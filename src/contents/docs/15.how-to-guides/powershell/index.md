@@ -1,5 +1,7 @@
 ---
 title: Run PowerShell Inside Your Flows
+h1: Execute PowerShell Scripts in Kestra Workflows
+description: Run PowerShell scripts in Kestra. Automate Windows administration, call Azure APIs, and integrate Microsoft services into your automation pipelines.
 icon: /src/contents/docs/icons/powershell.svg
 stage: Getting Started
 topics:
@@ -162,7 +164,7 @@ _This example works for both `io.kestra.plugin.scripts.powershell.Script` and `i
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your PowerShell script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your PowerShell script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: powershell_metrics

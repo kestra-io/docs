@@ -1,5 +1,6 @@
 ---
-title: Configure Kestra with MITM Proxy – Outbound HTTPS
+title: "MITM Proxy: Inspect Kestra's Outbound HTTPS Traffic"
+h1: Route and inspect outbound HTTPS traffic through a MITM proxy
 sidebarTitle: MITM Proxy for Kestra
 icon: /src/contents/docs/icons/padlock.svg
 description: Configure Kestra to route outbound HTTPS traffic through a Man-in-the-Middle (MITM) proxy for secure environments.
@@ -7,13 +8,11 @@ description: Configure Kestra to route outbound HTTPS traffic through a Man-in-t
 
 Configure outbound HTTP/S traffic through an MITM proxy in Kestra.
 
-## Route Kestra traffic through an MITM proxy
-
-This guide walks through the steps to route and inspect Kestra's outbound HTTP/S traffic using an MITM proxy.
+This guide explains how to route and inspect Kestra's outbound HTTP/S traffic using an MITM proxy.
 
 ## Why use an MITM proxy
 
-In secured or restricted environments it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy** for auditing, inspection, or policy enforcement. For this to work seamlessly, clients (Kestra) must:
+In secured or restricted environments it’s common to route outbound HTTP/S traffic through a **Man-in-the-Middle (MITM) proxy** for auditing, inspection, or policy enforcement. For this to work, clients (Kestra) must:
 
 - Trust the proxy’s CA certificate.
 - Route outbound traffic through the proxy.
@@ -22,8 +21,6 @@ In secured or restricted environments it’s common to route outbound HTTP/S tra
 :::alert{type="info"}
 **Security note:** An MITM proxy intercepts TLS traffic. Only enable this in controlled environments and with appropriate approvals.
 :::
-
----
 
 ## Prerequisites
 
@@ -49,8 +46,6 @@ kubectl create secret generic kestra-ssl   --from-file=truststore.jks   -n kestr
 
 This secret will be mounted into Kestra pods.
 
----
-
 ## Configuring Kestra to use the MITM proxy
 
 You must update the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) and ensure the truststore is available inside the container. Below are suggested changes for both Kubernetes (Helm) and Docker Compose deployments.
@@ -60,21 +55,21 @@ You must update the [Observability and Networking configuration](../../configura
 Add proxy settings and truststore configuration to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) (merged via Helm `configurations.application` or a config file):
 
 ```yaml
-## values.yaml (or application.yml configuration)
-configuration:
-  micronaut:
-    http:
-      client:
-        proxy-address: "your.proxy.net:8000"
-        proxy-type: HTTP
-
-  server:
-    ssl:
-      clientAuthentication: want
-      trustStore:
-        path: "file:/app/ssl/truststore.jks"
-        password: "changeit"
-        type: "JKS"
+## values.yaml
+configurations:
+  application:
+    micronaut:
+      http:
+        client:
+          proxy-address: "your.proxy.net:8000"
+          proxy-type: HTTP
+      server:
+        ssl:
+          clientAuthentication: want
+          trustStore:
+            path: "file:/app/ssl/truststore.jks"
+            password: "changeit"
+            type: "JKS"
 ```
 
 ### 2. Mount the truststore inside the container
@@ -82,15 +77,15 @@ configuration:
 **Kubernetes (Helm `values.yaml`)**
 
 ```yaml
-extraVolumeMounts:
-  - name: ssl-secret
-    mountPath: "/app/ssl"
-    readOnly: true
-
-extraVolumes:
-  - name: ssl-secret
-    secret:
-      secretName: kestra-ssl
+common:
+  extraVolumeMounts:
+    - name: ssl-secret
+      mountPath: "/app/ssl"
+      readOnly: true
+  extraVolumes:
+    - name: ssl-secret
+      secret:
+        secretName: kestra-ssl
 ```
 
 **Docker Compose**
@@ -110,17 +105,18 @@ services:
 **Kubernetes (values.yaml)**
 
 ```yaml
-extraEnv:
-  - name: JAVA_OPTS
-    value: >-
-      -Djavax.net.ssl.trustStore=/app/ssl/truststore.jks
-      -Djavax.net.ssl.trustStorePassword=changeit
-      -Djavax.net.ssl.trustStoreType=JKS
-      -Dhttp.proxyHost=your.proxy.net
-      -Dhttp.proxyPort=8000
-      -Dhttps.proxyHost=your.proxy.net
-      -Dhttps.proxyPort=8000
-      -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|kestra-minio
+common:
+  extraEnv:
+    - name: JAVA_OPTS
+      value: >-
+        -Djavax.net.ssl.trustStore=/app/ssl/truststore.jks
+        -Djavax.net.ssl.trustStorePassword=changeit
+        -Djavax.net.ssl.trustStoreType=JKS
+        -Dhttp.proxyHost=your.proxy.net
+        -Dhttp.proxyPort=8000
+        -Dhttps.proxyHost=your.proxy.net
+        -Dhttps.proxyPort=8000
+        -Dhttp.nonProxyHosts=localhost|127.0.0.1|kubernetes.default.svc|.svc|.cluster.local|your.nexus.domain.com|kestra-minio
 ```
 
 **Docker Compose**
@@ -131,8 +127,6 @@ services:
     environment:
       - JAVA_OPTS=-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit -Djavax.net.ssl.trustStoreType=JKS -Dhttp.proxyHost=your.proxy.net -Dhttp.proxyPort=8000 -Dhttps.proxyHost=your.proxy.net -Dhttps.proxyPort=8000 -Dhttp.nonProxyHosts=localhost|127.0.0.1|your.nexus.domain.com
 ```
-
----
 
 ## Troubleshooting
 

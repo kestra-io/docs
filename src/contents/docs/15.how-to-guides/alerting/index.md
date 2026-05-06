@@ -1,5 +1,6 @@
 ---
 title: Configure Alerts in Kestra
+h1: Set Up Workflow Failure Alerts via Slack and PagerDuty
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -13,8 +14,6 @@ Configure alerts that fire whenever a workflow fails.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/wIsbBpw3yCM?si=y0ZcPIDjLYPHnVVN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Alerting is essential to keeping production systems reliable. Kestra makes it easy with multiple ways to attach alerts to workflows so you always know what’s happening.
 

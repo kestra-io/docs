@@ -1,6 +1,7 @@
 ---
 title: Access Values Between Flows
-description: Learn how to access and share values between different Kestra flows using Subflows, KV Store, and Namespace Variables. Understand the benefits and use cases for managing data across workflows in Kestra.
+h1: Share Data Across Flows with Subflows, KV Store, and Variables
+description: Share data across Kestra flows using Subflows, KV Store, and Namespace Variables. Learn best patterns for passing values between different workflows.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -14,8 +15,6 @@ Sometimes it's useful to store values so they can be used across multiple flows.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/1XqujT5HeDM?si=Vx-lscIKtQ0vLsfK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 There are three different ways you can access values across different flows:
 1. Subflows
@@ -48,7 +47,7 @@ tasks:
     message: "{{ outputs.subflow.outputs.subflow_output }}"
 ```
 
-As we can see in the subflow directly, we have explicitly defined the output to make it easier to access in our parent flow. This example uses the input to generate the output sent to the parent flow.
+In the subflow, the output is explicitly defined to make it accessible in the parent flow. This example uses the input to generate the output sent to the parent flow.
 
 ```yaml
 id: subflow

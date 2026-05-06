@@ -1,5 +1,6 @@
 ---
-title: Flowable Tasks in Kestra – Control Orchestration Logic
+title: "Flowable Tasks in Kestra: Control Flow Logic"
+h1: Control Execution Flow with Sequential, Parallel, and Loop Tasks
 description: Deep dive into Kestra Flowable Tasks. Learn to control execution flow with sequential, parallel, switch, if/else, loops, and error handling constructs.
 sidebarTitle: Flowable Tasks
 icon: /src/contents/docs/icons/flow.svg
@@ -42,7 +43,7 @@ tasks:
 You can access the output of a sibling task using the syntax `{{ outputs.sibling.value }}`.
 :::
 
-For more details on capabilities, check out the [Sequential Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Sequential).
+For more details on capabilities, check out the [Sequential Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.sequential).
 
 ### Parallel
 
@@ -73,7 +74,7 @@ tasks:
 You cannot access the output of a sibling task as tasks will be run in parallel.
 :::
 
-For more task details, refer to the [Parallel Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel).
+For more task details, refer to the [Parallel Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.parallel).
 
 ### Switch
 
@@ -104,7 +105,7 @@ tasks:
           message: "This is false"
 ```
 
-For more plugin details, refer to the [Switch Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch).
+For more plugin details, refer to the [Switch Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.switch).
 
 ### If
 
@@ -137,7 +138,7 @@ tasks:
         message: "This is false"
 ```
 
-For more details, check out the [If Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.If).
+For more details, check out the [If Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.if).
 
 ### ForEach
 
@@ -171,8 +172,6 @@ In this execution, you can access:
 - The iteration value i.e., the index of a loop (the loop index starts at 0) using the syntax `{{ taskrun.iteration }}`
 - The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
 
----
-
 This example shows how to run tasks in parallel for each value in the list. All child tasks of the parallel task run in parallel. However, due to the `concurrencyLimit` property set to 2, only two parallel task groups run at any given time.
 
 ```yaml
@@ -197,12 +196,12 @@ tasks:
             - sleep {{ parent.taskrun.value }}
 ```
 
-For more information on handling outputs generated from `ForEach`, check out this [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md).
+For more information on handling outputs generated from `ForEach`, check out the [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md) and the [Best Practices for ForEach and ForEachItem](../../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, including how to access [sibling task outputs correctly](../../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach) inside the loop.
 
 For processing items, or forwarding processing to a subflow, [ForEachItem](#foreachitem) is better suited.
 
 :::alert{type="info"}
-For more details, refer to the [ForEach Task documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach).
+For more details, refer to the [ForEach Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach).
 :::
 
 ### ForEachItem
@@ -260,7 +259,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For more details, refer to the [ForEachItem Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem).
+For more details, refer to the [ForEachItem Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem).
 :::
 
 #### `ForEach` vs `ForEachItem`
@@ -274,8 +273,6 @@ Read more about performance optimization in our [best practices guides](../../..
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/mkZcdbgxSWA?si=DXGrFU6m6XEOtZSN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ### LoopUntil
 
@@ -309,9 +306,7 @@ tasks:
         uri: https://kestra.io/api/mock
 ```
 
-For more details, refer to the [LoopUntil Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.LoopUntil).
-
----
+For more details, refer to the [LoopUntil Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil).
 
 ### AllowFailure
 
@@ -349,7 +344,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For more details, refer to the [AllowFailure Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.AllowFailure).
+For more details, refer to the [AllowFailure Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.allowfailure).
 :::
 
 ### Fail
@@ -412,7 +407,7 @@ tasks:
     message: "I'm after the fail on condition"
 ```
 
-For more information, refer to the [Fail Task documentation](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Fail).
+For more information, refer to the [Fail Task documentation](/plugins/core/execution/io.kestra.plugin.core.execution.fail).
 
 ### Subflow
 
@@ -438,13 +433,13 @@ tasks:
       store: 12
 ```
 
-For more details, refer to the [Subflow Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Subflow).
+For more details, refer to the [Subflow Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.subflow).
 
 ### WorkingDirectory
 
 By default, Kestra launches each task in a new working directory, possibly on different workers if multiple ones exist.
 
-The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. In order to share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
+The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. To share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
 
 This task can be particularly useful for compute-intensive file system operations.
 
@@ -518,7 +513,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-[WorkingDirectory Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.WorkingDirectory)
+[WorkingDirectory Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.workingdirectory)
 :::
 
 ### Pause
@@ -560,7 +555,7 @@ tasks:
 
 :::alert{type="info"}
 A Pause task without delay waits indefinitely until the task state is changed to **Running**.
-For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu, and select **Mark as RUNNING** on the form. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Pause).
+For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu, and select **Mark as RUNNING** on the form. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.pause).
 :::
 
 ### DAG
@@ -606,7 +601,7 @@ tasks:
           - task3
 ```
 
-For more details, refer to the [Dag Task documentation](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Dag).
+For more details, refer to the [Dag Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).
 
 ### Template (deprecated)
 

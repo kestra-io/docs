@@ -1,22 +1,16 @@
 import { API_URL } from "astro:env/client"
 
-const cacheObject: Record<string, any> = {}
-
-export async function $fetch<T = any>(url: string, init: RequestInit = {}): Promise<T> {
-    if (cacheObject[url]) {
-        return cacheObject[url]
-    }
-
-    const data = await $fetchNoCache(url, init);
-
-    cacheObject[url] = data
-    return data
+const cloudflareCache: RequestInit = {
+    cf: {
+        cacheTtl: 60 * 60, // 1 hour
+        cacheEverything: true,
+    },
 }
 
-export async function $fetchNoCache<T = any>(
+async function internalFetch(
     url: string,
     init: RequestInit = {},
-): Promise<T> {
+): Promise<Response> {
     let response: Response
 
     try {
@@ -27,35 +21,85 @@ export async function $fetchNoCache<T = any>(
     }
 
     if (!response.ok) {
-        throw new Error(
+        let responseData: unknown
+
+        try {
+            const contentType = response.headers.get("content-type") || ""
+            if (contentType.includes("application/json")) {
+                responseData = await response.clone().json()
+            } else {
+                responseData = await response.clone().text()
+            }
+        } catch {
+            responseData = undefined
+        }
+
+        const error = new Error(
             `Fetch error: ${response.status} ${response.statusText} on url ${url}`,
-        )
+        ) as Error & {
+            response?: { status: number; statusText: string; data?: unknown }
+        }
+
+        error.response = {
+            status: response.status,
+            statusText: response.statusText,
+            data: responseData,
+        }
+
+        throw error
     }
 
-    const data = await response.json()
-
-    return data
+    return response
 }
 
-export async function $fetchApi<T = any>(url: string, init: RequestInit = {}): Promise<T> {
-    return $fetch<T>(`${API_URL}${url}`, init)
+export async function $fetch<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T> {
+    const response = await internalFetch(url, init)
+
+    return await response.json()
+}
+
+export async function $fetchCached<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    return await $fetch<T>(url, cachingConfig)
+}
+
+export async function $fetchCachedRaw(
+    url: string,
+    init: RequestInit = {},
+): Promise<Response> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    return await internalFetch(url, cachingConfig)
+}
+
+export async function $fetchApi<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T> {
+    return await $fetch<T>(`${API_URL}${url}`, init)
 }
 
 export async function $fetchApiCached<T = any>(
     url: string,
-    duration = 60000,
     init: RequestInit = {},
 ): Promise<T> {
-    if (cacheObject[url]) {
-        if (Date.now() - cacheObject[url].timestamp < duration) {
-            return cacheObject[url].data
-        }
-    }
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
 
-    const data = await $fetchApi<T>(url, init)
-    cacheObject[url] = {
-        data,
-        timestamp: Date.now(),
-    }
-    return data
+    return await $fetchApi<T>(url, cachingConfig)
+}
+
+export async function $fetchApiRawCached(
+    url: string,
+    init: RequestInit = {},
+): Promise<Response> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    return await internalFetch(`${API_URL}${url}`, cachingConfig)
 }

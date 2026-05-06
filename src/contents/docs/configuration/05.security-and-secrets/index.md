@@ -1,5 +1,6 @@
 ---
-title: Kestra Security and Secrets Configuration
+title: Security & Secrets Configuration in Kestra
+h1: Configure Encryption, Secret Backends & Auth Security
 description: Configure encryption, secret backends, auth-related security settings, RBAC-adjacent platform security, and secure server behavior in Kestra.
 sidebarTitle: Security and Secrets
 icon: /src/contents/docs/icons/admin.svg
@@ -86,7 +87,11 @@ kestra:
 
 `isolation` is the key control to understand here: it limits which Kestra services are allowed to resolve secrets, which is useful when you want workers or executors to have narrower access than the whole platform.
 
+The Azure service principal referenced in the base structure above must have the following Key Vault access policy permissions: `Get`, `List`, `Set`, `Delete`, `Recover`, `Backup`, `Restore`, `Purge`.
+
 Representative backend examples:
+
+AWS Secrets Manager requires the following IAM permissions: `CreateSecret`, `DeleteSecret`, `DescribeSecret`, `GetSecretValue`, `ListSecrets`, `PutSecretValue`, `RestoreSecret`, `TagResource`, `UpdateSecret`.
 
 ```yaml
 kestra:
@@ -99,6 +104,8 @@ kestra:
       region: us-east-1
 ```
 
+Google Secret Manager requires the `roles/secretmanager.admin` role. Omit `service-account` to fall back to `GOOGLE_APPLICATION_CREDENTIALS` or the environment's default credentials:
+
 ```yaml
 kestra:
   secret:
@@ -109,6 +116,8 @@ kestra:
         <service-account JSON>
 ```
 
+Elasticsearch secrets are additionally encrypted with AES. The key must be at least 32 characters:
+
 ```yaml
 kestra:
   secret:
@@ -117,7 +126,48 @@ kestra:
       secret: "a-secure-32-character-minimum-key"
 ```
 
-Supported Vault auth methods include Userpass, Token, and AppRole. JDBC-backed secrets, secret tags, and secret caching are covered below.
+HashiCorp Vault (KV v2) supports Userpass, Token, and AppRole authentication.
+
+Userpass:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      password:
+        user: john
+        password: foo
+```
+
+Token:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      token:
+        token: your-secret-token
+```
+
+AppRole:
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    vault:
+      address: "http://localhost:8200"
+      app-role:
+        path: approle
+        role-id: your-role-id
+        secret-id: your-secret-id
+```
+
+JDBC-backed secrets, secret tags, and secret caching are covered below.
 
 ### JDBC secret backend
 
@@ -240,6 +290,10 @@ kestra:
       tenant-id: staging
 ```
 
+:::alert{type="info"}
+Place `default-role` under `kestra.security`, not `micronaut.security`.
+:::
+
 ### Invitation expiration and password rules
 
 Invitation links expire after seven days by default. Extend them if user onboarding happens through slower approval processes:
@@ -270,7 +324,13 @@ kestra:
     delete-files-on-start: true
 ```
 
-Liveness and heartbeat settings also belong here:
+Liveness and heartbeat settings also belong here. The parameter constraints below affect cluster stability:
+
+- `timeout` — must match across **all Executors**
+- `initial-delay` — must match across **all Executors**
+- `heartbeat-interval` — must be strictly less than `timeout`
+
+Recommended settings for JDBC-backed (OSS) deployments:
 
 ```yaml
 kestra:
@@ -283,7 +343,19 @@ kestra:
       heartbeat-interval: 3s
 ```
 
-Use the OSS-style settings above for JDBC-backed deployments. In Kafka-based EE deployments, `timeout` and `initial-delay` are commonly increased to `1m`.
+Recommended settings for Kafka-based (EE) deployments:
+
+```yaml
+kestra:
+  server:
+    liveness:
+      timeout: 1m
+      initial-delay: 1m
+```
+
+:::alert{type="warning"}
+Worker liveness in Kafka mode is handled by Kafka's protocol guarantees, so you only need to set `timeout` and `initial-delay` for the EE stack.
+:::
 
 Heartbeat and restart behavior also belong here:
 
@@ -311,6 +383,24 @@ kestra:
 
 :::alert{type="warning"}
 Keep the external process manager timeout longer than Kestra's own termination grace period. Otherwise Kubernetes, Docker, or systemd can kill the process before graceful shutdown finishes.
+:::
+
+## Regex timeout
+
+Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs.
+
+The default timeout is **10 seconds**. To change it, set `kestra.regex.timeout` in your configuration:
+
+```yaml
+kestra:
+  regex:
+    timeout: 30s
+```
+
+Accepts any [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) string (e.g., `5s`, `PT30S`, `1m`).
+
+:::alert{type="info"}
+The timeout is set once at startup and cannot be changed at runtime without restarting the server.
 :::
 
 ## Related docs

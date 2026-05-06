@@ -1,5 +1,6 @@
 ---
-title: Contribute to Kestra Documentation – Writer’s Guide
+title: "Kestra Docs Contributor Guide: Writer's Reference"
+h1: "How to Contribute to Kestra Docs: Setup, Front Matter, and Best Practices"
 description: Help improve Kestra's documentation. This writer's guide covers local build setup, front matter conventions, and best practices for contributing to docs.
 sidebarTitle: Kestra Documentation
 icon: /src/contents/docs/icons/contributing.svg
@@ -8,9 +9,7 @@ import ChildCard from "~/components/docs/ChildCard.astro"
 
 Contribute to the Kestra Documentation.
 
-## Contribute to the Kestra Documentation
-
-We love documentation contributions. To contribute to the documentation, fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes. We'll happily review and merge your suggestions into the documentation set as quickly as we can.
+To contribute to the documentation, fork the [docs repository](https://github.com/kestra-io/docs/fork) and create a pull request with your changes.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/97xvcAMf888?si=y9vEEtGvoHfLxsK4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -51,8 +50,6 @@ npm run build
 In addition to contributing content and understanding the overall structure of the documentation, it's important to become familiar with the custom Markdown components and patterns used throughout the Kestra Docs. For those contributing to the Kestra Plugin documentation, a basic understanding of plugin structure and Java syntax for doc strings is required.
 
 This guide is designed to help external contributors get up to speed with the tools, conventions, and components you'll encounter when contributing to Kestra's documentation.
-
-## Contribute to the Kestra documentation
 
 <ChildCard />
 
@@ -102,13 +99,32 @@ And this is the resulting view:
 
 ![Apps Front Matter](./apps-frontmatter.png)
 
-Let's discuss each property in more detail.
+Each property is described below.
 
 #### title
 
-This is simply the title of the page, but it is important to make sure this is clear. Typically, this will be the name of the feature or the concept, but as a contributor, you may want to write your own ["How to guide"](../../15.how-to-guides/index.mdx) with your Kestra use case. In this scenario, be clear about the purpose of the guide and with what feature or Plugin (e.g., [Access Files on your Local Machine in Kestra ](../../15.how-to-guides/access-local-files/index.md)).
+`title` is the SEO title of the page. It appears in browser tabs, search results, and social previews. Write it to be descriptive and keyword-rich. For feature or concept pages this is typically the feature name; for how-to guides, make it clear about both the purpose and the tool involved (e.g., [Access Files on your Local Machine in Kestra](../../15.how-to-guides/access-local-files/index.md)).
 
-`sidebarTitle` controls what is shown on the lefthand-side navigation bar of the documentation. This can simply be the name of the feature or topic.
+Use Title Case for `title` and `sidebarTitle`.
+
+#### h1
+
+`h1` controls the heading displayed at the top of the page. It is separate from `title` so the on-page heading can be written for readability while `title` is optimised for search. If `h1` is omitted, `title` is used as the heading. Most pages define both:
+
+```markdown
+---
+title: "Handle Errors in Kestra: Retries and Alerts"
+h1: Build Resilient Workflows with Retries, Alerts & Failure Handling
+---
+```
+
+#### description
+
+`description` is the meta description shown in search results and link previews. Write one to two sentences (roughly 150–160 characters) summarising the page's content. Every page should include one.
+
+#### sidebarTitle
+
+`sidebarTitle` controls the label shown in the left-hand navigation. Keep it short — typically just the feature or topic name. Use Title Case.
 
 #### icon
 
@@ -144,7 +160,7 @@ topics:
 ---
 ```
 
-These properties are `const` variables set in the `GuidesChildCard.vue` file of the repository. They have a set list to choose from when classifying a guide. For example, `stage` can be "Getting Started," "Intermediate," or "Advanced." `topics` can be a multitude of different concepts such as "Scripting," "Kestra Concepts," "Best Practices," and more. If your guide doesn't fit into any of the existing topics, feel free to suggest a new one, and we’ll review it.
+These properties are `const` variables set in the `GuidesChildCard.vue` file of the repository. They have a set list to choose from when classifying a guide. For example, `stage` can be "Getting Started," "Intermediate," or "Advanced." `topics` can be a multitude of different concepts such as "Scripting," "Kestra Concepts," "Best Practices," and more. If your guide doesn’t fit into any of the existing topics, feel free to suggest a new one in a pull request.
 
 #### editions
 
@@ -209,6 +225,21 @@ editions: ["OSS", "EE"]
 ---
 ```
 
+### Writing style
+
+#### Headings
+
+Use sentence case for all body headings — capitalise only the first word and proper nouns. Use Title Case for `title` and `sidebarTitle` in front matter.
+
+Avoid restating the page title as the first H2. The first heading should introduce the first distinct section, not repeat what the title already says.
+
+#### Voice and tone
+
+- Address the reader as "you" (second person).
+- Use active voice and present tense for facts and product behavior.
+- Be direct. Avoid filler phrases like "In this guide," "It's worth noting that," or "Simply."
+- Do not use first-person plural ("we," "our"). Kestra docs address the reader, not the writing team.
+
 ### Customized text
 
 We use several components to add customized text presentations in the documentation. To differentiate important information from average text, we use three different levels of alert types: "info," "success," and "warning."
@@ -226,6 +257,8 @@ This is a warning, but it's fine.
 
 ![this is fine](./this-is-fine.png)
 :::
+
+Use alerts sparingly. Reserve them for content that would cause failure or confusion if missed — a required prerequisite, a destructive side effect, or a non-obvious constraint. Avoid using them for general information that works just as well as a sentence in the body text.
 
 Another helpful component we use is `:::collapse`. This tag keeps the documentation space-efficient and hides long examples or other information that does not need to be seen when scrolling the page. Still, the reader can open it up to reveal its content. This is particularly useful for flows that could otherwise take up a lot of space on a page or FAQ Answers that may not be relevant to every reader and can be selected as needed.
 
@@ -311,7 +344,7 @@ The component has the following syntax, able to include both `version` and `edit
 
 In the documentation, we try to always have an accompanying video for the discussed feature. To ensure the YouTube video is embedded and displayed correctly and consistently on every page, we use a custom `video-container` div class. Add the div after the page's introductory sentence and before the main content.
 
-```
+```html
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/97xvcAMf888?si=y9vEEtGvoHfLxsK4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -435,7 +468,7 @@ public class ChatCompletion extends AbstractTask implements RunnableTask<ChatCom
     )
 ```
 
-If any titles, descriptions, or examples could be improved or added, create a pull request or issue for the specific plugin repository, and we will happily review and merge it into the set.
+To improve or add titles, descriptions, or examples, create a pull request or issue on the specific plugin repository.
 
 ## Contribute to Kestra Blueprints
 
@@ -468,7 +501,8 @@ extend:
     - SQL
   ee: false
   demo: true
-  meta_description: This flow represents a data engineering use case. It downloads
+  metaTitle: Getting Started - Data Engineering Pipeline
+  metaDescription: This flow represents a data engineering use case. It downloads
     a JSON file, filters the data in Python, and calculates the KPIs in SQL
     using DuckDB.
 ```
@@ -481,4 +515,4 @@ With the proper YAML and extension, the Flow's topology will display interactive
 
 ![Blueprint Page](./blueprint-page.png)
 
-If you have ideas for new blueprints or existing titles, descriptions, or examples that could be improved, create a pull request or an issue on the [Blueprints repository](http://github.com/kestra-io/blueprints). We will happily review and merge it into the set.
+To suggest new blueprints or improve existing ones, create a pull request or issue on the [Blueprints repository](http://github.com/kestra-io/blueprints).

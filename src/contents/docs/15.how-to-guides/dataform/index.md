@@ -1,5 +1,7 @@
 ---
 title: Use Dataform in Kestra
+h1: Orchestrate Declarative Dataform Workflows in Kestra
+description: Orchestrate DataForm transformations in Kestra. Schedule and run DataForm jobs in your data pipeline for reliable, version-controlled SQL-based data modeling.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -21,7 +23,7 @@ There are two ways in which you can create a Dataform project while running with
 
 2. Create the Dataform project in Kestra using [Namespace Files](../../../docs/06.concepts/02.namespace-files/index.md), and then run it using the [DataformCLI](/plugins/plugin-dataform/cli/io.kestra.plugin.dataform.cli.dataformcli) task. You can later choose to push the Namespace Files into GitHub repository using [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacefiles) task.
 
-In this guide, we will see in detail both the above methods for transforming data using Dataform in Kestra for BigQuery.
+This guide covers both methods for transforming data using Dataform in Kestra for BigQuery.
 
 ### Using GitHub repository
 
@@ -60,12 +62,12 @@ The `clone_repo` task pulls the repository with the Dataform project, and the `t
 
 ### Using Dataform project creation in Kestra
 
-We will first create the Kestra flow and save it. The flow contains the following tasks:
+First, create and save the Kestra flow. The flow contains the following tasks:
 
 1. HTTP Download task that downloads the `orders.csv` file using HTTP URL.
 2. BigQuery CreateTable task that creates the `orders` table in the `ecommerce` dataset.
 3. BigQuery Load task that loads the `orders.csv` contents into the BigQuery `orders` table.
-4. DataformCLI task that will run the Dataform project, that we will create later using Namespace Files. The project creates the `stg_orders` BigQuery view based on the `orders` BigQuery table.
+4. DataformCLI task that runs the Dataform project, created later using Namespace Files. The project creates the `stg_orders` BigQuery view based on the `orders` BigQuery table.
 
 ```yaml
 id: dataform_project
@@ -145,9 +147,9 @@ Once the flow is saved, navigate to the Editor, and create a file `package.json`
 }
 ```
 
-Note that this file is not required for the Kestra execution as we will be installing this dependency using `beforeCommands`. This is however required if you choose to push the namespace files to GitHub repository so that you can run the project seamlessly in other ways.
+This file is not required for Kestra execution, as the dependency is installed via `beforeCommands`. It is required if you push the namespace files to a GitHub repository so you can run the project in other ways.
 
-Next, we will create `dataform.json`.
+Next, create `dataform.json`.
 
 ```json
 {
@@ -160,9 +162,9 @@ Next, we will create `dataform.json`.
 
 Most often, the `database` is same as the GCP project ID.
 
-Let us now create a folder `definitions`. In this folder create a file `orders.sqlx`. This file will define the `orders` table as the source table. The contents of the `orders.sqlx` file will be:
+Create a `definitions` folder. Inside it, create a file `orders.sqlx` to define the `orders` table as the source table:
 
-```
+```javascript
 config {
   type: "declaration",
   database: "<database>",
@@ -172,9 +174,9 @@ config {
 }
 ```
 
-Next, we will create the `stg_orders.sqlx` file under the `definitions` folder. This file will define the `stg_orders` view that we want to generate using Dataform. The file contents will be:
+Next, create `stg_orders.sqlx` under the `definitions` folder to define the `stg_orders` view:
 
-```
+```javascript
 config {
   type: "view",  // Specify whether this model will create a table or a view
   schema: "ecommerce",

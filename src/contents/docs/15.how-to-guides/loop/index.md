@@ -1,5 +1,6 @@
 ---
 title: Loop Over a List of Values
+h1: Iterate Over Lists with the ForEach Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -84,4 +85,4 @@ Now that you've seen how to loop over a list of values using `ForEach`, you can 
 - Using dynamic input values instead of hardcoded lists.
 - Logging or processing additional data from each iteration.
 
-For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) task documentation.
+For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task documentation and the [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, which covers how to access sibling task outputs inside and outside the loop, when to use `ForEachItem` instead, and common mistakes to avoid.

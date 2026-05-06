@@ -1,5 +1,6 @@
 ---
-title: Assets in Kestra – Track Lineage and Metadata
+title: "Assets in Kestra: Track Lineage and Metadata"
+h1: Manage Workflow Assets, Tables, and Dataset Lineage
 description: Use Assets in Kestra Enterprise to track workflow lineage and metadata. Manage resources like tables, files, and datasets across your data stack.
 sidebarTitle: Assets
 icon: /src/contents/docs/icons/admin.svg
@@ -143,7 +144,8 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        ---
+        
+---
         - hosts: localhost
           tasks:
             - name: Print Hello World
@@ -598,7 +600,7 @@ The `assets()` Pebble function allows you to query and retrieve assets dynamical
 
 ### Function signature
 
-```
+```plaintext
 assets(type: string, namespace: string, metadata: map)
 ```
 

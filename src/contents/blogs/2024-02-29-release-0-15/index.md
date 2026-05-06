@@ -5,6 +5,8 @@ date: 2024-02-29T13:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
 ---
@@ -138,7 +140,7 @@ taskDefaults:
 The `action: NONE` property allows you to _manually_ move or delete the file after it has been processed. The `taskDefaults` property is used to avoid duplicating the AWS credential configuration across multiple tasks and triggers from the AWS plugin.
 
 For more details on the `NONE` action, check out:
-- the plugin documentation e.g. [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.Trigger), [GCS Trigger](/plugins/plugin-gcp/gcs/io.kestra.plugin.gcp.gcs.Trigger), [Azure Blob Storage Trigger](/plugins/plugin-azure/storage.blob/io.kestra.plugin.azure.storage.blob.trigger), and [SFTP Trigger](/plugins/plugin-fs/sftp/io.kestra.plugin.fs.sftp.trigger)
+- the plugin documentation e.g. [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger), [GCS Trigger](/plugins/plugin-gcp/cloud-storage-gcs/io.kestra.plugin.gcp.gcs.trigger), [Azure Blob Storage Trigger](/plugins/plugin-azure/azure-blob-storage/io.kestra.plugin.azure.storage.blob.trigger), and [SFTP Trigger](/plugins/plugin-fs/sftp-ssh-file-transfer-protocol/io.kestra.plugin.fs.sftp.trigger)
 - the GitHub issues [#1842](https://github.com/kestra-io/kestra/issues/1842) and [#262](https://github.com/kestra-io/plugin-gcp/issues/262).
 
 ### New HTTP Trigger
@@ -279,7 +281,7 @@ Lastly, the `Save` and `Actions` buttons have been moved to a dedicated UI menu 
 
 With this release, we're introducing [Azure EventHubs](/plugins/plugin-azure#eventhubs) and [Solace](/plugins/plugin-solace) plugins, which extend the integration capabilities for event-driven architectures. These plugins open up new possibilities for data processing and event handling within your workflows.
 
-We've also added a new generic Singer plugin that simultaneously integrates with all [taps](/plugins/plugin-singer/taps/io.kestra.plugin.singer.taps.generictap) and [targets](/plugins/plugin-singer/targets/io.kestra.plugin.singer.targets.generictarget), thereby significantly expanding the range of data sources and destinations that can be declaratively orchestrated in Kestra using the Singer ecosystem.
+We've also added a new generic Singer plugin that simultaneously integrates with all [taps](/plugins/plugin-singer) and [targets](/plugins/plugin-singer), thereby significantly expanding the range of data sources and destinations that can be declaratively orchestrated in Kestra using the Singer ecosystem.
 
 ---
 

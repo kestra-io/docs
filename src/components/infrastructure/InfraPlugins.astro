@@ -1,0 +1,24 @@
+---
+import Connect from "~/components/infrastructure/Connect.astro"
+
+const PLUGINS = [
+    { cls: "io.kestra.plugin.servicenow", name: "ServiceNow" },
+    { cls: "io.kestra.plugin.ansible", name: "Ansible" },
+    { cls: "io.kestra.plugin.aws", name: "AWS" },
+    { cls: "io.kestra.plugin.azure", name: "Azure" },
+    { cls: "io.kestra.plugin.gcp", name: "GCP" },
+    { cls: "io.kestra.plugin.git", name: "Git" },
+    { cls: "io.kestra.plugin.scripts.go", name: "Go" },
+    { cls: "io.kestra.plugin.ee.vmware.vcenter.CloneVm", name: "VMware" },
+]
+
+const plugins = PLUGINS.map((p) => ({
+    name: p.name,
+    logo: `/icons/${p.cls}.svg`,
+}))
+---
+
+<Connect
+    {plugins}
+    link={{ href: "/plugins?category=INFRASTRUCTURE", text: "See All Plugins" }}
+/>

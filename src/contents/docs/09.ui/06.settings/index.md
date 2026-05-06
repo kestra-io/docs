@@ -1,5 +1,6 @@
 ---
-title: Settings in the Kestra UI – Personalize Your Experience
+title: "Settings in Kestra UI: Themes, Timezone & Editor"
+h1: "Personalize Your Kestra UI: Themes, Timezone & Editor Prefs"
 description: Customize the Kestra UI. Configure themes, editor preferences, time zones, and default settings to personalize your user experience.
 sidebarTitle: Settings
 icon: /src/contents/docs/icons/ui.svg
@@ -8,9 +9,7 @@ docId: settings
 
 Configure Settings for Kestra.
 
-## Personalize your Kestra UI experience
-
-**Settings** are accessible from the bottom left environment menu. You are able to configure the Kestra UI. These configuration options are on a per-user basis.
+**Settings** are accessible from the bottom left environment menu. All configuration options are per-user.
 
 ![Kestra User Interface Settings Page](./settings.png)
 
@@ -18,15 +17,13 @@ Configure Settings for Kestra.
 ## Main configuration
 
 Options you can configure under **Main Configuration** include:
-- **Default Namespace**: e.g., `company.team` - by default, this is empty. Once set, this will be the default namespace when creating a new flow (otherwise, we use `company.team` as a placeholder). Also, when navigating to the Flows or Executions pages, it will filter for this default namespace.
+- **Default Namespace**: e.g., `company.team` - by default, this is empty. Once set, this will be the default namespace when creating a new flow (otherwise `company.team` is used as a placeholder). Also, when navigating to the Flows or Executions pages, it will filter for this default namespace.
 - **Default Editor Type**: e.g., "YAML Editor" or "No Code Editor"
 - **Default Log Level**: e.g., `TRACE`
 - **Default Log Display**: Expand all, Collapse all, or Expand only failed tasks
 - **Execute the Flow**: In the same tab or in a new tab
 - **Default Execution Tab**: Sets which Execution tab you are directed to (e.g., Gantt, Logs, Outputs, etc.) after executing a flow.
 - **Default Flow Tab**: Sets which flow tab opens by default when you click a flow (e.g., Overview, Topology, Edit, etc.)
-
----
 
 ## Theme preferences
 
@@ -57,8 +54,6 @@ Below is a detailed list of the Theme Preferences you can configure:
 - **Environment Name**: e.g., dev, staging, prod
 - **Environment Color**: select a color from the color picker
 
----
-
 ## Language and region
 
 - **Language**: English, German, Spanish, French, Hindi, Italian, Japanese, Korean, Polish, Portuguese, Russian, or Chinese
@@ -73,10 +68,8 @@ Below is a detailed list of the Theme Preferences you can configure:
   - `Monday, September 30, 2024 12:44 PM`
 
 :::alert{type="info"}
-You can change the date and time of your Kestra instance. However, note that this does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or the time that your Kestra flows will execute on. By default, those will run on UTC. This setting is only for the UI display.
+This setting only affects the UI display. It does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or flow execution times, which run on UTC by default.
 :::
-
----
 
 ## Export
 

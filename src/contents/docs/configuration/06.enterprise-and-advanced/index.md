@@ -1,6 +1,7 @@
 ---
-title: Kestra Enterprise and Advanced Configuration
-description: Configure Enterprise-only and advanced Kestra settings including licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
+title: Enterprise & Advanced Configuration in Kestra
+h1: "Configure Enterprise Features: Kafka, Elasticsearch & AI Copilot"
+description: Configure Enterprise-only Kestra settings. Manage licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
 sidebarTitle: Enterprise and Advanced
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -34,7 +35,11 @@ kestra:
 
 Kestra validates the license on startup. The `fingerprint` is also required for versioned plugins.
 
-EE Java security lets you restrict filesystem access and thread creation:
+EE Java security lets you restrict filesystem access and thread creation. Three controls are available:
+
+- `forbidden-paths` — disallows read/write on listed filesystem paths
+- `authorized-class-prefix` — limits which classes are allowed to create threads
+- `forbidden-class-prefix` — blocks specific classes from creating threads
 
 ```yaml
 kestra:
@@ -46,6 +51,17 @@ kestra:
       authorized-class-prefix:
         - io.kestra.plugin.core
         - io.kestra.plugin.gcp
+```
+
+Use `forbidden-class-prefix` when you want to block a specific plugin family from spawning threads rather than maintaining an allowlist:
+
+```yaml
+kestra:
+  ee:
+    java-security:
+      enabled: true
+      forbidden-class-prefix:
+        - io.kestra.plugin.scripts
 ```
 
 Use EE Java security carefully. It is a platform hardening feature, so the goal is to narrow what plugin code is allowed to touch, not to tune routine runtime behavior.
@@ -165,6 +181,70 @@ kestra:
 
 Use client properties for transport and auth, `defaults` for cluster-wide topic behavior, and `topics.*.properties` only when one topic needs behavior that differs from the rest.
 
+Full SSL client configuration with keystores:
+
+```yaml
+kestra:
+  kafka:
+    client:
+      properties:
+        bootstrap.servers: "host:port"
+        security.protocol: "SSL"
+        ssl.endpoint.identification.algorithm: ""
+        ssl.key.password: "<your-password>"
+        ssl.keystore.location: "/etc/ssl/private/keystore.p12"
+        ssl.keystore.password: "<your-password>"
+        ssl.keystore.type: "PKCS12"
+        ssl.truststore.location: "/etc/ssl/private/truststore.jks"
+        ssl.truststore.password: "<your-password>"
+  queue:
+    type: kafka
+```
+
+Consumer, producer, and stream defaults:
+
+```yaml
+kestra:
+  kafka:
+    defaults:
+      consumer:
+        properties:
+          isolation.level: "read_committed"
+          auto.offset.reset: "earliest"
+          enable.auto.commit: "false"
+      producer:
+        properties:
+          acks: "all"
+          compression.type: "lz4"
+          max.request.size: "10485760"
+      stream:
+        properties:
+          processing.guarantee: "exactly_once"
+          replication.factor: "${kestra.kafka.defaults.topic.replication-factor}"
+          acks: "all"
+          compression.type: "lz4"
+          max.request.size: "10485760"
+          state.dir: "/tmp/kafka-streams"
+```
+
+Client loggers for debugging message flow:
+
+```yaml
+kestra:
+  kafka:
+    client:
+      loggers:
+        - level: INFO
+          type: PRODUCER
+          topic-regexp: "kestra_(executions|workertaskresult)"
+          key-regexp: .*parallel.*
+          value-regexp: .*parallel.*
+```
+
+:::alert{type="warning"}
+Client loggers have a heavy performance impact. Use them only for short-lived debugging sessions.
+:::
+
 Shared-cluster deployments often also need prefixes or dedicated topic names to avoid collisions with other tenants or environments.
 
 To reject oversized Kafka messages early:
@@ -199,11 +279,14 @@ This page also includes:
 
 ### AI Copilot
 
+Set `kestra.ai.enabled` to `false` to fully disable the AI Copilot, including the built-in fallback to `api.kestra.io`. Defaults to `true`.
+
 Enterprise Edition supports multiple providers in one configuration, which is useful when teams need both a default internal model and a fallback external model:
 
 ```yaml
 kestra:
   ai:
+    enabled: true # set to false to disable AI Copilot entirely
     providers:
       - id: gemini
         display-name: Gemini - Private

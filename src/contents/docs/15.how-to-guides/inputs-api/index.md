@@ -1,5 +1,6 @@
 ---
 title: Pass Inputs via an API Call
+h1: Parameterize Flow Executions by Passing Inputs via API
 icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:
@@ -15,7 +16,7 @@ Inputs allow you to dynamically pass data to your execution at runtime. For a de
 
 If you want to trigger a flow and change the value for an input, you can do so by triggering your flow by the API and passing your new input in the form data.
 
-Let's assume the following flow:
+Take the following flow as an example:
 
 ```yaml
 id: inputs_demo

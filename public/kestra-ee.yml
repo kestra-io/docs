@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.3
+  version: 1.3.16
 tags:
 - name: Flows
   description: Flows api
@@ -155,7 +155,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -164,7 +163,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -528,7 +526,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -537,7 +534,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -615,7 +611,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -624,7 +619,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -1326,6 +1320,42 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/pebble/filters:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the list of available Pebble expression filters.
+      operationId: getExpressionFilters
+      responses:
+        "200":
+          description: getExpressionFilters 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/pebble/functions:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve the list of available Pebble expression functions.
+      operationId: getExpressionFunctions
+      responses:
+        "200":
+          description: getExpressionFunctions 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/plugins:
     get:
       tags:
@@ -1483,7 +1513,6 @@ paths:
       - name: arrayOf
         in: query
         description: If schema should be an array of requested type
-        required: true
         explode: false
         schema:
           type: boolean
@@ -1516,7 +1545,6 @@ paths:
       - name: all
         in: query
         description: Include all the properties
-        required: true
         explode: false
         schema:
           type: boolean
@@ -1576,7 +1604,6 @@ paths:
       - name: all
         in: query
         description: Include all the properties
-        required: true
         explode: false
         schema:
           type: boolean
@@ -1650,7 +1677,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -1659,7 +1685,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -1943,6 +1968,62 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/support/debug-info:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve debug information for a support ticket
+      description: Returns aggregated debug information about the current Kestra instance.
+        Available to all authenticated users.
+      operationId: supportDebugInfo
+      responses:
+        "200":
+          description: supportDebugInfo 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportDebugInfo"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/support/forward:
+    post:
+      tags:
+      - Misc
+      summary: Forward support ticket to configured registry proxy
+      operationId: forwardSupportTicket
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: string
+                filesPublisher:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                    format: binary
+            encoding:
+              payload:
+                contentType: application/octet-stream
+                explode: false
+              filesPublisher:
+                contentType: application/octet-stream
+                explode: false
+        required: true
+      responses:
+        "200":
+          description: forwardSupportTicket 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/tenants:
     post:
       tags:
@@ -1981,7 +2062,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -1990,7 +2070,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -2229,7 +2308,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -2238,7 +2316,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -2757,7 +2834,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/DashboardGenerationPrompt"
+              $ref: "#/components/schemas/AiController.DashboardGenerationPrompt"
         required: true
       responses:
         "200":
@@ -2783,7 +2860,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/FlowGenerationPrompt"
+              $ref: "#/components/schemas/AiController.FlowGenerationPrompt"
         required: true
       responses:
         "200":
@@ -2906,7 +2983,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -2915,7 +2991,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -3123,7 +3198,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -3132,7 +3206,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -3366,7 +3439,6 @@ paths:
       - name: encoding
         in: query
         description: The file encoding as Java charset name. Defaults to UTF-8
-        required: true
         explode: false
         schema:
           type: string
@@ -3744,7 +3816,6 @@ paths:
       - name: purge
         in: query
         description: "If true, will purge instead of soft-delete"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -3811,7 +3882,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -3821,7 +3891,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -3871,7 +3940,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -3881,7 +3949,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -3962,7 +4029,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -3972,7 +4038,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4028,7 +4093,6 @@ paths:
       - name: allowDeleted
         in: query
         description: Get asset even if soft deleted
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4088,7 +4152,6 @@ paths:
         in: query
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4096,7 +4159,6 @@ paths:
       - name: expandAll
         in: query
         description: "If true, expand all dependencies recursively"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -4300,7 +4362,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -4309,7 +4370,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -4557,7 +4617,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -4566,7 +4625,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -4704,7 +4762,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4714,7 +4771,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -4909,7 +4965,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -4918,12 +4973,19 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
           format: int32
           default: 1
+      - name: source
+        in: query
+        description: Whether to include the flow source in the response
+        explode: false
+        schema:
+          type: boolean
+          nullable: true
+          default: false
       - name: tenant
         in: path
         required: true
@@ -5331,7 +5393,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -5340,7 +5401,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -5528,7 +5588,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -5538,7 +5597,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -5867,7 +5925,6 @@ paths:
         in: query
         description: "if true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -5908,7 +5965,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -5918,7 +5974,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7724,7 +7779,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7734,7 +7788,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -7903,7 +7956,6 @@ paths:
       - name: wait
         in: query
         description: If the server will wait the end of the execution
-        required: true
         explode: false
         schema:
           type: boolean
@@ -8495,6 +8547,41 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/{tenant}/executions/{executionId}/eval:
+    post:
+      tags:
+      - Executions
+      summary: Evaluate a variable expression for this execution
+      operationId: evalExpression
+      parameters:
+      - name: executionId
+        in: path
+        description: The execution id
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The Pebble expression that should be evaluated
+        content:
+          text/plain:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: evalExpression 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExecutionController.EvalResult"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/{tenant}/executions/{executionId}/eval/{taskRunId}:
     post:
       tags:
@@ -8641,7 +8728,6 @@ paths:
       - name: encoding
         in: query
         description: The file encoding as Java charset name. Defaults to UTF-8
-        required: true
         explode: false
         schema:
           type: string
@@ -8738,7 +8824,6 @@ paths:
         in: query
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -8746,7 +8831,6 @@ paths:
       - name: expandAll
         in: query
         description: "If true, expand all dependencies recursively"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -8851,7 +8935,6 @@ paths:
         in: query
         description: Specifies whether killing the execution also kill all subflow
           executions.
-        required: true
         explode: false
         schema:
           type: boolean
@@ -9324,7 +9407,6 @@ paths:
       - name: wait
         in: query
         description: If the server will wait the end of the execution
-        required: true
         explode: false
         schema:
           type: boolean
@@ -9495,7 +9577,6 @@ paths:
       - name: delete
         in: query
         description: If missing flow should be deleted
-        required: true
         explode: false
         schema:
           type: boolean
@@ -9510,7 +9591,6 @@ paths:
       - name: allowNamespaceChild
         in: query
         description: If namespace child should are allowed to be updated
-        required: true
         explode: false
         schema:
           type: boolean
@@ -9633,6 +9713,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BulkResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/flows/deprecated:
+    get:
+      tags:
+      - Flows
+      summary: List flows containing deprecated tasks
+      operationId: listDeprecated
+      parameters:
+      - name: namespace
+        in: query
+        description: A namespace filter prefix
+        explode: false
+        schema:
+          type: string
+          nullable: true
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: listDeprecated 200 response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlowController.FlowWithDeprecatedTasks"
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -10044,7 +10155,6 @@ paths:
       - name: failOnError
         in: query
         description: If should fail on invalid flows
-        required: true
         explode: false
         schema:
           type: boolean
@@ -10092,7 +10202,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -10102,7 +10211,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -10187,7 +10295,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -10197,7 +10304,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -10386,12 +10492,18 @@ paths:
       parameters:
       - name: delete
         in: query
-        description: If missing flow should be deleted
-        required: true
+        description: If missing flows should be deleted
         explode: false
         schema:
           type: boolean
           default: true
+      - name: override
+        in: query
+        description: If namespace of all provided flows should be overridden
+        explode: false
+        schema:
+          type: boolean
+          default: false
       - name: namespace
         in: path
         description: The flow namespace
@@ -10403,14 +10515,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: override
-        in: query
-        description: If namespace of all provided flows should be overridden
-        required: true
-        explode: false
-        schema:
-          type: boolean
-          default: false
       requestBody:
         description: A list of flows source code
         content:
@@ -10452,7 +10556,6 @@ paths:
       - name: source
         in: query
         description: Include the source code
-        required: true
         explode: false
         schema:
           type: boolean
@@ -10468,7 +10571,6 @@ paths:
       - name: allowDeleted
         in: query
         description: Get flow even if deleted
-        required: true
         explode: false
         schema:
           type: boolean
@@ -10582,7 +10684,6 @@ paths:
         in: query
         description: "If true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -10590,7 +10691,6 @@ paths:
       - name: expandAll
         in: query
         description: "If true, expand all dependencies recursively"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -10682,7 +10782,6 @@ paths:
           type: string
       - name: allowDelete
         in: query
-        required: true
         explode: false
         schema:
           type: boolean
@@ -10950,7 +11049,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -10959,7 +11057,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -11108,7 +11205,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -11117,7 +11213,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -12200,7 +12295,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -12209,7 +12303,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -12306,7 +12399,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -12315,7 +12407,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -12364,7 +12455,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -12374,7 +12464,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -12758,7 +12847,6 @@ paths:
       - name: aggregation
         in: query
         description: "The type of aggregation: avg, sum, min or max"
-        required: true
         explode: false
         schema:
           type: string
@@ -12826,7 +12914,6 @@ paths:
       - name: aggregation
         in: query
         description: "The type of aggregation: avg, sum, min or max"
-        required: true
         explode: false
         schema:
           type: string
@@ -12971,7 +13058,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -12981,7 +13067,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -13110,7 +13195,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -13120,7 +13204,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -13139,7 +13222,6 @@ paths:
       - name: existing
         in: query
         description: Return only existing namespace
-        required: true
         explode: false
         schema:
           type: boolean
@@ -13394,7 +13476,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -13403,7 +13484,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -13662,7 +13742,6 @@ paths:
         in: query
         description: "if true, list only destination dependencies, otherwise list\
           \ also source dependencies"
-        required: true
         explode: false
         schema:
           type: boolean
@@ -14292,7 +14371,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -14301,7 +14379,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -14556,7 +14633,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -14565,7 +14641,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -14695,7 +14770,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -14704,7 +14778,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -15172,7 +15245,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           type: integer
@@ -15181,7 +15253,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           type: integer
@@ -15491,7 +15562,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -15501,7 +15571,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -15641,7 +15710,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -15651,7 +15719,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -15684,7 +15751,6 @@ paths:
       - name: includeChildNamespaces
         in: query
         description: Include child namespaces in filter or not
-        required: true
         explode: false
         schema:
           type: boolean
@@ -16321,7 +16387,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -16331,7 +16396,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -16438,7 +16502,6 @@ paths:
       - name: disabled
         in: query
         description: The disabled state
-        required: true
         explode: false
         schema:
           type: boolean
@@ -16573,7 +16636,6 @@ paths:
       - name: page
         in: query
         description: The current page
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -16583,7 +16645,6 @@ paths:
       - name: size
         in: query
         description: The current page size
-        required: true
         explode: false
         schema:
           minimum: 1
@@ -16941,8 +17002,6 @@ components:
         timestamp:
           type: string
           format: date-time
-    AbstractRetry:
-      type: object
     AbstractTrigger:
       required:
       - id
@@ -17099,6 +17158,22 @@ components:
           type: string
         isDefault:
           type: boolean
+    AiController.DashboardGenerationPrompt:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/DashboardGenerationPrompt"
+      - type: object
+        properties:
+          providerId:
+            type: string
+    AiController.FlowGenerationPrompt:
+      type: object
+      allOf:
+      - $ref: "#/components/schemas/FlowGenerationPrompt"
+      - type: object
+        properties:
+          providerId:
+            type: string
     ApiAuth:
       type: object
       properties:
@@ -18080,8 +18155,18 @@ components:
           type: string
         password:
           type: string
+    AuthProperty.Type:
+      type: string
+      enum:
+      - VALUE
+      - SECRET
     AuthProperty_String_:
+      required:
+      - type
       type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/AuthProperty.Type"
     Backfill:
       title: A backfill configuration.
       required:
@@ -18761,8 +18846,6 @@ components:
           type: string
         yaml:
           type: string
-        providerId:
-          type: string
     DependsOn:
       type: object
       properties:
@@ -19271,7 +19354,9 @@ components:
             items:
               $ref: "#/components/schemas/Output"
           retry:
-            $ref: "#/components/schemas/AbstractRetry"
+            title: Retry
+            type: object
+            description: Retry policy applied when the flow fails.
           sla:
             type: array
             items:
@@ -19283,6 +19368,20 @@ components:
               \ is executed.  If no checks are defined, the flow executes normally."
             items:
               $ref: "#/components/schemas/Check"
+    FlowController.FlowWithDeprecatedTasks:
+      type: object
+      properties:
+        namespace:
+          type: string
+        flowId:
+          type: string
+        revision:
+          type: integer
+          format: int32
+        deprecatedTasks:
+          type: array
+          items:
+            $ref: "#/components/schemas/FlowService.TaskDeprecation"
     FlowController.TaskValidationType:
       type: string
       enum:
@@ -19370,8 +19469,6 @@ components:
         userPrompt:
           type: string
         yaml:
-          type: string
-        providerId:
           type: string
         namespace:
           type: string
@@ -19493,6 +19590,16 @@ components:
       enum:
       - USER
       - SYSTEM
+    FlowService.TaskDeprecation:
+      type: object
+      properties:
+        taskId:
+          type: string
+        taskType:
+          type: string
+        replacement:
+          type: string
+          nullable: true
     FlowTopologyGraph:
       type: object
       properties:
@@ -21004,6 +21111,8 @@ components:
             type: string
         isAiEnabled:
           type: boolean
+        isAiApiKeyConfigured:
+          type: boolean
         isBasicAuthInitialized:
           type: boolean
         pluginsHash:
@@ -21226,7 +21335,18 @@ components:
           type: string
     OAuth2Config:
       type: object
+      properties:
+        type:
+          $ref: "#/components/schemas/OAuth2ConfigType"
       description: OAuth2 authentication configuration (sensitive fields masked)
+    OAuth2ConfigType:
+      type: string
+      enum:
+      - CLIENT_CREDENTIALS
+      - JWT_BEARER
+      - PRIVATE_KEY_JWT
+      - UNKNOWN
+      x-type: String
     Output:
       required:
       - id
@@ -22821,6 +22941,9 @@ components:
     State:
       required:
       - current
+      - getDuration
+      - getEndDate
+      - getStartDate
       type: object
       properties:
         duration:
@@ -22842,6 +22965,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/State.History"
+        getDuration:
+          type: string
+          readOnly: true
+        getStartDate:
+          type: string
+          format: date-time
+          readOnly: true
+        getEndDate:
+          type: string
+          format: date-time
+          readOnly: true
     State.History:
       required:
       - date
@@ -22873,6 +23007,48 @@ components:
       - SKIPPED
       - BREAKPOINT
       - RESUBMITTED
+    SupportDebugInfo:
+      type: object
+      properties:
+        kestraVersion:
+          type: string
+        licenseId:
+          type: string
+        authType:
+          $ref: "#/components/schemas/SupportDebugInfo.AuthType"
+        deploymentType:
+          $ref: "#/components/schemas/SupportDebugInfo.DeploymentType"
+        queueType:
+          type: string
+        queueVersion:
+          type: string
+        storageType:
+          type: string
+        repositoryType:
+          type: string
+        repositoryVersion:
+          type: string
+        secretType:
+          type: string
+      description: Debug information collected automatically and attached to a support
+        ticket.
+    SupportDebugInfo.AuthType:
+      type: string
+      description: Authentication type configured on the instance.
+      enum:
+      - OIDC_SSO
+      - LDAP
+      - BASIC_AUTH
+      x-type: String
+    SupportDebugInfo.DeploymentType:
+      type: string
+      description: Deployment type detected from active Micronaut environments.
+      enum:
+      - KUBERNETES
+      - DOCKER_COMPOSE
+      - DOCKER
+      - STANDALONE
+      x-type: String
     Task:
       required:
       - id
@@ -22904,7 +23080,9 @@ components:
         description:
           type: string
         retry:
-          $ref: "#/components/schemas/AbstractRetry"
+          title: Retry
+          type: object
+          description: Retry policy applied when the task fails.
         timeout:
           $ref: "#/components/schemas/Property_Duration_"
         disabled:

@@ -1,0 +1,248 @@
+title: "Kestra vs. AWS Step Functions: Any Cloud, Any Language, Any Workflow"
+description: "Compare Kestra vs AWS Step Functions: multi-cloud workflow orchestration in any language vs AWS-native state machine automation. See features, setup time, and use cases."
+competitorName: AWS Step Functions
+category: Data Orchestration
+shortDescription: "AWS-native state machine automation vs. multi-cloud workflow orchestration in any language."
+
+brandColor:
+  color: "#FF4F8B"
+  gradient: "linear-gradient(90deg, #FF4F8B, #B0084D)"
+
+intro:
+  title: "Kestra vs. AWS Step Functions: Any Cloud, Any Language, Any Workflow"
+  description: "AWS Step Functions is reliable inside the AWS ecosystem. Kestra covers the rest: data pipelines, infrastructure, and business processes across any cloud, any language, and any team."
+
+philosophy:
+  mainTitle: Two Platforms, Two Architectures
+  kestra:
+    title: "Universal Orchestration: Any Cloud, Any Language"
+    description: "Open-source orchestration platform built on declarative YAML. Orchestrate data pipelines, infrastructure automation, and business processes across AWS, Azure, GCP, or on-premises. Bring your existing scripts in any language without refactoring."
+    subCardText: '"How do I automate workflows across my whole stack without locking into one cloud?"'
+  competitor:
+    title: AWS Service Orchestration
+    description: "Managed AWS service for orchestrating AWS services using Amazon States Language (ASL). Ideal for serverless workflows within the AWS ecosystem, with tight integration across Lambda, ECS, and other AWS-native services."
+    shadowColor: "#FFE8C0"
+    subCardBg: "var(--ks-background-orange-light)"
+    subCardText: '"How do I coordinate my AWS Lambda functions and services reliably?"'
+
+businessValue:
+  mainTitle: "AWS Automation Optimizes Infrastructure.<br />Workflow Orchestration Transforms a Business."
+  kestra:
+    title: Business-critical Workflows
+    list:
+      - Automate how your entire company operates
+      - "Cross-functional: data + ops + business + IT"
+      - Multi-cloud and on-premises without vendor lock-in
+      - Developer self-service with enterprise guardrails
+      - Serves the entire organization
+  competitor:
+    title: AWS Service Coordination
+    list:
+      - Orchestrate Lambda, ECS, and AWS-native services
+      - AWS-native scope only
+      - Requires IAM configuration per workflow
+      - Per-state-transition pricing compounds at scale
+      - Serves AWS-focused engineering teams
+    shadowColor: "#FFE8C0"
+    bulletColor: "#FF9900"
+  footerText: "AWS Step Functions is a strong choice if your workflows live entirely within AWS and you need reliable Lambda orchestration without managing infrastructure. For teams that need to orchestrate across clouds, run existing Python or SQL scripts without Lambda wrappers, or automate beyond AWS services, Kestra provides a broader platform with open-source flexibility and predictable pricing."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "AWS Step Functions requires an AWS account, IAM roles with least-privilege policies, and workflows written in Amazon States Language (a JSON-based DSL that defines states, transitions, and error handling separately from your business logic)."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready—database and config included. Open the UI, pick a Blueprint, run it. No cloud account required, no IAM policies to configure."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~45"
+      two: Minutes
+    description: "Requires AWS account setup, IAM role creation with trust and permission policies, learning Amazon States Language, and deploying via console or CloudFormation before running a first workflow."
+    shadowColor: "#FFE8C0"
+    command: |
+      # 1. Create IAM execution role with trust policy
+      aws iam create-role --role-name StepFunctionsRole \
+        --assume-role-policy-document file://trust-policy.json
+
+      # 2. Attach permissions for each AWS service you need
+      aws iam attach-role-policy --role-name StepFunctionsRole \
+        --policy-arn arn:aws:iam::aws:policy/AWSLambdaRole
+
+      # 3. Write Amazon States Language definition (JSON)
+      # 4. Create state machine
+      aws stepfunctions create-state-machine \
+        --name my-workflow \
+        --definition file://state-machine.json \
+        --role-arn arn:aws:iam::123456789012:role/StepFunctionsRole
+    lang: sh
+
+easeOfUse:
+  title: Workflows Your Whole Team Can Read
+  kestra:
+    title: "Kestra: Readable by Your Whole Team"
+    description: "YAML is readable on day 1. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Run Python, SQL, Bash, or any language directly. No Lambda wrappers, no deployment packages."
+    code: |
+      id: daily_etl
+      namespace: analytics
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 6 * * *"
+
+      tasks:
+        - id: extract_and_process
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            import boto3, pandas as pd
+            s3 = boto3.client('s3')
+            df = pd.read_parquet('s3://my-bucket/raw/data.parquet')
+            df.to_csv('/tmp/processed.csv')
+            s3.upload_file('/tmp/processed.csv', 'my-bucket', 'processed/data.csv')
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily ETL complete"
+    lang: yaml
+  competitor:
+    title: "AWS Step Functions: State Machine JSON with Lambda Wrappers"
+    description: "Business logic lives in Lambda functions; orchestration logic lives in Amazon States Language. Each step is a separate deployed function. When something breaks, debugging means navigating the Step Functions console, CloudWatch Logs, and individual Lambda execution logs in parallel."
+    shadowColor: "#FFE8C0"
+    code: |
+      {
+        "Comment": "Daily ETL workflow",
+        "StartAt": "ExtractAndProcess",
+        "States": {
+          "ExtractAndProcess": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-east-1:123456789012:function:extract-process",
+            "Next": "Notify",
+            "Catch": [
+              {
+                "ErrorEquals": ["States.ALL"],
+                "Next": "HandleError"
+              }
+            ]
+          },
+          "Notify": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-east-1:123456789012:function:send-notification",
+            "End": true
+          },
+          "HandleError": {
+            "Type": "Fail",
+            "Error": "ETLFailed",
+            "Cause": "Workflow step failed"
+          }
+        }
+      }
+    lang: json
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate across data pipelines, infrastructure operations, business processes, and customer workflows. Multi-cloud by default: AWS, Azure, GCP, and on-premises in a single platform."
+  competitor:
+    description: "Purpose-built for AWS service orchestration. Excellent at coordinating Lambda, ECS, SageMaker, and AWS-native services. Not designed for multi-cloud workflows, cross-language scripting without Lambda, or business process automation beyond the AWS ecosystem."
+    shadowColor: "#FFE8C0"
+
+featureGrid:
+  title: Kestra vs AWS Step Functions at a Glance
+  tableData:
+    - feature: Primary use case
+      kestra: Universal workflow orchestration
+      competitor: AWS service orchestration
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: Amazon States Language (JSON)
+    - feature: Languages supported
+      kestra: "Agnostic (Python, SQL, R, Bash, Node.js & more)"
+      competitor: Any language via Lambda wrappers
+    - feature: Cloud support
+      kestra: "Multi-cloud (AWS, Azure, GCP, on-premises)"
+      competitor: AWS only
+    - feature: Deployment options
+      kestra: "Self-hosted, Kestra Cloud, or air-gapped"
+      competitor: AWS-managed only (no self-hosted option)
+    - feature: Pricing model
+      kestra: "Open source (free) or subscription"
+      competitor: Per-state-transition (Standard and Express tiers)
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Not designed for this
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: AWS infrastructure only (via SDK task integrations)
+    - feature: Business process automation
+      kestra: "✓ Native support"
+      competitor: Limited to AWS-native scope
+    - feature: Open source
+      kestra: "✓ Apache 2.0"
+      competitor: Proprietary AWS service
+
+testimonials:
+  - quote: "Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently."
+    author: "Director of Engineering @ Acxiom"
+    kpis:
+      - value: "120+"
+        name: "Engineers empowered"
+      - value: "50+"
+        name: "Customers on multi-tenant platform"
+      - value: "0"
+        name: "Pipeline rewrites required"
+    storyLink: "/use-cases/stories/scaling-big-data-operations"
+
+platformStrengths:
+  title: Kestra Is Built for How Modern Engineering Teams Work
+  features:
+    - title: No cloud vendor lock-in
+      description: "Kestra runs on AWS, Azure, GCP, on-premises, or any combination. Workflows are portable YAML, not tied to a proprietary state machine format or a single cloud's IAM model. Move environments, add clouds, or go multi-cloud without rewriting orchestration logic."
+    - title: Bring your existing scripts
+      description: "Run Python, SQL, Bash, and R directly in Kestra without Lambda wrappers or deployment packages. Scripts execute in isolated containers with full dependency control. Your existing code works as-is. No framework wrappers, no IAM execution role per function."
+    - title: Minutes to first workflow
+      description: "Two commands and you're running workflows locally. No AWS account, no IAM configuration, no ASL syntax to learn. When you're ready for production, deploy to Kubernetes or Kestra Cloud with the same YAML you developed locally."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "Your workflows span multiple clouds or include on-premises systems. AWS Step Functions cannot orchestrate outside of AWS."
+      - "Your team works in Python, SQL, Bash, or R and you don't want to wrap every script in a Lambda function with its own deployment package."
+      - "You need workflow orchestration beyond AWS: data pipelines, business processes, infrastructure automation across your whole stack."
+      - "Predictable pricing matters. Per-state-transition costs compound quickly for high-frequency or long-running workflows."
+      - "Non-engineers need to trigger and monitor workflows without writing ASL or Lambda code."
+  competitor:
+    title: Choose AWS Step Functions When
+    list:
+      - "Your workflows are entirely within AWS and you want zero infrastructure to manage."
+      - "You're already deeply invested in Lambda and need reliable coordination between functions with native AWS retries and error handling."
+      - "Native AWS service integrations (SageMaker, Bedrock, ECS, Glue, DynamoDB) are at the center of your use case."
+      - "AWS-native audit trails, CloudWatch integration, and IAM-based access control are compliance requirements."
+    shadowColor: "#FFE8C0"
+    bulletColor: "#FF9900"
+
+commonQuestions:
+  - question: How do I migrate from AWS Step Functions to Kestra?
+    answer: "The migration path is straightforward because Kestra runs your existing code without wrappers. Extract business logic from your Lambda functions and run it directly as Script tasks in Kestra. Translate your ASL state machine definitions to YAML flows: states become tasks, transitions become task ordering, Catch blocks become error handling. Most teams run both platforms in parallel during migration, shifting workflows incrementally as they gain confidence."
+  - question: Does Kestra work with AWS services?
+    answer: "Yes. Kestra has native plugins for S3, SQS, SNS, Lambda, Glue, DynamoDB, Redshift, Athena, and more. Trigger workflows from S3 file arrivals or SQS messages, read and write to any AWS service, and run code in ECS containers. The difference is that Kestra is not limited to AWS—you can mix AWS tasks with Azure, GCP, or on-premises operations in the same workflow."
+  - question: Can Kestra replace Lambda functions, or do I still need them?
+    answer: "Kestra runs your code directly in isolated containers, so you don't need Lambda wrappers for orchestration. Write Python, Bash, SQL, or any language inline in your YAML or reference external scripts. Install any dependencies. For AWS patterns that genuinely need Lambda (responding to direct API Gateway invocations, for example), you can still call Lambda from a Kestra task, but orchestration logic moves to Kestra."
+  - question: How does Kestra's pricing compare to AWS Step Functions?
+    answer: "AWS Step Functions charges per state transition: $0.025 per 1,000 transitions for Standard workflows. Costs compound quickly for workflows with many states or high execution frequency. Kestra open source is free to self-host with no per-execution fees. Kestra Enterprise and Kestra Cloud use a subscription model. Run your own numbers: at $0.025 per 1,000 transitions, a workflow with 20 states running 10,000 times a day costs roughly $1,500/month in Step Functions alone."
+  - question: Can I run Kestra on AWS?
+    answer: "Yes. Deploy Kestra on AWS using EKS, ECS, or EC2 with Docker Compose. Kestra integrates natively with RDS (PostgreSQL) for state storage, S3 for internal storage, and your existing VPC and IAM configuration. Your workflows stay inside your VPC, use your existing IAM roles, and never send execution data to a third-party SaaS."
+  - question: What about AWS Step Functions' visual workflow editor?
+    answer: "Both platforms offer visual workflow views. Kestra renders a live DAG topology as you type YAML, with real-time updates before you deploy. AWS Step Functions has Workflow Studio with drag-and-drop. Kestra's source of truth is YAML you can diff and review in pull requests. Step Functions' visual editor generates ASL JSON (a 50-line nested object for a three-step workflow), which is hard to review meaningfully in a pull request."

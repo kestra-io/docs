@@ -1,0 +1,76 @@
+---
+const logos = import.meta.glob("/src/components/enterprise/assets/logos/*.svg", { eager: true });
+
+const logoList = [
+    "LM", "BHP", "ACXIOM", "ITZ",
+    "T-SYSTEM", "COE", "BATTELLE", "DATAPORT"
+].map(name => ({
+    src: (logos[`/src/components/enterprise/assets/logos/${name}.svg`] as any).default.src,
+    alt: name
+}));
+
+const doubled = [...logoList, ...logoList];
+---
+
+<div class="logos-wrap">
+    <div class="logos">
+        {doubled.map((logo, index) => (
+            <div class:list={["logo-item", { "d-sm-none": index >= logoList.length }]}>
+                <img src={logo.src} alt={logo.alt} />
+            </div>
+        ))}
+    </div>
+</div>
+
+<style lang="scss">
+    .logos-wrap {
+        width: 100%;
+        overflow: hidden;
+        margin-top: 2rem;
+
+        .logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+
+            @include media-breakpoint-down(md) {
+                gap: 2rem;
+
+                img {
+                    width: 80%;
+                }
+            }
+
+            @include media-breakpoint-down(sm) {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                width: max-content;
+                animation: marquee 30s linear infinite;
+                gap: 0;
+
+                .logo-item {
+                    padding: 0 0.5rem;
+                    flex-shrink: 0;
+
+                    img {
+                        width: 100px;
+                        opacity: 0.8;
+                    }
+                }
+            }
+        }
+    }
+
+    @keyframes marquee {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+</style>
+

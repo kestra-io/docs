@@ -1,0 +1,40 @@
+---
+title: "Kestra Filter Reference: Transform Expression Values"
+h1: "Filter Reference"
+description: Complete reference for Kestra Pebble filters — JSON, collections, strings, dates, and YAML. Use filters to transform values with the pipe syntax.
+sidebarTitle: Filter Reference
+icon: /src/contents/docs/icons/expression.svg
+---
+
+import ChildCard from "~/components/docs/ChildCard.astro"
+
+Use filters when you need to transform a value with the pipe syntax: `{{ value | filterName(...) }}`.
+
+## Filter categories
+
+- [JSON and structured data](./01.json/index.mdx) — `toJson`, `toIon`, `jq`
+- [Numbers and collections](./02.collections/index.mdx) — `abs`, `number`, `first`, `last`, `sort`, `chunk`, `distinct`, and more
+- [Strings](./03.strings/index.mdx) — `lower`, `upper`, `replace`, `slugify`, `base64encode`, regex filters, and more
+- [Dates](./04.dates/index.mdx) — `date`, `dateAdd`, `timestamp`, `timestampMilli`, and precision variants
+- [YAML](./05.yaml/index.mdx) — `yaml`, `indent`, `nindent`
+
+## Choosing the right filter quickly
+
+| If you need to... | Use |
+| --- | --- |
+| Parse or transform JSON payloads | `toJson`, `jq`, `first` |
+| Provide a fallback string or value | `default` |
+| Format a date | `date` |
+| Offset a date | `dateAdd` |
+| Split or join text | `split`, `join` |
+| Normalize casing | `lower`, `upper`, `title`, `capitalize` |
+| Convert a value to a string | `string` |
+| Sort a collection | `sort`, `rsort` |
+| Count items in a collection | `length` |
+| Get unique values | `distinct` |
+| Encode or decode Base64 | `base64encode`, `base64decode` |
+| Hash a string | `sha1`, `sha512`, `md5` |
+| Convert to a number | `number` |
+| Render YAML in a templated task | `yaml`, `indent`, `nindent` |
+
+<ChildCard />

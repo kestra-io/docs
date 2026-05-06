@@ -1,9 +1,11 @@
 ---
 import TaskIcon from "~/components/common/TaskIcon.vue"
 import { Icon } from "astro-icon/components"
-import { $fetchApi } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
+import { NO_RANDOM_ORDER } from "astro:env/client"
+import { randomSortFunction } from "~/utils/random"
 
 let plugins: {
     artifactId: string
@@ -17,7 +19,7 @@ try {
     const excluded =
         /^(core$|plugin-kestra$|plugin-debezium$|plugin-ee|secret-|storage-)/
     const metadata =
-        await $fetchApi<{ artifactId: string; group: string; name: string }[]>(
+        await $fetchApiCached<{ artifactId: string; group: string; name: string }[]>(
             "/plugins/metadata",
         )
     plugins = metadata
@@ -26,10 +28,10 @@ try {
             ...p,
             link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
         }))
-        .sort(() => 0.5 - Math.random())
+        .sort(randomSortFunction)
         .slice(0, 20)
 
-    const subgroupsData = await $fetchApi("/plugins/subgroups")
+    const subgroupsData = await $fetchApiCached("/plugins/subgroups")
     const count = calculateTotalPlugins(subgroupsData)
     totalPlugins = `${Math.floor(count / 100) * 100}+`
 } catch (e) {
@@ -52,7 +54,7 @@ const carouselPlugins = [...plugins, ...plugins]
                 </p>
             </div>
             <a href="/plugins" class="btn btn-secondary" data-usal="zoomin">
-                See all plugins
+                See All Plugins
             </a>
         </div>
 

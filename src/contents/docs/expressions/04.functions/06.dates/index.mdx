@@ -1,0 +1,66 @@
+---
+title: "Date and Calendar Functions in Kestra Expressions"
+h1: "Date and Calendar Functions"
+description: Reference for Kestra's date and calendar functions — isWeekend(), isPublicHoliday(), isDayWeekInMonth(), dayOfWeek(), dayOfMonth(), monthOfYear(), and hourOfDay() — for scheduling and routing logic.
+sidebarTitle: Date Functions
+icon: /src/contents/docs/icons/expression.svg
+---
+
+Use these functions when you need to make scheduling or routing decisions based on the calendar — for example, skipping runs on weekends or public holidays.
+
+## `isWeekend()`
+
+Returns `true` if the date falls on Saturday or Sunday:
+
+```twig
+{{ isWeekend(trigger.date) }}
+```
+
+## `isPublicHoliday()`
+
+Checks against a country's public holiday calendar. `countryCode` is an ISO 3166-1 alpha-2 code; `subDivision` is optional and accepts ISO 3166-2 codes:
+
+```twig
+{{ isPublicHoliday(trigger.date, 'US') }}
+{{ isPublicHoliday(trigger.date, 'DE', 'DE-BY') }}
+```
+
+## `isDayWeekInMonth()`
+
+Returns `true` if the date is the Nth occurrence of the given weekday in its month. `position` accepts `FIRST`, `SECOND`, `THIRD`, `FOURTH`, or `LAST`:
+
+```twig
+{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}
+```
+
+## `dayOfWeek()`
+
+Returns the uppercase day name such as `MONDAY`:
+
+```twig
+{{ dayOfWeek(trigger.date) }}
+```
+
+## `dayOfMonth()`
+
+Returns the day of the month as an integer (1–31):
+
+```twig
+{{ dayOfMonth(trigger.date) }}
+```
+
+## `monthOfYear()`
+
+Returns the month as an integer (1–12):
+
+```twig
+{{ monthOfYear(trigger.date) }}
+```
+
+## `hourOfDay()`
+
+Returns the hour as an integer (0–23):
+
+```twig
+{{ hourOfDay(execution.startDate) }}
+```

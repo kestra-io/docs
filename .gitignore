@@ -38,6 +38,11 @@ dist
 .astro
 .env
 
+## Playwright
+test-results/
+playwright-report/
+blob-report/
+
 ## mkcert
 localhost.pem
 localhost-key.pem

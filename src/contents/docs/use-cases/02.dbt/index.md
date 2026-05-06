@@ -1,7 +1,8 @@
 ---
-title: Orchestrate dbt Workflows
+title: Orchestrate dbt Workflows in Kestra
+h1: Version-Control, Test & Deploy dbt Models with GitOps
 sidebarTitle: dbt Workflows
-description: Version-control, test, and deploy dbt models with GitOps and on-demand compute
+description: Version-control, test, and deploy dbt models with Kestra and GitOps. Run dbt on demand or on a schedule with on-demand compute for reliable transformations.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 
@@ -37,7 +38,7 @@ Below are common patterns to orchestrate dbt workflows using Kestra.
 
 ### Fetch dbt Project from Git at Runtime
 
-The example below shows a simple flow that runs `dbt build` for DuckDB in a Docker container. Note that the dbt project is cloned from a Git repository at runtime to ensure the latest version is used.
+The example below runs `dbt build` for DuckDB in a Docker container. The dbt project is cloned from a Git repository at runtime to ensure the latest version is used.
 
 ```yaml
 id: dbt_duckdb
@@ -125,7 +126,7 @@ With the Code Editor built into Kestra, you can easily manage dbt projects by cl
 
 :::collapse{title="Run dbt CLI, iterate on models, and push changes to Git"}
 
-Let's create a flow that runs dbt CLI commands on top of the dbt project synced from Git to our Kestra namespace. We will use the Code Editor to make changes to the dbt models and push the changes back to the Git repository.
+Create a flow that runs dbt CLI commands on top of the dbt project synced from Git to your Kestra namespace. Use the Code Editor to make changes to the dbt models and push them back to the Git repository.
 
 ```yaml
 id: dbt_build
@@ -159,7 +160,7 @@ tasks:
       type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-Note how by using the `namespaceFiles` property, we can run dbt commands on the files uploaded to the namespace. This allows you to test the dbt models without having to clone the Git repository every time.
+The `namespaceFiles` property lets you run dbt commands on files uploaded to the namespace, so you can test dbt models without cloning the Git repository each time.
 
 Execute the flow using the default value for the `dbt_command` input.
 
@@ -202,7 +203,7 @@ tasks:
     commitMessage: "{{ inputs.commit_message }}"
 ```
 
-Make sure to adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.
+Adjust the `url`, `branch`, and `gitDirectory` properties to match your dbt Git repository structure. If the branch does not exist, it will be created. If you want to test this step more incrementally, you can set the `dryRun` property to `true` to validate the changes before committing them to Git.
 :::
 
 ---

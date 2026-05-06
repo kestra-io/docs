@@ -1,5 +1,6 @@
 ---
 title: Plugin Defaults in Kestra – Set Task-Level Defaults
+h1: Reduce Repetition by Setting Global Plugin Defaults
 description: Streamline Kestra flow configuration with Plugin Defaults. Set global or flow-level default values for task properties to reduce repetition and boilerplate.
 sidebarTitle: Plugin Defaults
 icon: /src/contents/docs/icons/flow.svg
@@ -8,15 +9,11 @@ docId: plugin-defaults
 
 Plugin defaults are default values applied to every task of a given type within one or more flows.
 
-## Plugin Defaults – set task-level defaults
-
 They work like default function arguments, helping you avoid repetition when tasks or plugins frequently use the same values.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/9zQTUeL0KMc?si=xOAqec_9X79-7YDp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## Plugin Defaults on a flow-level
 
@@ -109,6 +106,25 @@ kestra:
           secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
           region: "us-east-1"
 ```
+
+### Nested property values
+
+For plugins with nested properties, define the values using the same nested YAML structure you would use in a flow. For example, to set resource limits for the Kubernetes task runner:
+
+```yaml
+kestra:
+  plugins:
+    defaults:
+      - type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+        forced: true
+        values:
+          resources:
+            limit:
+              cpu: "1"
+              memory: "128Mi"
+```
+
+This is equivalent to writing the same nested structure directly in a task. The `forced: true` attribute ensures these defaults override any values set at the task level.
 
 ## Plugin Defaults Enterprise Edition
 

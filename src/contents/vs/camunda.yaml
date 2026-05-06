@@ -1,0 +1,234 @@
+title: "Kestra vs. Camunda: Workflow Orchestration Without the BPMN Overhead"
+description: "Compare Kestra vs Camunda: declarative YAML orchestration for data and infrastructure vs BPMN-based process automation. See setup time, use cases, and which approach fits your team."
+competitorName: Camunda
+category: Business Automation
+shortDescription: "BPMN-based enterprise process orchestration vs. declarative YAML orchestration for engineering teams."
+
+brandColor:
+  color: "#FC5D0D"
+
+intro:
+  title: "Kestra vs. Camunda: Workflow Orchestration Without the BPMN Overhead"
+  description: "Camunda is a process orchestration platform built on BPMN 2.0 standards, purpose-built for enterprise business process management, human-in-the-loop workflows, and regulated industries. Kestra takes a different approach: declarative YAML workflows for data pipelines, infrastructure automation, and business processes, designed for technical teams who need orchestration without learning a modeling language."
+
+philosophy:
+  mainTitle: Two Approaches to Process Orchestration
+  kestra:
+    title: "Declarative Orchestration: YAML Defines Intent, Code Executes"
+    description: "Workflows are YAML files: what to run, when, and in what order. Business logic lives in your existing Python, SQL, Bash, or dbt scripts. There is no modeling tool to open and no XML schema to translate into running code. Kestra handles scheduling, triggers, retries, and observability as native YAML primitives."
+    subCardText: '"How do we orchestrate data pipelines, infrastructure jobs, and business workflows in a format our whole engineering team can read and version?"'
+  competitor:
+    title: BPMN-Based Process Automation
+    description: "Workflows are BPMN 2.0 diagrams designed in the Camunda Modeler and executed by the Zeebe engine. BPMN is a widely adopted standard in regulated industries, making process logic auditable, portable, and familiar to business analysts. Camunda excels at human task management, approval flows, and complex enterprise process automation that spans both technical and non-technical participants."
+    shadowColor: "#FFE5D0"
+    subCardBg: "var(--ks-background-orange-light)"
+    subCardText: '"How do we model and govern complex business processes, approval flows, and human tasks across technical and non-technical teams?"'
+
+businessValue:
+  mainTitle: "Developer-First Workflow Orchestration vs. Enterprise Process Governance"
+  kestra:
+    title: Orchestration for Technical Teams
+    list:
+      - "Data pipelines, infrastructure automation, business processes, AI workflows"
+      - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly)"
+      - "Event-driven at core: file arrivals, Kafka, webhooks, schedules"
+      - "Self-service for non-engineers via Kestra Apps"
+      - "1200+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+  competitor:
+    title: Enterprise Business Process Management
+    list:
+      - "BPMN 2.0 process modeling and execution via the Zeebe engine"
+      - "Human task management with Tasklist for approval flows"
+      - "Process analytics and SLA tracking via Camunda Optimize"
+      - "Regulated industry compliance: SOC2, ISO 27001, TISAX"
+      - "Primarily business process automation, not data pipeline orchestration"
+    shadowColor: "#FFE5D0"
+    bulletColor: "#FC5D0D"
+  footerText: "Camunda is the right choice for organizations already building in BPMN 2.0, for enterprise business process management, regulated workflows with strict audit requirements, and human-in-the-loop processes where business analysts design alongside developers. Kestra is the right choice for data engineering teams, infrastructure automation, and technical workflows that need fast setup, YAML definitions, and 1200+ pre-built integrations without a BPMN modeling step."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Camunda also offers SaaS and Managed deployment options. This comparison uses their self-hosted download-and-install path—the same deployment model as Kestra's local setup—which requires downloading a starter package, launching services via startup scripts, designing a BPMN process in the Camunda Modeler, deploying it, and writing job workers in Java or Node.js."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready (database and config included). Open the UI, pick a Blueprint, run it. No Modeler to install, no BPMN to draw, no workers to write."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: "~30"
+      two: Minutes
+    description: "Download the Camunda starter package, launch Camunda 8 Run locally, open the Camunda Modeler, design your BPMN process diagram, deploy it to the running engine, then write and run job workers in Java (JDK 21+, Maven) or Node.js to handle service tasks."
+    shadowColor: "#FFE5D0"
+    command: |
+      # Step 1: Download starter package from developers.camunda.com
+      # Step 2: Launch Camunda 8 Run
+      ./start.sh  # or start.bat on Windows
+
+      # Step 3: Open Camunda Modeler, design BPMN, deploy process
+
+      # Step 4: Write and run a job worker (Java or Node.js)
+      # Java example:
+      mvn spring-boot:run
+
+      # Now your BPMN process can execute service tasks...
+    lang: sh
+
+easeOfUse:
+  title: Two Ways to Define a Workflow
+  kestra:
+    title: "Kestra: A workflow is a YAML file"
+    description: "YAML is readable on day 1. Our docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start with our library of Blueprints. Any engineer can read a YAML workflow and understand exactly what it does."
+    code: |
+      id: daily_etl
+      namespace: data.production
+
+      tasks:
+        - id: extract
+          type: io.kestra.plugin.scripts.python.Script
+          script: |
+            # Your existing extraction logic, unchanged
+            result = {"records": 1000}
+
+        - id: transform
+          type: io.kestra.plugin.dbt.cli.DbtCLI
+          commands:
+            - dbt run --select staging
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "ETL complete: {{ outputs.extract.vars.result.records }} records processed"
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 0 * * *"
+    lang: yaml
+  competitor:
+    title: "Camunda: A workflow is a BPMN diagram in the Modeler, plus worker code"
+    description: "Processes are designed as BPMN diagrams in the Camunda Modeler and executed by Zeebe. Service tasks are handled by job workers you write in Java, Node.js, or another supported SDK—one worker per task type."
+    shadowColor: "#FFE5D0"
+    code: |
+      // Step 1: Design your process visually in Camunda Modeler
+
+      // Step 2: Write a job worker for each service task
+      @ZeebeWorker(type = "extract-data")
+      public void extractData(final JobClient client, final ActivatedJob job) {
+          // Your extraction logic
+          Map<String, Object> variables = Map.of("records", 1000);
+          client.newCompleteCommand(job.getKey())
+                .variables(variables)
+                .send()
+                .join();
+      }
+
+      // Step 3: Deploy BPMN and start your worker
+      zeebeClient.newDeployResourceCommand()
+          .addResourceFromClasspath("daily-etl.bpmn")
+          .send()
+          .join();
+    lang: java
+
+visualPreview:
+  mainTitle: Two Platforms, Two Jobs to Be Done
+  kestra:
+    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from one platform. Event-driven at its core, with native triggers for file arrivals, Kafka, webhooks, and schedules, all defined in YAML alongside the workflow logic."
+  competitor:
+    description: "A BPMN-based process orchestration platform designed for enterprise business process management. Excellent for regulated workflows with audit trails, human approval flows, and collaborative process design across technical and business teams. Integrations are available via Camunda Connectors and job workers."
+    shadowColor: "#FFE5D0"
+
+featureGrid:
+  title: Kestra vs. Camunda at a Glance
+  tableData:
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: BPMN 2.0 diagram (visual modeler) + worker code
+    - feature: Primary use case
+      kestra: "Data pipelines, infrastructure automation, technical workflows"
+      competitor: "Business process management, human-in-the-loop, regulated industries"
+    - feature: Human task management
+      kestra: "✓ Native task types for approvals and input steps"
+      competitor: "✓ Camunda Tasklist (purpose-built for human workflows)"
+    - feature: Data pipeline tooling
+      kestra: "✓ 1200+ pre-built plugins: dbt, Airbyte, Spark, Snowflake, and more"
+      competitor: "Connectors available for common services; significantly smaller catalog than Kestra"
+    - feature: Setup time
+      kestra: "~5 minutes (Docker Compose)"
+      competitor: "~30 minutes (self-hosted, download-and-install)"
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, R, Bash, Go, Node.js, scripts run as-is)"
+      competitor: "Java, Node.js, Python, Go for job workers"
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: "✓ Tasklist + Camunda Forms for human task participants"
+    - feature: Multi-tenancy
+      kestra: "Namespace isolation + RBAC out-of-box"
+      competitor: "Organization/cluster-level isolation; identity management via Camunda Identity"
+    - feature: Compliance and audit
+      kestra: "SOC2 Type II certified; audit logs for every execution"
+      competitor: "SOC2, ISO 27001, TISAX; full process audit trail"
+
+testimonials:
+  - quote: "Moving from a legacy runbook tool to Kestra was transformative. We went from managing Java application servers and content packs to deploying workflows via Git. Our team can now build and ship automation in hours instead of weeks."
+    author: "IT Automation Architect @ Global Financial Services Firm"
+    kpis:
+      - value: "80%"
+        name: Reduction in automation lead time
+      - value: "0"
+        name: Java app servers to maintain
+      - value: "10x"
+        name: More workflows automated
+    storyLink: "/use-cases/stories/erp-transformation-smarter-faster-fully-automated"
+
+platformStrengths:
+  title: Kestra Is Built for the Workflows That Power Your Data Stack
+  features:
+    - title: No modeling tool, no XML schema to learn
+      description: "A Kestra workflow is a YAML file you open in any text editor, write tasks into, and commit to Git. There is no visual modeler to install, no schema to learn, and no gap between what you write and what runs. Engineers who know YAML can build and modify workflows without learning a new modeling standard."
+    - title: Data pipeline tooling built in
+      description: "Kestra ships with 1200+ pre-built plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. Each is a YAML task type, not a custom worker you write and maintain. Add any data integration to your workflow in minutes without writing glue code."
+    - title: Scheduling and event triggers as first-class primitives
+      description: "Cron schedules, S3 file arrivals, Kafka message consumption, webhook callbacks, and database row changes are YAML trigger blocks defined alongside the workflow. No external scheduler to configure or manage. Triggers, tasks, and retries live in one file, version-controlled with your code."
+
+decisionGuide:
+  mainTitle: Two Tools for Different Problems
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You're orchestrating data pipelines, ETL workflows, dbt models, or infrastructure automation."
+      - "Your team wants to define workflows in YAML without learning BPMN or running a visual modeler."
+      - "You need 1200+ pre-built data and infrastructure integrations without writing job workers."
+      - "Setup time matters: first workflow in 5 minutes with Docker Compose, no BPMN modeling required."
+      - "Non-engineers need to trigger workflows via self-service forms, not participate in process design."
+  competitor:
+    title: Choose Camunda When
+    list:
+      - "You're automating complex enterprise business processes with structured approval steps and human task assignment."
+      - "Your organization requires BPMN 2.0 process portability, audit trails, and compliance with SOC2, ISO 27001, or TISAX."
+      - "Business analysts and developers collaborate on process design, and a shared visual modeling language bridges that gap."
+      - "Long-running case management workflows with dynamic branching and human decision points are core to your use case."
+    shadowColor: "#FFE5D0"
+    bulletColor: "#FC5D0D"
+
+commonQuestions:
+  - question: Can Kestra replace Camunda for business process management?
+    answer: "For technical workflows, data pipelines, and infrastructure automation, yes. Kestra handles scheduling, event-driven triggers, retries, and multi-step dependencies in YAML. For use cases that require BPMN 2.0 process portability, structured human task queues, or compliance certifications like ISO 27001 and TISAX, Camunda is purpose-built. Where the two overlap is in automating processes that mix data pipeline steps with business logic; a pipeline that extracts, transforms, notifies a Slack channel, and waits for an approval before loading to production runs cleanly in Kestra without a separate modeling artifact."
+  - question: Does Kestra support human-in-the-loop workflows?
+    answer: "Yes. Kestra includes native task types for human approval steps, pausing execution and waiting for input before continuing. Business users can interact through Kestra Apps without writing code. Camunda's Tasklist is more fully featured for structured human task management, with assignment rules, priorities, and forms purpose-built for approval-heavy processes in regulated industries."
+  - question: How does Kestra connect to the data tools my team already uses?
+    answer: "Kestra ships with 1200+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, Redshift, PostgreSQL, and more—each a YAML task type that runs without any additional code. Camunda offers Connectors for common services, but the catalog is significantly smaller. For anything not covered by a pre-built connector, you write and deploy a job worker in Java, Node.js, or another supported SDK."
+  - question: What does migration from Camunda to Kestra look like?
+    answer: "Kestra workflows are YAML-native, so migration means translating BPMN service tasks into Kestra task definitions and replacing Camunda job workers with script tasks. Your existing Python, SQL, and Shell logic runs unchanged inside Kestra Script tasks. Teams typically run both platforms in parallel during transition, migrating process by process."
+  - question: How does Kestra handle compliance and audit requirements?
+    answer: "Kestra logs every workflow execution with full input, output, and timing detail. Enterprise deployments include audit logs for every action, namespace-level RBAC, SSO/SAML, and secrets management integration. Kestra holds SOC2 Type II certification. Camunda additionally carries ISO 27001 and TISAX certifications, which may be required in specific regulated verticals like automotive or defense."
+  - question: Can Kestra and Camunda run in parallel?
+    answer: "Yes. Kestra can trigger Camunda processes via its HTTP plugin or REST API task, and Camunda can call Kestra workflows through the Kestra API. Teams running both platforms commonly use Kestra for data pipeline orchestration and Camunda for business process management, connecting the two at handoff points via API calls."

@@ -1,5 +1,6 @@
 ---
-title: Align JVM CPU Limits on Kubernetes
+title: JVM CPU Limits for Kestra on Kubernetes
+h1: Prevent the JVM from exceeding CPU limits in Kubernetes
 sidebarTitle: JVM CPU Limits
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
@@ -54,7 +55,7 @@ common:
 
 Auto mode reads `resources.limits.cpu`, supports values such as `"250m"`, `"1"`, or `"1.5"`, converts them to an integer CPU count (minimum 1), and injects:
 
-```text
+```plaintext
 -XX:ActiveProcessorCount=<computed value>
 ```
 

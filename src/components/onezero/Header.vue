@@ -77,10 +77,10 @@
             height: 39,
         },
         {
-            name: "Toyota",
-            src: "/landing/onezero/toyota.svg",
-            width: 152.78,
-            height: 25.13,
+            name: "Amdocs",
+            src: "/landing/onezero/amdocs.svg",
+            width: 120,
+            height: 26,
         },
         {
             name: "Acxiom",
@@ -116,12 +116,11 @@
 </script>
 
 <style lang="scss" scoped>
-
     section {
         position: relative;
         width: 100%;
         background: #131316 url("/landing/onezero/hero.webp") center top 40rem / cover no-repeat;
-        margin-top: calc(-2rem - var(--announce-height));
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
         @include media-breakpoint-up(lg) {
             background-position: center top 30rem;
         }

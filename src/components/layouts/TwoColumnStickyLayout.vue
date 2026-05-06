@@ -2,15 +2,8 @@
     <section class="layout-wrapper">
         <div class="container" :class="{ reverse: props.reverse }">
             <div class="left">
-                <div class="content" :class="{ 'no-style': props.noSidebarStyle }">
+                <div class="content">
                     <slot name="sidebar" />
-                </div>
-                <div v-if="props.socials" class="socials">
-                    <div class="social-links">
-                        <a v-for="link in SOCIALS" :key="link.href" :href="link.href" target="_blank">
-                            <component :is="link.icon" />
-                        </a>
-                    </div>
                 </div>
             </div>
             <div class="right">
@@ -21,39 +14,18 @@
 </template>
 
 <script setup lang="ts">
-    import Twitter from "~/components/icons/TwitterXIcon.vue"
-    import Linkedin from "vue-material-design-icons/Linkedin.vue"
-    import BlueSky from "~/components/icons/BlueSkyIcon.vue"
+
 
     const props = withDefaults(defineProps<{
-        socials?: boolean
-        noSidebarStyle?: boolean
         reverse?: boolean
     }>(), {
-        socials: true,
-        noSidebarStyle: false,
         reverse: false,
     })
 
-    const SOCIALS = [
-        {
-            href: "https://twitter.com/kestra_io",
-            icon: Twitter,
-        },
-        {
-            href: "https://www.linkedin.com/company/kestra",
-            icon: Linkedin,
-        },
-        {
-            href: "https://web-cdn.bsky.app/profile/kestra.io",
-            icon: BlueSky,
-        },
-    ]
+
 </script>
 
 <style scoped lang="scss">
-
-
     .layout-wrapper {
         padding: $rem-4 0;
         @include media-breakpoint-down(xl) {
@@ -101,39 +73,10 @@
         }
 
         .content {
-            border-radius: 0.5rem;
-            border: $block-border;
-            padding: 2rem;
-            background: var(--ks-background-body);
             width: 100%;
-
-            &.no-style {
-                border: none;
-                padding: 0;
-                background: transparent;
-                border-radius: 0;
-            }
         }
 
-        .socials {
-            margin-top: 0.75rem;
-            align-self: flex-start;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
 
-            .social-links {
-                display: flex;
-                gap: 0.625rem;
-                a {
-                    color: var(--ks-content-tertiary);
-                    font-size: 1rem;
-                    &:hover {
-                        color: var(--ks-content-link);
-                    }
-                }
-            }
-        }
     }
 
     .right {

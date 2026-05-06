@@ -1,6 +1,7 @@
 ---
-title: Why Kestra
-description: "A Simpler, More Powerful Way to Orchestrate Everything"
+title: "Why Kestra: Simpler, More Powerful Orchestration"
+h1: Why Teams Choose Kestra for Workflow Orchestration
+description: Discover why teams choose Kestra for orchestration. A declarative, event-driven platform that scales from simple automations to complex enterprise pipelines.
 hideSidebar: true
 ---
 
@@ -37,7 +38,7 @@ Kestra follows a “start simple and grow as needed” philosophy. You can sched
 
 ### 1. Focus on Business Logic, Not Plumbing
 
-With Kestra, flows are written in simple YAML. You can use one of over 500 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
+With Kestra, flows are written in simple YAML. You can use one of over 1,200 built-in plugins or create tasks in any language — Python, Node.js, Go, Rust, SQL, or even a Bash script running in a container. If you want to change a schedule or add a new trigger, you just update the flow configuration directly from the embedded code editor in the UI. You don’t need to redeploy your entire application or fiddle with a complicated framework.
 
 ### 2. Simple by Default, Complex When Needed
 
@@ -169,4 +170,4 @@ Kestra’s goal is to remove the barriers that keep orchestration locked away in
 
 If you’re tired of the old trade-offs — heavy code frameworks vs. limited no-code apps — Kestra stands ready to help. Get started by installing our forever-free open-source edition. You get to keep your favorite languages, empower non-technical teams, and orchestrate everything from small daily tasks to multi-stage, event-driven pipelines.
 
-If you have questions or want to see how Kestra fits into your environment, [Talk to us](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.
+If you have questions or want to see how Kestra fits into your environment, [Book a Demo](https://kestra.io/demo) or [join our Slack community](http://kestra.io/slack). We’re happy to discuss your specific use case and help you succeed in your orchestration and automation journey.

@@ -1,5 +1,7 @@
 ---
-title: Plugin Discovery Mechanism
+title: Plugin Discovery Mechanism Change in Kestra 0.17.0
+h1: How Plugin Discovery Changed to Java Service Loader in 0.17.0
+sidebarTitle: Plugin Discovery Mechanism
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
 description: Changes to the plugin discovery mechanism in Kestra 0.17.0 using Java Service Loader.
@@ -14,13 +16,13 @@ Plugins are now discovered and loaded using the standard *Java Service Loader*.
 
 So far, Kestra heavily relied on the _Bean Introspection_ mechanism provided by the Micronaut Framework for loading plugins (_Micronaut is the JVM-based API framework used by Kestra_).
 
-However, we have repeatedly encountered some limitations in maintaining the backward compatibility of plugins during major version upgrades of Micronaut. In addition, this implementation was limiting our ability to introduce future enhancements around the plugin mechanism.
+However, this implementation encountered limitations in maintaining backward compatibility of plugins during major Micronaut version upgrades, and was limiting the ability to introduce future enhancements around the plugin mechanism.
 
-Thanks to this new implementation, we reduced the number of dependencies required for developing custom plugins, and these plugins now load twice as fast as before.
+This new implementation reduces the number of dependencies required for developing custom plugins, and plugins now load twice as fast.
 
 Finally, this change is part of a wider effort to improve the developer experience around plugins, and to reduce Micronaut's exposure outside the Kestra core.
 
-Unfortunately, we've had to introduce some minor breaking-changes to the way custom plugins should be built.
+This change introduces minor breaking changes to how custom plugins are built.
 
 Below are the changes required to migrate to Kestra 0.17.0.
 
@@ -34,7 +36,7 @@ However, Micronaut is still required to use the utility classes provided by Kest
 
 Kestra requires a new annotation processor to be configured in the `build.gradle` file of your project (or `pom.xml` for Maven).
 
-```
+```groovy
 annotationProcessor group: "io.kestra", name: "processor", version: kestraVersion
 ```
 

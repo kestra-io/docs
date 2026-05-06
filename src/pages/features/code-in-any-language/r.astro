@@ -1,99 +1,150 @@
 ---
-import LanguageLayout from "~/components/features/shared/LanguageLayout.astro"
+import type { Plugin } from "@kestra-io/ui-libs"
+import { $fetchApiCached } from "~/utils/fetch"
+import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 
-const FEATURES = {
-    title: "Advanced <span>R Scripting with Kestra</span>",
-    items: [
-        {
-            image: "/landing/features/language/sub-pages/icon-customize.svg",
-            title: "Customize at Runtime",
-            description:
-                "Add any R package to your environment as your workflows demand, maintaining flexibility without pre-configurations.",
-        },
-        {
-            image: "/landing/features/language/sub-pages/icon-sync.svg",
-            title: "Import or Sync your Entire Project",
-            description:
-                "Sync your  R project into Kestra. Enjoy comprehensive support for all your dependencies and modules.",
-        },
-        {
-            image: "/landing/features/language/sub-pages/icon-cloud.svg",
-            title: "Cloud-Agnostic Execution",
-            description:
-                "Deploy and execute your R scripts on any cloud with Kestra’s Task Runners. Optimize for performance, cost, compliance.",
-        },
-    ],
-}
+import Layout from "~/components/layout.astro"
+import Link from "~/components/common/Link.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import TopHero from "~/components/layout/TopHero.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import Capability from "~/components/partners/Capability.astro"
+import SectionCard from "~/components/layout/SectionCard.astro"
+import PluginsBlock from "~/components/common/PluginsBlock.astro"
 
-const POWER_DESC = [
-    " R is essential for statistical analysis, visualization, and data manipulation. With Kestra, you can effortlessly automate data ingestion, conduct complex statistical analysis, and handle real-time data processing. Kestra's robust orchestration capabilities ensure that your R scripts run smoothly and efficiently, streamlining your data-driven projects.",
+import visualHero from "~/assets/landing/features/code-in-any-lang/r/r-hero.svg"
+import visualsImg from "~/assets/landing/features/code-in-any-lang/r/visuals.webp"
+import rSpecificImg from "~/assets/landing/features/code-in-any-lang/r/r-power.svg"
+import anyLanguage1 from "~/assets/landing/features/code-in-any-lang/python/any-language-1.webp"
+import anyLanguage2 from "~/assets/landing/features/code-in-any-lang/r/any-language-2.webp"
+import anyLanguage3 from "~/assets/landing/features/code-in-any-lang/r/any-language-3.webp"
+
+const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
+const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+
+const title = "R Orchestration"
+const description =
+    "Add any R package to your environment as your workflows demand, maintaining flexibility without pre-configurations."
+
+const MAIN_ITEMS = [
+    {
+        icon: "mdi:leak",
+        title: "Customize at Runtime",
+        description:
+            "Add any R package to your environment as your workflows demand, maintaining flexibility without pre-configurations.",
+    },
+    {
+        icon: "mdi:hub-outline",
+        title: "Import or Sync your Entire Project",
+        description:
+            "Sync your R project into Kestra. Enjoy comprehensive support for all your dependencies and modules.",
+    },
+    {
+        icon: "mdi:checkbox-multiple-marked-circle-outline",
+        title: "Cloud-Agnostic Execution",
+        description:
+            "Deploy and execute your R scripts on any cloud with Kestra’s Task Runners. Optimize for performance, cost, compliance.",
+    },
 ]
 
-const SCRIPTS = [
+const SCRIPT_FEATURES = [
     {
         title: "Embrace GitOps best practices for your R scripts",
         description:
-            "Kestra takes R script orchestration to the next level by embracing Continuous Integration/Continuous Deployment (CI/CD) and GitOps principles. Manage your R workflows with the same rigor as your application code: version control, automated testing, and consistent, repeatable deployment environments. Kestra  lets you define workflows in YAML, ensuring that your orchestration is as maintainable and scalable as your applications.",
-        source: "/landing/features/language/git-with-kestra.svg",
-        imgWidth: "520px",
-        imgHeight: "282px",
+            "Kestra takes R script orchestration to the next level by embracing Continuous Integration/Continuous Deployment (CI/CD) and GitOps principles. Manage your R workflows with the same rigor as your application code: version control, automated testing, and consistent, repeatable deployment environments. Kestra lets you define workflows in YAML, ensuring that your orchestration is as maintainable and scalable as your applications.",
+        image: anyLanguage1,
     },
     {
         title: "Integration with Docker, Seamless Environment Management",
         description:
             "Managing environments for R scripts is straightforward with Kestra’s Docker integration. Containerize each part of your R workflow to ensure isolated and consistent settings, directly from Kestra's intuitive editor. This integration simplifies handling environment inconsistencies and boosts reproducibility.",
-        source: "/landing/features/language/r/scripts/docker.svg",
-        imgWidth: "568px",
-        imgHeight: "420px",
+        image: anyLanguage2,
+        reverse: true,
     },
     {
         title: "Embedded R Scripts for Simplicity",
         description:
             "For tasks that need straightforward solutions, Kestra’s task feature allows embedding R scripts directly into your workflows. Ideal for data manipulation, quick statistical calculations, or creating data alerts within larger workflows. Embed your R scripts directly to reduce complexity and enhance execution speed.",
-        source: "/landing/features/language/r/scripts/embedded-r.svg",
-        imgWidth: "560px",
-        imgHeight: "474px",
-        mask: "mask-1",
+        image: anyLanguage3,
     },
 ]
-
-const ORCHESTRATOR_DESC = [
-    "Kestra seamlessly integrates with your existing R scripts with no need for modifications. Just call your scripts as they are, and let Kestra do the heavy lifting. Focus on your analysis and let Kestra handle the orchestration.",
-]
-
-const FOOTER_LINKS = {
-    dark: { text: "Get started", href: "/docs/quickstart#start-kestra" },
-    purple: { text: "Talk to us", href: "/demo" },
-}
 ---
 
-<LanguageLayout
-    meta={{
-        title: "R Orchestration",
-        description: FEATURES.items[0].description,
-    }}
-    header={{
-        title: "R Scripts",
-        description:
-            "Build declaratively your workflows and seamlessly run all your R Scripts",
-        source: "/landing/features/language/r/header.svg",
-    }}
-    features={FEATURES}
-    power={{
-        title: "with R",
-        description: POWER_DESC,
-        source: "/landing/features/language/r/power.svg",
-    }}
-    scripts={{
-        title: "R",
-        data: SCRIPTS,
-    }}
-    orchestrator={{
-        description: ORCHESTRATOR_DESC,
-        source: "/landing/features/language/r/scripts/r-puzzle.svg",
-    }}
-    footer={{
-        title: "Getting Started with Declarative Orchestration",
-        links: FOOTER_LINKS,
-    }}
-/>
+<Layout {title} {description} headerTheme="lightText">
+    <TopHero
+        title="Orchestrate your R Scripts"
+        description="Build declaratively your workflows and seamlessly run all your R Scripts"
+        image={visualHero}
+    >
+        <Link
+            slot="cta"
+            href="/get-started"
+            class="btn btn-primary"
+        >
+            Get Started
+        </Link>
+    </TopHero>
+
+    <CardGrid
+        title="Advanced R Scripting with Kestra"
+        items={MAIN_ITEMS}
+    />
+
+    <div class="gitops">
+        <Capability
+            capabilities={[
+                {
+                    image: rSpecificImg,
+                    alt: "Simple Yet Powerful",
+                    title: "<span class='highlight'>Power</span> Your Projects with R",
+                    text: "R is essential for statistical analysis, visualization, and data manipulation. With Kestra, you can effortlessly automate data ingestion, conduct complex statistical analysis, and handle real-time data processing. <br /><br /> Kestra's robust orchestration capabilities ensure that your R scripts run smoothly and efficiently, streamlining your data-driven projects.",
+                },
+            ]}
+        />
+    </div>
+
+    <SectionCard cards={SCRIPT_FEATURES}>
+        <Fragment slot="title">Orchestrating R Scripts with Kestra</Fragment>
+    </SectionCard>
+
+    <div class="gitops">
+        <Capability
+            title="Let Your Orchestrator Adapt to <br class='d-none d-lg-block'> Your Code, Not the Reverse"
+            capabilities={[
+                {
+                    image: visualsImg,
+                    alt: "Simple Yet Powerful",
+                    title: "Zero Modifications, Full Integration",
+                    text: "Kestra seamlessly integrates with your existing R scripts with no need for modifications. Just call your scripts as they are, and let Kestra do the heavy lifting. Focus on your analysis and let Kestra handle the orchestration.",
+                },
+            ]}
+        />
+    </div>
+
+    <PluginsBlock>
+        <Fragment slot="title">Platform Independent</Fragment>
+        <Fragment slot="description">
+            Select from {totalPlugins}+ integrations and swap tools when needed
+        </Fragment>
+    </PluginsBlock>
+
+    <SeeHow cta={{ text: "Contact Sales", href: "/demo" }}>
+        <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>
+        Replace legacy schedulers, brittle scripts, and disconnected automation tools
+        with a unified orchestration platform.
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    .gitops {
+        :global(.powerful),
+        :global(.partner-capability),
+        :global(.feat) {
+            background: var(--ks-background-secondary) !important;
+        }
+
+        :global(hr) {
+            border: 1px solid var(--ks-border-secondary) !important;
+        }
+    }
+</style>

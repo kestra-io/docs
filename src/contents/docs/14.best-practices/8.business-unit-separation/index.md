@@ -1,5 +1,6 @@
 ---
-title: Business Units Separation
+title: Business Unit Separation in Kestra Enterprise
+h1: Isolate Business Units Using Tenants and Namespaces
 sidebarTitle: Business Unit Separation
 icon: /src/contents/docs/icons/best-practices.svg
 editions: ["EE", "Cloud"]

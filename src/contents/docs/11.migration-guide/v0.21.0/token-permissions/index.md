@@ -1,5 +1,7 @@
 ---
-title: ME and APITOKEN user permissions
+title: ME and APITOKEN Permissions in Kestra 0.21.0 RBAC
+h1: "New ME and APITOKEN Role Permissions: Update Your Custom Roles"
+sidebarTitle: ME & APITOKEN Permissions
 description: RBAC updates in Kestra 0.21.0 (Enterprise). New `ME` and `APITOKEN` permissions for managing user profiles and API tokens. Update custom roles accordingly.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.21.0
@@ -15,7 +17,7 @@ Additional permissions were introduced for creating Users and Groups, allowing b
 
 ## After 0.21
 
-The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, Admins must make sure to update any custom roles with these permissions as needed. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
+The `ME` and `APITOKEN` permissions were added in version 0.21.0. After upgrading to 0.21.0 or later, Admins must update any custom roles with these permissions as needed. Any roles managed by Kestra that need these permissions have them automatically applied in the upgrade.
 
 `ME:READ` permission is added to all Kestra-managed roles. All users will be able to access profile information. Only the Admin role will be configured with:
 

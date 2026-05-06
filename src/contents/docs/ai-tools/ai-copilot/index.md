@@ -1,6 +1,7 @@
 ---
 title: AI Copilot in Kestra – Generate and Edit Flows
-description: Discover Kestra's AI Copilot, enabling you to generate and iteratively edit declarative flow code using natural language prompts. Streamline workflow creation and refinement with AI-assisted suggestions for tasks, triggers, and more.
+h1: Generate and Refine Flows with Natural Language Prompts
+description: Use Kestra AI Copilot to generate and edit flows with natural language prompts. Get AI-assisted suggestions for tasks, triggers, and configurations.
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
 version: "1.0.0"
@@ -31,6 +32,7 @@ To add Copilot to your flow editor, add the following to your [Enterprise and Ad
 ```yaml
 kestra:
   ai:
+    enabled: true # set to false to disable AI Copilot entirely
     providers:
       - id: gemini
         display-name: Gemini - Private
@@ -50,6 +52,20 @@ kestra:
 :::alert{type="info"}
 Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
 :::
+
+### Disabling AI Copilot
+
+To fully disable the AI Copilot — including the built-in fallback to the `api.kestra.io` service — set `kestra.ai.enabled` to `false`:
+
+```yaml
+kestra:
+  ai:
+    enabled: false
+```
+
+When disabled, the Copilot UI will not appear and all AI endpoints will be deactivated. The property defaults to `true`.
+
+### Multiple providers
 
 When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
 
@@ -81,7 +97,7 @@ The open-source version supports only Google Gemini models. Enterprise Edition u
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-In the above demo, we want to create a flow that uses a [Python script](/plugins/tasks/io.kestra.plugin.scripts.python.Script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
+In the above demo, we want to create a flow that uses a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
 
 ```txt
 Create a flow with a Python script that fetches weather data for New York City
@@ -160,7 +176,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 
 ## Enterprise Edition Copilot configurations
 
-Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so make sure to adjust for your provider.
+Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so adjust it for your provider.
 Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock
