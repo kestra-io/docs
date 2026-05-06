@@ -1,5 +1,6 @@
 ---
-title: Kill Switch – Stop Problematic Executions (Enterprise)
+title: "Kill Switch in Kestra Enterprise: Stop Executions"
+h1: Immediately Kill, Cancel, or Ignore Executions by Scope
 description: Use Kill Switch in Kestra Enterprise to immediately kill, cancel, or ignore executions by scope, with scheduling, audit logs, and in-app banners.
 sidebarTitle: Kill Switch
 icon: /src/contents/docs/icons/admin.svg

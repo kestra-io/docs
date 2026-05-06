@@ -1,146 +1,1724 @@
 ---
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+
 import Layout from "~/components/layout.astro"
-import heroFront from "~/assets/use-cases/healthcare/hero-front.webp"
-import HeartPulse from "~/assets/use-cases/healthcare/heart-pulse.svg"
-import SophiaGenetics from "~/assets/use-cases/healthcare/SophiaGenetics.svg?raw"
-import { optimizeSvgIcon } from "~/utils/svgo"
-
 import Link from "~/components/common/Link.astro"
+import Faq from "~/components/common/Faq.vue"
 import Quotes from "~/components/common/Quotes.vue"
-import TopHero from "~/components/layout/TopHero.astro"
-import SeeHow from "~/components/common/SeeHow.astro"
-import Unlock from "~/components/use-cases/Unlock.vue"
-import CardGrid from "~/components/card/CardGrid.astro"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import GoFurther from "~/components/get-started/GoFurther.astro"
 
-const title = "Kestra for Healthcare"
+import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
+import AccountGroupOutline from "vue-material-design-icons/AccountGroupOutline.vue"
+import FileDocumentCheckOutline from "vue-material-design-icons/FileDocumentCheckOutline.vue"
+import CodeTagsCheck from "vue-material-design-icons/CodeTagsCheck.vue"
+import Git from "vue-material-design-icons/Git.vue"
+import ServerNetworkOutline from "vue-material-design-icons/ServerNetworkOutline.vue"
+
+import ApotekHjartatLogo from "~/contents/customer-stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment/logo.svg?raw"
+import ApotekHjartatLogoImg from "~/contents/customer-stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment/logo.svg"
+import SophiaGeneticsLogoImg from "~/assets/use-cases/healthcare/SophiaGenetics.svg"
+import BrainlabLogoImg from "~/assets/landing/infrastructure/companies/brainlab.svg"
+import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const HERO_TAGS = [
+    { label: "HIPAA & HITRUST friendly", icon: "mdi:shield-check-outline" },
+    { label: "PHI stays on-prem", icon: "mdi:shield-lock-outline" },
+    { label: "Air-gapped & sovereign", icon: "mdi:earth-box" },
+    { label: "Apache 2.0 licensed", icon: "mdi:code-tags" },
+    { label: "Kubernetes & GPU workers", icon: "mdi:server-network-outline" },
+    { label: "Multi-tenant data science", icon: "mdi:account-group-outline" },
+    { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
+]
+
+const title = "Kestra for Healthcare & Life Sciences"
 const description =
-    "Streamline data processing, accelerate research, and enhance collaboration with Kestra’s advanced orchestration and scheduling solutions"
+    "The orchestration layer behind modern healthcare and life sciences. Run medical AI imaging, pharmacy supply chains, genomics pipelines, and HIPAA-compliant data operations on one open-source engine. PHI stays inside your perimeter."
 
-const ITEMS = [
+const FLOW_STAGES = [
     {
-        icon: "mdi:clipboard-pulse-outline",
-        title: "Healthcare Data Management",
-        description:
-            "Integrate patient records, laboratory systems, and analytics platforms into automated workflows to maintain accurate, real-time data.",
+        id: "trigger",
+        label: "TRIGGER",
+        items: [
+            "Medical image / DICOM arrival",
+            "Supplier file drop / SFTP",
+            "Schedule / batch window",
+            "Kafka / event stream",
+            "Webhook / portal call",
+            "Ticket / incident update",
+        ],
     },
     {
-        icon: "mdi:dna",
-        title: "Genomic Data Processing",
-        description:
-            "Automate sequencing workflows and large-scale genomic data analysis. Parallelize tasks and manage dependencies declaratively.",
+        id: "ingest",
+        label: "INGEST",
+        items: [
+            "PACS, DICOM & imaging archives",
+            "Pharmacy & supplier file feeds",
+            "Genomics / lab / sequencing data",
+            "Lakehouse / dbt / warehouse",
+            "Vault / CyberArk / PHI secrets",
+            "Identity (LDAP, Keycloak, AD)",
+        ],
     },
     {
-        icon: "mdi:shield-check",
-        title: "Regulatory Compliance",
-        description:
-            "Automate compliance reporting, access logs, and audit trails to meet healthcare regulatory standards.",
+        id: "process",
+        label: "PROCESS",
+        items: [
+            "Image segmentation & ML scoring",
+            "Supplier file normalization",
+            "Bioinformatics & genomics jobs",
+            "dbt / SQL / Python / R / Spark",
+            "Clinical & analyst approval gates",
+            "PHI policy & retention controls",
+        ],
     },
     {
-        icon: "mdi:head-snowflake-outline",
-        title: "Predictive Analytics",
-        description:
-            "Integrate ML models into data workflows to support diagnosis support systems and patient risk prediction.",
-    },
-    {
-        icon: "mdi:lan-connect",
-        title: "Secure Research Collaboration",
-        description:
-            "Coordinate workflows between researchers, data scientists, and IT teams with centralized monitoring and version control.",
+        id: "act",
+        label: "ACT",
+        items: [
+            "Update PACS / EHR / CRM",
+            "Sync inventory / dispatch supplier",
+            "Publish lakehouse / data product",
+            "Notify clinician / analyst / on-call",
+            "Archive signed audit bundle",
+            "Update downstream systems",
+        ],
     },
 ]
 
 const quotes = [
     {
-        quote: "Kestra strong observability, ease of development, and flexibility make it a versatile solution for managing data pipelines in the field of genomics.",
-        author: "Yohann Nédélec - Tech Lead",
-        smallLogoSvg: optimizeSvgIcon(SophiaGenetics, "sophia-genetics-logo"),
+        quote:
+            "Stability was the turning point. With Kestra, our most critical flows finally run the way they should.",
+        author: "Infrastructure Lead, Apotek Hjärtat",
+        smallLogoSvg: optimizeSvgIcon(ApotekHjartatLogo, "apotek-hjartat-quote-logo"),
         kpis: [
+            { value: "400+", name: "pharmacies rely on Kestra" },
+            { value: "50+", name: "critical workflows modernized" },
+            { value: "30+ yrs", name: "of legacy platform, replaced" },
+        ],
+        storyLink: "/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment",
+    },
+]
+
+const WORKLOAD_CATEGORIES = [
+    {
+        name: "Medical AI, Imaging & Decision Support",
+        items: [
             {
-                name: "Increased productivity",
-                value: "200%",
+                icon: "mdi:image-search-outline",
+                title: "Medical Image & AI Pipelines",
+                description: "Process half-gigabyte DICOM volumes, run segmentation and scoring models, and route case outputs for analyst review. The orchestration layer behind cardiac, radiology, and pathology AI workflows. 80 to 90 percent less orchestration overhead than hand-rolled pipelines.",
             },
             {
-                name: "Reduction of Azure Batch processing costs",
-                value: "50%",
+                icon: "mdi:account-supervisor-outline",
+                title: "Human-in-the-Loop Clinical Review",
+                description: "Pause any workflow for case-analyst, clinician, or compliance sign-off. Dynamic reprioritization based on AI corner cases, study importance, or operational SLAs. Every decision captured in the immutable audit trail.",
             },
             {
-                name: "faster processing of large datasets",
-                value: "85%",
+                icon: "mdi:flask-outline",
+                title: "Computer Vision & Diagnostic Support",
+                description: "Orchestrate inference across cardiac imaging, neurosurgery planning, oncology workflows, and pathology slides. Native Docker and Kubernetes execution with GPU worker groups for ML workloads.",
+            },
+        ],
+    },
+    {
+        name: "Pharmacy, Supply Chain & Operations",
+        items: [
+            {
+                icon: "mdi:pill",
+                title: "Pharmacy Supply Chain Orchestration",
+                description: "Receive supplier orders from SFTP, email, or API. Normalize formats with Python or shell scripts, validate against rules, and load to your back-office system. The pattern running major pharmacy retail networks.",
+            },
+            {
+                icon: "mdi:swap-horizontal-bold",
+                title: "Mission-Critical Integration Modernization",
+                description: "Replace 30-year-old integration platforms one workflow at a time. Wrap legacy Python scripts and Cron jobs as Kestra flows, then modernize incrementally. Stability and observability without freezing operations.",
+            },
+            {
+                icon: "mdi:warehouse",
+                title: "Inventory, Distribution & Logistics",
+                description: "Coordinate inventory, distribution, and partner logistics. Kafka triggers for high-volume events, MySQL or Postgres back-office writes, and exception routing to the right ops team.",
+            },
+        ],
+    },
+    {
+        name: "Genomics, Research & Data Science",
+        items: [
+            {
+                icon: "mdi:dna",
+                title: "Genomics & Bioinformatics Pipelines",
+                description: "Parallelize sequencing pipelines on Kubernetes, AWS Batch, or GPU workers. Long-running jobs with retries, timeouts, and lineage. Hypersensitive genomic data stays inside your perimeter.",
+            },
+            {
+                icon: "mdi:account-group-outline",
+                title: "Multi-Team Data Science Workflows",
+                description: "Different data science teams have different workflow needs. Namespace-scoped flows, secrets, and runtime per team. Each lab or research group owns its environment on a shared, governed platform.",
+            },
+            {
+                icon: "mdi:cube-outline",
+                title: "Long-Running Compute & GPU Orchestration",
+                description: "Manage long-running training and inference jobs across Kubernetes, AWS Batch, and GPU clusters. Pause for researcher review, retry with exponential backoff, and capture lineage for reproducibility.",
+            },
+        ],
+    },
+    {
+        name: "HIPAA Data, Platform & IT Operations",
+        items: [
+            {
+                icon: "mdi:shield-check-outline",
+                title: "HIPAA-Compliant Data Pipelines",
+                description: "PHI stays inside your perimeter. Self-hosted workers run next to PHI; the control plane can live in a segmented zone. Multifax and high-volume ingestion patterns with SLA-bound execution and burst capacity.",
+            },
+            {
+                icon: "mdi:ticket-outline",
+                title: "Identity, Ticketing & Service Operations",
+                description: "Replace manual orchestration that takes hours and waits days for resolution. Centralize multi-server scripts behind one declarative engine, with tickets routed automatically and resolution captured in audit.",
+            },
+            {
+                icon: "mdi:security-network",
+                title: "Sovereign Platform & Cloud Operations",
+                description: "Self-hosted on private cloud or air-gapped infrastructure. Kubernetes, OpenShift, AWS, GCP, or Azure deployment with worker-group isolation. Modernize legacy infra automation without compromising on PHI controls.",
             },
         ],
     },
 ]
 
-const UNLOCK_CONTENT = {
-    leftContent: [
-        {
-            title: "Accelerate Data Processing",
-            description:
-                "Kestra facilitates seamless data sharing and workflow coordination among bioinformaticians, data scientists, and IT teams.",
-        },
-        {
-            title: "Improve Data Accuracy and Reliability",
-            description:
-                "Kestra prioritizes data security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations.",
-        },
-    ],
-    rightContent: [
-        {
-            title: "Enhance Collaboration",
-            description:
-                "Whether dealing with genomic sequences, patient records, or research data, Kestra ensures that your data is processed swiftly and accurately.",
-        },
-        {
-            title: "Secure and Compliant Data Handling",
-            description:
-                "Manual data processing is prone to errors and inconsistencies. Kestra’s automation capabilities minimize these risks by ensuring that data is handled consistently and accurately.",
-        },
-    ],
-}
+const ENTERPRISE_FEATURES = [
+    {
+        icon: ShieldCheckOutline,
+        title: "PHI-Safe & Air-Gapped Deployment",
+        description: "Self-hosted, VPC, or fully air-gapped. Segment control plane and workers across restricted zones so PHI never leaves your perimeter. EU or US data residency for Kestra Cloud.",
+    },
+    {
+        icon: ServerNetworkOutline,
+        title: "Kubernetes, OpenShift & GPU Workers",
+        description: "Docker, Helm, or OpenShift. Worker groups isolate Linux, Windows, GPU, and PHI-touching runtimes on one shared control plane. PostgreSQL backend handles millions of executions.",
+    },
+    {
+        icon: Git,
+        title: "Immutable, Replayable Execution",
+        description: "Every flow is YAML in Git. Every execution frozen in time. Replay any historical case, study, or supplier batch with the exact code, secrets, and inputs. Years later, the audit holds.",
+    },
+    {
+        icon: AccountGroupOutline,
+        title: "Multi-Tenant by Namespace, RBAC by Default",
+        description: "Each lab, business unit, or research team owns its flows, secrets, and runtime on a shared platform. Namespace-scoped RBAC with SSO, SAML, OIDC, and SCIM. Zero blast radius between teams.",
+    },
+    {
+        icon: FileDocumentCheckOutline,
+        title: "Clinical & Compliance Approval Gates",
+        description: "Pause any workflow pending human sign-off. Enforce dual control on clinical decisions, model promotions, PHI-touching releases, and any production change. A first-class flow primitive.",
+    },
+    {
+        icon: CodeTagsCheck,
+        title: "Audit Logs, Lineage & SIEM Integration",
+        description: "Every execution, user action, and resource change recorded. Stream logs directly to Splunk, Elastic, or your preferred SIEM for HIPAA, HITRUST, and SOC 2 evidence.",
+    },
+]
+
+const BUILD_TABS = [
+    {
+        name: "Medical image AI pipeline",
+        title: "From DICOM arrival to clinician review, with the AI pipeline orchestrated end to end.",
+        description:
+            "A medical study lands on the webhook. Kestra loads credentials from Vault, segments the volume with a Python container, scores anomalies, pauses for case-analyst confirmation on flagged studies, and writes results back to PACS. A common pattern for cardiac, radiology, and pathology AI at scale.",
+        code: `id: medical-image-pipeline
+namespace: company.health.imaging
+
+inputs:
+  - id: study
+    type: JSON
+    displayName: DICOM study payload (study UID, modality, patient ref)
+
+tasks:
+  - id: load_secrets
+    type: io.kestra.plugin.hashicorp.vault.kv.Read
+    url: "{{ secret('VAULT_URL') }}"
+    token: "{{ secret('VAULT_TOKEN') }}"
+    path: "secret/health/imaging"
+
+  - id: segment_volume
+    type: io.kestra.plugin.scripts.python.Commands
+    containerImage: "ghcr.io/health/segmentation:1.4"
+    commands:
+      - python segment.py --study '{{ inputs.study | toJson }}'
+
+  - id: score_anomaly
+    type: io.kestra.plugin.scripts.python.Commands
+    containerImage: "ghcr.io/health/scoring:2.1"
+    commands:
+      - python score.py --segments {{ outputs.segment_volume.outputFiles.segments }}
+
+  - id: route_review
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.score_anomaly.vars.flagged == true }}"
+    then:
+      - id: analyst_review
+        type: io.kestra.plugin.core.flow.Pause
+        description: |
+          Case analyst must confirm finding for study
+          {{ inputs.study.study_uid }} before posting back to PACS.
+
+  - id: post_to_pacs
+    type: io.kestra.plugin.core.http.Request
+    uri: "https://pacs.internal/api/studies/{{ inputs.study.study_uid }}/findings"
+    method: POST
+    contentType: application/json
+    headers:
+      Authorization: "Bearer {{ outputs.load_secrets.data.pacs_token }}"
+    body: "{{ outputs.score_anomaly.outputFiles.report }}"
+
+  - id: archive_lineage
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "imaging-audit"
+    key: "studies/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ inputs.study.study_uid }}.json"
+    from: "{{ outputs.score_anomaly.outputFiles.report }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.hashicorp.vault.kv.Read" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.core.flow.Pause" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Pharmacy supply chain ingestion",
+        title: "Normalize supplier files from any format and load them to the back office.",
+        description:
+            "Suppliers drop order files in any format. Kestra polls the SFTP, normalizes each file with a Python script, validates against business rules, loads to the back-office database, and routes exceptions to the right ops queue. The pattern running pharmacy retail networks at scale.",
+        code: `id: supplier-order-ingestion
+namespace: company.pharmacy.supply
+
+triggers:
+  - id: every_5_min
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "*/5 * * * *"
+
+tasks:
+  - id: list_files
+    type: io.kestra.plugin.fs.sftp.List
+    host: "supplier-feed.internal"
+    port: "22"
+    username: "{{ secret('SFTP_USER') }}"
+    password: "{{ secret('SFTP_PASSWORD') }}"
+    from: "/inbound/orders/"
+
+  - id: normalize
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python normalize.py --listing {{ outputs.list_files.uri }}
+
+  - id: validate
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs.normalize.vars.errors > 0 }}"
+    then:
+      - id: notify_ops
+        type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+        url: "{{ secret('SLACK_OPS_URL') }}"
+        payload: |
+          { "text": "{{ outputs.normalize.vars.errors }} supplier file errors. Run {{ execution.id }}." }
+
+  - id: load_to_backoffice
+    type: io.kestra.plugin.jdbc.mysql.Query
+    url: "jdbc:mysql://backoffice:3306/orders"
+    username: "{{ secret('MYSQL_USER') }}"
+    password: "{{ secret('MYSQL_PASSWORD') }}"
+    sql: |
+      INSERT INTO orders.supplier_batch (batch_id, file_count, loaded_at)
+      VALUES ('{{ execution.id }}', {{ outputs.normalize.vars.file_count }}, NOW())
+
+  - id: archive_batch
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "supply-chain-archive"
+    key: "orders/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ execution.id }}.json"
+    from: "{{ outputs.normalize.outputFiles.batch }}"`,
+        plugins: [
+            { cls: "io.kestra.plugin.fs.sftp.List" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.jdbc.mysql.Query" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "Genomics pipeline per team",
+        title: "Per-team genomics pipeline with namespace isolation and signed lineage.",
+        description:
+            "Each research team owns its namespace, secrets, and runtime. The same flow shape runs per team: pull raw sequencing data, run a containerized bioinformatics step on Kubernetes, validate, publish to the secure lakehouse, archive the lineage. Hypersensitive data never leaves your perimeter.",
+        code: `id: genomics-pipeline
+namespace: company.research.team_a
+
+triggers:
+  - id: nightly
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 3 * * *"
+
+tasks:
+  - id: pull_raw_data
+    type: io.kestra.plugin.aws.s3.Downloads
+    bucket: "raw-sequencing"
+    prefix: "{{ flow.namespace }}/inbound/"
+
+  - id: run_pipeline
+    type: io.kestra.plugin.kubernetes.kubectl.Apply
+    namespace: "research-{{ flow.namespace }}"
+    spec: |
+      apiVersion: batch/v1
+      kind: Job
+      metadata:
+        name: bioinformatics-{{ execution.id }}
+      spec:
+        template:
+          spec:
+            containers:
+              - name: pipeline
+                image: ghcr.io/research/bio:v3
+                args: ["--input", "{{ outputs.pull_raw_data.uri }}"]
+            restartPolicy: Never
+
+  - id: quality_checks
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python validate_run.py --execution {{ execution.id }}
+
+  - id: publish_to_lakehouse
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "research-lakehouse"
+    key: "{{ flow.namespace }}/{{ execution.startDate | date('yyyy/MM/dd') }}/results.parquet"
+    from: "{{ outputs.quality_checks.outputFiles.parquet }}"
+
+  - id: notify_team
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_TEAM_URL') }}"
+    payload: |
+      { "text": "Genomics run {{ execution.id }} complete. Results in lakehouse." }`,
+        plugins: [
+            { cls: "io.kestra.plugin.aws.s3.Downloads" },
+            { cls: "io.kestra.plugin.kubernetes.kubectl.Apply" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+    {
+        name: "HIPAA-compliant intake",
+        title: "High-volume PHI intake with policy enforcement, retention controls, and signed audit.",
+        description:
+            "A document or fax lands on the webhook. Kestra enforces PHI policy at the edge, runs OCR and extraction, transforms with dbt, archives the bundle with retention metadata for HIPAA, and notifies the team. Bursty, replayable, audit-ready.",
+        code: `id: hipaa-intake
+namespace: company.health.intake
+
+triggers:
+  - id: intake_webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "phi-intake"
+
+inputs:
+  - id: document
+    type: JSON
+    displayName: Incoming document or fax payload
+
+tasks:
+  - id: enforce_policy
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python enforce_phi_policy.py --doc '{{ inputs.document | toJson }}'
+
+  - id: ocr_extract
+    type: io.kestra.plugin.scripts.python.Commands
+    containerImage: "ghcr.io/health/ocr:5.2"
+    commands:
+      - python extract.py --doc '{{ inputs.document | toJson }}'
+
+  - id: dbt_transform
+    type: io.kestra.plugin.dbt.cli.Build
+    projectDir: "./dbt/intake"
+    commands:
+      - dbt build --target intake
+
+  - id: archive_with_retention
+    type: io.kestra.plugin.aws.s3.Upload
+    bucket: "phi-archive"
+    key: "intake/{{ execution.startDate | date('yyyy/MM/dd') }}/{{ execution.id }}.json"
+    from: "{{ outputs.ocr_extract.outputFiles.bundle }}"
+    metadata:
+      retention-class: "hipaa-7y"
+      execution-id: "{{ execution.id }}"
+
+  - id: notify_team
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_INTAKE_URL') }}"
+    payload: |
+      { "text": "PHI intake {{ execution.id }} archived with HIPAA retention." }`,
+        plugins: [
+            { cls: "io.kestra.plugin.core.trigger.Webhook" },
+            { cls: "io.kestra.plugin.scripts.python.Commands" },
+            { cls: "io.kestra.plugin.dbt.cli.Build" },
+            { cls: "io.kestra.plugin.aws.s3.Upload" },
+        ],
+        href: "/blueprints",
+    },
+]
+
+const FAQ = [
+    {
+        question: "Can Kestra orchestrate medical AI and imaging pipelines at scale?",
+        answer: "Yes. Process half-gigabyte DICOM volumes, run segmentation and scoring models, route case outputs for analyst review, and write results back to PACS. GPU worker groups handle ML workloads. Human-in-the-loop pauses on flagged studies. A common pattern for cardiac, radiology, and pathology AI at scale.",
+    },
+    {
+        question: "How does Kestra handle PHI safely for HIPAA, HITRUST, and SOC 2?",
+        answer: "PHI never has to leave your perimeter. Self-hosted workers run next to PHI; the control plane can live in a segmented zone. Secrets come from Vault, AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or CyberArk. Every execution is immutable and replayable. Audit logs stream to Splunk, Elastic, or your SIEM for HIPAA, HITRUST, and SOC 2 evidence.",
+    },
+    {
+        question: "Can Kestra automate pharmacy supply chains and supplier file integration?",
+        answer: "Yes. Poll SFTP for supplier files in any format, normalize with Python or shell scripts, validate against business rules, load to your back-office database, and route exceptions to the right ops queue. The pattern running major pharmacy retail networks across hundreds of stores.",
+    },
+    {
+        question: "Can Kestra orchestrate genomics and bioinformatics pipelines?",
+        answer: "Yes. Parallelize sequencing pipelines on Kubernetes, AWS Batch, or GPU workers. Long-running jobs with retries, timeouts, lineage, and per-team namespace isolation. Hypersensitive genomic data stays inside your perimeter. The pattern multi-team genomics and life-sciences data programs use.",
+    },
+    {
+        question: "Can Kestra run fully air-gapped, sovereign, or on-premise for restricted environments?",
+        answer: "Yes. Kestra Enterprise runs fully self-hosted in your private cloud, VPC, or air-gapped datacenter with no egress required. Workers sit on-premise; the control plane can live in a different zone. Kestra Cloud runs in EU or US regions with no cross-region data transfer.",
+    },
+    {
+        question: "Does Kestra deploy on Kubernetes, OpenShift, and Docker?",
+        answer: "Yes. Native deployment on Docker, Helm charts for Kubernetes, and OpenShift. Worker groups let you isolate Linux, Windows, GPU, and PHI-touching runtimes on a shared control plane. PostgreSQL backend handles millions of executions without requiring Kafka or Elasticsearch.",
+    },
+    {
+        question: "How does Kestra handle multi-tenant isolation across data science teams or business units?",
+        answer: "Different data science teams have different needs. Namespace-scoped RBAC and multi-tenant isolation let each team own its flows, secrets, and runtime on a shared platform. Subflows and triggers coordinate work across teams when needed. Zero blast radius between environments.",
+    },
+    {
+        question: "Does Kestra integrate with EHRs, HL7, FHIR, and existing healthcare interface engines?",
+        answer: "Yes, when needed. Plugins for HL7 v2 over MLLP, FHIR REST APIs, and the SFTP, MQ, and Kafka feeds your interface engine already produces. But interface engines are not where Kestra is strongest. Modern healthcare and life-sciences customers reach for Kestra to orchestrate medical AI pipelines, pharmacy supply chains, genomics workflows, and HIPAA-compliant data operations.",
+    },
+    {
+        question: "How does Kestra handle secrets, identity, and access control for sensitive healthcare data?",
+        answer: "Native integrations with HashiCorp Vault, CyberArk, AWS Secrets Manager, GCP Secret Manager, and Azure Key Vault. Secrets are scoped per namespace, per tenant, per flow, and never written to logs. SSO via SAML, OIDC, and OAuth2; SCIM provisioning; integration with Active Directory, LDAP, Keycloak, Azure AD, and Okta.",
+    },
+    {
+        question: "Can Kestra modernize legacy healthcare workflows that run on hand-rolled scripts and 30-year-old platforms?",
+        answer: "Yes. Wrap existing Python scripts, Cron jobs, and legacy integration platforms as Kestra flows, then modernize incrementally. Major pharmacy retailers have replaced 30-plus-year-old integration platforms across hundreds of stores and dozens of critical workflows this way. No big-bang rewrite, no production freeze.",
+    },
+    {
+        question: "Is Kestra open source, and does it fit healthcare procurement requirements?",
+        answer: "Yes. Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, Kill Switch, Apps for self-service UIs, and 24x7 support. Open standards (YAML, REST, OIDC, OpenTelemetry), no proprietary runtime lock-in, transparent licensing. Maps cleanly to healthcare procurement and compliance frameworks.",
+    },
+    {
+        question: "How does Kestra support AI-assisted workflows while keeping humans in the loop?",
+        answer: "Orchestrate OCR, LLM extraction, computer vision, and ML scoring alongside rule-based checks. Pause for human review at any decision point: case analyst confirmation, clinician sign-off, model promotion, exception handling. Models, prompts, and PHI stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
+    },
+]
+
 ---
 
 <Layout {title} {description} headerTheme="lightText">
-    <TopHero
-        title="Transform Healthcare <br /> with Automated <br /> Workflows"
-        description="Orchestrate patient data, research pipelines, and compliance processes with secure, scalable automation that run in the most restricted environments"
-        image={heroFront}
-    >
-        <Link
-            slot="cta"
-            href="/get-started"
-            class="btn btn-primary"
-        >
-            Get Started
-        </Link>
-    </TopHero>
+    <div class="healthcare">
 
-    <CardGrid title="Use Cases in Healthcare" items={ITEMS} />
+        <section class="hero">
+            <img src="/hero-grid.svg" alt="" class="hero-bg-grid" aria-hidden="true" />
+            <div class="hero-inner">
+                <div class="badge-pill" data-usal="zoomin">
+                    <Icon name="mdi:heart-pulse" />
+                    <span>Healthcare &amp; Life Sciences</span>
+                </div>
 
-    <Quotes {quotes} />
+                <h1 data-usal="fade-u">
+                    The orchestration layer behind<br />
+                    <span class="gradient">modern healthcare and life sciences.</span>
+                </h1>
 
-    <Unlock
-        client:visible
-        title="Healthcare"
-        description="Kestra prioritizes security and compliance, ensuring all information is handled according to the highest standards for trust and reliability in your healthcare operations."
-        logo={{
-            src: HeartPulse.src,
-            alt: "heart pulse",
-        }}
-        content={UNLOCK_CONTENT}
-    />
+                <p class="subtitle" data-usal="fade-l">
+                    Run medical AI pipelines, pharmacy supply chains, genomics workflows, and HIPAA-compliant data
+                    operations on one open-source engine. PHI stays inside your perimeter. Replayable end to end.
+                </p>
 
-    <PluginsBlock />
+                <div class="tags" data-usal="fade-l">
+                    {HERO_TAGS.map((tag) => (
+                        <span class="tag">
+                            <Icon name={tag.icon} class="tag-icon" />
+                            {tag.label}
+                        </span>
+                    ))}
+                </div>
 
-    <SeeHow
-        cta={{
-            text: "Contact Sales",
-            href: "/demo",
-        }}
-    >
-        <Fragment slot="title"> Secure and Compliant Data Handling </Fragment>
-        Kestra prioritizes security and compliance, ensuring all information is handled
-        according to the highest standards for trust and reliability in your healthcare
-        operations.
-    </SeeHow>
+                <div class="exec-panel-wrapper" data-usal="fade-up">
+                    <div class="exec-panel">
+                        <div class="exec-panel__header">
+                            <span class="exec-panel__dot"></span>
+                            <span class="exec-panel__title">medical-image-pipeline</span>
+                            <span class="exec-panel__meta">namespace · company.health.imaging</span>
+                            <span class="exec-panel__duration">2.8s</span>
+                        </div>
+
+                        <div class="exec-panel__body">
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">receive_study</span>
+                                <span class="exec-row__type">core.http.Webhook</span>
+                                <span class="exec-row__result">DICOM accepted</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">load_secrets</span>
+                                <span class="exec-row__type">hashicorp.vault.kv.Read</span>
+                                <span class="exec-row__result">4 keys</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">segment_volume</span>
+                                <span class="exec-row__type">scripts.python (GPU)</span>
+                                <span class="exec-row__result">14 regions</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">score_anomaly</span>
+                                <span class="exec-row__type">scripts.python.Commands</span>
+                                <span class="exec-row__result">flagged</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">analyst_review</span>
+                                <span class="exec-row__type">core.flow.Pause</span>
+                                <span class="exec-row__result">Confirmed</span>
+                            </div>
+                            <div class="exec-row">
+                                <span class="exec-row__check">✓</span>
+                                <span class="exec-row__name">post_to_pacs</span>
+                                <span class="exec-row__type">core.http.Request</span>
+                                <span class="exec-row__result">posted</span>
+                            </div>
+                        </div>
+
+                        <div class="exec-panel__footer">
+                            <span class="exec-footer__item">PHI-safe</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Replayable</span>
+                            <span class="exec-footer__sep">·</span>
+                            <span class="exec-footer__item">Human-approved</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-ctas" data-usal="zoomin">
+                    <Link href="/demo" class="btn btn-primary btn-lg">Book a Demo</Link>
+                </div>
+
+                <div class="hero-logos" data-usal="fade-u">
+                    <span class="hero-logos__label">Trusted by healthcare, pharmacy, and life-sciences teams</span>
+                    <div class="hero-logos__row">
+                        <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
+                        <Image src={BrainlabLogoImg} alt="Brainlab" class="hero-logos__item hero-logos__item--brainlab" />
+                        <Image src={SophiaGeneticsLogoImg} alt="SOPHIA GENETICS" class="hero-logos__item hero-logos__item--sophia" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="flow">
+            <div class="container-xxl">
+                <h2 class="flow__title text-center">
+                    One control plane for the workflows <span class="highlight">healthcare and life sciences run on</span>.
+                </h2>
+                <p class="flow__lead">
+                    Medical AI pipelines. Pharmacy supply chains. Genomics workflows. HIPAA-compliant data operations.
+                    Whether you're segmenting cardiac volumes, normalizing supplier files for 400 pharmacies, or
+                    parallelizing genomic pipelines, the engine is the same. Self-hosted, multi-tenant, audit-ready.
+                </p>
+
+                <div class="flow__grid">
+                    <div class="flow__steps">
+                        {FLOW_STAGES.map((stage, idx) => (
+                            <div class={`flow-block flow-${idx}`}>
+                                <div class="flow-block__content">
+                                    <span class={`flow-block__label label-${stage.id}`}>{stage.label}</span>
+                                    <div class={`flow-block__card card-${stage.id}`}>
+                                        <div class="flow-block__items">
+                                            {stage.items.map(item => (
+                                                <div class="flow-block__item">{item}</div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {idx < FLOW_STAGES.length - 1 && (
+                                    <div class={`flow-arrow arrow-${idx}`}>
+                                        <div class="line" />
+                                        <Icon name="mdi:play" class="head" width={16} height={16} />
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <h5 class="flow__footer text-center">
+                    Each step is a declarative YAML task. Wrap an existing legacy pipeline today. Modernize it in place tomorrow. No rewrite of the whole estate.
+                </h5>
+            </div>
+        </section>
+
+        <section class="workloads">
+            <div class="container">
+                <div class="workloads__head">
+                    <h2>What healthcare and life-sciences teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <p>Real workloads from real institutions. Medical AI imaging across cardiac, oncology, and pathology. Pharmacy and supply-chain operations at scale. Secure genomics and life-sciences pipelines. HIPAA-compliant data and IT operations across multi-team estates.</p>
+                </div>
+                {WORKLOAD_CATEGORIES.map(cat => (
+                    <div class="workloads__group">
+                        <h3 class="workloads__category">{cat.name}</h3>
+                        <div class="workloads__grid">
+                            {cat.items.map(item => (
+                                <div class="workload-card">
+                                    <Icon name={item.icon} class="workload-card__icon" />
+                                    <h4 class="workload-card__title">{item.title}</h4>
+                                    <p class="workload-card__desc">{item.description}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+
+        <Quotes {quotes} client:load />
+
+        <section class="enterprise">
+            <div class="container-xxl">
+                <h2 class="enterprise__title" data-usal="fade-r">
+                    Built to the bar <span class="highlight">healthcare IT</span> actually needs.
+                </h2>
+                <NoGapGrid items={ENTERPRISE_FEATURES}>
+                    <div class="feature-card feature-card--cta">
+                        <a href="/demo" class="btn btn-secondary" data-usal="zoomin">
+                            Book a Demo
+                        </a>
+                    </div>
+                </NoGapGrid>
+            </div>
+        </section>
+
+        <section class="build">
+            <div class="container">
+                <h2>Patterns from real <span class="highlight">healthcare and life-sciences deployments</span>.</h2>
+                <p class="build__lead">Real workflows running today inside healthcare, pharmacy, medtech, and life-sciences teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
+                <div class="wrapper">
+                    <div class="inner">
+                        <div class="header row g-0">
+                            {BUILD_TABS.map((tab, idx) => (
+                                <div
+                                    class:list={[
+                                        "col-6 col-md-3 header-tab",
+                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
+                                    ]}
+                                    data-tab-target={idx}
+                                >
+                                    {tab.name}
+                                </div>
+                            ))}
+                        </div>
+
+                        {BUILD_TABS.map((tab, idx) => (
+                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
+                                <div class="panel panel-1">
+                                    <Snippets client:idle code={tab.code} lang="yaml" />
+                                </div>
+                                <div class="panel panel-2">
+                                    <h3 data-usal="fade-r">{tab.title}</h3>
+                                    <p data-usal="fade-l">{tab.description}</p>
+                                    <div class="plugins" data-usal="zoomin">
+                                        {tab.plugins.map(plugin => (
+                                            <div class="plugin-icon">
+                                                <TaskIcon cls={plugin.cls} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <Link class="goto" href={tab.href} data-usal="fade-r">
+                                        Explore Blueprints
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <GoFurther />
+
+        <PluginsBlock>
+            <Fragment slot="title">
+                Integrates with the <span class="highlight">systems healthcare and life-sciences teams</span> already run.
+            </Fragment>
+            <Fragment slot="description">
+                Connect EHRs, HL7 and FHIR engines, payer APIs, clearinghouses, lab and imaging systems,
+                data platforms, and security controls through {totalPlugins}+ plugins. Or build the exact integration
+                your environment requires.
+            </Fragment>
+        </PluginsBlock>
+
+        <SeeHow cta={{ text: "Book a Demo", href: "/demo" }}>
+            <Fragment slot="title">Modernize healthcare workflows on a platform you fully own.</Fragment>
+            Self-hosted, air-gapped, and procurement-friendly. Modernize legacy pipelines incrementally,
+            run medical AI inside your perimeter, and orchestrate sensitive data operations end to end.
+            One open-source engine.
+        </SeeHow>
+
+        <Faq items={FAQ} client:visible />
+    </div>
 </Layout>
+
+<style lang="scss">
+    // ── Healthcare palette: medical green ────────────────────────────
+    // Distinct from FSI (yellow), Public Services (cobalt), Automotive
+    // (red), Retail (purple). Reads as wellness, vital, sovereign green.
+    $hc-green:        #16A34A;
+    $hc-green-bright: #4ADE80;
+    $hc-green-light:  #BBF7D0;
+    $hc-green-deep:   #14532D;
+    $hc-platinum:     #E8EDF0;
+
+    .healthcare { overflow: clip; }
+
+    :global(html.dark) .healthcare {
+        .flow,
+        .workloads,
+        .build,
+        .enterprise {
+            background: #1C1C20;
+        }
+        :global(section.quotes-wrapper),
+        :global(section.plugin-block),
+        :global(.see) {
+            background: #1C1C20;
+        }
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        background: #050d08;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: calc(-1 * var(--top-bar-height, 67px) - var(--announce-height, 0px));
+        padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 5rem) 1.5rem 6rem;
+
+        @include media-breakpoint-down(md) {
+            padding: calc(var(--top-bar-height, 67px) + var(--announce-height, 0px) + 3rem) 1rem 4rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            bottom: -260px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1100px;
+            height: 520px;
+            background: radial-gradient(ellipse at center, rgba(22, 163, 74, 0.32) 0%, rgba(22, 163, 74, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+    }
+
+    .hero-bg-grid {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1720px;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.5;
+    }
+
+    .hero-inner {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        width: 100%;
+        max-width: 68rem;
+        color: $white;
+        text-align: center;
+
+        @include media-breakpoint-down(md) { gap: 1.5rem; }
+
+        h1 {
+            color: $white;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+
+        .gradient {
+            background: linear-gradient(90deg, #{$hc-green-bright}, #{$hc-green-light});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: $font-size-lg;
+            line-height: 1.6;
+            max-width: 48rem;
+            margin: 0;
+
+            @include media-breakpoint-down(md) { font-size: $font-size-md; }
+        }
+    }
+
+    .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 4px 1.125rem;
+        gap: 0.5rem;
+        border-radius: 2.5rem;
+        background: #050d08;
+        position: relative;
+        z-index: 1;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        color: $hc-green-bright;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 2.5rem;
+            padding: 1px;
+            background: linear-gradient(90deg, #{$hc-green} 0%, #{$hc-green-light} 100%);
+            -webkit-mask: linear-gradient($white 0 0) content-box, linear-gradient($white 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -1;
+        }
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.78);
+        font-size: $font-size-xs;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-color: rgba(74, 222, 128, 0.55);
+            background: rgba(22, 163, 74, 0.14);
+            color: $white;
+
+            :global(.tag-icon) { color: $hc-green-light; }
+        }
+
+        :global(.tag-icon) {
+            width: 12px;
+            height: 12px;
+            color: $hc-green-bright;
+            flex-shrink: 0;
+        }
+    }
+
+    @property --hc-neon-angle {
+        syntax: '<angle>';
+        inherits: false;
+        initial-value: 0deg;
+    }
+
+    @keyframes hc-neon-trace {
+        to { --hc-neon-angle: 360deg; }
+    }
+
+    .exec-panel-wrapper {
+        --hc-neon-angle: 0deg;
+        border-radius: 10px;
+        background: conic-gradient(
+            from var(--hc-neon-angle),
+            rgba(22, 163, 74, 0.16) 0deg,
+            rgba(22, 163, 74, 0.16) 320deg,
+            #{$hc-green}             340deg,
+            $hc-platinum             350deg,
+            #{$hc-green}             360deg
+        );
+        padding: 1px;
+        box-shadow:
+            0 1.214px 10.321px 0 rgba(22, 163, 74, 0.28) inset,
+            -6.667px -7.143px 31.334px 3.333px rgba(22, 163, 74, 0.6);
+        width: 100%;
+        max-width: 640px;
+        animation: hc-neon-trace 5s linear infinite;
+    }
+
+    .exec-panel {
+        background: #061a0e;
+        border-radius: 9px;
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+        text-align: left;
+
+        &__header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(22, 163, 74, 0.08);
+            flex-wrap: wrap;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+        }
+
+        &__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: $hc-green-bright;
+            box-shadow: 0 0 8px $hc-green-bright;
+            flex-shrink: 0;
+        }
+
+        &__title {
+            color: $white;
+            font-weight: 600;
+        }
+
+        &__meta {
+            color: rgba(255, 255, 255, 0.45);
+            flex: 1;
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__duration {
+            color: $hc-green-light;
+            font-weight: 500;
+        }
+
+        &__body {
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        &__footer {
+            padding: 10px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(22, 163, 74, 0.06);
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            color: $hc-green-light;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exec-footer__sep { color: rgba(255, 255, 255, 0.25); }
+    }
+
+    .exec-row {
+        display: grid;
+        grid-template-columns: 20px minmax(130px, 1fr) minmax(150px, 1fr) minmax(90px, auto);
+        align-items: center;
+        gap: 1rem;
+        padding: 6px 8px;
+        border-radius: 4px;
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        transition: background 0.2s;
+
+        &:hover { background: rgba(22, 163, 74, 0.10); }
+
+        @include media-breakpoint-down(sm) {
+            grid-template-columns: 20px 1fr auto;
+        }
+
+        &__check {
+            color: $hc-green-bright;
+            font-weight: 700;
+        }
+
+        &__name {
+            color: $white;
+            font-weight: 500;
+        }
+
+        &__type {
+            color: rgba(255, 255, 255, 0.45);
+
+            @include media-breakpoint-down(sm) { display: none; }
+        }
+
+        &__result {
+            color: $hc-green-light;
+            text-align: right;
+            white-space: nowrap;
+        }
+    }
+
+    .hero-ctas {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .btn {
+            justify-content: center;
+
+            @include media-breakpoint-down(md) {
+                width: auto;
+                min-width: 200px;
+            }
+        }
+    }
+
+    // ── Hero logo strip ──────────────────────────────────────────────
+    // 3 logos, optically balanced per SVG aspect ratio.
+    .hero-logos {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+        padding-top: 2rem;
+        width: 100%;
+        max-width: 52rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+
+        &__label {
+            font-size: $font-size-xs;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        &__row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            align-items: center;
+            justify-items: center;
+            column-gap: 3rem;
+            row-gap: 1.5rem;
+            width: 100%;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: 1fr;
+                row-gap: 1.75rem;
+            }
+        }
+
+        &__item {
+            width: auto;
+            height: auto;
+            display: block;
+            filter: brightness(0) invert(1);
+            opacity: 0.85;
+            transition: opacity 0.2s;
+            object-fit: contain;
+            max-width: 100%;
+
+            &:hover { opacity: 1; }
+
+            // Unified optical sizing across all industry pages:
+            // text wordmarks 36px, compact icon+text 42px, stacked
+            // vertically icon+text 52–56px.
+            &--apotek   { max-height: 42px; max-width: 180px; }  // icon + text
+            &--brainlab { max-height: 36px; max-width: 180px; }  // text
+            &--sophia   { max-height: 36px; max-width: 200px; }  // text wide
+
+            @include media-breakpoint-down(md) {
+                &--apotek   { max-height: 48px; max-width: 200px; }
+                &--brainlab { max-height: 40px; max-width: 200px; }
+                &--sophia   { max-height: 40px; max-width: 220px; }
+            }
+        }
+    }
+
+    $stages: (
+        "trigger": ( "bg": #fff3d3, "border": #a87f4f, "label": #b87f00 ),
+        "ingest":  ( "bg": #cbe2ff, "border": #6b62f2, "label": #0069c6 ),
+        "process": ( "bg": #e3cffe, "border": #bb62f2, "label": #822bfd ),
+        "act":     ( "bg": #d3ffe0, "border": #4fa876, "label": #007336 )
+    );
+
+    .flow {
+        position: relative;
+        background: var(--ks-background-secondary);
+        padding: 5.5rem 1rem;
+        overflow: hidden;
+
+        .container-xxl {
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        &__title {
+            margin-bottom: 1rem;
+            color: var(--ks-content-primary);
+
+            .highlight {
+                background: linear-gradient(90deg, #{$hc-green}, #{$hc-green-bright});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.55;
+            max-width: 50rem;
+            margin: 0 auto 3rem;
+        }
+
+        &__footer {
+            margin-top: 2rem;
+            color: var(--ks-content-secondary);
+            font-weight: 500;
+        }
+
+        &__grid {
+            width: 100%;
+            padding: 2rem 1rem;
+            background-color: rgba(22, 163, 74, 0.06);
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='10' ry='10' stroke='%2316A34A' stroke-width='1' stroke-dasharray='8%2c 8' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            border-radius: 10px;
+        }
+
+        &__steps {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            width: 100%;
+
+            @include media-breakpoint-down(xl) {
+                display: grid;
+                grid-template-columns: repeat(2, auto);
+                row-gap: 80px;
+                column-gap: 40px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+                row-gap: 60px;
+                column-gap: 0;
+            }
+        }
+    }
+
+    .flow-block {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                max-width: 320px;
+                margin-top: 0.5rem;
+            }
+        }
+
+        &__label {
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            text-transform: uppercase;
+            font-weight: 700;
+
+            @each $id, $colors in $stages {
+                &.label-#{$id} { color: map-get($colors, "label"); }
+            }
+        }
+
+        &__card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 240px;
+            min-height: 340px;
+            padding: 16px;
+            border-radius: 8px;
+
+            @include media-breakpoint-down(lg) {
+                width: 220px;
+                min-height: 330px;
+            }
+
+            @include media-breakpoint-down(sm) {
+                width: 100%;
+                min-height: auto;
+                padding: 24px 16px;
+            }
+
+            @each $id, $colors in $stages {
+                &.card-#{$id} {
+                    background: map-get($colors, "bg");
+                    border: 1px solid map-get($colors, "border");
+                }
+            }
+        }
+
+        &__items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        &__item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #333638;
+            border-radius: 4px;
+            color: #333638;
+            font-family: $font-family-monospace;
+            font-size: $font-size-xs;
+            font-weight: 700;
+            box-shadow: 4px 4px 0 0 #EBEBEB, 4px 4px 0 1px #333638CC;
+        }
+    }
+
+    .flow-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+
+        .line {
+            background: #000000;
+            html.dark & { background: #ffffff; }
+        }
+
+        .head {
+            position: absolute;
+            color: #000000;
+            html.dark & { color: #ffffff; }
+        }
+
+        @include media-breakpoint-up(xl) {
+            width: 90px;
+
+            .line { width: 100%; height: 1.5px; }
+            .head {
+                right: -4px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+
+        @include media-breakpoint-between(sm, xl) {
+            &.arrow-0, &.arrow-1 {
+                position: absolute;
+                top: calc(100% + 4px);
+                left: 50%;
+                height: 72px;
+                width: 1.5px;
+                transform: translateX(-50%);
+
+                .line { width: 1.5px; height: 100%; }
+                .head {
+                    bottom: -5px;
+                    left: 50%;
+                    transform: translateX(-50%) rotate(90deg);
+                }
+            }
+            &.arrow-2 { display: none; }
+        }
+
+        @include media-breakpoint-down(sm) {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 50%;
+            height: 58px;
+            width: 1.5px;
+            transform: translateX(-50%);
+
+            .line { width: 1.5px; height: 100%; }
+            .head {
+                bottom: -6px;
+                left: 50%;
+                transform: translateX(-50%) rotate(90deg);
+            }
+        }
+    }
+
+    .workloads {
+        position: relative;
+        padding: 5rem 1rem;
+        background: var(--ks-background-body);
+        overflow: hidden;
+
+        > .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__head {
+            text-align: center;
+            max-width: 46rem;
+            margin: 0 auto 3rem;
+
+            h2 { color: var(--ks-content-primary); margin-bottom: 0.75rem; }
+            p { color: var(--ks-content-secondary); font-size: $font-size-lg; margin: 0; }
+        }
+
+        &__highlight {
+            background: linear-gradient(90deg, #{$hc-green}, #{$hc-green-bright});
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        &__group {
+            max-width: 72rem;
+            margin: 0 auto 3rem;
+
+            &:last-child { margin-bottom: 0; }
+        }
+
+        &__category {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: $hc-green-deep;
+            margin: 0 0 1rem;
+
+            :global(html.dark) & { color: $hc-green-bright; }
+        }
+
+        &__grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1fr;
+
+            @include media-breakpoint-up(md) { grid-template-columns: repeat(3, 1fr); }
+        }
+    }
+
+    .workload-card {
+        padding: 1.5rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+        box-shadow: 0 1px 3px 0 var(--ks-shadows-light);
+        transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+
+        &:hover {
+            border-color: $hc-green;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px 0 var(--ks-shadows-light);
+        }
+
+        &__icon {
+            font-size: 1.375rem;
+            color: $hc-green;
+            margin-bottom: 0.75rem;
+            width: 1.375rem;
+            height: 1.375rem;
+
+            :global(html.dark) & { color: $hc-green-bright; }
+        }
+
+        &__title {
+            font-size: $font-size-md;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            margin: 0 0 0.5rem;
+            line-height: 1.3;
+        }
+
+        &__desc {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+    }
+
+    .build {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                text-align: center;
+
+                .highlight { color: $hc-green; }
+
+                @include media-breakpoint-up(xl) { padding-inline: 0; }
+            }
+
+            .wrapper {
+                border: 1px solid var(--ks-border-primary);
+                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+                border-radius: 13px;
+
+                @include media-breakpoint-down(xl) { border-radius: 0; }
+
+                .inner {
+                    border-radius: $rem-1;
+                    background: var(--ks-background-primary-inverse);
+                    overflow: clip;
+
+                    @include media-breakpoint-down(xxl) { border-radius: 0; }
+
+                    .header {
+                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                        & > div {
+                            padding: 1.1875rem $rem-2;
+                            font-size: $font-size-md;
+                            color: var(--ks-content-secondary-inverse);
+                            text-align: center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            cursor: pointer;
+                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
+
+                            &.active {
+                                background: var(--ks-background-secondary-inverse);
+                                border-bottom: 1px solid var(--ks-border-active);
+                                color: var(--ks-content-primary-inverse);
+                                font-weight: 600;
+                            }
+                        }
+
+                        & .middle-part {
+                            border-left: 1px solid var(--ks-border-primary-inverse);
+                            border-right: 1px solid var(--ks-border-primary-inverse);
+                        }
+                    }
+
+                    .content {
+                        display: none;
+                        flex-direction: row;
+                        gap: $rem-2;
+                        padding: $rem-2;
+                        justify-content: center;
+
+                        &.active { display: flex; }
+
+                        @include media-breakpoint-down(xl) {
+                            flex-direction: column;
+                            align-items: center;
+                        }
+
+                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
+
+                        .panel {
+                            border-radius: 0.5rem;
+                            flex-shrink: 0;
+
+                            &.panel-1 {
+                                width: 39.4375rem;
+
+                                @include media-breakpoint-down(xl) { width: 100%; }
+
+                                :global(.code-card) {
+                                    border: 1px solid var(--ks-border-secondary-inverse);
+                                    background: var(--ks-background-input);
+                                    height: 100%;
+
+                                    :global(.code-inner) { transition: max-height 0.3s ease; }
+                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
+
+                                    &:global(:not(.is-expanded)) {
+                                        :global(.code-inner) { max-height: 27.9375rem !important; }
+                                    }
+                                }
+                            }
+
+                            &.panel-2 {
+                                position: relative;
+                                padding-top: $rem-2;
+                                color: var(--ks-content-primary-inverse);
+                                width: 27.5625rem;
+
+                                @include media-breakpoint-down(xl) {
+                                    width: 100%;
+                                    padding-top: 0;
+                                }
+
+                                p {
+                                    font-size: $font-size-lg;
+                                    margin-top: $rem-1;
+                                    margin-bottom: $rem-2;
+                                }
+
+                                .plugins {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    flex-wrap: wrap;
+
+                                    .plugin-icon {
+                                        width: 2.125rem;
+                                        height: 2.125rem;
+                                        padding: 0.375rem;
+                                        background: $white;
+                                        border: $block-border;
+                                        border-radius: $border-radius;
+                                    }
+                                }
+
+                                .goto {
+                                    position: absolute;
+                                    bottom: 0;
+                                    right: 0;
+                                    color: var(--ks-content-link-inverse);
+                                    font-weight: 600;
+
+                                    @include media-breakpoint-down(xl) {
+                                        position: relative;
+                                        margin-top: $rem-3;
+                                        float: right;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+    }
+
+    .enterprise {
+        padding: 140px 1rem 80px;
+        gap: 40px;
+        background: var(--ks-background-primary-inverse);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+
+        @include media-breakpoint-down(lg) { padding: 4rem 1rem 3rem; }
+
+        &__title {
+            color: #fff;
+            margin-bottom: 2.5rem;
+            text-align: center;
+
+            .highlight { color: $hc-green-bright; }
+        }
+
+        :global(.features-grid) {
+            box-shadow: 0 9px 36px 0 var(--ks-shadows-light-inverse);
+        }
+
+        :global(.feature-icon) {
+            color: $hc-green !important;
+        }
+        :global(.feature-title) {
+            color: #fff !important;
+        }
+        :global(.feature-desc) {
+            color: rgba(255, 255, 255, 0.72) !important;
+        }
+
+        .container-xxl { max-width: 1420px; }
+    }
+
+    .enterprise :global(.feature-card--cta) {
+        width: 100%;
+        padding: 2rem 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 1px 1px 0 0 var(--ks-border-secondary-inverse);
+
+        @include media-breakpoint-down(lg) { padding: 2rem; }
+
+        .btn { white-space: nowrap; }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
+                const target = tab && (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(".header-tab, .content")) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>

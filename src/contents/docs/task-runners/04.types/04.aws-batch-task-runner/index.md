@@ -1,20 +1,21 @@
 ---
-title: AWS Batch Task Runner – Run Tasks on ECS Fargate or EC2
+title: AWS Batch Task Runner – Run Tasks on ECS Fargate, EC2, or EKS
+h1: Execute Kestra Tasks as AWS Batch Jobs on ECS Fargate, EC2, or EKS
 sidebarTitle: AWS Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
-description: Execute Kestra tasks as AWS Batch jobs on ECS Fargate or EC2 for scalable and serverless compute.
+description: Execute Kestra tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS for scalable and serverless compute.
 ---
 
-Run tasks as AWS ECS Fargate or EC2 containers using AWS Batch.
+Run tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS compute environments.
 
 ## Offload tasks to AWS Batch
 
 To launch tasks on AWS Batch, you need to understand three key concepts:
-1. **Compute environment** — mandatory; it won’t be created by the task. The compute environment defines the infrastructure for your tasks and can be either ECS Fargate or EC2.
+1. **Compute environment** — mandatory; it won’t be created by the task. The compute environment defines the infrastructure for your tasks and can be ECS Fargate, EC2, or EKS.
 2. **Job queue** — optional; it will be created by the task if not specified. Creating a queue adds some latency to the script’s runtime.
-3. **Job** — created by the task runner; contains information about the image, commands, and resources to use. In AWS ECS terminology, it’s the task definition.
+3. **Job** — created by the task runner; contains information about the image, commands, and resources to use.
 
 :::alert{type="info"}
 To get started quickly, use [this blueprint](/blueprints/aws-batch-terraform-git) to provision all required resources for running containers on ECS Fargate.
@@ -22,10 +23,14 @@ To get started quickly, use [this blueprint](/blueprints/aws-batch-terraform-git
 
 ## How does the AWS Batch task runner work?
 
-In order to support `inputFiles`, `namespaceFiles`, and `outputFiles`, the AWS Batch task runner currently relies on [multi-container ECS jobs](https://docs.aws.amazon.com/batch/latest/userguide/multi-container-jobs.html) and creates three containers for each job:
+To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner creates sidecar containers that handle S3 file transfers alongside the main container. The approach differs by compute environment type.
+
+**ECS (Fargate and EC2):** Uses [multi-container ECS jobs](https://docs.aws.amazon.com/batch/latest/userguide/multi-container-jobs.html) with three containers per job:
 1. A _before_-container that uploads input files to S3.
 2. The _main_ container that fetches input files into the `{{ workingDir }}` directory and runs the task.
 3. An _after_-container that fetches output files using `outputFiles` to make them available from the Kestra UI for download and preview.
+
+**EKS:** Uses [EKS job definitions](https://docs.aws.amazon.com/batch/latest/userguide/jobs-eks.html) with a Kubernetes pod. Sidecar containers run as pod containers using the same S3-based file transfer pattern. The main container command is wrapped in `/bin/sh -c`, so the container image must include `/bin/sh`.
 
 Since the working directory of the container isn’t known in advance, you must define the working and output directories explicitly. For example, use `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
 
@@ -102,6 +107,10 @@ The `batch:CreateJobQueue`, `batch:UpdateJobQueue`, `batch:DeleteJobQueue`, and 
 
 Replace `<executionRoleArn>`, `<serviceRoleArn>`, `<taskRoleArn>`, and `<accountId>` with the values from your AWS account. If you use a different region, update the CloudWatch Logs ARN accordingly.
 
+:::alert{type="info"}
+The `iam:PassRole` entries for `<executionRoleArn>` and `<taskRoleArn>` apply to **ECS compute environments only**. For EKS, these roles are ignored — use `serviceAccountName` with [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) to grant IAM permissions to your EKS pods instead.
+:::
+
 ### S3 permissions when using `bucket`
 
 When you set the `bucket` property, the Kestra worker itself (not the ECS task container) uploads `inputFiles` and `namespaceFiles` to S3 before the job starts and downloads `outputFiles` after it finishes. It also deletes the working-directory prefix from the bucket on cleanup. The Kestra IAM principal therefore needs the following additional permissions when `bucket` is configured:
@@ -124,7 +133,7 @@ When you set the `bucket` property, the Kestra worker itself (not the ECS task c
 }
 ```
 
-The ECS task container separately needs S3 access via its `taskRoleArn` to read input files and write output files at runtime. Refer to the [Create the `ecsTaskRole` IAM role](#create-the-ecstaskrole-iam-role) section for the task-level policy.
+The ECS task container separately needs S3 access via its `taskRoleArn` to read input files and write output files at runtime. Refer to the [Create the `ecsTaskRole` IAM role](#create-the-ecstaskrole-iam-role) section for the task-level policy. For EKS compute environments, grant S3 access to the pod's IAM role via IRSA and set `serviceAccountName` on the task runner.
 
 ## Resource sizing
 
@@ -158,6 +167,8 @@ AWS Fargate enforces strict combinations of vCPU and memory. The task runner val
 
 For EC2 compute environments, the vCPU value must be a whole integer (e.g. `"1"`, `"2"`) and must be ≥ 1.
 
+For EKS compute environments, CPU is specified as a decimal (e.g. `"0.5"`, `"1"`) and memory as an integer in MiB. The Fargate combination restrictions above do not apply.
+
 ### Sidecar container resources
 
 When `inputFiles`, `namespaceFiles`, or `outputFiles` are used, the task runner adds sidecar containers that handle S3 file transfers. Default sidecar resources are:
@@ -186,6 +197,8 @@ taskRunner:
 :::alert{type="info"}
 Fargate always assigns a public IP address to each task. If your subnets do not have a route to the internet (no internet gateway or NAT gateway), the containers will not be able to pull Docker images from public registries.
 :::
+
+For EKS compute environments, sidecar resource limits are applied at the container level rather than the pod level, so the task-level resource subtraction described above does not apply.
 
 ## How to run tasks on AWS ECS Fargate
 
@@ -248,8 +261,43 @@ tasks:
 
 
 :::alert{type="info"}
-For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-aws/runner/io.kestra.plugin.ee.aws.runner.Batch) or view them in the built-in Code Editor in the Kestra UI.
+For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-ee-aws/aws-batch-task-runner/io.kestra.plugin.ee.aws.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
 :::
+
+## How to run tasks on AWS Batch with EKS
+
+The example below shows how to run a shell command using an EKS compute environment. The container image must include `/bin/sh`. Use `serviceAccountName` with [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) to grant the pod access to AWS services like S3 — `taskRoleArn` and `executionRoleArn` are ignored for EKS.
+
+```yaml
+id: run_container_on_eks
+namespace: company.team
+
+variables:
+  region: us-east-1
+  compute_environment_arn: arn:aws:batch:us-east-1:123456789:compute-environment/kestraEksEnvironment
+  job_queue_arn: arn:aws:batch:us-east-1:123456789:job-queue/kestraEksQueue
+
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: amazonlinux:2
+    taskRunner:
+      type: io.kestra.plugin.ee.aws.runner.Batch
+      region: "{{ vars.region }}"
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+      computeEnvironmentArn: "{{ vars.compute_environment_arn }}"
+      jobQueueArn: "{{ vars.job_queue_arn }}"
+      serviceAccountName: kestra-sa
+    commands:
+      - echo "Hello from AWS Batch on EKS"
+```
+
+:::alert{type="warning"}
+CloudWatch log streaming for EKS requires the EKS cluster to have CloudWatch logging configured, for example via [Fluent Bit](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html) or the CloudWatch agent. Without cluster-level logging, task logs will not appear in Kestra.
+:::
+
+To set up an EKS cluster for use with AWS Batch, follow the [AWS getting started with AWS Batch on Amazon EKS](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html) guide.
 
 ## Full step-by-step guide: setting up AWS Batch from scratch
 
@@ -534,6 +582,16 @@ The task runner exposes several optional properties for tuning behavior and auth
 |---|---|---|
 | `resume` | `true` | When `true`, if the Kestra worker is restarted while a job is running, it will reconnect to the existing job rather than submitting a new one. Requires a `jobQueueArn` to be configured. |
 | `delete` | `true` | When `true`, the job definition, any auto-created job queue, and the S3 working-directory prefix are deleted after the job completes. Set to `false` to retain resources for debugging — note that a task retry may then reconnect to the previous (failed) job. |
+
+### EKS: service account and IRSA
+
+For EKS compute environments, use `serviceAccountName` to attach a Kubernetes service account to the pod. Annotate the service account with an IAM role ARN to enable [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) — this is the recommended way to grant pods access to AWS services such as S3.
+
+| Property | Description |
+|---|---|
+| `serviceAccountName` | Name of the Kubernetes service account to attach to the EKS pod. Use with IRSA for IAM authorization. Ignored for ECS compute environments. |
+
+`taskRoleArn` and `executionRoleArn` are ignored when the compute environment is EKS.
 
 ### STS role assumption
 

@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
-    medium: https://annageller.medium.com/
+  medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.jpg
 ---

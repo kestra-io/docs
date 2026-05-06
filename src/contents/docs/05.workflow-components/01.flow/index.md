@@ -1,6 +1,6 @@
 ---
 title: Flows in Kestra – Define Orchestration Units
-h1: Understand Flows: The Core Units of Kestra Orchestration
+h1: "Understand Flows: The Core Units of Kestra Orchestration"
 description: Understand Kestra Flows, the fundamental units of orchestration. Learn to define tasks, inputs, outputs, and logic to automate your business processes.
 sidebarTitle: Flow
 icon: /src/contents/docs/icons/flow.svg
@@ -8,8 +8,6 @@ docId: flows
 ---
 
 Flow is a container for tasks and their orchestration logic.
-
-## Flows – define orchestration units
 
 A Flow is the fundamental unit of orchestration in Kestra. It defines a set of tasks, their execution order, inputs, outputs, and orchestration logic.
 
@@ -173,7 +171,6 @@ Flows have a number of variable expressions giving you information about them dy
 | `{{ flow.tenantId }}`         | The identifier of the tenant (EE only).                                                                                           |
 | `{{ flow.revision }}`         | The revision of the flow.                                                                                                         |
 
-
 ## Listeners (deprecated)
 
 Listeners are special tasks that can listen to the current flow and launch tasks *outside the flow*, meaning launch tasks that are not part of the flow.
@@ -212,4 +209,5 @@ For more information about the Kestra server CLI, check the [Server CLI Referenc
 
 ### Can I sync a local flows directory to be continuously loaded into Kestra?
 
-At the time of writing, there is no syncing of a flows directory to Kestra. However, we are aware of that need and we are working on a solution. You can follow up in [this GitHub issue](https://github.com/kestra-io/kestra/issues/2403).
+Yes. See [Synchronize Local Flows](../../15.how-to-guides/local-flow-sync/index.md) for syncing a local directory, or [Sync Flows from a Git Repository](../../15.how-to-guides/syncflows/index.md) for Git-based workflows.
+

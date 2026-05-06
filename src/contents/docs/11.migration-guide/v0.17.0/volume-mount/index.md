@@ -1,5 +1,7 @@
 ---
-title: Volume Mount
+title: "Volume Mount Migration in Kestra 0.17.0: Plugin Config"
+h1: Migrate from volume-enabled to Plugin Configuration in 0.17.0
+sidebarTitle: Volume Mount → Plugin Config
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.17.0
 description: Guide to migrating from the deprecated volume-enabled property to plugin configuration in Kestra 0.17.0.
@@ -10,15 +12,15 @@ description: Guide to migrating from the deprecated volume-enabled property to p
 
 How to migrate `volume-enabled` to the plugin configuration.
 
-The docker volume mount, by setting the property `kestra.tasks.scripts.docker.volume-enabled` to `true`, has been deprecated since 0.17.0. It is now recommended to use the plugin configuration `volume-enabled` for the Docker runner plugin.
+The docker volume mount, by setting the property `kestra.tasks.scripts.docker.volume-enabled` to `true`, has been deprecated since 0.17.0. Use the plugin configuration `volume-enabled` for the Docker runner plugin instead.
 
 This change is implemented in a non-breaking way, so you don't need to immediately change the way you use the docker volume mount. In case you use this older method for mounting the volume, you will receive the following deprecation warning:
 
 :::alert{type="warning"}
-The `kestra.tasks.scripts.docker.volume-enabled` is deprecated, please use the plugin configuration `volume-enabled` instead.
+The `kestra.tasks.scripts.docker.volume-enabled` is deprecated. Use the plugin configuration `volume-enabled` instead.
 :::
 
-It is recommended to make the following change in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) for mounting the volume:
+Make the following change in the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) for mounting the volume:
 
 ```yaml
  kestra:

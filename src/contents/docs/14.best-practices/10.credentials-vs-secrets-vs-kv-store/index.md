@@ -1,5 +1,6 @@
 ---
 title: Choosing Where to Store Sensitive and Shared Values
+h1: "Credentials, Secrets, or KV Store: Pick the Right Option"
 sidebarTitle: Sensitive and Shared Values
 icon: /src/contents/docs/icons/best-practices.svg
 description: Learn how to choose between Kestra credentials, secrets, and the KV Store for authentication, sensitive values, and runtime state.

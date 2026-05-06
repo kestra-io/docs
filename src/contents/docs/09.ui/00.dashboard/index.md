@@ -1,13 +1,12 @@
 ---
-title: Dashboards in Kestra UI – Monitor Executions and Metrics
+title: "Dashboards in Kestra UI: Monitor Executions"
+h1: Monitor Workflows with Kestra Dashboards
 description: Monitor workflows with Kestra Dashboards. Visualize execution metrics, create custom charts, and track performance indicators in the UI.
 sidebarTitle: Dashboards
 icon: /src/contents/docs/icons/ui.svg
 ---
 
 Get insights into your workflows with Dashboards.
-
-## Monitor Kestra executions with dashboards
 
 The first time you access the main **Dashboard**, you'll see the **Welcome Page** and you can click **Create my first flow** to launch a Guided Tour.
 
@@ -19,7 +18,7 @@ The Dashboard page displays both the **default dashboard** and any **custom dash
 
 ![Dashboard Main Page](./main_page.png)
 
-Dashboards provide a load of useful data right at your finger tips, including:
+Dashboards display the following data:
 - Executions over time
 - Execution Status for Today, Yesterday as well as Last 30 days
 - Executions per namespace
@@ -33,7 +32,7 @@ Dashboards provide a load of useful data right at your finger tips, including:
 Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra's home screen, you can create a custom dashboard with charts that answer specific questions and track key metrics. Each chart's configuration can be modified individually using the pencil icon in the dashboard view.
 
 :::alert{type="info"}
-Check out the [No-Code Dashboards guide](../../no-code/02.no-code-dashboards/index.md) to know more about building Dashboards without touching YAML.
+See the [No-Code Dashboards guide](../../no-code/02.no-code-dashboards/index.md) for building dashboards without writing YAML.
 :::
 
 ### Chart types

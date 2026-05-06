@@ -1,5 +1,7 @@
 ---
 title: Run Julia Inside Your Flows
+h1: Execute Julia Scripts Directly in Kestra
+description: Execute Julia scripts in Kestra for scientific computing and data analysis. Use Docker to manage Julia dependencies and pass results between tasks.
 icon: /src/contents/docs/icons/julia.svg
 stage: Getting Started
 topics:
@@ -160,7 +162,7 @@ _This example works for both `io.kestra.plugin.scripts.julia.Script` and `io.kes
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Julia script. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Julia script. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: julia_metrics

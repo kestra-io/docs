@@ -1,10 +1,11 @@
 ---
 title: Run Perl Inside Your Flows
+h1: Execute Perl Scripts in Kestra with Docker
 icon: /src/contents/docs/icons/perl.svg
 stage: Getting Started
 topics:
   - Scripting
-description: Execute Perl scripts directly within your Kestra flows using Docker to process data or run automation tasks.
+description: Execute Perl scripts inside Kestra workflows. Run automation and text-processing tasks with Perl, using Docker containers for clean dependency isolation.
 ---
 
 Run Perl code directly in your flows and generate outputs.
@@ -164,7 +165,7 @@ tasks:
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Perl code. We use the same pattern for defining metrics as we had used for outputs `::{}::`. In this example, we will demonstrate both the counter and timer metrics.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your Perl code. Metrics use the same `::{}::` pattern as outputs. This example demonstrates both the counter and timer metrics.
 
 ```yaml
 id: perl_metrics

@@ -1,6 +1,7 @@
 ---
-title: System Flows in Kestra – Automate Platform Maintenance
-description: Automate maintenance workflows with System Flows.
+title: "System Flows in Kestra: Automate Maintenance"
+h1: Automate Platform Maintenance with System Flows
+description: Automate platform maintenance with System Flows in Kestra. Schedule cleanup, monitoring, and admin tasks that run on a fixed cadence automatically.
 sidebarTitle: System Flows
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
@@ -12,10 +13,6 @@ Automate maintenance workflows with System Flows.
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/o05hcKNI_7I?si=sRuuMei3YJb4f7nC" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
-
-## System Flows – automate platform maintenance
 
 System Flows periodically execute background operations that keep your platform running but which you would generally prefer to keep out of sight. These flows automate maintenance workflows, such as:
 

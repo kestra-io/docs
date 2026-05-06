@@ -1,5 +1,6 @@
 ---
 title: Process Task Runner – Run Tasks as Local Processes
+h1: Run Tasks Locally Without Container Overhead
 sidebarTitle: Process Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -30,7 +31,7 @@ tasks:
       - echo "Hello World!"
 ```
 
-The [Process task runner](/plugins/core/task-runners/runner/io.kestra.plugin.core.runner.process) has no additional configuration properties — only the `type` is required.
+The [Process task runner](/plugins/core/runner/io.kestra.plugin.core.runner.process) has no additional configuration properties — only the `type` is required.
 
 :::alert{type="info"}
 Script tasks default to the Docker task runner if no `taskRunner` is specified. Set `taskRunner.type` to `io.kestra.plugin.core.runner.Process` explicitly when you want local process execution.
@@ -178,5 +179,5 @@ tasks:
 ```
 
 :::alert{type="info"}
-Note that Worker Groups are an Enterprise Edition feature. To try them out, please [reach out](/demo).
+Worker Groups are an Enterprise Edition feature. To try them out, please [reach out](/demo).
 :::

@@ -1,5 +1,6 @@
 ---
-title: Flowable Tasks in Kestra – Control Orchestration Logic
+title: "Flowable Tasks in Kestra: Control Flow Logic"
+h1: Control Execution Flow with Sequential, Parallel, and Loop Tasks
 description: Deep dive into Kestra Flowable Tasks. Learn to control execution flow with sequential, parallel, switch, if/else, loops, and error handling constructs.
 sidebarTitle: Flowable Tasks
 icon: /src/contents/docs/icons/flow.svg
@@ -171,8 +172,6 @@ In this execution, you can access:
 - The iteration value i.e., the index of a loop (the loop index starts at 0) using the syntax `{{ taskrun.iteration }}`
 - The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
 
----
-
 This example shows how to run tasks in parallel for each value in the list. All child tasks of the parallel task run in parallel. However, due to the `concurrencyLimit` property set to 2, only two parallel task groups run at any given time.
 
 ```yaml
@@ -275,8 +274,6 @@ Read more about performance optimization in our [best practices guides](../../..
   <iframe src="https://www.youtube.com/embed/mkZcdbgxSWA?si=DXGrFU6m6XEOtZSN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 ### LoopUntil
 
 `LoopUntil` runs a group of tasks repeatedly until a boolean condition evaluates to `true`. After each iteration, the task evaluates the `condition` expression; if it evaluates to `false`, the block is executed again after the configured interval.
@@ -310,8 +307,6 @@ tasks:
 ```
 
 For more details, refer to the [LoopUntil Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loopuntil).
-
----
 
 ### AllowFailure
 
@@ -444,7 +439,7 @@ For more details, refer to the [Subflow Task documentation](/plugins/core/flow/i
 
 By default, Kestra launches each task in a new working directory, possibly on different workers if multiple ones exist.
 
-The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. In order to share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
+The example below runs all tasks nested under the `WorkingDirectory` task sequentially in the same directory, allowing downstream tasks to reuse output files from previous ones. To share a working directory, all tasks nested under the `WorkingDirectory` task are launched on the same worker.
 
 This task can be particularly useful for compute-intensive file system operations.
 

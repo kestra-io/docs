@@ -13,16 +13,24 @@ export type CardPlugin = {
     elementCounts?: number
     blueprints?: number
     isEnterprise?: boolean
+    classes?: string
 }
 
 export function prunePluginsForCards(
-    plugins: Plugin[], 
+    plugins: Plugin[],
     pluginsData: Record<string, any>
 ): CardPlugin[] {
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
         const info = pluginsData[key] ?? {}
         const groupInfo = pluginsData[p.group]
+
+        const classes = Object.entries(p)
+            .filter(([k, v]) => isEntryAPluginElementPredicate(k, v))
+            .flatMap(([, v]) => (v as PluginElement[]).map((el) => el.cls))
+            .join(" ")
+            .replace(/io\.kestra\.plugin\./g, "")
+
         return {
             name: p.name,
             title: info.title ?? p.title ?? p.name,
@@ -35,6 +43,7 @@ export function prunePluginsForCards(
             elementCounts: info.elementCounts,
             blueprints: info.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
+            classes,
         }
     })
 }

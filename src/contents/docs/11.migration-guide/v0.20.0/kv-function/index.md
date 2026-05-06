@@ -1,5 +1,7 @@
 ---
-title: Retrieving KV pairs from other namespaces
+title: "KV Namespace Access Change in Kestra 0.20.0: Permissions"
+h1: Ensure Namespace Access Permissions When Retrieving KV Pairs
+sidebarTitle: KV Cross-Namespace Permissions
 description: KV Function security update in Kestra 0.20.0. Ensure proper namespace access permissions when retrieving Key-Value pairs from different namespaces.
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.20.0
@@ -11,4 +13,4 @@ editions: ["EE"]
 
 Migrating usage of KV functions
 
-The `kv()` Pebble function was missing a check for allowed namespace in case a namespace is passed to the function e.g. `{{ kv('MY_KEY', 'differentNamespace') }}`. This check has been added in 0.20 release. If you use the `kv()` function to get a KV from a different namespace in the Enterprise Edition, make sure to allow access to this namespace (this happens by default unless explicitly restricted).
+The `kv()` Pebble function was missing a check for allowed namespace in case a namespace is passed to the function e.g. `{{ kv('MY_KEY', 'differentNamespace') }}`. This check has been added in 0.20 release. If you use the `kv()` function to get a KV from a different namespace in the Enterprise Edition, ensure access to that namespace is allowed (this happens by default unless explicitly restricted).

@@ -8,8 +8,6 @@ icon: /src/contents/docs/icons/flow.svg
 
 Schedule flows using cron expressions.
 
-## Schedule trigger – cron-based scheduling
-
 The Schedule trigger generates new executions on a regular cadence based on a Cron expression or custom scheduling conditions.
 
 ```yaml

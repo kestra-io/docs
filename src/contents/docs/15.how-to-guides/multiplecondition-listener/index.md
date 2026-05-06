@@ -1,5 +1,7 @@
 ---
-title: Use the MultipleCondition Listener
+title: "MultipleCondition Listener in Kestra: How It Works"
+h1: Trigger Flows When Multiple Conditions Are Met
+description: Configure MultipleCondition triggers in Kestra to start flows only when multiple conditions are met for precise event-driven orchestration.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
@@ -117,7 +119,7 @@ triggers:
 1. Tasks Section:
 
 
-    - The task `only_listener` simply outputs a static value (`children`) when the trigger conditions are met. This part can be customized to perform more complex tasks after the conditions are satisfied.
+    - The task `only_listener` outputs a static value (`children`) when the trigger conditions are met. This part can be customized to perform more complex tasks after the conditions are satisfied.
 
 2. Triggers Section:
 
@@ -144,7 +146,7 @@ When both multiplecondition_flow_a and multiplecondition_flow_b succeed within 2
     If the flow doesn't trigger, ensure both `multiplecondition_flow_a` and `multiplecondition_flow_b` have completed successfully within the time window.
 
   2. **Incorrect Output Reference**:
-    Double-check the flow IDs and namespaces to make sure the trigger is referencing the correct flows.
+    Verify the flow IDs and namespaces to ensure the trigger is referencing the correct flows.
 
 ## Conclusion
 

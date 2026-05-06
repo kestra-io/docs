@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
-    medium: https://annageller.medium.com/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.jpg
@@ -46,8 +46,6 @@ Here are some examples of what you can do with Apps:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## Use Cases for Apps
 

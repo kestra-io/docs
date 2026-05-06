@@ -6,7 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
-    medium: https://annageller.medium.com/
+  medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
 ---
@@ -169,8 +169,8 @@ Realtime triggers listen to events in real time and start a workflow execution a
 - a new message is published to an [AWS SQS queue](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
 - a new message is published to [Google Pub/Sub](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
 - a new message is published to [Azure Event Hubs](/plugins/plugin-azure/eventhubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
-- a new message is published to a [NATS subject](/plugins/plugin-nats/io.kestra.plugin.nats.realtimetrigger)
-- a new item is added to a [Redis list](/plugins/plugin-redis/io.kestra.plugin.redis.list.realtimetrigger)
+- a new message is published to a [NATS subject](/plugins/plugin-nats/nats-core/io.kestra.plugin.nats.core.realtimetrigger)
+- a new item is added to a [Redis list](/plugins/plugin-redis/redis-list/io.kestra.plugin.redis.list.realtimetrigger)
 - a new row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
 
 
@@ -179,8 +179,6 @@ With this new feature, you can orchestrate business-critical processes and micro
 <div class="video-container">
     <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## Human in the loop with Pause task
 

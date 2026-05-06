@@ -1,5 +1,6 @@
 ---
-title: Deploy Kestra with Podman Compose – Postgres Backend
+title: "Deploy with Podman Compose in Kestra: Postgres"
+h1: Rootless Container Deployment with Podman Compose
 sidebarTitle: Podman Compose
 icon: /src/contents/docs/icons/podman.svg
 description: Deploy Kestra using Podman Compose with PostgreSQL, offering a rootless container alternative to Docker.
@@ -69,7 +70,7 @@ Note: Check if you have an existing podman VM on your local machine by navigatin
 
 Open the URL `http://localhost:8080` in your browser to launch the UI.
 
-### Adjusting the Configuration
+### Adjusting the configuration
 
 The command above starts a *standalone* server (all architecture components in one JVM).
 
@@ -87,7 +88,7 @@ If you want to use a configuration file instead of the `KESTRA_CONFIGURATION` en
 
 First, create a configuration file, for example named `application.yaml`, and populate with the content of the `KESTRA_CONFIGURATION` environment variable defined in the `docker-compose.yml` file.
 
-Next, update `kestra` service in the `docker-compose.yml` file to mount this file into the container and make Kestra using it via the `--config` option:
+Next, update `kestra` service in the `docker-compose.yml` file to mount this file into the container and to use the `--config` option:
 
 ```yaml
 ## [...]

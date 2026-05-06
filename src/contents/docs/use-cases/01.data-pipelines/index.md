@@ -1,7 +1,8 @@
 ---
-title: Orchestrate Data Pipelines
+title: Orchestrate Data Pipelines in Kestra
+h1: Schedule, Backfill & Scale Data Pipelines Declaratively
 sidebarTitle: Data Pipelines
-description: Schedule, backfill, automate, and scale data pipelines declaratively
+description: Schedule, backfill, and scale data pipelines declaratively with Kestra. Orchestrate ETL, ELT, and analytics workflows from ingestion to delivery.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 

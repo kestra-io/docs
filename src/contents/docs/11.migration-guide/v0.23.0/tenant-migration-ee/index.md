@@ -1,5 +1,7 @@
 ---
-title: Enterprise Migration Guide from defaultTenant to Multitenancy
+title: "EE Migration: defaultTenant to Mandatory Multitenancy"
+h1: Enterprise Migration from defaultTenant to Mandatory Multitenancy
+sidebarTitle: "EE: Mandatory Multitenancy"
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 0.23.0
 editions: ["EE"]
@@ -25,13 +27,13 @@ This property is used to route non-tenant-specific API calls to a fallback tenan
 
 ### Compatibility Layer
 
-While in OSS we transform URI to a different one including the main `tenantId` directly into the API routes, in EE we inject the fallback tenant into the request header instead without rerouting the API endpoints themselves. Thus, we won’t map `/api/v1/...` to `/api/v1/fallbackTenant/...`, but instead we only inject tenantId into the header. Note that this manual tenant header injection will be removed in a future version.
+In OSS, URIs are transformed to include the main `tenantId` directly in the API routes. In EE, the fallback tenant is injected into the request header without rerouting the endpoints — `/api/v1/...` is not mapped to `/api/v1/fallbackTenant/...`. This manual tenant header injection will be removed in a future version.
 
 ### Migration Script
 :::alert{type="warning"}
 Before running the following migration scripts, you must completely shut down all server components of your Kestra application. Running these scripts while the application is active may result in data corruption or migration failures.
 :::
-The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration. Before running the migrate script, we recommend to do a complete database dump to preserve a restore point in case of any issues during the process.
+The following command will migrate the `defaultTenant` to a newly created tenant. Thus, you need to provide both the `--tenant-id` and the `--tenant-name` (both are required). Use `--dry-run` to simulate the migration. Before running the migrate script, do a complete database dump to preserve a restore point in case of any issues during the process.
 
 ```shell
 kestra migrate default-tenant \
@@ -68,13 +70,13 @@ Migrating some tables can take a long time, you can use `--excludes=table1,table
 
 ### Kafka Queue Handling
 
-If your queue is Kafka, queues will be recreated after migration. You don’t need to do anything manually — we recreate the queue automatically for you.
+If your queue is Kafka, queues will be recreated after migration. No manual action is needed — Kestra recreates the queue automatically.
 
-To start fresh, we strongly recommend using a new Kafka cluster for your queues.
+To start fresh, using a new Kafka cluster for your queues is strongly recommended.
 
 ### Elasticsearch repository handling
 
-If your repository is Elasticsearch, it probably means your instance stores a large amount of execution data so we strongly recommend to exclude executions, logs, and metrics from the migration and update them manually.
+If your repository is Elasticsearch, your instance likely stores a large amount of execution data. Exclude executions, logs, and metrics from the migration and update them manually.
 
 ```shell
 kestra migrate default-tenant \
@@ -84,7 +86,7 @@ kestra migrate default-tenant \
     [--dry-run]
 ```
 
-After the migration, you can use the following Kibana style query to migrate asynchronously the excluded indices, note that it can take a long time.
+After the migration, use the following Kibana-style query to migrate the excluded indices asynchronously. This can take a long time.
 
 ```
 POST /kestra_executions/_update_by_query?wait_for_completion=false
@@ -126,7 +128,7 @@ The provided commands use a list of existing tenant names (`main`, `tenant1`, `t
 
 ## Local storage
 
-If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, and replace those names with your existing tenant IDs. Also make sure to replace main in `base-path/main/` with your target tenant ID.
+If you use both `defaultTenant` and specific tenants, you need to specify all existing tenant ID in the list here `[[ "$bn" == "main" || "$bn" == "tenant1" || "$bn" == "tenant2" ]]`, and replace those names with your existing tenant IDs. Also replace `main` in `base-path/main/` with your target tenant ID.
 
 ```bash
 #!/bin/bash
@@ -153,11 +155,9 @@ done
 - Your `base-path` is configured under the configuration section `kestra.storage.local.base-path`.
 - Replace `main` with the appropriate tenant ID.
 
----
-
 ## MinIO Storage
 
-For MinIO, we recommend keeping the `undefined` option due to the different handling of storage paths.
+For MinIO, keep the `undefined` option due to the different handling of storage paths.
 
 ### Enterprise Users
 
@@ -172,8 +172,6 @@ done
 ```
 
 - Replace `mybucket` with the bucket name from `kestra.storage.minio.bucket`.
-
----
 
 ## Azure Blob Storage
 
@@ -270,8 +268,6 @@ echo "Migration finished!"
 
 - `BUCKET_NAME` is configured under `kestra.storage.azure.container`.
 
----
-
 ## S3 Storage
 
 ```bash
@@ -310,8 +306,6 @@ echo "Tenant migration finished!"
 ```
 
 - `BUCKET` is configured under `kestra.storage.s3.bucket`.
-
----
 
 ## GCS storage
 

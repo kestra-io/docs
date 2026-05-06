@@ -1,5 +1,6 @@
 ---
 title: Trigger a Flow on a Prometheus Alert
+h1: Auto-Trigger Kestra Flows from Prometheus Alerts
 icon: /src/contents/docs/icons/prometheus.svg
 stage: Intermediate
 topics:
@@ -25,7 +26,7 @@ Kestra natively supports integration with Prometheus for metric scraping and vis
 
 Follow these steps based on the [Kestra Monitoring Guide](../monitoring/index.md).
 
-Once Kestra is up and running, you can check out the available metrics by going to `http://localhost:8081/prometheus` on your browser.
+Once Kestra is up and running, view the available metrics at `http://localhost:8081/prometheus` in your browser.
 
 ## Configure Prometheus to Scrape Kestra
 
@@ -53,7 +54,7 @@ If you're running everything with Docker on the same machine, you will need to c
 
 ## Create a Prometheus Alert and Webhook Receiver
 
-To trigger a Kestra flow on a Prometheus alert, we need to configure [Prometheus Alertmanager](https://github.com/prometheus/alertmanager) to send a webhook to Kestra. You can [download Alertmanager and Prometheus](https://prometheus.io/download/) from the official site as well as run the services in a Docker Compose file, refer below for an example:
+To trigger a Kestra flow on a Prometheus alert, configure [Prometheus Alertmanager](https://github.com/prometheus/alertmanager) to send a webhook to Kestra. You can [download Alertmanager and Prometheus](https://prometheus.io/download/) from the official site as well as run the services in a Docker Compose file, refer below for an example:
 
 ```yaml
 services:
@@ -154,7 +155,7 @@ rule_files:
 ```
 
 :::alert{type="info"}
-Make sure that your `groups.name` and `rule_files` have the same name so that Alertmanager correctly connects the alerts.
+Ensure that `groups.name` and `rule_files` have the same name so that Alertmanager correctly connects the alerts.
 :::
 
 To check that your rules are picked up by Prometheus, go to `http://localhost:9090/rules`.
@@ -221,4 +222,4 @@ Once the flow is written, you can verify the trigger is active from the **Flows 
 
 ---
 
-For more on the Webhook trigger, see the [Kestra Webhook Trigger Docs](https://kestra.io/docs/workflow-components/triggers/webhook-trigger). Again, be sure to check out the [full list of metrics Kestra exposes to Prometheus](../../10.administrator-guide/prometheus-metrics/index.md).
+For more on the Webhook trigger, see the [Kestra Webhook Trigger Docs](https://kestra.io/docs/workflow-components/triggers/webhook-trigger). Again, see the [full list of metrics Kestra exposes to Prometheus](../../10.administrator-guide/prometheus-metrics/index.md).

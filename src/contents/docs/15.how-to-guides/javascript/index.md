@@ -1,5 +1,7 @@
 ---
 title: Run JavaScript Inside Your Flows
+h1: Execute JavaScript Scripts in Kestra Workflows
+description: Run JavaScript and Node.js scripts in Kestra. Install npm packages at runtime and pass outputs between tasks using inputs and variables.
 icon: /src/contents/docs/icons/nodejs.svg
 stage: Getting Started
 topics:
@@ -13,8 +15,6 @@ You can execute NodeJS code in a flow by either writing your NodeJS inline or by
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/nACf-2mnonk?si=OzJP7gtN-AbGrkr_" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 In this example, the flow will install the required npm packages, make an API request to fetch data and use the NodeJS Kestra Library to generate outputs and metrics using this data.
 
@@ -92,7 +92,7 @@ You can read more about the Commands type in the [Plugin documentation](/plugins
 
 If you want to get a variable or file from your JavaScript code, you can use an [output](../../05.workflow-components/06.outputs/index.md).
 
-You'll need to install the [`@kestra-io/libs` npm package](https://npm.io/package/@kestra-io/libs) in order to pass your variables to Kestra.
+To pass your variables to Kestra, install the [`@kestra-io/libs` npm package](https://npm.io/package/@kestra-io/libs).
 
 ```bash
 npm install @kestra-io/libs
@@ -209,7 +209,7 @@ _This example works for both `io.kestra.plugin.scripts.node.Script` and `io.kest
 
 ## Handling Metrics
 
-You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. You don't need to modify your flow in order for this to work.
+You can also get [metrics](../../16.scripts/06.outputs-metrics/index.md#outputs-and-metrics-in-script-and-commands-tasks) from your NodeJS code. In this example, we can use the `Date` class to time the execution time of the function and then pass this to Kestra so it can be viewed in the Metrics tab. No flow changes are needed.
 
 ```javascript
 const Kestra = require('@kestra-io/libs');
