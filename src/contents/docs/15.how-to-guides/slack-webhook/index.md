@@ -1,5 +1,6 @@
 ---
-title: Use the Slack Events API with Kestra
+title: "Slack Events API with Kestra: Trigger Flows"
+h1: Trigger Kestra Flows Automatically from Slack Events
 icon: /src/contents/docs/icons/slack.svg
 stage: Getting Started
 topics:
@@ -61,7 +62,7 @@ triggers:
 ```
 
 :::alert{type="warning"}
-Note that the **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../../06.concepts/04.secret/index.md) to store it securely.
+The **webhook key** cannot contain any **special characters** — only letters and digits. Also, consider it as a secret that you should keep safe. You can use Kestra's [Secrets](../../06.concepts/04.secret/index.md) to store it securely.
 :::
 
 Now, the only part left is to create a simple app that will listen to Slack events and will forward them to your Kestra flow via the Webhook trigger.
@@ -88,7 +89,7 @@ modal token set --token-id ak-zzzzzzzzz --token-secret as-zzzzzzzzz
 ```
 
 
-Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](../../06.concepts/04.secret/index.md) to store those securely. Also, make sure to replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
+Now, create the following flow in Kestra and replace the token ID and token secret with the ones you got from Modal. You can use Kestra's [Secrets](../../06.concepts/04.secret/index.md) to store those securely. Also, replace `your_kestra_host` with your Kestra host URL in the `slack.py` file.
 
 
 ```yaml
@@ -173,7 +174,7 @@ Once you execute that flow, you will see the endpoint to your app in the logs:
 
 ![Modal app deployment endpoint shown in Kestra logs](./img_9.png)
 
-Go back to Slack and add the URL to the "Request URL" field in the "Event Subscriptions" section. Make sure to add `slack/events` at the end of the URL, e.g.:
+Go back to Slack and add the URL to the "Request URL" field in the "Event Subscriptions" section. Add `slack/events` at the end of the URL, e.g.:
 
 ```bash
 https://anna-geller--slack-app-fastapi-app.modal.run/slack/events
@@ -261,7 +262,7 @@ triggers:
 ```
 
 :::alert{type="info"}
-Note that the `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property, depending on the task's requirements.
+The `SlackIncomingWebhook` task also has the `messageText` property that can be used instead of the `payload` property, depending on the task's requirements.
 :::
 
 And here is the result:
@@ -338,7 +339,7 @@ This will expose your local server to the internet. You should see a similar URL
 https://0913-31-18-152-123.ngrok-free.app
 ```
 
-Go back to your Slack app and add the URL to the "Request URL" field in the "Event Subscriptions" section. Make sure to add `slack/events` at the end of the URL, e.g.:
+Go back to your Slack app and add the URL to the "Request URL" field in the "Event Subscriptions" section. Add `slack/events` at the end of the URL, e.g.:
 
 ```bash
 https://0913-31-18-152-123.ngrok-free.app/slack/events

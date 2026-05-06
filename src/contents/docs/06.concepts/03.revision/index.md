@@ -1,19 +1,16 @@
 ---
-title: Flow Revisions in Kestra – Versioning and Rollbacks
-description: Manage versions of flows.
+title: "Flow Revisions in Kestra: Versioning and Rollbacks"
+h1: Version and Roll Back Your Flows with Revisions
+description: Track and manage flow versions in Kestra with built-in revision history. Roll back to any previous version to undo changes and maintain reliability.
 sidebarTitle: Revision
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
 Manage versions of flows.
 
-## Flow revisions – versioning and rollbacks
-
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/lpHl52Rlvr0?si=RyPvvhGNkTmskLKP" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Flows are versioned by default. Whenever you make any changes to your flows, a new revision is created. This allows you to rollback to a previous version of your flow if needed.
 

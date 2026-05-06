@@ -1,5 +1,6 @@
 ---
-title: Multi-Tenancy in Kestra – Configure and Manage Tenants
+title: "Multi-Tenancy in Kestra: Configure Tenants"
+h1: Isolate Resources and Users Across Teams with Multi-Tenancy
 description: Enable Multi-Tenancy in Kestra Enterprise. Isolate resources, flows, and users across different teams or projects within a single Kestra instance.
 sidebarTitle: Tenants
 icon: /src/contents/docs/icons/admin.svg
@@ -42,7 +43,7 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 
 1. **Data Isolation**: each tenant's data, configuration, and code is isolated and inaccessible to other tenants.
 2. **Resource Isolation**: each tenant's resources are isolated from other tenants — including flows, triggers, executions, logs, audit logs, secrets, etc.
-3. **Simple Configuration**: you can easily create new tenants instantly giving you a fresh, fully-isolated workspace accessible from your existing Kestra instance.
+3. **Simple Configuration**: create new tenants at any time, each providing a fresh, fully isolated workspace accessible from your existing Kestra instance.
 4. **Intuitive UI Navigation**: the UI provides a dropdown as well as tenant identifiers included in the URL to make switching between tenants seamless.
 
 

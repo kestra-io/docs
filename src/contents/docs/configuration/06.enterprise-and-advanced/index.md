@@ -1,6 +1,7 @@
 ---
-title: Kestra Enterprise and Advanced Configuration
-description: Configure Enterprise-only and advanced Kestra settings including licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
+title: Enterprise & Advanced Configuration in Kestra
+h1: "Configure Enterprise Features: Kafka, Elasticsearch & AI Copilot"
+description: Configure Enterprise-only Kestra settings. Manage licenses, Elasticsearch, Kafka, indexer behavior, UI custom links, AI Copilot, and air-gapped deployments.
 sidebarTitle: Enterprise and Advanced
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
@@ -278,11 +279,14 @@ This page also includes:
 
 ### AI Copilot
 
+Set `kestra.ai.enabled` to `false` to fully disable the AI Copilot, including the built-in fallback to `api.kestra.io`. Defaults to `true`.
+
 Enterprise Edition supports multiple providers in one configuration, which is useful when teams need both a default internal model and a fallback external model:
 
 ```yaml
 kestra:
   ai:
+    enabled: true # set to false to disable AI Copilot entirely
     providers:
       - id: gemini
         display-name: Gemini - Private

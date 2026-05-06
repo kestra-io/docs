@@ -1,0 +1,266 @@
+---
+import { Image } from "astro:assets"
+import Link from "~/components/common/Link.astro"
+import kestraLogo from "~/components/versus/assets/ks.svg?raw"
+import airflowLogo from "~/components/versus/assets/airflow-monograme.svg?raw"
+import vsGrid from "./assets/vs-grid.png"
+
+const tableData = [
+    {
+        feature: "Workflow definition",
+        kestra: "Declarative YAML",
+        competitor: "Python DAGs",
+    },
+    {
+        feature: "Languages supported",
+        kestra: "Any (Python, SQL, Bash, R, Go, ...)",
+        competitor: "Python-first",
+    },
+    {
+        feature: "Deployment",
+        kestra: "Single Docker Compose",
+        competitor: "API server + DAG processor + metadata DB + executor",
+    },
+    {
+        feature: "Time to first workflow",
+        kestra: "~5 minutes",
+        competitor: "~30 minutes",
+    },
+    {
+        feature: "Multi-tenancy",
+        kestra: "Namespace isolation + RBAC",
+        competitor: "Limited",
+    },
+]
+---
+
+<section class="vs-section">
+    <div class="vs-grid-bg" aria-hidden="true">
+        <Image src={vsGrid} alt="" loading="lazy" class="vs-grid-img" />
+    </div>
+    <div class="container vs-container">
+        <div class="vs-inner">
+            <div class="vs-left" data-usal="fade-r">
+                <h2>Kestra vs. Airflow 3.0</h2>
+                <p class="vs-description">
+                    Choosing between two orchestrators is a team, deployment, and operational call as much as an architecture one.
+                </p>
+                <Link href="/vs/airflow" class="btn btn-primary vs-cta">
+                    See the full comparison
+                </Link>
+            </div>
+
+            <div class="vs-right" data-usal="fade-l">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <div
+                                        set:html={kestraLogo}
+                                        role="img"
+                                        aria-label="Kestra"
+                                    />
+                                </th>
+                                <th>
+                                    <div class="airflow-header">
+                                        <div
+                                            set:html={airflowLogo}
+                                            role="img"
+                                            aria-label="Airflow"
+                                        />
+                                        <span class="airflow-version">3.0</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                tableData.map((row) => (
+                                    <tr>
+                                        <td class="feature-name">
+                                            {row.feature}
+                                        </td>
+                                        <td class="kestra-col">
+                                            {row.kestra}
+                                        </td>
+                                        <td>{row.competitor}</td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .vs-section {
+        position: relative;
+        background: var(--ks-background-secondary);
+        border-top: 1px solid var(--ks-border-secondary);
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding: 4rem 0.75rem;
+        overflow: hidden;
+
+        @include media-breakpoint-up(lg) {
+            padding: 5rem 0.75rem;
+        }
+    }
+
+    .vs-grid-bg {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .vs-grid-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+    }
+
+    .vs-container {
+        position: relative;
+        z-index: 1;
+    }
+
+    .vs-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            gap: 4rem;
+        }
+    }
+
+    .vs-left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+
+        @include media-breakpoint-up(lg) {
+            flex: 0 0 300px;
+        }
+
+        @include media-breakpoint-up(xl) {
+            flex: 0 0 340px;
+        }
+    }
+
+    h2 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        line-height: 1.2;
+        color: var(--ks-content-primary);
+        margin: 0;
+
+        @include media-breakpoint-up(md) {
+            font-size: 2rem;
+        }
+    }
+
+    .vs-description {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        color: var(--ks-content-secondary);
+        margin: 0;
+    }
+
+    .vs-cta {
+        min-width: 200px;
+    }
+
+    .vs-right {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .table-wrapper {
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 10px;
+        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        text-align: left;
+        vertical-align: middle;
+        border-bottom: 1px solid var(--ks-border-primary);
+        font-size: 0.875rem;
+        color: var(--ks-content-primary);
+        height: 60px;
+        padding: 12px 16px;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    .feature-name {
+        font-weight: 600;
+        width: 35%;
+    }
+
+    th:nth-child(1) {
+        width: 35%;
+    }
+
+    .kestra-col,
+    th:nth-child(2) {
+        background: var(--ks-background-purple-light);
+        border-left: 1px solid var(--ks-border-active);
+        border-right: 1px solid var(--ks-border-active);
+        border-bottom-color: var(--ks-border-active);
+    }
+
+    th:nth-child(2) {
+        border-top: 1px solid #8465ff;
+        border-radius: 8px 8px 0 0;
+    }
+
+    tr:last-child .kestra-col {
+        border-bottom: 1px solid #8465ff;
+        border-radius: 0 0 8px 8px;
+    }
+
+    th {
+        :global(svg) {
+            height: 28px;
+            width: auto;
+            display: block;
+        }
+    }
+
+    .airflow-header {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .airflow-version {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--ks-content-primary);
+        line-height: 1;
+    }
+</style>

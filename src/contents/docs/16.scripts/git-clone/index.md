@@ -1,5 +1,6 @@
 ---
 title: Git Clone Task – Fetch Repos for Script Workflows
+h1: Clone Git Repositories into Your Kestra Working Directory
 sidebarTitle: Git Clone task
 icon: /src/contents/docs/icons/dev.svg
 description: Use the Git Clone task to fetch repositories into Kestra's working directory and process files in your workflows.
@@ -13,7 +14,7 @@ This task clones a Git repository into a working directory, and then enables you
 
 ## `Git` plugin
 
-To use the `io.kestra.plugin.git.Clone` task in your flow, make sure to add it as the first child task of the `WorkingDirectory` task. Otherwise, you’ll get an error: `Destination path "xyz" already exists and is not an empty directory`. This happens because you can only clone a GitHub repository into an empty working directory.
+To use the `io.kestra.plugin.git.Clone` task in your flow, add it as the first child task of the `WorkingDirectory` task. Otherwise, you’ll get an error: `Destination path "xyz" already exists and is not an empty directory`. This happens because you can only clone a GitHub repository into an empty working directory.
 
 ### Add `io.kestra.plugin.git.Clone` as the first task in a `WorkingDirectory`
 

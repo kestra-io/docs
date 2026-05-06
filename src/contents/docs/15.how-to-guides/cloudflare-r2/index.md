@@ -1,5 +1,6 @@
 ---
 title: Use Cloudflare R2 with MinIO Gateway for Kestra
+h1: Configure Cloudflare R2 as S3-Compatible Storage for Kestra
 icon: /src/contents/docs/icons/cloudflare.svg
 stage: Intermediate
 topics:

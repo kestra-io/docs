@@ -6,6 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
 ---
@@ -96,8 +97,6 @@ Check the following video demo for a deep dive into the new `Namespaces` UI:
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=RiEZ_NKQym3Kh1tt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 ## SCIM Directory Sync 🗂️
 
@@ -241,8 +240,6 @@ Check the video below for a Task Runners feature showcase:
   <iframe src="https://www.youtube.com/embed/edYa8WAMAdQ?si=WiXpLNPOwk3mekwh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
----
-
 :::collapse{title="The main v0.18.0 enhancements to Task Runners"}
 Here are the main enhancements to Task Runners added in this release:
 - The `taskRunner` property has been added to all CLI tasks including `DbtCLI`, `TerraformCLI`, and all other script tasks.
@@ -273,7 +270,7 @@ Read more about Task Runners in our [Documentation](../../docs/task-runners/inde
 
 A new `ForEach` core task has been [introduced](https://github.com/kestra-io/kestra/issues/2137) to unify and simplify parallel and sequential task executions, replacing (_in a non-breaking way_) the `EachParallel` and `EachSequential` tasks. Those old tasks are deprecated but you can still use them — take as much time as you need to migrate.
 
-Check the [core plugin documentation](/plugins/core/tasks/flow/io.kestra.plugin.core.flow.foreach) to learn more.
+Check the [core plugin documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) to learn more.
 
 ### New `SELECT` and `MULTISELECT` input types
 

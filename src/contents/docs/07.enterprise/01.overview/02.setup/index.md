@@ -1,6 +1,7 @@
 ---
-title: Set Up Kestra Enterprise – License and First Tenant
-description: How to set up Kestra Enterprise Edition.
+title: "Set Up Kestra Enterprise: License and First Tenant"
+h1: Activate Your License and Configure the First Tenant
+description: Configure your Kestra Enterprise instance. Activate your license, create the first tenant, and complete the initial setup to start using Enterprise features.
 sidebarTitle: Enterprise Edition Setup Guide
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]

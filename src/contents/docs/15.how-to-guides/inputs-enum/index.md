@@ -1,5 +1,7 @@
 ---
 title: Validate Inputs with the Enum Data Type
+h1: Restrict Input Values Using the Enum Type for Validation
+description: Use ENUM-type inputs in Kestra to restrict flow parameters to a predefined set of values, improving validation and reducing runtime configuration errors.
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -12,7 +14,7 @@ Inputs allow you to dynamically pass data to your execution at runtime. For a de
 
 ## Input validation with Enum data type
 
-Let's now look at how to use the `ENUM` input type and the `Switch` task to validate user input and conditionally branch the flow based on the input value.
+The following example shows how to use the `ENUM` input type and the `Switch` task to validate user input and conditionally branch the flow based on the input value.
 
 ```yaml
 id: orchestrate_everything
@@ -60,5 +62,5 @@ You can add an arbitrary number of cases to the `Switch` task, and each case can
 By using the `defaults` attribute, you can specify a default input value that will be prefilled in the dropdown menu in the UI when executing the flow.
 
 :::alert{type="info"}
-Note that it's not possible to launch a workflow execution without selecting a value from the dropdown menu. The requirement for selecting a value guarantees that the flow is only executed with valid input `values` defined by the `ENUM` type.
+It's not possible to launch a workflow execution without selecting a value from the dropdown menu. The requirement for selecting a value guarantees that the flow is only executed with valid input `values` defined by the `ENUM` type.
 :::

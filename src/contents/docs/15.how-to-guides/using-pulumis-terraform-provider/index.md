@@ -1,5 +1,6 @@
 ---
-title: Integrate Kestra with Pulumi's Terraform Provider
+title: Kestra with Pulumi's Terraform Provider
+h1: Manage Kestra Infrastructure from Your Pulumi Projects
 icon: /src/contents/docs/icons/pulumi.svg
 stage: Advanced
 topics:
@@ -14,7 +15,7 @@ This post outlines the process of leveraging Pulumi's terraform-provider package
 
 ## About the example repository
 
-The repository we will be using, the [pulumi-kestra-example](https://github.com/japerry911/pulumi-kestra-example) repository, is a hands-on example that shows how to provision and manage Kestra resources with Pulumi using a Python-based provider and SDK generated locally. The repo includes:
+The [pulumi-kestra-example](https://github.com/japerry911/pulumi-kestra-example) repository is a hands-on example that shows how to provision and manage Kestra resources with Pulumi using a Python-based provider and SDK generated locally. The repo includes:
  - a Pulumi project YAML
  - a complete example flow and namespace
  - an app - demonstrating a real-world use case: uploading a file to Google Cloud Storage via a Kestra flow and app
@@ -67,7 +68,7 @@ KESTRA_PROVIDER_URL=
 - Fill in the appropriate values for `KESTRA_API_TOKEN`, `KESTRA_USERNAME`, `KESTRA_PASSWORD`, and `KESTRA_PROVIDER_URL` based on your Kestra instance edition.
 
 7. Prepare for Resource Building
-- With the local Pulumi SDK for the Kestra Terraform provider set up and installed, let's install some additional Python packages before we start defining our resources:
+- With the local Pulumi SDK for the Kestra Terraform provider set up and installed, install some additional Python packages before defining your resources:
     - Activate your Python environment: `source venv/bin/activate`
     - Install python-dotenv and PyYAML: `pip install python dotenv PyYaml`
 

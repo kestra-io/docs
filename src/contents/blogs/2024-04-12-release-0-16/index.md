@@ -6,6 +6,7 @@ category: News & Product Updates
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
 ---
@@ -18,8 +19,8 @@ Let's dive into the highlights of this release.
 
 Until Kestra 0.15.11, you could configure the script tasks to run in local **processes** or in **Docker containers** by using the `runner` property.
 
-Kestra 0.16.0 introduces a new `taskRunner` property in Beta, offering more flexibility than  `runner` and allows you to deploy your code to various remote environments, including [Kubernetes](/plugins/plugin-kubernetes/runner/io.kestra.plugin.ee.kubernetes.runner.Kubernetes), [Docker](/plugins/plugin-aws/io.kestra.plugin.scripts.runner.docker.Docker),
- [AWS Batch](/plugins/plugin-aws/runner/io.kestra.plugin.ee.aws.runner.Batch), [Azure Batch](/plugins/plugin-azure/runner/io.kestra.plugin.ee.azure.runner.Batch), [Google Batch](/plugins/plugin-gcp/runner/io.kestra.plugin.ee.gcp.runner.Batch), and more coming in the future. Since each `taskRunner` type is a plugin, you can create your own, fully tailored to your needs.
+Kestra 0.16.0 introduces a new `taskRunner` property in Beta, offering more flexibility than  `runner` and allows you to deploy your code to various remote environments, including [Kubernetes](/plugins/plugin-kubernetes/runner/io.kestra.plugin.ee.kubernetes.runner.kubernetes), [Docker](/plugins/plugin-aws/io.kestra.plugin.scripts.runner.docker.Docker),
+ [AWS Batch](/plugins/plugin-aws/runner/io.kestra.plugin.ee.aws.runner.Batch), [Azure Batch](/plugins/plugin-azure/runner/io.kestra.plugin.ee.azure.runner.batch), [Google Batch](/plugins/plugin-gcp/runner/io.kestra.plugin.ee.gcp.runner.batch), and more coming in the future. Since each `taskRunner` type is a plugin, you can create your own, fully tailored to your needs.
 
 One of the key advantages of Task Runners is that **they make it easy to move from development to production**. Many Kestra users develop their scripts locally in Docker containers and then run the same code in a production environment on a Kubernetes cluster. Thanks to task runners, setting this up is a breeze. Below you see an example showing how you can combine `taskDefaults` with the `taskRunner` property to use Docker in the development environment and Kubernetes in production — all without changing anything in your code.
 
@@ -124,7 +125,7 @@ tasks:
 
 [Since Kestra 0.16.0](https://github.com/kestra-io/kestra/issues/2962), you can use the `TemplatedTask` task which lets you fully template all task properties using Pebble so that they can be dynamically rendered based on your custom inputs, variables, and outputs from other tasks.
 
-Here is an example of how to use the [TemplatedTask](/plugins/tasks/templating/io.kestra.plugin.core.templating.TemplatedTask) to create a Databricks job using dynamic properties:
+Here is an example of how to use the [TemplatedTask](/plugins/core/templating/io.kestra.plugin.core.templating.templatedtask) to create a Databricks job using dynamic properties:
 
 ```yaml
 id: templated_databricks_job
@@ -170,7 +171,7 @@ Note how in this example, the `waitForCompletion` property is templated using Pe
 
 ### New pebble functions to process YAML
 
-Related to the templated task, there are [new Pebble functions](../../docs/expressions/index.mdx#yaml-filters) to process YAML including the `yaml` and `indent` functions that allow you to parse and load YAML strings into objects. Those objects can then be further transformed using Pebble templating.
+Related to the templated task, there are [new Pebble functions](../../docs/expressions/03.filters/05.yaml/index.mdx) to process YAML including the `yaml` and `indent` functions that allow you to parse and load YAML strings into objects. Those objects can then be further transformed using Pebble templating.
 
 Big thanks to [kriko](https://github.com/kriko) for [contributing this feature](https://github.com/kestra-io/kestra/pull/3283)!
 
@@ -209,7 +210,7 @@ The above flow will only be triggered after an execution:
 
 ## Improvements to the secret function
 
-The `secret()` function now returns `null` if the secret cannot be found. [This change](https://github.com/kestra-io/kestra/issues/3162) allows you to fall back to an environment variable if a secret is missing. To do that, you can use the `secret()` function in combination with the [null-coalescing](../../docs/expressions/index.mdx#fallbacks-and-conditionals) operator as follows:
+The `secret()` function now returns `null` if the secret cannot be found. [This change](https://github.com/kestra-io/kestra/issues/3162) allows you to fall back to an environment variable if a secret is missing. To do that, you can use the `secret()` function in combination with the [null-coalescing](../../docs/expressions/02.syntax/index.mdx#fallbacks-and-conditionals) operator as follows:
 
 ```yaml
 accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') ?? env.aws_access_key_id }}"

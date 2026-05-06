@@ -12,6 +12,7 @@ import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
+import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
 import { rehypeHeadingIds } from "@astrojs/markdown-remark"
 import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
@@ -50,6 +51,7 @@ export default defineConfig({
     ],
     markdown: {
         remarkPlugins: [
+            remarkMermaid,
             remarkClassname,
             remarkDirective,
             remarkCustomElements,
