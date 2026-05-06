@@ -6,9 +6,7 @@ icon: /src/contents/docs/icons/faq.svg
 description: Solutions for common Kestra issues, including pod restarts, unprocessable executions, and Docker-in-Docker problems.
 ---
 
-Something doesn't work as expected? Check out these common issues and fixes.
-
-## Fix common Kestra issues
+Common issues and fixes for Kestra deployments.
 
 ## CrashLoopBackoff when restarting all pods
 
@@ -38,7 +36,7 @@ You can also skip executions at broader levels:
    ```
 
 :::alert{type="info"}
-Make sure to replace `tenant` and `namespace` with the correct values for the flow.
+Replace `tenant` and `namespace` with the correct values for the flow.
 :::
 
 2. **Namespaces** — Skip all executions within specific namespaces:
@@ -51,7 +49,7 @@ Make sure to replace `tenant` and `namespace` with the correct values for the fl
    ```
 
 :::alert{type="info"}
-Make sure to replace `tenant` with the correct values for the namespace.
+Replace `tenant` with the correct values for the namespace.
 :::
 
 3. **Tenants** — Skip all executions associated with specific tenants:
@@ -89,21 +87,20 @@ modprobe: can't change directory to '/lib/modules': No such file or directory
 error: attempting to run rootless dockerd but need 'kernel.unprivileged_userns_clone' (/proc/sys/kernel/unprivileged_userns_clone) set to 1
 ```
 
-To fix this, launch the DinD container as `root` by setting the following values:
+To fix this, switch DinD to insecure (privileged) mode by setting the following values:
 
 ```yaml
 dind:
-  image:
-    tag: dind
-  args:
-    - --log-level=fatal
-  securityContext:
-    runAsUser: 0
-    runAsGroup: 0
-
-securityContext:
-  runAsUser: 0
-  runAsGroup: 0
+  mode: 'insecure'
+  base:
+    insecure:
+      image:
+        tag: dind
+      args:
+        - --log-level=fatal
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
 ```
 
 ## DinD on a Mac with Apple silicon (ARM)

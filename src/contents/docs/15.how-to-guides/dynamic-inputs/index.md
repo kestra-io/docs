@@ -16,7 +16,7 @@ In this guide, we show how you can create a dynamic dropdown list for inputs. Th
 
 To get started, we create a flow that fetches the data from the external source and set the value in the KV store. The value will be in the form of a list of strings.
 
-In this example, the flow fetches data from a PostgreSQL table on an hourly schedule. You can change the `cron` property to run at a different frequency depending on how frequently you expect the data at the source to change. If the external source is in a database that supports change data capture, as in this case where we use PostgreSQL table, you can also leverage [debezium trigger](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.trigger) and immediately update the KV store.
+In this example, the flow fetches data from a PostgreSQL table on an hourly schedule. You can change the `cron` property to run at a different frequency depending on how frequently you expect the data at the source to change. If the external source is in a database that supports change data capture, as in this case where we use PostgreSQL table, you can also use the [debezium trigger](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.trigger) and immediately update the KV store.
 
 ```yaml
 id: update_kv_store

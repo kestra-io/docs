@@ -205,7 +205,7 @@ testimonials:
         name: "Faster incident remediation"
       - value: "100%"
         name: "Audit trail coverage"
-    storyLink: "/use-cases/stories/27-securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
+    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
 
 platformStrengths:
   title: "Kestra Extends What Ansible Does Best"

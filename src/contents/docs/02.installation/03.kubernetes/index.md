@@ -29,7 +29,8 @@ Kestra maintains three Helm charts:
 
 Chart sources:
 - Repository: [helm.kestra.io](https://helm.kestra.io/)
-- Source code: [kestra-io/helm-charts](https://github.com/kestra-io/helm-charts)
+- Source code: [kestra helm chart](https://github.com/kestra-io/kestra/tree/develop/charts/kestra)
+- ArtifactHub: [kestra](https://artifacthub.io/packages/helm/kestra/kestra) · [kestra-starter](https://artifacthub.io/packages/helm/kestra/kestra-starter)
 
 :::alert{type="info"}
 All default image tags are listed in the [Docker installation guide](../02.docker/index.md).
@@ -40,7 +41,7 @@ All default image tags are listed in the [Docker installation guide](../02.docke
 To understand available configuration options and compare versions:
 
 - **Compare versions**: See differences between two Helm chart versions on [ArtifactHub](https://artifacthub.io/packages/helm/kestra/kestra?modal=values) using the values comparison modal.
-- **Full values reference**: Review all available configuration options in the [values.yaml](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/values.yaml) file on GitHub.
+- **Full values reference**: Review all available configuration options in the [values.yaml](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) file on GitHub.
 
 ### Starter chart dependencies
 
@@ -280,7 +281,7 @@ On Google Kubernetes Engine (GKE), using a node pool based on `UBUNTU_CONTAINERD
 
 ### Disable rootless mode
 
-Some clusters only support a root version of DinD. To enable insecure (privileged) mode instead, use the [insecure mode](https://github.com/kestra-io/helm-charts/blob/master/chart_kestra/charts/kestra/values.yaml#L257) Helm values:
+Some clusters only support a root version of DinD. To enable insecure (privileged) mode instead, use the [insecure mode](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) Helm values:
 
 ```yaml
 dind:
@@ -349,7 +350,7 @@ docker inspect <container-id>
 
 ## Disable DinD and use Kubernetes task runner
 
-To avoid using `root` to spin up containers via DinD, disable DinD by setting the following [Helm chart values](https://github.com/kestra-io/helm-charts/blob/master/charts/kestra/README.md#kestra-dind):
+To avoid using `root` to spin up containers via DinD, disable DinD by setting the following [Helm chart values](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/README.md#kestra-dind):
 
 ```yaml
 dind:

@@ -126,6 +126,7 @@ export const collections = {
                 featuredImage: image(),
                 logo: image().optional(),
                 logoDark: image().optional(),
+                rank: z.number(),
                 tasks: z.array(z.string()),
                 kpi1: z.string(),
                 kpi2: z.string(),

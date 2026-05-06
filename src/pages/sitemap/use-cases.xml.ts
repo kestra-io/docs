@@ -1,4 +1,3 @@
-import { slugify } from "@kestra-io/ui-libs"
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
 import { sitemapResponse, formatLastMod } from "~/utils/sitemap.ts"
