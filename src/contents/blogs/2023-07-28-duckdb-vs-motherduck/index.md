@@ -186,7 +186,7 @@ D show databases; -- orders DB is not displayed as it's not in MotherDuck yet
 
 ### 2) Ingest local database to the cloud
 
-The SQL statement `CREATE DATABASE dbname FROM 'orders.db’;` will upload the entire local `orders.db` to the cloud, including all tables we’ve created so far:
+The SQL statement `CREATE DATABASE dbname FROM 'orders.db';` will upload the entire local `orders.db` to the cloud, including all tables we've created so far:
 
 ```sql
 D CREATE DATABASE orders FROM 'orders.db';
