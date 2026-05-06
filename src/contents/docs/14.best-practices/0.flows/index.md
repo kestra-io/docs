@@ -1,5 +1,6 @@
 ---
-title: Flow Best Practices – Design flows for Performance and Reliability
+title: "Flow Best Practices: Performance and Reliability"
+h1: Design Kestra Flows for Optimal Performance and Reliability
 sidebarTitle: Flow Best Practices
 icon: /src/contents/docs/icons/best-practices.svg
 description: Design Kestra flows for optimal performance and reliability by managing task count, data volume, and parallelism.
@@ -32,10 +33,10 @@ Depending on the internal queue and repository implementation, there may be a ha
 
 While a flow can contain many tasks, it’s not recommended to include a large number of tasks within a single execution.
 
-A flow can contain either manually defined tasks or dynamically generated ones. While [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) and [ForEachItem](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEachItem) are powerful for looping over results, they can easily create hundreds of TaskRuns if used on large datasets. For example, a nested loop of 20 × 20 tasks results in **400 TaskRuns**.
+A flow can contain either manually defined tasks or dynamically generated ones. While [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) and [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem) are powerful for looping over results, they can create hundreds of TaskRuns if used on large datasets. For example, a nested loop of 20 × 20 tasks results in **400 TaskRuns**.
 
 :::alert{type="warning"}
-In our experience, flows with **over 100 tasks** tend to experience performance degradation and longer execution times.
+Flows with **over 100 tasks** tend to experience performance degradation and longer execution times.
 :::
 
 To avoid this, consider breaking the workflow into subflows using the [Subflow task](../../05.workflow-components/10.subflows/index.md). Since a `Subflow` task creates a new execution, its tasks are **isolated** and do not affect the parent flow’s performance.
@@ -47,7 +48,7 @@ While powerful, this feature **should not be used to transfer large amounts of d
 
 For example, the [Query](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.query) task in BigQuery has a `fetch` property that retrieves query results as an output attribute. If the query returns a large dataset, the result will be stored in the execution context — meaning it will be serialized and deserialized on each task state change, severely impacting performance.
 
-This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Switch) or [ForEach](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.ForEach) task.
+This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) or [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task.
 
 :::alert{type="info"}
 For large data volumes, use the `stores` property instead. Stored outputs are written to Kestra’s internal storage, and only the file URL is referenced in the execution context.
@@ -59,7 +60,7 @@ When `store` is set to `false` or the default value, the output will include a `
 
 ## Parallel tasks
 
-The [Parallel](/plugins/core/tasks/flows/io.kestra.plugin.core.flow.Parallel) task helps reduce overall flow duration by running multiple branches simultaneously.
+The [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) task helps reduce overall flow duration by running multiple branches simultaneously.
 By default, **all parallel tasks start at the same time**, unless you set the `concurrent` property. The only limit is the number of worker threads configured in your environment.
 
 Be mindful of external system limits such as API rate restrictions or connection quotas — running too many parallel tasks may overload those systems.

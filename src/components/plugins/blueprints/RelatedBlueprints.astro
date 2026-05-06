@@ -1,0 +1,48 @@
+---
+import { $fetchApiCached } from "~/utils/fetch"
+import { getBlueprintsHeading } from "~/utils/plugins/pluginUtils"
+import type { BlueprintPreview } from "~/utils/plugins/types"
+import Related from "./RelatedBlueprints.vue"
+
+const {
+    pluginType,
+    pluginName,
+    pluginWrapper,
+    currentSubgroupPlugin,
+    subGroupName,
+    customId,
+    pluginTitle,
+} = Astro.props
+
+const pluginIdentifier = (() => {
+    if (pluginType) return pluginType
+    if (currentSubgroupPlugin?.subGroup) return currentSubgroupPlugin.subGroup
+    return pluginWrapper?.group ?? pluginName
+})()
+
+const rawBlueprints = await $fetchApiCached<any[]>(
+    `/blueprints/plugin/${pluginIdentifier}/version/latest`,
+)
+
+const relatedBlueprints: BlueprintPreview[] = (rawBlueprints ?? []).map((b: any) => ({
+    id: b.id,
+    title: b.title,
+    tags: b.tags,
+    includedTasks: b.includedTasks,
+}))
+
+const heading = getBlueprintsHeading(
+    pluginName,
+    pluginWrapper,
+    subGroupName,
+    customId,
+    pluginTitle,
+)
+---
+
+<Related
+    relatedBlueprints={relatedBlueprints}
+    headerText={heading.html}
+    headerId={heading.id}
+    client:visible
+/>

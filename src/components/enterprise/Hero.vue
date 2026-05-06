@@ -10,12 +10,12 @@
                 <div class="d-flex align-items-center gap-3 cta" data-usal="zoomin">
                     <Link
                         href="/pricing"
-                        text="Compare All Plans"
+                        text="Pricing"
                         class="btn btn-secondary"
                     />
                     <Link
-                        href="/enterprise/free-trial"
-                        text="Request Free Trial"
+                        href="/demo"
+                        text="Contact Sales"
                         class="btn btn-primary"
                     />
                 </div>

@@ -1,39 +1,47 @@
-const applyTheme = (doc = document) => {
-    doc.documentElement.classList.add("dark");
-    doc.documentElement.classList.remove("light");
-};
+const STORAGE_KEY = "theme"
+const DARK_MQ = "(prefers-color-scheme: dark)"
 
-/*
-const getTheme = () => localStorage.getItem("theme") ?? "system";
+type Theme = "light" | "dark" | "system"
 
-const isDark = (t: string) =>
-    t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+function getStoredTheme(): Theme {
+    return (localStorage.getItem(STORAGE_KEY) as Theme) ?? "system"
+}
 
-const applyTheme = (t: string) => {
-    const dark = isDark(t);
-    document.documentElement.classList.toggle("dark", dark);
-    document.documentElement.classList.toggle("light", !dark);
-    document.querySelectorAll(".theme-switcher button")
-        .forEach(btn => btn.classList.toggle("active", btn.id === `theme-${t}`));
-};
+function isDark(theme: Theme): boolean {
+    return theme === "dark" || (theme === "system" && matchMedia(DARK_MQ).matches)
+}
 
-document.addEventListener("click", ({ target }) => {
-    const btn = (target as HTMLElement).closest(".theme-switcher button");
-    if (!btn) return;
-    const theme = btn.id.replace("theme-", "");
-    theme === "system"
-        ? localStorage.removeItem("theme")
-        : localStorage.setItem("theme", theme);
-    applyTheme(theme);
-});
-*/
+function applyTheme(theme: Theme = getStoredTheme(), doc: Document = document) {
+    const dark = isDark(theme)
 
-document.addEventListener("astro:before-swap", (e: any) => {
-    applyTheme(e.newDocument);
-});
+    doc.documentElement.classList.toggle("dark", dark)
+    doc.documentElement.classList.toggle("light", !dark)
 
-["astro:page-load", "DOMContentLoaded"].forEach(e =>
-    document.addEventListener(e, () => applyTheme())
-);
-applyTheme();
+    doc.querySelectorAll<HTMLButtonElement>(".theme-switcher button").forEach((btn) => {
+        btn.classList.toggle("active", btn.id === `theme-${theme}`)
+    })
+}
 
+document.addEventListener("click", (e) => {
+    const btn = (e.target as Element).closest<HTMLButtonElement>(".theme-switcher button")
+    if (!btn) return
+
+    const theme = btn.id.replace("theme-", "") as Theme
+
+    if (theme === "system") {
+        localStorage.removeItem(STORAGE_KEY)
+    } else {
+        localStorage.setItem(STORAGE_KEY, theme)
+    }
+
+    applyTheme(theme)
+})
+
+matchMedia(DARK_MQ).addEventListener("change", () => {
+    if (getStoredTheme() === "system") applyTheme()
+})
+
+document.addEventListener("astro:before-swap", (e: any) => applyTheme(getStoredTheme(), e.newDocument))
+document.addEventListener("astro:page-load", () => applyTheme())
+
+applyTheme()

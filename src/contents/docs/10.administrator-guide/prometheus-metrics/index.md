@@ -1,13 +1,12 @@
 ---
-title: Prometheus Metrics in Kestra – Endpoint and Signals
+title: "Prometheus Metrics for Kestra: Reference and /prometheus Endpoint"
+h1: Available Prometheus metrics and how to scrape them
 sidebarTitle: Prometheus Metrics
 icon: /src/contents/docs/icons/admin.svg
 description: Explore the available Prometheus metrics in Kestra to monitor the performance and health of your orchestration cluster.
 ---
 
 This page provides an overview of all available [Prometheus](https://prometheus.io/) metrics in Kestra.
-
-## Monitor Kestra with Prometheus metrics
 
 Prometheus metrics are enabled by default in Kestra, in contrast to [OpenTelemetry](../open-telemetry/index.md), which must be explicitly enabled in the configuration file.
 
@@ -17,7 +16,7 @@ Each Prometheus metric is described with its purpose and the type of data it rep
 
 Example output from the Prometheus endpoint:
 
-```text
+```plaintext
 ## HELP executor_active_threads The approximate number of threads that are actively executing tasks
 ## TYPE executor_active_threads gauge
 executor_active_threads 4
@@ -26,8 +25,6 @@ executor_active_threads 4
 :::alert{type="info"}
 For deeper details on Micrometer metrics integration, see the [Micronaut Micrometer documentation](https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/).
 :::
-
----
 
 ## Kestra
 
@@ -96,6 +93,7 @@ Various Kestra-specific database queries:
 For each internal queue:
 
 * `kestra_queue_big_message_count_total` (counter): Big messages in the queue.
+* `kestra_queue_message_lag_count` (gauge): Total number of messages in the queue that are not yet consumed.
 * `kestra_queue_poll_size` (gauge): Size of a poll to the queue (message batch size).
 * `kestra_queue_produce_count_total` (counter): Total number of produced messages.
 * `kestra_queue_receive_duration_seconds` (summary): Queue duration to receive and consume a batch of messages.

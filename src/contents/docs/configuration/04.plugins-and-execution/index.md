@@ -1,5 +1,6 @@
 ---
-title: Kestra Plugins and Execution Configuration
+title: Plugins & Execution Configuration in Kestra
+h1: Configure Plugin Defaults, Retries & System Flows
 description: Configure plugin installation, plugin defaults, feature flags, retries, task settings, system flows, templates, and execution-related behavior in Kestra.
 sidebarTitle: Plugins and Execution
 icon: /src/contents/docs/icons/admin.svg
@@ -151,6 +152,10 @@ kestra:
       default-version: LATEST
 ```
 
+- `remote-storage-enabled`: store managed plugins in internal storage rather than on local disk
+- `auto-reload-enabled` / `auto-reload-interval`: check for updated plugins on a fixed interval
+- `default-version`: controls which plugin version is selected when no explicit version is pinned; accepts `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or a specific version string
+
 ## Execution behavior
 
 These settings affect how the platform behaves around tasks and executions globally. Use them for platform-wide operational defaults, not for flow-specific logic.
@@ -171,8 +176,11 @@ kestra:
   retries:
     attempts: 5
     delay: 1s
+    max-delay: ~
     multiplier: 2.0
 ```
+
+`max-delay` caps the maximum backoff interval. It is undefined by default, which means the delay grows without bound according to the multiplier.
 
 :::alert{type="warning"}
 These retries do not apply to tasks. For task-level retries across many plugins, use plugin defaults.
@@ -201,7 +209,7 @@ kestra:
       path: /tmp/kestra-wd/tmp
 ```
 
-Make sure your container or VM volume mounts line up with that path:
+Ensure your container or VM volume mounts align with that path:
 
 ```yaml
 volumes:

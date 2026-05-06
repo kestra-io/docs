@@ -1,5 +1,6 @@
 ---
-title: Configure Local Ceph Storage for Kestra via MinIO Gateway
+title: Ceph Storage for Kestra via MinIO S3 Gateway
+h1: Set Up a Local Ceph Cluster as S3-Compatible Storage for Kestra
 icon: /src/contents/docs/icons/ceph.svg
 stage: Intermediate
 topics:
@@ -40,7 +41,7 @@ cephadm version
 
 ## Enable SSH locally
 
-`cephadm` uses SSH to manage hosts, even in local single-node setups. Make sure `sshd` is running:
+`cephadm` uses SSH to manage hosts, even in local single-node setups. Ensure `sshd` is running:
 
 ```sh
 sudo apt install openssh-server
@@ -110,7 +111,7 @@ sudo cephadm shell -- ceph orch ps
 
 Look for a line like:
 
-```
+```plaintext
 rgw.default.kestra.xxxxxx  kestra  *:80  running (...)
 ```
 
@@ -136,7 +137,7 @@ Copy the `access_key` and `secret_key` from the output.
 
 ## Connect MinIO to Ceph (Gateway Mode)
 
-We'll configure MinIO to proxy all S3 requests to Ceph RGW.
+MinIO proxies all S3 requests to Ceph RGW.
 
 ### `docker-compose.yml`
 

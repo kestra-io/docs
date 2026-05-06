@@ -5,6 +5,7 @@ date: 2026-02-27T13:00:00
 category: News & Product Updates
 author:
   name: Martin-Pierre Roset
+  linkedin: https://www.linkedin.com/in/martin-pierre-roset/
   image: mproset
 image: ./main.jpg
 ---

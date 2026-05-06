@@ -2,13 +2,34 @@
 import { Icon } from "astro-icon/components"
 
 const REASONS = [
-    "Partner Badge",
-    "Partner Directory Listing",
-    "Marketing & Co-branding Materials",
-    "Partner Enablement",
-    "Priority Services Routing",
-    "Sandbox Enterprise Edition",
-    "Feature Early Access",
+    {
+        label: "Partner Badge",
+        icon: "mdi:star-circle-outline"
+    },
+    {
+        label: "Partner Directory Listing",
+        icon: "mdi:playlist-star"
+    },
+    {
+        label: "Marketing & Co-branding Materials",
+        icon: "mdi:looks"
+    },
+    {
+        label: "Partner Enablement",
+        icon: "mdi:toggle-switch"
+    },
+    {
+        label: "Priority Services Routing",
+        icon: "mdi:priority-high"
+    },
+    {
+        label: "Sandbox Enterprise Edition",
+        icon: "mdi:shield-lock-outline"
+    },
+    {
+        label: "Feature Early Access",
+        icon: "mdi:test-tube"
+    },
 ]
 ---
 
@@ -17,11 +38,11 @@ const REASONS = [
         <h2 class="mb-5 text-center">Reasons to integrate with Kestra</h2>
         <div class="row g-3 justify-content-center">
             {
-                REASONS.map((reason) => (
+                REASONS.map(({ label, icon }) => (
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="reason-card">
-                            <Icon name="mdi:image-filter-center-focus-strong" />
-                            <h5 class="mt-3 text-center">{reason}</h5>
+                            <Icon name={icon} />
+                            <h5 class="mt-3 text-center">{label}</h5>
                         </div>
                     </div>
                 ))
@@ -32,7 +53,6 @@ const REASONS = [
 
 <style lang="scss">
     .reasons {
-        width: 100%;
         padding: 4rem 1rem;
         background: var(--ks-background-secondary);
 
@@ -64,7 +84,7 @@ const REASONS = [
 
             [data-icon] {
                 color: var(--ks-icon-color);
-                font-size: 1.5rem;
+                font-size: 2rem;
             }
         }
     }

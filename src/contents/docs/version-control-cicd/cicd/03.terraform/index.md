@@ -1,5 +1,6 @@
 ---
 title: Terraform for Kestra – Manage Resources as Code
+h1: Provision Kestra Flows and Namespaces with the Terraform Provider
 sidebarTitle: Terraform
 icon: /src/contents/docs/icons/terraform.svg
 description: Provision and manage Kestra resources like flows and namespaces as code using the official Kestra Terraform Provider.

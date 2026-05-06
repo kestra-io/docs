@@ -1,13 +1,12 @@
 ---
-title: Workflow Inputs in Kestra – Concepts and Usage
+title: "Workflow Inputs in Kestra: Declare and Pass Parameters"
+h1: Make Flows Dynamic with Typed Inputs and Runtime Parameters
 description: Make your Kestra flows dynamic with Inputs. Learn to declare typed inputs, validate values, and pass parameters at runtime for flexible workflow execution.
 icon: /src/contents/docs/icons/flow.svg
 sidebarTitle: Inputs
 ---
 
 Inputs are dynamic values passed to the flow at runtime.
-
-## Workflow Inputs – concepts and usage
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/peQvnhaspyQ?si=gcZxTX5KF2dC7ZLO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -198,7 +197,8 @@ Below is the list of available properties for all inputs regardless of their typ
 
 Kestra validates the `type` of each input. In addition to the type validation, some input types can be configured with validation rules that are enforced at execution time.
 
-- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html).
+- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html). Validator patterns are subject to a 10-second timeout. The timeout is configurable via [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout).
+- `SECRET`: Supports the same `validator` regex property as `STRING`, with the same 10-second timeout applied before the value is encrypted.
 - `INT`: `min` and `max` define the allowed range.
 - `FLOAT`: `min` and `max` define the allowed range.
 - `DURATION`: `min` and `max` define the allowed range.
@@ -544,8 +544,6 @@ Variables are best suited for values that you don't want to change and are used 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
-
----
 
 Inputs in Kestra are strongly typed. Currently, you cannot enforce strong types and simultaneously use dynamically rendered Pebble expressions.
 

@@ -1,5 +1,5 @@
 ---
-import Carousel from "~/components/common/Carousel.vue"
+import Carousel from "~/components/common/Carousel.astro"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import { $fetchApiCached } from "~/utils/fetch"
 
@@ -10,7 +10,7 @@ const tags = await $fetchApiCached<BlueprintTag[]>(
 )
 ---
 
-<Carousel client:load>
+<Carousel>
     {
         blueprints?.map((blueprint: Blueprint) => (
             <BlueprintCard

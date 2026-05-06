@@ -1,5 +1,6 @@
 ---
 title: Configure Secrets in Kestra
+h1: Securely Store and Use Secrets in Your Flows
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
@@ -17,7 +18,7 @@ Secrets are sensitive values that should not be exposed in plain text, such as p
 For a detailed overview, see the [Secrets](../../06.concepts/04.secret/index.md) documentation.
 
 This guide demonstrates how to add secrets to your Kestra server using an environment file (`.env`).
-If you prefer a simpler, UI-based experience, check out the [Enterprise Edition](../../oss-vs-paid/index.md), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
+If you prefer a simpler, UI-based experience, see the [Enterprise Edition](../../oss-vs-paid/index.md), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
 
 ---
 
@@ -27,7 +28,7 @@ If you prefer a simpler, UI-based experience, check out the [Enterprise Edition]
 
 Start by defining your secrets in a standard environment file:
 
-```
+```bash
 POSTGRES_PASSWORD=actual_postgres_password
 OPENAI_KEY=actual_openai_key
 AWS_ACCESS_KEY=actual_aws_access_key
@@ -39,7 +40,7 @@ AWS_SECRET_KEY=actual_aws_secret_key
 Kestra expects all secret keys to be **prefixed with `SECRET_`** and their values **base64-encoded**.
 The resulting `.env_encoded` file should look like this:
 
-```
+```bash
 SECRET_POSTGRES_PASSWORD=base64_encoded_postgres_password
 SECRET_OPENAI_KEY=base64_encoded_openai_key
 SECRET_AWS_ACCESS_KEY=base64_encoded_aws_access_key
@@ -63,7 +64,7 @@ You can verify the output by opening `.env_encoded` — it should look like the 
 
 Alternatively, you can manually write the file using macros to encode secrets dynamically:
 
-```
+```bash
 SECRET_POSTGRES_PASSWORD={{ "actual_postgres_password" | base64encode }}
 SECRET_OPENAI_KEY={{ "actual_openai_key" | base64encode }}
 SECRET_AWS_ACCESS_KEY={{ "actual_aws_access_key" | base64encode }}

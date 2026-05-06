@@ -5,6 +5,8 @@ date: 2024-12-03T17:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
+  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
 image: ./main.png
@@ -299,7 +301,7 @@ The filter and search bars have been improved to better handle more complex filt
 
 Kestra can now persist the dbt manifest in the KV Store, which allows you to rebuild only those models that have changed since the last run.
 
-Check the [plugin example](/plugins/plugin-dbt/cli/io.kestra.plugin.dbt.cli.dbtcli) showing how to use it.
+Check the [plugin example](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli) showing how to use it.
 
 ## Thanks to Our Contributors
 

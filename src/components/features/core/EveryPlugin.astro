@@ -4,6 +4,8 @@ import { Icon } from "astro-icon/components"
 import { $fetchApiCached } from "~/utils/fetch"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
+import { NO_RANDOM_ORDER } from "astro:env/client"
+import { randomSortFunction } from "~/utils/random"
 
 let plugins: {
     artifactId: string
@@ -26,7 +28,7 @@ try {
             ...p,
             link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
         }))
-        .sort(() => 0.5 - Math.random())
+        .sort(randomSortFunction)
         .slice(0, 20)
 
     const subgroupsData = await $fetchApiCached("/plugins/subgroups")
@@ -52,7 +54,7 @@ const carouselPlugins = [...plugins, ...plugins]
                 </p>
             </div>
             <a href="/plugins" class="btn btn-secondary" data-usal="zoomin">
-                See all plugins
+                See All Plugins
             </a>
         </div>
 

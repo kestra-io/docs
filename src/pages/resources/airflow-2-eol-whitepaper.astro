@@ -1,0 +1,69 @@
+---
+import Layout from "~/components/layout.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Quotes from "~/components/common/Quotes.vue"
+import Hero from "~/components/airflow-2-eol-whitepaper/Hero.astro"
+import WhoThisIsFor from "~/components/airflow-2-eol-whitepaper/WhoThisIsFor.astro"
+import VsTable from "~/components/airflow-2-eol-whitepaper/VsTable.astro"
+import Link from "~/components/common/Link.astro"
+
+import shapesImage from "~/components/airflow-2-eol-whitepaper/assets/cta-shapes.png"
+import AppleLogo from "~/assets/teams/apple.svg?raw"
+
+const title =
+    "Airflow 2 is No Longer Maintained — Reaffirm or Rethink Your Orchestration"
+const description =
+    "Airflow 2 reaches end-of-life on April 22, 2026. Download the free guide to help you decide whether to upgrade to Airflow 3 or rethink your orchestration stack."
+
+const COME_AWAY_ITEMS = [
+    {
+        icon: "mdi:cached",
+        title: "What changed in Airflow 3",
+        description:
+            "Airflow 3 is a big rewrite. Schedules, executors, versioning, backfills, and UI all moved — we cover what's new, what broke, and what's just renamed so you don't get surprised mid-migration.",
+    },
+    {
+        icon: "mdi:source-fork",
+        title: "The architectural fork in the road",
+        description:
+            "Code that runs fine in Airflow 2 will not port cleanly. Different DAG shapes, executors, and deployment models lead you to one of two choices: an in-place upgrade or a re-platform decision.",
+    },
+    {
+        icon: "mdi:chart-line",
+        title: "A proven migration path",
+        description:
+            "Whether you're moving incrementally, running both in parallel, or rebuilding on a declarative orchestrator, we walk through concrete migration paths and the trade-offs of each.",
+    },
+]
+
+const quotes = [
+    {
+        quote:
+            "We switched from Airflow because we want engineers solving problems, not coding orchestration. Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        author: "Senior Engineering Manager @ <strong>Apple</strong> (ML Team)",
+        smallLogoSvg: AppleLogo,
+        kpis: [
+            { name: "engineers onboarded", value: "200" },
+            { name: "faster workflow iteration", value: "2x" },
+            { name: "pipeline failures", value: "0" },
+        ],
+    },
+]
+---
+
+<Layout {title} {description}>
+    <Hero />
+    <CardGrid title="What you'll come away with" items={COME_AWAY_ITEMS} />
+    <WhoThisIsFor />
+    <VsTable />
+    <Quotes quotes={quotes} client:visible />
+    <SeeHow imgSrc={shapesImage} cta={{ text: "Book a Demo", href: "/demo" }}>
+        <Fragment slot="title">Ready to explore your options?</Fragment>
+        Talk to our team about what migration looks like, or start building with
+        Kestra for free.
+        <Fragment slot="footer">
+            <Link href="/docs" class="btn btn-secondary">Read the Docs</Link>
+        </Fragment>
+    </SeeHow>
+</Layout>

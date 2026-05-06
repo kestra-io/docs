@@ -1,5 +1,6 @@
 ---
 title: Work with JSON in Kestra
+h1: Parse, Query, and Transform JSON Data in Workflows
 icon: /src/contents/docs/icons/api.svg
 stage: Getting Started
 topics:
@@ -61,7 +62,7 @@ However, if the body is large, we may only want to access a certain part of it. 
 {{ outputs.request.body | jq('.title') | first }}
 ```
 
-This will access the key `title` from the JSON. `jq` will return the result in an array when used within an expression. In order to access the value, the function `first` is added to the end of the expression, removing it from the array.
+This will access the key `title` from the JSON. `jq` will return the result in an array when used within an expression. To access the value, add the function `first` to the end of the expression to remove it from the array.
 
 We can put that into the example:
 
@@ -126,6 +127,6 @@ The log message returns `My response: test`.
 
 ## Debugging Expressions
 
-You can use [Debug Expression](../../05.workflow-components/06.outputs/index.md#using-debug-expression) to test expressions without running your workflow. This is useful if you want to be able to see different parts of the JSON easily.
+You can use [Debug Expression](../../05.workflow-components/06.outputs/index.md#using-debug-expression) to test expressions without running your workflow. This is useful for inspecting different parts of a JSON structure.
 
 ![debug_outputs](./json1.png)

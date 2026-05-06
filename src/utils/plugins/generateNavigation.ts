@@ -1,119 +1,80 @@
 import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
 import { isEntryAPluginElementPredicate, slugify, subGroupName } from "@kestra-io/ui-libs"
+import type { NavItem } from "~/utils/navigation"
+import { toNavTitle } from "./all"
 
-function toNavTitle(title: string) {
-    let startCaseTitle = title.charAt(0).toUpperCase() + title.slice(1)
-    if (title.match(/^[a-z]+[A-Z][a-z]/)) {
-        startCaseTitle = title.replace(/[A-Z][a-z]/, (match) => " " + match)
-    }
-    return startCaseTitle
-        .split(".")
-        .map((string) => string.charAt(0).toUpperCase() + string.slice(1))
-        .join("")
-}
-
-function subGroupWrapperNav(subGroupWrapper: Plugin, parentUrl: string) {
-    return Object.entries(subGroupWrapper)
+function filterDeprecatedElements(plugin: Plugin): [string, PluginElement[]][] {
+    return Object.entries(plugin)
         .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-        .map(([key, value]) => {
-            return {
-                title: toNavTitle(key),
-                isPage: false,
-                path: parentUrl + "#" + slugify(key),
-                children: (value as PluginElement[])
-                    .filter(({ deprecated }) => !deprecated)
-                    .map((item) => ({
-                        title: item.cls.substring(item.cls.lastIndexOf(".") + 1),
-                        path: `${parentUrl}/${slugify(item.cls)}`,
-                    })),
-            }
-        })
+        .map(([type, elements]) => [
+            type,
+            (elements as PluginElement[]).filter(({ deprecated }) => !deprecated),
+        ] as [string, PluginElement[]])
+        .filter(([, elements]) => elements.length > 0)
 }
 
-interface Navigation {
-    title: string
-    path: string
-    children?: Navigation[] | undefined
-    isPage?: boolean
+function buildElementNav(plugin: Plugin, parentUrl: string): NavItem[] {
+    return filterDeprecatedElements(plugin).map(([key, elements]) => ({
+        title: toNavTitle(key),
+        isPage: false,
+        path: `${parentUrl}#${slugify(key)}`,
+        children: elements.map((item) => ({
+            title: item.cls.substring(item.cls.lastIndexOf(".") + 1),
+            path: `${parentUrl}/${slugify(item.cls)}`,
+        })),
+    }))
 }
 
-export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Navigation[] {
-    const subGroupsByGroup = pluginsSubGroups.reduce(
-        (result, subGroupWrapper) => {
-            const filteredElementsByTypeEntries = Object.entries(subGroupWrapper)
-                .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
-                .map(([elementType, elements]) => [
-                    elementType,
-                    (elements as PluginElement[]).filter(({ deprecated }) => !deprecated),
-                ])
-                .filter(([, elements]) => elements.length > 0)
+function stripDeprecated(plugin: Plugin): Plugin {
+    const filtered = filterDeprecatedElements(plugin)
+    if (filtered.length === 0) return undefined as unknown as Plugin
 
-            if (filteredElementsByTypeEntries.length === 0) {
-                return result
-            }
+    const nonElementEntries = Object.entries(plugin)
+        .filter(([key, value]) => !isEntryAPluginElementPredicate(key, value))
 
-            subGroupWrapper = Object.fromEntries([
-                ...Object.entries(subGroupWrapper).filter(
-                    ([key, value]) => !isEntryAPluginElementPredicate(key, value),
-                ),
-                ...filteredElementsByTypeEntries,
-            ])
+    return Object.fromEntries([...nonElementEntries, ...filtered]) as unknown as Plugin
+}
 
-            if (!result[subGroupWrapper.group]) {
-                result[subGroupWrapper.group] = []
-            }
-            result[subGroupWrapper.group].push(subGroupWrapper)
-            return result
-        },
-        {} as Record<string, Plugin[]>,
-    )
-    let sortedPluginsHierarchy = Object.entries(subGroupsByGroup)
-        .map(([_, subGroupsWrappers]) => {
-            let plugin = subGroupsWrappers.find(
-                (subGroupWrapper) => subGroupWrapper.subGroup === undefined,
-            )!
-            let rootPluginUrl = "/plugins/" + slugify(plugin.name)
-            let pluginChildren
-            if (subGroupsWrappers.length > 1) {
-                pluginChildren = subGroupsWrappers
-                    .filter((subGroupWrapper) => subGroupWrapper.subGroup !== undefined)
-                    .map((subGroupWrapper) => {
-                        const subGroupUrl = `${rootPluginUrl}/${slugify(subGroupName(subGroupWrapper))}`
+export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): NavItem[] {
+    const subGroupsByGroup: Record<string, Plugin[]> = {}
+
+    for (const raw of pluginsSubGroups) {
+        const plugin = stripDeprecated(raw)
+        if (!plugin) continue
+        ;(subGroupsByGroup[plugin.group] ??= []).push(plugin)
+    }
+
+    const sorted = Object.values(subGroupsByGroup)
+        .map((wrappers) => {
+            const root = wrappers.find((p) => p.subGroup === undefined)!
+            const rootUrl = `/plugins/${slugify(root.name)}`
+
+            const subGroups = wrappers.filter((p) => p.subGroup !== undefined)
+
+            const children = subGroups.length > 1
+                ? subGroups.map((p) => {
+                        const url = `${rootUrl}/${slugify(subGroupName(p))}`
                         return {
-                            title: toNavTitle(subGroupWrapper.title),
-                            path: subGroupUrl,
-                            children: subGroupWrapperNav(subGroupWrapper, subGroupUrl),
+                            title: toNavTitle(p.title),
+                            path: url,
+                            children: buildElementNav(p, url),
                         }
                     })
-            }
-            // There is no subgroups, we skip that part and directly put plugin elements below
-            else {
-                pluginChildren = subGroupWrapperNav(subGroupsWrappers[0], rootPluginUrl)
-            }
+                : buildElementNav(subGroups[0] ?? wrappers[0], rootUrl)
+
             return {
-                title: toNavTitle(plugin.title),
-                path: rootPluginUrl,
-                children: pluginChildren,
+                title: toNavTitle(root.title),
+                path: rootUrl,
+                children,
             }
         })
         .sort((a, b) => {
-            const nameA = a.title.toLowerCase(),
-                nameB = b.title.toLowerCase()
-
-            if (nameA === "core") {
-                return -1
-            }
-            if (nameB === "core") {
-                return 1
-            }
-
-            return nameA === nameB ? 0 : nameA < nameB ? -1 : 1
+            const nameA = a.title.toLowerCase()
+            const nameB = b.title.toLowerCase()
+            if (nameA === "core") return -1
+            if (nameB === "core") return 1
+            return nameA.localeCompare(nameB)
         })
-    return [
-        {
-            title: "Plugins",
-            path: "/plugins",
-            children: sortedPluginsHierarchy,
-        },
-    ]
+
+    return [{ title: "Plugins", path: "/plugins", children: sorted }]
 }

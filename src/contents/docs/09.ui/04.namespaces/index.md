@@ -1,13 +1,12 @@
 ---
-title: Namespaces in the Kestra UI – Manage Namespace Resources
+title: "Namespaces in Kestra UI: Manage Resources"
+h1: Manage Flows, Files, and KV Store per Namespace
 description: Overview of the Namespaces UI in Kestra. Manage flows, files, KV store, and dependencies specific to each Namespace in a central view.
 sidebarTitle: Namespaces
 icon: /src/contents/docs/icons/ui.svg
 ---
 
 Manage all resources associated with a Namespace in one place.
-
-## Manage Namespace resources from the UI
 
 The **Namespaces** tab in the UI for Open Source users displays all Namespaces associated with different flows in your Kestra instance.
 
@@ -17,7 +16,7 @@ The **Namespaces** tab in the UI for Open Source users displays all Namespaces a
 
 ## Interactive demo
 
-Explore the Namespace UI through this interactive demo (Kestra v0.23):
+Explore the Namespace UI through this interactive demo:
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/5CbeQf4naMpPJvz8mNbk?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Namespaces | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -54,7 +53,7 @@ For more information, see the [KV Store concept guide](../../06.concepts/05.kv-s
 
 ## Files
 
-The **Files** tab lets you create, edit, and manage Namespace Files used in your flows — from custom Python scripts to images. Keep all your resources organized in one place. Learn more in [Namespace Files](../../06.concepts/02.namespace-files/index.md).
+The **Files** tab lets you create, edit, and manage Namespace Files used in your flows — from custom Python scripts to images. Learn more in [Namespace Files](../../06.concepts/02.namespace-files/index.md).
 
 ![Namespace Files](./namespace-files-tab.png)
 

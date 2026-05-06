@@ -5,6 +5,7 @@ date: 2023-05-05T12:00:00
 category: Solutions
 author:
   name: Ludovic Dehon
+  linkedin: https://www.linkedin.com/in/ludovic-dehon/
   image: "ldehon"
   twitter: "@tchiotludo"
 image: ./main.jpg
@@ -35,6 +36,7 @@ Moreover, even in the most simplified Debezium deployment, there are typically a
 Although Debezium shines as an efficient and performance-oriented solution in real-time Change Data Capture (CDC) use cases, this perpetual operation can become a resource drain. The always-on nature of Debezium's connectors may lead to an overuse of resources, especially in scenarios where changes are not frequent or the data volume is low. Hence, while Debezium's continuous monitoring feature is an asset in certain scenarios, it may be an overkill and resource drain in others.
 
 For example, from [Amazon MSK connect](https://docs.aws.amazon.com/msk/latest/developerguide/msk-connect-connectors.html) documentation:
+
 > Each MCU represents 1 vCPU of compute and 4 GiB of memory.
 
 
@@ -102,7 +104,7 @@ This code snippet demonstrates how Kestra uses YAML to manage data pipelines. It
 
 ## Broadening the Data Pipeline Possibilities with Kestra ##
 
-Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins/), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
+Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
 
 Kestra's Debezium plugins include connectors for Postgres and MySQL, PostgreSQL, Oracle, SQL Server, and more. The ongoing development aims to continually improve and expand the product's capabilities.
 

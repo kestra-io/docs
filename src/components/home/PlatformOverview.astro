@@ -1,0 +1,352 @@
+---
+import { Image } from "astro:assets"
+
+import agent from "./assets/overview/agent.png"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import code from "./assets/overview/code.png"
+import eventDriven from "./assets/overview/event-driven.png"
+import governance from "./assets/overview/governance.png"
+import { API_URL } from "astro:env/client"
+
+const totalPlugins = await fetchTotalPluginsCount()
+
+const images = [
+    {
+        src: code,
+        alt: "Code workflows",
+        className: "code-workflow",
+        title: "Declarative Orchestration",
+        description:
+            "Write workflows in YAML. Version them. Review them. Ship them.",
+    },
+    {
+        src: agent,
+        alt: "Agent workflows",
+        className: "agent-workflow",
+        title: "Connect Everything",
+        description:
+            "Cloud, data, infra, CI/CD, ITSM, messaging. Plug into your entire stack.",
+        connectors: true,
+    },
+    {
+        src: eventDriven,
+        alt: "Event-driven workflows",
+        className: "event-driven-workflow",
+        title: "Batch and Event-Driven",
+        description:
+            "Cron, events, webhooks, messages. One engine to run them all.",
+    },
+    {
+        src: governance,
+        alt: "Governance workflows",
+        className: "governance-workflow",
+        title: "Governance and Reliability",
+        description:
+            "Retries, timeouts, SLAs, RBAC, audit logs. SOC 2, Built to run in production.",
+    },
+]
+
+const pluginsDisplayed = [
+    "dbt.cli.DbtCLI",
+    "ansible.cli.AnsibleCLI",
+    "gcp.cli.GCloudCLI",
+    "servicenow.Get",
+]
+const pluginIcons = await Promise.all(
+    pluginsDisplayed.map(async (plugin) => {
+        try {
+            const iconResponse = await fetch(
+                `${API_URL}/plugins/icons/io.kestra.plugin.${plugin}`,
+            )
+            return await iconResponse.text()
+        } catch (e) {
+            console.warn(`Could not load icon for plugin ${plugin}:`, e)
+            return null
+        }
+    }),
+)
+---
+
+<section class="platform-overview" aria-labelledby="platform">
+    <h2 id="platform">One Platform. All Your Workflows.</h2>
+    <div class="platform-wrapper">
+        <div class="image-stack">
+            {
+                images.map(
+                    (
+                        { src, alt, title, description, className, connectors },
+                        i,
+                    ) => (
+                        <figure style={`--i: ${i - (images.length - 1) / 2};`}>
+                            <Image
+                                src={src}
+                                alt={alt}
+                                class="stack-image"
+                                loading="lazy"
+                            />
+                            <figcaption class={className}>
+                                <h3>{title}</h3>
+                                <p>{description}</p>
+                                {connectors && (
+                                    <p class="connectors">
+                                        {pluginIcons.map((icon, index) => (
+                                            <span set:html={icon} />
+                                        ))}
+                                        {totalPlugins}+ plugins
+                                    </p>
+                                )}
+                            </figcaption>
+                        </figure>
+                    ),
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    const THRESHOLD = -250
+    const stack = document.querySelector(".platform-wrapper")
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                const isEntryAboveTheFold =
+                    entry.boundingClientRect.top < THRESHOLD
+                entry.target.classList.toggle(
+                    "expanded",
+                    entry.isIntersecting || isEntryAboveTheFold,
+                )
+            })
+        },
+        { threshold: 0.6 },
+    )
+    if (stack) {
+        observer.observe(stack)
+    }
+</script>
+
+<style lang="scss">
+    section {
+        padding: 5rem 2rem;
+        background-color: white;
+        --background-gradient-opacity: 100%;
+        @include media-breakpoint-up(md) {
+            --background-gradient-opacity: 70%;
+        }
+        background-image:
+            linear-gradient(
+                to bottom,
+                var(--hp-background-purple-light) 0%,
+                var(--hp-background-purple-light) 1%,
+                color-mix(
+                        in srgb,
+                        var(--hp-background-purple-light) 20%,
+                        white 50%
+                    )
+                    40%,
+                #ffffffdf 100%
+            ),
+            radial-gradient(
+                ellipse at top center,
+                transparent 0,
+                color-mix(
+                        in srgb,
+                        #ffffff var(--background-gradient-opacity),
+                        transparent 65%
+                    )
+                    30%,
+                color-mix(
+                        in srgb,
+                        #ffffff var(--background-gradient-opacity),
+                        transparent 100%
+                    )
+                    100%
+            ),
+            linear-gradient(
+                to right,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--hp-border-secondary) 1px,
+                transparent 1px
+            );
+        background-size:
+            100% 100%,
+            100% 100%,
+            var(--hp-grid-size) var(--hp-grid-size),
+            var(--hp-grid-size) var(--hp-grid-size);
+        background-position: center bottom;
+        color: var(--hp-content-secondary);
+        text-align: center;
+    }
+    .platform-overview {
+        text-align: center;
+        padding: 4rem 0;
+        color: var(--hp-content-primary);
+    }
+
+    .platform-wrapper {
+        position: relative;
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        --stack-offset: -320px;
+        @include media-breakpoint-up(md) {
+            --stack-offset: -50px;
+            &.expanded {
+                --stack-offset: -150px;
+                figcaption {
+                    opacity: 1;
+                }
+            }
+        }
+        figcaption {
+            position: static;
+            text-align: left;
+            transition: all 0.3s ease;
+            padding-block: 1rem;
+            border-radius: 0.5rem;
+            --figure-bar-width: 20px;
+
+            .connectors {
+                display: flex;
+                gap: 0.5rem;
+                margin-top: 1rem;
+                justify-content: start;
+                white-space: nowrap;
+                align-items: center;
+                gap: 0.5rem;
+
+                span {
+                    width: 24px;
+                    height: 24px;
+                    display: flex;
+                    flex-shrink: 0;
+                    justify-content: center;
+                    align-items: center;
+                    @include media-breakpoint-up(md) {
+                        width: 36px;
+                        height: 36px;
+                        border-radius: 4px;
+                        background-color: #ffffff;
+                        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+                    }
+
+                    :global(svg) {
+                        width: 24px;
+                        height: 24px;
+                    }
+                }
+            }
+
+            @include media-breakpoint-up(md) {
+                opacity: 0;
+                padding: 1rem;
+                position: absolute;
+                width: 250px;
+                z-index: 3;
+                background: #ffffffdf;
+                transform: translateY(calc(var(--i) * var(--stack-offset)));
+            }
+            @include media-breakpoint-up(lg) {
+                --figure-bar-width: 115px;
+                z-index: 0;
+                background: none;
+                &:before {
+                    content: "";
+                    position: absolute;
+                    z-index: 1;
+                    width: var(--figure-bar-width);
+                    height: 1px;
+                    background: var(--hp-border-secondary);
+                    top: 2rem;
+                }
+            }
+            h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            p {
+                font-size: 0.8rem;
+                color: var(--hp-content-secondary);
+                margin: 0;
+            }
+        }
+        figure:nth-child(even) figcaption {
+            @include media-breakpoint-up(md) {
+                top: 42%;
+                right: -1rem;
+                text-align: right;
+            }
+            @include media-breakpoint-up(lg) {
+                right: 0;
+                text-align: left;
+            }
+            &:before {
+                right: 100%;
+            }
+            &:after {
+                left: calc(var(--figure-bar-width) * -1);
+            }
+        }
+
+        // on odd indexes, position caption on the left, otherwise on the right
+        figure:nth-child(odd) figcaption {
+            @include media-breakpoint-up(md) {
+                left: -1rem;
+                top: 49%;
+            }
+            @include media-breakpoint-up(lg) {
+                left: 0;
+                text-align: right;
+            }
+            &:before {
+                left: 100%;
+            }
+            &:after {
+                right: calc(var(--figure-bar-width) * -1);
+            }
+        }
+    }
+
+    .image-stack {
+        position: relative;
+        margin: 2rem auto 0;
+        max-width: 1150px;
+        figure {
+            padding-inline: 1.5rem;
+            @include media-breakpoint-up(md) {
+                padding-inline: 0;
+            }
+        }
+        @include media-breakpoint-up(md) {
+            height: 700px;
+        }
+    }
+
+    .stack-image {
+        max-width: none;
+        width: 100%;
+        margin-top: 2rem;
+        border: 1px solid var(--hp-border-secondary);
+        border-radius: 1rem;
+        box-shadow: -2px 2px 0 0 var(--hp-border-secondary);
+        @include media-breakpoint-up(md) {
+            margin-top: 0;
+            position: absolute;
+            z-index: 1;
+            left: 52%;
+            top: 30%;
+            width: 438px;
+            box-shadow:
+                -3px 4px 0 0 var(--hp-border-secondary),
+                -15px 20px 40px rgba(167, 150, 255, 0.3);
+            transform: translateX(-50%)
+                translateY(calc(var(--i) * var(--stack-offset, -50px)))
+                scaleY(0.7) skew(20deg) rotate(-9deg);
+            transition: transform 0.3s ease;
+        }
+    }
+</style>

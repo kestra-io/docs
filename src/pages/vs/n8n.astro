@@ -1,6 +1,6 @@
 ---
 import { getEntry } from "astro:content"
-import Layout from "~/components/layout.astro"
+import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
 import BusinessValue from "~/components/versus/BusinessValue.astro"
@@ -8,7 +8,7 @@ import SetupSpeed from "~/components/versus/SetupSpeed.astro"
 import EaseOfUse from "~/components/versus/EaseOfUse.astro"
 import VisualPreview from "~/components/versus/VisualPreview.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
-import SocialProof from "~/components/common/SocialProof.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
 import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
 import DecisionGuide from "~/components/versus/DecisionGuide.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -16,21 +16,18 @@ import Faq from "~/components/common/Faq.vue"
 
 import n8nLogo from "~/components/versus/assets/n8n.svg?raw"
 import n8nMonogram from "~/components/versus/assets/n8n-monograme.svg?raw"
-import lmfrImage from "~/components/versus/assets/lmfr.png"
 import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
 import n8nImg from "~/components/versus/assets/n8n-img.svg"
-import heroUI from "~/components/versus/assets/hero_ui_n8n.webp"
-import heroBg from "~/components/versus/assets/hero_bg.webp"
 
-const entry = await getEntry("vsPages", "n8n")
-if (!entry) throw new Error("Could not find vsPages/n8n collection entry")
+const entry = await getEntry("vs", "n8n")
+if (!entry) throw new Error("Could not find vs/n8n collection entry")
 
 const {
     title,
-    description,
+    shortDescription,
     competitorName,
 
     intro,
@@ -40,22 +37,20 @@ const {
     easeOfUse,
     visualPreview,
     featureGrid,
-    socialProof,
+    testimonials,
     platformStrengths,
     decisionGuide,
     commonQuestions,
 } = entry.data
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<VsLayout {title} description={shortDescription} {commonQuestions}>
     <Intro
         {...intro}
         competitor={{
             name: competitorName,
             monogram: n8nMonogram,
         }}
-        image={{ src: heroUI, alt: "kestra ui" }}
-        bgImg={heroBg.src}
     />
     <Philosophy
         {...philosophy}
@@ -103,9 +98,8 @@ const {
             competitorLogo: n8nLogo,
         }}
     />
-    <SocialProof
-        {...socialProof}
-        image={{ ...socialProof.image, src: lmfrImage }}
+    <VsTestimonial
+        quotes={testimonials}
     />
     <PlatformStrengths
         {...platformStrengths}
@@ -128,4 +122,4 @@ const {
         </Fragment>
         See how Kestra can simplify your workflows—and scale beyond app automation.
     </SeeHow>
-</Layout>
+</VsLayout>

@@ -1,5 +1,6 @@
 ---
 title: Task Cache in Kestra – Reuse Expensive Results
+h1: Cache Task Outputs to Skip Re-Execution and Speed Up Flows
 description: Optimize performance with Task Caching in Kestra. Cache outputs of expensive tasks to skip re-execution and speed up workflows when inputs haven't changed.
 sidebarTitle: Task Cache
 icon: /src/contents/docs/icons/flow.svg
@@ -7,8 +8,6 @@ version: "0.24.0"
 ---
 
 Cache the status and outputs of computationally expensive operations.
-
-## Task cache – reuse expensive results
 
 The `taskCache` property stores a task’s status and outputs in Kestra’s database. When the same execution runs again with identical inputs, Kestra skips the task and reuses the cached outputs. You can enable caching on any task, but it is most effective for heavy operations such as large data extractions or long-running scripts.
 
@@ -37,10 +36,12 @@ In the example below, the flow caches the outputs of a computationally expensive
 ```yaml
 id: caching
 namespace: company.team
+
 tasks:
   - id: transactions
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/transactions.csv
+
   - id: products
     type: io.kestra.plugin.core.http.Download
     uri: https://huggingface.co/datasets/kestra/datasets/resolve/main/csv/cache_demo/products.csv
@@ -48,6 +49,7 @@ tasks:
     taskCache:
       enabled: true
       ttl: PT24H
+
   - id: duckdb
     type: io.kestra.plugin.jdbc.duckdb.Query
     store: true

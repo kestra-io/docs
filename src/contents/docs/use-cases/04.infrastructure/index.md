@@ -1,18 +1,19 @@
 ---
-title: Automate Infrastructure
+title: Automate Infrastructure Workflows in Kestra
+h1: Provision Resources, Manage Builds & Scale Infrastructure
 sidebarTitle: Infrastructure
-description: Provision resources, manage builds, and scale infrastructure workflows
+description: Provision resources, manage builds, and scale infrastructure workflows with Kestra. Automate cloud provisioning, CI/CD, and Terraform from one platform.
 icon: /src/contents/docs/icons/kestra.svg
 ---
 
-DevOps and engineering teams automate infrastructure to ensure consistency across environments, avoid manual errors, and scale resources on demand. With Kestra, you can orchestrate Docker builds, Terraform deployments, Ansible playbooks, and cloud provisioning in a unified workflow — triggered by schedules, code changes, or external events.
+DevOps and engineering teams automate infrastructure to ensure consistency across environments, avoid manual errors, and scale resources on demand. With Kestra, you can orchestrate Docker builds, Terraform, OpenTofu, and Terragrunt deployments, Ansible playbooks, and cloud provisioning in a unified workflow — triggered by schedules, code changes, or external events.
 
 ## Automate infrastructure workflows with Kestra
 
 ## What is Infrastructure Automation?
 
 Infrastructure automation is the process of codifying and orchestrating infrastructure tasks to manage cloud resources, build container images, and deploy applications. Kestra handles dependencies, retries, and scaling so you can:
-- **Provision resources** dynamically (e.g., spin up cloud VM instances via Terraform)
+- **Provision resources** dynamically (e.g., spin up cloud VM instances via Terraform, OpenTofu, or Terragrunt)
 - **Build and deploy** containers for critical applications
 - **Scale workloads** using task runners (AWS ECS Fargate, Azure Batch, Kubernetes) or dedicated worker groups
 - **Roll back** code changes to a previous revision if some infrastructure workflows fail.
@@ -21,7 +22,7 @@ Infrastructure automation is the process of codifying and orchestrating infrastr
 
 ## Why Use Kestra for Infrastructure Automation?
 
-1. **Unified Platform** – Combine Docker, Terraform, Ansible, and cloud CLI tools in a declarative YAML flow.
+1. **Unified Platform** – Combine Docker, Terraform, OpenTofu, Terragrunt, Ansible, and cloud CLI tools in a declarative YAML flow.
 2. **Dynamic Scaling** – Task runners provision containers on-demand (e.g., AWS Fargate) for heavy containerized workloads
 3. **State Management** – Securely pass secrets, variables, and outputs between tasks (e.g., Docker image tag → Terraform config).
 4. **Failure Handling** – Retry failed Terraform plans or Docker builds with custom retry policies, and get alerts on failures.
@@ -33,7 +34,7 @@ Infrastructure automation is the process of codifying and orchestrating infrastr
 
 ## Example: Infrastructure Automation Flow
 
-This workflow builds a Docker image, runs a container, provisions cloud resources with Terraform, and logs the results:
+This workflow builds a Docker image, runs a container, provisions cloud resources with Terraform, and logs the results. You can substitute the `TerraformCLI` task with [OpenTofuCLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli) for a drop-in open-source alternative, or [TerragruntCLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli) when orchestrating multi-module configurations.
 
 ```yaml
 id: infrastructure_automation
@@ -137,7 +138,7 @@ tasks:
 ---
 
 ## Next Steps
-- [Explore plugins](https://kestra.io/plugins) for Docker, Terraform, Ansible, Script tasks (Python, Go, Shell, Powershell, Ruby and more), and cloud providers.
+- [Explore plugins](https://kestra.io/plugins) for Docker, Terraform, OpenTofu, Terragrunt, Ansible, Script tasks (Python, Go, Shell, Powershell, Ruby and more), and cloud providers.
 - [Explore Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) for scaling custom scripts and containers.
 - [Read how-to guides](../../15.how-to-guides/index.mdx) on how to integrate with Grafana, Prometheus, and other monitoring tools.
 - [Explore video tutorials](https://www.youtube.com/@kestra-io) on our YouTube channel.

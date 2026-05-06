@@ -2,7 +2,7 @@ import { $fetchCached } from "~/utils/fetch.ts"
 
 export interface GitHubRelease {
     tag_name: string
-    name: string | null
+    name?: string
     body: string
     published_at: string
     draft: boolean
@@ -22,10 +22,13 @@ function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
     const before = body.slice(0, splitIndex)
     const after = body.slice(splitIndex)
 
-    const transformedBefore = before.replace(/^-\s([a-f0-9]{7})/gm, (match, commitId) => {
-        const url = `https://github.com/${repo}/commit/${commitId}`
-        return `- [\`${commitId}\`](${url})`
-    })
+    const transformedBefore = before.replace(
+        /^-\s([a-f0-9]{7})/gm,
+        (match, commitId) => {
+            const url = `https://github.com/${repo}/commit/${commitId}`
+            return `- [\`${commitId}\`](${url})`
+        },
+    )
     const transformedAfter = after.replace(/^-\s([a-f0-9]{7})/gm, "- ")
 
     return transformedBefore + transformedAfter
@@ -33,26 +36,30 @@ function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
 
 export async function fetchMajorReleases(limit = 20): Promise<GitHubRelease[]> {
     try {
-        const data = await $fetchCached(`https://api.github.com/repos/kestra-io/kestra/releases?per_page=150`)
-        const majorReleases = data.filter((r: any) => !r.draft && !r.prerelease)
+        const data = await $fetchCached(
+            `https://api.github.com/repos/kestra-io/kestra/releases?per_page=150`,
+        )
+        const majorReleases = data.filter((r: any) => !r.draft && !r.prerelease && !r.tag_name.includes("/"))
 
         return majorReleases.slice(0, limit).map((release: any) => ({
             ...release,
             body: modifyCommitLink(release.body),
         }))
-    } catch (e) {
+    } catch {
         return []
     }
 }
 
 export async function fetchReleaseByTag(tag: string) {
     try {
-        const data = await $fetchCached(`https://api.github.com/repos/kestra-io/kestra/releases/tags/${tag}`,)
+        const data = await $fetchCached(
+            `https://api.github.com/repos/kestra-io/kestra/releases/tags/${tag}`,
+        )
         return {
             ...data,
             body: modifyCommitLink(data.body),
         }
-    } catch (e) {
-        return null;
+    } catch {
+        return null
     }
 }

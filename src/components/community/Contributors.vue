@@ -55,6 +55,8 @@
 
 <script>
     import { $fetchApiCached } from "~/utils/fetch.ts"
+    import { NO_RANDOM_ORDER } from "astro:env/client"
+    import { randomSortFunction } from "~/utils/random"
 
     export default {
         setup() {
@@ -109,11 +111,12 @@
         },
         async created() {
             try {
-                const { data } = await $fetchApiCached("/communities/github/contributors")
-                this.contributors = data
-                this.contributorsRand = this.contributors.toSorted(
-                    () => 0.5 - Math.random(),
+                const data = await $fetchApiCached(
+                    "/communities/github/contributors",
                 )
+                this.contributors = data
+                this.contributorsRand =
+                    this.contributors.toSorted(randomSortFunction)
             } catch (e) {
                 this.contributors = []
             }

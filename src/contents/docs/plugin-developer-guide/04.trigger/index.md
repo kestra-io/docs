@@ -1,5 +1,6 @@
 ---
 title: Develop a Kestra Trigger Plugin
+h1: How to Build Polling and Realtime Trigger Plugins for Kestra
 sidebarTitle: Develop a Trigger
 icon: /src/contents/docs/icons/dev.svg
 description: Learn how to develop custom Trigger plugins for Kestra, including Polling and Realtime triggers.
@@ -75,7 +76,7 @@ This method must return an `Optional<Execution>` with:
 You have to provide an `Output` for any output needed (result of query, result of file system listing, etc.) that will be available for the flow tasks within the `{{ trigger.* }}` variables.
 
 :::alert{type="warning"}
-Note that the trigger must free the resource for the next evaluation. For each interval, this method will be called and if the conditions are met, an execution will be created.
+The trigger must free the resource for the next evaluation. For each interval, this method will be called and if the conditions are met, an execution will be created.
 
 To avoid this, move the file or remove the record from the database; take an action to avoid an infinite triggering.
 :::

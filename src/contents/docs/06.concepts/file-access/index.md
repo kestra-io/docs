@@ -1,14 +1,13 @@
 ---
-title: File Access in Kestra – Use Local and Namespace Files
-description: Access local and namespace files in Kestra with universal file protocol.
+title: "File Access in Kestra: Local and Namespace Files"
+h1: Access Local and Namespace Files with Universal Protocol
+description: Access local and namespace files in Kestra using the universal file protocol. Learn how to read, write, and share files between tasks and namespaces.
 sidebarTitle: File Access in Kestra
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.24.0"
 ---
 
 Access local and namespace files in Kestra with universal file protocol.
-
-## File access – use local and Namespace Files
 
 Kestra supports a universal file protocol that simplifies how to reference files in your flows. This protocol provides more consistent and flexible handling of local and [namespace files](../02.namespace-files/index.md) in your flows.
 
@@ -63,9 +62,9 @@ Note that to use the `file:///` scheme, you will need to bind-mount the host dir
               - /scripts
 ```
 
-Keep in mind that if you see the following error:
+If you see the following error:
 
-```
+```plaintext
 java.lang.SecurityException: The path /scripts/hello.py is not authorized. Only files inside the working directory are allowed by default, other paths must be allowed either globally inside the Kestra configuration using the `kestra.local-files.allowed-paths` property, or by plugin using the `allowed-paths` plugin configuration.`.
 ```
 

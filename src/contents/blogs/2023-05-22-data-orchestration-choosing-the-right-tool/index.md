@@ -5,6 +5,7 @@ date: 2023-05-22T18:00:00
 category: Solutions
 author:
   name: Martin Pierre Roset
+  linkedin: https://www.linkedin.com/in/martin-pierre-roset/
   image: "mproset"
 image: ./main.jpg
 ---
@@ -30,7 +31,7 @@ Kestra's intuitive and user-friendly interface makes the tool accessible to both
 ### 5-Integration & Extension capabilities ###
 ![plugins](./plugins.png)
 
-Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins/), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
+Kestra's flexibility and versatility, underlined by its extensive [range of plugins](/plugins), makes it an ideal tool for creating complex workflows with deep integrations with multiple systems. For systems without existing plugins, Kestra's compatibility with containers such as **Docker** and **Kubernetes** makes integration straightforward.
 
 ### 6-Monitoring ###
 ![monitoring](./Monitoring.png)
