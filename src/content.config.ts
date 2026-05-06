@@ -14,6 +14,7 @@ export const collections = {
         schema: () =>
             z.object({
                 title: z.string(),
+                h1: z.string().optional(),
                 updated: z.coerce.date().optional(),
                 sidebarTitle: z.string().optional(),
                 description: z.string().optional(),

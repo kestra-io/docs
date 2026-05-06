@@ -1,4 +1,23 @@
+import { execFileSync } from "child_process"
+import path from "path"
+
 type SitemapEntry = string | { loc: string; lastmod?: string | null }
+
+/**
+ * Returns the date of the last git commit that touched the given file,
+ * or null if the file is untracked or the git command fails.
+ */
+export const gitLastModified = (filePath: string): Date | null => {
+    try {
+        const fp = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath)
+        const output = execFileSync("git", ["log", "-1", "--format=%cI", "--", fp], { encoding: "utf8" }).trim()
+        if (!output) return null
+        const date = new Date(output)
+        return Number.isNaN(date.getTime()) ? null : date
+    } catch {
+        return null
+    }
+}
 
 export const formatLastMod = (d?: string | Date | null): string | null => {
     if (!d) return null
@@ -22,12 +41,12 @@ export const sitemapResponse = (entries: SitemapEntry[]): Response => {
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd http://www.google.com/schemas/sitemap-image/1.1 http://www.google.com/schemas/sitemap-image/1.1/sitemap-image.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
     ${normalized
-        .map((r) =>
-            r.lastmod
-                ? `<url><loc>${r.loc}</loc><lastmod>${r.lastmod}</lastmod></url>`
-                : `<url><loc>${r.loc}</loc></url>`,
-        )
-        .join("\n    ")}
+            .map((r) =>
+                r.lastmod
+                    ? `<url><loc>${r.loc}</loc><lastmod>${r.lastmod}</lastmod></url>`
+                    : `<url><loc>${r.loc}</loc></url>`,
+            )
+            .join("\n    ")}
 </urlset>`
 
     return new Response(xml, {
