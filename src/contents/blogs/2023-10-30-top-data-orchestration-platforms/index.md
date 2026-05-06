@@ -1,7 +1,7 @@
 ---
 title: "Top Data Orchestration Platforms in 2026"
 description: "Compare the top data orchestration platforms in 2026, including Airflow, Kestra, Dagster, Prefect, and cloud-native options. Find the right tool for your team's needs."
-date: 2026-05-04T12:00:00
+date: 2026-04-10T12:00:00
 category: Solutions
 author:
   name: Dario Radecic

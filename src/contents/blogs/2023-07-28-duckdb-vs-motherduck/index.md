@@ -1,7 +1,7 @@
 ---
 title: "DuckDB vs. MotherDuck: When to Move to the Cloud"
 description: "DuckDB is fast and free. MotherDuck adds cloud storage, collaboration, and scale. Here's how to decide which one fits your use case and how to orchestrate both with Kestra."
-date: 2026-05-05T14:00:00
+date: 2026-02-05T14:00:00
 category: Solutions
 author:
   name: Anna Geller

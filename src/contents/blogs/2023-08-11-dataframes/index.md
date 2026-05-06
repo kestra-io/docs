@@ -1,7 +1,7 @@
 ---
 title: "Polars, DuckDB, Pandas, Fugue, Daft: Which Dataframe and SQL Tool Is Best?"
 description: "A practical comparison of open-source dataframe and SQL frameworks for data engineering and analytics, including Polars, DuckDB, Pandas, Fugue, and Daft."
-date: 2026-05-05T16:00:00
+date: 2026-03-17T16:00:00
 category: Solutions
 author:
   name: Anna Geller
