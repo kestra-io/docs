@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/geller-anna/
+  role: "Product Lead"
   image: "ageller"
 image: ./main.png
 ---
