@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: Anna Geller
   linkedin: https://www.linkedin.com/in/geller-anna/
+  medium: https://annageller.medium.com/
   role: "Product Lead"
   image: "ageller"
 image: ./main.png
@@ -54,7 +55,7 @@ The fix took 15 minutes and the flow now does four things that would have been a
 
 ### Automatic fallback to a different model
 
-The single classification task is now three Classification tasks chained with `runIf`:
+The single classification task is now three [Classification](/plugins/plugin-ai/completion) tasks chained with `runIf`:
 
 ```yaml
 - id: classify
@@ -86,7 +87,7 @@ The trade-off is that Gemini 2.5 Pro could technically lead to slightly worse cl
 
 ### Retries before the fallback even fires
 
-Some failures are noise: one 503 in a moment of high contention, immediately fine on the next call. Kestra's task-level retry handles these without the fallback ever firing:
+Some failures are noise: one 503 in a moment of high contention, immediately fine on the next call. Kestra's task-level [retry](/docs/workflow-components/retries) handles these without the fallback ever firing:
 
 ```yaml
 retry:
@@ -143,4 +144,5 @@ For workflows that mix deterministic and probabilistic steps, the orchestrator l
 
 A reliable AI workflow handles the model call as one task among many, with the same care you'd give any flaky third-party API. The orchestrator's job is to make that affordable: retry once for noise, fall back across providers for outages, queue concurrent runs so you don't hammer your own quota, and route alerts through one channel instead of five.
 
-From my experience, when you stop treating the model as the centerpiece and start treating it as one node in a graph, the failure modes become tractable. 
+From my experience, when you stop treating the model as the centerpiece and start treating it as one node in a graph, the failure modes become tractable. If you want to see how Kestra approaches this end-to-end, take a look at our [AI automation](/ai-automation) page.
+
