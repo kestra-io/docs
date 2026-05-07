@@ -2,7 +2,7 @@
 
 > Kestra is an open-source workflow orchestration platform. Workflows are defined declaratively in YAML as **flows**. Each flow has an `id`, a `namespace`, a list of `tasks`, and optionally `inputs`, `outputs`, `triggers`, and `variables`. Tasks reference plugins via a fully-qualified `type` such as `io.kestra.plugin.core.log.Log`. Dynamic values use `{{ ... }}` Pebble expressions referencing `inputs`, `outputs`, `trigger`, `vars`, `execution`, and other context variables. Kestra is API-first: every action available in the UI is also available via REST API.
 >
-> **For agents and LLMs:** Append `.md` to any `kestra.io/docs/*` URL to retrieve that page as plain Markdown, or set `Accept: text/markdown` on the request. Use this to fetch full page content when a link in this file is relevant to your task.
+> **For agents and LLMs:** Append `.md` to any `kestra.io/docs/*` URL to retrieve that page as plain Markdown, or set `Accept: text/markdown` on the request. For a full content snapshot of all pages, see [/llms-full.txt](/llms-full.txt). For the complete documentation index, see [/llms.txt](/llms.txt).
 
 ## Core model
 
@@ -18,39 +18,39 @@ Understanding these five concepts is enough to read and write most Kestra flows.
 
 This section covers two distinct things: (1) guidance for AI agents interacting with Kestra, and (2) Kestra features for building AI and LLM-powered workflows. If you are an AI agent helping a user with Kestra, start with Agent Skills. If the user wants to build AI workflows on top of Kestra, use the remaining links.
 
-- [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
-- [AI Tools overview](https://kestra.io/docs/ai-tools): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
-- [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot): Generate and refine flow YAML from natural language prompts inside the Kestra UI
-- [AI Agents](https://kestra.io/docs/ai-tools/ai-agents): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
-- [AI Workflows](https://kestra.io/docs/ai-tools/ai-workflows): Patterns for building AI-native workflows — LLM calls, tool use, and multi-step inference pipelines — using Kestra tasks
-- [RAG Workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows): Retrieval-augmented generation patterns — indexing, chunking, embedding, and querying — orchestrated as Kestra flows
+- [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
+- [AI Tools overview](https://kestra.io/docs/ai-tools.md): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
+- [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot.md): Generate and refine flow YAML from natural language prompts inside the Kestra UI
+- [AI Agents](https://kestra.io/docs/ai-tools/ai-agents.md): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
+- [AI Workflows](https://kestra.io/docs/ai-tools/ai-workflows.md): Patterns for building AI-native workflows — LLM calls, tool use, and multi-step inference pipelines — using Kestra tasks
+- [RAG Workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows.md): Retrieval-augmented generation patterns — indexing, chunking, embedding, and querying — orchestrated as Kestra flows
 
 ## Authoring flows
 
 Use this section when writing, editing, or understanding the structure of a Kestra flow. Covers every top-level property and component a flow can have.
 
-- [Flow definition](https://kestra.io/docs/workflow-components/flow): All top-level flow properties — `id`, `namespace`, `tasks`, `inputs`, `outputs`, `triggers`, `variables`, `errors`, `labels`, `pluginDefaults`, `disabled`, `concurrency`
-- [Tasks](https://kestra.io/docs/workflow-components/tasks): Runnable tasks (do work on a worker) vs flowable tasks (control execution logic), and how task properties work
-- [Flowable tasks](https://kestra.io/docs/workflow-components/tasks/flowable-tasks): Control flow primitives — `Sequential`, `Parallel`, `ForEach`, `ForEachItem`, `Switch`, `If`, `DAG`, `LoopUntil`, `Subflow`, `AllowFailure`, `Pause`, `WorkingDirectory`
-- [Inputs](https://kestra.io/docs/workflow-components/inputs): Typed runtime parameters (`STRING`, `INT`, `BOOLEAN`, `FILE`, `JSON`, `ARRAY`, `ENUM`, `DATETIME`, etc.) with optional defaults and validation
-- [Outputs](https://kestra.io/docs/workflow-components/outputs): Reference task outputs with `{{ outputs.task_id.attribute }}`, dynamic task outputs with `{{ outputs.task_id[taskrun.value].attribute }}`, and sibling outputs inside loops
-- [Triggers](https://kestra.io/docs/workflow-components/triggers): Start flows automatically — Schedule (cron), Flow (react to another flow's completion), Webhook, Polling, and Realtime triggers
-- [Variables](https://kestra.io/docs/workflow-components/variables): Flow-level named values referenced as `{{ vars.name }}`; useful for values reused across multiple tasks
-- [Subflows](https://kestra.io/docs/workflow-components/subflows): Call another flow as a task, pass inputs, wait for completion, and consume its outputs
-- [Errors](https://kestra.io/docs/workflow-components/errors): `errors` block for flow-level error handling tasks; `AllowFailure` for marking individual tasks as non-fatal
-- [Retries](https://kestra.io/docs/workflow-components/retries): Retry policies — constant, exponential, random — with `maxAttempt` and `maxDuration`
-- [Plugin Defaults](https://kestra.io/docs/workflow-components/plugin-defaults): Set default property values for a plugin type across all tasks in a flow or namespace, avoiding repetition
-- [Concurrency](https://kestra.io/docs/workflow-components/concurrency): Limit simultaneous executions of a flow with `concurrency.limit` and `behavior` (queue or cancel)
+- [Flow definition](https://kestra.io/docs/workflow-components/flow.md): All top-level flow properties — `id`, `namespace`, `tasks`, `inputs`, `outputs`, `triggers`, `variables`, `errors`, `labels`, `pluginDefaults`, `disabled`, `concurrency`
+- [Tasks](https://kestra.io/docs/workflow-components/tasks.md): Runnable tasks (do work on a worker) vs flowable tasks (control execution logic), and how task properties work
+- [Flowable tasks](https://kestra.io/docs/workflow-components/tasks/flowable-tasks.md): Control flow primitives — `Sequential`, `Parallel`, `ForEach`, `ForEachItem`, `Switch`, `If`, `DAG`, `LoopUntil`, `Subflow`, `AllowFailure`, `Pause`, `WorkingDirectory`
+- [Inputs](https://kestra.io/docs/workflow-components/inputs.md): Typed runtime parameters (`STRING`, `INT`, `BOOLEAN`, `FILE`, `JSON`, `ARRAY`, `ENUM`, `DATETIME`, etc.) with optional defaults and validation
+- [Outputs](https://kestra.io/docs/workflow-components/outputs.md): Reference task outputs with `{{ outputs.task_id.attribute }}`, dynamic task outputs with `{{ outputs.task_id[taskrun.value].attribute }}`, and sibling outputs inside loops
+- [Triggers](https://kestra.io/docs/workflow-components/triggers.md): Start flows automatically — Schedule (cron), Flow (react to another flow's completion), Webhook, Polling, and Realtime triggers
+- [Variables](https://kestra.io/docs/workflow-components/variables.md): Flow-level named values referenced as `{{ vars.name }}`; useful for values reused across multiple tasks
+- [Subflows](https://kestra.io/docs/workflow-components/subflows.md): Call another flow as a task, pass inputs, wait for completion, and consume its outputs
+- [Errors](https://kestra.io/docs/workflow-components/errors.md): `errors` block for flow-level error handling tasks; `AllowFailure` for marking individual tasks as non-fatal
+- [Retries](https://kestra.io/docs/workflow-components/retries.md): Retry policies — constant, exponential, random — with `maxAttempt` and `maxDuration`
+- [Plugin Defaults](https://kestra.io/docs/workflow-components/plugin-defaults.md): Set default property values for a plugin type across all tasks in a flow or namespace, avoiding repetition
+- [Concurrency](https://kestra.io/docs/workflow-components/concurrency.md): Limit simultaneous executions of a flow with `concurrency.limit` and `behavior` (queue or cancel)
 
 ## Expressions and templating
 
 Use this section when you need to write or debug a `{{ ... }}` expression — to access runtime values, transform data, or apply conditional logic inside a flow property.
 
-- [Expressions overview](https://kestra.io/docs/expressions): Entry point for `{{ ... }}` Pebble expression syntax — links to context variables, filters, functions, and syntax reference
-- [Execution context variables](https://kestra.io/docs/expressions/context): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
-- [Pebble syntax](https://kestra.io/docs/expressions/syntax): Conditionals, loops, operators, tags, tests, and multiline JSON bodies
-- [Filter reference](https://kestra.io/docs/expressions/filters): `date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, and all other Pebble filters with examples
-- [Function reference](https://kestra.io/docs/expressions/functions): `render()`, `printContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
+- [Expressions overview](https://kestra.io/docs/expressions.md): Entry point for `{{ ... }}` Pebble expression syntax — links to context variables, filters, functions, and syntax reference
+- [Execution context variables](https://kestra.io/docs/expressions/context.md): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
+- [Pebble syntax](https://kestra.io/docs/expressions/syntax.md): Conditionals, loops, operators, tags, tests, and multiline JSON bodies
+- [Filter reference](https://kestra.io/docs/expressions/filters.md): `date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, and all other Pebble filters with examples
+- [Function reference](https://kestra.io/docs/expressions/functions.md): `render()`, `printContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
 
 ## Finding and using plugins
 
@@ -58,106 +58,599 @@ Use this section to find the right `type` for a task, understand its properties,
 
 - [Plugin marketplace](https://kestra.io/plugins): Search all available task, trigger, condition, and storage plugins with full property documentation — the definitive reference for any plugin type
 - [Core plugins](https://kestra.io/plugins/core): Built-in tasks — `Log`, `Return`, `OutputValues`, `ForEach`, `ForEachItem`, `Http.Request`, `Http.Download`, `Subflow`, and more
-- [Script tasks](https://kestra.io/docs/scripts): Run Python, Shell, Node.js, R, Julia, Ruby, Perl, and PowerShell inline or from files inside a flow
-- [Task runners](https://kestra.io/docs/task-runners): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS ECS Fargate, Azure Batch, Google Batch, or Google Cloud Run — instead of the local worker
+- [Script tasks](https://kestra.io/docs/scripts.md): Run Python, Shell, Node.js, R, Julia, Ruby, Perl, and PowerShell inline or from files inside a flow
+- [Task runners](https://kestra.io/docs/task-runners.md): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS ECS Fargate, Azure Batch, Google Batch, or Google Cloud Run — instead of the local worker
 
 ## Data, state, and storage
 
 Use this section when a flow needs to store or retrieve data that lives outside the flow itself — files, shared state, secrets, or reusable scripts.
 
-- [Internal storage](https://kestra.io/docs/concepts/storage): Kestra's built-in file system for passing large files between tasks; tasks return internal storage URIs as output attributes (e.g. `uri`)
-- [Namespace files](https://kestra.io/docs/concepts/namespace-files): Scripts, configs, and SQL files stored at the namespace level and available to all flows in that namespace via `WorkingDirectory` or `{{ namespaceFiles }}`
-- [KV Store](https://kestra.io/docs/concepts/kv-store): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API — use for shared state and counters
-- [Secrets](https://kestra.io/docs/concepts/secret): Encrypted values referenced with `{{ secret('NAME') }}`; stored in Kestra or delegated to an external secrets manager
-- [Backfill](https://kestra.io/docs/concepts/backfill): Re-execute a scheduled trigger over a past date range to reprocess historical data
+- [Internal storage](https://kestra.io/docs/concepts/storage.md): Kestra's built-in file system for passing large files between tasks; tasks return internal storage URIs as output attributes (e.g. `uri`)
+- [Namespace files](https://kestra.io/docs/concepts/namespace-files.md): Scripts, configs, and SQL files stored at the namespace level and available to all flows in that namespace via `WorkingDirectory` or `{{ namespaceFiles }}`
+- [KV Store](https://kestra.io/docs/concepts/kv-store.md): Persistent key-value pairs scoped to a namespace; read with `{{ kv('key') }}`, written via tasks or the API — use for shared state and counters
+- [Secrets](https://kestra.io/docs/concepts/secret.md): Encrypted values referenced with `{{ secret('NAME') }}`; stored in Kestra or delegated to an external secrets manager
+- [Backfill](https://kestra.io/docs/concepts/backfill.md): Re-execute a scheduled trigger over a past date range to reprocess historical data
 
 ## Best practices
 
 Use this section when deciding *how* to structure a flow or *which* pattern to use. Covers common decision points and traps that are easy to get wrong.
 
-- [Best practices overview](https://kestra.io/docs/best-practices): Entry point for all design guidance
-- [Flow design](https://kestra.io/docs/best-practices/flows): How to structure, split, and reuse flows — when to use subflows vs tasks, and how to avoid oversized executions
-- [ForEach vs ForEachItem](https://kestra.io/docs/best-practices/foreach-and-foreachitem): When to use each loop primitive, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
-- [Outputs patterns](https://kestra.io/docs/best-practices/outputs): Clean patterns for producing and consuming task outputs across tasks and flows
-- [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store): Decision guide for choosing the right storage backend for each type of value
-- [Secrets management](https://kestra.io/docs/best-practices/secrets-management): How to handle credentials and sensitive values safely in flows
-- [Naming conventions](https://kestra.io/docs/best-practices/naming-conventions): Consistent `id`, `namespace`, and label conventions for maintainable flows
+- [Best practices overview](https://kestra.io/docs/best-practices.md): Entry point for all design guidance
+- [Flow design](https://kestra.io/docs/best-practices/flows.md): How to structure, split, and reuse flows — when to use subflows vs tasks, and how to avoid oversized executions
+- [ForEach vs ForEachItem](https://kestra.io/docs/best-practices/foreach-and-foreachitem.md): When to use each loop primitive, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
+- [Outputs patterns](https://kestra.io/docs/best-practices/outputs.md): Clean patterns for producing and consuming task outputs across tasks and flows
+- [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md): Decision guide for choosing the right storage backend for each type of value
+- [Secrets management](https://kestra.io/docs/best-practices/secrets-management.md): How to handle credentials and sensitive values safely in flows
+- [Naming conventions](https://kestra.io/docs/best-practices/naming-conventions.md): Consistent `id`, `namespace`, and label conventions for maintainable flows
 
 ## Examples, how-tos, and use cases
 
 Use this section to find working code for a specific tool or integration, understand what Kestra is commonly used for, or get a starting-point flow template.
 
-- [How-to guides](https://kestra.io/docs/how-to-guides): Task-focused, example-driven guides for specific tools, languages, and integration patterns — the fastest way to produce working flow code for a given scenario
-- [Use cases](https://kestra.io/docs/use-cases): End-to-end solutions for data pipelines, dbt, microservices, infrastructure automation, approval workflows, and Python — useful for understanding what Kestra is built for and how teams use it in practice
+- [How-to guides](https://kestra.io/docs/how-to-guides.md): Task-focused, example-driven guides for specific tools, languages, and integration patterns — the fastest way to produce working flow code for a given scenario
+- [Use cases](https://kestra.io/docs/use-cases.md): End-to-end solutions for data pipelines, dbt, microservices, infrastructure automation, approval workflows, and Python — useful for understanding what Kestra is built for and how teams use it in practice
 - [Blueprints](https://kestra.io/blueprints): Curated, ready-to-use flow templates searchable by tag, plugin, and use case
 
 ## APIs, CLI, and IaC
 
 Use this section when interacting with Kestra programmatically — deploying flows, triggering executions, querying results, or managing resources as code.
 
-- [REST API reference — OSS](https://kestra.io/docs/api-reference/open-source): All endpoints for flows, executions, logs, triggers, namespaces, storage, and more
-- [REST API reference — Enterprise](https://kestra.io/docs/api-reference/enterprise): Additional endpoints for tenants, users, roles, audit logs, and worker groups
-- [kestractl CLI](https://kestra.io/docs/kestra-cli/kestractl): CLI for flow deployment, execution management, and namespace operations
-- [Terraform provider](https://kestra.io/docs/terraform): Manage flows, namespaces, users, roles, and secrets as code using the official Kestra Terraform provider
-- [Kestra SDK](https://kestra.io/docs/api-reference/kestra-sdk): Java, Python, and Node.js API clients
+- [REST API reference — OSS](https://kestra.io/docs/api-reference/open-source.md): All endpoints for flows, executions, logs, triggers, namespaces, storage, and more
+- [REST API reference — Enterprise](https://kestra.io/docs/api-reference/enterprise.md): Additional endpoints for tenants, users, roles, audit logs, and worker groups
+- [kestractl CLI](https://kestra.io/docs/kestra-cli/kestractl.md): CLI for flow deployment, execution management, and namespace operations
+- [Terraform provider](https://kestra.io/docs/terraform.md): Manage flows, namespaces, users, roles, and secrets as code using the official Kestra Terraform provider
+- [Kestra SDK](https://kestra.io/docs/api-reference/kestra-sdk.md): Java, Python, and Node.js API clients
 
 ## Enterprise and Cloud
 
 Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud account. OSS deployments do not have access to the features in this section. Use this section when setting up authentication, governance, multi-tenancy, or scale-oriented features.
 
-- [Enterprise overview](https://kestra.io/docs/enterprise): Full feature set, setup guidance, and migration path from OSS
-- [OSS vs Enterprise](https://kestra.io/docs/oss-vs-paid): Side-by-side feature comparison across Open Source, Enterprise, and Cloud editions
+- [Enterprise overview](https://kestra.io/docs/enterprise.md): Full feature set, setup guidance, and migration path from OSS
+- [OSS vs Enterprise](https://kestra.io/docs/oss-vs-paid.md): Side-by-side feature comparison across Open Source, Enterprise, and Cloud editions
 
 **Authentication and access control**
-- [RBAC](https://kestra.io/docs/enterprise/auth/rbac): Role-based access control — define roles with namespace-scoped permissions and assign them to users or service accounts
-- [SSO](https://kestra.io/docs/enterprise/auth/sso): Single sign-on via OIDC, LDAP, or SAML; configure identity providers and attribute mappings
-- [Service accounts](https://kestra.io/docs/enterprise/auth/service-accounts): Non-human identities with API tokens for CI/CD pipelines and automated deployments
-- [SCIM](https://kestra.io/docs/enterprise/auth/scim): Provision and deprovision users and groups automatically from your identity provider
+- [RBAC](https://kestra.io/docs/enterprise/auth/rbac.md): Role-based access control — define roles with namespace-scoped permissions and assign them to users or service accounts
+- [SSO](https://kestra.io/docs/enterprise/auth/sso.md): Single sign-on via OIDC, LDAP, or SAML; configure identity providers and attribute mappings
+- [Service accounts](https://kestra.io/docs/enterprise/auth/service-accounts.md): Non-human identities with API tokens for CI/CD pipelines and automated deployments
+- [SCIM](https://kestra.io/docs/enterprise/auth/scim.md): Provision and deprovision users and groups automatically from your identity provider
 
 **Governance**
-- [Tenants](https://kestra.io/docs/enterprise/governance/tenants): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
-- [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs): Immutable record of all user and system actions across the platform
-- [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
-- [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
-- [Worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation): Restrict which workers can execute tasks from a given namespace
+- [Tenants](https://kestra.io/docs/enterprise/governance/tenants.md): Hard multi-tenancy — fully isolated namespaces, users, and data per tenant
+- [Audit logs](https://kestra.io/docs/enterprise/governance/audit-logs.md): Immutable record of all user and system actions across the platform
+- [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
+- [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management.md): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
+- [Worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation.md): Restrict which workers can execute tasks from a given namespace
 
 **Scalability**
-- [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-groups): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
-- [Apps](https://kestra.io/docs/enterprise/scalability/apps): Build and publish lightweight form-based UIs on top of flows for non-technical users
+- [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
+- [Apps](https://kestra.io/docs/enterprise/scalability/apps.md): Build and publish lightweight form-based UIs on top of flows for non-technical users
 
 **Instance management**
-- [Maintenance mode](https://kestra.io/docs/enterprise/instance/maintenance-mode): Pause execution scheduling without stopping the server
-- [Kill switch](https://kestra.io/docs/enterprise/instance/kill-switch): Immediately halt all running executions across the instance
+- [Maintenance mode](https://kestra.io/docs/enterprise/instance/maintenance-mode.md): Pause execution scheduling without stopping the server
+- [Kill switch](https://kestra.io/docs/enterprise/instance/kill-switch.md): Immediately halt all running executions across the instance
 
 ## Operating Kestra
 
 Use this section for questions about installing, configuring, or running a Kestra server in production. Less relevant for flow authoring questions.
 
-- [Installation](https://kestra.io/docs/installation): Docker, Docker Compose, Kubernetes (AWS EKS, GCP GKE, Azure AKS), and VM deployment guides
-- [Configuration reference](https://kestra.io/docs/configuration): All server configuration options — datasource, storage, queue, auth, encryption, plugins, and telemetry
-- [Administrator guide](https://kestra.io/docs/administrator-guide): Production operations — monitoring, HA, SSL, security hardening, backup, purging, and troubleshooting
-- [Performance](https://kestra.io/docs/performance): Benchmarks, JVM tuning, and infrastructure sizing guidance
-- [Migration guide](https://kestra.io/docs/migration-guide): Breaking changes and upgrade notes across Kestra versions
+- [Installation](https://kestra.io/docs/installation.md): Docker, Docker Compose, Kubernetes (AWS EKS, GCP GKE, Azure AKS), and VM deployment guides
+- [Configuration reference](https://kestra.io/docs/configuration.md): All server configuration options — datasource, storage, queue, auth, encryption, plugins, and telemetry
+- [Administrator guide](https://kestra.io/docs/administrator-guide.md): Production operations — monitoring, HA, SSL, security hardening, backup, purging, and troubleshooting
+- [Performance](https://kestra.io/docs/performance.md): Benchmarks, JVM tuning, and infrastructure sizing guidance
+- [Migration guide](https://kestra.io/docs/migration-guide.md): Breaking changes and upgrade notes across Kestra versions
 
 ## Extending Kestra
 
 Use this section when building custom plugins, managing flows in Git, deploying via CI/CD pipelines, or building flows without writing YAML.
 
-- [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide): Build, test, document, and publish custom Kestra plugins in Java
-- [Version control and CI/CD](https://kestra.io/docs/version-control-cicd): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
-- [No-code editor](https://kestra.io/docs/no-code): Build and configure flows visually without writing YAML using the drag-and-drop editor
+- [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
+- [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
+- [No-code editor](https://kestra.io/docs/no-code.md): Build and configure flows visually without writing YAML using the drag-and-drop editor
 
 ## Reference
 
 Use this section for definitions, architecture questions, or understanding Kestra's internal design.
 
-- [Glossary](https://kestra.io/docs/glossary): Definitions of Kestra-specific and general orchestration terms
-- [Architecture](https://kestra.io/docs/architecture): How Kestra's components fit together — Webserver, Scheduler, Executor, Worker, Queue, and storage layers
-- [Why Kestra](https://kestra.io/docs/why-kestra): How Kestra compares to other orchestration tools and where it is best suited
+- [Glossary](https://kestra.io/docs/glossary.md): Definitions of Kestra-specific and general orchestration terms
+- [Architecture](https://kestra.io/docs/architecture.md): How Kestra's components fit together — Webserver, Scheduler, Executor, Worker, Queue, and storage layers
+- [Why Kestra](https://kestra.io/docs/why-kestra.md): How Kestra compares to other orchestration tools and where it is best suited
 
 ## Getting started
 
 Human-oriented onboarding for users installing and learning Kestra for the first time. Agents that have already processed the Core model section above do not need to start here.
 
-- [Quickstart](https://kestra.io/docs/quickstart): Run Kestra locally with Docker in minutes
-- [Tutorial](https://kestra.io/docs/tutorial): Step-by-step introduction covering flows, inputs, outputs, triggers, and error handling end to end
+- [Quickstart](https://kestra.io/docs/quickstart.md): Run Kestra locally with Docker in minutes
+- [Tutorial](https://kestra.io/docs/tutorial.md): Step-by-step introduction covering flows, inputs, outputs, triggers, and error handling end to end
+
+## Complete Documentation Index
+
+Every page in the Kestra documentation. Use this section to enumerate all available pages. Append `.md` to any URL for plain Markdown content.
+
+- [Kestra Docs: Your Infinitely-Scalable Orchestration Platform](https://kestra.io/docs)
+- [Administrator Guide: Operate and Secure Your Cluster](https://kestra.io/docs/administrator-guide.md)
+- [Backup and Restore Kestra: Flows, Secrets, and Executions](https://kestra.io/docs/administrator-guide/backup-and-restore.md)
+- [Fix Basic Authentication Issues in Kestra](https://kestra.io/docs/administrator-guide/basic-auth-troubleshooting.md)
+- [Docker-in-Docker Behind a Proxy: Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/dind-behind-proxy.md)
+- [High Availability in Kestra: Scale Workers and Webservers](https://kestra.io/docs/administrator-guide/high-availability.md)
+- [JVM CPU Limits for Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/jvm-cpu-limits.md)
+- [MITM Proxy: Inspect Kestra's Outbound HTTPS Traffic](https://kestra.io/docs/administrator-guide/mitm-proxy-configuration.md)
+- [Kestra Monitoring: Prometheus, Alerts, and Health Checks](https://kestra.io/docs/administrator-guide/monitoring.md)
+- [OpenTelemetry for Kestra: Traces, Metrics, and Logs](https://kestra.io/docs/administrator-guide/open-telemetry.md)
+- [Prometheus Metrics for Kestra: Reference and /prometheus Endpoint](https://kestra.io/docs/administrator-guide/prometheus-metrics.md)
+- [Purge Executions, Logs, and Files in Kestra](https://kestra.io/docs/administrator-guide/purge.md)
+- [Software and Hardware Requirements to Run Kestra](https://kestra.io/docs/administrator-guide/requirements.md)
+- [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/administrator-guide/security-hardening.md)
+- [Server Heartbeats and Job Recovery in Kestra](https://kestra.io/docs/administrator-guide/server-lifecycle.md)
+- [SSL/TLS Configuration: Enable HTTPS for Kestra](https://kestra.io/docs/administrator-guide/ssl-configuration.md)
+- [Troubleshoot Kestra: Kubernetes, Docker, and Startup Issues](https://kestra.io/docs/administrator-guide/troubleshooting.md)
+- [Upgrade Kestra: Rolling Updates, Migrations, and Rollback](https://kestra.io/docs/administrator-guide/upgrades.md)
+- [Anonymous Usage Reporting in Kestra: Enable or Disable](https://kestra.io/docs/administrator-guide/usage.md)
+- [Webserver URL, Reverse Proxy, and Forward Proxy Setup](https://kestra.io/docs/administrator-guide/webserver-url.md)
+- [AI Tools in Kestra: Copilot, Agents & RAG Workflows](https://kestra.io/docs/ai-tools.md)
+- [Agent Skills – Operate Kestra from AI Coding Agents](https://kestra.io/docs/ai-tools/agent-skills.md)
+- [AI Agents in Kestra – Autonomous Orchestration](https://kestra.io/docs/ai-tools/ai-agents.md)
+- [AI Copilot in Kestra – Generate and Edit Flows](https://kestra.io/docs/ai-tools/ai-copilot.md)
+- [RAG Workflows in Kestra – Retrieval-Augmented Generation](https://kestra.io/docs/ai-tools/ai-rag-workflows.md)
+- [AI Workflows in Kestra: Orchestrate with Any LLM](https://kestra.io/docs/ai-tools/ai-workflows.md)
+- [API Reference: Enterprise and Open Source Editions](https://kestra.io/docs/api-reference.md)
+- [Cloud & Enterprise API Reference for Kestra](https://kestra.io/docs/api-reference/enterprise.md)
+- [SDK Language Clients for the Kestra API](https://kestra.io/docs/api-reference/kestra-sdk.md)
+- [Java SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/java-sdk.md)
+- [JavaScript SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/javascript-sdk.md)
+- [Python SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/python-sdk.md)
+- [Open Source API Reference for Kestra](https://kestra.io/docs/api-reference/open-source.md)
+- [Architecture in Kestra: Components and Deployment Models](https://kestra.io/docs/architecture.md)
+- [Data Storage Components in Kestra Architecture](https://kestra.io/docs/architecture/data-components.md)
+- [Deployment Architectures in Kestra: JDBC and Kafka](https://kestra.io/docs/architecture/deployment-architecture.md)
+- [Main Components of Kestra Architecture](https://kestra.io/docs/architecture/main-components.md)
+- [Multi-Tenancy in Kestra: Tenant Isolation Model](https://kestra.io/docs/architecture/multi-tenancy.md)
+- [Server Components in Kestra Architecture Explained](https://kestra.io/docs/architecture/server-components.md)
+- [Workflow Best Practices in Kestra: Design & Patterns](https://kestra.io/docs/best-practices.md)
+- [Business Unit Separation in Kestra Enterprise](https://kestra.io/docs/best-practices/business-unit-separation.md)
+- [Choosing Where to Store Sensitive and Shared Values](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md)
+- [Expressions with Namespace Files in Kestra](https://kestra.io/docs/best-practices/expressions-with-namespace-files.md)
+- [Choose the Right Fetch Pattern in Kestra](https://kestra.io/docs/best-practices/fetch-patterns.md)
+- [Flow Best Practices: Performance and Reliability](https://kestra.io/docs/best-practices/flows.md)
+- [ForEach vs ForEachItem in Kestra: When to Use Each](https://kestra.io/docs/best-practices/foreach-and-foreachitem.md)
+- [Dev to Production in Kestra: Promote Flows Safely](https://kestra.io/docs/best-practices/from-dev-to-prod.md)
+- [Version Control with Git in Kestra](https://kestra.io/docs/best-practices/git.md)
+- [Managing Environments in Kestra: Dev, Prod & Tenants](https://kestra.io/docs/best-practices/manage-environments.md)
+- [Managing pip Dependencies in Kestra: Docker & Caching](https://kestra.io/docs/best-practices/managing-pip-dependencies.md)
+- [Naming Conventions in Kestra: Flows and Namespaces](https://kestra.io/docs/best-practices/naming-conventions.md)
+- [Managing and Purging Flow Outputs in Kestra](https://kestra.io/docs/best-practices/outputs.md)
+- [Data Retention and Purging in Kestra: Choose a Strategy](https://kestra.io/docs/best-practices/purging-data.md)
+- [Secrets Management in Kestra: Avoid Accidental Exposure](https://kestra.io/docs/best-practices/secrets-management.md)
+- [Kestra Brand Assets: Logos and Visual Identity](https://kestra.io/docs/brand-assets.md)
+- [Core Concepts in Kestra: Architecture and Templating](https://kestra.io/docs/concepts.md)
+- [Backfill in Kestra: Replay Missed Schedules](https://kestra.io/docs/concepts/backfill.md)
+- [Blueprints in Kestra: Reusable Workflow Templates](https://kestra.io/docs/concepts/blueprints.md)
+- [Caching in Kestra: Speed Up Repeated Tasks](https://kestra.io/docs/concepts/caching.md)
+- [File Access in Kestra: Local and Namespace Files](https://kestra.io/docs/concepts/file-access.md)
+- [KV Store in Kestra: Persist Shared State](https://kestra.io/docs/concepts/kv-store.md)
+- [Namespace Files in Kestra: Manage Project Assets](https://kestra.io/docs/concepts/namespace-files.md)
+- [Pebble Templating in Kestra: Dynamic Variables](https://kestra.io/docs/concepts/pebble.md)
+- [Replay Executions in Kestra: Rerun from Any Task](https://kestra.io/docs/concepts/replay.md)
+- [Flow Revisions in Kestra: Versioning and Rollbacks](https://kestra.io/docs/concepts/revision.md)
+- [Secrets in Kestra: Store Sensitive Values Securely](https://kestra.io/docs/concepts/secret.md)
+- [Data Storage in Kestra: How Task Data Is Managed](https://kestra.io/docs/concepts/storage.md)
+- [System Flows in Kestra: Automate Maintenance](https://kestra.io/docs/concepts/system-flows.md)
+- [System Labels in Kestra: Reserved Admin Metadata](https://kestra.io/docs/concepts/system-labels.md)
+- [Configure Kestra: Settings, Environments & Defaults](https://kestra.io/docs/configuration.md)
+- [Configuration Basics in Kestra: YAML & Env Overrides](https://kestra.io/docs/configuration/configuration-basics.md)
+- [Enterprise & Advanced Configuration in Kestra](https://kestra.io/docs/configuration/enterprise-and-advanced.md)
+- [Observability & Networking Configuration in Kestra](https://kestra.io/docs/configuration/observability-and-networking.md)
+- [Plugins & Execution Configuration in Kestra](https://kestra.io/docs/configuration/plugins-and-execution.md)
+- [Runtime & Storage Configuration in Kestra](https://kestra.io/docs/configuration/runtime-and-storage.md)
+- [Security & Secrets Configuration in Kestra](https://kestra.io/docs/configuration/security-and-secrets.md)
+- [Contribute to Kestra: Code, Docs, and Community](https://kestra.io/docs/contribute-to-kestra.md)
+- [Community Guidelines: How to Participate in Kestra](https://kestra.io/docs/contribute-to-kestra/community-guidelines.md)
+- [Contribute to the Kestra Codebase: Issues and PRs](https://kestra.io/docs/contribute-to-kestra/contributing.md)
+- [Kestra Docs Contributor Guide: Writer's Reference](https://kestra.io/docs/contribute-to-kestra/docs-contributor-guide.md)
+- [Cloud & Enterprise Edition: Features and Setup](https://kestra.io/docs/enterprise.md)
+- [Auth & Users in Kestra Enterprise: RBAC, SSO](https://kestra.io/docs/enterprise/auth.md)
+- [Enterprise API in Kestra: Endpoints and Auth](https://kestra.io/docs/enterprise/auth/api.md)
+- [API Tokens in Kestra: Manage Programmatic Access](https://kestra.io/docs/enterprise/auth/api-tokens.md)
+- [Authentication in Kestra Enterprise: OIDC Setup](https://kestra.io/docs/enterprise/auth/authentication.md)
+- [Credentials in Kestra: Authenticate External Systems](https://kestra.io/docs/enterprise/auth/credentials.md)
+- [Invitations in Kestra Enterprise: Onboard Users](https://kestra.io/docs/enterprise/auth/invitations.md)
+- [RBAC in Kestra Enterprise: Roles and Permissions](https://kestra.io/docs/enterprise/auth/rbac.md)
+- [RBAC Permissions Reference for Kestra Enterprise](https://kestra.io/docs/enterprise/auth/rbac/permissions-reference.md)
+- [SCIM Directory Sync in Kestra Enterprise](https://kestra.io/docs/enterprise/auth/scim.md)
+- [authentik SCIM Provisioning in Kestra](https://kestra.io/docs/enterprise/auth/scim/authentik.md)
+- [Keycloak SCIM Provisioning in Kestra](https://kestra.io/docs/enterprise/auth/scim/keycloak.md)
+- [Microsoft Entra ID SCIM Provisioning in Kestra](https://kestra.io/docs/enterprise/auth/scim/microsoft-entra-id.md)
+- [Okta SCIM Provisioning in Kestra Enterprise](https://kestra.io/docs/enterprise/auth/scim/okta.md)
+- [Service Accounts in Kestra Enterprise: CI/CD Auth](https://kestra.io/docs/enterprise/auth/service-accounts.md)
+- [Single Sign-On in Kestra: Providers and Setup](https://kestra.io/docs/enterprise/auth/sso.md)
+- [Set Up authentik SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/authentik.md)
+- [Set Up Google OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/google-oidc.md)
+- [Set Up Keycloak SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/keycloak.md)
+- [LDAP Authentication in Kestra: Directory Login](https://kestra.io/docs/enterprise/auth/sso/ldap.md)
+- [Set Up Microsoft OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/microsoft-oidc.md)
+- [Set Up Okta OIDC SSO in Kestra](https://kestra.io/docs/enterprise/auth/sso/okta.md)
+- [Cloud & Enterprise FAQ: Licensing and Configuration](https://kestra.io/docs/enterprise/ee-faq.md)
+- [Governance in Kestra Enterprise: Security and Control](https://kestra.io/docs/enterprise/governance.md)
+- [Allowed & Restricted Plugins in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/allowed-plugins.md)
+- [Assets in Kestra: Track Lineage and Metadata](https://kestra.io/docs/enterprise/governance/assets.md)
+- [Audit Logs in Kestra: Governance and Compliance](https://kestra.io/docs/enterprise/governance/audit-logs.md)
+- [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
+- [Log Shipper in Kestra Enterprise: Centralize Logs](https://kestra.io/docs/enterprise/governance/logshipper.md)
+- [Namespace Management in Kestra Enterprise: Isolation](https://kestra.io/docs/enterprise/governance/namespace-management.md)
+- [Read-Only Secret Manager in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/read-only-secrets.md)
+- [Secrets in Kestra Enterprise: Manage Sensitive Data](https://kestra.io/docs/enterprise/governance/secrets.md)
+- [External Secrets Manager in Kestra: AWS, Azure, GCP](https://kestra.io/docs/enterprise/governance/secrets-manager.md)
+- [Multi-Tenancy in Kestra: Configure Tenants](https://kestra.io/docs/enterprise/governance/tenants.md)
+- [Unit Tests in Kestra Enterprise: Validate Flows](https://kestra.io/docs/enterprise/governance/unit-tests.md)
+- [Worker Isolation in Kestra Enterprise: Separation](https://kestra.io/docs/enterprise/governance/worker-isolation.md)
+- [Instance Management in Kestra Enterprise: Health](https://kestra.io/docs/enterprise/instance.md)
+- [Announcements in Kestra Enterprise: In-App Banners](https://kestra.io/docs/enterprise/instance/announcements.md)
+- [Kill Switch in Kestra Enterprise: Stop Executions](https://kestra.io/docs/enterprise/instance/kill-switch.md)
+- [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
+- [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
+- [Enterprise Edition in Kestra: Architecture and Setup](https://kestra.io/docs/enterprise/overview.md)
+- [Enterprise Features in Kestra: High-Availability](https://kestra.io/docs/enterprise/overview/enterprise-edition.md)
+- [Migrate from OSS to Kestra Enterprise Edition](https://kestra.io/docs/enterprise/overview/migrate-from-oss.md)
+- [Set Up Kestra Enterprise: License and First Tenant](https://kestra.io/docs/enterprise/overview/setup.md)
+- [Install Kestra Enterprise from Standalone JAR](https://kestra.io/docs/enterprise/overview/standalone-server-installation.md)
+- [Scale Kestra Enterprise: Worker Groups and Apps](https://kestra.io/docs/enterprise/scalability.md)
+- [Apps in Kestra Enterprise: Frontends for Flows](https://kestra.io/docs/enterprise/scalability/apps.md)
+- [Task Runners in Kestra Enterprise: Offload Compute](https://kestra.io/docs/enterprise/scalability/task-runners.md)
+- [Worker Groups in Kestra Enterprise: Target Workers](https://kestra.io/docs/enterprise/scalability/worker-group.md)
+- [Expressions in Kestra: Pebble Syntax and Variables](https://kestra.io/docs/expressions.md)
+- [Kestra Expression Context: Inputs, Outputs & Variables](https://kestra.io/docs/expressions/context.md)
+- [Kestra Filter Reference: Transform Expression Values](https://kestra.io/docs/expressions/filters.md)
+- [Number and Collection Filters in Kestra](https://kestra.io/docs/expressions/filters/collections.md)
+- [Date and Time Filters in Kestra Expressions](https://kestra.io/docs/expressions/filters/dates.md)
+- [JSON and Structured Data Filters in Kestra](https://kestra.io/docs/expressions/filters/json.md)
+- [String Filters in Kestra Expressions](https://kestra.io/docs/expressions/filters/strings.md)
+- [YAML Filters in Kestra Expressions](https://kestra.io/docs/expressions/filters/yaml.md)
+- [Kestra Function Reference: Generate and Retrieve Values](https://kestra.io/docs/expressions/functions.md)
+- [Data Access Functions in Kestra Expressions](https://kestra.io/docs/expressions/functions/data-access.md)
+- [Date and Calendar Functions in Kestra Expressions](https://kestra.io/docs/expressions/functions/dates.md)
+- [Data Parsing Functions in Kestra Expressions](https://kestra.io/docs/expressions/functions/parsing.md)
+- [Rendering and Debugging Functions in Kestra](https://kestra.io/docs/expressions/functions/rendering.md)
+- [Utility Functions in Kestra Expressions](https://kestra.io/docs/expressions/functions/utilities.md)
+- [Workflow Helper Functions in Kestra Expressions](https://kestra.io/docs/expressions/functions/workflow.md)
+- [Pebble Syntax in Kestra: Tags, Operators & Control Flow](https://kestra.io/docs/expressions/syntax.md)
+- [Kestra Glossary: Terms and Definitions](https://kestra.io/docs/glossary.md)
+- [Kestra How-to Guides: Hands-On Workflow Tutorials](https://kestra.io/docs/how-to-guides.md)
+- [Access Local Files in Kestra: Bind Mounts Guide](https://kestra.io/docs/how-to-guides/access-local-files.md)
+- [Configure Alerts in Kestra](https://kestra.io/docs/how-to-guides/alerting.md)
+- [Audit Machines and Tool Versions with Ansible in Kestra](https://kestra.io/docs/how-to-guides/ansible.md)
+- [Detect Ansible Config Drift with Kestra](https://kestra.io/docs/how-to-guides/ansible-config-drift.md)
+- [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
+- [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
+- [Ceph Storage for Kestra via MinIO S3 Gateway](https://kestra.io/docs/how-to-guides/ceph.md)
+- [Use Cloudflare R2 with MinIO Gateway for Kestra](https://kestra.io/docs/how-to-guides/cloudflare-r2.md)
+- [Add Conditional Branching in Kestra](https://kestra.io/docs/how-to-guides/conditional-branching.md)
+- [Build a Custom Plugin for Kestra](https://kestra.io/docs/how-to-guides/custom-plugin.md)
+- [Use Dataform in Kestra](https://kestra.io/docs/how-to-guides/dataform.md)
+- [Manage dbt Projects with Kestra's Code Editor](https://kestra.io/docs/how-to-guides/dbt.md)
+- [Use Debezium Tasks and Triggers in Kestra](https://kestra.io/docs/how-to-guides/debezium.md)
+- [Build Dynamic Flows in Kestra](https://kestra.io/docs/how-to-guides/dynamic-flows.md)
+- [Create a Dynamic Dropdown for Inputs](https://kestra.io/docs/how-to-guides/dynamic-inputs.md)
+- [Build ETL Pipelines in Kestra](https://kestra.io/docs/how-to-guides/etl-pipelines.md)
+- [Validate and Deploy Flows with GitHub Actions](https://kestra.io/docs/how-to-guides/github-actions.md)
+- [Back Up GitHub Repos with Kestra Playground](https://kestra.io/docs/how-to-guides/github-repo-backup.md)
+- [Run Go Inside Your Flows](https://kestra.io/docs/how-to-guides/golang.md)
+- [Configure a Google Service Account in Kestra](https://kestra.io/docs/how-to-guides/google-credentials.md)
+- [Connect Google Sheets to Kestra](https://kestra.io/docs/how-to-guides/google-sheets.md)
+- [Make HTTP Requests Inside Your Flows](https://kestra.io/docs/how-to-guides/http-request.md)
+- [Prevent Duplicate Executions with Correlation IDs](https://kestra.io/docs/how-to-guides/idempotency.md)
+- [Pass Inputs via an API Call](https://kestra.io/docs/how-to-guides/inputs-api.md)
+- [Validate Inputs with the Enum Data Type](https://kestra.io/docs/how-to-guides/inputs-enum.md)
+- [Run JavaScript Inside Your Flows](https://kestra.io/docs/how-to-guides/javascript.md)
+- [Connect Web Apps to Kestra via Webhooks](https://kestra.io/docs/how-to-guides/js-webhook.md)
+- [Work with JSON in Kestra](https://kestra.io/docs/how-to-guides/json.md)
+- [Run Julia Inside Your Flows](https://kestra.io/docs/how-to-guides/julia.md)
+- [Configure Keycloak SSO in Kestra](https://kestra.io/docs/how-to-guides/keycloak.md)
+- [Set Up Secrets from a Helm Chart](https://kestra.io/docs/how-to-guides/kubernetes-secrets.md)
+- [Synchronize Local Flows in Kestra](https://kestra.io/docs/how-to-guides/local-flow-sync.md)
+- [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
+- [Loop Over a List of Values](https://kestra.io/docs/how-to-guides/loop.md)
+- [Safeguard Microservices with Unit Tests](https://kestra.io/docs/how-to-guides/microservices-unit-tests.md)
+- [Configure Local MinIO Storage for Kestra](https://kestra.io/docs/how-to-guides/minio.md)
+- [Configure Monitoring with Grafana and Prometheus](https://kestra.io/docs/how-to-guides/monitoring.md)
+- [MultipleCondition Listener in Kestra: How It Works](https://kestra.io/docs/how-to-guides/multiplecondition-listener.md)
+- [Namespace Variables vs. KV Store in Kestra](https://kestra.io/docs/how-to-guides/namespace-variables-vs-kvstore.md)
+- [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
+- [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
+- [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
+- [Parallel vs. Sequential Tasks in Kestra](https://kestra.io/docs/how-to-guides/parallel-vs-sequential.md)
+- [Pause and Resume Flows in Kestra](https://kestra.io/docs/how-to-guides/pause-resume.md)
+- [Run Perl Inside Your Flows](https://kestra.io/docs/how-to-guides/perl.md)
+- [Populate Your Instance with Sample Data](https://kestra.io/docs/how-to-guides/populate-demo-data.md)
+- [Run PowerShell Inside Your Flows](https://kestra.io/docs/how-to-guides/powershell.md)
+- [Trigger a Flow on a Prometheus Alert](https://kestra.io/docs/how-to-guides/prometheus-alert-trigger.md)
+- [Push Flows to a Git Repository](https://kestra.io/docs/how-to-guides/pushflows.md)
+- [Push Namespace Files to a Git Repository](https://kestra.io/docs/how-to-guides/pushnamespacefiles.md)
+- [Run Python Inside Your Flows](https://kestra.io/docs/how-to-guides/python.md)
+- [Manage Python Dependencies in Kestra](https://kestra.io/docs/how-to-guides/python-dependencies.md)
+- [Manage Python Dependencies with uv in Kestra](https://kestra.io/docs/how-to-guides/python-uv.md)
+- [Run R Inside Your Flows](https://kestra.io/docs/how-to-guides/r.md)
+- [Realtime Triggers in Kestra: Kafka, SQS, Pub/Sub](https://kestra.io/docs/how-to-guides/realtime-triggers.md)
+- [Revision History and Rollback in Kestra](https://kestra.io/docs/how-to-guides/rollback-and-revision-history.md)
+- [Run Ruby Inside Your Flows](https://kestra.io/docs/how-to-guides/ruby.md)
+- [Run Rust Inside Your Flows](https://kestra.io/docs/how-to-guides/rust.md)
+- [Build SecOps Workflows with Kestra](https://kestra.io/docs/how-to-guides/secops-with-kestra.md)
+- [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
+- [Install Only Selected Plugins in Kestra OSS](https://kestra.io/docs/how-to-guides/selected-plugin-installation.md)
+- [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
+- [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
+- [Migrate from Shipyard to Kestra](https://kestra.io/docs/how-to-guides/shipyard-migration.md)
+- [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
+- [Use SQLMesh to Run dbt Projects](https://kestra.io/docs/how-to-guides/sqlmesh.md)
+- [Subflow Retries, Restarts, and Replays in Kestra](https://kestra.io/docs/how-to-guides/subflow-executions.md)
+- [Connect a Supabase Database to Kestra](https://kestra.io/docs/how-to-guides/supabase-db.md)
+- [Sync Flows from a Git Repository](https://kestra.io/docs/how-to-guides/syncflows.md)
+- [Synchronous Executions API in Kestra](https://kestra.io/docs/how-to-guides/synchronous-executions-api.md)
+- [Sync Namespace Files from a Git Repository](https://kestra.io/docs/how-to-guides/syncnamespacefiles.md)
+- [Modularize Triggers and Schedules with Terraform](https://kestra.io/docs/how-to-guides/terraform-modules-for-triggers.md)
+- [Terraform for Flow Modularity in Kestra](https://kestra.io/docs/how-to-guides/terraform-templating.md)
+- [Kestra with Pulumi's Terraform Provider](https://kestra.io/docs/how-to-guides/using-pulumis-terraform-provider.md)
+- [Access Values Between Flows](https://kestra.io/docs/how-to-guides/values-between-flows.md)
+- [Set Up Webhooks to Trigger Flows](https://kestra.io/docs/how-to-guides/webhooks.md)
+- [Install Kestra: Docker, Kubernetes, VM, and JAR](https://kestra.io/docs/installation.md)
+- [Deploy Kestra on AWS EC2 – RDS and S3 Backend](https://kestra.io/docs/installation/aws-ec2.md)
+- [Deploy Kestra on Azure VM – Azure Database Backend](https://kestra.io/docs/installation/azure-vm.md)
+- [Deploy Kestra on DigitalOcean – Managed DB Setup](https://kestra.io/docs/installation/digitalocean-droplet.md)
+- [Run Kestra with Docker – Single-Container Setup](https://kestra.io/docs/installation/docker.md)
+- [Deploy Kestra with Docker Compose – PostgreSQL](https://kestra.io/docs/installation/docker-compose.md)
+- [Deploy Kestra on GCP VM – Cloud SQL and GCS](https://kestra.io/docs/installation/gcp-vm.md)
+- [Deploy on Kubernetes with Helm in Kestra](https://kestra.io/docs/installation/kubernetes.md)
+- [Deploy on AWS EKS with RDS and S3 in Kestra](https://kestra.io/docs/installation/kubernetes-aws-eks.md)
+- [Deploy on Azure AKS: PostgreSQL and Blob Storage](https://kestra.io/docs/installation/kubernetes-azure-aks.md)
+- [Deploy on GCP GKE: CloudSQL and Cloud Storage](https://kestra.io/docs/installation/kubernetes-gcp-gke.md)
+- [Deploy with Podman Compose in Kestra: Postgres](https://kestra.io/docs/installation/podman-compose.md)
+- [Run from Standalone JAR in Kestra: No Docker](https://kestra.io/docs/installation/standalone-server.md)
+- [Install Kestra on Windows – Standalone JAR Setup](https://kestra.io/docs/installation/windows.md)
+- [CLI Guide: kestractl vs Kestra Server CLI](https://kestra.io/docs/kestra-cli.md)
+- [Server CLI in Kestra: Commands and Options](https://kestra.io/docs/kestra-cli/kestra-server.md)
+- [kestractl: Kestra CLI for Flows and Executions](https://kestra.io/docs/kestra-cli/kestractl.md)
+- [Kestra Migration Guide: Version Upgrades & Changes](https://kestra.io/docs/migration-guide.md)
+- [Kestra 0.11.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.11.0.md)
+- [Script Tasks Moved to Plugins in Kestra 0.11.0](https://kestra.io/docs/migration-guide/v0.11.0/core-script-tasks.md)
+- [Templates Deprecated in Kestra 0.11.0: Migrate to Subflows](https://kestra.io/docs/migration-guide/v0.11.0/templates.md)
+- [Kestra 0.12.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.12.0.md)
+- [Listeners Deprecated in Kestra 0.12.0: Use Flow Triggers](https://kestra.io/docs/migration-guide/v0.12.0/listeners.md)
+- [Kestra 0.13.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.13.0.md)
+- [Sync User Access to Default Tenant in Kestra 0.13.0](https://kestra.io/docs/migration-guide/v0.13.0/default-tenant.md)
+- [Kestra 0.14.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.14.0.md)
+- [Groups API Change in Kestra 0.14.0: groupList Rename](https://kestra.io/docs/migration-guide/v0.14.0/group-list.md)
+- [Non-Recursive Pebble Rendering in Kestra 0.14.0](https://kestra.io/docs/migration-guide/v0.14.0/recursive-rendering.md)
+- [Kestra 0.15.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.15.0.md)
+- [Inputs name Renamed to id in Kestra 0.15.0](https://kestra.io/docs/migration-guide/v0.15.0/inputs-name.md)
+- [Micronaut 4.3 Migration in Kestra 0.15.0: Plugin Update](https://kestra.io/docs/migration-guide/v0.15.0/micronaut4.md)
+- [scheduleConditions Deprecated in Kestra 0.15.0](https://kestra.io/docs/migration-guide/v0.15.0/schedule-conditions.md)
+- [Subflow Outputs Behavior Change in Kestra 0.15.0](https://kestra.io/docs/migration-guide/v0.15.0/subflow-outputs.md)
+- [Kestra 0.17.0 Migration Guide: Renamed Plugins](https://kestra.io/docs/migration-guide/v0.17.0.md)
+- [JSON Serialization Change in Kestra 0.17.0: NON_NULL](https://kestra.io/docs/migration-guide/v0.17.0/json-objects-serialization.md)
+- [LocalFiles & outputDir Deprecated in Kestra 0.17.0](https://kestra.io/docs/migration-guide/v0.17.0/local-files.md)
+- [Plugin Discovery Mechanism Change in Kestra 0.17.0](https://kestra.io/docs/migration-guide/v0.17.0/plugin-discovery-mechanism.md)
+- [Renamed Plugins in Kestra 0.17.0: Update Your Flows](https://kestra.io/docs/migration-guide/v0.17.0/renamed-plugins.md)
+- [Volume Mount Migration in Kestra 0.17.0: Plugin Config](https://kestra.io/docs/migration-guide/v0.17.0/volume-mount.md)
+- [Kestra 0.18.0 Migration Guide: What Changed](https://kestra.io/docs/migration-guide/v0.18.0.md)
+- [runner Deprecated in Kestra 0.18.0: Use taskRunner](https://kestra.io/docs/migration-guide/v0.18.0/runners.md)
+- [Terraform task_defaults to plugin_defaults in 0.18.0](https://kestra.io/docs/migration-guide/v0.18.0/tf-task-defaults.md)
+- [Kestra 0.19.0 Migration Guide: State Store to KV Store](https://kestra.io/docs/migration-guide/v0.19.0.md)
+- [State Store Deprecated in Kestra 0.19.0: Use KV Store](https://kestra.io/docs/migration-guide/v0.19.0/state-store.md)
+- [Kestra 0.20.0 Migration Guide: KV, Kafka & Config](https://kestra.io/docs/migration-guide/v0.20.0.md)
+- [Cluster Monitoring Permissions Change in Kestra 0.20.0](https://kestra.io/docs/migration-guide/v0.20.0/cluster-monitoring.md)
+- [Conditions Renamed in Kestra 0.20.0: Update Your Flows](https://kestra.io/docs/migration-guide/v0.20.0/conditions-renamed.md)
+- [Custom Plugins Migration in Kestra 0.20.0: namespace Param](https://kestra.io/docs/migration-guide/v0.20.0/custom-plugins.md)
+- [Elasticsearch Indexer Change in Kestra 0.20.0 Enterprise](https://kestra.io/docs/migration-guide/v0.20.0/elasticsearch-indexer.md)
+- [KV Namespace Access Change in Kestra 0.20.0: Permissions](https://kestra.io/docs/migration-guide/v0.20.0/kv-function.md)
+- [Restore Kafka Queue in Kestra 0.20.0 Enterprise](https://kestra.io/docs/migration-guide/v0.20.0/restore-kafka-queue.md)
+- [Server Configuration Changes in Kestra 0.20.0](https://kestra.io/docs/migration-guide/v0.20.0/server-configuration.md)
+- [Usernames Replaced by Emails in Kestra 0.20.0 Enterprise](https://kestra.io/docs/migration-guide/v0.20.0/username-replaced-by-email.md)
+- [Worker Group Fallback Change in Kestra 0.20.0 Enterprise](https://kestra.io/docs/migration-guide/v0.20.0/worker-group-fallback.md)
+- [Kestra 0.21.0 Migration Guide: Secrets & Logging](https://kestra.io/docs/migration-guide/v0.21.0.md)
+- [Default Git Branch Changed to main in Kestra 0.21.0](https://kestra.io/docs/migration-guide/v0.21.0/default-git-branch.md)
+- [Parent Flow Restart Behavior in Kestra 0.21.0](https://kestra.io/docs/migration-guide/v0.21.0/restarting-parent-flow.md)
+- [Secret Function Change: Missing Keys Now Throw Errors](https://kestra.io/docs/migration-guide/v0.21.0/secret-function.md)
+- [stderr Log Level Change: WARNING to ERROR in 0.21.0](https://kestra.io/docs/migration-guide/v0.21.0/stderr-log-level.md)
+- [ME and APITOKEN Permissions in Kestra 0.21.0 RBAC](https://kestra.io/docs/migration-guide/v0.21.0/token-permissions.md)
+- [Kestra 0.22.0 Migration Guide – Changes & Actions](https://kestra.io/docs/migration-guide/v0.22.0.md)
+- [Azure Log Exporter Split in Kestra 0.22.0](https://kestra.io/docs/migration-guide/v0.22.0/azure-log-exporter.md)
+- [Default Tenant Deprecated: Multi-Tenancy Now Default](https://kestra.io/docs/migration-guide/v0.22.0/default-tenant.md)
+- [Service Account API Changes in Kestra 0.22.0 EE](https://kestra.io/docs/migration-guide/v0.22.0/ee-api-changes.md)
+- [Account Lockout After Failed Login Attempts (0.22.0)](https://kestra.io/docs/migration-guide/v0.22.0/failed-attempts-lockout.md)
+- [Helm Chart Health Check Path Changes in 0.22.0](https://kestra.io/docs/migration-guide/v0.22.0/healthcheck-paths.md)
+- [KV Function Now Errors on Missing Keys in 0.22.0](https://kestra.io/docs/migration-guide/v0.22.0/kv-error-on-missing.md)
+- [Plugin 'version' Property Renamed in Kestra 0.22.0](https://kestra.io/docs/migration-guide/v0.22.0/renamed-version-property.md)
+- [Kestra 0.23.0 Migration Guide – Mandatory Multitenancy](https://kestra.io/docs/migration-guide/v0.23.0.md)
+- [BOOLEAN Input Deprecated: Switch to BOOL in 0.23.0](https://kestra.io/docs/migration-guide/v0.23.0/boolean-input-change.md)
+- [Env Variable Prefix Changed: KESTRA_ to ENV_ (0.23.0)](https://kestra.io/docs/migration-guide/v0.23.0/default-env-prefix.md)
+- [Docker pullPolicy Default Changed to IF_NOT_PRESENT](https://kestra.io/docs/migration-guide/v0.23.0/default-pull-policy.md)
+- [Flow Trigger Now Reacts to PAUSED State by Default](https://kestra.io/docs/migration-guide/v0.23.0/flow-trigger-paused-state.md)
+- [Internal Storage Path Migration for S3 and GCS (0.23.0)](https://kestra.io/docs/migration-guide/v0.23.0/internal-storage-migration.md)
+- [JDBC autocommit Property Removed from Query Tasks](https://kestra.io/docs/migration-guide/v0.23.0/jdbc-autocommit.md)
+- [LoopUntil checkFrequency Default Values Changed](https://kestra.io/docs/migration-guide/v0.23.0/loop-until-defaults.md)
+- [Python Script Tasks Now Use python:3.13-slim Image](https://kestra.io/docs/migration-guide/v0.23.0/python-script-image.md)
+- [Script Tasks: WARNING State Removed for ERROR Logs](https://kestra.io/docs/migration-guide/v0.23.0/script-warnings.md)
+- [SQL Server Backend Removed in Kestra 0.23.0](https://kestra.io/docs/migration-guide/v0.23.0/sql-server-backend.md)
+- [Superadmin Property Migration: Manual User Refresh](https://kestra.io/docs/migration-guide/v0.23.0/superadmin-refresh.md)
+- [EE Migration: defaultTenant to Mandatory Multitenancy](https://kestra.io/docs/migration-guide/v0.23.0/tenant-migration-ee.md)
+- [OSS Migration: Introducing the defaultTenant Context](https://kestra.io/docs/migration-guide/v0.23.0/tenant-migration-oss.md)
+- [Tenant Path Removed from Superadmin API Routes (EE)](https://kestra.io/docs/migration-guide/v0.23.0/tenant-segment-removed-from-superadmin-apis.md)
+- [Kestra 0.24.0 Migration Guide – Changes and Actions](https://kestra.io/docs/migration-guide/v0.24.0.md)
+- [Basic Authentication Now Required in Kestra OSS 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/basic-authentication.md)
+- [FILE Input API: Capture Filename on Upload (0.24.0)](https://kestra.io/docs/migration-guide/v0.24.0/capture-filename.md)
+- [IAM and API Endpoint Changes in Kestra 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/endpoint-changes.md)
+- [LangChain4j to Plugin AI Migration in Kestra 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/renaming-langchain4j-plugin-ai.md)
+- [maxAttempt renamed maxAttempts](https://kestra.io/docs/migration-guide/v0.24.0/retries-maxAttempts.md)
+- [Kestra 1.0.0 Migration Guide – Milestone Release Changes](https://kestra.io/docs/migration-guide/v1.0.0.md)
+- [Custom Plugin Package Structure Changes in Kestra 1.0](https://kestra.io/docs/migration-guide/v1.0.0/custom-plugin-packages.md)
+- [Helm Chart Updates in Kestra 1.0.0 for Production](https://kestra.io/docs/migration-guide/v1.0.0/helm-charts.md)
+- [Input Default Values Are Now Dynamically Rendered](https://kestra.io/docs/migration-guide/v1.0.0/inputs-defaults-property.md)
+- [PurgeAuditLogs: 'permissions' Renamed to 'resources](https://kestra.io/docs/migration-guide/v1.0.0/purge-audit-logs.md)
+- [Reserved Keywords Cannot Be Used as Flow IDs (1.0.0)](https://kestra.io/docs/migration-guide/v1.0.0/reserved-flow-ids.md)
+- [Singer Tap Plugin Removed: Migrate to Airbyte or dlt](https://kestra.io/docs/migration-guide/v1.0.0/singer-plugin.md)
+- [Kestra 1.1.0 Migration Guide – Deprecated Features](https://kestra.io/docs/migration-guide/v1.1.0.md)
+- [ForEachItem Iteration Now Starts at 0 Instead of 1](https://kestra.io/docs/migration-guide/v1.1.0/foreach-item.md)
+- [KV Store and Secrets Metadata Migration in Kestra 1.1](https://kestra.io/docs/migration-guide/v1.1.0/kv-secrets-metadata-migration.md)
+- [New 'prefill' Property for Inputs: Breaking Change](https://kestra.io/docs/migration-guide/v1.1.0/prefill-inputs.md)
+- [Query Task Now Supports Only One SQL Statement](https://kestra.io/docs/migration-guide/v1.1.0/query-task.md)
+- [Task Runs UI Page Removed in Kestra EE 1.1.0](https://kestra.io/docs/migration-guide/v1.1.0/task-runs-ui.md)
+- [Webhook Execution API Return Type Changed in 1.1.0](https://kestra.io/docs/migration-guide/v1.1.0/webhook-response.md)
+- [Migration Guide for Kestra 1.2.0 – Changes & Actions](https://kestra.io/docs/migration-guide/v1.2.0.md)
+- [Namespace Files Metadata Migration in Kestra 1.2.0](https://kestra.io/docs/migration-guide/v1.2.0/namespace-file-migration.md)
+- [Notification Plugins Split in Kestra 1.2.0 (Non-Breaking)](https://kestra.io/docs/migration-guide/v1.2.0/notifications-plugin-split.md)
+- [Migration Guide for Kestra 1.3.0 – Changes & Actions](https://kestra.io/docs/migration-guide/v1.3.0.md)
+- [Enterprise License Upgrade in Kestra 1.3.0](https://kestra.io/docs/migration-guide/v1.3.0/ee-license-upgrade.md)
+- [File-Listing Plugins Default to 25 Results in 1.3.0](https://kestra.io/docs/migration-guide/v1.3.0/file-listing-default-limit.md)
+- [LTS Migration: Kestra 1.0 to 1.3 Upgrade Guide](https://kestra.io/docs/migration-guide/v1.3.0/lts-migration.md)
+- [No Code in Kestra: Build Flows & Dashboards Visually](https://kestra.io/docs/no-code.md)
+- [No Code Dashboards in Kestra: Design Without YAML](https://kestra.io/docs/no-code/no-code-dashboards.md)
+- [No Code Flow Building in Kestra: Skip the YAML](https://kestra.io/docs/no-code/no-code-flow-building.md)
+- [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
+- [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
+- [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)
+- [Performance Tuning in Kestra: Workers, JDBC, Kafka](https://kestra.io/docs/performance/performance-tuning.md)
+- [Size & Scale Kestra: Executors, Workers, Schedulers](https://kestra.io/docs/performance/sizing-and-scaling-infrastructure.md)
+- [Plugin Developer Guide: Build & Publish in Kestra](https://kestra.io/docs/plugin-developer-guide.md)
+- [Develop a Kestra Condition Plugin](https://kestra.io/docs/plugin-developer-guide/condition.md)
+- [Plugin Contribution Guidelines for Kestra](https://kestra.io/docs/plugin-developer-guide/contribution-guidelines.md)
+- [Document Your Kestra Plugin with Annotations](https://kestra.io/docs/plugin-developer-guide/document.md)
+- [Gradle Configuration for Kestra Plugins](https://kestra.io/docs/plugin-developer-guide/gradle.md)
+- [Build and Publish a Kestra Plugin](https://kestra.io/docs/plugin-developer-guide/publish.md)
+- [Set Up for Kestra Plugin Development](https://kestra.io/docs/plugin-developer-guide/setup.md)
+- [Develop a Kestra Task Plugin](https://kestra.io/docs/plugin-developer-guide/task.md)
+- [Develop a Kestra Trigger Plugin](https://kestra.io/docs/plugin-developer-guide/trigger.md)
+- [Add Unit Tests for Kestra Plugins](https://kestra.io/docs/plugin-developer-guide/unit-tests.md)
+- [Quickstart Guide: Run Your First Kestra Workflow](https://kestra.io/docs/quickstart.md)
+- [Releases & LTS Policy in Kestra: Cadence and Support](https://kestra.io/docs/releases.md)
+- [Run Scripts in Kestra: Multi-Language Tasks & Runners](https://kestra.io/docs/scripts.md)
+- [Bind Mount Scripts into Kestra – Run Local Code](https://kestra.io/docs/scripts/bind-mount.md)
+- [Commands vs Script Tasks in Kestra](https://kestra.io/docs/scripts/commands-vs-scripts.md)
+- [Build a Custom Docker Image for Script Tasks](https://kestra.io/docs/scripts/custom-docker-image.md)
+- [Git Clone Task – Fetch Repos for Script Workflows](https://kestra.io/docs/scripts/git-clone.md)
+- [Inline Scripts in Docker: Write Code Directly in Tasks](https://kestra.io/docs/scripts/inline-scripts-in-docker.md)
+- [Input and Output Files in Script Tasks](https://kestra.io/docs/scripts/input-output-files.md)
+- [Install Dependencies at Runtime for Script Tasks](https://kestra.io/docs/scripts/installing-dependencies.md)
+- [Supported Programming Languages in Kestra](https://kestra.io/docs/scripts/languages.md)
+- [Logging from Scripts – Send Logs to Kestra](https://kestra.io/docs/scripts/logging.md)
+- [Script Outputs & Metrics: Send Data Back to Kestra](https://kestra.io/docs/scripts/outputs-metrics.md)
+- [Task Runners in Scripts: Control Execution Environment](https://kestra.io/docs/scripts/task-runners.md)
+- [Working Directory Task – Share Files Across Scripts](https://kestra.io/docs/scripts/working-directory.md)
+- [Task Runners in Kestra: Offload & Isolate Compute](https://kestra.io/docs/task-runners.md)
+- [Task Runner Benefits: Resource Control & Flexibility](https://kestra.io/docs/task-runners/benefits.md)
+- [Task Runner Capabilities & Supported Plugins in Kestra](https://kestra.io/docs/task-runners/overview.md)
+- [Task Runners vs Worker Groups – When to Use Each](https://kestra.io/docs/task-runners/task-runners-vs-worker-groups.md)
+- [Task Runner Types – Choose the Right Execution Backend](https://kestra.io/docs/task-runners/types.md)
+- [AWS Batch Task Runner – Run Tasks on ECS Fargate, EC2, or EKS](https://kestra.io/docs/task-runners/types/aws-batch-task-runner.md)
+- [Azure Batch Task Runner: Run Tasks on Azure Containers](https://kestra.io/docs/task-runners/types/azure-batch-task-runner.md)
+- [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
+- [Google Batch Task Runner: Run Tasks on Cloud VMs](https://kestra.io/docs/task-runners/types/google-batch-task-runner.md)
+- [Google Cloud Run Task Runner: Serverless Task Execution](https://kestra.io/docs/task-runners/types/google-cloudrun-task-runner.md)
+- [Kubernetes Task Runner – Run Tasks as K8s Pods](https://kestra.io/docs/task-runners/types/kubernetes-task-runner.md)
+- [Process Task Runner – Run Tasks as Local Processes](https://kestra.io/docs/task-runners/types/process-task-runner.md)
+- [Kestra Terraform Provider: Manage Resources as IaC](https://kestra.io/docs/terraform.md)
+- [Terraform Provider in Kestra: Data Sources Index](https://kestra.io/docs/terraform/data-sources.md)
+- [Terraform Provider in Kestra: Read Bindings](https://kestra.io/docs/terraform/data-sources/binding.md)
+- [Terraform Provider in Kestra: Read Flows](https://kestra.io/docs/terraform/data-sources/flow.md)
+- [Terraform Provider in Kestra: Read Groups](https://kestra.io/docs/terraform/data-sources/group.md)
+- [Terraform Provider in Kestra: Read KV Entries](https://kestra.io/docs/terraform/data-sources/kv.md)
+- [Terraform Provider in Kestra: Read Namespaces](https://kestra.io/docs/terraform/data-sources/namespace.md)
+- [Terraform Provider in Kestra: Read Namespace Files](https://kestra.io/docs/terraform/data-sources/namespace_file.md)
+- [Terraform Provider in Kestra: Read Roles](https://kestra.io/docs/terraform/data-sources/role.md)
+- [Terraform Provider in Kestra: Read Service Accounts](https://kestra.io/docs/terraform/data-sources/service_account.md)
+- [Terraform Provider in Kestra: Read SA API Tokens](https://kestra.io/docs/terraform/data-sources/service_account_api_tokens.md)
+- [Terraform Provider in Kestra: Read Templates](https://kestra.io/docs/terraform/data-sources/template.md)
+- [Terraform Provider in Kestra: Read Tenants](https://kestra.io/docs/terraform/data-sources/tenant.md)
+- [Terraform Provider in Kestra: Read Tests](https://kestra.io/docs/terraform/data-sources/test.md)
+- [Terraform Provider in Kestra: Read Users](https://kestra.io/docs/terraform/data-sources/user.md)
+- [Terraform: Read User API Tokens in Kestra](https://kestra.io/docs/terraform/data-sources/user_api_tokens.md)
+- [Terraform Provider in Kestra: Read Worker Groups](https://kestra.io/docs/terraform/data-sources/worker_group.md)
+- [Kestra Terraform Provider Guides](https://kestra.io/docs/terraform/guides.md)
+- [Kestra Terraform Provider: Configuration Options](https://kestra.io/docs/terraform/guides/configurations.md)
+- [Working with YAML in Kestra Terraform Provider](https://kestra.io/docs/terraform/guides/working-with-yaml.md)
+- [Terraform Resources in Kestra: Manage Index](https://kestra.io/docs/terraform/resources.md)
+- [Terraform: Manage Apps in Kestra](https://kestra.io/docs/terraform/resources/app.md)
+- [Terraform: Manage Bindings in Kestra](https://kestra.io/docs/terraform/resources/binding.md)
+- [Terraform: Manage Dashboards in Kestra](https://kestra.io/docs/terraform/resources/dashboard.md)
+- [Terraform: Manage Flows in Kestra](https://kestra.io/docs/terraform/resources/flow.md)
+- [Terraform: Manage Groups in Kestra](https://kestra.io/docs/terraform/resources/group.md)
+- [Terraform: Manage KV Entries in Kestra](https://kestra.io/docs/terraform/resources/kv.md)
+- [Terraform: Manage Namespaces in Kestra](https://kestra.io/docs/terraform/resources/namespace.md)
+- [Terraform: Manage Namespace Files in Kestra](https://kestra.io/docs/terraform/resources/namespace_file.md)
+- [Terraform: Manage Namespace Secrets in Kestra](https://kestra.io/docs/terraform/resources/namespace_secret.md)
+- [Terraform: Manage Roles in Kestra](https://kestra.io/docs/terraform/resources/role.md)
+- [Terraform: Manage Security Integrations in Kestra](https://kestra.io/docs/terraform/resources/security_integration.md)
+- [Terraform: Manage Service Accounts in Kestra](https://kestra.io/docs/terraform/resources/service_account.md)
+- [Terraform: Manage Service Account API Tokens](https://kestra.io/docs/terraform/resources/service_account_api_token.md)
+- [Terraform: Manage Templates in Kestra](https://kestra.io/docs/terraform/resources/template.md)
+- [Terraform: Manage Tenants in Kestra](https://kestra.io/docs/terraform/resources/tenant.md)
+- [Terraform: Manage Tests in Kestra](https://kestra.io/docs/terraform/resources/test.md)
+- [Terraform: Manage Users in Kestra](https://kestra.io/docs/terraform/resources/user.md)
+- [Terraform: Manage User API Tokens in Kestra](https://kestra.io/docs/terraform/resources/user_api_token.md)
+- [Terraform: Manage User Passwords in Kestra](https://kestra.io/docs/terraform/resources/user_password.md)
+- [Terraform: Manage Worker Groups in Kestra](https://kestra.io/docs/terraform/resources/worker_group.md)
+- [Tutorial: Build Kestra Flows Step by Step](https://kestra.io/docs/tutorial.md)
+- [Handle Errors in Kestra: Retries and Alerts](https://kestra.io/docs/tutorial/errors.md)
+- [Flowable Tasks in Kestra: Branch, Loop, Parallelize](https://kestra.io/docs/tutorial/flowable.md)
+- [Build a Hello World Flow in Kestra](https://kestra.io/docs/tutorial/fundamentals.md)
+- [Add Inputs to Kestra Workflows](https://kestra.io/docs/tutorial/inputs.md)
+- [Pass Outputs Between Tasks in Kestra](https://kestra.io/docs/tutorial/outputs.md)
+- [Add Triggers to Automate Kestra Flows](https://kestra.io/docs/tutorial/triggers.md)
+- [Kestra UI Guide: Dashboards, Flows & Logs](https://kestra.io/docs/ui.md)
+- [Blueprints in the Kestra UI – Find and Use Templates](https://kestra.io/docs/ui/blueprints.md)
+- [Bookmarks in the Kestra UI – Star and Revisit Pages](https://kestra.io/docs/ui/bookmarks.md)
+- [Dashboards in Kestra UI: Monitor Executions](https://kestra.io/docs/ui/dashboard.md)
+- [Executions in the Kestra UI – Inspect and Manage Runs](https://kestra.io/docs/ui/executions.md)
+- [Flows in the Kestra UI – Browse, Edit, Execute](https://kestra.io/docs/ui/flows.md)
+- [Logs in Kestra UI: Search and Filter Task Output](https://kestra.io/docs/ui/logs.md)
+- [Namespaces in Kestra UI: Manage Resources](https://kestra.io/docs/ui/namespaces.md)
+- [Playground in Kestra UI: Build Flows Task by Task](https://kestra.io/docs/ui/playground.md)
+- [Settings in Kestra UI: Themes, Timezone & Editor](https://kestra.io/docs/ui/settings.md)
+- [Kestra Use Cases: Data, ETL, Infra & Microservices](https://kestra.io/docs/use-cases.md)
+- [Automate Manual Approval Processes in Kestra](https://kestra.io/docs/use-cases/approval-processes.md)
+- [Orchestrate Data Pipelines in Kestra](https://kestra.io/docs/use-cases/data-pipelines.md)
+- [Orchestrate dbt Workflows in Kestra](https://kestra.io/docs/use-cases/dbt.md)
+- [Automate Infrastructure Workflows in Kestra](https://kestra.io/docs/use-cases/infrastructure.md)
+- [Orchestrate Microservices in Kestra](https://kestra.io/docs/use-cases/microservices.md)
+- [Orchestrate Python Workflows in Kestra](https://kestra.io/docs/use-cases/python-workflows.md)
+- [Version Control & CI/CD in Kestra: GitOps and Pipelines](https://kestra.io/docs/version-control-cicd.md)
+- [CI/CD Pipelines in Kestra: Validate and Deploy Flows](https://kestra.io/docs/version-control-cicd/cicd.md)
+- [Azure DevOps for Kestra – YAML Pipelines Example](https://kestra.io/docs/version-control-cicd/cicd/05-azure-devops.md)
+- [Bitbucket Pipes for Kestra: Build and Deploy Flows](https://kestra.io/docs/version-control-cicd/cicd/bitbucket-pipes.md)
+- [GitHub Actions for Kestra – CI/CD Workflow Examples](https://kestra.io/docs/version-control-cicd/cicd/github-action.md)
+- [GitLab CI for Kestra: Automate Flow Validation](https://kestra.io/docs/version-control-cicd/cicd/gitlab.md)
+- [CI/CD Helpers in Kestra: Local Dev and Read-Only Flows](https://kestra.io/docs/version-control-cicd/cicd/helpers.md)
+- [Kubernetes Operator in Kestra: GitOps for Flows](https://kestra.io/docs/version-control-cicd/cicd/kubernetes-operator.md)
+- [Terraform for Kestra – Manage Resources as Code](https://kestra.io/docs/version-control-cicd/cicd/terraform.md)
+- [Version Control with Git: Sync, Push, and Clone Flows](https://kestra.io/docs/version-control-cicd/git.md)
+- [Why Kestra: Simpler, More Powerful Orchestration](https://kestra.io/docs/why-kestra.md)
+- [Workflow Components in Kestra: Complete Reference](https://kestra.io/docs/workflow-components.md)
+- [afterExecution Tasks in Kestra – Post-Run Actions](https://kestra.io/docs/workflow-components/afterexecution.md)
+- [Checks in Kestra – Pre-Execution Validations](https://kestra.io/docs/workflow-components/checks.md)
+- [Flow Concurrency in Kestra: Limit Parallel Runs](https://kestra.io/docs/workflow-components/concurrency.md)
+- [Descriptions in Kestra – Document Flows and Tasks](https://kestra.io/docs/workflow-components/descriptions.md)
+- [Disabled Flag in Kestra: Skip Flows and Triggers](https://kestra.io/docs/workflow-components/disabled.md)
+- [Workflow Errors in Kestra – Handling Strategies](https://kestra.io/docs/workflow-components/errors.md)
+- [Executions in Kestra – Run and Monitor Flows](https://kestra.io/docs/workflow-components/execution.md)
+- [Finally Tasks in Kestra – Always-Run Cleanup](https://kestra.io/docs/workflow-components/finally.md)
+- [Flows in Kestra – Define Orchestration Units](https://kestra.io/docs/workflow-components/flow.md)
+- [Workflow Inputs in Kestra: Declare and Pass Parameters](https://kestra.io/docs/workflow-components/inputs.md)
+- [Labels in Kestra – Tag Flows and Executions](https://kestra.io/docs/workflow-components/labels.md)
+- [Namespaces in Kestra – Organize and Secure Workflows](https://kestra.io/docs/workflow-components/namespace.md)
+- [Workflow Outputs in Kestra: Share Data Between Tasks](https://kestra.io/docs/workflow-components/outputs.md)
+- [Plugin Defaults in Kestra – Set Task-Level Defaults](https://kestra.io/docs/workflow-components/plugin-defaults.md)
+- [Plugins in Kestra: Tasks, Triggers, Integrations](https://kestra.io/docs/workflow-components/plugins.md)
+- [Task Retries in Kestra – Handle Transient Failures](https://kestra.io/docs/workflow-components/retries.md)
+- [Workflow SLAs in Kestra – Assert Duration Targets](https://kestra.io/docs/workflow-components/sla.md)
+- [Execution States in Kestra: Full Lifecycle Guide](https://kestra.io/docs/workflow-components/states.md)
+- [Subflows in Kestra – Modularize and Reuse Flows](https://kestra.io/docs/workflow-components/subflows.md)
+- [Task Cache in Kestra – Reuse Expensive Results](https://kestra.io/docs/workflow-components/task-cache.md)
+- [Tasks in Kestra – Define Steps in a Flow](https://kestra.io/docs/workflow-components/tasks.md)
+- [Flowable Tasks in Kestra: Control Flow Logic](https://kestra.io/docs/workflow-components/tasks/flowable-tasks.md)
+- [Runnable Tasks in Kestra – Execute Workloads](https://kestra.io/docs/workflow-components/tasks/runnable-tasks.md)
+- [Task Runs in Kestra – Track Task Execution](https://kestra.io/docs/workflow-components/tasks/taskruns.md)
+- [Task Timeouts in Kestra – Limit Run Duration](https://kestra.io/docs/workflow-components/timeout.md)
+- [Triggers in Kestra: Schedule, Events, Webhooks](https://kestra.io/docs/workflow-components/triggers.md)
+- [Flow Trigger in Kestra – Chain Flow Executions](https://kestra.io/docs/workflow-components/triggers/flow-trigger.md)
+- [Polling Trigger in Kestra – Check External Systems](https://kestra.io/docs/workflow-components/triggers/polling-trigger.md)
+- [Realtime Trigger in Kestra – Millisecond Eventing](https://kestra.io/docs/workflow-components/triggers/realtime-trigger.md)
+- [Schedule Trigger in Kestra – Cron-Based Scheduling](https://kestra.io/docs/workflow-components/triggers/schedule-trigger.md)
+- [Webhook Trigger in Kestra – Start Flows via HTTP](https://kestra.io/docs/workflow-components/triggers/webhook-trigger.md)
+- [Variables in Kestra – Reuse Values Across Flows](https://kestra.io/docs/workflow-components/variables.md)

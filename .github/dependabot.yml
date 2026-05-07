@@ -18,6 +18,9 @@ updates:
   # Maintain dependencies for NPM modules
   - package-ecosystem: "npm"
     directory: "/"
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps)"
     schedule:
       interval: "weekly"
       day: "wednesday"
