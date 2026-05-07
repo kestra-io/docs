@@ -23,7 +23,7 @@ The flow runs on every `issues.opened` webhook from GitHub and does the followin
 1. Mints a fresh GitHub App installation token to follow security best practices around short-lived credentials.
 2. Adds the issue to our org-level Issues project board via the `gh` CLI.
 3. Reads the canonical squad ownership map from a Notion page.
-4. Calls Gemini to classify the issue against the map.main
+4. Calls Gemini to classify the issue against the map.
 5. Writes the resulting **Owner** squad to the issue's org-level fields via GitHub GraphQL.
 6. Labels the Kestra execution with the resolved squad name so we can audit it later.
 
