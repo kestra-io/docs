@@ -145,7 +145,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
-- [No-code editor](https://kestra.io/docs/no-code.md): Build and configure flows visually without writing YAML using the drag-and-drop editor
+- [No Code editor](https://kestra.io/docs/ui/flows.md): Build and configure flows visually without writing YAML — form-based editing that generates schema-validated YAML in real time
 
 ## Reference
 
@@ -500,9 +500,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Enterprise License Upgrade in Kestra 1.3.0](https://kestra.io/docs/migration-guide/v1.3.0/ee-license-upgrade.md)
 - [File-Listing Plugins Default to 25 Results in 1.3.0](https://kestra.io/docs/migration-guide/v1.3.0/file-listing-default-limit.md)
 - [LTS Migration: Kestra 1.0 to 1.3 Upgrade Guide](https://kestra.io/docs/migration-guide/v1.3.0/lts-migration.md)
-- [No Code in Kestra: Build Flows & Dashboards Visually](https://kestra.io/docs/no-code.md)
-- [No Code Dashboards in Kestra: Design Without YAML](https://kestra.io/docs/no-code/no-code-dashboards.md)
-- [No Code Flow Building in Kestra: Skip the YAML](https://kestra.io/docs/no-code/no-code-flow-building.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
 - [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)
@@ -594,12 +591,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Pass Outputs Between Tasks in Kestra](https://kestra.io/docs/tutorial/outputs.md)
 - [Add Triggers to Automate Kestra Flows](https://kestra.io/docs/tutorial/triggers.md)
 - [Kestra UI Guide: Dashboards, Flows & Logs](https://kestra.io/docs/ui.md)
-- [Blueprints in the Kestra UI – Find and Use Templates](https://kestra.io/docs/ui/blueprints.md)
-- [Bookmarks in the Kestra UI – Star and Revisit Pages](https://kestra.io/docs/ui/bookmarks.md)
 - [Dashboards in Kestra UI: Monitor Executions](https://kestra.io/docs/ui/dashboard.md)
 - [Executions in the Kestra UI – Inspect and Manage Runs](https://kestra.io/docs/ui/executions.md)
 - [Flows in the Kestra UI – Browse, Edit, Execute](https://kestra.io/docs/ui/flows.md)
-- [Logs in Kestra UI: Search and Filter Task Output](https://kestra.io/docs/ui/logs.md)
 - [Namespaces in Kestra UI: Manage Resources](https://kestra.io/docs/ui/namespaces.md)
 - [Playground in Kestra UI: Build Flows Task by Task](https://kestra.io/docs/ui/playground.md)
 - [Settings in Kestra UI: Themes, Timezone & Editor](https://kestra.io/docs/ui/settings.md)
