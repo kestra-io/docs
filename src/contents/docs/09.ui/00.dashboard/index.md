@@ -31,9 +31,65 @@ Dashboards display the following data:
 
 Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra's home screen, you can create a custom dashboard with charts that answer specific questions and track key metrics. Each chart's configuration can be modified individually using the pencil icon in the dashboard view.
 
-:::alert{type="info"}
-See the [No-Code Dashboards guide](../../no-code/02.no-code-dashboards/index.md) for building dashboards without writing YAML.
-:::
+You can build custom dashboards using the **No Code editor** (form-based, no YAML required) or by **writing YAML directly**. Both produce the same schema-validated output.
+
+### No Code editor
+
+The No Code editor lets you design dashboards directly in the UI using structured forms. As you configure charts and data sources, the editor generates YAML in real time and stays synchronized with the live preview — switch between views at any time.
+
+- **Speed & accessibility**: Build dashboards without writing YAML — ideal for analysts, operators, or anyone new to Kestra.
+- **Visual clarity**: Live previews let you see your dashboard evolve as you edit.
+- **No ceiling**: Switch to YAML when you need filters, dynamic queries, or advanced layout logic — all in the same editor.
+
+#### Interactive demo
+
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No Code Dashboard | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+#### Quick start
+
+Navigate to the **Dashboards** tab, click **Default Dashboard**, and select **+ Create Dashboard**.
+
+![Create Dashboard](./create-dashboard.png)
+
+In the Dashboard YAML editor, select the **No Code** tab. It appears alongside the YAML editor so you can view both as you work.
+
+![No Code Dashboard Editor](./no-code-dashboards.png)
+
+#### Example: build a KPI success ratio chart
+
+Give your dashboard an ID, title, description, and time window. Changes in No Code forms immediately reflect in the YAML editor.
+
+![Time Window](./time-window.png)
+
+Click **+ Add** in the **charts** block to create your first chart. Choose **KPI Chart** as the chart type. Each type has its own options — see the [Chart Plugin documentation](/plugins/core/chart) for the full list. Open the **Documentation** tab at any time to view chart-specific guidance without leaving the editor.
+
+![Documentation Multi-Panel](./documentation-view.png)
+
+Give the chart an ID and set the data type to **Executions**. Set `field` to `ID` and `agg` to `COUNT` to capture all executions. Optionally add a display name.
+
+![KPI Chart](./kpi-chart.png)
+
+Click **+ Add** under the numerator section to add a filter. Choose `IN` for `type`, add `SUCCESS` as a value, and set `field` to `STATE`. This scopes the numerator to successful executions only.
+
+![Add Numerator](./add-numerator.png)
+
+Return to the `charts` No Code tab and open **Optional Properties**. Set `displayName`, change `numberType` to `PERCENTAGE`, and set `width` to `3`.
+
+![Chart Options](./chart-options.png)
+
+Open the **Preview** tab to review the chart. Click **Save** when satisfied. To create a failure ratio chart, copy the generated YAML, paste it into the YAML editor, and replace `SUCCESS` with `FAILED`.
+
+![Chart Preview](./chart-preview.png)
+
+#### Best practices
+
+**Organize by purpose.** Group related charts into dashboards with a clear goal — for example, separate dashboards for system health, execution performance, and user activity.
+
+**Use consistent naming.** A pattern like `team_metric_type` (e.g., `dataops_executions_latency`) makes dashboards easier to find, version, and export.
+
+**Use YAML for reuse.** When charts share the same structure with small differences in filters or fields, copy-paste the YAML and modify — faster than rebuilding forms.
+
+**Preview before saving.** Catch mismatched fields and aggregation errors early before they make it into a published dashboard.
 
 ### Chart types
 
