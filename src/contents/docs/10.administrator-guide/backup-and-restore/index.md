@@ -22,6 +22,8 @@ Perform metadata backup and restore while Kestra is paused to ensure consistency
 
 A metadata backup includes all data **not** related to executions: blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets-manager backends), security integrations, settings, templates, tenants, triggers, users, and access bindings. To include execution-related data, use the `--include-data` flag.
 
+Namespace discovery during backup relies on each resource's metadata repository. Ensure the required [metadata migrations](/docs/migration-guide/v1.3.0/lts-migration) have been run so that namespaces containing only KV items, namespace files, or secrets — but no flows — are correctly included.
+
 ### Metadata backup
 
 To back up instance metadata, run:

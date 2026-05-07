@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "kestra": {
+      "type": "http",
+      "url": "https://api.kestra.io/v1/mcp"
+    }
+  }
+}
