@@ -34,7 +34,7 @@ Five of those six steps are deterministic. Step 4 is the AI step, and it's the o
 
 A few weeks after we put this flow into production, a triage run failed with this error from Gemini's API:
 
-```
+```json
 {
   "error": {
     "code": 503,
@@ -62,30 +62,27 @@ The single classification task is now three Classification tasks chained with `r
   allowFailure: true
   provider:
     modelName: gemini-3.1-pro-preview
-  ...
 
 - id: classify_fallback_3
   allowFailure: true
   runIf: "{{ outputs.classify.classification is not defined }}"
   provider:
     modelName: gemini-3-pro-preview
-  ...
 
 - id: classify_fallback_25
   allowFailure: true
   runIf: "{{ outputs.classify.classification is not defined and outputs.classify_fallback_3.classification is not defined }}"
   provider:
     modelName: gemini-2.5-pro
-  ...
 ```
 
-First call: Gemini 3.1 Pro Preview, the latest and most accurate.
+**First call**: Gemini 3.1 Pro Preview, the latest and most accurate.
 
-Second call (only if the first didn't produce a classification): Gemini 3.0 Pro Preview.
+**Second call** (_only if the first didn't produce a classification_): Gemini 3.0 Pro Preview.
 
-Third call (only if both didn't): Gemini 2.5 Pro.
+**Third call** (_only if both didn't_): Gemini 2.5 Pro.
 
-The trade-off is that Gemini 2.5 Pro could technically lead to slightly worse classifications than 3.1 Pro on edge cases. When we fall back to it, accuracy drops a few points. We accepted that because a probably-correct owner is more useful than no owner at all, and a Squad Lead can fix the rare misroutes manually. Blocking triage entirely until 3.1 recovers would be the worse outcome.
+The trade-off is that Gemini 2.5 Pro could technically lead to slightly worse classifications than 3.1 Pro on edge cases. When we fall back to it, accuracy drops a few points. We accepted that because a probably-correct owner is more useful than no owner at all, and a squad lead can fix the rare misroutes manually. Blocking triage entirely until 3.1 recovers would be the worse outcome.
 
 ### Retries before the fallback even fires
 
@@ -103,7 +100,7 @@ On the first failure, the task waits one second and tries again. If the outage i
 
 I would argue retry-then-fallback is the right default for such external calls in a workflow. The two failure modes aren't the same: transient noise is best handled with retry, provider-wide outages with a fallback path. Doing one without the other is a half-measure.
 
-### Concurrency limits to avoid hammering downstream
+### Concurrency limits to avoid hitting our own quota
 
 The webhook trigger fires every time someone opens an issue. On a busy morning we may see twenty issue events arrive within a few minutes. Without a guard, we'd hit our Gemini quota and our Notion API rate limit at the same time.
 
@@ -115,7 +112,7 @@ concurrency:
 
 This caps simultaneous executions of the flow at ten and queues the rest. The trigger isn't rate-limited, the executions just wait their turn. Calls to Gemini and Notion are paced naturally by the queue, no exponential-backoff bookkeeping required in our code.
 
-### One alert path, not five
+### One alert path
 
 Each classification attempt sets `allowFailure: true`. A failed task doesn't break the execution, it ends it in `WARNING` state. We have a separate flow in the `kestra.monitors` namespace that listens for `FAILED` and `WARNING` states across the `kestra.products` namespace and fires a single Slack message:
 
@@ -134,13 +131,13 @@ Any time the fallback chain triggers, even when classification ultimately succee
 
 ## Glue code vs orchestrator
 
-You could build the same thing with a Lambda, a few try/except blocks, a Redis queue, a CloudWatch alarm, and a Slack webhook. People do. From my experience, the result is fragile in two specific ways.
+You could write this as a script with try/except blocks and a Slack webhook. For the first version, that's reasonable. From my experience, the hand-rolled version becomes fragile in two specific ways after a few months in production.
 
-The failure paths drift. You add retry to the model call but forget to add it to the GitHub mutation that runs after it. The Lambda still fails on transient GitHub errors, and the retry sits in the wrong place to catch them. In Kestra, retry, `allowFailure`, and concurrency are properties on every task. They compose.
+Failure handling drifts. You add retry to the model call but forget to add it to the GitHub mutation that runs after it. The script grows from 50 to 300 lines, the retry policy accumulates piecewise, and one day a non-retried HTTP call takes the whole job down. In Kestra, `retry`, `allowFailure`, and `concurrency` can be added in a few lines of YAML. Set the retry policy once at the flow level and every failed task will be restarted, including the ones you add later.
 
-The alert paths drift, too. You wire one webhook for one error type, then bolt another on for another, then a third. Six months later, you don't know which alerts are which, and a real failure gets lost in the noise. With a single namespace-level monitor flow, every workflow in the namespace inherits the same alert path, and you have one place to tune signal-to-noise.
+Alerting drifts the same way. One Slack webhook for one error type, then another, then a third. Channels and formats diverge, and real failures get lost in stale alerts nobody reads. A single namespace-level monitor flow in Kestra gives every workflow the same alert path, with one place to tune signal-to-noise.
 
-For workflows that mix deterministic and probabilistic steps, an orchestrator is the layer that lets you reason about the flow as a whole. AI calls are inherently probabilistic. They will succeed, partially succeed, fail with a clear error, fail with a vague one, hang, and occasionally return garbled output. The deterministic glue around them has to handle all of those without being rewritten each time you add a new step.
+For workflows that mix deterministic and probabilistic steps, the orchestrator lets you reason about the flow as a whole. AI calls succeed, partially succeed, fail with a clear error, fail with a vague one, hang, or return malformed output. The deterministic glue around them has to handle all of those, without being rewritten each time you add a new step.
 
 ## Takeaways
 
