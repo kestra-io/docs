@@ -110,7 +110,7 @@ In practice, this means:
 
 - **Declarative:** Define *what* should happen and *when* in YAML; execute the actual work in whatever language or tool makes sense.
 - **True language flexibility:** The same orchestration layer coordinates [Python scripts](../../docs/15.how-to-guides/python/index.md), SQL queries, [shell commands](../../docs/15.how-to-guides/shell/index.md), Go binaries, and API calls without caring what language runs underneath.
-- **Accessible to non-developers:** A data analyst can read and modify a workflow without understanding Python packaging or virtual environments. Teams that prefer clicking to coding get a [real UI](../../docs/no-code/01.no-code-flow-building/index.md), not a bolted-on afterthought.
+- **Accessible to non-developers:** A data analyst can read and modify a workflow without understanding Python packaging or virtual environments. Teams that prefer clicking to coding get a [real UI](../../docs/09.ui/01.flows/index.md), not a bolted-on afterthought.
 - **Easy migrations:** Bring existing workloads as-is without refactoring. Just wrap what you have and orchestrate it.
 
 ### What this enables

@@ -497,7 +497,7 @@ If maturity is important to you, it's still worth considering Spark. Even though
 
 ## Using SQL and dataframes in your data pipelines
 
-[Kestra](../../docs/01.quickstart/index.md) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../../docs/09.ui/05.blueprints/index.md) that you can use to get started quickly.
+[Kestra](../../docs/01.quickstart/index.md) is a simple and fast open-source data orchestrator that can help you integrate your SQL and dataframe transformations into end-to-end data pipelines. The UI ships with a variety of [blueprints](../../docs/06.concepts/07.blueprints/index.md) that you can use to get started quickly.
 
 The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how you can easily orchestrate your SQL and Pandas data transformations.
 

@@ -17,7 +17,6 @@ const navigationTree = {
         "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
-        "No Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
         "Use Cases",
