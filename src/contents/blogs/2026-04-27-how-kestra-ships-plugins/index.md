@@ -5,6 +5,8 @@ date: 2026-04-27T09:00:00
 category: Engineering
 author:
   name: François Delbrayelle
+  linkedin: https://www.linkedin.com/in/fdelbrayelle/
+  twitter: "@fdelbrayelle"
   image: fdelbrayelle
   role: Lead Software Engineer
 image: ./main.png

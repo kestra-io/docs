@@ -16,6 +16,7 @@ If you are upgrading to 1.2.0 from an earlier version, you must run the Namespac
 
 - In flows/tasks that use Namespace Files (e.g., `namespaceFiles` or `read()`).
 - In the Kestra UI (files missing, not browsable, or not selectable where expected).
+- In metadata backups: namespace files in namespaces that contain no flows will be silently excluded from the backup archive and absent after restore.
 
 ## Required command
 
