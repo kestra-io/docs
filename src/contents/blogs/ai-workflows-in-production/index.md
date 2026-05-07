@@ -9,7 +9,7 @@ author:
   medium: https://annageller.medium.com/
   role: "Product Lead"
   image: "ageller"
-image: ./main.png
+image: ./main.jpg
 ---
 
 When Gemini 3.1 Pro returned a 503 "model is currently experiencing high demand" response in the middle of our issue triage, the flow didn't stop. It tried Gemini 3.0, then Gemini 2.5, set the GitHub fields the rest of the flow needed, and logged a single Slack message so we'd know it happened. The model provider had a bad minute. The workflow didn't.
