@@ -160,7 +160,7 @@ If you decide to go with open-source orchestration tools, you have options. If y
 
 In case you need both open-source and maximum flexibility, look no further than Kestra. It's the only language-agnostic orchestration platform and has a wide array of connectors. Further, the documentation and blueprints make it easier to learn when compared to other open-source alternatives.
 
-Keep in mind that we had a tough time limiting this article to only 5 orchestration tools. There are other great production-ready solutions out there, such as [Dagster](/vs/dagster) and [Temporal](/vs/temporal), so make sure to check out these as well. For teams facing an Airflow migration decision, see our guides on [Airflow alternatives for enterprises](../2026-01-18-enterprise-airflow-alternatives/index.md) and the [Airflow 3 vs Airflow 2 upgrade breakdown](../2026-01-27-airflow-3-vs-airflow-2/index.md).
+Keep in mind that we had a tough time limiting this article to only 5 orchestration tools. There are other great production-ready solutions out there, such as [Dagster](/vs/dagster) and [Temporal](/vs/temporal), so make sure to check out these as well. For teams facing an Airflow migration decision, see our guides on [Airflow alternatives for enterprises](../enterprise-airflow-alternatives/index.md) and the [Airflow 3 vs Airflow 2 upgrade breakdown](../airflow-3-vs-airflow-2/index.md).
 
 Also, make sure to **stay tuned** to the [Kestra blog](/blogs) for more up-to-date guides on orchestration, automation tools, trends in data management, and new features related to our Kestra orchestration platform.
 

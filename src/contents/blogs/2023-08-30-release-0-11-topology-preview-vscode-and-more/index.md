@@ -380,7 +380,7 @@ This release introduces new integrations to automate data lake processes includi
 
 ### Amazon Athena
 
-Amazon Athena is a serverless query engine allowing to analyze data in Amazon S3 using standard SQL. You can now use [the new AWS task](/plugins/plugin-aws#athena) to run any SQL query on Athena. For detailed integration examples, check our [Apache Iceberg Crash Course for AWS users](../2023-08-05-iceberg-for-aws-users/index.md).
+Amazon Athena is a serverless query engine allowing to analyze data in Amazon S3 using standard SQL. You can now use [the new AWS task](/plugins/plugin-aws#athena) to run any SQL query on Athena. For detailed integration examples, check our [Apache Iceberg Crash Course for AWS users](../iceberg-for-aws-users/index.md).
 
 ### Databricks plugin
 

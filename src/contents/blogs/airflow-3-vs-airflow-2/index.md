@@ -13,7 +13,7 @@ image: ./main.png
 
 Airflow 3 brings real improvements, but the migration effort is substantial enough that teams should evaluate whether Airflow still fits their needs before committing engineering cycles to the upgrade.
 
-In a [previous post, we looked at Airflow alternatives](../2026-01-18-enterprise-airflow-alternatives/index.md) for teams considering a move away from Python-first orchestration. But what if you're not sure whether to leave Airflow at all? What if you just want to understand whether the Airflow 3 upgrade is worth the engineering effort?
+In a [previous post, we looked at Airflow alternatives](../enterprise-airflow-alternatives/index.md) for teams considering a move away from Python-first orchestration. But what if you're not sure whether to leave Airflow at all? What if you just want to understand whether the Airflow 3 upgrade is worth the engineering effort?
 
 Airflow 2.x entered limited support mode in April 2026. That means security patches only, no bug fixes, no new features. If you're still on Airflow 2, the decision is now unavoidable: invest in migrating to Airflow 3, or use this forced refactor as an opportunity to reconsider your orchestration strategy entirely.
 
@@ -174,7 +174,7 @@ Here's a simple framework:
 
 Either path requires planning, testing, and coordination. If you haven't started yet, the time pressure is now real.
 
-For a broader view of what's available beyond Airflow, see our [guide to enterprise Airflow alternatives](../2026-01-18-enterprise-airflow-alternatives/index.md).
+For a broader view of what's available beyond Airflow, see our [guide to enterprise Airflow alternatives](../enterprise-airflow-alternatives/index.md).
 
 :::alert{type="info"}
 📘 **Get the full migration analysis.** Our free Airflow 2 EOL guide covers upgrade paths, breaking changes in detail, and a side-by-side comparison of staying vs. switching.

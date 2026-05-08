@@ -19,7 +19,7 @@ Recently, we've released the [Dremio](/plugins/plugin-jdbc-dremio) and [Arrow Fl
 
 ## What is Dremio
 
-[Dremio](https://github.com/kestra-io/kestra) is a data lakehouse platform that simplifies big data analytics. It allows you to directly access data from various sources, such as Postgres, S3 and Azure Data Lake Storage, without needing to copy or move the data. Its key features include a fast query engine, a semantic layer to help manage and share data, a catalog for [Iceberg tables](../2023-08-05-iceberg-for-aws-users/index.md), and [reflections](https://www.dremio.com/resources/tutorials/getting-started-with-reflections/) — a market-leading query acceleration technology that delivers sub-second query response times. Designed to work with SQL and common BI tools, Dremio provides self-service analytics and data management for BI workloads with the best price performance and lowest cost.
+[Dremio](https://github.com/kestra-io/kestra) is a data lakehouse platform that simplifies big data analytics. It allows you to directly access data from various sources, such as Postgres, S3 and Azure Data Lake Storage, without needing to copy or move the data. Its key features include a fast query engine, a semantic layer to help manage and share data, a catalog for [Iceberg tables](../iceberg-for-aws-users/index.md), and [reflections](https://www.dremio.com/resources/tutorials/getting-started-with-reflections/) — a market-leading query acceleration technology that delivers sub-second query response times. Designed to work with SQL and common BI tools, Dremio provides self-service analytics and data management for BI workloads with the best price performance and lowest cost.
 
 
 ---
@@ -79,7 +79,7 @@ Let's look at a practical application of Kestra and Dremio for data lakehouse or
 
 4. **Processing Data with Python**:
    - The `io.kestra.plugin.scripts.python.Script` task utilizes a Docker image with [Polars](https://www.pola.rs/).
-   - The script reads the query result into a [Polars DataFrame](../2023-08-11-dataframes/index.md).
+   - The script reads the query result into a [Polars DataFrame](../dataframes/index.md).
    - This DataFrame is then available for further analysis or reporting.
 
 

@@ -219,7 +219,7 @@ It's also worth mentioning that DuckDB integrates exceptionally well with Polars
 ![dataframes_polars_duckdb](./dataframes_polars_duckdb.png)
 
 
-**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
+**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](../duckdb-vs-motherduck/index.md) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
 Speaking of scaling your dataframes, let's cover Modin, Ponder, Fugue, and Daft next.
 
@@ -507,7 +507,7 @@ The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how y
 
 ## Summary
 
-This post covered several open-source projects that support dataframes and SQL workflows. For DuckDB specifically, see our [DuckDB vs. MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md) guide for when to move from local to cloud. To orchestrate any of these tools in production pipelines, check out [Kestra's blueprints](/blueprints) with examples for DuckDB, Polars, dbt, and more.
+This post covered several open-source projects that support dataframes and SQL workflows. For DuckDB specifically, see our [DuckDB vs. MotherDuck](../duckdb-vs-motherduck/index.md) guide for when to move from local to cloud. To orchestrate any of these tools in production pipelines, check out [Kestra's blueprints](/blueprints) with examples for DuckDB, Polars, dbt, and more.
 
 Which table abstraction is your favorite? Let us know in the [community Slack](/slack). If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra).
 
