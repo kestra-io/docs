@@ -67,7 +67,7 @@ If a dedicated plugin exists but does not meet your needs, open a [GitHub issue]
 | --- | --- | --- |
 | Download a file and store it for downstream tasks | [`Download`](/plugins/core/http/io.kestra.plugin.core.http.download) | It streams the response body directly to internal storage and returns a file URI |
 | Call an API and inspect status, headers, or body | [`Request`](/plugins/core/http/io.kestra.plugin.core.http.request) | It exposes structured HTTP outputs such as `code`, `headers`, and `body` |
-| Implement custom pagination, retries, signing, or SDK logic | A script task from [`plugin-scripts`](/docs/scripts) | It gives you full code control and can still emit files or structured outputs |
+| Implement custom pagination, retries, signing, or SDK logic | A script task from [`plugin-scripts`](../../16.scripts/index.mdx) | It gives you full code control and can still emit files or structured outputs |
 
 ## Use `Download` for file-oriented retrieval
 
@@ -272,4 +272,4 @@ Use a script task, then persist the result with `outputFiles` so downstream task
 - Use `Request` for API calls and structured HTTP responses.
 - Use script-based fetching only when you need custom client logic that built-in tasks do not provide.
 
-For task-level details, see [`Download`](/plugins/core/http/io.kestra.plugin.core.http.download), [`Request`](/plugins/core/http/io.kestra.plugin.core.http.request), and the [`plugin-scripts` documentation](/docs/scripts).
+For task-level details, see [`Download`](/plugins/core/http/io.kestra.plugin.core.http.download), [`Request`](/plugins/core/http/io.kestra.plugin.core.http.request), and the [`plugin-scripts` documentation](../../16.scripts/index.mdx).

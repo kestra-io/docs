@@ -38,7 +38,7 @@ Google "Airflow alternatives" and you'll find plenty of articles that compare to
 First, there's the governance problem. When you have 200 data engineers writing pipelines, you need guardrails that prevent well-meaning people from doing damage. Things like:
 
 - [Role-based access control](../../docs/07.enterprise/03.auth/rbac/index.md) that actually works
-- [Namespacing](../../docs/07.enterprise/02.governance/namespace-management/index.md) that isolates teams
+- [Namespacing](../../docs/07.enterprise/02.governance/07.namespace-management/index.md) that isolates teams
 - [Audit trails](../../docs/07.enterprise/02.governance/06.audit-logs/index.md) that satisfy your compliance officer without requiring a dedicated forensics team to interpret
 
 Second, there's deployment flexibility. "Cloud-native" is a fine marketing term until your security team mandates on-premises deployment for certain workloads, or your company operates in a jurisdiction with data residency requirements. Companies want to have the ability to run the same orchestration platform in GCP, on-prem, and air-gapped environments.
