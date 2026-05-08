@@ -88,7 +88,7 @@ GitHub is a prime example of a platform embracing agentic workflows. Their "GitH
 
 ### Declarative Orchestration for AI Agents
 
-Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/concepts/flow).
+Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/workflow-components/flow).
 
 This declarative model serves as a critical set of guardrails. It ensures that even as the AI agent makes autonomous decisions, its actions are confined within a version-controlled, observable, and secure environment. This answers a key question in enterprise AI: how to grant autonomy without sacrificing control. For more on [why Kestra](/docs/why-kestra) is built this way, see our documentation.
 

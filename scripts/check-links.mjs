@@ -7,8 +7,17 @@
  *    broken targets are caught at build time rather than surfacing as 404s at
  *    runtime.
  *
- * 2. Broken relative links — relative links that include a .md or .mdx
- *    extension must resolve to a real file on disk.
+ * 2. Broken relative links (explicit extension) — relative links with a .md
+ *    or .mdx extension must resolve to a real file on disk.
+ *
+ * 3. Broken relative links (extensionless) — relative links with no file
+ *    extension (e.g. ../08.architecture or ../07.triggers/) must resolve to a
+ *    real file or directory index on disk.
+ *
+ * 4. Broken absolute internal links — absolute paths into known content
+ *    sections (e.g. /docs/some-page in a blog post) must resolve to a real
+ *    page on disk, accounting for the numeric directory prefixes Astro strips
+ *    from URLs.
  *
  * Usage: node scripts/check-links.mjs
  */
@@ -22,14 +31,19 @@ const rootDir = path.resolve(__dirname, "..")
 const contentsDir = path.join(rootDir, "src", "contents")
 const docsDir = path.join(contentsDir, "docs")
 
-// Absolute-path prefixes that belong to content managed in this repo.
-// Links using these in docs pages should be relative links instead.
-const INTERNAL_CONTENT_PREFIXES = [
-    "/docs/",
-    "/blog/",
-    "/tutorial-videos/",
-    "/customer-stories/",
-]
+/**
+ * Maps URL path prefix → absolute path to the content directory that serves
+ * it. Astro strips numeric directory prefixes (e.g. "05.") when building
+ * URLs, so /docs/workflow-components routes to docs/05.workflow-components/.
+ *
+ * NOTE: blog posts live in src/contents/blogs/ but are served under /blogs/.
+ */
+const CONTENT_SECTIONS = new Map([
+    ["/docs/", path.join(contentsDir, "docs")],
+    ["/blogs/", path.join(contentsDir, "blogs")],
+    ["/tutorial-videos/", path.join(contentsDir, "tutorial-videos")],
+    ["/customer-stories/", path.join(contentsDir, "customer-stories")],
+])
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -89,15 +103,16 @@ function isExternal(url) {
 
 /** True if the URL is an absolute path into a known content section. */
 function isAbsoluteInternalContent(url) {
-    return (
-        url.startsWith("/") &&
-        INTERNAL_CONTENT_PREFIXES.some((p) => url.startsWith(p))
-    )
+    if (!url.startsWith("/")) return false
+    for (const prefix of CONTENT_SECTIONS.keys()) {
+        if (url.startsWith(prefix)) return true
+    }
+    return false
 }
 
 /**
- * True if the URL is a relative link that explicitly references a .md/.mdx
- * file (possibly followed by a fragment). These must resolve to a real file.
+ * True if the URL is a relative link with an explicit .md/.mdx extension.
+ * These must resolve to a real file on disk.
  */
 function isRelativeMarkdownLink(url) {
     return (
@@ -107,11 +122,125 @@ function isRelativeMarkdownLink(url) {
     )
 }
 
-/** Resolve a relative link URL to an absolute file path. */
-function resolveRelativeLink(url, fromFile) {
-    const withoutFragment = url.replace(/#.*$/, "")
-    const withoutQuery = withoutFragment.split("?")[0]
-    return path.resolve(path.dirname(fromFile), withoutQuery)
+/**
+ * True if the URL is a relative link with no file extension (or only a
+ * trailing slash), meaning it targets a directory index or bare page slug.
+ * Known static-asset extensions are excluded to avoid false positives.
+ */
+function isRelativeExtensionlessLink(url) {
+    if (url.startsWith("/") || isExternal(url)) return false
+    const clean = url.replace(/#.*$/, "").replace(/\?.*$/, "")
+    if (!clean || clean === ".") return false
+    // Already handled by isRelativeMarkdownLink
+    if (/\.mdx?$/.test(clean)) return false
+    // Skip links to static assets
+    if (/\.(png|jpe?g|gif|svg|webp|ico|pdf|json|ya?ml|zip|tar|gz|woff2?|ttf|eot|mp[34]|wav|csv|xml)$/i.test(clean)) return false
+    // Only proceed if the last segment has no dot (extensionless) or URL ends with /
+    const lastSegment = clean.split("/").filter(Boolean).pop() ?? ""
+    return clean.endsWith("/") || !lastSegment.includes(".")
+}
+
+/** Resolve a relative URL to an absolute filesystem path, stripping fragments. */
+function resolveRelativePath(url, fromFile) {
+    const clean = url.replace(/#.*$/, "").replace(/\?.*$/, "")
+    return path.resolve(path.dirname(fromFile), clean)
+}
+
+/**
+ * Given a base path (no extension), try the common candidates in order and
+ * return the first that exists, or null.
+ */
+function findFile(base) {
+    const candidates = [
+        path.join(base, "index.md"),
+        path.join(base, "index.mdx"),
+        base + ".md",
+        base + ".mdx",
+    ]
+    for (const c of candidates) {
+        if (fs.existsSync(c)) return c
+    }
+    return null
+}
+
+// Cache readdirSync results to avoid repeated syscalls for the same directory.
+const _dirCache = new Map()
+function cachedReaddir(dir) {
+    if (!_dirCache.has(dir)) {
+        try {
+            _dirCache.set(dir, fs.readdirSync(dir, { withFileTypes: true }))
+        } catch {
+            _dirCache.set(dir, [])
+        }
+    }
+    return _dirCache.get(dir)
+}
+
+/** Strip the leading numeric prefix Astro removes from directory names (e.g. "05."). */
+function stripNumericPrefix(name) {
+    return name.replace(/^\d+\./, "")
+}
+
+// Cache resolved absolute URLs to avoid repeated work across files.
+const _absoluteCache = new Map()
+
+/**
+ * Resolve an absolute internal URL (e.g. /docs/workflow-components/tasks) to
+ * its file path on disk, accounting for Astro's numeric-prefix stripping.
+ * Returns the resolved path string, or null if it does not exist.
+ */
+function resolveAbsoluteInternalLink(url) {
+    const clean = url
+        .replace(/#.*$/, "")
+        .replace(/\?.*$/, "")
+        .replace(/\/$/, "")
+
+    if (_absoluteCache.has(clean)) return _absoluteCache.get(clean)
+
+    let sectionDir = null
+    let urlPath = ""
+    for (const [prefix, dir] of CONTENT_SECTIONS) {
+        if (clean.startsWith(prefix)) {
+            sectionDir = dir
+            urlPath = clean.slice(prefix.length)
+            break
+        }
+    }
+    if (!sectionDir) {
+        _absoluteCache.set(clean, null)
+        return null
+    }
+
+    if (!urlPath) {
+        const result = findFile(sectionDir)
+        _absoluteCache.set(clean, result)
+        return result
+    }
+
+    const segments = urlPath.split("/").filter(Boolean)
+    let current = sectionDir
+
+    for (const segment of segments) {
+        const entries = cachedReaddir(current)
+        const match = entries.find(
+            (e) => stripNumericPrefix(e.name) === segment,
+        )
+        if (!match) {
+            _absoluteCache.set(clean, null)
+            return null
+        }
+        current = path.join(current, match.name)
+    }
+
+    // current may be a directory (needs index file) or a direct file
+    const result = fs.existsSync(current) && fs.statSync(current).isDirectory()
+        ? findFile(current)
+        : fs.existsSync(current)
+          ? current
+          : null
+
+    _absoluteCache.set(clean, result)
+    return result
 }
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
@@ -136,19 +265,38 @@ for (const filePath of allFiles) {
     for (const url of targets) {
         if (isExternal(url)) continue
 
-        // Rule 1: docs pages must use relative links, not absolute internal paths.
-        if (isDocsFile && isAbsoluteInternalContent(url)) {
-            errors.push(
-                `${relPath}\n    absolute internal link: "${url}"\n    → convert to a relative path so broken links are caught at build time`,
-            )
+        if (isAbsoluteInternalContent(url)) {
+            if (isDocsFile) {
+                // Rule 1: docs pages must use relative links, not absolute paths.
+                errors.push(
+                    `${relPath}\n    absolute internal link: "${url}"\n    → convert to a relative path so broken links are caught at build time`,
+                )
+            } else {
+                // Rule 4: absolute links in non-docs files must resolve to a real page.
+                if (resolveAbsoluteInternalLink(url) === null) {
+                    errors.push(
+                        `${relPath}\n    broken absolute link: "${url}"\n    → no matching page found on disk`,
+                    )
+                }
+            }
         }
 
         // Rule 2: relative .md/.mdx links must point to existing files.
         if (isRelativeMarkdownLink(url)) {
-            const resolved = resolveRelativeLink(url, filePath)
+            const resolved = resolveRelativePath(url, filePath)
             if (!fs.existsSync(resolved)) {
                 errors.push(
                     `${relPath}\n    broken relative link: "${url}"\n    → resolves to ${path.relative(rootDir, resolved)} (file not found)`,
+                )
+            }
+        }
+
+        // Rule 3: extensionless relative links must resolve to a file or index.
+        if (isRelativeExtensionlessLink(url)) {
+            const base = resolveRelativePath(url, filePath)
+            if (findFile(base) === null) {
+                errors.push(
+                    `${relPath}\n    broken relative link: "${url}"\n    → no file or index found at ${path.relative(rootDir, base)}`,
                 )
             }
         }

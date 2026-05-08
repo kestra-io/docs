@@ -7,7 +7,7 @@ publicationDate: 2024-06-24T22:00:00
 addedDate: 2024-06-28T08:01:42.232
 ---
 
-[Get started with Realtime Triggers](/docs/workflow-components/triggers/realtime-triggers)
+[Get started with Realtime Triggers](/docs/workflow-components/triggers/realtime-trigger)
 
 Kestra empowers developers and business users to orchestrate any event in real time, harnessing the full potential of modern, event-driven architecture. 
 
