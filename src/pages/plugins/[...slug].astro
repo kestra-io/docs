@@ -154,11 +154,9 @@ const pluginSchema = pluginType
           image: imageUrl,
           inLanguage: "en",
           about: {
-              "@type": "SoftwareApplication",
               "@id": `https://kestra.io/plugins/${pluginName}#${pluginName}`,
           },
           isPartOf: {
-              "@type": "WebSite",
               "@id": "https://kestra.io/#website",
           },
           author: { "@id": "https://kestra.io/#organization" },
@@ -202,7 +200,6 @@ const pluginSchema = pluginType
                     url: Astro.url.href,
                 },
           isPartOf: {
-              "@type": "SoftwareApplication",
               "@id": "https://kestra.io/#software",
           },
           author: { "@id": "https://kestra.io/#organization" },
