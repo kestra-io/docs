@@ -63,7 +63,7 @@ kestra:
     region: "us-east-1"
 ```
 
-For full details, see [internal storage configuration](../../08.architecture/data-components/index.md#internal-storage).
+For full details, see [internal storage configuration](../../configuration/02.runtime-and-storage/index.md#internal-storage).
 
 ## Additional information
 
