@@ -58,25 +58,25 @@ tasks:
 
   - id: processPayment
     type: io.kestra.plugin.core.http.Request
-    when: "{{ outputs.checkInventory.code == 201 }}"
+    runIf: "{{ outputs.checkInventory.code == 201 }}"
     description: Process payment for the order
     uri: https://kestra.io/api/mock
 
   - id: orderConfirmation
     type: io.kestra.plugin.core.http.Request
-    when: "{{ outputs.processPayment.code == 201 }}"
+    runIf: "{{ outputs.processPayment.code == 201 }}"
     description: Confirm the order and notify the customer
     uri: https://kestra.io/api/mock
 
   - id: arrangeShipping
     type: io.kestra.plugin.core.http.Request
-    when: "{{ outputs.orderConfirmation.code == 201 }}"
+    runIf: "{{ outputs.orderConfirmation.code == 201 }}"
     description: Arrange shipping for the order
     uri: https://kestra.io/api/mock
 
   - id: updateDeliveryStatus
     type: io.kestra.plugin.core.http.Request
-    when: "{{ outputs.arrangeShipping.code == 201 }}"
+    runIf: "{{ outputs.arrangeShipping.code == 201 }}"
     description: Update the delivery status of the order
     uri: https://kestra.io/api/mock
 

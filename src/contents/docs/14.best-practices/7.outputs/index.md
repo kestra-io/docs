@@ -23,7 +23,7 @@ inputs:
 
 tasks:
   - id: taskA
-    when: "{{ inputs.runTask }}"
+    runIf: "{{ inputs.runTask }}"
     type: io.kestra.plugin.core.debug.Return
     format: Hello World!
 

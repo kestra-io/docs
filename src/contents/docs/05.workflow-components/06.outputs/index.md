@@ -186,7 +186,7 @@ tasks:
   - id: main
     type: io.kestra.plugin.core.debug.Return
     format: Hello World!
-    when: "{{ inputs.run_task }}"
+    runIf: "{{ inputs.run_task }}"
 
   - id: fallback
     type: io.kestra.plugin.core.debug.Return

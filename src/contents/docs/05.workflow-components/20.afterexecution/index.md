@@ -17,7 +17,7 @@ Run tasks after a flow execution completes.
 
 ## `afterExecution` property
 
-`afterExecution` is a block of tasks that run after the flow ends. You can use it to run conditional tasks based on the final state, such as **SUCCESS** or **FAILED**. This is especially useful for custom notifications and alerts. For example, you can combine `afterExecution` with the `when` property to send different Slack messages depending on the execution state.
+`afterExecution` is a block of tasks that run after the flow ends. You can use it to run conditional tasks based on the final state, such as **SUCCESS** or **FAILED**. This is especially useful for custom notifications and alerts. For example, you can combine `afterExecution` with the `runIf` property to send different Slack messages depending on the execution state.
 
 ```yaml
 id: alerts_demo
@@ -29,13 +29,13 @@ tasks:
 
 afterExecution:
   - id: onSuccess
-    when: "{{execution.state == 'SUCCESS'}}"
+    runIf: "{{execution.state == 'SUCCESS'}}"
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     messageText: "{{flow.namespace}}.{{flow.id}} finished successfully!"
 
   - id: onFailure
-    when: "{{execution.state == 'FAILED'}}"
+    runIf: "{{execution.state == 'FAILED'}}"
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
     messageText: "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"

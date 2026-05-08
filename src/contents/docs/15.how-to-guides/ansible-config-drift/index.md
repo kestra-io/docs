@@ -76,7 +76,7 @@ tasks:
     tasks:
       - id: check_drift
         type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-        when: "{{ taskrun.value | jq('.changed') | first == true }}"
+        runIf: "{{ taskrun.value | jq('.changed') | first == true }}"
         url: "{{ secret('SLACK_WEBHOOK') }}"
         payload: |
           {

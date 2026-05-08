@@ -61,7 +61,7 @@ tasks:
 
   - id: fail
     type: io.kestra.plugin.core.execution.Fail
-    when: "{{ randomInt(lower=0, upper=2) == 1 }}"
+    runIf: "{{ randomInt(lower=0, upper=2) == 1 }}"
     errorMessage: Bad value returned!
 
   - id: end
