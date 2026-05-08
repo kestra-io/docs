@@ -112,13 +112,13 @@ See [secret managers](../../07.enterprise/02.governance/secrets-manager/index.md
 
 Understanding where data is persisted is critical when flows process personally identifiable information (PII) or other sensitive values.
 
-**Stored as plaintext in the database (executions table):**
-- Scalar input values (all non-FILE input types — STRING, INTEGER, etc.)
-- Task output values emitted via `outputs` in the script output protocol
-- Log messages
+**Stored as plaintext in the database:**
+- Scalar input values (all non-FILE input types — STRING, INTEGER, etc.) — stored in the executions table
+- Task output values emitted via `outputs` in the script output protocol — stored in the task_outputs table
+- Log messages — stored in the logs table
 
 **Not stored in the database:**
-- FILE-type inputs and output files — these go to internal storage (your configured S3, GCS, Azure Blob, etc.) and are not visible in the executions table.
+- FILE-type inputs and output files — these go to internal storage (your configured S3, GCS, Azure Blob, etc.).
 
 #### Encrypting sensitive task outputs
 
@@ -132,14 +132,15 @@ In Enterprise Edition, script tasks support an `encryptedOutputs` key in the `::
 id: sensitive_data_flow
 namespace: company.team
 
+inputs:
+  - id: ssn
+    type: STRING
+
 tasks:
   - id: process_pii
     type: io.kestra.plugin.scripts.shell.Script
     script: |
-      # Stored encrypted in the task_outputs table (Enterprise Edition)
       echo '::{"encryptedOutputs":{"ssn":"{{ inputs.ssn }}"}}::'
-
-      # Stored as plaintext in the task_outputs table
       echo '::{"outputs":{"status":"processed"}}::'
 ```
 
