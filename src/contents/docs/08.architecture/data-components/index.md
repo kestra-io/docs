@@ -26,7 +26,7 @@ The table below outlines key data components, where they are stored, and their p
 | **Namespaces**                                                                                         | Repository                                                                                          | Organizes workflows and manages secrets, plugin defaults, and variables. |
 | **Namespace files**                                                                                    | Internal storage                                                                                    | Stores code and configuration files in Kestra’s storage backend. |
 | **Executions & metadata**                                                                              | Repository                                                                                          | Stores execution details including status, timestamps, and metadata. |
-| **Input values** (non-FILE types)                                                                      | Repository (executions table)                                                                       | Scalar input values (STRING, INTEGER, etc.) stored as plaintext in the executions table. |
+| **Input values** (non-FILE types)                                                                      | Repository (executions table)                                                                       | Scalar input values stored in the executions table. Non-sensitive types (STRING, INTEGER, etc.) are stored as plaintext; `SECRET` type inputs are stored encrypted. |
 | **Input files** (FILE type)                                                                            | Internal storage                                                                                    | FILE-type inputs and files passed to script or CLI tasks, stored at `/{namespace}/{flow-id}/executions/{execution-id}/inputs/{input-name}/{file-name}`. |
 | **Output values**                                                                                      | Repository (task_outputs table)                                                                     | Scalar task outputs stored in a dedicated task_outputs table. In Enterprise Edition, values emitted via `encryptedOutputs` are stored as encrypted strings rather than plaintext. |
 | **Output files**                                                                                       | Internal storage                                                                                    | Generated files available for download and reuse in downstream tasks. |
@@ -113,9 +113,13 @@ See [secret managers](../../07.enterprise/02.governance/secrets-manager/index.md
 Understanding where data is persisted is critical when flows process personally identifiable information (PII) or other sensitive values.
 
 **Stored as plaintext in the database:**
-- Scalar input values (all non-FILE input types — STRING, INTEGER, etc.) — stored in the executions table
+- Non-sensitive scalar inputs (STRING, INTEGER, etc.) — stored in the executions table
 - Task output values emitted via `outputs` in the script output protocol — stored in the task_outputs table
 - Log messages — stored in the logs table
+
+**Stored encrypted in the database:**
+- `SECRET` type inputs — stored in the executions table as an encrypted value (requires encryption to be configured); the value is also automatically masked in logs
+- `encryptedOutputs` values (Enterprise Edition) — stored in the task_outputs table
 
 **Not stored in the database:**
 - FILE-type inputs and output files — these go to internal storage (your configured S3, GCS, Azure Blob, etc.).
@@ -134,7 +138,7 @@ namespace: company.team
 
 inputs:
   - id: ssn
-    type: STRING
+    type: SECRET
 
 tasks:
   - id: process_pii
@@ -146,12 +150,14 @@ tasks:
 
 Both plaintext and encrypted outputs are accessible in downstream tasks via `{{ outputs.process_pii.ssn }}` — Kestra decrypts the value at expression evaluation time.
 
+Lines matching the `::{}::` protocol are consumed by the output processor and never written to the logs table, so the plaintext value is not exposed in log storage.
+
 #### Best practices for PII-sensitive flows
 
-- **Use `encryptedOutputs`** for any sensitive values that must be passed between tasks.
+- **Use `type: SECRET` for sensitive inputs.** `SECRET` inputs are encrypted at rest in the executions table and automatically masked in log output. Requires [`kestra.encryption.secret-key`](../../configuration/05.security-and-secrets/index.md) to be configured — without it, `SECRET` inputs fail at runtime.
+- **Use `encryptedOutputs` for sensitive task outputs** (Enterprise Edition). Values are stored encrypted in the task_outputs table and decrypted transparently when referenced in downstream tasks.
 - **Use [Secrets](../../07.enterprise/02.governance/secrets-manager/index.md)** for credentials and configuration values that should never appear in execution records.
-- **Avoid passing PII as scalar inputs.** Non-FILE input parameters are stored as plaintext in the executions table and visible in the UI. If PII must be provided at execution time, pass it as a FILE-type input (stored in internal storage) or fetch it from a secret at runtime.
-- **Log carefully.** Log messages are stored in the database and visible in the UI. Avoid logging raw sensitive values.
+- **Log carefully.** Only `SECRET` inputs are automatically masked in logs. Any sensitive value logged directly — via `print`, `echo`, or a logging statement — is stored as plaintext in the logs table.
 
 ### Database maintenance
 
