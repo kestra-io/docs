@@ -239,6 +239,12 @@
         margin-bottom: $spacer;
     }
 
+    // Arcade demos use a height:0 + padding-bottom aspect-ratio wrapper, so
+    // margin on the iframe itself is ignored. Target the parent div instead.
+    div:has(> iframe[src*="arcade.software"]) {
+        margin-bottom: $spacer * 1.5;
+    }
+
     // Alerts
     .doc-alert {
         border: 1px solid;

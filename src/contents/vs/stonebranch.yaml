@@ -3,6 +3,8 @@ description: "Compare Kestra vs Stonebranch Universal Automation Center: Open-so
 competitorName: Stonebranch
 category: Infrastructure Automation
 shortDescription: "Proprietary agent-based workload automation vs. open-source, developer-first orchestration."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond legacy workload automation."
 
 brandColor:
   color: "#156de0"

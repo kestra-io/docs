@@ -5,7 +5,7 @@ date: 2023-09-28T14:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
   medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
@@ -192,7 +192,7 @@ This plugin provides an additional mechanism to build decoupled workflows. For e
 
 You can also use it to build and push images as part of CI/CD pipelines orchestrated with Kestra, especially when combined with the [GitHub Webhook](https://levelup.gitconnected.com/when-github-actions-get-painful-to-troubleshoot-try-this-instead-9a134c9e9baf) used as a trigger.
 
-Search for [blueprints](../../docs/09.ui/05.blueprints/index.md) with the `Docker` tag to see examples leveraging this plugin in combination with various container registries. Below is one of such examples, which builds and pushes a Docker image to **GitHub Container Registry**. The `dockerfile` parameter is a multiline string with the Dockerfile content. However, it can also be a path to a file. The `tags` parameter is a list of tags of the image to build. Make sure to replace the credentials below to match your GitHub username or organization. The `push` parameter is a boolean that indicates whether to push the image to GitHub Container Registry. Finally, make sure to securely store your GitHub Access Token as a secret.
+Search for [blueprints](../../docs/06.concepts/07.blueprints/index.md) with the `Docker` tag to see examples leveraging this plugin in combination with various container registries. Below is one of such examples, which builds and pushes a Docker image to **GitHub Container Registry**. The `dockerfile` parameter is a multiline string with the Dockerfile content. However, it can also be a path to a file. The `tags` parameter is a list of tags of the image to build. Make sure to replace the credentials below to match your GitHub username or organization. The `push` parameter is a boolean that indicates whether to push the image to GitHub Container Registry. Finally, make sure to securely store your GitHub Access Token as a secret.
 
 ```yaml
 id: build_github_container_image
@@ -220,7 +220,7 @@ tasks:
 
 SurrealDB is a cloud-native database for modern web, mobile, and serverless applications. It supports multiple querying languages, including SQL, GraphQL, ACID transactions, WebSocket connections, structured and unstructured data, and full-text indexing.
 
-The [SurrealDB plugin](https://github.com/kestra-io/plugin-surrealdb) allows you to run [SurrealQL](https://surrealdb.com/docs/surrealql) `queries` and react to events from your application via the SurrealDB `trigger` — type **SurrealDB** in the [blueprints](../../docs/09.ui/05.blueprints/index.md) search bar to see examples of how to use this plugin.
+The [SurrealDB plugin](https://github.com/kestra-io/plugin-surrealdb) allows you to run [SurrealQL](https://surrealdb.com/docs/surrealql) `queries` and react to events from your application via the SurrealDB `trigger` — type **SurrealDB** in the [blueprints](../../docs/06.concepts/07.blueprints/index.md) search bar to see examples of how to use this plugin.
 
 ---
 

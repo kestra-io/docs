@@ -9,7 +9,7 @@ const navigationTree = {
         "Tutorial",
         "Architecture",
         "Contribute to Kestra",
-        "User Interface",
+        "UI & No Code",
         // "Video Tutorials"
     ],
     "Build with Kestra": [
@@ -17,7 +17,6 @@ const navigationTree = {
         "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
-        "No Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
         "Use Cases",

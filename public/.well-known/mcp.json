@@ -1,6 +1,8 @@
 {
-  "name": "kestra",
-  "url": "https://api.kestra.io/v1/mcp",
-  "description": "Kestra plugin registry and blueprint catalog — 13 read-only tools for discovering plugins, inspecting task schemas, and retrieving blueprint templates. No authentication required.",
-  "transport": "http"
+  "mcpServers": {
+    "kestra": {
+      "type": "http",
+      "url": "https://api.kestra.io/v1/mcp"
+    }
+  }
 }

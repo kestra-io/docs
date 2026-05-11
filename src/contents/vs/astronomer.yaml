@@ -3,6 +3,8 @@ description: "Compare Kestra vs Astronomer (Astro): YAML-first universal orchest
 competitorName: Astronomer
 category: Data Orchestration
 shortDescription: "Managed Apache Airflow for Python data pipelines vs. universal YAML orchestration in any language."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond Python-first orchestration."
 
 brandColor:
   color: "#59418D"

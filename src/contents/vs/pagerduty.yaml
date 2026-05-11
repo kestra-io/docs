@@ -3,6 +3,8 @@ description: "Compare Kestra vs PagerDuty Process Automation (formerly Rundeck):
 competitorName: "PagerDuty PA"
 category: Infrastructure Automation
 shortDescription: "Click-to-run runbook tools vs. event-driven multi-step orchestration with approvals and audit trails."
+seeHowTitle: "Getting Started with Modern Incident Orchestration"
+seeHowBody: "See how Kestra replaces runbook tools with end-to-end incident automation—from alert to resolution."
 
 brandColor:
   color: "#06ac38"
