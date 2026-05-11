@@ -1,6 +1,6 @@
 ---
-title: "Airflow 3 vs Airflow 2: Upgrade, or Migrate?"
-description: "Airflow 3 brings real improvements, but the migration effort is substantial enough that teams should evaluate whether Airflow still fits their needs before committing engineering cycles to the upgrade."
+title: "Airflow 3 vs Airflow 2: Is the Upgrade Worth It?"
+description: "Airflow 2 reached end of life in April 2026. Should you upgrade to Airflow 3 or migrate to a modern alternative? Here's a practical breakdown of what changed and what it costs to upgrade."
 date: 2026-01-27T13:00:00
 category: Solutions
 author:
@@ -13,9 +13,9 @@ image: ./main.png
 
 Airflow 3 brings real improvements, but the migration effort is substantial enough that teams should evaluate whether Airflow still fits their needs before committing engineering cycles to the upgrade.
 
-In a [previous post, we looked at Airflow alternatives](../2026-01-18-enterprise-airflow-alternatives/index.md) for teams considering a move away from Python-first orchestration. But what if you're not sure whether to leave Airflow at all? What if you just want to understand whether the Airflow 3 upgrade is worth the engineering effort?
+In a [previous post, we looked at Airflow alternatives](../enterprise-airflow-alternatives/index.md) for teams considering a move away from Python-first orchestration. But what if you're not sure whether to leave Airflow at all? What if you just want to understand whether the Airflow 3 upgrade is worth the engineering effort?
 
-This is the decision facing thousands of data teams right now. Airflow 2.x enters limited support mode in April 2026. That means security patches only, no bug fixes, no new features. You have a few months to decide: invest in migrating to Airflow 3, or use this forced refactor as an opportunity to reconsider your orchestration strategy entirely.
+Airflow 2.x entered limited support mode in April 2026. That means security patches only, no bug fixes, no new features. If you're still on Airflow 2, the decision is now unavoidable: invest in migrating to Airflow 3, or use this forced refactor as an opportunity to reconsider your orchestration strategy entirely.
 
 The answer depends on what you're optimizing for, and whether Airflow 3 fixes the specific pain points your team is experiencing. Let's break it down.
 
@@ -128,7 +128,7 @@ tasks:
       - python main.py
 
   - id: transform
-    type: io.kestra.plugin.dbt.cli.DbtCLI
+    type: io.kestra.plugin.dbt.cli.DbtCLI  # see /plugins/plugin-dbt
     commands:
       - dbt run
 
@@ -172,11 +172,13 @@ Here's a simple framework:
 - Multi-tenancy and governance gaps are causing real friction
 - You're already building workarounds for Airflow's architectural constraints
 
-Whatever you decide, don't wait until April 2026. Either path requires planning, testing, and coordination time you don't want to compress into a few frantic weeks.
+Either path requires planning, testing, and coordination. If you haven't started yet, the time pressure is now real.
+
+For a broader view of what's available beyond Airflow, see our [guide to enterprise Airflow alternatives](../enterprise-airflow-alternatives/index.md).
 
 :::alert{type="info"}
 📘 **Get the full migration analysis.** Our free Airflow 2 EOL guide covers upgrade paths, breaking changes in detail, and a side-by-side comparison of staying vs. switching.
 [Download the Guide →](/resources/airflow-2-eol-whitepaper)
 :::
 
-If you're reconsidering your orchestration strategy and want to see how Kestra addresses the gaps we've discussed, [book a demo](/demo) with our team. We'll walk through your specific use cases and help you determine if it's the right fit.
+If you're reconsidering your orchestration strategy and want to see how Kestra addresses the gaps we've discussed, [book a demo](/demo) with our team. You can also explore Kestra's [declarative orchestration approach](/features/declarative-data-orchestration) and [language-agnostic execution](/features/code-in-any-language) as alternatives to Python-only DAGs. We'll walk through your specific use cases and help you determine if it's the right fit.

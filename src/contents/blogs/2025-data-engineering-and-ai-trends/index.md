@@ -80,7 +80,7 @@ Cost optimization continues to drive renewed interest in data lakes, with teams 
 - Schema evolution to handle changing data models
 - RBAC integration through catalogs like [AWS Lake Formation](https://aws.amazon.com/blogs/big-data/interact-with-apache-iceberg-tables-using-amazon-athena-and-cross-account-fine-grained-permissions-using-aws-lake-formation/).
 
-This setup allows teams to query data directly in object storage using engines like [DuckDB](../2023-08-11-dataframes) (ad-hoc analysis), [chDB](../embedded-databases/index.md) (lightweight aggregations), or Polars (complex transformations/index.md). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
+This setup allows teams to query data directly in object storage using engines like [DuckDB](../dataframes) (ad-hoc analysis), [chDB](../embedded-databases/index.md) (lightweight aggregations), or Polars (complex transformations/index.md). While data warehouses remain common for managing mission-critical curated data marts, the trend favors open **hybrid lakehouse architectures** with Iceberg at the core. Notably, major platforms like Databricks and Snowflake now also support Iceberg, reducing vendor lock-in risks as teams prioritize interoperability alongside cost control.
 
 ---
 

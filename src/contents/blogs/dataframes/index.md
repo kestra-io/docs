@@ -1,7 +1,7 @@
 ---
-title: "Polars, DuckDB, Pandas, Modin, Ponder, Fugue, Daft — which one is the best dataframe and SQL tool?"
-description: "Comparing open-source dataframe and SQL frameworks for data engineering, machine learning and analytics"
-date: 2023-08-10T16:00:00
+title: "Polars, DuckDB, Pandas, Fugue, Daft: Which Dataframe and SQL Tool Is Best?"
+description: "A practical comparison of open-source dataframe and SQL frameworks for data engineering and analytics, including Polars, DuckDB, Pandas, Fugue, and Daft."
+date: 2026-03-17T16:00:00
 category: Solutions
 author:
   name: Anna Geller
@@ -219,7 +219,7 @@ It's also worth mentioning that DuckDB integrates exceptionally well with Polars
 ![dataframes_polars_duckdb](./dataframes_polars_duckdb.png)
 
 
-**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
+**What about distributed compute?** DuckDB is an in-process single-node database. MotherDuck is a SaaS service that scales DuckDB to the cloud. Check our [DuckDB vs. MotherDuck](../duckdb-vs-motherduck/index.md) guide and our [blueprints](/blueprints?q=duckdb) to learn more about various DuckDB use cases for scheduled ETL and event-driven workflows.
 
 Speaking of scaling your dataframes, let's cover Modin, Ponder, Fugue, and Daft next.
 
@@ -468,7 +468,7 @@ Overall, the project seems to be heading in an interesting direction. The table 
 
 We've covered a lot already. Here are some additional tools that support Dataframe and SQL workflows:
 - [Vaex](https://github.com/vaexio/vaex) - out-of-core hybrid Apache Arrow/NumPy DataFrame library for Python, ML, visualization and exploration of big tabular data at a billion rows per second.
-- [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to Spark dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java. Spark was also the first dataframe framework that added SQL support.
+- [Spark SQL](https://spark.apache.org/sql/) - a SQL interface to [Spark](/plugins/plugin-spark) dataframes. This is the most mature interface when it comes to seamlessly combining SQL with imperative code written in Python, Scala and Java. Spark was also the first dataframe framework that added SQL support.
 - [Pandas on Spark](https://spark.apache.org/docs/latest/api/python/user_guide/pandas_on_spark/index.html) — while Spark SQL is mature, the Pandas API for Spark is somewhat limited with only [around 60% coverage](https://modin.readthedocs.io/en/stable/getting_started/why_modin/modin_vs_dask_vs_koalas.html#modin-vs-dask-dataframe-vs-koalas) of what you can do with Pandas. Still, if you need some Pandas functionality while mainly using [PySpark](https://spark.apache.org/docs/latest/api/python/index.html), it's worth checking out. You can notice here that Spark is the most comprehensive among all these dataframe frameworks, covering Pandas API, DataFrame libraries in multiple lanuages, while also providing a reliable SQL interface on top of them.
 - [Dask](https://www.dask.org/) and [Ray](https://www.ray.io/) — distributed frameworks to parallelize Python and ML applications. The [dask-sql](https://dask-sql.readthedocs.io/en/latest/) project provides a distributed query engine in Python, allowing a mixture of SQL operations and Python code. Ray supports SQL via an external open-source contribution called [ray-sql](https://github.com/datafusion-contrib/ray-sql). However, judging by the number of downloads, both ``dask-sql`` and ``ray-sql`` are not widely used yet.
 - [R's data.table](https://github.com/Rdatatable/data.table) — provides a high-performance version of [base R](https://www.r-project.org/about.html)'s `data.frame` table abstraction.
@@ -486,7 +486,7 @@ Here is what you should consider when choosing a dataframe framework:
 3. What is the maturity of the framework? Is it actively maintained?
 
 It's always best to start simple. You can start with:
-- [DuckDB](https://duckdb.org/) and [dbt](https://github.com/dbt-labs/dbt-core) for SQL-oriented use cases
+- [DuckDB](/plugins/plugin-jdbc-duckdb) and [dbt](/plugins/plugin-dbt) for SQL-oriented use cases
 - [Polars](https://www.pola.rs/) for Python-, Node- or Rust-oriented workflows.
 
 With these tools, you can easily transition to pandas and other frameworks when you need to, thanks to the Apache Arrow format.
@@ -507,5 +507,7 @@ The [following blueprint](/blueprints/postgres-to-pandas-dataframes) shows how y
 
 ## Summary
 
-This post covered several open-source projects that support dataframes and SQL workflows. Which table abstraction is your favorite? Let us know in the [community Slack](/slack). Make sure to check out [Kestra's blueprints](../2023-07-12-your-private-app-store-for-data-pipelines/index.md) to discover how to orchestrate both SQL and dataframe workflows. If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra) and join the [community](/slack).
+This post covered several open-source projects that support dataframes and SQL workflows. For DuckDB specifically, see our [DuckDB vs. MotherDuck](../duckdb-vs-motherduck/index.md) guide for when to move from local to cloud. To orchestrate any of these tools in production pipelines, check out [Kestra's blueprints](/blueprints) with examples for DuckDB, Polars, dbt, and more.
+
+Which table abstraction is your favorite? Let us know in the [community Slack](/slack). If you like Kestra, give us a [star on GitHub](https://github.com/kestra-io/kestra).
 
