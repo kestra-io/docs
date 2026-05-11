@@ -3,6 +3,8 @@ description: "Compare Kestra vs n8n: Code-first universal orchestration in any l
 competitorName: n8n
 category: Business Automation
 shortDescription: "Visual low-code app automation vs. code-first universal orchestration at enterprise scale."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond app automation."
 
 brandColor:
   color: "#ea4b71"

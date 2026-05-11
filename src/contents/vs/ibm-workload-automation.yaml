@@ -3,6 +3,8 @@ description: "Compare Kestra vs IBM Workload Automation (formerly Tivoli Workloa
 competitorName: IBM Workload Automation
 category: Infrastructure Automation
 shortDescription: "Agent-based enterprise job scheduling vs. open-source, event-driven orchestration in YAML."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond legacy enterprise scheduling."
 
 brandColor:
   color: "#1f70c1"
