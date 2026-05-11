@@ -1,2 +1,5 @@
 /api/feeds
   Content-Type: application/json
+
+/.well-known/mcp
+  Content-Type: application/json

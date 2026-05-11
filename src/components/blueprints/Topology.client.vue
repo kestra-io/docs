@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
     import { getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref } from "vue"
-    import { Topology } from "@kestra-io/ui-libs"
+    import { Topology } from "@kestra-io/topology"
     import { useVueFlow } from "@vue-flow/core"
     import TaskIcon from "~/components/common/TaskIcon.vue"
 
@@ -120,9 +120,5 @@
 
     :deep(.bg-white) {
         background-color: var(--ks-background-body) !important;
-    }
-
-    :deep(.text-color) {
-        color: var(--ks-content-primary) !important;
     }
 </style>

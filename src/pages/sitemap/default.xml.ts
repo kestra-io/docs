@@ -8,6 +8,7 @@ export const GET: APIRoute = async () => {
         .map((item) => item.url)
         .filter((r) => r !== "" && r.indexOf("[") === -1)
         .filter((r) => r !== "/404" && r !== "/500")
+        .filter((r) => r !== "/use-cases" && !r.startsWith("/use-cases/"))
         .map((r) => "https://kestra.io" + r)
 
     return sitemapResponse(urls)
