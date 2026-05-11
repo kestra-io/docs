@@ -95,5 +95,5 @@ All three migrations are safe to run **retroactively** — if you have already u
 
 ## Further reading
 
-- [Key-Value Store and Secrets Metadata Migration (1.1.0)](/docs/migration-guide/v1.1.0/kv-secrets-metadata-migration)
-- [Namespace Files Metadata Migration (1.2.0)](/docs/migration-guide/v1.2.0/namespace-file-migration)
+- [Key-Value Store and Secrets Metadata Migration (1.1.0)](../../v1.1.0/kv-secrets-metadata-migration/index.md)
+- [Namespace Files Metadata Migration (1.2.0)](../../v1.2.0/namespace-file-migration/index.md)

@@ -64,6 +64,10 @@ jobs:
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
         run: node scripts/check-astro-content-imports.mjs
 
+      - name: Check links in content
+        if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
+        run: node scripts/check-links.mjs
+
       - name: Build
         run: npm run build
         env:
