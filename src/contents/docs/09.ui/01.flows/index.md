@@ -15,7 +15,7 @@ Click a flow ID or the eye icon to open a flow.
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
-A **Flow** page has multiple tabs that allow you to: see the flow topology, all flow executions, edit the flow, view its revisions, logs, metrics, and dependencies. You are also able to edit namespace files in the Flow editor as well.
+A **Flow** page has multiple tabs that allow you to: see the flow topology, all flow executions, edit the flow, view its revisions, logs, metrics, and dependencies. You can also edit namespace files in the Flow editor.
 
 ![Kestra User Interface Flow Page](./05-Flows-Flow.png)
 
@@ -29,7 +29,7 @@ From the main Flows page, you can filter the displayed flows on fields like name
 
 The Edit interface provides a rich view of your workflow, as well as Namespace Files. The editor allows you to add multiple panels:
 - Flow code
-- No-code
+- No Code
 - Topology
 - Documentation
 - Files
@@ -47,11 +47,49 @@ The **Flow** code view allows you to edit your workflows with YAML. Autocomplete
 
 ![Flow Code](./flow-editor.png)
 
-### No-code view
+### No Code view
 
-The **No-code** view allows you to edit your workflows directly from the UI. As you modify your flow, YAML code is generated in real time in the flow code view, and you can switch between both views at any time.
+The **No Code** view lets you edit workflows directly in the UI using structured forms. As you modify your flow, YAML is generated in real time in the code view and you can switch between both views at any time.
 
-![No-code](./no-code-editor.png)
+- **Speed & onboarding**: Build flows without writing YAML first; switch to code view whenever you need advanced control.
+- **Consistency**: UI-driven forms align with plugin schemas and validation, reducing drift.
+- **No ceiling**: When you outgrow forms, switch to YAML, add files/scripts, and keep everything in one place.
+
+#### Build a flow in No Code
+
+1. **Create a flow** from **Flows → + Create**; confirm namespace and identifiers.
+2. **Open No Code view** from the editor panel. Browse or search the plugin catalog and select a plugin to reveal its form fields.
+
+![No Code Panel View](./no-code-flow-panel.png)
+
+You can close, open, and reposition panels at any time. In the example below, the Slack plugin documentation is open alongside the No Code editor with the YAML view closed.
+
+![No Code Documentation View](./multi-panel.png)
+
+3. **Configure inputs** by clicking **+ Add** in the inputs section. Each input opens a configuration tab. If the YAML view is open, you'll see it update in real time as you add inputs.
+
+![No Code Input Configuration](./no-code-inputs.png)
+
+4. **Configure task properties** via forms. Each task opens a No Code tab and generates YAML as you select properties. Fields can autocomplete expressions from inputs you've already configured.
+
+![No Code Task Configuration](./no-code-tasks.png)
+
+5. **Add flow logic** — If, Switch, ForEach, and Subflow tasks — to control execution paths.
+6. **Add a trigger** (schedule, file event, webhook) to automate runs.
+
+![No Code Trigger Configuration](./no-code-trigger.png)
+
+7. **Add additional flow components** such as [outputs](../../05.workflow-components/06.outputs/index.md), [retry](../../05.workflow-components/12.retries/index.md), [SLA](../../05.workflow-components/18.sla/index.md), [afterExecution](../../05.workflow-components/20.afterexecution/index.md), and [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md). Everything possible in YAML is available in No Code.
+
+![Additional Flow Components](./additional-components.png)
+
+8. **Save and run**: execute from the UI to see logs and results.
+
+Edits in No Code forms update YAML instantly, and edits in YAML reflect back in No Code. For complex expressions, advanced plugin fields, or bulk edits, switch to the YAML view — then switch back. Use the **Actions** menu to export or copy the flow at any time.
+
+:::alert{type="info"}
+You can also skip YAML with the [AI Copilot](../../ai-tools/ai-copilot/index.md), which generates a flow from a plain-language description.
+:::
 
 ### Topology view
 
@@ -107,50 +145,3 @@ The **Dependencies** page shows the relationship dependencies between other flow
 The **Dependencies View** on the **Namespaces** page shows all the flows in the namespace and how they each relate to one another, if at all, whereas the Flow Dependencies view is only for the selected flow.
 :::
 
-## JSON Schema usage for flow validation
-
-Kestra provides a JSON Schema to validate your flow definitions. This schema ensures that your flows are correctly structured and helps catch errors early in the development process.
-
-### JSON Schema in VSCode
-
-To use the JSON Schema in Visual Studio Code (VSCode), follow these steps:
-
-1. Install the [YAML extension](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) by Red Hat.
-2. Open your VSCode settings (`Ctrl+,` or `Cmd+,`).
-3. Search for `YAML: Schemas` and click on `Edit in settings.json`.
-4. Add the following configuration to associate the Kestra JSON Schema with your flow files:
-
-```json
-{
-  "yaml.schemas": {
-    "https://your-kestra-instance.com/api/v1/schemas/flow.json": "/*.yaml"
-  }
-}
-```
-
-Replace `https://your-kestra-instance.com/api/v1/schemas/flow.json` with the actual URL of your Kestra JSON Schema.
-
-### Example of using JSON Schema in flow editor
-
-Here is an example of how to use the JSON Schema in the flow editor:
-
-```yaml
-id: example_flow
-namespace: example_namespace
-tasks:
-  - id: example_task
-    type: io.kestra.core.tasks.log.Log
-    message: "Hello, World!"
-```
-
-When you open this flow in the editor, the JSON Schema validates the structure and provides autocompletion and error checking.
-
-### Globally available location for JSON Schema
-
-The JSON Schema for Kestra flows is available at the following URL:
-
-```plaintext
-https://your-kestra-instance.com/api/v1/main/schemas/flow.json
-```
-
-Replace `https://your-kestra-instance.com` with the actual URL of your Kestra instance.
