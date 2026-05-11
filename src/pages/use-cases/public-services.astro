@@ -45,7 +45,7 @@ const HERO_TAGS = [
 
 const title = "Government & Public Sector Workflow Automation"
 const description =
-    "Open-source workflow automation for government agencies and public sector IT. Orchestrate infrastructure, SOC, data modernization, and citizen-services workflows — self-hosted, air-gapped, and sovereign-deployment ready."
+    "Open-source workflow automation for government and public sector IT. Orchestrate infrastructure, SOC, data, and citizen services — air-gapped and sovereign-ready."
 
 const FLOW_STAGES = [
     {
@@ -492,7 +492,7 @@ const FAQ = [
     },
     {
         question: "How does Kestra fit alongside legacy automation suites like VMware Aria, vRealize Automation, vRO, Rundeck, HP Operations Orchestration, Control-M, and Autosys?",
-        answer: "Kestra is the open-source modernization path. Most public-sector teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Procurement-friendly licensing, open standards (YAML, REST, OIDC, OpenTelemetry), and a clear exit path for every workflow.",
+        answer: `Kestra is the open-source modernization path off <a href="/vs/vmware-cloud-foundation">VMware Aria</a>, <a href="/vs/rundeck">Rundeck</a>, <a href="/vs/hp-operations-orchestrator">HP Operations Orchestration</a>, <a href="/vs/control-m">Control-M</a>, and <a href="/vs/broadcom">Autosys</a>. Most public-sector teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Procurement-friendly licensing, open standards (YAML, REST, OIDC, OpenTelemetry), and a clear exit path for every workflow.`,
     },
     {
         question: "Can Kestra orchestrate bare metal through MAAS, NetBox, and existing source-of-truth systems?",
@@ -536,7 +536,7 @@ const FAQ = [
     },
     {
         question: "What workflow automation tools do government agencies and public sector IT teams use?",
-        answer: "Government IT teams commonly run CA7, IBM Workload Automation, Control-M, or legacy shell schedulers tied to mainframe and ERP systems. Kestra replaces them on one self-hosted, open-source engine — with FedRAMP-friendly air-gapped deployment, namespace-scoped RBAC, immutable audit logs, and support for legacy integrations (SFTP, JDBC, mainframe, COTS) alongside modern cloud and Kubernetes workloads.",
+        answer: `Government IT teams commonly run CA7, <a href="/vs/ibm-workload-automation">IBM Workload Automation</a>, <a href="/vs/control-m">Control-M</a>, or legacy shell schedulers tied to mainframe and ERP systems. Kestra replaces them on one self-hosted, open-source engine — with FedRAMP-friendly air-gapped deployment, namespace-scoped RBAC, immutable audit logs, and support for legacy integrations (SFTP, JDBC, mainframe, COTS) alongside modern cloud and Kubernetes workloads.`,
     },
     {
         question: "How does Kestra compare to ServiceNow for IT automation in government and public sector?",
@@ -653,7 +653,9 @@ const FAQ = [
                     <span class="hero-logos__label">Trusted by public administrations, institutions &amp; public-service IT operators</span>
                     <div class="hero-logos__row">
                         <Image src={COELogoImg} alt="Council of Europe" class="hero-logos__item hero-logos__item--coe" />
-                        <Image src={DataportLogoImg} alt="Dataport" class="hero-logos__item hero-logos__item--dataport" />
+                        <a href="/use-cases/stories/building-a-government-grade-orchestration-control-plane-with-kestra" aria-label="Read the Dataport government-grade orchestration story">
+                            <Image src={DataportLogoImg} alt="Dataport" class="hero-logos__item hero-logos__item--dataport" />
+                        </a>
                         <Image src={ITZBundLogoImg} alt="ITZBund" class="hero-logos__item hero-logos__item--itzbund" />
                         <Image src={BundesagenturLogoImg} alt="Bundesagentur für Arbeit" class="hero-logos__item hero-logos__item--bundesagentur" />
                         <Image src={BattelleLogoImg} alt="Battelle" class="hero-logos__item hero-logos__item--battelle" />
@@ -665,7 +667,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the <span class="highlight">platforms public-sector IT runs</span>.
+                    How <span class="highlight">government workflow automation</span> connects mainframe, cloud, and SOC.
                 </h2>
                 <p class="flow__lead">
                     VMware lifecycle. Bare-metal commissioning. SOC alert response. GitOps delivery.
@@ -707,7 +709,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What public-sector IT teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <h2>Workflow automation use cases in government and public sector IT.</h2>
                     <p>Real workloads from real institutions. Self-service infrastructure at federal IT centres. SOC operations across multi-state estates. Sovereign data platforms in EU institutions. Incremental modernization of legacy automation.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -732,7 +734,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built to the bar <span class="highlight">institutional IT</span> actually needs.
+                    Public sector orchestration requirements: <span class="highlight">FedRAMP, air-gapped, and sovereign</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -746,7 +748,7 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2>Patterns from real <span class="highlight">public-sector deployments</span>.</h2>
+                <h2>Government workflow automation <span class="highlight">examples and blueprints</span>.</h2>
                 <p class="build__lead">Real workflows running today inside public-sector IT teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
                 <div class="wrapper">
                     <div class="inner">
@@ -1542,7 +1544,12 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $ps-blue; }
+                .highlight {
+                    background: linear-gradient(90deg, #{$ps-blue}, #{$ps-blue-bright});
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1709,7 +1716,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $ps-blue-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$ps-blue-bright}, #{$ps-blue-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
