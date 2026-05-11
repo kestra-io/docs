@@ -1,12 +1,36 @@
 ---
 title: "Workflow Helper Functions in Kestra Expressions"
 h1: "Workflow Helper Functions"
-description: Reference for Kestra's workflow and execution helper functions — errorLogs(), currentEachOutput(), tasksWithState(), iterationOutput(), parentOutput(), and appLink().
+description: Reference for Kestra's workflow and execution helper functions — loopOutputs(), errorLogs(), currentEachOutput(), tasksWithState(), iterationOutput(), parentOutput(), and appLink().
 sidebarTitle: Workflow Functions
 icon: /src/contents/docs/icons/expression.svg
 ---
 
 This group is more situational, but it becomes valuable in complex flows where you need to inspect sibling results, build links back into Kestra, or summarize failures.
+
+## `loopOutputs()`
+
+Extracts a named output from every iteration of a [Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task and returns the values as an ordered list. Use it after a `Loop` task to collect one output field from all iterations without manually traversing the outputs list.
+
+```twig
+{{ loopOutputs(outputs.myLoop.outputs, 'result') }}
+```
+
+`outputs` must be the loop's `.outputs` list. `name` is the declared output ID to extract. The function returns one value per iteration in order, with `null` for iterations where the key is missing.
+
+For a `Loop` over `["a", "b", "c"]` with a declared output `result`:
+
+```twig
+{{ loopOutputs(outputs.loop.outputs, 'result') }}
+{# → ["processed a", "processed b", "processed c"] #}
+```
+
+To access a single iteration directly, use list index notation:
+
+```twig
+{{ outputs.loop.outputs[0].outputs.result }}  {# first iteration's output #}
+{{ outputs.loop.outputs[0].item.value }}       {# first iteration's value #}
+```
 
 ## `errorLogs()`
 

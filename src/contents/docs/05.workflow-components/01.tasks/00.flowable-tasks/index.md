@@ -286,7 +286,7 @@ Read more about performance optimization in our [best practices guides](../../..
 
 ### Loop
 
-The `Loop` task iterates over a set of values and runs a set of child tasks for each item. Unlike `ForEach`, each iteration runs in an isolated sub-execution with its own context.
+The `Loop` task iterates over a set of values and runs child tasks for each item. Unlike `ForEach`, each iteration runs in an isolated sub-execution with its own context.
 
 `values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file.
 
@@ -448,11 +448,11 @@ tasks:
 
       iteration_count = {{ outputs.process_items.iterationCount }}
 
-      # outputs.process_items.outputs is a map keyed by iteration value string:
-      # {"1": {"squared": 1}, "2": {"squared": 4}, "3": {"squared": 9}, ...}
+      # outputs.process_items.outputs is a list of iteration results:
+      # [{"item": {"value": "1", "iteration": 1}, "outputs": {"squared": 1}}, ...]
       all_outputs = {{ outputs.process_items.outputs | toJson }}
 
-      squared_values = [v["squared"] for v in all_outputs.values()]
+      squared_values = [iteration["outputs"]["squared"] for iteration in all_outputs]
 
       print(f"Processed {iteration_count} items")
       print(f"Squared values: {squared_values}")
@@ -461,7 +461,7 @@ tasks:
       Kestra.outputs({"total": sum(squared_values)})
 ```
 
-`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a map keyed by iteration value string — for `values: [1, 2, 3, 4, 5]`, the keys are `"1"`, `"2"`, `"3"`, `"4"`, `"5"`. To access a single iteration's output directly in an expression, use `outputs.process_items.outputs['1'].squared`.
+`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results — each entry contains an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. To access the first iteration's output in an expression, use `outputs.process_items.outputs[0].outputs.squared`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`.
 
 For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
 

@@ -37,7 +37,7 @@ The table below maps every `ForEach` expression to its `Loop` equivalent. The se
 | `parents[0].taskrun.value` | `item.parent.value` | Inside the inner of two nested loops |
 | `parents[1].taskrun.value` | `item.parents[0].value` | One level further up |
 | `outputs.task_id[taskrun.value].value` | `outputs.task_id.value` | Inside the iteration; task outputs are scoped to the current sub-execution |
-| `outputs.foreach_id[value].field` (after the loop) | `outputs.loop_id.outputs['value'].output_id` (after the loop) | Outside the loop; collected outputs are keyed by iteration value string |
+| `outputs.foreach_id[value].field` (after the loop) | `outputs.loop_id.outputs[n].outputs.output_id` (by index) or `loopOutputs(outputs.loop_id.outputs, 'output_id')` (all values as a list) | Outside the loop; outputs are now a list — key-based access by value string is no longer supported |
 
 ## Migrating `ForEach`
 
@@ -259,7 +259,7 @@ tasks:
 
 In `ForEach`, task outputs from all iterations were automatically merged into a single map in the parent execution, keyed by `taskrun.value`. Any task after the loop could access `outputs.task_id[value].field` without any extra configuration.
 
-In `Loop`, each iteration runs in its own sub-execution. Task outputs inside an iteration are **not** visible outside the loop by default. You must explicitly declare which values to expose using the `outputs` property on the Loop task. After the loop completes, the collected outputs are available as a map keyed by iteration value: `outputs.<loop_id>.outputs['<iteration_value>'].<output_id>`.
+In `Loop`, each iteration runs in its own sub-execution. Task outputs inside an iteration are **not** visible outside the loop by default. You must explicitly declare which values to expose using the `outputs` property on the Loop task. After the loop completes, `outputs.<loop_id>.outputs` is a list of iteration results — each entry has an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. Access a single iteration by index: `outputs.<loop_id>.outputs[n].outputs.<output_id>`. To extract one output across all iterations as a list, use the [`loopOutputs()` function](../../../expressions/04.functions/04.workflow/index.mdx#loopoutputs).
 
 **Before**
 
@@ -298,8 +298,8 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: |
       Loop ran {{ outputs.loop.iterationCount }} iterations.
-      All results: {{ outputs.loop.outputs | toJson }}
-      Result for 'a': {{ outputs.loop.outputs['a'].result }}
+      All results: {{ loopOutputs(outputs.loop.outputs, 'result') }}
+      First result: {{ outputs.loop.outputs[0].outputs.result }}
 ```
 
 ## Migrating `ForEachItem`
@@ -345,6 +345,6 @@ For flows that relied on batch sizes larger than 1, you will need to restructure
 2. Replace every `{{ taskrun.value }}` inside the loop with `{{ item.value }}`.
 3. Replace every `{{ taskrun.iteration }}` inside the loop with `{{ item.index }}`.
 4. Remove `parent.taskrun.value` and `parents[0].taskrun.value` references inside nested flowables — `{{ item.value }}` works directly at any nesting depth.
-5. Update post-loop output access: declare `outputs` on the Loop task, then access collected results via `outputs.<loop_id>.outputs['<iteration_value>'].<output_id>`. The map is keyed by iteration value string.
+5. Update post-loop output access: declare `outputs` on the Loop task. After the loop, `outputs.<loop_id>.outputs` is a list of iteration results — each entry has an `item` (with `value`, `iteration`, and `key`) and an `outputs` map. Access a single iteration by index: `outputs.<loop_id>.outputs[n].outputs.<output_id>`. To extract one output across all iterations as a list, use `{{ loopOutputs(outputs.<loop_id>.outputs, '<output_id>') }}`.
 6. Search all flows for `io.kestra.plugin.core.flow.ForEachItem` and migrate to `Loop` with a URI value as described above.
 7. Validate each updated flow by saving it in the Kestra UI or via the API and confirming no parse errors.
