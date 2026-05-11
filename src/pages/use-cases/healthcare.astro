@@ -43,7 +43,7 @@ const HERO_TAGS = [
 
 const title = "Healthcare Data Orchestration & Workflow Automation"
 const description =
-    "Open-source workflow automation for healthcare and life sciences. Orchestrate HIPAA-compliant data pipelines, medical AI imaging, genomics workflows, and pharmacy supply chains — with PHI staying inside your perimeter."
+    "Open-source HIPAA-compliant workflow automation for healthcare and life sciences. Orchestrate medical AI, genomics, and pharmacy supply chains — PHI stays inside."
 
 const FLOW_STAGES = [
     {
@@ -522,11 +522,11 @@ const FAQ = [
     },
     {
         question: "How does Kestra compare to Apache Airflow for healthcare data pipelines?",
-        answer: "Airflow is Python-only and has no native HIPAA-specific controls. Kestra runs any language via YAML, ships with self-hosted and air-gapped deployment, scopes secrets per namespace so PHI never leaves your environment, and adds human-in-the-loop approval gates for clinical review flows. Healthcare and life-sciences teams move from Airflow to Kestra when they need compliance controls, multi-language ML support, or workflows that extend beyond data engineering.",
+        answer: `<a href="/vs/airflow">Airflow</a> is Python-only and has no native HIPAA-specific controls. Kestra runs any language via YAML, ships with self-hosted and air-gapped deployment, scopes secrets per namespace so PHI never leaves your environment, and adds human-in-the-loop approval gates for clinical review flows. Healthcare and life-sciences teams move from Airflow to Kestra when they need compliance controls, multi-language ML support, or workflows that extend beyond data engineering.`,
     },
     {
         question: "What workflow automation tools are most commonly used in healthcare and life sciences?",
-        answer: "Common tools include Apache Airflow, Azure Data Factory, Informatica, and homegrown Python schedulers. Kestra replaces all of them on a single open-source engine — running genomics jobs on Kubernetes, pharmacy supply-chain batch files, medical AI pipelines, and compliance reporting workflows side-by-side, with HIPAA-friendly self-hosted deployment and immutable audit logs for every execution.",
+        answer: `Common tools include <a href="/vs/airflow">Apache Airflow</a>, <a href="/vs/azure-data-factory">Azure Data Factory</a>, Informatica, and homegrown Python schedulers. Kestra replaces all of them on a single open-source engine — running genomics jobs on Kubernetes, pharmacy supply-chain batch files, medical AI pipelines, and compliance reporting workflows side-by-side, with HIPAA-friendly self-hosted deployment and immutable audit logs for every execution.`,
     },
     {
         question: "Is Kestra used in clinical trials, genomics, or bioinformatics?",
@@ -638,7 +638,9 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by healthcare, pharmacy, and life-sciences teams</span>
                     <div class="hero-logos__row">
-                        <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
+                        <a href="/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment" aria-label="Read the Apotek Hjärtat pharmacy customer story">
+                            <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
+                        </a>
                         <Image src={BrainlabLogoImg} alt="Brainlab" class="hero-logos__item hero-logos__item--brainlab" />
                         <Image src={SophiaGeneticsLogoImg} alt="SOPHIA GENETICS" class="hero-logos__item hero-logos__item--sophia" />
                     </div>
@@ -649,7 +651,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the workflows <span class="highlight">healthcare and life sciences run on</span>.
+                    How <span class="highlight">healthcare data orchestration</span> connects clinical, pharmacy, and research systems.
                 </h2>
                 <p class="flow__lead">
                     Medical AI pipelines. Pharmacy supply chains. Genomics workflows. HIPAA-compliant data operations.
@@ -691,7 +693,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What healthcare and life-sciences teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <h2>HIPAA-compliant workflow automation use cases in healthcare and life sciences.</h2>
                     <p>Real workloads from real institutions. Medical AI imaging across cardiac, oncology, and pathology. Pharmacy and supply-chain operations at scale. Secure genomics and life-sciences pipelines. HIPAA-compliant data and IT operations across multi-team estates.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -716,7 +718,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built to the bar <span class="highlight">healthcare IT</span> actually needs.
+                    Healthcare workflow automation requirements: <span class="highlight">HIPAA, GxP, and PHI controls</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -730,7 +732,7 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2>Patterns from real <span class="highlight">healthcare and life-sciences deployments</span>.</h2>
+                <h2>Healthcare data orchestration <span class="highlight">examples and blueprints</span>.</h2>
                 <p class="build__lead">Real workflows running today inside healthcare, pharmacy, medtech, and life-sciences teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
                 <div class="wrapper">
                     <div class="inner">
@@ -1521,7 +1523,12 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $hc-green; }
+                .highlight {
+                    background: linear-gradient(90deg, #{$hc-green}, #{$hc-green-bright});
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1688,7 +1695,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $hc-green-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$hc-green-bright}, #{$hc-green-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {

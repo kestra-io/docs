@@ -42,7 +42,7 @@ const HERO_TAGS = [
 
 const title = "Automotive & Manufacturing Workflow Orchestration"
 const description =
-    "Workflow orchestration for automotive manufacturers and suppliers. Connect shop floor, PLM, dealer network, and connected fleet. Automate quality, warranty, recall, and telemetry workflows across MES, SAP, and Teamcenter — with IATF-grade audit evidence."
+    "Workflow orchestration for automotive manufacturers and suppliers. Automate quality, warranty, recall, and connected-vehicle telemetry across MES, SAP, and Teamcenter."
 
 const FLOW_STAGES = [
     {
@@ -456,11 +456,11 @@ const FAQ = [
     },
     {
         question: "What workflow automation tools do automotive manufacturers typically use?",
-        answer: "Automotive IT teams commonly rely on SAP scheduling, IBM Workload Automation, Automic, or homegrown scripts tied to MES and PLM systems. Kestra replaces them on one engine — orchestrating shop-floor data collection, Teamcenter and SAP integrations, quality workflows, warranty and recall pipelines, and connected-vehicle telemetry jobs, with IATF-grade audit evidence and Kubernetes-native scaling.",
+        answer: `Automotive IT teams commonly rely on SAP scheduling, <a href="/vs/ibm-workload-automation">IBM Workload Automation</a>, <a href="/vs/broadcom">Automic</a>, or homegrown scripts tied to MES and PLM systems. Kestra replaces them on one engine — orchestrating shop-floor data collection, Teamcenter and SAP integrations, quality workflows, warranty and recall pipelines, and connected-vehicle telemetry jobs, with IATF-grade audit evidence and Kubernetes-native scaling.`,
     },
     {
         question: "How does Kestra compare to IBM Workload Automation or Automic for automotive manufacturing?",
-        answer: "IBM Workload Automation and Automic require proprietary agents and vendor-specific configuration, and are designed for batch. Kestra is open-source, container-native, and event-driven. It handles the same batch scheduling plus real-time event-driven flows from CAN bus, telematics, or MES systems — with YAML-backed flows in Git, native Kubernetes workers, and API-first architecture that integrates with your PLM, DMS, and ERP systems without custom middleware.",
+        answer: `<a href="/vs/ibm-workload-automation">IBM Workload Automation</a> and <a href="/vs/broadcom">Automic</a> require proprietary agents and vendor-specific configuration, and are designed for batch. Kestra is open-source, container-native, and event-driven. It handles the same batch scheduling plus real-time event-driven flows from CAN bus, telematics, or MES systems — with YAML-backed flows in Git, native Kubernetes workers, and API-first architecture that integrates with your PLM, DMS, and ERP systems without custom middleware.`,
     },
     {
         question: "Can Kestra orchestrate connected-vehicle and IoT data pipelines?",
@@ -573,7 +573,9 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Used by automotive, mobility, and manufacturing teams</span>
                     <div class="hero-logos__row">
-                        <Image src={QuadisLogoImg} alt="Quadis" class="hero-logos__item" />
+                        <a href="/use-cases/stories/quadis-drives-innovation-transforming-car-retail-operations-with-kestra" aria-label="Read the Quadis customer story">
+                            <Image src={QuadisLogoImg} alt="Quadis" class="hero-logos__item" />
+                        </a>
                         <Image src={RenaultLogoImg} alt="Renault" class="hero-logos__item" />
                         <Image src={MichelinLogoImg} alt="Michelin" class="hero-logos__item" />
                         <Image src={XiaomiLogoImg} alt="Xiaomi" class="hero-logos__item" />
@@ -585,7 +587,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                    How <span class="highlight">automotive workflow orchestration</span> connects plant, PLM, and dealer.
                 </h2>
                 <p class="flow__lead">
                     Plant event, quality defect, warranty claim, supplier feed, engineering release, or vehicle telemetry. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture evidence.
@@ -625,7 +627,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>Every critical workflow in automotive and manufacturing.</h2>
+                    <h2>Workflow automation use cases in automotive manufacturing.</h2>
                     <p>Manufacturing and quality, warranty and aftersales, engineering and supplier, data and platform operations. One engine runs them all.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -650,7 +652,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    <span class="highlight">Enterprise-Grade</span> Orchestration from Plant to Cloud.
+                    Automotive orchestration requirements: <span class="highlight">IATF, ASPICE, and audit evidence</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -664,7 +666,7 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2><span class="highlight">Blueprints</span> for automotive and manufacturing.</h2>
+                <h2>Automotive workflow automation <span class="highlight">examples and blueprints</span>.</h2>
                 <p class="build__lead">Production workflows, from quality response to OTA rollout. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
                 <div class="wrapper">
                     <div class="inner">
@@ -1440,7 +1442,12 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $au-red; }
+                .highlight {
+                    background: linear-gradient(90deg, #{$au-red}, #{$au-red-bright});
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1607,7 +1614,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $au-red-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$au-red-bright}, #{$au-red-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {

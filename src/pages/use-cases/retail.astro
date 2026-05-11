@@ -47,7 +47,7 @@ const HERO_TAGS = [
 
 const title = "Retail & E-Commerce Workflow Automation"
 const description =
-    "Workflow automation and data orchestration for modern retail and e-commerce. Automate supply chain, ERP integration, and DataMesh pipelines across SAP, Shopify, and Salesforce — open-source, self-hosted, and built for scale."
+    "Open-source workflow automation for retail and e-commerce. Automate supply chain, ERP, and DataMesh pipelines across SAP, Shopify, and Salesforce — at scale."
 
 const FLOW_STAGES = [
     {
@@ -530,15 +530,15 @@ const FAQ = [
     },
     {
         question: "How does Kestra compare to Informatica or Azure Data Factory for retail data orchestration?",
-        answer: "Informatica and ADF are proprietary platforms with high licensing costs and limited infrastructure scope. Kestra is open-source Apache 2.0, runs any language and tool, and covers the same ETL/ELT workloads plus business process automation, API integrations, and self-service ops — with no per-connector licensing. Retail teams use Kestra to consolidate data pipelines, ERP integrations, and operational workflows on one engine.",
+        answer: `Informatica and <a href="/vs/azure-data-factory">Azure Data Factory</a> are proprietary platforms with high licensing costs and limited infrastructure scope. Kestra is open-source Apache 2.0, runs any language and tool, and covers the same ETL/ELT workloads plus business process automation, API integrations, and self-service ops — with no per-connector licensing. Retail teams use Kestra to consolidate data pipelines, ERP integrations, and operational workflows on one engine.`,
     },
     {
         question: "How does Kestra handle DataMesh architectures in retail?",
-        answer: "Kestra's namespace isolation maps directly to DataMesh domain ownership. Each domain team owns their namespace, flows, secrets, and data products. Centralized RBAC and audit logs give platform teams governance across the mesh without owning domain logic. Leroy Merlin runs DataMesh at scale on Kestra — +900% in data production, 250+ active users, and 5,000+ workflows created.",
+        answer: `Kestra's namespace isolation maps directly to DataMesh domain ownership. Each domain team owns their namespace, flows, secrets, and data products. Centralized RBAC and audit logs give platform teams governance across the mesh without owning domain logic. <a href="/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent">Leroy Merlin runs DataMesh at scale on Kestra</a> — +900% in data production, 250+ active users, and 5,000+ workflows created.`,
     },
     {
         question: "What workflow automation platforms do retail and e-commerce companies use?",
-        answer: "Common platforms include Informatica, Talend, Apache Airflow, Azure Data Factory, and custom scripts. Kestra replaces them on one self-hosted open-source engine — connecting SAP, Oracle ERP, Salesforce Commerce, Shopify, Gorgias, and warehouse systems side-by-side, with DataMesh-ready namespace isolation, multi-language support, and no per-connector licensing fees.",
+        answer: `Common platforms include Informatica, Talend, <a href="/vs/airflow">Apache Airflow</a>, <a href="/vs/azure-data-factory">Azure Data Factory</a>, and custom scripts. Kestra replaces them on one self-hosted open-source engine — connecting SAP, Oracle ERP, Salesforce Commerce, Shopify, Gorgias, and warehouse systems side-by-side, with DataMesh-ready namespace isolation, multi-language support, and no per-connector licensing fees.`,
     },
 ]
 
@@ -646,8 +646,12 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by retail, commerce, and consumer-goods teams</span>
                     <div class="hero-logos__row">
-                        <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item hero-logos__item--leroy" />
-                        <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item hero-logos__item--gorgias" />
+                        <a href="/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent" aria-label="Read the Leroy Merlin DataMesh customer story">
+                            <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item hero-logos__item--leroy" />
+                        </a>
+                        <a href="/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra" aria-label="Read the Gorgias customer story">
+                            <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item hero-logos__item--gorgias" />
+                        </a>
                         <Image src={AuchanLogoImg} alt="Auchan" class="hero-logos__item hero-logos__item--auchan" />
                         <Image src={DecathlonLogoImg} alt="Decathlon" class="hero-logos__item hero-logos__item--decathlon" />
                         <Image src={IntersportLogoImg} alt="Intersport" class="hero-logos__item hero-logos__item--intersport" />
@@ -661,7 +665,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the workflows <span class="highlight">retail teams actually run</span>.
+                    How <span class="highlight">retail workflow automation</span> connects ERP, e-commerce, and supply chain.
                 </h2>
                 <p class="flow__lead">
                     Data pipelines per business domain. Approval workflows in front of merchandising and ops.
@@ -703,7 +707,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What retail teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <h2>Workflow automation use cases in retail and e-commerce.</h2>
                     <p>Real workloads from real retail and commerce teams. DataMesh at enterprise scale. ERP modernization at global brands. Workflow automation across DIY, fashion, and consumer goods. Customer service context one click away. Mission-critical integration replaced one workflow at a time.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -728,7 +732,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built to the bar <span class="highlight">retail platform teams</span> actually need.
+                    Retail data orchestration requirements: <span class="highlight">DataMesh, RBAC, and scale</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -742,7 +746,7 @@ const FAQ = [
 
         <section class="build">
             <div class="container">
-                <h2>Patterns from real <span class="highlight">retail deployments</span>.</h2>
+                <h2>Retail workflow automation <span class="highlight">examples and blueprints</span>.</h2>
                 <p class="build__lead">Real workflows running today inside retail, commerce, and consumer-goods teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
                 <div class="wrapper">
                     <div class="inner">
@@ -1552,7 +1556,12 @@ const FAQ = [
                 padding-inline: $rem-1;
                 text-align: center;
 
-                .highlight { color: $rt-purple; }
+                .highlight {
+                    background: linear-gradient(90deg, #{$rt-purple}, #{$rt-purple-bright});
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    background-clip: text;
+                }
 
                 @include media-breakpoint-up(xl) { padding-inline: 0; }
             }
@@ -1719,7 +1728,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $rt-purple-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$rt-purple-bright}, #{$rt-purple-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
