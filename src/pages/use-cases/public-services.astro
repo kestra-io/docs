@@ -5,6 +5,8 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Snippets from "~/components/common/Snippets.vue"
 import TaskIcon from "~/components/common/TaskIcon.vue"
@@ -41,9 +43,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Public Services & Institutions"
+const title = "Government & Public Sector Workflow Automation"
 const description =
-    "One orchestration engine for infrastructure, SOC, data, and modernization workflows. Integrate what you already run. Standardize how operations execute. Replace brittle orchestration silos when you're ready."
+    "Open-source workflow automation for government agencies and public sector IT. Orchestrate infrastructure, SOC, data modernization, and citizen-services workflows — self-hosted, air-gapped, and sovereign-deployment ready."
 
 const FLOW_STAGES = [
     {
@@ -532,11 +534,30 @@ const FAQ = [
         question: "How does Kestra support AI-assisted triage and runbooks while keeping humans in the loop?",
         answer: "Orchestrate OCR, LLM extraction, classification, and decision-support models alongside rule-based checks. Pause for human review at any decision point: analyst confirmation, change-advisory approval, model promotion, exception handling. Models, prompts, and PII stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
     },
+    {
+        question: "What workflow automation tools do government agencies and public sector IT teams use?",
+        answer: "Government IT teams commonly run CA7, IBM Workload Automation, Control-M, or legacy shell schedulers tied to mainframe and ERP systems. Kestra replaces them on one self-hosted, open-source engine — with FedRAMP-friendly air-gapped deployment, namespace-scoped RBAC, immutable audit logs, and support for legacy integrations (SFTP, JDBC, mainframe, COTS) alongside modern cloud and Kubernetes workloads.",
+    },
+    {
+        question: "How does Kestra compare to ServiceNow for IT automation in government and public sector?",
+        answer: "ServiceNow is an ITSM platform with workflow capabilities focused on change and incident management. Kestra is a dedicated workflow orchestration engine for data, infrastructure, and business process automation. They complement each other — Kestra integrates with ServiceNow as a trigger source and output target, executing the actual automation steps (provisioning, patching, compliance scanning) while ServiceNow manages the change-advisory process and ticket state.",
+    },
+    {
+        question: "Is Kestra suitable for defense, intelligence, and classified environments?",
+        answer: "Yes. Kestra Enterprise runs fully self-hosted in air-gapped environments with no internet egress requirement. Workers and the control plane can run in separate security zones. All configuration is YAML in Git. No telemetry, no call-home, no proprietary cloud dependency. Approved for high-classification and sovereign infrastructure deployments.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Government and Public Sector Workflow Automation"
+        audienceType="Government Agencies, Public Sector IT Teams, and Public Institutions"
+        description={description}
+    />
     <div class="public-services">
 
         <section class="hero">
@@ -548,8 +569,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    Modernize public-sector IT.<br />
-                    <span class="gradient">On a platform you fully control.</span>
+                    Workflow automation for government<br />
+                    <span class="gradient">and public sector IT teams.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">

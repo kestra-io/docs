@@ -5,6 +5,8 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Snippets from "~/components/common/Snippets.vue"
 import TaskIcon from "~/components/common/TaskIcon.vue"
@@ -41,9 +43,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Software, Consulting & Service Providers"
+const title = "Workflow Orchestration for SaaS & Software Providers"
 const description =
-    "One orchestration engine for every client, every product, every delivery. Onboard customers, ship environments, and run multi-tenant workloads on the platform your delivery team already wants."
+    "Orchestration infrastructure for software companies, consulting firms, and managed service providers. Embed workflow automation in your product, automate client delivery, and run multi-tenant workloads on one open-source engine."
 
 const FLOW_STAGES = [
     {
@@ -518,11 +520,30 @@ const FAQ = [
         question: "What kind of support and Customer Success do enterprise software and services teams get?",
         answer: "Enterprise plans include 24x7 support, a dedicated Slack channel with the engineering team, a Customer Success Program staffed with implementation experts, and a clear escalation path for production issues. Quarterly business reviews, joint roadmap discussions, and named contacts for upgrades and migrations. The cadence software vendors and consultancies expect from a platform their delivery teams depend on.",
     },
+    {
+        question: "How does Kestra compare to Temporal or Camunda for embedding in a software product?",
+        answer: "Temporal requires code-first Java/Go/TypeScript workers and has no no-code UI for business users. Camunda is BPMN-centric with significant modeling overhead. Kestra ships as a single deployable unit with a declarative YAML engine, REST API, a self-service App UI for non-engineers, and a Terraform provider for fleet deployment. Software vendors embed Kestra as the orchestration backbone in their product and expose Kestra Apps to customers as the self-service workflow UI — no orchestration expertise required from end users.",
+    },
+    {
+        question: "What is the best workflow orchestration platform for multi-tenant SaaS products?",
+        answer: "Kestra's namespace isolation maps directly to SaaS tenancy — each customer or workspace owns their namespace, flows, secrets, and execution history. One control plane serves hundreds of tenants with namespace-level RBAC, per-tenant audit logs, and dedicated worker groups for performance isolation. The Terraform provider deploys and manages namespaces at fleet scale. Software vendors use Kestra to power the automation layer inside their SaaS product without building orchestration infrastructure from scratch.",
+    },
+    {
+        question: "How do consulting and managed-service firms use Kestra for client delivery?",
+        answer: "Consulting and MSP teams use Kestra to standardize delivery across client engagements. One shared control plane with namespace isolation separates client environments, secrets, and workflows. Git-backed YAML flows travel with the engagement — no configuration drift between environments. The Terraform provider deploys standard namespace templates at the start of each engagement, cutting setup time from days to minutes.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Workflow Orchestration for Software and Managed Service Providers"
+        audienceType="SaaS Companies, Software Vendors, Consulting Firms, and Managed Service Providers"
+        description={description}
+    />
     <div class="software-providers">
 
         <section class="hero">
@@ -534,8 +555,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    One orchestration engine for<br />
-                    <span class="gradient">every client, every product, every delivery.</span>
+                    Workflow orchestration for<br />
+                    <span class="gradient">software providers and consulting firms.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">

@@ -5,6 +5,8 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Snippets from "~/components/common/Snippets.vue"
 import TaskIcon from "~/components/common/TaskIcon.vue"
@@ -39,9 +41,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Healthcare & Life Sciences"
+const title = "Healthcare Data Orchestration & Workflow Automation"
 const description =
-    "The orchestration layer behind modern healthcare and life sciences. Run medical AI imaging, pharmacy supply chains, genomics pipelines, and HIPAA-compliant data operations on one open-source engine. PHI stays inside your perimeter."
+    "Open-source workflow automation for healthcare and life sciences. Orchestrate HIPAA-compliant data pipelines, medical AI imaging, genomics workflows, and pharmacy supply chains — with PHI staying inside your perimeter."
 
 const FLOW_STAGES = [
     {
@@ -518,11 +520,30 @@ const FAQ = [
         question: "How does Kestra support AI-assisted workflows while keeping humans in the loop?",
         answer: "Orchestrate OCR, LLM extraction, computer vision, and ML scoring alongside rule-based checks. Pause for human review at any decision point: case analyst confirmation, clinician sign-off, model promotion, exception handling. Models, prompts, and PHI stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
     },
+    {
+        question: "How does Kestra compare to Apache Airflow for healthcare data pipelines?",
+        answer: "Airflow is Python-only and has no native HIPAA-specific controls. Kestra runs any language via YAML, ships with self-hosted and air-gapped deployment, scopes secrets per namespace so PHI never leaves your environment, and adds human-in-the-loop approval gates for clinical review flows. Healthcare and life-sciences teams move from Airflow to Kestra when they need compliance controls, multi-language ML support, or workflows that extend beyond data engineering.",
+    },
+    {
+        question: "What workflow automation tools are most commonly used in healthcare and life sciences?",
+        answer: "Common tools include Apache Airflow, Azure Data Factory, Informatica, and homegrown Python schedulers. Kestra replaces all of them on a single open-source engine — running genomics jobs on Kubernetes, pharmacy supply-chain batch files, medical AI pipelines, and compliance reporting workflows side-by-side, with HIPAA-friendly self-hosted deployment and immutable audit logs for every execution.",
+    },
+    {
+        question: "Is Kestra used in clinical trials, genomics, or bioinformatics?",
+        answer: "Yes. Kestra orchestrates bioinformatics and genomics pipelines — Nextflow, WDL, Snakemake, and custom Python/R scripts — alongside sequencing data ingestion, variant calling, and analysis result delivery. GPU workers on Kubernetes handle compute-intensive jobs. Audit trails, namespace isolation, and PHI policy controls support GxP and HIPAA requirements for clinical and research environments.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Healthcare Data Orchestration and Workflow Automation"
+        audienceType="Healthcare Providers, Life Sciences Companies, and Pharmaceutical Organizations"
+        description={description}
+    />
     <div class="healthcare">
 
         <section class="hero">
@@ -534,8 +555,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    The orchestration layer behind<br />
-                    <span class="gradient">modern healthcare and life sciences.</span>
+                    Healthcare workflow automation<br />
+                    <span class="gradient">for data, AI, and life sciences.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">

@@ -5,6 +5,8 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Snippets from "~/components/common/Snippets.vue"
 import TaskIcon from "~/components/common/TaskIcon.vue"
@@ -38,9 +40,9 @@ const HERO_TAGS = [
     { label: "Connected-vehicle scale", icon: "mdi:car-connected" },
 ]
 
-const title = "Kestra for Automotive & Manufacturing"
+const title = "Automotive & Manufacturing Workflow Orchestration"
 const description =
-    "Kestra connects the shop floor, the PLM, the dealer network, and the connected fleet. Automakers and suppliers use it to orchestrate quality, warranty, recall, engineering release, and telemetry workflows — without ripping out MES, SAP, or Teamcenter, and with IATF-grade audit evidence."
+    "Workflow orchestration for automotive manufacturers and suppliers. Connect shop floor, PLM, dealer network, and connected fleet. Automate quality, warranty, recall, and telemetry workflows across MES, SAP, and Teamcenter — with IATF-grade audit evidence."
 
 const FLOW_STAGES = [
     {
@@ -452,11 +454,30 @@ const FAQ = [
         question: "Is Kestra open source, and what does the licensing model look like?",
         answer: "Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
     },
+    {
+        question: "What workflow automation tools do automotive manufacturers typically use?",
+        answer: "Automotive IT teams commonly rely on SAP scheduling, IBM Workload Automation, Automic, or homegrown scripts tied to MES and PLM systems. Kestra replaces them on one engine — orchestrating shop-floor data collection, Teamcenter and SAP integrations, quality workflows, warranty and recall pipelines, and connected-vehicle telemetry jobs, with IATF-grade audit evidence and Kubernetes-native scaling.",
+    },
+    {
+        question: "How does Kestra compare to IBM Workload Automation or Automic for automotive manufacturing?",
+        answer: "IBM Workload Automation and Automic require proprietary agents and vendor-specific configuration, and are designed for batch. Kestra is open-source, container-native, and event-driven. It handles the same batch scheduling plus real-time event-driven flows from CAN bus, telematics, or MES systems — with YAML-backed flows in Git, native Kubernetes workers, and API-first architecture that integrates with your PLM, DMS, and ERP systems without custom middleware.",
+    },
+    {
+        question: "Can Kestra orchestrate connected-vehicle and IoT data pipelines?",
+        answer: "Yes. Kestra handles real-time telemetry ingestion from vehicle fleets, MQTT and Kafka event streams, OTA update pipelines, and fleet monitoring workflows. Workers scale horizontally on Kubernetes to process high-volume vehicle data. The same declarative YAML model covers both the edge data ingestion and the downstream analytics, alerting, and CRM update workflows.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Automotive and Manufacturing Workflow Orchestration"
+        audienceType="Automotive Manufacturers, Tier-1 Suppliers, and Manufacturing Operations Teams"
+        description={description}
+    />
     <div class="automotive">
 
         <section class="hero">
@@ -468,8 +489,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    Kestra connects the shop floor,<br />
-                    <span class="gradient">the dealer, and the connected fleet.</span>
+                    Workflow orchestration for automotive<br />
+                    <span class="gradient">manufacturing and connected vehicles.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
