@@ -5,6 +5,8 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Snippets from "~/components/common/Snippets.vue"
 import TaskIcon from "~/components/common/TaskIcon.vue"
@@ -43,9 +45,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Retail & Commerce"
+const title = "Retail & E-Commerce Workflow Automation"
 const description =
-    "The data and workflow control plane for modern retail. Scale data platforms across teams, automate business workflows, and modernize legacy ERP and supply-chain integration. From DataMesh at scale to ERP modernization to AI-assisted customer service automation."
+    "Workflow automation and data orchestration for modern retail and e-commerce. Automate supply chain, ERP integration, and DataMesh pipelines across SAP, Shopify, and Salesforce — open-source, self-hosted, and built for scale."
 
 const FLOW_STAGES = [
     {
@@ -526,11 +528,30 @@ const FAQ = [
         question: "How does Kestra scale through Black Friday, product launches, and peak-season spikes?",
         answer: "Horizontal worker scaling absorbs traffic spikes without architectural changes. Queue-backed triggers and per-namespace rate controls protect downstream systems. Pre-peak dry runs are replayable against production code, so launch-day behaviour is known before launch day. Real customers run business-critical pipelines on the same engine year-round.",
     },
+    {
+        question: "How does Kestra compare to Informatica or Azure Data Factory for retail data orchestration?",
+        answer: "Informatica and ADF are proprietary platforms with high licensing costs and limited infrastructure scope. Kestra is open-source Apache 2.0, runs any language and tool, and covers the same ETL/ELT workloads plus business process automation, API integrations, and self-service ops — with no per-connector licensing. Retail teams use Kestra to consolidate data pipelines, ERP integrations, and operational workflows on one engine.",
+    },
+    {
+        question: "How does Kestra handle DataMesh architectures in retail?",
+        answer: "Kestra's namespace isolation maps directly to DataMesh domain ownership. Each domain team owns their namespace, flows, secrets, and data products. Centralized RBAC and audit logs give platform teams governance across the mesh without owning domain logic. Leroy Merlin runs DataMesh at scale on Kestra — +900% in data production, 250+ active users, and 5,000+ workflows created.",
+    },
+    {
+        question: "What workflow automation platforms do retail and e-commerce companies use?",
+        answer: "Common platforms include Informatica, Talend, Apache Airflow, Azure Data Factory, and custom scripts. Kestra replaces them on one self-hosted open-source engine — connecting SAP, Oracle ERP, Salesforce Commerce, Shopify, Gorgias, and warehouse systems side-by-side, with DataMesh-ready namespace isolation, multi-language support, and no per-connector licensing fees.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Retail and E-Commerce Workflow Automation"
+        audienceType="Retail Companies, E-Commerce Businesses, and Supply Chain Teams"
+        description={description}
+    />
     <div class="retail">
 
         <section class="hero">
@@ -542,8 +563,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    The data + workflow control plane<br />
-                    <span class="gradient">for modern retail.</span>
+                    Retail workflow automation<br />
+                    <span class="gradient">and data orchestration at scale.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
