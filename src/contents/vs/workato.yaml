@@ -3,6 +3,8 @@ description: "Compare Kestra vs Workato: Open-source workflow orchestration for 
 competitorName: Workato
 category: Business Automation
 shortDescription: "Low-code enterprise SaaS integration vs. engineering-grade orchestration for data pipelines, infrastructure, and self-hosting."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond enterprise iPaaS."
 
 brandColor:
   color: "#0055B3"

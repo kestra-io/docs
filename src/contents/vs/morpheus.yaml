@@ -3,6 +3,8 @@ description: "Compare Kestra vs HPE Morpheus: open-source declarative workflow o
 competitorName: HPE Morpheus
 category: Infrastructure Automation
 shortDescription: "Proprietary hybrid cloud management platform vs. open-source declarative workflow orchestration."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—beyond cloud management into true orchestration."
 
 brandColor:
   color: "#01a982"

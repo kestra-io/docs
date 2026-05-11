@@ -3,6 +3,11 @@ description: "Compare Kestra vs Apache Airflow: Declarative YAML orchestration f
 competitorName: Airflow
 category: Data Orchestration
 shortDescription: "Python-first DAG scheduling vs. universal YAML orchestration for any language and stack."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond them."
+secondaryCta:
+  label: "Download the Guide"
+  href: "/resources/airflow-2-eol-whitepaper"
 
 brandColor:
   color: "#017cee"

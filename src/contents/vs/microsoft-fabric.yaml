@@ -3,6 +3,8 @@ description: "Compare Kestra vs Microsoft Fabric: Open-source workflow orchestra
 competitorName: Microsoft Fabric
 category: Data Orchestration
 shortDescription: "Azure-native unified analytics platform vs. stack-agnostic workflow orchestration for any cloud or infrastructure."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and orchestrate beyond the Azure ecosystem."
 
 brandColor:
   color: "#0078D4"

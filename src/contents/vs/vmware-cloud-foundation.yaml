@@ -3,6 +3,8 @@ description: "Compare Kestra vs VMware Aria Automation (vRA/vRO): declarative YA
 competitorName: "VMware Aria Automation"
 category: Infrastructure Automation
 shortDescription: "vSphere-coupled JavaScript vRO workflows vs. cloud-agnostic declarative YAML orchestration."
+seeHowTitle: "Getting Started with Modern Infrastructure Orchestration"
+seeHowBody: "See how Kestra replaces VMware Aria Automation with declarative YAML workflows across any cloud."
 brandColor:
   color: "#87B74B"
   gradient: "linear-gradient(90deg, #87B74B, #F6C43F, #686465)"

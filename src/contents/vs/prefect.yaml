@@ -3,6 +3,8 @@ description: "Compare Kestra vs. Prefect: Universal workflow orchestration in an
 competitorName: Prefect
 category: Data Orchestration
 shortDescription: "Python-only workflow orchestration vs. universal declarative orchestration in any language with YAML."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond them."
 
 brandColor:
   color: "#2d6df6"

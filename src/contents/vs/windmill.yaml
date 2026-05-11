@@ -3,6 +3,8 @@ description: "Compare Kestra vs Windmill: YAML-first orchestration with 1200+ na
 competitorName: Windmill
 category: Data Orchestration
 shortDescription: "Developer scripts and flows platform vs. YAML-first workflow orchestration with 1200+ plugins at scale."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond developer scripts."
 
 brandColor:
   color: "#3B82F6"
