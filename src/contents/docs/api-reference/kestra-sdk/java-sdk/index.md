@@ -22,7 +22,7 @@ Add this dependency to your project's **POM** file:
 <dependency>
   <groupId>io.kestra</groupId>
   <artifactId>kestra-api-client</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.11</version>
   <scope>compile</scope>
 </dependency>
 ```
@@ -32,7 +32,7 @@ Add this dependency to your project's **POM** file:
 Add this dependency to your **build.gradle** file:
 
 ```groovy
-implementation "io.kestra:kestra-api-client:1.0.0"
+implementation "io.kestra:kestra-api-client:1.0.11"
 ```
 
 ### Manual installation
@@ -51,7 +51,7 @@ Initialize the `KestraClient` and reuse it across your application. Run this min
 
 ```java
 import java.util.*;
-import io.kestra.client.KestraClient;  // Adjust import to your SDK package
+import io.kestra.sdk.KestraClient;  // Adjust import to your SDK package
 
 public class GettingStarted {
     // Instantiate the client once and reuse it (e.g., as a singleton)
@@ -82,7 +82,7 @@ Create a flow by sending the YAML definition as a string. This matches what youâ
 
 ```java
 import java.util.*;
-import io.kestra.client.KestraClient;
+import io.kestra.sdk.KestraClient;
 
 public class FlowsExamples {
     private static final KestraClient CLIENT = KestraClient.builder()
@@ -128,7 +128,7 @@ Update by sending the full YAML for the flow (including the same `id`/`namespace
 
 ```java
 import java.util.*;
-import io.kestra.client.KestraClient;
+import io.kestra.sdk.KestraClient;
 
 public class FlowsUpdates {
     private static final KestraClient CLIENT = KestraClient.builder()
@@ -177,8 +177,8 @@ Trigger an execution and optionally pass inputs, labels, or scheduling parameter
 
 ```java
 import java.util.*;
-import io.kestra.client.KestraClient;
-import io.kestra.client.types.ExecutionKind; // Adjust to your SDK model package
+import io.kestra.sdk.KestraClient;
+import io.kestra.sdk.model.ExecutionKind; // Adjust to your SDK model package
 
 public class ExecutionsExamples {
     private static final KestraClient CLIENT = KestraClient.builder()
@@ -225,7 +225,7 @@ Stream execution events/logs as they happen. This is useful for building live co
 
 ```java
 import java.util.*;
-import io.kestra.client.KestraClient;
+import io.kestra.sdk.KestraClient;
 
 public class ExecutionStreaming {
     private static final KestraClient CLIENT = KestraClient.builder()
@@ -267,7 +267,7 @@ public class ExecutionStreaming {
 Create one utility class to hold your client and reuse it everywhere:
 
 ```java
-import io.kestra.client.KestraClient;
+import io.kestra.sdk.KestraClient;
 
 public final class KestraClients {
     private KestraClients() {}
