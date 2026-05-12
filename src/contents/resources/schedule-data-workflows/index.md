@@ -3,7 +3,7 @@ title: "Schedule Data Workflows: Orchestrate Your Data Flows"
 description: "Master data workflow scheduling with Kestra. Learn how declarative, event-driven orchestration unifies your data, AI, and infrastructure pipelines for enhanced reliability and efficiency."
 metaTitle: "Schedule Data Workflows with Kestra | Orchestration Guide"
 metaDescription: "Automate and orchestrate your data workflows effectively with Kestra. Learn about scheduling types, triggers, and best practices for reliable, event-driven data processing."
-tag: orchestration
+tag: data
 date: 2026-05-02
 faq:
   - question: "What is a data workflow schedule?"

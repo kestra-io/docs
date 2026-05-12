@@ -3,7 +3,7 @@ title: "Best ETL Pipeline Tools for Data Engineering"
 description: "Explore the top ETL pipeline tools for efficient data integration and transformation. Discover how modern, declarative orchestration platforms like Kestra can unify and enhance your ETL workflows."
 metaTitle: "Best ETL Pipeline Tools for Data Engineering"
 metaDescription: "Find the best ETL pipeline tools for data integration and transformation. Compare open-source, cloud, and real-time options to optimize your data engineering workflows."
-tag: etl
+tag: data
 date: 2026-05-06
 faq:
   - question: "What tools are commonly used for ETL pipelines?"
