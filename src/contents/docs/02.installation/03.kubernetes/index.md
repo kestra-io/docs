@@ -72,6 +72,10 @@ Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if y
 To manage flows declaratively using CRDs, install the [Kestra Kubernetes Operator](../../version-control-cicd/cicd/07.kubernetes-operator/index.md) (Enterprise Edition).
 :::
 
+:::alert{type="info"}
+If you use ArgoCD, see [Deploy Kestra with ArgoCD using a Wrapper Chart](../../15.how-to-guides/argocd/index.md) for the recommended GitOps deployment pattern.
+:::
+
 ## Install Kestra
 
 Add the chart repository:
