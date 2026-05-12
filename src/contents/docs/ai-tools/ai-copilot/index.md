@@ -25,6 +25,12 @@ You can type prompts or click the microphone button in the Copilot panel to dict
 
 Copilot grounds its suggestions in your Namespace metadata. It automatically reads Plugin Defaults, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your existing `pluginDefaults`, stored credentials, or variables without extra hints.
 
+## Usage limits
+
+Kestra includes a built-in fallback AI service at `api.kestra.io` that is active when no custom provider is configured. This service has a daily generation limit per instance. The UI displays how many generations you have left, and the limit resets daily at midnight UTC.
+
+To remove the limit, configure your own LLM provider in the `kestra.ai.providers` block. See [Configuration](#configuration) below.
+
 ## Configuration
 
 To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`isDefault: true`):
@@ -177,6 +183,7 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 ## Enterprise Edition Copilot configurations
 
 Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so adjust it for your provider.
+
 Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
 
 ### Amazon Bedrock
@@ -301,7 +308,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In thi"s case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
+If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
 :::
 
 :::alert{type="info"}
