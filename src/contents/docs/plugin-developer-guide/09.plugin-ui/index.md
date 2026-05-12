@@ -37,7 +37,7 @@ Each plugin component targets a specific **slot** — a named extension point in
 
 ### `topology-details`
 
-Renders in the **execution topology view** when a task node is selected. Receives the task definition and the execution state.
+Renders in the **execution topology view** when a task node is selected. Receives the task definition, the execution state, and the flow context.
 
 ```ts
 interface TopologyDetailsProps {
@@ -45,25 +45,34 @@ interface TopologyDetailsProps {
   task: Record<string, unknown>;
   /** The latest execution state for this task, if available */
   execution: Record<string, unknown>;
+  /** The flow namespace */
+  namespace: string;
+  /** The flow ID */
+  flowId: string;
 }
 ```
 
-The component is shown in the context of a running or completed execution. Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly.
+Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. The component is also passed a `displayMode` attribute — when its value is `"full"` the component renders in an expanded drawer; otherwise it renders inline in the compact topology node. Use `useAttrs()` to read it:
+
+```ts
+const attrs = useAttrs();
+const isFullView = computed(() => attrs.displayMode === "full");
+```
 
 ### `topology-task-drawer`
 
-Renders in the **flow editor** (low-code editor) drawer when a task node is selected. This slot targets the design-time context, so `execution` may be absent. Receives the same props as `topology-details`.
+Renders in the **flow editor** (low-code editor) drawer when a task node is selected. Receives the same props as `topology-details`. This slot targets the design-time context, so `execution` may be absent.
 
 ```ts
 interface TopologyTaskDrawerProps {
-  /** The full task definition object from the flow YAML */
   task: Record<string, unknown>;
-  /** The latest execution state for this task, if available */
   execution: Record<string, unknown>;
+  namespace: string;
+  flowId: string;
 }
 ```
 
-Use this slot to surface design-time information — task configuration previews, schema hints, or query previews — directly in the flow editor drawer.
+You can reuse the same Vue component file for both `topology-details` and `topology-task-drawer` — just register it under both slot names in `vite.config.ts` and use `displayMode` to adjust what is rendered (see [Configuring the exposed components](#configuring-the-exposed-components)).
 
 ### `log-details`
 
@@ -263,11 +272,245 @@ A single task can expose components for multiple slots:
 ],
 ```
 
+## Complete example
+
+The snippet below is adapted from the BigQuery plugin ([plugin-gcp#599](https://github.com/kestra-io/plugin-gcp/pull/599)). It shows a `topology-details` component that:
+
+- renders project/location before execution
+- adds duration and cost estimates after execution
+- uses `displayMode === "full"` to show a rich job-details section only in the expanded drawer
+- fetches outputs and metrics via `@kestra-io/kestra-sdk`
+- reuses the same file for the `topology-task-drawer` slot
+
+```vue
+<!-- ui/src/components/QueryRunQueryTopologyDetails.vue -->
+<script setup lang="ts">
+import type { TopologyDetailsProps } from "@kestra-io/artifact-sdk";
+import { computed, ref, watch, useAttrs } from "vue";
+import { execution as fetchExecution, flow as fetchFlowDef, searchByExecution } from "@kestra-io/kestra-sdk";
+
+const props = defineProps<TopologyDetailsProps>();
+const attrs = useAttrs();
+const isFullView = computed(() => attrs.displayMode === "full");
+
+const taskId = computed(() => props.task?.id as string | undefined);
+
+// Fetch the full flow definition to resolve task config that may not be in props.task
+const flowTask = ref<Record<string, any> | null>(null);
+
+async function loadFlowTask() {
+  try {
+    const f = await fetchFlowDef({ path: { namespace: props.namespace, id: props.flowId } });
+    const tasks = (f as any).tasks as any[] | undefined;
+    flowTask.value = tasks?.find((t: any) => t.id === taskId.value) ?? null;
+  } catch { /* best-effort */ }
+}
+
+loadFlowTask();
+
+const projectId = computed(() =>
+  (props.task?.projectId ?? flowTask.value?.projectId) as string | undefined
+);
+const location = computed(() =>
+  (props.task?.location ?? flowTask.value?.location) as string | undefined
+);
+
+// Execution state
+const hasExecution = computed(() => !!props.execution?.id);
+const executionId = computed(() => props.execution?.id as string | undefined);
+
+// Fetch the full execution to get task outputs (props.execution contains task runs but not outputs)
+const fetchedOutputs = ref<Record<string, any> | null>(null);
+
+watch(executionId, async (id) => {
+  if (!id) return;
+  try {
+    const exec = await fetchExecution({ path: { executionId: id } });
+    const tr = (exec.taskRunList as any[])?.filter((r: any) => r.taskId === taskId.value).at(-1);
+    fetchedOutputs.value = (tr as any)?.outputs ?? null;
+  } catch { /* best-effort */ }
+}, { immediate: true });
+
+const taskOutputs = computed(() => fetchedOutputs.value ?? null);
+
+// Metrics
+const metrics = ref<Array<{ name: string; value: number; taskId?: string }>>([]);
+
+watch(executionId, async (id) => {
+  if (!id) return;
+  try {
+    const resp = await searchByExecution({ path: { executionId: id } });
+    metrics.value = ((resp.results as any[]) ?? []).filter(
+      (m: any) => !m.taskId || m.taskId === taskId.value
+    );
+  } catch { /* best-effort */ }
+}, { immediate: true });
+
+const getMetric = (name: string) => metrics.value.find((m) => m.name === name)?.value;
+const bytesBilled  = computed(() => getMetric("total.bytes.billed"));
+const durationMs   = computed(() => getMetric("duration"));
+
+function formatBytes(b?: number) {
+  if (b === undefined) return "—";
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let i = 0, v = b;
+  while (v >= 1024 && i < units.length - 1) { v /= 1024; i++; }
+  return `${v.toFixed(i === 0 ? 0 : 2)} ${units[i]}`;
+}
+
+function formatCost(b?: number) {
+  if (b === undefined) return "—";
+  const cost = (b / Math.pow(1024, 4)) * 5;
+  return cost < 0.01 ? "< $0.01" : `~$${cost.toFixed(4)}`;
+}
+
+function formatDuration(ms?: number) {
+  if (ms === undefined) return "—";
+  return ms < 1000 ? `${ms} ms` : `${(ms / 1000).toFixed(2)} s`;
+}
+</script>
+
+<template>
+  <div class="details">
+    <dl class="grid">
+      <dt>Project</dt><dd>{{ projectId ?? "—" }}</dd>
+      <dt>Location</dt><dd>{{ location ?? "—" }}</dd>
+      <template v-if="hasExecution">
+        <dt>Duration</dt><dd>{{ formatDuration(durationMs) }}</dd>
+        <dt>Est. cost</dt><dd>{{ formatCost(bytesBilled) }}</dd>
+      </template>
+    </dl>
+
+    <!-- Full details: only shown in expanded drawer (displayMode="full") -->
+    <template v-if="hasExecution && isFullView">
+      <section class="section">
+        <h4 class="section-title">Job Details</h4>
+        <dl class="grid">
+          <dt>Job ID</dt><dd>{{ taskOutputs?.jobId ?? "—" }}</dd>
+          <dt>Rows</dt><dd>{{ taskOutputs?.size?.toLocaleString() ?? "—" }}</dd>
+          <dt>Bytes billed</dt><dd>{{ formatBytes(bytesBilled) }}</dd>
+        </dl>
+      </section>
+    </template>
+  </div>
+</template>
+
+<style scoped>
+.details { padding: 0.5rem 0.75rem; font-size: 0.7rem; }
+.grid { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.625rem; margin: 0; }
+.grid dt { font-weight: 500; color: var(--ks-color-text-secondary, #6b7280); white-space: nowrap; }
+.grid dd { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.section { margin-top: 0.5rem; }
+.section-title { margin: 0 0 0.25rem; font-size: 0.6875rem; font-weight: 600; text-transform: uppercase; color: var(--ks-color-text-secondary, #6b7280); }
+</style>
+```
+
+Register the same file under both slots — no `additionalProperties` needed for `topology-task-drawer` since the host drawer handles its own layout:
+
+```ts
+// ui/vite.config.ts
+import defaultViteConfig from "@kestra-io/artifact-sdk/vite.config";
+
+export default defaultViteConfig({
+  plugin: "io.kestra.plugin.example",
+
+  exposes: {
+    "query.RunQuery": [
+      {
+        slotName: "topology-details",
+        path: "./src/components/QueryRunQueryTopologyDetails.vue",
+        additionalProperties: {
+          height: 108,
+          heightWithExecution: 135,
+          customAction: { label: "Show query", taskProp: "sql", lang: "sql" },
+        },
+      },
+      {
+        slotName: "topology-task-drawer",
+        path: "./src/components/QueryRunQueryTopologyDetails.vue",
+      },
+    ],
+  },
+});
+```
+
+### Storybook stories
+
+The scaffolder generates a starter story. Expand it with pre-execution and post-execution variants to cover both rendering modes:
+
+```ts
+// ui/src/QueryRunQueryTopologyDetails.stories.ts
+import type { Meta, StoryObj } from "@storybook/vue3";
+import QueryRunQueryTopologyDetails from "./components/QueryRunQueryTopologyDetails.vue";
+
+const meta: Meta<typeof QueryRunQueryTopologyDetails> = {
+  title: "Plugin UI / topology-details / QueryRunQueryTopologyDetails",
+  component: QueryRunQueryTopologyDetails,
+  tags: ["autodocs"],
+};
+
+export default meta;
+type Story = StoryObj<typeof QueryRunQueryTopologyDetails>;
+
+const baseTask = {
+  id: "run-query",
+  type: "io.kestra.plugin.example.query.RunQuery",
+  sql: "SELECT id, name FROM users WHERE active = true LIMIT 1000",
+  projectId: "my-project",
+};
+
+export const PreExecution: Story = {
+  name: "Pre-execution",
+  args: {
+    task: baseTask,
+    namespace: "company.team",
+    flowId: "my-flow",
+  },
+};
+
+export const PostExecution: Story = {
+  name: "Post-execution",
+  args: {
+    task: baseTask,
+    namespace: "company.team",
+    flowId: "my-flow",
+    execution: {
+      id: "exec-abc123",
+      state: { current: "SUCCESS" },
+      taskRunList: [
+        {
+          id: "tr-001",
+          taskId: "run-query",
+          executionId: "exec-abc123",
+          outputs: { jobId: "my-project:US.bqjob_r1234", size: 42500 },
+        },
+      ],
+    },
+  },
+};
+```
+
+The dev server (`npm run dev`) renders your component using `SLOTS['topology-details'].defaultProps` from `@kestra-io/artifact-sdk`, which provides the same shape as the story props:
+
+```vue
+<!-- ui/src/App.vue -->
+<script setup lang="ts">
+import QueryRunQueryTopologyDetails from "./components/QueryRunQueryTopologyDetails.vue";
+import { SLOTS } from "@kestra-io/artifact-sdk";
+</script>
+
+<template>
+  <div style="padding: 1rem">
+    <QueryRunQueryTopologyDetails v-bind="SLOTS['topology-details'].defaultProps" />
+  </div>
+</template>
+```
+
 ## Development workflow
 
 ### Local dev server
 
-The scaffolded `src/App.vue` renders your component using the slot's default props. Start the dev server to iterate quickly without running Kestra:
+The scaffolded `src/App.vue` renders your component with the slot's default props (via `SLOTS` from `@kestra-io/artifact-sdk`). Start it to iterate quickly without running Kestra:
 
 ```bash
 cd ui
@@ -276,13 +519,13 @@ npm run dev
 
 ### Storybook
 
-Storybook lets you develop and document your component in isolation, with full control over props:
+Run Storybook to develop and test your component in isolation:
 
 ```bash
 npm run storybook
 ```
 
-A starter story is generated alongside the component. Add story variants for pre-execution and post-execution states to cover both rendering modes.
+See the [Complete example](#complete-example) above for a full stories file with pre-execution and post-execution variants.
 
 ### Building
 
