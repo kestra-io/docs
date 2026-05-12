@@ -8,6 +8,12 @@ description: Add a self-signed or internal CA certificate to the JVM truststore 
 
 Add a self-signed or internal CA certificate to the JVM truststore so Kestra tasks can make outbound calls to services secured by that CA.
 
+This is common in environments where internal services — such as databases, APIs, or artifact registries — use a private or self-signed certificate authority not included in the JVM's default truststore. Without this configuration, tasks that connect to those services fail with:
+
+```plaintext
+javax.net.ssl.SSLHandshakeException: PKIX path building failed: unable to find valid certification path to requested target
+```
+
 ## Prerequisites
 
 You need `kubectl`, `keytool` (bundled with the JDK), and `helm`.
@@ -78,6 +84,8 @@ The commands use the following variables:
      --from-file=truststore.p12=ssl/truststore.p12 \
      -n $NAMESPACE
    ```
+
+   The `--from-file=key=path` syntax sets the key name inside the Secret to `truststore.p12`, so the mounted filename matches the JVM path configured in step 5.
 
 5. **Configure Helm**: Add the following to your `values.yaml` to mount the secret and point the JVM to it:
 
