@@ -372,3 +372,5 @@ Expected output:
 NAME        READY   SECRET      AGE
 kestra-tls  True    kestra-tls  5m
 ```
+
+For a step-by-step guide to adding a self-signed or internal CA to the JVM truststore in a Kubernetes deployment, see [Trusting a custom CA for outbound connections on Kubernetes](../custom-ca-kubernetes/index.md).
