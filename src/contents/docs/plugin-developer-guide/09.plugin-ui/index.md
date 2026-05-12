@@ -33,11 +33,11 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. The SDK defines two slots:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. The SDK defines three slots:
 
 ### `topology-details`
 
-Renders in the topology view when a task node is selected (either in the flow editor or the execution topology). Receives the task definition and, post-execution, the execution state.
+Renders in the **execution topology view** when a task node is selected. Receives the task definition and the execution state.
 
 ```ts
 interface TopologyDetailsProps {
@@ -48,7 +48,22 @@ interface TopologyDetailsProps {
 }
 ```
 
-The component is shown both before (flow design time) and after execution. Check `execution?.id` to detect which context you're in and adjust the rendered content accordingly.
+The component is shown in the context of a running or completed execution. Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly.
+
+### `topology-task-drawer`
+
+Renders in the **flow editor** (low-code editor) drawer when a task node is selected. This slot targets the design-time context, so `execution` may be absent. Receives the same props as `topology-details`.
+
+```ts
+interface TopologyTaskDrawerProps {
+  /** The full task definition object from the flow YAML */
+  task: Record<string, unknown>;
+  /** The latest execution state for this task, if available */
+  execution: Record<string, unknown>;
+}
+```
+
+Use this slot to surface design-time information — task configuration previews, schema hints, or query previews — directly in the flow editor drawer.
 
 ### `log-details`
 
@@ -84,9 +99,10 @@ The CLI will:
 
 1. **Detect your plugin** — reads `settings.gradle[.kts]` to infer the plugin group ID (e.g. `io.kestra.plugin.example`).
 2. **Ask which task** you want to add UI for (e.g. `query.RunQuery`).
-3. **Ask which UI slot** to target (`topology-details` or `log-details`).
-4. **Show a summary** and ask for confirmation before writing anything.
-5. **Scaffold the `ui/` directory** with all required files and run `npm install`.
+3. **Ask which UI slot** to target (`topology-details`, `topology-task-drawer`, or `log-details`).
+4. **Ask whether to add `@kestra-io/kestra-sdk`** as a dependency (default: no — add it only if your component needs to call Kestra APIs, see [Calling the Kestra API](#calling-the-kestra-api)).
+5. **Show a summary** and ask for confirmation before writing anything.
+6. **Scaffold the `ui/` directory** with all required files and run `npm install`.
 
 :::alert{type="info"}
 Node.js ≥ 18 is required. The scaffolder can also be run from inside an existing `ui/` directory if you want to add more components later.
@@ -127,6 +143,8 @@ Kestra EE uses cookie-based authentication with JWT access tokens and automatic 
 The SDK wraps every call in an axios instance that the Kestra host configures at startup with `withCredentials: true`, a 401 → token-refresh interceptor, and impersonation support. Any SDK function you call in your component automatically inherits this configuration — no extra setup needed.
 
 ### Installation
+
+The scaffolder asks whether to include `@kestra-io/kestra-sdk` during setup. If you answered yes, the package is already in your `package.json`. If you skipped it, add it manually:
 
 ```bash
 cd ui
@@ -231,6 +249,11 @@ A single task can expose components for multiple slots:
   {
     slotName: "topology-details",
     path: "./src/components/QueryRunQueryTopologyDetails.vue",
+    additionalProperties: { height: 120 },
+  },
+  {
+    slotName: "topology-task-drawer",
+    path: "./src/components/QueryRunQueryTopologyTaskDrawer.vue",
     additionalProperties: { height: 120 },
   },
   {
