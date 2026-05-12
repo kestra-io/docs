@@ -27,7 +27,7 @@ Copilot grounds its suggestions in your Namespace metadata. It automatically rea
 
 ## Usage limits
 
-Kestra includes a built-in fallback AI service at `api.kestra.io` that is active when no custom provider is configured. This service has a daily generation limit per instance. The UI displays how many generations you have left, and the limit resets daily at midnight UTC.
+When no custom provider is configured, Kestra uses a built-in AI service with a daily generation limit per instance. The UI shows how many generations you have left, and the limit resets daily at midnight UTC.
 
 To remove the limit, configure your own LLM provider in the `kestra.ai.providers` block. See [Configuration](#configuration) below.
 
