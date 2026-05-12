@@ -54,48 +54,6 @@ A common concern with CDC is its potential impact on the performance of the sour
 - **Timestamp-based CDC** requires queries to scan tables for new or updated records, which can be resource-intensive, especially on large tables without proper indexing.
 - **Log-based CDC** generally has the lowest performance impact. It reads the transaction log asynchronously, meaning it doesn't interfere with the database's primary workload. The process of reading the log is offloaded from the main database engine, making it a non-intrusive and highly efficient method for capturing changes.
 
-### End-to-end CDC architecture
-
-The diagram below illustrates how a typical log-based CDC pipeline flows — from a row-level change in the source database, through capture and streaming, to the downstream consumers that react to each event in real time. Kestra sits at the orchestration layer, coordinating the workflow and triggering downstream tasks as change events arrive.
-
-```mermaid
-flowchart LR
-    subgraph SRC["Source database"]
-        APP[Application<br/>INSERT / UPDATE / DELETE]
-        TXLOG[(Transaction log<br/>WAL / binlog)]
-        APP -->|writes| TXLOG
-    end
-
-    subgraph CDC["CDC capture layer"]
-        DEBEZIUM[Debezium connector<br/>log reader]
-    end
-
-    subgraph STREAM["Streaming layer"]
-        KAFKA[Message broker<br/>Kafka / Pulsar]
-    end
-
-    subgraph ORCH["Orchestration — Kestra"]
-        TRIGGER[Real-time trigger<br/>on change event]
-        FLOW[Kestra flow<br/>transform &amp; route]
-    end
-
-    subgraph DOWN["Downstream consumers"]
-        DWH[(Data warehouse<br/>Snowflake / BigQuery)]
-        ANALYTICS[Real-time<br/>analytics]
-        MICRO[Microservices<br/>inventory, shipping...]
-        NOTIF[Notifications<br/>Slack / email]
-    end
-
-    TXLOG -->|tails log| DEBEZIUM
-    DEBEZIUM -->|publishes events| KAFKA
-    KAFKA -->|consumes events| TRIGGER
-    TRIGGER --> FLOW
-    FLOW --> DWH
-    FLOW --> ANALYTICS
-    FLOW --> MICRO
-    FLOW --> NOTIF
-```
-
 This event-driven topology is what makes CDC so powerful: a single row change in the source can fan out to every system that needs it, without coupling those systems to the source database. The next sections explore the concrete benefits this architecture unlocks.
 
 ## Benefits of implementing change data capture
