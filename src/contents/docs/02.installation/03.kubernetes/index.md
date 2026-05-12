@@ -25,7 +25,6 @@ Kestra maintains three Helm charts:
 
 1. **`kestra`** — production-ready chart. No dependencies included. Best suited for production deployments with customizable database and storage.
 2. **`kestra-starter`** — includes PostgreSQL and Versity (S3-like storage) for evaluation only. Great for getting started quickly and experimenting with Kestra.
-3. **`kestra-operator`** — installs the Enterprise Edition Kubernetes Operator.
 
 Chart sources:
 - Repository: [helm.kestra.io](https://helm.kestra.io/)
@@ -67,10 +66,6 @@ Use:
 
 Review [Enterprise requirements](../../07.enterprise/05.instance/index.mdx) before deploying.
 Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
-
-:::alert{type="info"}
-To manage flows declaratively using CRDs, install the [Kestra Kubernetes Operator](../../version-control-cicd/cicd/07.kubernetes-operator/index.md) (Enterprise Edition).
-:::
 
 :::alert{type="info"}
 If you use ArgoCD, see [Deploy Kestra with ArgoCD using a Wrapper Chart](../../15.how-to-guides/argocd/index.md) for the recommended GitOps deployment pattern.
