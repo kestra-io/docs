@@ -47,44 +47,6 @@ A typical lakehouse architecture is built on several key components working in c
 - **Processing Engines:** A variety of engines can access the data directly. Apache Spark is the most common for large-scale data processing, while query engines like [DuckDB](/blogs/2024-03-14-duck-db) and Trino enable high-performance SQL analytics.
 - **Governance and Access Control:** Tools for managing security, access control, data quality, and lineage are integrated across the platform.
 
-### Visualizing the Lakehouse Architecture
-
-To better understand how these components fit together, the following diagram illustrates a typical lakehouse architecture. It shows how diverse data sources are ingested into a unified storage layer enhanced with transactional capabilities. From there, various processing engines can access the same data to serve a wide range of analytics and AI use cases.
-
-```mermaid
-flowchart TD
-    subgraph Sources["Data Sources"]
-        direction LR
-        A["Structured Data<br/>(Databases)"]
-        B["Semi-structured Data<br/>(Logs, JSON)"]
-        C["Unstructured Data<br/>(Images, Audio)"]
-    end
-
-    subgraph LakehousePlatform["Data Lakehouse Platform"]
-        direction TD
-        D[("Cloud Object Storage<br/>S3, GCS, Azure Blob")]
-        E["Open Table Formats<br/>(Delta Lake, Iceberg, Hudi)<br/>ACID Transactions, Schema Enforcement"]
-        F["Processing & Query Engines<br/>(Spark, Trino, DuckDB)"]
-        D --> E --> F
-    end
-
-    subgraph Consumers["Consumption Layer"]
-        direction LR
-        G["BI & Reporting"]
-        H["AI & Machine Learning"]
-        I["Data Science"]
-    end
-
-    Sources -- "ELT Pipelines<br/>(Orchestrated by Kestra)" --> D
-    F --> G
-    F --> H
-    F --> I
-
-    style LakehousePlatform fill:#f2e6ff,stroke:#9933ff,stroke-width:2px
-    style Sources fill:#dae8fc,stroke:#6c8ebf,stroke-width:2px
-    style Consumers fill:#d5e8d4,stroke:#82b366,stroke-width:2px
-```
-
 This unified structure directly addresses the limitations of maintaining separate data lakes and data warehouses.
 
 
