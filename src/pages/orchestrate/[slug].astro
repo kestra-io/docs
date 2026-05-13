@@ -75,15 +75,10 @@ try {
     console.warn(`Could not fetch plugin icon for ${tool.pluginClass}`, e)
 }
 
-// Derive the plugin docs URL from the plugin class
-// (io.kestra.plugin.dbt.cli.DbtCLI → /plugins/plugin-dbt).
 const pluginParts = tool.pluginClass.split(".")
 const pluginDocsUrl =
     pluginParts.length > 3 ? `/plugins/plugin-${pluginParts[3]}` : null
 
-// Pick up to 4 recent blog posts mentioning the tool name (e.g. "dbt") in
-// their id or title to surface as "Read more" content at the bottom of
-// the page. Uses the existing common/BlogList component.
 const toolKeyword = tool.name.toLowerCase().split(" ")[0]
 const allBlogs = await getCollection("blogs")
 const relatedBlogs = allBlogs
@@ -442,7 +437,6 @@ const comparisonTableData = comparison.rows.map((row) => {
 <style lang="scss">
     @use "sass:math";
 
-    /* ===== Use cases: mirrors features/core/Operate.astro card pattern ===== */
     .orch-usecases {
         width: 100%;
         padding: 3rem 2rem;
@@ -486,11 +480,6 @@ const comparisonTableData = comparison.rows.map((row) => {
     }
 
     .uc-card {
-        // Whole-card fold / unfold driven by the IntersectionObserver.
-        // Default state is fully visible so content shows even before
-        // JS runs. When the card scrolls out of view, the observer
-        // adds `.is-folded`, which collapses it. Folding back in
-        // reverses the transform smoothly.
         position: relative;
         display: flex;
         flex-direction: row;
@@ -664,21 +653,11 @@ const comparisonTableData = comparison.rows.map((row) => {
             width: 100%;
             max-width: 360px;
 
-            // The cycle is divided into (total + 2) equal slots:
-            //   * one slot per step (running phase)
-            //   * one extra slot where every step holds "validated" together
-            //   * one extra slot of breathing room before the cycle resets
-            // Each slot is 1.2s so the eye has time to register each step.
             --total-tasks: 5;
             --slot: 1.2s;
             --cycle: calc((var(--total-tasks) + 2) * var(--slot));
         }
 
-        // Default state: cells are visible and animations are running.
-        // The IntersectionObserver adds `.is-folded` to a card when it
-        // scrolls *out* of view — that's when the wrapper cell collapses
-        // and the looping animation pauses. This way the section still
-        // renders correctly even before JS runs.
         .uc-task-cell {
             opacity: 1;
             transform: translateY(0) scaleY(1);
@@ -711,7 +690,6 @@ const comparisonTableData = comparison.rows.map((row) => {
             }
         }
 
-        // Mirror the .plugin-icon pattern from features/financial-services.
         .uc-task-icon {
             width: 2.125rem;
             height: 2.125rem;
@@ -730,7 +708,7 @@ const comparisonTableData = comparison.rows.map((row) => {
         }
 
         .uc-task-name {
-            font-family: $font-family-monospace;
+            font-family: $font-family-sans-serif;
             font-size: 0.78rem;
             font-weight: 600;
             color: #131316;
@@ -738,14 +716,14 @@ const comparisonTableData = comparison.rows.map((row) => {
         }
 
         .uc-task-label {
-            font-family: $font-family-monospace;
+            font-family: $font-family-sans-serif;
             font-size: 0.66rem;
+            font-weight: 400;
             color: #6b6a73;
             line-height: 1.2;
             margin-top: 2px;
         }
 
-        // Stacked status icons (pending, running, validated)
         .uc-task-status {
             position: relative;
             width: 18px;
@@ -806,9 +784,6 @@ const comparisonTableData = comparison.rows.map((row) => {
         }
     }
 
-    // When the card scrolls out of view the IntersectionObserver adds
-    // `.is-folded`. We collapse the whole card (opacity + scale + slight
-    // upward shift) and pause the looping animations to save CPU.
     .uc-card.is-folded {
         opacity: 0;
         transform: translateY(-32px) scale(0.94);
@@ -824,25 +799,15 @@ const comparisonTableData = comparison.rows.map((row) => {
         to { transform: rotate(360deg); }
     }
 
-    // ===== Per-step keyframes =====
-    // The cycle is split into (total + 2) equal slots: one slot per step's
-    // running phase, one slot where every step holds "validated", and one slot
-    // of breathing room before the cycle resets and the sequence starts over.
-    // All tasks share the same cycle (slot count drives keyframe % positions)
-    // so steps stay in sync and the whole flow resets together.
     $max-tasks: 8;
     @for $total from 1 through $max-tasks {
         @for $i from 0 through ($total - 1) {
             $slot: math.div(100, $total + 2);
             $start: $slot * $i;
             $end: $slot * ($i + 1);
-            // Onset / decay window = 1/4 of a slot — wide enough to feel as a
-            // gentle pulse rather than a hard switch.
             $onset: math.div($slot, 4);
-            // When every step finishes "running" and they all hold validated.
             $hold-end: $slot * ($total + 1);
 
-            // ----- Status icons (pending / running / validated) -----
             @keyframes uc-pending-#{$total}-#{$i} {
                 0% { opacity: 1; }
                 @if $i > 0 {
@@ -874,9 +839,6 @@ const comparisonTableData = comparison.rows.map((row) => {
                 100% { opacity: 0; }
             }
 
-            // ----- Task card pulse (translateX + box-shadow glow) -----
-            // Wider keyframe windows than before so the eye registers each
-            // step shifting and glowing purple instead of snapping.
             @keyframes uc-task-active-#{$total}-#{$i} {
                 0% {
                     transform: translateX(0) scale(1);
@@ -914,9 +876,6 @@ const comparisonTableData = comparison.rows.map((row) => {
                 }
             }
 
-            // ----- Arrow pulse -----
-            // Stays dim until step i's slot, ramps to purple over the slot,
-            // peaks at the handoff to step i+1, then fades back to dim.
             @keyframes uc-arrow-active-#{$total}-#{$i} {
                 0% {
                     color: rgba(255, 255, 255, 0.28);
@@ -978,7 +937,6 @@ const comparisonTableData = comparison.rows.map((row) => {
         }
     }
 
-    /* ===== Resources: docs link + related blogs ===== */
     .orch-resources {
         background: var(--ks-background-body);
         padding: $rem-4 $rem-1;
@@ -1012,8 +970,6 @@ const comparisonTableData = comparison.rows.map((row) => {
             flex-direction: column;
             gap: 0.6rem;
 
-            // Subtle brand-color glow accent — reuses the same --tool-color
-            // pattern as the hero / use-case task icons.
             &::before {
                 content: "";
                 position: absolute;
@@ -1038,9 +994,6 @@ const comparisonTableData = comparison.rows.map((row) => {
                 z-index: 1;
             }
 
-            // Same pill-badge pattern as `.uc-card .badge` above — keeps
-            // the site's existing label typography instead of inventing
-            // a one-off treatment.
             &__eyebrow {
                 width: fit-content;
                 padding: 0.375rem 1.125rem;
@@ -1069,9 +1022,7 @@ const comparisonTableData = comparison.rows.map((row) => {
         }
     }
 
-    /* ===== Comparison table overrides ===== */
     .orch-compare {
-        // Same auto-layout pattern as data/ComparisonGrid for multi-competitor tables
         :global(table) {
             table-layout: auto !important;
         }
@@ -1082,7 +1033,6 @@ const comparisonTableData = comparison.rows.map((row) => {
             padding: 1rem 1.25rem !important;
         }
 
-        // Logos rendered via slot need explicit sizing (parent's scoped styles don't reach slot content)
         :global(.th-logo) {
             display: inline-flex;
             align-items: center;
@@ -1100,7 +1050,6 @@ const comparisonTableData = comparison.rows.map((row) => {
         }
     }
 
-    /* ===== Build tabs for blueprints (financial-services pattern) ===== */
     .orch-build {
         padding: 3rem 0 4.5rem;
         background: var(--ks-background-primary);
