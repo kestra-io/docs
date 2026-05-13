@@ -1,6 +1,6 @@
 <template>
     <Suspense>
-        <SchemaToHtmlV2
+        <SchemaToHtml
             class="plugin-schema"
             :schema
             :plugin-type
@@ -9,12 +9,13 @@
             <template #markdown="{ content }">
                 <MDCParserAndRenderer v-if="content" :content="content" />
             </template>
-        </SchemaToHtmlV2>
+        </SchemaToHtml>
     </Suspense>
 </template>
 
 <script lang="ts" setup>
-    import { SchemaToHtmlV2, type JSONSchema } from "@kestra-io/ui-libs"
+    import SchemaToHtml from "~/components/plugins/schema/SchemaToHtml.vue"
+    import type { JSONSchema } from "~/utils/plugins/schema"
     import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 
     defineProps<{

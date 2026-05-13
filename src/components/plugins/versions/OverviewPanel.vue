@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
+    import type { PluginMetadata } from "~/utils/plugins/plugin"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import Github from "vue-material-design-icons/Github.vue"
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"

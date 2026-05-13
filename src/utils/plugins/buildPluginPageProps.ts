@@ -1,11 +1,11 @@
 import {
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
-    slugify,
     subGroupName,
     type Plugin,
     type PluginMetadata,
-} from "@kestra-io/ui-libs"
+} from "./plugin"
+import { slugify } from "../slugify"
 
 import {
     formatElementName,

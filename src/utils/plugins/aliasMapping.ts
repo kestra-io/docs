@@ -1,4 +1,4 @@
-import { extractPluginElements, type Plugin } from "@kestra-io/ui-libs";
+import { extractPluginElements, type Plugin } from "./plugin";
 
 export function getAliasMapping(allPlugins: Plugin[]) {
     const aliasMap: Record<string, string> = {};

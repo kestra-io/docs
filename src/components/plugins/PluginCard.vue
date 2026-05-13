@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { computed } from "vue"
-    import { slugify } from "@kestra-io/ui-libs"
+    import { slugify } from "~/utils/slugify"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
