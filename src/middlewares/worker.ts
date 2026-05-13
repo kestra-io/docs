@@ -21,7 +21,7 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     )
         .filter(
             ([key]) =>
-                import.meta.env.DEV && key !== "upgrade-insecure-requests",
+                !import.meta.env.DEV || key !== "upgrade-insecure-requests",
         )
         .map(([key, value]) => {
             let line = key
