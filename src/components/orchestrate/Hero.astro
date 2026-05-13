@@ -58,7 +58,18 @@ const heroStyle = toolColor
         </div>
         <div class="pictos">
             <div class="picto ks" set:html={ksIcon} aria-label="Kestra" />
-            <div class="plus" aria-hidden="true">+</div>
+            <div class="flow" aria-hidden="true">
+                <div class="flow-arrow flow-arrow--out">
+                    <span class="flow-line" />
+                    <span class="flow-line-bright" />
+                    <span class="flow-head" />
+                </div>
+                <div class="flow-arrow flow-arrow--back">
+                    <span class="flow-line" />
+                    <span class="flow-line-bright" />
+                    <span class="flow-head" />
+                </div>
+            </div>
             {
                 toolIcon && (
                     <div
@@ -201,34 +212,97 @@ const heroStyle = toolColor
                         var(--tool-color, var(--ks-border-secondary)) 55%,
                         var(--ks-border-secondary)
                     );
-                    box-shadow:
-                        inset 2px 3px 16px 0
-                            var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                        0 18px 48px -12px
-                            color-mix(
-                                in srgb,
-                                var(--tool-color, transparent) 35%,
-                                transparent
-                            );
+                    animation: glow-tool 4.5s ease-in-out infinite;
+                }
+
+                &.ks {
+                    animation: glow-ks 4.5s ease-in-out infinite;
                 }
             }
 
-            .plus {
+            .flow {
                 display: flex;
-                align-items: center;
+                flex-direction: column;
                 justify-content: center;
-                width: 56px;
-                height: 60px;
+                gap: 0.6rem;
+                width: 90px;
                 flex-shrink: 0;
-                font-size: 2.5rem;
-                font-weight: 300;
-                line-height: 1;
-                color: color-mix(
-                    in srgb,
-                    var(--tool-color, var(--ks-content-secondary)) 80%,
-                    var(--ks-content-secondary)
-                );
-                user-select: none;
+            }
+
+            .flow-arrow {
+                position: relative;
+                width: 100%;
+                height: 14px;
+
+                &--out {
+                    --flow-color: #8b5cf6;
+                }
+
+                &--back {
+                    --flow-color: var(
+                        --tool-color,
+                        var(--ks-content-color-highlight)
+                    );
+                }
+            }
+
+            .flow-line {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--flow-color);
+                opacity: 0.22;
+                transform: translateY(-50%);
+                border-radius: 999px;
+            }
+
+            .flow-line-bright {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--flow-color);
+                box-shadow:
+                    0 0 6px var(--flow-color),
+                    0 0 14px var(--flow-color);
+                border-radius: 999px;
+                transform: translateY(-50%) scaleX(0);
+                opacity: 0;
+            }
+
+            .flow-arrow--out .flow-line-bright {
+                transform-origin: left center;
+                animation: line-fill-out 4.5s ease-in-out infinite;
+            }
+
+            .flow-arrow--back .flow-line-bright {
+                transform-origin: right center;
+                animation: line-fill-back 4.5s ease-in-out infinite;
+            }
+
+            .flow-head {
+                position: absolute;
+                top: 50%;
+                width: 7px;
+                height: 7px;
+                border-right: 2px solid var(--flow-color);
+                border-bottom: 2px solid var(--flow-color);
+                opacity: 0.35;
+            }
+
+            .flow-arrow--out .flow-head {
+                right: 0;
+                transform: translate(50%, -50%) rotate(-45deg);
+                animation: head-out 4.5s ease-in-out infinite;
+            }
+
+            .flow-arrow--back .flow-head {
+                left: 0;
+                transform: translate(-50%, -50%) rotate(135deg);
+                animation: head-back 4.5s ease-in-out infinite;
             }
 
             @include media-breakpoint-down(md) {
@@ -244,12 +318,130 @@ const heroStyle = toolColor
                     }
                 }
 
-                .plus {
-                    width: 36px;
-                    height: 40px;
-                    font-size: 1.75rem;
+                .flow {
+                    width: 48px;
+                    gap: 0.35rem;
                 }
             }
+        }
+    }
+
+    @keyframes line-fill-out {
+        0% {
+            transform: translateY(-50%) scaleX(0);
+            opacity: 0;
+        }
+        6% {
+            opacity: 0.9;
+        }
+        44% {
+            transform: translateY(-50%) scaleX(1);
+            opacity: 1;
+        }
+        50% {
+            transform: translateY(-50%) scaleX(1);
+            opacity: 0;
+        }
+        51%, 100% {
+            transform: translateY(-50%) scaleX(0);
+            opacity: 0;
+        }
+    }
+
+    @keyframes line-fill-back {
+        0%, 50% {
+            transform: translateY(-50%) scaleX(0);
+            opacity: 0;
+        }
+        56% {
+            opacity: 0.9;
+        }
+        94% {
+            transform: translateY(-50%) scaleX(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-50%) scaleX(1);
+            opacity: 0;
+        }
+    }
+
+    @keyframes head-out {
+        0%, 35% {
+            opacity: 0.35;
+            filter: none;
+        }
+        44% {
+            opacity: 0.9;
+            filter: drop-shadow(0 0 4px var(--flow-color));
+        }
+        50% {
+            opacity: 0.5;
+            filter: none;
+        }
+        100% {
+            opacity: 0.35;
+            filter: none;
+        }
+    }
+
+    @keyframes head-back {
+        0%, 85% {
+            opacity: 0.35;
+            filter: none;
+        }
+        94% {
+            opacity: 0.9;
+            filter: drop-shadow(0 0 4px var(--flow-color));
+        }
+        100% {
+            opacity: 0.5;
+            filter: none;
+        }
+    }
+
+    @keyframes glow-ks {
+        0%, 20% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 14px 44px -8px rgba(139, 92, 246, 0.75);
+        }
+        38%, 88% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 18px 48px -16px rgba(139, 92, 246, 0.08);
+        }
+        94%, 100% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 14px 44px -8px rgba(139, 92, 246, 0.75);
+        }
+    }
+
+    @keyframes glow-tool {
+        0%, 38% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 18px 48px -16px
+                    color-mix(in srgb, var(--tool-color, transparent) 10%, transparent);
+        }
+        44%, 70% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 14px 44px -8px
+                    color-mix(in srgb, var(--tool-color, transparent) 80%, transparent);
+        }
+        88%, 100% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 18px 48px -16px
+                    color-mix(in srgb, var(--tool-color, transparent) 10%, transparent);
         }
     }
 </style>
