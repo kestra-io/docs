@@ -13,7 +13,7 @@ Airflow 2 recently reached end of life. For most teams, the easiest path is to u
 
 The reason most teams won't evaluate is the same reason I [failed to migrate a data team to dbt](https://medium.pimpaudben.fr/how-i-failed-to-implement-dbt-in-my-previous-job-0b168f59e150) a few years ago. I had a working prototype, benchmarks, and a migration plan. What I didn't have was a working example in front of the people who needed to say yes, before they'd already mentally committed to the status quo. Airflow migrations replay this pattern: the translation work kills most evaluations before they start. Most teams look at years of accumulated DAGs and decide the upgrade is easier. They never get to the working demo stage.
 
-LLMs have started to change that calculus. I built [migration-skills](https://github.com/kestra-io/migration-skills) so the conversion part takes minutes instead of weeks. Convert a DAG, run it in Kestra, and you have something to show the right people the same day you decide to look.
+LLMs have started to change that calculus. I built [migration-skills](https://github.com/kestra-io/agent-skills/tree/main/skills/migrate-airflow-kestra) so the conversion part takes minutes instead of weeks. Convert a DAG, run it in Kestra, and you have something to show the right people the same day you decide to look.
 
 Kestra takes a different approach: declarative YAML flows, file-based data passing with no size limits, and a [1200+ plugin ecosystem](/plugins) that covers most integrations out of the box. The IDE-like UI, with a live topology view and built-in code editor, makes the day-to-day workflow significantly smoother.
 
@@ -596,6 +596,6 @@ Then:
 2. Install `kestractl`: [kestra.io/docs/kestra-cli/kestractl](../../docs/kestra-cli/kestractl/index.md)
 3. Pick a simple DAG to start (a 3-5 task sequential pipeline works well) and run it through the migration workflow described above
 
-If you prefer a standalone migration tool, the [kestra-io/migration-skills](https://github.com/kestra-io/migration-skills) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow (DAG parsing, namespace file extraction, flow validation, and deployment) as a single command.
+If you prefer a standalone migration tool, the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills/tree/main/skills/migrate-airflow-kestra) repository on GitHub provides a dedicated `/migrate-airflow-kestra` skill you can install directly into Claude Code. It handles the full migration workflow (DAG parsing, namespace file extraction, flow validation, and deployment) as a single command.
 
 A working example moves things faster than any migration plan. One DAG, converted, running in Kestra, in front of the people who need to say yes. That's how evaluations actually start.
