@@ -21,9 +21,35 @@ interface Props {
 }
 
 const props = Astro.props as Props
+
+// TechArticle JSON-LD: emit on every /docs/* page (including the index) so that
+// Google can surface documentation rich results and AI search engines can
+// attribute citations back to a canonical headline + publisher.
+const techArticleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": Astro.url.href,
+    "headline": props.pageTitle ?? props.title ?? "Kestra Documentation",
+    "url": Astro.url.href,
+    "inLanguage": "en",
+    ...(props.description ? { description: props.description } : {}),
+    "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://kestra.io/#website",
+    },
+    "about": {
+        "@type": "SoftwareApplication",
+        "@id": "https://kestra.io/#software",
+    },
+    "author": { "@id": "https://kestra.io/#organization" },
+    "publisher": { "@id": "https://kestra.io/#organization" },
+}
 ---
 
 <Layout title={props.title} description={props.description} image={props.image}>
+    <Fragment slot="head">
+        <script type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
+    </Fragment>
     <link rel="preload" as="image" href={squaredGrid.src} />
     <div
         style={{
