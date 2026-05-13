@@ -85,6 +85,7 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
+const isPricingPage = Astro.url.pathname === "/pricing" || Astro.url.pathname === "/pricing/"
 const hasAnnounce = isHomepage && annonces.length > 0
 
 const websiteSchema = isHomepage
@@ -96,6 +97,37 @@ const websiteSchema = isHomepage
           "name": "Kestra",
           "description":
               "Open-source declarative orchestration platform for data, AI, and infrastructure workflows",
+      }
+    : null
+
+const softwareApplicationSchema = (isHomepage || isPricingPage)
+    ? {
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          "@id": "https://kestra.io/#software",
+          "name": "Kestra",
+          "applicationCategory": "DeveloperApplication",
+          "applicationSubCategory": "Workflow Orchestration",
+          "operatingSystem": "Linux, macOS, Windows, Docker, Kubernetes",
+          "url": "https://kestra.io",
+          "downloadUrl": "https://github.com/kestra-io/kestra",
+          "license": "https://www.apache.org/licenses/LICENSE-2.0",
+          "isAccessibleForFree": true,
+          "publisher": { "@id": "https://kestra.io/#organization" },
+          "offers": [
+              {
+                  "@type": "Offer",
+                  "name": "Open Source",
+                  "price": "0",
+                  "priceCurrency": "USD",
+                  "url": "https://github.com/kestra-io/kestra",
+              },
+              {
+                  "@type": "Offer",
+                  "name": "Enterprise Edition",
+                  "url": "https://kestra.io/pricing",
+              },
+          ],
       }
     : null
 
@@ -229,6 +261,7 @@ const organizationSchema = {
 
         <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
         {websiteSchema && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
+        {softwareApplicationSchema && <script type="application/ld+json" set:html={JSON.stringify(softwareApplicationSchema)}></script>}
 
         <slot name="head" />
 
