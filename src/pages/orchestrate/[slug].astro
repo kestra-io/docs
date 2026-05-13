@@ -1,0 +1,1320 @@
+---
+import { Icon } from "astro-icon/components"
+import { getCollection } from "astro:content"
+
+import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Faq from "~/components/common/Faq.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Link from "~/components/common/Link.astro"
+import BlogList from "~/components/common/BlogList.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+
+import Hero from "~/components/orchestrate/Hero.astro"
+
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+import { optimizeSvgIcon } from "~/utils/svgo"
+
+import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
+import RedditLogo from "~/components/orchestrate/assets/reddit.svg?raw"
+import RiversideLogo from "~/components/orchestrate/assets/riverside.svg?raw"
+import SlackLogo from "~/components/orchestrate/assets/slack.svg?raw"
+import FoundationDataLogo from "~/components/orchestrate/assets/foundation-data.svg?raw"
+
+const versusLogoModules = import.meta.glob<string>(
+    "../../components/versus/assets/*.svg",
+    { query: "?raw", import: "default", eager: true },
+)
+
+function getVersusLogo(filename: string): string {
+    const key = Object.keys(versusLogoModules).find((k) =>
+        k.endsWith(`/${filename}.svg`),
+    )
+    return key ? versusLogoModules[key] : ""
+}
+
+const LOGO_MAP: Record<string, string> = {
+    gorgias: optimizeSvgIcon(GorgiasLogo, "gorgias-orch-logo"),
+    reddit: optimizeSvgIcon(RedditLogo, "reddit-orch-logo"),
+    riverside: optimizeSvgIcon(RiversideLogo, "riverside-orch-logo"),
+    slack: optimizeSvgIcon(SlackLogo, "slack-orch-logo"),
+    "foundation-data": optimizeSvgIcon(FoundationDataLogo, "foundation-data-orch-logo"),
+}
+
+export async function getStaticPaths() {
+    const entries = await getCollection("orchestrate")
+    return entries.map((entry) => ({
+        params: { slug: entry.id },
+        props: { entry },
+    }))
+}
+
+const { entry } = Astro.props
+const {
+    title,
+    description,
+    tool,
+    hero,
+    pillars,
+    useCases,
+    quotes,
+    blueprints,
+    comparison,
+    faq,
+    seeHow,
+} = entry.data
+
+let pluginIcon = ""
+try {
+    pluginIcon = await fetchPluginIcon(tool.pluginClass)
+} catch (e) {
+    console.warn(`Could not fetch plugin icon for ${tool.pluginClass}`, e)
+}
+
+// Derive the plugin docs URL from the plugin class
+// (io.kestra.plugin.dbt.cli.DbtCLI → /plugins/plugin-dbt).
+const pluginParts = tool.pluginClass.split(".")
+const pluginDocsUrl =
+    pluginParts.length > 3 ? `/plugins/plugin-${pluginParts[3]}` : null
+
+// Pick up to 4 recent blog posts mentioning the tool name (e.g. "dbt") in
+// their id or title to surface as "Read more" content at the bottom of
+// the page. Uses the existing common/BlogList component.
+const toolKeyword = tool.name.toLowerCase().split(" ")[0]
+const allBlogs = await getCollection("blogs")
+const relatedBlogs = allBlogs
+    .filter(
+        (b) =>
+            b.id.toLowerCase().includes(toolKeyword) ||
+            b.data.title.toLowerCase().includes(toolKeyword),
+    )
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .slice(0, 4)
+    .map((b) => ({
+        path: `/blogs/${b.id}`,
+        image: b.data.image,
+        title: b.data.title,
+        date: b.data.date.toISOString(),
+        category: b.data.category,
+    }))
+
+const competitorLogos: string[] = await Promise.all(
+    comparison.competitors.map(async (c) => {
+        if (c.logoAsset) {
+            return getVersusLogo(c.logoAsset)
+        }
+        if (c.pluginClass) {
+            try {
+                return await fetchPluginIcon(c.pluginClass)
+            } catch (e) {
+                console.warn(`Could not fetch logo for ${c.name}`, e)
+                return ""
+            }
+        }
+        return ""
+    }),
+)
+
+const quoteItems = quotes.map((q) => ({
+    quote: q.quote,
+    author: q.author,
+    storyLink: q.storyLink,
+    sourceUrl: q.sourceUrl,
+    sourceLabel: q.sourceLabel,
+    kpis: q.kpis,
+    smallLogoSvg: q.logoFile ? LOGO_MAP[q.logoFile] : undefined,
+}))
+
+const competitorKeys = comparison.competitors.map((_: any, i: number) => `comp${i}`)
+const comparisonTableData = comparison.rows.map((row) => {
+    const obj: Record<string, string> = {
+        feature: row.feature,
+        kestra: row.kestra,
+    }
+    row.values.forEach((v, i) => {
+        obj[`comp${i}`] = v
+    })
+    return obj
+})
+---
+
+<Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={faq} slot="head" />
+
+    <Hero
+        title={hero.title}
+        description={hero.description}
+        cta={hero.cta}
+        secondaryCta={hero.secondaryCta}
+        toolName={tool.name}
+        toolIcon={pluginIcon}
+        toolColor={tool.color}
+    />
+
+    <CardGrid title={pillars.title} subtitle={pillars.subtitle} items={pillars.items} />
+
+    <section class="orch-usecases">
+        <div class="orch-usecases__head">
+            <h2>{useCases.title}</h2>
+            {useCases.subtitle && <p>{useCases.subtitle}</p>}
+        </div>
+        <div class="orch-usecases__container">
+            {
+                useCases.items.map((uc, ucIdx) => {
+                    const items = [...(uc.items ?? [])]
+                    if (uc.signal) {
+                        items.push({
+                            title: "What you get",
+                            description: uc.signal,
+                            wide: true,
+                        })
+                    }
+                    return (
+                        <div class="uc-card">
+                            <div class="content">
+                                <div class="badge" data-usal="zoomin">
+                                    {uc.badgeIcon && (
+                                        <Icon
+                                            name={uc.badgeIcon}
+                                            class="badge-icon"
+                                        />
+                                    )}
+                                    <span>{uc.badge}</span>
+                                </div>
+                                <h3 data-usal="fade-r">{uc.title}</h3>
+                                <p data-usal="fade-l" set:html={uc.description} />
+                                {items.length > 0 && (
+                                    <div class="items-grid">
+                                        {items.map((item) => (
+                                            <div
+                                                class:list={[
+                                                    "item-card",
+                                                    { wide: item.wide },
+                                                ]}
+                                                data-usal="zoomin"
+                                            >
+                                                <h4>{item.title}</h4>
+                                                <p set:html={item.description} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                            <div class="right">
+                                <div
+                                    class="uc-task-flow"
+                                    data-total={uc.flow.length}
+                                    style={`--total-tasks: ${uc.flow.length}`}
+                                >
+                                    {uc.flow.map((step, stepIdx) => (
+                                        <>
+                                            <div
+                                                class="uc-task-cell"
+                                                style={`--step-index: ${stepIdx}`}
+                                            >
+                                            <div
+                                                class:list={[
+                                                    "uc-task",
+                                                    { "is-gate": step.gate },
+                                                ]}
+                                                data-step={stepIdx}
+                                            >
+                                                <div class="uc-task-icon">
+                                                    {step.pluginClass ? (
+                                                        <TaskIcon cls={step.pluginClass} />
+                                                    ) : (
+                                                        <Icon
+                                                            name="mdi:hexagon-outline"
+                                                            width={20}
+                                                            height={20}
+                                                        />
+                                                    )}
+                                                </div>
+                                                <div class="uc-task-meta">
+                                                    <div class="uc-task-name">
+                                                        {step.node}
+                                                    </div>
+                                                    {step.label && (
+                                                        <div class="uc-task-label">
+                                                            {step.label}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div class="uc-task-status">
+                                                    <Icon
+                                                        name="mdi:circle-outline"
+                                                        class="status status-pending"
+                                                        width={18}
+                                                        height={18}
+                                                    />
+                                                    <Icon
+                                                        name="mdi:loading"
+                                                        class="status status-running"
+                                                        width={18}
+                                                        height={18}
+                                                    />
+                                                    <Icon
+                                                        name="mdi:check-circle"
+                                                        class="status status-validated"
+                                                        width={18}
+                                                        height={18}
+                                                    />
+                                                </div>
+                                            </div>
+                                            </div>
+                                            {stepIdx < uc.flow.length - 1 && (
+                                                <div
+                                                    class="uc-task-arrow-cell"
+                                                    style={`--step-index: ${stepIdx}`}
+                                                >
+                                                <div
+                                                    class="uc-task-arrow"
+                                                    data-step={stepIdx}
+                                                >
+                                                    <Icon
+                                                        name="mdi:chevron-down"
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                </div>
+                                                </div>
+                                            )}
+                                        </>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+        </div>
+    </section>
+
+    <Quotes quotes={quoteItems} client:load />
+
+    <section class="orch-build">
+        <div class="container">
+            <h2 class="text-center">{blueprints.title}</h2>
+            <p class="orch-build__lead">{blueprints.lead}</p>
+            <div class="wrapper">
+                <div class="inner">
+                    <div class="header row g-0">
+                        {
+                            blueprints.items.map((tab, idx) => (
+                                <div
+                                    class:list={[
+                                        "col-6 col-md header-tab",
+                                        { active: idx === 0 },
+                                        {
+                                            "middle-part":
+                                                idx > 0 &&
+                                                idx < blueprints.items.length - 1,
+                                        },
+                                    ]}
+                                    data-tab-target={idx}
+                                >
+                                    {tab.name}
+                                </div>
+                            ))
+                        }
+                    </div>
+
+                    {
+                        blueprints.items.map((bp, idx) => (
+                            <div
+                                class:list={["content", { active: idx === 0 }]}
+                                data-tab-content={idx}
+                            >
+                                <div class="panel panel-1">
+                                    <Snippets client:idle code={bp.code} lang="yaml" />
+                                </div>
+                                <div class="panel panel-2">
+                                    <h3>{bp.title}</h3>
+                                    <p set:html={bp.description} />
+                                    <div class="plugins">
+                                        {bp.plugins.map((cls) => (
+                                            <div class="plugin-icon">
+                                                <TaskIcon cls={cls} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {bp.href && (
+                                        <a class="goto" href={bp.href}>
+                                            Explore Blueprints →
+                                        </a>
+                                    )}
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="orch-compare">
+        <FeatureGrid
+            featureGrid={{
+                title: comparison.title,
+                tableData: comparisonTableData,
+            }}
+            columns={competitorKeys}
+        >
+            <Fragment slot="firstCol">Capability</Fragment>
+            <Fragment slot="more">
+                {
+                    comparison.competitors.map((c, i) => (
+                        <th>
+                            {competitorLogos[i] ? (
+                                <div
+                                    class="th-logo"
+                                    set:html={competitorLogos[i]}
+                                    role="img"
+                                    aria-label={c.name}
+                                />
+                            ) : (
+                                c.name
+                            )}
+                        </th>
+                    ))
+                }
+            </Fragment>
+        </FeatureGrid>
+    </div>
+
+    <Faq
+        items={faq}
+        title={`${tool.name} & Kestra: common questions`}
+        client:visible
+    />
+
+    {
+        (pluginDocsUrl || relatedBlogs.length > 0) && (
+            <section class="orch-resources">
+                <div class="container">
+                    <div class="orch-resources__grid">
+                        {pluginDocsUrl && (
+                            <aside class="docs-card">
+                                <span class="docs-card__eyebrow">
+                                    Documentation
+                                </span>
+                                <h3>
+                                    Wire {tool.name} into your workflows
+                                </h3>
+                                <p>
+                                    Every {tool.name} task, trigger, and
+                                    configuration option, with copy-ready
+                                    YAML examples.
+                                </p>
+                                <Link href={pluginDocsUrl}>
+                                    Explore the {tool.name} plugin docs
+                                </Link>
+                            </aside>
+                        )}
+                        {relatedBlogs.length > 0 && (
+                            <div class="blogs-card">
+                                <BlogList
+                                    posts={relatedBlogs}
+                                    title={`Read more about ${tool.name} + Kestra`}
+                                />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    <SeeHow
+        cta={seeHow.cta
+            ? { text: seeHow.cta.label, href: seeHow.cta.href }
+            : { text: "Book a Demo", href: "/demo" }}
+    >
+        <Fragment slot="title">{seeHow.title}</Fragment>
+        {seeHow.description}
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    @use "sass:math";
+
+    /* ===== Use cases: mirrors features/core/Operate.astro card pattern ===== */
+    .orch-usecases {
+        width: 100%;
+        padding: 3rem 2rem;
+        background: var(--ks-background-primary)
+            url("~/assets/landing/infrastructure/grid.svg") no-repeat top;
+
+        @include media-breakpoint-down(md) {
+            padding: 1rem 0.75rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            padding: 5.4375rem 120px;
+        }
+
+        &__head {
+            max-width: 760px;
+            margin: 0 auto 3rem;
+            text-align: center;
+
+            h2 {
+                color: var(--ks-content-primary);
+                margin-bottom: 1rem;
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                font-size: $font-size-lg;
+                line-height: 1.6;
+                margin: 0;
+            }
+        }
+
+        &__container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+    }
+
+    .uc-card {
+        // Whole-card fold / unfold driven by the IntersectionObserver.
+        // Default state is fully visible so content shows even before
+        // JS runs. When the card scrolls out of view, the observer
+        // adds `.is-folded`, which collapses it. Folding back in
+        // reverses the transform smoothly.
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        padding-left: 6.875rem;
+        align-items: stretch;
+        justify-content: space-between;
+        gap: 4rem;
+        border-radius: 1rem;
+        border: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-primary);
+        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+        overflow: hidden;
+
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        transform-origin: center top;
+        transition:
+            opacity 0.55s ease-out,
+            transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+        @include media-breakpoint-down(xl) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            padding-left: 0;
+        }
+
+        .badge {
+            width: fit-content;
+            padding: 0.375rem 1.125rem;
+            gap: 0.5rem;
+            border-radius: 2.5rem;
+            border: 1px solid var(--ks-border-active);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: $font-size-xs;
+            color: var(--ks-content-color-highlight);
+
+            @include media-breakpoint-up(xl) {
+                position: absolute;
+                top: 2rem;
+                left: 2rem;
+            }
+
+            .badge-icon {
+                font-size: 1rem;
+                margin-top: -2px;
+            }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 2rem;
+            flex: 1;
+            padding-block: 4rem;
+
+            @include media-breakpoint-down(xl) {
+                padding: 2rem 2rem 0;
+                width: 100%;
+            }
+
+            @include media-breakpoint-down(sm) {
+                padding: 2rem;
+            }
+
+            h3 {
+                color: var(--ks-content-primary);
+                margin: 0;
+            }
+
+            > p {
+                color: var(--ks-content-secondary);
+                margin: 0;
+            }
+
+            > p :global(code) {
+                font-family: $font-family-monospace;
+                font-size: 0.85em;
+                background: var(--ks-background-purple-light);
+                color: var(--ks-content-primary);
+                padding: 0.1rem 0.35rem;
+                border-radius: 4px;
+                border: 1px solid var(--ks-border-primary);
+            }
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+
+            @include media-breakpoint-up(xl) {
+                max-width: 600px;
+            }
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: 1fr;
+            }
+
+            .item-card {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 1rem 1.5rem;
+                border-radius: 0.625rem;
+                background: var(--ks-background-primary);
+                border: 1px solid var(--ks-border-secondary);
+                box-shadow: 2px 0.1875rem 1rem 0 var(--ks-shadows-light);
+
+                &.wide {
+                    grid-column: span 2;
+                    width: 100%;
+
+                    @include media-breakpoint-down(md) {
+                        grid-column: span 1;
+                    }
+                }
+
+                h4 {
+                    font-size: $font-size-sm;
+                    margin: 0;
+                    color: var(--ks-content-primary);
+                    font-weight: 600;
+                }
+
+                p {
+                    font-size: $font-size-xs;
+                    margin: 0;
+                    color: var(--ks-content-secondary);
+                    line-height: 1.55;
+                }
+            }
+        }
+
+        .right {
+            width: 625px;
+            flex: 0 0 625px;
+            background: linear-gradient(
+                157.65deg,
+                #5733c5 5.65%,
+                #141414 28.44%,
+                #000000 51.96%,
+                #5d61ff 86.31%
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5rem 2rem;
+            overflow: hidden;
+            align-self: stretch;
+
+            @include media-breakpoint-down(xl) {
+                width: 100%;
+                flex: 0 0 auto;
+                align-self: auto;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .uc-task-flow {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.5rem;
+            width: 100%;
+            max-width: 360px;
+
+            // The cycle is divided into (total + 2) equal slots:
+            //   * one slot per step (running phase)
+            //   * one extra slot where every step holds "validated" together
+            //   * one extra slot of breathing room before the cycle resets
+            // Each slot is 1.2s so the eye has time to register each step.
+            --total-tasks: 5;
+            --slot: 1.2s;
+            --cycle: calc((var(--total-tasks) + 2) * var(--slot));
+        }
+
+        // Default state: cells are visible and animations are running.
+        // The IntersectionObserver adds `.is-folded` to a card when it
+        // scrolls *out* of view — that's when the wrapper cell collapses
+        // and the looping animation pauses. This way the section still
+        // renders correctly even before JS runs.
+        .uc-task-cell {
+            opacity: 1;
+            transform: translateY(0) scaleY(1);
+            transform-origin: top center;
+            transition:
+                opacity 0.45s ease-out,
+                transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .uc-task {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 0.875rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 0.625rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+
+            animation-duration: var(--cycle);
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-play-state: running;
+
+            &.is-gate {
+                background: rgba(255, 235, 226, 0.96);
+                border-color: rgba(255, 139, 97, 0.55);
+            }
+        }
+
+        // Mirror the .plugin-icon pattern from features/financial-services.
+        .uc-task-icon {
+            width: 2.125rem;
+            height: 2.125rem;
+            padding: 0.375rem;
+            background: $white;
+            border: $block-border;
+            border-radius: $border-radius;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .uc-task-meta {
+            min-width: 0;
+        }
+
+        .uc-task-name {
+            font-family: $font-family-monospace;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #131316;
+            line-height: 1.2;
+        }
+
+        .uc-task-label {
+            font-family: $font-family-monospace;
+            font-size: 0.66rem;
+            color: #6b6a73;
+            line-height: 1.2;
+            margin-top: 2px;
+        }
+
+        // Stacked status icons (pending, running, validated)
+        .uc-task-status {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .uc-task-status .status {
+            position: absolute;
+            inset: 0;
+            width: 18px;
+            height: 18px;
+            opacity: 0;
+            animation-duration: var(--cycle);
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-play-state: running;
+        }
+
+        .uc-task-status .status-pending {
+            color: #a5a4aa;
+        }
+
+        .uc-task-status .status-running {
+            color: #8c4bff;
+            animation-duration: var(--cycle), 0.9s;
+            animation-timing-function: linear, linear;
+            animation-iteration-count: infinite, infinite;
+            animation-fill-mode: both, both;
+        }
+
+        .uc-task-status .status-validated {
+            color: #22c55e;
+        }
+
+        .uc-task-arrow-cell {
+            opacity: 1;
+            transform: scaleY(1) translateY(0);
+            transform-origin: top center;
+            transition:
+                opacity 0.4s ease-out,
+                transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .uc-task-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.3);
+            height: 14px;
+
+            animation-duration: var(--cycle);
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-fill-mode: both;
+            animation-play-state: running;
+        }
+    }
+
+    // When the card scrolls out of view the IntersectionObserver adds
+    // `.is-folded`. We collapse the whole card (opacity + scale + slight
+    // upward shift) and pause the looping animations to save CPU.
+    .uc-card.is-folded {
+        opacity: 0;
+        transform: translateY(-32px) scale(0.94);
+
+        .uc-task,
+        .uc-task-arrow,
+        .uc-task-status .status {
+            animation-play-state: paused;
+        }
+    }
+
+    @keyframes uc-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    // ===== Per-step keyframes =====
+    // The cycle is split into (total + 2) equal slots: one slot per step's
+    // running phase, one slot where every step holds "validated", and one slot
+    // of breathing room before the cycle resets and the sequence starts over.
+    // All tasks share the same cycle (slot count drives keyframe % positions)
+    // so steps stay in sync and the whole flow resets together.
+    $max-tasks: 8;
+    @for $total from 1 through $max-tasks {
+        @for $i from 0 through ($total - 1) {
+            $slot: math.div(100, $total + 2);
+            $start: $slot * $i;
+            $end: $slot * ($i + 1);
+            // Onset / decay window = 1/4 of a slot — wide enough to feel as a
+            // gentle pulse rather than a hard switch.
+            $onset: math.div($slot, 4);
+            // When every step finishes "running" and they all hold validated.
+            $hold-end: $slot * ($total + 1);
+
+            // ----- Status icons (pending / running / validated) -----
+            @keyframes uc-pending-#{$total}-#{$i} {
+                0% { opacity: 1; }
+                @if $i > 0 {
+                    #{$start - $onset}% { opacity: 1; }
+                }
+                #{$start + $onset}% { opacity: 0; }
+                #{$hold-end}% { opacity: 0; }
+                #{$hold-end + $onset}% { opacity: 1; }
+                100% { opacity: 1; }
+            }
+
+            @keyframes uc-running-#{$total}-#{$i} {
+                0% { opacity: 0; }
+                @if $i > 0 {
+                    #{$start - $onset}% { opacity: 0; }
+                }
+                #{$start + $onset}% { opacity: 1; }
+                #{$end - $onset}% { opacity: 1; }
+                #{$end + $onset}% { opacity: 0; }
+                100% { opacity: 0; }
+            }
+
+            @keyframes uc-validated-#{$total}-#{$i} {
+                0% { opacity: 0; }
+                #{$end - $onset}% { opacity: 0; }
+                #{$end + $onset}% { opacity: 1; }
+                #{$hold-end}% { opacity: 1; }
+                #{$hold-end + $onset}% { opacity: 0; }
+                100% { opacity: 0; }
+            }
+
+            // ----- Task card pulse (translateX + box-shadow glow) -----
+            // Wider keyframe windows than before so the eye registers each
+            // step shifting and glowing purple instead of snapping.
+            @keyframes uc-task-active-#{$total}-#{$i} {
+                0% {
+                    transform: translateX(0) scale(1);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+                }
+                @if $i > 0 {
+                    #{$start - $onset}% {
+                        transform: translateX(0) scale(1);
+                        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+                    }
+                }
+                #{$start + $onset}% {
+                    transform: translateX(5px) scale(1.02);
+                    box-shadow: 0 14px 36px rgba(140, 75, 255, 0.55);
+                }
+                #{$end - $onset}% {
+                    transform: translateX(5px) scale(1.02);
+                    box-shadow: 0 14px 36px rgba(140, 75, 255, 0.55);
+                }
+                #{$end + $onset}% {
+                    transform: translateX(0) scale(1);
+                    box-shadow: 0 10px 26px rgba(34, 197, 94, 0.28);
+                }
+                #{$hold-end}% {
+                    transform: translateX(0) scale(1);
+                    box-shadow: 0 10px 26px rgba(34, 197, 94, 0.28);
+                }
+                #{$hold-end + $onset}% {
+                    transform: translateX(0) scale(1);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+                }
+                100% {
+                    transform: translateX(0) scale(1);
+                    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+                }
+            }
+
+            // ----- Arrow pulse -----
+            // Stays dim until step i's slot, ramps to purple over the slot,
+            // peaks at the handoff to step i+1, then fades back to dim.
+            @keyframes uc-arrow-active-#{$total}-#{$i} {
+                0% {
+                    color: rgba(255, 255, 255, 0.28);
+                    transform: translateY(-2px) scale(0.9);
+                }
+                @if $i > 0 {
+                    #{$start - $onset}% {
+                        color: rgba(255, 255, 255, 0.28);
+                        transform: translateY(-2px) scale(0.9);
+                    }
+                }
+                #{$start + $onset}% {
+                    color: rgba(140, 75, 255, 0.85);
+                    transform: translateY(1px) scale(1.05);
+                }
+                #{$end - $onset}% {
+                    color: rgba(140, 75, 255, 1);
+                    transform: translateY(3px) scale(1.15);
+                }
+                #{$end}% {
+                    color: rgba(140, 75, 255, 1);
+                    transform: translateY(5px) scale(1.2);
+                }
+                #{$end + $onset}% {
+                    color: rgba(140, 75, 255, 0.7);
+                    transform: translateY(0) scale(1);
+                }
+                #{$end + 2 * $onset}% {
+                    color: rgba(255, 255, 255, 0.35);
+                    transform: translateY(-2px) scale(0.9);
+                }
+                100% {
+                    color: rgba(255, 255, 255, 0.28);
+                    transform: translateY(-2px) scale(0.9);
+                }
+            }
+
+            .uc-task-flow[data-total="#{$total}"] {
+                .uc-task[data-step="#{$i}"] {
+                    animation-name: uc-task-active-#{$total}-#{$i};
+                    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+                    .status-pending {
+                        animation-name: uc-pending-#{$total}-#{$i};
+                    }
+                    .status-running {
+                        animation-name: uc-running-#{$total}-#{$i}, uc-spin;
+                    }
+                    .status-validated {
+                        animation-name: uc-validated-#{$total}-#{$i};
+                    }
+                }
+
+                .uc-task-arrow[data-step="#{$i}"] {
+                    animation-name: uc-arrow-active-#{$total}-#{$i};
+                    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                }
+            }
+        }
+    }
+
+    /* ===== Resources: docs link + related blogs ===== */
+    .orch-resources {
+        background: var(--ks-background-body);
+        padding: $rem-4 $rem-1;
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        &__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: start;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+                gap: 3rem;
+            }
+        }
+
+        .docs-card {
+            position: relative;
+            padding: 1.75rem;
+            border-radius: 0.75rem;
+            border: $block-border;
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+
+            // Subtle brand-color glow accent — reuses the same --tool-color
+            // pattern as the hero / use-case task icons.
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                pointer-events: none;
+                background: radial-gradient(
+                    120% 80% at 100% 0%,
+                    color-mix(
+                        in srgb,
+                        var(--tool-color, var(--ks-content-color-highlight))
+                            18%,
+                        transparent
+                    ),
+                    transparent 60%
+                );
+                z-index: 0;
+            }
+
+            > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            // Same pill-badge pattern as `.uc-card .badge` above — keeps
+            // the site's existing label typography instead of inventing
+            // a one-off treatment.
+            &__eyebrow {
+                width: fit-content;
+                padding: 0.375rem 1.125rem;
+                border-radius: 2.5rem;
+                border: 1px solid var(--ks-border-active);
+                display: inline-flex;
+                align-items: center;
+                font-size: $font-size-xs;
+                color: var(--ks-content-color-highlight);
+            }
+
+            h3 {
+                margin: 0;
+                font-size: $font-size-lg;
+                font-weight: 600;
+                color: var(--ks-content-primary);
+                line-height: 1.3;
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                line-height: 1.55;
+            }
+        }
+    }
+
+    /* ===== Comparison table overrides ===== */
+    .orch-compare {
+        // Same auto-layout pattern as data/ComparisonGrid for multi-competitor tables
+        :global(table) {
+            table-layout: auto !important;
+        }
+
+        :global(th),
+        :global(td) {
+            width: auto !important;
+            padding: 1rem 1.25rem !important;
+        }
+
+        // Logos rendered via slot need explicit sizing (parent's scoped styles don't reach slot content)
+        :global(.th-logo) {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            max-height: 40px;
+            max-width: 140px;
+            overflow: hidden;
+        }
+
+        :global(.th-logo svg) {
+            width: auto !important;
+            height: 32px !important;
+            max-width: 140px !important;
+            max-height: 32px !important;
+        }
+    }
+
+    /* ===== Build tabs for blueprints (financial-services pattern) ===== */
+    .orch-build {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                text-align: center;
+                color: var(--ks-content-primary);
+            }
+        }
+
+        &__lead {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+
+        .wrapper {
+            border: 1px solid var(--ks-border-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+            border-radius: 13px;
+
+            @include media-breakpoint-down(xl) {
+                border-radius: 0;
+            }
+
+            .inner {
+                border-radius: $rem-1;
+                background: var(--ks-background-primary-inverse);
+                overflow: clip;
+
+                @include media-breakpoint-down(xxl) {
+                    border-radius: 0;
+                }
+
+                .header {
+                    border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                    & > div {
+                        padding: 1.1rem $rem-2;
+                        font-size: $font-size-md;
+                        color: var(--ks-content-secondary-inverse);
+                        text-align: center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition:
+                            background-color 0.2s,
+                            color 0.2s,
+                            border-color 0.2s;
+
+                        @include media-breakpoint-down(sm) {
+                            font-size: $font-size-sm;
+                        }
+
+                        &.active {
+                            background: var(--ks-background-secondary-inverse);
+                            border-bottom: 1px solid var(--ks-border-active);
+                            color: var(--ks-content-primary-inverse);
+                            font-weight: 600;
+                        }
+                    }
+
+                    & .middle-part {
+                        border-left: 1px solid var(--ks-border-primary-inverse);
+                        border-right: 1px solid var(--ks-border-primary-inverse);
+                    }
+                }
+
+                .content {
+                    display: none;
+                    flex-direction: row;
+                    gap: $rem-2;
+                    padding: $rem-2;
+                    justify-content: center;
+
+                    &.active {
+                        display: flex;
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    @include media-breakpoint-down(sm) {
+                        padding: $rem-2 $rem-1;
+                    }
+
+                    .panel {
+                        border-radius: 0.5rem;
+                        flex-shrink: 0;
+
+                        &.panel-1 {
+                            width: 39.4375rem;
+
+                            @include media-breakpoint-down(xl) {
+                                width: 100%;
+                            }
+
+                            :global(.code-card) {
+                                border: 1px solid var(--ks-border-secondary-inverse);
+                                background: var(--ks-background-input);
+                                height: 100%;
+
+                                :global(.code-inner) {
+                                    transition: max-height 0.3s ease;
+                                }
+                                :global(.mdc-renderer pre) {
+                                    padding: 0 1rem 1rem 1rem;
+                                }
+
+                                &:global(:not(.is-expanded)) {
+                                    :global(.code-inner) {
+                                        max-height: 27.9375rem !important;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.panel-2 {
+                            position: relative;
+                            padding-top: $rem-2;
+                            color: var(--ks-content-primary-inverse);
+                            width: 27.5625rem;
+
+                            @include media-breakpoint-down(xl) {
+                                width: 100%;
+                                padding-top: 0;
+                            }
+
+                            p {
+                                font-size: $font-size-lg;
+                                margin-top: $rem-1;
+                                margin-bottom: $rem-2;
+                            }
+
+                            .plugins {
+                                display: flex;
+                                gap: 0.5rem;
+                                flex-wrap: wrap;
+
+                                .plugin-icon {
+                                    width: 2.125rem;
+                                    height: 2.125rem;
+                                    padding: 0.375rem;
+                                    background: $white;
+                                    border: $block-border;
+                                    border-radius: $border-radius;
+                                }
+                            }
+
+                            .goto {
+                                position: absolute;
+                                bottom: 0;
+                                right: 0;
+                                color: var(--ks-content-link-inverse);
+                                font-weight: 600;
+
+                                @include media-breakpoint-down(xl) {
+                                    position: relative;
+                                    margin-top: $rem-3;
+                                    float: right;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(".orch-build .inner")) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
+                if (!tab) return
+                const target = (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`,
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(".header-tab, .content")) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    const card = entry.target as HTMLElement
+                    card.classList.toggle("is-folded", !entry.isIntersecting)
+                }
+            },
+            { threshold: 0.15 },
+        )
+        for (const card of document.querySelectorAll(".uc-card")) {
+            observer.observe(card as HTMLElement)
+        }
+    })
+</script>

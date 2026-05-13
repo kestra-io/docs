@@ -3,6 +3,7 @@ import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsSchema } from "./schemas/vs"
+import { orchestrateSchema } from "./schemas/orchestrate"
 
 export const collections = {
     docs: defineCollection({
@@ -93,6 +94,13 @@ export const collections = {
             base: "./src/contents/vs",
         }),
         schema: vsSchema,
+    }),
+    orchestrate: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/orchestrate",
+        }),
+        schema: orchestrateSchema,
     }),
     externalBlogs: defineCollection({
         loader: glob({

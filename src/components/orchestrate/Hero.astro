@@ -1,0 +1,259 @@
+---
+import Link from "~/components/common/Link.astro"
+import ksIcon from "~/components/versus/assets/ks-icon.svg?raw"
+
+interface Props {
+    title: string
+    description: string
+    cta: {
+        label: string
+        href: string
+    }
+    secondaryCta?: {
+        label: string
+        href: string
+    }
+    toolName: string
+    toolIcon: string
+    toolColor?: string
+}
+
+const {
+    title,
+    description,
+    cta,
+    secondaryCta = { label: "Book a Demo", href: "/demo" },
+    toolName,
+    toolIcon,
+    toolColor,
+} = Astro.props as Props
+
+// Escape special regex characters in the tool name so multi-word names like
+// "dbt Core" or "S3" highlight correctly.
+const escapedTool = toolName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+const renderedTitle = title
+    .replace(/\b(Kestra|kestra)\b/, '<span class="highlight">$1</span>')
+    .replace(
+        new RegExp(`\\b${escapedTool}\\b`, "i"),
+        '<span class="tool-name">$&</span>',
+    )
+
+const heroStyle = toolColor
+    ? `--tool-color: ${toolColor};`
+    : undefined
+---
+
+<section class="hero" style={heroStyle}>
+    <div class="container">
+        <div class="content">
+            <h1 set:html={renderedTitle} />
+            <p>{description}</p>
+            <div class="ctas">
+                <Link href={cta.href} class="btn btn-primary text-white">
+                    {cta.label}
+                </Link>
+                <Link href={secondaryCta.href} class="btn btn-secondary">
+                    {secondaryCta.label}
+                </Link>
+            </div>
+        </div>
+        <div class="pictos">
+            <div class="picto ks" set:html={ksIcon} aria-label="Kestra" />
+            <div class="plus" aria-hidden="true">+</div>
+            {
+                toolIcon && (
+                    <div
+                        class="picto tool"
+                        set:html={toolIcon}
+                        aria-label={toolName}
+                    />
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .hero {
+        position: relative;
+        background:
+            var(--ks-background-secondary)
+            url("~/assets/header-grid.svg") no-repeat center / cover;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding-inline: 1rem;
+        overflow: hidden;
+
+        // Optional tool-color glow on the right, like a brand accent
+        &::before {
+            content: "";
+            position: absolute;
+            top: -200px;
+            right: -120px;
+            width: 720px;
+            height: 720px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                color-mix(in srgb, var(--tool-color, transparent) 22%, transparent) 0%,
+                transparent 65%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding-block: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 2.5rem;
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 2rem;
+            }
+        }
+
+        .content {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 600px;
+
+            h1 {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+                margin-bottom: 1rem;
+                font-size: 2.5rem;
+                line-height: 1.15;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 2rem;
+                }
+
+                :global(.highlight) {
+                    color: var(--ks-content-color-highlight);
+                }
+
+                :global(.tool-name) {
+                    color: color-mix(
+                        in srgb,
+                        var(--tool-color, var(--ks-content-primary)) 80%,
+                        var(--ks-content-primary)
+                    );
+                }
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                margin-bottom: 1.5rem;
+            }
+
+            .ctas {
+                display: flex;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+
+                .btn-secondary {
+                    background-color: transparent !important;
+                    color: var(--ks-content-primary) !important;
+                    border-color: var(--ks-border-button-secondary) !important;
+                }
+            }
+        }
+
+        .pictos {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+
+            .picto {
+                width: 170px;
+                height: 170px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid var(--ks-border-secondary);
+                border-radius: 12px;
+                padding: 38px;
+                background: $white;
+                box-shadow: inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1));
+
+                :global(svg) {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+
+                &.ks {
+                    overflow: hidden;
+                    padding: 24px;
+                }
+
+                &.tool {
+                    // Tinted ring + glow that picks up the orchestrated tool's brand color
+                    border-color: color-mix(
+                        in srgb,
+                        var(--tool-color, var(--ks-border-secondary)) 55%,
+                        var(--ks-border-secondary)
+                    );
+                    box-shadow:
+                        inset 2px 3px 16px 0
+                            var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                        0 18px 48px -12px
+                            color-mix(
+                                in srgb,
+                                var(--tool-color, transparent) 35%,
+                                transparent
+                            );
+                }
+            }
+
+            .plus {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 56px;
+                height: 60px;
+                flex-shrink: 0;
+                font-size: 2.5rem;
+                font-weight: 300;
+                line-height: 1;
+                color: color-mix(
+                    in srgb,
+                    var(--tool-color, var(--ks-content-secondary)) 80%,
+                    var(--ks-content-secondary)
+                );
+                user-select: none;
+            }
+
+            @include media-breakpoint-down(md) {
+                gap: 0.5rem;
+
+                .picto {
+                    width: 110px;
+                    height: 110px;
+                    padding: 22px;
+
+                    &.ks {
+                        padding: 14px;
+                    }
+                }
+
+                .plus {
+                    width: 36px;
+                    height: 40px;
+                    font-size: 1.75rem;
+                }
+            }
+        }
+    }
+</style>
