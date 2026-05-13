@@ -21,13 +21,13 @@ pillars:
   subtitle: "dbt Core solves transformation. Kestra solves everything around it: when it runs, what triggers it, what happens next, and who ran what and when."
   items:
     - icon: "mdi:source-branch"
-      title: "Orchestration"
+      title: "Per-step retries and downstream coordination"
       description: "dbt Core is a single step. It has no scheduler, no event triggers, and no awareness of the pipeline around it. Kestra treats dbt as one node in a flow: it retries only the failed step, passes outputs forward, and halts downstream tools until the data is confirmed ready."
     - icon: "mdi:account-clock-outline"
-      title: "Execution attribution"
+      title: "Execution history with attribution"
       description: "A model output changes. A test starts failing. A downstream dashboard shifts. With cron or GitHub Actions there is no easy answer to who ran what, against which data state. Kestra logs every execution with a trigger source, a timestamp, and the full test result. The record exists before you need it."
     - icon: "mdi:eye-outline"
-      title: "Visibility"
+      title: "Per-model failure detail"
       description: "When <code>dbt test</code> fails in CI, finding out which model failed and why means digging through log output. Kestra captures every model's output, test result, and failure in a single execution view: timestamped, attributed, and searchable without log archaeology."
 
 useCases:
@@ -181,12 +181,6 @@ quotes:
   - quote: "We switched from orchestrating with dbt Cloud because Kestra hosted Core really well."
     author: "EVP Analytics — Foundation Data"
     logoFile: "foundation-data"
-  - quote: "Kestra has support for Airbyte and dbt to make this simple for you. Definitely worth checking out."
-    author: "Entire-Club5012 — r/dataengineering"
-    sourceUrl: "https://www.reddit.com/r/dataengineering/comments/1b24nxy/comment/l94rk5r/"
-    sourceLabel: "View on Reddit"
-    logoFile: "reddit"
-
 blueprints:
   title: "Blueprints for dbt Core orchestration."
   lead: "Production-ready workflows. Copy the YAML, wire it to your stack."
