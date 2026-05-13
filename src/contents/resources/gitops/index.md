@@ -30,7 +30,7 @@ The entire system is managed declaratively, with Git serving as the guaranteed s
 
 ### Key principles of GitOps
 
-The GitOps methodology is guided by four fundamental principles that ensure consistency, reliability, and auditability. These principles form the foundation of any successful GitOps implementation and are crucial for effective [version control and CI/CD](https/kestra.io/docs/version-control-cicd).
+The GitOps methodology is guided by four fundamental principles that ensure consistency, reliability, and auditability. These principles form the foundation of any successful GitOps implementation and are crucial for effective [version control and CI/CD](https://kestra.io/docs/version-control-cicd).
 
 1.  **Declarative Configuration**: The entire system state must be described declaratively in a format like YAML or JSON. This description defines the desired state of all components, including infrastructure, applications, and configurations. By defining your system declaratively, as you would with [Kestra flows](https://kestra.io/docs/workflow-components/flow), you create a clear, unambiguous target for your automation.
 
