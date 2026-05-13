@@ -9,10 +9,7 @@ const disabled = import.meta.env.DEV || envField.PREVIEW
 
 User-agent: *
 Disallow: ${disabled ? "*" : "/slack"}
-${disabled ? "" : `# Block the /blueprints pagination bug (critical - 501 errors)
-Disallow: /blueprints?*clid=*
-Disallow: /blueprints?*size=*
-# Build assets — CSS, JS, fonts accessible for robots rendering
+${disabled ? "" : `# Build assets — CSS, JS, fonts accessible for robots rendering
 Allow: /_astro/
 Disallow: /_nuxt/
 Disallow: /__nuxt_content/

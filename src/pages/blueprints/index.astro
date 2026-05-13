@@ -8,29 +8,59 @@ import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintLists from "~/components/blueprints/BlueprintLists.vue"
 import BlueprintSearch from "~/components/blueprints/BlueprintSearch.vue"
 
-const page = Astro.url.searchParams.get("page") ?? 1
-const size = Astro.url.searchParams.get("size") ?? 24
+// Sanitize pagination params so unexpected query strings (e.g. tracking-injected
+// `clid=`, malformed `size=99999`) cannot reach the upstream API and trigger 501s.
+// See PR description for the production incident this guards against.
+const PAGE_DEFAULT = 1
+const SIZE_DEFAULT = 24
+const SIZE_MAX = 48
+const PAGE_MAX = 1000
+
+const parsePositiveInt = (raw: string | null, fallback: number, max: number) => {
+    if (!raw) return fallback
+    const n = Number.parseInt(raw, 10)
+    if (!Number.isFinite(n) || n < 1) return fallback
+    return Math.min(n, max)
+}
+
+const page = parsePositiveInt(Astro.url.searchParams.get("page"), PAGE_DEFAULT, PAGE_MAX)
+const size = parsePositiveInt(Astro.url.searchParams.get("size"), SIZE_DEFAULT, SIZE_MAX)
 const q = Astro.url.searchParams.get("q") ?? undefined
 const sort = Astro.url.searchParams.get("sort") ?? "A-Z"
 const tagsSelected = Astro.url.searchParams.get("tags") ?? undefined
 
-const tags = await $fetchApiCached<BlueprintTag[]>(
-    `/blueprints/versions/latest/tags`,
-)
+let tags: BlueprintTag[] = []
+try {
+    tags = await $fetchApiCached<BlueprintTag[]>(
+        `/blueprints/versions/latest/tags`,
+    )
+} catch (e) {
+    console.error("[blueprints] failed to fetch tags", e)
+}
 
 const tagsForFilter = tagsSelected
     ? tags.find((tag) => tag.name.toLowerCase() === tagsSelected.toLowerCase())
           ?.id
     : undefined
 
-const { results: blueprintsData = [], total = 0 } = (await $fetchApiCached<{
-    results: Blueprint[]
-    total: number
-}>(
-    `/blueprints/versions/latest?size=${size}&page=${page}` +
-        (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
-        (q ? `&q=${encodeURIComponent(q)}` : ""),
-)) ?? { results: [], total: 0 }
+let blueprintsData: Blueprint[] = []
+let total = 0
+try {
+    const data = await $fetchApiCached<{
+        results: Blueprint[]
+        total: number
+    }>(
+        `/blueprints/versions/latest?size=${size}&page=${page}` +
+            (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
+            (q ? `&q=${encodeURIComponent(q)}` : ""),
+    )
+    if (data) {
+        blueprintsData = data.results ?? []
+        total = data.total ?? 0
+    }
+} catch (e) {
+    console.error("[blueprints] failed to fetch blueprint list", e)
+}
 
 const blueprints = blueprintsData.sort((a, b) => {
     if (sort === "A-Z") {
