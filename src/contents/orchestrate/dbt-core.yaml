@@ -383,7 +383,7 @@ comparison:
         - "No"
         - "No"
     - feature: "Orchestrate beyond dbt (full stack)"
-      kestra: "✓ 1,200+ plugins"
+      kestra: "✓ 1300+ plugins"
       values:
         - "dbt only"
         - "Possible, fragile"
