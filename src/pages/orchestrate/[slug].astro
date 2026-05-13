@@ -773,8 +773,9 @@ const comparisonTableData = comparison.rows.map((row) => {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.7);
             height: 14px;
+            filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.35));
 
             animation-duration: var(--cycle);
             animation-timing-function: ease-in-out;
@@ -878,37 +879,45 @@ const comparisonTableData = comparison.rows.map((row) => {
 
             @keyframes uc-arrow-active-#{$total}-#{$i} {
                 0% {
-                    color: rgba(255, 255, 255, 0.28);
+                    color: rgba(255, 255, 255, 0.7);
+                    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.35));
                     transform: translateY(-2px) scale(0.9);
                 }
                 @if $i > 0 {
                     #{$start - $onset}% {
-                        color: rgba(255, 255, 255, 0.28);
+                        color: rgba(255, 255, 255, 0.7);
+                        filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.35));
                         transform: translateY(-2px) scale(0.9);
                     }
                 }
                 #{$start + $onset}% {
-                    color: rgba(140, 75, 255, 0.85);
+                    color: #fff;
+                    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.8));
                     transform: translateY(1px) scale(1.05);
                 }
                 #{$end - $onset}% {
-                    color: rgba(140, 75, 255, 1);
-                    transform: translateY(3px) scale(1.15);
+                    color: #fff;
+                    filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.95));
+                    transform: translateY(3px) scale(1.2);
                 }
                 #{$end}% {
-                    color: rgba(140, 75, 255, 1);
-                    transform: translateY(5px) scale(1.2);
+                    color: #fff;
+                    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 1));
+                    transform: translateY(5px) scale(1.25);
                 }
                 #{$end + $onset}% {
-                    color: rgba(140, 75, 255, 0.7);
+                    color: rgba(255, 255, 255, 0.9);
+                    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
                     transform: translateY(0) scale(1);
                 }
                 #{$end + 2 * $onset}% {
-                    color: rgba(255, 255, 255, 0.35);
+                    color: rgba(255, 255, 255, 0.7);
+                    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.35));
                     transform: translateY(-2px) scale(0.9);
                 }
                 100% {
-                    color: rgba(255, 255, 255, 0.28);
+                    color: rgba(255, 255, 255, 0.7);
+                    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.35));
                     transform: translateY(-2px) scale(0.9);
                 }
             }
