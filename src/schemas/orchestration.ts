@@ -115,7 +115,7 @@ const seeHowSchema = z.object({
     cta: ctaSchema.optional(),
 })
 
-export const orchestrateSchema = z.object({
+export const orchestrationSchema = z.object({
     title: z.string(),
     description: z.string(),
     tool: z.object({
@@ -133,4 +133,4 @@ export const orchestrateSchema = z.object({
     seeHow: seeHowSchema,
 })
 
-export type OrchestrateData = z.infer<typeof orchestrateSchema>
+export type OrchestrationData = z.infer<typeof orchestrationSchema>
