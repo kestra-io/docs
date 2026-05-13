@@ -12,19 +12,6 @@ const heroSchema = z.object({
     secondaryCta: ctaSchema.optional(),
 })
 
-const pipelineStageSchema = z.object({
-    id: z.string(),
-    label: z.string(),
-    items: z.array(z.string()),
-})
-
-const pipelineSchema = z.object({
-    title: z.string(),
-    lead: z.string(),
-    footer: z.string().optional(),
-    stages: z.array(pipelineStageSchema),
-})
-
 const pillarSchema = z.object({
     icon: z.string(),
     title: z.string(),
@@ -137,7 +124,6 @@ export const orchestrateSchema = z.object({
         color: z.string().optional(),
     }),
     hero: heroSchema,
-    pipeline: pipelineSchema.optional(),
     pillars: pillarsSchema,
     useCases: useCasesSchema,
     quotes: z.array(quoteSchema),

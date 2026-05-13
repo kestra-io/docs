@@ -16,60 +16,6 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-pipeline:
-  title: "dbt Core transforms your data. Kestra orchestrates the run."
-  lead: "Kestra wraps every dbt execution with scheduling, approval gates, retries, and notifications, without touching your dbt models or profiles."
-  footer: "Each stage is a declarative YAML task. Swap the trigger, the dbt command, or the downstream system without rewriting the whole pipeline."
-  stages:
-    - id: trigger
-      label: "TRIGGER"
-      items:
-        - "cron / schedule"
-        - "API / webhook"
-        - "self-service form"
-        - "upstream sync complete"
-        - "file or queue event"
-    - id: prepare
-      label: "PREPARE"
-      items:
-        - "dbt deps"
-        - "dbt compile"
-        - "select models"
-        - "test on subset"
-        - "fail fast on errors"
-    - id: gate
-      label: "GATE"
-      items:
-        - "pause for review"
-        - "named approver"
-        - "timestamp logged"
-        - "reject and stop"
-        - "timeout policy"
-    - id: execute
-      label: "EXECUTE"
-      items:
-        - "dbt run / build"
-        - "stream logs to Kestra"
-        - "retry failed step"
-        - "capture outputs"
-        - "multi-environment"
-    - id: chain
-      label: "CHAIN"
-      items:
-        - "trigger downstream flow"
-        - "pass outputs forward"
-        - "run in parallel"
-        - "update other systems"
-        - "call any API"
-    - id: notify
-      label: "NOTIFY"
-      items:
-        - "Slack / Teams"
-        - "email"
-        - "PagerDuty"
-        - "audit log"
-        - "webhook"
-
 pillars:
   title: "Three things Kestra adds to every dbt Core run."
   subtitle: "dbt Core solves transformation. Kestra solves everything around it: when it runs, what triggers it, what happens next, and who ran what and when."
