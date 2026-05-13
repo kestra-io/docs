@@ -62,12 +62,10 @@ const heroStyle = toolColor
                 <div class="flow-arrow flow-arrow--out">
                     <span class="flow-line" />
                     <span class="flow-line-bright" />
-                    <span class="flow-head" />
                 </div>
                 <div class="flow-arrow flow-arrow--back">
                     <span class="flow-line" />
                     <span class="flow-line-bright" />
-                    <span class="flow-head" />
                 </div>
             </div>
             {
@@ -283,28 +281,6 @@ const heroStyle = toolColor
                 animation: line-fill-back 4.5s ease-in-out infinite;
             }
 
-            .flow-head {
-                position: absolute;
-                top: 50%;
-                width: 7px;
-                height: 7px;
-                border-right: 2px solid var(--flow-color);
-                border-bottom: 2px solid var(--flow-color);
-                opacity: 0.35;
-            }
-
-            .flow-arrow--out .flow-head {
-                right: 0;
-                transform: translate(50%, -50%) rotate(-45deg);
-                animation: head-out 4.5s ease-in-out infinite;
-            }
-
-            .flow-arrow--back .flow-head {
-                left: 0;
-                transform: translate(-50%, -50%) rotate(135deg);
-                animation: head-back 4.5s ease-in-out infinite;
-            }
-
             @include media-breakpoint-down(md) {
                 gap: 0.5rem;
 
@@ -366,41 +342,7 @@ const heroStyle = toolColor
         }
     }
 
-    @keyframes head-out {
-        0%, 35% {
-            opacity: 0.35;
-            filter: none;
-        }
-        44% {
-            opacity: 0.9;
-            filter: drop-shadow(0 0 4px var(--flow-color));
-        }
-        50% {
-            opacity: 0.5;
-            filter: none;
-        }
-        100% {
-            opacity: 0.35;
-            filter: none;
-        }
-    }
-
-    @keyframes head-back {
-        0%, 85% {
-            opacity: 0.35;
-            filter: none;
-        }
-        94% {
-            opacity: 0.9;
-            filter: drop-shadow(0 0 4px var(--flow-color));
-        }
-        100% {
-            opacity: 0.5;
-            filter: none;
-        }
-    }
-
-    @keyframes glow-ks {
+@keyframes glow-ks {
         0%, 20% {
             box-shadow:
                 inset 2px 3px 16px 0
