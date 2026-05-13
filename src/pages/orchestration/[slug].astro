@@ -44,7 +44,7 @@ const LOGO_MAP: Record<string, string> = {
 }
 
 export async function getStaticPaths() {
-    const entries = await getCollection("orchestrate")
+    const entries = await getCollection("orchestration")
     return entries.map((entry) => ({
         params: { slug: entry.id },
         props: { entry },
