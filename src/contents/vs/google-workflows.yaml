@@ -3,6 +3,8 @@ description: "Compare Kestra vs Google Workflows: multi-cloud workflow orchestra
 competitorName: Google Workflows
 category: Data Orchestration
 shortDescription: "GCP serverless HTTP service coordination vs. multi-cloud orchestration with 1200+ plugins."
+seeHowTitle: "Orchestrate Beyond GCP Service Coordination"
+seeHowBody: "See how Kestra runs code directly, connects to {totalPlugins}+ plugins, and works across every cloud — without Cloud Functions."
 
 brandColor:
   color: "#4285f4"

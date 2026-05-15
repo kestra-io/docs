@@ -81,11 +81,11 @@ Once the Job completes successfully, roll out your updated Kestra server Pods as
 
 ## What happens if you skip these migrations
 
-| Skipped migration | Impact |
-|---|---|
-| `kv` | The **Key-Value Store** page in the UI appears empty. Flows continue to work — this is a UI-only issue. |
-| `secrets` | The **Secrets** page in the UI appears empty (EE only). Flows continue to work — this is a UI-only issue. |
-| `nsfiles` | **Namespace Files are inaccessible** both in flows/tasks (e.g., `namespaceFiles`, `read()`) and in the UI. |
+| Skipped migration | UI / runtime impact | Backup impact |
+|---|---|---|
+| `kv` | Key-Value Store page appears empty. Flows continue to work. | KV items in namespaces without flows are silently excluded from backups. |
+| `secrets` | Secrets page appears empty (EE only). Flows continue to work. | Secrets in namespaces without flows are silently excluded from backups. |
+| `nsfiles` | Namespace Files are inaccessible in flows/tasks and the UI. | Namespace files in namespaces without flows are silently excluded from backups. |
 
 :::alert{type="warning"}
 Unlike the KV and Secrets migrations (which only affect UI display), the Namespace Files migration affects **runtime execution**. Skipping it can break flows that depend on Namespace Files.

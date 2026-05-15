@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
     import type { AshbyJob } from "~/utils/careers.ts"
-    import { slugify } from "@kestra-io/ui-libs"
+    import { slugify } from "~/utils/slugify"
     import {
         searchDepartment,
         searchLocation,

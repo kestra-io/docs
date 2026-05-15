@@ -1,0 +1,43 @@
+---
+interface Props {
+    serviceType: string
+    audienceType: string
+    description: string
+    url?: string
+}
+
+const { serviceType, audienceType, description, url } = Astro.props
+
+const canonicalUrl =
+    url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
+
+const schema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": serviceType,
+    "provider": {
+        "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
+        "name": "Kestra Technologies",
+        "url": "https://kestra.io",
+    },
+    "audience": {
+        "@type": "Audience",
+        "audienceType": audienceType,
+    },
+    "description": description,
+    "url": canonicalUrl,
+    "offers": {
+        "@type": "Offer",
+        "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "priceType": "https://schema.org/InvoicePrice",
+            "description": "Open source (Apache 2.0) is free. Enterprise Edition pricing via Kestra sales.",
+        },
+        "availability": "https://schema.org/InStock",
+        "url": "https://kestra.io/demo",
+    },
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

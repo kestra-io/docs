@@ -19,7 +19,7 @@ A Flow is the fundamental unit of orchestration in Kestra. It defines a set of t
 
 A flow organizes `tasks`, their `inputs` and `outputs`, error handling, and orchestration logic. It specifies **what** tasks run, **when** they run, and **how** they interact (sequentially, in parallel, or conditionally).
 
-You can define a flow declaratively using a [YAML](https://en.wikipedia.org/wiki/YAML) file. Alternatively, you can also build flows using the [No-Code Editor](../../no-code/01.no-code-flow-building/index.md) instead of writing your own YAML.
+You can define a flow declaratively using a [YAML](https://en.wikipedia.org/wiki/YAML) file. Alternatively, you can also build flows using the [No Code editor](../../09.ui/01.flows/index.md) instead of writing your own YAML.
 
 A flow must have:
 

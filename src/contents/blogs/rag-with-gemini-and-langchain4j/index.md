@@ -1,6 +1,6 @@
 ---
-title: "Retrieval Augmented Generation (RAG) with Google Gemini AI and Langchain4J"
-description: Create a Retrieval Augmented Generation pipeline with Google Gemini AI and the Langchain4J plugin.
+title: "RAG Pipeline with Google Gemini and LangChain4J: A Step-by-Step Guide"
+description: "Learn how to build a Retrieval Augmented Generation (RAG) pipeline using Google Gemini AI and Kestra's LangChain4J plugin. Covers document ingestion, embeddings, and generation."
 date: 2025-06-10T13:00:00
 category: Solutions
 author:
@@ -140,7 +140,7 @@ tasks:
 4. We configure the content retriever to return three results and filter them with a minimal score of 0.5 to avoid having inaccurate results returned by the embedding store.
 5. The prompt sent to the large language model for completion.
 
-We use the Google Gemini 2.5 Flash model. This model is convenient for such use cases as it has a large context window of one million tokens. This is important for retrieval augmented generation, as retrieved documents will be added to the context window.
+We use the Google Gemini 2.5 Flash model via the [Google Cloud plugin](/plugins/plugin-gcp). This model is convenient for such use cases as it has a large context window of one million tokens. This is important for retrieval augmented generation, as retrieved documents will be added to the context window.
 This model is also cost-effective and quick to answer, making it a good fit for automated workflows.
 
 If you execute this flow with the default prompt, it will answer something like the following:
@@ -183,7 +183,9 @@ At ingestion time, each document will be indexed with metadata, including the do
 
 ## Conclusion
 
-RAG significantly enhances generative AI, providing context-rich, accurate, and up-to-date responses tailored to your specific data. With Kestra’s Langchain4J plugin and Google Gemini, building AI workflows becomes straightforward and effective.
+RAG significantly enhances generative AI, providing context-rich, accurate, and up-to-date responses tailored to your specific data. With Kestra’s LangChain4J plugin and Google Gemini, building AI workflows becomes straightforward and effective.
+
+To go further, check the [AI plugin docs](/plugins/plugin-ai) for the full task reference, or explore the [AI Agents announcement](../introducing-ai-agents/index.md) to see how Kestra extends beyond RAG into fully autonomous agentic workflows.
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra).
