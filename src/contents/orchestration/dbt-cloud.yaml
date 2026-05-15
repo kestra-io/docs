@@ -1,5 +1,5 @@
 title: "Orchestrate dbt Cloud with Kestra: event-driven triggers, full-pipeline coordination, and cross-stack visibility"
-description: "dbt Cloud runs your transformations. Kestra orchestrates everything around them. Trigger dbt Cloud jobs when Airbyte finishes, chain them with downstream activation, add approval gates, and track every run across your full data stack in one place."
+description: "dbt Cloud runs your transformations. Kestra orchestrates everything around them. Trigger dbt Cloud jobs when Fivetran finishes, chain them with downstream activation, add approval gates, and track every run across your full data stack in one place."
 
 tool:
   name: "dbt Cloud"
@@ -8,7 +8,7 @@ tool:
 
 hero:
   title: "Your dbt Cloud jobs, fully orchestrated."
-  description: "dbt Cloud handles transformation scheduling inside the dbt boundary. It cannot trigger when Airbyte finishes, coordinate what happens after Hightouch syncs, or give you a shared execution history across your full pipeline. Kestra wraps every dbt Cloud job with event-driven triggers, upstream and downstream coordination, and one execution view across the tools that run before and after dbt."
+  description: "dbt Cloud handles transformation scheduling inside the dbt boundary. It cannot trigger when Fivetran finishes, coordinate what happens after Hightouch syncs, or give you a shared execution history across your full pipeline. Kestra wraps every dbt Cloud job with event-driven triggers, upstream and downstream coordination, and one execution view across the tools that run before and after dbt."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -22,13 +22,13 @@ pillars:
   items:
     - icon: "mdi:lightning-bolt-outline"
       title: "Event-driven triggers instead of cron-only scheduling"
-      description: "dbt Cloud fires on a cron schedule or a Git event. If your Airbyte sync runs long, dbt starts building on stale data. Kestra triggers the dbt Cloud job the moment the upstream step confirms completion — whether that's an Airbyte sync, a file arrival in S3, or a webhook from any API — and halts the downstream activation layer until dbt confirms success."
+      description: "dbt Cloud fires on a cron schedule or a Git event. If your Fivetran sync runs long, dbt starts building on stale data. Kestra triggers the dbt Cloud job the moment the upstream step confirms completion — whether that's a Fivetran sync, a file arrival in S3, or a webhook from any API — and halts the downstream activation layer until dbt confirms success."
     - icon: "mdi:pipe-disconnected"
       title: "Full-pipeline coordination with step-level retries"
-      description: "dbt Cloud's lineage stops at the dbt boundary. It has no visibility into the Airbyte connection feeding it or the Hightouch sync consuming the output. Kestra runs all three as steps in a single flow. If dbt fails, Kestra retries only the dbt step — Airbyte does not re-sync. Outputs flow forward between steps, and the entire pipeline shares one execution ID."
+      description: "dbt Cloud's lineage stops at the dbt boundary. It has no visibility into the Fivetran connector feeding it or the Hightouch sync consuming the output. Kestra runs all three as steps in a single flow. If dbt fails, Kestra retries only the dbt step — Fivetran does not re-sync. Outputs flow forward between steps, and the entire pipeline shares one execution ID."
     - icon: "mdi:eye-outline"
       title: "Cross-stack execution history with attribution"
-      description: "Something breaks in the activation layer. You need to know whether dbt completed cleanly, which run produced the data, and who triggered it. dbt Cloud's history covers the dbt job. It has no record of the Airbyte sync that preceded it or the Hightouch sync that followed. Kestra logs every step across every tool with a trigger source, a timestamp, and a direct link to the failing task."
+      description: "Something breaks in the activation layer. You need to know whether dbt completed cleanly, which run produced the data, and who triggered it. dbt Cloud's history covers the dbt job. It has no record of the Fivetran sync that preceded it or the Hightouch sync that followed. Kestra logs every step across every tool with a trigger source, a timestamp, and a direct link to the failing task."
 
 useCases:
   title: "How teams use dbt Cloud and Kestra"
@@ -37,14 +37,14 @@ useCases:
     - badge: "Full pipeline"
       badgeIcon: "mdi:pipe-disconnected"
       title: "Ingestion-to-activation pipeline"
-      description: "Airbyte syncs raw data, then Kestra triggers the dbt Cloud job and waits for it to confirm success, then fires the Hightouch sync. All three run as sequential steps in a single Kestra flow. If dbt fails, Kestra retries it without re-running the Airbyte sync. This is the pattern Gorgias and Riverside.fm run in production."
+      description: "Fivetran syncs raw data, then Kestra triggers the dbt Cloud job and waits for it to confirm success, then fires the Hightouch sync. All three run as sequential steps in a single Kestra flow. If dbt fails, Kestra retries it without re-running the Fivetran sync."
       flow:
         - node: "trigger"
           label: "on schedule or event"
           pluginClass: "io.kestra.plugin.core.trigger.Schedule"
-        - node: "airbyte sync"
+        - node: "fivetran sync"
           label: "ingest raw"
-          pluginClass: "io.kestra.plugin.airbyte.connections.Sync"
+          pluginClass: "io.kestra.plugin.fivetran.connectors.Sync"
         - node: "dbt Cloud job"
           label: "transform"
           pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
@@ -56,20 +56,20 @@ useCases:
           pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
       items:
         - title: "Step-level retries"
-          description: "Retry only the failed step. Airbyte does not re-sync on a dbt failure."
+          description: "Retry only the failed step. Fivetran does not re-sync on a dbt failure."
         - title: "Outputs flow forward"
-          description: "Pass artifacts and run IDs between Airbyte, dbt Cloud, and Hightouch."
+          description: "Pass artifacts and run IDs between Fivetran, dbt Cloud, and Hightouch."
         - title: "One execution ID across all tools"
           description: "Single place to debug the full pipeline, not three separate dashboards."
           wide: true
     - badge: "Event-driven"
       badgeIcon: "mdi:lightning-bolt-outline"
-      title: "Trigger dbt Cloud when Airbyte finishes"
-      description: "Replace the cron schedule that fires whether source data is ready or not. Kestra listens for the Airbyte sync completion event and triggers the dbt Cloud job the moment ingestion confirms success. No polling, no builds starting before the source data is confirmed ready."
+      title: "Trigger dbt Cloud when Fivetran finishes"
+      description: "Replace the cron schedule that fires whether source data is ready or not. Kestra listens for the Fivetran sync completion event and triggers the dbt Cloud job the moment ingestion confirms success. No polling, no builds starting before the source data is confirmed ready."
       flow:
-        - node: "airbyte sync"
+        - node: "fivetran sync"
           label: "sync complete"
-          pluginClass: "io.kestra.plugin.airbyte.connections.Sync"
+          pluginClass: "io.kestra.plugin.fivetran.connectors.Sync"
         - node: "dbt Cloud job"
           label: "trigger + wait"
           pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
@@ -163,13 +163,9 @@ useCases:
           wide: true
 
 quotes:
-  - quote: "Typically how it started is we use it for everything that happens after ingestion, which is mainly transformation — which is calling DBT and DBT steps in order. We still use DBT Cloud, so we're just calling DBT Cloud jobs."
-    author: "Lead Data Engineer, Riverside.fm"
-    logoFile: "riverside"
-  - quote: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly!"
-    author: "Senior Data Engineer, Gorgias"
-    storyLink: "/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra"
-    logoFile: "gorgias"
+  - quote: "We switched from orchestrating with dbt Cloud because Kestra hosted Core really well."
+    author: "EVP Analytics — Foundation Data"
+    logoFile: "foundation-data"
   - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle — you give flexibility, but you abstract that with a declarative approach."
     author: "Lead Data Engineer, Riverside.fm"
     logoFile: "riverside"
@@ -180,10 +176,10 @@ blueprints:
   items:
     - name: "Ingestion to activation"
       title: "Ingestion to activation pipeline"
-      description: "Airbyte syncs raw data on a schedule. When it completes, Kestra triggers the dbt Cloud job and waits for success. On completion, it fires the Hightouch sync. Any failure stops the pipeline at the failing step and posts a Slack alert with a link to the execution."
+      description: "Fivetran syncs raw data on a schedule. When it completes, Kestra triggers the dbt Cloud job and waits for success. On completion, it fires the Hightouch sync. Any failure stops the pipeline at the failing step and posts a Slack alert with a link to the execution."
       href: "/blueprints"
       plugins:
-        - "io.kestra.plugin.airbyte.connections.Sync"
+        - "io.kestra.plugin.fivetran.connectors.Sync"
         - "io.kestra.plugin.dbt.cloud.TriggerRun"
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
@@ -197,10 +193,11 @@ blueprints:
             cron: "0 4 * * *"
 
         tasks:
-          - id: airbyte_sync
-            type: io.kestra.plugin.airbyte.connections.Sync
-            url: "{{ secret('AIRBYTE_URL') }}"
-            connectionId: "{{ secret('AIRBYTE_CONNECTION_ID') }}"
+          - id: fivetran_sync
+            type: io.kestra.plugin.fivetran.connectors.Sync
+            connectorId: "{{ secret('FIVETRAN_CONNECTOR_ID') }}"
+            apiKey: "{{ secret('FIVETRAN_API_KEY') }}"
+            apiSecret: "{{ secret('FIVETRAN_API_SECRET') }}"
 
           - id: trigger_dbt_cloud
             type: io.kestra.plugin.dbt.cloud.TriggerRun
@@ -342,6 +339,7 @@ comparison:
   subtitle: "How Kestra compares to the tools dbt Cloud teams are already using or evaluating."
   competitors:
     - name: "Prefect"
+      logoAsset: "prefect"
     - name: "GitHub Actions"
       pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
     - name: "Airflow"
@@ -383,7 +381,7 @@ comparison:
         - "No native form layer"
         - "No"
         - "No"
-    - feature: "Chain dbt Cloud with Airbyte, Hightouch, Spark"
+    - feature: "Chain dbt Cloud with Fivetran, Hightouch, Spark"
       kestra: "✓ 1300+ plugins"
       values:
         - "Possible, Python code required"
@@ -392,25 +390,23 @@ comparison:
 
 faq:
   - question: "What's the difference between dbt Cloud's native scheduler and Kestra?"
-    answer: "dbt Cloud's scheduler runs dbt jobs on a cron schedule or Git event, handles CI on pull requests, and hosts the dbt IDE. It was designed for dbt-specific workflows. Kestra sits above that and handles everything the dbt Cloud scheduler can't: triggering dbt Cloud jobs when Airbyte finishes, chaining downstream activation steps, adding approval gates between staging and production, and giving you a unified execution history across every tool in the stack. Kestra works with dbt Cloud, not instead of it."
+    answer: "dbt Cloud's scheduler runs dbt jobs on a cron schedule or Git event, handles CI on pull requests, and hosts the dbt IDE. It was designed for dbt-specific workflows. Kestra sits above that and handles everything the dbt Cloud scheduler can't: triggering dbt Cloud jobs when Fivetran finishes, chaining downstream activation steps, adding approval gates between staging and production, and giving you a unified execution history across every tool in the stack. Kestra works with dbt Cloud, not instead of it."
   - question: "What does Kestra add to a dbt Cloud setup?"
-    answer: "When your pipeline also involves Airbyte, Fivetran, Hightouch, or any other tool, dbt Cloud has no mechanism to coordinate those steps — the scheduler was built for dbt workflows. Kestra wraps the entire pipeline: it triggers the dbt Cloud job when the upstream sync completes, waits for dbt to confirm success, then fires the downstream activation layer. Every step shares one execution ID and one place to debug."
-  - question: "Can Kestra trigger a dbt Cloud job when Airbyte finishes?"
-    answer: "Kestra's Airbyte plugin runs a sync and waits for completion before the next task starts. The dbt Cloud task then triggers and waits for the dbt job to confirm success. This replaces the cron schedule that fires whether or not source data is ready, so dbt never builds on stale inputs."
+    answer: "When your pipeline also involves Fivetran, Hightouch, or any other tool, dbt Cloud has no mechanism to coordinate those steps — the scheduler was built for dbt workflows. Kestra wraps the entire pipeline: it triggers the dbt Cloud job when the upstream sync completes, waits for dbt to confirm success, then fires the downstream activation layer. Every step shares one execution ID and one place to debug."
+  - question: "Can Kestra trigger a dbt Cloud job when Fivetran finishes?"
+    answer: "Kestra's Fivetran plugin runs a connector sync and waits for completion before the next task starts. The dbt Cloud task then triggers and waits for the dbt job to confirm success. This replaces the cron schedule that fires whether or not source data is ready, so dbt never builds on stale inputs."
   - question: "How does the approval gate work before a production dbt Cloud job?"
     answer: "Kestra's Pause task suspends the flow after the staging job completes. The result is surfaced in the Kestra UI. A named reviewer reads it and explicitly resumes the flow. Only then does the production job trigger. The reviewer identity and timestamp are logged automatically in the execution history. This works across any two dbt Cloud job IDs — staging and production are both passed as flow inputs."
   - question: "Can Kestra chain multiple dbt Cloud jobs in dependency order?"
     answer: "Each dbt Cloud job runs as a separate task inside a single Kestra flow. Kestra waits for each job to confirm success before starting the next. If job 2 fails, job 3 does not start, and Kestra posts a Slack alert with the run ID of the failing job and a link to the execution. The run IDs flow forward between tasks for traceability."
   - question: "Does Kestra replace dbt Cloud, or does it work alongside it?"
     answer: "Kestra works alongside dbt Cloud. dbt Cloud keeps running your transformations and managing the dbt IDE, lineage, and CI. Kestra handles the orchestration layer above it: scheduling based on upstream events, chaining with other tools, approval gates, and cross-stack visibility. Teams that want to move from dbt Cloud to dbt Core can also use Kestra — the <code>DbtCLI</code> task runs dbt Core commands directly without needing the dbt Cloud API."
-  - question: "What if my pipeline also includes Fivetran instead of Airbyte?"
-    answer: "Kestra has a Fivetran plugin that triggers connector syncs and waits for completion, the same way the Airbyte plugin does. The rest of the pipeline — dbt Cloud job, downstream activation, Slack notification — is identical. The YAML swaps one task type for another."
   - question: "Is Kestra self-hosted or managed?"
     answer: "Kestra offers multiple deployment options: fully self-hosted on Docker or Kubernetes, a managed cloud version, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives complete control over where your pipeline execution and credentials live, with no external dependency on Kestra's infrastructure."
 
 seeHow:
   title: "Ready to orchestrate your dbt Cloud jobs?"
-  description: "Trigger on upstream events, chain with Airbyte and Hightouch, and track every run across your full data stack. Open source, self-hosted, event-driven."
+  description: "Trigger on upstream events, chain with Fivetran and Hightouch, and track every run across your full data stack. Open source, self-hosted, event-driven."
   cta:
     label: "Book a Demo"
     href: "/demo"
