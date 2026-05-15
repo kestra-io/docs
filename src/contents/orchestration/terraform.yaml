@@ -415,7 +415,7 @@ comparison:
     - name: "GitHub Actions"
       pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
     - name: "Jenkins"
-      logoAsset: "jenkins"
+      pluginClass: "io.kestra.plugin.jenkins.JobBuild"
   rows:
     - feature: "Scheduling"
       kestra: "✓ Native cron + events"
