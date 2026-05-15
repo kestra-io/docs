@@ -1,8 +1,8 @@
 ---
 export const prerender = false
 import { $fetchApiCached } from "~/utils/fetch"
-import type { Plugin } from "@kestra-io/ui-libs"
-import { filterPluginsWithoutDeprecated } from "@kestra-io/ui-libs"
+import type { Plugin } from "~/utils/plugins/plugin"
+import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
 import { prunePluginsForCards, calculateTotalPluginCount } from "~/utils/plugins/pruneForClient"
 
 import Layout from "~/components/layout.astro"

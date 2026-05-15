@@ -61,7 +61,7 @@ The term ‘DataOps’ has been diluted by vendors (*we’re guilty of that, too
 
 ## Increased Demand for Data Lakehouses
 
-Budget constraints are making data lakehouses attractive compared to cloud data warehouses. Lakehouse architectures provide a simple and affordable data storage solution. The new [S3 Express One Zone Storage Class](https://aws.amazon.com/s3/storage-classes/express-one-zone/), the [flexibility of DuckDB](../2023-07-28-duckdb-vs-motherduck/index.md), the ability to [lazily process dataframes in Polars](../2023-08-11-dataframes), the growing adoption of [Apache Iceberg](../2023-08-05-iceberg-for-aws-users/index.md), and the significantly simplified event-driven orchestration capabilities enabled by tools such as [Kestra](https://github.com/kestra-io/kestra/index.md) enable high-throughput data processing over data stored in the lakehouse.
+Budget constraints are making data lakehouses attractive compared to cloud data warehouses. Lakehouse architectures provide a simple and affordable data storage solution. The new [S3 Express One Zone Storage Class](https://aws.amazon.com/s3/storage-classes/express-one-zone/), the [flexibility of DuckDB](../duckdb-vs-motherduck/index.md), the ability to [lazily process dataframes in Polars](../dataframes), the growing adoption of [Apache Iceberg](../iceberg-for-aws-users/index.md), and the significantly simplified event-driven orchestration capabilities enabled by tools such as [Kestra](https://github.com/kestra-io/kestra/index.md) enable high-throughput data processing over data stored in the lakehouse.
 
 ## Commercial vs. Open Source Battles among LLMs and Data Tools
 

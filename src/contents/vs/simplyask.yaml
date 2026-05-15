@@ -3,6 +3,8 @@ description: "Compare Kestra vs SimplyAsk (Symphona): Open-source workflow orche
 competitorName: SimplyAsk
 category: Business Automation
 shortDescription: "No-code business process automation for telco and operations teams vs. engineering-grade workflow orchestration with self-hosting and GitOps."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond no-code business process automation."
 
 brandColor:
   color: "#2563EB"

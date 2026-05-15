@@ -32,6 +32,7 @@
     "@cloudflare/workers-types": "^4.20260413.1",
     "@gtm-support/vue-gtm": "^3.2.0",
     "@iconify-json/mdi": "^1.2.3",
+    "@kestra-io/topology": "^0.0.2",
     "@kestra-io/ui-libs": "^0.0.299",
     "@popperjs/core": "^2.11.8",
     "@types/aos": "^3.0.7",

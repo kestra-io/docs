@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { computed } from "vue"
-    import { slugify } from "@kestra-io/ui-libs"
+    import { slugify } from "~/utils/slugify"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
@@ -77,7 +77,7 @@
 </template>
 
 <style scoped lang="scss">
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
 
     .plugin {
         height: 188px;

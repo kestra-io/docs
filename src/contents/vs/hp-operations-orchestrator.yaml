@@ -3,6 +3,8 @@ description: "Compare Kestra vs HP Operations Orchestrator (HP OO / Micro Focus 
 competitorName: "HP Operations Orchestrator"
 category: Infrastructure Automation
 shortDescription: "Legacy Java-based runbook automation vs. cloud-native declarative orchestration in YAML."
+seeHowTitle: "Modernizing Legacy IT Automation with Kestra"
+seeHowBody: "See how enterprises replace HP OO and other legacy runbook tools with Kestra's declarative platform."
 
 brandColor:
   color: "#0096d6"

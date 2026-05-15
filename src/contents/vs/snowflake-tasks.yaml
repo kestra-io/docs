@@ -3,6 +3,8 @@ description: "Compare Kestra vs Snowflake Tasks: Open-source, multi-cloud workfl
 competitorName: Snowflake Tasks
 category: Data Orchestration
 shortDescription: "SQL-based task scheduling inside Snowflake vs. universal YAML orchestration across any cloud and stack."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and orchestrate beyond the data warehouse."
 
 brandColor:
   color: "#29B5E8"

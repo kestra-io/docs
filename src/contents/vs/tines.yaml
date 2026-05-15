@@ -3,6 +3,8 @@ description: "Compare Kestra vs Tines: Open-source workflow orchestration for en
 competitorName: Tines
 category: Business Automation
 shortDescription: "No-code security and IT automation vs. open-source YAML orchestration for engineering teams at scale."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your security workflows—and scale beyond SOC automation."
 
 brandColor:
   color: "#6B4FBB"
