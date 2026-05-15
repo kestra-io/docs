@@ -59,7 +59,7 @@
 <script setup lang="ts">
     import { computed, nextTick, ref } from "vue"
     import { useEventListener, useThrottleFn, useWindowScroll } from "@vueuse/core"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
+    import type { PluginMetadata } from "~/utils/plugins/plugin"
 
     import OverviewPanel from "~/components/plugins/versions/OverviewPanel.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
