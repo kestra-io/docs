@@ -1,5 +1,6 @@
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
-import { isEntryAPluginElementPredicate, slugify, subGroupName } from "@kestra-io/ui-libs"
+import type { Plugin, PluginElement } from "./plugin"
+import { isEntryAPluginElementPredicate, subGroupName } from "./plugin"
+import { slugify } from "../slugify"
 import type { NavItem } from "~/utils/navigation"
 import { toNavTitle } from "./all"
 
