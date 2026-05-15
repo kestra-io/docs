@@ -1,7 +1,8 @@
 ---
 export const prerender = false
 
-import { slugify, subGroupName } from "@kestra-io/ui-libs"
+import { slugify } from "~/utils/slugify"
+import { subGroupName } from "~/utils/plugins/plugin"
 
 import Layout from "~/components/layout.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
@@ -153,11 +154,9 @@ const pluginSchema = pluginType
           image: imageUrl,
           inLanguage: "en",
           about: {
-              "@type": "SoftwareApplication",
               "@id": `https://kestra.io/plugins/${pluginName}#${pluginName}`,
           },
           isPartOf: {
-              "@type": "WebSite",
               "@id": "https://kestra.io/#website",
           },
           author: { "@id": "https://kestra.io/#organization" },
@@ -201,7 +200,6 @@ const pluginSchema = pluginType
                     url: Astro.url.href,
                 },
           isPartOf: {
-              "@type": "SoftwareApplication",
               "@id": "https://kestra.io/#software",
           },
           author: { "@id": "https://kestra.io/#organization" },
@@ -216,15 +214,16 @@ const pluginSchema = pluginType
         />
     </Fragment>
     <PluginLayout>
-        <PluginSidebar
-            slot="sidebar"
-            pluginWrapper={prunedRootPlugin}
-            pluginsWithoutDeprecated={prunedPluginsWithoutDeprecated}
-            pluginName={pluginName}
-            title={rootPluginTitle}
-            routeParts={splitRouteSlug}
-            client:idle
-        />
+        <div slot="sidebar">
+            <PluginSidebar
+                pluginWrapper={prunedRootPlugin}
+                pluginsWithoutDeprecated={prunedPluginsWithoutDeprecated}
+                pluginName={pluginName}
+                title={rootPluginTitle}
+                routeParts={splitRouteSlug}
+                client:idle
+            />
+        </div>
         <article class="bd-main">
             <div class="bd-title">
                 <Breadcrumb
@@ -281,17 +280,18 @@ const pluginSchema = pluginType
                 )
             }
         </article>
-        <RightSideBar
-            slot="aside"
-            links={pageWithToc.body.toc?.links}
-            version={githubVersions}
-            releasesUrl={githubReleasesUrl}
-            categories={currentPluginCategories}
-            metadata={currentPluginMetadata}
-            title={headingTitle}
-            url={Astro.url.href}
-            client:idle
-        />
+        <div slot="aside">
+            <RightSideBar
+                links={pageWithToc.body.toc?.links}
+                version={githubVersions}
+                releasesUrl={githubReleasesUrl}
+                categories={currentPluginCategories}
+                metadata={currentPluginMetadata}
+                title={headingTitle}
+                url={Astro.url.href}
+                client:idle
+            />
+        </div>
     </PluginLayout>
 </Layout>
 

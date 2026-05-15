@@ -10,9 +10,75 @@ import PriceQuote from "~/components/price/PriceQuote.vue"
 const title = "Kestra Pricing: Open Source, Cloud & Enterprise Plans"
 const description =
     "Choose the right plan for your needs. Start with the Open Source version and scale with the Enterprise Edition of Kestra."
+
+const pricingSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "Product",
+            "@id": "https://kestra.io/pricing#open-source",
+            "name": "Kestra Open Source",
+            "url": "https://kestra.io/pricing",
+            "description":
+                "Self-hosted orchestration platform with 1,200+ plugins, unlimited flows and executions, AI Copilot, event-driven scheduling, and multi-cloud deployment.",
+            "brand": { "@id": "https://kestra.io/#organization" },
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "url": "https://github.com/kestra-io/kestra",
+            },
+        },
+        {
+            "@type": "Product",
+            "@id": "https://kestra.io/pricing#cloud",
+            "name": "Kestra Cloud",
+            "url": "https://kestra.io/pricing",
+            "description":
+                "Fully managed Kestra platform with automatic scaling, built-in security, enterprise plugins, SOC2 compliance, and pay-as-you-scale pricing.",
+            "brand": { "@id": "https://kestra.io/#organization" },
+            "offers": {
+                "@type": "Offer",
+                "priceSpecification": {
+                    "@type": "UnitPriceSpecification",
+                    "priceType": "https://schema.org/InvoicePrice",
+                    "description": "Pay only for what you use",
+                },
+                "availability": "https://schema.org/InStock",
+                "url": "https://kestra.io/pricing",
+            },
+        },
+        {
+            "@type": "Product",
+            "@id": "https://kestra.io/pricing#enterprise",
+            "name": "Kestra Enterprise Edition",
+            "url": "https://kestra.io/pricing",
+            "description":
+                "Enterprise-grade orchestration with SSO, LDAP/SCIM, custom RBAC, audit logs, worker groups, multi-tenant support, AI Copilot with any LLM, and enterprise SLA.",
+            "brand": { "@id": "https://kestra.io/#organization" },
+            "offers": {
+                "@type": "Offer",
+                "priceSpecification": {
+                    "@type": "UnitPriceSpecification",
+                    "priceType": "https://schema.org/InvoicePrice",
+                    "description": "Annual subscription — contact sales",
+                },
+                "availability": "https://schema.org/InStock",
+                "url": "https://kestra.io/demo",
+            },
+        },
+    ],
+}
 ---
 
 <Layout {title} {description}>
+    <Fragment slot="head">
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(pricingSchema)}
+        />
+    </Fragment>
     <div class="cont">
         <Header>
             <HostSwitcher slot="switcher" />

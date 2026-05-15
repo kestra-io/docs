@@ -86,7 +86,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
 
     .versions-title {
         font-size: $font-size-sm;
