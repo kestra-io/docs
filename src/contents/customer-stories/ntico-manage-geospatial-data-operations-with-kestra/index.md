@@ -31,6 +31,7 @@ quotePerson: Stephane Delos
 quotePersonTitle: ""
 industry: Consulting and Integrations
 headquarter: Villeneuve d'Ascq, France
+region: Europe
 solution: Geospatial Data
 companyName: ""
 cta: "What would change if your geospatial data operations were fully orchestrated—automated end-to-end, without the integration complexity?"

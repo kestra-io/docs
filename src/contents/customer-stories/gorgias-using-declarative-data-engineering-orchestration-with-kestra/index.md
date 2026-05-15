@@ -33,6 +33,7 @@ quotePerson: Antoine Balliet
 quotePersonTitle: Senior Data Engineer
 industry: SaaS
 headquarter: Paris, France
+region: Europe
 solution: Gorgias is the leading AI customer experience platform for ecommerce
   stores. Trusted by over 15000 merchants worldwide.
 companyName: Gorgias

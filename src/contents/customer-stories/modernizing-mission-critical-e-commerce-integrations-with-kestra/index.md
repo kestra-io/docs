@@ -29,6 +29,7 @@ quotePerson: Rafael Bartalotti
 quotePersonTitle: Engineering Manager
 industry: largest wine e-tailers in Latin America
 headquarter: São Paulo, Brazil
+region: Latin America
 solution: E-commerce & Data Platform
 companyName: Víssimo
 cta: "What would change if your e-commerce integrations ran mission-critical workflows automatically—keeping inventory, orders, and fulfillment in sync at scale?"

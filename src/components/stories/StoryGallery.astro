@@ -1,31 +1,328 @@
 ---
-import Squared from "~/components/layout/Squared.vue"
-import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+import LogoBar from "~/components/home/LogoBar.astro"
+
+interface FeaturedStory {
+    id: string
+    title: string
+    heroImage: string
+    logo?: string
+    logoDark?: string
+    companyName: string
+    kpi1: string
+    kpi2: string
+    kpi3: string
+    description: string
+    industry: string
+}
+
+interface Props {
+    featuredStory: FeaturedStory
+}
+
+const { featuredStory } = Astro.props
+
+function parseKpi(kpi: string | undefined): { value: string; label: string } | null {
+    if (!kpi) return null
+    const lines = kpi.trim().split("\n").map((l) => l.trim()).filter(Boolean)
+    const value = lines[0]?.replace(/^#{1,6}\s*/, "") ?? ""
+    const label = lines.slice(1).join(" ")
+    return value ? { value, label } : null
+}
+
+const kpis = [featuredStory.kpi1, featuredStory.kpi2, featuredStory.kpi3]
+    .map(parseKpi)
+    .filter(Boolean) as { value: string; label: string }[]
 ---
 
-<Squared>
-    <div class="header">
-        <Breadcrumb items={[{ label: "Home", href: "/" }]} />
-        <h1 data-usal="fade-l">Customers Stories</h1>
-    </div>
-</Squared>
-
-<section class="stories">
+<section class="stories-hero">
     <div class="container">
-        <slot name="stories" />
+        <div class="hero-grid">
+            <div class="hero-left">
+                <h1>Thousands of teams.<br />Millions of flows.<br />Zero drama.</h1>
+                <p class="hero-desc">
+                    See how engineering teams across industries use Kestra to
+                    automate their most critical workflows — at any scale.
+                </p>
+            </div>
+            <div class="hero-right">
+                <a
+                    href={`/use-cases/stories/${featuredStory.id}`}
+                    class="featured-card"
+                >
+                    <div class="featured-image-wrap">
+                        <img
+                            src={featuredStory.heroImage}
+                            alt={featuredStory.title}
+                            loading="eager"
+                        />
+                        {
+                            featuredStory.logoDark && (
+                                <div class="featured-logo-badge">
+                                    <img
+                                        src={featuredStory.logoDark}
+                                        alt={featuredStory.companyName}
+                                        loading="eager"
+                                    />
+                                </div>
+                            )
+                        }
+                    </div>
+                    {
+                        kpis.length > 0 && (
+                            <div class="featured-kpis">
+                                {kpis.map((kpi) => (
+                                    <div class="featured-kpi">
+                                        <span class="kpi-value">{kpi.value}</span>
+                                        <span class="kpi-label">{kpi.label}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )
+                    }
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="logo-bar-outer">
+        <div class="container">
+            <LogoBar />
+        </div>
     </div>
 </section>
 
-<style lang="scss">
-    .header {
-        width: 100%;
-    }
+<section class="stories-list-section">
+    <slot name="stories" />
+</section>
 
-    .stories {
-        background: var(--ks-background-body);
+<style lang="scss">
+    .stories-hero {
+        background:
+            radial-gradient(
+                ellipse 60% 80% at 72% 45%,
+                rgba(108, 44, 255, 0.22) 0%,
+                transparent 65%
+            ),
+            radial-gradient(
+                ellipse 40% 50% at 20% 70%,
+                rgba(0, 80, 200, 0.1) 0%,
+                transparent 60%
+            ),
+            #060613;
+        color: white;
+        padding-top: 5rem;
+
+        @include media-breakpoint-down(lg) {
+            padding-top: 3rem;
+        }
 
         .container {
             max-width: 1180px;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding-bottom: 4rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                padding-bottom: 2.5rem;
+            }
+        }
+
+        .hero-left {
+            h1 {
+                font-size: clamp(2rem, 3.5vw, 3rem);
+                font-weight: 700;
+                line-height: 1.1;
+                color: white;
+                margin-bottom: 1.5rem;
+                letter-spacing: -0.02em;
+            }
+
+            .hero-desc {
+                font-size: 1.0625rem;
+                color: rgba(255, 255, 255, 0.65);
+                line-height: 1.65;
+                margin: 0;
+            }
+        }
+
+        .hero-right {
+            .featured-card {
+                display: block;
+                text-decoration: none;
+                color: inherit;
+
+                &:hover .featured-image-wrap img {
+                    transform: scale(1.02);
+                }
+            }
+
+            .featured-image-wrap {
+                position: relative;
+                border-radius: 0.75rem;
+                overflow: hidden;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                aspect-ratio: 16 / 9;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.4s ease;
+                    display: block;
+                }
+            }
+
+            .featured-logo-badge {
+                position: absolute;
+                top: 0.75rem;
+                right: 0.75rem;
+                background: white;
+                padding: 0.375rem 0.75rem;
+                border-radius: 0.375rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                img {
+                    height: 1.75rem;
+                    width: auto;
+                    object-fit: contain;
+                }
+            }
+
+            .featured-kpis {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+                margin-top: 0.875rem;
+            }
+
+            .featured-kpi {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 0.5rem;
+                padding: 0.875rem 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.2rem;
+
+                .kpi-value {
+                    font-size: 1.375rem;
+                    font-weight: 700;
+                    color: #8b5cf6;
+                    line-height: 1.2;
+                    letter-spacing: -0.02em;
+                }
+
+                .kpi-label {
+                    font-size: 0.75rem;
+                    color: rgba(255, 255, 255, 0.55);
+                    line-height: 1.35;
+                }
+            }
+        }
+
+        .logo-bar-outer {
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            padding: 2rem 1rem;
+
+            .container {
+                max-width: 1180px;
+            }
+        }
+    }
+
+    .stories-list-section {
+        background: var(--ks-background-body);
+    }
+
+</style>
+
+<style is:global lang="scss">
+    .stories-list-section {
+        .stories-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem 4rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+
+            @include media-breakpoint-down(sm) {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .stories-count {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            appearance: none;
+            background: var(--ks-background-secondary);
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.5rem;
+            padding: 0.5rem 2.25rem 0.5rem 0.875rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--ks-content-primary);
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2387858f' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            min-width: 160px;
+            transition: border-color 0.15s;
+
+            &:focus {
+                outline: none;
+                border-color: var(--ks-content-link);
+            }
+
+            &:hover {
+                border-color: var(--ks-content-link);
+            }
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--ks-content-tertiary);
+            padding: 3rem 0;
+            font-size: 0.9375rem;
         }
     }
 </style>

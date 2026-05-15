@@ -33,6 +33,7 @@ quotePerson: Rubén Boniz Martinez
 quotePersonTitle: ""
 industry: Automotive
 headquarter: Madrid, Spain
+region: Europe
 solution: Spain’s largest car retailer, providing a diverse range of vehicles
   from prestigious manufacturers.
 companyName: ""

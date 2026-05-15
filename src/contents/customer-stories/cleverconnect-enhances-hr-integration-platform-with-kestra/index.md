@@ -31,6 +31,7 @@ quotePerson: Patrick Ferreira
 quotePersonTitle: ""
 industry: Human Resources
 headquarter: Paris, France
+region: Europe
 solution: Leading HR tech company focused on AI-driven recruitment solutions.
 companyName: ""
 cta: "What would change if your HR integration workflows were fully automated—scaling with your business without added engineering overhead?"

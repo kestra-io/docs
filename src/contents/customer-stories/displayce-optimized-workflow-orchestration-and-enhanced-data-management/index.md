@@ -35,6 +35,7 @@ quotePerson: Engineer at Displayce
 quotePersonTitle: ""
 industry: Advertising
 headquarter: Bordeaux, France
+region: Europe
 solution: Displayce optimises the purchase, impact and quality of digital
   out-of-home campaigns on over 1 million digital screens worldwide.
 companyName: ""

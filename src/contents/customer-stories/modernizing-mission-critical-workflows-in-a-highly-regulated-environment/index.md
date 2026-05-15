@@ -29,6 +29,7 @@ quotePerson: Infrastructure Lead
 quotePersonTitle: ""
 industry: Healthcare
 headquarter: Sweden
+region: Europe
 solution: Pharmacy Retail
 companyName: Pharmacy Retailer
 cta: "What would change if your mission-critical healthcare workflows ran reliably—meeting compliance requirements without the operational overhead?"

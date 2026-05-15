@@ -31,6 +31,7 @@ quotePerson: Principal Hosting
 quotePersonTitle: ""
 industry: Heavy Industry
 headquarter: Australia
+region: Australia
 solution: Global leader in heavy industry across the globe
 companyName: Fortune 500 Company
 cta: "What would change if your hybrid cloud automation ran securely across every OT domain—isolated by design, auditable by default?"

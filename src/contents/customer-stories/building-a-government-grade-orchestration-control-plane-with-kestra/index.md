@@ -30,6 +30,7 @@ quotePerson: Platform Architect
 quotePersonTitle: ""
 industry: Public Sector
 headquarter: Altenholz - Germany
+region: Europe
 solution: Build a government-grade cloud service portal
 companyName: Dataport
 cta: "What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane, built for governance, visibility, and scale?"

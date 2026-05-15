@@ -36,6 +36,7 @@ quotePerson: John Kim
 quotePersonTitle: IT Lead
 industry: Retail & Manufacturing
 headquarter: Seoul, South Korea
+region: Asia Pacific
 solution: Fila has evolved into a global sportswear brand, known for its
   high-quality and stylish clothing and accessories.
 companyName: Fila

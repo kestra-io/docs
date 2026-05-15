@@ -32,6 +32,7 @@ quotePerson: Engineer at Reglo
 quotePersonTitle: ""
 industry: Retail
 headquarter: Paris, France
+region: Europe
 solution: High Quality Pets Nutrition
 companyName: ""
 cta: "What would change if your ETL processes triggered automatically from a single command—no manual pipeline runs, just results?"

@@ -9,16 +9,7 @@ import { randomSortFunction } from "~/utils/random"
 interface Props {
     entry: CollectionEntry<"customerStories">
     related: {
-        results: {
-            id: string
-            title: string
-            description: string
-            heroImage: string
-            featuredImage: string
-            logo?: string
-            logoDark?: string
-            content: string
-        }[]
+        results: Story[]
         total: number
     }
 }
