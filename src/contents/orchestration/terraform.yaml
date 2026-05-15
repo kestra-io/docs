@@ -8,7 +8,7 @@ tool:
 
 hero:
   title: "Your Terraform runs, fully orchestrated."
-  description: "Terraform is a CLI. It has no scheduler, no native pause between <code>plan</code> and <code>apply</code>, no shared history with the steps that run before or after. Kestra wraps every run with cron and event triggers, a reviewer gate, automatic retries, and one execution view across Terraform, Ansible, and ArgoCD."
+  description: "Terraform is a CLI. It has no scheduler, no native pause between plan and apply, no shared history with the steps that run before or after. Kestra wraps every run with cron and event triggers, a reviewer gate, automatic retries, and one execution view across Terraform, Ansible, and ArgoCD."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -238,174 +238,159 @@ quotes:
 
 blueprints:
   title: "Blueprints for Terraform orchestration."
-  lead: "Production-ready workflows. Copy the YAML, point it at your state backend."
+  lead: "One blueprint per use case above. Copy the YAML, point it at your state backend, ship it."
   items:
-    - name: "Terraform from a Git repo with remote state"
-      title: "Terraform from a Git repo with remote state"
-      description: "Clone a Git repository, run <code>terraform init</code> against an S3 backend, then <code>terraform plan</code> and <code>terraform apply</code>. Both outputs are captured as task artifacts. Add the Schedule or Webhook trigger to run on cron or on every merge."
+    - name: "Scheduled drift detection"
+      title: "Scheduled drift detection"
+      description: "Runs <code>terraform plan</code> hourly with <code>-detailed-exitcode</code>. If exit code 2 (changes detected), Kestra captures the full plan output and posts a Slack alert with a link to the execution. Replayable per run, no cron job on a jump box."
       href: "/blueprints"
       plugins:
-        - "io.kestra.plugin.core.flow.WorkingDirectory"
-        - "io.kestra.plugin.git.Clone"
         - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.core.trigger.Schedule"
+        - "io.kestra.plugin.core.flow.If"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
       code: |
-        id: git-terraform
-        namespace: company.team
+        id: terraform-drift-detection
+        namespace: company.infra
+
+        triggers:
+          - id: hourly
+            type: io.kestra.plugin.core.trigger.Schedule
+            cron: "0 * * * *"
 
         tasks:
-          - id: git
-            type: io.kestra.plugin.core.flow.WorkingDirectory
-            tasks:
-              - id: clone_repository
-                type: io.kestra.plugin.git.Clone
-                url: https://github.com/anna-geller/kestra-ci-cd
-                branch: main
-
-              - id: terraform
-                type: io.kestra.plugin.terraform.cli.TerraformCLI
-                beforeCommands:
-                  - terraform init
-                inputFiles:
-                  terraform.tfvars: |
-                    username            = "cicd"
-                    password            = "{{ secret('CI_CD_PASSWORD') }}"
-                    hostname            = "https://demo.kestra.io"
-                outputFiles:
-                  - "*.txt"
-                commands:
-                  - terraform plan 2>&1 | tee plan_output.txt
-                  - terraform apply -auto-approve 2>&1 | tee apply_output.txt
-                env:
-                  AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-                  AWS_SECRET_KEY_ID: "{{ secret('AWS_SECRET_KEY_ID') }}"
-                  AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
-    - name: "Self-service VM provisioning on GCP"
-      title: "Self-service VM provisioning on GCP"
-      description: "A form-driven flow: pick a region, size, OS, and environment. Kestra generates a standardized hostname, reserves an IP from an external IPAM, runs <code>terraform apply</code> to create the VM, then posts the result and external IP to Slack. State is tracked in Kestra KV."
-      href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.scripts.python.Script"
-        - "io.kestra.plugin.terraform.cli.TerraformCLI"
-        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
-        - "io.kestra.plugin.core.kv.Set"
-      code: |
-        id: create-vm-gcp-terraform
-        namespace: solutions.infra
-
-        inputs:
-          - id: region
-            type: SELECT
-            values: [us-central1, us-east1]
-            defaults: us-central1
-          - id: vmSize
-            type: SELECT
-            values: [Small, Medium, Large, n1-standard-1]
-            defaults: n1-standard-1
-          - id: env
-            type: SELECT
-            values: [Development, Staging, Production]
-            defaults: Development
-
-        tasks:
-          - id: generateCustomHostname
-            type: io.kestra.plugin.scripts.python.Script
-            dependencies:
-              - kestra
-            script: |
-              from kestra import Kestra
-              env_code = "{{ inputs.env | slice(0, 3) }}"
-              index_code = {{ kv('getVMIndex', errorOnMissing = false) ?? 1 }}
-              vm_name = f"gcp{env_code}vm{index_code}".lower()
-              Kestra.outputs({'customHostname': vm_name, 'index_code': index_code})
-
-          - id: createVM
+          - id: terraform_plan
             type: io.kestra.plugin.terraform.cli.TerraformCLI
-            inputFiles:
-              main.tf: |
-                resource "google_compute_instance" "default" {
-                  name         = "{{ outputs.generateCustomHostname.vars.customHostname }}"
-                  machine_type = "{{ inputs.vmSize }}"
-                  zone         = "{{ inputs.region }}-a"
-
-                  boot_disk {
-                    initialize_params {
-                      image = "ubuntu-2204-jammy-v20240614"
-                    }
-                  }
-
-                  network_interface {
-                    network = "default"
-                    access_config {}
-                  }
-                }
-
-                output "external_ip" {
-                  value = google_compute_instance.default.network_interface[0].access_config[0].nat_ip
-                }
-              gcp-svc-account.json: "{{ secret('GCP_SVC_ACCOUNT') }}"
-            env:
-              GOOGLE_APPLICATION_CREDENTIALS: gcp-svc-account.json
             beforeCommands:
               - terraform init
             commands:
-              - terraform apply -auto-approve -json
-              - terraform output -raw external_ip > external_ip.txt
+              - terraform plan -detailed-exitcode 2>&1 | tee plan_output.txt
             outputFiles:
-              - "*.txt"
+              - "plan_output.txt"
+            allowFailure: true
+            env:
+              AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+              AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+              AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
+
+          - id: check_drift
+            type: io.kestra.plugin.core.flow.If
+            condition: "{{ outputs.terraform_plan.exitCode == 2 }}"
+            then:
+              - id: alert_drift
+                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+                url: "{{ secret('SLACK_WEBHOOK') }}"
+                payload: |
+                  {
+                    "text": ":warning: Drift detected in production infrastructure. <{{ execution.url }}|View execution>"
+                  }
+    - name: "Approval gate between plan and apply"
+      title: "Approval gate between plan and apply"
+      description: "Runs <code>terraform plan</code>, pauses the flow on the plan output, waits for a named reviewer, then runs <code>terraform apply</code> against the same plan. The reviewer identity and timestamp are logged automatically. Retries the apply step on transient failure."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.core.flow.Pause"
+        - "io.kestra.plugin.core.log.Log"
+      code: |
+        id: terraform-apply-with-approval
+        namespace: company.infra
+
+        inputs:
+          - id: environment
+            type: SELECT
+            values: [staging, production]
+            defaults: staging
+
+        tasks:
+          - id: terraform_plan
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init -backend-config=env/{{ inputs.environment }}.tfbackend
+            commands:
+              - terraform plan -out=tfplan 2>&1 | tee plan_output.txt
+            outputFiles:
+              - "plan_output.txt"
+              - "tfplan"
+
+          - id: await_approval
+            type: io.kestra.plugin.core.flow.Pause
+            description: |
+              Plan complete for {{ inputs.environment }}.
+              Review the diff in plan_output.txt, then resume to apply.
+
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init -backend-config=env/{{ inputs.environment }}.tfbackend
+            commands:
+              - terraform apply -auto-approve tfplan 2>&1 | tee apply_output.txt
+            inputFiles:
+              tfplan: "{{ outputs.terraform_plan.outputFiles['tfplan'] }}"
+            outputFiles:
+              - "apply_output.txt"
+            retry:
+              type: constant
+              interval: PT5M
+              maxAttempt: 2
+
+          - id: audit_log
+            type: io.kestra.plugin.core.log.Log
+            message: "Applied to {{ inputs.environment }} at {{ execution.startDate }} by {{ execution.namespace }}."
+    - name: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      title: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      description: "<code>terraform apply</code> provisions the VM and writes the private IP to a task artifact. <code>ansible-playbook</code> configures the app using that IP, with per-step retries. <code>argocd app sync</code> ships the deployment. Slack confirms when all three steps succeed."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.scripts.shell.Commands"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      code: |
+        id: provision-configure-deploy
+        namespace: company.platform
+
+        inputs:
+          - id: app_name
+            type: STRING
+
+        tasks:
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init
+            commands:
+              - terraform apply -auto-approve -var "app_name={{ inputs.app_name }}"
+              - terraform output -raw private_ip > private_ip.txt
+            outputFiles:
+              - "private_ip.txt"
+
+          - id: ansible_configure
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            inputFiles:
+              inventory.ini: |
+                [app]
+                {{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}
+              configure.yml: "{{ read(secret('ANSIBLE_PLAYBOOK')) }}"
+            commands:
+              - ansible-playbook -i inventory.ini configure.yml
+            retry:
+              type: constant
+              interval: PT2M
+              maxAttempt: 3
+
+          - id: argocd_sync
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - argocd app sync {{ inputs.app_name }} --auth-token {{ secret('ARGOCD_TOKEN') }} --server {{ secret('ARGOCD_SERVER') }}
 
           - id: notify
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
             url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: |
-              {{ outputs.generateCustomHostname.vars.customHostname }} created.
-              External IP: {{ read(outputs.createVM.outputFiles['external_ip.txt']) }}
-    - name: "Provision GitHub repos with the Terraform GitHub provider"
-      title: "Provision GitHub repos with the Terraform GitHub provider"
-      description: "A multi-tool example: Terraform manages a SaaS resource (a GitHub repository) and Kestra orchestrates the run. The flow exposes <code>repository_name</code> and <code>description</code> as inputs, runs <code>terraform plan</code> then <code>terraform apply</code>, and captures both outputs. Wrap the same flow in a Kestra App for self-service repo creation."
-      href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.terraform.cli.TerraformCLI"
-      code: |
-        id: create-repository
-        namespace: company.team
-
-        inputs:
-          - id: repository_name
-            type: STRING
-          - id: description
-            type: STRING
-
-        tasks:
-          - id: terraform
-            type: io.kestra.plugin.terraform.cli.TerraformCLI
-            inputFiles:
-              main.tf: |
-                terraform {
-                  required_providers {
-                    github = {
-                      source  = "integrations/github"
-                      version = "~> 6.0"
-                    }
-                  }
-                }
-
-                provider "github" {
-                  token = "{{ secret('GITHUB_TOKEN') }}"
-                }
-
-                resource "github_repository" "{{inputs.repository_name}}" {
-                  name        = "{{inputs.repository_name}}"
-                  description = "{{ inputs.description }}"
-                  auto_init   = true
-                  visibility = "public"
-                }
-            beforeCommands:
-              - terraform init
-            commands:
-              - terraform plan 2>&1 | tee plan_output.txt
-              - terraform apply -auto-approve 2>&1 | tee apply_output.txt
-            outputFiles:
-              - "*.txt"
+            payload: |
+              {
+                "text": ":rocket: {{ inputs.app_name }} provisioned ({{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}), configured, and deployed."
+              }
 
 comparison:
   title: "Kestra vs Terraform orchestration alternatives"
