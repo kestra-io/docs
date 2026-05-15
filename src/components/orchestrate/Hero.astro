@@ -1,6 +1,5 @@
 ---
-import Link from "~/components/common/Link.astro"
-import ksIcon from "~/components/versus/assets/ks-icon.svg?raw"
+import BrandedHero from "~/components/common/BrandedHero.astro"
 
 interface Props {
     title: string
@@ -22,284 +21,103 @@ const {
     title,
     description,
     cta,
-    secondaryCta = { label: "Book a Demo", href: "/demo" },
+    secondaryCta,
     toolName,
     toolIcon,
     toolColor,
 } = Astro.props as Props
-
-const escapedTool = toolName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-
-const renderedTitle = title
-    .replace(/\b(Kestra|kestra)\b/, '<span class="highlight">$1</span>')
-    .replace(
-        new RegExp(`\\b${escapedTool}\\b`, "i"),
-        '<span class="tool-name">$&</span>',
-    )
-
-const heroStyle = toolColor
-    ? `--tool-color: ${toolColor};`
-    : undefined
 ---
 
-<section class="hero" style={heroStyle}>
-    <div class="container">
-        <div class="content">
-            <h1 set:html={renderedTitle} />
-            <p>{description}</p>
-            <div class="ctas">
-                <Link href={cta.href} class="btn btn-primary text-white">
-                    {cta.label}
-                </Link>
-                <Link href={secondaryCta.href} class="btn btn-secondary">
-                    {secondaryCta.label}
-                </Link>
-            </div>
+<BrandedHero
+    {title}
+    {description}
+    {cta}
+    {secondaryCta}
+    secondaryIcon={toolIcon}
+    secondaryLabel={toolName}
+    highlightTerm={toolName}
+    themeColor={toolColor}
+    animatePictos={true}
+>
+    <div class="flow" slot="between" aria-hidden="true">
+        <div class="flow-arrow flow-arrow--out">
+            <span class="flow-line" />
+            <span class="flow-line-bright" />
         </div>
-        <div class="pictos">
-            <div class="picto ks" set:html={ksIcon} aria-label="Kestra" />
-            <div class="flow" aria-hidden="true">
-                <div class="flow-arrow flow-arrow--out">
-                    <span class="flow-line" />
-                    <span class="flow-line-bright" />
-                </div>
-                <div class="flow-arrow flow-arrow--back">
-                    <span class="flow-line" />
-                    <span class="flow-line-bright" />
-                </div>
-            </div>
-            {
-                toolIcon && (
-                    <div
-                        class="picto tool"
-                        set:html={toolIcon}
-                        aria-label={toolName}
-                    />
-                )
-            }
+        <div class="flow-arrow flow-arrow--back">
+            <span class="flow-line" />
+            <span class="flow-line-bright" />
         </div>
     </div>
-</section>
+</BrandedHero>
 
 <style lang="scss">
-    .hero {
+    .flow {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.6rem;
+        width: 90px;
+        flex-shrink: 0;
+
+        @include media-breakpoint-down(md) {
+            width: 48px;
+            gap: 0.35rem;
+        }
+    }
+
+    .flow-arrow {
         position: relative;
-        background:
-            var(--ks-background-secondary)
-            url("~/assets/header-grid.svg") no-repeat center / cover;
-        border-bottom: 1px solid var(--ks-border-secondary);
-        padding-inline: 1rem;
-        overflow: hidden;
+        width: 100%;
+        height: 14px;
 
-        &::before {
-            content: "";
-            position: absolute;
-            top: -200px;
-            right: -120px;
-            width: 720px;
-            height: 720px;
-            border-radius: 50%;
-            background: radial-gradient(
-                circle,
-                color-mix(in srgb, var(--tool-color, transparent) 22%, transparent) 0%,
-                transparent 65%
+        &--out {
+            --flow-color: #8b5cf6;
+        }
+
+        &--back {
+            --flow-color: var(
+                --tool-color,
+                var(--ks-content-color-highlight)
             );
-            pointer-events: none;
-            z-index: 0;
         }
+    }
 
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1180px;
-            margin: 0 auto;
-            padding-block: 5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 3rem;
+    .flow-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--flow-color);
+        opacity: 0.22;
+        transform: translateY(-50%);
+        border-radius: 999px;
+    }
 
-            @include media-breakpoint-down(lg) {
-                padding-block: 2.5rem;
-                flex-direction: column-reverse;
-                align-items: flex-start;
-                gap: 2rem;
-            }
-        }
+    .flow-line-bright {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--flow-color);
+        box-shadow:
+            0 0 6px var(--flow-color),
+            0 0 14px var(--flow-color);
+        border-radius: 999px;
+        transform: translateY(-50%) scaleX(0);
+        opacity: 0;
+    }
 
-        .content {
-            flex: 1 1 0;
-            min-width: 0;
-            max-width: 600px;
+    .flow-arrow--out .flow-line-bright {
+        transform-origin: left center;
+        animation: line-fill-out 4.5s ease-in-out infinite;
+    }
 
-            h1 {
-                color: var(--ks-content-primary);
-                font-weight: 600;
-                margin-bottom: 1rem;
-                font-size: 2.5rem;
-                line-height: 1.15;
-
-                @include media-breakpoint-down(md) {
-                    font-size: 2rem;
-                }
-
-                :global(.highlight) {
-                    color: var(--ks-content-color-highlight);
-                }
-
-                :global(.tool-name) {
-                    color: color-mix(
-                        in srgb,
-                        var(--tool-color, var(--ks-content-primary)) 80%,
-                        var(--ks-content-primary)
-                    );
-                }
-            }
-
-            p {
-                color: var(--ks-content-secondary);
-                margin-bottom: 1.5rem;
-            }
-
-            .ctas {
-                display: flex;
-                gap: 0.75rem;
-                flex-wrap: wrap;
-
-                .btn-secondary {
-                    background-color: transparent !important;
-                    color: var(--ks-content-primary) !important;
-                    border-color: var(--ks-border-button-secondary) !important;
-                }
-            }
-        }
-
-        .pictos {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-shrink: 0;
-
-            .picto {
-                width: 170px;
-                height: 170px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid var(--ks-border-secondary);
-                border-radius: 12px;
-                padding: 38px;
-                background: $white;
-                box-shadow: inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1));
-
-                :global(svg) {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
-                }
-
-                &.ks {
-                    overflow: hidden;
-                    padding: 24px;
-                }
-
-                &.tool {
-                    border-color: color-mix(
-                        in srgb,
-                        var(--tool-color, var(--ks-border-secondary)) 55%,
-                        var(--ks-border-secondary)
-                    );
-                    animation: glow-tool 4.5s ease-in-out infinite;
-                }
-
-                &.ks {
-                    animation: glow-ks 4.5s ease-in-out infinite;
-                }
-            }
-
-            .flow {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                gap: 0.6rem;
-                width: 90px;
-                flex-shrink: 0;
-            }
-
-            .flow-arrow {
-                position: relative;
-                width: 100%;
-                height: 14px;
-
-                &--out {
-                    --flow-color: #8b5cf6;
-                }
-
-                &--back {
-                    --flow-color: var(
-                        --tool-color,
-                        var(--ks-content-color-highlight)
-                    );
-                }
-            }
-
-            .flow-line {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                right: 0;
-                height: 2px;
-                background: var(--flow-color);
-                opacity: 0.22;
-                transform: translateY(-50%);
-                border-radius: 999px;
-            }
-
-            .flow-line-bright {
-                position: absolute;
-                top: 50%;
-                left: 0;
-                right: 0;
-                height: 2px;
-                background: var(--flow-color);
-                box-shadow:
-                    0 0 6px var(--flow-color),
-                    0 0 14px var(--flow-color);
-                border-radius: 999px;
-                transform: translateY(-50%) scaleX(0);
-                opacity: 0;
-            }
-
-            .flow-arrow--out .flow-line-bright {
-                transform-origin: left center;
-                animation: line-fill-out 4.5s ease-in-out infinite;
-            }
-
-            .flow-arrow--back .flow-line-bright {
-                transform-origin: right center;
-                animation: line-fill-back 4.5s ease-in-out infinite;
-            }
-
-            @include media-breakpoint-down(md) {
-                gap: 0.5rem;
-
-                .picto {
-                    width: 110px;
-                    height: 110px;
-                    padding: 22px;
-
-                    &.ks {
-                        padding: 14px;
-                    }
-                }
-
-                .flow {
-                    width: 48px;
-                    gap: 0.35rem;
-                }
-            }
-        }
+    .flow-arrow--back .flow-line-bright {
+        transform-origin: right center;
+        animation: line-fill-back 4.5s ease-in-out infinite;
     }
 
     @keyframes line-fill-out {
@@ -339,51 +157,6 @@ const heroStyle = toolColor
         100% {
             transform: translateY(-50%) scaleX(1);
             opacity: 0;
-        }
-    }
-
-@keyframes glow-ks {
-        0%, 20% {
-            box-shadow:
-                inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                0 14px 44px -8px rgba(139, 92, 246, 0.75);
-        }
-        38%, 88% {
-            box-shadow:
-                inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                0 18px 48px -16px rgba(139, 92, 246, 0.08);
-        }
-        94%, 100% {
-            box-shadow:
-                inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                0 14px 44px -8px rgba(139, 92, 246, 0.75);
-        }
-    }
-
-    @keyframes glow-tool {
-        0%, 38% {
-            box-shadow:
-                inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                0 18px 48px -16px
-                    color-mix(in srgb, var(--tool-color, transparent) 10%, transparent);
-        }
-        44%, 70% {
-            box-shadow:
-                inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                0 14px 44px -8px
-                    color-mix(in srgb, var(--tool-color, transparent) 80%, transparent);
-        }
-        88%, 100% {
-            box-shadow:
-                inset 2px 3px 16px 0
-                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
-                0 18px 48px -16px
-                    color-mix(in srgb, var(--tool-color, transparent) 10%, transparent);
         }
     }
 </style>

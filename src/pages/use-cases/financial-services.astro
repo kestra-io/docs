@@ -8,8 +8,7 @@ import Faq from "~/components/common/Faq.vue"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Snippets from "~/components/common/Snippets.vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -747,51 +746,11 @@ const FAQ = [
             </div>
         </section>
 
-        <section class="build">
-            <div class="container">
-                <h2>Financial workflow automation <span class="highlight">examples and blueprints</span>.</h2>
-                <p class="build__lead">Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="header row g-0">
-                            {BUILD_TABS.map((tab, idx) => (
-                                <div
-                                    class:list={[
-                                        "col-6 col-md-3 header-tab",
-                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
-                                    ]}
-                                    data-tab-target={idx}
-                                >
-                                    {tab.name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {BUILD_TABS.map((tab, idx) => (
-                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
-                                <div class="panel panel-1">
-                                    <Snippets client:idle code={tab.code} lang="yaml" />
-                                </div>
-                                <div class="panel panel-2">
-                                    <h3 data-usal="fade-r">{tab.title}</h3>
-                                    <p data-usal="fade-l">{tab.description}</p>
-                                    <div class="plugins" data-usal="zoomin">
-                                        {tab.plugins.map(plugin => (
-                                            <div class="plugin-icon">
-                                                <TaskIcon cls={plugin.cls} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link class="goto" href={tab.href} data-usal="fade-r">
-                                        Explore Blueprints
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+        <BlueprintTabs
+            title={`Financial workflow automation <span class="highlight">examples and blueprints</span>.`}
+            lead="Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI."
+            items={BUILD_TABS.map((t) => ({ ...t, plugins: t.plugins.map((p) => p.cls) }))}
+        />
 
         <GoFurther />
 
@@ -827,15 +786,22 @@ const FAQ = [
     :global(html.dark) .financial-services {
         .flow,
         .workloads,
-        .build,
         .enterprise {
             background: #1C1C20;
         }
         :global(section.quotes-wrapper),
         :global(section.plugin-block),
-        :global(.see) {
+        :global(.see),
+        :global(.blueprint-tabs) {
             background: #1C1C20;
         }
+    }
+
+    :global(.blueprint-tabs h2 .highlight) {
+        background: linear-gradient(90deg, #{$fs-yellow}, #{$fs-yellow-bright});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero {
@@ -1521,176 +1487,6 @@ const FAQ = [
         }
     }
 
-    .build {
-        padding: 3rem 0 4.5rem;
-        background: var(--ks-background-primary);
-        border-bottom: $block-border;
-
-        .container {
-            max-width: 73.75rem;
-            margin: 0 auto;
-            padding-inline: 0;
-
-            h2 {
-                margin-bottom: 1rem;
-                padding-inline: $rem-1;
-                text-align: center;
-
-                .highlight {
-                    background: linear-gradient(90deg, #{$fs-yellow}, #{$fs-yellow-bright});
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                }
-
-                @include media-breakpoint-up(xl) { padding-inline: 0; }
-            }
-
-            .wrapper {
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-                border-radius: 13px;
-
-                @include media-breakpoint-down(xl) { border-radius: 0; }
-
-                .inner {
-                    border-radius: $rem-1;
-                    background: var(--ks-background-primary-inverse);
-                    overflow: clip;
-
-                    @include media-breakpoint-down(xxl) { border-radius: 0; }
-
-                    .header {
-                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
-
-                        & > div {
-                            padding: 1.1875rem $rem-2;
-                            font-size: $font-size-md;
-                            color: var(--ks-content-secondary-inverse);
-                            text-align: center;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-
-                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
-
-                            &.active {
-                                background: var(--ks-background-secondary-inverse);
-                                border-bottom: 1px solid var(--ks-border-active);
-                                color: var(--ks-content-primary-inverse);
-                                font-weight: 600;
-                            }
-                        }
-
-                        & .middle-part {
-                            border-left: 1px solid var(--ks-border-primary-inverse);
-                            border-right: 1px solid var(--ks-border-primary-inverse);
-                        }
-                    }
-
-                    .content {
-                        display: none;
-                        flex-direction: row;
-                        gap: $rem-2;
-                        padding: $rem-2;
-                        justify-content: center;
-
-                        &.active { display: flex; }
-
-                        @include media-breakpoint-down(xl) {
-                            flex-direction: column;
-                            align-items: center;
-                        }
-
-                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
-
-                        .panel {
-                            border-radius: 0.5rem;
-                            flex-shrink: 0;
-
-                            &.panel-1 {
-                                width: 39.4375rem;
-
-                                @include media-breakpoint-down(xl) { width: 100%; }
-
-                                :global(.code-card) {
-                                    border: 1px solid var(--ks-border-secondary-inverse);
-                                    background: var(--ks-background-input);
-                                    height: 100%;
-
-                                    :global(.code-inner) { transition: max-height 0.3s ease; }
-                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
-
-                                    &:global(:not(.is-expanded)) {
-                                        :global(.code-inner) { max-height: 27.9375rem !important; }
-                                    }
-                                }
-                            }
-
-                            &.panel-2 {
-                                position: relative;
-                                padding-top: $rem-2;
-                                color: var(--ks-content-primary-inverse);
-                                width: 27.5625rem;
-
-                                @include media-breakpoint-down(xl) {
-                                    width: 100%;
-                                    padding-top: 0;
-                                }
-
-                                p {
-                                    font-size: $font-size-lg;
-                                    margin-top: $rem-1;
-                                    margin-bottom: $rem-2;
-                                }
-
-                                .plugins {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    flex-wrap: wrap;
-
-                                    .plugin-icon {
-                                        width: 2.125rem;
-                                        height: 2.125rem;
-                                        padding: 0.375rem;
-                                        background: $white;
-                                        border: $block-border;
-                                        border-radius: $border-radius;
-                                    }
-                                }
-
-                                .goto {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    color: var(--ks-content-link-inverse);
-                                    font-weight: 600;
-
-                                    @include media-breakpoint-down(xl) {
-                                        position: relative;
-                                        margin-top: $rem-3;
-                                        float: right;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &__lead {
-            text-align: center;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            margin: 0 auto $rem-2;
-            max-width: 44rem;
-            padding-inline: $rem-1;
-        }
-    }
-
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1749,22 +1545,3 @@ const FAQ = [
     }
 </style>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        for (const container of document.querySelectorAll(".build .inner")) {
-            container.addEventListener("click", (e) => {
-                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
-                const target = tab && (container as Element).querySelector(
-                    `[data-tab-content="${tab.dataset.tabTarget}"]`
-                )
-                if (!target) return
-
-                for (const el of container.querySelectorAll(".header-tab, .content")) {
-                    el.classList.remove("active")
-                }
-                tab.classList.add("active")
-                target.classList.add("active")
-            })
-        }
-    })
-</script>
