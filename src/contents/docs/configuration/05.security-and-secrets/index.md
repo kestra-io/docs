@@ -394,7 +394,7 @@ Keep the external process manager timeout longer than Kestra's own termination g
 
 ## Regex timeout
 
-Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs.
+Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs. When a pattern exceeds the limit, the task fails immediately with a timeout error rather than hanging indefinitely.
 
 The default timeout is **10 seconds**. To change it, set `kestra.regex.timeout` in your configuration:
 

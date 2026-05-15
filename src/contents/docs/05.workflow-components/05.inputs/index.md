@@ -197,8 +197,8 @@ Below is the list of available properties for all inputs regardless of their typ
 
 Kestra validates the `type` of each input. In addition to the type validation, some input types can be configured with validation rules that are enforced at execution time.
 
-- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html). Validator patterns are subject to a 10-second timeout. The timeout is configurable via [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout).
-- `SECRET`: Supports the same `validator` regex property as `STRING`, with the same 10-second timeout applied before the value is encrypted.
+- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html). Validator patterns are subject to a 10-second timeout; executions that exceed it are rejected with an error. The timeout is configurable via [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout).
+- `SECRET`: Supports the same `validator` regex property as `STRING`, with the same 10-second timeout applied before the value is encrypted. This ensures the secret is never stored if the pattern is unsafe.
 - `INT`: `min` and `max` define the allowed range.
 - `FLOAT`: `min` and `max` define the allowed range.
 - `DURATION`: `min` and `max` define the allowed range.
