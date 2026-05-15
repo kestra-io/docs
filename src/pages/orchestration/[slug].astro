@@ -23,6 +23,11 @@ import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-d
 import RiversideLogo from "~/components/orchestrate/assets/riverside.svg?raw"
 import SlackLogo from "~/components/orchestrate/assets/slack.svg?raw"
 import FoundationDataLogo from "~/components/orchestrate/assets/foundation-data.svg?raw"
+import RedditLogo from "~/components/orchestrate/assets/reddit.svg?raw"
+import CreditAgricoleLogo from "~/components/orchestrate/assets/credit-agricole.svg?raw"
+import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
+import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
+import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -41,6 +46,11 @@ const LOGO_MAP: Record<string, string> = {
     riverside: optimizeSvgIcon(RiversideLogo, "riverside-orch-logo"),
     slack: optimizeSvgIcon(SlackLogo, "slack-orch-logo"),
     "foundation-data": optimizeSvgIcon(FoundationDataLogo, "foundation-data-orch-logo"),
+    reddit: optimizeSvgIcon(RedditLogo, "reddit-orch-logo"),
+    "credit-agricole": optimizeSvgIcon(CreditAgricoleLogo, "credit-agricole-orch-logo"),
+    sopht: optimizeSvgIcon(SophtLogo, "sopht-orch-logo"),
+    bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
+    censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
 }
 
 export async function getStaticPaths() {
