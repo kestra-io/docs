@@ -56,7 +56,9 @@ Workflows in Kestra are defined as simple YAML files, making them easy to write,
 
 Kestra's architecture is built for modern, event-driven use cases and can be deployed anywhere, from a single Docker container to a highly available [Kubernetes cluster](/docs/installation/kubernetes). Its extensive plugin ecosystem, with over 1,200 integrations, allows it to coordinate actions across your entire stack. The platform offers a free and feature-rich open-source edition, as well as an Enterprise Edition with advanced governance and security features. You can explore a wide range of pre-built workflows in the [Blueprints library](/blueprints).
 
-**Best for:** Modern enterprises seeking a unified, flexible, and developer-friendly [infrastructure automation](/infra-automation) and orchestration platform to manage diverse workflows across the entire organization. For a deeper dive, see [Why Kestra](/docs/why-kestra) and browse the full list of [Kestra vs. Alternatives](/vs).
+- **Strengths:** Declarative YAML workflows enable real GitOps and version control. Language-agnostic execution and 1,200+ plugins unify data, AI, and infrastructure orchestration. Apache 2.0 open-source core, flexible deployment (Docker, Kubernetes, on-prem, cloud), and a modern UI with event-driven triggers and built-in RBAC/audit logs in Enterprise Edition.
+- **Weaknesses:** Not a like-for-like replacement for Redwood's specialized SAP-centric tooling — SAP-heavy shops will need to validate plugin coverage. The polyglot, code-first approach assumes engineering maturity and is less suited to teams used to GUI-only operators.
+- **Best for:** Modern enterprises seeking a unified, flexible, and developer-friendly [infrastructure automation](/infra-automation) and orchestration platform to manage diverse workflows across the entire organization. For a deeper dive, see [Why Kestra](/docs/why-kestra) and browse the full list of [Kestra vs. Alternatives](/vs).
 
 ### 2. Stonebranch Universal Automation Center
 
@@ -64,7 +66,9 @@ Stonebranch is a modern hybrid IT automation platform that positions itself as a
 
 A key strength of Stonebranch is its focus on event-driven automation and real-time operations, allowing organizations to move beyond traditional time-based scheduling. It provides a drag-and-drop workflow designer, which can be appealing for teams with less coding expertise. The platform offers a wide range of integrations, enabling it to manage everything from mainframe jobs to cloud services.
 
-**Best for:** Enterprises looking for a managed, real-time automation solution to modernize their existing IT operations and bridge the gap between legacy and cloud environments. See a direct comparison in [Kestra vs. Stonebranch](/vs/stonebranch).
+- **Strengths:** Strong event-driven and real-time capabilities, broad hybrid IT coverage from mainframe to cloud, and an approachable drag-and-drop designer. A reasonable modernization path off legacy WLA without abandoning enterprise-grade SLA semantics.
+- **Weaknesses:** Agent-based architecture adds operational complexity, and the proprietary, commercial-only model limits GitOps adoption. The visual designer can hinder true workflow-as-code practices and large-scale developer collaboration.
+- **Best for:** Enterprises looking for a managed, real-time automation solution to modernize their existing IT operations and bridge the gap between legacy and cloud environments. See a direct comparison in [Kestra vs. Stonebranch](/vs/stonebranch).
 
 ### 3. BMC Control-M
 
@@ -72,7 +76,9 @@ Control-M is one of the most established and widely used enterprise workload aut
 
 Control-M provides a centralized dashboard for monitoring and managing jobs, with strong capabilities for SLA management and dependency scheduling. Its extensive integration library ensures it can connect to almost any application or system within a large enterprise. While powerful, Control-M is a traditional WLA tool that can come with significant licensing costs and operational complexity.
 
-**Best for:** Large enterprises with heavy investments in mainframe and legacy systems that require a highly reliable and centralized platform for mission-critical batch scheduling. For more details, check out [Kestra vs. Control-M](/vs/control-m).
+- **Strengths:** Battle-tested at the largest enterprise scale, mature SLA management, deep mainframe and file-transfer support. Extensive integration library makes it a safe bet for mission-critical batch in heterogeneous environments.
+- **Weaknesses:** Significant licensing costs and operational complexity. Cloud-native and developer-experience features lag behind modern orchestrators, and modules like Control-M for WJM are nearing end-of-life — signaling broader modernization pressure.
+- **Best for:** Large enterprises with heavy investments in mainframe and legacy systems that require a highly reliable and centralized platform for mission-critical batch scheduling. For more details, check out [Kestra vs. Control-M](/vs/control-m).
 
 ### 4. Tidal Workload Automation
 
@@ -80,7 +86,9 @@ Tidal is another long-standing player in the workload automation space and a dir
 
 Tidal excels at managing complex, event-based schedules and provides a single point of control for workflows spanning multiple applications and infrastructure types. It is known for its scalability and performance in large IT environments. The user interface and underlying architecture reflect its origins as a traditional WLA tool, which may present a learning curve for teams accustomed to modern, code-first tools.
 
-**Best for:** Organizations with complex, multi-step business processes that require sophisticated scheduling and dependency management across a heterogeneous IT landscape.
+- **Strengths:** Mature scheduling engine with sophisticated dependency and event handling. Scales well in large heterogeneous estates and is a credible direct replacement for other legacy WLA tools.
+- **Weaknesses:** UI and architecture feel dated next to cloud-native orchestrators, and GitOps / workflow-as-code support is limited. Steeper learning curve for code-first teams and a closed commercial ecosystem.
+- **Best for:** Organizations with complex, multi-step business processes that require sophisticated scheduling and dependency management across a heterogeneous IT landscape.
 
 ### 5. IBM Workload Automation
 
@@ -88,7 +96,9 @@ IBM Workload Automation, formerly known as Tivoli Workload Scheduler, is a compr
 
 The platform offers both on-premises and SaaS deployment options and includes features for predictive analytics and SLA management to help prevent delays in critical business processes. Its deep integration with the broader IBM ecosystem can be a significant advantage for existing IBM customers.
 
-**Best for:** Enterprises, particularly those with a significant IBM footprint, that need a powerful and scalable solution for managing workloads across mainframe, distributed, and cloud environments. Learn more about how Kestra compares to [IBM Workload Automation](/vs/ibm-workload-automation).
+- **Strengths:** Deep integration with the IBM ecosystem, strong mainframe and zOS coverage, and credible SLA management with predictive analytics. Flexible on-prem or SaaS deployment with enterprise-grade support.
+- **Weaknesses:** Best ROI is limited to organizations with an existing IBM footprint. Licensing is expensive and opaque, modernization features lag behind cloud-native platforms, and the developer experience is dated.
+- **Best for:** Enterprises, particularly those with a significant IBM footprint, that need a powerful and scalable solution for managing workloads across mainframe, distributed, and cloud environments. Learn more about how Kestra compares to [IBM Workload Automation](/vs/ibm-workload-automation).
 
 ### 6. ActiveBatch
 
@@ -96,7 +106,9 @@ ActiveBatch by Redwood (formerly by Advanced Systems Concepts, Inc.) is a worklo
 
 The platform supports a wide range of technologies and offers features for event-driven automation, file transfers, and business process automation. Its focus on ease of use makes it a strong contender for organizations looking to empower non-developers to build and manage their own automations.
 
-**Best for:** Organizations seeking a centralized automation platform with a low-code interface and an extensive library of integrations to support both IT and business process automation.
+- **Strengths:** Low-code visual designer makes automation accessible to non-developers, with a rich pre-built integration library spanning ERPs, databases, and SaaS apps. Solid event-driven and file-transfer capabilities for IT and business process automation.
+- **Weaknesses:** GUI-first authoring is at odds with GitOps and workflow-as-code practices. Commercial-only licensing and limited developer extensibility constrain large engineering teams looking for fine-grained programmatic control.
+- **Best for:** Organizations seeking a centralized automation platform with a low-code interface and an extensive library of integrations to support both IT and business process automation.
 
 ### 7. Broadcom Automic
 
@@ -104,7 +116,9 @@ Automic Workload Automation from Broadcom is a highly scalable enterprise automa
 
 Automic provides a unified platform for orchestrating everything from mainframe jobs to microservices. It offers advanced features for version control, compliance, and analytics. As a high-end enterprise solution, it comes with a corresponding level of complexity and cost.
 
-**Best for:** Large, global enterprises that require a robust, scalable, and secure platform to automate mission-critical operations across a diverse and complex IT landscape.
+- **Strengths:** Highly scalable enterprise platform with strong security, compliance, and analytics. Broad coverage from mainframe to microservices and proven track record in mission-critical global deployments.
+- **Weaknesses:** High licensing and operational costs, steep learning curve, and limited developer-friendly tooling. Modernization momentum is slower than cloud-native orchestrators, with significant vendor lock-in.
+- **Best for:** Large, global enterprises that require a robust, scalable, and secure platform to automate mission-critical operations across a diverse and complex IT landscape.
 
 ## Comparison Table: Redwood Alternatives at a Glance
 
