@@ -151,6 +151,9 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const tocEntry = (id: string, text: string): TocLink => ({ id, depth: TOC_DEPTH, text })
 
+    const extractFirstHeading = (markdown: string): string | undefined =>
+        markdown.match(/^#{1,6}\s+(.+)$/m)?.[1]?.trim()
+
     const generateTocForPluginElements = (wrapper: Plugin): TocLink[] =>
         Object.entries(wrapper)
             .filter(([key]) => isEntryAPluginElementPredicate(key, wrapper[key as keyof Plugin]))
@@ -238,7 +241,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         return [
             ...baseTocLinks,
             ...(isRootView && rootPlugin?.longDescription
-                ? [tocEntry("how-to-use-this-plugin", "How to use this plugin")]
+                ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
             ...(isRootView && currentPluginVideos?.length > 0
                 ? [tocEntry("see-it-in-action", "See it in action")]

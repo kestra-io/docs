@@ -53,10 +53,7 @@
             </div>
         </template>
         <template v-if="description !== undefined && plugin?.longDescription">
-            <div class="description">
-                <h2 id="how-to-use-this-plugin">
-                    How to use this plugin
-                </h2>
+            <div id="how-to-use-this-plugin" class="description">
                 <div ref="contentWrap" class="markdown-container" :class="{expanded: isExpanded}">
                     <div ref="contentInner" class="markdown-inner">
                         <slot name="markdown" :content="description.replace(/ *:(?![ /])/g, ': ')" />
