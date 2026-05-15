@@ -22,9 +22,6 @@ interface Props {
 
 const props = Astro.props as Props
 
-// TechArticle JSON-LD: emit on every /docs/* page (including the index) so that
-// Google can surface documentation rich results and AI search engines can
-// attribute citations back to a canonical headline + publisher.
 const techArticleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
