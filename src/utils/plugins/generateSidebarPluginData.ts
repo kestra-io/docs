@@ -1,4 +1,4 @@
-import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
+import { type Plugin, type PluginMetadata } from "./plugin"
 import { groupBySubpackage, hasMultipleSubPackages } from "./all"
 import { nuxtBlocksFromSubGroupsWrappers } from "./nuxtBlocks"
 

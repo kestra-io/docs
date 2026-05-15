@@ -1,6 +1,6 @@
 import { generate } from "~/utils/ogImage.ts"
 import { $fetchApiCached } from "~/utils/fetch.ts"
-import type { PluginMetadata } from "@kestra-io/ui-libs"
+import type { PluginMetadata } from "~/utils/plugins/plugin"
 
 export const prerender = false
 

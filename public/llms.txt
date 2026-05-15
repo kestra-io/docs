@@ -4,6 +4,10 @@
 >
 > **For agents and LLMs:** Append `.md` to any `kestra.io/docs/*` URL to retrieve that page as plain Markdown, or set `Accept: text/markdown` on the request. For a full content snapshot of all pages, see [/llms-full.txt](/llms-full.txt). For the complete documentation index, see [/llms.txt](/llms.txt).
 
+## Tools & Capability Discovery
+
+- [MCP Server Config](https://kestra.io/.well-known/mcp): Use this to connect an agent to Kestra's orchestration tools.
+
 ## Core model
 
 Understanding these five concepts is enough to read and write most Kestra flows. Everything else in this file builds on them.
