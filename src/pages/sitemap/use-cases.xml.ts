@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
-import { slugify } from "@kestra-io/ui-libs"
+import { slugify } from "~/utils/slugify"
 import { sitemapResponse, formatLastMod, gitLastModified } from "~/utils/sitemap.ts"
 
 export const GET: APIRoute = async () => {

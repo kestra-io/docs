@@ -1,5 +1,5 @@
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs"
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
+import { isEntryAPluginElementPredicate } from "./plugin"
+import type { Plugin, PluginElement } from "./plugin"
 
 export type CardPlugin = {
     name: string

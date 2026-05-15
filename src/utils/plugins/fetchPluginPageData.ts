@@ -1,5 +1,6 @@
 import { API_URL } from "astro:env/client"
-import type { JSONSchema, Plugin, PluginMetadata } from "@kestra-io/ui-libs"
+import type { JSONSchema } from "./schema"
+import type { Plugin, PluginMetadata } from "./plugin"
 
 import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
