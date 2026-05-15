@@ -85,8 +85,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     div {
         display: flex;
         justify-content: space-between;
@@ -107,7 +105,7 @@
         }
 
         .border-red {
-            border-color: color-palette.$base-red-400 !important;
+            border-color: var(--ks-border-alert-danger) !important;
         }
 
         &:first-child {

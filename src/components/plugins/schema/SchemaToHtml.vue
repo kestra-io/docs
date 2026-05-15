@@ -161,9 +161,6 @@
 </script>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/legacy/_variables.scss" as variables;
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     .plugin-title :deep(p) {
         font-size: 1rem;
         margin: 1rem 0;
@@ -185,11 +182,11 @@
     }
 
     :deep(.plugin-section) {
-        border-bottom: 1px solid variables.$black-3;
+        border-bottom: 1px solid var(--ks-border-primary);
         padding: 2rem 0;
 
         &:first-child {
-            border-top: 1px solid variables.$black-3;
+            border-top: 1px solid var(--ks-border-primary);
         }
 
         &:last-child {
@@ -208,7 +205,7 @@
                 height: 1.5rem;
                 width: 1.5rem;
                 bottom: 0;
-                color: variables.$black-10 !important;
+                color: var(--ks-content-secondary) !important;
             }
         }
 
@@ -217,7 +214,7 @@
             & * {
                 height: 1.5rem;
                 width: 1.5rem;
-                color: color-palette.$base-gray-300 !important;
+                color: var(--ks-content-tertiary) !important;
             }
         }
     }
