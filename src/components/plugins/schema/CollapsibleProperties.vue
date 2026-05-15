@@ -109,8 +109,8 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_variables.scss" as variables;
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+    @use "/src/assets/styles/legacy/_variables.scss" as variables;
+    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
 
     .border {
         border-radius: .5rem;

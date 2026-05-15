@@ -151,7 +151,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_variables.scss" as variables;
+    @use "/src/assets/styles/legacy/_variables.scss" as variables;
 
     h2 {
         margin-top: 0;

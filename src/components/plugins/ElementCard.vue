@@ -39,7 +39,7 @@
 </script>
 
 <style scoped lang="scss">
-    @use "@kestra-io/ui-libs/src/scss/_variables.scss" as variables;
+    @use "/src/assets/styles/legacy/_variables.scss" as variables;
 
     a {
         display: block;

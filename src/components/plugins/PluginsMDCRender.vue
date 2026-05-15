@@ -25,7 +25,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
 
     @mixin section-colors($section, $color) {
         &.section-#{$section} .collapse-button span:not(.type-box),

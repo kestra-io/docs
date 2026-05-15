@@ -77,7 +77,7 @@
 </template>
 
 <style scoped lang="scss">
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
+    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
 
     .plugin {
         height: 188px;
