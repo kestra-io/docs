@@ -78,6 +78,18 @@ The foundation. An agent connected to the Kestra MCP server can write a flow wit
 
 The result is valid YAML on the first attempt, with no hallucinated property names and no tab to the plugin reference. This is the baseline: correct flows, every time.
 
+**Closing the hallucination gap with `kestractl`**
+
+The MCP tools eliminate most hallucinations — unknown property names, wrong types — but an agent can still produce structurally plausible YAML that the Kestra server rejects. The safest pattern is to validate the generated flow against a real instance before treating it as done:
+
+```bash
+kestractl flows validate my-flow.yaml --namespace prod
+```
+
+Wire this into a tool-call loop: generate the flow with the MCP tools, validate with `kestractl`, feed any validation errors back to the agent, and repeat until the server returns a clean result. This turns Level 1 from "usually correct" to "provably correct."
+
+Install [`kestractl`](https://github.com/kestra-io/kestractl) with one command — see the [kestractl docs](/docs/kestra-cli/kestractl) for setup and authentication options.
+
 ### Level 2 — Bootstrapping from Blueprints
 
 Before writing from scratch, a smarter agent checks whether the problem has already been solved:
