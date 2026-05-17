@@ -25,8 +25,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     @mixin section-colors($section, $color) {
         &.section-#{$section} .collapse-button span:not(.type-box),
         &.section-#{$section} .prop-key {
@@ -144,7 +142,7 @@
         }
 
         :deep(.section-metrics > .collapse-button > span) {
-            color: color-palette.$base-orange-400 !important;
+            color: var(--ks-special-orange) !important;
             font-size: $font-size-sm !important;
         }
     }
@@ -166,7 +164,7 @@
 
         @include section-colors("properties", var(--ks-content-property));
         @include section-colors("outputs", var(--ks-content-output));
-        @include section-colors("metrics", color-palette.$base-orange-400);
+        @include section-colors("metrics", var(--ks-special-orange));
 
         &[class*="section-"] summary.collapse-button span:not(.type-box),
         summary.collapse-button span:not(.type-box) {

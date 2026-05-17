@@ -230,8 +230,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     .bd-toc {
         @include media-breakpoint-down(lg) {
             margin: $rem-1 0;
@@ -287,7 +285,7 @@
             &::-webkit-scrollbar-thumb {
                 background: var(--ks-content-color-highlight);
                 &:hover {
-                    background: color-palette.$base-purple-600;
+                    background: var(--ks-border-active);
                 }
             }
             a {

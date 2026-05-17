@@ -93,9 +93,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
-
     strong {
         margin-left: calc($spacer * 2);
     }
