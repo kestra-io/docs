@@ -1,7 +1,7 @@
 ---
 title: "Kestra MCP: Live Documentation Access for AI Coding Agents"
 description: "The Kestra MCP server now exposes three documentation tools — search_docs, get_doc, and list_doc_children — giving AI coding agents direct access to the full Kestra documentation. Combined with the plugin and Blueprint tools, an agent can go from writing correct flows to reasoning about your entire Kestra architecture."
-date: 2026-05-12T09:00:00
+date: 2026-05-18T09:00:00
 category: Solutions
 author:
   name: François Delbrayelle
