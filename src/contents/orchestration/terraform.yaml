@@ -397,6 +397,7 @@ comparison:
   subtitle: "How Kestra compares to the platforms platform teams already use to run Terraform."
   competitors:
     - name: "Terraform Cloud / HCP"
+      pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
     - name: "GitHub Actions"
       pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
     - name: "Jenkins"
