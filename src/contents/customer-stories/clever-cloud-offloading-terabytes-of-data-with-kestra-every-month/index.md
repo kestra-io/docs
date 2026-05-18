@@ -34,6 +34,7 @@ quotePersonTitle: ""
 industry: Cloud Provider
 headquarter: Nantes, France
 region: Europe
+companySize: "51–500"
 solution: Clever Cloud is an IT Automation platform to manage all the ops work
   while you focus on your business value
 companyName: ""

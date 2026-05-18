@@ -33,6 +33,7 @@ quotePersonTitle: SOC Development Team, Government IT Provider
 industry: Government & Public Sector
 headquarter: Germany
 region: Europe
+companySize: "5,000+"
 solution: Alert orchestration for a government SOC — replacing Palo Alto XSOAR with a fully self-hosted platform covering detection, enrichment, and automated response across multiple German federal states
 companyName: Government IT Provider
 intro: A European government IT services provider managing security operations across multiple German federal states needed to replace Palo Alto XSOAR after the vendor shifted new capabilities primarily to its cloud offering. With citizen data that cannot touch a commercial cloud by law, the SOC team evaluated five alternatives — purpose-built SOARs included — and selected Kestra. They built 100+ security workflows on top of it, covering the full alert lifecycle with no cloud dependencies.

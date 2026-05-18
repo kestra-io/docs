@@ -145,6 +145,7 @@ export const collections = {
                 intro: z.string().optional(),
                 deployment: z.string().optional(),
                 useCase: z.string().optional(),
+                companySize: z.string().optional(),
                 cta: z.string().optional(),
             }),
     }),

@@ -34,6 +34,7 @@ quotePersonTitle: ""
 industry: Automotive
 headquarter: Madrid, Spain
 region: Europe
+companySize: "501–5,000"
 solution: Spain’s largest car retailer, providing a diverse range of vehicles
   from prestigious manufacturers.
 companyName: ""

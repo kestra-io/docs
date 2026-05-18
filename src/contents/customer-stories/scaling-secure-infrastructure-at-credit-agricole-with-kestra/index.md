@@ -36,6 +36,7 @@ quotePersonTitle: "PO Data "
 industry: Banking
 headquarter: Paris, France
 region: Europe
+companySize: "5,000+"
 solution: CAGIP manage the whole infrastructure ecosystem for the Credit Agricole Group
 companyName: Crédit Agricole
 cta: "What would change if your bank's infrastructure scaled securely—automated across every team, with governance built into every workflow?"

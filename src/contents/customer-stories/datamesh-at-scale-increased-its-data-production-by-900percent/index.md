@@ -34,6 +34,7 @@ quotePersonTitle: Head of Data Engineering
 industry: Retail
 headquarter: Villeneuve d'Ascq, France
 region: Europe
+companySize: "5,000+"
 solution: Global home improvement and gardening retailer
 companyName: Leroy Merlin France
 cta: "What would change if your data mesh produced 9× more data—automating the pipelines that power your entire retail operation?"

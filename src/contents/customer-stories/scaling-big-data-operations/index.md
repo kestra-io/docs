@@ -36,6 +36,7 @@ quotePersonTitle: ""
 industry: Customer Intelligence & AI-Powered Marketing
 headquarter: Conway, Arkansas, USA
 region: North America
+companySize: "5,000+"
 solution: Acxiom is a global leader in customer intelligence, identity
   management, and AI-driven marketing solutions. It serves top-tier brands while
   strictly adhering to global privacy regulations.

@@ -33,6 +33,7 @@ quotePersonTitle: ""
 industry: Travel Industry
 headquarter: Annecy, France
 region: Europe
+companySize: "1–50"
 solution: Exclusive travel agency for women only.
 companyName: ""
 cta: "What would change if your travel data pipelines ran end-to-end automatically—delivering better experiences for every traveler?"

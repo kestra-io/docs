@@ -12,6 +12,17 @@
                         <option value="">All regions</option>
                         <option v-for="reg in regions" :key="reg" :value="reg">{{ reg }}</option>
                     </select>
+                    <select v-model="activeUseCase" class="filter-select">
+                        <option value="">All use cases</option>
+                        <option v-for="uc in useCases" :key="uc" :value="uc">{{ uc }}</option>
+                    </select>
+                    <select v-model="activeCompanySize" class="filter-select">
+                        <option value="">All company sizes</option>
+                        <option value="1–50">1–50</option>
+                        <option value="51–500">51–500</option>
+                        <option value="501–5,000">501–5,000</option>
+                        <option value="5,000+">5,000+</option>
+                    </select>
                 </div>
             </div>
 
@@ -41,6 +52,8 @@
 
     const activeIndustry = ref("")
     const activeRegion = ref("")
+    const activeUseCase = ref("")
+    const activeCompanySize = ref("")
 
     const industries = computed(() => {
         const set = new Set(props.stories.map((s) => s.industry).filter(Boolean))
@@ -52,11 +65,19 @@
         return Array.from(set).sort()
     })
 
+    const useCases = computed(() => {
+        const set = new Set(props.stories.map((s) => s.useCase).filter(Boolean))
+        return Array.from(set).sort()
+    })
+
+
     const filteredStories = computed(() => {
         return props.stories.filter((s) => {
             const industryMatch = !activeIndustry.value || s.industry === activeIndustry.value
             const regionMatch = !activeRegion.value || s.region === activeRegion.value
-            return industryMatch && regionMatch
+            const useCaseMatch = !activeUseCase.value || s.useCase === activeUseCase.value
+            const companySizeMatch = !activeCompanySize.value || s.companySize === activeCompanySize.value
+            return industryMatch && regionMatch && useCaseMatch && companySizeMatch
         })
     })
 </script>

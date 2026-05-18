@@ -33,6 +33,7 @@ quotePersonTitle: Head of Data Operations
 industry: Advertising
 headquarter: Ashburn, VA.
 region: North America
+companySize: "51–500"
 solution: Foundation Data is a technology company that empowers automotive
   groups and dealerships to take control of their digital advertising.
 companyName: Foundation Data

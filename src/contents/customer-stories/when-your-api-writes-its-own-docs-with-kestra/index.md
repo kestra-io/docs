@@ -35,6 +35,7 @@ quotePersonTitle: AI/ML Lead
 industry: API Management
 headquarter: Denver, Colorado, USA
 region: North America
+companySize: "51–500"
 solution: Gravitee brings modern DevOps principles to API management with
   built-in support for GitOps, Kubernetes, and APIOps.
 companyName: Gravitee

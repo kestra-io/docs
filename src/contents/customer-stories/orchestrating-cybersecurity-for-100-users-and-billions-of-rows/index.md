@@ -34,6 +34,7 @@ quotePersonTitle: ""
 industry: Banking & Investment
 headquarter: New York City, USA
 region: North America
+companySize: "5,000+"
 solution: Helping power economic growth by creating opportunities for all
   through business and community investments, local collaborations and policy
   advocacy.

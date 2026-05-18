@@ -54,6 +54,7 @@ interface Story {
     intro?: string
     deployment?: string
     useCase?: string
+    companySize?: string
     tasks: string[]
     content: string
     featuredImage: string
