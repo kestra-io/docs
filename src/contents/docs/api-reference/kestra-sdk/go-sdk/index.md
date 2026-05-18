@@ -27,36 +27,46 @@ import openapiclient "github.com/kestra-io/client-sdk/go-sdk"
 
 ## Configure the client
 
-Set the server URL and pass credentials via the request context. Construct a single `APIClient` and reuse it across your application.
+Define two helpers — `newClient()` to build the `APIClient` and `newContext()` to attach credentials — then reuse them across your application. Read configuration from environment variables.
 
 ```go
 package main
 
 import (
     "context"
-    "fmt"
+    "os"
     openapiclient "github.com/kestra-io/client-sdk/go-sdk"
 )
 
-func main() {
-    configuration := openapiclient.NewConfiguration()
-    configuration.Servers = openapiclient.ServerConfigurations{
-        {URL: "http://localhost:8080"},
+func getenv(key, fallback string) string {
+    if v := os.Getenv(key); v != "" {
+        return v
     }
-    apiClient := openapiclient.NewAPIClient(configuration)
+    return fallback
+}
 
-    // Pass credentials on each request via context
-    ctx := context.WithValue(context.Background(), openapiclient.ContextBasicAuth, openapiclient.BasicAuth{
-        UserName: "root@root.com",
-        Password: "Root!1234",
-    })
+func newClient() *openapiclient.APIClient {
+    cfg := openapiclient.NewConfiguration()
+    cfg.Servers = openapiclient.ServerConfigurations{
+        {URL: getenv("KESTRA_URL", "http://localhost:8080")},
+    }
+    return openapiclient.NewAPIClient(cfg)
+}
 
-    fmt.Println("Client ready:", apiClient != nil, ctx != nil)
+func newContext() context.Context {
+    return context.WithValue(
+        context.Background(),
+        openapiclient.ContextBasicAuth,
+        openapiclient.BasicAuth{
+            UserName: getenv("KESTRA_USER", "root@root.com"),
+            Password: getenv("KESTRA_PASS", "Root!1234"),
+        },
+    )
 }
 ```
 
 :::alert{type="info"}
-To use bearer token authentication instead, pass `openapiclient.ContextAccessToken` with your token string as the context value.
+To use bearer token authentication instead, pass `openapiclient.ContextAccessToken` with your token string as the context value. The examples below receive `ctx` and `apiClient` from `newContext()` and `newClient()` above.
 :::
 
 ---
@@ -66,14 +76,6 @@ To use bearer token authentication instead, pass `openapiclient.ContextAccessTok
 Send the flow definition as a YAML string.
 
 ```go
-package main
-
-import (
-    "context"
-    "fmt"
-    openapiclient "github.com/kestra-io/client-sdk/go-sdk"
-)
-
 func createFlow(ctx context.Context, apiClient *openapiclient.APIClient) {
     tenant := "main"
     body := `id: my_flow
@@ -176,7 +178,7 @@ func createExecution(ctx context.Context, apiClient *openapiclient.APIClient) {
 ```
 
 :::alert{type="info"}
-`Wait(true)` blocks until the execution finishes. Use `Wait(false)` for non-blocking calls. Pass `.Labels([]string{"team:platform"})` to attach labels to the execution.
+`Wait(true)` blocks until the execution finishes. Use `Wait(false)` for non-blocking calls. Pass `.Labels([]string{"team:platform"})` to attach labels to the execution. `CreateExecution` returns a slice — the SDK wraps the single execution in an array. Always check `len(execs) > 0` before accessing `execs[0]`.
 :::
 
 ---
@@ -222,7 +224,7 @@ func getKVValue(ctx context.Context, apiClient *openapiclient.APIClient) {
 ```go
 func setKVValue(ctx context.Context, apiClient *openapiclient.APIClient) {
     tenant := "main"
-    _, err := apiClient.KVAPI.
+    _, _, err := apiClient.KVAPI.
         SetKeyValue(ctx, "my_namespace", "my_key", tenant).
         Body("my_value").
         Execute()
@@ -299,9 +301,9 @@ func searchTriggers(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ### Disable or enable a trigger
 
-```go
-import "time"
+Add `"time"` to your import block for `time.Time{}`.
 
+```go
 func disableTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
     tenant := "main"
     trigger := openapiclient.NewTrigger("my_namespace", "my_flow", "my_schedule", time.Time{})

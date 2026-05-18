@@ -1,6 +1,7 @@
 ---
 title: "JavaScript SDK for Kestra: Client Setup and Examples"
 h1: Install and Configure the Kestra JavaScript SDK
+sidebarTitle: JavaScript SDK
 description: Integrate Kestra with JavaScript using the official SDK. Install the library, configure the client, and programmatically create and execute workflows.
 icon: /src/contents/docs/icons/api.svg
 release: 1.2.0
@@ -134,6 +135,10 @@ Deleting a flow removes its definition. Execution history is retained unless you
 ## Execute a flow
 
 Trigger an execution and optionally wait for it to complete. Options such as `wait`, `labels`, and `revision` go in the fourth `opts` argument.
+
+:::alert{type="info"}
+If you used an earlier version of this SDK, the parameter order changed: `tenant` is now the third argument and `opts` is the fourth. The old positional `wait` boolean is now `{ wait: true }` inside `opts`.
+:::
 
 ```javascript
 import client from './client.js';

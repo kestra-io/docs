@@ -154,6 +154,7 @@ Trigger an execution and optionally pass labels or scheduling parameters.
 ```java
 import java.util.List;
 import java.time.OffsetDateTime;
+import io.kestra.sdk.ApiException;
 import io.kestra.sdk.model.ExecutionKind;
 
 public class ExecutionsExamples {
@@ -163,15 +164,19 @@ public class ExecutionsExamples {
         String tenant = "main";
         Boolean wait = false;
 
-        KestraClients.INSTANCE.executions()
-            .createExecution(
-                namespace, id, wait, tenant,
-                List.of("team:platform"),  // labels
-                null,                      // revision (null = latest)
-                (OffsetDateTime) null,     // scheduleDate
-                null,                      // breakpoint task ID
-                ExecutionKind.NORMAL
-            );
+        try {
+            KestraClients.INSTANCE.executions()
+                .createExecution(
+                    namespace, id, wait, tenant,
+                    List.of("team:platform"),  // labels
+                    null,                      // revision (null = latest)
+                    (OffsetDateTime) null,     // scheduleDate
+                    null,                      // breakpoint task ID
+                    ExecutionKind.NORMAL
+                );
+        } catch (ApiException e) {
+            if (e.getCode() != 0) throw e; // code 0 = deserialization-only; execution ran normally
+        }
 
         System.out.println("Execution triggered");
     }
@@ -179,7 +184,7 @@ public class ExecutionsExamples {
 ```
 
 :::alert{type="warning"}
-In SDK 1.0.0, `createExecution` successfully triggers the execution but throws a deserialization exception when reading the response — the server returns a single JSON object while the SDK expects an array. The execution runs normally. Catch `ApiException` and ignore code `0` to handle this.
+In SDK 1.0.0, `createExecution` successfully triggers the execution but throws a deserialization exception when reading the response — the server returns a single JSON object while the SDK expects an array. The execution runs normally. The `try/catch` above suppresses this by re-throwing only on a non-zero status code.
 :::
 
 ---
