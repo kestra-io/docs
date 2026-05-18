@@ -8,6 +8,7 @@ import Quotes from "~/components/common/Quotes.vue"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Link from "~/components/common/Link.astro"
 import BlogList from "~/components/common/BlogList.astro"
+import ResourceList from "~/components/common/ResourceList.astro"
 import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import CardGrid from "~/components/card/CardGrid.astro"
 import SplitBadgeCard from "~/components/card/SplitBadgeCard.astro"
@@ -29,6 +30,7 @@ import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
 import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
 import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
 import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
+import BhpLogo from "~/components/orchestrate/assets/bhp.svg?raw"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -53,6 +55,7 @@ const LOGO_MAP: Record<string, string> = {
     bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
     censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
     "west-bend": optimizeSvgIcon(WestBendLogo, "west-bend-orch-logo"),
+    bhp: optimizeSvgIcon(BhpLogo, "bhp-orch-logo"),
 }
 
 export async function getStaticPaths() {
@@ -76,6 +79,7 @@ const {
     comparison,
     faq,
     seeHow,
+    resources,
 } = entry.data
 
 let pluginIcon = ""
@@ -106,6 +110,8 @@ const relatedBlogs = allBlogs
         date: b.data.date.toISOString(),
         category: b.data.category,
     }))
+
+const hasCurated = (resources?.items ?? []).length > 0
 
 const competitorLogos: string[] = await Promise.all(
     comparison.competitors.map(async (c) => {
@@ -231,7 +237,7 @@ const comparisonTableData = comparison.rows.map((row) => {
     />
 
     {
-        (pluginDocsUrl || relatedBlogs.length > 0) && (
+        (pluginDocsUrl || hasCurated || relatedBlogs.length > 0) && (
             <section class="orch-resources">
                 <div class="container">
                     <div class="orch-resources__grid">
@@ -253,14 +259,24 @@ const comparisonTableData = comparison.rows.map((row) => {
                                 </Link>
                             </aside>
                         )}
-                        {relatedBlogs.length > 0 && (
-                            <div class="blogs-card">
-                                <BlogList
-                                    posts={relatedBlogs}
-                                    title={`Read more about ${tool.name} + Kestra`}
+                        <div class="blogs-card">
+                            {hasCurated ? (
+                                <ResourceList
+                                    items={resources!.items}
+                                    title={
+                                        resources!.title ??
+                                        `More on ${tool.name} and Kestra`
+                                    }
                                 />
-                            </div>
-                        )}
+                            ) : (
+                                relatedBlogs.length > 0 && (
+                                    <BlogList
+                                        posts={relatedBlogs}
+                                        title={`Read more about ${tool.name} + Kestra`}
+                                    />
+                                )
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -450,4 +466,5 @@ const comparisonTableData = comparison.rows.map((row) => {
             }
         }
     }
+
 </style>
