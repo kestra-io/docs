@@ -1,0 +1,176 @@
+---
+import { Image } from "astro:assets"
+
+export interface ResourceItem {
+    kind:
+        | "how-to"
+        | "blueprint"
+        | "story"
+        | "blog"
+        | "plugin"
+        | "docs"
+        | "resource"
+    title: string
+    description: string
+    href: string
+    image?: string
+}
+
+interface Props {
+    items: ResourceItem[]
+    title: string
+    headingId?: string
+}
+
+const { items, title, headingId } = Astro.props
+
+const KIND_LABEL: Record<ResourceItem["kind"], string> = {
+    "how-to": "How-to guide",
+    blueprint: "Blueprint",
+    story: "Customer story",
+    blog: "Blog",
+    plugin: "Plugin",
+    docs: "Documentation",
+    resource: "Resources",
+}
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/contents/{blogs,customer-stories}/**/*.{jpg,jpeg,png,webp}",
+)
+
+const resolved = await Promise.all(
+    items.map(async (item) => {
+        let image: ImageMetadata | undefined
+        if (item.image) {
+            const key = `/src/contents/${item.image.replace(/^\/+/, "")}`
+            const loader = imageModules[key]
+            if (loader) {
+                const mod = await loader()
+                image = mod.default
+            }
+        }
+        return {
+            ...item,
+            image,
+            kindLabel: KIND_LABEL[item.kind] ?? "Resource",
+        }
+    }),
+)
+
+const ordered = [
+    ...resolved.filter((item) => item.image),
+    ...resolved.filter((item) => !item.image),
+]
+---
+
+<div class="resource-list">
+    <h2 id={headingId}>{title}</h2>
+    <div class="resource-list__items">
+        {
+            ordered.map((item, index) => (
+                <>
+                    {index > 0 && <hr />}
+                    <a href={item.href} class="resource-card">
+                        {item.image && (
+                            <Image
+                                src={item.image}
+                                alt={item.title}
+                                class="resource-card__img"
+                                widths={[160, 320]}
+                                sizes="160px"
+                            />
+                        )}
+                        <div class="resource-card__body">
+                            <span class="resource-card__kind">
+                                {item.kindLabel}
+                            </span>
+                            <p class="resource-card__title">{item.title}</p>
+                            <p class="resource-card__desc">
+                                {item.description}
+                            </p>
+                        </div>
+                    </a>
+                </>
+            ))
+        }
+    </div>
+</div>
+
+<style lang="scss">
+    .resource-list {
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 1.5rem;
+            padding: 0;
+            color: var(--ks-content-primary);
+        }
+
+        &__items {
+            hr {
+                width: 100%;
+                border: none;
+                border-top: $block-border;
+                margin: 0;
+            }
+        }
+    }
+
+    .resource-card {
+        display: flex;
+        gap: 1rem;
+        align-items: start;
+        padding: 0.5rem;
+        margin-left: -0.5rem;
+        border-radius: 0.4rem;
+        text-decoration: none;
+        color: inherit;
+
+        &:hover {
+            background-color: var(--ks-background-secondary);
+            text-decoration: none;
+
+            .resource-card__title {
+                color: var(--ks-content-secondary);
+            }
+        }
+
+        &__img {
+            width: 125px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            border: 1px solid var(--ks-border-secondary);
+            flex-shrink: 0;
+        }
+
+        &__body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            min-width: 0;
+        }
+
+        &__kind {
+            font-size: $font-size-xs;
+            color: var(--ks-content-link);
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        &__title {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            margin: 0;
+            color: var(--ks-content-primary);
+            line-height: 1.35;
+        }
+
+        &__desc {
+            font-size: $font-size-xs;
+            color: var(--ks-content-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+    }
+</style>

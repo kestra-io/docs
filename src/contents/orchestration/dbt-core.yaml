@@ -8,7 +8,7 @@ tool:
 
 hero:
   title: "Your dbt Core runs, fully orchestrated."
-  description: "dbt Core is a CLI. It has no scheduler, no event triggers, no cross-tool coordination. Kestra wraps every run with event-driven scheduling, automatic retries, and end-to-end visibility across everything that runs before and after dbt."
+  description: "Trigger dbt build on cron, after an Airbyte sync, or on a file landing in S3. Capture per-model test failures, retry only the failed step, replay any model from history, and chain Airbyte upstream and Hightouch downstream in one execution."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -17,7 +17,7 @@ hero:
     href: "/get-started"
 
 pillars:
-  title: "Three things Kestra adds to every dbt Core run."
+  title: "Around every dbt build."
   subtitle: "dbt Core solves transformation. Kestra solves everything around it: when it runs, what triggers it, what happens next, and who ran what and when."
   items:
     - icon: "mdi:source-branch"
@@ -32,7 +32,7 @@ pillars:
 
 useCases:
   title: "How teams use dbt Core and Kestra"
-  subtitle: "Patterns data engineering teams run in production. Pick one, copy the YAML, ship it through CI."
+  subtitle: "Patterns data engineering teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
   items:
     - badge: "Scheduled"
       badgeIcon: "mdi:clock-outline"

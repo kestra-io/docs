@@ -8,7 +8,7 @@ tool:
 
 hero:
   title: "Your dbt Cloud jobs, fully orchestrated."
-  description: "dbt Cloud handles transformation scheduling inside the dbt boundary. It cannot trigger when Fivetran finishes, coordinate what happens after Hightouch syncs, or give you a shared execution history across your full pipeline. Kestra wraps every dbt Cloud job with event-driven triggers, upstream and downstream coordination, and one execution view across the tools that run before and after dbt."
+  description: "Trigger dbt Cloud jobs from Fivetran completions, S3 events, or Kafka messages. Coordinate Hightouch syncs after each job, replay any step from history, and span Airbyte, dbt Cloud, and Hightouch in one execution view."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -17,7 +17,7 @@ hero:
     href: "/get-started"
 
 pillars:
-  title: "Three things Kestra adds to every dbt Cloud job."
+  title: "Above the dbt Cloud job runner."
   subtitle: "dbt Cloud solves transformation scheduling inside the dbt layer. Kestra solves what surrounds it: when jobs trigger, what runs after them, and where the audit trail lives."
   items:
     - icon: "mdi:lightning-bolt-outline"
