@@ -22,6 +22,8 @@
   to: "/docs/api-reference"
 - regexp: "/docs/best-practices/pebble-templating-with-namespace-files/?$"
   to: "/docs/best-practices/expressions-with-namespace-files"
+- regexp: "^/docs/best-practices/foreach-and-foreachitem(/.*)?$"
+  to: "/docs/best-practices/loop"
 - regexp: "/docs/concepts/editor(/.*)?$"
   to: "/docs/ui/flows"
 - regexp: "/docs/concepts/expression/basic-usage"
