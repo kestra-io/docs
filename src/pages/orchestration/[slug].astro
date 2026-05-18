@@ -28,6 +28,7 @@ import CreditAgricoleLogo from "~/components/orchestrate/assets/credit-agricole.
 import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
 import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
 import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
+import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -51,6 +52,7 @@ const LOGO_MAP: Record<string, string> = {
     sopht: optimizeSvgIcon(SophtLogo, "sopht-orch-logo"),
     bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
     censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
+    "west-bend": optimizeSvgIcon(WestBendLogo, "west-bend-orch-logo"),
 }
 
 export async function getStaticPaths() {
@@ -204,16 +206,17 @@ const comparisonTableData = comparison.rows.map((row) => {
                 {
                     comparison.competitors.map((c, i) => (
                         <th>
-                            {competitorLogos[i] ? (
-                                <div
-                                    class="th-logo"
-                                    set:html={competitorLogos[i]}
-                                    role="img"
-                                    aria-label={c.name}
-                                />
-                            ) : (
-                                c.name
-                            )}
+                            <div class="th-competitor">
+                                {competitorLogos[i] && (
+                                    <div
+                                        class="th-logo"
+                                        set:html={competitorLogos[i]}
+                                        role="img"
+                                        aria-label={c.name}
+                                    />
+                                )}
+                                <span class="th-name">{c.name}</span>
+                            </div>
                         </th>
                     ))
                 }
@@ -326,6 +329,20 @@ const comparisonTableData = comparison.rows.map((row) => {
         :global(td) {
             width: auto !important;
             padding: 1rem 1.25rem !important;
+        }
+
+        :global(.th-competitor) {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.375rem;
+        }
+
+        :global(.th-name) {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            line-height: 1;
         }
 
         :global(.th-logo) {

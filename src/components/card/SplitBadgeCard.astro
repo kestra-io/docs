@@ -121,7 +121,7 @@ const cardClass = [
         display: flex;
         flex-direction: row;
         width: 100%;
-        padding-left: 6.875rem;
+        padding-left: 4rem;
         justify-content: space-between;
         gap: 4rem;
         border-radius: 1rem;
@@ -189,6 +189,7 @@ const cardClass = [
                 position: absolute;
                 top: 2rem;
                 left: 2rem;
+                margin-bottom: 1.125rem;
             }
 
             .badge-icon {
@@ -205,6 +206,10 @@ const cardClass = [
             gap: 2rem;
             flex: 1;
             padding-block: 4rem;
+
+            @include media-breakpoint-up(xl) {
+                padding-top: 5.125rem;
+            }
 
             @include media-breakpoint-down(xl) {
                 padding: 2rem 2rem 0;
