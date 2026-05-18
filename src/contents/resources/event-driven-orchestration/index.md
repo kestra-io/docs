@@ -55,7 +55,7 @@ With event-driven orchestration, the order creation event (a new message on an `
 
 ### Real-time responsiveness
 
-Schedules are a poor fit when data arrival is unpredictable. An hourly cron that processes files from S3 adds up to an hour of latency on every upload. An event-driven trigger starts the workflow the moment the file lands, keeping end-to-end latency in the seconds.
+Schedules are a poor fit when data arrival is unpredictable. An hourly cron that processes files from S3 adds up to an hour of latency on every upload. An event-driven trigger starts the workflow the moment the file lands, keeping end-to-end latency in the seconds. The same pattern powers high-throughput verticals — including event-driven orchestration for [automotive and connected-vehicle workloads](/use-cases/automotive) where telemetry must be processed as it streams in.
 
 ### Decoupling without losing visibility
 
@@ -220,7 +220,7 @@ Event-driven orchestration shows up in three recurring patterns worth recognizin
 
 **Data pipeline automation.** File lands in S3 or GCS, orchestrator picks it up, runs validation, loads into the warehouse, triggers dbt, and notifies stakeholders. This replaces the classic "scheduled every hour, hope the data is there" pattern.
 
-**Microservice coordination.** An order event triggers a workflow that calls payment, inventory, shipping, and notification services in a defined sequence, with compensating actions on failure. The orchestrator acts as a saga coordinator.
+**Microservice coordination.** An order event triggers a workflow that calls payment, inventory, shipping, and notification services in a defined sequence, with compensating actions on failure. The orchestrator acts as a saga coordinator — see how teams approach [microservices orchestration](/use-cases/microservices-orchestration) end-to-end.
 
 **Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications.
 

@@ -103,7 +103,7 @@ Choosing the right IT automation platform involves understanding the strengths a
 *   **Unified Platform:** Kestra bridges the gap between different domains. The same platform can orchestrate a Terraform deployment, run a dbt data transformation, and coordinate an AI agent workflow, eliminating tool sprawl.
 *   **Scalable and Enterprise-Ready:** Built on a robust JVM-based architecture, Kestra is designed for high-throughput workloads. The [Enterprise Edition](https://kestra.io/enterprise) adds features like RBAC, SSO, audit logs, and multi-tenancy for secure, governed automation at scale.
 
-Kestra is the right choice for organizations looking for a single, flexible platform to manage complex, cross-domain workflows with an engineering-first, code-adjacent approach. You can learn more about its philosophy in the [Why Kestra documentation](https://kestra.io/docs/why-kestra).
+Kestra is the right choice for organizations looking for a single, flexible platform to manage complex, cross-domain workflows with an engineering-first, code-adjacent approach — including [software providers and ISVs](/use-cases/software-providers) embedding orchestration into their own products. You can learn more about its philosophy in the [Why Kestra documentation](https://kestra.io/docs/why-kestra).
 
 ### UiPath: RPA and AI-Driven Transformation for Business Processes
 
