@@ -8,7 +8,7 @@ tool:
 
 hero:
   title: "Your Terraform runs, fully orchestrated."
-  description: "Terraform is a CLI. It has no scheduler, no native pause between plan and apply, no shared history with the steps that run before or after. Kestra wraps every run with cron and event triggers, a reviewer gate, automatic retries, and one execution view across Terraform, Ansible, and ArgoCD."
+  description: "Trigger terraform plan on cron, on a Git push, or any event. Gate between plan and apply with the Pause task, retry the failed step on transient errors, and chain Terraform, Ansible, and ArgoCD in one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -17,7 +17,7 @@ hero:
     href: "/get-started"
 
 pillars:
-  title: "Four things Kestra adds to every Terraform run."
+  title: "From plan to apply, end to end."
   subtitle: "Terraform solves reproducibility. Kestra solves the operational layer around it: when runs happen, who approves them, what runs next, and where the audit lives."
   items:
     - icon: "mdi:source-branch"
@@ -35,7 +35,7 @@ pillars:
 
 useCases:
   title: "How platform teams use Terraform and Kestra"
-  subtitle: "Patterns infrastructure teams run in production. Pick one, copy the YAML, wire it to your stack."
+  subtitle: "Patterns infrastructure teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
   items:
     - badge: "Scheduled"
       badgeIcon: "mdi:clock-outline"

@@ -115,6 +115,28 @@ const seeHowSchema = z.object({
     cta: ctaSchema.optional(),
 })
 
+const resourceItemSchema = z.object({
+    kind: z.enum([
+        "how-to",
+        "blueprint",
+        "story",
+        "blog",
+        "plugin",
+        "docs",
+        "resource",
+    ]),
+    title: z.string(),
+    description: z.string(),
+    href: z.string(),
+    image: z.string().optional(),
+})
+
+const resourcesSchema = z.object({
+    title: z.string(),
+    lead: z.string().optional(),
+    items: z.array(resourceItemSchema),
+})
+
 export const orchestrationSchema = z.object({
     title: z.string(),
     description: z.string(),
@@ -131,6 +153,7 @@ export const orchestrationSchema = z.object({
     comparison: comparisonSchema,
     faq: z.array(faqItemSchema),
     seeHow: seeHowSchema,
+    resources: resourcesSchema.optional(),
 })
 
 export type OrchestrationData = z.infer<typeof orchestrationSchema>

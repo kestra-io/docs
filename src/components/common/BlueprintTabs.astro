@@ -92,10 +92,12 @@ const {
 </section>
 
 <script>
-    document.addEventListener("astro:page-load", () => {
+    function wireBlueprintTabs() {
         for (const container of document.querySelectorAll(
             ".blueprint-tabs .inner",
         )) {
+            if ((container as HTMLElement).dataset.wired === "true") continue
+            ;(container as HTMLElement).dataset.wired = "true"
             container.addEventListener("click", (e) => {
                 const tab = (e.target as Element).closest(
                     ".header-tab",
@@ -115,7 +117,14 @@ const {
                 target.classList.add("active")
             })
         }
-    })
+    }
+
+    document.addEventListener("astro:page-load", wireBlueprintTabs)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireBlueprintTabs)
+    } else {
+        wireBlueprintTabs()
+    }
 </script>
 
 <style lang="scss">
