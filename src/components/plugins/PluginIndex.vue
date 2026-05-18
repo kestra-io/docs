@@ -151,14 +151,12 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_variables.scss" as variables;
-
     h2 {
         margin-top: 0;
     }
 
     .description {
-        border-top: 1px solid variables.$black-3;
+        border-top: 1px solid var(--ks-border-primary);
         padding: 2rem 3rem;
         margin: 0 -3rem;
     }

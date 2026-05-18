@@ -39,8 +39,6 @@
 </script>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/legacy/_variables.scss" as variables;
-
     a {
         display: block;
         height: 100%;
@@ -76,11 +74,11 @@
 
         :deep(svg) {
             font-size: 1rem;
-            color: variables.$purple-36 !important;
+            color: var(--ks-content-property) !important;
         }
 
         h6 {
-            color: variables.$white;
+            color: var(--ks-content-primary);
             font-size: 1rem;
             font-weight: 700;
             margin: 0;
@@ -98,15 +96,15 @@
             min-width: 50px;
             max-width: fit-content;
             max-height: fit-content;
-            background: variables.$black-2;
+            background: var(--ks-background-tertiary);
             border-radius: 4px;
             padding: 0.5rem;
             font-size: 0.75rem;
             color: var(--ks-content-secondary);
-            border: 1px solid variables.$black-3;
+            border: 1px solid var(--ks-border-primary);
 
             .plugin-class {
-                color: variables.$purple-50 !important;
+                color: var(--ks-content-link) !important;
                 font-size: 12px;
                 text-overflow: ellipsis;
                 overflow: hidden;

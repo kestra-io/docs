@@ -146,13 +146,10 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_variables.scss" as variables;
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     $section-colors: (
-        properties: color-palette.$base-blue-300,
-        outputs: color-palette.$base-green-300,
-        metrics: color-palette.$base-orange-400
+        properties: var(--ks-content-property),
+        outputs: var(--ks-content-output),
+        metrics: var(--ks-special-orange)
     );
 
     @each $section, $color in $section-colors {
@@ -167,7 +164,7 @@
         margin-bottom: 0.875rem;
 
         :deep(.collapse-button span:not(.type-box)) {
-            color: variables.$purple-37 !important;
+            color: var(--ks-content-link) !important;
             font-weight: 500 !important;
             font-size: 12px !important;
             font-family: "Source code pro", monospace;
@@ -182,8 +179,8 @@
             padding: 9px 1.875rem;
             font-size: 0.875rem;
             font-weight: 500;
-            background: variables.$black-9;
-            border: 1px solid variables.$black-6;
+            background: var(--ks-background-tertiary);
+            border: 1px solid var(--ks-border-primary);
             border-radius: 12px 12px 0 0;
         }
 
@@ -193,15 +190,15 @@
 
         .def-content {
             padding: 1rem 0;
-            background: variables.$black-4;
-            border: 1px solid variables.$black-6;
+            background: var(--ks-background-tertiary);
+            border: 1px solid var(--ks-border-primary);
             border-top: none;
             border-radius: 0 0 12px 12px
         }
 
         .def-property {
             padding: 9px 2rem;
-            border-bottom: 1px solid variables.$black-6;
+            border-bottom: 1px solid var(--ks-border-primary);
 
             &:last-child {
                 border-bottom: none;

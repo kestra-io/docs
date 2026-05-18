@@ -136,8 +136,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     .overview-title,
     .type {
         font-size: $font-size-sm;
