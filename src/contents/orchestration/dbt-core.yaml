@@ -178,9 +178,9 @@ quotes:
   - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle — you give flexibility, but you abstract that with a declarative approach."
     author: "Lead Data Engineer — Riverside.fm"
     logoFile: "riverside"
-  - quote: "We switched from orchestrating with dbt Cloud because Kestra hosted Core really well."
-    author: "EVP Analytics — Foundation Data"
-    logoFile: "foundation-data"
+  - quote: "In an analysis of our last pipeline, it was clear that if we had used dbt with an appropriate orchestrator, we would have cut out somewhere in the neighborhood of 90% of the Python code we wrote."
+    author: "Kent Maxwell · West Bend Insurance"
+    logoFile: "west-bend"
 blueprints:
   title: "Blueprints for dbt Core orchestration."
   lead: "Production-ready workflows. Copy the YAML, wire it to your stack."
