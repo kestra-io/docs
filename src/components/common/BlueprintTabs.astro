@@ -1,0 +1,328 @@
+---
+import Link from "~/components/common/Link.astro"
+import Snippets from "~/components/common/Snippets.vue"
+import TaskIcon from "~/components/common/TaskIcon.vue"
+
+interface BlueprintItem {
+    name: string
+    title: string
+    description: string
+    code: string
+    plugins: string[]
+    href?: string
+    ctaText?: string
+}
+
+interface Props {
+    title: string
+    lead?: string
+    items: BlueprintItem[]
+    defaultCtaText?: string
+    lang?: string
+    align?: "left" | "center"
+}
+
+const {
+    title,
+    lead,
+    items,
+    defaultCtaText = "Explore Blueprints",
+    lang = "yaml",
+    align = "center",
+} = Astro.props as Props
+---
+
+<section class:list={["blueprint-tabs", `align-${align}`]}>
+    <div class="container">
+        <h2 set:html={title} />
+        {lead && <p class="blueprint-tabs__lead" set:html={lead} />}
+        <div class="wrapper">
+            <div class="inner">
+                <div class="header row g-0">
+                    {
+                        items.map((tab, idx) => (
+                            <div
+                                class:list={[
+                                    "col-6 col-md header-tab",
+                                    { active: idx === 0 },
+                                    {
+                                        "middle-part":
+                                            idx > 0 && idx < items.length - 1,
+                                    },
+                                ]}
+                                data-tab-target={idx}
+                            >
+                                {tab.name}
+                            </div>
+                        ))
+                    }
+                </div>
+
+                {
+                    items.map((bp, idx) => (
+                        <div
+                            class:list={["content", { active: idx === 0 }]}
+                            data-tab-content={idx}
+                        >
+                            <div class="panel panel-1">
+                                <Snippets client:idle code={bp.code} lang={lang} />
+                            </div>
+                            <div class="panel panel-2">
+                                <h3>{bp.title}</h3>
+                                <p set:html={bp.description} />
+                                <div class="plugins">
+                                    {bp.plugins.map((cls) => (
+                                        <div class="plugin-icon">
+                                            <TaskIcon cls={cls} />
+                                        </div>
+                                    ))}
+                                </div>
+                                {bp.href && (
+                                    <Link class="goto" href={bp.href}>
+                                        {bp.ctaText ?? defaultCtaText}
+                                    </Link>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("astro:page-load", () => {
+        for (const container of document.querySelectorAll(
+            ".blueprint-tabs .inner",
+        )) {
+            container.addEventListener("click", (e) => {
+                const tab = (e.target as Element).closest(
+                    ".header-tab",
+                ) as HTMLElement | null
+                if (!tab) return
+                const target = (container as Element).querySelector(
+                    `[data-tab-content="${tab.dataset.tabTarget}"]`,
+                )
+                if (!target) return
+
+                for (const el of container.querySelectorAll(
+                    ".header-tab, .content",
+                )) {
+                    el.classList.remove("active")
+                }
+                tab.classList.add("active")
+                target.classList.add("active")
+            })
+        }
+    })
+</script>
+
+<style lang="scss">
+    .blueprint-tabs {
+        padding: 3rem 0 4.5rem;
+        background: var(--ks-background-primary);
+        border-bottom: $block-border;
+
+        .container {
+            max-width: 73.75rem;
+            margin: 0 auto;
+            padding-inline: 0;
+
+            h2 {
+                margin-bottom: 1rem;
+                padding-inline: $rem-1;
+                color: var(--ks-content-primary);
+            }
+        }
+
+        &__lead {
+            color: var(--ks-content-secondary);
+            font-size: $font-size-lg;
+            margin: 0 auto $rem-2;
+            max-width: 44rem;
+            padding-inline: $rem-1;
+        }
+
+        &.align-center {
+            .container h2,
+            .blueprint-tabs__lead {
+                text-align: center;
+            }
+        }
+
+        &.align-left {
+            .container h2,
+            .blueprint-tabs__lead {
+                text-align: left;
+            }
+
+            .blueprint-tabs__lead {
+                margin-left: 0;
+            }
+        }
+
+        .wrapper {
+            border: 1px solid var(--ks-border-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+            border-radius: 13px;
+
+            @include media-breakpoint-down(xl) {
+                border-radius: 0;
+            }
+
+            .inner {
+                border-radius: $rem-1;
+                background: var(--ks-background-primary-inverse);
+                overflow: clip;
+
+                @include media-breakpoint-down(xxl) {
+                    border-radius: 0;
+                }
+
+                .header {
+                    border-bottom: 1px solid var(--ks-border-secondary-inverse);
+
+                    & > div {
+                        padding: 1.1rem $rem-2;
+                        font-size: $font-size-md;
+                        color: var(--ks-content-secondary-inverse);
+                        text-align: center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        transition:
+                            background-color 0.2s,
+                            color 0.2s,
+                            border-color 0.2s;
+
+                        @include media-breakpoint-down(sm) {
+                            font-size: $font-size-sm;
+                        }
+
+                        &.active {
+                            background: var(--ks-background-secondary-inverse);
+                            border-bottom: 1px solid var(--ks-border-active);
+                            color: var(--ks-content-primary-inverse);
+                            font-weight: 600;
+                        }
+                    }
+
+                    & .middle-part {
+                        border-left: 1px solid var(--ks-border-primary-inverse);
+                        border-right: 1px solid var(--ks-border-primary-inverse);
+                    }
+                }
+
+                .content {
+                    display: none;
+                    flex-direction: row;
+                    gap: $rem-2;
+                    padding: $rem-2;
+                    justify-content: center;
+
+                    &.active {
+                        display: flex;
+                    }
+
+                    @include media-breakpoint-down(xl) {
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    @include media-breakpoint-down(sm) {
+                        padding: $rem-2 $rem-1;
+                    }
+
+                    .panel {
+                        border-radius: 0.5rem;
+                        flex-shrink: 0;
+
+                        &.panel-1 {
+                            width: 39.4375rem;
+
+                            @include media-breakpoint-down(xl) {
+                                width: 100%;
+                            }
+
+                            :global(.code-card) {
+                                border: 1px solid var(--ks-border-secondary-inverse);
+                                background: var(--ks-background-input);
+                                height: 100%;
+
+                                :global(.code-inner) {
+                                    transition: max-height 0.3s ease;
+                                }
+                                :global(.mdc-renderer pre) {
+                                    padding: 0 1rem 1rem 1rem;
+                                }
+
+                                &:global(:not(.is-expanded)) {
+                                    :global(.code-inner) {
+                                        max-height: 27.9375rem !important;
+                                    }
+                                }
+                            }
+                        }
+
+                        &.panel-2 {
+                            position: relative;
+                            padding-top: $rem-2;
+                            color: var(--ks-content-primary-inverse);
+                            width: 27.5625rem;
+
+                            @include media-breakpoint-down(xl) {
+                                width: 100%;
+                                padding-top: 0;
+                            }
+
+                            p {
+                                font-size: $font-size-lg;
+                                margin-top: $rem-1;
+                                margin-bottom: $rem-2;
+
+                                :global(code:not(pre code)) {
+                                    border: none;
+                                    border-radius: var(--bs-border-radius);
+                                    color: #3b3a41;
+                                    padding: 0 0.25rem;
+                                    background-color: #f1efff;
+                                }
+                            }
+
+                            .plugins {
+                                display: flex;
+                                gap: 0.5rem;
+                                flex-wrap: wrap;
+
+                                .plugin-icon {
+                                    width: 2.125rem;
+                                    height: 2.125rem;
+                                    padding: 0.375rem;
+                                    background: $white;
+                                    border: $block-border;
+                                    border-radius: $border-radius;
+                                }
+                            }
+
+                            .goto {
+                                position: absolute;
+                                bottom: 0;
+                                right: 0;
+                                color: var(--ks-content-link-inverse);
+                                font-weight: 600;
+
+                                @include media-breakpoint-down(xl) {
+                                    position: relative;
+                                    margin-top: $rem-3;
+                                    float: right;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+</style>

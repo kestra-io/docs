@@ -1578,6 +1578,29 @@
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
                 }
+
+                .nav-footer .btn-outline-dark {
+                    color: $white;
+                    border-color: $white;
+
+                    &:hover,
+                    &:focus,
+                    &:active {
+                        color: $black;
+                        background-color: $white;
+                        border-color: $white;
+                    }
+
+                    .slack-icon :deep(svg) {
+                        filter: brightness(0) invert(1);
+                    }
+
+                    &:hover .slack-icon :deep(svg),
+                    &:focus .slack-icon :deep(svg),
+                    &:active .slack-icon :deep(svg) {
+                        filter: brightness(0);
+                    }
+                }
             }
         }
 
