@@ -98,7 +98,7 @@ A robust DR plan is a cornerstone of business continuity, ensuring that an organ
 
 ### Preventing data loss and system downtime
 
-Downtime can have severe consequences, including direct financial losses from lost revenue, reputational damage that erodes customer trust, and potential legal or compliance penalties. A well-executed DR plan minimizes these impacts by restoring services quickly and ensuring data integrity. Effective [infrastructure monitoring](https://kestra.io/use-cases/monitoring) is a key part of this, providing early warnings of potential issues.
+Downtime can have severe consequences, including direct financial losses from lost revenue, reputational damage that erodes customer trust, and potential legal or compliance penalties — stakes that are especially high in [financial services orchestration workflows](/use-cases/financial-services) where settlement windows and regulatory SLAs leave no margin for unplanned downtime. A well-executed DR plan minimizes these impacts by restoring services quickly and ensuring data integrity. Effective [infrastructure monitoring](https://kestra.io/use-cases/monitoring) is a key part of this, providing early warnings of potential issues.
 
 ### Ensuring operational resilience
 

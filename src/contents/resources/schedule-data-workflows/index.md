@@ -41,7 +41,7 @@ A workflow schedule is the automated execution plan for a data workflow. Instead
 ### Different types of data workflows
 
 Data workflows are not a monolith; they serve various purposes within the data lifecycle. Common types include:
-- **Data Integration:** Moving data between systems, such as extracting from APIs and loading into a data warehouse. A classic example is an [ETL workflow](https://kestra.io/resources/data/etl-workflow).
+- **Data Integration:** Moving data between systems, such as extracting from APIs and loading into a data warehouse, or scheduling recurring jobs across [database management workflows](/use-cases/databases-management). A classic example is an [ETL workflow](https://kestra.io/resources/data/etl-workflow).
 - **Data Transformation:** Cleaning, standardizing, and enriching raw data to make it usable for analysis. This often involves running scripts or dbt models.
 - **Data Analysis:** Preparing aggregated datasets for business intelligence and reporting tools.
 - **Machine Learning:** Orchestrating the steps to train, evaluate, and deploy machine learning models.

@@ -134,7 +134,7 @@ errors:
     payload: '{"text": "🚨 Patch workflow failed — triggering rollback"}'
 ```
 
-Approval gates between rings, health checks at each stage, compliance evidence generated automatically, and failure handling built in. That's what "automated" looks like in practice — not fire-and-forget, but governed end-to-end.
+Approval gates between rings, health checks at each stage, compliance evidence generated automatically, and failure handling built in. That's what "automated" looks like in practice — not fire-and-forget, but governed end-to-end. Many teams reuse the same primitives for their broader [provisioning and deployment workflows](/use-cases/provisioning-and-deployment) and run patching inside their existing [CI/CD pipelines](/use-cases/ci-cd).
 
 ## Common Tools for Automated Patch Management
 
