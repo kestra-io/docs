@@ -148,7 +148,18 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
             ? getPluginTitle(subgroupPlugin, metadataMap) || formatPluginName(effectiveSubGroup)
             : null
         if (subgroupTitle && subgroupTitle !== rootPluginTitle) {
-            return `${taskName} ${rootPluginTitle} ${subgroupTitle}`
+            // Skip the parent name when the subgroup already contains it
+            // (e.g. "Google Cloud" + "Cloud Storage (GCS)" → just "Cloud Storage (GCS)")
+            const subLower = subgroupTitle.toLowerCase()
+            const rootLower = rootPluginTitle.toLowerCase()
+            const overlaps =
+                subLower.includes(rootLower) ||
+                rootLower
+                    .split(/\s+/)
+                    .some((w) => w.length > 2 && subLower.includes(w.toLowerCase()))
+            return overlaps
+                ? `${taskName} ${subgroupTitle}`
+                : `${taskName} ${rootPluginTitle} ${subgroupTitle}`
         }
         return `${taskName} ${rootPluginTitle}`
     })()
