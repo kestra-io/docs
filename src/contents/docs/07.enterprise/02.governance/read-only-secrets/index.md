@@ -241,6 +241,48 @@ kestra:
           application: kestra-production
 ```
 
+## Exclude secrets by tags
+
+Use `excluded-tags` to hide secrets from Kestra based on their tags. Any secret whose tags match at least one key-value pair in `excluded-tags` is excluded from Kestra's view, even if it would otherwise be included by `filter-on-tags`. This filter applies only when `read-only: true` is set and is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
+
+When both `filter-on-tags` and `excluded-tags` are configured, a secret must match all entries in `filter-on-tags.tags` and must not match any entry in `excluded-tags`.
+
+The following examples exclude secrets tagged `hidden: "true"` for each supported provider:
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    read-only: true
+    aws-secret-manager:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    read-only: true
+    azure-key-vault:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: google-secret-manager
+    read-only: true
+    google-secret-manager:
+      excluded-tags:
+        hidden: "true"
+```
+
+:::alert{type="info"}
+AWS Secrets Manager does not support negative tag filtering in its `ListSecrets` API. Kestra evaluates `excluded-tags` client-side after fetching the secret list from AWS.
+:::
+
 ## Filter secrets by prefix
 
 For AWS Secrets Manager, you can also filter secrets by a name prefix when using read-only mode. Use `filter-on-prefix.prefix` to select secrets whose names start with the given prefix and `filter-on-prefix.keep-prefix` to control whether the prefix is kept in the Kestra secret key.
