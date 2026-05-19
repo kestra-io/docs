@@ -148,7 +148,7 @@ tasks:
     payload: '{"text": "✅ {{ inputs.environment }} environment provisioned"}'
 ```
 
-Terraform for provisioning, Ansible for configuration, an HTTP call for CMDB registration, a notification at the end — all coordinated with retries, error handling, and audit logging built into the orchestration layer.
+Terraform for provisioning, Ansible for configuration, an HTTP call for CMDB registration, a notification at the end — all coordinated with retries, error handling, and audit logging built into the orchestration layer. The same backbone powers Kestra's broader [CI/CD automation use cases](/use-cases/ci-cd) when the trigger is a Git push instead of an input.
 
 ## Implementing Infrastructure Automation
 
@@ -189,4 +189,4 @@ The last category is where many organizations under-invest — and where the mos
 
 Infrastructure automation works when there's a clear hierarchy: IaC at the bottom, configuration management on top of it, and an orchestration layer tying everything together. Skipping the orchestration layer is where most automation programs stall — provisioning gets automated, configuration gets automated, but the end-to-end workflow stays manual.
 
-For teams evaluating orchestration for infrastructure workflows, Kestra is open-source, self-hostable, and integrates natively with Terraform, Ansible, Kubernetes, and cloud APIs. Start with the [infrastructure automation hub](/infra-automation), try the [getting-started blueprint](/blueprints/infrastructure-automation), or read the broader [declarative infrastructure approach](/blogs/infra-automation).
+For teams evaluating orchestration for infrastructure workflows, Kestra is open-source, self-hostable, and integrates natively with Terraform, Ansible, Kubernetes, and cloud APIs. Start with the [infrastructure automation hub](/infra-automation), try the [getting-started blueprint](/blueprints/infrastructure-automation), explore how [platform engineers use Kestra](/use-cases/platform-engineers) as a unified control plane, or read the broader [declarative infrastructure approach](/blogs/infra-automation).

@@ -40,7 +40,7 @@ An AI orchestrator coordinates the components of an AI system — retrieval, emb
 
 ### In container and cloud systems
 
-Container orchestrators (Kubernetes, Nomad, Amazon ECS) manage the lifecycle of containerized applications — scheduling containers across nodes, scaling replicas, recovering from failures. Cloud orchestrators (AWS Step Functions, Azure Logic Apps) coordinate cloud service calls into workflows. These are related to but distinct from workflow orchestration — they handle the runtime infrastructure rather than the workflow logic.
+Container orchestrators (Kubernetes, Nomad, Amazon ECS) manage the lifecycle of containerized applications — scheduling containers across nodes, scaling replicas, recovering from failures. Cloud orchestrators (AWS Step Functions, Azure Logic Apps) coordinate cloud service calls into workflows. These are related to but distinct from workflow orchestration — they handle the runtime infrastructure rather than the workflow logic. For the workflow-logic side of that boundary, see Kestra's [microservices orchestration use cases](/use-cases/microservices-orchestration).
 
 ## What Does a Technology Orchestrator Actually Do?
 

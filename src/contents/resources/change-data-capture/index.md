@@ -74,7 +74,7 @@ The most transformative benefit of CDC is its ability to power real-time analyti
 
 ## Use cases for change data capture
 
-CDC is a versatile technique applicable to a wide range of data integration challenges. Its ability to provide low-latency, reliable data streams makes it invaluable in many modern architectures.
+CDC is a versatile technique applicable to a wide range of data integration challenges. Its ability to provide low-latency, reliable data streams makes it invaluable in many modern architectures — see the dedicated [Change Data Capture use cases](/use-cases/change-data-capture) page for the patterns Kestra teams run in production.
 
 ### Data warehousing and ETL processes
 
@@ -82,7 +82,7 @@ CDC is a key enabler for efficient data warehousing. Instead of performing full 
 
 ### Database replication and migration
 
-When migrating from one database system to another, minimizing downtime is critical. CDC facilitates zero-downtime migrations by allowing the new database to be synchronized with the old one in real time. Once the initial data load is complete, CDC keeps the target database up-to-date with any changes occurring on the source. The cutover can then be performed with minimal disruption to applications.
+When migrating from one database system to another, minimizing downtime is critical. CDC facilitates zero-downtime migrations by allowing the new database to be synchronized with the old one in real time. Once the initial data load is complete, CDC keeps the target database up-to-date with any changes occurring on the source. The cutover can then be performed with minimal disruption to applications — a common scenario in broader [database management workflows](/use-cases/databases-management).
 
 ### Auditing and compliance
 
@@ -90,7 +90,7 @@ For industries with strict regulatory requirements, maintaining a detailed audit
 
 ### What is an example of change data capture?
 
-A classic example of CDC is in an e-commerce platform. When a customer places an order, a new record is inserted into the `orders` table in the transactional database.
+A classic example of CDC is in an e-commerce platform — a pattern that sits at the core of modern [retail data workflows](/use-cases/retail). When a customer places an order, a new record is inserted into the `orders` table in the transactional database.
 1.  A log-based CDC tool like Debezium reads this `INSERT` event from the database's transaction log.
 2.  The change event is published to a message broker like Kafka.
 3.  Multiple downstream services can consume this event in real time:

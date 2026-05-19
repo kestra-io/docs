@@ -47,7 +47,7 @@ A typical lakehouse architecture is built on several key components working in c
 - **Processing Engines:** A variety of engines can access the data directly. Apache Spark is the most common for large-scale data processing, while query engines like [DuckDB](/blogs/2024-03-14-duck-db) and Trino enable high-performance SQL analytics.
 - **Governance and Access Control:** Tools for managing security, access control, data quality, and lineage are integrated across the platform.
 
-This unified structure directly addresses the limitations of maintaining separate data lakes and data warehouses.
+This unified structure directly addresses the limitations of maintaining separate data lakes and data warehouses, and increasingly sits at the heart of the [modern data stack](/use-cases/modern-data-stack) Kestra customers operate.
 
 
 ## Lakehouse vs. Data Warehouse vs. Data Lake: Key Differentiators

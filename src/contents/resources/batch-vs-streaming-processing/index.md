@@ -80,7 +80,7 @@ State is first-class: the processor often needs to maintain rolling aggregates, 
 
 - **Low latency**: results are available within milliseconds to seconds of the event occurring.
 - **Continuous insight**: dashboards, monitors, and reactive workflows get a live view of the system rather than periodic snapshots.
-- **Reactive workflows**: streaming enables use cases that are impossible with batch — fraud blocking, dynamic pricing, real-time recommendations, [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) that kicks off downstream work the instant an event lands.
+- **Reactive workflows**: streaming enables use cases that are impossible with batch — fraud blocking, dynamic pricing, real-time recommendations, [real-time pipelines for the automotive industry](/use-cases/automotive), and [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) that kicks off downstream work the instant an event lands.
 
 ### Weaknesses
 
