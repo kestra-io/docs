@@ -1,7 +1,7 @@
 ---
 title: "Workflow Helper Functions in Kestra Expressions"
 h1: "Workflow Helper Functions"
-description: Reference for Kestra's workflow and execution helper functions — loopOutputs(), errorLogs(), currentEachOutput(), tasksWithState(), iterationOutput(), parentOutput(), and appLink().
+description: Reference for Kestra's workflow and execution helper functions — loopOutputs(), errorLogs(), currentEachOutput(), tasksWithState(), iterationOutput(), and appLink().
 sidebarTitle: Workflow Functions
 icon: /src/contents/docs/icons/expression.svg
 ---
@@ -67,15 +67,6 @@ Retrieves the output of a specific iteration from a previous task. Both argument
 ```twig
 {{ iterationOutput(outputs.myTask).value }}
 {{ iterationOutput(outputs.myTask, 2).value }}
-```
-
-## `parentOutput()`
-
-Retrieves the output of a parent task. The optional `index` argument specifies which ancestor to target; omitting it returns the direct parent's output:
-
-```twig
-{{ parentOutput() }}
-{{ parentOutput(1) }}
 ```
 
 ## `appLink()`
