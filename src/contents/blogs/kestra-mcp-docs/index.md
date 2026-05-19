@@ -36,7 +36,7 @@ schema:
         text: "No. The endpoint is the same: https://api.kestra.io/v1/mcp. The three new tools are automatically available to any connected client alongside the existing 13 tools. No reconnection or configuration change is needed if you already have the Kestra MCP server set up."
 ---
 
-The [Kestra MCP server](./2026-04-30-kestra-mcp-plugins-blueprints/index.md) started with 13 tools covering the full plugin registry and Blueprint catalog. That was enough for an AI coding agent to write correct Kestra flows: discover plugins, inspect task schemas, retrieve ready-made YAML templates.
+The [Kestra MCP server](../2026-04-30-kestra-mcp-plugins-blueprints/index.md) started with 13 tools covering the full plugin registry and Blueprint catalog. That was enough for an AI coding agent to write correct Kestra flows: discover plugins, inspect task schemas, retrieve ready-made YAML templates.
 
 It was not enough to reason about the platform itself.
 
@@ -54,7 +54,7 @@ claude mcp add --transport http kestra https://api.kestra.io/v1/mcp
 claude mcp add --transport http --scope user kestra https://api.kestra.io/v1/mcp
 ```
 
-The same endpoint also works with Codex CLI, Gemini CLI, OpenCode, and any other MCP-compatible agent — see the [Plugins & Blueprints post](./2026-04-30-kestra-mcp-plugins-blueprints/index.md) for configuration snippets.
+The same endpoint also works with Codex CLI, Gemini CLI, OpenCode, and any other MCP-compatible agent — see the [Plugins & Blueprints post](../2026-04-30-kestra-mcp-plugins-blueprints/index.md) for configuration snippets.
 
 ## The three new tools
 
