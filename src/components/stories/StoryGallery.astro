@@ -390,7 +390,6 @@ const overflowCount = featuredStory.tasks.length - maxPlugins
         .filter-bar {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             gap: 1rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
@@ -405,6 +404,7 @@ const overflowCount = featuredStory.tasks.length - maxPlugins
             font-size: 0.9375rem;
             font-weight: 600;
             color: var(--ks-content-primary);
+            margin-right: auto;
         }
 
         .filters {
@@ -426,7 +426,7 @@ const overflowCount = featuredStory.tasks.length - maxPlugins
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2387858f' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
-            min-width: 160px;
+            width: 200px;
             transition: border-color 0.15s;
 
             &:focus {
