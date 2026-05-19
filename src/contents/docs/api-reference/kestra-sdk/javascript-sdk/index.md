@@ -1,42 +1,35 @@
 ---
 title: "JavaScript SDK for Kestra: Client Setup and Examples"
 h1: Install and Configure the Kestra JavaScript SDK
+sidebarTitle: JavaScript SDK
 description: Integrate Kestra with JavaScript using the official SDK. Install the library, configure the client, and programmatically create and execute workflows.
 icon: /src/contents/docs/icons/api.svg
 release: 1.2.0
 ---
 
-Interact with Kestra's API via the JavaScript SDK.
+Use the Kestra JavaScript SDK to interact with the Kestra API from Node.js applications.
 
 ## Install the JavaScript SDK
 
-This guide shows how to create and execute flows programmatically with the JavaScript SDK.
-Before starting, ensure your Kestra instance is reachable (for example via `KESTRA_API_URL`), and keep credentials in environment variables or an `.env` file:
+Before starting, make sure your Kestra instance is reachable. Store credentials in environment variables or an `.env` file:
 
 ```bash
 KESTRA_API_URL=http://localhost:8080
 KESTRA_USERNAME=root@root.com
 KESTRA_PASSWORD=Root!1234
-# KESTRA_TOKEN=...            # optional if you use token auth instead of basic auth
+# KESTRA_TOKEN=...  # use instead of username/password for token auth
 ```
 
-Install the SDK (and `dotenv` if you want to load `.env` automatically):
+Install the SDK and `dotenv`:
 
 ```shell
 npm install @kestra-io/kestra-sdk
 npm install dotenv --save-dev
 ```
 
-:::alert{type="info"}
-**Notes**
-- Prefer environment variables over hardcoding credentials.
-- Use **either** username/password (basic auth) or an access token (bearer).
-- Reuse a single `KestraClient` instance throughout your application.
-:::
-
 ### Configure the client
 
-Initialize the client once and share it:
+Initialize `KestraClient` once and share it across your application.
 
 ```javascript
 import 'dotenv/config';
@@ -44,7 +37,7 @@ import KestraClient from '@kestra-io/kestra-sdk';
 
 const client = new KestraClient(
   process.env.KESTRA_API_URL ?? 'http://localhost:8080',
-  process.env.KESTRA_TOKEN ?? '',            // accessToken (preferred if set)
+  process.env.KESTRA_TOKEN ?? '',
   process.env.KESTRA_USERNAME ?? 'root@root.com',
   process.env.KESTRA_PASSWORD ?? 'Root!1234'
 );
@@ -52,14 +45,18 @@ const client = new KestraClient(
 export default client;
 ```
 
+:::alert{type="info"}
+Provide either `KESTRA_TOKEN` (bearer) or `KESTRA_USERNAME`/`KESTRA_PASSWORD` (basic auth), not both.
+:::
+
 ---
 
 ## Create a flow
 
-Send the flow definition as YAML. This mirrors what you would define in the UI.
+Send the flow definition as YAML. The first argument is always `tenant`.
 
 ```javascript
-import client from './client.js'; // the shared client above
+import client from './client.js';
 
 async function createFlow() {
   const tenant = 'main';
@@ -68,7 +65,7 @@ namespace: my_namespace
 tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
-    message: Hello World! 🚀
+    message: Hello World!
 `;
 
   const created = await client.flowsApi.createFlow(tenant, body);
@@ -79,25 +76,21 @@ createFlow().catch(console.error);
 ```
 
 :::alert{type="info"}
-**Important**
-- `body` must be valid flow YAML. Invalid YAML or missing fields returns a `4xx`.
-- Ensure the correct `tenant` for multi-tenant setups.
-- The response contains the created flow (including metadata and source).
+`body` must be valid flow YAML. If a flow with the same `id` and `namespace` already exists, use `updateFlow`.
 :::
 
 ---
 
 ## Update a flow
 
-Send the full YAML (including the same `id` and `namespace`) to update a flow.
+Send the full YAML — including the same `id` and `namespace` — to replace an existing flow.
 
 ```javascript
-import 'dotenv/config';
 import client from './client.js';
 
 async function updateFlow() {
   const tenant = 'main';
-  const namespace = 'company.team';
+  const namespace = 'my_namespace';
   const id = 'my_flow';
 
   const body = `id: ${id}
@@ -105,7 +98,7 @@ namespace: ${namespace}
 tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
-    message: Hello World! with update 🚀
+    message: Updated message!
 `;
 
   const updated = await client.flowsApi.updateFlow(namespace, id, tenant, body);
@@ -115,29 +108,18 @@ tasks:
 updateFlow().catch(console.error);
 ```
 
-:::alert{type="info"}
-**Tips**
-- Provide the **full** YAML on update; partial payloads are not merged.
-- Keep flow YAML in source control for versioning and code review.
-- Reuse the same `tenant`/`namespace`/`id` to target the correct flow.
-:::
-
 ---
 
 ## Delete a flow
 
-Remove a flow by `namespace`/`id`/`tenant`.
+Remove a flow by `namespace`, `id`, and `tenant`.
 
 ```javascript
-import 'dotenv/config';
 import client from './client.js';
 
 async function deleteFlow() {
   const tenant = 'main';
-  const namespace = 'company.team';
-  const id = 'my_flow';
-
-  const deleted = await client.flowsApi.deleteFlow(namespace, id, tenant);
+  const deleted = await client.flowsApi.deleteFlow('my_namespace', 'my_flow', tenant);
   console.log('Flow deleted:', deleted || 'No data returned');
 }
 
@@ -145,89 +127,96 @@ deleteFlow().catch(console.error);
 ```
 
 :::alert{type="info"}
-**Notes**
-- Deleting a flow removes its definition; executions remain in history unless separately deleted.
-- Ensure you target the correct `tenant` before deleting.
+Deleting a flow removes its definition. Execution history is retained unless you delete executions separately.
 :::
 
 ---
 
 ## Execute a flow
 
-Trigger an execution and optionally pass inputs, labels, or scheduling parameters.
+Trigger an execution and optionally wait for it to complete. Options such as `wait`, `labels`, and `revision` go in the fourth `opts` argument.
+
+:::alert{type="info"}
+If you used an earlier version of this SDK, the parameter order changed: `tenant` is now the third argument and `opts` is the fourth. The old positional `wait` boolean is now `{ wait: true }` inside `opts`.
+:::
 
 ```javascript
 import client from './client.js';
 
 async function executeFlow() {
   const tenant = 'main';
-  const namespace = 'company.team';
-  const flowId = 'my_flow';
-  const wait = true; // set false for a non-blocking call
 
-  const exec = await client.executionsApi.createExecution(namespace, flowId, wait, tenant);
-  console.log('Execution started:', exec?.id ?? 'No data returned');
+  const exec = await client.executionsApi.createExecution(
+    'my_namespace',
+    'my_flow',
+    tenant,
+    { wait: true }  // set false for a non-blocking call
+  );
+  console.log('Execution started:', exec?.id);
 }
 
 executeFlow().catch(console.error);
 ```
 
-:::alert{type="info"}
-**Notes**
-- `wait=true` blocks until the execution finishes (handy for tests/CLI).
-- You can also pass labels, schedule dates, breakpoints, variables, and inputs — see the method signature for optional parameters.
-- For multi-tenant setups, set the correct `tenant` value.
-:::
+To pass inputs, add them via `formData`:
+
+```javascript
+async function executeFlowWithInputs() {
+  const tenant = 'main';
+
+  const exec = await client.executionsApi.createExecution(
+    'my_namespace',
+    'my_flow',
+    tenant,
+    { wait: true },
+    { input_id: 'value' }  // formData: keys match flow input IDs
+  );
+  console.log('Execution started:', exec?.id);
+}
+```
 
 ---
 
 ## Delete an execution
 
-Delete an execution and optionally purge logs, metrics, and internal storage.
+Delete an execution and optionally purge its logs, metrics, and internal storage.
 
 ```javascript
 import client from './client.js';
 
 async function deleteExecution() {
-  const executionId = '6nN8Eqt0sq5gXJDj6NjfgO';
   const tenant = 'main';
-  const opts = {
-    deleteLogs: true,
-    deleteMetrics: true,
-    deleteStorage: true,
-  };
+  const executionId = 'your-execution-id';
 
-  const deleted = await client.executionsApi.deleteExecution(executionId, tenant, opts);
+  const deleted = await client.executionsApi.deleteExecution(
+    executionId,
+    tenant,
+    { deleteLogs: true, deleteMetrics: true, deleteStorage: true }
+  );
   console.log('Execution deleted:', deleted || 'No data returned');
 }
 
 deleteExecution().catch(console.error);
 ```
 
-:::alert{type="info"}
-**Notes**
-- Use the flags to remove associated logs/metrics/storage when needed.
-- Ensure you target the correct `tenant` and execution ID before deleting.
-:::
-
 ---
 
-## Follow (stream) an execution
+## Follow an execution
 
-Stream execution events/logs for live feedback.
+Stream execution events for live feedback.
 
 ```javascript
 import client from './client.js';
 
 async function followExecution() {
-  const executionId = 'your-execution-id';
   const tenant = 'main';
+  const executionId = 'your-execution-id';
 
   const stream = client.executionsApi.followExecution(executionId, tenant);
 
   stream.onmessage = (event) => {
     const data = JSON.parse(event.data || '{}');
-    if (!data || !data.state) return; // first message may be empty (keepalive)
+    if (!data || !data.state) return; // first message may be an empty keepalive
     console.log(`Event: ${data.id} | Status: ${data.state.current}`);
   };
 
@@ -241,18 +230,152 @@ followExecution().catch(console.error);
 ```
 
 :::alert{type="info"}
-**Tips**
-- The first SSE payload is an empty keepalive — skip it before processing updates.
-- If you only need the final result, poll the execution by ID instead of streaming.
-- Add retry/backoff when streaming over unstable networks.
+The first SSE payload is an empty keepalive — skip it before processing updates. If you only need the final result, poll the execution by ID instead of streaming.
 :::
+
+---
+
+## KV Store
+
+The KV Store lets you read and write key-value pairs scoped to a namespace.
+
+### Set a value
+
+```javascript
+import client from './client.js';
+
+async function setKvValue() {
+  const tenant = 'main';
+  await client.kvApi.setKeyValue('my_namespace', 'my_key', tenant, 'my_value');
+  console.log('Key set');
+}
+
+setKvValue().catch(console.error);
+```
+
+### Get a value
+
+```javascript
+import client from './client.js';
+
+async function getKvValue() {
+  const tenant = 'main';
+  const result = await client.kvApi.keyValue('my_namespace', 'my_key', tenant);
+  console.log('Value:', result?.value);
+}
+
+getKvValue().catch(console.error);
+```
+
+### List keys
+
+Use `listAllKeys` with tenant first, then options for pagination:
+
+```javascript
+import client from './client.js';
+
+async function listKvKeys() {
+  const tenant = 'main';
+  const result = await client.kvApi.listAllKeys(tenant, { page: 1, size: 50 });
+  result.results?.forEach(entry => console.log('Key:', entry.key));
+}
+
+listKvKeys().catch(console.error);
+```
+
+### Delete a key
+
+```javascript
+import client from './client.js';
+
+async function deleteKvKey() {
+  const tenant = 'main';
+  await client.kvApi.deleteKeyValue('my_namespace', 'my_key', tenant);
+  console.log('Key deleted');
+}
+
+deleteKvKey().catch(console.error);
+```
+
+---
+
+## Manage triggers
+
+Search, enable or disable, unlock, and restart triggers for flows.
+
+### Search triggers
+
+Pass tenant first, then options for pagination and filtering:
+
+```javascript
+import client from './client.js';
+
+async function searchTriggers() {
+  const tenant = 'main';
+  const result = await client.triggersApi.searchTriggers(tenant, { page: 1, size: 50 });
+  result.results?.forEach(t => {
+    console.log(`${t.triggerContext?.triggerId}: disabled=${t.triggerContext?.disabled}`);
+  });
+}
+
+searchTriggers().catch(console.error);
+```
+
+### Disable or enable a trigger
+
+```javascript
+import client from './client.js';
+import { TriggerControllerSetDisabledRequest, Trigger } from '@kestra-io/kestra-sdk';
+
+async function disableTrigger() {
+  const tenant = 'main';
+  const request = new TriggerControllerSetDisabledRequest(
+    [new Trigger('my_namespace', 'my_flow', 'my_schedule', new Date())],
+    true  // pass false to re-enable
+  );
+  await client.triggersApi.disabledTriggersByIds(tenant, request);
+  console.log('Trigger disabled');
+}
+
+disableTrigger().catch(console.error);
+```
+
+### Restart a trigger
+
+```javascript
+import client from './client.js';
+
+async function restartTrigger() {
+  const tenant = 'main';
+  await client.triggersApi.restartTrigger('my_namespace', 'my_flow', 'my_schedule', tenant);
+  console.log('Trigger restarted');
+}
+
+restartTrigger().catch(console.error);
+```
+
+### Unlock a trigger
+
+Use `unlockTrigger` to unlock a trigger that is stuck in a locked state:
+
+```javascript
+import client from './client.js';
+
+async function unlockTrigger() {
+  const tenant = 'main';
+  await client.triggersApi.unlockTrigger('my_namespace', 'my_flow', 'my_schedule', tenant);
+  console.log('Trigger unlocked');
+}
+
+unlockTrigger().catch(console.error);
+```
 
 ---
 
 ## Best practices
 
-- **Reuse your client:** Create one `KestraClient` and share it across your app.
-- **Externalize config:** Keep URL/auth in env vars or your config system.
-- **Validate YAML:** Invalid flow YAML returns `422` responses.
-- **Automate:** Combine `createFlow` + `createExecution` for CI/CD pipelines.
-- **Label consistently:** Use labels for governance, search, and routing.
+- **Reuse your client:** create one `KestraClient` and share it across your app.
+- **Externalize config:** keep URL and auth in environment variables.
+- **Validate YAML:** invalid flow YAML returns `422` responses.
+- **Combine `createFlow` and `createExecution`** for CI/CD pipelines.
+- **Use labels** for governance, search, and routing.
