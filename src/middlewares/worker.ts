@@ -89,6 +89,11 @@ const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 
 export default {
     async fetch(request, env, ctx) {
+        // Serve static assets directly without middleware overhead
+        if (/\.[a-zA-Z0-9]+$/.test(new URL(request.url).pathname)) {
+            return handle(request, env, ctx)
+        }
+
         let response: Response | undefined = undefined
         function next() {
             if (response) {
