@@ -22,7 +22,9 @@ const { featureGrid, id, columns } = Astro.props
             <table>
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>
+                            <slot name="firstCol" />
+                        </th>
                         <th>
                             <div
                                 class="th-logo"

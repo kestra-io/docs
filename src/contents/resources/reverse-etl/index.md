@@ -41,7 +41,7 @@ This shift has profound implications:
 - **Informed Sales Outreach:** Sales representatives can see a customer's product usage, recent support tickets, and lead score directly in their CRM before making a call.
 - **Proactive Customer Support:** Support teams can be alerted to product usage patterns that indicate a customer might be at risk of churning, allowing for proactive intervention.
 
-By closing the loop between data analysis and business action, Reverse ETL transforms the data warehouse from a passive reporting tool into an active, operational hub that drives intelligent business decisions across the entire organization.
+By closing the loop between data analysis and business action, Reverse ETL transforms the data warehouse from a passive reporting tool into an active, operational hub that drives intelligent business decisions across the entire organization. Mature teams typically pair this with [Change Data Capture pipelines](/use-cases/change-data-capture) so warehouse syncs reflect upstream changes within seconds rather than hours.
 
 ## Reverse ETL vs. ETL: Key Differences and Complementary Roles
 
@@ -88,7 +88,7 @@ The true power of Reverse ETL is realized when it's applied to solve real-world 
 ### Streamlining Operations and Customer Service
 
 - **Proactive Support:** Identify customers exhibiting at-risk behaviors (e.g., failed payments, low feature adoption) and automatically create a ticket in Zendesk or Intercom for a customer success manager to follow up.
-- **Inventory and Supply Chain Management:** Sync sales forecasts and demand models from the warehouse to an ERP system to optimize stock levels and prevent shortages.
+- **Inventory and Supply Chain Management:** Sync sales forecasts and demand models from the warehouse to an ERP system to optimize stock levels and prevent shortages — a foundational pattern for [retail data activation use cases](/use-cases/retail).
 - **Enhanced Fraud Detection:** Feed real-time transaction and user behavior models into payment or security systems to identify and flag suspicious activity instantly.
 
 ## How Reverse ETL Platforms Work: From Warehouse to Application

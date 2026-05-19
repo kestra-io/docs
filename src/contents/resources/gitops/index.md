@@ -99,7 +99,7 @@ flowchart LR
 3.  **Merge**: Once approved, the change is merged into the main branch.
 4.  **CI Pipeline**: The merge triggers a Continuous Integration (CI) pipeline that builds, tests, and packages the application (e.g., as a Docker image) and pushes it to a container registry. The pipeline then updates a deployment manifest (e.g., a Kubernetes YAML file) in the configuration repository with the new image tag.
 5.  **Reconciliation**: The GitOps operator running in the production environment detects the change in the configuration repository. It pulls the updated manifest and compares the desired state with the actual state of the cluster.
-6.  **Deployment**: The operator applies the necessary changes to reconcile the cluster's state with the desired state, such as deploying the new container image. This entire process can be managed and validated with [Kestra's CI/CD capabilities](https://kestra.io/docs/version-control-cicd/cicd).
+6.  **Deployment**: The operator applies the necessary changes to reconcile the cluster's state with the desired state, such as deploying the new container image. This entire process can be managed and validated with [Kestra's CI/CD capabilities](https://kestra.io/docs/version-control-cicd/cicd) — see how teams build end-to-end [CI/CD orchestration with Kestra](/use-cases/ci-cd).
 
 ### Migrating to a GitOps model
 
@@ -158,7 +158,7 @@ GitOps is a versatile framework applicable across various domains, from infrastr
 
 ### Real-world applications of GitOps
 
--   **Cloud Infrastructure Provisioning**: Managing cloud resources (VPCs, databases, IAM roles) with Terraform or OpenTofu, where changes are applied via a GitOps workflow. This is a core part of modern [infrastructure automation](https://kestra.io/use-cases/infrastructure).
+-   **Cloud Infrastructure Provisioning**: Managing cloud resources (VPCs, databases, IAM roles) with Terraform or OpenTofu, where changes are applied via a GitOps workflow. This is a core part of modern [infrastructure automation](https://kestra.io/use-cases/infrastructure) and orchestrated [provisioning and deployment workflows](/use-cases/provisioning-and-deployment).
 -   **Application Deployment**: The most common use case, deploying and managing the lifecycle of microservices and other applications on Kubernetes.
 -   **Data Pipeline Orchestration**: Versioning and deploying [data pipelines](https://kestra.io/use-cases/data-pipelines) as code. For example, dbt models, data quality tests, and orchestration flows (like Kestra's YAML files) can be managed in Git and deployed automatically.
 -   **AI Model Deployment**: Managing the deployment of machine learning models and their configurations, ensuring that a specific model version is tied to a specific Git commit for reproducibility. Kestra can orchestrate these [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) in a GitOps-native way.

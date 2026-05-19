@@ -39,7 +39,7 @@ IaC is built on a set of foundational principles that ensure its effectiveness:
 
 ## Why Infrastructure as Code is Essential for Modern IT
 
-Adopting IaC is no longer a niche practice; it's a critical component of modern DevOps and platform engineering. The benefits extend beyond simple automation, impacting speed, reliability, and cost.
+Adopting IaC is no longer a niche practice; it's a critical component of modern DevOps and [platform engineering](/use-cases/platform-engineers). The benefits extend beyond simple automation, impacting speed, reliability, and cost.
 
 - **Consistency and Reliability:** IaC eliminates configuration drift by ensuring that every environment is provisioned from the same source of truth. This consistency drastically reduces bugs and deployment failures caused by environment-specific discrepancies.
 - **Speed and Efficiency:** Automation accelerates the entire lifecycle of infrastructure management. Provisioning new environments, from a single server to a complex multi-cloud setup, can be reduced from days or weeks to minutes.
@@ -66,7 +66,7 @@ This GitOps model provides a clear history of all infrastructure modifications, 
 
 ### What are examples of Infrastructure as Code?
 IaC can be applied to a wide range of scenarios:
-- **Cloud Environment Setup:** Provisioning virtual machines, networks, storage, and IAM policies on AWS, Azure, or GCP.
+- **Cloud Environment Setup:** Provisioning virtual machines, networks, storage, and IAM policies on AWS, Azure, or GCP — see Kestra's [provisioning and deployment use cases](/use-cases/provisioning-and-deployment) for end-to-end orchestration of these flows.
 - **Web Application Deployment:** Defining the entire stack for an application, including servers, load balancers, databases, and CDN configurations.
 - **Multi-Cloud Deployments:** Using a single set of configurations to deploy infrastructure consistently across different cloud providers.
 - **CI/CD Pipelines:** Automatically creating and destroying testing and staging environments as part of the software delivery pipeline.

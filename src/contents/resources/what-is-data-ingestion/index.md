@@ -43,7 +43,7 @@ Batch data ingestion involves collecting and transferring data in large, discret
 
 Real-time ingestion involves moving data from source to target continuously, as soon as it is generated. Streaming is a specific type of real-time ingestion where data is processed as a continuous flow of events. This approach ensures that the target system is always up-to-date with the latest information.
 
-- **Use Cases:** This method is essential for applications that require immediate insights, such as fraud detection in financial transactions, real-time analytics for e-commerce websites, monitoring IoT sensor data, and personalizing user experiences on the fly. An example is using an [event-driven ingestion pattern for AWS S3](https://kestra.io/blueprints/ingest-to-datalake-event-driven).
+- **Use Cases:** This method is essential for applications that require immediate insights, such as fraud detection in financial transactions, real-time analytics for e-commerce websites, monitoring IoT sensor data, [Change Data Capture pipelines](/use-cases/change-data-capture) that stream every row-level change downstream, and personalizing user experiences on the fly. An example is using an [event-driven ingestion pattern for AWS S3](https://kestra.io/blueprints/ingest-to-datalake-event-driven).
 - **Characteristics:** The primary benefits are extremely low latency and the ability to act on data in the moment. However, these systems are typically more complex to design and maintain. Modern orchestration platforms simplify this by providing native [`Realtime Triggers`](https://kestra.io/docs/workflow-components/triggers/realtime-trigger) that can listen to message queues like Kafka, SQS, or Pulsar.
 
 For a deeper dive into different ingestion methods, explore this [guide to cloud data warehouse integration and ingestion](https://kestra.io/blogs/2024-03-06-guide-integration-ingestion).
@@ -63,7 +63,7 @@ A robust data ingestion system is composed of several key elements working in co
 
 ### Key Elements Involved
 
-- **Data Sources:** Where the data originates. This can include databases (SQL, NoSQL), APIs, log files, message queues, IoT devices, and flat files (CSV, JSON, Parquet).
+- **Data Sources:** Where the data originates. This can include databases (SQL, NoSQL) — see how Kestra fits into broader [database management workflows](/use-cases/databases-management) — APIs, log files, message queues, IoT devices, and flat files (CSV, JSON, Parquet).
 - **Connectors/Agents:** Software components that connect to data sources and extract the data. These can be API clients, database drivers, or specialized agents. A platform with a rich ecosystem of [plugins](https://kestra.io/plugins) can connect to virtually any source.
 - **Ingestion Layer:** The transport mechanism that moves the data. For real-time ingestion, this is often a message broker like Apache Kafka or AWS SQS. For batch, it might be a direct transfer protocol.
 - **Staging Area:** An intermediate storage location, such as a data lake or cloud storage (e.g., S3, GCS), where raw data is landed before further processing.
@@ -91,7 +91,7 @@ As businesses grow, so does their data. Ingestion systems must be scalable to ha
 
 ### Security and Compliance Considerations
 
-Data is a valuable and sensitive asset. During ingestion, it must be protected both in transit and at rest through encryption. Access control mechanisms like RBAC are crucial to ensure only authorized users and systems can interact with the data. Furthermore, organizations must adhere to regulatory standards like GDPR and HIPAA, which requires features like detailed [audit logs](https://kestra.io/docs/enterprise/governance/audit-logs) for compliance.
+Data is a valuable and sensitive asset. During ingestion, it must be protected both in transit and at rest through encryption. Access control mechanisms like RBAC are crucial to ensure only authorized users and systems can interact with the data. Furthermore, organizations must adhere to regulatory standards like GDPR and HIPAA — a hard requirement for [healthcare data ingestion workflows](/use-cases/healthcare) — which requires features like detailed [audit logs](https://kestra.io/docs/enterprise/governance/audit-logs) for compliance.
 
 ## Best Practices for Effective Data Ingestion
 

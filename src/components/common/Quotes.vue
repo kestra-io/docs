@@ -68,6 +68,16 @@
             >
                 Read the Story
             </a>
+            <a
+                v-if="activeItem.sourceUrl"
+                :href="activeItem.sourceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="source-link"
+            >
+                {{ activeItem.sourceLabel || "View source" }}
+                <OpenInNew class="source-icon" />
+            </a>
             <button v-if="quotes.length > 1" :disabled="activeQuote === 0" @click="onPrev">
                 <ChevronLeft />
             </button>
@@ -83,6 +93,7 @@
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+    import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
 
     const props = defineProps<{
         quotes: {
@@ -92,6 +103,8 @@
             bigLogoSrc?: string
             kpis?: { name: string; value: string }[]
             storyLink?: string
+            sourceUrl?: string
+            sourceLabel?: string
         }[]
     }>()
 
@@ -412,6 +425,18 @@
             width: fit-content;
             font-size: $font-size-xs;
             font-weight: bold;
+            gap: 0.375rem;
+        }
+
+        a.source-link {
+            color: var(--ks-content-secondary);
+
+            .source-icon {
+                :deep(svg) {
+                    width: 0.9rem;
+                    height: 0.9rem;
+                }
+            }
         }
 
         button {

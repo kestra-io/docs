@@ -134,7 +134,7 @@ A hospital needs to report patient admission rates to a public health agency. Ac
 4.  **Aggregation:** The anonymized records are loaded into a secure data mart, where they are aggregated by day, demographic group, and diagnosis code.
 5.  **Reporting:** A reporting tool generates the final admission rate report from the aggregated data.
 
-Data lineage here is crucial for auditing. It proves that the PII was correctly removed and that the aggregation logic matches the agency's specifications. This is a common pattern in many [data pipeline use cases](https://kestra.io/docs/use-cases/data-pipelines) where compliance and accuracy are non-negotiable.
+Data lineage here is crucial for auditing. It proves that the PII was correctly removed and that the aggregation logic matches the agency's specifications. This is a common pattern in many [data pipeline use cases](https://kestra.io/docs/use-cases/data-pipelines) — and a baseline expectation for [healthcare orchestration workflows](/use-cases/healthcare) — where compliance and accuracy are non-negotiable.
 
 ## The Tangible Benefits of Robust Data Lineage
 
