@@ -25,10 +25,10 @@ pillars:
       description: "The <code>vcenter.Trigger</code> and <code>esxi.Trigger</code> poll the API every minute or two for VM lifecycle events: created, removed, powered off, suspended, failed to power on. Filter by event type and a VM name regex. The payload reaches the flow as <code>trigger.events</code>, so cleanup, alerts, or DR steps run with the right VM in context."
     - icon: "mdi:camera-outline"
       title: "Snapshot-first maintenance with automatic rollback"
-      description: "<code>CreateVmSnapshot</code> runs before patches, template refreshes, or risky reconfigurations. <code>RestoreVmFromSnapshot</code> reverts on a failed health check. The snapshot ID flows forward, so every patch run has a rollback target captured per execution and a clear path home."
+      description: "<code>CreateVmSnapshot</code> runs before patches, template refreshes, or risky reconfigurations. <code>RestoreVmFromSnapshot</code> reverts on a failed health check. The snapshot ID flows forward, so every patch run has a rollback target captured per execution."
     - icon: "mdi:transit-connection-variant"
       title: "vCenter clone, Ansible configure, ServiceNow register, in one flow"
-      description: "After <code>CloneVm</code> finishes, the VM's IP, hostname, and UUID flow into the next task. <code>ansible-playbook</code> joins the domain and installs agents. ServiceNow gets a new CMDB record. BHP runs this exact sequence (\"clone the template, run a playbook, join the domain, install agents, create the ServiceNow entry\") across multiple OT and IT zones."
+      description: "After <code>CloneVm</code> finishes, the VM's IP, hostname, and UUID flow into the next task. <code>ansible-playbook</code> joins the domain and installs agents. ServiceNow gets a new CMDB record. Kestra customer BHP, a Fortune 500 industrial company, runs this exact sequence across its corporate IT and OT (operational technology, the systems running its plants and sites) network zones."
     - icon: "mdi:shield-check-outline"
       title: "Approval gates and self-service forms in front of every destructive action"
       description: "The Pause task suspends the flow before delete, reset, or template conversion. A Kestra App turns the operation into a typed form: dropdowns for the VM, the snapshot, the datastore, the target environment. Operators submit. RBAC controls who can launch what. BHP replaced its vRA self-service catalog with this pattern."
@@ -75,7 +75,7 @@ useCases:
     - badge: "Operations"
       badgeIcon: "mdi:camera-outline"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
-      description: "<code>CreateVmSnapshot</code> captures the pre-patch state. A Shell or Ansible task runs the OS update over SSH. An HTTP probe checks the application after reboot. On failure, <code>RestoreVmFromSnapshot</code> rolls back automatically and Slack alerts the on-call. The pattern matches the safe-patching blueprint shipped for Nutanix, applied to vCenter VMs."
+      description: "<code>CreateVmSnapshot</code> captures the pre-patch state. A Shell or Ansible task runs the OS update over SSH. An HTTP probe checks the application after reboot. On failure, <code>RestoreVmFromSnapshot</code> rolls back automatically and Slack alerts the on-call. The snapshot ID is preserved per execution so the rollback always lands on the right state."
       flow:
         - node: "cron trigger"
           label: "patch window"
@@ -137,7 +137,7 @@ useCases:
     - badge: "Self-service"
       badgeIcon: "mdi:account-multiple-outline"
       title: "Self-service VM operations behind a Kestra App"
-      description: "Replace the vRA service catalog with a typed form. Operators pick the template, datastore, network, and target environment from dropdowns. The same audited flow runs every time: clone, configure, register. RBAC controls who can launch what. As one BHP engineer put it: \"Everything comes from the UI with dynamic dropdowns and then the magic green button and off we go.\""
+      description: "Replace the vRA service catalog with a typed form. Operators pick the template, datastore, network, and target environment from dropdowns. The same audited flow runs every time: clone, configure, register. RBAC controls who can launch what."
       flow:
         - node: "Kestra App"
           label: "typed form"
@@ -183,7 +183,7 @@ blueprints:
     - name: "Provision, configure, register"
       title: "Provision from a vCenter template, configure with Ansible, register in ServiceNow"
       description: "<code>CloneVm</code> deploys a VM from a golden template and emits its IP and hostname. <code>ansible-playbook</code> joins the domain and installs agents, with per-step retries. <code>ServiceNow.Post</code> lands a fresh CMDB record. Slack confirms when all three steps succeed."
-      href: "/blueprints"
+      href: "/blueprints/vmware-provision-configure-register"
       plugins:
         - "io.kestra.plugin.ee.vmware.vcenter.CloneVm"
         - "io.kestra.plugin.ansible.cli.AnsibleCLI"
@@ -253,7 +253,7 @@ blueprints:
     - name: "Snapshot-gated patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on vCenter, runs the OS update over SSH, probes the application, and restores the snapshot if the probe fails. The snapshot ID is preserved per execution so the rollback always lands on the right state."
-      href: "/blueprints"
+      href: "/blueprints/vmware-safe-patching"
       plugins:
         - "io.kestra.plugin.ee.vmware.vcenter.CreateVmSnapshot"
         - "io.kestra.plugin.scripts.shell.Commands"
@@ -391,9 +391,9 @@ comparison:
       pluginClass: "io.kestra.plugin.jenkins.JobBuild"
   rows:
     - feature: "Workflow language"
-      kestra: "✓ Declarative YAML, Git-native"
+      kestra: "✓ Declarative YAML, Git-native, plus polyglot scripts (Python, JS, Bash, Groovy, R)"
       values:
-        - "JavaScript in vRO (proprietary APIs)"
+        - "Polyglot vRO actions (JS, PowerShell, Python) with proprietary APIs"
         - "Cypher / Morpheus-specific scripts"
         - "Groovy pipelines"
     - feature: "Event triggers on vCenter / ESXi"
@@ -443,7 +443,7 @@ faq:
   - question: "Does Kestra replace VMware vCenter and ESXi?"
     answer: "No. vCenter and ESXi continue to run your VMs. Kestra calls the vCenter and ESXi APIs through the <code>io.kestra.plugin.ee.vmware</code> plugin to run the operations you used to script: <code>CloneVm</code>, <code>CreateVmSnapshot</code>, <code>RestoreVmFromSnapshot</code>, <code>UpdateVm</code>, and so on. The hypervisor stays where it is. Kestra orchestrates the workflow around it."
   - question: "What about vRealize Automation (vRA) and vRealize Orchestrator (vRO)?"
-    answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. BHP cut licensing cost by 90% and reduced time-to-deliver from 6 months to 6 days by moving off Aria Automation onto Kestra, while keeping vCenter and ESXi exactly as they were. The vRA service catalog becomes Kestra Apps. vRO JavaScript workflows become Kestra YAML flows. The hypervisor doesn't move."
+    answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. BHP cut licensing cost by 90% and reduced time-to-deliver from 6 months to 6 days by moving off Aria Automation onto Kestra, while keeping vCenter and ESXi exactly as they were. The vRA service catalog becomes Kestra Apps. vRO actions (JavaScript, PowerShell, or Python) become Kestra YAML flows that can still call the same scripts. The hypervisor doesn't move."
   - question: "Does the plugin work with both vCenter-managed clusters and standalone ESXi hosts?"
     answer: "Yes. The plugin ships two task groups: <code>io.kestra.plugin.ee.vmware.vcenter.*</code> for vCenter-managed environments, and <code>io.kestra.plugin.ee.vmware.esxi.*</code> for standalone ESXi hosts. The task names match (CreateVm, StartVm, CreateVmSnapshot, RestoreVmFromSnapshot, and so on), so the same flow shape works against either endpoint. Template and clone operations are vCenter-only."
   - question: "How do the vCenter and ESXi event triggers actually work?"
@@ -484,7 +484,7 @@ resources:
       href: "/plugins/plugin-ee-vmware"
 
 seeHow:
-  title: "Ready to orchestrate vSphere without the legacy automation layer?"
+  title: "Ready to orchestrate VMware without the legacy automation layer?"
   description: "Keep vCenter and ESXi. Replace vRA/vRO with declarative YAML flows: event triggers, snapshot-gated patching, self-service forms, and one audit trail across VMware, Ansible, Terraform, and ServiceNow."
   cta:
     label: "Book a Demo"
