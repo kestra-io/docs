@@ -49,10 +49,10 @@ We now moved the storage of task metrics in a dedicated place out of the task at
 
 ### Log a message and fetch logs
 
-Logging messages is one of the most common things developers do. In a Kestra flow, logging was previously done with the [Echo](/plugins/core/tasks/debugs/io.kestra.plugin.core.debug.echo) task that was on a `debugs` group of plugins. The naming and semantics of the Echo task were not very good and with the new auto-completion feature, we think people may have difficulty finding it.
-That’s why we created a new [Log](/plugins/core/tasks/log/io.kestra.plugin.core.log.log) task to replace the old Echo task that is now deprecated (don’t panic, we will keep it around for a long time). This new task allows logging one or more messages at once.
+Logging messages is one of the most common things developers do. In a Kestra flow, logging was previously done with the [Echo](/plugins/core/debug) task that was on a `debugs` group of plugins. The naming and semantics of the Echo task were not very good and with the new auto-completion feature, we think people may have difficulty finding it.
+That’s why we created a new [Log](/plugins/core/log/io.kestra.plugin.core.log.log) task to replace the old Echo task that is now deprecated (don’t panic, we will keep it around for a long time). This new task allows logging one or more messages at once.
 
-We also added a new [Fetch](/plugins/core/tasks/log/io.kestra.plugin.core.log.fetch) task to retrieve logs so now a flow can access its own log, for example, to send error logs from a notification task in case of failure.
+We also added a new [Fetch](/plugins/core/log) task to retrieve logs so now a flow can access its own log, for example, to send error logs from a notification task in case of failure.
 
 ### Fail task
 
