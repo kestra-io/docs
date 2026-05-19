@@ -61,6 +61,19 @@ const flowId      = computed(() => attrs.flowId as string | undefined);
 
 When `displayMode` is `"full"` the component renders in an expanded drawer; otherwise it renders inline in the compact topology node.
 
+:::alert{type="warning"}
+During certain render phases, `namespace` and `flowId` may arrive as unresolved URL template strings — e.g. `"{namespace}"` instead of `"myteam"`. These strings are truthy in JavaScript, so a plain `if (!namespace.value)` check won't catch them. Always guard with a `startsWith("{")` check before making API calls:
+
+```ts
+async function loadFlowData() {
+  const ns = namespace.value;
+  const fid = flowId.value;
+  if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return;
+  // safe to call SDK
+}
+```
+:::
+
 ### `topology-task-drawer`
 
 Renders in the **flow editor** (low-code editor) drawer when a task node is selected. Receives the same props as `topology-details`. This slot targets the design-time context, so `execution` may be absent.
@@ -220,6 +233,25 @@ Key API functions for topology and log components:
 
 :::alert{type="info"}
 Wrap every SDK call in `try { … } catch { /* best-effort */ }`. In Storybook and the local dev server (`npm run dev`) there is no Kestra host, so calls will fail — the component should degrade gracefully and fall back to whatever static data the stories or dev harness provides via props.
+:::
+
+:::alert{type="warning"}
+**404 responses trigger a full-page error overlay.** The SDK's 404 interceptor unconditionally sets `coreStore.error = 404`, which replaces the entire Kestra UI with an error page. Passing `showMessageOnError: false` is **not enough** — that only suppresses toast messages; the 404 interceptor runs before that check.
+
+For any SDK call that may legitimately return 404 (e.g. fetching a flow definition before the flow has been saved), pass `validateStatus` to route the 404 through the success path instead of the error interceptor:
+
+```ts
+import { flow } from "@kestra-io/kestra-sdk";
+
+try {
+  const f = await flow(
+    { path: { namespace: ns, id: fid } },
+    { showMessageOnError: false, validateStatus: (s: number) => s === 200 || s === 404 },
+  );
+  // f.tasks will be undefined on a 404 — handle that gracefully
+  const tasks = (f as any)?.tasks as any[] | undefined;
+} catch { /* best-effort */ }
+```
 :::
 
 ## Configuring the exposed components
