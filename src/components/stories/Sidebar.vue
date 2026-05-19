@@ -11,7 +11,7 @@
         </div>
 
         <div class="sidebar-company-name">{{ displayName }}</div>
-        <div v-if="story.solution" class="sidebar-company-desc">{{ story.solution }}</div>
+        <div v-if="story.tagline" class="sidebar-company-desc">{{ story.tagline }}</div>
 
         <div class="sidebar-fields">
             <div class="sidebar-field">

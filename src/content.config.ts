@@ -148,6 +148,7 @@ export const collections = {
                 region: z.string(),
                 headquarter: z.string(),
                 solution: z.string(),
+                tagline: z.string().optional(),
                 excerpt: z.string().optional(),
                 companyName: z.string(),
                 intro: z.string().optional(),

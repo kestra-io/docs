@@ -50,6 +50,7 @@ interface Story {
     region: string
     headquarter: string
     solution: string
+    tagline?: string
     companyName: string
     intro?: string
     deployment?: string

@@ -33,6 +33,7 @@ headquarter: Jakarta, Indonesia
 region: Asia Pacific
 companySize: "51–500"
 solution: Flights and Hotels booking solution
+tagline: Online travel platform for flight and hotel bookings
 companyName: ""
 cta: "What would change if your travel data workflows ran smarter—automating the complex pipelines that power bookings, pricing, and experiences?"
 ---

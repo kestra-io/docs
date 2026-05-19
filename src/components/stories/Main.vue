@@ -60,6 +60,8 @@
 </script>
 
 <style scoped lang="scss">
+    $purple: #631bff;
+
     .story-main {
         min-width: 0;
         width: 100%;
@@ -129,7 +131,7 @@
         font-size: 2.5rem;
         font-weight: 700;
         letter-spacing: -0.03em;
-        color: var(--ks-content-link);
+        color: $purple;
         line-height: 1;
         margin-bottom: 0.4rem;
     }
@@ -149,14 +151,13 @@
     }
 
     .pull-quote {
-        background: rgba(99, 27, 255, 0.04);
-        border: 1px solid rgba(99, 27, 255, 0.12);
+        background: rgba($purple, 0.06);
         border-radius: 0.75rem;
-        padding: 1.5rem 1.75rem;
+        padding: 2rem 2rem;
         margin: 0 0 2.5rem;
 
         .pull-quote-text {
-            font-size: 1.0625rem;
+            font-size: 1.125rem;
             font-weight: 700;
             color: var(--ks-content-primary);
             line-height: 1.75;
@@ -166,7 +167,7 @@
 
         .open-quote,
         .close-quote {
-            color: var(--ks-content-link);
+            color: $purple;
         }
 
         .open-quote {
@@ -242,7 +243,7 @@
         }
 
         blockquote {
-            border-left: 3px solid rgba(99, 27, 255, 0.3);
+            border-left: 3px solid rgba($purple, 0.3);
             padding: 0.25rem 0 0.25rem 1.25rem;
             margin: 1.5rem 0;
             font-style: italic;
@@ -294,7 +295,7 @@
         }
 
         .problem-item {
-            border-left: 2px solid rgba(99, 27, 255, 0.15);
+            border-left: 2px solid rgba($purple, 0.61);
             padding: 0 0 2rem 1.5rem;
             position: relative;
 
@@ -310,7 +311,7 @@
                 width: 8px;
                 height: 8px;
                 border-radius: 50%;
-                background: rgba(99, 27, 255, 0.25);
+                background: rgba($purple, 0.61);
             }
         }
 
@@ -318,23 +319,22 @@
             font-family: "JetBrains Mono", monospace;
             font-size: 0.65rem;
             font-weight: 500;
-            color: rgba(99, 27, 255, 0.4);
+            color: var(--ks-content-tertiary);
             letter-spacing: 0.1em;
-            text-transform: uppercase;
             margin-bottom: 0.3rem;
             display: block;
         }
 
         .problem-title {
-            font-size: 0.9375rem;
+            font-size: 1rem;
             font-weight: 700;
             color: var(--ks-content-primary);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
             line-height: 1.4;
         }
 
         .problem-desc {
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
             color: var(--ks-content-secondary);
             line-height: 1.75;
             margin-bottom: 0;
@@ -352,54 +352,60 @@
         .problem-close-prefix {
             font-size: 1rem;
             font-weight: 700;
-            color: var(--ks-content-link);
+            color: rgba($purple, 0.9);
             margin-bottom: 0.5rem;
         }
 
         .problem-close-key {
-            color: var(--ks-content-link);
+            color: rgba($purple, 0.9);
             font-weight: 600;
+        }
+
+        #the-problem,
+        #what-kestra-fixed,
+        #kestra-in-the-soc-environment {
+            margin-bottom: 2rem;
         }
 
         /* ── FIX LIST ── */
         .fix-list {
             display: flex;
             flex-direction: column;
-            gap: 1.75rem;
-            margin-bottom: 1rem;
+            gap: 2.5rem;
+            margin-bottom: 2.5rem;
         }
 
         .fix-item {
             display: flex;
-            gap: 1rem;
+            gap: 1.25rem;
             align-items: flex-start;
         }
 
         .fix-check {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             flex-shrink: 0;
             margin-top: 0.1rem;
             border-radius: 50%;
-            background: rgba(13, 158, 110, 0.1);
-            border: 1px solid rgba(13, 158, 110, 0.3);
+            background: rgba(13, 158, 110, 0.06);
+            border: 1px solid rgba(13, 158, 110, 0.18);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.6rem;
-            color: #0d9e6e;
+            font-size: 0.7rem;
+            color: rgba(13, 158, 110, 0.6);
         }
 
         .fix-title {
-            font-size: 0.9375rem;
+            font-size: 1.0625rem;
             font-weight: 700;
             color: var(--ks-content-primary);
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
             line-height: 1.4;
         }
 
         .fix-desc {
-            font-size: 0.875rem;
+            font-size: 0.9375rem;
             color: var(--ks-content-secondary);
             line-height: 1.75;
             margin-bottom: 0;
@@ -407,14 +413,15 @@
 
         /* ── RESULTS LIST ── */
         .results-list {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 0 1.5rem;
         }
 
         .result-item {
             display: grid;
-            grid-template-columns: 9rem 1fr;
-            gap: 1.5rem;
+            grid-column: 1 / -1;
+            grid-template-columns: subgrid;
             align-items: baseline;
             padding: 1.125rem 0;
             border-bottom: 1px solid var(--ks-border-secondary);

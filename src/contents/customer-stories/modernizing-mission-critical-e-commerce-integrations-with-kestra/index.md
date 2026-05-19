@@ -32,6 +32,7 @@ headquarter: São Paulo, Brazil
 region: Latin America
 companySize: "51–500"
 solution: E-commerce & Data Platform
+tagline: Latin America's largest wine e-commerce platform
 companyName: Víssimo
 cta: "What would change if your e-commerce integrations ran mission-critical workflows automatically—keeping inventory, orders, and fulfillment in sync at scale?"
 ---

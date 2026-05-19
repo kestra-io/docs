@@ -14,7 +14,7 @@
             </div>
             <div class="card-info">
                 <span class="card-company">{{ displayName }}</span>
-                <p class="card-short-desc">{{ story.excerpt || story.solution }}</p>
+                <p class="card-short-desc">{{ story.excerpt || story.tagline }}</p>
             </div>
         </div>
 
