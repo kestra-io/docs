@@ -175,7 +175,7 @@ While specialized data observability platforms exist, an orchestration platform 
 
 ### Building Observable Data Pipelines with Kestra's Declarative Workflows
 
-Kestra's [declarative orchestration](https://kestra.io/docs/declarative-data-orchestration) model, based on simple YAML files, makes pipelines inherently observable. Every aspect of the workflow—dependencies, tasks, triggers, and error handling—is explicitly defined, version-controlled in Git, and auditable.
+Kestra's declarative orchestration model, based on simple YAML files, makes pipelines inherently observable. Every aspect of the workflow—dependencies, tasks, triggers, and error handling—is explicitly defined, version-controlled in Git, and auditable.
 
 You can embed observability checks directly into your flows. For example, a simple task can query a table's metadata to check its row count or latest partition date, providing freshness and volume metrics with every run.
 
