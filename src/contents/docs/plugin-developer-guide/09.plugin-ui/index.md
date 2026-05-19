@@ -45,19 +45,21 @@ interface TopologyDetailsProps {
   task: Record<string, unknown>;
   /** The latest execution state for this task, if available */
   execution: Record<string, unknown>;
-  /** The flow namespace */
-  namespace: string;
-  /** The flow ID */
-  flowId: string;
 }
 ```
 
-Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. The component is also passed a `displayMode` attribute — when its value is `"full"` the component renders in an expanded drawer; otherwise it renders inline in the compact topology node. Use `useAttrs()` to read it:
+Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly.
+
+The host also injects `namespace`, `flowId`, and `displayMode` as HTML attributes — they are not declared in the props type, so they land in `attrs`, not `props`. Use `useAttrs()` to read them:
 
 ```ts
 const attrs = useAttrs();
-const isFullView = computed(() => attrs.displayMode === "full");
+const isFullView  = computed(() => attrs.displayMode === "full");
+const namespace   = computed(() => attrs.namespace as string | undefined);
+const flowId      = computed(() => attrs.flowId as string | undefined);
 ```
+
+When `displayMode` is `"full"` the component renders in an expanded drawer; otherwise it renders inline in the compact topology node.
 
 ### `topology-task-drawer`
 
@@ -67,10 +69,10 @@ Renders in the **flow editor** (low-code editor) drawer when a task node is sele
 interface TopologyTaskDrawerProps {
   task: Record<string, unknown>;
   execution: Record<string, unknown>;
-  namespace: string;
-  flowId: string;
 }
 ```
+
+Same as `topology-details`, `namespace`, `flowId`, and `displayMode` are injected as attributes and must be read via `useAttrs()`.
 
 You can reuse the same Vue component file for both `topology-details` and `topology-task-drawer` — just register it under both slot names in `vite.config.ts` and use `displayMode` to adjust what is rendered (see [Configuring the exposed components](#configuring-the-exposed-components)).
 
@@ -292,21 +294,27 @@ import { execution as fetchExecution, flow as fetchFlowDef, searchByExecution } 
 const props = defineProps<TopologyDetailsProps>();
 const attrs = useAttrs();
 const isFullView = computed(() => attrs.displayMode === "full");
+const namespace  = computed(() => attrs.namespace as string | undefined);
+const flowId     = computed(() => attrs.flowId as string | undefined);
 
 const taskId = computed(() => props.task?.id as string | undefined);
 
-// Fetch the full flow definition to resolve task config that may not be in props.task
+// Fetch the full flow definition to resolve task config that may not be in props.task.
+// namespace/flowId come from attrs (injected by the host), not from props.
 const flowTask = ref<Record<string, any> | null>(null);
 
 async function loadFlowTask() {
+  if (!namespace.value || !flowId.value) return;
   try {
-    const f = await fetchFlowDef({ path: { namespace: props.namespace, id: props.flowId } });
+    const f = await fetchFlowDef({ path: { namespace: namespace.value, id: flowId.value } });
     const tasks = (f as any).tasks as any[] | undefined;
     flowTask.value = tasks?.find((t: any) => t.id === taskId.value) ?? null;
   } catch { /* best-effort */ }
 }
 
-loadFlowTask();
+watch([namespace, flowId], ([ns, fid]) => {
+  if (ns && fid) loadFlowTask();
+}, { immediate: true });
 
 const projectId = computed(() =>
   (props.task?.projectId ?? flowTask.value?.projectId) as string | undefined
