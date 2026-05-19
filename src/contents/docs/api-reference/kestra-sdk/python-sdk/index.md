@@ -28,7 +28,7 @@ uv pip install kestrapy
 uv pip install python-dotenv  # optional: loads .env automatically
 ```
 
-### Configure the client
+## Configure the client
 
 Import and initialize the client with your Kestra credentials. Construct `KestraClient` once and reuse it throughout your application.
 

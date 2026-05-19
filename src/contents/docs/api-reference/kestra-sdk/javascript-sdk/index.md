@@ -27,7 +27,7 @@ npm install @kestra-io/kestra-sdk
 npm install dotenv --save-dev
 ```
 
-### Configure the client
+## Configure the client
 
 Initialize `KestraClient` once and share it across your application.
 
