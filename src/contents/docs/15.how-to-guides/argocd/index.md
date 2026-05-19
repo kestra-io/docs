@@ -151,7 +151,7 @@ ArgoCD now watches your repository. Because the chart is vendored, syncs do not 
 
 ## Trigger ArgoCD syncs from Kestra flows
 
-If you use Kestra to orchestrate infrastructure operations, the [ArgoCD plugin](/plugins/plugin-argocd/tasks/apps/io.kestra.plugin.argocd.apps.sync) lets you trigger and monitor ArgoCD application syncs directly from a flow:
+If you use Kestra to orchestrate infrastructure operations, the [ArgoCD plugin](/plugins/plugin-argocd/io.kestra.plugin.argocd.apps.sync) lets you trigger and monitor ArgoCD application syncs directly from a flow:
 
 ```yaml
 id: deploy_kestra_upgrade
