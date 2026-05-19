@@ -125,7 +125,7 @@ GitOps, on the other hand, is a "pull-based" model for continuous deployment. Th
 
 Jenkins is a powerful, general-purpose automation server often used to build traditional, imperative CI/CD pipelines. In a Jenkins-based workflow, the deployment logic is typically defined in a script (like a `Jenkinsfile`). This script dictates the steps to deploy an application.
 
-GitOps takes a declarative approach. Instead of scripting *how* to deploy, you declare *what* the end state should look like in Git. The GitOps operator handles the "how." This reduces the need for complex deployment scripts and makes the system state more transparent and auditable. While Jenkins can be part of a GitOps workflow (e.g., for the CI part), it is fundamentally different from the declarative, state-driven model of GitOps tools. For a deeper comparison, see [Kestra vs. Jenkins](https://kestra.io/vs/jenkins).
+GitOps takes a declarative approach. Instead of scripting *how* to deploy, you declare *what* the end state should look like in Git. The GitOps operator handles the "how." This reduces the need for complex deployment scripts and makes the system state more transparent and auditable. While Jenkins can be part of a GitOps workflow (e.g., for the CI part), it is fundamentally different from the declarative, state-driven model of GitOps tools.
 
 ### What is the difference between AIOps and GitOps?
 
@@ -158,9 +158,9 @@ GitOps is a versatile framework applicable across various domains, from infrastr
 
 ### Real-world applications of GitOps
 
--   **Cloud Infrastructure Provisioning**: Managing cloud resources (VPCs, databases, IAM roles) with Terraform or OpenTofu, where changes are applied via a GitOps workflow. This is a core part of modern [infrastructure automation](https://kestra.io/use-cases/infrastructure) and orchestrated [provisioning and deployment workflows](/use-cases/provisioning-and-deployment).
+-   **Cloud Infrastructure Provisioning**: Managing cloud resources (VPCs, databases, IAM roles) with Terraform or OpenTofu, where changes are applied via a GitOps workflow. This is a core part of modern infrastructure automation and orchestrated [provisioning and deployment workflows](/use-cases/provisioning-and-deployment).
 -   **Application Deployment**: The most common use case, deploying and managing the lifecycle of microservices and other applications on Kubernetes.
--   **Data Pipeline Orchestration**: Versioning and deploying [data pipelines](https://kestra.io/use-cases/data-pipelines) as code. For example, dbt models, data quality tests, and orchestration flows (like Kestra's YAML files) can be managed in Git and deployed automatically.
+-   **Data Pipeline Orchestration**: Versioning and deploying data pipelines as code. For example, dbt models, data quality tests, and orchestration flows (like Kestra's YAML files) can be managed in Git and deployed automatically.
 -   **AI Model Deployment**: Managing the deployment of machine learning models and their configurations, ensuring that a specific model version is tied to a specific Git commit for reproducibility. Kestra can orchestrate these [AI workflows](https://kestra.io/docs/ai-tools/ai-workflows) in a GitOps-native way.
 
 ### GitOps for cloud-native applications
@@ -171,4 +171,4 @@ GitOps finds its most natural home in the cloud-native ecosystem, particularly w
 
 As organizations adopt GitOps, scaling it effectively becomes crucial. This involves establishing best practices for repository structure, access control, and promotion of changes across environments. A centralized platform engineering team might manage the core GitOps tooling, while individual application teams manage their own service configurations in separate repositories.
 
-An orchestration platform like Kestra can act as a unifying control plane, providing visibility and control over diverse GitOps workflows across the organization. This allows you to [unlock GitOps superpowers](https://kestra.io/blogs/gitops-superpowers) and build a scalable, governed, and efficient [infrastructure automation platform](https://kestra.io/infra-automation).
+An orchestration platform like Kestra can act as a unifying control plane, providing visibility and control over diverse GitOps workflows across the organization. This allows you to unlock GitOps superpowers and build a scalable, governed, and efficient [infrastructure automation platform](https://kestra.io/infra-automation).
