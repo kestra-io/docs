@@ -1,0 +1,486 @@
+title: "Orchestrate Nutanix HCI with Kestra: AHV lifecycle, snapshots, and recovery"
+description: "Nutanix powers your hyperconverged infrastructure. Kestra runs the workflows around it: trigger on schedule or events, capture recovery points before patching, restore automatically on failure, and chain Nutanix with Ansible, Terraform, and ServiceNow."
+
+tool:
+  name: "Nutanix"
+  pluginClass: "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
+  color: "#024DA1"
+
+hero:
+  title: "Your Nutanix clusters, fully orchestrated."
+  description: "Trigger AHV tasks from cron, webhooks, or any HTTP signal. Capture crash- or app-consistent recovery points before patching, restore on a failed health check, and chain Nutanix with Ansible, Terraform, and ServiceNow in one execution history."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+pillars:
+  title: "Above Prism, around every AHV operation."
+  subtitle: "What Kestra wraps around your Nutanix clusters: when actions fire, what gets a recovery point first, who approves a destructive op, and where the audit lives. Prism Central and your AHV hosts stay in place. The Calm / Self-Service catalog gets replaced."
+  items:
+    - icon: "mdi:lightning-bolt-outline"
+      title: "Schedule and event triggers wrapped around AHV operations"
+      description: "Native cron, fixed intervals, webhooks, S3 file arrivals, Kafka messages, and database row changes fire a Nutanix task directly. The trigger payload reaches the flow as <code>trigger.body</code>, so the right VM gets the right inputs from a single execution. No webhook bus on Prism, no polling script."
+    - icon: "mdi:camera-outline"
+      title: "Crash- or app-consistent recovery points before any risky change"
+      description: "<code>CreateVmSnapshot</code> emits a crash- or application-consistent recovery point through the Nutanix dataprotection v4 API, with optional expiration. <code>RestoreVmSnapshot</code> reverts on a failed health check. The <code>snapshotExtId</code> flows forward, so every change has a documented rollback target."
+    - icon: "mdi:transit-connection-variant"
+      title: "AHV provisioning, Ansible configuration, ServiceNow registration, in one flow"
+      description: "<code>CreateVm</code> creates a VM through the VMM v4 API and, with <code>wait: true</code>, polls until the first IPv4 address is available. The IP flows into <code>ansible-playbook</code> to join the domain and install agents. <code>ServiceNow.Post</code> lands the CMDB record. One execution ID across all three."
+    - icon: "mdi:source-branch"
+      title: "Template lifecycle as code"
+      description: "<code>CloneTemplate</code>, <code>ConvertVmToTemplate</code>, <code>ConvertTemplateToVm</code>, and <code>CloneVm</code> chain together as flow steps. Versioned base images become typed inputs in a Kestra App, so operators deploy from a dropdown instead of clicking through Prism Central. Every template change has an execution attached."
+    - icon: "mdi:shield-check-outline"
+      title: "Approval gates and self-service forms in front of every destructive action"
+      description: "The Pause task suspends the flow before <code>DeleteVm</code>, <code>ResetVm</code>, or a template conversion. A Kestra App is a typed form bound to the flow: dropdowns for the cluster, the VM, the recovery point, the target environment. Operators submit. RBAC controls who can launch what."
+    - icon: "mdi:history"
+      title: "Per-VM, per-task execution history"
+      description: "Every AHV task captures the VM <code>extId</code>, the operator, the inputs, and the async <code>taskExtId</code> returned by the v4 API. The record is searchable by date, status, or VM. Auditors get evidence by default, attached to the execution that produced it."
+
+useCases:
+  title: "How infrastructure teams use Nutanix and Kestra"
+  subtitle: "Patterns AHV admins and platform teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Operations"
+      badgeIcon: "mdi:camera-outline"
+      title: "Pre-patch snapshot, OS update, rollback on health-check failure"
+      description: "<code>CreateVmSnapshot</code> emits a crash-consistent recovery point on the target AHV VM. A Shell task runs the OS update over SSH and reboots the VM. An HTTP probe checks the application. On any failure, the <code>errors</code> branch fires <code>RestoreVmSnapshot</code> against the same <code>snapshotExtId</code> and pages the on-call. Shipped as a working Kestra blueprint."
+      flow:
+        - node: "cron trigger"
+          label: "patch window"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "pre-patch snapshot"
+          label: "recovery point"
+          pluginClass: "io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot"
+        - node: "ssh patch"
+          label: "apt / yum upgrade"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "health check"
+          label: "HTTP probe"
+          pluginClass: "io.kestra.plugin.core.http.Request"
+        - node: "rollback on fail"
+          label: "restore snapshot"
+          pluginClass: "io.kestra.plugin.ee.nutanix.snapshot.RestoreVmSnapshot"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Snapshot ID captured per run"
+          description: "<code>snapshotExtId</code> is stored in the execution outputs and reusable from the rollback branch."
+        - title: "Crash- or app-consistent"
+          description: "Pick the consistency mode per VM; the v4 API supports both, with optional expiration."
+        - title: "Automatic rollback"
+          description: "The <code>errors</code> branch restores the snapshot if the post-patch probe fails, no human required."
+        - title: "On-call alert with execution link"
+          description: "Slack message includes the VM name, snapshot ID, and the URL of the failing execution."
+      signal: "Published as the <code>nutanix-safe-patching-workflow</code> blueprint in the Kestra catalog."
+    - badge: "Full pipeline"
+      badgeIcon: "mdi:pipe-disconnected"
+      title: "Provision an AHV VM, configure with Ansible, register in ServiceNow"
+      description: "<code>CreateVm</code> creates a VM on a target Nutanix cluster through the VMM v4 API. With <code>wait: true</code> the task polls for the first IPv4 address. That IP flows into <code>ansible-playbook</code> to join the domain, install agents, and apply config. <code>ServiceNow.Post</code> lands a CMDB record. Slack confirms."
+      flow:
+        - node: "ServiceNow webhook"
+          label: "approved ticket"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "Create AHV VM"
+          label: "wait for IP"
+          pluginClass: "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
+        - node: "ansible-playbook"
+          label: "configure host"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "ServiceNow"
+          label: "CMDB update"
+          pluginClass: "io.kestra.plugin.servicenow.Post"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "wait: true returns the IP"
+          description: "Kestra polls the VMM v4 API until the first IPv4 address is available, then continues."
+        - title: "Outputs flow forward"
+          description: "Pass the VM name, IP, and AHV extId into the Ansible inventory and the ServiceNow record."
+        - title: "Step-level retries"
+          description: "Retry only the failed step. The <code>CreateVm</code> does not re-run when the playbook fails."
+        - title: "CMDB stays in sync"
+          description: "Every provision lands a record in ServiceNow with the Nutanix metadata attached."
+    - badge: "Ephemeral"
+      badgeIcon: "mdi:cog-refresh-outline"
+      title: "Ephemeral AHV environments for CI, decommissioned at end of pipeline"
+      description: "On a CI webhook, <code>CloneVm</code> creates a fresh AHV VM from a golden template. The test suite runs against it. <code>DeleteVm</code> tears it down when the pipeline finishes, or on failure through the <code>errors</code> branch. The VM <code>extId</code>, IP, and run logs stay in the execution history for post-mortems."
+      flow:
+        - node: "CI webhook"
+          label: "pipeline start"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "Clone VM"
+          label: "from template"
+          pluginClass: "io.kestra.plugin.ee.nutanix.ahv.CloneVm"
+        - node: "run tests"
+          label: "ssh / pytest"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "Delete VM"
+          label: "always"
+          pluginClass: "io.kestra.plugin.ee.nutanix.ahv.DeleteVm"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "One template, many CI runs"
+          description: "Clone from a single AHV template so every pipeline gets the same baseline."
+        - title: "Guaranteed teardown"
+          description: "The <code>DeleteVm</code> step runs from the errors branch on any failure, so leaks don't pile up."
+        - title: "Per-pipeline audit trail"
+          description: "Every CI run has a Kestra execution with the VM extId and test output attached."
+    - badge: "Self-service"
+      badgeIcon: "mdi:account-multiple-outline"
+      title: "Self-service VM operations behind a Kestra App"
+      description: "Replace the Calm / Self-Service catalog with a typed form. Operators pick the cluster, template, recovery point, and target environment from dropdowns. The same audited flow runs every time. RBAC controls who can launch what. No Prism Central console handouts."
+      flow:
+        - node: "Kestra App"
+          label: "typed form"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "validate inputs"
+          label: "RBAC + schema"
+          pluginClass: "io.kestra.plugin.core.log.Log"
+        - node: "Clone or Create VM"
+          label: "AHV"
+          pluginClass: "io.kestra.plugin.ee.nutanix.ahv.CloneVm"
+        - node: "ansible-playbook"
+          label: "configure"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "notify"
+          label: "Slack + audit"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Typed inputs and dropdowns"
+          description: "Form inputs validated before the run. Cluster, template, network all picked from live data."
+        - title: "RBAC on who can run what"
+          description: "Role-based access on the form itself, not on Prism Central handouts."
+        - title: "Same flow, every request"
+          description: "Every submission goes through the same audited, retry-aware execution."
+          wide: true
+
+quotes:
+  - quote: "Kestra allowed us to move from fragmented automation to a unified control plane, secure, scalable, and manageable by all our teams."
+    author: "Julien Legrand, PO Data · Crédit Agricole"
+    storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    logoFile: "credit-agricole"
+
+blueprints:
+  title: "Blueprints for Nutanix orchestration."
+  lead: "One blueprint per use case above. Copy the YAML, point it at your Prism Central, ship it."
+  items:
+    - name: "Safe patching with rollback"
+      title: "Pre-patch snapshot, OS update, rollback on health-check failure"
+      description: "Provisions or selects an AHV VM, emits a pre-patch recovery point, runs the OS update over SSH, waits for reboot, and probes a health endpoint. The <code>errors</code> branch restores the snapshot and notifies Slack on failure. Shipped as a working blueprint in the Kestra catalog."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
+        - "io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot"
+        - "io.kestra.plugin.scripts.shell.Commands"
+        - "io.kestra.plugin.ee.nutanix.snapshot.RestoreVmSnapshot"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: nutanix-safe-patching-workflow
+        namespace: company.team
+        description: Provision a Nutanix AHV VM, emit VM/snapshot assets, apply OS updates, and rollback automatically on failure.
+
+        inputs:
+          - id: vm_name
+            type: STRING
+            defaults: "prod-web-server-01"
+
+        tasks:
+          - id: provision_vm
+            type: io.kestra.plugin.ee.nutanix.ahv.CreateVm
+            wait: true
+            vm:
+              name: "{{ inputs.vm_name }}"
+              description: "VM created by Kestra"
+              cluster:
+                extId: "{{ secret('NUTANIX_CLUSTER_EXT_ID') }}"
+              resources:
+                numSockets: 1
+                numCoresPerSocket: 2
+                memorySizeBytes: 2147483648
+                disks: []
+
+          - id: safe_patching_block
+            type: io.kestra.plugin.core.flow.Sequential
+            tasks:
+              - id: pre_patch_snapshot
+                type: io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot
+                vmExtId: "{{ outputs.provision_vm.vmExtId }}"
+                snapshotName: "pre_patch_{{ execution.id }}"
+
+              - id: apply_updates
+                type: io.kestra.plugin.scripts.shell.Commands
+                commands:
+                  - ssh -o StrictHostKeyChecking=no admin@{{ outputs.provision_vm.vmIpAddresses[0] }} "sudo apt update && sudo apt upgrade -y && sudo reboot"
+
+              - id: wait_for_boot
+                type: io.kestra.plugin.core.flow.Pause
+                delay: PT1M
+
+              - id: health_check
+                type: io.kestra.plugin.core.http.Request
+                uri: "http://{{ outputs.provision_vm.vmIpAddresses[0] }}/health"
+                method: "GET"
+
+              - id: notify_success
+                type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+                url: "{{ secret('SLACK_WEBHOOK') }}"
+                messageText: ":white_check_mark: Patching succeeded for {{ inputs.vm_name }}."
+
+        errors:
+          - id: rollback
+            type: io.kestra.plugin.ee.nutanix.snapshot.RestoreVmSnapshot
+            snapshotExtId: "{{ outputs.safe_patching_block.pre_patch_snapshot.snapshotExtId }}"
+
+          - id: notify_oncall
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            messageText: ":alert: Patching failed for {{ inputs.vm_name }}, rolled back to pre-patch state. <{{ execution.url }}|View execution>"
+
+        pluginDefaults:
+          - type: io.kestra.plugin.ee.nutanix
+            values:
+              host: "{{ secret('NUTANIX_HOST') }}"
+              token: "{{ secret('NUTANIX_TOKEN') }}"
+    - name: "Provision, configure, register"
+      title: "Provision an AHV VM, configure with Ansible, register in ServiceNow"
+      description: "<code>CreateVm</code> creates a VM and waits for an IP. <code>ansible-playbook</code> joins the domain and installs agents, with per-step retries. <code>ServiceNow.Post</code> lands a CMDB record. Slack confirms when all three steps succeed."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.servicenow.Post"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: nutanix-provision-configure-register
+        namespace: company.platform
+
+        inputs:
+          - id: vm_name
+            type: STRING
+            defaults: "app-server-01"
+          - id: environment
+            type: SELECT
+            values: [dev, staging, production]
+            defaults: staging
+
+        tasks:
+          - id: provision_vm
+            type: io.kestra.plugin.ee.nutanix.ahv.CreateVm
+            wait: true
+            vm:
+              name: "{{ inputs.vm_name }}"
+              description: "Provisioned by Kestra execution {{ execution.id }}"
+              cluster:
+                extId: "{{ secret('NUTANIX_CLUSTER_EXT_ID') }}"
+              resources:
+                numSockets: 2
+                numCoresPerSocket: 2
+                memorySizeBytes: 4294967296
+                disks: []
+
+          - id: ansible_configure
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            inputFiles:
+              inventory.ini: |
+                [app]
+                {{ inputs.vm_name }} ansible_host={{ outputs.provision_vm.vmIpAddresses[0] }} ansible_user=ubuntu
+              configure.yml: "{{ read(secret('ANSIBLE_PLAYBOOK')) }}"
+            commands:
+              - ansible-playbook -i inventory.ini configure.yml --extra-vars "env={{ inputs.environment }}"
+            retry:
+              type: constant
+              interval: PT2M
+              maxAttempt: 3
+
+          - id: servicenow_register
+            type: io.kestra.plugin.servicenow.Post
+            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
+            username: "{{ secret('SERVICENOW_USER') }}"
+            password: "{{ secret('SERVICENOW_PASSWORD') }}"
+            clientId: "{{ secret('SERVICENOW_CLIENT_ID') }}"
+            clientSecret: "{{ secret('SERVICENOW_CLIENT_SECRET') }}"
+            table: cmdb_ci_server
+            data:
+              name: "{{ inputs.vm_name }}"
+              ip_address: "{{ outputs.provision_vm.vmIpAddresses[0] }}"
+              environment: "{{ inputs.environment }}"
+              short_description: "Provisioned by Kestra execution {{ execution.id }}"
+
+          - id: notify
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":rocket: {{ inputs.vm_name }} provisioned on Nutanix ({{ outputs.provision_vm.vmIpAddresses[0] }}), configured with Ansible, and registered in ServiceNow."
+              }
+
+        pluginDefaults:
+          - type: io.kestra.plugin.ee.nutanix
+            values:
+              host: "{{ secret('NUTANIX_HOST') }}"
+              token: "{{ secret('NUTANIX_TOKEN') }}"
+    - name: "Ephemeral CI environments"
+      title: "Clone an AHV VM for CI, run tests, decommission at end of pipeline"
+      description: "On a CI webhook, <code>CloneVm</code> creates a fresh AHV VM from a golden template. The test suite runs against it over SSH. <code>DeleteVm</code> runs in the main flow on success and from the <code>errors</code> branch on failure, so the VM is always torn down."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.ee.nutanix.ahv.CloneVm"
+        - "io.kestra.plugin.scripts.shell.Commands"
+        - "io.kestra.plugin.ee.nutanix.ahv.DeleteVm"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: nutanix-ephemeral-ci-environment
+        namespace: company.ci
+
+        triggers:
+          - id: ci_webhook
+            type: io.kestra.plugin.core.trigger.Webhook
+            key: nutanix_ci_env
+
+        tasks:
+          - id: clone_vm
+            type: io.kestra.plugin.ee.nutanix.ahv.CloneVm
+            sourceExtId: "{{ secret('NUTANIX_CI_TEMPLATE_EXT_ID') }}"
+            cloneOverrides:
+              name: "ci-{{ trigger.body.pipeline_id }}"
+            wait: true
+
+          - id: run_tests
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - ssh -o StrictHostKeyChecking=no ci@{{ outputs.clone_vm.vmIpAddresses[0] }} "./run-ci.sh {{ trigger.body.pipeline_id }}"
+
+          - id: delete_vm
+            type: io.kestra.plugin.ee.nutanix.ahv.DeleteVm
+            vmExtId: "{{ outputs.clone_vm.vmExtId }}"
+
+          - id: notify_success
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            messageText: ":white_check_mark: CI run {{ trigger.body.pipeline_id }} passed and VM was decommissioned."
+
+        errors:
+          - id: cleanup_vm
+            type: io.kestra.plugin.ee.nutanix.ahv.DeleteVm
+            vmExtId: "{{ outputs.clone_vm.vmExtId }}"
+
+          - id: notify_failure
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            messageText: ":alert: CI run {{ trigger.body.pipeline_id }} failed, VM was torn down. <{{ execution.url }}|View execution>"
+
+        pluginDefaults:
+          - type: io.kestra.plugin.ee.nutanix
+            values:
+              host: "{{ secret('NUTANIX_HOST') }}"
+              token: "{{ secret('NUTANIX_TOKEN') }}"
+
+comparison:
+  title: "Kestra vs Nutanix orchestration alternatives"
+  subtitle: "Kestra orchestrates around AHV and Prism Central. It replaces the Calm / Self-Service automation layer above them. The competitors below are the platforms Nutanix admins actually evaluate."
+  competitors:
+    - name: "Nutanix Self-Service (Calm)"
+    - name: "HPE Morpheus"
+      logoAsset: "morpheus"
+    - name: "Jenkins + scripts"
+      pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+  rows:
+    - feature: "Workflow language"
+      kestra: "✓ Declarative YAML, Git-native, plus polyglot scripts (Python, JS, Bash, Groovy, R)"
+      values:
+        - "Calm blueprints (DSL) plus Python actions"
+        - "Cypher / Morpheus-specific scripts"
+        - "Groovy pipelines"
+    - feature: "Scheduling"
+      kestra: "✓ Native cron + intervals + events"
+      values:
+        - "Calm scheduler (basic)"
+        - "Native scheduler"
+        - "Cron in pipelines"
+    - feature: "Snapshot-first patching with rollback"
+      kestra: "✓ Native, snapshotExtId flows forward"
+      values:
+        - "Custom Calm blueprint per pattern"
+        - "Built-in policy actions"
+        - "Manual via shell + REST"
+    - feature: "Chain with Ansible, Terraform, ServiceNow"
+      kestra: "✓ Native, with outputs"
+      values:
+        - "Calm integrations (limited extensibility)"
+        - "Built-in connectors (proprietary)"
+        - "Possible, glue scripts required"
+    - feature: "Self-service forms with RBAC"
+      kestra: "✓ Kestra Apps, typed inputs"
+      values:
+        - "Calm self-service catalog"
+        - "Built-in self-service catalog"
+        - "Parameterized build"
+    - feature: "Per-VM execution history with attribution"
+      kestra: "✓ Execution view + task state"
+      values:
+        - "Calm run history"
+        - "Morpheus task history"
+        - "Build history"
+    - feature: "Air-gapped / private network deploy"
+      kestra: "✓ Self-hosted, per-zone control plane"
+      values:
+        - "Centralized appliance"
+        - "Centralized appliance"
+        - "Self-hosted"
+    - feature: "Orchestrate beyond Nutanix"
+      kestra: "✓ 1300+ plugins, cross-stack"
+      values:
+        - "Nutanix-centric, multi-cloud add-ons"
+        - "Multi-cloud (proprietary connectors)"
+        - "Possible, plugin-dependent"
+
+faq:
+  - question: "Does Kestra replace AHV or Prism Central?"
+    answer: "No. AHV is your hypervisor, Prism Central is your management plane, and both stay in place. Kestra calls the Prism Central v4 APIs (VMM for lifecycle, dataprotection for snapshots) through the <code>io.kestra.plugin.ee.nutanix</code> plugin to run the operations you used to script: <code>CreateVm</code>, <code>CloneVm</code>, <code>CreateVmSnapshot</code>, <code>RestoreVmSnapshot</code>, and so on. Kestra orchestrates the workflow around your cluster."
+  - question: "What about Nutanix Calm / NCM Self-Service?"
+    answer: "Calm (renamed NCM Self-Service) is the automation and self-service layer Nutanix ships above Prism Central. That is the layer Kestra replaces. Calm blueprints become Kestra YAML flows. The Calm self-service catalog becomes Kestra Apps with typed inputs and RBAC. Calm Python actions stay where they are: Kestra can call them, or you can move them inline into <code>scripts.python.Commands</code>. The hypervisor doesn't move, only the orchestration UI above it."
+  - question: "How does the snapshot-and-restore pattern work?"
+    answer: "<code>CreateVmSnapshot</code> emits a recovery point through the Nutanix dataprotection v4 API and returns a <code>snapshotExtId</code>. That ID is stored in the execution outputs and reusable from any downstream task, including the <code>errors</code> branch. If the post-change health probe fails, <code>RestoreVmSnapshot</code> runs against that exact ID and reverts the VM. Both crash-consistent and application-consistent modes are supported, with optional expiration so old recovery points don't pile up."
+  - question: "Can Kestra chain Nutanix with Terraform, Ansible, and ServiceNow in one flow?"
+    answer: "Yes. Each tool runs as a task in one Kestra flow. <code>CreateVm</code> with <code>wait: true</code> emits the VM's IP and AHV extId. The next Ansible task templates those into the inventory and runs the playbook. ServiceNow lands the CMDB record. If Ansible fails, Kestra retries only that step, the Nutanix create is not re-run. One execution ID, one audit trail, one place to debug."
+  - question: "How does Kestra handle Prism Central credentials?"
+    answer: "Credentials come from Kestra's secrets backend (built-in, or HashiCorp Vault, CyberArk, AWS Secrets Manager, GCP Secret Manager) and are injected at task execution time. The plugin accepts a bearer <code>token</code> or a <code>username</code> and <code>password</code>, plus the Prism Central <code>host</code> (and optional <code>port</code>, defaulting to 9440). Set them once via <code>pluginDefaults</code> at flow or namespace level and every Nutanix task picks them up."
+  - question: "Is the Nutanix plugin Enterprise-only?"
+    answer: "Yes, the <code>io.kestra.plugin.ee.nutanix</code> plugin is part of Kestra Enterprise. Kestra Enterprise also includes the Apps layer, RBAC, audit logs, worker isolation, and SSO that infrastructure teams replacing Calm typically need."
+  - question: "Can Kestra run inside an air-gapped Nutanix environment?"
+    answer: "Yes. Kestra ships self-hosted on Docker or Kubernetes, runs fully air-gapped, and supports per-cluster control planes with remote workers close to each Prism Central endpoint. AD-backed authentication, least-privilege RBAC, and log shipping to the enterprise SIEM are all supported on-prem with no external dependency."
+
+resources:
+  title: "More on Nutanix and Kestra"
+  items:
+    - kind: "blog"
+      title: "Make GitOps, DNS, Inventory, and Compute Behave Like One System"
+      description: "How Kestra 1.3 orchestrates Argo CD, Cloudflare, MAAS, KVM, NetBox, and Nutanix AHV with consistent guardrails and a single audit trail."
+      href: "/blogs/infra-automation"
+      image: "blogs/infra-automation/main.jpg"
+    - kind: "docs"
+      title: "Automate infrastructure workflows in Kestra"
+      description: "How Kestra orchestrates Nutanix, VMware, Docker, Terraform, OpenTofu, Ansible, and cloud CLIs in one declarative flow."
+      href: "/docs/use-cases/infrastructure"
+    - kind: "resource"
+      title: "Hybrid cloud automation: patterns and platforms"
+      description: "Where Kestra fits alongside Nutanix, vSphere, AWS, Azure, and GCP for hybrid cloud automation, with platform comparisons."
+      href: "/resources/infrastructure/hybrid-cloud-automation"
+    - kind: "plugin"
+      title: "Nutanix plugin reference"
+      description: "Every AHV and snapshot task, every parameter, with copy-ready YAML examples."
+      href: "/plugins/plugin-ee-nutanix"
+
+seeHow:
+  title: "Ready to orchestrate Nutanix without the legacy automation layer?"
+  description: "Keep Prism Central and AHV. Replace Calm / Self-Service with declarative YAML flows: event triggers, snapshot-gated patching, ephemeral CI environments, and one audit trail across Nutanix, Ansible, Terraform, and ServiceNow."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
