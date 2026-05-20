@@ -1,5 +1,5 @@
 title: "Orchestrate dbt Cloud with Kestra: event-driven triggers, full-pipeline coordination, and cross-stack visibility"
-description: "dbt Cloud runs your transformations. Kestra orchestrates everything around them. Trigger dbt Cloud jobs when Fivetran finishes, chain them with downstream activation, add approval gates, and track every run across your full data stack in one place."
+description: "Trigger dbt Cloud jobs when Fivetran finishes, chain with downstream activation, add approval gates, and track every run across your data stack in one place."
 
 tool:
   name: "dbt Cloud"
