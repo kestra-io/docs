@@ -192,7 +192,7 @@ This is achieved by:
 - **Event-Driven Automation:** Kestra can trigger validation workflows based on real-time events, such as a new file arriving in S3 or a new record in a Kafka topic. This enables you to catch quality issues at the source, before they contaminate downstream systems.
 - **Scalability and Governance:** For leading enterprises like JPMorgan Chase and Apple, maintaining data quality at a massive scale is critical. They use robust orchestration to manage complex dependencies and ensure that quality checks are consistently applied across billions of records and thousands of pipelines. At Crédit Agricole, Kestra replaced fragmented scripts with a single, governed orchestration layer, dramatically improving the reliability of their data processes.
 
-By using Kestra, you elevate data quality from a manual, reactive cleanup task to a proactive, automated, and integral part of your data operations. You can learn more about how to [integrate Kestra in the Modern Data Stack](https://kestra.io/docs/use-cases/modern-data-stack) and [why Kestra](https://kestra.io/docs/why-kestra) is designed for this level of reliability.
+By using Kestra, you elevate data quality from a manual, reactive cleanup task to a proactive, automated, and integral part of your data operations. You can learn more about [why Kestra](https://kestra.io/docs/why-kestra) is designed for this level of reliability.
 
 ## From Data Quality Theory to Practice
 

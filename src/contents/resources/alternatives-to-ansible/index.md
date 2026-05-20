@@ -124,8 +124,6 @@ Jenkins is a highly extensible, open-source automation server that can be used t
 - **Weaknesses:** Jenkins can become complex to manage and scale, a phenomenon often called "Jenkins sprawl." While the `Jenkinsfile` introduces a declarative pipeline-as-code approach, the platform is not inherently designed for declarative state management of infrastructure.
 - **Best for:** Organizations with existing investments in Jenkins or those who need extreme flexibility and a vast plugin library to support their CI/CD and automation needs.
 
-Discover the differences in our [Kestra vs Jenkins breakdown](/vs/jenkins).
-
 ## 9. CFEngine: Policy-Based Configuration Management
 
 CFEngine is one of the original open-source configuration management systems, designed for large-scale, autonomous infrastructure based on policy and promise theory.

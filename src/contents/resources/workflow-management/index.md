@@ -90,7 +90,7 @@ To excel in workflow management, individuals and teams need to cultivate several
 - **Analytical Thinking**: The ability to break down a complex process into its constituent parts, identify dependencies, and spot inefficiencies.
 - **Process Mapping**: Visualizing and documenting workflows to create a clear blueprint for automation.
 - **Problem-Solving**: Identifying the root cause of bottlenecks or failures and designing effective solutions.
-- **Technical Proficiency**: Comfort with the tools of the trade, whether it's scripting in [Python](https://kestra.io/docs/how-to-guides/python) or [Shell](https://kestra.io/docs/scripts/shell), or mastering a declarative language like YAML.
+- **Technical Proficiency**: Comfort with the tools of the trade, whether it's scripting in [Python](https://kestra.io/docs/how-to-guides/python) or Shell, or mastering a declarative language like YAML.
 - **Communication**: Collaborating with stakeholders to understand requirements and explain the logic behind workflow designs.
 - **Change Management**: Guiding teams through the transition from manual processes to automated workflows.
 

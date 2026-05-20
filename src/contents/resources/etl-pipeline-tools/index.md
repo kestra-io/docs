@@ -146,7 +146,7 @@ Open-source software has fundamentally reshaped the data landscape, and ETL is n
 Python is the lingua franca of data engineering, and its extensive libraries make it a powerful choice for building custom ETL logic.
 *   **Pandas & Polars:** These libraries provide high-performance, easy-to-use data structures (DataFrames) and data analysis tools, making them ideal for in-memory data transformations.
 *   **Orchestration Frameworks:** Tools like **Apache Airflow** and **Prefect** allow engineers to define complex ETL workflows as Python code, managing scheduling, dependencies, and retries. You can see how Prefect compares in our [Prefect vs. Kestra](https://kestra.io/vs/prefect) guide.
-Kestra provides robust support for [running Python scripts](https://kestra.io/docs/scripts/python), enabling engineers to leverage these powerful libraries within a declarative, language-agnostic orchestration environment.
+Kestra provides robust support for running Python scripts, enabling engineers to leverage these powerful libraries within a declarative, language-agnostic orchestration environment.
 
 ### Choosing the Right Open-Source ETL Tool
 
