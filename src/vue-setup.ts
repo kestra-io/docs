@@ -27,7 +27,7 @@ export default (app: App) => {
         }),
     )
 
-    if (!document.documentElement.classList.contains("no-animation")) {
+    if (typeof document === "undefined" || !document.documentElement.classList.contains("no-animation")) {
         app.use(USALPlugin, {
             defaults: {
                 duration: 200,
