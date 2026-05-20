@@ -1,5 +1,5 @@
 title: "Orchestrate VMware and your virtualization ecosystem with Kestra: VMs, snapshots, events"
-description: "VMware powers your virtualization ecosystem. Kestra runs the workflows around it: trigger on VM events, snapshot before patching, gate destructive ops, and chain VMware with Terraform, Ansible, and ServiceNow."
+description: "Orchestrate vSphere from one flow: vCenter event triggers, snapshot-gated patching, approval gates, and one audit trail across VMware, Ansible, and ServiceNow."
 
 tool:
   name: "VMware"
@@ -28,7 +28,7 @@ pillars:
       description: "<code>CreateVmSnapshot</code> runs before patches, template refreshes, or risky reconfigurations. <code>RestoreVmFromSnapshot</code> reverts on a failed health check. The snapshot ID flows forward, so every patch run has a rollback target captured per execution."
     - icon: "mdi:transit-connection-variant"
       title: "vCenter clone, Ansible configure, ServiceNow register, in one flow"
-      description: "After <code>CloneVm</code> finishes, the VM's IP, hostname, and UUID flow into the next task. <code>ansible-playbook</code> joins the domain and installs agents. ServiceNow gets a new CMDB record. Kestra customer BHP, a Fortune 500 industrial company, runs this exact sequence across its corporate IT and OT (operational technology, the systems running its plants and sites) network zones."
+      description: "After <code>CloneVm</code> finishes, the VM's IP, hostname, and UUID flow into the next task. The <a href='/plugins/plugin-ansible'>Ansible plugin</a> joins the domain and installs agents. ServiceNow gets a new CMDB record. Kestra customer BHP, a Fortune 500 industrial company, runs this exact sequence across its corporate IT and OT (operational technology, the systems running its plants and sites) network zones."
     - icon: "mdi:shield-check-outline"
       title: "Approval gates and self-service forms in front of every destructive action"
       description: "The Pause task suspends the flow before delete, reset, or template conversion. A Kestra App turns the operation into a typed form: dropdowns for the VM, the snapshot, the datastore, the target environment. Operators submit. RBAC controls who can launch what. BHP replaced its vRA self-service catalog with this pattern."
@@ -453,7 +453,7 @@ faq:
   - question: "How does Kestra handle vCenter and ESXi credentials?"
     answer: "Credentials come from Kestra's secrets backend (built-in, or HashiCorp Vault, CyberArk, AWS Secrets Manager, GCP Secret Manager) and are injected at task execution time. The plugin accepts <code>username</code> and <code>password</code> as templated strings, typically <code>{{ secret('VMWARE_VCENTER_USERNAME') }}</code> and <code>{{ secret('VMWARE_VCENTER_PASSWORD') }}</code>. Workers can run inside a restricted OT or DMZ network zone so the credentials never leave that boundary."
   - question: "Is the VMware plugin Enterprise-only?"
-    answer: "Yes, the <code>io.kestra.plugin.ee.vmware</code> plugin is part of Kestra Enterprise. Kestra Enterprise also includes the Apps layer, RBAC, audit logs, worker isolation, and SSO that infrastructure teams replacing vRA/vRO typically need."
+    answer: "Yes, the <code>io.kestra.plugin.ee.vmware</code> plugin is part of Kestra Enterprise. Kestra Enterprise also includes the Apps layer, RBAC, audit logs, worker isolation, and SSO that infrastructure teams replacing vRA/vRO typically need. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Terraform, Ansible, and cloud APIs."
   - question: "Can Kestra run inside an air-gapped, multi-zone OT environment?"
     answer: "Yes. Kestra ships self-hosted on Docker or Kubernetes, runs fully air-gapped, and supports per-zone control planes with remote workers close to each vCenter or ESXi endpoint. BHP deploys this pattern across four OT assets plus one IT, each scoped to its own network zone, with AD-backed authentication, least-privilege RBAC, and logs shipped to the enterprise SIEM."
 

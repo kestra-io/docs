@@ -1,5 +1,5 @@
 title: "Orchestrate Docker with Kestra: signed builds, digest promotion, Compose stacks"
-description: "Docker builds your images and runs your containers. Kestra orchestrates the workflows around them: build, scan with Trivy, sign with Cosign, promote the same sha256 digest from staging to prod, and bring full Compose stacks up for integration tests with guaranteed teardown."
+description: "Build, scan with Trivy, sign with Cosign, and promote the same sha256 digest from staging to prod, with Compose stacks for tests and guaranteed teardown."
 
 tool:
   name: "Docker"
@@ -455,7 +455,7 @@ faq:
   - question: "Can a task in the same flow run inside an image I just built?"
     answer: "Yes. Capture <code>outputs.build.imageId</code> from <code>docker.Build</code>, then set it on the next task: <code>containerImage: \"{{ outputs.build.imageId }}\"</code> with the Docker task runner and <code>pullPolicy: NEVER</code>. The task runs in the local image you just built, without a registry round-trip. This is the pattern data scientists use to ship a custom Python runtime and the workload that needs it in one execution."
   - question: "What does Kestra add to a docker build + docker push setup?"
-    answer: "Docker is a CLI. It builds and pushes images when you run the command, but it has no scheduler, no event triggers, no pause-and-resume between staging and prod, no native chaining with cloud auth, and no shared history for the steps that run before or after. Kestra adds all of those. Every <code>docker build</code> becomes a workflow step: triggered on Git push or schedule, gated by a reviewer, scanned and signed before push, retried on transient registry errors, and auditable across the full pipeline including the deploy step."
+    answer: "Docker is a CLI. It builds and pushes images when you run the command, but it has no scheduler, no event triggers, no pause-and-resume between staging and prod, no native chaining with cloud auth, and no shared history for the steps that run before or after. Kestra adds all of those. Every <code>docker build</code> becomes a workflow step: triggered on Git push or schedule, gated by a reviewer, scanned and signed before push, retried on transient registry errors, and auditable across the full pipeline including the deploy step. The same flows can pair Docker with <a href='/plugins/plugin-ansible'>Ansible</a> for host configuration, with <a href='/orchestration/terraform'>Terraform</a> for the underlying infrastructure, and with the broader <a href='/infra-automation'>infrastructure automation</a> patterns Kestra supports."
   - question: "Does Kestra replace Jenkins, GitHub Actions, or GitLab CI?"
     answer: "It can, but it doesn't have to. Many teams start by adding Kestra above an existing CI: GitHub Actions builds the image and posts the digest, Kestra picks it up via webhook, runs Trivy + Cosign, pauses for approval, and triggers the Kubernetes rollout against the signed digest. When the team is ready, the build itself can move into Kestra with <code>docker.Build</code>."
   - question: "How does the short-lived registry token pattern work?"

@@ -1,5 +1,5 @@
 title: "Orchestrate Nutanix with Kestra: VMware exits, AHV day-2 ops, recovery points"
-description: "Nutanix powers your hyperconverged infrastructure. Kestra orchestrates the workflows around it: coordinate VMware-to-AHV migrations in waves with Move, capture crash- or app-consistent recovery points, replicate them to a DR cluster, and slice Prism inventory by Category for chargeback or wave selection."
+description: "Orchestrate Nutanix from one flow: VMware-to-AHV waves with Move, crash- or app-consistent recovery points, DR replication, and Category-driven inventory."
 
 tool:
   name: "Nutanix"
@@ -489,7 +489,7 @@ faq:
   - question: "Does Kestra replace AHV or Prism Central?"
     answer: "No. AHV stays as your hypervisor, Prism Central stays as your management plane. Kestra calls the Prism Central v4 APIs (VMM for VM lifecycle, dataprotection for recovery points) through the <code>io.kestra.plugin.ee.nutanix</code> plugin, and reaches other Nutanix surfaces (Move, Categories, LCM) through the generic <code>core.http.Request</code> task. Kestra orchestrates the workflow around your cluster, not the cluster itself."
   - question: "How do I orchestrate a VMware-to-AHV migration with Nutanix Move?"
-    answer: "Move handles the data copy, Kestra handles the wave. The flow: inventory the VMware source with <code>vmware.vcenter.ListVms</code>, log in to Move (<code>POST /v2/users/login</code>), create or pick a migration plan, poll <code>/v2/plans/{id}/workloads/list</code> until each workload reaches state 5 (ready for cutover), gate the wave with the Pause task, then post the <code>cutover</code> action per workload. Once cutover succeeds, call <code>nutanix.ahv.StartVm</code> on the target and hand off to Ansible. The vCenter source stays live until cutover, so the rollback path is to power the source back on if the post-cutover health check fails."
+    answer: "Move handles the data copy, Kestra handles the wave. The flow: inventory the VMware source with <code>vmware.vcenter.ListVms</code>, log in to Move (<code>POST /v2/users/login</code>), create or pick a migration plan, poll <code>/v2/plans/{id}/workloads/list</code> until each workload reaches state 5 (ready for cutover), gate the wave with the Pause task, then post the <code>cutover</code> action per workload. Once cutover succeeds, call <code>nutanix.ahv.StartVm</code> on the target and hand off to the <a href='/plugins/plugin-ansible'>Ansible plugin</a> for domain join and agent install. The vCenter source stays live until cutover, so the rollback path is to power the source back on if the post-cutover health check fails."
   - question: "What about Nutanix Self-Service (Calm) and X-Play?"
     answer: "Calm (renamed NCM Self-Service) is the catalog layer above Prism. X-Play is the runbook layer. Both are what Kestra replaces. Calm blueprints become Kestra YAML flows that can still call your existing Python actions. The Calm self-service catalog becomes Kestra Apps with typed inputs, RBAC, and an execution audit trail. X-Play playbooks become Kestra flows triggered by alerts, schedule, or webhook. AHV stays where it is."
   - question: "How does the recovery point pattern work?"
@@ -501,7 +501,7 @@ faq:
   - question: "How does ListVms filtering actually work?"
     answer: "The VMM v4 API supports OData on <code>ListVms</code>. The plugin exposes <code>filter</code>, <code>orderBy</code>, <code>select</code>, and pagination directly. Examples: <code>powerState eq 'ON' and contains(name, 'prod-')</code>, or <code>categories/any(c: c eq 'dept/finance')</code>. With <code>fetchType: STORE</code> the result lands as an ION file in internal storage, so downstream Python tasks can stream through 10,000 VM rows without loading them all in memory."
   - question: "Is the Nutanix plugin Enterprise-only?"
-    answer: "Yes, the <code>io.kestra.plugin.ee.nutanix</code> plugin is part of Kestra Enterprise. Kestra Enterprise also includes Apps, RBAC, audit logs, worker isolation, and SSO, which infrastructure teams replacing Calm typically need on top."
+    answer: "Yes, the <code>io.kestra.plugin.ee.nutanix</code> plugin is part of Kestra Enterprise. Kestra Enterprise also includes Apps, RBAC, audit logs, worker isolation, and SSO, which infrastructure teams replacing Calm typically need on top. For the broader context across Terraform, Ansible, Argo CD, and cloud APIs, see <a href='/infra-automation'>Kestra for infrastructure automation</a> and the dedicated <a href='/orchestration/terraform'>Terraform orchestration page</a>."
   - question: "Can Kestra run inside an air-gapped Nutanix environment?"
     answer: "Yes. Kestra ships self-hosted on Docker or Kubernetes, runs fully air-gapped, and supports per-cluster control planes with remote workers close to each Prism Central endpoint. AD-backed authentication, least-privilege RBAC, and log shipping to the enterprise SIEM are all supported on-prem with no external dependency."
 

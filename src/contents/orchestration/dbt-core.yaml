@@ -1,5 +1,5 @@
 title: "Orchestrate dbt Core with Kestra: scheduling, retries, and full-pipeline visibility"
-description: "dbt Core transforms your data. Kestra orchestrates the run. Wrap every dbt execution with event-driven scheduling, approval gates, retries, and end-to-end visibility, without touching your dbt models or profiles."
+description: "Wrap every dbt build with event triggers, approval gates between layers, retries, and full lineage visibility, without touching your dbt models."
 
 tool:
   name: "dbt Core"

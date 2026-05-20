@@ -1,5 +1,5 @@
 title: "Orchestrate Terraform with Kestra: scheduling, approval gates, and multi-tool coordination"
-description: "Terraform provisions infrastructure. Kestra orchestrates the runs. Add scheduled plans, approval gates between plan and apply, retries, and chaining with Ansible or ArgoCD, without touching your Terraform code."
+description: "Schedule Terraform plans for drift detection, gate plan to apply with a named reviewer, retry only the failed step, and chain with Ansible or ArgoCD."
 
 tool:
   name: "Terraform"
@@ -468,7 +468,7 @@ faq:
   - question: "What's the difference between Kestra and Spacelift for Terraform?"
     answer: "Spacelift is purpose-built for IaC and does that one job well. Kestra is a general-purpose orchestrator. If your Terraform runs sit inside a larger workflow that also calls Ansible, ArgoCD, data pipelines, or business logic, Kestra runs the full chain from one platform with one history. Spacelift stops at the IaC layer."
   - question: "Is Kestra self-hosted?"
-    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives full control over where Terraform plans and applies execute, with no external dependency on Kestra's infrastructure."
+    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives full control over where Terraform plans and applies execute, with no external dependency on Kestra's infrastructure. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Ansible, ArgoCD, and cloud APIs."
 
 seeHow:
   title: "Ready to orchestrate your Terraform runs?"

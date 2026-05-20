@@ -1,5 +1,5 @@
 title: "Orchestrate Ansible with Kestra: triggers, approval gates, and cross-tool coordination"
-description: "Ansible runs your playbooks. Kestra orchestrates the runs. Add event triggers, approval gates, retries, and chaining with Terraform and ServiceNow, without touching your playbooks or inventory."
+description: "Wrap every Ansible playbook with event triggers, wave approval gates, per-host retries, and chaining with Terraform and ServiceNow, no inventory changes."
 
 tool:
   name: "Ansible"
@@ -407,7 +407,7 @@ faq:
   - question: "Do I need a separate AWX or Tower instance to run Kestra?"
     answer: "No. Kestra runs <code>ansible-playbook</code> directly through its task runner, on the worker, in a container, or remotely via SSH. No AWX, no Tower, no EDA controller. Teams already on AAP can keep it: Kestra calls AAP jobs over the API the same way it calls Terraform Cloud or Jenkins."
   - question: "Is Kestra self-hosted? Can it run air-gapped?"
-    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. BHP deploys Kestra per OT asset, with each control plane scoped to a single network zone. No external dependency on Kestra's infrastructure."
+    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. BHP deploys Kestra per OT asset, with each control plane scoped to a single network zone. No external dependency on Kestra's infrastructure. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Terraform, Ansible, and cloud APIs."
 
 resources:
   title: "More on Ansible and Kestra"
