@@ -460,7 +460,7 @@ faq:
   - question: "Does Kestra work with OpenTofu and Terragrunt?"
     answer: "Kestra has dedicated plugins for both. The <code>OpenTofuCLI</code> and <code>TerragruntCLI</code> tasks accept the same inputs as the Terraform task, so swapping the binary is a one-line change. The same flow, retries, approval gates, and execution history apply."
   - question: "Do we have to drop Jenkins or Ansible to use Kestra?"
-    answer: "No. Kestra calls Ansible playbooks as a task and can fire Jenkins jobs over the API. Many teams start by adding Kestra above an existing Jenkins or Ansible setup: Kestra schedules the run, gates the apply, then hands off to the existing pipeline. Crédit Agricole's CAGIP team began with Ansible and Jenkins and added Kestra as the unified control plane on top."
+    answer: "No. Kestra calls Ansible playbooks as a task and can fire Jenkins jobs over the API. Many teams start by adding Kestra above an existing Jenkins or Ansible setup: Kestra schedules the run, gates the apply, then hands off to the existing pipeline."
   - question: "Can Kestra migrate Terraform state between backends?"
     answer: "Yes. Wrap the migration in a flow: authenticate against the source and target backends, snapshot the current state to a versioned location, run <code>terraform state mv</code> (or re-init with the new backend), then verify the target backend with a list call. Every step is logged and rerunnable if the verification fails."
   - question: "How does Kestra handle state and secrets for Terraform?"
