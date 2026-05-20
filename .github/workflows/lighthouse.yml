@@ -11,14 +11,11 @@ on:
 jobs:
   lighthouse-baseline:
     name: Lighthouse – Save Baseline (main)
-    if: |
-      github.event.workflow_run.event == 'push' &&
-      github.event.workflow_run.head_branch == 'main' &&
-      github.event.workflow_run.conclusion == 'success' &&
-      startsWith(github.repository, 'kestra-io/')
+    if: ${{ github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success' && startsWith(github.repository, 'kestra-io/') }}
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+
     steps:
       - name: Checkout main
         uses: actions/checkout@v6
@@ -28,28 +25,53 @@ jobs:
         with:
           node-version-file: .nvmrc
 
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build site
+        run: npm run build
+        env:
+          NO_IMAGE_OPTIM: "true"
+
       - name: Install Lighthouse
         # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
         run: npm install --no-save lighthouse chrome-launcher
 
-      - name: Run Lighthouse against production
+      - name: Start local dev server
+        # wrangler dev serves the built Workers bundle locally via Miniflare —
+        # no Cloudflare credentials required, no network access needed.
+        run: npx wrangler dev --local &
+
+      - name: Wait for dev server to be ready
+        run: |
+          echo "Waiting for http://localhost:8787…"
+          for i in $(seq 1 24); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8787 || true)
+            if [ "$STATUS" = "200" ]; then
+              echo "Server is ready (HTTP 200)."
+              exit 0
+            fi
+            echo "  Attempt $i/24: HTTP $STATUS — retrying in 5 s…"
+            sleep 5
+          done
+          echo "Warning: server did not return 200 after 2 min; running Lighthouse anyway."
+
+      - name: Run Lighthouse against local build
         run: node scripts/lighthouse-benchmark.mjs
         env:
-          BASE_URL: https://kestra.io
-          OUTPUT_FILE: lighthouse-results-prod.json
-          MARKDOWN_FILE: lighthouse-report-prod.md
+          BASE_URL: http://localhost:8787
+          OUTPUT_FILE: lighthouse-results.json
+          MARKDOWN_FILE: lighthouse-report.md
 
-      # Fixed artifact name so dawidd6/action-download-artifact can always
-      # fetch "the latest baseline from main" in deploy.yml's lighthouse job.
       - name: Upload as baseline artifact
         uses: actions/upload-artifact@v7
         with:
-          name: lighthouse-baseline-prod
-          path: lighthouse-results-prod.json
+          name: lighthouse-baseline
+          path: lighthouse-results.json
           retention-days: 30
 
-      - name: Update commit comment
+      - name: Comment on commit
         uses: peter-evans/commit-comment@v4
         with:
-          body-path: lighthouse-report-prod.md
+          body-path: lighthouse-report.md
           token: ${{ secrets.GITHUB_TOKEN }}
