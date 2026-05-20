@@ -45,50 +45,97 @@ cta: What would your analytics team build if your pipelines ran in sync, with no
 
 ## The problem
 
-Riverside's analytics engineering team runs the company's internal data operations. Every business insight moves through a pipeline that starts with ELT ingestion, passes through sequential dbt Cloud transformation jobs in Snowflake, runs data quality checks via Metaplane, and ends at downstream platforms via Hightouch reverse ETL. Six tools, all with real dependencies on each other, all previously coordinated by time-based scheduling with no actual handoff between them.
+<div class="section-subtitle">Six tools with real dependencies on each other — coordinated only by timers.</div>
 
-**01 -- Pipelines ran on timers, not dependencies**
+Riverside's analytics engineering team runs the company's internal data operations. Every business insight moves through a pipeline — ELT ingestion into Snowflake, sequential dbt Cloud transformation jobs, Metaplane data quality checks, and Hightouch reverse ETL to downstream platforms. Six tools, all with real dependencies on each other, all previously running on isolated schedules with no actual handoff between them.
 
-Each tool assumed the previous step had finished. If ELT was still running when dbt's scheduled slot arrived, the transformation would execute on incomplete data. No alert fired. The pipeline had no way to know the sequence had broken.
+<div class="problem-list">
+<div class="problem-item">
+<span class="problem-number">01</span>
+<div class="problem-title">Pipelines ran on timers, not dependencies</div>
+<div class="problem-desc">Each tool assumed the previous step had finished. If ELT was still running when dbt's scheduled slot arrived, the transformation would execute on incomplete data. No alert fired. The cost became visible when the CEO flagged a number that looked off — every tool had run on schedule, but the data was wrong because the sequence had broken silently. <em class="inline-quote">"It undermines credibility."</em></div>
+</div>
+<div class="problem-item">
+<span class="problem-number">02</span>
+<div class="problem-title">Python-first orchestrators required expertise the team didn't have</div>
+<div class="problem-desc">The analytics engineering team writes SQL, YAML, and Python transformation logic — not platform engineering. Astronomer and Dagster both required adopting a Python-centric execution model: decorators, framework abstractions, proprietary asset definitions. An orchestrator that required learning a new programming model was not viable for a team whose job is data transformation, not infrastructure ownership.</div>
+</div>
+<div class="problem-item">
+<span class="problem-number">03</span>
+<div class="problem-title">The final choice came down to abstraction vs. control</div>
+<div class="problem-desc">Orchestra and Kestra were the final two. Orchestra hides the YAML entirely — appealing, but that meant less control over flow structure and fewer options for the custom connectors the team needed for tools like Metaplane. Kestra's YAML gave the team direct control over sequencing, conditional logic, and custom API calls. After the trial: <em class="inline-quote">"Simply powerful yet simple enough."</em></div>
+</div>
+</div>
 
-The cost of this became visible when the CEO flagged a number that looked off. The pipeline had technically succeeded: every tool had run on schedule. But the data was wrong because the sequence had broken silently. *"It undermines credibility,"* Hernán Estrin, Analytics Engineering Lead, noted when explaining the motivation for embedding data quality checks between pipeline stages. The team needed tools that could talk to each other, not just run on timers.
-
-**02 -- Python-first orchestrators required expertise the team didn't have**
-
-The analytics engineering team writes SQL, YAML, and Python transformation logic. Infrastructure engineering is not their domain. Astronomer and Dagster both required adopting a Python-centric execution model: decorators, framework abstractions, proprietary asset definitions. The team didn't want to own any of it. An orchestrator that required learning a new programming model was not a viable option for a team whose job is data transformation, not platform engineering.
-
-**03 -- The final choice came down to abstraction vs. flexibility**
-
-Orchestra and Kestra were the final two. Orchestra's UI abstraction was appealing: it hides the YAML entirely. But that abstraction also meant less control over flow structure and fewer options for the custom connectors the team needed for tools like Metaplane. Kestra's YAML is visible, which requires slightly more familiarity, but gave the team control over the exact sequencing, conditional logic, and custom API calls their stack required. After the trial, Hernán's assessment: *"Simply powerful yet simple enough."* The docs were clear. Each task had its own inline configuration. The learning curve was short enough that analytics engineers could own their own flows without deep Kestra knowledge.
+<div class="problem-close">
+<div class="problem-close-prefix">// The requirement</div>
+Tools that could talk to each other — <strong class="problem-close-key">not just run on timers.</strong>
+</div>
 
 ## What Kestra fixed
 
-**Declarative orchestration at the right level of abstraction**
+<div class="section-subtitle">Developer-experience arguments won the eval. Dependency-aware pipelines won the team.</div>
 
-Kestra sits on top of Riverside's existing tools. Nothing was rewritten. Custom Python ingestion scripts stay in their own repository; Kestra calls them. dbt Cloud jobs run as sequential steps in a single flow, sometimes three jobs in a row, each dependent on the last. Metaplane data quality checks run between dbt stages and halt the pipeline if a check fails, sending a Slack alert before bad data reaches stakeholders.
-
-*"You give flexibility, but you abstract that with a declarative approach in which you say, okay, I want this to happen and it will happen."* Analytics engineers can add a dbt Cloud job to an existing flow without understanding how Kestra executes it underneath.
-
-**Event-driven triggers for the Snowflake handoff**
-
-Some of Riverside's ELT tools run continuously and don't emit a clean completion event. The fix is a Snowflake-based trigger: Kestra polls a Snowflake table for the latest run status, confirms success, and only then kicks off the dbt pipeline.
-
-**Managed cloud, no infrastructure required**
-
-*"We don't have the technical knowledge nor the help from our teams in order to set up the infra. We just need something available to use right from the get-go."* Self-hosted was never on the table. Kestra Cloud gave them a production-ready instance without a DevOps engagement. Hernán and one other engineer maintain all production flows.
+<div class="fix-list">
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Declarative orchestration at the right level of abstraction</div>
+<div class="fix-desc">Kestra sits on top of Riverside's existing tools. Nothing was rewritten. Custom Python scripts stay in their own repository — Kestra calls them. dbt Cloud jobs run as sequential steps, each dependent on the last. Analytics engineers can add a step to an existing flow without understanding how Kestra executes it underneath. <em class="inline-quote">"You give flexibility, but you abstract that with a declarative approach in which you say, okay, I want this to happen and it will happen."</em></div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Data quality gates embedded between every pipeline stage</div>
+<div class="fix-desc">Metaplane checks run between dbt stages and halt the pipeline if a check fails, sending a Slack alert before bad data reaches stakeholders. The CEO had previously flagged a number that looked off because the sequence had broken silently. That's why these gates exist at every stage.</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Event-driven triggers for the Snowflake handoff</div>
+<div class="fix-desc">Some of Riverside's ELT tools run continuously and don't emit a clean completion event. Kestra polls a Snowflake table for the latest run status, confirms success, and only then kicks off the dbt pipeline — no timers, no guesswork.</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Managed cloud, no infrastructure required</div>
+<div class="fix-desc"><em class="inline-quote">"We don't have the technical knowledge nor the help from our teams to set up the infra. We just need something available to use right from the get-go."</em> Self-hosted was never on the table. Kestra Cloud gave them a production-ready instance without a DevOps engagement. Two engineers maintain all production flows.</div>
+</div>
+</div>
+</div>
 
 ## Outcomes
 
-**Full analytics stack in sync:** ELT ingestion, sequential dbt Cloud jobs, Metaplane data quality gates, and Hightouch reverse ETL now run in dependency-aware sequence instead of on isolated timers.
-
-**Data quality gates between every pipeline stage:** Metaplane checks are embedded between dbt steps. A failed check halts the pipeline and sends a Slack alert. The CEO had previously flagged a number that looked off because the sequence had broken silently. That's why these gates exist at every stage.
-
-**Analytics engineers own the orchestration:** Two engineers maintain all production flows. Team members without deep Kestra knowledge can read a flow and add a step. *"They don't need to know a lot to read an extra flow."*
+<div class="results-list">
+<div class="result-item">
+<div class="result-metric">6+ tools in sync</div>
+<div class="result-desc">ELT ingestion, sequential dbt Cloud jobs, Metaplane data quality gates, and Hightouch reverse ETL now run in a dependency-aware sequence instead of on isolated timers.</div>
+</div>
+<div class="result-item">
+<div class="result-metric">Quality gates at every stage</div>
+<div class="result-desc">Metaplane checks between every dbt stage halt the pipeline on failure and fire a Slack alert. Bad data no longer reaches stakeholders silently.</div>
+</div>
+<div class="result-item">
+<div class="result-metric">2 engineers own it all</div>
+<div class="result-desc">Hernán and one other engineer maintain all production flows. Team members without deep Kestra knowledge can read a flow and add a step. <em class="inline-quote">"They don't need to know a lot to read an extra flow."</em></div>
+</div>
+</div>
 
 ## Kestra in the Riverside analytics stack
 
-Riverside runs Kestra Cloud on GCP. The full pipeline runs through a single orchestration layer: custom Python scripts and Fivetran connectors handle ELT ingestion from external sources; Kestra triggers sequential dbt Cloud jobs via the API connector; Metaplane checks run between dbt stages via a custom HTTP connector, halting the pipeline on failure; Hightouch is triggered after dbt completes to sync results to downstream platforms.
+Riverside runs Kestra Cloud on GCP. Custom Python scripts and Fivetran connectors handle ELT ingestion from external sources. Kestra triggers sequential dbt Cloud jobs via the API connector. Metaplane checks run between dbt stages via a custom HTTP connector, halting the pipeline on failure. Hightouch is triggered after dbt completes to sync results to downstream platforms. Slack handles alerting throughout — pipeline failures, data quality alerts, and development-mode suppression via tag-based conditions.
 
-Slack handles alerting throughout: pipeline failures, data quality alerts, and development-mode suppression via tag-based conditions to avoid alert noise during testing.
-
-The full stack: Kestra Cloud · dbt Cloud · Snowflake · Fivetran · Metaplane · Hightouch · Python · Slack.
+<div class="stack-row">
+<span class="stack-pill">Kestra Cloud</span>
+<span class="stack-pill">dbt Cloud</span>
+<span class="stack-pill">Snowflake</span>
+<span class="stack-pill">Fivetran</span>
+<span class="stack-pill">Metaplane</span>
+<span class="stack-pill">Hightouch</span>
+<span class="stack-pill">Python</span>
+<span class="stack-pill">Slack</span>
+<span class="stack-pill">GCP</span>
+</div>
