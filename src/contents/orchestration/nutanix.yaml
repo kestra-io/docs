@@ -22,7 +22,7 @@ pillars:
   items:
     - icon: "mdi:swap-horizontal-circle-outline"
       title: "VMware-to-AHV migration coordinated in waves"
-      description: "Drive Nutanix Move through the v2 REST API from a flow: add source and target providers, build a migration plan, run readiness checks, then cut over wave by wave when each VM hits state 5 (ready for cutover). Kestra handles the wave scheduling, dependency ordering, and rollback path that Move itself does not. Western Union ran exactly this pattern in 2026."
+      description: "Drive Nutanix Move through the v2 REST API from a flow: add source and target providers, build a migration plan, run readiness checks, then cut over wave by wave when each VM hits state 5 (ready for cutover). Kestra handles the wave scheduling, dependency ordering, and rollback path that Move itself does not."
     - icon: "mdi:camera-outline"
       title: "Crash- or app-consistent recovery points before any risky change"
       description: "<code>CreateVmSnapshot</code> emits a recovery point through the Nutanix dataprotection v4 API, with optional expiration. Pick crash-consistent for speed, app-consistent (Guest Tools quiesce) for databases. <code>RestoreVmSnapshot</code> reverts on a failed health check, with the <code>snapshotExtId</code> flowing forward from the create step."
@@ -82,7 +82,7 @@ useCases:
           description: "VMware source stays live until cutover; an errors branch can power the source VM back on and pause the wave."
         - title: "Per-VM audit trail"
           description: "Every cutover has the source vCenter UUID, the AHV <code>extId</code>, the operator, and the readiness state on record."
-      signal: "Pattern documented in the Nutanix Move v2 REST API guide and used by Western Union and Pro IT NW migration teams in 2026."
+      signal: "Pattern based on the documented Nutanix Move v2 REST API workflow (login, build plan, poll workloads to state 5, cutover)."
     - badge: "Operations"
       badgeIcon: "mdi:camera-outline"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
