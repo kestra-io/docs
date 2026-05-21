@@ -2,7 +2,7 @@ title: "n8n vs Kestra for Workflow Automation"
 description: "Compare Kestra vs n8n: Code-first universal orchestration in any language with YAML vs visual drag-and-drop app automation. See features, architecture, and use cases."
 competitorName: n8n
 category: Business Automation
-shortDescription: "Visual low-code app automation vs. code-first universal orchestration at enterprise scale."
+shortDescription: "Visual low-code app automation vs. code-first universal orchestration for any team or scale."
 seeHowTitle: "Getting Started with Declarative Orchestration"
 seeHowBody: "See how Kestra can simplify your workflows—and scale beyond app automation."
 
@@ -11,7 +11,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. n8n: Orchestrate at Scale, Not Just Connect Apps"
-  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, infrastructure, and AI workloads at enterprise scale. One automates tasks. The other carries it into production across teams."
+  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads for teams of any size. One automates tasks. The other carries them into production."
 
 philosophy:
   mainTitle: Two Platforms, Two Philosophies
@@ -31,7 +31,7 @@ businessValue:
   kestra:
     title: Enterprise-Scale Orchestration
     list:
-      - Automate data pipelines, infrastructure, and AI workloads
+      - Automate data pipelines, integration workflows, infrastructure, and AI workloads
       - "Cross-functional: data + platform + DevOps + business"
       - Production-grade reliability with retries, concurrency controls, and audit trails
       - Scales to billions of executions across teams
@@ -39,14 +39,14 @@ businessValue:
   competitor:
     title: App-to-App Automation
     list:
-      - Connect SaaS apps and build integrations
+      - Connect SaaS apps with a visual drag-and-drop canvas
       - Technical teams and marketing automation
       - Speed of setup and visual iteration
       - Single-team automation workflows
       - Serves individual teams and developers
     shadowColor: "#FF9F7A"
     bulletColor: "#FF6B3D"
-  footerText: "n8n is a strong choice for connecting apps and prototyping automations visually, especially AI agent workflows. Kestra takes a different approach: declarative YAML, your existing Python, SQL, and Shell scripts without refactoring, and production workflows with namespace-level isolation. One platform handles a single team's app integrations. The other runs orchestration across the engineering org."
+  footerText: "n8n is a strong choice for connecting apps and prototyping automations visually, especially AI agent workflows. Kestra takes a different approach: declarative YAML, your existing Python, SQL, and Shell scripts without refactoring, and production workflows with namespace-level isolation. One platform handles point-to-point SaaS connections. The other runs orchestration across the engineering org."
 
 setupSpeed:
   title: Time to First Workflow
@@ -144,7 +144,7 @@ featureGrid:
   title: Kestra vs. n8n at a Glance
   tableData:
     - feature: Primary use case
-      kestra: Universal workflow orchestration
+      kestra: "Universal workflow orchestration — pipelines, integrations, infrastructure, AI workloads"
       competitor: Visual app-to-app automation
     - feature: Workflow definition
       kestra: Declarative YAML (code-first)
@@ -209,7 +209,7 @@ platformStrengths:
     - title: Minutes to first workflow
       description: "Build your first scheduled workflow in under 5 minutes with our <a href='/docs/quickstart'>Quickstart Guide</a>. No Node.js runtime to manage, no visual canvas required. Write YAML and execute."
     - title: Orchestrate anything
-      description: "Data pipelines, infrastructure provisioning, AI workloads. One platform with container-level isolation and RBAC per namespace."
+      description: "Data pipelines, integration workflows, document processing, infrastructure provisioning, and AI workloads. One platform with container-level isolation and RBAC per namespace."
 
 decisionGuide:
   mainTitle: The Right Tool for the Right Job
@@ -217,13 +217,14 @@ decisionGuide:
     title: Choose Kestra When
     list:
       - "Data pipelines, infrastructure automation, or AI workloads at production scale."
+      - "File-based and document processing pipelines — extract, parse, and push structured data into enterprise systems like ERPs or databases."
       - "Multi-language teams (Python, SQL, Bash, R, Go) that need orchestration beyond JavaScript."
       - "Workflows that go through pull requests, CI/CD, and code review."
       - "Multi-team environments with namespace isolation and compliance requirements."
   competitor:
     title: Choose n8n When
     list:
-      - "Connecting SaaS apps and building integration workflows fast."
+      - "Point-and-click SaaS trigger automation where visual setup speed is the priority."
       - "Visual drag-and-drop workflow building is the team's preferred model."
       - "AI agent workflows, chatbots, or RAG pipelines are the primary use case."
       - "A lightweight, self-hosted automation tool for a single team."
@@ -232,9 +233,11 @@ decisionGuide:
 
 commonQuestions:
   - question: How is Kestra different from n8n?
-    answer: "Kestra is a code-first orchestration platform for data pipelines, infrastructure automation, and AI workloads at enterprise scale. n8n is a visual-first automation tool for connecting apps and building AI agent workflows. Kestra uses declarative YAML, runs on a distributed architecture with namespace isolation, and deploys through CI/CD. n8n uses a drag-and-drop canvas, runs on Node.js, and builds workflows in the browser. n8n gets you from zero to working automation fast. Kestra carries those workflows into production across teams."
+    answer: "Kestra is a code-first orchestration platform for data pipelines, integration workflows, infrastructure automation, and AI workloads. n8n is a visual-first automation tool for connecting apps and building AI agent workflows. Kestra uses declarative YAML, runs on a distributed architecture with namespace isolation, and deploys through CI/CD. n8n uses a drag-and-drop canvas, runs on Node.js, and builds workflows in the browser. n8n gets you from zero to working automation fast. Kestra carries those workflows into production across teams."
   - question: Can Kestra handle AI workflows like n8n?
     answer: "Yes, but differently. n8n has a visual AI agent builder with LangChain integration, 12 vector store integrations, MCP client and server nodes, and an evaluation node for testing agent outputs — great for prototyping chatbots and agent chains. Kestra orchestrates AI workloads the same way it orchestrates everything else: as steps in declarative pipelines with full state tracking, retries, and scheduling — built visually in the UI or in code. You can call any model API, run any ML framework, and package any environment in a Docker container. A single Kestra flow can handle data extraction, model training, evaluation, deployment, and monitoring as one end-to-end pipeline. If you need a visual agent builder, n8n excels. If you need production AI pipelines integrated with data and infrastructure workflows, Kestra is built for that."
+  - question: Can Kestra handle integration workflows, not just data pipelines?
+    answer: "Yes. Kestra treats integration workflows the same as any other pipeline: a sequence of tasks with retries, scheduling, error handling, and full audit trails. A workflow that reads a PDF invoice, extracts structured fields with a Python script, and pushes the result into an ERP via API is a straightforward Kestra flow. The same applies to syncing data between systems, transforming files before loading them into a database, or triggering downstream processes based on incoming webhooks. Kestra has 1,200+ plugins covering file systems, cloud storage, databases, messaging queues, and REST APIs. Where n8n excels at quick SaaS-to-SaaS trigger automations built visually, Kestra is better suited for multi-step integration pipelines that need production-grade reliability, version control, and auditability."
   - question: How does Kestra handle my scripts?
     answer: "Kestra is language-agnostic. Run Python, SQL, Go, and more, either inline in your YAML or from external files. Scripts execute in isolated Docker containers by default, with full control over dependencies. No decorators, no wrappers, no framework-specific syntax. Your code stays portable."
   - question: Does Kestra have a visual editor like n8n?
