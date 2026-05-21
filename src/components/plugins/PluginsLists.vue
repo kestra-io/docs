@@ -112,7 +112,6 @@
         { value: "A-Z", label: "Name A-Z" },
         { value: "Z-A", label: "Name Z-A" },
         { value: "newest", label: "Newest" },
-        { value: "recently-updated", label: "Recently updated" },
         { value: "most-used", label: "Most used" },
     ]
 
@@ -142,10 +141,6 @@
             }
 
             if (sort === "newest") {
-                const aDate = a.firstReleasedAt ? new Date(a.firstReleasedAt).getTime() : 0
-                const bDate = b.firstReleasedAt ? new Date(b.firstReleasedAt).getTime() : 0
-                if (aDate !== bDate) return bDate - aDate
-            } else if (sort === "recently-updated") {
                 const aDate = a.lastReleasedAt ? new Date(a.lastReleasedAt).getTime() : 0
                 const bDate = b.lastReleasedAt ? new Date(b.lastReleasedAt).getTime() : 0
                 if (aDate !== bDate) return bDate - aDate
