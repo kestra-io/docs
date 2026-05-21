@@ -1,0 +1,495 @@
+title: "Orchestrate Docker with Kestra: signed builds, digest promotion, Compose stacks"
+description: "Build, scan with Trivy, sign with Cosign, and promote the same sha256 digest from staging to prod, with Compose stacks for tests and guaranteed teardown."
+
+tool:
+  name: "Docker"
+  pluginClass: "io.kestra.plugin.docker.Build"
+  color: "#2496ED"
+
+hero:
+  title: "Your Docker pipelines, fully orchestrated."
+  description: "Build, scan with Trivy, sign with Cosign, and push, all in one flow. Promote the same sha256 digest from staging to prod without rebuilding, bring up Compose stacks for integration tests with guaranteed teardown, and reuse your built image as the next task's runtime."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+pillars:
+  title: "Around every docker build, every digest, every stack."
+  subtitle: "What Kestra wraps around your Docker pipelines: how images get signed, how a single sha256 digest travels from staging to prod, how Compose stacks come up for tests and tear down on every exit path, and where the audit lives."
+  items:
+    - icon: "mdi:certificate-outline"
+      title: "Build, Trivy scan, Cosign sign, in one flow"
+      description: "<code>docker.Build</code> produces the image and emits the <code>imageId</code> (sha256 digest). <code>trivy.cli.TrivyCLI</code> fails the flow on HIGH or CRITICAL CVEs. A shell task runs <code>cosign sign --key cosign.key</code> against the digest, not the tag. Admission controllers downstream can verify the signature is on the same artifact you tested."
+    - icon: "mdi:source-pull"
+      title: "Promote the same digest, never rebuild between environments"
+      description: "Capture the <code>imageId</code> from the build step, push it to the staging registry, run smoke tests, then push the same digest to the prod registry under a new tag. The artifact you signed and scanned is the artifact you ship. Tags are mutable, sha256 is not."
+    - icon: "mdi:layers-triple-outline"
+      title: "Compose stacks for ephemeral integration tests"
+      description: "<code>docker.Compose</code> brings up a full stack (app, Postgres, Redis, queue) for the duration of one flow. Tests run against the live stack. An <code>errors</code> branch fires <code>docker compose down -v</code> on every exit path, so containers and volumes never leak across CI runs."
+    - icon: "mdi:cube-send"
+      title: "Build a custom task-runner image and use it in the same flow"
+      description: "<code>docker.Build</code> produces a Python or R image with your data dependencies pre-installed. The next task, <code>scripts.python.Commands</code>, references that <code>imageId</code> as its <code>containerImage</code> with <code>pullPolicy: NEVER</code>. One execution covers build, test, and the workload that uses the image."
+    - icon: "mdi:cloud-lock-outline"
+      title: "Short-lived ECR, Artifact Registry, ACR tokens"
+      description: "<code>aws.ecr.GetAuthToken</code>, <code>gcp.auth.OauthAccessToken</code>, and <code>azure.auth.OauthAccessToken</code> fetch fresh credentials at the start of the run. <code>docker.Build</code> and <code>docker.Push</code> consume them through the <code>credentials</code> property. No registry passwords sit in CI variables."
+    - icon: "mdi:shield-check-outline"
+      title: "Approval gate between staging and prod registry push"
+      description: "Build once, push the digest to staging. The Pause task surfaces the scan summary, the signature, and the digest in the UI. A named reviewer approves, then the same digest gets a prod tag and a second <code>docker.Push</code> ships it. Reviewer identity and resume timestamp land in the execution history."
+
+useCases:
+  title: "How platform teams use Docker and Kestra"
+  subtitle: "Patterns DevOps and platform engineers run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Supply chain"
+      badgeIcon: "mdi:certificate-outline"
+      title: "Build, Trivy scan, Cosign sign, push the signed digest"
+      description: "<code>docker.Build</code> produces the image and emits the digest. <code>trivy.cli.TrivyCLI</code> scans and fails on HIGH/CRITICAL. A shell step runs <code>cosign sign</code> against the digest using a key from the Kestra secrets backend (keyless via Sigstore works too). The signed digest pushes to the registry along with its <code>.sig</code> reference. Admission controllers verify on deploy."
+      flow:
+        - node: "Git tag webhook"
+          label: "release"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "docker build"
+          label: "emits sha256"
+          pluginClass: "io.kestra.plugin.docker.Build"
+        - node: "trivy scan"
+          label: "fail on HIGH"
+          pluginClass: "io.kestra.plugin.trivy.cli.TrivyCLI"
+        - node: "cosign sign"
+          label: "digest, not tag"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "docker push"
+          label: "image + .sig"
+          pluginClass: "io.kestra.plugin.docker.Push"
+        - node: "notify"
+          label: "Slack with digest"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Sign the digest, not the tag"
+          description: "Cosign binds the signature to the immutable sha256, so retagging doesn't break verification."
+        - title: "Trivy gate before sign"
+          description: "Scan exits non-zero on HIGH/CRITICAL. The flow halts, the sign step never runs on a vulnerable image."
+        - title: "SBOM stored per execution"
+          description: "Trivy outputs the SBOM as a task artifact, downloadable from the execution UI alongside the signature."
+        - title: "Keyless option via Sigstore"
+          description: "Use OIDC-based keyless signing (<code>COSIGN_EXPERIMENTAL=1</code>) when you don't want to manage Cosign keys."
+    - badge: "Promotion"
+      badgeIcon: "mdi:source-pull"
+      title: "Digest-pinned promotion from staging to prod"
+      description: "Build the image once, capture the <code>imageId</code> (sha256). Push to the staging registry under the version tag. Run smoke tests against the staging digest. The Pause task surfaces the digest. On approval, <code>docker.Tag</code> retags the same digest for prod and <code>docker.Push</code> promotes it. The artifact tested in staging is bit-for-bit the artifact running in prod."
+      flow:
+        - node: "tag webhook"
+          label: "vX.Y.Z"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "docker build"
+          label: "capture digest"
+          pluginClass: "io.kestra.plugin.docker.Build"
+        - node: "push staging"
+          label: "vX.Y.Z-staging"
+          pluginClass: "io.kestra.plugin.docker.Push"
+        - node: "smoke test"
+          label: "pull by digest"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "approve promotion"
+          label: "Pause + reviewer"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "retag for prod"
+          label: "same digest"
+          pluginClass: "io.kestra.plugin.docker.Tag"
+        - node: "push prod"
+          label: "vX.Y.Z"
+          pluginClass: "io.kestra.plugin.docker.Push"
+      items:
+        - title: "Never rebuild between envs"
+          description: "The same sha256 moves from dev to staging to prod, so what was scanned is what ships."
+        - title: "Pin smoke tests to the digest"
+          description: "Pull <code>repo@sha256:...</code>, not <code>repo:latest</code>, so the test runs against the artifact you'll promote."
+        - title: "Reviewer logged on approval"
+          description: "Pause records the resumer and resume timestamp, attached to the execution."
+        - title: "Rollback is a retag"
+          description: "Re-promote the previous digest under the prod tag if the new version fails post-deploy."
+    - badge: "Ephemeral stack"
+      badgeIcon: "mdi:layers-triple-outline"
+      title: "Compose stack for integration tests with guaranteed teardown"
+      description: "On a PR webhook, <code>docker.Compose</code> brings up the full stack: app container, Postgres, Redis, message queue. A health-check loop waits until services accept connections. The test runner executes against the live stack. The <code>errors</code> branch fires <code>docker compose down -v</code> so containers and volumes never survive a failed run."
+      flow:
+        - node: "PR webhook"
+          label: "integration tests"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "compose up"
+          label: "full stack"
+          pluginClass: "io.kestra.plugin.docker.Compose"
+        - node: "wait for ready"
+          label: "health probe loop"
+          pluginClass: "io.kestra.plugin.core.http.Request"
+        - node: "run tests"
+          label: "pytest / go test"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "post results"
+          label: "PR comment"
+          pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+        - node: "compose down"
+          label: "errors branch too"
+          pluginClass: "io.kestra.plugin.docker.Compose"
+      items:
+        - title: "Teardown on every exit path"
+          description: "An <code>errors</code> branch runs <code>compose down -v</code> on test failures, so volumes never leak."
+        - title: "Health check before test"
+          description: "Probe app, db, and queue with <code>core.http.Request</code> retry until ready. No flaky 'connection refused' on first run."
+        - title: "Network-isolated by default"
+          description: "Services reach each other on the internal Compose network. No host port conflicts across parallel runs."
+        - title: "PR-scoped execution history"
+          description: "Every PR run has its own execution, its own compose project, its own log."
+    - badge: "Task runner"
+      badgeIcon: "mdi:cube-send"
+      title: "Build a custom task-runner image and use it in the same flow"
+      description: "<code>docker.Build</code> produces a Python image with pandas, polars, and your internal libraries pre-installed. The next task, <code>scripts.python.Commands</code>, references the freshly built <code>imageId</code> as its <code>containerImage</code> with <code>pullPolicy: NEVER</code>. Data scientists ship a custom runtime and the workload that needs it in one execution."
+      flow:
+        - node: "Git push"
+          label: "data-tools repo"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "docker build"
+          label: "custom python image"
+          pluginClass: "io.kestra.plugin.docker.Build"
+        - node: "python workload"
+          label: "containerImage = imageId"
+          pluginClass: "io.kestra.plugin.scripts.python.Commands"
+        - node: "output to S3"
+          label: "results"
+          pluginClass: "io.kestra.plugin.aws.s3.Upload"
+      items:
+        - title: "Same flow, build + use"
+          description: "No registry push needed for the build/use loop, <code>pullPolicy: NEVER</code> references the local image directly."
+        - title: "imageId is the contract"
+          description: "<code>outputs.build.imageId</code> is the sha256, so the runtime is pinned to the exact build."
+        - title: "Per-namespace task-runner images"
+          description: "Different teams build and use their own runtime image without polluting a shared base."
+          wide: true
+
+quotes:
+  - quote: "Kestra's declarative model and Terraform integration gave us exactly what we needed to build customer-specific pipelines, automate deployment, and monitor everything reliably."
+    author: "Lirav Duvshani, CEO @DataFlooder · Sopht"
+    storyLink: "/use-cases/stories/sopht-scales-its-green-itops-platform-with-kestra"
+    logoFile: "sopht"
+
+blueprints:
+  title: "Blueprints for Docker orchestration."
+  lead: "One blueprint per use case above. Copy the YAML, point it at your registry, ship it."
+  items:
+    - name: "Build, scan, sign, push"
+      title: "Supply-chain: Build, Trivy scan, Cosign sign, push the signed digest"
+      description: "Builds the image, runs Trivy, signs the digest with Cosign keyless via Sigstore OIDC (or a stored key), then pushes the image and the <code>.sig</code> reference. The exact digest is logged for the downstream deploy step to verify."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.docker.Build"
+        - "io.kestra.plugin.trivy.cli.TrivyCLI"
+        - "io.kestra.plugin.scripts.shell.Commands"
+        - "io.kestra.plugin.docker.Push"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: docker-build-scan-sign-push
+        namespace: company.platform
+
+        inputs:
+          - id: image_name
+            type: STRING
+            defaults: "data-infrastructure"
+          - id: version
+            type: STRING
+            defaults: "1.0.0"
+
+        tasks:
+          - id: build
+            type: io.kestra.plugin.docker.Build
+            dockerfile: |
+              FROM python:3.12-slim
+              RUN pip install --no-cache-dir requests polars
+            tags:
+              - "{{ secret('REGISTRY') }}/{{ inputs.image_name }}:{{ inputs.version }}"
+
+          - id: trivy_scan
+            type: io.kestra.plugin.trivy.cli.TrivyCLI
+            commands:
+              - trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format json --output trivy-report.json {{ secret('REGISTRY') }}/{{ inputs.image_name }}:{{ inputs.version }}
+            outputFiles:
+              - trivy-report.json
+
+          - id: cosign_sign
+            type: io.kestra.plugin.scripts.shell.Commands
+            env:
+              COSIGN_EXPERIMENTAL: "1"
+              COSIGN_PASSWORD: "{{ secret('COSIGN_PASSWORD') }}"
+            commands:
+              - echo "Signing digest {{ outputs.build.imageId }}"
+              - cosign sign --yes {{ secret('REGISTRY') }}/{{ inputs.image_name }}@{{ outputs.build.imageId }}
+
+          - id: push
+            type: io.kestra.plugin.docker.Push
+            credentials:
+              registry: "{{ secret('REGISTRY') }}"
+              username: "{{ secret('REGISTRY_USERNAME') }}"
+              password: "{{ secret('REGISTRY_PASSWORD') }}"
+            tags:
+              - "{{ secret('REGISTRY') }}/{{ inputs.image_name }}:{{ inputs.version }}"
+
+          - id: notify
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":lock: Signed and pushed {{ inputs.image_name }}:{{ inputs.version }} (digest: {{ outputs.build.imageId }})"
+              }
+    - name: "Digest-pinned promotion"
+      title: "Promote the same sha256 digest from staging to prod"
+      description: "Builds once, pushes to staging, runs smoke tests against the staging digest, pauses for a named reviewer, then retags the exact same digest for prod and pushes. The artifact that was tested is the artifact that ships."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.docker.Build"
+        - "io.kestra.plugin.docker.Push"
+        - "io.kestra.plugin.core.flow.Pause"
+        - "io.kestra.plugin.docker.Tag"
+      code: |
+        id: docker-digest-promotion
+        namespace: company.platform
+
+        inputs:
+          - id: image_name
+            type: STRING
+            defaults: "data-infrastructure"
+          - id: version
+            type: STRING
+            defaults: "1.0.0"
+
+        tasks:
+          - id: build
+            type: io.kestra.plugin.docker.Build
+            dockerfile: |
+              FROM python:3.12-slim
+              RUN pip install --no-cache-dir requests
+            tags:
+              - "staging.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
+
+          - id: push_staging
+            type: io.kestra.plugin.docker.Push
+            credentials:
+              registry: "staging.registry.local"
+              username: "{{ secret('STAGING_REGISTRY_USER') }}"
+              password: "{{ secret('STAGING_REGISTRY_PASSWORD') }}"
+            tags:
+              - "staging.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
+
+          - id: smoke_test
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - docker pull staging.registry.local/{{ inputs.image_name }}@{{ outputs.build.imageId }}
+              - docker run --rm staging.registry.local/{{ inputs.image_name }}@{{ outputs.build.imageId }} python -c "print('ok')"
+
+          - id: await_approval
+            type: io.kestra.plugin.core.flow.Pause
+            description: |
+              Smoke test passed for digest {{ outputs.build.imageId }}.
+              Resume to promote the same digest to prod.
+
+          - id: retag_for_prod
+            type: io.kestra.plugin.docker.Tag
+            sourceImage: "staging.registry.local/{{ inputs.image_name }}@{{ outputs.build.imageId }}"
+            tags:
+              - "prod.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
+
+          - id: push_prod
+            type: io.kestra.plugin.docker.Push
+            credentials:
+              registry: "prod.registry.local"
+              username: "{{ secret('PROD_REGISTRY_USER') }}"
+              password: "{{ secret('PROD_REGISTRY_PASSWORD') }}"
+            tags:
+              - "prod.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
+    - name: "Compose ephemeral test environment"
+      title: "Bring up a Compose stack for integration tests, tear down on every exit"
+      description: "<code>docker.Compose</code> starts the app + Postgres + Redis stack from an inline Compose file. Tests run against the live stack. The <code>errors</code> branch always runs <code>compose down -v</code> so volumes and containers never leak, even on test failure or timeout."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.docker.Compose"
+        - "io.kestra.plugin.core.http.Request"
+        - "io.kestra.plugin.scripts.shell.Commands"
+      code: |
+        id: docker-compose-integration-tests
+        namespace: company.ci
+
+        triggers:
+          - id: pr_webhook
+            type: io.kestra.plugin.core.trigger.Webhook
+            key: pr_integration
+
+        tasks:
+          - id: compose_up
+            type: io.kestra.plugin.docker.Compose
+            inputFiles:
+              docker-compose.yml: |
+                services:
+                  app:
+                    image: company/app:{{ trigger.body.sha }}
+                    ports:
+                      - "8080:8080"
+                    depends_on:
+                      db:
+                        condition: service_healthy
+                  db:
+                    image: postgres:16-alpine
+                    environment:
+                      POSTGRES_PASSWORD: testpw
+                    healthcheck:
+                      test: ["CMD-SHELL", "pg_isready -U postgres"]
+                      interval: 5s
+                      retries: 10
+                  redis:
+                    image: redis:7-alpine
+            commands:
+              - docker compose -p pr-{{ trigger.body.pr_number }} up -d --wait
+
+          - id: wait_app_ready
+            type: io.kestra.plugin.core.http.Request
+            uri: "http://localhost:8080/health"
+            method: GET
+            retry:
+              type: constant
+              interval: PT5S
+              maxAttempt: 12
+
+          - id: run_tests
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - docker compose -p pr-{{ trigger.body.pr_number }} exec -T app pytest tests/integration
+
+          - id: compose_down_success
+            type: io.kestra.plugin.docker.Compose
+            inputFiles:
+              docker-compose.yml: "{{ outputs.compose_up.outputFiles['docker-compose.yml'] }}"
+            commands:
+              - docker compose -p pr-{{ trigger.body.pr_number }} down -v
+
+        errors:
+          - id: compose_down_failure
+            type: io.kestra.plugin.docker.Compose
+            inputFiles:
+              docker-compose.yml: "{{ outputs.compose_up.outputFiles['docker-compose.yml'] }}"
+            commands:
+              - docker compose -p pr-{{ trigger.body.pr_number }} down -v
+
+comparison:
+  title: "Kestra vs Docker pipeline alternatives"
+  subtitle: "Kestra wraps Docker CLI runs with native scheduling, supply-chain steps, digest pinning, and Compose stack lifecycle. The competitors below are the CI tools where teams orchestrate Docker today."
+  competitors:
+    - name: "Jenkins"
+      pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+    - name: "GitHub Actions"
+      pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+    - name: "GitLab CI"
+      pluginClass: "io.kestra.plugin.gitlab.issues.Create"
+  rows:
+    - feature: "Sign the digest with Cosign as a flow step"
+      kestra: "✓ Shell task with the cosign CLI, digest from <code>outputs.build.imageId</code>"
+      values:
+        - "Possible via shell, no native pattern"
+        - "GitHub-provided cosign action"
+        - "Possible via shell, no native pattern"
+    - feature: "Digest-pinned promotion across environments"
+      kestra: "✓ <code>imageId</code> flows forward, <code>docker.Tag</code> retags by digest"
+      values:
+        - "Pipeline-coded, parameter passing"
+        - "Action-dependent, output passing"
+        - "Variable passing across jobs"
+    - feature: "Compose stack lifecycle with guaranteed teardown"
+      kestra: "✓ Native <code>docker.Compose</code> task plus <code>errors</code> branch"
+      values:
+        - "post-build cleanup step"
+        - "<code>if: always()</code> teardown step"
+        - "<code>after_script</code> teardown"
+    - feature: "Reuse the built image as the next task's runtime"
+      kestra: "✓ <code>containerImage</code> on the next task references the imageId"
+      values:
+        - "Custom container agents, registry pull"
+        - "Container jobs, registry pull"
+        - "Container images, registry pull"
+    - feature: "Short-lived cloud registry tokens"
+      kestra: "✓ Native ECR, GCP, Azure auth tasks"
+      values:
+        - "Custom shell with aws/gcloud CLI"
+        - "OIDC + glue scripts"
+        - "OIDC + glue scripts"
+    - feature: "Event triggers beyond Git push"
+      kestra: "✓ Webhook, schedule, S3, Kafka, file events, all native"
+      values:
+        - "Webhook plugin, polling"
+        - "Webhook events on the repo"
+        - "Webhook + pipeline schedule"
+    - feature: "Per-step retries on transient registry errors"
+      kestra: "✓ Configurable per task"
+      values:
+        - "Pipeline-coded retries"
+        - "Action-dependent"
+        - "<code>retry:</code> keyword in job"
+    - feature: "Per-execution audit history"
+      kestra: "✓ Execution view + per-task state and digest"
+      values:
+        - "Build history"
+        - "Run history in Actions UI"
+        - "Pipeline history"
+    - feature: "Orchestrate beyond CI (data, infra, business workflows)"
+      kestra: "✓ 1300+ plugins"
+      values:
+        - "Build-focused"
+        - "Build-focused"
+        - "Build-focused"
+
+faq:
+  - question: "How does Kestra sign a Docker image with Cosign?"
+    answer: "The flow captures <code>imageId</code> (the sha256 digest) from the <code>docker.Build</code> output, then runs <code>cosign sign --yes registry/repo@<digest></code> via a <code>scripts.shell.Commands</code> task. Two modes are supported: key-based (Cosign private key stored in the Kestra secrets backend) and keyless via Sigstore OIDC (set <code>COSIGN_EXPERIMENTAL=1</code>, no key management needed). Signing the digest, not the tag, binds the signature to the immutable artifact, so retagging or repushing under a different tag doesn't break verification."
+  - question: "Why promote by digest instead of by tag?"
+    answer: "Tags are mutable. The same <code>latest</code> tag can point to different images at different times, which means the artifact that passed your tests is not guaranteed to be the artifact running in prod. A sha256 digest is the cryptographic identity of the image bytes. Capture <code>outputs.build.imageId</code> at build time, push it under a staging tag, run your tests against <code>repo@sha256:...</code>, then retag the same digest for prod. The promotion never rebuilds, never repulls a base image, never lets in drift."
+  - question: "Can I use Compose for ephemeral integration test environments?"
+    answer: "Yes. <code>docker.Compose</code> brings up a stack with the dependencies your tests need (Postgres, Redis, queue, the app). Use a unique compose project name per execution (<code>-p pr-{{ trigger.body.pr_number }}</code>) so parallel runs don't collide. Always put a second <code>docker compose down -v</code> task in the <code>errors</code> branch, otherwise a failed test leaves containers and volumes on the runner. <code>--wait</code> on <code>compose up</code> plus Compose v2 healthchecks gives you 'service is ready' semantics."
+  - question: "Can a task in the same flow run inside an image I just built?"
+    answer: "Yes. Capture <code>outputs.build.imageId</code> from <code>docker.Build</code>, then set it on the next task: <code>containerImage: \"{{ outputs.build.imageId }}\"</code> with the Docker task runner and <code>pullPolicy: NEVER</code>. The task runs in the local image you just built, without a registry round-trip. This is the pattern data scientists use to ship a custom Python runtime and the workload that needs it in one execution."
+  - question: "What does Kestra add to a docker build + docker push setup?"
+    answer: "Docker is a CLI. It builds and pushes images when you run the command, but it has no scheduler, no event triggers, no pause-and-resume between staging and prod, no native chaining with cloud auth, and no shared history for the steps that run before or after. Kestra adds all of those. Every <code>docker build</code> becomes a workflow step: triggered on Git push or schedule, gated by a reviewer, scanned and signed before push, retried on transient registry errors, and auditable across the full pipeline including the deploy step. The same flows can pair Docker with <a href='/plugins/plugin-ansible'>Ansible</a> for host configuration, with <a href='/orchestration/terraform'>Terraform</a> for the underlying infrastructure, and with the broader <a href='/infra-automation'>infrastructure automation</a> patterns Kestra supports."
+  - question: "Does Kestra replace Jenkins, GitHub Actions, or GitLab CI?"
+    answer: "It can, but it doesn't have to. Many teams start by adding Kestra above an existing CI: GitHub Actions builds the image and posts the digest, Kestra picks it up via webhook, runs Trivy + Cosign, pauses for approval, and triggers the Kubernetes rollout against the signed digest. When the team is ready, the build itself can move into Kestra with <code>docker.Build</code>."
+  - question: "How does the short-lived registry token pattern work?"
+    answer: "Each cloud has a Kestra task for short-lived credentials. <code>aws.ecr.GetAuthToken</code> returns a 12-hour ECR token. <code>gcp.auth.OauthAccessToken</code> returns a one-hour OAuth token for Artifact Registry (use <code>accessToken.tokenValue</code> in the password field). <code>azure.auth.OauthAccessToken</code> returns an ACR token. <code>docker.Build</code> and <code>docker.Push</code> consume them directly via the <code>credentials</code> property. No long-lived registry passwords in CI variables."
+  - question: "How does Kestra handle multi-arch buildx builds?"
+    answer: "<code>docker.Build</code> accepts a <code>platforms</code> array, passed straight to <code>buildx</code>. Set <code>platforms: [linux/amd64, linux/arm64]</code> and the daemon builds both, tags them under the same manifest list, and pushes the manifest in one step. No separate workflow per architecture."
+  - question: "Where does the Docker daemon actually run?"
+    answer: "On whichever worker the task is scheduled on. For local builds, mount the host's Docker socket: <code>volumes: [/var/run/docker.sock:/var/run/docker.sock]</code> on the Docker task runner. On Kubernetes, use a DinD sidecar or a remote daemon endpoint via the <code>host:</code> property. Per-worker isolation means the prod-push worker doesn't see staging credentials."
+  - question: "Is the Docker plugin Enterprise-only?"
+    answer: "No. The <code>io.kestra.plugin.docker</code> plugin ships in the open-source edition. Kestra Enterprise adds Apps, namespace-scoped RBAC, audit logs, worker isolation, and SSO, which teams running multi-tenant build platforms typically want on top."
+
+resources:
+  title: "More on Docker and Kestra"
+  items:
+    - kind: "blueprint"
+      title: "AWS ECR CI/CD: build and push Docker images"
+      description: "Working blueprint: fetch a short-lived ECR token, build a Python image from an inline Dockerfile, push it to ECR."
+      href: "/blueprints/build-aws-ecr-image"
+    - kind: "blueprint"
+      title: "GCP Artifact Registry: build and push Docker images"
+      description: "Working blueprint: OAuth token for the service account, build the image, push it to Artifact Registry."
+      href: "/blueprints/build-gcp-artifact-registry-image"
+    - kind: "docs"
+      title: "Automate infrastructure workflows in Kestra"
+      description: "How Kestra orchestrates Docker, Terraform, OpenTofu, Ansible, and cloud CLIs in one declarative flow."
+      href: "/docs/use-cases/infrastructure"
+    - kind: "plugin"
+      title: "Docker plugin reference"
+      description: "Every Docker task (Build, Push, Pull, Run, Compose, Tag, Stop, Rm, Prune) with copy-ready YAML examples."
+      href: "/plugins/plugin-docker"
+
+seeHow:
+  title: "Ready to ship signed digests and Compose stacks?"
+  description: "Build, scan with Trivy, sign with Cosign, promote the same sha256 from staging to prod without rebuilding, and bring up Compose stacks for tests with guaranteed teardown. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"

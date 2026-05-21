@@ -91,7 +91,11 @@ try {
 
 const pluginParts = tool.pluginClass.split(".")
 const pluginDocsUrl =
-    pluginParts.length > 3 ? `/plugins/plugin-${pluginParts[3]}` : null
+    pluginParts.length > 4 && pluginParts[3] === "ee"
+        ? `/plugins/plugin-ee-${pluginParts[4]}`
+        : pluginParts.length > 3
+          ? `/plugins/plugin-${pluginParts[3]}`
+          : null
 
 const toolKeyword = tool.name.toLowerCase().split(" ")[0]
 const allBlogs = await getCollection("blogs")
