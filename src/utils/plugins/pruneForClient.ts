@@ -15,6 +15,7 @@ export type CardPlugin = {
     isEnterprise?: boolean
     classes?: string
     firstReleasedAt?: string
+    lastReleasedAt?: string
     usageCount?: number
 }
 
@@ -47,6 +48,7 @@ export function prunePluginsForCards(
             isEnterprise: p.group?.includes('.ee.') ?? false,
             classes,
             firstReleasedAt: info.firstReleasedAt as string | undefined,
+            lastReleasedAt: info.lastReleasedAt as string | undefined,
             usageCount: info.usageCount as number | undefined,
         }
     })
