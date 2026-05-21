@@ -49,7 +49,20 @@ With dbt Cloud, the focus shifts from managing infrastructure to building data m
 
 ## Core Differences: dbt Core vs. dbt Cloud
 
-The decision between dbt Core and dbt Cloud hinges on several key trade-offs. Let's break them down.
+The decision between dbt Core and dbt Cloud hinges on several key trade-offs. Here's a side-by-side summary before we break each one down.
+
+| Dimension | dbt Core | dbt Cloud |
+| --- | --- | --- |
+| **License & cost** | Open-source (Apache 2.0), free | Free Developer tier, paid Team/Enterprise plans |
+| **Hosting** | Self-managed (your infra) | Fully managed SaaS |
+| **Development environment** | Local IDE (VS Code, PyCharm) + CLI | Web-based IDE with Git integration |
+| **Scheduler** | None — bring your own orchestrator | Built-in scheduler + API triggers |
+| **CI/CD** | Self-built via GitHub Actions, GitLab CI, etc. | Native CI checks on pull requests |
+| **Collaboration** | Git workflows, self-hosted docs | Shared environment, dbt Explorer, hosted docs |
+| **Security & governance** | DIY (auth, secrets, access control) | RBAC, SSO, audit logs out-of-the-box |
+| **Observability** | Provided by your orchestrator | Built-in job monitoring + metadata API |
+| **Best for** | Engineering-heavy teams needing full control | Teams optimizing for speed and low ops overhead |
+| **Operational overhead** | High | Low |
 
 ### Infrastructure Management and Hosting
 
