@@ -7,8 +7,8 @@ tool:
   color: "#EE0000"
 
 hero:
-  title: "Your Ansible playbooks, fully orchestrated."
-  description: "Trigger ansible-playbook from cron, webhooks, or any HTTP signal. Run nightly drift detection with check mode, gate patch waves between dev and prod, parse per-host results via the Kestra Ansible callback, and chain Ansible with Terraform, NetBox, and ServiceNow."
+  title: "Add state, gates, and visibility to Ansible."
+  description: "Run ansible-playbook from cron, webhooks, or any HTTP signal. Add step-level retries, parsed per-host results via the Kestra callback, approval gates between waves, and chain Ansible with Terraform, NetBox, or ServiceNow in one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -155,7 +155,7 @@ useCases:
           wide: true
 
 quotes:
-  - quote: "I'm not sure we can do what we can do now with only Terraform and Ansible. The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
+  - quote: "The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
     author: "Crédit Agricole"
     storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
     logoFile: "credit-agricole"
