@@ -1,0 +1,534 @@
+title: "Orchestrate Argo CD with Kestra: event-driven sync, approval gates, chains"
+description: "Trigger argocd app sync on CI completions or image pushes. Add approval gates before prod, retry transient failures, and chain Terraform, Ansible, and Argo CD."
+
+tool:
+  name: "Argo CD"
+  pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+  color: "#EF7B4D"
+
+hero:
+  title: "Add gates, retries, and chains to Argo CD."
+  description: "Trigger argocd app sync from CI completions, image pushes, or any HTTP signal. Add manual approval gates between staging and prod, retry transient sync failures, poll until Synced and Healthy, and chain Terraform, Ansible, and Argo CD in one execution history."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+pillars:
+  title: "Around every sync, every revision, every cluster."
+  subtitle: "Argo CD reconciles desired state from Git. Kestra wraps that controller with the orchestration layer above it: when a sync fires, what runs before, who approves the promotion to prod, and where the cross-tool audit trail lives. The Argo CD server, the Application objects, and the cluster reconciliation stay where they are."
+  items:
+    - icon: "mdi:lightning-bolt-outline"
+      title: "Triggers beyond Git polling: webhooks, image push, CI events"
+      description: "Argo CD reconciles when its controller polls Git, which adds reconcile lag on every change. Kestra fires argocd app sync the moment upstream signals arrive: a GitHub Actions completion, a Docker image push to the registry, a Terraform apply finishing, or any HTTP webhook. The flow waits for upstream confirmation, then triggers the sync directly with the matching revision."
+    - icon: "mdi:gate-arrow-right"
+      title: "Pause-and-resume between staging and prod"
+      description: "The native Pause task suspends the flow after the staging sync confirms Synced and Healthy via apps.Status. A named reviewer reads the staging diff in the Kestra UI and explicitly resumes. Only then does the prod sync fire. The reviewer identity and timestamp are recorded in the execution history alongside the Argo CD revision."
+    - icon: "mdi:link-variant"
+      title: "Provision, configure, deploy in one chain"
+      description: "terraform apply provisions the cluster and writes outputs (kubeconfig, ingress IP). ansible-playbook configures the underlying nodes. argocd app sync deploys the app stack. All three share one execution history. If Ansible fails, only the Ansible step retries. The Terraform apply does not re-run."
+    - icon: "mdi:radar"
+      title: "Poll until Synced and Healthy, alert on either fail"
+      description: "apps.Status returns syncStatus and healthStatus. Pair it with a retry block to wait until both report green, with a hard timeout. On Degraded or sync timeout, the errors branch sends a Slack alert with the app name, the failing revision, and a direct link to the Argo CD UI."
+    - icon: "mdi:shield-check-outline"
+      title: "Block the sync when the image is unsigned or unscanned"
+      description: "Trivy scans the candidate image for critical CVEs. Cosign verifies the signature against the keyless attestation from the build. A manifest validator checks the Kustomize or Helm output. Each runs as a flow step before apps.Sync. If any check fails, the sync never fires and on-call gets a structured alert with the scan output."
+    - icon: "mdi:source-branch"
+      title: "One flow, many Argo apps, environment-shaped inputs"
+      description: "Pass the Argo CD app name and Git revision as flow inputs. The same flow promotes the same revision through staging, qa, and prod Argo apps in sequence, with a Pause gate before every environment beyond staging. No duplicate YAML per environment, the inputs determine which app gets synced."
+
+useCases:
+  title: "How GitOps teams use Argo CD and Kestra"
+  subtitle: "Patterns platform teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Event-driven"
+      badgeIcon: "mdi:lightning-bolt-outline"
+      title: "Sync Argo CD the moment the CI build is green"
+      description: "A GitHub Actions webhook fires when the build artifact is signed and pushed. The flow validates the payload, triggers argocd app sync at the new revision, polls apps.Status until Synced and Healthy, then posts to Slack with the revision and the application URL. No more reconcile lag while the Argo CD git poller catches up to the new commit."
+      flow:
+        - node: "ci webhook"
+          label: "GitHub Actions"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "validate payload"
+          label: "signed digest"
+          pluginClass: "io.kestra.plugin.core.flow.If"
+        - node: "argocd sync"
+          label: "at revision"
+          pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        - node: "poll status"
+          label: "until Healthy"
+          pluginClass: "io.kestra.plugin.argocd.apps.Status"
+        - node: "notify"
+          label: "Slack with revision"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Sync fires on the upstream event"
+          description: "The sync runs the moment CI finishes, not when Argo CD's controller next polls Git. Cuts minutes from the deploy lag."
+        - title: "Revision pinned at trigger time"
+          description: "The flow passes the exact commit SHA from the webhook payload to apps.Sync, so the sync hits the verified build."
+        - title: "Health gates the success message"
+          description: "Slack only posts :white_check_mark: once apps.Status reports both Synced and Healthy."
+        - title: "Failure goes to on-call with the link"
+          description: "On Degraded or timeout, the errors branch pages on-call with the application name and a direct link to the Argo CD UI."
+          wide: true
+    - badge: "Multi-tool"
+      badgeIcon: "mdi:link-variant"
+      title: "Provision with Terraform, configure with Ansible, deploy with Argo CD"
+      description: "terraform apply provisions the EKS cluster and writes the cluster endpoint to a task artifact. ansible-playbook configures the underlying nodes using that endpoint, with per-step retries. argocd app sync deploys the app stack. Slack confirms when all three steps succeed. If Ansible fails, only Ansible retries. The Terraform apply does not re-run."
+      flow:
+        - node: "scheduled"
+          label: "release window"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "terraform apply"
+          label: "EKS cluster"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "approve"
+          label: "before configure"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "ansible playbook"
+          label: "node config"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "argocd sync"
+          label: "app deploy"
+          pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        - node: "status check"
+          label: "Synced + Healthy"
+          pluginClass: "io.kestra.plugin.argocd.apps.Status"
+        - node: "notify"
+          label: "Slack summary"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "One execution ID across three tools"
+          description: "Terraform outputs flow forward to Ansible. Ansible's host facts flow forward to the Argo CD step. One UI to debug."
+        - title: "Per-step retries, no full re-run"
+          description: "If ansible-playbook hits a transient SSH error, Kestra retries only that step. Terraform apply does not re-run."
+        - title: "Gate between provision and configure"
+          description: "A Pause task between Terraform and Ansible lets a reviewer inspect the new infra before configuration starts."
+        - title: "Argo CD does what it does best"
+          description: "Kestra coordinates the chain. Argo CD still owns the cluster reconciliation, the manifests, and the rollback target."
+          wide: true
+    - badge: "Promotion"
+      badgeIcon: "mdi:source-branch"
+      title: "Promote the same revision through staging, qa, and prod"
+      description: "The flow takes a revision SHA as input. apps.Sync deploys it to the staging Argo app. apps.Status waits for Synced and Healthy. An HTTP probe runs smoke tests against the staging endpoint. A Pause task gates the promotion. Once a reviewer resumes, the same revision deploys to the prod Argo app, followed by another status poll and probe."
+      flow:
+        - node: "revision input"
+          label: "git SHA"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "sync staging"
+          label: "staging app"
+          pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        - node: "staging status"
+          label: "Synced + Healthy"
+          pluginClass: "io.kestra.plugin.argocd.apps.Status"
+        - node: "smoke probe"
+          label: "/health"
+          pluginClass: "io.kestra.plugin.core.http.Request"
+        - node: "approval gate"
+          label: "named reviewer"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "sync prod"
+          label: "prod app"
+          pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        - node: "prod status"
+          label: "Synced + Healthy"
+          pluginClass: "io.kestra.plugin.argocd.apps.Status"
+        - node: "notify"
+          label: "Slack release"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Same revision, every environment"
+          description: "The flow pins the same Git SHA across staging and prod. No drift between what was tested and what ships."
+        - title: "Named reviewer per promotion"
+          description: "The Pause task records who approved the prod sync and when. The Argo CD revision links back from the audit log."
+        - title: "Smoke test before promotion"
+          description: "An HTTP probe runs against staging before the gate opens. A 5xx from staging stops the promotion automatically."
+        - title: "Per-environment Argo app"
+          description: "application is a flow input, so staging-app, qa-app, and prod-app are three Argo Application objects driven from one flow definition."
+          wide: true
+    - badge: "Supply chain"
+      badgeIcon: "mdi:shield-check-outline"
+      title: "Pre-sync supply chain verification with Trivy and Cosign"
+      description: "The flow runs on every image push to the registry. Trivy scans the new image for critical CVEs. Cosign verifies the keyless signature against the build provenance. If both pass, apps.Sync fires at the matching revision. If either fails, the sync never runs and on-call gets the scan output as a structured Slack message."
+      flow:
+        - node: "registry webhook"
+          label: "image push"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "trivy scan"
+          label: "CRITICAL CVE check"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "cosign verify"
+          label: "signature check"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "gate on results"
+          label: "block on fail"
+          pluginClass: "io.kestra.plugin.core.flow.If"
+        - node: "argocd sync"
+          label: "at verified digest"
+          pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        - node: "status poll"
+          label: "until Healthy"
+          pluginClass: "io.kestra.plugin.argocd.apps.Status"
+        - node: "notify"
+          label: "result to Slack"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Sync blocked when checks fail"
+          description: "An If task evaluates Trivy and Cosign exit codes. If either is non-zero, the sync step never runs."
+        - title: "Scan output flows forward"
+          description: "Trivy's JSON output is captured as a task artifact and attached to the Slack alert, so on-call sees exactly which CVE blocked the deploy."
+        - title: "Same digest in registry and Argo CD"
+          description: "The image digest from the webhook is the same one passed to Argo CD's revision. No room for a swapped artifact between scan and sync."
+          wide: true
+
+quotes:
+  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment. All orchestrated through Kestra."
+    author: "Censhare"
+    logoFile: "censhare"
+  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything. This should resolve the issues we are facing currently with everyone working in parallel."
+    author: "BSI Software"
+    logoFile: "bsi"
+
+blueprints:
+  title: "Blueprints for Argo CD orchestration."
+  lead: "One blueprint per use case above. Copy the YAML, point it at your Argo CD server, ship it."
+  items:
+    - name: "Event-driven sync on CI completion"
+      title: "Sync Argo CD the moment CI passes, then poll until Healthy"
+      description: "A GitHub Actions webhook triggers the flow with the new revision. Kestra calls apps.Sync, polls apps.Status until both syncStatus and healthStatus report green, then posts to Slack with the revision and application URL."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.core.trigger.Webhook"
+        - "io.kestra.plugin.argocd.apps.Sync"
+        - "io.kestra.plugin.argocd.apps.Status"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      code: |
+        id: argocd-sync-on-ci
+        namespace: company.platform
+
+        inputs:
+          - id: application
+            type: STRING
+            description: "Argo CD Application object to sync."
+          - id: revision
+            type: STRING
+            description: "Git revision (commit SHA) to sync to."
+
+        triggers:
+          - id: ci_webhook
+            type: io.kestra.plugin.core.trigger.Webhook
+            key: argocd-sync
+
+        tasks:
+          - id: sync
+            type: io.kestra.plugin.argocd.apps.Sync
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.application }}"
+            revision: "{{ inputs.revision }}"
+            timeout: PT5M
+
+          - id: wait_for_healthy
+            type: io.kestra.plugin.argocd.apps.Status
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.application }}"
+            refresh: true
+            retry:
+              type: constant
+              interval: PT15S
+              maxAttempt: 20
+
+          - id: notify_success
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":white_check_mark: Argo CD synced {{ inputs.application }} to {{ outputs.sync.revision }}. Status: {{ outputs.wait_for_healthy.syncStatus }} / {{ outputs.wait_for_healthy.healthStatus }}. <{{ execution.url }}|View execution>"
+              }
+
+        errors:
+          - id: notify_failure
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":alert: Argo CD sync failed for {{ inputs.application }} at {{ inputs.revision }}. <{{ execution.url }}|View execution>"
+              }
+    - name: "Terraform, Ansible, Argo CD chain"
+      title: "Provision the cluster, configure the nodes, deploy the app"
+      description: "terraform apply provisions an EKS cluster. A Pause task gates before configuration. ansible-playbook configures the nodes. argocd app sync deploys the app. apps.Status waits for Healthy. Slack confirms or alerts. Per-step retries keep the chain moving on transient errors."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.core.flow.Pause"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.argocd.apps.Sync"
+        - "io.kestra.plugin.argocd.apps.Status"
+      code: |
+        id: argocd-tf-ansible-chain
+        namespace: company.platform
+
+        inputs:
+          - id: application
+            type: STRING
+            defaults: "platform-prod"
+          - id: tf_working_dir
+            type: STRING
+            defaults: "/cluster"
+
+        tasks:
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            inputFiles:
+              main.tf: "{{ read('main.tf') }}"
+            commands:
+              - terraform init
+              - terraform apply -auto-approve
+
+          - id: review_infra
+            type: io.kestra.plugin.core.flow.Pause
+            description: |
+              Cluster provisioned by Terraform. Review the outputs and resume to start node configuration.
+
+          - id: ansible_configure
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            commands:
+              - ansible-playbook -i inventory.yml site.yml
+            retry:
+              type: constant
+              interval: PT30S
+              maxAttempt: 3
+
+          - id: argocd_sync
+            type: io.kestra.plugin.argocd.apps.Sync
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.application }}"
+            timeout: PT10M
+
+          - id: wait_for_healthy
+            type: io.kestra.plugin.argocd.apps.Status
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.application }}"
+            refresh: true
+            retry:
+              type: constant
+              interval: PT20S
+              maxAttempt: 30
+
+          - id: notify_success
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":rocket: Stack deployed: Terraform + Ansible + Argo CD. App {{ inputs.application }} now {{ outputs.wait_for_healthy.healthStatus }}. <{{ execution.url }}|View>"
+              }
+
+        errors:
+          - id: notify_failure
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":alert: Chain failed for {{ inputs.application }}. Check which step broke. <{{ execution.url }}|View execution>"
+              }
+    - name: "Staged promotion with approval gate"
+      title: "Sync staging, smoke test, gate, then sync prod with the same revision"
+      description: "The flow takes a revision SHA as input. Syncs the staging Argo app, polls until Healthy, runs a smoke test against the staging endpoint, pauses for a named reviewer, then syncs the prod Argo app at the same revision. Slack notifies at each stage."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.argocd.apps.Sync"
+        - "io.kestra.plugin.argocd.apps.Status"
+        - "io.kestra.plugin.core.http.Request"
+        - "io.kestra.plugin.core.flow.Pause"
+      code: |
+        id: argocd-staged-promotion
+        namespace: company.platform
+
+        inputs:
+          - id: revision
+            type: STRING
+            description: "Git revision (commit SHA) to promote across environments."
+          - id: staging_app
+            type: STRING
+            defaults: "platform-staging"
+          - id: prod_app
+            type: STRING
+            defaults: "platform-prod"
+          - id: staging_url
+            type: STRING
+            defaults: "https://staging.example.com/health"
+
+        tasks:
+          - id: sync_staging
+            type: io.kestra.plugin.argocd.apps.Sync
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.staging_app }}"
+            revision: "{{ inputs.revision }}"
+            timeout: PT5M
+
+          - id: staging_healthy
+            type: io.kestra.plugin.argocd.apps.Status
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.staging_app }}"
+            refresh: true
+            retry:
+              type: constant
+              interval: PT15S
+              maxAttempt: 20
+
+          - id: smoke_test
+            type: io.kestra.plugin.core.http.Request
+            uri: "{{ inputs.staging_url }}"
+            method: GET
+            options:
+              connectTimeout: PT30S
+              readTimeout: PT30S
+
+          - id: approve_prod
+            type: io.kestra.plugin.core.flow.Pause
+            description: |
+              Staging is Synced and Healthy at revision {{ inputs.revision }}.
+              Smoke test passed. Resume to promote to {{ inputs.prod_app }}.
+
+          - id: sync_prod
+            type: io.kestra.plugin.argocd.apps.Sync
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.prod_app }}"
+            revision: "{{ inputs.revision }}"
+            timeout: PT10M
+
+          - id: prod_healthy
+            type: io.kestra.plugin.argocd.apps.Status
+            server: "{{ secret('ARGOCD_SERVER') }}"
+            token: "{{ secret('ARGOCD_TOKEN') }}"
+            application: "{{ inputs.prod_app }}"
+            refresh: true
+            retry:
+              type: constant
+              interval: PT20S
+              maxAttempt: 30
+
+          - id: notify_release
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":ship: Promoted {{ inputs.revision }} to {{ inputs.prod_app }}. Status: {{ outputs.prod_healthy.syncStatus }} / {{ outputs.prod_healthy.healthStatus }}. <{{ execution.url }}|View release>"
+              }
+
+comparison:
+  title: "Kestra vs Argo CD orchestration alternatives"
+  subtitle: "Kestra wraps the Argo CD API with native event triggers, approval gates, sync status polling, supply-chain pre-checks, and cross-tool chaining. The competitors below are the platforms teams typically reach for to trigger and chain Argo CD syncs today."
+  competitors:
+    - name: "GitHub Actions + argocd CLI"
+      logoAsset: "github-actions"
+    - name: "Argo Workflows"
+      logoAsset: "argo"
+    - name: "Argo CD ApplicationSet"
+      logoAsset: "argo"
+  rows:
+    - feature: "Trigger argocd app sync from non-Git events"
+      kestra: "✓ Webhook, S3, Kafka, image push, schedule, any HTTP signal"
+      values:
+        - "Webhook + custom Action steps"
+        - "Webhook + custom workflow templates"
+        - "Git-only by design"
+    - feature: "Approval gate (Pause/resume) between syncs"
+      kestra: "✓ Native Pause + resume, named reviewer logged"
+      values:
+        - "GitHub Environments approval (Action-specific)"
+        - "Suspend node, no first-class reviewer log"
+        - "Not native"
+    - feature: "Sync status polling until Synced + Healthy"
+      kestra: "✓ apps.Status + retry block in one task"
+      values:
+        - "Custom polling script in Bash"
+        - "Workflow loop with delay step"
+        - "Native, no external polling needed"
+    - feature: "Chain Terraform + Ansible + Argo CD"
+      kestra: "✓ Native plugin tasks, outputs flow forward"
+      values:
+        - "Each tool as a separate Action, manual handoff"
+        - "Workflow templates per tool, no native chaining"
+        - "Argo CD-centric, no Terraform or Ansible"
+    - feature: "Pre-sync image scan / signature verify as flow step"
+      kestra: "✓ Trivy + Cosign as upstream tasks, sync blocked on fail"
+      values:
+        - "Action steps, manual conditional skip"
+        - "Workflow steps, custom conditional"
+        - "Argo CD does not run scans"
+    - feature: "Multi-environment promotion in one flow"
+      kestra: "✓ Single flow, app and revision as inputs"
+      values:
+        - "One Action per environment, repeated YAML"
+        - "Workflow per environment"
+        - "ApplicationSet generates apps, no flow logic"
+    - feature: "Cross-stack execution history"
+      kestra: "✓ One execution ID across Terraform, Ansible, Argo CD"
+      values:
+        - "Action run log, Argo CD events separately"
+        - "Workflow events, Argo CD events separately"
+        - "Argo CD events only"
+    - feature: "Self-hosted, air-gapped, OSS edition"
+      kestra: "✓ Self-hosted by default, OSS edition free"
+      values:
+        - "Self-hosted GHE Actions or hosted"
+        - "Self-hosted Kubernetes"
+        - "Self-hosted Kubernetes"
+    - feature: "Beyond Argo CD: orchestrate the rest of the stack"
+      kestra: "✓ 1300+ plugins, cross-stack"
+      values:
+        - "Action marketplace, CI-centric"
+        - "Kubernetes-centric workflow engine"
+        - "Argo CD app delivery only"
+
+faq:
+  - question: "Does Kestra replace Argo CD?"
+    answer: "No. Argo CD owns the Kubernetes reconciliation: the Application objects, the cluster state, the rollback target, and the GitOps source of truth. Kestra calls the Argo CD API through the io.kestra.plugin.argocd plugin to run apps.Sync and apps.Status as flow tasks. Argo CD stays where it is. Kestra orchestrates the workflow around it: when to sync, what to check first, who approves promotion to prod, and what runs after."
+  - question: "How does Kestra trigger Argo CD?"
+    answer: "Kestra fires argocd app sync from any event source: a webhook (GitHub Actions completion, registry image push), a cron schedule, an S3 file landing, a Kafka message, a Terraform apply finishing, or a manual trigger from the Kestra UI. The trigger payload passes through as flow inputs, so the sync hits the exact application and revision the upstream event specified. This replaces the reconcile lag from Argo CD's git polling interval with an immediate, event-driven sync."
+  - question: "How does the approval gate work between staging and prod?"
+    answer: "Kestra's Pause task suspends the flow after the staging sync confirms Synced and Healthy via apps.Status. The result is surfaced in the Kestra UI alongside the Argo CD revision and the smoke-test output. A named reviewer reads it and explicitly resumes. Only then does the prod apps.Sync fire with the same revision. The reviewer identity and timestamp are recorded automatically in the execution history."
+  - question: "Can Kestra chain Terraform with Argo CD in a single flow?"
+    answer: "Yes. terraform apply runs as the first task and publishes outputs (cluster endpoint, ingress IP, kubeconfig path). Those outputs flow forward into an Ansible step that configures the underlying nodes, then into the apps.Sync task that deploys the app. If Ansible fails, Kestra retries the Ansible step only. The Terraform apply does not re-run. The whole chain shares one execution ID. See <a href='/orchestration/terraform'>Terraform orchestration with Kestra</a> for the full pattern."
+  - question: "How does Kestra authenticate to Argo CD?"
+    answer: "Use an Argo CD API token, not a username and password. Create a token in Argo CD scoped to a service account with the minimum required privileges (typically applications, sync and applications, get). Store the token and the Argo CD server URL in Kestra's secrets backend and reference them via pluginDefaults on io.kestra.plugin.argocd at the namespace or flow level. Every Argo CD task picks them up without repeating credentials."
+  - question: "Is the Argo CD plugin Enterprise-only?"
+    answer: "No. The io.kestra.plugin.argocd plugin ships in the open-source edition with apps.Sync and apps.Status tasks. Kestra Enterprise adds Apps (typed self-service forms so non-engineers can trigger a deploy through a form), namespace-scoped RBAC, audit logs, worker isolation, and SSO. Platform teams running Argo CD across many app teams typically want these on top."
+  - question: "Where does Kestra fit alongside Argo Workflows?"
+    answer: "Argo Workflows is a workflow engine for Kubernetes (the other half of the Argo project). Kestra is a general-purpose orchestrator. The two solve different problems: Argo Workflows is great for Kubernetes-native batch jobs (ML training, data processing) where every step is a Pod. Kestra orchestrates across tools (Terraform, Ansible, Argo CD, dbt, Airbyte, ServiceNow), schedules with native event triggers, and gives you one execution history across the whole stack. Use both if you have Pod-native batch work alongside cross-tool orchestration."
+  - question: "Can Kestra run in an air-gapped Kubernetes cluster alongside Argo CD?"
+    answer: "Yes. Kestra ships self-hosted on Docker or Kubernetes (often itself deployed by Argo CD), runs fully air-gapped, and supports remote workers close to each cluster. The open-source edition includes unlimited workflows and event-driven triggers, with no external dependency on Kestra's infrastructure. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Argo CD, Terraform, Ansible, and Kubernetes."
+
+resources:
+  title: "More on Argo CD and Kestra"
+  items:
+    - kind: "docs"
+      title: "Automate infrastructure workflows in Kestra"
+      description: "How Kestra orchestrates Argo CD, Terraform, Ansible, Docker, Proxmox, and Kubernetes in one declarative flow."
+      href: "/docs/use-cases/infrastructure"
+    - kind: "resource"
+      title: "Provision with Terraform, deploy with Argo CD"
+      description: "Why platform teams chain Terraform and Argo CD through Kestra rather than passing artifacts manually between CI and the GitOps controller."
+      href: "/orchestration/terraform"
+    - kind: "plugin"
+      title: "Argo CD plugin reference"
+      description: "Every Argo CD task (apps.Sync, apps.Status) with copy-ready YAML examples and full property reference."
+      href: "/plugins/plugin-argocd"
+
+seeHow:
+  title: "Ready to orchestrate Argo CD beyond Git polling?"
+  description: "Trigger argocd app sync on CI completions or image pushes, gate promotion to prod with a named reviewer, chain Terraform and Ansible upstream, and verify supply chain checks before every deploy. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"

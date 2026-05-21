@@ -7,8 +7,8 @@ tool:
   color: "#FF694A"
 
 hero:
-  title: "Your dbt Core runs, fully orchestrated."
-  description: "Trigger dbt build on cron, after an Airbyte sync, or on a file landing in S3. Capture per-model test failures, retry only the failed step, replay any model from history, and chain Airbyte upstream and Hightouch downstream in one execution."
+  title: "Run dbt Core with enterprise-grade orchestration."
+  description: "Trigger dbt build on cron, after an Airbyte sync, or when a file lands in S3. Capture per-model test failures, retry only the failed step, replay any model from history, and chain Airbyte upstream and Hightouch downstream in one execution."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -115,7 +115,7 @@ useCases:
         - title: "Outputs flow forward"
           description: "Pass artifacts and metadata between Airbyte, dbt, and Hightouch."
         - title: "Shared execution context"
-          description: "One execution ID across all three tools — one place to debug."
+          description: "One execution ID across all three tools. One place to debug."
         - title: "Single audit history"
           description: "Search every run by date, status, or trigger source from one UI."
     - badge: "Event-driven"
@@ -167,16 +167,16 @@ useCases:
         - title: "Same flow, two schedules"
           description: "Nightly full builds and on-demand targeted refreshes share one YAML."
         - title: "Tag / path / selector"
-          description: "Use any dbt selector syntax — Kestra forwards it unchanged."
+          description: "Use any dbt selector syntax. Kestra forwards it unchanged."
           wide: true
 
 quotes:
   - quote: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly!"
-    author: "Senior Data Engineer — Gorgias"
+    author: "Senior Data Engineer, Gorgias"
     storyLink: "/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra"
     logoFile: "gorgias"
-  - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle — you give flexibility, but you abstract that with a declarative approach."
-    author: "Lead Data Engineer — Riverside.fm"
+  - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle. You give flexibility, but you abstract that with a declarative approach."
+    author: "Lead Data Engineer, Riverside.fm"
     logoFile: "riverside"
   - quote: "In an analysis of our last pipeline, it was clear that if we had used dbt with an appropriate orchestrator, we would have cut out somewhere in the neighborhood of 90% of the Python code we wrote."
     author: "Kent Maxwell · West Bend Insurance"
