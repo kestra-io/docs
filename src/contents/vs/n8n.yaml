@@ -11,7 +11,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. n8n: Orchestrate at Scale, Not Just Connect Apps"
-  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads for teams of any size. One automates tasks. The other carries them into production."
+  description: "n8n connects apps visually for fast prototyping. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads for teams of any size. One builds prototypes. The other carries them into production."
 
 philosophy:
   mainTitle: Two Platforms, Two Philosophies
@@ -137,7 +137,7 @@ visualPreview:
   kestra:
     description: "Orchestrate across data pipelines, infrastructure operations, AI workloads, and business workflows in one unified platform. Distributed, isolated, and built for production."
   competitor:
-    description: "Purpose-built for connecting apps and building visual automations. Strong AI agent tooling with LangChain, MCP, and 12 vector store integrations. Not designed for infrastructure orchestration or multi-team isolation at scale."
+    description: "Purpose-built for prototyping app connections and visual automations. Strong AI agent tooling with LangChain, MCP, and 12 vector store integrations. Not designed for production-grade integration pipelines, infrastructure orchestration, or multi-team isolation at scale."
     shadowColor: "#FF9F7A"
 
 featureGrid:
