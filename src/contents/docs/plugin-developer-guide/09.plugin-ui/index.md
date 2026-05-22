@@ -33,7 +33,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. The SDK defines three slots:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and their TypeScript types are distributed via the `@kestra-io/artifact-sdk` package. Three slots are currently available:
 
 ### `topology-details`
 
