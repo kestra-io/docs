@@ -11,7 +11,7 @@ description: Learn various ways to manage Python dependencies in Kestra, includi
 Manage your Python dependencies in Kestra.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/iZeDizdrpMI?si=af1byHzZcxvUL-DQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/iZeDizdrpMI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 Managing Python Dependencies can be frustrating. There's several ways you can manage your dependencies in Kestra.
