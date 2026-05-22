@@ -34,7 +34,7 @@ The GitOps methodology is guided by four fundamental principles that ensure cons
 
 1.  **Declarative Configuration**: The entire system state must be described declaratively in a format like YAML or JSON. This description defines the desired state of all components, including infrastructure, applications, and configurations. By defining your system declaratively, as you would with [Kestra flows](https://kestra.io/docs/workflow-components/flow), you create a clear, unambiguous target for your automation.
 
-2.  **Version Control**: The declarative configuration files are stored and versioned in a Git repository, which serves as the single source of truth. All changes to the desired state are made through commits to this repository, creating a complete, immutable, and auditable history of the system's evolution.
+2.  **Version Control**: The declarative configuration files are stored and versioned in a [Git repository](/orchestration/git), which serves as the single source of truth. All changes to the desired state are made through commits to this repository, creating a complete, immutable, and auditable history of the system's evolution.
 
 3.  **Automated Reconciliation**: Software agents, often called operators or controllers, are responsible for ensuring that the live system state matches the desired state defined in Git. These agents continuously monitor the environment and automatically apply any necessary changes to reconcile drift.
 
@@ -75,8 +75,8 @@ Implementing GitOps requires a combination of the right tools and a well-defined
 ### Common GitOps tools and frameworks
 
 The GitOps ecosystem is rich with tools designed to automate and manage declarative infrastructure.
--   **Kubernetes-native tools**: For teams running on Kubernetes, **Argo CD** and **Flux CD** are the most popular GitOps operators. They run inside the cluster, monitor Git repositories, and automatically sync the cluster state. Kestra provides an [Argo CD plugin](https://kestra.io/plugins/plugin-argocd) to orchestrate these sync operations.
--   **Infrastructure as Code (IaC) tools**: Tools like **Terraform** and **Ansible** are used to define infrastructure declaratively. While not GitOps operators themselves, they are often integrated into a GitOps workflow where an orchestration platform triggers them based on Git commits. Kestra offers native plugins for both [Terraform](https://kestra.io/plugins/plugin-terraform) and [Ansible](https://kestra.io/plugins/plugin-ansible).
+-   **Kubernetes-native tools**: For teams running on Kubernetes, **Argo CD** and **Flux CD** are the most popular GitOps operators. They run inside the cluster, monitor Git repositories, and automatically sync the cluster state. Kestra provides an [Argo CD plugin](https://kestra.io/plugins/plugin-argocd) and a full [Argo CD orchestration guide](/orchestration/argocd) to drive these sync operations end-to-end.
+-   **Infrastructure as Code (IaC) tools**: Tools like **[Terraform](/orchestration/terraform)** and **[Ansible](/orchestration/ansible)** are used to define infrastructure declaratively. While not GitOps operators themselves, they are often integrated into a GitOps workflow where an orchestration platform triggers them based on Git commits. Kestra offers native plugins for both [Terraform](https://kestra.io/plugins/plugin-terraform) and [Ansible](https://kestra.io/plugins/plugin-ansible).
 -   **Orchestration platforms**: A platform like Kestra can serve as the control plane for your GitOps workflows, coordinating tasks across different tools, triggering deployments, and managing dependencies.
 
 ### A typical GitOps workflow
@@ -99,7 +99,7 @@ flowchart LR
 3.  **Merge**: Once approved, the change is merged into the main branch.
 4.  **CI Pipeline**: The merge triggers a Continuous Integration (CI) pipeline that builds, tests, and packages the application (e.g., as a Docker image) and pushes it to a container registry. The pipeline then updates a deployment manifest (e.g., a Kubernetes YAML file) in the configuration repository with the new image tag.
 5.  **Reconciliation**: The GitOps operator running in the production environment detects the change in the configuration repository. It pulls the updated manifest and compares the desired state with the actual state of the cluster.
-6.  **Deployment**: The operator applies the necessary changes to reconcile the cluster's state with the desired state, such as deploying the new container image. This entire process can be managed and validated with [Kestra's CI/CD capabilities](https://kestra.io/docs/version-control-cicd/cicd) — see how teams build end-to-end [CI/CD orchestration with Kestra](/use-cases/ci-cd).
+6.  **Deployment**: The operator applies the necessary changes to reconcile the cluster's state with the desired state, such as deploying the new container image. This entire process can be managed and validated with [Kestra's CI/CD capabilities](https://kestra.io/docs/version-control-cicd/cicd) — see how teams build end-to-end [CI/CD orchestration with Kestra](/use-cases/ci-cd). Kestra orchestrates each stage of the diagram above: [GitHub Actions](/orchestration/github-actions) for CI, [Docker](/orchestration/docker) for the registry, [Argo CD](/orchestration/argocd) for sync, and [Kubernetes](/orchestration/kubernetes) for runtime.
 
 ### Migrating to a GitOps model
 
