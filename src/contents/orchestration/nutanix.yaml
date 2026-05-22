@@ -1,5 +1,5 @@
-title: "Orchestrate Nutanix with Kestra: VMware exits, AHV day-2 ops, recovery points"
-description: "Orchestrate Nutanix from one flow: VMware-to-AHV waves with Move, crash- or app-consistent recovery points, DR replication, and Category-driven inventory."
+title: "Orchestrate Nutanix AHV with Kestra: day-2 ops, recovery points, DR replication"
+description: "Orchestrate Nutanix from one flow: crash- or app-consistent recovery points, cross-cluster DR replication, and Category-driven Prism inventory."
 
 tool:
   name: "Nutanix"
@@ -7,8 +7,8 @@ tool:
   color: "#024DA1"
 
 hero:
-  title: "Your Nutanix clusters, fully orchestrated."
-  description: "Coordinate VMware-to-AHV migrations in waves with Nutanix Move, capture crash- or app-consistent recovery points before patching, replicate them to a DR cluster on schedule, and slice Prism inventory by Category for chargeback or wave selection, all in one execution history."
+  title: "Run Nutanix AHV Day-2 ops from one flow."
+  description: "Capture app-consistent recovery points before patching, replicate them to a DR cluster on schedule, slice Prism inventory by Category for chargeback, and run VMware-to-AHV migration waves when the moment comes."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -529,8 +529,8 @@ resources:
       href: "/plugins/plugin-ee-nutanix"
 
 seeHow:
-  title: "Ready to coordinate VMware exits and AHV day-2 ops?"
-  description: "Keep Prism Central and AHV. Replace Calm / Self-Service with declarative YAML flows: Move waves, crash- or app-consistent recovery points, cross-cluster replication, Category-driven inventory and chargeback, all from one execution history."
+  title: "Ready to orchestrate Nutanix day-2 ops?"
+  description: "Keep Prism Central and AHV. Replace Calm / Self-Service with declarative YAML flows: crash- or app-consistent recovery points, cross-cluster replication, and Category-driven Prism inventory, all from one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
