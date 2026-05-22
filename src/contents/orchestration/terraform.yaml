@@ -1,0 +1,478 @@
+title: "Orchestrate Terraform with Kestra: scheduling, approval gates, and multi-tool coordination"
+description: "Schedule Terraform plans for drift detection, gate plan to apply with a named reviewer, retry only the failed step, and chain with Ansible or ArgoCD."
+
+tool:
+  name: "Terraform"
+  pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+  color: "#7B42BC"
+
+hero:
+  title: "Your Terraform runs, fully orchestrated."
+  description: "Trigger terraform plan on cron, on a Git push, or any event. Gate between plan and apply with the Pause task, retry the failed step on transient errors, and chain Terraform, Ansible, and ArgoCD in one execution history."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+pillars:
+  title: "From plan to apply, end to end."
+  subtitle: "Terraform solves reproducibility. Kestra solves the operational layer around it: when runs happen, who approves them, what runs next, and where the audit lives."
+  items:
+    - icon: "mdi:source-branch"
+      title: "Plan, gate, and apply as one flow"
+      description: "<code>terraform plan</code> and <code>terraform apply</code> become two steps in a Kestra flow. The flow pauses between them on a Pause task, surfaces the plan diff in the UI, and resumes only after a named reviewer approves. The decision is logged with a timestamp and identity."
+    - icon: "mdi:clock-outline"
+      title: "Native scheduling and drift detection"
+      description: "Kestra runs <code>terraform plan</code> on a cron or interval schedule and checks the output. If the plan is non-empty, the flow routes the diff to Slack, email, or a webhook. No cron job on a jump box, no polling script, no missed drift."
+    - icon: "mdi:pipe-disconnected"
+      title: "Coordination with Ansible, ArgoCD, and the rest of the stack"
+      description: "Terraform provisions the VM. Ansible configures it. ArgoCD ships the app. All three run as sequential tasks in one flow, with Terraform outputs (IPs, resource IDs) passed forward and per-step retries on the step that fails. The Terraform step does not re-run when Ansible fails."
+    - icon: "mdi:eye-outline"
+      title: "Per-step execution history with attribution"
+      description: "Every run captures the trigger source, the inputs, the plan output, the apply result, and the reviewer. The record is searchable by date, status, or operator. Auditors get evidence by default, attached to the execution that produced it."
+
+useCases:
+  title: "How platform teams use Terraform and Kestra"
+  subtitle: "Patterns infrastructure teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Scheduled"
+      badgeIcon: "mdi:clock-outline"
+      title: "Scheduled drift detection"
+      description: "Run <code>terraform plan</code> on a cron schedule against the production state. If the plan returns a non-empty diff, Kestra captures the output, posts the change set to Slack, and links straight to the execution. No one has to remember to check."
+      flow:
+        - node: "cron trigger"
+          label: "on schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "terraform plan"
+          label: "capture diff"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "diff check"
+          label: "non-empty?"
+          pluginClass: "io.kestra.plugin.core.flow.If"
+        - node: "alert"
+          label: "Slack / email"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Cron + interval schedules"
+          description: "Native scheduler with cron, fixed intervals, or condition-based triggers."
+        - title: "Plan output stored per run"
+          description: "Every drift check is timestamped, attributed, and replayable in the UI."
+        - title: "Slack / email / webhook routing"
+          description: "Route the diff to the team that owns the affected modules."
+          wide: true
+    - badge: "Governance"
+      badgeIcon: "mdi:shield-check-outline"
+      title: "Approval gate between plan and apply"
+      description: "Run <code>terraform plan</code> automatically. Pause the flow on the plan output. A named reviewer reads the diff in the Kestra UI and resumes the flow. Only then does <code>terraform apply</code> run. The approver and timestamp land in the execution history."
+      flow:
+        - node: "trigger"
+          label: "on event or PR"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "terraform plan"
+          label: "capture diff"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "pause / review"
+          label: "human approves"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "terraform apply"
+          label: "with retries"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "audit log"
+          label: "who + when"
+          pluginClass: "io.kestra.plugin.core.log.Log"
+      items:
+        - title: "Native pause + resume"
+          description: "Built-in Pause task suspends execution until a reviewer approves."
+        - title: "Reviewer + timestamp logged"
+          description: "Identity and approval moment stored in execution history automatically."
+        - title: "Retry on transient apply errors"
+          description: "Configure a per-step retry policy on <code>terraform apply</code> with backoff."
+        - title: "Replayable from any step"
+          description: "Re-run the apply without re-running the plan, or vice versa."
+    - badge: "Full pipeline"
+      badgeIcon: "mdi:pipe-disconnected"
+      title: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      description: "Run <code>terraform apply</code> to provision the VM, hand the outputs (IP, hostname) to <code>ansible-playbook</code> to configure the app, then trigger an <code>argocd app sync</code> for the deployment. If Ansible fails, Kestra retries the Ansible step. The Terraform apply does not re-run."
+      flow:
+        - node: "trigger"
+          label: "on demand or schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "terraform apply"
+          label: "provision VM"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "ansible-playbook"
+          label: "configure app"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "argocd sync"
+          label: "deploy"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "notify"
+          label: "Slack + CMDB"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Step-level retries"
+          description: "Retry only the failed step. The Terraform apply is not re-run on Ansible failure."
+        - title: "Outputs flow forward"
+          description: "Pass IPs, resource IDs, and Terraform output values into the next task."
+        - title: "Shared execution context"
+          description: "One execution ID across Terraform, Ansible, and ArgoCD. One UI to debug."
+        - title: "Single audit history"
+          description: "Search every run by date, status, or operator from one place."
+    - badge: "Multi-env"
+      badgeIcon: "mdi:source-branch"
+      title: "Promotion across dev, staging, and production"
+      description: "One flow runs <code>terraform apply</code> against the dev workspace, validates, pauses for a reviewer, applies against staging, validates again, pauses, then applies against production. Each gate logs the approver. Each apply runs against its own remote state."
+      flow:
+        - node: "trigger"
+          label: "git push or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "dev apply"
+          label: "workspace = dev"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "review"
+          label: "gate"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "staging apply"
+          label: "workspace = staging"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "review"
+          label: "gate"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "prod apply"
+          label: "workspace = prod"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+      items:
+        - title: "Workspace as a flow input"
+          description: "Pass the target workspace, var-file, or backend config as a flow input."
+        - title: "Promotion stops on failure"
+          description: "A failed staging apply halts the flow before the production run."
+        - title: "Reviewer per environment"
+          description: "Different approvers per gate, with the identity logged at each step."
+    - badge: "Self-service"
+      badgeIcon: "mdi:account-multiple-outline"
+      title: "Self-service VM and resource provisioning"
+      description: "Wrap a Terraform module behind a Kestra App: a form with typed inputs (region, size, owner) that runs the same flow every time. Engineers request infrastructure without cloning the repo, editing HCL, or holding cloud console access."
+      flow:
+        - node: "Kestra App"
+          label: "form input"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "generate hostname"
+          label: "naming convention"
+          pluginClass: "io.kestra.plugin.scripts.python.Script"
+        - node: "terraform apply"
+          label: "provision"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "notify"
+          label: "Slack + IP"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Typed inputs and dropdowns"
+          description: "Form inputs validated before the flow runs. No malformed <code>tfvars</code>."
+        - title: "RBAC on who can run what"
+          description: "Role-based access on the form itself, not on the cloud console."
+        - title: "Same flow, every request"
+          description: "Every provision goes through the same audited, retry-aware execution."
+          wide: true
+    - badge: "Operations"
+      badgeIcon: "mdi:database-cog-outline"
+      title: "State backend migration with auth and verification"
+      description: "Move Terraform state from one backend to another (on-prem database to Azure Blob, S3 to GCS, local to remote) as one auditable flow. Kestra handles the credentialed auth step, backs up the source state, runs <code>terraform state mv</code>, and verifies the new backend before marking the migration complete."
+      flow:
+        - node: "auth"
+          label: "workload identity"
+          pluginClass: "io.kestra.plugin.azure.auth.OauthAccessToken"
+        - node: "state backup"
+          label: "snapshot source"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "terraform state mv"
+          label: "migrate"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "verify"
+          label: "list new backend"
+          pluginClass: "io.kestra.plugin.azure.storage.blob.List"
+        - node: "notify"
+          label: "on complete"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Credentialed execution"
+          description: "Pull workload identity tokens or static secrets from a vault, scoped per task."
+        - title: "Backup before migrate"
+          description: "Snapshot the source state to a versioned location before touching anything."
+        - title: "Post-migration verification"
+          description: "List the new backend, confirm the state file is present, halt if not."
+
+quotes:
+  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment — all orchestrated through Kestra."
+    author: "Censhare"
+    logoFile: "censhare"
+  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything — and this should resolve the issues we are facing currently with everyone working in parallel."
+    author: "BSI Software"
+    logoFile: "bsi"
+  - quote: "I'm not sure we can do what we can do now with only Terraform and Ansible. The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
+    author: "Crédit Agricole"
+    storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    logoFile: "credit-agricole"
+  - quote: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly!"
+    author: "Senior Data Engineer, Gorgias"
+    storyLink: "/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra"
+    logoFile: "gorgias"
+  - quote: "Kestra's declarative model and Terraform integration gave us exactly what we needed to build customer-specific pipelines, automate deployment, and monitor everything reliably."
+    author: "Lirav Duvshani, CEO @DataFlooder, Sopht"
+    storyLink: "/use-cases/stories/sopht-scales-its-green-itops-platform-with-kestra"
+    logoFile: "sopht"
+  - quote: "The key aspects that I think Kestra is doing better than any other platform are Ansible and Terraform integration. Combine that with very impressive observability and it checks the majority of the boxes on my end."
+    author: "Lance S., Kestra Community Slack"
+    sourceUrl: "https://kestra-io.slack.com/"
+    sourceLabel: "View on Slack"
+    logoFile: "slack"
+  - quote: "I was searching for an open source platform that would allow me to first run Terraform to provision a VM and then Ansible to configure it, and Kestra came up."
+    author: "r/Terraform community"
+    sourceUrl: "https://www.reddit.com/r/Terraform/comments/1j4tahe/has_anyone_used_kestra_before/"
+    sourceLabel: "View on Reddit"
+    logoFile: "reddit"
+
+blueprints:
+  title: "Blueprints for Terraform orchestration."
+  lead: "One blueprint per use case above. Copy the YAML, point it at your state backend, ship it."
+  items:
+    - name: "Scheduled drift detection"
+      title: "Scheduled drift detection"
+      description: "Runs <code>terraform plan</code> hourly with <code>-detailed-exitcode</code>. If exit code 2 (changes detected), Kestra captures the full plan output and posts a Slack alert with a link to the execution. Replayable per run, no cron job on a jump box."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.core.trigger.Schedule"
+        - "io.kestra.plugin.core.flow.If"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      code: |
+        id: terraform-drift-detection
+        namespace: company.infra
+
+        triggers:
+          - id: hourly
+            type: io.kestra.plugin.core.trigger.Schedule
+            cron: "0 * * * *"
+
+        tasks:
+          - id: terraform_plan
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init
+            commands:
+              - terraform plan -detailed-exitcode 2>&1 | tee plan_output.txt
+            outputFiles:
+              - "plan_output.txt"
+            allowFailure: true
+            env:
+              AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+              AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+              AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
+
+          - id: check_drift
+            type: io.kestra.plugin.core.flow.If
+            condition: "{{ outputs.terraform_plan.exitCode == 2 }}"
+            then:
+              - id: alert_drift
+                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+                url: "{{ secret('SLACK_WEBHOOK') }}"
+                payload: |
+                  {
+                    "text": ":warning: Drift detected in production infrastructure. <{{ execution.url }}|View execution>"
+                  }
+    - name: "Approval gate between plan and apply"
+      title: "Approval gate between plan and apply"
+      description: "Runs <code>terraform plan</code>, pauses the flow on the plan output, waits for a named reviewer, then runs <code>terraform apply</code> against the same plan. The reviewer identity and timestamp are logged automatically. Retries the apply step on transient failure."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.core.flow.Pause"
+        - "io.kestra.plugin.core.log.Log"
+      code: |
+        id: terraform-apply-with-approval
+        namespace: company.infra
+
+        inputs:
+          - id: environment
+            type: SELECT
+            values: [staging, production]
+            defaults: staging
+
+        tasks:
+          - id: terraform_plan
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init -backend-config=env/{{ inputs.environment }}.tfbackend
+            commands:
+              - terraform plan -out=tfplan 2>&1 | tee plan_output.txt
+            outputFiles:
+              - "plan_output.txt"
+              - "tfplan"
+
+          - id: await_approval
+            type: io.kestra.plugin.core.flow.Pause
+            description: |
+              Plan complete for {{ inputs.environment }}.
+              Review the diff in plan_output.txt, then resume to apply.
+
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init -backend-config=env/{{ inputs.environment }}.tfbackend
+            commands:
+              - terraform apply -auto-approve tfplan 2>&1 | tee apply_output.txt
+            inputFiles:
+              tfplan: "{{ outputs.terraform_plan.outputFiles['tfplan'] }}"
+            outputFiles:
+              - "apply_output.txt"
+            retry:
+              type: constant
+              interval: PT5M
+              maxAttempt: 2
+
+          - id: audit_log
+            type: io.kestra.plugin.core.log.Log
+            message: "Applied to {{ inputs.environment }} at {{ execution.startDate }} by {{ execution.namespace }}."
+    - name: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      title: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      description: "<code>terraform apply</code> provisions the VM and writes the private IP to a task artifact. <code>ansible-playbook</code> configures the app using that IP, with per-step retries. <code>argocd app sync</code> ships the deployment. Slack confirms when all three steps succeed."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.scripts.shell.Commands"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      code: |
+        id: provision-configure-deploy
+        namespace: company.platform
+
+        inputs:
+          - id: app_name
+            type: STRING
+
+        tasks:
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init
+            commands:
+              - terraform apply -auto-approve -var "app_name={{ inputs.app_name }}"
+              - terraform output -raw private_ip > private_ip.txt
+            outputFiles:
+              - "private_ip.txt"
+
+          - id: ansible_configure
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            inputFiles:
+              inventory.ini: |
+                [app]
+                {{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}
+              configure.yml: "{{ read(secret('ANSIBLE_PLAYBOOK')) }}"
+            commands:
+              - ansible-playbook -i inventory.ini configure.yml
+            retry:
+              type: constant
+              interval: PT2M
+              maxAttempt: 3
+
+          - id: argocd_sync
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - argocd app sync {{ inputs.app_name }} --auth-token {{ secret('ARGOCD_TOKEN') }} --server {{ secret('ARGOCD_SERVER') }}
+
+          - id: notify
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":rocket: {{ inputs.app_name }} provisioned ({{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}), configured, and deployed."
+              }
+
+comparison:
+  title: "Kestra vs Terraform orchestration alternatives"
+  subtitle: "How Kestra compares to the platforms platform teams already use to run Terraform."
+  competitors:
+    - name: "Terraform Cloud / HCP"
+      pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+    - name: "GitHub Actions"
+      pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+    - name: "Jenkins"
+      pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+  rows:
+    - feature: "Scheduling"
+      kestra: "✓ Native cron + events"
+      values:
+        - "Run triggers, no cron"
+        - "Cron-based workflows"
+        - "Cron in pipelines"
+    - feature: "Approval gate between plan and apply"
+      kestra: "✓ Native pause + resume"
+      values:
+        - "Run approvals (paid tiers)"
+        - "Environment approvals (deploy only)"
+        - "Pipeline input step"
+    - feature: "Retry per step on apply failure"
+      kestra: "✓ Configurable per task"
+      values:
+        - "Re-run from start"
+        - "Re-run from start or step"
+        - "Built in, pipeline-coded"
+    - feature: "Chain Terraform with Ansible / ArgoCD"
+      kestra: "✓ Native, with outputs"
+      values:
+        - "Terraform only"
+        - "Possible, glue scripts required"
+        - "Possible, plugin-dependent"
+    - feature: "Per-run execution history with attribution"
+      kestra: "✓ Execution history + task state"
+      values:
+        - "Run history in HCP UI"
+        - "Run history in Actions UI"
+        - "Build history"
+    - feature: "Self-service forms for non-engineers"
+      kestra: "✓ Kestra Apps"
+      values:
+        - "No-code modules (paid tiers)"
+        - "No native form layer"
+        - "Parameterized build"
+    - feature: "OpenTofu / Terragrunt support"
+      kestra: "✓ Dedicated plugins"
+      values:
+        - "Terraform only"
+        - "Run any CLI manually"
+        - "Run any CLI manually"
+
+faq:
+  - question: "What does Kestra add to a Terraform CLI setup?"
+    answer: "Terraform is a CLI. It runs <code>plan</code> and <code>apply</code> when you tell it to, but it has no scheduler, no event triggers, no pause-and-resume between plan and apply, and no shared visibility layer for the steps that run before or after. Kestra provides all of those. Every Terraform run becomes a workflow step: triggered on schedule or by events, gated by a reviewer, retried on transient failure, and auditable across the full pipeline."
+  - question: "What's the difference between Terraform Cloud and Kestra?"
+    answer: "Terraform Cloud (now part of HCP) handles state storage, remote execution, and run management inside the Terraform ecosystem. Kestra sits above that operational layer. It schedules runs, adds a native pause-and-resume between plan and apply, chains Terraform with Ansible, ArgoCD, or any other tool, and gives you one execution history across the full infrastructure workflow. Terraform Cloud is Terraform-only by design. Kestra orchestrates everything around it, and works alongside Terraform Cloud if you use it for state and remote runs."
+  - question: "Can Kestra schedule <code>terraform plan</code> for drift detection?"
+    answer: "Kestra has a native scheduler that supports cron expressions, fixed intervals, and event-based triggers. Run <code>terraform plan</code> every hour, capture the diff, and post a Slack alert if the plan is non-empty. The full plan output is stored as a task artifact and replayable from the execution UI."
+  - question: "How does the approval gate work between plan and apply?"
+    answer: "Kestra's Pause task suspends the flow after <code>terraform plan</code> completes. The plan output is surfaced in the Kestra UI. A named reviewer reads it, optionally adds a comment, and resumes the flow. Only then does <code>terraform apply</code> run. The reviewer identity and timestamp are logged in the execution history. Different reviewers can be wired to different namespaces or environments through Kestra's RBAC."
+  - question: "Can Kestra chain Terraform with Ansible and ArgoCD in a single flow?"
+    answer: "Each tool runs as a task inside one Kestra flow. <code>terraform apply</code> publishes outputs (IPs, resource IDs, hostnames) that flow forward into the Ansible task. ArgoCD runs after Ansible completes. If Ansible fails, Kestra retries the Ansible step only. The Terraform apply does not re-run. The whole pipeline shares one execution ID, one audit trail, and one place to debug."
+  - question: "Does Kestra work with OpenTofu and Terragrunt?"
+    answer: "Kestra has dedicated plugins for both. The <code>OpenTofuCLI</code> and <code>TerragruntCLI</code> tasks accept the same inputs as the Terraform task, so swapping the binary is a one-line change. The same flow, retries, approval gates, and execution history apply."
+  - question: "Do we have to drop Jenkins or Ansible to use Kestra?"
+    answer: "No. Kestra calls Ansible playbooks as a task and can fire Jenkins jobs over the API. Many teams start by adding Kestra above an existing Jenkins or Ansible setup: Kestra schedules the run, gates the apply, then hands off to the existing pipeline."
+  - question: "Can Kestra migrate Terraform state between backends?"
+    answer: "Yes. Wrap the migration in a flow: authenticate against the source and target backends, snapshot the current state to a versioned location, run <code>terraform state mv</code> (or re-init with the new backend), then verify the target backend with a list call. Every step is logged and rerunnable if the verification fails."
+  - question: "How does Kestra handle state and secrets for Terraform?"
+    answer: "Kestra does not manage Terraform state. State stays in your existing backend (S3, GCS, Azure Blob, Terraform Cloud, an on-prem database, or whatever you run today). Kestra injects credentials and tfvars at run time using its built-in secrets manager or an external secrets backend like HashiCorp Vault. Outputs are stored per execution and reusable downstream."
+  - question: "What's the difference between Kestra and Spacelift for Terraform?"
+    answer: "Spacelift is purpose-built for IaC and does that one job well. Kestra is a general-purpose orchestrator. If your Terraform runs sit inside a larger workflow that also calls Ansible, ArgoCD, data pipelines, or business logic, Kestra runs the full chain from one platform with one history. Spacelift stops at the IaC layer."
+  - question: "Is Kestra self-hosted?"
+    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives full control over where Terraform plans and applies execute, with no external dependency on Kestra's infrastructure. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Ansible, ArgoCD, and cloud APIs."
+
+seeHow:
+  title: "Ready to orchestrate your Terraform runs?"
+  description: "Schedule plans, gate applies, retry failures, and chain Terraform with Ansible and ArgoCD. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"

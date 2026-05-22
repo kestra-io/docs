@@ -109,9 +109,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/legacy/_variables.scss" as variables;
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     .border {
         border-radius: .5rem;
     }
@@ -125,9 +122,9 @@
 
         :deep(> .collapse-button) {
             padding: 9px 16px;
-            border: 1px solid variables.$black-6;
+            border: 1px solid var(--ks-border-primary);
             border-radius: 12px;
-            background-color: variables.$black-9;
+            background-color: var(--ks-background-tertiary);
         }
 
         &[open] {
@@ -148,7 +145,7 @@
         }
 
         :deep(.property-detail) {
-            border: 1px solid variables.$black-6;
+            border: 1px solid var(--ks-border-primary);
             margin-bottom: 1rem;
             border-radius: 0 0 12px 12px;
 
@@ -162,13 +159,7 @@
         }
     }
 
-    $section-colors: (
-        properties: color-palette.$base-blue-300,
-        outputs: color-palette.$base-green-300,
-        metrics: color-palette.$base-orange-400
-    );
-
-    @each $section, $color in $section-colors {
+    @each $section in (properties, outputs, metrics) {
         .section-#{$section} {
             :deep(.collapse-button span:not(.type-box)) {
                 font-size: 1rem;

@@ -61,17 +61,17 @@ High-quality data is not just a technical requirement; it's a strategic business
 On a daily basis, business operations rely on accurate data to function. Poor data quality can cause tangible problems:
 - **Supply Chain:** Incorrect inventory levels lead to stockouts or overstocking.
 - **Customer Service:** Inaccurate customer histories frustrate support agents and customers alike.
-- **Finance:** Flawed transaction data results in billing errors and compliance issues.
+- **Finance:** Flawed transaction data results in billing errors and compliance issues — a defining concern for [financial services data workflows](/use-cases/financial-services).
 - **Marketing:** Incomplete customer profiles lead to ineffective campaigns and wasted ad spend.
 
-By improving data quality, organizations can streamline these processes, reduce manual corrections, and enhance overall operational efficiency.
+By improving data quality, organizations can streamline these processes, reduce manual corrections, and enhance overall operational efficiency. The same imperative drives [public services data orchestration](/use-cases/public-services), where citizen-facing systems can't afford to act on stale or contradictory records.
 
 ### Reducing Risks and Improving Decision-Making
 
 Every business decision carries a degree of risk, but decisions based on poor data are gambles. High-quality data provides a solid foundation for strategic planning, financial forecasting, and market analysis. It mitigates several types of risk:
 - **Financial Risk:** Accurate financial data is essential for budgeting and reporting.
 - **Reputational Risk:** Errors like sending marketing materials to deceased customers can damage brand perception.
-- **Compliance Risk:** Regulations like GDPR and CCPA impose strict requirements on the accuracy and management of personal data.
+- **Compliance Risk:** Regulations like GDPR, HIPAA, and CCPA impose strict requirements on the accuracy and management of personal data — non-negotiable for [healthcare orchestration workflows](/use-cases/healthcare) where every record affects patient care.
 
 Ultimately, trustworthy data empowers leaders to make confident, evidence-based decisions that drive growth and innovation.
 
@@ -192,7 +192,7 @@ This is achieved by:
 - **Event-Driven Automation:** Kestra can trigger validation workflows based on real-time events, such as a new file arriving in S3 or a new record in a Kafka topic. This enables you to catch quality issues at the source, before they contaminate downstream systems.
 - **Scalability and Governance:** For leading enterprises like JPMorgan Chase and Apple, maintaining data quality at a massive scale is critical. They use robust orchestration to manage complex dependencies and ensure that quality checks are consistently applied across billions of records and thousands of pipelines. At Crédit Agricole, Kestra replaced fragmented scripts with a single, governed orchestration layer, dramatically improving the reliability of their data processes.
 
-By using Kestra, you elevate data quality from a manual, reactive cleanup task to a proactive, automated, and integral part of your data operations. You can learn more about how to [integrate Kestra in the Modern Data Stack](https://kestra.io/docs/use-cases/modern-data-stack) and [why Kestra](https://kestra.io/docs/why-kestra) is designed for this level of reliability.
+By using Kestra, you elevate data quality from a manual, reactive cleanup task to a proactive, automated, and integral part of your data operations. You can learn more about [why Kestra](https://kestra.io/docs/why-kestra) is designed for this level of reliability.
 
 ## From Data Quality Theory to Practice
 

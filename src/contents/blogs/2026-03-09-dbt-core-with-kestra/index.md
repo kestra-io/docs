@@ -27,7 +27,7 @@ Kestra is that layer: it runs your dbt CLI commands in isolated containers, wait
 
 dbt Cloud orchestrates its slice. Everything around it is your problem.
 
-Kestra handles that broader pipeline (ingestion, transformation, activation) as a single workflow. dbt Cloud can still run the transformation layer; Kestra coordinates what happens before and after.
+Kestra handles that broader pipeline (ingestion, transformation, activation) as a single workflow. dbt Cloud can still run the transformation layer; Kestra coordinates what happens before and after. The [dbt Cloud orchestration page](/orchestration/dbt-cloud) covers that setup in detail.
 
 And for teams that care about cross-stack lineage, Kestra's [Assets](../../docs/07.enterprise/02.governance/01.assets/index.md) fill the gap dbt Cloud leaves: dbt tracks lineage within your models, but has no visibility into the S3 bucket feeding them or the reverse ETL sync consuming their output. Assets tracks inputs and outputs across every step in the pipeline, not just within dbt.
 

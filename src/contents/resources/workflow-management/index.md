@@ -46,7 +46,7 @@ Modern systems offer a suite of capabilities to manage the entire workflow lifec
 
 - **Workflow Modeling/Design**: This is the interface for defining workflows. It can be a visual drag-and-drop editor, a code-based approach using languages like Python, or a declarative format like YAML. Declarative systems allow you to define the "what" (the desired state) and let the engine figure out the "how."
 - **Execution Engine**: The core of the WFMS, responsible for interpreting the workflow definition, scheduling tasks, managing dependencies, and executing the logic.
-- **Monitoring & Analytics**: A crucial component for observability. This includes a [user interface](https://kestra.io/docs/ui) with dashboards, real-time status tracking, detailed logs, and performance metrics. This visibility helps teams identify bottlenecks and troubleshoot failures quickly.
+- **Monitoring & Analytics**: A crucial component for observability. This includes a [user interface](https://kestra.io/docs/ui) with dashboards, real-time status tracking, detailed logs, and performance metrics. This visibility helps teams identify bottlenecks and troubleshoot failures quickly — see Kestra's [workflow monitoring use cases](/use-cases/monitoring) for production patterns.
 - **Integration Capabilities**: No workflow exists in a vacuum. A modern WFMS must connect to a wide range of external systems, databases, and APIs. This is typically achieved through a rich ecosystem of [plugins](https://kestra.io/plugins) and connectors.
 - **Scalability**: The system must be able to handle growth in both the number of workflows and the volume of executions without performance degradation. This often involves distributed architecture and efficient resource management.
 - **Error Handling and Retries**: Workflows can fail. A good WFMS provides built-in mechanisms for retries, timeouts, and error-handling branches to build resilient processes.
@@ -90,7 +90,7 @@ To excel in workflow management, individuals and teams need to cultivate several
 - **Analytical Thinking**: The ability to break down a complex process into its constituent parts, identify dependencies, and spot inefficiencies.
 - **Process Mapping**: Visualizing and documenting workflows to create a clear blueprint for automation.
 - **Problem-Solving**: Identifying the root cause of bottlenecks or failures and designing effective solutions.
-- **Technical Proficiency**: Comfort with the tools of the trade, whether it's scripting in [Python](https://kestra.io/docs/how-to-guides/python) or [Shell](https://kestra.io/docs/scripts/shell), or mastering a declarative language like YAML.
+- **Technical Proficiency**: Comfort with the tools of the trade, whether it's scripting in [Python](https://kestra.io/docs/how-to-guides/python) or Shell, or mastering a declarative language like YAML.
 - **Communication**: Collaborating with stakeholders to understand requirements and explain the logic behind workflow designs.
 - **Change Management**: Guiding teams through the transition from manual processes to automated workflows.
 
@@ -127,7 +127,7 @@ Workflows are built from basic patterns that can be combined to model complex lo
     *   **Application**: An approval workflow where a request is routed to a manager only if the amount exceeds a certain threshold. In data pipelines, this could mean running a cleanup task only if data quality metrics fall below a set standard.
 
 4.  **State-Machine Workflows**: These are more complex workflows that move between different "states" based on events or triggers. The process is not necessarily linear and can loop back or jump between states.
-    *   **Application**: An order fulfillment process that moves from "Pending" to "Processing" to "Shipped" or "Cancelled" states. A CI/CD pipeline is also a state-machine, moving through states like "Building," "Testing," and "Deploying."
+    *   **Application**: An order fulfillment process that moves from "Pending" to "Processing" to "Shipped" or "Cancelled" states — a canonical [microservices orchestration pattern](/use-cases/microservices-orchestration). A CI/CD pipeline is also a state-machine, moving through states like "Building," "Testing," and "Deploying," which is why [software engineers adopt Kestra](/use-cases/software-engineers) as a workflow backbone.
 
 You can find many examples of these patterns in Kestra's [Blueprints](https://kestra.io/blueprints) library.
 

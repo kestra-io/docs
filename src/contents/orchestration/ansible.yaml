@@ -1,0 +1,434 @@
+title: "Orchestrate Ansible with Kestra: triggers, approval gates, and cross-tool coordination"
+description: "Wrap every Ansible playbook with event triggers, wave approval gates, per-host retries, and chaining with Terraform and ServiceNow, no inventory changes."
+
+tool:
+  name: "Ansible"
+  pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+  color: "#EE0000"
+
+hero:
+  title: "Your Ansible playbooks, fully orchestrated."
+  description: "Trigger ansible-playbook from cron, webhooks, S3 events, or any HTTP signal. Gate waves with the Pause task, parse per-host results with the Kestra callback, retry only the failed step, and chain Terraform and ServiceNow in one execution history."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+pillars:
+  title: "Around every Ansible run."
+  subtitle: "What Kestra wraps around every playbook run: when it fires, how it composes with other tools, what comes out of it, and who gets to launch it."
+  items:
+    - icon: "mdi:lightning-bolt-outline"
+      title: "Schedule and event triggers wrapped around ansible-playbook"
+      description: "Native cron, fixed intervals, webhooks, S3 file arrivals, Kafka messages, and database row changes all fire a playbook run directly. The trigger payload is available inside the flow as <code>trigger.body</code>, so the right host gets the right inputs from a single execution."
+    - icon: "mdi:shield-check-outline"
+      title: "Wave-by-wave promotion with named reviewers"
+      description: "The Pause task suspends execution after each wave. The play recap surfaces in the UI. A reviewer reads it, optionally adds a comment, then resumes into the next environment. Each gate stores the reviewer identity inline with the execution."
+    - icon: "mdi:transit-connection-variant"
+      title: "Terraform outputs flow into the Ansible inventory automatically"
+      description: "When <code>terraform apply</code> finishes, its outputs (IPs, hostnames, resource IDs) become task variables. The next Ansible task templates them straight into <code>inventory.ini</code>. One execution ID across both steps, no manual copy-paste between tools."
+    - icon: "mdi:format-list-bulleted-square"
+      title: "Per-host results from the Kestra Ansible callback, iterable in YAML"
+      description: "The Kestra Ansible callback emits structured per-host outputs after each play. A <code>ForEach</code> task loops over the hosts and branches on <code>changed</code>, <code>failed</code>, or any fact. Route alerts by tag, hand failing hosts to a remediation flow, or upload the play recap to S3."
+    - icon: "mdi:account-multiple-outline"
+      title: "Self-service forms in front of playbooks, with RBAC"
+      description: "A Kestra App is a typed form bound to a flow: dropdowns for the target host, the environment, the version. An operator submits the form, the same audited playbook runs every time, role-based access controls who can launch what."
+    - icon: "mdi:history"
+      title: "Replay any step from any past execution"
+      description: "Every play, every host, every task output is stored per execution. Open last week's run, click into the failing host, replay that step against the same target. The original inventory, vars, and <code>ansible.cfg</code> are preserved with the run, so the replay matches the original conditions."
+
+useCases:
+  title: "How platform teams use Ansible and Kestra"
+  subtitle: "Patterns infrastructure teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Full pipeline"
+      badgeIcon: "mdi:pipe-disconnected"
+      title: "Provision with Terraform, configure with Ansible, register in ServiceNow"
+      description: "Run <code>terraform apply</code> to spin up the VM. Hand the outputs (IP, hostname) to <code>ansible-playbook</code> to join the domain, install agents, and apply config. Then update the ServiceNow CMDB and post to Slack. One execution ID, one audit trail across all four steps."
+      flow:
+        - node: "trigger"
+          label: "on demand or schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "terraform apply"
+          label: "provision VM"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "ansible-playbook"
+          label: "configure host"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "ServiceNow"
+          label: "CMDB update"
+          pluginClass: "io.kestra.plugin.servicenow.Post"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Step-level retries"
+          description: "Retry only the failed step. The Terraform apply does not re-run when the playbook fails."
+        - title: "Outputs flow forward"
+          description: "Pass IPs, hostnames, and Terraform output values into the Ansible inventory."
+        - title: "Single execution context"
+          description: "One ID across Terraform, Ansible, and ServiceNow, with one place to debug."
+        - title: "CMDB stays in sync"
+          description: "Every provision lands a record in ServiceNow with the inventory metadata attached."
+    - badge: "Governance"
+      badgeIcon: "mdi:shield-check-outline"
+      title: "Scheduled drift detection that alerts only on change"
+      description: "Run the playbook against the fleet on a nightly schedule. Kestra parses the per-host results from the Ansible callback, loops through hosts with a <code>ForEach</code>, and posts a Slack alert only when a host comes back with <code>changed: true</code>. Clean runs stay quiet."
+      flow:
+        - node: "cron trigger"
+          label: "on schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "ansible-playbook"
+          label: "enforce state"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "ForEach host"
+          label: "per-host check"
+          pluginClass: "io.kestra.plugin.core.flow.ForEach"
+        - node: "alert"
+          label: "if changed"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Native cron scheduler"
+          description: "Built-in schedule and interval triggers. No cron job on a jump box, no Tower instance."
+        - title: "Per-host result parsing"
+          description: "The Kestra Ansible callback emits structured outputs the flow can iterate over."
+        - title: "Alert only on changed=true"
+          description: "Keeps Slack noise low and draws attention to real drift, not clean enforcement runs."
+        - title: "Full playbook output stored per run"
+          description: "Every nightly check is timestamped, attributed, and replayable from the execution UI."
+      signal: "Pattern published in the Kestra blueprint <code>ansible-config-drift</code>."
+    - badge: "Event-driven"
+      badgeIcon: "mdi:lightning-bolt-outline"
+      title: "Event-triggered remediation from monitoring alerts"
+      description: "A Splunk or CloudWatch alert fires on high CPU or a failed health check. The webhook hits Kestra, Kestra runs the remediation playbook against the affected host, updates the ServiceNow incident with the result, and posts to Slack. Same flow, same audit trail, whether the alert fires once a week or a hundred times a day."
+      flow:
+        - node: "webhook"
+          label: "alert payload"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "ansible-playbook"
+          label: "remediate host"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "ServiceNow"
+          label: "update incident"
+          pluginClass: "io.kestra.plugin.servicenow.Update"
+        - node: "notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Webhook + API triggers"
+          description: "Fire a playbook from Splunk, PagerDuty, ServiceNow, or any HTTP source. No glue service required."
+        - title: "Incident enrichment"
+          description: "Push the playbook's diagnostic output back into the ServiceNow ticket as a work note."
+        - title: "Per-execution audit trail"
+          description: "Every remediation has an inventory snapshot, payload, host result, and operator on record."
+        - title: "Replay on the same host"
+          description: "Re-run the playbook against the original target with one click from the execution view."
+    - badge: "Self-service"
+      badgeIcon: "mdi:account-multiple-outline"
+      title: "Self-service playbook runs through a UI form"
+      description: "Wrap a playbook behind a Kestra App: a typed form with dropdowns for the target host, environment, and version. Operators run the playbook from the form. RBAC controls who can run what. No SSH key handouts, no ad-hoc <code>ansible-playbook</code> on someone's laptop."
+      flow:
+        - node: "Kestra App"
+          label: "form input"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "validate inputs"
+          label: "RBAC + schema"
+          pluginClass: "io.kestra.plugin.core.log.Log"
+        - node: "ansible-playbook"
+          label: "with --extra-vars"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "notify"
+          label: "Slack + audit"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Typed inputs and dropdowns"
+          description: "Form inputs validated before the run. No malformed <code>--extra-vars</code>, no typos on the limit."
+        - title: "RBAC on who can run what"
+          description: "Role-based access on the form itself, not on raw SSH keys to production hosts."
+        - title: "Same playbook, every request"
+          description: "Every form submission goes through the same audited, retry-aware execution."
+          wide: true
+
+quotes:
+  - quote: "I'm not sure we can do what we can do now with only Terraform and Ansible. The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
+    author: "Crédit Agricole"
+    storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    logoFile: "credit-agricole"
+  - quote: "Ansible output parsing was a massive win, it's deterministic and made our life so much easier."
+    author: "Principal Hosting · BHP"
+    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
+    logoFile: "bhp"
+  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment: all orchestrated through Kestra."
+    author: "Censhare"
+    logoFile: "censhare"
+
+blueprints:
+  title: "Blueprints for Ansible orchestration."
+  lead: "One blueprint per use case above. Copy the YAML, point it at your inventory, ship it."
+  items:
+    - name: "Provision, configure, register"
+      title: "Provision with Terraform, configure with Ansible, register in ServiceNow"
+      description: "<code>terraform apply</code> provisions the VM and writes the private IP to a task artifact. <code>ansible-playbook</code> joins the host to the domain and installs agents, with per-step retries. The next task posts a record into the ServiceNow CMDB. Slack confirms when all three steps succeed."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.servicenow.Post"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: provision-configure-register
+        namespace: company.platform
+
+        inputs:
+          - id: hostname
+            type: STRING
+          - id: environment
+            type: SELECT
+            values: [dev, staging, production]
+            defaults: staging
+
+        tasks:
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            beforeCommands:
+              - terraform init
+            commands:
+              - terraform apply -auto-approve -var "hostname={{ inputs.hostname }}"
+              - terraform output -raw private_ip > private_ip.txt
+            outputFiles:
+              - "private_ip.txt"
+
+          - id: ansible_configure
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            inputFiles:
+              inventory.ini: |
+                [app]
+                {{ inputs.hostname }} ansible_host={{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }} ansible_user=ubuntu
+              configure.yml: "{{ read(secret('ANSIBLE_PLAYBOOK')) }}"
+            commands:
+              - ansible-playbook -i inventory.ini configure.yml --extra-vars "env={{ inputs.environment }}"
+            retry:
+              type: constant
+              interval: PT2M
+              maxAttempt: 3
+
+          - id: servicenow_register
+            type: io.kestra.plugin.servicenow.Post
+            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
+            username: "{{ secret('SERVICENOW_USER') }}"
+            password: "{{ secret('SERVICENOW_PASSWORD') }}"
+            clientId: "{{ secret('SERVICENOW_CLIENT_ID') }}"
+            clientSecret: "{{ secret('SERVICENOW_CLIENT_SECRET') }}"
+            table: cmdb_ci_server
+            data:
+              name: "{{ inputs.hostname }}"
+              ip_address: "{{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}"
+              environment: "{{ inputs.environment }}"
+              short_description: "Provisioned by execution {{ execution.id }}"
+
+          - id: notify
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":rocket: {{ inputs.hostname }} provisioned ({{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}), configured, and registered in ServiceNow."
+              }
+    - name: "Scheduled drift detection"
+      title: "Scheduled drift detection with alerting on change"
+      description: "Runs the playbook nightly against the fleet using the Kestra Ansible callback to emit per-host structured output. A <code>ForEach</code> loops through hosts and posts a Slack alert only when <code>changed: true</code>. Clean enforcement runs stay quiet."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.core.trigger.Schedule"
+        - "io.kestra.plugin.core.flow.ForEach"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: ansible-config-drift
+        namespace: company.infra
+
+        triggers:
+          - id: nightly
+            type: io.kestra.plugin.core.trigger.Schedule
+            cron: "0 3 * * *"
+
+        tasks:
+          - id: enforce_state
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            namespaceFiles:
+              enabled: true
+            taskRunner:
+              type: io.kestra.plugin.core.runner.Process
+            ansibleConfig: |
+              [defaults]
+              interpreter_python = auto_silent
+              log_path={{ workingDir }}/ansible.log
+              stdout_callback = yaml
+            commands:
+              - ansible-playbook -i inventory.ini myplaybook.yml
+
+          - id: loop_hosts
+            type: io.kestra.plugin.core.flow.ForEach
+            values: "{{ outputs.enforce_state.vars.outputs }}"
+            tasks:
+              - id: alert_on_change
+                type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+                runIf: "{{ (taskrun.value | jq('.changed') | first) == true }}"
+                url: "{{ secret('SLACK_WEBHOOK') }}"
+                messageText: "Drift detected: {{ taskrun.value | jq('.msg') | first ?? 'config changed on host' }}"
+    - name: "Event-triggered remediation"
+      title: "Event-triggered remediation from a monitoring webhook"
+      description: "A monitoring alert fires the webhook, Kestra runs the remediation playbook against the affected host using the alert payload to build an inline inventory, updates the ServiceNow incident with the playbook output, then posts to Slack. Every execution has an audit trail."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.core.trigger.Webhook"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.servicenow.Update"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: ansible-remediation-from-alert
+        namespace: company.infra
+
+        triggers:
+          - id: alert_webhook
+            type: io.kestra.plugin.core.trigger.Webhook
+            key: ansible_remediation
+
+        tasks:
+          - id: remediate_host
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            inputFiles:
+              inventory.ini: |
+                [target]
+                {{ trigger.body.host }} ansible_user=ops
+              remediate.yml: "{{ read(secret('REMEDIATION_PLAYBOOK')) }}"
+            commands:
+              - ansible-playbook -i inventory.ini remediate.yml --extra-vars "incident={{ trigger.body.incident_id }}"
+            retry:
+              type: constant
+              interval: PT1M
+              maxAttempt: 2
+
+          - id: update_incident
+            type: io.kestra.plugin.servicenow.Update
+            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
+            username: "{{ secret('SERVICENOW_USER') }}"
+            password: "{{ secret('SERVICENOW_PASSWORD') }}"
+            clientId: "{{ secret('SERVICENOW_CLIENT_ID') }}"
+            clientSecret: "{{ secret('SERVICENOW_CLIENT_SECRET') }}"
+            table: incident
+            sysId: "{{ trigger.body.incident_id }}"
+            data:
+              state: "6"
+              work_notes: "Auto-remediation ran via Kestra execution {{ execution.id }}. Host: {{ trigger.body.host }}."
+
+          - id: notify
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":hammer_and_wrench: Remediated {{ trigger.body.host }} for incident {{ trigger.body.incident_id }}. <{{ execution.url }}|View execution>"
+              }
+
+comparison:
+  title: "Kestra vs Ansible orchestration alternatives"
+  subtitle: "How Kestra compares to the platforms infrastructure teams already use to run Ansible."
+  competitors:
+    - name: "Ansible Automation Platform"
+      logoAsset: "ansible-automation-platform-monograme"
+    - name: "GitHub Actions"
+      pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+    - name: "Rundeck"
+      logoAsset: "rundeck-full"
+  rows:
+    - feature: "Scheduling"
+      kestra: "✓ Native cron + events"
+      values:
+        - "Native scheduled jobs"
+        - "Cron-based workflows"
+        - "Native scheduler"
+    - feature: "Event triggers (webhook, S3, Kafka)"
+      kestra: "✓ Native"
+      values:
+        - "EDA controller add-on"
+        - "Webhook only"
+        - "Webhook only"
+    - feature: "Approval gate between playbook waves"
+      kestra: "✓ Native pause + resume"
+      values:
+        - "Workflow approval (paid tiers)"
+        - "Environment approvals (deploy only)"
+        - "Pause-on-input step"
+    - feature: "Chain Ansible with Terraform / ServiceNow / ArgoCD"
+      kestra: "✓ Native, with outputs"
+      values:
+        - "Possible, custom collections"
+        - "Possible, glue scripts required"
+        - "Job steps, manual wiring"
+    - feature: "Per-host execution history with attribution"
+      kestra: "✓ Execution view + task state"
+      values:
+        - "AAP run history UI"
+        - "Logs in Actions UI"
+        - "Job log per execution"
+    - feature: "Self-service forms with RBAC"
+      kestra: "✓ Kestra Apps"
+      values:
+        - "Survey forms"
+        - "Workflow dispatch input"
+        - "Job options"
+    - feature: "Air-gapped / private network deploy"
+      kestra: "✓ Self-hosted by default"
+      values:
+        - "Self-hosted (Red Hat subscription)"
+        - "Self-hosted runners"
+        - "Self-hosted"
+    - feature: "Orchestrate beyond Ansible (full stack)"
+      kestra: "✓ 1300+ plugins"
+      values:
+        - "Ansible-centric"
+        - "Possible, action-dependent"
+        - "Possible, plugin-dependent"
+
+faq:
+  - question: "What's the difference between Kestra and Ansible Automation Platform (AAP / Tower / AWX)?"
+    answer: "AAP is the Red Hat-owned operational layer for Ansible: a runner, a UI, surveys, RBAC, and the EDA controller for event triggers. Kestra is a general-purpose orchestrator. It schedules playbook runs, adds native pause-and-resume between waves, and chains Ansible with Terraform, ServiceNow, ArgoCD, databases, and your own scripts in one flow. AAP is Ansible-centric by design. Kestra orchestrates the broader workflow around Ansible, and works alongside AAP if you already run it."
+  - question: "Can I keep my existing playbooks and inventory as-is?"
+    answer: "Yes. The <code>io.kestra.plugin.ansible.cli.AnsibleCLI</code> task runs <code>ansible-playbook</code> exactly as you do today. Inventory, roles, vars, vault files, and <code>ansible.cfg</code> stay where they are. You point Kestra at the playbook through inline <code>inputFiles</code>, Namespace Files, or a Git clone task. Nothing in the playbook itself changes."
+  - question: "How does the approval gate work between dev, staging, and production waves?"
+    answer: "Kestra's Pause task suspends the flow after a wave completes. The playbook output is surfaced in the Kestra UI. A named reviewer reads it, optionally adds a comment, and resumes. Only then does the next wave run. The reviewer identity and timestamp land in the execution history. Different reviewers can be wired to different namespaces or environments through RBAC."
+  - question: "Can Kestra react to an alert from Splunk or PagerDuty and run a remediation playbook?"
+    answer: "Yes. The <code>io.kestra.plugin.core.trigger.Webhook</code> trigger exposes a signed endpoint. Wire Splunk, PagerDuty, ServiceNow, or any HTTP source to that URL. The alert payload is available in the flow as <code>trigger.body</code>, so the playbook runs against the right host with the right inputs."
+  - question: "Does Kestra work with Ansible Vault and dynamic inventories?"
+    answer: "Yes. Vault files come through Kestra's secrets backend (built-in or HashiCorp Vault) and are mounted into the task working directory at run time. Dynamic inventories work the same way they do on the CLI: include the script or plugin in the task, set the inventory path, and run <code>ansible-playbook -i</code> against it. Inventories built from a Terraform output or a NetBox query are common."
+  - question: "How does Kestra handle per-host failures in a playbook run?"
+    answer: "The Kestra Ansible callback emits structured per-host results that the flow can iterate over with <code>ForEach</code>. You can branch on <code>changed</code>, <code>failed</code>, or any fact, route alerts to different channels by tag or owner, or hand the failing host to a follow-up playbook. The full play recap stays in the execution log, attached to the run."
+  - question: "Do I need a separate AWX or Tower instance to run Kestra?"
+    answer: "No. Kestra runs <code>ansible-playbook</code> directly through its task runner, on the worker, in a container, or remotely via SSH. No AWX, no Tower, no EDA controller. Teams already on AAP can keep it: Kestra calls AAP jobs over the API the same way it calls Terraform Cloud or Jenkins."
+  - question: "Is Kestra self-hosted? Can it run air-gapped?"
+    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives full control over where playbooks execute, with no external dependency on Kestra's infrastructure. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Terraform, Ansible, and cloud APIs."
+
+resources:
+  title: "More on Ansible and Kestra"
+  items:
+    - kind: "docs"
+      title: "Automate infrastructure workflows in Kestra"
+      description: "How Kestra orchestrates Docker, Terraform, OpenTofu, Terragrunt, Ansible, and cloud CLIs in one declarative flow."
+      href: "/docs/use-cases/infrastructure"
+    - kind: "resource"
+      title: "Top alternatives to Ansible for modern DevOps"
+      description: "Where Ansible fits among Puppet, Chef, Salt, Terraform, and Kestra, and when each one is the right tool."
+      href: "/resources/infrastructure/alternatives-to-ansible"
+    - kind: "blog"
+      title: "Automate infrastructure with Kestra, Ansible and Terraform"
+      description: "The AnsibleCLI task end to end, with a Terraform handoff for a full provision-and-configure flow."
+      href: "/blogs/2024-04-16-infrastructure-orchestration-using-kestra"
+      image: "blogs/2024-04-16-infrastructure-orchestration-using-kestra/main.jpg"
+
+seeHow:
+  title: "Ready to orchestrate your Ansible playbooks?"
+  description: "Trigger on events, gate between waves, chain with Terraform and ServiceNow. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"

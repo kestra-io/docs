@@ -41,7 +41,7 @@ A workflow schedule is the automated execution plan for a data workflow. Instead
 ### Different types of data workflows
 
 Data workflows are not a monolith; they serve various purposes within the data lifecycle. Common types include:
-- **Data Integration:** Moving data between systems, such as extracting from APIs and loading into a data warehouse. A classic example is an [ETL workflow](https://kestra.io/resources/data/etl-workflow).
+- **Data Integration:** Moving data between systems, such as extracting from APIs and loading into a data warehouse, or scheduling recurring jobs across [database management workflows](/use-cases/databases-management). A classic example is an [ETL workflow](https://kestra.io/resources/data/etl-workflow).
 - **Data Transformation:** Cleaning, standardizing, and enriching raw data to make it usable for analysis. This often involves running scripts or dbt models.
 - **Data Analysis:** Preparing aggregated datasets for business intelligence and reporting tools.
 - **Machine Learning:** Orchestrating the steps to train, evaluate, and deploy machine learning models.
@@ -100,7 +100,7 @@ The first step in any data workflow is accessing the data. Kestra's extensive [p
 
 ### Transforming data and building workflows
 
-Once data is accessed, you define transformation tasks. A key strength of Kestra is its language-agnostic nature; you can [run Python scripts](https://kestra.io/docs/scripts/python), execute SQL queries, or run shell commands within the same workflow. Each step is a task in your YAML file, and you can structure them to run sequentially or in parallel. This entire structure is defined in a [Flow](https://kestra.io/docs/workflow-components/flow), which is the central unit of orchestration in Kestra.
+Once data is accessed, you define transformation tasks. A key strength of Kestra is its language-agnostic nature; you can run Python scripts, execute SQL queries, or run shell commands within the same workflow. Each step is a task in your YAML file, and you can structure them to run sequentially or in parallel. This entire structure is defined in a [Flow](https://kestra.io/docs/workflow-components/flow), which is the central unit of orchestration in Kestra.
 
 ### Scheduling and monitoring execution
 
@@ -147,7 +147,7 @@ Kestra supports a wide variety of [triggers](https://kestra.io/docs/workflow-com
     - **Webhooks:** Initiating a flow via an HTTP request, perfect for API integrations.
     - **File Detection:** Starting a workflow when a new file arrives in S3, GCS, or a local filesystem.
     - **Message Queues:** Triggering a flow based on a new message in Kafka, SQS, or RabbitMQ.
-Kestra's support for [real-time triggers](https://kestra.io/blogs/realtime-triggers) enables data processing with millisecond latency, moving beyond traditional batch processing.
+Kestra's support for real-time triggers enables data processing with millisecond latency, moving beyond traditional batch processing.
 
 ### Common workflow structures
 

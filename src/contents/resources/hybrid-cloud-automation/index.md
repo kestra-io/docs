@@ -57,7 +57,7 @@ The biggest source of outages in hybrid environments isn't technology — it's i
 
 ### Security and Compliance
 
-Regulated industries often keep sensitive workloads on-prem while using public cloud for everything else. Automation makes compliance auditable: every change is logged, every approval is captured, every credential is rotated on schedule. Compliance shifts from a quarterly scramble to a continuous property of the system.
+Regulated industries often keep sensitive workloads on-prem while using public cloud for everything else — a defining constraint behind many [public services orchestration use cases](/use-cases/public-services). Automation makes compliance auditable: every change is logged, every approval is captured, every credential is rotated on schedule. Compliance shifts from a quarterly scramble to a continuous property of the system.
 
 ## Common Use Cases for Hybrid Cloud Automation
 
@@ -69,7 +69,7 @@ Moving workloads between environments — cloud to on-prem for cost, on-prem to 
 
 ### Disaster Recovery and Business Continuity
 
-DR plans that exist only as runbooks fail when the incident actually happens. Hybrid cloud automation turns DR into a workflow that can be tested regularly — failing over from on-prem to cloud, validating the failover, then failing back — until it becomes routine rather than a once-a-year fire drill.
+DR plans that exist only as runbooks fail when the incident actually happens. Hybrid cloud automation turns DR into a workflow that can be tested regularly — failing over from on-prem to cloud, validating the failover, then failing back — until it becomes routine rather than a once-a-year fire drill. This is one of the most common [disaster recovery use cases](/use-cases/disaster-recovery) Kestra teams put into production.
 
 ### Development and Testing Environments
 

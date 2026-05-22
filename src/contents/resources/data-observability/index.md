@@ -40,7 +40,7 @@ At its core, data observability is an orchestration challenge. It requires coord
 
 Without data observability, data teams operate with blind spots. A pipeline might complete successfully, but the data it delivers could be incomplete, stale, or incorrectly formatted. These "silent failures" are particularly insidious because they undermine the most valuable asset a data team has: trust.
 
-When business stakeholders can no longer rely on the dashboards and reports they use for critical decisions, the value of the entire data platform diminishes. Data observability addresses this by:
+When business stakeholders can no longer rely on the dashboards and reports they use for critical decisions, the value of the entire data platform diminishes — a particularly acute risk for [financial services orchestration workflows](/use-cases/financial-services), where every reconciliation depends on trustworthy pipelines. Data observability addresses this by:
 
 -   **Building Confidence:** Providing verifiable proof that data is fresh, accurate, and complete.
 -   **Reducing Time-to-Resolution:** Enabling data engineers to quickly pinpoint the root cause of an issue, from source to consumption.
@@ -89,7 +89,7 @@ Adopting a data observability strategy yields significant returns, transforming 
 
 ### Minimizing Data Downtime and Errors
 
-Data downtime refers to periods when data is missing, inaccurate, or otherwise erroneous. By providing early warnings of potential issues, data observability significantly reduces the duration and impact of this downtime. Instead of discovering a problem hours or days later from an angry end-user, teams are alerted in near real-time. This proactive stance allows for faster root cause analysis and resolution, often before the business is even aware of an issue. Implementing robust [error handling and observability](https://kestra.io/blueprints/error-logs) within your orchestration workflows is a first step toward minimizing this downtime.
+Data downtime refers to periods when data is missing, inaccurate, or otherwise erroneous. By providing early warnings of potential issues, data observability significantly reduces the duration and impact of this downtime. Instead of discovering a problem hours or days later from an angry end-user, teams are alerted in near real-time. This proactive stance allows for faster root cause analysis and resolution, often before the business is even aware of an issue — the same proactive posture that anchors Kestra's [pipeline monitoring use cases](/use-cases/monitoring). Implementing robust [error handling and observability](https://kestra.io/blueprints/error-logs) within your orchestration workflows is a first step toward minimizing this downtime.
 
 ### Improving Data Quality and Reliability at Scale
 
@@ -175,7 +175,7 @@ While specialized data observability platforms exist, an orchestration platform 
 
 ### Building Observable Data Pipelines with Kestra's Declarative Workflows
 
-Kestra's [declarative orchestration](https://kestra.io/docs/declarative-data-orchestration) model, based on simple YAML files, makes pipelines inherently observable. Every aspect of the workflow—dependencies, tasks, triggers, and error handling—is explicitly defined, version-controlled in Git, and auditable.
+Kestra's declarative orchestration model, based on simple YAML files, makes pipelines inherently observable. Every aspect of the workflow—dependencies, tasks, triggers, and error handling—is explicitly defined, version-controlled in Git, and auditable.
 
 You can embed observability checks directly into your flows. For example, a simple task can query a table's metadata to check its row count or latest partition date, providing freshness and volume metrics with every run.
 

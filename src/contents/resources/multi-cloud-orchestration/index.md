@@ -50,7 +50,7 @@ Without a shared orchestration layer, multi-cloud operations devolve into a patc
 
 ### Improved Resource Management and Scalability
 
-A unified orchestration layer lets teams provision, scale, and decommission resources across clouds based on workload demand rather than contractual lock-in. Workloads can shift to cheaper regions, fail over to a secondary provider, or scale out burst capacity — without rewriting the automation each time.
+A unified orchestration layer lets teams provision, scale, and decommission resources across clouds based on workload demand rather than contractual lock-in. Workloads can shift to cheaper regions, fail over to a secondary provider, or scale out burst capacity — without rewriting the automation each time. Cross-cloud failover is also the backbone of most modern [disaster recovery use cases](/use-cases/disaster-recovery).
 
 ### Optimizing Costs and Governance
 
@@ -145,4 +145,4 @@ Five practices that separate functional multi-cloud orchestration from theatrica
 
 Multi-cloud orchestration works when there's a single control plane that treats every environment equally — and breaks down when each cloud gets its own orchestrator bolted together at the edges. Picking the orchestration layer is the most consequential decision in a multi-cloud strategy.
 
-For teams evaluating options, Kestra is open-source, self-hostable, and runs natively across AWS, Azure, GCP, and on-prem from a single YAML-defined workflow layer. Start with the [multi-cloud deployment blueprint](/blueprints/multi-cloud-deployment), explore the [infrastructure automation hub](/infra-automation), or read the deeper case for [vendor-neutral orchestration](/blogs/kestra-series-a).
+For teams evaluating options, Kestra is open-source, self-hostable, and runs natively across AWS, Azure, GCP, and on-prem from a single YAML-defined workflow layer. Start with the [multi-cloud deployment blueprint](/blueprints/multi-cloud-deployment), explore the [infrastructure automation hub](/infra-automation), see how [software providers and ISVs](/use-cases/software-providers) embed this orchestration layer, or read the deeper case for [vendor-neutral orchestration](/blogs/kestra-series-a).

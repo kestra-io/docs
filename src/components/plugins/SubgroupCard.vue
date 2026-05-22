@@ -57,9 +57,6 @@
 </script>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/legacy/_variables.scss" as variables;
-    @use "/src/assets/styles/legacy/_color-palette.scss" as color-palette;
-
     a {
         display: block;
         height: 100%;
@@ -85,7 +82,7 @@
         }
 
         &.is-active {
-            border-color: variables.$primary !important;
+            border-color: var(--ks-border-active) !important;
         }
 
         .top-row {
@@ -99,9 +96,9 @@
         .icon-content {
             width: 60px;
             height: 60px;
-            background: variables.$gray-100;
+            background: var(--ks-background-secondary);
             border-radius: 8px;
-            border: 1px solid variables.$white-2;
+            border: 1px solid var(--ks-border-primary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -134,7 +131,7 @@
         }
 
         h6 {
-            color: variables.$white;
+            color: var(--ks-content-primary);
             font-size: 1rem;
             font-weight: 700;
             margin: 0;
@@ -160,7 +157,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: color-palette.$base-gray-300;
+            color: var(--ks-content-tertiary);
             height: 45px;
 
             .left {
@@ -175,7 +172,7 @@
                 }
 
                 span {
-                    color: color-palette.$base-gray-300;
+                    color: var(--ks-content-tertiary);
                     font-weight: normal;
                     font-size: 12px;
                 }
@@ -183,7 +180,7 @@
 
             :deep(svg) {
                 font-size: 1rem;
-                color: variables.$purple-36;
+                color: var(--ks-content-property);
             }
         }
     }

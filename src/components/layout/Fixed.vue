@@ -29,15 +29,16 @@
 
 <script setup lang="ts">
     import { ref, onMounted, onUnmounted } from "vue"
+    import { useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import AIGenImg from "../docs/assets/ai-generate-lined.svg"
 
 
     const yScroll = ref(0)
 
-    const handleScroll = () => {
+    const handleScroll = useThrottleFn(() => {
         yScroll.value = window.scrollY
-    }
+    }, 100)
 
     const backToTop = () => {
         window.scrollTo({
@@ -48,7 +49,7 @@
 
     onMounted(() => {
         if (typeof window !== "undefined") {
-            window.addEventListener("scroll", handleScroll)
+            window.addEventListener("scroll", handleScroll, { passive: true })
             handleScroll()
         }
     })
