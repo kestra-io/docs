@@ -33,41 +33,46 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and their TypeScript types are distributed via the `@kestra-io/artifact-sdk` package. Three slots are currently available:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Four slots are currently available:
 
 ### `topology-details`
 
-Renders in the **execution topology view** when a task node is selected. Receives the task definition, the execution state, and the flow context.
+Renders in the **execution topology view** when a task node is selected. The contract is defined in [`ui/packages/slot-contracts/src/topology-details.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-details.ts) in Kestra core and distributed via `@kestra-io/artifact-sdk`:
 
 ```ts
-interface TopologyDetailsProps {
-  /** The full task definition object from the flow YAML */
-  task: Record<string, unknown>;
-  /** The latest execution state for this task, if available */
-  execution: Record<string, unknown>;
-}
+import type { Execution, MetricEntry, Task } from "@kestra-io/kestra-sdk"
+import { z } from "zod"
+
+export const propsSchema = z.object({
+    taskType: z.string(),
+    task: z.custom<Task>(),
+    execution: z.custom<Execution>().optional(),
+    namespace: z.string().optional(),
+    flowId: z.string().optional(),
+    metrics: z.custom<MetricEntry>().array(),
+})
 ```
 
-Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly.
+`Task`, `Execution`, and `MetricEntry` are imported from `@kestra-io/kestra-sdk`.
 
-The host also injects `namespace`, `flowId`, and `displayMode` as HTML attributes — they are not declared in the props type, so they land in `attrs`, not `props`. Use `useAttrs()` to read them:
+Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. `metrics` is always an array (empty before execution).
+
+The host also injects `displayMode` as an HTML attribute — it is not in the props type, so it lands in `attrs`. Use `useAttrs()` to read it:
 
 ```ts
 const attrs = useAttrs();
-const isFullView  = computed(() => attrs.displayMode === "full");
-const namespace   = computed(() => attrs.namespace as string | undefined);
-const flowId      = computed(() => attrs.flowId as string | undefined);
+const isFullView = computed(() => attrs.displayMode === "full");
 ```
 
 When `displayMode` is `"full"` the component renders in an expanded drawer; otherwise it renders inline in the compact topology node.
 
 :::alert{type="warning"}
-During certain render phases, `namespace` and `flowId` may arrive as unresolved URL template strings — e.g. `"{namespace}"` instead of `"myteam"`. These strings are truthy in JavaScript, so a plain `if (!namespace.value)` check won't catch them. Always guard with a `startsWith("{")` check before making API calls:
+During certain render phases, `namespace` and `flowId` may arrive as unresolved URL template strings — e.g. `"{namespace}"` instead of `"myteam"`. These strings are truthy in JavaScript, so a plain `if (!props.namespace)` check won't catch them. Always guard with a `startsWith("{")` check before making API calls:
 
 ```ts
 async function loadFlowData() {
-  const ns = namespace.value;
-  const fid = flowId.value;
+  const ns = props.namespace;
+  const fid = props.flowId;
   if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return;
   // safe to call SDK
 }
@@ -76,16 +81,9 @@ async function loadFlowData() {
 
 ### `topology-task-drawer`
 
-Renders in the **flow editor** (low-code editor) drawer when a task node is selected. Receives the same props as `topology-details`. This slot targets the design-time context, so `execution` may be absent.
+Renders in the **flow editor** (low-code editor) drawer when a task node is selected. It shares the exact same `propsSchema` as `topology-details` (defined in [`topology-task-drawer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-drawer.ts)). This slot targets the design-time context, so `execution` is typically absent and `metrics` will be an empty array.
 
-```ts
-interface TopologyTaskDrawerProps {
-  task: Record<string, unknown>;
-  execution: Record<string, unknown>;
-}
-```
-
-Same as `topology-details`, `namespace`, `flowId`, and `displayMode` are injected as attributes and must be read via `useAttrs()`.
+Same as `topology-details`, `displayMode` is injected as an HTML attribute and must be read via `useAttrs()`. `namespace` and `flowId` are props.
 
 You can reuse the same Vue component file for both `topology-details` and `topology-task-drawer` — just register it under both slot names in `vite.config.ts` and use `displayMode` to adjust what is rendered (see [Configuring the exposed components](#configuring-the-exposed-components)).
 
@@ -110,6 +108,29 @@ interface LogEntry {
   [key: string]: unknown;
 }
 ```
+
+### `topology-task-runner-details`
+
+Renders in the **execution topology view** when a task runner node is selected. The contract is defined in [`ui/packages/slot-contracts/src/topology-task-runner-details.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-runner-details.ts) in Kestra core:
+
+```ts
+import type { Execution, Task } from "@kestra-io/kestra-sdk"
+import { z } from "zod"
+
+export const propsSchema = z.object({
+    taskType: z.string(),
+    taskRunnerType: z.string(),
+    task: z.custom<Task>(),
+    taskRunner: z.record(z.string(), z.unknown()),
+    execution: z.custom<Execution>().optional(),
+    taskRun: z.record(z.string(), z.unknown()).optional(),
+    taskRunnerDetail: z.record(z.string(), z.unknown()).optional(),
+    namespace: z.string().optional(),
+    flowId: z.string().optional(),
+})
+```
+
+This slot targets task runner plugins (e.g. Docker, Kubernetes) and exposes the runner configuration, the task run state, and any runner-specific detail the backend enriches at runtime (`taskRunnerDetail`).
 
 ## Quick start
 
@@ -321,32 +342,30 @@ The snippet below is adapted from the BigQuery plugin ([plugin-gcp#599](https://
 <script setup lang="ts">
 import type { TopologyDetailsProps } from "@kestra-io/artifact-sdk";
 import { computed, ref, watch, useAttrs } from "vue";
-import { execution as fetchExecution, flow as fetchFlowDef, searchByExecution } from "@kestra-io/kestra-sdk";
+import { execution as fetchExecution, flow as fetchFlowDef } from "@kestra-io/kestra-sdk";
 
 const props = defineProps<TopologyDetailsProps>();
 const attrs = useAttrs();
 const isFullView = computed(() => attrs.displayMode === "full");
-const namespace  = computed(() => attrs.namespace as string | undefined);
-const flowId     = computed(() => attrs.flowId as string | undefined);
 
 const taskId = computed(() => props.task?.id as string | undefined);
 
 // Fetch the full flow definition to resolve task config that may not be in props.task.
-// namespace/flowId come from attrs (injected by the host), not from props.
+// namespace/flowId come from props (injected by the host).
 const flowTask = ref<Record<string, any> | null>(null);
 
 async function loadFlowTask() {
-  if (!namespace.value || !flowId.value) return;
+  const ns = props.namespace;
+  const fid = props.flowId;
+  if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return;
   try {
-    const f = await fetchFlowDef({ path: { namespace: namespace.value, id: flowId.value } });
+    const f = await fetchFlowDef({ path: { namespace: ns, id: fid } });
     const tasks = (f as any).tasks as any[] | undefined;
     flowTask.value = tasks?.find((t: any) => t.id === taskId.value) ?? null;
   } catch { /* best-effort */ }
 }
 
-watch([namespace, flowId], ([ns, fid]) => {
-  if (ns && fid) loadFlowTask();
-}, { immediate: true });
+watch([() => props.namespace, () => props.flowId], () => loadFlowTask(), { immediate: true });
 
 const projectId = computed(() =>
   (props.task?.projectId ?? flowTask.value?.projectId) as string | undefined
@@ -373,20 +392,8 @@ watch(executionId, async (id) => {
 
 const taskOutputs = computed(() => fetchedOutputs.value ?? null);
 
-// Metrics
-const metrics = ref<Array<{ name: string; value: number; taskId?: string }>>([]);
-
-watch(executionId, async (id) => {
-  if (!id) return;
-  try {
-    const resp = await searchByExecution({ path: { executionId: id } });
-    metrics.value = ((resp.results as any[]) ?? []).filter(
-      (m: any) => !m.taskId || m.taskId === taskId.value
-    );
-  } catch { /* best-effort */ }
-}, { immediate: true });
-
-const getMetric = (name: string) => metrics.value.find((m) => m.name === name)?.value;
+// Metrics come from props — no SDK fetch needed
+const getMetric = (name: string) => props.metrics.find((m) => m.name === name)?.value;
 const bytesBilled  = computed(() => getMetric("total.bytes.billed"));
 const durationMs   = computed(() => getMetric("duration"));
 
@@ -502,15 +509,18 @@ const baseTask = {
 export const PreExecution: Story = {
   name: "Pre-execution",
   args: {
+    taskType: "io.kestra.plugin.example.query.RunQuery",
     task: baseTask,
     namespace: "company.team",
     flowId: "my-flow",
+    metrics: [],
   },
 };
 
 export const PostExecution: Story = {
   name: "Post-execution",
   args: {
+    taskType: "io.kestra.plugin.example.query.RunQuery",
     task: baseTask,
     namespace: "company.team",
     flowId: "my-flow",
@@ -526,6 +536,10 @@ export const PostExecution: Story = {
         },
       ],
     },
+    metrics: [
+      { name: "duration", value: 1230, taskId: "run-query" },
+      { name: "total.bytes.billed", value: 10737418240, taskId: "run-query" },
+    ],
   },
 };
 ```
