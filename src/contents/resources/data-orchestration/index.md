@@ -34,7 +34,7 @@ Data orchestration sits as its own layer in the modern data stack:
 | --- | --- | --- |
 | **Storage** | Stores data at scale | Snowflake, BigQuery, S3, Iceberg |
 | **Ingestion** | Moves raw data into storage | Airbyte, Fivetran, Kafka Connect |
-| **Transformation** | Reshapes data into analytics models | dbt, SQLMesh, Spark |
+| **Transformation** | Reshapes data into analytics models | dbt ([orchestrated with dbt Core](/orchestration/dbt-core) or [dbt Cloud](/orchestration/dbt-cloud)), SQLMesh, Spark |
 | **Orchestration** | **Coordinates all of the above** | **Kestra, Airflow, Dagster, Prefect** |
 | **BI / Activation** | Serves data to people or systems | Looker, Tableau, Hightouch |
 
@@ -61,13 +61,13 @@ These four terms get used interchangeably in casual conversation and confused co
 
 The difference between ETL and data orchestration is the most common confusion. ETL describes *what a pipeline does* (extract, transform, load). Orchestration describes *how pipelines are coordinated* (triggers, dependencies, retries, observability). You still need orchestration whether your pipelines are ETL, ELT, streaming, or event-driven. The pattern is an implementation detail; the orchestration is infrastructure.
 
-For the ETL-specific angle, see the [ETL vs ELT comparison](/resources/data/etl-vs-elt). For the pipeline-specific concept, see the [data pipeline guide](/resources/data/data-pipeline).
+For the ETL-specific angle, see the [ETL vs ELT comparison](/resources/data/etl-vs-elt). For the pipeline-specific concept, see the [data pipeline guide](/resources/data/data-pipeline). For warehouse transformations specifically, Kestra orchestrates [dbt Core jobs](/orchestration/dbt-core) and [dbt Cloud runs](/orchestration/dbt-cloud) as native steps in any flow.
 
 ## How Data Orchestration Works
 
 Every data orchestrator, regardless of vendor, provides the same five core capabilities. A tool that doesn't cover all five is an incomplete orchestrator.
 
-**Triggers.** What starts a workflow. Modern orchestrators support multiple trigger types: cron schedules (run every night at 3 a.m.), event-driven (a file lands in S3), webhooks (an external system calls an API), and manual (a human clicks a button). Schedule-only orchestrators belong to a prior generation.
+**Triggers.** What starts a workflow. Modern orchestrators support multiple trigger types: cron schedules (run every night at 3 a.m.), event-driven ([a file lands in S3](/orchestration/aws)), webhooks (an external system calls an API), and manual (a human clicks a button). Schedule-only orchestrators belong to a prior generation.
 
 **Dependencies.** Which tasks must finish before others start. A transformation can't run before its upstream ingestion completes. A BI refresh can't run before its upstream transformation completes. Explicit dependencies are what turn a list of tasks into a coordinated workflow.
 
