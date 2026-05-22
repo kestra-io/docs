@@ -362,6 +362,7 @@ comparison:
     - name: "GitHub Actions native (schedule + workflow_dispatch)"
       logoAsset: "github-actions"
     - name: "Custom webhook listener + GitHub API"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
     - name: "Reusable workflows + workflow_call"
       logoAsset: "github-actions"
   rows:

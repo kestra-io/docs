@@ -382,8 +382,11 @@ comparison:
   subtitle: "Kestra wraps the ServiceNow Table API with first-class tasks for record Get, Post, Update, Delete. The competitors below are how teams typically wire ServiceNow tickets to operational flows today."
   competitors:
     - name: "ServiceNow Flow Designer"
+      pluginClass: "io.kestra.plugin.servicenow.Post"
     - name: "ServiceNow Orchestration (EE add-on)"
+      pluginClass: "io.kestra.plugin.servicenow.Post"
     - name: "Custom REST polling + scripts"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
   rows:
     - feature: "Trigger flows from approved tickets via webhook"
       kestra: "✓ Business Rule + Kestra Webhook trigger, real-time"

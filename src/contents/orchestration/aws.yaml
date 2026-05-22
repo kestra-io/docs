@@ -3,7 +3,7 @@ description: "Trigger S3, Lambda, Glue, EMR, DynamoDB, Athena from one flow. Nat
 
 tool:
   name: "AWS"
-  pluginClass: "io.kestra.plugin.aws.s3.Upload"
+  pluginClass: "io.kestra.plugin.aws.cli.AwsCLI"
   color: "#FF9900"
 
 hero:
@@ -411,8 +411,11 @@ comparison:
   subtitle: "Kestra wraps the AWS API with first-class tasks across 46 services. The competitors below are the AWS-native ways teams glue services together today, each with strengths and trade-offs."
   competitors:
     - name: "Step Functions + Lambda glue"
+      logoAsset: "aws-step-functions"
     - name: "EventBridge rules + Lambda fan-out"
+      pluginClass: "io.kestra.plugin.aws.eventbridge.PutEvents"
     - name: "Custom code on EC2 / ECS"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
   rows:
     - feature: "S3 trigger with prefix/regex filter and fan-out"
       kestra: "✓ s3.Trigger with action MOVE or DELETE on processed files"

@@ -393,8 +393,11 @@ comparison:
   subtitle: "Kestra wraps the OPA REST API with first-class tasks for policy evaluation, lifecycle, and audit. The competitors below are how teams typically wire OPA decisions into operational flows today."
   competitors:
     - name: "OPA admission webhook (K8s only)"
+      pluginClass: "io.kestra.plugin.kubernetes.core.PodCreate"
     - name: "conftest in CI scripts"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
     - name: "Custom OPA HTTP client in CI"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
   rows:
     - feature: "Evaluate before terraform apply, kubectl, IAM changes"
       kestra: "✓ policy.Evaluate as a flow task before any write"
