@@ -10,10 +10,6 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-// Static category map. Labels match the canonical Kestra plugin taxonomy
-// (Infrastructure, Cloud, Data, Business, AI, Alerting, Core) so /orchestration
-// stays in sync with /plugins. New pages: pick the primary category that best
-// describes the tool's surface; multi-category plugins land in their dominant one.
 const CATEGORY_MAP: Record<string, string> = {
     ansible: "Infrastructure",
     argocd: "Infrastructure",
@@ -61,8 +57,6 @@ const entries = await Promise.all(
         }),
 )
 
-// Derive unique categories from entries so the toggle stays in sync with
-// CATEGORY_MAP without manual button maintenance.
 const CATEGORY_ORDER = [
     "Infrastructure",
     "Cloud",
@@ -265,7 +259,6 @@ const faqItems = [
 
 <script is:inline>
     ;(function () {
-        // Clear any previous carousel interval
         if (window.__orchCarouselTimer)
             clearInterval(window.__orchCarouselTimer)
 
@@ -310,7 +303,6 @@ const faqItems = [
                 search.addEventListener("input", applyFilters)
             }
 
-            // Hero carousel
             var carousel = document.getElementById("hero-carousel")
             var heroName = document.getElementById("hero-name")
             if (carousel && heroName) {
@@ -327,14 +319,13 @@ const faqItems = [
                 window.__orchCarouselTimer = setInterval(function () {
                     items[current].classList.remove("active")
                     heroName.style.opacity = "0"
-                    heroName.style.transition = "opacity 0.2s ease"
                     setTimeout(function () {
                         current = (current + 1) % total
                         items[current].classList.add("active")
                         updateHeroName(items[current])
                         heroName.style.opacity = "1"
-                    }, 200)
-                }, 2000)
+                    }, 400)
+                }, 2800)
             }
         }
 
@@ -453,6 +444,7 @@ const faqItems = [
 
                 span {
                     color: var(--ks-border-active);
+                    transition: opacity 0.4s ease;
                 }
             }
 
