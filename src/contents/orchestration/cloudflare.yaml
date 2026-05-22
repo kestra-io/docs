@@ -326,9 +326,11 @@ comparison:
   subtitle: "Kestra wraps the Cloudflare API with first-class tasks for DNS records, cache purge, WAF rules, Workers KV, Worker scripts, and zone metadata. The competitors below are how teams typically drive Cloudflare changes today."
   competitors:
     - name: "Cloudflare Dashboard (manual)"
+      pluginClass: "io.kestra.plugin.cloudflare.dns.records.Upsert"
     - name: "Terraform Cloudflare provider"
       pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
     - name: "Custom script + Cloudflare API"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
   rows:
     - feature: "DNS upsert as a flow task"
       kestra: "✓ dns.records.Upsert handles create-or-patch, no branching"

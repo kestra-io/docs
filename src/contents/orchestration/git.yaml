@@ -330,8 +330,11 @@ comparison:
   subtitle: "Kestra's Git plugin gives you bidirectional namespace sync, granular push by artifact type, tenant-wide promotion, dryRun diffs, and protected namespaces as first-class flow tasks. The competitors below are how teams sometimes try to wire Kestra to Git without the plugin."
   competitors:
     - name: "Manual export + git CLI on the Kestra host"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
     - name: "Custom CI script + Kestra REST API"
+      logoAsset: "ks-monograme"
     - name: "Kestra UI only (no Git sync)"
+      logoAsset: "ks-monograme"
   rows:
     - feature: "Bidirectional sync with explicit source of truth"
       kestra: "✓ sourceOfTruth: GIT or KESTRA, whenMissingInSource controls deletion"

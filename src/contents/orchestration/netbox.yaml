@@ -404,7 +404,9 @@ comparison:
   subtitle: "Kestra wraps the NetBox API with first-class tasks for device, IPAM, site, and contact assignment operations. The competitors below are how network teams typically drive NetBox today, each with different ergonomics."
   competitors:
     - name: "pynetbox in custom Python scripts"
+      pluginClass: "io.kestra.plugin.scripts.python.Script"
     - name: "NetBox Webhooks + Lambda glue"
+      pluginClass: "io.kestra.plugin.aws.lambda.Invoke"
     - name: "Ansible netbox.netbox collection"
       logoAsset: "ansible-automation-platform-monograme"
   rows:

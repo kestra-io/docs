@@ -4,7 +4,7 @@ description: "Connect Slack to dbt, Terraform, Argo CD, AWS, Snowflake, and the 
 tool:
   name: "Slack"
   pluginClass: "io.kestra.plugin.slack.app.chats.Post"
-  color: "#4A154B"
+  color: "#E01E5A"
 
 hero:
   title: "Connect Slack to the rest of your stack."
@@ -366,8 +366,11 @@ comparison:
   subtitle: "Kestra wraps the Slack API with first-class tasks for chats, channels, canvases, files, reactions, users, history, plus the Events API trigger. The competitors below are how teams typically connect Slack to the rest of their stack today."
   competitors:
     - name: "Slack Incoming Webhooks (one-way)"
+      pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
     - name: "Zapier / Make per integration"
+      logoAsset: "zapier"
     - name: "Custom bot + per-system glue code"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
   rows:
     - feature: "Same notification task across dbt, Terraform, Argo CD, AWS"
       kestra: "✓ One chats.Post task called by any flow"

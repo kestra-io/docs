@@ -348,8 +348,11 @@ comparison:
   subtitle: "Kestra wraps the Kubernetes API with first-class tasks for Pod execution, server-side apply, rolling restarts, patching, and multi-cluster ops. The competitors below are how teams typically drive cluster changes today, with different goals than this plugin."
   competitors:
     - name: "Argo CD (GitOps reconciliation)"
+      pluginClass: "io.kestra.plugin.argocd.apps.Sync"
     - name: "kubectl in a Shell task"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
     - name: "Helm + custom CI script"
+      pluginClass: "io.kestra.plugin.scripts.shell.Commands"
   rows:
     - feature: "Run a Pod as a first-class flow step with log streaming"
       kestra: "✓ PodCreate streams container logs to the execution view"
