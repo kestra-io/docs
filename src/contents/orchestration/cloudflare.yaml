@@ -1,0 +1,427 @@
+title: "Orchestrate Cloudflare with Kestra: DNS records, cache purge, WAF, Workers"
+description: "Drive Cloudflare DNS, CDN purges, WAF rules, and Workers KV from upstream events. Multi-zone updates, Worker deploys, and zone-aware ops in one flow."
+
+tool:
+  name: "Cloudflare"
+  pluginClass: "io.kestra.plugin.cloudflare.dns.records.Upsert"
+  color: "#F38020"
+
+hero:
+  title: "Drive Cloudflare DNS, CDN, and WAF from flows."
+  description: "Update DNS the moment Terraform writes the new IP. Purge cache when Argo CD reports Healthy. Block IPs from alert payloads. Push Worker scripts and KV values from data pipelines. Zone metadata as flow input, multi-zone batch operations, all in one execution history."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+pillars:
+  title: "Around every zone, every record, every cache miss."
+  subtitle: "Cloudflare runs the edge. Kestra wires it into the rest of your stack: DNS updated from Terraform output, cache purged when the deploy succeeds, WAF rules opened by an alert and closed by a schedule. The Cloudflare dashboard, the API tokens, and the edge runtime stay where they are."
+  items:
+    - icon: "mdi:dns-outline"
+      title: "DNS records driven by what's happening upstream"
+      description: "dns.records.Upsert creates a record if it does not exist, otherwise patches the first match by name and type. Pair it with Terraform output to keep an A record in sync with a new EC2 IP. dns.records.Batch handles bulk Create / Update / Delete in one call. dns.records.List feeds reconciliation flows. The dashboard stops being the place anyone clicks to add an A record."
+    - icon: "mdi:lightning-bolt-outline"
+      title: "Cache purge as the final deploy step, not a separate runbook"
+      description: "cache.Purge fires after Argo CD reports Healthy, after a Pages deploy completes, or after a Worker script is deployed. Scope by tag, hostname, or URL list. The deploy execution is not marked successful until the cache is fresh, so the rollback target and the cache state stay aligned across rollouts."
+    - icon: "mdi:shield-alert-outline"
+      title: "WAF access rules opened by alerts, closed by schedule"
+      description: "waf.accessrules.Create with mode block, challenge, or whitelist. Trigger from a Slack alert payload, a PagerDuty event, or an Athena query that surfaces abuse. Auto-expire emergency rules with a scheduled waf.accessrules.Delete one hour later. waf.accessrules.List reconciles reality with the declared rule set in Git."
+    - icon: "mdi:database-arrow-up-outline"
+      title: "Workers KV writes from data pipelines"
+      description: "compute.kv.Write pushes bulk key-value pairs into a Workers KV namespace from any upstream source: a dbt model output, a Snowflake query, a Kafka stream. compute.kv.Get reads back for verification. compute.namespaces.Create provisions a new KV namespace per environment. The edge cache becomes a first-class output of your data flow."
+    - icon: "mdi:code-tags"
+      title: "Worker script lifecycle as flow tasks"
+      description: "workers.scripts.Deploy uploads or replaces a Worker by name (PUT is idempotent). workers.scripts.Get fetches the current source for diffing. workers.scripts.List enumerates every script on the account for inventory. workers.dynamic.Run posts inline JavaScript to a gateway Worker for ad-hoc edge logic during a flow."
+    - icon: "mdi:earth"
+      title: "Zone-aware multi-zone operations in one execution"
+      description: "zones.List returns every zone on the account. A ForEach over the result iterates and runs dns.records.* per zone, no hardcoded zone IDs. zones.Get resolves a zone ID from a hostname so downstream tasks do not need lookup hops. Multi-tenant SaaS shops with hundreds of customer zones run reconciliation flows that span the whole account."
+
+useCases:
+  title: "How edge teams use Cloudflare and Kestra"
+  subtitle: "Patterns engineering teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "DNS sync"
+      badgeIcon: "mdi:dns-outline"
+      title: "Update Cloudflare DNS the moment Terraform writes the new IP"
+      description: "terraform apply finishes and writes the new EC2 IP to an output. Kestra picks up the output value, calls dns.records.Upsert against the right zone with the new A record content, then purges any cached responses for that hostname. The runbook step that used to be a Slack ping for someone to update the dashboard disappears."
+      flow:
+        - node: "terraform apply"
+          label: "infra change"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "extract output"
+          label: "new IP / hostname"
+          pluginClass: "io.kestra.plugin.core.debug.Return"
+        - node: "upsert DNS"
+          label: "dns.records.Upsert"
+          pluginClass: "io.kestra.plugin.cloudflare.dns.records.Upsert"
+        - node: "purge cache"
+          label: "by hostname"
+          pluginClass: "io.kestra.plugin.cloudflare.cache.Purge"
+        - node: "notify"
+          label: "Slack with record ID"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Upsert handles new-record and update cases"
+          description: "No branching between Create and Update. Upsert patches the first matching record by name+type, or creates it if missing."
+        - title: "TF output flows forward into the DNS task"
+          description: "The IP that Terraform wrote becomes the content field on dns.records.Upsert. No copy-paste, no manual edit."
+        - title: "Cache purge follows immediately"
+          description: "Any cached response for the hostname is invalidated so clients pick up the new origin on the next request."
+        - title: "One execution ID spans Terraform and Cloudflare"
+          description: "Debugging the rollout starts in Kestra. The execution links to the Terraform plan output and the Cloudflare record ID."
+          wide: true
+    - badge: "Deploy gate"
+      badgeIcon: "mdi:lightning-bolt-outline"
+      title: "Purge cache the moment the new deploy reports Healthy"
+      description: "Argo CD finishes syncing the new version of the app and reports Healthy via the workflow_run webhook. Kestra catches the webhook, runs cache.Purge against the affected hostname (or by tag for finer scoping), then posts to Slack with the deploy URL. Until the purge succeeds, the deploy is not considered complete."
+      flow:
+        - node: "argo cd healthy"
+          label: "webhook back"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "purge cache"
+          label: "by hostname or tag"
+          pluginClass: "io.kestra.plugin.cloudflare.cache.Purge"
+        - node: "verify"
+          label: "HEAD against /healthz"
+          pluginClass: "io.kestra.plugin.core.http.Request"
+        - node: "notify"
+          label: "Slack with URL"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Deploy success now includes cache state"
+          description: "The flow is not done until Purge returns 200. Rolling back to a stale-cache state is not possible."
+        - title: "Tag-scoped purges for fine control"
+          description: "Tags set in the Cache-Tag header purge only that subset. Hostname-wide purge is the broad option."
+        - title: "Post-purge probe confirms freshness"
+          description: "An HTTP HEAD with cache-control: no-cache verifies the origin response, catches cache rules that block the purge."
+          wide: true
+    - badge: "Incident"
+      badgeIcon: "mdi:shield-alert-outline"
+      title: "Block an abusive IP from a PagerDuty alert, auto-expire in 1 hour"
+      description: "PagerDuty fires when a Cloudflare Analytics threshold breaches. The webhook payload reaches a Kestra trigger with the offending IP. The flow calls waf.accessrules.Create with mode: block and notes referencing the incident ID. A second scheduled flow runs one hour later, queries waf.accessrules.List for rules tagged with the incident, and deletes them. Emergency block without a dashboard click."
+      flow:
+        - node: "pagerduty alert"
+          label: "webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "create block rule"
+          label: "waf.accessrules.Create"
+          pluginClass: "io.kestra.plugin.cloudflare.waf.accessrules.Create"
+        - node: "notify SOC"
+          label: "Slack with rule ID"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        - node: "scheduled cleanup"
+          label: "1 hour later"
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "delete rule"
+          label: "waf.accessrules.Delete"
+          pluginClass: "io.kestra.plugin.cloudflare.waf.accessrules.Delete"
+      items:
+        - title: "Block is reactive, expiry is automatic"
+          description: "No human required to remove the rule. The flow's second leg deletes it when the threat window closes."
+        - title: "Incident ID baked into rule notes"
+          description: "Every emergency rule references the PagerDuty incident, so audit later answers exactly who and what triggered the block."
+        - title: "Reconcile against a Git-declared rule set"
+          description: "A separate flow lists rules with no incident tag, compares to a YAML manifest in Git, and reports drift."
+          wide: true
+    - badge: "Multi-zone"
+      badgeIcon: "mdi:earth"
+      title: "Reconcile DNS records across every zone in one execution"
+      description: "A YAML manifest in Git declares zone + record mappings. Kestra clones the repo, calls zones.List to enumerate the account, and runs dns.records.Batch per zone to align declared records with reality. A pre-flight dryRun on a Schedule posts the diff to Slack for review before the apply flow runs. Multi-tenant zones, hundreds of records, one flow definition."
+      flow:
+        - node: "weekly schedule"
+          label: "cron"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "clone manifest"
+          label: "from Git"
+          pluginClass: "io.kestra.plugin.git.Clone"
+        - node: "list zones"
+          label: "zones.List"
+          pluginClass: "io.kestra.plugin.cloudflare.zones.List"
+        - node: "ForEach zone"
+          label: "per-zone batch"
+          pluginClass: "io.kestra.plugin.core.flow.ForEach"
+        - node: "batch records"
+          label: "Create/Update/Delete"
+          pluginClass: "io.kestra.plugin.cloudflare.dns.records.Batch"
+        - node: "drift report"
+          label: "Slack summary"
+          pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      items:
+        - title: "Git is the declared state, Cloudflare is reconciled"
+          description: "Edit a YAML, push, the next schedule applies. No dashboard clicks for records that live in the manifest."
+        - title: "Batch keeps the request count down"
+          description: "Per zone, one dns.records.Batch combines create + update + delete instead of one API call per record."
+        - title: "Drift surfaces before it bites"
+          description: "Records added in the dashboard but missing in Git get flagged in the drift report, not silently overwritten on next apply."
+          wide: true
+
+quotes:
+  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything. This should resolve the issues we are facing currently with everyone working in parallel."
+    author: "BSI Software"
+    logoFile: "bsi"
+
+blueprints:
+  title: "Blueprints for Cloudflare orchestration."
+  lead: "One blueprint per use case above. Copy the YAML, set your Cloudflare API token, point at your zone, ship it."
+  items:
+    - name: "DNS upsert when Terraform writes a new IP"
+      title: "Sync a Cloudflare A record with terraform output, then purge cache"
+      description: "terraform apply produces a new IP output. The flow upserts the matching A record in Cloudflare, purges the cache for that hostname, and posts a Slack message with the record ID and the new content."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.cloudflare.dns.records.Upsert"
+        - "io.kestra.plugin.cloudflare.cache.Purge"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      code: |
+        id: cloudflare-dns-from-terraform
+        namespace: company.platform
+
+        inputs:
+          - id: zone_id
+            type: STRING
+          - id: hostname
+            type: STRING
+            defaults: "app.example.com"
+
+        tasks:
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            inputFiles:
+              main.tf: "{{ read('main.tf') }}"
+            commands:
+              - terraform init
+              - terraform apply -auto-approve -json
+
+          - id: upsert_dns
+            type: io.kestra.plugin.cloudflare.dns.records.Upsert
+            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
+            zoneId: "{{ inputs.zone_id }}"
+            recordType: "A"
+            name: "{{ inputs.hostname }}"
+            content: "{{ outputs.terraform_apply.stdOutLineCount > 0 ? outputs.terraform_apply.vars.ip : '' }}"
+            ttl: 1
+            proxied: true
+
+          - id: purge_cache
+            type: io.kestra.plugin.cloudflare.cache.Purge
+            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
+            zoneId: "{{ inputs.zone_id }}"
+            hosts:
+              - "{{ inputs.hostname }}"
+
+          - id: notify
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":globe_with_meridians: {{ inputs.hostname }} now points at {{ outputs.upsert_dns.content }}. Record ID: {{ outputs.upsert_dns.recordId }}. <{{ execution.url }}|View execution>"
+              }
+    - name: "Cache purge after Argo CD reports Healthy"
+      title: "Listen for the deploy webhook, purge cache, verify with a probe"
+      description: "A Webhook trigger receives the Argo CD workflow_run completion. The flow calls cache.Purge by hostname, then runs an HTTP HEAD with cache-control: no-cache to verify the origin response. Slack confirms with the deploy URL."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.core.trigger.Webhook"
+        - "io.kestra.plugin.cloudflare.cache.Purge"
+        - "io.kestra.plugin.core.http.Request"
+        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+      code: |
+        id: cache-purge-on-deploy
+        namespace: company.platform
+
+        inputs:
+          - id: zone_id
+            type: STRING
+          - id: hostname
+            type: STRING
+            defaults: "app.example.com"
+
+        triggers:
+          - id: deploy_healthy
+            type: io.kestra.plugin.core.trigger.Webhook
+            key: cf-cache-purge
+
+        tasks:
+          - id: purge
+            type: io.kestra.plugin.cloudflare.cache.Purge
+            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
+            zoneId: "{{ inputs.zone_id }}"
+            hosts:
+              - "{{ inputs.hostname }}"
+
+          - id: verify_fresh
+            type: io.kestra.plugin.core.http.Request
+            uri: "https://{{ inputs.hostname }}/healthz"
+            method: HEAD
+            headers:
+              Cache-Control: "no-cache"
+            options:
+              connectTimeout: PT10S
+              readTimeout: PT10S
+
+          - id: notify
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":fire: Cache purged for {{ inputs.hostname }}. Origin response: {{ outputs.verify_fresh.code }}. <{{ execution.url }}|View>"
+              }
+    - name: "Multi-zone DNS reconciliation from a Git manifest"
+      title: "Iterate every zone on the account, apply declared records in one batch each"
+      description: "Weekly schedule. Clone the manifest repo. List every zone on the account. Per zone, parse the manifest, build the declared record set, and apply with dns.records.Batch. A drift summary posts to Slack showing records changed per zone."
+      href: "/blueprints?tags=Infrastructure"
+      plugins:
+        - "io.kestra.plugin.core.trigger.Schedule"
+        - "io.kestra.plugin.git.Clone"
+        - "io.kestra.plugin.cloudflare.zones.List"
+        - "io.kestra.plugin.core.flow.ForEach"
+        - "io.kestra.plugin.cloudflare.dns.records.Batch"
+      code: |
+        id: cloudflare-multi-zone-reconcile
+        namespace: company.platform
+
+        triggers:
+          - id: weekly
+            type: io.kestra.plugin.core.trigger.Schedule
+            cron: "0 6 * * 1"
+
+        tasks:
+          - id: clone_manifest
+            type: io.kestra.plugin.git.Clone
+            url: https://github.com/company/cloudflare-dns
+            branch: main
+            username: "{{ secret('GIT_USERNAME') }}"
+            password: "{{ secret('GIT_TOKEN') }}"
+
+          - id: list_zones
+            type: io.kestra.plugin.cloudflare.zones.List
+            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
+
+          - id: per_zone
+            type: io.kestra.plugin.core.flow.ForEach
+            values: "{{ outputs.list_zones.zones }}"
+            tasks:
+              - id: apply_records
+                type: io.kestra.plugin.cloudflare.dns.records.Batch
+                apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
+                zoneId: "{{ json(taskrun.value).id }}"
+                posts: "{{ read('records/' ~ json(taskrun.value).name ~ '/create.json') }}"
+                patches: "{{ read('records/' ~ json(taskrun.value).name ~ '/update.json') }}"
+                deletes: "{{ read('records/' ~ json(taskrun.value).name ~ '/delete.json') }}"
+
+          - id: summary
+            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK') }}"
+            payload: |
+              {
+                "text": ":arrows_counterclockwise: Reconciled {{ outputs.list_zones.zones | length }} Cloudflare zones from main. <{{ execution.url }}|View execution>"
+              }
+
+comparison:
+  title: "Kestra vs Cloudflare automation alternatives"
+  subtitle: "Kestra wraps the Cloudflare API with first-class tasks for DNS records, cache purge, WAF rules, Workers KV, Worker scripts, and zone metadata. The competitors below are how teams typically drive Cloudflare changes today."
+  competitors:
+    - name: "Cloudflare Dashboard (manual)"
+    - name: "Terraform Cloudflare provider"
+      pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+    - name: "Custom script + Cloudflare API"
+  rows:
+    - feature: "DNS upsert as a flow task"
+      kestra: "✓ dns.records.Upsert handles create-or-patch, no branching"
+      values:
+        - "Dashboard click per record"
+        - "terraform plan/apply per change"
+        - "Custom HTTP code"
+    - feature: "Bulk DNS Create + Update + Delete in one call"
+      kestra: "✓ dns.records.Batch with three arrays in one request"
+      values:
+        - "Per-record manual"
+        - "One resource per record, no native batch"
+        - "Custom batching code"
+    - feature: "Cache purge as a deploy step"
+      kestra: "✓ cache.Purge by host, tag, or URL list"
+      values:
+        - "Manual or post-deploy script"
+        - "Not in scope (state, not action)"
+        - "Custom HTTP call"
+    - feature: "WAF rule lifecycle (create + auto-expire)"
+      kestra: "✓ Create + scheduled Delete with one rule definition"
+      values:
+        - "Dashboard click on, dashboard click off"
+        - "Resource lifecycle, no time-based expiry"
+        - "Custom code with a TTL store"
+    - feature: "Workers KV bulk writes from a data flow"
+      kestra: "✓ compute.kv.Write with batch payload"
+      values:
+        - "wrangler kv:bulk put from shell"
+        - "Not native"
+        - "Custom HTTP"
+    - feature: "Worker script deploy as a flow task"
+      kestra: "✓ workers.scripts.Deploy, idempotent PUT"
+      values:
+        - "wrangler from a runner"
+        - "Custom provider, multipart upload required"
+        - "Custom HTTP"
+    - feature: "Multi-zone iteration in one execution"
+      kestra: "✓ zones.List + ForEach + per-zone task"
+      values:
+        - "Per-zone manual"
+        - "for_each on resources, plan time only"
+        - "Custom loop"
+    - feature: "Chain Cloudflare with Terraform, Argo CD, dbt"
+      kestra: "✓ Outputs flow into Cloudflare tasks and back out"
+      values:
+        - "No chain"
+        - "Provider per tool, no chain semantics"
+        - "Custom glue"
+    - feature: "Self-hosted, air-gapped, OSS edition"
+      kestra: "✓ Self-hosted by default, OSS edition free"
+      values:
+        - "SaaS only"
+        - "Self-hosted or HCP"
+        - "Self-hosted"
+
+faq:
+  - question: "Does Kestra replace Cloudflare?"
+    answer: "No. Cloudflare still serves your DNS, runs your edge cache, executes your Workers, and enforces your WAF rules. Kestra calls the Cloudflare API through the io.kestra.plugin.cloudflare plugin to drive changes as part of broader workflows: DNS updates triggered by Terraform output, cache purges triggered by Argo CD Healthy events, WAF rule lifecycle driven by alerts, KV writes driven by data pipelines. The edge stays where it is."
+  - question: "How does Kestra authenticate to Cloudflare?"
+    answer: "Use a Cloudflare API token, not the Global API Key. Create a token in the Cloudflare dashboard scoped to the minimum permissions: Zone:DNS:Edit for record changes, Zone:Cache Purge:Purge for purges, Account:Workers Scripts:Edit for Worker deploys, and so on. Store the token in Kestra's secrets backend and reference via pluginDefaults on io.kestra.plugin.cloudflare so every task picks it up."
+  - question: "What's the difference between dns.records.Upsert and dns.records.Create?"
+    answer: "Create always creates a new record and fails if the matching name+type already exists. Upsert creates if missing or patches the first match by name+type if it exists. Use Upsert when the same flow may run for both new and existing records (e.g. driven by Terraform output where you do not know if the A record was set up previously). Use Create when you want the failure mode to flag duplicate creation."
+  - question: "Can Kestra deploy Cloudflare Worker scripts?"
+    answer: "Yes. workers.scripts.Deploy uploads or replaces a Worker by name using an idempotent PUT, so redeploying the same scriptName updates the existing script. Pair with git.Clone to pull the worker code from a Git repo at flow runtime, scripts.python or scripts.javascript to build the bundle, then workers.scripts.Deploy to ship it. workers.scripts.Delete removes a script (set force: true if the script is still referenced by routes)."
+  - question: "How does the WAF auto-expire pattern work?"
+    answer: "Two flows. The first creates the rule with waf.accessrules.Create (mode: block) and stores the returned rule ID along with the incident ID. The second flow runs on a Schedule (say every 5 minutes), calls waf.accessrules.List, filters for rules tagged with the incident ID and older than the desired TTL, and calls waf.accessrules.Delete on each. Auto-expire without writing your own expiry loop."
+  - question: "Can the same flow update DNS records across multiple zones?"
+    answer: "Yes. zones.List returns every zone on the account. A ForEach over the result iterates per zone, with the zone ID available as the loop variable. Per-zone tasks (dns.records.Batch, cache.Purge, waf.accessrules.List) reference it dynamically. Multi-tenant SaaS shops with hundreds of customer zones run reconciliation flows that span the whole account in one execution."
+  - question: "Is the Cloudflare plugin Enterprise-only?"
+    answer: "No. The io.kestra.plugin.cloudflare plugin ships in the open-source edition with every task: dns.records.*, cache.Purge, waf.accessrules.*, compute.kv.*, compute.namespaces.Create, workers.scripts.*, workers.dynamic.Run, zones.*. Kestra Enterprise adds Apps for self-service (engineers add a DNS record via a typed form), namespace-scoped RBAC, audit logs, and SSO."
+  - question: "Can Kestra orchestrate Cloudflare in an air-gapped environment?"
+    answer: "Cloudflare is a SaaS edge, so the API itself is internet-reachable. Kestra workers that call the API need outbound network to api.cloudflare.com. The Kestra control plane and the workers themselves can still run inside an air-gapped network with outbound HTTPS allow-listed to api.cloudflare.com. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader self-hosted picture."
+
+resources:
+  title: "More on Cloudflare and Kestra"
+  items:
+    - kind: "docs"
+      title: "Automate infrastructure workflows in Kestra"
+      description: "How Kestra orchestrates Cloudflare, Terraform, Argo CD, AWS, and the rest of the stack in one declarative flow."
+      href: "/docs/use-cases/infrastructure"
+    - kind: "resource"
+      title: "Chain Cloudflare with Terraform"
+      description: "Why most DNS sprawl comes from the gap between terraform apply and the dashboard click. The chain pattern closes it."
+      href: "/orchestration/terraform"
+    - kind: "plugin"
+      title: "Cloudflare plugin reference"
+      description: "Every Cloudflare task (dns.records.*, cache.Purge, waf.accessrules.*, compute.kv.*, workers.scripts.*, zones.*) with copy-ready YAML and full property reference."
+      href: "/plugins/plugin-cloudflare"
+
+seeHow:
+  title: "Ready to wire Cloudflare into the rest of your stack?"
+  description: "Drive DNS records from Terraform output, purge cache the moment deploys ship, block IPs from alert payloads with auto-expiry, deploy Workers from CI, and reconcile records across every zone weekly. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"

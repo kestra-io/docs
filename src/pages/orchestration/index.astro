@@ -10,19 +10,29 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
-// Static category map. The orchestration schema has no `category` field today;
-// when more pages land or categories shift, edit this map. Keep labels in sync
-// with the toggle buttons below.
+// Static category map. Labels match the canonical Kestra plugin taxonomy
+// (Infrastructure, Cloud, Data, Business, AI, Alerting, Core) so /orchestration
+// stays in sync with /plugins. New pages: pick the primary category that best
+// describes the tool's surface; multi-category plugins land in their dominant one.
 const CATEGORY_MAP: Record<string, string> = {
-    ansible: "Infrastructure Automation",
-    argocd: "Infrastructure Automation",
-    docker: "Infrastructure Automation",
-    nutanix: "Infrastructure Automation",
-    proxmox: "Infrastructure Automation",
-    terraform: "Infrastructure Automation",
-    vmware: "Infrastructure Automation",
-    "dbt-cloud": "Data Orchestration",
-    "dbt-core": "Data Orchestration",
+    ansible: "Infrastructure",
+    argocd: "Infrastructure",
+    aws: "Cloud",
+    cloudflare: "Cloud",
+    docker: "Infrastructure",
+    git: "Infrastructure",
+    "github-actions": "Infrastructure",
+    kubernetes: "Infrastructure",
+    netbox: "Infrastructure",
+    nutanix: "Infrastructure",
+    opa: "Infrastructure",
+    proxmox: "Infrastructure",
+    servicenow: "Business",
+    slack: "Business",
+    terraform: "Infrastructure",
+    vmware: "Infrastructure",
+    "dbt-cloud": "Data",
+    "dbt-core": "Data",
 }
 
 const orchestrationEntries = await getCollection("orchestration")
@@ -49,6 +59,28 @@ const entries = await Promise.all(
                 color: entry.data.tool.color ?? "#8465FF",
             }
         }),
+)
+
+// Derive unique categories from entries so the toggle stays in sync with
+// CATEGORY_MAP without manual button maintenance.
+const CATEGORY_ORDER = [
+    "Infrastructure",
+    "Cloud",
+    "Data",
+    "Business",
+    "AI",
+    "Alerting",
+    "Core",
+]
+const presentCategories = [...new Set(entries.map((e) => e.category))].sort(
+    (a, b) => {
+        const ai = CATEGORY_ORDER.indexOf(a)
+        const bi = CATEGORY_ORDER.indexOf(b)
+        if (ai === -1 && bi === -1) return a.localeCompare(b)
+        if (ai === -1) return 1
+        if (bi === -1) return -1
+        return ai - bi
+    },
 )
 
 const faqItems = [
@@ -108,7 +140,6 @@ const faqItems = [
                         entries.map((entry, i) => (
                             <div
                                 class:list={[
-                                    "hero-picto",
                                     "carousel-item",
                                     { active: i === 0 },
                                 ]}
@@ -160,14 +191,13 @@ const faqItems = [
                 <button class="toggle-btn active" data-category=""
                     >All tools</button
                 >
-                <button
-                    class="toggle-btn"
-                    data-category="Infrastructure Automation"
-                    >Infrastructure Automation</button
-                >
-                <button class="toggle-btn" data-category="Data Orchestration"
-                    >Data Orchestration</button
-                >
+                {
+                    presentCategories.map((cat) => (
+                        <button class="toggle-btn" data-category={cat}>
+                            {cat}
+                        </button>
+                    ))
+                }
             </div>
             <div class="grid" id="orch-grid">
                 {
@@ -381,16 +411,31 @@ const faqItems = [
                     position: relative;
                     width: 64px;
                     height: 64px;
+                    border: 1px solid #f1f1f1;
+                    border-radius: 12px;
+                    padding: 8px;
+                    background: #f7f7f7;
+                    overflow: hidden;
 
                     .carousel-item {
                         position: absolute;
-                        inset: 0;
+                        inset: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         opacity: 0;
-                        transform: translateY(8px);
+                        transform: translateY(6px);
                         transition:
                             opacity 0.4s ease,
                             transform 0.4s ease;
                         pointer-events: none;
+
+                        :global(svg) {
+                            max-width: 100%;
+                            max-height: 100%;
+                            width: auto;
+                            height: auto;
+                        }
 
                         &.active {
                             opacity: 1;
@@ -408,7 +453,6 @@ const faqItems = [
 
                 span {
                     color: var(--ks-border-active);
-                    transition: color 0.3s ease;
                 }
             }
 
