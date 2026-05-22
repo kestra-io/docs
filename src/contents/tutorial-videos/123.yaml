@@ -1,0 +1,10 @@
+title: "Amazon Ion Explained: The Format Hiding Inside Your Kestra Workflows"
+description: "Amazon Ion is a richly-typed superset of JSON that adds native timestamps
+  and a compact binary encoding, serving as the internal data format for Kestra. This
+  video explores the differences between Ion and JSON and demonstrates how the format
+  works within Kestra's data pipelines."
+category: "Deep Dive Tutorials"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=FJzVjObF418"
+publicationDate: "2026-05-19T00:00:00.000"
+contentType: "Deep Dive Tutorials"
