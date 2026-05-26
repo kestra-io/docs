@@ -1,6 +1,6 @@
 ---
 title: "The Kestra Plugin Ecosystem for AI: From LLM Providers to Vector Databases"
-description: "Building AI pipelines means stitching together LLM calls, vector search, document ingestion, and data preprocessing. Kestra ships plugins for all of it. This guide maps every plugin category that matters for AI workflows — outside of plugin-ai and plugin-serdes — so you know exactly what to reach for."
+description: "Building AI pipelines means stitching together LLM calls, vector search, document ingestion, and data preprocessing. Kestra ships plugins for all of it. This blog post maps every plugin category that matters for AI workflows — outside of plugin-ai — so you know exactly what to reach for."
 date: 2026-05-26T09:00:00
 category: Solutions
 author:
@@ -37,7 +37,7 @@ schema:
 
 An AI pipeline is rarely just a single LLM call. It typically involves ingesting documents, generating embeddings, indexing them into a vector store, transforming the data, and orchestrating the whole sequence reliably. Kestra covers every layer of that stack through its plugin ecosystem.
 
-Two plugin groups are purpose-built for AI: [`plugin-ai`](/plugins/plugin-ai) (shared AI abstractions) and [`plugin-serdes`](/plugins/plugin-serdes) (format conversion including [TOON](/blogs/kestra-mcp-plugins-blueprints) for token-efficient LLM context). This post covers everything else — the broader plugin ecosystem that AI workflows draw on, organized by the role each group plays.
+One plugin group is purpose-built for AI: [`plugin-ai`](/plugins/plugin-ai), which provides the shared abstractions that power Kestra's AI tasks. This post covers the rest of the ecosystem — from format conversion and serialization with [`plugin-serdes`](/plugins/plugin-serdes) to vector databases, document extraction, scripting, and everything else AI workflows draw on, organized by the role each group plays.
 
 ## LLM Providers
 
@@ -90,6 +90,12 @@ RAG starts with raw content. Before embeddings can be generated, documents need 
 [`plugin-tika`](/plugins/plugin-tika) wraps Apache Tika. Its `Parse` task extracts text, metadata, and embedded files from PDFs, Word documents, PowerPoint files, Excel spreadsheets, HTML, images (with optional OCR via Tesseract), and dozens of other formats. One task handles the full corpus of enterprise document types — the standard first step in any RAG ingestion pipeline.
 
 [`plugin-apify`](/plugins/plugin-apify) covers web content. `Run` triggers an Apify actor with configurable inputs and run caps; `Get` and `GetLastRun` retrieve the resulting dataset; `Save` persists it to Kestra's internal storage for downstream processing. This is the practical path for feeding live web content into a training or retrieval pipeline.
+
+## Format Conversion and Serialization
+
+Before data moves between pipeline stages, it often needs to change shape. [`plugin-serdes`](/plugins/plugin-serdes) handles serialization and deserialization across the formats that appear throughout AI workflows: CSV, JSON, AVRO, Parquet, XML, and others. Its `Convert` task translates between formats in a single step; `Serialize` and `Deserialize` handle encoding and decoding within a flow.
+
+For AI workloads, the standout feature is [TOON](/blogs/kestra-mcp-plugins-blueprints) (Token-Optimized Object Notation) — a compact serialization format designed to reduce the token count when passing structured data as LLM context. Instead of verbose JSON, TOON encodes records in a dense tabular form that conveys the same information in significantly fewer tokens, lowering cost and latency on every inference call that touches structured data.
 
 ## Data Transformation and Preprocessing
 
