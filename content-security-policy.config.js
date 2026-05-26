@@ -98,6 +98,7 @@ export default {
         "https://*.ipify.org",
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],
