@@ -22,7 +22,7 @@ schema:
       name: "Which Kestra plugins support vector databases?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "Kestra supports Weaviate (plugin-weaviate), OpenSearch (plugin-opensearch), Elasticsearch (plugin-elasticsearch), Typesense (plugin-typesense), Meilisearch (plugin-meilisearch), MongoDB Atlas Vector Search (plugin-mongodb), Redis Search (plugin-redis), and Neo4j (plugin-neo4j) for knowledge graphs."
+        text: "Kestra supports Weaviate (plugin-weaviate), Pinecone (plugin-pinecone), OpenSearch (plugin-opensearch), Elasticsearch (plugin-elasticsearch), Typesense (plugin-typesense), Meilisearch (plugin-meilisearch), MongoDB Atlas Vector Search (plugin-mongodb), Redis Search (plugin-redis), and Neo4j (plugin-neo4j) for knowledge graphs."
     - "@type": "Question"
       name: "How do I run custom Python or ML code in Kestra?"
       acceptedAnswer:
@@ -63,6 +63,8 @@ Retrieval-Augmented Generation requires fast, accurate retrieval. Kestra covers 
 ### Purpose-built vector databases
 
 [`plugin-weaviate`](/plugins/plugin-weaviate) is the most AI-native option. It exposes `SchemaCreate` to define collection structures, `BatchCreate` for bulk vector ingestion, `Query` for GraphQL-based semantic and hybrid search, and `Delete` for cleanup. Weaviate's native support for nearText and nearVector queries maps directly to RAG retrieval patterns.
+
+[`plugin-pinecone`](/plugins/plugin-pinecone) covers Pinecone, the fully managed serverless vector database. It handles index and namespace management, vector upsert and deletion, and similarity queries with metadata filtering — the standard operations for RAG retrieval without any infrastructure to run.
 
 ### Search engines with vector extensions
 
@@ -180,7 +182,7 @@ Each step is a Kestra task with retries, timeouts, secret injection, and observa
 Kestra ships dedicated plugins for [Anthropic](/plugins/plugin-anthropic), [OpenAI](/plugins/plugin-openai), [Gemini](/plugins/plugin-gemini), [Mistral](/plugins/plugin-mistral), [DeepSeek](/plugins/plugin-deepseek), [Ollama](/plugins/plugin-ollama), [Perplexity](/plugins/plugin-perplexity), and [HuggingFace](/plugins/plugin-huggingface). Each wraps the provider's API as declarative Kestra tasks with native retry, secret, and observability support.
 
 ### Which Kestra plugins support vector databases?
-[`plugin-weaviate`](/plugins/plugin-weaviate) is purpose-built for vector storage and retrieval. [`plugin-opensearch`](/plugins/plugin-opensearch) and [`plugin-elasticsearch`](/plugins/plugin-elasticsearch) provide hybrid BM25 + k-NN search. [`plugin-typesense`](/plugins/plugin-typesense) and [`plugin-meilisearch`](/plugins/plugin-meilisearch) offer lightweight alternatives. [`plugin-mongodb`](/plugins/plugin-mongodb) supports Atlas Vector Search. [`plugin-redis`](/plugins/plugin-redis) covers embedding caching. [`plugin-neo4j`](/plugins/plugin-neo4j) handles knowledge graph retrieval.
+[`plugin-weaviate`](/plugins/plugin-weaviate) and [`plugin-pinecone`](/plugins/plugin-pinecone) are purpose-built for vector storage and retrieval. [`plugin-opensearch`](/plugins/plugin-opensearch) and [`plugin-elasticsearch`](/plugins/plugin-elasticsearch) provide hybrid BM25 + k-NN search. [`plugin-typesense`](/plugins/plugin-typesense) and [`plugin-meilisearch`](/plugins/plugin-meilisearch) offer lightweight alternatives. [`plugin-mongodb`](/plugins/plugin-mongodb) supports Atlas Vector Search. [`plugin-redis`](/plugins/plugin-redis) covers embedding caching. [`plugin-neo4j`](/plugins/plugin-neo4j) handles knowledge graph retrieval.
 
 ### How do I run custom Python or ML code in Kestra?
 [`plugin-scripts`](/plugins/plugin-scripts) runs Python `Script` and `Commands` tasks with pip or UV dependency management — install any ML library inline. For lightweight transforms without container overhead, [`plugin-graalvm`](/plugins/plugin-graalvm) runs Python, JavaScript, and Ruby in-process via GraalVM.
