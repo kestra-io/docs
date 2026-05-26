@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Let the ServiceNow ticket fire the flow with a declarative workflow engine that listens to Business Rule webhooks on change request approval, runs the matching runbook scoped by CMDB relationships, updates the ticket through every step, and chains ServiceNow with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, <a href='/orchestration/kubernetes'>Kubernetes</a>, and the rest of your stack in one audited flow. Tickets carry the execution URL forever; flows close tickets with the result summary."
+
 pillars:
   title: "Around every change, every incident, every CI."
   subtitle: "ServiceNow holds the audit and the human process. Kestra holds the execution. The plugin closes the loop: tickets fire flows, flows update tickets, CMDB scopes the work, audit lives on both sides cross-referenced. The copy-paste between the runbook doc and the change record disappears."
@@ -186,6 +188,27 @@ blueprints:
       title: "Ticket approved, flow runs, ticket updated, ticket closed"
       description: "Listens for ServiceNow Business Rule webhooks on change_request approval. Dispatches the matching subflow based on the template field. Updates the ticket through the work via servicenow.Update calls and closes with the execution URL."
       href: "/blueprints?tags=Business"
+      flowDiagram:
+        source:
+          label: "Change request approved"
+          sublabel: "ServiceNow Business Rule"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Ticket-driven runbook"
+          sublabel: "two-way audit"
+        tools:
+          - label: "Mark in progress"
+            pluginClass: "io.kestra.plugin.servicenow.Update"
+          - label: "Dispatch runbook"
+            pluginClass: "io.kestra.plugin.core.flow.Subflow"
+          - label: "Close ticket"
+            pluginClass: "io.kestra.plugin.servicenow.Update"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Ticket closed + audited"
+          sublabel: "execution URL attached"
+          icon: "mdi:ticket-confirmation-outline"
       plugins:
         - "io.kestra.plugin.core.trigger.Webhook"
         - "io.kestra.plugin.servicenow.Update"
@@ -248,6 +271,27 @@ blueprints:
       title: "Production flow errors branch creates a ServiceNow incident"
       description: "On a production flow failure, looks up the affected application's owner and tier from cmdb_ci_appl, calculates severity from the tier, and opens an incident with the full context routed to the right assignment group."
       href: "/blueprints?tags=Business"
+      flowDiagram:
+        source:
+          label: "Prod flow failure"
+          sublabel: "errors branch"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Failure to incident"
+          sublabel: "CMDB-scoped routing"
+        tools:
+          - label: "dbt build (fails)"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "Lookup CMDB"
+            pluginClass: "io.kestra.plugin.servicenow.Get"
+          - label: "Open incident"
+            pluginClass: "io.kestra.plugin.servicenow.Post"
+          - label: "Page Slack"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Right team, right priority"
+          sublabel: "context bundled"
+          icon: "mdi:alert-circle-outline"
       plugins:
         - "io.kestra.plugin.servicenow.Get"
         - "io.kestra.plugin.servicenow.Post"
@@ -308,6 +352,27 @@ blueprints:
       title: "Change request approved, CMDB lookup, per-CI patch, ticket closed"
       description: "Listens for patch-category change requests, pulls every CI related to the application from cmdb_ci_appl_relationship, runs the per-host patching subflow per CI, updates the ticket with per-CI status, closes with a summary."
       href: "/blueprints?tags=Business"
+      flowDiagram:
+        source:
+          label: "Patch change approved"
+          sublabel: "Business Rule webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "CMDB-scoped patch wave"
+          sublabel: "per-CI subflow"
+        tools:
+          - label: "servicenow.Get CIs"
+            pluginClass: "io.kestra.plugin.servicenow.Get"
+          - label: "ForEach CI"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "Patch subflow"
+            pluginClass: "io.kestra.plugin.core.flow.Subflow"
+          - label: "Close ticket"
+            pluginClass: "io.kestra.plugin.servicenow.Update"
+        outcome:
+          label: "Wave closed with summary"
+          sublabel: "per-CI links in ticket"
+          icon: "mdi:database-search-outline"
       plugins:
         - "io.kestra.plugin.core.trigger.Webhook"
         - "io.kestra.plugin.servicenow.Get"

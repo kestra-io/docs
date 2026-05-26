@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Run Proxmox like vCenter without the Broadcom tax with a declarative workflow engine that listens to cron, VM state changes, or any HTTP signal, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching with rollback, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a> in one audited flow. <a href='/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra'>Crédit Agricole</a> runs unified Proxmox automation across regulated EU infrastructure."
+
 pillars:
   title: "Around every VM, every container, every node."
   subtitle: "What Kestra wraps around your Proxmox cluster: when actions fire, what gets snapshotted first, who drains a node before maintenance, and where the audit lives. The Proxmox API, the ESXi Import Wizard, and vzdump backups stay where they are."
@@ -190,6 +192,27 @@ blueprints:
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on a Proxmox VM or LXC, runs the OS update over SSH, probes the service. The <code>errors</code> branch rolls back the snapshot and notifies Slack on failure."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Patch window"
+          sublabel: "scheduled cron"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Snapshot-gated patching"
+          sublabel: "VM or LXC"
+        tools:
+          - label: "snapshot.Create"
+            pluginClass: "io.kestra.plugin.proxmox.snapshot.Create"
+          - label: "SSH patch"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "HTTP probe"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "snapshot.Rollback"
+            pluginClass: "io.kestra.plugin.proxmox.snapshot.Rollback"
+        outcome:
+          label: "Patched + audited"
+          sublabel: "rollback ready per host"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.proxmox.snapshot.Create"
         - "io.kestra.plugin.scripts.shell.Commands"
@@ -272,6 +295,27 @@ blueprints:
       title: "Drain a Proxmox node for maintenance: live-migrate all guests off, gate, return"
       description: "Lists all VMs and containers on a target node, dispatches each to another node via live migration, polls each UPID to completion, then pauses for the maintenance window before optionally returning guests."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Maintenance trigger"
+          sublabel: "scheduled or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Node drain + maintenance"
+          sublabel: "live-migrate, gate, return"
+        tools:
+          - label: "cluster.ListResources"
+            pluginClass: "io.kestra.plugin.proxmox.cluster.ListResources"
+          - label: "ForEach guest"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "vm.Migrate"
+            pluginClass: "io.kestra.plugin.proxmox.vm.Migrate"
+          - label: "Pause / maintenance"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+        outcome:
+          label: "Node drained + serviced"
+          sublabel: "guests returned after"
+          icon: "mdi:server-network-outline"
       plugins:
         - "io.kestra.plugin.proxmox.cluster.ListResources"
         - "io.kestra.plugin.core.flow.ForEach"
@@ -326,6 +370,27 @@ blueprints:
       title: "Monthly backup restore drill on a throwaway VMID"
       description: "Lists recent vzdump backups, restores the latest one to a temporary VMID, starts the VM, probes the service, deletes the temp VM. Catches storage corruption and broken backups before the real disaster."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Monthly cron"
+          sublabel: "first of month"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Backup restore drill"
+          sublabel: "throwaway VMID"
+        tools:
+          - label: "backup.List"
+            pluginClass: "io.kestra.plugin.proxmox.backup.List"
+          - label: "backup.Restore"
+            pluginClass: "io.kestra.plugin.proxmox.backup.Restore"
+          - label: "HTTP probe"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "vm.Delete"
+            pluginClass: "io.kestra.plugin.proxmox.vm.Delete"
+        outcome:
+          label: "Backups verified"
+          sublabel: "no surprise disasters"
+          icon: "mdi:database-arrow-up-outline"
       plugins:
         - "io.kestra.plugin.proxmox.backup.List"
         - "io.kestra.plugin.proxmox.backup.Restore"
@@ -485,6 +550,14 @@ comparison:
         - "Broad Ansible collections, Ansible-centric"
         - "Terraform providers, provisioning-centric"
         - "Limited"
+
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs VMware Cloud Foundation"
+  description: "Side-by-side breakdown across hypervisor day-2 ops, self-service catalogs, snapshot rollback, and cross-stack orchestration as teams plan VMware exits."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/vmware-cloud-foundation"
 
 faq:
   - question: "Does Kestra replace Proxmox VE?"

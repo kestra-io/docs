@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Connect Kubernetes to the rest of your platform with a declarative workflow engine that runs Pods as flow steps, applies manifests on non-Git events, restarts Deployments after Secret rotation, and chains kubectl operations with <a href='/orchestration/argocd'>Argo CD</a>, Vault, and GitHub in one audited flow. PodCreate streams container logs to the execution view so a four-hour GPU training run is debuggable while it runs, and the same flow definition spans staging, prod, or every tenant cluster via per-task kubeconfig."
+
 pillars:
   title: "Direct cluster API, not GitOps reconciliation."
   subtitle: "Argo CD reconciles what should be deployed from Git. This plugin acts on the cluster directly: spawns Pods as flow steps, patches Secrets, rolls Deployments, reads live state into flow inputs. Two complementary patterns, two different sources of truth, both first-class in Kestra."
@@ -180,6 +182,23 @@ blueprints:
       title: "PodCreate with GPU request, stream logs, save the model artifact"
       description: "Spawns a Pod with a GPU resource request on a node selector for the GPU pool. The main container runs a training script; a sidecar collects the resulting model file and writes it to Kestra internal storage. Slack confirms with the artifact URI and runtime metrics."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Schedule"
+          sublabel: "or training webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "GPU training run"
+          sublabel: "live logs to execution view"
+        tools:
+          - label: "PodCreate (GPU)"
+            pluginClass: "io.kestra.plugin.kubernetes.core.PodCreate"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Model artifact saved"
+          sublabel: "metrics + URI captured"
+          icon: "mdi:chip"
       plugins:
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.kubernetes.core.PodCreate"
@@ -229,6 +248,27 @@ blueprints:
       title: "Rotate a Vault secret, restart every Deployment that reads it"
       description: "Calls the Vault rotation endpoint, then iterates the list of Deployments that consume the secret. Per Deployment: kubectl.Patch annotates with a rollout timestamp, kubectl.Restart triggers the rolling restart, kubectl.Get waits for Available replicas to match desired."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Weekly schedule"
+          sublabel: "Vault rotation window"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Rotate + rolling restart"
+          sublabel: "one execution across Vault + K8s"
+        tools:
+          - label: "Vault rotate"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "kubectl.Patch"
+            pluginClass: "io.kestra.plugin.kubernetes.kubectl.Patch"
+          - label: "kubectl.Restart"
+            pluginClass: "io.kestra.plugin.kubernetes.kubectl.Restart"
+          - label: "kubectl.Get"
+            pluginClass: "io.kestra.plugin.kubernetes.kubectl.Get"
+        outcome:
+          label: "Pods refreshed + healthy"
+          sublabel: "Available = desired"
+          icon: "mdi:key-variant"
       plugins:
         - "io.kestra.plugin.core.http.Request"
         - "io.kestra.plugin.kubernetes.kubectl.Patch"
@@ -297,6 +337,27 @@ blueprints:
       title: "ForEach tenant: apply the same manifest, wait for Ready, report per tenant"
       description: "Fetches the tenant list from an inventory API, iterates with parallel ForEach, applies the release manifest to each tenant cluster using the matching kubeconfig from Kestra secrets, waits for Ready, and posts per-tenant status to Slack. Failures route to an errors branch that rolls back that tenant only."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Release trigger"
+          sublabel: "manual or tag push"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Multi-cluster apply"
+          sublabel: "ForEach tenant, parallel"
+        tools:
+          - label: "Tenant inventory API"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "ForEach tenant"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "kubectl.Apply"
+            pluginClass: "io.kestra.plugin.kubernetes.kubectl.Apply"
+          - label: "kubectl.Get"
+            pluginClass: "io.kestra.plugin.kubernetes.kubectl.Get"
+        outcome:
+          label: "All tenants on new revision"
+          sublabel: "per-cluster status logged"
+          icon: "mdi:earth"
       plugins:
         - "io.kestra.plugin.core.flow.ForEach"
         - "io.kestra.plugin.kubernetes.kubectl.Apply"

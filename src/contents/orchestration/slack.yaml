@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Make Slack the meeting point for your stack with a declarative workflow engine that listens to slash commands, Block Kit clicks, or any upstream completion (<a href='/orchestration/dbt-core'>dbt</a>, <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, <a href='/orchestration/aws'>AWS</a>), handles notification routing, scheduled Canvas reports, approval gates, and incident channel automation, and chains Slack with the rest of your tools in one audited flow. The same chats.Post task fires from any plugin in 1300+; channel routing lives in the parent flow, not in Slack admin."
+
 pillars:
   title: "Around every workflow, every system, every channel."
   subtitle: "Slack is where teams already work. Kestra makes every other tool reach them there: notifications from dbt, reports from Snowflake, approval gates for Terraform, incident channels spun from any failure, message archives exported to BigQuery. Slack stops being a per-tool integration target and becomes the meeting point for the whole stack."
@@ -181,6 +183,27 @@ blueprints:
       title: "A single Subflow that takes channel + status + execution context, posts to Slack"
       description: "Two flows. The notify subflow takes channel, status, summary, and execution_url as inputs and posts a Block Kit message with reactions.Add for the status emoji. Any parent flow (dbt, Terraform, Argo CD, AWS Lambda) calls it on success or failure."
       href: "/blueprints?tags=Business"
+      flowDiagram:
+        source:
+          label: "Subflow call"
+          sublabel: "from any parent"
+          pluginClass: "io.kestra.plugin.core.flow.Subflow"
+        workflow:
+          label: "Reusable notify"
+          sublabel: "one shape, many tools"
+        tools:
+          - label: "dbt parent"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "Terraform parent"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "chats.Post"
+            pluginClass: "io.kestra.plugin.slack.app.chats.Post"
+          - label: "reactions.Add"
+            pluginClass: "io.kestra.plugin.slack.app.reactions.Add"
+        outcome:
+          label: "Notified + reacted"
+          sublabel: "Block Kit formatted"
+          icon: "mdi:bell-ring-outline"
       plugins:
         - "io.kestra.plugin.core.flow.Subflow"
         - "io.kestra.plugin.slack.app.chats.Post"
@@ -227,6 +250,27 @@ blueprints:
       title: "Query metrics at 8am, format markdown, post a Canvas to leadership"
       description: "Runs a Snowflake query against the daily metrics view, formats the rows into markdown sections via a Python script, posts the result as an editable Canvas to a leadership channel, and pings the team with a thread reply."
       href: "/blueprints?tags=Business"
+      flowDiagram:
+        source:
+          label: "Morning schedule"
+          sublabel: "8am weekdays"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Snowflake to Canvas"
+          sublabel: "editable in-channel"
+        tools:
+          - label: "Snowflake query"
+            pluginClass: "io.kestra.plugin.jdbc.snowflake.Query"
+          - label: "Python markdown"
+            pluginClass: "io.kestra.plugin.scripts.python.Script"
+          - label: "canvases.Create"
+            pluginClass: "io.kestra.plugin.slack.app.canvases.Create"
+          - label: "chats.Post thread"
+            pluginClass: "io.kestra.plugin.slack.app.chats.Post"
+        outcome:
+          label: "Daily metrics in-channel"
+          sublabel: "no PDF, no dashboard hop"
+          icon: "mdi:file-document-edit-outline"
       plugins:
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.jdbc.snowflake.Query"
@@ -290,6 +334,27 @@ blueprints:
       title: "Weekly pull #support history, transform, load to BigQuery, trigger dbt"
       description: "A weekly flow pulls the support channel's history, transforms it into a BigQuery-friendly schema in Python, loads it as a weekly partition, then triggers the support_metrics dbt models to refresh."
       href: "/blueprints?tags=Business"
+      flowDiagram:
+        source:
+          label: "Weekly schedule"
+          sublabel: "Monday 06:00"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Slack to warehouse analytics"
+          sublabel: "channel as data source"
+        tools:
+          - label: "conversations.History"
+            pluginClass: "io.kestra.plugin.slack.app.conversations.History"
+          - label: "Python transform"
+            pluginClass: "io.kestra.plugin.scripts.python.Script"
+          - label: "BigQuery load"
+            pluginClass: "io.kestra.plugin.gcp.bigquery.Load"
+          - label: "dbt refresh"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+        outcome:
+          label: "Slack data in warehouse"
+          sublabel: "response-time SLAs ready"
+          icon: "mdi:database-export-outline"
       plugins:
         - "io.kestra.plugin.slack.app.conversations.History"
         - "io.kestra.plugin.scripts.python.Script"

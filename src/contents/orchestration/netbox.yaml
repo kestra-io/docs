@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Make NetBox the inventory source of truth driving every flow, with a declarative orchestration engine that lists devices by site/role/tag, allocates IPs from prefixes on VM provision, handles drift reconciliation between scan reality and declared inventory, and chains NetBox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/proxmox'>Proxmox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a> in one audited flow. The static hosts file goes away, NetBox becomes the inventory."
+
 pillars:
   title: "Around every device, every prefix, every site."
   subtitle: "NetBox holds the inventory. Kestra reads it to drive automation, writes back to keep it current, and reconciles it against reality on a schedule. The static Ansible inventory file, the IP spreadsheet, and the who-has-which-rack tribal knowledge all go away. NetBox is the source of truth, flows are the consumers."
@@ -183,6 +185,27 @@ blueprints:
       title: "device.List filtered by role and site, ForEach playbook, rollup to Slack"
       description: "Filters devices in NetBox by role and site, iterates with ForEach, runs an Ansible playbook against each device's primary IP, captures per-device results via the Kestra Ansible callback, and posts a rollup to Slack with success counts and failure details."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Maintenance window"
+          sublabel: "schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "NetBox-driven Ansible"
+          sublabel: "no static hosts file"
+        tools:
+          - label: "device.List"
+            pluginClass: "io.kestra.plugin.ee.netbox.device.List"
+          - label: "ForEach device"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "ansible-playbook"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "Slack rollup"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Fleet configured"
+          sublabel: "inventory = NetBox"
+          icon: "mdi:server-network"
       plugins:
         - "io.kestra.plugin.ee.netbox.device.List"
         - "io.kestra.plugin.core.flow.ForEach"
@@ -237,6 +260,27 @@ blueprints:
       title: "Proxmox VM created, NetBox allocates IP, device registered, owner assigned"
       description: "On a VM provisioning request, the flow creates the VM in Proxmox, requests an IP from a NetBox prefix, configures the VM's network with that IP, registers the VM as a device in NetBox, and assigns the requesting team as the primary contact."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "VM request"
+          sublabel: "form or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Provision + register"
+          sublabel: "Proxmox, IP, owner"
+        tools:
+          - label: "proxmox.vm.Create"
+            pluginClass: "io.kestra.plugin.proxmox.vm.Create"
+          - label: "ipam.AssignIpAddress"
+            pluginClass: "io.kestra.plugin.ee.netbox.ipam.AssignIpAddress"
+          - label: "device.Create"
+            pluginClass: "io.kestra.plugin.ee.netbox.device.Create"
+          - label: "contactassignment.Create"
+            pluginClass: "io.kestra.plugin.ee.netbox.contactassignment.Create"
+        outcome:
+          label: "VM live + NetBox synced"
+          sublabel: "no spreadsheet, no ping"
+          icon: "mdi:ip-network-outline"
       plugins:
         - "io.kestra.plugin.proxmox.vm.Create"
         - "io.kestra.plugin.ee.netbox.ipam.AssignIpAddress"
@@ -315,6 +359,27 @@ blueprints:
       title: "Weekly reconciliation flow between network scan and NetBox state"
       description: "Runs a Python scan task (LLDP, SNMP, or hypervisor API), pulls device.List from NetBox, computes the additions and deletions, auto-creates additions with a review-needed tag, and opens a GitHub issue for each missing device."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Weekly schedule"
+          sublabel: "cron Monday 06:00"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Drift reconciliation"
+          sublabel: "scan vs declared"
+        tools:
+          - label: "Network scan"
+            pluginClass: "io.kestra.plugin.scripts.python.Script"
+          - label: "device.List"
+            pluginClass: "io.kestra.plugin.ee.netbox.device.List"
+          - label: "device.Create"
+            pluginClass: "io.kestra.plugin.ee.netbox.device.Create"
+          - label: "issues.Create"
+            pluginClass: "io.kestra.plugin.github.issues.Create"
+        outcome:
+          label: "Inventory trustworthy"
+          sublabel: "no silent drift"
+          icon: "mdi:compare-horizontal"
       plugins:
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.scripts.python.Script"

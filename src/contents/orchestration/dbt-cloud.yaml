@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Connect dbt Cloud to the rest of your data stack with a declarative workflow engine that listens to Fivetran completions, S3 file landings, or any upstream event, handles dbt Cloud TriggerRun with wait, approval gates between staging and prod, and chains dbt Cloud with Fivetran, Hightouch, and Snowflake in one audited flow. Trigger the moment data lands instead of padding cron buffers, and span every step in one execution history."
+
 pillars:
   title: "Above the dbt Cloud job runner."
   subtitle: "dbt Cloud solves transformation scheduling inside the dbt layer. Kestra solves what surrounds it: when jobs trigger, what runs after them, and where the audit trail lives."
@@ -178,6 +180,27 @@ blueprints:
       title: "Ingestion to activation pipeline"
       description: "Fivetran syncs raw data on a schedule. When it completes, Kestra triggers the dbt Cloud job and waits for success. On completion, it fires the Hightouch sync. Any failure stops the pipeline at the failing step and posts a Slack alert with a link to the execution."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Daily schedule"
+          sublabel: "cron 0 4 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Ingest, transform, activate"
+          sublabel: "step-level retries"
+        tools:
+          - label: "fivetran.Sync"
+            pluginClass: "io.kestra.plugin.fivetran.connectors.Sync"
+          - label: "dbt Cloud TriggerRun"
+            pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
+          - label: "Hightouch sync"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Pipeline complete"
+          sublabel: "one execution ID"
+          icon: "mdi:pipe-disconnected"
       plugins:
         - "io.kestra.plugin.fivetran.connectors.Sync"
         - "io.kestra.plugin.dbt.cloud.TriggerRun"
@@ -234,6 +257,27 @@ blueprints:
       title: "Approval gate before production job"
       description: "Triggers the staging dbt Cloud job and pauses the flow on the result. A named reviewer reads the output in the Kestra UI and resumes the flow. Only then does the production job run. The reviewer's identity and timestamp are stored automatically in the execution history."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Promotion trigger"
+          sublabel: "manual or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Staging, gate, prod"
+          sublabel: "named reviewer logged"
+        tools:
+          - label: "TriggerRun staging"
+            pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "TriggerRun prod"
+            pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Prod build audited"
+          sublabel: "approver + timestamp"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.dbt.cloud.TriggerRun"
         - "io.kestra.plugin.core.flow.Pause"
@@ -282,6 +326,27 @@ blueprints:
       title: "Chained dbt Cloud jobs with dependency ordering"
       description: "Runs three dbt Cloud jobs in order: ingestion models, mart models, activation models. Each step waits for the previous to confirm success before starting. If any job fails, Kestra stops the chain and posts a Slack alert with the run ID of the failing job and a link to the execution."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Nightly schedule"
+          sublabel: "cron 0 3 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Chained dbt jobs"
+          sublabel: "ordered, fail-fast"
+        tools:
+          - label: "Ingestion job"
+            pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
+          - label: "Mart job"
+            pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
+          - label: "Activation job"
+            pluginClass: "io.kestra.plugin.dbt.cloud.TriggerRun"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "All marts built in order"
+          sublabel: "run IDs flow forward"
+          icon: "mdi:source-branch"
       plugins:
         - "io.kestra.plugin.dbt.cloud.TriggerRun"
         - "io.kestra.plugin.core.trigger.Schedule"
