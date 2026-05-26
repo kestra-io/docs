@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace EventBridge rule sprawl and Step Functions JSON with a declarative workflow engine that listens to S3 file landings, SQS backlog, schedules, or any HTTP signal, handles cross-account ops via stsRole and backlog-aware EMR Serverless autoscale, and chains S3, Lambda, Glue, Athena, and DynamoDB in one audited flow. <a href='/use-cases/stories/scaling-big-data-operations'>Acxiom scaled its big-data orchestration</a> across AWS and Databricks with this exact pattern."
+nutshell: "Replace EventBridge rule sprawl and Step Functions JSON with a workflow engine that listens to S3, SQS, or schedules, handles cross-account ops via stsRole, and chains S3, Lambda, Glue, Athena, and DynamoDB in one audited flow. Collapse rule + glue Lambda + Step Functions into one execution ID; cut idle compute with backlog-aware EMR Serverless."
 
 pillars:
   title: "One execution across S3, Lambda, EMR, Glue, and DynamoDB."

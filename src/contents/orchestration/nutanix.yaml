@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace Nutanix Self-Service (Calm) and X-Play with a declarative workflow engine that listens to schedules, webhooks, or VMware-to-AHV migration waves, handles crash- or app-consistent recovery points with cross-cluster DR replication, and chains AHV operations with <a href='/orchestration/vmware'>VMware</a>, <a href='/orchestration/ansible'>Ansible</a>, and <a href='/orchestration/servicenow'>ServiceNow</a> in one audited flow. <a href='/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra'>Crédit Agricole</a> drives Nutanix day-2 ops from a unified Kestra control plane across regulated EU infrastructure."
+nutshell: "Replace Nutanix Self-Service (Calm) and X-Play with a workflow engine that listens to schedules or migration waves, handles crash- or app-consistent recovery points with cross-cluster DR replication, and chains AHV with <a href='/orchestration/vmware'>VMware</a>, <a href='/orchestration/ansible'>Ansible</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the Calm catalog license; cut VMware-to-AHV cutover risk to per-VM waves with rollback."
 
 pillars:
   title: "Around every AHV operation, across every cluster."

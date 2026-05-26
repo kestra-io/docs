@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace Jenkinsfile glue and GitHub Actions YAML with a declarative workflow engine that builds, Trivy-scans, Cosign-signs, and promotes the same sha256 digest from staging to prod, brings up Compose stacks with guaranteed teardown, and chains Docker with <a href='/orchestration/kubernetes'>Kubernetes</a>, <a href='/orchestration/argocd'>Argo CD</a>, and short-lived ECR/GAR/ACR tokens in one audited flow. The artifact you signed is the artifact you ship."
+nutshell: "Replace Jenkinsfile glue with a workflow engine that builds, Trivy-scans, Cosign-signs, and promotes the same sha256 digest from staging to prod, and chains Docker with <a href='/orchestration/kubernetes'>Kubernetes</a>, <a href='/orchestration/argocd'>Argo CD</a>, and short-lived ECR/GAR/ACR tokens in one audited flow. Never rebuild between envs; drop long-lived registry passwords from CI vars."
 
 pillars:
   title: "Around every docker build, every digest, every stack."

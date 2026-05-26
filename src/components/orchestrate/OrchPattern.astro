@@ -38,10 +38,9 @@ const sectionStyle = toolColor ? `--tool-color: ${toolColor};` : undefined
 
 const tabs = blueprints.filter((bp) => bp.flowDiagram)
 const hasTabs = tabs.length > 0
-const hasContent = Boolean(nutshell) || hasTabs
 ---
 
-<section class={`orch-pattern${hasContent ? "" : " is-empty"}`} style={sectionStyle}>
+<section class="orch-pattern" style={sectionStyle}>
     <div class="container">
         <div class="wrapper">
             {nutshell && (
@@ -75,11 +74,39 @@ const hasContent = Boolean(nutshell) || hasTabs
                                     <div class="panel-row">
                                         <div class="panel-topology">
                                             <div class="topology">
-                                                <div class="topology-row">
-                                                    <span class="topology-eyebrow">
-                                                        Trigger
+                                                <div class="topology-group group-flow">
+                                                    <span class="topology-tag tag-flow">Flow</span>
+                                                    <div class="node">
+                                                        <div class="node-icon node-icon-flow">
+                                                            <Icon
+                                                                name="mdi:lightning-bolt"
+                                                                width={20}
+                                                                height={20}
+                                                            />
+                                                        </div>
+                                                        <div class="node-text">
+                                                            <div class="node-label">
+                                                                {bp.flowDiagram!.workflow.label}
+                                                            </div>
+                                                            {bp.flowDiagram!.workflow.sublabel && (
+                                                                <div class="node-sublabel">
+                                                                    {bp.flowDiagram!.workflow.sublabel}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="topology-rail topology-rail--bi" aria-hidden="true">
+                                                    <span class="rail-track">
+                                                        <Icon name="mdi:menu-up" class="rail-arrow rail-arrow--up" width={14} height={14} />
+                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
                                                     </span>
-                                                    <div class="node node-trigger">
+                                                </div>
+
+                                                <div class="topology-group group-trigger">
+                                                    <span class="topology-tag tag-trigger">Triggers</span>
+                                                    <div class="node">
                                                         <div class="node-icon">
                                                             {bp.flowDiagram!.source.pluginClass ? (
                                                                 <TaskIcon cls={bp.flowDiagram!.source.pluginClass} />
@@ -106,47 +133,13 @@ const hasContent = Boolean(nutshell) || hasTabs
 
                                                 <div class="topology-rail" aria-hidden="true">
                                                     <span class="rail-track">
-                                                        <span class="rail-fill rail-fill-1" />
+                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
                                                     </span>
                                                 </div>
 
-                                                <div class="topology-row">
-                                                    <span class="topology-eyebrow">
-                                                        Flow
-                                                    </span>
-                                                    <div class="node node-flow">
-                                                        <div class="node-icon node-icon-flow">
-                                                            <Icon
-                                                                name="mdi:lightning-bolt"
-                                                                class="ks-spark"
-                                                                width={20}
-                                                                height={20}
-                                                            />
-                                                        </div>
-                                                        <div class="node-text">
-                                                            <div class="node-label">
-                                                                {bp.flowDiagram!.workflow.label}
-                                                            </div>
-                                                            {bp.flowDiagram!.workflow.sublabel && (
-                                                                <div class="node-sublabel">
-                                                                    {bp.flowDiagram!.workflow.sublabel}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="topology-rail" aria-hidden="true">
-                                                    <span class="rail-track">
-                                                        <span class="rail-fill rail-fill-2" />
-                                                    </span>
-                                                </div>
-
-                                                <div class="topology-row">
-                                                    <span class="topology-eyebrow">
-                                                        Tasks
-                                                    </span>
-                                                    <div class="tools-cluster node-tasks">
+                                                <div class="topology-group group-tasks">
+                                                    <span class="topology-tag tag-tasks">Tasks</span>
+                                                    <div class="tools-cluster">
                                                         {bp.flowDiagram!.tools.map((tool) => (
                                                             <div class="tool-pill">
                                                                 <div class="tool-icon">
@@ -170,14 +163,12 @@ const hasContent = Boolean(nutshell) || hasTabs
 
                                                 <div class="topology-rail" aria-hidden="true">
                                                     <span class="rail-track">
-                                                        <span class="rail-fill rail-fill-3" />
+                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
                                                     </span>
                                                 </div>
 
-                                                <div class="topology-row">
-                                                    <span class="topology-eyebrow">
-                                                        Outcome
-                                                    </span>
+                                                <div class="topology-group group-outcome">
+                                                    <span class="topology-tag tag-outcome">Outcome</span>
                                                     <div class="node node-outcome">
                                                         <div class="node-icon">
                                                             {bp.flowDiagram!.outcome.pluginClass ? (
@@ -201,6 +192,12 @@ const hasContent = Boolean(nutshell) || hasTabs
                                                             )}
                                                         </div>
                                                     </div>
+                                                </div>
+
+                                                <div class="topology-rail" aria-hidden="true">
+                                                    <span class="rail-track">
+                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -394,8 +391,10 @@ const hasContent = Boolean(nutshell) || hasTabs
 
     .panel-topology {
         flex: 0 0 42%;
-        padding: 1.75rem 1.5rem;
-        background: var(--ks-background-secondary);
+        padding: 1.75rem 1.25rem;
+        background: #0e0d1a;
+        background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
+        background-size: 14px 14px;
         border-right: 1px solid var(--ks-border-secondary);
 
         @include media-breakpoint-down(lg) {
@@ -426,128 +425,135 @@ const hasContent = Boolean(nutshell) || hasTabs
     .topology {
         display: flex;
         flex-direction: column;
-    }
-
-    .topology-row {
-        display: grid;
-        grid-template-columns: 4.25rem 1fr;
         align-items: center;
-        gap: 0.875rem;
-
-        @include media-breakpoint-down(md) {
-            grid-template-columns: 3.5rem 1fr;
-            gap: 0.625rem;
-        }
     }
 
-    .topology-eyebrow {
+    .topology-group {
+        position: relative;
+        width: 100%;
+        min-height: 6.75rem;
+        padding: 2.5rem 0.85rem 1rem;
+        border: 1px solid;
+        border-radius: 0.875rem;
+        background: rgba(255, 255, 255, 0.02);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .group-flow {
+        --group-color: #8405ff;
+        border-color: var(--group-color);
+        background: rgba(132, 5, 255, 0.05);
+    }
+
+    .group-trigger {
+        --group-color: #02be8a;
+        border-color: var(--group-color);
+        background: rgba(2, 190, 138, 0.05);
+    }
+
+    .group-tasks {
+        --group-color: #1761fd;
+        border-color: var(--group-color);
+        background: rgba(23, 97, 253, 0.05);
+    }
+
+    .group-outcome {
+        --group-color: var(--tool-color, #8405ff);
+        border-color: var(--group-color);
+        background: color-mix(in srgb, var(--group-color) 5%, transparent);
+    }
+
+    .topology-tag {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.2rem 0.75rem;
+        border-radius: 2rem;
         font-size: 0.6875rem;
-        font-weight: 600;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--ks-content-secondary);
-        text-align: right;
-        padding-right: 0.25rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #ffffff;
+        white-space: nowrap;
     }
+
+    .tag-flow { background: #8405ff; }
+    .tag-trigger { background: #02be8a; }
+    .tag-tasks { background: #1761fd; }
+    .tag-outcome { background: var(--tool-color, #8405ff); }
 
     .topology-rail {
-        display: grid;
-        grid-template-columns: 4.25rem 1fr;
-        gap: 0.875rem;
-        padding: 0.4rem 0;
-        align-items: center;
-
-        @include media-breakpoint-down(md) {
-            grid-template-columns: 3.5rem 1fr;
-            gap: 0.625rem;
-        }
+        display: flex;
+        justify-content: center;
+        padding: 0.9rem 0;
     }
 
     .rail-track {
-        grid-column: 2;
-        margin-left: 1rem;
         position: relative;
-        display: inline-block;
-        width: 2px;
-        height: 32px;
-        background: color-mix(
-            in srgb,
-            var(--ks-content-color-highlight) 14%,
-            var(--ks-border-secondary)
+        display: block;
+        box-sizing: content-box;
+        width: 14px;
+        height: 56px;
+        padding: 10px 0;
+        background-image: linear-gradient(
+            to bottom,
+            #9A8EB4 50%,
+            transparent 50%
         );
-        border-radius: 2px;
-        overflow: hidden;
+        background-size: 2px 7px;
+        background-position: center top;
+        background-repeat: repeat-y;
+        background-origin: content-box;
+        background-clip: content-box;
+        animation: rail-flow 0.25s linear infinite;
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #9A8EB4;
+        }
     }
 
-    .rail-fill {
+    .topology-rail--bi .rail-track::before {
+        display: none;
+    }
+
+    .rail-arrow {
         position: absolute;
-        left: -1px;
-        right: -1px;
-        top: 0;
-        height: 70%;
-        background: linear-gradient(
-            to bottom,
-            transparent 0%,
-            color-mix(in srgb, var(--ks-content-color-highlight) 30%, transparent)
-                25%,
-            var(--ks-content-color-highlight) 50%,
-            color-mix(in srgb, var(--ks-content-color-highlight) 30%, transparent)
-                75%,
-            transparent 100%
-        );
-        filter: drop-shadow(
-            0 0 4px
-                color-mix(
-                    in srgb,
-                    var(--ks-content-color-highlight) 70%,
-                    transparent
-                )
-        );
-        border-radius: 2px;
-        transform: translateY(-110%);
-        opacity: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #9A8EB4;
+    }
+
+    .rail-arrow--down { bottom: 0; }
+    .rail-arrow--up { top: 0; }
+
+    @keyframes rail-flow {
+        from { background-position: center 0; }
+        to { background-position: center 7px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rail-track { animation: none !important; }
     }
 
     .node {
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.75rem 0.9rem;
-        background: var(--ks-background-primary);
-        border: 1px solid var(--ks-border-secondary);
+        padding: 0.7rem 0.85rem;
+        background: rgba(154, 142, 180, 0.22);
+        border: 1px solid rgba(154, 142, 180, 0.35);
         border-radius: 0.625rem;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-        transition: box-shadow 0.2s ease;
-    }
-
-    .node-flow {
-        border-color: color-mix(
-            in srgb,
-            var(--ks-content-color-highlight) 30%,
-            var(--ks-border-secondary)
-        );
-        background: linear-gradient(
-            135deg,
-            color-mix(in srgb, var(--ks-content-color-highlight) 5%, var(--ks-background-primary)),
-            var(--ks-background-primary)
-        );
-    }
-
-    .node-outcome {
-        border-color: color-mix(
-            in srgb,
-            var(--tool-color, var(--ks-content-color-highlight)) 35%,
-            var(--ks-border-secondary)
-        );
-        background: linear-gradient(
-            135deg,
-            color-mix(in srgb, var(--tool-color, var(--ks-content-color-highlight)) 5%, var(--ks-background-primary)),
-            var(--ks-background-primary)
-        );
-
-        .node-icon {
-            color: var(--tool-color, var(--ks-content-color-highlight));
-        }
     }
 
     .node-icon {
@@ -557,27 +563,22 @@ const hasContent = Boolean(nutshell) || hasTabs
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--ks-background-body);
-        border: 1px solid var(--ks-border-secondary);
+        background: linear-gradient(135deg, #2b1c5c, #1a1235);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 0.5rem;
         padding: 0.3rem;
+        color: #ffffff;
     }
 
     .node-icon-flow {
-        background: color-mix(
-            in srgb,
-            var(--ks-content-color-highlight) 10%,
-            var(--ks-background-body)
-        );
-        border-color: color-mix(
-            in srgb,
-            var(--ks-content-color-highlight) 25%,
-            var(--ks-border-secondary)
-        );
+        background: linear-gradient(135deg, color-mix(in srgb, var(--group-color) 60%, #1a1235), #1a1235);
+        border-color: color-mix(in srgb, var(--group-color) 35%, transparent);
+    }
 
-        .ks-spark {
-            color: var(--ks-content-color-highlight);
-        }
+    .node-outcome .node-icon {
+        background: linear-gradient(135deg, color-mix(in srgb, var(--group-color) 55%, #1a1235), #1a1235);
+        border-color: color-mix(in srgb, var(--group-color) 35%, transparent);
+        color: #ffffff;
     }
 
     .node-text {
@@ -591,13 +592,13 @@ const hasContent = Boolean(nutshell) || hasTabs
         font-size: 0.85rem;
         font-weight: 600;
         line-height: 1.2;
-        color: var(--ks-content-primary);
+        color: rgba(255, 255, 255, 0.95);
     }
 
     .node-sublabel {
         font-size: 0.72rem;
         line-height: 1.25;
-        color: var(--ks-content-secondary);
+        color: rgba(255, 255, 255, 0.55);
     }
 
     .tools-cluster {
@@ -605,12 +606,10 @@ const hasContent = Boolean(nutshell) || hasTabs
         flex-wrap: wrap;
         gap: 0.375rem;
         align-content: center;
-        padding: 0.6rem;
-        background: var(--ks-background-primary);
-        border: 1px solid var(--ks-border-secondary);
+        padding: 0.5rem;
+        background: rgba(154, 142, 180, 0.22);
+        border: 1px solid rgba(154, 142, 180, 0.35);
         border-radius: 0.625rem;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-        transition: box-shadow 0.2s ease;
     }
 
     .tool-pill {
@@ -618,12 +617,12 @@ const hasContent = Boolean(nutshell) || hasTabs
         align-items: center;
         gap: 0.35rem;
         padding: 0.3rem 0.55rem;
-        background: var(--ks-background-body);
-        border: 1px solid var(--ks-border-secondary);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 0.375rem;
         font-size: 0.72rem;
         font-weight: 500;
-        color: var(--ks-content-primary);
+        color: rgba(255, 255, 255, 0.9);
         line-height: 1;
     }
 
@@ -634,6 +633,7 @@ const hasContent = Boolean(nutshell) || hasTabs
         display: flex;
         align-items: center;
         justify-content: center;
+        color: rgba(255, 255, 255, 0.85);
     }
 
     .tool-label {
@@ -672,186 +672,31 @@ const hasContent = Boolean(nutshell) || hasTabs
         }
     }
 
-    $cycle: 8s;
-    $ease: cubic-bezier(0.65, 0, 0.35, 1);
+    $cycle: 12s;
+    $ease: ease-in-out;
 
-    @keyframes orch-pulse {
-        0%, 3% {
-            border-color: var(--ks-border-secondary);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
+    @keyframes group-pulse {
+        0%, 4%, 18%, 100% {
+            box-shadow: 0 0 0 0 transparent;
         }
-        6%, 9% {
-            border-color: color-mix(
-                in srgb,
-                var(--ks-content-color-highlight) 55%,
-                var(--ks-border-secondary)
-            );
+        9%, 13% {
             box-shadow:
-                0 0 0 4px
-                    color-mix(
-                        in srgb,
-                        var(--ks-content-color-highlight) 14%,
-                        transparent
-                    ),
-                0 10px 26px
-                    color-mix(
-                        in srgb,
-                        var(--ks-content-color-highlight) 32%,
-                        transparent
-                    );
-            transform: translateY(-1px);
-        }
-        13%, 100% {
-            border-color: var(--ks-border-secondary);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
+                0 0 0 4px color-mix(in srgb, var(--group-color) 22%, transparent),
+                0 10px 30px color-mix(in srgb, var(--group-color) 32%, transparent);
         }
     }
 
-    @keyframes orch-pulse-flow {
-        0%, 3% {
-            border-color: color-mix(
-                in srgb,
-                var(--ks-content-color-highlight) 30%,
-                var(--ks-border-secondary)
-            );
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-        }
-        6%, 9% {
-            border-color: color-mix(
-                in srgb,
-                var(--ks-content-color-highlight) 70%,
-                var(--ks-border-secondary)
-            );
-            box-shadow:
-                0 0 0 4px
-                    color-mix(
-                        in srgb,
-                        var(--ks-content-color-highlight) 16%,
-                        transparent
-                    ),
-                0 12px 30px
-                    color-mix(
-                        in srgb,
-                        var(--ks-content-color-highlight) 36%,
-                        transparent
-                    );
-            transform: translateY(-1px);
-        }
-        13%, 100% {
-            border-color: color-mix(
-                in srgb,
-                var(--ks-content-color-highlight) 30%,
-                var(--ks-border-secondary)
-            );
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes orch-pulse-outcome {
-        0%, 3% {
-            border-color: color-mix(
-                in srgb,
-                var(--tool-color, var(--ks-content-color-highlight)) 35%,
-                var(--ks-border-secondary)
-            );
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-        }
-        6%, 9% {
-            border-color: color-mix(
-                in srgb,
-                var(--tool-color, var(--ks-content-color-highlight)) 75%,
-                var(--ks-border-secondary)
-            );
-            box-shadow:
-                0 0 0 4px
-                    color-mix(
-                        in srgb,
-                        var(--tool-color, var(--ks-content-color-highlight)) 16%,
-                        transparent
-                    ),
-                0 12px 30px
-                    color-mix(
-                        in srgb,
-                        var(--tool-color, var(--ks-content-color-highlight)) 38%,
-                        transparent
-                    );
-            transform: translateY(-1px);
-        }
-        13%, 100% {
-            border-color: color-mix(
-                in srgb,
-                var(--tool-color, var(--ks-content-color-highlight)) 35%,
-                var(--ks-border-secondary)
-            );
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
-            transform: translateY(0);
-        }
-    }
-
-    @keyframes orch-rail-comet {
-        0%, 4% {
-            transform: translateY(-110%);
-            opacity: 0;
-        }
-        8% {
-            transform: translateY(-110%);
-            opacity: 1;
-        }
-        22% {
-            transform: translateY(110%);
-            opacity: 1;
-        }
-        26%, 100% {
-            transform: translateY(110%);
-            opacity: 0;
-        }
-    }
-
-    .node-trigger {
-        animation: orch-pulse $cycle $ease infinite;
-        animation-delay: 0s;
-    }
-    .rail-fill-1 {
-        animation: orch-rail-comet $cycle $ease infinite;
-        animation-delay: 0.8s;
-    }
-    .node-flow {
-        animation: orch-pulse-flow $cycle $ease infinite;
-        animation-delay: 1.6s;
-    }
-    .rail-fill-2 {
-        animation: orch-rail-comet $cycle $ease infinite;
-        animation-delay: 2.4s;
-    }
-    .node-tasks {
-        animation: orch-pulse $cycle $ease infinite;
-        animation-delay: 3.2s;
-    }
-    .rail-fill-3 {
-        animation: orch-rail-comet $cycle $ease infinite;
-        animation-delay: 4s;
-    }
-    .node-outcome {
-        animation: orch-pulse-outcome $cycle $ease infinite;
-        animation-delay: 4.8s;
-    }
+    .group-flow { animation: group-pulse $cycle $ease infinite; animation-delay: 0s; }
+    .group-trigger { animation: group-pulse $cycle $ease infinite; animation-delay: 3s; }
+    .group-tasks { animation: group-pulse $cycle $ease infinite; animation-delay: 6s; }
+    .group-outcome { animation: group-pulse $cycle $ease infinite; animation-delay: 9s; }
 
     @media (prefers-reduced-motion: reduce) {
-        .node-trigger,
-        .node-flow,
-        .node-tasks,
-        .node-outcome,
-        .rail-fill {
+        .group-flow,
+        .group-trigger,
+        .group-tasks,
+        .group-outcome {
             animation: none !important;
-        }
-        .rail-fill {
-            opacity: 1;
-            transform: translateY(0);
         }
     }
 </style>

@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace VMware Aria Automation (vRA/vRO) with a declarative workflow engine that listens to vCenter events, cron, or HTTP signals, handles snapshot-gated change with automatic rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Keep vCenter and ESXi in place; replace the vRA/vRO automation layer above them with declarative YAML, per-zone control planes, and one execution history across the stack."
+nutshell: "Replace VMware Aria Automation (vRA/vRO) with a workflow engine that listens to vCenter events, handles snapshot-gated change with rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Drop the Broadcom-priced vRA subscription; run per-zone control planes for regulated OT."
 
 pillars:
   title: "Above vCenter, around every VM operation."

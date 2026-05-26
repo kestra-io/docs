@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Let the ServiceNow ticket fire the flow with a declarative workflow engine that listens to Business Rule webhooks on change request approval, runs the matching runbook scoped by CMDB relationships, updates the ticket through every step, and chains ServiceNow with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, <a href='/orchestration/kubernetes'>Kubernetes</a>, and the rest of your stack in one audited flow. Tickets carry the execution URL forever; flows close tickets with the result summary."
+nutshell: "Let the ServiceNow ticket fire the flow: a workflow engine that listens to Business Rule webhooks on approval, runs the matching runbook scoped by CMDB relationships, updates the ticket through every step, and chains ServiceNow with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, and <a href='/orchestration/kubernetes'>Kubernetes</a>. Standard changes close themselves; incidents auto-open with CMDB-driven severity."
 
 pillars:
   title: "Around every change, every incident, every CI."

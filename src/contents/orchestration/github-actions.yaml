@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace cron triggers and reusable workflow YAML with a declarative workflow engine that fires workflow_dispatch on dbt completions, S3 file landings, Kafka messages, or any non-Git event, handles cross-repo dispatch with named approval gates outside the workflow itself, and chains GitHub Actions output with <a href='/orchestration/terraform'>Terraform</a>, dbt, and <a href='/orchestration/servicenow'>ServiceNow</a> in one audited flow. Issues open and PRs comment as flow steps when production fails."
+nutshell: "Replace cron triggers and reusable workflow YAML with a workflow engine that fires workflow_dispatch on dbt completions, S3 events, or Kafka messages, handles cross-repo dispatch with approval gates outside the workflow itself, and chains Actions output with <a href='/orchestration/terraform'>Terraform</a>, dbt, and <a href='/orchestration/servicenow'>ServiceNow</a>. Dispatch the same workflow across every repo in one ForEach (matrices cannot span repos)."
 
 pillars:
   title: "Above the runner, around the workflow."
