@@ -23,10 +23,13 @@ const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
 )
 
+const isDevCommand = process.argv.includes("dev")
+const skipCloudflareDev = process.env.LOCAL_DEV_NO_CF === "1"
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
-    adapter: cloudflare({
+    adapter: (isDevCommand && skipCloudflareDev) ? undefined : cloudflare({
         sessionKVBindingName: "docs-session",
         prerenderEnvironment: "node",
         // only use cloudflare images in production
