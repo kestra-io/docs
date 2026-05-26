@@ -68,7 +68,7 @@ tasks:
 
 ### Python example
 
-Below is an example of a flow that installs the `pandas` package before running a Python script. The `venv` folder is cached for one day.
+Below is an example of a flow that installs the `pandas` package before running a Python script. The `deps` folder is cached for one day.
 
 ```yaml
 id: python_cached_dependencies
@@ -83,14 +83,15 @@ tasks:
         taskRunner:
           type: io.kestra.plugin.core.runner.Process
         beforeCommands:
-          - python -m venv venv
-          - ./venv/bin/pip install pandas
+          - pip install --target=./deps pandas
+        env:
+          PYTHONPATH: "./deps"
         script: |
           import pandas as pd
           print(pd.__version__)
     cache:
       patterns:
-        - venv/**
+        - deps/**
       ttl: PT24H
 ```
 
