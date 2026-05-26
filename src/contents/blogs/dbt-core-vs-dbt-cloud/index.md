@@ -11,7 +11,7 @@ author:
   linkedin: https://www.linkedin.com/in/elliotgunn/
   image: egunn
   role: Product Marketing Manager
-image: ./main.png
+image: ./main.jpg
 faq:
   - question: "What is dbt Cloud?"
     answer: "dbt Cloud is a fully managed, cloud-hosted SaaS platform that provides a complete environment for developing, testing, and deploying dbt projects. It includes a web-based IDE, a scheduler, logging, and collaboration features, all built on top of the open-source dbt Core engine. It's designed for teams seeking convenience, scalability, and an all-in-one solution without managing infrastructure."
