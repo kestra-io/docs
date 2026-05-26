@@ -33,7 +33,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Four slots are currently available:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Two slots are available in `@kestra-io/artifact-sdk` 0.1.x, with two more planned:
 
 ### `topology-details`
 
@@ -87,7 +87,11 @@ Same as `topology-details`, `displayMode` is injected as an HTML attribute and m
 
 You can reuse the same Vue component file for both `topology-details` and `topology-task-drawer` — just register it under both slot names in `vite.config.ts` and use `displayMode` to adjust what is rendered (see [Configuring the exposed components](#configuring-the-exposed-components)).
 
-### `log-details`
+### `log-details` _(planned)_
+
+:::alert{type="info"}
+`log-details` is not yet registered in `@kestra-io/artifact-sdk` 0.1.x. The type definitions (`LogDetailsProps`, `LogEntry`) are exported by the SDK but the slot is not available for scaffolding yet. This section documents the planned contract.
+:::
 
 Renders in the log view for a task execution attempt. Receives the task definition, the list of log entries, and the attempt number.
 
@@ -109,7 +113,12 @@ interface LogEntry {
 }
 ```
 
-### `topology-task-runner-details`
+### `topology-task-runner-details` _(planned)_
+
+:::alert{type="info"}
+`topology-task-runner-details` is not yet available in `@kestra-io/artifact-sdk` 0.1.x. This section documents the planned contract.
+:::
+
 
 Renders in the **execution topology view** when a task runner node is selected. The contract is defined in [`ui/packages/slot-contracts/src/topology-task-runner-details.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-runner-details.ts) in Kestra core:
 
@@ -144,7 +153,7 @@ The CLI will:
 
 1. **Detect your plugin** — reads `settings.gradle[.kts]` to infer the plugin group ID (e.g. `io.kestra.plugin.example`).
 2. **Ask which task** you want to add UI for (e.g. `query.RunQuery`).
-3. **Ask which UI slot** to target (`topology-details`, `topology-task-drawer`, or `log-details`).
+3. **Ask which UI slot** to target (`topology-details` or `topology-task-drawer`).
 4. **Ask whether to add `@kestra-io/kestra-sdk`** as a dependency (default: no — add it only if your component needs to call Kestra APIs, see [Calling the Kestra API](#calling-the-kestra-api)).
 5. **Show a summary** and ask for confirmation before writing anything.
 6. **Scaffold the `ui/` directory** with all required files and run `npm install`.
@@ -320,10 +329,6 @@ A single task can expose components for multiple slots:
     path: "./src/components/QueryRunQueryTopologyTaskDrawer.vue",
     additionalProperties: { height: 120 },
   },
-  {
-    slotName: "log-details",
-    path: "./src/components/QueryRunQueryLogDetails.vue",
-  },
 ],
 ```
 
@@ -340,18 +345,19 @@ The snippet below is adapted from the BigQuery plugin ([plugin-gcp#599](https://
 ```vue
 <!-- ui/src/components/QueryRunQueryTopologyDetails.vue -->
 <script setup lang="ts">
-import type { TopologyDetailsProps } from "@kestra-io/artifact-sdk";
+import type { KnownSlotProps } from "@kestra-io/artifact-sdk";
 import { computed, ref, watch, useAttrs } from "vue";
 import { execution as fetchExecution, flow as fetchFlowDef } from "@kestra-io/kestra-sdk";
 
-const props = defineProps<TopologyDetailsProps>();
+// KnownSlotProps["topology-details"] includes taskType, task, execution, namespace, flowId, metrics
+const props = defineProps<KnownSlotProps["topology-details"]>();
 const attrs = useAttrs();
 const isFullView = computed(() => attrs.displayMode === "full");
 
 const taskId = computed(() => props.task?.id as string | undefined);
 
 // Fetch the full flow definition to resolve task config that may not be in props.task.
-// namespace/flowId come from props (injected by the host).
+// namespace/flowId are proper props (injected by the host).
 const flowTask = ref<Record<string, any> | null>(null);
 
 async function loadFlowTask() {
