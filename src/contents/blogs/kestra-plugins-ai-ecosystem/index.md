@@ -93,9 +93,15 @@ RAG starts with raw content. Before embeddings can be generated, documents need 
 
 ## Format Conversion and Serialization
 
-Before data moves between pipeline stages, it often needs to change shape. [`plugin-serdes`](/plugins/plugin-serdes) handles serialization and deserialization across the formats that appear throughout AI workflows: CSV, JSON, AVRO, Parquet, XML, and others. Its `Convert` task translates between formats in a single step; `Serialize` and `Deserialize` handle encoding and decoding within a flow.
+Before data moves between pipeline stages, it often needs to change shape. [`plugin-serdes`](/plugins/plugin-serdes) handles serialization and deserialization across the formats that appear throughout AI workflows: CSV, JSON, AVRO, Parquet, XML, YAML, Protobuf, and Excel, converting each to and from Kestra's internal Ion format so any two tasks can exchange data without manual parsing.
 
-For AI workloads, the standout feature is [TOON](/blogs/kestra-mcp-plugins-blueprints) (Token-Optimized Object Notation) — a compact serialization format designed to reduce the token count when passing structured data as LLM context. Instead of verbose JSON, TOON encodes records in a dense tabular form that conveys the same information in significantly fewer tokens, lowering cost and latency on every inference call that touches structured data.
+For AI workloads, three capabilities stand out.
+
+**Markdown conversion.** The `HtmlToMarkdown` task converts HTML files into Markdown — directly useful for RAG pipelines and LLM preprocessing, where HTML is too verbose: Markdown conveys the same structure with significantly fewer tokens. `MarkdownToText` strips all formatting to produce clean plain text, the right input for embedding models that don't need structural markup. `MarkdownToHtml` rounds the set out for cases where the output needs to go back into an HTML context (email templates, rich notifications).
+
+**TOON.** `JsonToToon` and `ToonToJson` convert between JSON and [TOON](/blogs/kestra-mcp-plugins-blueprints) (Token-Oriented Object Notation), a deterministic, indentation-based format that encodes the JSON data model with explicit structure and minimal quoting. For uniform arrays of objects, TOON uses tabular encoding that conveys the same data in significantly fewer tokens than JSON — lowering cost and latency on every inference call that passes structured data as LLM context.
+
+**Schema inference.** `InferAvroSchemaFromIon` scans an Ion file and emits a compatible `.avsc` schema, eliminating the manual schema-writing step before converting to Avro or Parquet.
 
 ## Data Transformation and Preprocessing
 
