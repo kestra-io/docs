@@ -19,6 +19,10 @@
                 :release-versions="releaseVersions"
                 :releases-url="releasesUrl"
                 :kestra-core="kestraCore"
+                :plugin-name="pluginName"
+                :plugin-type="pluginType"
+                :current-tail="currentTail"
+                :current-version="currentVersion"
             />
 
             <div class="managed">
@@ -87,12 +91,20 @@
             releasesUrl?: string | null
             categories?: string[]
             metadata?: PluginMetadata[]
+            pluginName?: string
+            pluginType?: string
+            currentTail?: string
+            currentVersion?: string
         }>(),
         {
             version: null,
             releasesUrl: null,
             categories: () => [],
             metadata: () => [],
+            pluginName: undefined,
+            pluginType: undefined,
+            currentTail: undefined,
+            currentVersion: undefined,
         },
     )
 

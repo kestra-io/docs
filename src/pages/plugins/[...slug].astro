@@ -1,12 +1,14 @@
 ---
 export const prerender = false
 
+import { API_URL } from "astro:env/client"
 import { slugify } from "~/utils/slugify"
 import { subGroupName } from "~/utils/plugins/plugin"
 
 import Layout from "~/components/layout.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import OneHeader from "~/components/plugins/OneHeader.astro"
+import ArchivedBanner from "~/components/plugins/ArchivedBanner.astro"
 import PluginLayout from "~/components/plugins/PluginLayout.astro"
 import RightSideBar from "~/components/plugins/sidebar/RightSideBar.vue"
 import PluginSidebar from "~/components/plugins/sidebar/PluginSidebar.vue"
@@ -24,10 +26,12 @@ import {
     fetchInitialPluginData,
     fetchPageDefinition,
     fetchSecondaryData,
+    fetchVersionedSubgroups,
 } from "~/utils/plugins/fetchPluginPageData"
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
+import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
-const splitRouteSlug = Astro.params.slug?.split("/") ?? []
+const rawSplitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
 
 if (pathname !== "/plugins/" && pathname.endsWith("/")) {
@@ -35,7 +39,12 @@ if (pathname !== "/plugins/" && pathname.endsWith("/")) {
 }
 pathname = pathname.replace(/\/$/, "")
 
-const pluginName = splitRouteSlug[0]
+const pluginName = rawSplitRouteSlug[0]
+
+const requestedVersion = parseRequestedVersion(rawSplitRouteSlug, pathname)
+const { splitRouteSlug } = requestedVersion
+let canonicalPathname = requestedVersion.canonicalPathname
+
 const maybeSubGroup = splitRouteSlug[1]
 const subGroup = maybeSubGroup?.includes(".") ? undefined : maybeSubGroup
 
@@ -45,12 +54,58 @@ const githubReleasesUrl = isEePlugin
     ? null
     : `https://github.com/kestra-io/${githubReleaseRepo}/releases`
 
-const { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
+let { githubVersions, allPlugins, allPluginMetadata, pluginsInformations } =
     await fetchInitialPluginData(
         pluginName ?? "",
         githubReleaseRepo,
         isEePlugin,
     )
+
+const versionState = resolveVersionState(
+    requestedVersion,
+    githubVersions.versions?.[0]?.version,
+)
+
+// Canonicalize: requesting the latest as /vX.Y.Z/ → 301 to the unversioned URL.
+// Enforces the invariant that versioned URLs only point at *older* versions, so every
+// downstream branch can read versionState.isArchived without ambiguity.
+if (versionState.isLatestRequested) {
+    return Astro.redirect(versionState.canonicalPathname, 301)
+}
+
+// A version segment that was never released (typo / stale link) is a bad URL → 404.
+// Guard on a non-empty release list so a failed/rate-limited releases fetch doesn't
+// turn every archived URL into a false 404.
+const knownVersions = githubVersions.versions ?? []
+if (
+    versionState.isArchived &&
+    knownVersions.length > 0 &&
+    !knownVersions.some((v: any) => v.version === versionState.version)
+) {
+    return new Response(null, { status: 404, statusText: "Not found" })
+}
+
+// The backend projects the live subgroup structure onto the version's class set; we just swap
+// this plugin's entries. versionElements (the flattened class set) backs the FQCN-redirect logic.
+let versionElements: Set<string> | null = null
+let versionElementsStatus: "ready" | "pending" | "unavailable" = "unavailable"
+
+if (versionState.version && pluginName) {
+    const result = await fetchVersionedSubgroups(pluginName, versionState.version)
+    versionElementsStatus = result.status
+    if (result.subgroups) {
+        versionElements = new Set(
+            result.subgroups.flatMap(entry =>
+                Object.values(entry).flatMap(value =>
+                    Array.isArray(value) ? value.map((e: any) => e?.cls).filter(Boolean) : [],
+                ),
+            ),
+        )
+        const isThisPlugin = (p: any) =>
+            (p.name ?? "").toLowerCase() === pluginName.toLowerCase()
+        allPlugins = allPlugins.filter(p => !isThisPlugin(p)).concat(result.subgroups)
+    }
+}
 
 if (subGroup && allPlugins.filter((p) => p.name === pluginName && p.subGroup).length === 1) {
     return Astro.redirect(`/plugins/${[pluginName, ...splitRouteSlug.slice(2)].join("/")}`, 301)
@@ -61,24 +116,54 @@ const aliasMapping = getAliasMapping(allPlugins)
 const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
 
+if (versionState.version) {
+    const fqcnSegment = rawSplitRouteSlug[rawSplitRouteSlug.length - 1]
+    const prefix = `/plugins/${pluginName}/`
+    const match = Object.keys(pageNames).find(
+        k => k.startsWith(prefix) && k.toLowerCase().endsWith("/" + fqcnSegment.toLowerCase()),
+    )
+    if (match) canonicalPathname = match
+}
+
 const pluginType = (() => {
     const lastSegment = splitRouteSlug[splitRouteSlug.length - 1]
     if (!lastSegment || !lastSegment.includes(".")) return undefined
     const parts = lastSegment.replace(/\.md$/, "").split(".")
-    return `${parts.slice(0, -1).join(".")}.${pageNames?.[pathname] ?? parts[parts.length - 1]}`
+    const lookupName = pageNames?.[canonicalPathname]
+        ?? findCanonicalElementName(pageNames, pluginName, parts[parts.length - 1])
+        ?? parts[parts.length - 1]
+    return `${parts.slice(0, -1).join(".")}.${lookupName}`
 })()
 
-try {
-    const mappedUrl = redirectAlias(
-        aliasMapping,
-        pathname,
-        pageList,
-        pluginType,
-    )
-    if (mappedUrl && mappedUrl !== pathname)
-        return Astro.redirect(mappedUrl, 301)
-} catch {
-    // do nothing if plugin not found
+function findCanonicalElementName(
+    map: Record<string, string> | undefined,
+    plugin: string | undefined,
+    lowerName: string,
+): string | undefined {
+    if (!map || !plugin) return undefined
+    const prefix = `/plugins/${plugin}/`
+    const target = lowerName.toLowerCase()
+    for (const [key, value] of Object.entries(map)) {
+        if (key.startsWith(prefix) && key.toLowerCase().endsWith("." + target)) {
+            return value
+        }
+    }
+    return undefined
+}
+
+if (!versionState.version) {
+    try {
+        const mappedUrl = redirectAlias(
+            aliasMapping,
+            pathname,
+            pageList,
+            pluginType,
+        )
+        if (mappedUrl && mappedUrl !== pathname)
+            return Astro.redirect(mappedUrl, 301)
+    } catch {
+        // do nothing if plugin not found
+    }
 }
 
 const sidebarPluginData = generateSidebarPluginData(
@@ -86,12 +171,47 @@ const sidebarPluginData = generateSidebarPluginData(
     allPluginMetadata,
 )
 
-const [page, { blueprintCounts, relatedBlogs }] = await Promise.all([
+const [pageResult, { blueprintCounts, relatedBlogs }] = await Promise.all([
     pluginType
-        ? fetchPageDefinition(pluginType)
-        : Promise.resolve(sidebarPluginData),
+        ? fetchPageDefinition(pluginType, pluginName, versionState.version)
+        : Promise.resolve({ status: "ready" as const, page: sidebarPluginData }),
     fetchSecondaryData(pluginName),
 ])
+
+// Versioned-doc UX. For an archived URL the backend answers one of:
+//   pending     → docs are generating in the background. Show latest as fallback + a loading
+//                 banner, and let the client poll until the versioned doc is ready.
+//   unavailable → either the task didn't exist in this (already-indexed) version, or the version's
+//                 docs can't be served at all (JAR removed from Maven / not in our catalog).
+let pendingVersionedDoc = false
+let unavailableVersionedDoc = false
+let pageResolved: typeof pageResult = pageResult
+if (versionState.isArchived && pluginType) {
+    if (pageResult.status === "pending") {
+        pendingVersionedDoc = true
+        pageResolved = await fetchPageDefinition(pluginType)
+    } else if (pageResult.status === "unavailable") {
+        // Version is indexed and has other tasks, just not this FQCN → the task didn't exist in
+        // this release. Send the user to the version root so they can see what did exist.
+        const versionHasOtherTasks = versionElements !== null && versionElements.size > 0
+        if (versionHasOtherTasks) {
+            return Astro.redirect(`/plugins/${pluginName}/v${versionState.version}`, 301)
+        }
+        // A real release whose docs we cannot serve. Keep latest docs visible and tell the user
+        // the archived version is unavailable (no redirect, no polling).
+        unavailableVersionedDoc = true
+        pageResolved = await fetchPageDefinition(pluginType)
+    }
+} else if (versionState.isArchived && !pluginType) {
+    // Overview / subgroup page (no specific class). The /subgroups endpoint's status drives the
+    // banner: pending = loading + poll; unavailable = "not available"; ready = sidebar filtered.
+    if (versionElementsStatus === "pending") {
+        pendingVersionedDoc = true
+    } else if (versionElementsStatus === "unavailable") {
+        unavailableVersionedDoc = true
+    }
+}
+const page = pageResolved.page
 
 const {
     effectiveSubGroup,
@@ -119,7 +239,7 @@ const {
     pluginName,
     subGroup,
     pluginType,
-    pathname,
+    pathname: canonicalPathname,
     pageNames,
     allPlugins,
     allPluginMetadata,
@@ -133,11 +253,13 @@ if (
     page === null ||
     !pluginsWithoutDeprecated.some(p => matchesSubGroup(p, effectiveSubGroup))
 ) {
-    console.warn("Redirecting due to no content")
-    return Astro.redirect(
-        `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
-        301,
-    )
+    if (!versionState.version) {
+        console.warn("Redirecting due to no content")
+        return Astro.redirect(
+            `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
+            301,
+        )
+    }
 }
 
 const latestVersion = githubVersions.versions?.[0]
@@ -220,14 +342,24 @@ const pluginSchema = pluginType
                 pluginsWithoutDeprecated={prunedPluginsWithoutDeprecated}
                 pluginName={pluginName}
                 title={rootPluginTitle}
-                routeParts={splitRouteSlug}
+                routeParts={canonicalPathname.replace(/^\/plugins\//, "").split("/")}
                 client:idle
             />
         </div>
         <article class="bd-main">
+            {
+                versionState.version && (
+                    <ArchivedBanner
+                        version={versionState.version}
+                        latestHref={canonicalPathname}
+                        pending={pendingVersionedDoc}
+                        unavailable={unavailableVersionedDoc}
+                    />
+                )
+            }
             <div class="bd-title">
                 <Breadcrumb
-                    slug={pathname}
+                    slug={canonicalPathname}
                     {pageList}
                     pageNames={pageNamesHeading}
                 />
@@ -244,12 +376,12 @@ const pluginSchema = pluginType
             </div>
 
             {
-                pluginType ? (
+                pluginType && (pageWithToc.body as any)?.jsonSchema ? (
                     <DefinitionView
                         schema={(pageWithToc.body as any).jsonSchema}
                         pluginType={pluginType}
                     />
-                ) : (
+                ) : pluginType ? null : (
                     <SubgroupView
                         {pluginsWithoutDeprecated}
                         {subGroupsIcons}
@@ -289,11 +421,58 @@ const pluginSchema = pluginType
                 metadata={currentPluginMetadata}
                 title={headingTitle}
                 url={Astro.url.href}
+                pluginName={pluginName}
+                pluginType={pluginType}
+                currentTail={splitRouteSlug.slice(1).join("/")}
+                currentVersion={versionState.version}
                 client:idle
             />
         </div>
     </PluginLayout>
 </Layout>
+
+{
+    pendingVersionedDoc && pluginName && versionState.version && (
+        <script
+            is:inline
+            define:vars={{
+                // Task pages poll the specific definition; overview/subgroup pages poll the elements
+                // endpoint. Both flip to a terminal status (200/404) when generation finishes or fails.
+                pollUrl: pluginType
+                    ? `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/definitions/${pluginType}`
+                    : `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/subgroups`,
+                pollIntervalMs: 4000,
+                maxPollAttempts: 75,
+            }}
+        >
+            (function pollVersionedDoc() {
+                let attempts = 0
+                function tick() {
+                    attempts++
+                    fetch(pollUrl, { method: "GET", cache: "no-store" })
+                        .then(function (r) {
+                            // 202 = still generating → keep waiting. Any other status is terminal:
+                            // 200 (docs ready) or 404 (generation failed / unavailable). Reload so the
+                            // server re-renders the correct state (archived docs, or "not available").
+                            if (r.status === 202) {
+                                if (attempts < maxPollAttempts) {
+                                    setTimeout(tick, pollIntervalMs)
+                                }
+                                return
+                            }
+                            window.location.reload()
+                        })
+                        .catch(function () {
+                            if (attempts < maxPollAttempts) {
+                                setTimeout(tick, pollIntervalMs)
+                            }
+                        })
+                }
+                setTimeout(tick, pollIntervalMs)
+            })()
+        </script>
+    )
+}
 
 <style lang="scss">
     .bd-main {

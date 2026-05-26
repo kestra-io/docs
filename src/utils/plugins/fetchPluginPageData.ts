@@ -2,13 +2,23 @@ import { API_URL } from "astro:env/client"
 import type { JSONSchema } from "./schema"
 import type { Plugin, PluginMetadata } from "./plugin"
 
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCached, $fetchApiRawCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { retrieveRepoReleases } from "../../pages/api/github-releases"
 import type { PluginPage } from "./types"
 
 const EE_RELEASES_PAGE_SIZE = 100
+
+// HTTP status used by the versioned endpoint to signal a background generation is in progress.
+const HTTP_ACCEPTED = 202
+
+export type PageFetchStatus = "ready" | "pending" | "unavailable"
+
+export interface PageFetchResult {
+    status: PageFetchStatus
+    page: PluginPage | null
+}
 
 export async function fetchInitialPluginData(pluginName: string, githubReleaseRepo: string, isEePlugin: boolean) {
     const [githubVersions, artifactsData, allPlugins, allPluginMetadata, pluginsInformations] =
@@ -69,21 +79,77 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
     return { githubVersions, allPlugins, allPluginMetadata, pluginsInformations }
 }
 
-export async function fetchPageDefinition(pluginType: string): Promise<PluginPage | null> {
+/**
+ * Versioned endpoint may return 202 while the backend is generating docs for a cold (artifactId, version).
+ * Caller can use status to render the latest version as fallback content with a loading banner, then poll.
+ */
+export async function fetchPageDefinition(
+    pluginType: string,
+    pluginName?: string,
+    version?: string,
+): Promise<PageFetchResult> {
+    const isVersioned = Boolean(version && pluginName)
+    const url = isVersioned
+        ? `/plugins/${pluginName}/versions/${version}/definitions/${pluginType}`
+        : `/plugins/definitions/${pluginType}?markdown=false`
+
     try {
+        if (isVersioned) {
+            const response = await $fetchApiRawCached(url)
+            if (response.status === HTTP_ACCEPTED) {
+                return { status: "pending", page: null }
+            }
+            if (!response.ok) {
+                return { status: "unavailable", page: null }
+            }
+            const pageData = await response.json() as {
+                markdown: string
+                schema: JSONSchema & { properties: { $deprecated?: "true" | "false" } }
+            }
+            return { status: "ready", page: pageDataToPluginPage(pageData) }
+        }
+
         const pageData = await $fetchApiCached<{
             markdown: string
             schema: JSONSchema & { properties: { $deprecated?: "true" | "false" } }
-        }>(`/plugins/definitions/${pluginType}?markdown=false`)
-
-        if (pageData.schema.properties.$deprecated === "true") return null
-
-        const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
-        const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
-
-        return { name, type: definitionType, ...nuxtBlocksFromJsonSchema(pageData.schema) } as any
+        }>(url)
+        return { status: "ready", page: pageDataToPluginPage(pageData) }
     } catch {
-        return null
+        return { status: "unavailable", page: null }
+    }
+}
+
+function pageDataToPluginPage(pageData: {
+    markdown: string
+    schema: JSONSchema & { properties: { $deprecated?: "true" | "false" } }
+}): PluginPage | null {
+    if (pageData.schema.properties.$deprecated === "true") return null
+    const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
+    const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
+    return { name, type: definitionType, ...nuxtBlocksFromJsonSchema(pageData.schema) } as any
+}
+
+export interface VersionedSubgroupsResult {
+    status: PageFetchStatus
+    subgroups: Plugin[] | null
+}
+
+export async function fetchVersionedSubgroups(
+    pluginName: string,
+    version: string,
+): Promise<VersionedSubgroupsResult> {
+    const url = `/plugins/${pluginName}/versions/${version}/subgroups`
+    try {
+        const response = await $fetchApiRawCached(url)
+        if (response.status === HTTP_ACCEPTED) {
+            return { status: "pending", subgroups: null }
+        }
+        if (!response.ok) {
+            return { status: "unavailable", subgroups: null }
+        }
+        return { status: "ready", subgroups: (await response.json()) as Plugin[] }
+    } catch {
+        return { status: "unavailable", subgroups: null }
     }
 }
 

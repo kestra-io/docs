@@ -16,14 +16,32 @@ export interface ReleaseInfo {
     releaseNotesUrl?: string | null
 }
 
+/**
+ * Compare two semver-ish version strings ("1.3.20", "1.10.2") for descending sort.
+ * Date sort is wrong for repos with parallel release lines (e.g. Kestra core: 1.1.x and 1.3.x
+ * release concurrently — a recent 1.1.x patch was appearing above older 1.3.x in the dropdown).
+ */
+function compareVersionsDesc(a: string, b: string): number {
+    const partsA = a.split(".").map((n) => parseInt(n, 10) || 0)
+    const partsB = b.split(".").map((n) => parseInt(n, 10) || 0)
+    const len = Math.max(partsA.length, partsB.length)
+    for (let i = 0; i < len; i++) {
+        const diff = (partsB[i] ?? 0) - (partsA[i] ?? 0)
+        if (diff !== 0) return diff
+    }
+    return 0
+}
+
 export async function retrieveRepoReleases(repo: string) {
     if (DISABLE_GITHUB) {
         return { versions: [] }
     }
     const headers: Record<string, string> = { "User-Agent": "request" }
+    const token = process.env.GITHUB_TOKEN
+    if (token) headers["Authorization"] = `Bearer ${token}`
 
     const response = await fetch(
-        `https://api.github.com/repos/kestra-io/${repo}/releases`,
+        `https://api.github.com/repos/kestra-io/${repo}/releases?per_page=100`,
         {
             headers,
         },
@@ -52,11 +70,7 @@ export async function retrieveRepoReleases(repo: string) {
                 const major = parseInt(v.version.split(".")[0])
                 return !isNaN(major) && major >= 1
             })
-            .toSorted((a, b) => {
-                const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0
-                const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0
-                return bTime - aTime
-            })
+            .toSorted((a, b) => compareVersionsDesc(a.version, b.version))
 
         return { versions }
     } catch (error) {
