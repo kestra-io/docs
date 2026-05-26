@@ -84,8 +84,7 @@ tasks:
           type: io.kestra.plugin.core.runner.Process
         beforeCommands:
           - python -m venv venv
-          - source venv/bin/activate
-          - pip install pandas
+          - ./venv/bin/pip install pandas
         script: |
           import pandas as pd
           print(pd.__version__)
