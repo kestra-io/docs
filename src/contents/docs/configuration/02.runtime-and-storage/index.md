@@ -426,7 +426,7 @@ kestra:
 If `service-account` is omitted, Kestra falls back to default GCP credentials, which is usually the right choice on GKE or GCE.
 
 :::alert{type="warning"}
-The same env-var caveat noted for [S3](#s3) applies to GCS. `KESTRA_STORAGE_GCS_PROJECT_ID` can be parsed as `kestra.storage.gcs.project.id` (nested) and rejected by the GCS storage plugin's Jackson mapper with `UnrecognizedPropertyException`. Use double underscores on the multi-word segment, or keep the configuration in YAML:
+`KESTRA_STORAGE_GCS_PROJECT_ID` can be parsed as `kestra.storage.gcs.project.id` (nested) and rejected by the GCS storage plugin's Jackson mapper with `UnrecognizedPropertyException`. Use double underscores on the multi-word segment, or keep the configuration in YAML:
 
 ```yaml
 # Helm values.yaml
