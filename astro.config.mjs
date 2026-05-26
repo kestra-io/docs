@@ -215,6 +215,7 @@ export default defineConfig({
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
         "/docs/migration-guide/v0.24.0/retries-maxAttempts":
             "/docs/migration-guide/v0.24.0/retries-maxattempts",
+        "/preview-access": "/get-started",
         "/cloud-early-access": "/cloud",
     },
     vite: {
