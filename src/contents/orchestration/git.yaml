@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Make Git the source of truth for every flow with a declarative orchestration engine that listens to schedules or PR webhooks, handles bidirectional namespace sync with dryRun diffs and protected namespaces, and chains Clone with downstream tools (<a href='/orchestration/terraform'>Terraform</a>, dbt, <a href='/orchestration/ansible'>Ansible</a>) pulled fresh at runtime in one audited flow. <a href='/use-cases/stories/scaling-big-data-operations'>Acxiom</a> ships orchestrator state through Git with named approval gates between staging and prod."
+
 pillars:
   title: "Around every flow, every namespace, every tenant."
   subtitle: "Kestra runs orchestration. Git holds the source of truth for what runs. The plugin lets you choose which side wins, push and pull by artifact type, sync an entire tenant, dryRun every change first, and clone external repos at runtime so the working directory is always fresh."
@@ -174,6 +176,23 @@ blueprints:
       title: "Sync flows from main into Kestra on a 5-minute schedule"
       description: "A system-namespace flow runs NamespaceSync with sourceOfTruth: GIT every five minutes. Flows added or removed in main appear or disappear in Kestra. protectedNamespaces guards system namespaces from deletion. The diff is posted to Slack."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Every 5 minutes"
+          sublabel: "schedule */5"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Git to Kestra reconcile"
+          sublabel: "sourceOfTruth: GIT"
+        tools:
+          - label: "NamespaceSync"
+            pluginClass: "io.kestra.plugin.git.NamespaceSync"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Drift reconciled"
+          sublabel: "main = Kestra"
+          icon: "mdi:source-branch-sync"
       plugins:
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.git.NamespaceSync"
@@ -221,6 +240,27 @@ blueprints:
       title: "Export Kestra to Git every hour, dryRun first, apply after review"
       description: "Hourly PushFlows in dryRun mode computes the diff. The diff goes to Slack for review. A Pause task waits for human approval. On resume, the same task re-runs with dryRun: false and commits. Every Kestra change ends up in Git with attributable authorship."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Hourly schedule"
+          sublabel: "cron 0 * * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Kestra to Git with review"
+          sublabel: "dryRun then apply"
+        tools:
+          - label: "PushFlows dryRun"
+            pluginClass: "io.kestra.plugin.git.PushFlows"
+          - label: "Slack diff"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "PushFlows apply"
+            pluginClass: "io.kestra.plugin.git.PushFlows"
+        outcome:
+          label: "Committed + attributed"
+          sublabel: "every change reviewed"
+          icon: "mdi:transfer-up"
       plugins:
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.git.PushFlows"
@@ -288,6 +328,25 @@ blueprints:
       title: "Pin a dbt project ref per execution, no container rebuild"
       description: "Clone the data-platform repo at the branch passed as input, run dbt build against the fresh checkout, post the results to Slack with the revision. The same flow runs feature branches in CI and main in prod without separate flow definitions or image rebuilds."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Schedule or webhook"
+          sublabel: "ref as input"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Clone, build, notify"
+          sublabel: "no image rebuild"
+        tools:
+          - label: "git.Clone"
+            pluginClass: "io.kestra.plugin.git.Clone"
+          - label: "dbt build"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Fresh checkout, dbt run"
+          sublabel: "ref pinned per execution"
+          icon: "mdi:download-outline"
       plugins:
         - "io.kestra.plugin.git.Clone"
         - "io.kestra.plugin.dbt.cli.DbtCLI"

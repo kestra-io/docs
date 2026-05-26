@@ -14,7 +14,10 @@ import CardGrid from "~/components/card/CardGrid.astro"
 import SplitBadgeCard from "~/components/card/SplitBadgeCard.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
 
+import { Icon } from "astro-icon/components"
+
 import Hero from "~/components/orchestrate/Hero.astro"
+import OrchPattern from "~/components/orchestrate/OrchPattern.astro"
 import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
 
 import { fetchPluginIcon } from "~/utils/pluginIcon"
@@ -72,15 +75,21 @@ const {
     description,
     tool,
     hero,
+    nutshell,
     pillars,
     useCases,
     quotes,
     blueprints,
     comparison,
+    postCompareCta,
     faq,
     seeHow,
     resources,
 } = entry.data
+
+const allBlueprintsHaveFlowDiagram =
+    blueprints.items.length > 0 &&
+    blueprints.items.every((bp) => bp.flowDiagram)
 
 let pluginIcon = ""
 try {
@@ -170,6 +179,12 @@ const comparisonTableData = comparison.rows.map((row) => {
         toolColor={tool.color}
     />
 
+    <OrchPattern
+        nutshell={nutshell}
+        blueprints={blueprints.items}
+        toolColor={tool.color}
+    />
+
     <CardGrid title={pillars.title} subtitle={pillars.subtitle} items={pillars.items} />
 
     <section class="orch-usecases">
@@ -197,11 +212,17 @@ const comparisonTableData = comparison.rows.map((row) => {
 
     <Quotes quotes={quoteItems} client:load />
 
-    <BlueprintTabs
-        title={blueprints.title}
-        lead={blueprints.lead}
-        items={blueprints.items}
-    />
+    {
+        !allBlueprintsHaveFlowDiagram && (
+            <div id="blueprints">
+                <BlueprintTabs
+                    title={blueprints.title}
+                    lead={blueprints.lead}
+                    items={blueprints.items}
+                />
+            </div>
+        )
+    }
 
     <div class="orch-compare">
         <FeatureGrid
@@ -231,6 +252,36 @@ const comparisonTableData = comparison.rows.map((row) => {
                     ))
                 }
             </Fragment>
+            {
+                postCompareCta && (
+                    <Fragment slot="cta">
+                        <div class="post-compare">
+                            <div class="post-compare__text">
+                                {postCompareCta.eyebrow && (
+                                    <span class="post-compare__eyebrow">
+                                        {postCompareCta.eyebrow}
+                                    </span>
+                                )}
+                                <span class="post-compare__title">
+                                    {postCompareCta.title}
+                                </span>
+                                {postCompareCta.description && (
+                                    <p class="post-compare__lead">
+                                        {postCompareCta.description}
+                                    </p>
+                                )}
+                            </div>
+                            <a
+                                href={postCompareCta.cta.href}
+                                class="btn btn-secondary post-compare__cta"
+                            >
+                                {postCompareCta.cta.label}
+                                <Icon name="mdi:chevron-right" width={16} height={16} />
+                            </a>
+                        </div>
+                    </Fragment>
+                )
+            }
         </FeatureGrid>
     </div>
 
@@ -348,7 +399,22 @@ const comparisonTableData = comparison.rows.map((row) => {
         :global(th),
         :global(td) {
             width: auto !important;
-            padding: 1rem 1.25rem !important;
+            padding: 0.75rem 1rem !important;
+            height: auto !important;
+            font-size: $font-size-sm !important;
+            line-height: 1.45 !important;
+            vertical-align: top !important;
+        }
+
+        :global(th) {
+            padding-top: 1rem !important;
+            padding-bottom: 0.875rem !important;
+        }
+
+        :global(td:first-child),
+        :global(th:first-child) {
+            min-width: 11rem;
+            max-width: 14rem;
         }
 
         :global(.th-competitor) {
@@ -383,6 +449,65 @@ const comparisonTableData = comparison.rows.map((row) => {
 
         :global(.check-icon) {
             color: #22c55e !important;
+        }
+
+        :global(.post-compare) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-top: 1.75rem;
+            padding: 1.125rem 1.5rem;
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.625rem;
+            box-shadow: 2px 3px 12px 0 var(--ks-shadows-light);
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem 1.125rem;
+                gap: 0.875rem;
+            }
+        }
+
+        :global(.post-compare__text) {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        :global(.post-compare__eyebrow) {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ks-content-color-highlight);
+        }
+
+        :global(.post-compare__title) {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.35;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.post-compare__lead) {
+            margin: 0;
+            font-size: 0.8125rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        :global(.post-compare__cta) {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
     }
 

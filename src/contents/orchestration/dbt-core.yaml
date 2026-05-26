@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Run dbt Core with a declarative workflow engine that listens to cron, Airbyte completions, or <a href='/orchestration/aws'>S3 file landings</a>, handles per-model retries with full test failure context, named approval gates between staging and prod, and chains dbt with Airbyte, Hightouch, and the rest of your data stack in one audited flow. <a href='/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra'>Gorgias</a> runs this exact ingest-transform-activate pattern in production."
+
 pillars:
   title: "Around every dbt build."
   subtitle: "dbt Core solves transformation. Kestra solves everything around it: when it runs, what triggers it, what happens next, and who ran what and when."
@@ -189,6 +191,25 @@ blueprints:
       title: "Scheduled run with alerting"
       description: "Runs <code>dbt run</code> then <code>dbt test</code> every morning at 5 AM. Any failure routes immediately to Slack with a link to the full execution, showing which task failed and the complete output. The team knows before they sit down for standup."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Nightly schedule"
+          sublabel: "cron 0 5 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "dbt run + test"
+          sublabel: "fail-fast with context"
+        tools:
+          - label: "dbt run"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "dbt test"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "Slack alert"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Models built + tested"
+          sublabel: "per-model failure linked"
+          icon: "mdi:clock-outline"
       plugins:
         - "io.kestra.plugin.dbt.cli.DbtCLI"
         - "io.kestra.plugin.core.trigger.Schedule"
@@ -229,6 +250,27 @@ blueprints:
       title: "Production run with approval gate"
       description: "Staging runs and tests first. The flow pauses for human review before promoting to production. Promotion proceeds only after explicit approval. The reviewer's identity and timestamp are logged automatically in the execution history."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Promotion trigger"
+          sublabel: "manual or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Staging, gate, prod"
+          sublabel: "named reviewer logged"
+        tools:
+          - label: "dbt staging run"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "dbt staging test"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "dbt prod run"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+        outcome:
+          label: "Prod refreshed + audited"
+          sublabel: "approver + timestamp"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.dbt.cli.DbtCLI"
         - "io.kestra.plugin.core.flow.Pause"
@@ -282,6 +324,27 @@ blueprints:
       title: "Full data stack pipeline"
       description: "Airbyte ingests raw data, dbt builds all models and runs tests, Hightouch syncs the results downstream. All three steps run in a single flow. If dbt fails, Kestra retries it without re-running the Airbyte sync. This is the pattern Gorgias runs in production."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Daily schedule"
+          sublabel: "cron 0 4 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Ingest, transform, activate"
+          sublabel: "Gorgias pattern"
+        tools:
+          - label: "airbyte.Sync"
+            pluginClass: "io.kestra.plugin.airbyte.connections.Sync"
+          - label: "dbt build"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "Hightouch sync"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Stack refreshed end-to-end"
+          sublabel: "step-level retries"
+          icon: "mdi:pipe-disconnected"
       plugins:
         - "io.kestra.plugin.airbyte.connections.Sync"
         - "io.kestra.plugin.dbt.cli.DbtCLI"
