@@ -39,6 +39,10 @@ An AI pipeline is rarely just a single LLM call. It typically involves ingesting
 
 One plugin group is purpose-built for AI: [`plugin-ai`](/plugins/plugin-ai), which provides the shared abstractions that power Kestra's AI tasks. This post covers the rest of the ecosystem — from format conversion and serialization with [`plugin-serdes`](/plugins/plugin-serdes) to vector databases, document extraction, scripting, and everything else AI workflows draw on, organized by the role each group plays.
 
+::alert{type="info"}
+All AI-related plugins are tagged with the **AI** category on the [Plugins page](https://kestra.io/plugins?category=AI). Use the category filter to browse them at a glance without scrolling through the full catalog.
+::
+
 ## LLM Providers
 
 Kestra ships a dedicated plugin for every major LLM provider. Each integrates directly as a Kestra task, meaning retries, error handling, secret management, and observability come for free.
