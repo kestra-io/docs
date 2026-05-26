@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace VMware Aria Automation (vRA/vRO) with a declarative workflow engine that listens to vCenter events, cron, or HTTP signals, handles snapshot-gated change with automatic rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. <a href='/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra'>BHP cut vRA licensing 90%</a> and ships new VMs 30× faster across four isolated OT control planes."
+nutshell: "Replace VMware Aria Automation (vRA/vRO) with a declarative workflow engine that listens to vCenter events, cron, or HTTP signals, handles snapshot-gated change with automatic rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Keep vCenter and ESXi in place; replace the vRA/vRO automation layer above them with declarative YAML, per-zone control planes, and one execution history across the stack."
 
 pillars:
   title: "Above vCenter, around every VM operation."
@@ -165,18 +165,7 @@ useCases:
           description: "Every submission goes through the same audited, retry-aware execution."
           wide: true
 
-quotes:
-  - quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!"
-    author: "Principal Hosting · BHP"
-    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
-    logoFile: "bhp"
-    kpis:
-      - value: "-90%"
-        name: "Licensing cost vs Aria Automation"
-      - value: "30×"
-        name: "Faster time to deliver"
-      - value: "4+1"
-        name: "Isolated platforms (4 OT, 1 IT)"
+quotes: []
 
 blueprints:
   title: "Blueprints for VMware orchestration."
@@ -516,7 +505,7 @@ faq:
   - question: "Does Kestra replace VMware vCenter and ESXi?"
     answer: "No. vCenter and ESXi continue to run your VMs. Kestra calls the vCenter and ESXi APIs through the <a href='/plugins/plugin-ee-vmware'>VMware plugin</a> to run the operations you used to script: CloneVm, CreateVmSnapshot, RestoreVmFromSnapshot, UpdateVm, and so on. The hypervisor stays where it is. Kestra orchestrates the workflow around it."
   - question: "What about vRealize Automation (vRA) and vRealize Orchestrator (vRO)?"
-    answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. The vRA service catalog becomes Kestra Apps with typed inputs and RBAC. vRO actions (JavaScript, PowerShell, or Python) become Kestra YAML flows that can still call the same scripts. vCenter and ESXi stay where they are. See <a href='/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra'>how BHP cut vRA licensing cost 90%</a> with this exact migration pattern."
+    answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. The vRA service catalog becomes Kestra Apps with typed inputs and RBAC. vRO actions (JavaScript, PowerShell, or Python) become Kestra YAML flows that can still call the same scripts. vCenter and ESXi stay where they are."
   - question: "Does the plugin work with both vCenter-managed clusters and standalone ESXi hosts?"
     answer: "Yes. The plugin ships two task groups: io.kestra.plugin.ee.vmware.vcenter.* for vCenter-managed environments, and io.kestra.plugin.ee.vmware.esxi.* for standalone ESXi hosts. The task names match (CreateVm, StartVm, CreateVmSnapshot, RestoreVmFromSnapshot, and so on), so the same flow shape works against either endpoint. Template and clone operations are vCenter-only."
   - question: "How do the vCenter and ESXi event triggers actually work?"
@@ -538,11 +527,6 @@ resources:
       description: "The VMware plugin end to end: vSphere, vCenter, ESXi lifecycle, snapshots, templates, and event-based triggers."
       href: "/blogs/control-vmware-with-kestra"
       image: "blogs/control-vmware-with-kestra/control-vmware-with-kestra.jpg"
-    - kind: "story"
-      title: "Securing hybrid cloud automation across IT and OT"
-      description: "How a Fortune 500 industrial company replaced VMware Aria Automation with Kestra, with cost reduction, faster delivery, and isolated control planes."
-      href: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
-      image: "customer-stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra/hero.jpg"
     - kind: "docs"
       title: "Automate infrastructure workflows in Kestra"
       description: "How Kestra orchestrates VMware, Docker, Terraform, OpenTofu, Ansible, and cloud CLIs in one declarative flow."
