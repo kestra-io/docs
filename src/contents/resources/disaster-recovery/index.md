@@ -34,7 +34,7 @@ In an IT context, disaster recovery (DR) is the process of reestablishing vital 
 
 Two key metrics define the effectiveness of a DR plan:
 *   **Recovery Time Objective (RTO):** The maximum acceptable amount of time that an application, system, or business process can be down after a failure or disaster occurs.
-*   **Recovery Point Objective (RPO):** The maximum acceptable amount of data loss measured in time. It defines the point in time to which data must be recoverable. For example, an RPO of one hour means that data must be restored to a state that is no more than one hour old.
+*   **Recovery Point Objective (RPO):** The maximum acceptable amount of data loss measured in time. It defines the point in time to which data must be recoverable. For example, an RPO of one hour means that data must be restored to a state that is no more than one hour old. Hypervisor-native recovery points are the building block here — Kestra drives [crash- or app-consistent recovery points on Nutanix AHV](/orchestration/nutanix) and [snapshot-gated rollback on VMware vSphere](/orchestration/vmware) and [Proxmox VE](/orchestration/proxmox).
 
 ### Key components of a disaster recovery plan
 
@@ -111,9 +111,9 @@ Modern disaster recovery requires speed, reliability, and precision—all areas 
 Here’s how Kestra enables a more robust DR strategy:
 *   **Declarative Workflows:** DR plans are defined in simple, human-readable YAML files. This makes them easy to version control, review, and audit. You can manage your DR plan using [GitOps principles](https://kestra.io/docs/version-control-cicd/git), ensuring a single source of truth.
 *   **Automated Remediation:** Kestra can automatically trigger recovery workflows in response to alerts from monitoring systems. For example, JPMorgan Chase uses Kestra for automated remediation in its cybersecurity analytics workflows, a principle directly applicable to incident response.
-*   **Polyglot Execution:** DR often involves a mix of technologies. Kestra can orchestrate any tool or script needed for recovery, whether it's running a Python script to validate data, applying a [Terraform configuration](https://kestra.io/docs/terraform) to provision new infrastructure, or executing a shell command to restart a service.
+*   **Polyglot Execution:** DR often involves a mix of technologies. Kestra can orchestrate any tool or script needed for recovery, whether it's running a Python script to validate data, applying a [Terraform configuration](/orchestration/terraform) to provision new infrastructure, or executing a shell command to restart a service.
 *   **Automated Testing:** The best DR plan is one that is regularly tested. Kestra allows you to schedule automated DR drills and even use [built-in unit tests](https://kestra.io/docs/enterprise/governance/unit-tests) to validate your recovery flows, ensuring they will work when you need them most.
-*   **Multi-Cloud and Hybrid Automation:** Kestra operates across any environment, making it ideal for automating failover and recovery in complex multi-cloud or hybrid setups. This is crucial for building a truly [high-availability system](https://kestra.io/docs/administrator-guide/high-availability).
+*   **Multi-Cloud and Hybrid Automation:** Kestra operates across any environment, making it ideal for automating failover and recovery in complex multi-cloud or hybrid setups spanning [AWS](/orchestration/aws), [VMware](/orchestration/vmware), [Proxmox](/orchestration/proxmox), and [Nutanix](/orchestration/nutanix). This is crucial for building a truly [high-availability system](https://kestra.io/docs/administrator-guide/high-availability).
 
 ```yaml
 id: database-failover-drill
