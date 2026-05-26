@@ -9,7 +9,6 @@ import SeeHow from "~/components/common/SeeHow.astro"
 import Link from "~/components/common/Link.astro"
 import BlogList from "~/components/common/BlogList.astro"
 import ResourceList from "~/components/common/ResourceList.astro"
-import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import CardGrid from "~/components/card/CardGrid.astro"
 import SplitBadgeCard from "~/components/card/SplitBadgeCard.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
@@ -86,10 +85,6 @@ const {
     seeHow,
     resources,
 } = entry.data
-
-const allBlueprintsHaveFlowDiagram =
-    blueprints.items.length > 0 &&
-    blueprints.items.every((bp) => bp.flowDiagram)
 
 let pluginIcon = ""
 try {
@@ -211,18 +206,6 @@ const comparisonTableData = comparison.rows.map((row) => {
     </section>
 
     <Quotes quotes={quoteItems} client:load />
-
-    {
-        !allBlueprintsHaveFlowDiagram && (
-            <div id="blueprints">
-                <BlueprintTabs
-                    title={blueprints.title}
-                    lead={blueprints.lead}
-                    items={blueprints.items}
-                />
-            </div>
-        )
-    }
 
     <div class="orch-compare">
         <FeatureGrid
