@@ -172,7 +172,7 @@ A typical RAG pipeline in Kestra draws on four to six of these plugin groups in 
 1. **Ingest**: `plugin-tika` parses source documents; `plugin-apify` scrapes web content
 2. **Transform**: `plugin-transform` cleans and chunks text; `plugin-serdes` converts formats
 3. **Embed**: `plugin-openai` or `plugin-huggingface` generates embedding vectors
-4. **Index**: `plugin-weaviate` or `plugin-opensearch` stores and indexes the vectors
+4. **Index**: `plugin-weaviate`, `plugin-pinecone`, or `plugin-opensearch` stores and indexes the vectors
 5. **Retrieve and generate**: `plugin-anthropic` or `plugin-gemini` answers queries using retrieved context
 6. **Validate**: `plugin-soda` checks data quality at each stage; `plugin-datahub` records lineage
 
