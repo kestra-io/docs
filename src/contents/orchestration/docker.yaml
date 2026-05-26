@@ -7,8 +7,8 @@ tool:
   color: "#2496ED"
 
 hero:
-  title: "Your Docker pipelines, fully orchestrated."
-  description: "Build, scan with Trivy, sign with Cosign, and push, all in one flow. Promote the same sha256 digest from staging to prod without rebuilding, bring up Compose stacks for integration tests with guaranteed teardown, and reuse your built image as the next task's runtime."
+  title: "Sign Docker digests once. Promote them everywhere."
+  description: "Build, scan with Trivy, sign with Cosign, and push in one flow. Promote the same sha256 digest from staging to prod without rebuilding, bring up Compose stacks for integration tests with guaranteed teardown, and reuse images as task runtimes."
   cta:
     label: "Book a Demo"
     href: "/demo"

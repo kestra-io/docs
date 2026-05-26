@@ -58,9 +58,9 @@ The most widely adopted IaC tools in 2026:
 
 | Tool | Language | Cloud scope | Best for |
 | --- | --- | --- | --- |
-| **Terraform** | HCL | Multi-cloud | De facto standard for cloud-agnostic infrastructure |
+| **[Terraform](/orchestration/terraform)** | HCL | Multi-cloud | De facto standard for cloud-agnostic infrastructure |
 | **AWS CloudFormation** | YAML / JSON | AWS-only | Deep AWS integration, native service coverage |
-| **Ansible** | YAML | Multi-cloud | Agentless config + lightweight provisioning |
+| **[Ansible](/orchestration/ansible)** | YAML | Multi-cloud | Agentless config + lightweight provisioning |
 | **Pulumi** | Python / TypeScript / Go | Multi-cloud | Teams preferring general-purpose languages over HCL |
 | **Azure Resource Manager / Bicep** | Bicep / JSON | Azure-only | Azure-native, integrated with Azure Policy |
 
@@ -90,8 +90,8 @@ Infrastructure automation in IT typically covers four layers:
 
 - **Hardware** — physical servers, storage devices, networking equipment. Automation here means API-driven provisioning (cloud VMs) or software-defined infrastructure (Nutanix, VMware).
 - **Software** — operating systems, middleware, applications, databases. Configuration management (Ansible, Puppet, Chef) enforces desired state.
-- **Networking** — routers, switches, load balancers, firewalls, VPNs, DNS. Network-as-Code tools (Terraform providers for Cloudflare, AWS, Cisco ACI) codify network configuration.
-- **Security** — identity and access management, encryption, monitoring, compliance tooling. Policy-as-Code tools (OPA, Sentinel, Kyverno) enforce security at deploy time.
+- **Networking** — routers, switches, load balancers, firewalls, VPNs, DNS. Network-as-Code tools (Terraform providers for [Cloudflare](/orchestration/cloudflare), [AWS](/orchestration/aws), Cisco ACI) codify network configuration.
+- **Security** — identity and access management, encryption, monitoring, compliance tooling. Policy-as-Code tools ([OPA](/orchestration/opa), Sentinel, Kyverno) enforce security at deploy time.
 
 A mature automation stack covers all four layers. Automating only one (say, VM provisioning) while leaving the others manual just moves the bottleneck.
 
@@ -108,7 +108,7 @@ Modern IT infrastructure automation most closely resembles **integrated automati
 
 ## A Concrete Example — Provisioning and Configuring in One Workflow
 
-Here's what integrated infrastructure automation looks like in Kestra: provision with Terraform, configure with Ansible, register the new service in a CMDB, and notify the team — all in one declarative workflow.
+Here's what integrated infrastructure automation looks like in Kestra: provision with Terraform, configure with Ansible, register the new service in a [ServiceNow CMDB](/orchestration/servicenow), and notify the team via [Slack](/orchestration/slack) — all in one declarative workflow.
 
 ```yaml
 id: provision_and_configure
@@ -180,7 +180,7 @@ A typical automation stack combines four categories of tools:
 | --- | --- | --- |
 | **IaC provisioning** | Declarative infrastructure | Terraform, Pulumi, CloudFormation |
 | **Configuration management** | Desired-state enforcement | Ansible, Puppet, Chef |
-| **Container orchestration** | Workload runtime | Kubernetes, Docker, ECS |
+| **Container orchestration** | Workload runtime | [Kubernetes](/orchestration/kubernetes), [Docker](/orchestration/docker), ECS |
 | **Workflow orchestration** | End-to-end coordination | Kestra, Airflow, Ansible Automation Platform |
 
 The last category is where many organizations under-invest — and where the most operational leverage lives. For direct comparisons, see [Kestra vs Ansible Automation Platform](/vs/ansible-automation-platform), [Kestra vs Chef](/vs/chef), and [Kestra vs Puppet](/vs/puppet).

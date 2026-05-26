@@ -1,4 +1,4 @@
-title: "Orchestrate dbt Cloud with Kestra: event-driven triggers, full-pipeline coordination, and cross-stack visibility"
+title: "Orchestrate dbt Cloud with Kestra: event-driven triggers and full-pipeline coordination"
 description: "Trigger dbt Cloud jobs when Fivetran finishes, chain with downstream activation, add approval gates, and track every run across your data stack in one place."
 
 tool:
@@ -7,8 +7,8 @@ tool:
   color: "#FF694A"
 
 hero:
-  title: "Your dbt Cloud jobs, fully orchestrated."
-  description: "Trigger dbt Cloud jobs from Fivetran completions, S3 events, or Kafka messages. Coordinate Hightouch syncs after each job, replay any step from history, and span Airbyte, dbt Cloud, and Hightouch in one execution view."
+  title: "Run dbt Cloud jobs the moment data lands."
+  description: "Stop padding cron buffers. Trigger dbt Cloud the moment Fivetran completes, S3 files land, or Kafka events fire. Coordinate Hightouch downstream, gate production behind manual approval, and span every step in one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -22,10 +22,10 @@ pillars:
   items:
     - icon: "mdi:lightning-bolt-outline"
       title: "Event-driven triggers instead of cron-only scheduling"
-      description: "dbt Cloud fires on a cron schedule or a Git event. If your Fivetran sync runs long, dbt starts building on stale data. Kestra triggers the dbt Cloud job the moment the upstream step confirms completion — whether that's a Fivetran sync, a file arrival in S3, or a webhook from any API — and halts the downstream activation layer until dbt confirms success."
+      description: "dbt Cloud fires on a cron schedule or a Git event. If your Fivetran sync runs long, dbt starts building on stale data. Kestra triggers the dbt Cloud job the moment the upstream step confirms completion, whether that's a Fivetran sync, a file arrival in S3, or a webhook from any API. It halts the downstream activation layer until dbt confirms success."
     - icon: "mdi:pipe-disconnected"
       title: "Full-pipeline coordination with step-level retries"
-      description: "dbt Cloud's lineage stops at the dbt boundary. It has no visibility into the Fivetran connector feeding it or the Hightouch sync consuming the output. Kestra runs all three as steps in a single flow. If dbt fails, Kestra retries only the dbt step — Fivetran does not re-sync. Outputs flow forward between steps, and the entire pipeline shares one execution ID."
+      description: "dbt Cloud's lineage stops at the dbt boundary. It has no visibility into the Fivetran connector feeding it or the Hightouch sync consuming the output. Kestra runs all three as steps in a single flow. If dbt fails, Kestra retries only the dbt step. Fivetran does not re-sync. Outputs flow forward between steps, and the entire pipeline shares one execution ID."
     - icon: "mdi:eye-outline"
       title: "Cross-stack execution history with attribution"
       description: "Something breaks in the activation layer. You need to know whether dbt completed cleanly, which run produced the data, and who triggered it. dbt Cloud's history covers the dbt job. It has no record of the Fivetran sync that preceded it or the Hightouch sync that followed. Kestra logs every step across every tool with a trigger source, a timestamp, and a direct link to the failing task."
@@ -117,7 +117,7 @@ useCases:
     - badge: "Multi-env"
       badgeIcon: "mdi:source-branch"
       title: "Chained dbt Cloud jobs with dependency ordering"
-      description: "Some pipelines require multiple dbt Cloud jobs in a specific sequence — ingestion models first, then downstream marts, then final activation models. Kestra runs each job in order, waits for confirmation, and passes the run ID forward. If job 2 fails, job 3 does not start. A single Slack alert links directly to the failed step."
+      description: "Some pipelines require multiple dbt Cloud jobs in a specific sequence: ingestion models first, then downstream marts, then final activation models. Kestra runs each job in order, waits for confirmation, and passes the run ID forward. If job 2 fails, job 3 does not start. A single Slack alert links directly to the failed step."
       flow:
         - node: "dbt job 1"
           label: "ingestion models"
@@ -142,7 +142,7 @@ useCases:
     - badge: "Operations"
       badgeIcon: "mdi:tune-vertical"
       title: "Parameterized job runs with flow inputs"
-      description: "Trigger different dbt Cloud jobs from the same Kestra flow by passing the job ID and custom environment variables as flow inputs at run time. One flow definition covers both the nightly full build job and the on-demand incremental job — the trigger or input determines which job fires, no duplicate flow definitions required."
+      description: "Trigger different dbt Cloud jobs from the same Kestra flow by passing the job ID and custom environment variables as flow inputs at run time. One flow definition covers both the nightly full build job and the on-demand incremental job. The trigger or input determines which job fires, no duplicate flow definitions required."
       flow:
         - node: "trigger"
           label: "on event or input"
@@ -164,9 +164,9 @@ useCases:
 
 quotes:
   - quote: "We switched from orchestrating with dbt Cloud because Kestra hosted Core really well."
-    author: "EVP Analytics — Foundation Data"
+    author: "EVP Analytics, Foundation Data"
     logoFile: "foundation-data"
-  - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle — you give flexibility, but you abstract that with a declarative approach."
+  - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle. You give flexibility, but you abstract that with a declarative approach."
     author: "Lead Data Engineer, Riverside.fm"
     logoFile: "riverside"
 
@@ -280,7 +280,7 @@ blueprints:
               }
     - name: "Chained dbt Cloud jobs"
       title: "Chained dbt Cloud jobs with dependency ordering"
-      description: "Runs three dbt Cloud jobs in order — ingestion models, mart models, activation models. Each step waits for the previous to confirm success before starting. If any job fails, Kestra stops the chain and posts a Slack alert with the run ID of the failing job and a link to the execution."
+      description: "Runs three dbt Cloud jobs in order: ingestion models, mart models, activation models. Each step waits for the previous to confirm success before starting. If any job fails, Kestra stops the chain and posts a Slack alert with the run ID of the failing job and a link to the execution."
       href: "/blueprints"
       plugins:
         - "io.kestra.plugin.dbt.cloud.TriggerRun"
@@ -392,15 +392,15 @@ faq:
   - question: "What's the difference between dbt Cloud's native scheduler and Kestra?"
     answer: "dbt Cloud's scheduler runs dbt jobs on a cron schedule or Git event, handles CI on pull requests, and hosts the dbt IDE. It was designed for dbt-specific workflows. Kestra sits above that and handles everything the dbt Cloud scheduler can't: triggering dbt Cloud jobs when Fivetran finishes, chaining downstream activation steps, adding approval gates between staging and production, and giving you a unified execution history across every tool in the stack. Kestra works with dbt Cloud, not instead of it."
   - question: "What does Kestra add to a dbt Cloud setup?"
-    answer: "When your pipeline also involves Fivetran, Hightouch, or any other tool, dbt Cloud has no mechanism to coordinate those steps — the scheduler was built for dbt workflows. Kestra wraps the entire pipeline: it triggers the dbt Cloud job when the upstream sync completes, waits for dbt to confirm success, then fires the downstream activation layer. Every step shares one execution ID and one place to debug."
+    answer: "When your pipeline also involves Fivetran, Hightouch, or any other tool, dbt Cloud has no mechanism to coordinate those steps. The scheduler was built for dbt workflows. Kestra wraps the entire pipeline: it triggers the dbt Cloud job when the upstream sync completes, waits for dbt to confirm success, then fires the downstream activation layer. Every step shares one execution ID and one place to debug."
   - question: "Can Kestra trigger a dbt Cloud job when Fivetran finishes?"
     answer: "Kestra's Fivetran plugin runs a connector sync and waits for completion before the next task starts. The dbt Cloud task then triggers and waits for the dbt job to confirm success. This replaces the cron schedule that fires whether or not source data is ready, so dbt never builds on stale inputs."
   - question: "How does the approval gate work before a production dbt Cloud job?"
-    answer: "Kestra's Pause task suspends the flow after the staging job completes. The result is surfaced in the Kestra UI. A named reviewer reads it and explicitly resumes the flow. Only then does the production job trigger. The reviewer identity and timestamp are logged automatically in the execution history. This works across any two dbt Cloud job IDs — staging and production are both passed as flow inputs."
+    answer: "Kestra's Pause task suspends the flow after the staging job completes. The result is surfaced in the Kestra UI. A named reviewer reads it and explicitly resumes the flow. Only then does the production job trigger. The reviewer identity and timestamp are logged automatically in the execution history. This works across any two dbt Cloud job IDs: staging and production are both passed as flow inputs."
   - question: "Can Kestra chain multiple dbt Cloud jobs in dependency order?"
     answer: "Each dbt Cloud job runs as a separate task inside a single Kestra flow. Kestra waits for each job to confirm success before starting the next. If job 2 fails, job 3 does not start, and Kestra posts a Slack alert with the run ID of the failing job and a link to the execution. The run IDs flow forward between tasks for traceability."
   - question: "Does Kestra replace dbt Cloud, or does it work alongside it?"
-    answer: "Kestra works alongside dbt Cloud. dbt Cloud keeps running your transformations and managing the dbt IDE, lineage, and CI. Kestra handles the orchestration layer above it: scheduling based on upstream events, chaining with other tools, approval gates, and cross-stack visibility. Teams that want to move from dbt Cloud to dbt Core can also use Kestra — the <code>DbtCLI</code> task runs dbt Core commands directly without needing the dbt Cloud API."
+    answer: "Kestra works alongside dbt Cloud. dbt Cloud keeps running your transformations and managing the dbt IDE, lineage, and CI. Kestra handles the orchestration layer above it: scheduling based on upstream events, chaining with other tools, approval gates, and cross-stack visibility. Teams that want to move from dbt Cloud to dbt Core can also use Kestra. The <code>DbtCLI</code> task runs dbt Core commands directly without needing the dbt Cloud API."
   - question: "Is Kestra self-hosted or managed?"
     answer: "Kestra offers multiple deployment options: fully self-hosted on Docker or Kubernetes, a managed cloud version, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives complete control over where your pipeline execution and credentials live, with no external dependency on Kestra's infrastructure."
 

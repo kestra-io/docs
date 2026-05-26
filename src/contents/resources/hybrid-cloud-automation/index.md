@@ -28,15 +28,15 @@ That's the hybrid cloud — and automating it is where operations teams either s
 
 Hybrid cloud automation manages, orchestrates, and optimizes workloads, resources, and services across a mixed environment — public cloud services, private clouds, and on-premises infrastructure — through automated processes. It turns the fragmented reality of modern IT (different consoles, different APIs, different security models) into a consistent operating layer that teams can reason about.
 
-The key distinction from traditional cloud automation: hybrid cloud automation is **cross-environment by default**. A single workflow can provision a VM in vSphere, deploy a container to EKS, and update a DNS record in Cloudflare — without rewriting the logic for each environment.
+The key distinction from traditional cloud automation: hybrid cloud automation is **cross-environment by default**. A single workflow can provision a VM in [vSphere](/orchestration/vmware), deploy a container to [EKS](/orchestration/kubernetes) on [AWS](/orchestration/aws), and update [a DNS record in Cloudflare](/orchestration/cloudflare) — without rewriting the logic for each environment.
 
 ## Key Components of Hybrid Cloud Automation
 
 Four components do the heavy lifting in a hybrid automation stack:
 
 - **Orchestration engine** — coordinates workflows across environments with triggers, retries, and dependency management
-- **Configuration management** — Ansible, Puppet, Chef, or similar for enforcing desired state on provisioned resources
-- **Infrastructure as Code** — Terraform, Pulumi, CloudFormation for declarative provisioning across clouds and on-prem
+- **Configuration management** — [Ansible](/orchestration/ansible), Puppet, Chef, or similar for enforcing desired state on provisioned resources
+- **Infrastructure as Code** — [Terraform](/orchestration/terraform), Pulumi, CloudFormation for declarative provisioning across clouds and on-prem
 - **Governance layer** — identity, secrets, approvals, audit trails, and policy enforcement across every environment
 
 Good hybrid cloud automation depends on all four working together. IaC without orchestration is just provisioning. Configuration management without governance is drift waiting to happen. Orchestration without IaC has nothing to run.
@@ -102,7 +102,7 @@ The filter that matters most: does the platform treat every environment equally,
 | Tool | Hybrid scope | Air-gapped support | Trade-off |
 | --- | --- | --- | --- |
 | **Kestra** | Cloud + on-prem + air-gapped | ✅ Native | General-purpose orchestrator, less deep than vendor-specific tools in their home environment |
-| **VMware Aria Automation** | Strong vSphere, weaker cloud | Partial | Deep VMware integration; orchestration logic lives in vRO |
+| **VMware Aria Automation** | Strong vSphere, weaker cloud | Partial | Deep VMware integration; orchestration logic lives in vRO — Kestra takes the opposite approach by [orchestrating vSphere from outside](/orchestration/vmware) and chaining with [Proxmox](/orchestration/proxmox) or [Nutanix](/orchestration/nutanix) |
 | **HPE Morpheus** | Hybrid cloud management | Partial | Catalog-driven provisioning; less flexible for custom workflows |
 | **Red Hat Ansible Automation Platform** | Config management + workflows | ✅ | Playbook-centric; orchestration is a layer on top |
 | **AWS Systems Manager** | AWS + limited hybrid | ❌ | AWS-first; limited for truly mixed environments |
@@ -119,6 +119,6 @@ Two trends are reshaping the space:
 
 ## Getting Started
 
-Hybrid cloud automation works when there's one orchestration layer spanning every environment — and breaks down when each environment gets its own automation stack. Picking the orchestration layer is the most consequential decision in a hybrid strategy.
+Hybrid cloud automation works when there's [one orchestration layer](/orchestration) spanning every environment — and breaks down when each environment gets its own automation stack. Picking the orchestration layer is the most consequential decision in a hybrid strategy.
 
 For teams evaluating options, Kestra is open-source, self-hostable, and runs the same way across cloud, on-prem, and air-gapped environments. Start with the [infrastructure automation hub](/infra-automation), read the [Fortune 500 hybrid migration case study](/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra), or explore the [declarative infrastructure approach](/blogs/infra-automation).

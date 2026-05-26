@@ -7,8 +7,8 @@ tool:
   color: "#00B135"
 
 hero:
-  title: "Your VMware estate, fully orchestrated."
-  description: "Trigger VM tasks from cron, VMware events, webhooks, or any HTTP signal. Snapshot before patching, gate destructive ops with the Pause task, retry only the failed step, and chain VMware with Ansible, Terraform, and ServiceNow in one execution history."
+  title: "Scale VMware ops without vRA complexity."
+  description: "Drive vCenter from cron, vSphere events, webhooks, or any HTTP signal. Snapshot before patching, gate destructive ops with the Pause task, retry only the failed step, and chain VMware with Ansible, Terraform, and ServiceNow in one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
