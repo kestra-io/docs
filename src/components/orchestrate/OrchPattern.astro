@@ -41,19 +41,17 @@ const hasTabs = tabs.length > 0
 const hasContent = Boolean(nutshell) || hasTabs
 ---
 
-{
-    hasContent && (
-        <section class="orch-pattern" style={sectionStyle}>
-            <div class="container">
-                <div class="wrapper">
-                    {nutshell && (
-                        <div class="wrapper__head">
-                            <p class="nutshell" set:html={nutshell} />
-                        </div>
-                    )}
+<section class={`orch-pattern${hasContent ? "" : " is-empty"}`} style={sectionStyle}>
+    <div class="container">
+        <div class="wrapper">
+            {nutshell && (
+                <div class="wrapper__head">
+                    <p class="nutshell" set:html={nutshell} />
+                </div>
+            )}
 
-                    {hasTabs && (
-                        <div class="orch-tabs" data-orch-tabs>
+            {hasTabs && (
+                <div class="orch-tabs" data-orch-tabs>
                             <div class="orch-tabs__bar" role="tablist">
                                 {tabs.map((bp, idx) => (
                                     <button
@@ -224,11 +222,9 @@ const hasContent = Boolean(nutshell) || hasTabs
                             ))}
                         </div>
                     )}
-                </div>
-            </div>
-        </section>
-    )
-}
+        </div>
+    </div>
+</section>
 
 <script>
     function wireOrchTabs() {
@@ -675,8 +671,6 @@ const hasContent = Boolean(nutshell) || hasTabs
             text-underline-offset: 3px;
         }
     }
-
-    /* ---------- animations ---------- */
 
     $cycle: 8s;
     $ease: cubic-bezier(0.65, 0, 0.35, 1);
