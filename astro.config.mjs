@@ -216,6 +216,7 @@ export default defineConfig({
         "/docs/migration-guide/v0.24.0/retries-maxAttempts":
             "/docs/migration-guide/v0.24.0/retries-maxattempts",
         "/preview-access": "/get-started",
+        "/cloud-early-access": "/cloud",
     },
     vite: {
         plugins: [
