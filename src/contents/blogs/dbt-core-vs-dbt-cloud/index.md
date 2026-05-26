@@ -3,7 +3,7 @@ title: "dbt Core vs. dbt Cloud: Key Differences & How to Choose"
 description: "Compare dbt Core vs. dbt Cloud to understand their key differences. Discover which solution best fits your data team's needs, whether you prioritize control or convenience."
 metaTitle: "dbt Core vs. dbt Cloud: Differences & Choice Guide"
 metaDescription: "Compare dbt Core vs. dbt Cloud to understand their key differences. Discover which solution best fits your data team's needs, from self-hosting to managed platforms. Read more!"
-date: 2026-05-15T13:00:00
+date: 2026-05-20T13:00:00
 category: Solutions
 tag: "Data Orchestration"
 author:
