@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace Ansible Tower / AAP with a declarative workflow engine that listens to cron, webhooks, or monitoring alerts, handles check-mode drift detection and rolling waves with per-host verification, and chains ansible-playbook with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/netbox'>NetBox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a> in one audited flow. <a href='/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra'>Crédit Agricole runs this exact pattern</a> across regulated EU infrastructure with no Tower or AWX in the loop."
+nutshell: "Replace Ansible Tower / AAP with a workflow engine that listens to cron, webhooks, or alerts, handles drift detection and rolling waves with per-host verification, and chains ansible-playbook with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/netbox'>NetBox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the AAP subscription; halt a wave at the first failed health probe."
 
 pillars:
   title: "Around every playbook, every host, every wave."

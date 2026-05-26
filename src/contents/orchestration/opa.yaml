@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Put policy-as-code inline with a declarative workflow engine that listens to release triggers, schedules, or webhooks, evaluates Rego policies on Terraform plans, Kubernetes manifests, IAM changes, or NetBox device mutations before any write, and chains OPA decisions with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/kubernetes'>Kubernetes</a>, and audit reports in one execution history. Self-hosted OPA, decision IDs linked to flow executions, compliance evidence written automatically."
+nutshell: "Put policy-as-code inline with a workflow engine that listens to releases or schedules, evaluates Rego policies on Terraform plans, Kubernetes manifests, or IAM changes before any write, and chains OPA decisions with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/kubernetes'>Kubernetes</a>, and audit reports in one execution. Catch violations before terraform apply lands; SOX/ISO/SOC evidence writes itself."
 
 pillars:
   title: "Around every write, every change, every commit."

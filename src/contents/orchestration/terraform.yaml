@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace Atlantis, jump-box cron jobs, and ad-hoc Terraform Cloud setups with a declarative workflow engine that listens to cron, Git pushes, or any HTTP signal, handles scheduled drift detection and named approval gates between plan and apply, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/argocd'>Argo CD</a>, and Terraform in one audited flow. <a href='/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra'>Crédit Agricole</a> and <a href='/use-cases/stories/sopht-scales-its-green-itops-platform-with-kestra'>Sopht</a> both run this pattern with state in their existing backend."
+nutshell: "Replace Atlantis and jump-box cron jobs with a workflow engine that listens to cron or Git pushes, handles scheduled drift detection and approval gates between plan and apply, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/argocd'>Argo CD</a>, and Terraform in one audited flow. Catch drift inside an hour instead of the next quarterly audit; state stays in your existing backend."
 
 pillars:
   title: "From plan to apply, end to end."

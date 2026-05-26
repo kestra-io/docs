@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Make Git the source of truth for every flow with a declarative orchestration engine that listens to schedules or PR webhooks, handles bidirectional namespace sync with dryRun diffs and protected namespaces, and chains Clone with downstream tools (<a href='/orchestration/terraform'>Terraform</a>, dbt, <a href='/orchestration/ansible'>Ansible</a>) pulled fresh at runtime in one audited flow. <a href='/use-cases/stories/scaling-big-data-operations'>Acxiom</a> ships orchestrator state through Git with named approval gates between staging and prod."
+nutshell: "Make Git the source of truth for every flow with an orchestration engine that listens to schedules or PR webhooks, handles bidirectional namespace sync with dryRun diffs and protected namespaces, and chains Clone with <a href='/orchestration/terraform'>Terraform</a>, dbt, and <a href='/orchestration/ansible'>Ansible</a> pulled fresh at runtime. Cut the gap from Git merge to deploy down to the next 5-minute reconcile."
 
 pillars:
   title: "Around every flow, every namespace, every tenant."

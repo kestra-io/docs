@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Make NetBox the inventory source of truth driving every flow, with a declarative orchestration engine that lists devices by site/role/tag, allocates IPs from prefixes on VM provision, handles drift reconciliation between scan reality and declared inventory, and chains NetBox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/proxmox'>Proxmox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a> in one audited flow. The static hosts file goes away, NetBox becomes the inventory."
+nutshell: "Make NetBox the inventory source of truth for every flow with an orchestration engine that lists devices by site/role/tag, allocates IPs from prefixes on VM provision, handles drift reconciliation between scan reality and declared inventory, and chains NetBox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/proxmox'>Proxmox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the static hosts file; cut drift detection from quarterly to weekly."
 
 pillars:
   title: "Around every device, every prefix, every site."

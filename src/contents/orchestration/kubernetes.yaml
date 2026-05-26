@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Connect Kubernetes to the rest of your platform with a declarative workflow engine that runs Pods as flow steps, applies manifests on non-Git events, restarts Deployments after Secret rotation, and chains kubectl operations with <a href='/orchestration/argocd'>Argo CD</a>, Vault, and GitHub in one audited flow. PodCreate streams container logs to the execution view so a four-hour GPU training run is debuggable while it runs, and the same flow definition spans staging, prod, or every tenant cluster via per-task kubeconfig."
+nutshell: "Connect Kubernetes to your platform with a workflow engine that runs Pods as flow steps, applies manifests on non-Git events, restarts Deployments after Secret rotation, and chains kubectl with <a href='/orchestration/argocd'>Argo CD</a>, Vault, and GitHub in one audited flow. Drop the duplicate GPU hardware bill; span every tenant cluster from one flow via per-task kubeConfig."
 
 pillars:
   title: "Direct cluster API, not GitOps reconciliation."

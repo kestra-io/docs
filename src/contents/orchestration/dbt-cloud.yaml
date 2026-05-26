@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Connect dbt Cloud to the rest of your data stack with a declarative workflow engine that listens to Fivetran completions, S3 file landings, or any upstream event, handles dbt Cloud TriggerRun with wait, approval gates between staging and prod, and chains dbt Cloud with Fivetran, Hightouch, and Snowflake in one audited flow. Trigger the moment data lands instead of padding cron buffers, and span every step in one execution history."
+nutshell: "Connect dbt Cloud to your data stack with a workflow engine that listens to Fivetran completions or any upstream event, handles TriggerRun with approval gates between staging and prod, and chains dbt Cloud with Fivetran, Hightouch, and Snowflake in one audited flow. Drop the cron buffer that builds on stale data; a transient retry never re-runs the upstream sync."
 
 pillars:
   title: "Above the dbt Cloud job runner."

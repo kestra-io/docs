@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Replace homemade Argo CD trigger scripts and CI glue with a declarative workflow engine that listens to CI completions, image pushes, or any HTTP signal, handles event-driven sync with named approval gates and status polling, and chains <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/ansible'>Ansible</a>, and Argo CD in one audited flow. Sync the moment the signed build lands, gate prod on a named reviewer, and run supply-chain verification before every deploy."
+nutshell: "Replace homemade Argo CD trigger scripts with a workflow engine that listens to CI completions or image pushes, handles event-driven sync with approval gates and status polling, and chains <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/ansible'>Ansible</a>, and Argo CD in one audited flow. Cut deploy lag from Argo's Git-poll interval (minutes) to zero."
 
 pillars:
   title: "Around every sync, every revision, every cluster."

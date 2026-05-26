@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Connect Cloudflare to the rest of your stack with a declarative workflow engine that listens to Terraform outputs, Argo CD Healthy events, or PagerDuty alerts, handles DNS upsert, cache purge, WAF auto-expire, and bulk Worker KV writes, and chains <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, and Cloudflare in one audited flow. Multi-tenant SaaS shops reconcile hundreds of zones per execution via zones.List and ForEach."
+nutshell: "Connect Cloudflare to your stack with a workflow engine that listens to <a href='/orchestration/terraform'>Terraform</a> outputs, <a href='/orchestration/argocd'>Argo CD</a> Healthy events, or PagerDuty alerts, handles DNS upsert, cache purge, and WAF auto-expire, and chains them in one audited flow. Drop the post-apply dashboard click; never serve prod from a stale cache."
 
 pillars:
   title: "Around every zone, every record, every cache miss."

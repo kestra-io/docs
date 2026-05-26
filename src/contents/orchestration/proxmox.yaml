@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Run Proxmox like vCenter without the Broadcom tax with a declarative workflow engine that listens to cron, VM state changes, or any HTTP signal, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching with rollback, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a> in one audited flow. <a href='/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra'>Crédit Agricole</a> runs unified Proxmox automation across regulated EU infrastructure."
+nutshell: "Run Proxmox like vCenter without the Broadcom tax: a workflow engine that listens to cron or VM state changes, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a>. Drop the vRA subscription; prove backups restore monthly."
 
 pillars:
   title: "Around every VM, every container, every node."

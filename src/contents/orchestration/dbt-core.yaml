@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Run dbt Core with a declarative workflow engine that listens to cron, Airbyte completions, or <a href='/orchestration/aws'>S3 file landings</a>, handles per-model retries with full test failure context, named approval gates between staging and prod, and chains dbt with Airbyte, Hightouch, and the rest of your data stack in one audited flow. <a href='/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra'>Gorgias</a> runs this exact ingest-transform-activate pattern in production."
+nutshell: "Run dbt Core with a workflow engine that listens to cron, Airbyte completions, or <a href='/orchestration/aws'>S3 events</a>, handles per-model retries with approval gates between staging and prod, and chains dbt with Airbyte, Hightouch, and the rest of your stack in one audited flow. <strong>West Bend Insurance</strong> estimates ~90% less Python glue code with an orchestrator around dbt."
 
 pillars:
   title: "Around every dbt build."
