@@ -3,7 +3,7 @@ title: "Airflow Alternatives: Top Workflow Orchestrators for Modern Stacks"
 description: "Explore the best alternatives to Airflow, including Kestra, Prefect, and Dagster. Find modern, lightweight, and event-driven workflow orchestrators that address common Airflow pain points."
 metaTitle: "Airflow Alternatives: Top Workflow Orchestrators"
 metaDescription: "Explore top alternatives to Airflow for data orchestration. Find the best lightweight workflow tools that beat Airflow at its own game."
-tag: "data orchestration"
+tag: "data"
 date: 2026-05-27
 slug: "airflow-alternatives"
 faq:
