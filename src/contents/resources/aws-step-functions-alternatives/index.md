@@ -18,7 +18,6 @@ faq:
   - question: "Why consider alternatives to AWS Step Functions for workflow orchestration?"
     answer: "Organizations often seek alternatives to AWS Step Functions due to concerns about vendor lock-in, as it's tightly integrated with the AWS ecosystem. Other reasons include a need for multi-cloud or hybrid-cloud orchestration, a desire for open-source solutions to avoid proprietary dependencies, or a preference for declarative workflow definitions that are easier to version and manage as code. Cost optimization for specific use cases can also be a factor."
 author: "elliot"
-image: "/images/blogs/aws-step-functions-alternatives/cover.png"
 ---
 
 AWS Step Functions has long served as a powerful serverless orchestration tool for many organizations deeply invested in the Amazon Web Services ecosystem. It excels at coordinating various AWS services into robust, state-machine-driven workflows, providing reliability and built-in error handling for cloud-native applications. However, as enterprises expand their operations across multiple clouds, integrate diverse technologies, or seek greater control over their orchestration layer, the limitations of a vendor-specific solution become increasingly apparent. Concerns about vendor lock-in, the complexity of managing highly dynamic workflows, and the desire for more flexible, open-source alternatives are driving many to explore beyond AWS's native offerings.

@@ -20,7 +20,6 @@ faq:
   - question: "How does Kestra compare to Apache NiFi for data integration?"
     answer: "Kestra offers a declarative, YAML-based approach to data integration, contrasting with NiFi's visual flow-based design. While NiFi excels at real-time dataflow automation, Kestra provides a unified platform to orchestrate not just data integration, but also transformations, AI workflows, and infrastructure operations with a language-agnostic engine. Kestra emphasizes GitOps, event-driven execution, and lower operational complexity."
 author: "elliot"
-image: "/images/resources/apache-nifi-alternatives/cover.png"
 ---
 
 Apache NiFi has long been a go-to for data engineers seeking to automate and manage data flows, excelling in real-time data ingestion and complex routing with its visual interface. However, recent shifts, such as the deprecation of its native NiFi Registry in February 2026, signal a move towards more Git-centric and declarative approaches in the data integration landscape. This change prompts many organizations to re-evaluate their orchestration strategies and consider modern alternatives.

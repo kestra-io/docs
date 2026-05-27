@@ -18,7 +18,6 @@ faq:
   - question: "Can Kestra replace Azure?"
     answer: "Kestra is not a direct replacement for Azure as an IaaS/PaaS cloud provider. Instead, Kestra acts as an orchestration control plane that can coordinate workflows across Azure, other clouds, on-premise infrastructure, and various tools. It can orchestrate Azure services, complementing or enhancing existing Azure deployments, or facilitate multi-cloud strategies."
 author: "virgile"
-image: "/images/resources/azure-alternatives/cover.png"
 hub: "infrastructure"
 alternatives_count: 6
 ---

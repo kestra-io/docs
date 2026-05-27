@@ -22,7 +22,6 @@ faq:
   - question: "What are the top ETL tools?"
     answer: "The top ETL tools vary based on use case and budget, but popular choices include cloud-native options like AWS Glue, Azure Data Factory, and Google Dataflow; traditional enterprise solutions like Informatica PowerCenter and IBM DataStage; and modern alternatives like Matillion, Talend, and Kestra (for orchestrating ETL workflows)."
 author: "Kestra"
-image: "/images/blogs/data-warehouse-etl/cover.png"
 ---
 
 Data warehouses are the backbone of modern analytics, but their value is only as good as the data they contain. This is where ETL—Extract, Transform, Load—becomes indispensable. It’s the foundational process that cleans, consolidates, and prepares raw data from countless sources, making it ready for the critical business insights that drive decisions.

@@ -20,7 +20,6 @@ faq:
   - question: "How often do you use Windows Failover Cluster in business?"
     answer: "Windows Failover Clusters are frequently used in business environments to ensure high availability for critical services. They are commonly deployed for file servers, SQL Server databases, Hyper-V virtual machines, and other applications where downtime must be minimized. Their usage is widespread across industries requiring continuous operation and robust disaster recovery capabilities."
 author: "kestra"
-image: "/images/resources/windows-cluster/cover.png"
 ---
 
 In today's IT landscape, ensuring high availability and scalability for critical applications is paramount. Windows Server Failover Clustering (WSFC) provides a robust solution for achieving this, allowing multiple servers to work together as a single, highly resilient system. Whether you're safeguarding databases, file servers, or virtual machines, understanding how to effectively create and manage a Windows cluster is essential for maintaining continuous operations and minimizing downtime.

@@ -20,7 +20,6 @@ faq:
   - question: "Is BPM outdated?"
     answer: "Traditional, rigid BPM approaches are evolving. Modern trends favor simplicity, agility, and AI readiness, moving away from overly complex modeling. While the core principles of process management remain vital, the tools and methodologies are adapting to integrate more seamlessly with developer-centric and event-driven automation paradigms."
 author: "Virgile Fanucci"
-image: "/images/blogs/camunda-alternatives/cover.png"
 hub: "infrastructure"
 alternatives_count: 6
 ---

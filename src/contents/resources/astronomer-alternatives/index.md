@@ -20,7 +20,6 @@ faq:
   - question: "How does Google Cloud Composer compare to Astronomer?"
     answer: "Google Cloud Composer is Google's managed Apache Airflow service, similar to Astronomer's offering. Both simplify Airflow deployment and operation. The choice often comes down to cloud ecosystem preference (GCP vs. multi-cloud/hybrid) and specific enterprise features or support models offered by each vendor."
 author: "Kestra"
-image: "/images/blogs/astronomer-alternatives/cover.png"
 ---
 
 Apache Airflow celebrated its 10-year anniversary this year, a testament to its enduring impact on data orchestration. For many organizations, managing Airflow at scale, especially with its Python-based DAGs and complex operational overhead, has led to the emergence of managed services like Astronomer. Astronomer, built on Airflow, aims to simplify these challenges by offering enterprise-grade features and support. However, as data stacks evolve and engineering teams demand more flexibility beyond Python-centric pipelines or vendor lock-in, the need for robust alternatives has grown.
