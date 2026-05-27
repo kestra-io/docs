@@ -3,7 +3,7 @@ title: "Top Astronomer Alternatives: Expert Insights for Data Orchestration"
 description: "Explore top Astronomer alternatives and competitors like Kestra, Apache Airflow, Prefect, and Dagster. Find the best solution for your data orchestration needs today."
 metaTitle: "Top Astronomer Alternatives & Competitors | Kestra"
 metaDescription: "Seeking Astronomer alternatives? Compare Kestra, Apache Airflow, Prefect, Dagster, and more. Get expert insights to choose the best data orchestration platform."
-tag: "data-orchestration"
+tag: "data"
 date: 2026-05-27
 slug: "astronomer-alternatives"
 faq:

@@ -3,7 +3,7 @@ title: "AWS Step Functions Alternatives You Need to Know"
 description: "Explore top AWS Step Functions alternatives, including open-source options and managed solutions. Find the best fit for your workflow orchestration needs today!"
 metaTitle: "AWS Step Functions Alternatives | Kestra"
 metaDescription: "Seeking AWS Step Functions alternatives? Discover open-source, managed, and flexible solutions like Kestra, Temporal, and Airflow for your workflow orchestration needs."
-tag: "Infrastructure Automation"
+tag: "infrastructure"
 date: 2026-05-27
 slug: "aws-step-functions-alternatives"
 faq:

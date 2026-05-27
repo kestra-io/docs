@@ -3,7 +3,7 @@ title: "HPC Workflow: Guide to High-Performance Workflows"
 description: "Demystify HPC workflows. Explore tools, understanding, and automation strategies for high-performance computing tasks with Kestra's declarative orchestration."
 metaTitle: "HPC Workflow: Guide to High-Performance Workflows"
 metaDescription: "Demystify HPC workflows. Explore tools, understanding, and automation strategies for high-performance computing tasks. Learn how Kestra unifies and automates HPC, AI, and infrastructure."
-tag: "Infrastructure"
+tag: "infrastructure"
 date: 2026-05-27
 slug: "hpc-workflow"
 faq:
