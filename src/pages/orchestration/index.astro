@@ -110,7 +110,7 @@ const faqItems = [
     description="One orchestrator across infrastructure and data: Terraform, Ansible, VMware, Nutanix, Proxmox, Docker, Argo CD, dbt Cloud, and dbt Core. Event-driven, declarative, self-hosted."
 >
     <section class="header-container">
-        <div class="header container">
+        <div class="orch-hero container">
             <div class="hero-logos">
                 <div class="hero-picto ks" set:html={kestraIcon} />
                 <div class="hero-plus" aria-hidden="true">
@@ -375,7 +375,7 @@ const faqItems = [
             1400px auto;
         padding-inline: 1rem;
 
-        .header {
+        .orch-hero {
             max-width: 1180px;
             margin: 0 auto;
             padding-top: 4rem;
@@ -472,6 +472,7 @@ const faqItems = [
                 margin-bottom: 0.5rem;
 
                 .rotator {
+                    position: relative;
                     display: inline-grid;
                     grid-template-areas: "stack";
                     vertical-align: baseline;
@@ -482,6 +483,12 @@ const faqItems = [
                         transition: opacity 0.6s ease;
                         white-space: nowrap;
                         pointer-events: none;
+
+                        &:not(.active) {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                        }
 
                         &.active {
                             opacity: 1;
