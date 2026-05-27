@@ -84,3 +84,17 @@ Once this label is set, the editor for this flow will be disabled in the UI.
 :::alert{type="info"}
 In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.
 :::
+
+---
+
+### `system.from`
+
+- Automatically set on every execution created by a Kestra MCP server
+- Value is always `mcp`
+- Use this label to filter all executions triggered by AI agents via the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md)
+
+### `system.mcpServerId`
+
+- Automatically set on every execution created by a Kestra MCP server
+- Value is the `id` of the MCP server that invoked the tool
+- Use this label together with `system.from: mcp` to identify which server triggered a specific execution

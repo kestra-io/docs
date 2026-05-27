@@ -412,6 +412,25 @@ kestra:
 
 If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
 
+## MCP server cache
+
+Each webserver node caches MCP server configuration in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.mcp.server-cache-config.maximum-size` | `500` | Maximum number of MCP server entries held in the cache. |
+| `kestra.mcp.server-cache-config.expire-after-access` | `PT5M` | Duration after which a cache entry expires if not accessed. |
+
+```yaml
+kestra:
+  mcp:
+    server-cache-config:
+      maximum-size: 200
+      expire-after-access: PT10M
+```
+
+Tune these only if you have a large number of MCP servers or tight memory constraints. The defaults are sufficient for most deployments.
+
 ## AI and isolated environments
 
 These are the most optional settings on the page. They matter only if you are enabling Copilot integrations or operating Kestra in restricted network environments.

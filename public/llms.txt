@@ -28,6 +28,7 @@ This section covers two distinct things: (1) guidance for AI agents interacting 
 - [AI Agents](https://kestra.io/docs/ai-tools/ai-agents.md): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
 - [AI Workflows](https://kestra.io/docs/ai-tools/ai-workflows.md): Patterns for building AI-native workflows — LLM calls, tool use, and multi-step inference pipelines — using Kestra tasks
 - [RAG Workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows.md): Retrieval-augmented generation patterns — indexing, chunking, embedding, and querying — orchestrated as Kestra flows
+- [MCP Server](https://kestra.io/docs/ai-tools/mcp-server.md): Expose Kestra flows as MCP tools for AI agents — configure MCP servers, connect Claude Desktop/Code/Cursor, and understand OSS vs EE auth options
 
 ## Authoring flows
 
@@ -38,7 +39,8 @@ Use this section when writing, editing, or understanding the structure of a Kest
 - [Flowable tasks](https://kestra.io/docs/workflow-components/tasks/flowable-tasks.md): Control flow primitives — `Sequential`, `Parallel`, `ForEach`, `ForEachItem`, `Switch`, `If`, `DAG`, `LoopUntil`, `Subflow`, `AllowFailure`, `Pause`, `WorkingDirectory`
 - [Inputs](https://kestra.io/docs/workflow-components/inputs.md): Typed runtime parameters (`STRING`, `INT`, `BOOLEAN`, `FILE`, `JSON`, `ARRAY`, `ENUM`, `DATETIME`, etc.) with optional defaults and validation
 - [Outputs](https://kestra.io/docs/workflow-components/outputs.md): Reference task outputs with `{{ outputs.task_id.attribute }}`, dynamic task outputs with `{{ outputs.task_id[taskrun.value].attribute }}`, and sibling outputs inside loops
-- [Triggers](https://kestra.io/docs/workflow-components/triggers.md): Start flows automatically — Schedule (cron), Flow (react to another flow's completion), Webhook, Polling, and Realtime triggers
+- [Triggers](https://kestra.io/docs/workflow-components/triggers.md): Start flows automatically — Schedule (cron), Flow (react to another flow's completion), Webhook, Polling, Realtime, and MCP Tool triggers
+- [MCP Tool Trigger](https://kestra.io/docs/workflow-components/triggers/mcp-tool-trigger.md): Register a flow as a named MCP tool — `toolName`, `title`, `toolDescription`, `mcpServer`, and `annotations` properties; flow inputs/outputs auto-mapped to JSON schema
 - [Variables](https://kestra.io/docs/workflow-components/variables.md): Flow-level named values referenced as `{{ vars.name }}`; useful for values reused across multiple tasks
 - [Subflows](https://kestra.io/docs/workflow-components/subflows.md): Call another flow as a task, pass inputs, wait for completion, and consume its outputs
 - [Errors](https://kestra.io/docs/workflow-components/errors.md): `errors` block for flow-level error handling tasks; `AllowFailure` for marking individual tasks as non-fatal
@@ -197,6 +199,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [AI Copilot in Kestra – Generate and Edit Flows](https://kestra.io/docs/ai-tools/ai-copilot.md)
 - [RAG Workflows in Kestra – Retrieval-Augmented Generation](https://kestra.io/docs/ai-tools/ai-rag-workflows.md)
 - [AI Workflows in Kestra: Orchestrate with Any LLM](https://kestra.io/docs/ai-tools/ai-workflows.md)
+- [MCP Server in Kestra – Expose Flows as AI Tools](https://kestra.io/docs/ai-tools/mcp-server.md)
 - [API Reference: Enterprise and Open Source Editions](https://kestra.io/docs/api-reference.md)
 - [Cloud & Enterprise API Reference for Kestra](https://kestra.io/docs/api-reference/enterprise.md)
 - [SDK Language Clients for the Kestra API](https://kestra.io/docs/api-reference/kestra-sdk.md)
@@ -654,4 +657,5 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Realtime Trigger in Kestra – Millisecond Eventing](https://kestra.io/docs/workflow-components/triggers/realtime-trigger.md)
 - [Schedule Trigger in Kestra – Cron-Based Scheduling](https://kestra.io/docs/workflow-components/triggers/schedule-trigger.md)
 - [Webhook Trigger in Kestra – Start Flows via HTTP](https://kestra.io/docs/workflow-components/triggers/webhook-trigger.md)
+- [MCP Tool Trigger in Kestra – Expose Flows as AI Tools](https://kestra.io/docs/workflow-components/triggers/mcp-tool-trigger.md)
 - [Variables in Kestra – Reuse Values Across Flows](https://kestra.io/docs/workflow-components/variables.md)

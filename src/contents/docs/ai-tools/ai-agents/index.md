@@ -223,9 +223,13 @@ A single `Skill` tool can define multiple skills. Each skill must have a unique 
 
 ### MCP clients
 
+Kestra supports MCP in two directions. These clients cover the **Kestra-as-client** direction: your flow calls tools on an *external* MCP server. For the opposite direction — exposing your flows *as* MCP tools for external AI agents to call — see [MCP Server](../mcp-server/index.md) and the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md).
+
 Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server to expose its tools:
 
 - [**DockerMcpClient**](/plugins/plugin-ai/tool/dockermcpclient) — runs an MCP server inside a Docker container.
 - [**SseMcpClient**](/plugins/plugin-ai/tool/ssemcpclient) — connects to a remote MCP server over Server-Sent Events (SSE).
 - [**StdioMcpClient**](/plugins/plugin-ai/tool/stdiomcpclient) — spawns a local MCP server process and communicates over stdio.
 - [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/streamablehttpmcpclient) — connects to an MCP server over HTTP streaming.
+
+The [Kestra Python MCP server](https://github.com/kestra-io/mcp-server-python) is an example of an external MCP server you can connect to from a Kestra AI Agent task using one of the clients above.
