@@ -35,6 +35,7 @@ export default {
         "https://www.gstatic.com/recaptcha/",
         "https://jobs.ashbyhq.com/",
         "https://*.claydar.com",
+        "https://ddwl4m2hdecbv.cloudfront.net"
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
