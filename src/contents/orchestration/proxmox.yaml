@@ -189,6 +189,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Proxmox node, ship it."
   items:
     - name: "Safe patching with rollback"
+      blueprintId: "proxmox-safe-patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on a Proxmox VM or LXC, runs the OS update over SSH, probes the service. The <code>errors</code> branch rolls back the snapshot and notifies Slack on failure."
       href: "/blueprints?tags=Infrastructure"
@@ -292,6 +293,7 @@ blueprints:
               tokenId: "{{ secret('PROXMOX_TOKEN_ID') }}"
               tokenSecret: "{{ secret('PROXMOX_TOKEN_SECRET') }}"
     - name: "Node drain via live migration"
+      blueprintId: "proxmox-node-drain"
       title: "Drain a Proxmox node for maintenance: live-migrate all guests off, gate, return"
       description: "Lists all VMs and containers on a target node, dispatches each to another node via live migration, polls each UPID to completion, then pauses for the maintenance window before optionally returning guests."
       href: "/blueprints?tags=Infrastructure"
@@ -367,6 +369,7 @@ blueprints:
               tokenId: "{{ secret('PROXMOX_TOKEN_ID') }}"
               tokenSecret: "{{ secret('PROXMOX_TOKEN_SECRET') }}"
     - name: "vzdump backup restore drill"
+      blueprintId: "proxmox-backup-restore-drill"
       title: "Monthly backup restore drill on a throwaway VMID"
       description: "Lists recent vzdump backups, restores the latest one to a temporary VMID, starts the VM, probes the service, deletes the temp VM. Catches storage corruption and broken backups before the real disaster."
       href: "/blueprints?tags=Infrastructure"

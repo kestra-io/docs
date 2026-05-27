@@ -21,6 +21,7 @@ import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
 
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { $fetchApiCached } from "~/utils/fetch"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
 import RiversideLogo from "~/components/orchestrate/assets/riverside.svg?raw"
@@ -85,6 +86,29 @@ const {
     seeHow,
     resources,
 } = entry.data
+
+const blueprintItems = await Promise.all(
+    blueprints.items.map(async (item) => {
+        if (!item.blueprintId) return item
+        try {
+            const [bp, graph] = await Promise.all([
+                $fetchApiCached<{ flow: string }>(
+                    `/blueprints/${item.blueprintId}/versions/latest`,
+                ),
+                $fetchApiCached(
+                    `/blueprints/${item.blueprintId}/versions/latest/graph`,
+                ),
+            ])
+            return { ...item, render: { source: bp.flow, graph } }
+        } catch (e) {
+            console.warn(
+                `Could not fetch blueprint "${item.blueprintId}" for ${entry.id}`,
+                e,
+            )
+            return item
+        }
+    }),
+)
 
 let pluginIcon = ""
 try {
@@ -175,8 +199,9 @@ const comparisonTableData = comparison.rows.map((row) => {
     />
 
     <OrchPattern
+        heading={blueprints.title}
         nutshell={nutshell}
-        blueprints={blueprints.items}
+        blueprints={blueprintItems}
         toolColor={tool.color}
     />
 

@@ -177,6 +177,7 @@ blueprints:
   lead: "Production-ready workflows. Copy the YAML, wire it to your stack."
   items:
     - name: "Ingestion to activation"
+      blueprintId: "fivetran-dbt-cloud"
       title: "Ingestion to activation pipeline"
       description: "Fivetran syncs raw data on a schedule. When it completes, Kestra triggers the dbt Cloud job and waits for success. On completion, it fires the Hightouch sync. Any failure stops the pipeline at the failing step and posts a Slack alert with a link to the execution."
       href: "/blueprints"
@@ -254,6 +255,7 @@ blueprints:
                 "text": ":warning: Pipeline failed in *{{ flow.namespace }}*. <{{ execution.url }}|View execution>"
               }
     - name: "Approval gate before production"
+      blueprintId: "dbt-cloud-approval-gate"
       title: "Approval gate before production job"
       description: "Triggers the staging dbt Cloud job and pauses the flow on the result. A named reviewer reads the output in the Kestra UI and resumes the flow. Only then does the production job run. The reviewer's identity and timestamp are stored automatically in the execution history."
       href: "/blueprints"
@@ -323,6 +325,7 @@ blueprints:
                 "text": ":white_check_mark: dbt Cloud production job complete. <{{ execution.url }}|View execution>"
               }
     - name: "Chained dbt Cloud jobs"
+      blueprintId: "dbt-cloud-chained-jobs"
       title: "Chained dbt Cloud jobs with dependency ordering"
       description: "Runs three dbt Cloud jobs in order: ingestion models, mart models, activation models. Each step waits for the previous to confirm success before starting. If any job fails, Kestra stops the chain and posts a Slack alert with the run ID of the failing job and a link to the execution."
       href: "/blueprints"

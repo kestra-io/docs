@@ -173,6 +173,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your Git provider credentials, point at your repo, ship it."
   items:
     - name: "Git as source of truth, reconcile every five minutes"
+      blueprintId: "git-sync-flows-source-of-truth"
       title: "Sync flows from main into Kestra on a 5-minute schedule"
       description: "A system-namespace flow runs NamespaceSync with sourceOfTruth: GIT every five minutes. Flows added or removed in main appear or disappear in Kestra. protectedNamespaces guards system namespaces from deletion. The diff is posted to Slack."
       href: "/blueprints?tags=Infrastructure"
@@ -237,6 +238,7 @@ blueprints:
                 "text": ":arrows_counterclockwise: Synced {{ inputs.target_namespace }} from {{ inputs.branch }}. Commit: {{ outputs.sync_from_git.commitId | default('no change') }}"
               }
     - name: "Continuous export with dryRun review"
+      blueprintId: "git-push-flows-dryrun-review"
       title: "Export Kestra to Git every hour, dryRun first, apply after review"
       description: "Hourly PushFlows in dryRun mode computes the diff. The diff goes to Slack for review. A Pause task waits for human approval. On resume, the same task re-runs with dryRun: false and commits. Every Kestra change ends up in Git with attributable authorship."
       href: "/blueprints?tags=Infrastructure"
@@ -325,6 +327,7 @@ blueprints:
                 "text": ":white_check_mark: Pushed {{ inputs.source_namespace }} to main. Commit: {{ outputs.apply.commitURL }}"
               }
     - name: "Clone external repo at runtime, run dbt against it"
+      blueprintId: "dbt-git-docker-duckdb"
       title: "Pin a dbt project ref per execution, no container rebuild"
       description: "Clone the data-platform repo at the branch passed as input, run dbt build against the fresh checkout, post the results to Slack with the revision. The same flow runs feature branches in CI and main in prod without separate flow definitions or image rebuilds."
       href: "/blueprints?tags=Infrastructure"

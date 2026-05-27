@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components"
 import TaskIcon from "~/components/common/TaskIcon.vue"
 import Snippets from "~/components/common/Snippets.vue"
+import Topology from "~/components/blueprints/Topology.client.vue"
 
 interface FlowNode {
     label: string
@@ -25,201 +26,129 @@ interface BlueprintItem {
     plugins: string[]
     href?: string
     flowDiagram?: FlowDiagram
+    blueprintId?: string
+    blueprintPlaceholder?: boolean
+    render?: { source: string; graph: unknown } | null
 }
 
 interface Props {
+    heading?: string
     nutshell?: string
     blueprints: BlueprintItem[]
     toolColor?: string
 }
 
-const { nutshell, blueprints, toolColor } = Astro.props as Props
+const { heading, nutshell, blueprints, toolColor } = Astro.props as Props
 const sectionStyle = toolColor ? `--tool-color: ${toolColor};` : undefined
 
-const tabs = blueprints.filter((bp) => bp.flowDiagram)
+const tabs = blueprints.filter((bp) => bp.render?.graph || bp.flowDiagram)
 const hasTabs = tabs.length > 0
 ---
 
 <section class="orch-pattern" style={sectionStyle}>
-    <div class="container">
-        <div class="wrapper">
-            {nutshell && (
-                <div class="wrapper__head">
-                    <p class="nutshell" set:html={nutshell} />
-                </div>
-            )}
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="container" data-orch-tabs>
+        <div class="pattern-head">
+            {heading && <h2 class="pattern-title">{heading}</h2>}
+            {nutshell && <p class="nutshell" set:html={nutshell} />}
 
             {hasTabs && (
-                <div class="orch-tabs" data-orch-tabs>
-                            <div class="orch-tabs__bar" role="tablist">
-                                {tabs.map((bp, idx) => (
-                                    <button
-                                        type="button"
-                                        class:list={["orch-tabs__tab", { active: idx === 0 }]}
-                                        role="tab"
-                                        data-tab-target={idx}
-                                        aria-selected={idx === 0}
-                                    >
-                                        {bp.name}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {tabs.map((bp, idx) => (
-                                <div
-                                    class:list={["orch-tabs__panel", { active: idx === 0 }]}
-                                    role="tabpanel"
-                                    data-tab-content={idx}
-                                >
-                                    <div class="panel-row">
-                                        <div class="panel-topology">
-                                            <div class="topology">
-                                                <div class="topology-group group-flow">
-                                                    <span class="topology-tag tag-flow">Flow</span>
-                                                    <div class="node">
-                                                        <div class="node-icon node-icon-flow">
-                                                            <Icon
-                                                                name="mdi:lightning-bolt"
-                                                                width={20}
-                                                                height={20}
-                                                            />
-                                                        </div>
-                                                        <div class="node-text">
-                                                            <div class="node-label">
-                                                                {bp.flowDiagram!.workflow.label}
-                                                            </div>
-                                                            {bp.flowDiagram!.workflow.sublabel && (
-                                                                <div class="node-sublabel">
-                                                                    {bp.flowDiagram!.workflow.sublabel}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="topology-rail topology-rail--bi" aria-hidden="true">
-                                                    <span class="rail-track">
-                                                        <Icon name="mdi:menu-up" class="rail-arrow rail-arrow--up" width={14} height={14} />
-                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
-                                                    </span>
-                                                </div>
-
-                                                <div class="topology-group group-trigger">
-                                                    <span class="topology-tag tag-trigger">Triggers</span>
-                                                    <div class="node">
-                                                        <div class="node-icon">
-                                                            {bp.flowDiagram!.source.pluginClass ? (
-                                                                <TaskIcon cls={bp.flowDiagram!.source.pluginClass} />
-                                                            ) : (
-                                                                <Icon
-                                                                    name={bp.flowDiagram!.source.icon || "mdi:lightning-bolt-outline"}
-                                                                    width={20}
-                                                                    height={20}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                        <div class="node-text">
-                                                            <div class="node-label">
-                                                                {bp.flowDiagram!.source.label}
-                                                            </div>
-                                                            {bp.flowDiagram!.source.sublabel && (
-                                                                <div class="node-sublabel">
-                                                                    {bp.flowDiagram!.source.sublabel}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="topology-rail" aria-hidden="true">
-                                                    <span class="rail-track">
-                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
-                                                    </span>
-                                                </div>
-
-                                                <div class="topology-group group-tasks">
-                                                    <span class="topology-tag tag-tasks">Tasks</span>
-                                                    <div class="tools-cluster">
-                                                        {bp.flowDiagram!.tools.map((tool) => (
-                                                            <div class="tool-pill">
-                                                                <div class="tool-icon">
-                                                                    {tool.pluginClass ? (
-                                                                        <TaskIcon cls={tool.pluginClass} />
-                                                                    ) : (
-                                                                        <Icon
-                                                                            name={tool.icon || "mdi:hexagon-outline"}
-                                                                            width={14}
-                                                                            height={14}
-                                                                        />
-                                                                    )}
-                                                                </div>
-                                                                <span class="tool-label">
-                                                                    {tool.label}
-                                                                </span>
-                                                            </div>
-                                                        ))}
-                                                    </div>
-                                                </div>
-
-                                                <div class="topology-rail" aria-hidden="true">
-                                                    <span class="rail-track">
-                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
-                                                    </span>
-                                                </div>
-
-                                                <div class="topology-group group-outcome">
-                                                    <span class="topology-tag tag-outcome">Outcome</span>
-                                                    <div class="node node-outcome">
-                                                        <div class="node-icon">
-                                                            {bp.flowDiagram!.outcome.pluginClass ? (
-                                                                <TaskIcon cls={bp.flowDiagram!.outcome.pluginClass} />
-                                                            ) : (
-                                                                <Icon
-                                                                    name={bp.flowDiagram!.outcome.icon || "mdi:check-circle-outline"}
-                                                                    width={20}
-                                                                    height={20}
-                                                                />
-                                                            )}
-                                                        </div>
-                                                        <div class="node-text">
-                                                            <div class="node-label">
-                                                                {bp.flowDiagram!.outcome.label}
-                                                            </div>
-                                                            {bp.flowDiagram!.outcome.sublabel && (
-                                                                <div class="node-sublabel">
-                                                                    {bp.flowDiagram!.outcome.sublabel}
-                                                                </div>
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="topology-rail" aria-hidden="true">
-                                                    <span class="rail-track">
-                                                        <Icon name="mdi:menu-down" class="rail-arrow rail-arrow--down" width={14} height={14} />
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="panel-code">
-                                            <div class="code-head">
-                                                <span class="code-caption">{bp.title}</span>
-                                                {bp.href && (
-                                                    <a class="code-link" href={bp.href}>
-                                                        Open blueprint
-                                                        <Icon name="mdi:chevron-right" width={14} height={14} />
-                                                    </a>
-                                                )}
-                                            </div>
-                                            <Snippets client:idle code={bp.code} lang="yaml" />
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                <div class="orch-pills" role="tablist">
+                    {tabs.map((bp, idx) => (
+                        <button
+                            type="button"
+                            class:list={["orch-pill", { active: idx === 0 }]}
+                            role="tab"
+                            data-tab-target={idx}
+                            aria-selected={idx === 0}
+                        >
+                            {bp.name}
+                        </button>
+                    ))}
+                </div>
+            )}
         </div>
+
+        {hasTabs && (
+            <div class="wrapper">
+                {tabs.map((bp, idx) => {
+                    const fd = bp.flowDiagram
+                    const nodes = fd ? [fd.source, ...fd.tools, fd.outcome] : []
+                    return (
+                        <div
+                            class:list={["orch-tabs__panel", { active: idx === 0 }]}
+                            role="tabpanel"
+                            data-tab-content={idx}
+                        >
+                            <div class="panel-row">
+                                <div class="panel-code">
+                                    <div class="code-head">
+                                        <span class="code-caption">{bp.title}</span>
+                                        {(bp.blueprintId || bp.href) && (
+                                            <a class="code-link" href={bp.blueprintId ? `/blueprints/${bp.blueprintId}` : bp.href}>
+                                                Open blueprint
+                                                <Icon name="mdi:chevron-right" width={14} height={14} />
+                                            </a>
+                                        )}
+                                    </div>
+                                    <Snippets client:idle code={bp.render?.source ?? bp.code} lang="yaml" />
+                                </div>
+
+                                <div class="panel-topology">
+                                    {bp.render?.graph ? (
+                                        <div class="topo-live">
+                                            <Topology
+                                                client:only="vue"
+                                                flowGraph={bp.render.graph}
+                                                source={bp.render.source}
+                                                id={bp.blueprintId || `orch-${idx}`}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div class="topo-canvas">
+                                            <div class="topo-flow">
+                                                <span class="topo-plus" aria-hidden="true">
+                                                    <Icon name="mdi:plus" width={14} height={14} />
+                                                </span>
+                                                {nodes.map((node) => (
+                                                    <Fragment>
+                                                        <div class="topo-node">
+                                                            <div class="topo-node__icon">
+                                                                {node.pluginClass ? (
+                                                                    <TaskIcon cls={node.pluginClass} />
+                                                                ) : (
+                                                                    <Icon
+                                                                        name={node.icon || "mdi:hexagon-outline"}
+                                                                        width={18}
+                                                                        height={18}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                            <span class="topo-node__label">{node.label}</span>
+                                                        </div>
+                                                        <span class="topo-plus" aria-hidden="true">
+                                                            <Icon name="mdi:plus" width={14} height={14} />
+                                                        </span>
+                                                    </Fragment>
+                                                ))}
+                                                <span class="topo-end" aria-hidden="true"></span>
+                                            </div>
+
+                                            <div class="topo-zoom" aria-hidden="true">
+                                                <span class="topo-zoom__btn"><Icon name="mdi:plus" width={16} height={16} /></span>
+                                                <span class="topo-zoom__btn"><Icon name="mdi:minus" width={16} height={16} /></span>
+                                                <span class="topo-zoom__btn"><Icon name="mdi:overscan" width={16} height={16} /></span>
+                                                <span class="topo-zoom__btn"><Icon name="mdi:tray-arrow-down" width={16} height={16} /></span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
+        )}
     </div>
 </section>
 
@@ -232,16 +161,16 @@ const hasTabs = tabs.length > 0
             root.dataset.wired = "true"
             root.addEventListener("click", (e) => {
                 const btn = (e.target as Element).closest(
-                    ".orch-tabs__tab",
+                    ".orch-pill",
                 ) as HTMLElement | null
                 if (!btn) return
                 const target = btn.dataset.tabTarget
                 if (target == null) return
                 for (const el of root.querySelectorAll(
-                    ".orch-tabs__tab, .orch-tabs__panel",
+                    ".orch-pill, .orch-tabs__panel",
                 )) {
                     el.classList.remove("active")
-                    if (el.matches(".orch-tabs__tab")) {
+                    if (el.matches(".orch-pill")) {
                         el.setAttribute("aria-selected", "false")
                     }
                 }
@@ -264,48 +193,71 @@ const hasTabs = tabs.length > 0
 
 <style lang="scss">
     .orch-pattern {
+        position: relative;
+        overflow: hidden;
         background: var(--ks-background-body);
         padding: 2.5rem 1rem 3rem;
 
         @include media-breakpoint-up(md) {
-            padding: 3rem 1.5rem 4rem;
+            padding: 3.5rem 1.5rem 4rem;
+        }
+    }
+
+    .grid-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(to right, var(--ks-border-primary) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--ks-border-primary) 1px, transparent 1px);
+        background-size: 68px 68px;
+        background-position: center top;
+        mask-image: radial-gradient(ellipse 75% 50% at 50% 6%, #000 0%, rgba(0, 0, 0, 0.35) 42%, transparent 72%);
+        -webkit-mask-image: radial-gradient(ellipse 75% 50% at 50% 6%, #000 0%, rgba(0, 0, 0, 0.35) 42%, transparent 72%);
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 42% 36% at 36% 4%, color-mix(in srgb, var(--ks-content-color-highlight) 9%, transparent), transparent 70%),
+                radial-gradient(ellipse 38% 32% at 70% 0%, color-mix(in srgb, var(--ks-content-color-highlight) 6%, transparent), transparent 70%);
         }
     }
 
     .container {
+        position: relative;
+        z-index: 1;
         max-width: 1180px;
         margin: 0 auto;
     }
 
-    .wrapper {
-        border: 1px solid var(--ks-border-primary);
-        border-radius: 0.875rem;
-        background: var(--ks-background-primary);
-        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-        overflow: hidden;
+    .pattern-head {
+        max-width: 820px;
+        margin: 0 auto 2.25rem;
+        padding: 0.5rem 1rem 0;
+        text-align: center;
     }
 
-    .wrapper__head {
-        padding: 1.75rem 2rem 1.5rem;
-        border-bottom: 1px solid var(--ks-border-secondary);
-        background: linear-gradient(
-            135deg,
-            color-mix(in srgb, var(--ks-content-color-highlight) 4%, var(--ks-background-primary)),
-            var(--ks-background-primary) 60%
-        );
+    .pattern-title {
+        margin: 0 0 0.875rem;
+        font-size: 2.125rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--ks-content-primary);
 
         @include media-breakpoint-down(md) {
-            padding: 1.25rem 1.25rem 1rem;
+            font-size: 1.625rem;
         }
     }
 
     .nutshell {
-        max-width: 880px;
+        max-width: 720px;
         margin: 0 auto;
-        text-align: center;
-        font-size: 1.0625rem;
-        line-height: 1.65;
-        color: var(--ks-content-primary);
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--ks-content-secondary);
 
         :global(a) {
             color: var(--ks-content-color-highlight);
@@ -325,50 +277,48 @@ const hasTabs = tabs.length > 0
         }
     }
 
-    .orch-tabs__bar {
+    .orch-pills {
         display: flex;
-        flex-direction: row;
-        overflow-x: auto;
-        scrollbar-width: thin;
-        background: var(--ks-background-secondary);
-        border-bottom: 1px solid var(--ks-border-secondary);
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-top: 1.5rem;
     }
 
-    .orch-tabs__tab {
-        flex: 1 1 0;
-        padding: 0.9rem 1.25rem;
+    .orch-pill {
+        padding: 0.625rem 1.125rem;
         border: 0;
-        border-bottom: 2px solid transparent;
+        border-radius: 0.625rem;
         background: transparent;
-        color: var(--ks-content-secondary);
-        font-size: 0.875rem;
+        color: var(--ks-content-tertiary);
+        font-size: 0.9375rem;
         font-weight: 600;
         cursor: pointer;
         white-space: nowrap;
-        text-align: center;
         transition:
             color 0.18s ease,
             background 0.18s ease,
-            border-color 0.18s ease;
+            box-shadow 0.18s ease;
 
         &:hover {
-            color: var(--ks-content-primary);
-            background: color-mix(
-                in srgb,
-                var(--ks-content-color-highlight) 4%,
-                transparent
-            );
+            color: var(--ks-content-secondary);
         }
 
         &.active {
             color: var(--ks-content-primary);
             background: var(--ks-background-primary);
-            border-bottom-color: var(--ks-content-color-highlight);
+            box-shadow:
+                0 1px 3px rgba(94, 110, 212, 0.12),
+                0 6px 16px rgba(94, 110, 212, 0.1);
         }
+    }
 
-        & + & {
-            border-left: 1px solid var(--ks-border-secondary);
-        }
+    .wrapper {
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.875rem;
+        background: var(--ks-background-primary);
+        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+        overflow: hidden;
     }
 
     .orch-tabs__panel {
@@ -383,261 +333,183 @@ const hasTabs = tabs.length > 0
         display: flex;
         flex-direction: row;
         align-items: stretch;
+        min-height: 30rem;
 
         @include media-breakpoint-down(lg) {
             flex-direction: column;
-        }
-    }
-
-    .panel-topology {
-        flex: 0 0 42%;
-        padding: 1.75rem 1.25rem;
-        background: #0e0d1a;
-        background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
-        background-size: 14px 14px;
-        border-right: 1px solid var(--ks-border-secondary);
-
-        @include media-breakpoint-down(lg) {
-            flex: 1 1 auto;
-            border-right: none;
-            border-bottom: 1px solid var(--ks-border-secondary);
-        }
-
-        @include media-breakpoint-down(md) {
-            padding: 1.25rem 1rem;
+            min-height: 0;
         }
     }
 
     .panel-code {
         flex: 1 1 0;
-        padding: 1.5rem 1.5rem;
+        min-width: 0;
+        padding: 1.5rem;
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
         background: var(--ks-background-primary);
-        min-width: 0;
 
         @include media-breakpoint-down(md) {
             padding: 1.25rem 1rem;
         }
     }
 
-    .topology {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .topology-group {
-        position: relative;
-        width: 100%;
-        min-height: 6.75rem;
-        padding: 2.5rem 0.85rem 1rem;
-        border: 1px solid;
-        border-radius: 0.875rem;
-        background: rgba(255, 255, 255, 0.02);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .group-flow {
-        --group-color: #8405ff;
-        border-color: var(--group-color);
-        background: rgba(132, 5, 255, 0.05);
-    }
-
-    .group-trigger {
-        --group-color: #02be8a;
-        border-color: var(--group-color);
-        background: rgba(2, 190, 138, 0.05);
-    }
-
-    .group-tasks {
-        --group-color: #1761fd;
-        border-color: var(--group-color);
-        background: rgba(23, 97, 253, 0.05);
-    }
-
-    .group-outcome {
-        --group-color: var(--tool-color, #8405ff);
-        border-color: var(--group-color);
-        background: color-mix(in srgb, var(--group-color) 5%, transparent);
-    }
-
-    .topology-tag {
-        position: absolute;
-        top: 0.75rem;
-        left: 0.85rem;
-        display: inline-flex;
-        align-items: center;
-        padding: 0.2rem 0.75rem;
-        border-radius: 2rem;
-        font-size: 0.6875rem;
-        font-weight: 700;
-        line-height: 1;
-        color: #ffffff;
-        white-space: nowrap;
-    }
-
-    .tag-flow { background: #8405ff; }
-    .tag-trigger { background: #02be8a; }
-    .tag-tasks { background: #1761fd; }
-    .tag-outcome { background: var(--tool-color, #8405ff); }
-
-    .topology-rail {
-        display: flex;
-        justify-content: center;
-        padding: 0.9rem 0;
-    }
-
-    .rail-track {
-        position: relative;
-        display: block;
-        box-sizing: content-box;
-        width: 14px;
-        height: 56px;
-        padding: 10px 0;
-        background-image: linear-gradient(
-            to bottom,
-            #9A8EB4 50%,
-            transparent 50%
+    .panel-topology {
+        flex: 0 0 40%;
+        border-left: 1px solid var(--ks-border-secondary);
+        background-color: var(--ks-background-body);
+        background-image: radial-gradient(
+            circle at 1px 1px,
+            var(--ks-topology-dot-color, #b4b4bd) 1px,
+            transparent 0
         );
-        background-size: 2px 7px;
-        background-position: center top;
-        background-repeat: repeat-y;
-        background-origin: content-box;
-        background-clip: content-box;
-        animation: rail-flow 0.25s linear infinite;
+        background-size: 20px 20px;
+
+        @include media-breakpoint-down(lg) {
+            flex: 1 1 auto;
+            border-left: none;
+            border-top: 1px solid var(--ks-border-secondary);
+        }
+    }
+
+    .topo-live {
+        position: sticky;
+        top: 5rem;
+        height: 30rem;
+        overflow: clip;
+
+        :global(astro-island) {
+            display: block;
+            height: 100%;
+        }
+    }
+
+    .topo-canvas {
+        position: relative;
+        height: 100%;
+        min-height: 26rem;
+        padding: 1.75rem 1rem 2rem;
+        background-color: var(--ks-background-secondary);
+        background-image: radial-gradient(circle at 1px 1px, var(--ks-border-secondary) 1px, transparent 0);
+        background-size: 18px 18px;
+        overflow: hidden;
+    }
+
+    .topo-flow {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: 16rem;
+        margin: 0 auto;
 
         &::before {
             content: "";
             position: absolute;
-            top: 0;
+            top: 0.75rem;
+            bottom: 0.75rem;
             left: 50%;
+            width: 1px;
+            background: var(--ks-border-secondary);
             transform: translateX(-50%);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #9A8EB4;
+            z-index: 0;
         }
     }
 
-    .topology-rail--bi .rail-track::before {
-        display: none;
-    }
-
-    .rail-arrow {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #9A8EB4;
-    }
-
-    .rail-arrow--down { bottom: 0; }
-    .rail-arrow--up { top: 0; }
-
-    @keyframes rail-flow {
-        from { background-position: center 0; }
-        to { background-position: center 7px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .rail-track { animation: none !important; }
-    }
-
-    .node {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        padding: 0.7rem 0.85rem;
-        background: rgba(154, 142, 180, 0.22);
-        border: 1px solid rgba(154, 142, 180, 0.35);
-        border-radius: 0.625rem;
-    }
-
-    .node-icon {
-        width: 2rem;
-        height: 2rem;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #2b1c5c, #1a1235);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        padding: 0.3rem;
-        color: #ffffff;
-    }
-
-    .node-icon-flow {
-        background: linear-gradient(135deg, color-mix(in srgb, var(--group-color) 60%, #1a1235), #1a1235);
-        border-color: color-mix(in srgb, var(--group-color) 35%, transparent);
-    }
-
-    .node-outcome .node-icon {
-        background: linear-gradient(135deg, color-mix(in srgb, var(--group-color) 55%, #1a1235), #1a1235);
-        border-color: color-mix(in srgb, var(--group-color) 35%, transparent);
-        color: #ffffff;
-    }
-
-    .node-text {
-        min-width: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 1px;
-    }
-
-    .node-label {
-        font-size: 0.85rem;
-        font-weight: 600;
-        line-height: 1.2;
-        color: rgba(255, 255, 255, 0.95);
-    }
-
-    .node-sublabel {
-        font-size: 0.72rem;
-        line-height: 1.25;
-        color: rgba(255, 255, 255, 0.55);
-    }
-
-    .tools-cluster {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.375rem;
-        align-content: center;
-        padding: 0.5rem;
-        background: rgba(154, 142, 180, 0.22);
-        border: 1px solid rgba(154, 142, 180, 0.35);
-        border-radius: 0.625rem;
-    }
-
-    .tool-pill {
+    .topo-plus {
+        position: relative;
+        z-index: 1;
         display: inline-flex;
         align-items: center;
-        gap: 0.35rem;
-        padding: 0.3rem 0.55rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.375rem;
-        font-size: 0.72rem;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 0.4rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        color: var(--ks-content-tertiary);
     }
 
-    .tool-icon {
-        width: 1.05rem;
-        height: 1.05rem;
+    .topo-node {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        width: 100%;
+        padding: 0.5rem 0.7rem;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.5rem;
+        box-shadow:
+            0 1px 2px rgba(0, 0, 0, 0.04),
+            0 5px 14px rgba(94, 110, 212, 0.08);
+    }
+
+    .topo-node__icon {
+        width: 30px;
+        height: 30px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: rgba(255, 255, 255, 0.85);
+        border-radius: 0.4rem;
+        overflow: hidden;
+
+        :global(svg),
+        :global(img) {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     }
 
-    .tool-label {
+    .topo-node__label {
+        font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--ks-content-primary);
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .topo-end {
+        position: relative;
+        z-index: 1;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--ks-content-color-highlight);
+    }
+
+    .topo-zoom {
+        position: absolute;
+        left: 1rem;
+        bottom: 1rem;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        background: var(--ks-background-primary);
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 0.5rem;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .topo-zoom__btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 32px;
+        color: var(--ks-content-secondary);
+
+        & + & {
+            border-top: 1px solid var(--ks-border-secondary);
+        }
     }
 
     .code-head {
@@ -669,34 +541,6 @@ const hasTabs = tabs.length > 0
         &:hover {
             text-decoration: underline;
             text-underline-offset: 3px;
-        }
-    }
-
-    $cycle: 12s;
-    $ease: ease-in-out;
-
-    @keyframes group-pulse {
-        0%, 4%, 18%, 100% {
-            box-shadow: 0 0 0 0 transparent;
-        }
-        9%, 13% {
-            box-shadow:
-                0 0 0 4px color-mix(in srgb, var(--group-color) 22%, transparent),
-                0 10px 30px color-mix(in srgb, var(--group-color) 32%, transparent);
-        }
-    }
-
-    .group-flow { animation: group-pulse $cycle $ease infinite; animation-delay: 0s; }
-    .group-trigger { animation: group-pulse $cycle $ease infinite; animation-delay: 3s; }
-    .group-tasks { animation: group-pulse $cycle $ease infinite; animation-delay: 6s; }
-    .group-outcome { animation: group-pulse $cycle $ease infinite; animation-delay: 9s; }
-
-    @media (prefers-reduced-motion: reduce) {
-        .group-flow,
-        .group-trigger,
-        .group-tasks,
-        .group-outcome {
-            animation: none !important;
         }
     }
 </style>

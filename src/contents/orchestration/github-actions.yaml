@@ -183,6 +183,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your GitHub PAT, point at your repo, ship it."
   items:
     - name: "Dispatch deploy workflow when dbt finishes"
+      blueprintId: "github-dispatch-deploy-on-dbt"
       title: "Trigger a GitHub Actions deploy when upstream data is ready"
       description: "Kestra catches the dbt completion webhook, runs a freshness check, dispatches the deploy workflow with the new revision, waits for the workflow_run completion event, then posts to Slack with the deploy URL."
       href: "/blueprints?tags=Infrastructure"
@@ -269,6 +270,7 @@ blueprints:
                 "text": ":alert: Dispatch failed for {{ inputs.revision }}. <{{ execution.url }}|View execution>"
               }
     - name: "Open issue on flow failure"
+      blueprintId: "create-github-issue-on-failure"
       title: "Errors branch opens a GitHub issue with execution context"
       description: "When a production flow fails, the errors branch finds the most recent PR touching the relevant code, opens a GitHub issue with the failing step and execution URL, and posts the same context as a PR comment."
       href: "/blueprints?tags=Infrastructure"
@@ -347,6 +349,7 @@ blueprints:
               :warning: A production flow that touches code in this PR has just failed.
               See execution: {{ execution.url }}
     - name: "Cross-repo workflow dispatch"
+      blueprintId: "github-cross-repo-dispatch"
       title: "Run the same workflow across every repo with a tag"
       description: "Searches the org for every repo with the platform-service topic, dispatches the security-scan.yml workflow per repo, waits for each workflow_run completion, and posts a single summary to Slack with per-repo pass or fail."
       href: "/blueprints?tags=Infrastructure"

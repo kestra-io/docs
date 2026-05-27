@@ -189,6 +189,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point at your OPA server, ship it."
   items:
     - name: "OPA gate before terraform apply"
+      blueprintId: "opa-policy-gate-ci"
       title: "terraform plan output evaluated by OPA; apply gated on the decision"
       description: "Runs terraform plan with JSON output, sends the plan as input to OPA's terraform/deny policy, branches on the violations array. If empty, terraform apply runs. If not, the flow halts and posts the violation details to Slack."
       href: "/blueprints?tags=Infrastructure"
@@ -272,6 +273,7 @@ blueprints:
                     "text": ":no_entry: OPA blocked the apply. Violations: {{ outputs.evaluate_policy.result | json }}. Decision ID: {{ outputs.evaluate_policy.decisionId }}. <{{ execution.url }}|View>"
                   }
     - name: "Policy lifecycle: Git to OPA with tests and gate"
+      blueprintId: "opa-policy-lifecycle"
       title: "Pull Rego from Git, run opa test, validate, gate, upload"
       description: "Weekly flow that pulls the policy repo, runs opa test for unit tests, validates each policy parses via policy.Compile, lists current OPA modules, pauses for a human to approve the diff, then policy.Upload deploys."
       href: "/blueprints?tags=Infrastructure"
@@ -358,6 +360,7 @@ blueprints:
                 "text": ":scroll: OPA policies updated from main. <{{ execution.url }}|View execution>"
               }
     - name: "Daily cross-stack compliance audit"
+      blueprintId: "opa-compliance-audit"
       title: "Pull AWS + K8s + Terraform state, evaluate against compliance policies, report"
       description: "Scheduled daily audit that aggregates state across stacks, runs policy.Evaluate against each, and posts a violation report to Slack with decision IDs."
       href: "/blueprints?tags=Infrastructure"

@@ -179,6 +179,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set the kubeconfig in Kestra secrets, point at your cluster, ship it."
   items:
     - name: "Run a GPU Pod and collect its artifact"
+      blueprintId: "kubernetes-gpu-pod-artifact"
       title: "PodCreate with GPU request, stream logs, save the model artifact"
       description: "Spawns a Pod with a GPU resource request on a node selector for the GPU pool. The main container runs a training script; a sidecar collects the resulting model file and writes it to Kestra internal storage. Slack confirms with the artifact URI and runtime metrics."
       href: "/blueprints?tags=Infrastructure"
@@ -245,6 +246,7 @@ blueprints:
                 "text": ":chart_with_upwards_trend: Training done. Artifact at {{ outputs.train.outputFiles['/output/model.bin'] }}. <{{ execution.url }}|View>"
               }
     - name: "Vault rotation, patch and restart Deployments"
+      blueprintId: "kubernetes-vault-rotation-restart"
       title: "Rotate a Vault secret, restart every Deployment that reads it"
       description: "Calls the Vault rotation endpoint, then iterates the list of Deployments that consume the secret. Per Deployment: kubectl.Patch annotates with a rollout timestamp, kubectl.Restart triggers the rolling restart, kubectl.Get waits for Available replicas to match desired."
       href: "/blueprints?tags=Infrastructure"
@@ -334,6 +336,7 @@ blueprints:
                 resourceName: "{{ taskrun.value }}"
                 waitUntilReady: PT5M
     - name: "Multi-cluster apply across tenant clusters"
+      blueprintId: "kubernetes-multicluster-apply"
       title: "ForEach tenant: apply the same manifest, wait for Ready, report per tenant"
       description: "Fetches the tenant list from an inventory API, iterates with parallel ForEach, applies the release manifest to each tenant cluster using the matching kubeconfig from Kestra secrets, waits for Ready, and posts per-tenant status to Slack. Failures route to an errors branch that rolls back that tenant only."
       href: "/blueprints?tags=Infrastructure"
