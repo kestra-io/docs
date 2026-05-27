@@ -95,6 +95,8 @@ const blueprintSchema = z.object({
     plugins: z.array(z.string()),
     href: z.string().optional(),
     flowDiagram: flowDiagramSchema.optional(),
+    blueprintId: z.string().optional(),
+    blueprintPlaceholder: z.boolean().optional(),
 })
 
 const blueprintsSchema = z.object({

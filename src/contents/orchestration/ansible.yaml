@@ -170,6 +170,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your inventory, ship it."
   items:
     - name: "Check-mode drift detection"
+      blueprintId: "ansible-config-drift"
       title: "Nightly check-mode audit with the Kestra Ansible callback"
       description: "Runs the playbook with <code>--check --diff</code> nightly. The Kestra Ansible callback emits per-host structured output. A <code>ForEach</code> loops through hosts and posts a Slack alert only when <code>changed: true</code>. Clean enforcement runs stay quiet."
       href: "/blueprints?tags=Infrastructure"
@@ -231,6 +232,7 @@ blueprints:
                 url: "{{ secret('SLACK_WEBHOOK') }}"
                 messageText: "Drift detected: {{ taskrun.value | jq('.msg') | first ?? 'config drift on host' }}"
     - name: "Rolling patch wave"
+      blueprintId: "ansible-rolling-patch-wave"
       title: "Rolling OS patch wave with serial and per-batch health probe"
       description: "<code>ansible-playbook</code> runs with <code>serial: 1</code> to patch one host at a time. Between batches a Kestra <code>core.http.Request</code> probes the application health endpoint. A failed probe halts the flow before the next batch."
       href: "/blueprints?tags=Infrastructure"
@@ -310,6 +312,7 @@ blueprints:
                 url: "{{ secret('SLACK_WEBHOOK') }}"
                 messageText: ":alert: Health probe failed for {{ taskrun.value | jq('.host') | first }} after patching, wave halted."
     - name: "Dynamic inventory from NetBox"
+      blueprintId: "ansible-netbox-dynamic-inventory"
       title: "Build inventory from NetBox at run time, then play against it"
       description: "Queries NetBox for the device list at the start of the flow, writes <code>inventory.ini</code> from the result, then runs <code>ansible-playbook</code> against the fresh inventory. The same execution updates the ServiceNow CMDB with the per-host result."
       href: "/blueprints?tags=Infrastructure"

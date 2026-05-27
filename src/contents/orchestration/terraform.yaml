@@ -243,6 +243,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your state backend, ship it."
   items:
     - name: "Scheduled drift detection"
+      blueprintId: "terraform-drift-detection"
       title: "Scheduled drift detection"
       description: "Runs <code>terraform plan</code> hourly with <code>-detailed-exitcode</code>. If exit code 2 (changes detected), Kestra captures the full plan output and posts a Slack alert with a link to the execution. Replayable per run, no cron job on a jump box."
       href: "/blueprints"
@@ -306,6 +307,7 @@ blueprints:
                     "text": ":warning: Drift detected in production infrastructure. <{{ execution.url }}|View execution>"
                   }
     - name: "Approval gate between plan and apply"
+      blueprintId: "terraform-approval-plan-apply"
       title: "Approval gate between plan and apply"
       description: "Runs <code>terraform plan</code>, pauses the flow on the plan output, waits for a named reviewer, then runs <code>terraform apply</code> against the same plan. The reviewer identity and timestamp are logged automatically. Retries the apply step on transient failure."
       href: "/blueprints"
@@ -380,6 +382,7 @@ blueprints:
             type: io.kestra.plugin.core.log.Log
             message: "Applied to {{ inputs.environment }} at {{ execution.startDate }} by {{ execution.namespace }}."
     - name: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      blueprintId: "terraform-ansible-argocd-chain"
       title: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
       description: "<code>terraform apply</code> provisions the VM and writes the private IP to a task artifact. <code>ansible-playbook</code> configures the app using that IP, with per-step retries. <code>argocd app sync</code> ships the deployment. Slack confirms when all three steps succeed."
       href: "/blueprints"

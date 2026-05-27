@@ -170,6 +170,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your Cloudflare API token, point at your zone, ship it."
   items:
     - name: "DNS upsert when Terraform writes a new IP"
+      blueprintId: "cloudflare-dns-from-terraform"
       title: "Sync a Cloudflare A record with terraform output, then purge cache"
       description: "terraform apply produces a new IP output. The flow upserts the matching A record in Cloudflare, purges the cache for that hostname, and posts a Slack message with the record ID and the new content."
       href: "/blueprints?tags=Infrastructure"
@@ -244,6 +245,7 @@ blueprints:
                 "text": ":globe_with_meridians: {{ inputs.hostname }} now points at {{ outputs.upsert_dns.content }}. Record ID: {{ outputs.upsert_dns.recordId }}. <{{ execution.url }}|View execution>"
               }
     - name: "Cache purge after Argo CD reports Healthy"
+      blueprintId: "cloudflare-cache-purge-on-deploy"
       title: "Listen for the deploy webhook, purge cache, verify with a probe"
       description: "A Webhook trigger receives the Argo CD workflow_run completion. The flow calls cache.Purge by hostname, then runs an HTTP HEAD with cache-control: no-cache to verify the origin response. Slack confirms with the deploy URL."
       href: "/blueprints?tags=Infrastructure"
@@ -313,6 +315,7 @@ blueprints:
                 "text": ":fire: Cache purged for {{ inputs.hostname }}. Origin response: {{ outputs.verify_fresh.code }}. <{{ execution.url }}|View>"
               }
     - name: "Multi-zone DNS reconciliation from a Git manifest"
+      blueprintId: "cloudflare-multizone-dns-from-git"
       title: "Iterate every zone on the account, apply declared records in one batch each"
       description: "Weekly schedule. Clone the manifest repo. List every zone on the account. Per zone, parse the manifest, build the declared record set, and apply with dns.records.Batch. A drift summary posts to Slack showing records changed per zone."
       href: "/blueprints?tags=Infrastructure"

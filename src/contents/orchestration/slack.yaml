@@ -180,6 +180,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, install your Slack app with the right OAuth scopes, set the bot token in Kestra secrets, ship it."
   items:
     - name: "Reusable notify subflow called by any upstream"
+      blueprintId: "slack-notify-subflow"
       title: "A single Subflow that takes channel + status + execution context, posts to Slack"
       description: "Two flows. The notify subflow takes channel, status, summary, and execution_url as inputs and posts a Block Kit message with reactions.Add for the status emoji. Any parent flow (dbt, Terraform, Argo CD, AWS Lambda) calls it on success or failure."
       href: "/blueprints?tags=Business"
@@ -247,6 +248,7 @@ blueprints:
             timestamp: "{{ outputs.post_message.ts }}"
             name: "{{ inputs.status == 'SUCCESS' ? 'white_check_mark' : 'fire' }}"
     - name: "Daily Snowflake digest as an editable Canvas"
+      blueprintId: "slack-snowflake-canvas"
       title: "Query metrics at 8am, format markdown, post a Canvas to leadership"
       description: "Runs a Snowflake query against the daily metrics view, formats the rows into markdown sections via a Python script, posts the result as an editable Canvas to a leadership channel, and pings the team with a thread reply."
       href: "/blueprints?tags=Business"
@@ -331,6 +333,7 @@ blueprints:
             channel: "{{ secret('LEADERSHIP_CHANNEL_ID') }}"
             messageText: ":bar_chart: Today's metrics Canvas is posted. <{{ outputs.post_canvas.canvasUrl }}|Open Canvas>"
     - name: "Channel history export to BigQuery"
+      blueprintId: "slack-history-to-bigquery"
       title: "Weekly pull #support history, transform, load to BigQuery, trigger dbt"
       description: "A weekly flow pulls the support channel's history, transforms it into a BigQuery-friendly schema in Python, loads it as a weekly partition, then triggers the support_metrics dbt models to refresh."
       href: "/blueprints?tags=Business"

@@ -188,6 +188,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Prism Central, ship it."
   items:
     - name: "Safe patching with rollback"
+      blueprintId: "nutanix-safe-patching-workflow"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Provisions an AHV VM and creates a pre-patch recovery point through the v4 dataprotection API. Runs the OS update over SSH, waits for reboot, probes a health endpoint. The <code>errors</code> branch restores the recovery point and notifies Slack. Shipped as a working blueprint in the Kestra catalog."
       href: "/blueprints?tags=Infrastructure"
@@ -286,6 +287,7 @@ blueprints:
               host: "{{ secret('NUTANIX_HOST') }}"
               token: "{{ secret('NUTANIX_TOKEN') }}"
     - name: "VMware-to-AHV wave migration"
+      blueprintId: "nutanix-vmware-ahv-migration"
       title: "Coordinate a Nutanix Move wave: readiness check, gate, cutover, AHV start"
       description: "Drives Nutanix Move through the v2 REST API for one wave of VMs. Polls workload state until 5 (ready for cutover), pauses for a named approver, then issues the per-VM cutover action and powers the new AHV VM on. The vCenter source stays live until cutover succeeds."
       href: "/blueprints?tags=Infrastructure"
@@ -388,6 +390,7 @@ blueprints:
               host: "{{ secret('NUTANIX_HOST') }}"
               token: "{{ secret('NUTANIX_TOKEN') }}"
     - name: "Inventory and chargeback report"
+      blueprintId: "nutanix-inventory-chargeback"
       title: "Weekly chargeback report from Prism Central inventory"
       description: "Pulls VM inventory through <code>ListVms</code> with an OData filter, aggregates vCPU and memory by Category in Python, posts the summary to Slack, and appends a row to a Google Sheet. Flags any VM that lacks the expected owner Category."
       href: "/blueprints?tags=Infrastructure"

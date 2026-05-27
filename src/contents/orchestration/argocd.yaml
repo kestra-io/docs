@@ -200,6 +200,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Argo CD server, ship it."
   items:
     - name: "Event-driven sync on CI completion"
+      blueprintId: "argocd-event-driven-sync"
       title: "Sync Argo CD the moment CI passes, then poll until Healthy"
       description: "A GitHub Actions webhook triggers the flow with the new revision. Kestra calls apps.Sync, polls apps.Status until both syncStatus and healthStatus report green, then posts to Slack with the revision and application URL."
       href: "/blueprints?tags=Infrastructure"
@@ -281,6 +282,7 @@ blueprints:
                 "text": ":alert: Argo CD sync failed for {{ inputs.application }} at {{ inputs.revision }}. <{{ execution.url }}|View execution>"
               }
     - name: "Terraform, Ansible, Argo CD chain"
+      blueprintId: "terraform-ansible-argocd-chain"
       title: "Provision the cluster, configure the nodes, deploy the app"
       description: "terraform apply provisions an EKS cluster. A Pause task gates before configuration. ansible-playbook configures the nodes. argocd app sync deploys the app. apps.Status waits for Healthy. Slack confirms or alerts. Per-step retries keep the chain moving on transient errors."
       href: "/blueprints?tags=Infrastructure"
@@ -381,6 +383,7 @@ blueprints:
                 "text": ":alert: Chain failed for {{ inputs.application }}. Check which step broke. <{{ execution.url }}|View execution>"
               }
     - name: "Staged promotion with approval gate"
+      blueprintId: "argocd-single-tenant-wave-rollout"
       title: "Sync staging, smoke test, gate, then sync prod with the same revision"
       description: "The flow takes a revision SHA as input. Syncs the staging Argo app, polls until Healthy, runs a smoke test against the staging endpoint, pauses for a named reviewer, then syncs the prod Argo app at the same revision. Slack notifies at each stage."
       href: "/blueprints?tags=Infrastructure"

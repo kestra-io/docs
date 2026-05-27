@@ -172,9 +172,10 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your vCenter, ship it."
   items:
     - name: "Provision, configure, register"
+      blueprintId: "vmware-provision-configure-register"
       title: "Provision from a vCenter template, configure with Ansible, register in ServiceNow"
       description: "CloneVm deploys a VM from a golden template and emits its IP and hostname. <a href='/plugins/plugin-ansible'>ansible-playbook</a> joins the domain and installs agents, with per-step retries. <a href='/plugins/plugin-servicenow'>ServiceNow.Post</a> lands a fresh CMDB record. Slack confirms when all three steps succeed."
-      href: "/blueprints?tags=Infrastructure"
+      href: "/blueprints/vmware-provision-configure-register"
       flowDiagram:
         source:
           label: "ServiceNow webhook"
@@ -263,9 +264,10 @@ blueprints:
                 "text": ":rocket: {{ inputs.vm_name }} provisioned from {{ inputs.template_name }} ({{ outputs.clone_vm.vmIpAddress }}), configured, and registered in ServiceNow."
               }
     - name: "Snapshot-gated patching"
+      blueprintId: "vmware-safe-patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on vCenter, runs the OS update over SSH, probes the application, and restores the snapshot if the probe fails. The snapshot ID is preserved per execution so the rollback always lands on the right state."
-      href: "/blueprints?tags=Infrastructure"
+      href: "/blueprints/vmware-safe-patching"
       flowDiagram:
         source:
           label: "Cron / vCenter event"
@@ -353,9 +355,10 @@ blueprints:
             url: "{{ secret('SLACK_WEBHOOK') }}"
             messageText: ":alert: Patch failed on {{ inputs.vm_name }}. Rolled back to {{ outputs.pre_patch_snapshot.snapshotName }}. <{{ execution.url }}|View execution>"
     - name: "Event-driven VM cleanup"
+      blueprintId: "vm-event-based-cleanup"
       title: "Event-driven cleanup on vCenter VM removal"
       description: "Listens for VM removal events on vCenter, then runs the offboarding sequence: log the event, remove the DNS A record, delete the Active Directory computer object, and notify CrowdStrike to hide the host. Each removed VM gets its own ForEach iteration."
-      href: "/blueprints?tags=Infrastructure"
+      href: "/blueprints/vm-event-based-cleanup"
       flowDiagram:
         source:
           label: "vCenter VM_REMOVED"

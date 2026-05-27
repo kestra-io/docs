@@ -187,6 +187,7 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your AWS credentials in Kestra secrets, point at your resources, ship it."
   items:
     - name: "S3 file landed, fan out by prefix"
+      blueprintId: "aws-s3-fanout"
       title: "Route incoming S3 objects to dbt or Lambda based on prefix"
       description: "s3.Trigger polls the bucket. An If task routes /raw/orders/ to dbt build and /raw/clicks/ to a Lambda. Both paths publish to SNS on completion and notify Slack."
       href: "/blueprints?tags=Infrastructure"
@@ -273,6 +274,7 @@ blueprints:
                 "text": ":file_folder: Processed {{ trigger.objects[0].key }}. <{{ execution.url }}|View>"
               }
     - name: "EMR Serverless backlog autoscale"
+      blueprintId: "aws-emr-serverless-spark"
       title: "Watch SQS depth on a schedule, spin Spark only when needed"
       description: "Every 5 minutes, the flow reads SQS queue depth via CloudWatch. If above threshold, it starts an EMR Serverless Spark job and polls until SUCCEEDED. Below threshold, the flow exits. No idle compute on quiet weekends."
       href: "/blueprints?tags=Infrastructure"
@@ -364,6 +366,7 @@ blueprints:
                     "text": ":chart_with_upwards_trend: Drained backlog, job {{ outputs.start_job.jobRunId }} done."
                   }
     - name: "Glue ETL, Athena validation, DynamoDB write"
+      blueprintId: "aws-glue-athena-dynamodb"
       title: "Daily pipeline across three AWS services in one execution"
       description: "Starts a Glue job, polls until SUCCEEDED, runs an Athena validation query, gates a DynamoDB write on the row count. Failed validation pages on-call instead of writing bad data."
       href: "/blueprints?tags=Infrastructure"
