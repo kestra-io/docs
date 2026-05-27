@@ -1,0 +1,123 @@
+---
+const items = [
+    {
+        title: "Your use case, end-to-end",
+        description:
+            "Not a generic tour. A full walkthrough of the workflow you actually care about.",
+    },
+    {
+        title: "Real UI, real executions",
+        description:
+            "Live product with actual logs, outputs, and topology views. Nothing staged.",
+    },
+    {
+        title: "Concise and developer-paced",
+        description:
+            "Focused on what matters. Skip around, rewatch, share with your team.",
+    },
+    {
+        title: "Language-agnostic orchestration",
+        description:
+            "Python, Node, Shell, SQL, Go — Kestra runs them all. See how your stack fits in.",
+    },
+]
+---
+
+<section class="what-youll-see">
+    <div class="container">
+        <h2 data-usal="fade-l">What you'll get</h2>
+        <p class="baseline" data-usal="fade-r">
+            A dedicated Loom, recorded for your use case.
+        </p>
+        <div class="checklist">
+            {
+                items.map((item) => (
+                    <div class="check-item" data-usal="fade-r">
+                        <svg
+                            class="check-icon"
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path d="M5 13l4 4L19 7" />
+                        </svg>
+                        <div>
+                            <p class="item-title">{item.title}</p>
+                            <p class="item-description">{item.description}</p>
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .what-youll-see {
+        padding: calc($spacer * 4) 0;
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        h2 {
+            text-align: center;
+            font-weight: 600;
+            font-size: $font-size-4xl;
+            margin-bottom: 0.5rem;
+
+            @include media-breakpoint-down(sm) {
+                font-size: $font-size-2xl;
+            }
+        }
+
+        .baseline {
+            text-align: center;
+            color: var(--ks-content-secondary);
+            font-size: 1.15rem;
+            margin-bottom: calc($spacer * 3);
+
+            @include media-breakpoint-down(sm) {
+                font-size: $font-size-md;
+            }
+        }
+
+        .checklist {
+            max-width: 520px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+
+            .check-icon {
+                flex-shrink: 0;
+                color: var(--ks-content-alert-success);
+                margin-top: 0.125rem;
+            }
+
+            .item-title {
+                font-size: $font-size-sm;
+                font-weight: 600;
+                color: var(--ks-content-primary);
+                margin: 0 0 0.125rem;
+            }
+
+            .item-description {
+                font-size: $font-size-sm;
+                color: var(--ks-content-secondary);
+                margin: 0;
+            }
+        }
+    }
+</style>

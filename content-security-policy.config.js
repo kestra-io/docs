@@ -72,6 +72,7 @@ export default {
         "https://*.hsforms.net",
         "http://*.hsforms.net",
         "https://jobs.ashbyhq.com/",
+        "https://*.loom.com",
     ],
     "connect-src": [
         "'self'",
