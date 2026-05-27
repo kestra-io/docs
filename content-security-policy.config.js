@@ -34,6 +34,7 @@ export default {
         "https://www.google.com/recaptcha/",
         "https://www.gstatic.com/recaptcha/",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -97,6 +98,7 @@ export default {
         "https://*.ipify.org",
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],

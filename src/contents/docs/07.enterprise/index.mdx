@@ -24,7 +24,7 @@ While Kestra Cloud is fully managed, it differs from Kestra Enterprise in severa
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | **Infrastructure Control**            | Fully managed by Kestra for simplicity and reliability                                                         | Full control and customization                                              |
 | **Backend Technology**                | PostgreSQL JDBC only                                                                                           | Customizable Kafka, PostgreSQL, MySQL, H2 (testing)                         |
-| **Workers**                           | Managed worker pools sized for stability                                                                       | Remote [Worker Groups](./04.scalability/worker-group/index.md), autoscaling |
+| **Workers**                           | Managed worker pools sized for stability                                                                       | Remote [Worker Groups](/docs/enterprise/scalability/worker-group), autoscaling |
 | **Custom Internal Storage & Secrets** | No instance-level control, **tenant/namespace-level only** backends                                            | Fully customizable backends                                                 |
 | **Network Configuration**             | Secure access over public Internet                                                                             | Private networking (self-hosted, VPC peering, etc.)                         |
 | **Backup Access**                     | Automatic backups handled by Kestra                                                                            | Customer-controlled backups                                                 |
@@ -32,10 +32,10 @@ While Kestra Cloud is fully managed, it differs from Kestra Enterprise in severa
 | **Identity Providers (IdP)**          | Built-in Google, Microsoft, or Basic Authentication                                                            | Custom SSO/SCIM supported                                                   |
 | **Log Retention**                     | Automatic retention protocol managed by Kestra                                                                 | Unlimited (based on customer setup)                                         |
 | **Deployment Regions**                | US & EU (Belgium) on GCP                                                                                       | Any cloud, any region                                                       |
-| **Task Runners**                      | Compatible with most, [Process Task Runner](../task-runners/04.types/01.process-task-runner/index.md) excluded | Compatible with all task runners                                            |
+| **Task Runners**                      | Compatible with most, [Process Task Runner](/docs/task-runners/types/process-task-runner) excluded | Compatible with all task runners                                            |
 
 This section describes those features in detail and explains how to configure them.
 
-If you're interested to learn more, check the [Open-Source and Enterprise Edition comparison](../oss-vs-paid/index.md), explore our [Pricing](/pricing), and [get in touch](/demo) to discuss your requirements.
+If you're interested to learn more, check the [Open-Source and Enterprise Edition comparison](/docs/oss-vs-paid), explore our [Pricing](/pricing), and [get in touch](/demo) to discuss your requirements.
 
 <ChildCard />

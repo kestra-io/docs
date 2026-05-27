@@ -700,6 +700,7 @@
 
 <script setup lang="ts">
     import { ref, onMounted, watch, nextTick } from "vue"
+    import { useThrottleFn } from "@vueuse/core"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
@@ -766,13 +767,13 @@
         })
 
         isScrolled.value = window.scrollY > 0
-        window.addEventListener("scroll", () => {
+        const handleScroll = useThrottleFn(() => {
             isScrolled.value = window.scrollY > 0
-            const header = navbar.value
-            if (header) {
-                header.classList.toggle("scrolled", isScrolled.value)
+            if (navbar.value) {
+                navbar.value.classList.toggle("scrolled", isScrolled.value)
             }
-        })
+        }, 100)
+        window.addEventListener("scroll", handleScroll, { passive: true })
 
         document.documentElement.style.setProperty(
             "--top-bar-height",

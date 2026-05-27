@@ -103,10 +103,10 @@
     import { useGtm } from "@gtm-support/vue-gtm"
     import { getHubspotTracking } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
-    import {
-        getMeetingUrl,
-        ensureMeetingsScriptLoaded,
-    } from "~/composables/useMeeting"
+    import { ensureMeetingsScriptLoaded } from "~/composables/useMeeting"
+
+    const CLOUD_MEETING_URL =
+        "https://meetings-eu1.hubspot.com/connor-alkin?embed=true"
 
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("cloud-form")
@@ -121,7 +121,7 @@
 
     onMounted(() => {
         if (getHubspotTracking() === null) {
-            meetingUrl.value = getMeetingUrl()
+            meetingUrl.value = CLOUD_MEETING_URL
             valid.value = true
         }
     })
@@ -188,7 +188,7 @@
             await ensureMeetingsScriptLoaded()
             hsq.push(["refreshPageHandlers"])
             hsq.push(["trackPageView"])
-            meetingUrl.value = getMeetingUrl()
+            meetingUrl.value = CLOUD_MEETING_URL
         } catch (error: any) {
             const isBlocked = error?.response?.data?.errors?.some(
                 (e: any) => e.errorType === "BLOCKED_EMAIL",

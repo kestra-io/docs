@@ -1,5 +1,5 @@
 title: "Orchestrate Terraform with Kestra: scheduling, approval gates, and multi-tool coordination"
-description: "Terraform provisions infrastructure. Kestra orchestrates the runs. Add scheduled plans, approval gates between plan and apply, retries, and chaining with Ansible or ArgoCD, without touching your Terraform code."
+description: "Schedule Terraform plans for drift detection, gate plan to apply with a named reviewer, retry only the failed step, and chain with Ansible or ArgoCD."
 
 tool:
   name: "Terraform"
@@ -7,8 +7,8 @@ tool:
   color: "#7B42BC"
 
 hero:
-  title: "Your Terraform runs, fully orchestrated."
-  description: "Trigger terraform plan on cron, on a Git push, or any event. Gate between plan and apply with the Pause task, retry the failed step on transient errors, and chain Terraform, Ansible, and ArgoCD in one execution history."
+  title: "Govern Terraform applies. Chain the downstream stack."
+  description: "Trigger terraform plan on cron, on a Git push, or any HTTP event. Gate between plan and apply with the Pause task, retry the failed step on transient errors, and chain Terraform, Ansible, and ArgoCD in one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
@@ -207,10 +207,10 @@ useCases:
           description: "List the new backend, confirm the state file is present, halt if not."
 
 quotes:
-  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment — all orchestrated through Kestra."
+  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment. All orchestrated through Kestra."
     author: "Censhare"
     logoFile: "censhare"
-  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything — and this should resolve the issues we are facing currently with everyone working in parallel."
+  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything. This should resolve the issues we are facing currently with everyone working in parallel."
     author: "BSI Software"
     logoFile: "bsi"
   - quote: "I'm not sure we can do what we can do now with only Terraform and Ansible. The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
@@ -460,7 +460,7 @@ faq:
   - question: "Does Kestra work with OpenTofu and Terragrunt?"
     answer: "Kestra has dedicated plugins for both. The <code>OpenTofuCLI</code> and <code>TerragruntCLI</code> tasks accept the same inputs as the Terraform task, so swapping the binary is a one-line change. The same flow, retries, approval gates, and execution history apply."
   - question: "Do we have to drop Jenkins or Ansible to use Kestra?"
-    answer: "No. Kestra calls Ansible playbooks as a task and can fire Jenkins jobs over the API. Many teams start by adding Kestra above an existing Jenkins or Ansible setup: Kestra schedules the run, gates the apply, then hands off to the existing pipeline. Crédit Agricole's CAGIP team began with Ansible and Jenkins and added Kestra as the unified control plane on top."
+    answer: "No. Kestra calls Ansible playbooks as a task and can fire Jenkins jobs over the API. Many teams start by adding Kestra above an existing Jenkins or Ansible setup: Kestra schedules the run, gates the apply, then hands off to the existing pipeline."
   - question: "Can Kestra migrate Terraform state between backends?"
     answer: "Yes. Wrap the migration in a flow: authenticate against the source and target backends, snapshot the current state to a versioned location, run <code>terraform state mv</code> (or re-init with the new backend), then verify the target backend with a list call. Every step is logged and rerunnable if the verification fails."
   - question: "How does Kestra handle state and secrets for Terraform?"
@@ -468,7 +468,7 @@ faq:
   - question: "What's the difference between Kestra and Spacelift for Terraform?"
     answer: "Spacelift is purpose-built for IaC and does that one job well. Kestra is a general-purpose orchestrator. If your Terraform runs sit inside a larger workflow that also calls Ansible, ArgoCD, data pipelines, or business logic, Kestra runs the full chain from one platform with one history. Spacelift stops at the IaC layer."
   - question: "Is Kestra self-hosted?"
-    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives full control over where Terraform plans and applies execute, with no external dependency on Kestra's infrastructure."
+    answer: "Kestra ships self-hosted on Docker or Kubernetes, as a managed cloud, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives full control over where Terraform plans and applies execute, with no external dependency on Kestra's infrastructure. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Ansible, ArgoCD, and cloud APIs."
 
 seeHow:
   title: "Ready to orchestrate your Terraform runs?"
