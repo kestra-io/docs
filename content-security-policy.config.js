@@ -35,7 +35,7 @@ export default {
         "https://www.gstatic.com/recaptcha/",
         "https://jobs.ashbyhq.com/",
         "https://*.claydar.com",
-        "https://ddwl4m2hdecbv.cloudfront.net"
+        "https://*.vector.co",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -73,6 +73,7 @@ export default {
         "https://*.hsforms.net",
         "http://*.hsforms.net",
         "https://jobs.ashbyhq.com/",
+        "https://*.vector.co",
     ],
     "connect-src": [
         "'self'",
@@ -100,6 +101,7 @@ export default {
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",
         "https://*.claydar.com",
+        "https://*.vector.co",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],
