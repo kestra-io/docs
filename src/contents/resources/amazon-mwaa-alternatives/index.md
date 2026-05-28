@@ -20,7 +20,6 @@ faq:
   - question: "Does Airbnb still use Airflow?"
     answer: "Yes, Airbnb, the creator of Apache Airflow, continues to use it extensively for orchestrating its data pipelines. However, like many large organizations, they also employ other specialized tools alongside Airflow for various aspects of their data and infrastructure management."
 author: "elliot"
-image: "/images/resources/top-amazon-mwaa-alternatives/cover.png"
 hub: "data"
 alternatives_count: 7
 ---

@@ -22,7 +22,6 @@ faq:
   - question: "How do managed Airflow services compare to Snowflake Tasks?"
     answer: "Managed Airflow services like Google Cloud Composer or Astronomer provide a more robust and scalable orchestration layer than native Snowflake Tasks, offering a full Python ecosystem and enterprise-grade features. However, they remain Python-centric and may still incur significant operational overhead, unlike truly serverless or declarative alternatives that simplify cross-platform orchestration."
 author: "elliot"
-image: "/images/resources/snowflake-tasks-alternatives/cover.png"
 ---
 
 Snowflake has become a cornerstone for modern data warehousing, offering impressive scalability and performance for analytical workloads. A key feature for automating processes within this ecosystem is Snowflake Tasks, enabling users to schedule and execute SQL statements or stored procedures directly within the data platform. However, as data architectures evolve and become increasingly complex, many organizations find themselves pushing the boundaries of what native Snowflake Tasks can effectively orchestrate. From managing dependencies across diverse systems to integrating polyglot code and intricate event-driven logic, the need for a more comprehensive orchestration solution often arises.

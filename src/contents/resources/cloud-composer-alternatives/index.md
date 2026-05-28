@@ -20,7 +20,6 @@ faq:
   - question: "What is the best free alternative to Cloud Composer?"
     answer: "For teams prioritizing cost-effectiveness and control, self-hosted Apache Airflow or Kestra's open-source edition are strong free alternatives. Self-hosting Airflow requires significant operational expertise, while Kestra offers a modern, declarative approach that can reduce operational complexity while remaining open-source."
 author: "Virgile Fanucci"
-image: "/images/blogs/cloud-composer-alternatives/cover.png"
 ---
 Google Cloud Composer has long been a go-to solution for data teams seeking a managed Apache Airflow experience, offering deep integration within the GCP ecosystem. However, as data stacks evolve and operational demands shift, many organizations are re-evaluating their orchestration choices. Factors like escalating costs, the desire for multi-cloud flexibility, or the inherent complexities of Python-heavy DAGs can prompt a search for alternatives that offer greater control, broader language support, or a more streamlined operational model.
 

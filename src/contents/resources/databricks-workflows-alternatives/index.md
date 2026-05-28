@@ -20,7 +20,6 @@ faq:
   - question: "Which orchestration tool is best for combining Databricks with other cloud services?"
     answer: "For orchestrating Databricks alongside a diverse set of other cloud services and on-premises systems, Kestra stands out. Its vendor-agnostic and declarative YAML approach allows seamless coordination of tasks across AWS, GCP, Azure, and your Databricks environment. This unified control plane reduces complexity and provides end-to-end visibility, making it ideal for multi-cloud or hybrid data strategies that include Databricks."
 author: "elliot"
-image: "/images/blogs/databricks-workflows-alternatives/cover.png"
 ---
 
 Databricks Workflows offers powerful, native orchestration for jobs within the Databricks Lakehouse Platform. It provides a streamlined experience for data and AI workloads, tightly integrated with the Databricks ecosystem. Yet, as organizations scale and diversify their technology stacks, the very strength of platform-native tools—deep integration—can become a limitation. Teams increasingly face challenges related to vendor lock-in, escalating costs, or the need to orchestrate workflows that span beyond a single cloud platform or domain.
