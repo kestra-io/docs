@@ -545,6 +545,8 @@ kestra:
 
 Use `html-head` sparingly for environment banners, extra CSS, or internal scripts that must load with the app shell.
 
+### Local file access
+
 To allow universal file access from host-mounted paths, both mount the directory and add it to the allowlist:
 
 ```yaml
@@ -556,6 +558,22 @@ kestra:
 ```
 
 Without the allowlist, file-access URIs pointing at local host paths will be rejected even if the path is mounted into the container.
+
+The `io.kestra.plugin.fs.local.Upload` and `io.kestra.plugin.fs.local.Uploads` tasks enforce their own `allowed-paths` check, independent of `kestra.local-files.allowed-paths`. Configure permitted directories under `plugins.configurations`:
+
+```yaml
+kestra:
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.fs.local.Uploads
+        values:
+          allowed-paths:
+            - /data/uploads
+      - type: io.kestra.plugin.fs.local.Upload
+        values:
+          allowed-paths:
+            - /data/uploads
+```
 
 ## When to use this page
 
