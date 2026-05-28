@@ -119,7 +119,7 @@ Three properties control how long the runner waits and how often it checks job s
 
 | Property | Default | Description |
 |---|---|---|
-| `waitUntilCompletion` | `PT1H` | Maximum wall-clock time before the job is timed out. The task's own `timeout` takes precedence when set. |
+| `waitUntilCompletion` | `PT1H` | Maps to the GCP **Task timeout** field visible in the GCP console under Task capacity. Controls both the GCP-enforced task timeout and the Kestra polling timeout — the Cloud Run task is forcibly terminated by GCP when this duration elapses. The Kestra task-level `timeout` property takes precedence when set. GCP maximum is 168 hours (`PT168H`). |
 | `completionCheckInterval` | `PT5S` | How often to poll the Cloud Run API for job status. Lower values reduce latency for short jobs; higher values reduce API calls for long ones. |
 | `waitForLogInterval` | `PT5S` | Extra time to stream late log entries after job completion. |
 
