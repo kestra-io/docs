@@ -1,22 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
-import TaskIcon from "~/components/common/TaskIcon.vue"
 import Snippets from "~/components/common/Snippets.vue"
 import Topology from "~/components/blueprints/Topology.client.vue"
-
-interface FlowNode {
-    label: string
-    sublabel?: string
-    pluginClass?: string
-    icon?: string
-}
-
-interface FlowDiagram {
-    source: FlowNode
-    workflow: { label: string; sublabel?: string }
-    tools: FlowNode[]
-    outcome: FlowNode
-}
 
 interface BlueprintItem {
     name: string
@@ -25,7 +10,6 @@ interface BlueprintItem {
     code: string
     plugins: string[]
     href?: string
-    flowDiagram?: FlowDiagram
     blueprintId?: string
     blueprintPlaceholder?: boolean
     render?: { source: string; graph: unknown } | null
@@ -41,7 +25,7 @@ interface Props {
 const { heading, nutshell, blueprints, toolColor } = Astro.props as Props
 const sectionStyle = toolColor ? `--tool-color: ${toolColor};` : undefined
 
-const tabs = blueprints.filter((bp) => bp.render?.graph || bp.flowDiagram)
+const tabs = blueprints
 const hasTabs = tabs.length > 0
 ---
 
@@ -72,15 +56,13 @@ const hasTabs = tabs.length > 0
         {hasTabs && (
             <div class="wrapper">
                 {tabs.map((bp, idx) => {
-                    const fd = bp.flowDiagram
-                    const nodes = fd ? [fd.source, ...fd.tools, fd.outcome] : []
                     return (
                         <div
                             class:list={["orch-tabs__panel", { active: idx === 0 }]}
                             role="tabpanel"
                             data-tab-content={idx}
                         >
-                            <div class="panel-row">
+                            <div class:list={["panel-row", { "panel-row--code-only": !bp.render?.graph }]}>
                                 <div class="panel-code">
                                     <div class="code-head">
                                         <span class="code-caption">{bp.title}</span>
@@ -94,8 +76,8 @@ const hasTabs = tabs.length > 0
                                     <Snippets client:idle code={bp.render?.source ?? bp.code} lang="yaml" />
                                 </div>
 
-                                <div class="panel-topology">
-                                    {bp.render?.graph ? (
+                                {bp.render?.graph && (
+                                    <div class="panel-topology">
                                         <div class="topo-live">
                                             <Topology
                                                 client:only="vue"
@@ -104,45 +86,8 @@ const hasTabs = tabs.length > 0
                                                 id={bp.blueprintId || `orch-${idx}`}
                                             />
                                         </div>
-                                    ) : (
-                                        <div class="topo-canvas">
-                                            <div class="topo-flow">
-                                                <span class="topo-plus" aria-hidden="true">
-                                                    <Icon name="mdi:plus" width={14} height={14} />
-                                                </span>
-                                                {nodes.map((node) => (
-                                                    <Fragment>
-                                                        <div class="topo-node">
-                                                            <div class="topo-node__icon">
-                                                                {node.pluginClass ? (
-                                                                    <TaskIcon cls={node.pluginClass} />
-                                                                ) : (
-                                                                    <Icon
-                                                                        name={node.icon || "mdi:hexagon-outline"}
-                                                                        width={18}
-                                                                        height={18}
-                                                                    />
-                                                                )}
-                                                            </div>
-                                                            <span class="topo-node__label">{node.label}</span>
-                                                        </div>
-                                                        <span class="topo-plus" aria-hidden="true">
-                                                            <Icon name="mdi:plus" width={14} height={14} />
-                                                        </span>
-                                                    </Fragment>
-                                                ))}
-                                                <span class="topo-end" aria-hidden="true"></span>
-                                            </div>
-
-                                            <div class="topo-zoom" aria-hidden="true">
-                                                <span class="topo-zoom__btn"><Icon name="mdi:plus" width={16} height={16} /></span>
-                                                <span class="topo-zoom__btn"><Icon name="mdi:minus" width={16} height={16} /></span>
-                                                <span class="topo-zoom__btn"><Icon name="mdi:overscan" width={16} height={16} /></span>
-                                                <span class="topo-zoom__btn"><Icon name="mdi:tray-arrow-down" width={16} height={16} /></span>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )
@@ -335,6 +280,10 @@ const hasTabs = tabs.length > 0
         align-items: stretch;
         min-height: 30rem;
 
+        &.panel-row--code-only {
+            min-height: 0;
+        }
+
         @include media-breakpoint-down(lg) {
             flex-direction: column;
             min-height: 0;
@@ -358,13 +307,7 @@ const hasTabs = tabs.length > 0
     .panel-topology {
         flex: 0 0 40%;
         border-left: 1px solid var(--ks-border-secondary);
-        background-color: var(--ks-background-body);
-        background-image: radial-gradient(
-            circle at 1px 1px,
-            var(--ks-topology-dot-color, #b4b4bd) 1px,
-            transparent 0
-        );
-        background-size: 20px 20px;
+        background: var(--ks-background-body);
 
         @include media-breakpoint-down(lg) {
             flex: 1 1 auto;
@@ -382,133 +325,6 @@ const hasTabs = tabs.length > 0
         :global(astro-island) {
             display: block;
             height: 100%;
-        }
-    }
-
-    .topo-canvas {
-        position: relative;
-        height: 100%;
-        min-height: 26rem;
-        padding: 1.75rem 1rem 2rem;
-        background-color: var(--ks-background-secondary);
-        background-image: radial-gradient(circle at 1px 1px, var(--ks-border-secondary) 1px, transparent 0);
-        background-size: 18px 18px;
-        overflow: hidden;
-    }
-
-    .topo-flow {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-        max-width: 16rem;
-        margin: 0 auto;
-
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0.75rem;
-            bottom: 0.75rem;
-            left: 50%;
-            width: 1px;
-            background: var(--ks-border-secondary);
-            transform: translateX(-50%);
-            z-index: 0;
-        }
-    }
-
-    .topo-plus {
-        position: relative;
-        z-index: 1;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 26px;
-        height: 26px;
-        border-radius: 0.4rem;
-        background: var(--ks-background-primary);
-        border: 1px solid var(--ks-border-secondary);
-        color: var(--ks-content-tertiary);
-    }
-
-    .topo-node {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        gap: 0.625rem;
-        width: 100%;
-        padding: 0.5rem 0.7rem;
-        background: var(--ks-background-primary);
-        border: 1px solid var(--ks-border-primary);
-        border-radius: 0.5rem;
-        box-shadow:
-            0 1px 2px rgba(0, 0, 0, 0.04),
-            0 5px 14px rgba(94, 110, 212, 0.08);
-    }
-
-    .topo-node__icon {
-        width: 30px;
-        height: 30px;
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.4rem;
-        overflow: hidden;
-
-        :global(svg),
-        :global(img) {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-    }
-
-    .topo-node__label {
-        font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
-        font-size: 0.8125rem;
-        font-weight: 500;
-        color: var(--ks-content-primary);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .topo-end {
-        position: relative;
-        z-index: 1;
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: var(--ks-content-color-highlight);
-    }
-
-    .topo-zoom {
-        position: absolute;
-        left: 1rem;
-        bottom: 1rem;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        background: var(--ks-background-primary);
-        border: 1px solid var(--ks-border-secondary);
-        border-radius: 0.5rem;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-    }
-
-    .topo-zoom__btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 32px;
-        color: var(--ks-content-secondary);
-
-        & + & {
-            border-top: 1px solid var(--ks-border-secondary);
         }
     }
 

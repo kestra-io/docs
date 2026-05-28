@@ -1,0 +1,594 @@
+title: "Orchestrate Jenkins with Kestra: trigger jobs from any event, chain with Terraform and Ansible, gate deploys behind approval"
+description: "Trigger Jenkins jobs from webhooks or schedules, chain them with Terraform, Ansible, and Argo CD in one flow, add Pause-with-notification gates between build and deploy, and trace every step from one execution view."
+
+tool:
+  name: "Jenkins"
+  pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+  color: "#D33833"
+
+hero:
+  title: "Run Jenkins jobs as steps in a bigger flow."
+  description: "Jenkins runs your CI in isolation. Kestra runs Jenkins jobs as steps alongside Terraform, Ansible, and Argo CD, adds approval gates between stages, triggers from any event, and gives you one execution history across every tool in the stack."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+nutshell: "Jenkins is the CI workhorse most enterprises still run. Kestra sits above it instead of replacing it. It triggers Jenkins jobs from webhooks, schedules, or any HTTP signal; chains them with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/ansible'>Ansible</a>, and <a href='/orchestration/argocd'>Argo CD</a> in one flow; adds Pause-with-notification gates between stages that Jenkins input{} cannot match; and gives you one execution view across every tool."
+
+pillars:
+  title: "Above the Jenkins build queue."
+  subtitle: "Jenkins solves the build, the agent, and the workspace. Kestra solves the steps that have to run around the job: what triggers it, what runs alongside it, who approves what comes next, and where the audit trail lives."
+  items:
+    - icon: "mdi:pipe-disconnected"
+      title: "Jenkins jobs as steps in a bigger flow"
+      description: "Jenkins runs your build in isolation. It has no native way to chain with the Terraform that provisioned the agent, the Ansible that configured the host, or the Argo CD that ships the result. Kestra runs all four as tasks in one flow. <code>io.kestra.plugin.jenkins.JobBuild</code> enqueues the Jenkins job; the next task only runs after <code>io.kestra.plugin.jenkins.JobInfo</code> confirms success. Outputs flow forward and the whole chain shares one execution ID."
+    - icon: "mdi:file-code-outline"
+      title: "Declarative YAML, not Groovy"
+      description: "A Jenkinsfile is Groovy DSL plus shell. Every pipeline change needs someone fluent in both. Kestra flows are plain YAML with typed inputs, a documented schema, and the same syntax across every namespace. The contributor doesn't have to learn Groovy to add a stage, swap a runner, or wire a notification."
+    - icon: "mdi:pause-circle-outline"
+      title: "Native pause and resume with notifications"
+      description: "Jenkins <code>input{}</code> stops the build mid-pipeline and waits for a click in the Jenkins UI. There's no first-class notification, no reviewer attribution, no timeout that doesn't fail the build. Kestra's <code>Pause</code> task suspends the flow, fires a notification (Slack, Teams, PagerDuty, Email) right before pausing, logs the reviewer's identity and timestamp on resume, and survives operator-set timeouts cleanly."
+    - icon: "mdi:lightning-bolt-outline"
+      title: "Event-driven triggers beyond GitHub"
+      description: "Jenkins ships with a cron timer and a GitHub webhook plugin. Anything else (Kafka, S3, a Snowflake task, a ServiceNow change, a custom HTTP source) needs a hand-rolled connector. Kestra has 50+ native triggers: <a href='/orchestration/git'>Git</a>, <a href='/orchestration/aws'>S3</a>, Kafka, webhooks, schedules, file arrival, database changes. The Jenkins job fires on the event that actually matters to the business."
+    - icon: "mdi:eye-outline"
+      title: "Run history that spans tools, not just Jenkins"
+      description: "Jenkins's build history shows builds. It has no record of the Terraform run that created the AWS resources, the Ansible playbook that configured them, or the Argo CD sync that deployed the result. Kestra logs every step across every tool with a trigger source, a timestamp, retry counts, and a direct link to the failing task. One place to debug the full pipeline."
+    - icon: "mdi:account-cog-outline"
+      title: "Self-service via Kestra Apps"
+      description: "Jenkins parameterized builds give a small form on the build page. They don't give QA a button to fire a smoke test, or release managers a typed form to promote a tag with the approver logged. Kestra Apps wraps any flow in a typed form. Non-engineers fire the Jenkins job they need without touching Jenkins or YAML, and every trigger lands in execution history with the user's identity."
+
+useCases:
+  title: "How teams use Jenkins and Kestra"
+  subtitle: "Patterns platform and DevOps teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Event-driven"
+      badgeIcon: "mdi:lightning-bolt-outline"
+      title: "Trigger Jenkins jobs from any event, not just cron"
+      description: "A webhook (or S3 file arrival, or Kafka message, or schedule) fires the flow. Kestra calls <code>JobBuild</code> with parameters from the trigger body, polls <code>JobInfo</code> until the build reaches a terminal status, and branches on the result. The Jenkins job runs on the event that matters, not on the next cron tick."
+      flow:
+        - node: "webhook"
+          label: "any HTTP signal"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "JobBuild"
+          label: "enqueue with params"
+          pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+        - node: "JobInfo"
+          label: "poll until terminal"
+          pluginClass: "io.kestra.plugin.jenkins.JobInfo"
+        - node: "branch"
+          label: "on result"
+          pluginClass: "io.kestra.plugin.core.flow.If"
+        - node: "notify"
+          label: "Slack on outcome"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Parameters from trigger body"
+          description: "<code>JobBuild.parameters</code> reads <code>trigger.body</code> at run time."
+        - title: "Polling without manual scripts"
+          description: "<code>JobInfo</code> handles the status check loop; no custom shell."
+        - title: "Branch on Jenkins result"
+          description: "An <code>If</code> task routes success and failure to different downstream paths."
+          wide: true
+    - badge: "Cross-stack"
+      badgeIcon: "mdi:pipe-disconnected"
+      title: "Chain Jenkins with Terraform, Ansible, and Argo CD"
+      description: "<a href='/orchestration/terraform'>Terraform</a> provisions the AWS resources, <a href='/orchestration/ansible'>Ansible</a> configures the hosts, Jenkins runs the test suite via <code>JobBuild</code>, and <a href='/orchestration/argocd'>Argo CD</a> syncs the deploy. All four run as sequential tasks in one Kestra flow with outputs flowing forward."
+      flow:
+        - node: "Terraform"
+          label: "provision"
+          pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - node: "Ansible"
+          label: "configure"
+          pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - node: "Jenkins"
+          label: "test"
+          pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+        - node: "Argo CD"
+          label: "sync"
+          pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        - node: "notify"
+          label: "Slack on done"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "One execution ID across all four tools"
+          description: "Terraform run ID, Ansible recap, Jenkins build number, Argo CD sync ID all in one view."
+        - title: "Step retries do not cascade"
+          description: "An Ansible retry never re-runs Terraform; a Jenkins retry never re-runs Ansible."
+        - title: "Outputs flow forward between steps"
+          description: "<code>outputs.terraform.outputs</code> feeds the Ansible inventory; Jenkins parameters read it."
+          wide: true
+    - badge: "Governance"
+      badgeIcon: "mdi:shield-check-outline"
+      title: "Approval gate between Jenkins build and Jenkins deploy"
+      description: "<code>JobBuild</code> fires the build job and <code>JobInfo</code> confirms success. Kestra posts the build number and artifact link to Microsoft Teams as an Adaptive Card, then pauses. A named reviewer approves in the Kestra UI; only then does the deploy <code>JobBuild</code> fire. Reviewer identity and timestamp are logged automatically."
+      flow:
+        - node: "build job"
+          label: "JobBuild"
+          pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+        - node: "teams"
+          label: "approval needed"
+          pluginClass: "io.kestra.plugin.microsoft365.teams.TeamsIncomingWebhook"
+        - node: "pause / review"
+          label: "human approves"
+          gate: true
+          pluginClass: "io.kestra.plugin.core.flow.Pause"
+        - node: "deploy job"
+          label: "JobBuild"
+          pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+        - node: "slack"
+          label: "audit log"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Notification before the Pause"
+          description: "Reviewers are paged the moment the build finishes; the <code>Pause</code> is not a silent wait."
+        - title: "Reviewer + timestamp logged"
+          description: "Identity and approval moment stored in execution history automatically."
+        - title: "Two job names, one flow"
+          description: "Build and deploy job paths are typed inputs; one flow drives both stages."
+        - title: "First-class audit trail"
+          description: "Every production deploy is linked to a reviewer, a build number, and a moment in time."
+    - badge: "Parallel"
+      badgeIcon: "mdi:source-branch"
+      title: "Run multiple Jenkins jobs in parallel with per-job isolation"
+      description: "A release fires twelve Jenkins jobs across regions or services. Kestra fans them out via <code>ForEach</code> with <code>concurrencyLimit</code>, calls <code>JobBuild</code> per job, and isolates failures with <code>allowFailure</code>. A targeted <a href='/orchestration/slack'>Slack</a> alert pages the owner of the failing job."
+      flow:
+        - node: "trigger"
+          label: "release event"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "ForEach jobs"
+          label: "fan out"
+          pluginClass: "io.kestra.plugin.core.flow.ForEach"
+        - node: "JobBuild"
+          label: "per job, parallel"
+          pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+        - node: "JobInfo"
+          label: "per-job status"
+          pluginClass: "io.kestra.plugin.jenkins.JobInfo"
+        - node: "slack"
+          label: "owner ping"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Bounded parallelism"
+          description: "<code>concurrencyLimit</code> caps how many jobs hit the Jenkins controller at once."
+        - title: "Per-job failure isolation"
+          description: "<code>allowFailure</code> on the inner task keeps one bad job from halting the wave."
+        - title: "Owner-aware alerts"
+          description: "Slack channels routed by job name; the right team gets paged for the right failure."
+          wide: true
+    - badge: "Migration"
+      badgeIcon: "mdi:swap-horizontal"
+      title: "Modernize Jenkins incrementally, both run side-by-side"
+      description: "Legacy Jenkins jobs keep running through <code>JobBuild</code> while new logic moves into Kestra flows. The Kestra flow becomes the orchestration layer: it calls the Jenkins jobs that are still useful, runs the new Kestra-native steps directly, and presents one execution history. No big-bang rewrite, no parallel-team coordination tax."
+      flow:
+        - node: "trigger"
+          label: "webhook or schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "legacy Jenkins"
+          label: "JobBuild"
+          pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+        - node: "Kestra-native step"
+          label: "new logic"
+          pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+        - node: "branch"
+          label: "result handling"
+          pluginClass: "io.kestra.plugin.core.flow.If"
+        - node: "slack"
+          label: "summary"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "No big-bang rewrite"
+          description: "Migrate one job at a time; the rest keep firing from Kestra."
+        - title: "One execution view during the transition"
+          description: "Jenkins runs and Kestra-native steps share one execution ID and one history."
+        - title: "Decommission Jenkins gradually"
+          description: "Retire a Jenkins job by deleting its <code>JobBuild</code> task once the Kestra step is proven."
+          wide: true
+
+quotes:
+  - quote: "Kestra allowed us to move from fragmented automation to a unified control plane: secure, scalable, and manageable by all our teams."
+    author: "Julien Legrand, PO Data at Crédit Agricole (CAGIP)"
+    logoFile: "credit-agricole"
+    storyLink: "/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    kpis:
+      - name: "Data Teams Unified"
+        value: "7"
+      - name: "Managed Clusters"
+        value: "100+"
+
+blueprints:
+  title: "Blueprints for Jenkins orchestration."
+  lead: "Production-ready flows. Copy the YAML, wire it to your stack."
+  items:
+    - name: "Event-driven Jenkins job with polling"
+      blueprintId: "jenkins-event-driven-job"
+      title: "Trigger a Jenkins job from a webhook and poll until terminal"
+      description: "A Webhook trigger fires the flow with build parameters in the body. Kestra calls <code>JobBuild</code> with those parameters, polls <code>JobInfo</code> until the build reaches a terminal status, branches on the result, and posts to <a href='/orchestration/slack'>Slack</a> on outcome."
+      href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Webhook"
+          sublabel: "any HTTP signal"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Trigger, poll, branch"
+          sublabel: "status-aware notify"
+        tools:
+          - label: "Webhook trigger"
+            pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+          - label: "JobBuild"
+            pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+          - label: "JobInfo"
+            pluginClass: "io.kestra.plugin.jenkins.JobInfo"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+        outcome:
+          label: "Build result captured"
+          sublabel: "with one execution ID"
+          icon: "mdi:lightning-bolt-outline"
+      plugins:
+        - "io.kestra.plugin.core.trigger.Webhook"
+        - "io.kestra.plugin.jenkins.JobBuild"
+        - "io.kestra.plugin.jenkins.JobInfo"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: jenkins-event-driven-job
+        namespace: company.team
+
+        inputs:
+          - id: job_name
+            type: STRING
+          - id: jenkins_url
+            type: STRING
+            defaults: https://jenkins.example.com
+
+        triggers:
+          - id: on_event
+            type: io.kestra.plugin.core.trigger.Webhook
+            key: "{{ secret('JENKINS_TRIGGER_KEY') }}"
+
+        tasks:
+          - id: enqueue_build
+            type: io.kestra.plugin.jenkins.JobBuild
+            serverUrl: "{{ inputs.jenkins_url }}"
+            jobName: "{{ inputs.job_name }}"
+            username: "{{ secret('JENKINS_USERNAME') }}"
+            apiToken: "{{ secret('JENKINS_API_TOKEN') }}"
+            parameters:
+              branch: "{{ trigger.body.branch ?? 'main' }}"
+              triggered_by: kestra
+
+          - id: wait_for_completion
+            type: io.kestra.plugin.core.flow.Sequential
+            retry:
+              type: constant
+              interval: PT15S
+              maxAttempt: 80
+            tasks:
+              - id: poll_status
+                type: io.kestra.plugin.jenkins.JobInfo
+                serverUrl: "{{ inputs.jenkins_url }}"
+                jobName: "{{ inputs.job_name }}"
+                username: "{{ secret('JENKINS_USERNAME') }}"
+                apiToken: "{{ secret('JENKINS_API_TOKEN') }}"
+              - id: assert_terminal
+                type: io.kestra.plugin.core.execution.Assert
+                conditions:
+                  - "{{ (outputs.poll_status.result ?? '') != '' }}"
+
+          - id: notify
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK_URL') }}"
+            payload: |
+              {
+                "text": "Jenkins job {{ inputs.job_name }} complete (execution {{ execution.id }})."
+              }
+
+        errors:
+          - id: alert_on_failure
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK_URL') }}"
+            payload: |
+              {
+                "text": "Jenkins flow failed for {{ inputs.job_name }} (execution {{ execution.id }})."
+              }
+    - name: "Approval gate between build and deploy"
+      blueprintId: "jenkins-approval-build-to-deploy"
+      title: "Pause between Jenkins build and deploy, with Teams approval"
+      description: "Kestra fires the build job, polls for success, posts the build number to Microsoft Teams, then pauses for human approval. On resume, the deploy job fires. Reviewer identity and timestamp are logged; <a href='/orchestration/slack'>Slack</a> confirms completion."
+      href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Promotion trigger"
+          sublabel: "manual or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Build, gate, deploy"
+          sublabel: "named reviewer logged"
+        tools:
+          - label: "Build job"
+            pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+          - label: "Teams approval"
+            pluginClass: "io.kestra.plugin.microsoft365.teams.TeamsIncomingWebhook"
+          - label: "Pause"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "Deploy job"
+            pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+          - label: "Slack confirm"
+            pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+        outcome:
+          label: "Deploy audited"
+          sublabel: "approver + timestamp"
+          icon: "mdi:shield-check-outline"
+      plugins:
+        - "io.kestra.plugin.jenkins.JobBuild"
+        - "io.kestra.plugin.jenkins.JobInfo"
+        - "io.kestra.plugin.microsoft365.teams.TeamsIncomingWebhook"
+        - "io.kestra.plugin.core.flow.Pause"
+        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      code: |
+        id: jenkins-approval-build-to-deploy
+        namespace: company.team
+
+        inputs:
+          - id: build_job
+            type: STRING
+          - id: deploy_job
+            type: STRING
+          - id: jenkins_url
+            type: STRING
+            defaults: https://jenkins.example.com
+          - id: approval_timeout
+            type: DURATION
+            defaults: PT4H
+
+        tasks:
+          - id: run_build
+            type: io.kestra.plugin.jenkins.JobBuild
+            serverUrl: "{{ inputs.jenkins_url }}"
+            jobName: "{{ inputs.build_job }}"
+            username: "{{ secret('JENKINS_USERNAME') }}"
+            apiToken: "{{ secret('JENKINS_API_TOKEN') }}"
+
+          - id: build_status
+            type: io.kestra.plugin.jenkins.JobInfo
+            serverUrl: "{{ inputs.jenkins_url }}"
+            jobName: "{{ inputs.build_job }}"
+            username: "{{ secret('JENKINS_USERNAME') }}"
+            apiToken: "{{ secret('JENKINS_API_TOKEN') }}"
+
+          - id: notify_approval
+            type: io.kestra.plugin.microsoft365.teams.TeamsIncomingWebhook
+            url: "{{ secret('TEAMS_WEBHOOK_URL') }}"
+            payload: |
+              {
+                "type": "message",
+                "attachments": [
+                  {
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                      "type": "AdaptiveCard",
+                      "version": "1.4",
+                      "body": [
+                        {
+                          "type": "TextBlock",
+                          "size": "Large",
+                          "weight": "Bolder",
+                          "text": "Jenkins deploy awaiting approval"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "Build {{ inputs.build_job }} complete. Review and approve the deploy to {{ inputs.deploy_job }} (execution {{ execution.id }}).",
+                          "wrap": true
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+
+          - id: await_approval
+            type: io.kestra.plugin.core.flow.Pause
+            pauseDuration: "{{ inputs.approval_timeout }}"
+
+          - id: run_deploy
+            type: io.kestra.plugin.jenkins.JobBuild
+            serverUrl: "{{ inputs.jenkins_url }}"
+            jobName: "{{ inputs.deploy_job }}"
+            username: "{{ secret('JENKINS_USERNAME') }}"
+            apiToken: "{{ secret('JENKINS_API_TOKEN') }}"
+
+          - id: notify_complete
+            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+            url: "{{ secret('SLACK_WEBHOOK_URL') }}"
+            payload: |
+              {
+                "text": "Jenkins deploy {{ inputs.deploy_job }} complete after approval (execution {{ execution.id }})."
+              }
+    - name: "Chain Terraform, Ansible, and Jenkins"
+      blueprintId: "jenkins-terraform-ansible-chain"
+      title: "Provision with Terraform, configure with Ansible, test with Jenkins"
+      description: "Terraform provisions the test fleet, Ansible applies the baseline, then Kestra triggers a Jenkins test job via <code>JobBuild</code> and waits for terminal status. <a href='/orchestration/slack'>Discord</a> reports the chain outcome. Outputs flow forward; step retries stay local."
+      href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Pipeline trigger"
+          sublabel: "schedule or webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Provision, configure, test"
+          sublabel: "Terraform + Ansible + Jenkins"
+        tools:
+          - label: "Terraform"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "Ansible"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "Jenkins JobBuild"
+            pluginClass: "io.kestra.plugin.jenkins.JobBuild"
+          - label: "Discord notify"
+            pluginClass: "io.kestra.plugin.discord.DiscordIncomingWebhook"
+        outcome:
+          label: "Cross-stack pipeline run"
+          sublabel: "one execution ID"
+          icon: "mdi:pipe-disconnected"
+      plugins:
+        - "io.kestra.plugin.terraform.cli.TerraformCLI"
+        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        - "io.kestra.plugin.jenkins.JobBuild"
+        - "io.kestra.plugin.discord.DiscordIncomingWebhook"
+      code: |
+        id: jenkins-terraform-ansible-chain
+        namespace: company.team
+
+        inputs:
+          - id: jenkins_url
+            type: STRING
+            defaults: https://jenkins.example.com
+          - id: jenkins_test_job
+            type: STRING
+
+        tasks:
+          - id: terraform_apply
+            type: io.kestra.plugin.terraform.cli.TerraformCLI
+            taskRunner:
+              type: io.kestra.plugin.scripts.runner.docker.Docker
+            containerImage: hashicorp/terraform:latest
+            inputFiles:
+              main.tf: |
+                terraform {
+                  required_providers {
+                    random = { source = "hashicorp/random" }
+                  }
+                }
+                resource "random_pet" "host" {}
+                output "host_name" {
+                  value = random_pet.host.id
+                }
+            beforeCommands:
+              - terraform init
+            commands:
+              - terraform apply -auto-approve
+
+          - id: ansible_configure
+            type: io.kestra.plugin.ansible.cli.AnsibleCLI
+            taskRunner:
+              type: io.kestra.plugin.scripts.runner.docker.Docker
+            containerImage: cytopia/ansible:latest
+            inputFiles:
+              inventory.ini: |
+                [test]
+                localhost ansible_connection=local
+              playbook.yml: |
+                ---
+                - name: Apply baseline
+                  hosts: test
+                  tasks:
+                    - name: Confirm reachability
+                      ansible.builtin.ping:
+            commands:
+              - ansible-playbook -i inventory.ini playbook.yml
+
+          - id: jenkins_test
+            type: io.kestra.plugin.jenkins.JobBuild
+            serverUrl: "{{ inputs.jenkins_url }}"
+            jobName: "{{ inputs.jenkins_test_job }}"
+            username: "{{ secret('JENKINS_USERNAME') }}"
+            apiToken: "{{ secret('JENKINS_API_TOKEN') }}"
+
+          - id: notify
+            type: io.kestra.plugin.discord.DiscordIncomingWebhook
+            url: "{{ secret('DISCORD_WEBHOOK_URL') }}"
+            payload: |
+              {
+                "content": "Cross-stack pipeline complete: Terraform + Ansible + Jenkins (execution {{ execution.id }})."
+              }
+
+        errors:
+          - id: alert_on_failure
+            type: io.kestra.plugin.discord.DiscordIncomingWebhook
+            url: "{{ secret('DISCORD_WEBHOOK_URL') }}"
+            payload: |
+              {
+                "content": "Cross-stack pipeline failed (execution {{ execution.id }})."
+              }
+
+comparison:
+  title: "Kestra vs the orchestration alternatives Jenkins teams evaluate"
+  subtitle: "When Jenkins is the CI workhorse but the orchestration around it needs more than Groovy, here is how Kestra compares to the usual alternatives."
+  competitors:
+    - name: "Prefect"
+      logoAsset: "prefect"
+    - name: "Airflow"
+      logoAsset: "airflow"
+    - name: "GitHub Actions"
+      pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+  rows:
+    - feature: "Pipeline definition language"
+      kestra: "✓ Declarative YAML"
+      values:
+        - "Python"
+        - "Python DAGs"
+        - "YAML"
+    - feature: "Trigger Jenkins jobs natively"
+      kestra: "✓ JobBuild + JobInfo plugin"
+      values:
+        - "HTTP requests in Python"
+        - "Operator chain"
+        - "HTTP request action"
+    - feature: "Pause + resume between stages"
+      kestra: "✓ Native, with reviewer logged"
+      values:
+        - "Available in Prefect 2.x+"
+        - "Custom sensor workaround"
+        - "Environment approvals (deploy only)"
+    - feature: "Event triggers beyond cron and GitHub"
+      kestra: "✓ Webhook, S3, Kafka, file, DB"
+      values:
+        - "Possible, Python code required"
+        - "Sensor-based polling"
+        - "Cron or Git events only"
+    - feature: "Chain Jenkins with Terraform, Ansible, Argo CD"
+      kestra: "✓ Native plugins for each"
+      values:
+        - "Python operators required"
+        - "Operator chain"
+        - "Step ordering, glue scripts"
+    - feature: "Self-service forms for non-engineers"
+      kestra: "✓ Kestra Apps"
+      values:
+        - "No native form layer"
+        - "No"
+        - "No"
+    - feature: "Secrets via secret() with backends"
+      kestra: "✓ Native (Vault, Cloud Secret Manager)"
+      values:
+        - "Secrets blocks"
+        - "Variables + Connections"
+        - "Repo + org secrets"
+
+faq:
+  - question: "Does Kestra replace Jenkins?"
+    answer: "No. Kestra sits above Jenkins instead of replacing it. The <code>io.kestra.plugin.jenkins.JobBuild</code> task triggers a Jenkins job, and <code>io.kestra.plugin.jenkins.JobInfo</code> fetches its status. Your existing Jenkinsfiles, agents, and plugins keep running. Kestra runs the orchestration layer: when each Jenkins job triggers, what runs alongside it (<a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/argocd'>Argo CD</a>), where the approval gates live, and the unified run history across every tool."
+  - question: "What does Kestra add to a Jenkins setup?"
+    answer: "Three things Jenkins's native scheduler does not solve well: event-driven triggers beyond cron and GitHub (webhooks, S3, Kafka, schedules, database changes); cross-tool chains where Jenkins is one step among several; and a Pause-with-notification gate between stages that logs the reviewer's identity and timestamp. Plus self-service via Kestra Apps, where a typed form fires a Jenkins job and the trigger user lands in execution history."
+  - question: "Can Kestra trigger a Jenkins job when a file lands in S3 or a Kafka message arrives?"
+    answer: "Yes. Kestra has 50+ native triggers (<a href='/orchestration/aws'>S3 ObjectCreated</a>, Kafka consumer, webhook, schedule, file arrival, database change, more). The trigger fires the flow with the event payload in <code>trigger.body</code>. The <code>JobBuild</code> task reads parameters from the payload and enqueues the Jenkins job. No custom webhook receiver, no polling loop."
+  - question: "How does Kestra Pause differ from Jenkins input{}?"
+    answer: "Jenkins <code>input{}</code> blocks the build mid-pipeline until someone clicks in the Jenkins UI. There is no first-class notification, no reviewer attribution, and a timed-out input fails the build. Kestra's <code>Pause</code> task suspends the flow; a notification task fires right before (Slack, Teams Adaptive Card, PagerDuty, Email); the reviewer's identity and timestamp are stored in execution history on resume; and a timeout closes the Pause cleanly without failing the surrounding flow."
+  - question: "Can Kestra and Jenkins run side-by-side during a migration?"
+    answer: "Yes. The typical migration path is incremental: existing Jenkins jobs keep firing through <code>JobBuild</code> while new logic moves into Kestra-native tasks (Python, shell, Docker, Kubernetes runners). The flow becomes the orchestration layer that calls Jenkins for legacy jobs and runs new Kestra-native steps directly. Migrating one job at a time means no big-bang rewrite and no parallel-team coordination tax."
+  - question: "Can one flow trigger many Jenkins jobs in parallel?"
+    answer: "Yes. A <code>ForEach</code> with <code>concurrencyLimit</code> caps the parallelism. Each iteration calls <code>JobBuild</code> with per-iteration parameters and <code>JobInfo</code> for status. <code>allowFailure</code> on the inner task isolates failures, so one bad job does not halt the wave. A targeted <a href='/orchestration/slack'>Slack</a> alert routes to the owner of the failing job rather than spamming the whole channel."
+  - question: "Is Kestra self-hosted or managed?"
+    answer: "Kestra offers multiple deployment options: fully self-hosted on Docker or Kubernetes, a managed cloud version, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives complete control over where your pipeline execution and credentials live, which matters when the Jenkins instances being orchestrated are inside a regulated network."
+
+seeHow:
+  title: "Ready to orchestrate Jenkins as part of a bigger flow?"
+  description: "Trigger Jenkins jobs from any event, chain them with Terraform, Ansible, and Argo CD, add Pause-with-notification gates between stages, and trace every step from one place. Open source, self-hosted, event-driven."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
