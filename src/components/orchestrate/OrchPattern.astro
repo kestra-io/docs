@@ -7,8 +7,8 @@ interface BlueprintItem {
     name: string
     title: string
     description: string
-    code: string
-    plugins: string[]
+    code?: string
+    plugins?: string[]
     href?: string
     blueprintId?: string
     blueprintPlaceholder?: boolean
@@ -73,7 +73,22 @@ const hasTabs = tabs.length > 0
                                             </a>
                                         )}
                                     </div>
-                                    <Snippets client:idle code={bp.render?.source ?? bp.code} lang="yaml" />
+                                    {bp.render?.source || bp.code ? (
+                                        <Snippets client:idle code={bp.render?.source ?? bp.code ?? ''} lang="yaml" />
+                                    ) : (
+                                        <div class="code-pending">
+                                            <p class="code-pending__lead">{bp.description}</p>
+                                            <p class="code-pending__note">
+                                                The full YAML and topology will appear here once the <code>{bp.blueprintId}</code> blueprint is published in the catalog.
+                                            </p>
+                                            {bp.blueprintId && (
+                                                <a class="code-link" href={`/blueprints/${bp.blueprintId}`}>
+                                                    View on the blueprints catalog
+                                                    <Icon name="mdi:chevron-right" width={14} height={14} />
+                                                </a>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {bp.render?.graph && (
@@ -357,6 +372,34 @@ const hasTabs = tabs.length > 0
         &:hover {
             text-decoration: underline;
             text-underline-offset: 3px;
+        }
+    }
+
+    .code-pending {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.5rem 0;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+    }
+
+    .code-pending__lead {
+        margin: 0;
+        color: var(--ks-content-primary);
+    }
+
+    .code-pending__note {
+        margin: 0;
+
+        :global(code) {
+            font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+            font-size: 0.875em;
+            padding: 0.1rem 0.35rem;
+            border-radius: 0.25rem;
+            background: var(--ks-background-secondary);
+            border: 1px solid var(--ks-border-secondary);
         }
     }
 </style>
