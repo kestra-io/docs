@@ -39,9 +39,9 @@ The LLM call is the easy part. By the time a model returns something useful, oth
 
 Kestra covers every layer of it. One group, [`plugin-ai`](/plugins/plugin-ai), is purpose-built for the job, with the shared abstractions behind Kestra's native AI tasks. This post maps the rest — the plugins you reach for *around* the model — organized by the role each plays: retrieval, ingestion, serialization, transformation, custom code, GPU compute, data quality, and the cloud and connector plumbing in between.
 
-::alert{type="info"}
+:::alert{type="info"}
 All AI-related plugins are tagged with the **AI** category on the [Plugins page](https://kestra.io/plugins?category=AI). Use the category filter to browse them at a glance without scrolling through the full catalog.
-::
+:::
 
 ## LLM Providers
 
