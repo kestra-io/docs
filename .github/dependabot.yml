@@ -101,7 +101,3 @@ updates:
             "prettier-*",
           ]
 
-    ignore:
-      # Ignore develop pre-release versions of kestra-sdk (managed internally, not via Dependabot)
-      - dependency-name: "@kestra-io/kestra-sdk"
-        versions: ["*-develop*"]
