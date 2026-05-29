@@ -1,13 +1,13 @@
 ---
 title: "How We Release Kestra With Kestra"
 description: "How to automate parallel releases across multiple versions with automatic retry handling."
-date: 2026-04-28T09:00:00
+date: 2026-05-29T09:00:00
 category: Engineering
 author:
   name: Roman Acevedo
   image: racevedo
   role: Software Engineer
-image: ./main.png TODO
+image: ./main.png
 ---
 
 Every Tuesday, we ship bug fixes across multiple maintained versions at once — [LTS](../introducing-lts/index.md), latest, and sometimes older releases. At peak, that's four parallel releases on the same day.
