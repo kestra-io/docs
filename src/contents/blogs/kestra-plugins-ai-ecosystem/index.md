@@ -35,9 +35,9 @@ schema:
         text: "plugin-tika parses PDFs, Office documents, images (with OCR via Tesseract), and dozens of other formats into plain text — the standard first step for RAG pipelines. For web content, plugin-apify adds web scraping via Apify actors."
 ---
 
-An AI pipeline is rarely just a single LLM call. It typically involves ingesting documents, generating embeddings, indexing them into a vector store, transforming the data, and orchestrating the whole sequence reliably. Kestra covers every layer of that stack through its plugin ecosystem.
+The LLM call is the easy part. By the time a model returns something useful, other tasks have already parsed the source documents, cleaned and chunked the text, generated embeddings, indexed them into a vector store, and pulled back the right context — all of it on a schedule or a trigger, surviving the rate limits and flaky responses that come with hitting model APIs at volume. That surrounding machinery is where an AI pipeline actually lives, and where an orchestrator earns its place.
 
-One plugin group is purpose-built for AI: [`plugin-ai`](/plugins/plugin-ai), which provides the shared abstractions that power Kestra's AI tasks. This post covers the rest of the ecosystem — from format conversion and serialization with [`plugin-serdes`](/plugins/plugin-serdes) to vector databases, document extraction, scripting, and everything else AI workflows draw on, organized by the role each group plays.
+Kestra covers every layer of it. One group, [`plugin-ai`](/plugins/plugin-ai), is purpose-built for the job, with the shared abstractions behind Kestra's native AI tasks. This post maps the rest — the plugins you reach for *around* the model — organized by the role each plays: retrieval, ingestion, serialization, transformation, custom code, GPU compute, data quality, and the cloud and connector plumbing in between.
 
 ::alert{type="info"}
 All AI-related plugins are tagged with the **AI** category on the [Plugins page](https://kestra.io/plugins?category=AI). Use the category filter to browse them at a glance without scrolling through the full catalog.
@@ -45,7 +45,7 @@ All AI-related plugins are tagged with the **AI** category on the [Plugins page]
 
 ## LLM Providers
 
-Kestra ships a dedicated plugin for every major LLM provider. Each integrates directly as a Kestra task, meaning retries, error handling, secret management, and observability come for free.
+Start with the model, since it's the part everyone pictures first. Kestra ships a dedicated plugin for every major provider, each exposing that provider's API as a declarative task.
 
 | Plugin | Key tasks | What you get |
 |--------|-----------|--------------|
@@ -58,19 +58,21 @@ Kestra ships a dedicated plugin for every major LLM provider. Each integrates di
 | [`plugin-perplexity`](/plugins/plugin-perplexity) | `ChatCompletion` | Perplexity — search-augmented responses |
 | [`plugin-huggingface`](/plugins/plugin-huggingface) | `Inference` | 700k+ HuggingFace models via Inference API |
 
-Because Kestra tasks are declarative, switching providers is a one-line change in the flow YAML. You can A/B test models across branches of the same flow, or fan out to multiple providers in parallel.
+The wrapper is the least interesting part; the orchestration around the call is what matters. LLM and embedding endpoints rate-limit hard and fail intermittently, so a `retry` with exponential backoff turns a 429 into a non-event rather than a broken run. Credentials resolve from `{{ secret('OPENAI_API_KEY') }}` at runtime instead of living in the flow source. And because the provider is a single `type:` line, swapping GPT for Claude — or fanning out to several models in parallel — is a config change, not a rewrite.
 
 ## Vector Databases and Search
 
-Retrieval-Augmented Generation requires fast, accurate retrieval. Kestra covers the full spectrum — from purpose-built vector databases to search engines with vector extensions.
+A model is only as good as the context you retrieve for it, which puts the vector store at the center of most RAG systems. Kestra spans the full spectrum of them, from purpose-built vector databases to search engines that have grown vector extensions.
 
 ### Purpose-built vector databases
 
-[`plugin-weaviate`](/plugins/plugin-weaviate) is the most AI-native option. It exposes `SchemaCreate` to define collection structures, `BatchCreate` for bulk vector ingestion, `Query` for GraphQL-based semantic and hybrid search, and `Delete` for cleanup. Weaviate's native support for nearText and nearVector queries maps directly to RAG retrieval patterns.
+[`plugin-weaviate`](/plugins/plugin-weaviate) is the most AI-native of the set: `SchemaCreate` defines collection structure, `BatchCreate` handles bulk vector ingestion, `Query` runs GraphQL-based semantic and hybrid search, and `Delete` cleans up. Its `nearText` and `nearVector` operators map directly onto RAG retrieval, so the task config reads the way you reason about the query.
 
-[`plugin-pinecone`](/plugins/plugin-pinecone) covers Pinecone, the fully managed serverless vector database. It handles index and namespace management, vector upsert and deletion, and similarity queries with metadata filtering — the standard operations for RAG retrieval without any infrastructure to run.
+[`plugin-pinecone`](/plugins/plugin-pinecone) covers Pinecone's fully managed serverless store: index and namespace management, vector upsert and delete, and similarity queries with metadata filtering — the standard retrieval operations, with no infrastructure to run.
 
 ### Search engines with vector extensions
+
+If you already run a search cluster, you may not need a separate vector database — these add vector search alongside the keyword search you already have, which is why hybrid BM25 + k-NN retrieval is so often the pragmatic default.
 
 | Plugin | Notable tasks | Vector capability |
 |--------|---------------|-------------------|
@@ -81,73 +83,73 @@ Retrieval-Augmented Generation requires fast, accurate retrieval. Kestra covers 
 
 ### Document databases with vector search
 
-[`plugin-mongodb`](/plugins/plugin-mongodb) exposes `Find` with `$vectorSearch` support (Atlas Vector Search), plus `Aggregate` for complex pipelines, `Bulk` for large ingestion batches, and a `Trigger` task that fires on Change Streams — useful for near-real-time indexing flows.
+[`plugin-mongodb`](/plugins/plugin-mongodb) exposes `Find` with `$vectorSearch` (Atlas Vector Search), `Aggregate` for multi-stage pipelines, and `Bulk` for large ingestion batches. Its `Trigger` fires on Change Streams, so a new or updated document can kick off re-indexing in near real time instead of waiting for the next batch run.
 
-[`plugin-redis`](/plugins/plugin-redis) covers JSON document storage (`Get`, `Set`, `Delete`) and Pub/Sub (`Publish`). With RedisSearch enabled, it becomes a high-throughput embedding cache and real-time retrieval layer.
+[`plugin-redis`](/plugins/plugin-redis) handles JSON document storage (`Get`, `Set`, `Delete`) and Pub/Sub (`Publish`). With RedisSearch enabled it doubles as a high-throughput embedding cache and real-time retrieval layer.
 
 ### Graph databases
 
-[`plugin-neo4j`](/plugins/plugin-neo4j) provides `Query` (Cypher with configurable result handling) and `Batch` for bulk operations. Knowledge graphs built in Neo4j let LLMs traverse structured relationships for reasoning chains and entity resolution — a pattern increasingly common in agentic AI architectures.
+[`plugin-neo4j`](/plugins/plugin-neo4j) provides `Query` (Cypher, with configurable result handling) and `Batch` for bulk operations. Knowledge graphs let an LLM traverse explicit relationships for reasoning chains and entity resolution, a pattern that shows up more and more in agentic architectures.
 
 ## Document Extraction and Web Ingestion
 
-RAG starts with raw content. Before embeddings can be generated, documents need to be parsed into clean text.
+RAG starts with raw content, and embeddings can't be generated until that content is clean text.
 
-[`plugin-tika`](/plugins/plugin-tika) wraps Apache Tika. Its `Parse` task extracts text, metadata, and embedded files from PDFs, Word documents, PowerPoint files, Excel spreadsheets, HTML, images (with optional OCR via Tesseract), and dozens of other formats. One task handles the full corpus of enterprise document types — the standard first step in any RAG ingestion pipeline.
+[`plugin-tika`](/plugins/plugin-tika) wraps Apache Tika. Its `Parse` task pulls text, metadata, and embedded files out of PDFs, Word documents, PowerPoint files, Excel spreadsheets, HTML, images (with optional OCR via Tesseract), and dozens of other formats. One task handles the full range of enterprise document types — the usual first step in an ingestion flow, and an obvious place to fan out across workers at volume.
 
-[`plugin-apify`](/plugins/plugin-apify) covers web content. `Run` triggers an Apify actor with configurable inputs and run caps; `Get` and `GetLastRun` retrieve the resulting dataset; `Save` persists it to Kestra's internal storage for downstream processing. This is the practical path for feeding live web content into a training or retrieval pipeline.
+[`plugin-apify`](/plugins/plugin-apify) covers the web. `Run` launches an Apify actor with configurable inputs and run caps, `Get` and `GetLastRun` retrieve the resulting dataset, and `Save` persists it to Kestra's internal storage for downstream tasks. It's the practical path for feeding live web content into a retrieval or training pipeline.
 
 ## Format Conversion and Serialization
 
-Before data moves between pipeline stages, it often needs to change shape. [`plugin-serdes`](/plugins/plugin-serdes) handles serialization and deserialization across the formats that appear throughout AI workflows: CSV, JSON, AVRO, Parquet, XML, YAML, Protobuf, and Excel, converting each to and from Kestra's internal Ion format so any two tasks can exchange data without manual parsing.
+Data rarely arrives in the shape the next task wants. [`plugin-serdes`](/plugins/plugin-serdes) converts the formats that show up throughout AI workflows — CSV, JSON, AVRO, Parquet, XML, YAML, Protobuf, Excel — to and from Kestra's internal Ion format, so any two tasks can exchange data without bespoke parsing.
 
-For AI workloads, three capabilities stand out.
+Three of its capabilities matter especially for AI work.
 
-**Markdown conversion.** The `HtmlToMarkdown` task converts HTML files into Markdown — directly useful for RAG pipelines and LLM preprocessing, where HTML is too verbose: Markdown conveys the same structure with significantly fewer tokens. `MarkdownToText` strips all formatting to produce clean plain text, the right input for embedding models that don't need structural markup. `MarkdownToHtml` rounds the set out for cases where the output needs to go back into an HTML context (email templates, rich notifications).
+**Markdown conversion.** `HtmlToMarkdown` turns verbose HTML into Markdown that carries the same structure in far fewer tokens — directly useful for RAG and LLM preprocessing. `MarkdownToText` strips formatting to clean plain text for embedding models that don't need markup; `MarkdownToHtml` covers the return trip for email templates or rich notifications.
 
-**TOON.** `JsonToToon` and `ToonToJson` convert between JSON and [TOON](/blogs/kestra-mcp-plugins-blueprints) (Token-Oriented Object Notation), a deterministic, indentation-based format that encodes the JSON data model with explicit structure and minimal quoting. For uniform arrays of objects, TOON uses tabular encoding that conveys the same data in significantly fewer tokens than JSON — lowering cost and latency on every inference call that passes structured data as LLM context.
+**TOON.** `JsonToToon` and `ToonToJson` convert between JSON and [TOON](/blogs/kestra-mcp-plugins-blueprints) (Token-Oriented Object Notation), a deterministic, indentation-based format with explicit structure and minimal quoting. For uniform arrays of objects it uses a tabular encoding that conveys the same data in far fewer tokens than JSON, lowering cost and latency on every inference call that passes structured context.
 
-**Schema inference.** `InferAvroSchemaFromIon` scans an Ion file and emits a compatible `.avsc` schema, eliminating the manual schema-writing step before converting to Avro or Parquet.
+**Schema inference.** `InferAvroSchemaFromIon` scans an Ion file and emits a matching `.avsc` schema, removing the hand-written schema step before a conversion to Avro or Parquet.
 
 ## Data Transformation and Preprocessing
 
-AI models are sensitive to input quality. Kestra provides several transformation layers, from lightweight expression-based transforms to full SQL modeling.
+Models are sensitive to input quality, and most of what determines that quality happens before the embedding call. Kestra offers transformation layers from lightweight expression-based transforms up to full SQL modeling.
 
-[`plugin-transform`](/plugins/plugin-transform) operates on Kestra's internal record streams. The `Records` module offers `Filter` (boolean expressions), `Map` (field projection), `Select` (field renaming), `Aggregate` (grouping with sum/count/avg), `Unnest` (flattening nested arrays), and `Zip` (merging streams by index). The `Grok` module parses unstructured text using named patterns. The `JSONata` module applies JSONata expressions to transform JSON — useful for reshaping LLM outputs before downstream processing.
+[`plugin-transform`](/plugins/plugin-transform) operates on Kestra's internal record streams. The `Records` module covers `Filter` (boolean expressions), `Map` (field projection, and the natural place to chunk text before embedding), `Select` (renaming), `Aggregate` (grouping with sum/count/avg), `Unnest` (flattening nested arrays), and `Zip` (merging streams by index). The `Grok` module parses unstructured text with named patterns, and the `JSONata` module reshapes JSON — handy for normalizing an LLM's output before anything downstream consumes it.
 
-[`plugin-datagen`](/plugins/plugin-datagen) generates synthetic data using Faker-based generators. `Generate` produces configurable batches in JSON, CSV, or SQL format. A `RealtimeTrigger` enables continuous data generation for streaming pipelines. The primary AI use case is creating reproducible training and evaluation datasets without touching production data.
+[`plugin-datagen`](/plugins/plugin-datagen) generates synthetic data with Faker-based generators. `Generate` produces configurable batches as JSON, CSV, or SQL, and a `RealtimeTrigger` drives continuous generation for streaming pipelines. The main AI use is reproducible training and evaluation datasets that never touch production data.
 
-[`plugin-dbt`](/plugins/plugin-dbt) brings SQL-based feature engineering into the flow. Run dbt models, execute tests, and install dependencies as discrete Kestra tasks — making feature pipelines version-controlled, testable, and observable alongside the rest of the workflow.
+[`plugin-dbt`](/plugins/plugin-dbt) brings SQL feature engineering into the flow. Run dbt models, execute tests, and install dependencies as discrete tasks, so feature pipelines stay version-controlled, testable, and observable alongside everything else.
 
 ## Scripting and Custom Code
 
-When the task doesn't fit a pre-built plugin, Kestra supports arbitrary code execution across 18 language runtimes.
+When nothing pre-built fits, Kestra runs arbitrary code across 18 language runtimes.
 
-[`plugin-scripts`](/plugins/plugin-scripts) runs `Script` and `Commands` tasks for Python, Node.js, R, Julia, Go, Ruby, Shell, Perl, PHP, Lua, Deno, Bun, JBang, Groovy, Jython, Nashorn, and more. The Python task supports pip and UV for dependency management, making it straightforward to install `transformers`, `torch`, or any other ML library inline. This is the escape hatch for custom inference logic, fine-tuning jobs, or integrations not covered by a dedicated plugin.
+[`plugin-scripts`](/plugins/plugin-scripts) runs `Script` and `Commands` tasks for Python, Node.js, R, Julia, Go, Ruby, Shell, Perl, PHP, Lua, Deno, Bun, JBang, Groovy, Jython, Nashorn, and more. The Python task supports pip and UV, so installing `transformers`, `torch`, or any other library is a line of config and the environment is reproducible. This is the escape hatch for custom inference logic, fine-tuning jobs, or integrations no dedicated plugin covers.
 
-[`plugin-graalvm`](/plugins/plugin-graalvm) provides in-process execution for Python, JavaScript, and Ruby via GraalVM — no container startup overhead. `Eval` runs inline scripts; `FileTransform` applies a script to transform a file. The tradeoff is that GraalVM's Python compatibility is narrower than CPython, so it's best suited for lightweight transforms and preprocessing rather than heavy ML workloads.
+[`plugin-graalvm`](/plugins/plugin-graalvm) runs Python, JavaScript, and Ruby in-process via GraalVM, with no container to start. `Eval` runs inline scripts and `FileTransform` applies a script to a file. The tradeoff is that GraalVM's Python compatibility is narrower than CPython's, so it suits lightweight transforms and preprocessing rather than heavy ML workloads.
 
 ## GPU Compute and Containers
 
-Heavy inference and fine-tuning workloads need compute backends beyond a standard Kestra worker.
+Heavy inference and fine-tuning need a compute backend beyond a standard Kestra worker.
 
-[`plugin-modal`](/plugins/plugin-modal) wraps the Modal CLI. `ModalCLI` runs Modal functions on serverless GPU infrastructure — useful for fine-tuning jobs, batch inference, or any compute-intensive task that would otherwise require managing GPU instances.
+[`plugin-modal`](/plugins/plugin-modal) wraps the Modal CLI: `ModalCLI` runs Modal functions on serverless GPU infrastructure, which fits fine-tuning, batch inference, or any compute-heavy job you'd rather not provision GPU instances for.
 
-[`plugin-docker`](/plugins/plugin-docker) and [`plugin-kubernetes`](/plugins/plugin-kubernetes) cover container-based execution. Docker tasks run ML containers locally or on a Docker host; Kubernetes tasks (`Deploy`, `Job`) schedule GPU workloads on a Kubernetes cluster. Combined with Kestra's [task runners](/docs/task-runners), they enable fully declarative GPU job submission.
+[`plugin-docker`](/plugins/plugin-docker) and [`plugin-kubernetes`](/plugins/plugin-kubernetes) handle container execution. Docker tasks run ML containers locally or on a Docker host; Kubernetes tasks (`Deploy`, `Job`) schedule GPU workloads on a cluster. Paired with Kestra's [task runners](/docs/task-runners), they make GPU job submission fully declarative.
 
-[`plugin-databricks`](/plugins/plugin-databricks) connects Kestra to Databricks for notebook execution, job submission, and MLflow integration — the standard path for teams already on the Databricks ML platform.
+[`plugin-databricks`](/plugins/plugin-databricks) connects Kestra to Databricks for notebook execution, job submission, and MLflow integration — the standard path for teams already on that platform.
 
 ## Data Quality and Lineage
 
-Reliable AI pipelines require validated inputs. Garbage in, garbage out applies especially to training and evaluation datasets.
+Garbage in, garbage out is unforgiving for training and evaluation data, so reliable pipelines validate before they trust.
 
-[`plugin-soda`](/plugins/plugin-soda) runs Soda scans against any data source. Define checks for null rates, value distributions, schema drift, and referential integrity; Kestra surfaces the results as task outputs and can gate downstream tasks on scan outcomes.
+[`plugin-soda`](/plugins/plugin-soda) runs Soda scans against any source — null rates, value distributions, schema drift, referential integrity. Kestra surfaces the results as task outputs, which means you can gate downstream tasks on a scan and stop a bad dataset before it ever reaches a model.
 
-[`plugin-datahub`](/plugins/plugin-datahub) integrates with DataHub for metadata ingestion and lineage tracking. Emit lineage events from Kestra flows to make model inputs, intermediate datasets, and outputs traceable in the catalog.
+[`plugin-datahub`](/plugins/plugin-datahub) emits lineage events to DataHub, making model inputs, intermediate datasets, and outputs traceable in the catalog.
 
 ## Cloud Platform Plugins
 
-The major cloud providers each have an AI-relevant surface area covered by their respective Kestra plugins.
+Each major cloud exposes an AI-relevant surface area through its Kestra plugin.
 
 | Plugin | AI-relevant services |
 |--------|---------------------|
@@ -157,26 +159,26 @@ The major cloud providers each have an AI-relevant surface area covered by their
 
 ## Connectors and Infrastructure
 
-Beyond compute and storage, AI pipelines need reliable data transport and versioning.
+Beyond compute and storage, pipelines need reliable transport and versioning.
 
-[`plugin-kafka`](/plugins/plugin-kafka) enables event-driven AI architectures. Use it to consume a stream of user interactions for real-time RAG, or to publish inference results downstream. Kestra's Kafka trigger fires a flow on every message or batch, making it straightforward to build continuously-updating vector indexes.
+[`plugin-kafka`](/plugins/plugin-kafka) drives event-based architectures: consume a stream of user interactions for real-time RAG, or publish inference results downstream. A Kafka trigger fires a flow on each message or batch, which is the straightforward way to keep a vector index continuously up to date.
 
-[`plugin-git`](/plugins/plugin-git) and [`plugin-github`](/plugins/plugin-github) bring prompt and configuration versioning into the flow. Store prompts, system instructions, and model configuration as code; pull them at runtime so flows always run against a pinned, auditable version.
+[`plugin-git`](/plugins/plugin-git) and [`plugin-github`](/plugins/plugin-github) bring prompts and configuration under version control. Store prompts, system instructions, and model settings as code, then pull them at runtime so every run executes against a pinned, auditable version.
 
-[`plugin-fs`](/plugins/plugin-fs) provides filesystem and object storage tasks for S3, GCS, SFTP, FTP, and local paths — the plumbing for moving model inputs and outputs between pipeline stages.
+[`plugin-fs`](/plugins/plugin-fs) provides filesystem and object-storage tasks for S3, GCS, SFTP, FTP, and local paths — the plumbing that moves model inputs and outputs between stages.
 
 ## Putting It Together
 
-A typical RAG pipeline in Kestra draws on four to six of these plugin groups in sequence:
+A typical RAG pipeline draws on four to six of these groups in sequence:
 
-1. **Ingest**: `plugin-tika` parses source documents; `plugin-apify` scrapes web content
-2. **Transform**: `plugin-transform` cleans and chunks text; `plugin-serdes` converts formats
-3. **Embed**: `plugin-openai` or `plugin-huggingface` generates embedding vectors
-4. **Index**: `plugin-weaviate`, `plugin-pinecone`, or `plugin-opensearch` stores and indexes the vectors
-5. **Retrieve and generate**: `plugin-anthropic` or `plugin-gemini` answers queries using retrieved context
-6. **Validate**: `plugin-soda` checks data quality at each stage; `plugin-datahub` records lineage
+1. **Ingest** — [`plugin-tika`](/plugins/plugin-tika) parses source documents; [`plugin-apify`](/plugins/plugin-apify) scrapes web content
+2. **Transform** — [`plugin-transform`](/plugins/plugin-transform) cleans and chunks the text; [`plugin-serdes`](/plugins/plugin-serdes) converts formats
+3. **Embed** — [`plugin-openai`](/plugins/plugin-openai) or [`plugin-huggingface`](/plugins/plugin-huggingface) generates the vectors
+4. **Index** — [`plugin-weaviate`](/plugins/plugin-weaviate), [`plugin-pinecone`](/plugins/plugin-pinecone), or [`plugin-opensearch`](/plugins/plugin-opensearch) stores them
+5. **Retrieve and generate** — [`plugin-anthropic`](/plugins/plugin-anthropic) or [`plugin-gemini`](/plugins/plugin-gemini) answers using the retrieved context
+6. **Validate** — [`plugin-soda`](/plugins/plugin-soda) checks quality at each stage; [`plugin-datahub`](/plugins/plugin-datahub) records lineage
 
-Each step is a Kestra task with retries, timeouts, secret injection, and observability built in. The flow YAML is the single source of truth for the entire pipeline — portable, version-controlled, and executable anywhere Kestra runs.
+Every step is a task, and data moves between them through Kestra's internal storage, so each stage hands off cleanly to the next. The flow YAML is the single source of truth — version-controlled, observable end to end, and portable anywhere Kestra runs. Re-indexing the corpus from scratch is a backfill; keeping it current is a trigger. The model was never the hard part — making everything around it dependable is, and that's the part Kestra owns.
 
 ---
 
@@ -196,3 +198,7 @@ Kestra ships dedicated plugins for [Anthropic](/plugins/plugin-anthropic), [Open
 
 ### Can I run GPU workloads from Kestra?
 Yes. [`plugin-modal`](/plugins/plugin-modal) submits serverless GPU jobs to Modal. [`plugin-kubernetes`](/plugins/plugin-kubernetes) schedules GPU workloads on Kubernetes. [`plugin-docker`](/plugins/plugin-docker) runs GPU-enabled containers locally or on a Docker host.
+
+---
+
+If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) ⭐️ and join [the community](/slack).
