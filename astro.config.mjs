@@ -197,6 +197,11 @@ export default defineConfig({
                 optional: true,
                 default: false,
             }),
+            GITHUB_TOKEN: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             NO_RANDOM_ORDER: envField.boolean({
                 context: "client",
                 access: "public",
