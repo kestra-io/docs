@@ -11,22 +11,28 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 const totalPlugins = await fetchTotalPluginsCount()
 
 const CATEGORY_MAP: Record<string, string> = {
+    airbyte: "Data",
     ansible: "Infrastructure",
     argocd: "Infrastructure",
     aws: "Cloud",
+    bigquery: "Data",
     cloudflare: "Cloud",
     docker: "Infrastructure",
     git: "Infrastructure",
     "github-actions": "Infrastructure",
+    gitlab: "Infrastructure",
     hightouch: "Data",
     jenkins: "Infrastructure",
+    kafka: "Data",
     kubernetes: "Infrastructure",
+    "microsoft-fabric": "Data",
     netbox: "Infrastructure",
     nutanix: "Infrastructure",
     opa: "Infrastructure",
     proxmox: "Infrastructure",
     servicenow: "Business",
     slack: "Business",
+    snowflake: "Data",
     terraform: "Infrastructure",
     vmware: "Infrastructure",
     "dbt-cloud": "Data",
@@ -342,7 +348,24 @@ const faqItems = [
             }
         }
 
+        function shuffleGrid() {
+            var grid = document.getElementById("orch-grid")
+            if (!grid || grid.dataset.shuffled === "true") return
+            var cards = Array.prototype.slice.call(
+                grid.querySelectorAll(".card"),
+            )
+            for (var i = cards.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1))
+                var tmp = cards[i]
+                cards[i] = cards[j]
+                cards[j] = tmp
+            }
+            for (var k = 0; k < cards.length; k++) grid.appendChild(cards[k])
+            grid.dataset.shuffled = "true"
+        }
+
         function init() {
+            shuffleGrid()
             var toggle = document.getElementById("orch-toggle")
             var search = document.getElementById("orch-search")
             if (toggle) {
@@ -399,6 +422,7 @@ const faqItems = [
                     border-radius: 12px;
                     padding: 8px;
                     background: #f7f7f7;
+                    color: #18181b;
 
                     :global(svg) {
                         max-width: 100%;
@@ -445,6 +469,7 @@ const faqItems = [
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        color: #18181b;
                         opacity: 0;
                         transform: translateY(6px);
                         transition:
@@ -633,6 +658,7 @@ const faqItems = [
         border-radius: 8px;
         padding: 8px;
         background: $white;
+        color: #18181b;
         flex-shrink: 0;
 
         :global(svg) {
