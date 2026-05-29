@@ -3,6 +3,8 @@ description: "Compare Kestra vs Amazon MWAA: YAML-first universal orchestration 
 competitorName: Amazon MWAA
 category: Data Orchestration
 shortDescription: "AWS-managed Apache Airflow vs. open-source, multi-cloud YAML orchestration without vendor lock-in."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and run them on any cloud without the AWS lock-in."
 
 brandColor:
   color: "#FF9900"

@@ -1,0 +1,613 @@
+---
+import { getCollection } from "astro:content"
+
+import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Faq from "~/components/common/Faq.vue"
+import Quotes from "~/components/common/Quotes.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Link from "~/components/common/Link.astro"
+import BlogList from "~/components/common/BlogList.astro"
+import ResourceList from "~/components/common/ResourceList.astro"
+import CardGrid from "~/components/card/CardGrid.astro"
+import SplitBadgeCard from "~/components/card/SplitBadgeCard.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+
+import { Icon } from "astro-icon/components"
+
+import Hero from "~/components/orchestrate/Hero.astro"
+import OrchPattern from "~/components/orchestrate/OrchPattern.astro"
+import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
+
+import { fetchPluginIcon } from "~/utils/pluginIcon"
+import { optimizeSvgIcon } from "~/utils/svgo"
+import { $fetchApiCached } from "~/utils/fetch"
+
+import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
+import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+import DataportLogo from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/logo.svg?raw"
+import CleverConnectLogo from "~/contents/customer-stories/cleverconnect-enhances-hr-integration-platform-with-kestra/logo.svg?raw"
+import RiversideLogo from "~/components/orchestrate/assets/riverside.svg?raw"
+import SlackLogo from "~/components/orchestrate/assets/slack.svg?raw"
+import FoundationDataLogo from "~/components/orchestrate/assets/foundation-data.svg?raw"
+import RedditLogo from "~/components/orchestrate/assets/reddit.svg?raw"
+import CreditAgricoleLogo from "~/components/orchestrate/assets/credit-agricole.svg?raw"
+import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
+import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
+import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
+import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
+import BhpLogo from "~/components/orchestrate/assets/bhp.svg?raw"
+
+const versusLogoModules = import.meta.glob<string>(
+    "../../components/versus/assets/*.svg",
+    { query: "?raw", import: "default", eager: true },
+)
+
+function getVersusLogo(filename: string): string {
+    const key = Object.keys(versusLogoModules).find((k) =>
+        k.endsWith(`/${filename}.svg`),
+    )
+    return key ? versusLogoModules[key] : ""
+}
+
+const LOGO_MAP: Record<string, string> = {
+    gorgias: optimizeSvgIcon(GorgiasLogo, "gorgias-orch-logo"),
+    "leroy-merlin": optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-orch-logo"),
+    dataport: optimizeSvgIcon(DataportLogo, "dataport-orch-logo"),
+    cleverconnect: optimizeSvgIcon(CleverConnectLogo, "cleverconnect-orch-logo"),
+    riverside: optimizeSvgIcon(RiversideLogo, "riverside-orch-logo"),
+    slack: optimizeSvgIcon(SlackLogo, "slack-orch-logo"),
+    "foundation-data": optimizeSvgIcon(FoundationDataLogo, "foundation-data-orch-logo"),
+    reddit: optimizeSvgIcon(RedditLogo, "reddit-orch-logo"),
+    "credit-agricole": optimizeSvgIcon(CreditAgricoleLogo, "credit-agricole-orch-logo"),
+    sopht: optimizeSvgIcon(SophtLogo, "sopht-orch-logo"),
+    bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
+    censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
+    "west-bend": optimizeSvgIcon(WestBendLogo, "west-bend-orch-logo"),
+    bhp: optimizeSvgIcon(BhpLogo, "bhp-orch-logo"),
+}
+
+export async function getStaticPaths() {
+    const entries = await getCollection("orchestration")
+    return entries.map((entry) => ({
+        params: { slug: entry.id },
+        props: { entry },
+    }))
+}
+
+const { entry } = Astro.props
+const {
+    title,
+    description,
+    tool,
+    hero,
+    nutshell,
+    pillars,
+    useCases,
+    quotes,
+    blueprints,
+    comparison,
+    postCompareCta,
+    faq,
+    seeHow,
+    resources,
+} = entry.data
+
+const blueprintItems = await Promise.all(
+    blueprints.items.map(async (item) => {
+        if (!item.blueprintId) return item
+        try {
+            const [bp, graph] = await Promise.all([
+                $fetchApiCached<{ flow: string }>(
+                    `/blueprints/${item.blueprintId}/versions/latest`,
+                ),
+                $fetchApiCached(
+                    `/blueprints/${item.blueprintId}/versions/latest/graph`,
+                ),
+            ])
+            return { ...item, render: { source: bp.flow, graph } }
+        } catch (e) {
+            console.warn(
+                `Could not fetch blueprint "${item.blueprintId}" for ${entry.id}`,
+                e,
+            )
+            return item
+        }
+    }),
+)
+
+let pluginIcon = ""
+try {
+    pluginIcon = await fetchPluginIcon(tool.pluginClass)
+} catch (e) {
+    console.warn(`Could not fetch plugin icon for ${tool.pluginClass}`, e)
+}
+
+const pluginParts = tool.pluginClass.split(".")
+const pluginDocsUrl =
+    pluginParts.length > 4 && pluginParts[3] === "ee"
+        ? `/plugins/plugin-ee-${pluginParts[4]}`
+        : pluginParts.length > 3
+          ? `/plugins/plugin-${pluginParts[3]}`
+          : null
+
+const toolKeyword = tool.name.toLowerCase().split(" ")[0]
+const allBlogs = await getCollection("blogs")
+const relatedBlogs = allBlogs
+    .filter(
+        (b) =>
+            b.id.toLowerCase().includes(toolKeyword) ||
+            b.data.title.toLowerCase().includes(toolKeyword),
+    )
+    .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .slice(0, 4)
+    .map((b) => ({
+        path: `/blogs/${b.id}`,
+        image: b.data.image,
+        title: b.data.title,
+        date: b.data.date.toISOString(),
+        category: b.data.category,
+    }))
+
+const hasCurated = (resources?.items ?? []).length > 0
+
+const competitorLogos: string[] = await Promise.all(
+    comparison.competitors.map(async (c) => {
+        if (c.logoAsset) {
+            return getVersusLogo(c.logoAsset)
+        }
+        if (c.pluginClass) {
+            try {
+                return await fetchPluginIcon(c.pluginClass)
+            } catch (e) {
+                console.warn(`Could not fetch logo for ${c.name}`, e)
+                return ""
+            }
+        }
+        return ""
+    }),
+)
+
+const quoteItems = quotes.map((q) => ({
+    quote: q.quote,
+    author: q.author,
+    storyLink: q.storyLink,
+    sourceUrl: q.sourceUrl,
+    sourceLabel: q.sourceLabel,
+    kpis: q.kpis,
+    smallLogoSvg: q.logoFile ? LOGO_MAP[q.logoFile] : undefined,
+}))
+
+const competitorKeys = comparison.competitors.map((_: any, i: number) => `comp${i}`)
+const comparisonTableData = comparison.rows.map((row) => {
+    const obj: Record<string, string> = {
+        feature: row.feature,
+        kestra: row.kestra,
+    }
+    row.values.forEach((v, i) => {
+        obj[`comp${i}`] = v
+    })
+    return obj
+})
+---
+
+<Layout title={title} description={description}>
+    <SchemaFAQ items={faq} slot="head" />
+
+    <Hero
+        title={hero.title}
+        description={hero.description}
+        cta={hero.cta}
+        secondaryCta={hero.secondaryCta}
+        toolName={tool.name}
+        toolIcon={pluginIcon}
+        toolColor={tool.color}
+    />
+
+    <OrchPattern
+        heading={blueprints.title}
+        nutshell={nutshell}
+        blueprints={blueprintItems}
+        toolColor={tool.color}
+    />
+
+    <CardGrid title={pillars.title} subtitle={pillars.subtitle} items={pillars.items} />
+
+    <section class="orch-usecases">
+        <div class="orch-usecases__head">
+            <h2>{useCases.title}</h2>
+            {useCases.subtitle && <p>{useCases.subtitle}</p>}
+        </div>
+        <div class="orch-usecases__container">
+            {
+                useCases.items.map((uc) => (
+                    <SplitBadgeCard
+                        badge={uc.badge}
+                        badgeIcon={uc.badgeIcon}
+                        title={uc.title}
+                        description={uc.description}
+                        items={uc.items}
+                        signal={uc.signal}
+                    >
+                        <UseCaseFlow slot="right" flow={uc.flow} />
+                    </SplitBadgeCard>
+                ))
+            }
+        </div>
+    </section>
+
+    <Quotes quotes={quoteItems} client:load />
+
+    <div class="orch-compare">
+        <FeatureGrid
+            featureGrid={{
+                title: comparison.title,
+                tableData: comparisonTableData,
+            }}
+            columns={competitorKeys}
+        >
+            <Fragment slot="firstCol">Capability</Fragment>
+            <Fragment slot="more">
+                {
+                    comparison.competitors.map((c, i) => (
+                        <th>
+                            <div class="th-competitor">
+                                {competitorLogos[i] && (
+                                    <div
+                                        class="th-logo"
+                                        set:html={competitorLogos[i]}
+                                        role="img"
+                                        aria-label={c.name}
+                                    />
+                                )}
+                                <span class="th-name">{c.name}</span>
+                            </div>
+                        </th>
+                    ))
+                }
+            </Fragment>
+            {
+                postCompareCta && (
+                    <Fragment slot="cta">
+                        <div class="post-compare">
+                            <div class="post-compare__text">
+                                {postCompareCta.eyebrow && (
+                                    <span class="post-compare__eyebrow">
+                                        {postCompareCta.eyebrow}
+                                    </span>
+                                )}
+                                <span class="post-compare__title">
+                                    {postCompareCta.title}
+                                </span>
+                                {postCompareCta.description && (
+                                    <p class="post-compare__lead">
+                                        {postCompareCta.description}
+                                    </p>
+                                )}
+                            </div>
+                            <a
+                                href={postCompareCta.cta.href}
+                                class="btn btn-secondary post-compare__cta"
+                            >
+                                {postCompareCta.cta.label}
+                                <Icon name="mdi:chevron-right" width={16} height={16} />
+                            </a>
+                        </div>
+                    </Fragment>
+                )
+            }
+        </FeatureGrid>
+    </div>
+
+    <Faq
+        items={faq}
+        title={`${tool.name} & Kestra: common questions`}
+        client:visible
+    />
+
+    {
+        (pluginDocsUrl || hasCurated || relatedBlogs.length > 0) && (
+            <section class="orch-resources">
+                <div class="container">
+                    <div class="orch-resources__grid">
+                        {pluginDocsUrl && (
+                            <aside class="docs-card">
+                                <span class="docs-card__eyebrow">
+                                    Documentation
+                                </span>
+                                <h3>
+                                    Wire {tool.name} into your workflows
+                                </h3>
+                                <p>
+                                    Every {tool.name} task, trigger, and
+                                    configuration option, with copy-ready
+                                    YAML examples.
+                                </p>
+                                <Link href={pluginDocsUrl}>
+                                    Explore the {tool.name} plugin docs
+                                </Link>
+                            </aside>
+                        )}
+                        <div class="blogs-card">
+                            {hasCurated ? (
+                                <ResourceList
+                                    items={resources!.items}
+                                    title={
+                                        resources!.title ??
+                                        `More on ${tool.name} and Kestra`
+                                    }
+                                />
+                            ) : (
+                                relatedBlogs.length > 0 && (
+                                    <BlogList
+                                        posts={relatedBlogs}
+                                        title={`Read more about ${tool.name} + Kestra`}
+                                    />
+                                )
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    <SeeHow
+        cta={seeHow.cta
+            ? { text: seeHow.cta.label, href: seeHow.cta.href }
+            : { text: "Book a Demo", href: "/demo" }}
+    >
+        <Fragment slot="title">{seeHow.title}</Fragment>
+        {seeHow.description}
+    </SeeHow>
+</Layout>
+
+<style lang="scss">
+    .orch-usecases {
+        width: 100%;
+        padding: 3rem 2rem;
+        background: var(--ks-background-primary)
+            url("~/assets/landing/infrastructure/grid.svg") no-repeat top;
+
+        @include media-breakpoint-down(md) {
+            padding: 1rem 0.75rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            padding: 5.4375rem 120px;
+        }
+
+        &__head {
+            max-width: 760px;
+            margin: 0 auto 3rem;
+            text-align: center;
+
+            h2 {
+                color: var(--ks-content-primary);
+                margin-bottom: 1rem;
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                font-size: $font-size-lg;
+                line-height: 1.6;
+                margin: 0;
+            }
+        }
+
+        &__container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+    }
+
+    .orch-compare {
+        :global(table) {
+            table-layout: auto !important;
+        }
+
+        :global(th),
+        :global(td) {
+            width: auto !important;
+            padding: 0.75rem 1rem !important;
+            height: auto !important;
+            font-size: $font-size-sm !important;
+            line-height: 1.45 !important;
+            vertical-align: top !important;
+        }
+
+        :global(th) {
+            padding-top: 1rem !important;
+            padding-bottom: 0.875rem !important;
+        }
+
+        :global(td:first-child),
+        :global(th:first-child) {
+            min-width: 11rem;
+            max-width: 14rem;
+        }
+
+        :global(.th-competitor) {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.375rem;
+        }
+
+        :global(.th-name) {
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            line-height: 1;
+        }
+
+        :global(.th-logo) {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            max-height: 40px;
+            max-width: 140px;
+            overflow: hidden;
+        }
+
+        :global(.th-logo svg) {
+            width: auto !important;
+            height: 32px !important;
+            max-width: 140px !important;
+            max-height: 32px !important;
+        }
+
+        :global(.check-icon) {
+            color: #22c55e !important;
+        }
+
+        :global(.post-compare) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-top: 1.75rem;
+            padding: 1.125rem 1.5rem;
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.625rem;
+            box-shadow: 2px 3px 12px 0 var(--ks-shadows-light);
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem 1.125rem;
+                gap: 0.875rem;
+            }
+        }
+
+        :global(.post-compare__text) {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        :global(.post-compare__eyebrow) {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ks-content-color-highlight);
+        }
+
+        :global(.post-compare__title) {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.35;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.post-compare__lead) {
+            margin: 0;
+            font-size: 0.8125rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        :global(.post-compare__cta) {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+    }
+
+    .orch-resources {
+        background: var(--ks-background-body);
+        padding: $rem-4 $rem-1;
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        &__grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            align-items: start;
+
+            @include media-breakpoint-up(md) {
+                grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+                gap: 3rem;
+            }
+        }
+
+        .docs-card {
+            position: relative;
+            padding: 1.75rem;
+            border-radius: 0.75rem;
+            border: $block-border;
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+
+            &::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                pointer-events: none;
+                background: radial-gradient(
+                    120% 80% at 100% 0%,
+                    color-mix(
+                        in srgb,
+                        var(--tool-color, var(--ks-content-color-highlight))
+                            18%,
+                        transparent
+                    ),
+                    transparent 60%
+                );
+                z-index: 0;
+            }
+
+            > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            &__eyebrow {
+                width: fit-content;
+                padding: 0.375rem 1.125rem;
+                border-radius: 2.5rem;
+                border: 1px solid var(--ks-border-active);
+                display: inline-flex;
+                align-items: center;
+                font-size: $font-size-xs;
+                color: var(--ks-content-color-highlight);
+            }
+
+            h3 {
+                margin: 0;
+                font-size: $font-size-lg;
+                font-weight: 600;
+                color: var(--ks-content-primary);
+                line-height: 1.3;
+            }
+
+            p {
+                margin: 0;
+                color: var(--ks-content-secondary);
+                font-size: $font-size-sm;
+                line-height: 1.55;
+            }
+        }
+    }
+
+</style>

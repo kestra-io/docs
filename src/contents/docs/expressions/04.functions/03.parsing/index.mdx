@@ -17,7 +17,7 @@ Parses a JSON string into an object so you can access its fields with dot or bra
 {{ fromJson('[1, 2, 3]')[0] }}
 ```
 
-Use `fromJson()` when a task output arrives as a serialized JSON string rather than a structured object. To go the other direction, use the [`toJson` filter](../03.filters/01.json/index.mdx#tojson).
+Use `fromJson()` when a task output arrives as a serialized JSON string rather than a structured object. To go the other direction, use the [`toJson` filter](../../03.filters/01.json/index.mdx#tojson).
 
 ## `fromIon()`
 
@@ -35,4 +35,4 @@ Parses a YAML string into an object so you can access its fields with dot or arr
 {{ yaml('foo: [666, 1, 2]').foo[0] }}
 ```
 
-`yaml()` is available both as a function and as a filter (`{{ value | yaml }}`). Use the function form when you are working with a raw YAML string literal or a variable containing YAML text. See the [`yaml` filter](../03.filters/05.yaml/index.mdx) for additional options including `indent` and `nindent` for template formatting.
+`yaml()` is available both as a function and as a filter (`{{ value | yaml }}`). Use the function form when you are working with a raw YAML string literal or a variable containing YAML text. See the [`yaml` filter](../../03.filters/05.yaml/index.mdx) for additional options including `indent` and `nindent` for template formatting.

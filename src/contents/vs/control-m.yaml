@@ -3,6 +3,8 @@ description: "Compare Kestra vs BMC Control-M: Open-source, developer-first orch
 competitorName: Control-M
 category: Infrastructure Automation
 shortDescription: "Proprietary enterprise job scheduling vs. open-source, developer-first orchestration in YAML."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond legacy batch scheduling."
 
 brandColor:
   color: "#00b2a9"

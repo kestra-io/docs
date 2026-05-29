@@ -48,7 +48,7 @@ While implementations vary, modern IT automation platforms share several key arc
 IT automation isn't just a theoretical concept; it solves concrete business problems every day. Here are a few examples:
 
 *   **Automated Incident Response:** When a monitoring tool like Prometheus detects a CPU spike, it can trigger a workflow. The platform automatically creates a Jira ticket, sends a notification to the on-call team in Slack, pulls diagnostic logs from the affected server, and presents all the information in one place.
-*   **Cloud Resource Provisioning:** A developer can request a new testing environment via a self-service portal. An automation platform orchestrates the entire process: running a Terraform plan to provision the VMs, configuring them with Ansible, updating DNS records, and notifying the developer once the environment is ready. Leading companies like BHP have used this approach to reduce provisioning times from months to days.
+*   **Cloud Resource Provisioning:** A developer can request a new testing environment via a self-service portal. An automation platform orchestrates the entire process: running a [Terraform plan](/orchestration/terraform) to provision the VMs, configuring them with [Ansible](/orchestration/ansible), updating [DNS records via Cloudflare](/orchestration/cloudflare), and notifying the developer once the environment is ready. Leading companies like BHP have used this approach to reduce provisioning times from months to days.
 *   **New Employee Onboarding:** When a new employee is added to an HR system, a workflow is triggered to create their accounts in Active Directory, Google Workspace, and Salesforce; assign them to the correct user groups; and ship a pre-configured laptop.
 
 These examples highlight how a central platform can coordinate actions across multiple, disparate systems to [automate infrastructure](https://kestra.io/docs/use-cases/infrastructure) and business processes, creating a cohesive [orchestration control plane](https://kestra.io/infra-automation).
@@ -79,11 +79,11 @@ AI is transforming IT automation from a set of pre-defined rules into an intelli
 
 An automation platform is only as powerful as the systems it can connect to. A comprehensive and extensible integration library is essential. Look for a platform with a large ecosystem of [hundreds of plugins](https://kestra.io/plugins) covering:
 
-*   **Cloud Providers:** AWS, Google Cloud, Azure.
-*   **Infrastructure Tools:** Terraform, Ansible, Kubernetes, Docker.
+*   **Cloud Providers:** [AWS](/orchestration/aws), Google Cloud, Azure.
+*   **Infrastructure Tools:** Terraform, Ansible, [Kubernetes](/orchestration/kubernetes), [Docker](/orchestration/docker).
 *   **Databases & Data Warehouses:** PostgreSQL, Snowflake, BigQuery, MySQL.
 *   **Messaging Systems:** Kafka, RabbitMQ, SQS, Google Pub/Sub.
-*   **ITSM & Collaboration:** ServiceNow, Jira, Slack, Microsoft Teams.
+*   **ITSM & Collaboration:** [ServiceNow](/orchestration/servicenow), Jira, [Slack](/orchestration/slack), Microsoft Teams.
 *   **SaaS Applications:** Salesforce, HubSpot, Stripe.
 
 The platform should also have a well-documented API and an SDK to allow for the development of custom integrations, ensuring it can adapt to your unique technology stack.
@@ -103,7 +103,7 @@ Choosing the right IT automation platform involves understanding the strengths a
 *   **Unified Platform:** Kestra bridges the gap between different domains. The same platform can orchestrate a Terraform deployment, run a dbt data transformation, and coordinate an AI agent workflow, eliminating tool sprawl.
 *   **Scalable and Enterprise-Ready:** Built on a robust JVM-based architecture, Kestra is designed for high-throughput workloads. The [Enterprise Edition](https://kestra.io/enterprise) adds features like RBAC, SSO, audit logs, and multi-tenancy for secure, governed automation at scale.
 
-Kestra is the right choice for organizations looking for a single, flexible platform to manage complex, cross-domain workflows with an engineering-first, code-adjacent approach. You can learn more about its philosophy in the [Why Kestra documentation](https://kestra.io/docs/why-kestra).
+Kestra is the right choice for organizations looking for a single, flexible platform to manage complex, cross-domain workflows with an engineering-first, code-adjacent approach — including [software providers and ISVs](/use-cases/software-providers) embedding orchestration into their own products. You can learn more about its philosophy in the [Why Kestra documentation](https://kestra.io/docs/why-kestra).
 
 ### UiPath: RPA and AI-Driven Transformation for Business Processes
 

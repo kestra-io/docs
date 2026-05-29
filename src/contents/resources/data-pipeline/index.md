@@ -100,7 +100,7 @@ Batch pipelines run on a fixed schedule — typically hourly, daily, or weekly. 
 
 ### Streaming Pipelines
 
-Streaming pipelines process data continuously, one record (or micro-batch) at a time, as it arrives. Latency drops from hours to seconds or milliseconds. Tools like Kafka, Flink, and Spark Streaming power this pattern. Use cases: fraud detection, real-time personalization, operational dashboards.
+Streaming pipelines process data continuously, one record (or micro-batch) at a time, as it arrives. Latency drops from hours to seconds or milliseconds. Tools like Kafka, Flink, and Spark Streaming power this pattern. Use cases: fraud detection, real-time personalization, operational dashboards, and [connected-vehicle data pipelines in the automotive industry](/use-cases/automotive).
 
 ### Event-Driven Pipelines
 

@@ -21,7 +21,7 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     )
         .filter(
             ([key]) =>
-                import.meta.env.DEV && key !== "upgrade-insecure-requests",
+                !import.meta.env.DEV || key !== "upgrade-insecure-requests",
         )
         .map(([key, value]) => {
             let line = key
@@ -59,7 +59,7 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     response.headers.set("content-security-policy", contentSecurityPolicy)
 
     if (!import.meta.env.DEV) {
-        response.headers.set("strict-transport-security", "max-age=15552000")
+        response.headers.set("strict-transport-security", "max-age=31536000")
     }
 
     return response
@@ -89,6 +89,11 @@ const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 
 export default {
     async fetch(request, env, ctx) {
+        // Serve static assets directly without middleware overhead
+        if (/\.[a-zA-Z0-9]+$/.test(new URL(request.url).pathname)) {
+            return handle(request, env, ctx)
+        }
+
         let response: Response | undefined = undefined
         function next() {
             if (response) {

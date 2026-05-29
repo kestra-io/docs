@@ -61,7 +61,7 @@ Every automated patching system follows the same five-stage cycle:
 
 ### 1. Discovery
 
-Inventory every managed endpoint — servers, workstations, network devices, VMs — along with their current patch state. Without this baseline, automation is flying blind. Modern discovery pulls from multiple sources: CMDB, cloud provider APIs, agent-based reporting, network scans.
+Inventory every managed endpoint — servers, workstations, network devices, VMs — along with their current patch state. Without this baseline, automation is flying blind. Modern discovery pulls from multiple sources: [NetBox device lists](/orchestration/netbox), [ServiceNow CMDB](/orchestration/servicenow), cloud provider APIs, agent-based reporting, network scans.
 
 ### 2. Assessment
 
@@ -134,7 +134,7 @@ errors:
     payload: '{"text": "🚨 Patch workflow failed — triggering rollback"}'
 ```
 
-Approval gates between rings, health checks at each stage, compliance evidence generated automatically, and failure handling built in. That's what "automated" looks like in practice — not fire-and-forget, but governed end-to-end.
+Approval gates between rings, health checks at each stage, compliance evidence generated automatically, and failure handling built in. That's what "automated" looks like in practice — not fire-and-forget, but governed end-to-end. Many teams reuse the same primitives for their broader [provisioning and deployment workflows](/use-cases/provisioning-and-deployment) and run patching inside their existing [CI/CD pipelines](/use-cases/ci-cd).
 
 ## Common Tools for Automated Patch Management
 
@@ -149,7 +149,7 @@ No single tool covers every OS, every environment, every compliance regime. Most
 | **Ansible** | Heterogeneous fleets | Any OS via modules | Script-based, needs orchestration on top |
 | **Tanium** | Security-focused large enterprise | Cross-platform | Expensive; heavy agent |
 
-The orchestration layer is what ties these tools together. Ansible handles the actual patching, Satellite owns the RHEL fleet, Intune owns the Windows estate — and a single orchestrator wraps them all in governed workflows with approvals, audit trails, and rollback logic.
+The orchestration layer is what ties these tools together. [Ansible](/orchestration/ansible) handles the actual patching, Satellite owns the RHEL fleet, Intune owns the Windows estate — and a single orchestrator wraps them all in governed workflows with approvals, audit trails, and rollback logic.
 
 ## Choosing a Patch Management Solution
 
@@ -168,7 +168,7 @@ No single tool is strong on all five, which is why orchestration across multiple
 Five practices that separate mature patching programs from theatrical ones:
 
 - **Automate the boring patches first** — security updates on internal tooling, non-critical dependencies. Extend to higher-stakes systems only once the process is stable.
-- **Use risk rings** — dev, staging, canary, production. Never deploy to production first, even for "safe" patches.
+- **Use risk rings** — dev, staging, canary, production. Never deploy to production first, even for "safe" patches. In virtualization estates, gate each ring with snapshot rollback — see Kestra patterns for [VMware](/orchestration/vmware), [Proxmox](/orchestration/proxmox), and [Nutanix AHV](/orchestration/nutanix).
 - **Build rollback into every workflow** — a patch that fails should undo itself automatically, not require a manual intervention at 3 a.m.
 - **Track mean time to patch** — the single best metric for patching program health. If MTTP is measured in weeks, automation isn't working yet.
 - **Integrate with ticketing** — exceptions and approvals should live in the ticketing system, not in email threads that get lost.

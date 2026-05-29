@@ -1,5 +1,5 @@
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs"
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
+import { isEntryAPluginElementPredicate } from "./plugin"
+import type { Plugin, PluginElement } from "./plugin"
 
 export type CardPlugin = {
     name: string
@@ -14,6 +14,8 @@ export type CardPlugin = {
     blueprints?: number
     isEnterprise?: boolean
     classes?: string
+    lastReleasedAt?: string
+    usageCount?: number
 }
 
 export function prunePluginsForCards(
@@ -44,6 +46,8 @@ export function prunePluginsForCards(
             blueprints: info.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
             classes,
+            lastReleasedAt: info.lastReleasedAt as string | undefined,
+            usageCount: info.usageCount as number | undefined,
         }
     })
 }

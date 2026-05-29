@@ -6,6 +6,7 @@ category: Solutions
 author:
   name: François Delbrayelle
   linkedin: https://www.linkedin.com/in/fdelbrayelle/
+  twitter: "@fdelbrayelle"
   image: fdelbrayelle
   role: Lead Software Engineer
 image: ./control-vmware-with-kestra.jpg

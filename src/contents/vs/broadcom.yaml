@@ -3,6 +3,8 @@ description: "Compare Kestra vs Broadcom Dollar Universe: declarative YAML workf
 competitorName: Broadcom Dollar Universe
 category: Infrastructure Automation
 shortDescription: "Proprietary UPROC-based enterprise workload automation vs. modern declarative YAML orchestration."
+seeHowTitle: "Modernize Beyond Legacy Batch Scheduling"
+seeHowBody: "See how Kestra replaces centralized job schedulers with developer-friendly, event-driven orchestration."
 
 brandColor:
   color: "#cc092f"

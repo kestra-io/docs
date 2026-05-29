@@ -28,11 +28,11 @@ The term covers several distinct technical domains. An orchestrator in one domai
 
 ### In data engineering and programming
 
-A data orchestrator coordinates the stages of a data pipeline — ingestion from sources, transformation into analytics-ready tables, loading into a warehouse — and manages the dependencies, schedules, and error handling across those stages. Kestra, Airflow, Dagster, and Prefect are the dominant data orchestrators in 2026. This is the most common usage in software engineering contexts. For the deep category guide, see [data orchestration](/resources/data/data-orchestration).
+A data orchestrator coordinates the stages of a data pipeline — ingestion from sources, transformation into analytics-ready tables (for example, [orchestrating dbt Core](/orchestration/dbt-core) or [dbt Cloud](/orchestration/dbt-cloud)), loading into a warehouse — and manages the dependencies, schedules, and error handling across those stages. Kestra, Airflow, Dagster, and Prefect are the dominant data orchestrators in 2026. This is the most common usage in software engineering contexts. For the deep category guide, see [data orchestration](/resources/data/data-orchestration).
 
 ### In infrastructure and DevOps
 
-An infrastructure orchestrator coordinates provisioning (creating cloud resources), configuration management (enforcing state on existing systems), CI/CD pipelines, and operational workflows (runbooks, incident response). The same tools sometimes cover both data and infrastructure orchestration — Kestra, Rundeck, Ansible Automation Platform are examples. For the category breakdown, see the [infrastructure automation page](/infra-automation).
+An infrastructure orchestrator coordinates [provisioning with Terraform](/orchestration/terraform), [configuration management with Ansible](/orchestration/ansible), [CI/CD pipelines via GitHub Actions](/orchestration/github-actions), and operational workflows (runbooks, incident response). The same tools sometimes cover both data and infrastructure orchestration — Kestra, Rundeck, Ansible Automation Platform are examples. For the category breakdown, see the [infrastructure automation page](/infra-automation), or explore Kestra's [orchestration hub](/orchestration) covering 20+ infrastructure and data integrations.
 
 ### In AI and machine learning
 
@@ -40,7 +40,7 @@ An AI orchestrator coordinates the components of an AI system — retrieval, emb
 
 ### In container and cloud systems
 
-Container orchestrators (Kubernetes, Nomad, Amazon ECS) manage the lifecycle of containerized applications — scheduling containers across nodes, scaling replicas, recovering from failures. Cloud orchestrators (AWS Step Functions, Azure Logic Apps) coordinate cloud service calls into workflows. These are related to but distinct from workflow orchestration — they handle the runtime infrastructure rather than the workflow logic.
+Container orchestrators (Kubernetes, Nomad, Amazon ECS) manage the lifecycle of containerized applications — scheduling containers across nodes, scaling replicas, recovering from failures. Cloud orchestrators (AWS Step Functions, Azure Logic Apps) coordinate cloud service calls into workflows. These are related to but distinct from workflow orchestration — they handle the runtime infrastructure rather than the workflow logic. For the workflow-logic side of that boundary, see Kestra's [microservices orchestration use cases](/use-cases/microservices-orchestration).
 
 ## What Does a Technology Orchestrator Actually Do?
 
@@ -50,7 +50,7 @@ Across all tech domains, orchestrators provide five core capabilities. A tool th
 - **Dependencies.** Explicit task ordering. A transformation can't run before its ingestion completes; a deploy can't run before the build succeeds. Dependencies turn a list of tasks into a coordinated workflow.
 - **Retries and error handling.** Networks blip, APIs rate-limit, source systems go down. Automatic retries with backoff, configurable timeouts, and clear error handlers turn transient failures into non-events.
 - **Observability.** Execution logs, per-task metrics, SLA tracking, lineage across systems. Answering "what broke?" in minutes instead of hours requires observability built in.
-- **Versioning and governance.** Workflow definitions live in Git, deploy through pull requests, and are subject to the same review discipline as application code. Role-based access, audit trails, and namespace isolation support multi-team usage.
+- **Versioning and governance.** Workflow definitions [live in Git](/orchestration/git), deploy through pull requests, and are subject to the same review discipline as application code. Role-based access, audit trails, and namespace isolation support multi-team usage.
 
 These capabilities are what separate a production orchestrator from a scripting tool. Cron can run a job on a schedule; it can't handle the other four. That's why teams outgrow cron within their first few dozen workflows.
 

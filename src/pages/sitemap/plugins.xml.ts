@@ -9,9 +9,9 @@ import {
     filterPluginsWithoutDeprecated,
     type Plugin,
     type PluginElement,
-} from "@kestra-io/ui-libs"
+} from "~/utils/plugins/plugin"
 import { $fetchApiCached } from "~/utils/fetch.ts"
-import { slugify } from "@kestra-io/ui-libs/src/utils/url.ts"
+import { slugify } from "~/utils/slugify"
 
 export const GET: APIRoute = async () => {
     const allPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)

@@ -5,9 +5,10 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Snippets from "~/components/common/Snippets.vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -38,9 +39,9 @@ const HERO_TAGS = [
     { label: "Connected-vehicle scale", icon: "mdi:car-connected" },
 ]
 
-const title = "Kestra for Automotive & Manufacturing"
+const title = "Automotive & Manufacturing Workflow Orchestration"
 const description =
-    "Kestra connects the shop floor, the PLM, the dealer network, and the connected fleet. Automakers and suppliers use it to orchestrate quality, warranty, recall, engineering release, and telemetry workflows — without ripping out MES, SAP, or Teamcenter, and with IATF-grade audit evidence."
+    "Workflow orchestration for automotive manufacturers and suppliers. Automate quality, warranty, recall, and connected-vehicle telemetry across MES, SAP, and Teamcenter."
 
 const FLOW_STAGES = [
     {
@@ -452,11 +453,30 @@ const FAQ = [
         question: "Is Kestra open source, and what does the licensing model look like?",
         answer: "Kestra is Apache 2.0. Enterprise Edition adds SSO, RBAC, multi-tenancy, worker groups, advanced audit, and 24x7 support. Start with OSS. Upgrade when you need enterprise governance.",
     },
+    {
+        question: "What workflow automation tools do automotive manufacturers typically use?",
+        answer: `Automotive IT teams commonly rely on SAP scheduling, <a href="/vs/ibm-workload-automation">IBM Workload Automation</a>, <a href="/vs/broadcom">Automic</a>, or homegrown scripts tied to MES and PLM systems. Kestra replaces them on one engine — orchestrating shop-floor data collection, Teamcenter and SAP integrations, quality workflows, warranty and recall pipelines, and connected-vehicle telemetry jobs, with IATF-grade audit evidence and Kubernetes-native scaling.`,
+    },
+    {
+        question: "How does Kestra compare to IBM Workload Automation or Automic for automotive manufacturing?",
+        answer: `<a href="/vs/ibm-workload-automation">IBM Workload Automation</a> and <a href="/vs/broadcom">Automic</a> require proprietary agents and vendor-specific configuration, and are designed for batch. Kestra is open-source, container-native, and event-driven. It handles the same batch scheduling plus real-time event-driven flows from CAN bus, telematics, or MES systems — with YAML-backed flows in Git, native Kubernetes workers, and API-first architecture that integrates with your PLM, DMS, and ERP systems without custom middleware.`,
+    },
+    {
+        question: "Can Kestra orchestrate connected-vehicle and IoT data pipelines?",
+        answer: "Yes. Kestra handles real-time telemetry ingestion from vehicle fleets, MQTT and Kafka event streams, OTA update pipelines, and fleet monitoring workflows. Workers scale horizontally on Kubernetes to process high-volume vehicle data. The same declarative YAML model covers both the edge data ingestion and the downstream analytics, alerting, and CRM update workflows.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Automotive and Manufacturing Workflow Orchestration"
+        audienceType="Automotive Manufacturers, Tier-1 Suppliers, and Manufacturing Operations Teams"
+        description={description}
+    />
     <div class="automotive">
 
         <section class="hero">
@@ -468,8 +488,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    Kestra connects the shop floor,<br />
-                    <span class="gradient">the dealer, and the connected fleet.</span>
+                    Workflow orchestration for automotive<br />
+                    <span class="gradient">manufacturing and connected vehicles.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
@@ -552,7 +572,9 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Used by automotive, mobility, and manufacturing teams</span>
                     <div class="hero-logos__row">
-                        <Image src={QuadisLogoImg} alt="Quadis" class="hero-logos__item" />
+                        <a href="/use-cases/stories/quadis-drives-innovation-transforming-car-retail-operations-with-kestra" aria-label="Read the Quadis customer story">
+                            <Image src={QuadisLogoImg} alt="Quadis" class="hero-logos__item" />
+                        </a>
                         <Image src={RenaultLogoImg} alt="Renault" class="hero-logos__item" />
                         <Image src={MichelinLogoImg} alt="Michelin" class="hero-logos__item" />
                         <Image src={XiaomiLogoImg} alt="Xiaomi" class="hero-logos__item" />
@@ -564,7 +586,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                    How <span class="highlight">automotive workflow orchestration</span> connects plant, PLM, and dealer.
                 </h2>
                 <p class="flow__lead">
                     Plant event, quality defect, warranty claim, supplier feed, engineering release, or vehicle telemetry. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture evidence.
@@ -604,7 +626,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>Every critical workflow in automotive and manufacturing.</h2>
+                    <h2>Workflow automation use cases in automotive manufacturing.</h2>
                     <p>Manufacturing and quality, warranty and aftersales, engineering and supplier, data and platform operations. One engine runs them all.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -629,7 +651,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    <span class="highlight">Enterprise-Grade</span> Orchestration from Plant to Cloud.
+                    Automotive orchestration requirements: <span class="highlight">IATF, ASPICE, and audit evidence</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -641,51 +663,11 @@ const FAQ = [
             </div>
         </section>
 
-        <section class="build">
-            <div class="container">
-                <h2><span class="highlight">Blueprints</span> for automotive and manufacturing.</h2>
-                <p class="build__lead">Production workflows, from quality response to OTA rollout. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="header row g-0">
-                            {BUILD_TABS.map((tab, idx) => (
-                                <div
-                                    class:list={[
-                                        "col-6 col-md-4 header-tab",
-                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
-                                    ]}
-                                    data-tab-target={idx}
-                                >
-                                    {tab.name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {BUILD_TABS.map((tab, idx) => (
-                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
-                                <div class="panel panel-1">
-                                    <Snippets client:idle code={tab.code} lang="yaml" />
-                                </div>
-                                <div class="panel panel-2">
-                                    <h3 data-usal="fade-r">{tab.title}</h3>
-                                    <p data-usal="fade-l">{tab.description}</p>
-                                    <div class="plugins" data-usal="zoomin">
-                                        {tab.plugins.map(plugin => (
-                                            <div class="plugin-icon">
-                                                <TaskIcon cls={plugin.cls} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link class="goto" href={tab.href} data-usal="fade-r">
-                                        Explore Blueprints
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+        <BlueprintTabs
+            title={`Automotive workflow automation <span class="highlight">examples and blueprints</span>.`}
+            lead="Production workflows, from quality response to OTA rollout. Copy the YAML. Wire it to your stack. Ship it through your CI."
+            items={BUILD_TABS.map((t) => ({ ...t, plugins: t.plugins.map((p) => p.cls) }))}
+        />
 
         <GoFurther />
 
@@ -721,15 +703,22 @@ const FAQ = [
     :global(html.dark) .automotive {
         .flow,
         .workloads,
-        .build,
         .enterprise {
             background: #1C1C20;
         }
         :global(section.quotes-wrapper),
         :global(section.plugin-block),
-        :global(.see) {
+        :global(.see),
+        :global(.blueprint-tabs) {
             background: #1C1C20;
         }
+    }
+
+    :global(.blueprint-tabs h2 .highlight) {
+        background: linear-gradient(90deg, #{$au-red}, #{$au-red-bright});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero {
@@ -1404,171 +1393,6 @@ const FAQ = [
         }
     }
 
-    .build {
-        padding: 3rem 0 4.5rem;
-        background: var(--ks-background-primary);
-        border-bottom: $block-border;
-
-        .container {
-            max-width: 73.75rem;
-            margin: 0 auto;
-            padding-inline: 0;
-
-            h2 {
-                margin-bottom: 1rem;
-                padding-inline: $rem-1;
-                text-align: center;
-
-                .highlight { color: $au-red; }
-
-                @include media-breakpoint-up(xl) { padding-inline: 0; }
-            }
-
-            .wrapper {
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-                border-radius: 13px;
-
-                @include media-breakpoint-down(xl) { border-radius: 0; }
-
-                .inner {
-                    border-radius: $rem-1;
-                    background: var(--ks-background-primary-inverse);
-                    overflow: clip;
-
-                    @include media-breakpoint-down(xxl) { border-radius: 0; }
-
-                    .header {
-                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
-
-                        & > div {
-                            padding: 1.1875rem $rem-2;
-                            font-size: $font-size-md;
-                            color: var(--ks-content-secondary-inverse);
-                            text-align: center;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-
-                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
-
-                            &.active {
-                                background: var(--ks-background-secondary-inverse);
-                                border-bottom: 1px solid var(--ks-border-active);
-                                color: var(--ks-content-primary-inverse);
-                                font-weight: 600;
-                            }
-                        }
-
-                        & .middle-part {
-                            border-left: 1px solid var(--ks-border-primary-inverse);
-                            border-right: 1px solid var(--ks-border-primary-inverse);
-                        }
-                    }
-
-                    .content {
-                        display: none;
-                        flex-direction: row;
-                        gap: $rem-2;
-                        padding: $rem-2;
-                        justify-content: center;
-
-                        &.active { display: flex; }
-
-                        @include media-breakpoint-down(xl) {
-                            flex-direction: column;
-                            align-items: center;
-                        }
-
-                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
-
-                        .panel {
-                            border-radius: 0.5rem;
-                            flex-shrink: 0;
-
-                            &.panel-1 {
-                                width: 39.4375rem;
-
-                                @include media-breakpoint-down(xl) { width: 100%; }
-
-                                :global(.code-card) {
-                                    border: 1px solid var(--ks-border-secondary-inverse);
-                                    background: var(--ks-background-input);
-                                    height: 100%;
-
-                                    :global(.code-inner) { transition: max-height 0.3s ease; }
-                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
-
-                                    &:global(:not(.is-expanded)) {
-                                        :global(.code-inner) { max-height: 27.9375rem !important; }
-                                    }
-                                }
-                            }
-
-                            &.panel-2 {
-                                position: relative;
-                                padding-top: $rem-2;
-                                color: var(--ks-content-primary-inverse);
-                                width: 27.5625rem;
-
-                                @include media-breakpoint-down(xl) {
-                                    width: 100%;
-                                    padding-top: 0;
-                                }
-
-                                p {
-                                    font-size: $font-size-lg;
-                                    margin-top: $rem-1;
-                                    margin-bottom: $rem-2;
-                                }
-
-                                .plugins {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    flex-wrap: wrap;
-
-                                    .plugin-icon {
-                                        width: 2.125rem;
-                                        height: 2.125rem;
-                                        padding: 0.375rem;
-                                        background: $white;
-                                        border: $block-border;
-                                        border-radius: $border-radius;
-                                    }
-                                }
-
-                                .goto {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    color: var(--ks-content-link-inverse);
-                                    font-weight: 600;
-
-                                    @include media-breakpoint-down(xl) {
-                                        position: relative;
-                                        margin-top: $rem-3;
-                                        float: right;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &__lead {
-            text-align: center;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            margin: 0 auto $rem-2;
-            max-width: 44rem;
-            padding-inline: $rem-1;
-        }
-    }
-
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1586,7 +1410,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $au-red-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$au-red-bright}, #{$au-red-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
@@ -1622,22 +1451,3 @@ const FAQ = [
     }
 </style>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        for (const container of document.querySelectorAll(".build .inner")) {
-            container.addEventListener("click", (e) => {
-                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
-                const target = tab && (container as Element).querySelector(
-                    `[data-tab-content="${tab.dataset.tabTarget}"]`
-                )
-                if (!target) return
-
-                for (const el of container.querySelectorAll(".header-tab, .content")) {
-                    el.classList.remove("active")
-                }
-                tab.classList.add("active")
-                target.classList.add("active")
-            })
-        }
-    })
-</script>

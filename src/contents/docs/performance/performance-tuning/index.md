@@ -112,7 +112,8 @@ However, if you process a lot of big executions, increasing it can incur an incr
 ```yaml
 kestra:
   kafka:
-    stream:
-      properties:
-        num.stream.threads: 4 # Default to 1
+    defaults:
+      stream:
+        properties:
+          num.stream.threads: 4 # Default to 1
 ```
