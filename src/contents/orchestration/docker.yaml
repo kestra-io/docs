@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace Jenkinsfile glue with a workflow engine that builds, Trivy-scans, Cosign-signs, and promotes the same sha256 digest from staging to prod, and chains Docker with <a href='/orchestration/kubernetes'>Kubernetes</a>, <a href='/orchestration/argocd'>Argo CD</a>, and short-lived ECR/GAR/ACR tokens in one audited flow. Never rebuild between envs; drop long-lived registry passwords from CI vars."
+
 pillars:
   title: "Around every docker build, every digest, every stack."
   subtitle: "What Kestra wraps around your Docker pipelines: how images get signed, how a single sha256 digest travels from staging to prod, how Compose stacks come up for tests and tear down on every exit path, and where the audit lives."
@@ -180,9 +182,31 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your registry, ship it."
   items:
     - name: "Build, scan, sign, push"
+      blueprintId: "docker-build-scan-sign-push"
       title: "Supply-chain: Build, Trivy scan, Cosign sign, push the signed digest"
       description: "Builds the image, runs Trivy, signs the digest with Cosign keyless via Sigstore OIDC (or a stored key), then pushes the image and the <code>.sig</code> reference. The exact digest is logged for the downstream deploy step to verify."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Git tag webhook"
+          sublabel: "release vX.Y.Z"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Build, scan, sign, push"
+          sublabel: "digest is the artifact"
+        tools:
+          - label: "docker.Build"
+            pluginClass: "io.kestra.plugin.docker.Build"
+          - label: "Trivy scan"
+            pluginClass: "io.kestra.plugin.trivy.cli.TrivyCLI"
+          - label: "Cosign sign"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "docker.Push"
+            pluginClass: "io.kestra.plugin.docker.Push"
+        outcome:
+          label: "Signed digest shipped"
+          sublabel: "verifiable downstream"
+          icon: "mdi:certificate-outline"
       plugins:
         - "io.kestra.plugin.docker.Build"
         - "io.kestra.plugin.trivy.cli.TrivyCLI"
@@ -243,9 +267,31 @@ blueprints:
                 "text": ":lock: Signed and pushed {{ inputs.image_name }}:{{ inputs.version }} (digest: {{ outputs.build.imageId }})"
               }
     - name: "Digest-pinned promotion"
+      blueprintId: "docker-digest-promotion"
       title: "Promote the same sha256 digest from staging to prod"
       description: "Builds once, pushes to staging, runs smoke tests against the staging digest, pauses for a named reviewer, then retags the exact same digest for prod and pushes. The artifact that was tested is the artifact that ships."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Tag webhook"
+          sublabel: "vX.Y.Z"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Digest-pinned promotion"
+          sublabel: "never rebuild between envs"
+        tools:
+          - label: "docker.Build"
+            pluginClass: "io.kestra.plugin.docker.Build"
+          - label: "Push staging"
+            pluginClass: "io.kestra.plugin.docker.Push"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "Push prod"
+            pluginClass: "io.kestra.plugin.docker.Push"
+        outcome:
+          label: "Same digest in prod"
+          sublabel: "tested = shipped"
+          icon: "mdi:source-pull"
       plugins:
         - "io.kestra.plugin.docker.Build"
         - "io.kestra.plugin.docker.Push"
@@ -308,9 +354,31 @@ blueprints:
             tags:
               - "prod.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
     - name: "Compose ephemeral test environment"
+      blueprintId: "docker-compose-ephemeral-test"
       title: "Bring up a Compose stack for integration tests, tear down on every exit"
       description: "<code>docker.Compose</code> starts the app + Postgres + Redis stack from an inline Compose file. Tests run against the live stack. The <code>errors</code> branch always runs <code>compose down -v</code> so volumes and containers never leak, even on test failure or timeout."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "PR webhook"
+          sublabel: "integration tests"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Ephemeral test stack"
+          sublabel: "guaranteed teardown"
+        tools:
+          - label: "compose up"
+            pluginClass: "io.kestra.plugin.docker.Compose"
+          - label: "HTTP probe"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "Run tests"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "compose down -v"
+            pluginClass: "io.kestra.plugin.docker.Compose"
+        outcome:
+          label: "Tests done, stack gone"
+          sublabel: "no leaked volumes"
+          icon: "mdi:layers-triple-outline"
       plugins:
         - "io.kestra.plugin.docker.Compose"
         - "io.kestra.plugin.core.http.Request"

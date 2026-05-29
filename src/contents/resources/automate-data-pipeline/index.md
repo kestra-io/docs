@@ -148,7 +148,7 @@ The three primary stages of a data pipeline are:
 
 ### Data ingestion and collection
 
-This initial stage involves connecting to data sources and extracting data. Sources can be incredibly diverse, including relational databases, NoSQL databases, SaaS application APIs, message queues like Kafka, and files in cloud storage like S3 or GCS. The goal is to move this raw data into a staging area where it can be processed. Tools like Airbyte or Fivetran, often orchestrated as part of a larger workflow, excel at this stage.
+This initial stage involves connecting to data sources and extracting data. Sources can be incredibly diverse, including relational databases, NoSQL databases, SaaS application APIs, message queues like Kafka, and files in cloud storage like [Amazon S3](/orchestration/aws) or GCS. The goal is to move this raw data into a staging area where it can be processed. Tools like Airbyte or Fivetran, often orchestrated as part of a larger workflow, excel at this stage.
 
 ### Data transformation and processing
 
@@ -159,7 +159,7 @@ Once ingested, the raw data is rarely in a usable format. The transformation sta
 *   **Structuring:** Converting data from formats like JSON or XML into a tabular structure.
 *   **Aggregating:** Summarizing data to create metrics and KPIs.
 
-Tools like dbt (for SQL-based transformations) and Spark (for large-scale data processing) are commonly used here. An orchestration tool can seamlessly chain ingestion and transformation steps, for example, by running an [Airbyte sync followed by a dbt transformation](/blueprints/airbyte-sync-parallel-with-dbt).
+Tools like dbt — orchestrated as [dbt Core](/orchestration/dbt-core) or [dbt Cloud](/orchestration/dbt-cloud) — and Spark (for large-scale data processing) are commonly used here. An orchestration tool can seamlessly chain ingestion and transformation steps, for example, by running an [Airbyte sync followed by a dbt transformation](/blueprints/airbyte-sync-parallel-with-dbt).
 
 ### Data loading and storage
 

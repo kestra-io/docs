@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace Nutanix Self-Service (Calm) and X-Play with a workflow engine that listens to schedules or migration waves, handles crash- or app-consistent recovery points with cross-cluster DR replication, and chains AHV with <a href='/orchestration/vmware'>VMware</a>, <a href='/orchestration/ansible'>Ansible</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the Calm catalog license; cut VMware-to-AHV cutover risk to per-VM waves with rollback."
+
 pillars:
   title: "Around every AHV operation, across every cluster."
   subtitle: "What Kestra wraps around your Nutanix clusters: how migrations from VMware land in waves, what gets a recovery point first, who approves an LCM upgrade, and where the audit lives. Prism Central and your AHV hosts stay in place. The Calm / Self-Service catalog gets replaced."
@@ -186,9 +188,31 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Prism Central, ship it."
   items:
     - name: "Safe patching with rollback"
+      blueprintId: "nutanix-safe-patching-workflow"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Provisions an AHV VM and creates a pre-patch recovery point through the v4 dataprotection API. Runs the OS update over SSH, waits for reboot, probes a health endpoint. The <code>errors</code> branch restores the recovery point and notifies Slack. Shipped as a working blueprint in the Kestra catalog."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Patch window"
+          sublabel: "scheduled or ad-hoc"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Safe patching with rollback"
+          sublabel: "recovery point first"
+        tools:
+          - label: "ahv.CreateVm"
+            pluginClass: "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
+          - label: "Recovery point"
+            pluginClass: "io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot"
+          - label: "SSH patch"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "Rollback on fail"
+            pluginClass: "io.kestra.plugin.ee.nutanix.snapshot.RestoreVmSnapshot"
+        outcome:
+          label: "Patched + audited"
+          sublabel: "snapshotExtId per execution"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
         - "io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot"
@@ -263,9 +287,31 @@ blueprints:
               host: "{{ secret('NUTANIX_HOST') }}"
               token: "{{ secret('NUTANIX_TOKEN') }}"
     - name: "VMware-to-AHV wave migration"
+      blueprintId: "nutanix-vmware-ahv-migration"
       title: "Coordinate a Nutanix Move wave: readiness check, gate, cutover, AHV start"
       description: "Drives Nutanix Move through the v2 REST API for one wave of VMs. Polls workload state until 5 (ready for cutover), pauses for a named approver, then issues the per-VM cutover action and powers the new AHV VM on. The vCenter source stays live until cutover succeeds."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Wave trigger"
+          sublabel: "manual or schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "VMware to AHV wave"
+          sublabel: "state 5, then cutover"
+        tools:
+          - label: "Move plan API"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "Cutover loop"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "ahv.StartVm"
+            pluginClass: "io.kestra.plugin.ee.nutanix.ahv.StartVm"
+        outcome:
+          label: "Wave on AHV"
+          sublabel: "vCenter source still live"
+          icon: "mdi:swap-horizontal-circle-outline"
       plugins:
         - "io.kestra.plugin.core.http.Request"
         - "io.kestra.plugin.core.flow.Pause"
@@ -344,9 +390,31 @@ blueprints:
               host: "{{ secret('NUTANIX_HOST') }}"
               token: "{{ secret('NUTANIX_TOKEN') }}"
     - name: "Inventory and chargeback report"
+      blueprintId: "nutanix-inventory-chargeback"
       title: "Weekly chargeback report from Prism Central inventory"
       description: "Pulls VM inventory through <code>ListVms</code> with an OData filter, aggregates vCPU and memory by Category in Python, posts the summary to Slack, and appends a row to a Google Sheet. Flags any VM that lacks the expected owner Category."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Weekly cron"
+          sublabel: "Monday 9am"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Chargeback report"
+          sublabel: "by Category"
+        tools:
+          - label: "ahv.ListVms"
+            pluginClass: "io.kestra.plugin.ee.nutanix.ahv.ListVms"
+          - label: "Aggregate Python"
+            pluginClass: "io.kestra.plugin.scripts.python.Script"
+          - label: "Slack summary"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+          - label: "Google Sheets"
+            pluginClass: "io.kestra.plugin.googleworkspace.sheets.AppendValues"
+        outcome:
+          label: "Per-department report"
+          sublabel: "untagged VMs flagged"
+          icon: "mdi:filter-variant"
       plugins:
         - "io.kestra.plugin.ee.nutanix.ahv.ListVms"
         - "io.kestra.plugin.scripts.python.Script"
@@ -486,6 +554,14 @@ comparison:
         - "Nutanix-centric"
         - "Multi-cloud (proprietary connectors)"
         - "Ansible-centric, broad collections"
+
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs HPE Morpheus"
+  description: "Side-by-side breakdown across HCI day-2 ops, self-service catalogs, multi-cloud reach, and cross-stack orchestration."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/morpheus"
 
 faq:
   - question: "Does Kestra replace AHV or Prism Central?"

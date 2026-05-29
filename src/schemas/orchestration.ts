@@ -24,6 +24,23 @@ const pillarsSchema = z.object({
     items: z.array(pillarSchema),
 })
 
+const flowNodeSchema = z.object({
+    label: z.string(),
+    sublabel: z.string().optional(),
+    pluginClass: z.string().optional(),
+    icon: z.string().optional(),
+})
+
+const flowDiagramSchema = z.object({
+    source: flowNodeSchema,
+    workflow: z.object({
+        label: z.string(),
+        sublabel: z.string().optional(),
+    }),
+    tools: z.array(flowNodeSchema).min(2).max(5),
+    outcome: flowNodeSchema,
+})
+
 const useCaseStepSchema = z.object({
     node: z.string(),
     label: z.string().optional(),
@@ -77,6 +94,9 @@ const blueprintSchema = z.object({
     code: z.string(),
     plugins: z.array(z.string()),
     href: z.string().optional(),
+    flowDiagram: flowDiagramSchema.optional(),
+    blueprintId: z.string().optional(),
+    blueprintPlaceholder: z.boolean().optional(),
 })
 
 const blueprintsSchema = z.object({
@@ -102,6 +122,13 @@ const comparisonSchema = z.object({
     subtitle: z.string().optional(),
     competitors: z.array(competitorSchema),
     rows: z.array(comparisonRowSchema),
+})
+
+const postCompareCtaSchema = z.object({
+    eyebrow: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
+    cta: ctaSchema,
 })
 
 const faqItemSchema = z.object({
@@ -146,11 +173,13 @@ export const orchestrationSchema = z.object({
         color: z.string().optional(),
     }),
     hero: heroSchema,
+    nutshell: z.string().optional(),
     pillars: pillarsSchema,
     useCases: useCasesSchema,
     quotes: z.array(quoteSchema),
     blueprints: blueprintsSchema,
     comparison: comparisonSchema,
+    postCompareCta: postCompareCtaSchema.optional(),
     faq: z.array(faqItemSchema),
     seeHow: seeHowSchema,
     resources: resourcesSchema.optional(),

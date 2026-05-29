@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace Atlantis and jump-box cron jobs with a workflow engine that listens to cron or Git pushes, handles scheduled drift detection and approval gates between plan and apply, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/argocd'>Argo CD</a>, and Terraform in one audited flow. Catch drift inside an hour instead of the next quarterly audit; state stays in your existing backend."
+
 pillars:
   title: "From plan to apply, end to end."
   subtitle: "Terraform solves reproducibility. Kestra solves the operational layer around it: when runs happen, who approves them, what runs next, and where the audit lives."
@@ -241,9 +243,29 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your state backend, ship it."
   items:
     - name: "Scheduled drift detection"
+      blueprintId: "terraform-drift-detection"
       title: "Scheduled drift detection"
       description: "Runs <code>terraform plan</code> hourly with <code>-detailed-exitcode</code>. If exit code 2 (changes detected), Kestra captures the full plan output and posts a Slack alert with a link to the execution. Replayable per run, no cron job on a jump box."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Hourly schedule"
+          sublabel: "cron 0 * * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Drift detection"
+          sublabel: "exit code 2 = drift"
+        tools:
+          - label: "terraform plan"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "If branch"
+            pluginClass: "io.kestra.plugin.core.flow.If"
+          - label: "Slack alert"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Drift surfaced"
+          sublabel: "plan attached per run"
+          icon: "mdi:magnify-scan"
       plugins:
         - "io.kestra.plugin.terraform.cli.TerraformCLI"
         - "io.kestra.plugin.core.trigger.Schedule"
@@ -285,9 +307,31 @@ blueprints:
                     "text": ":warning: Drift detected in production infrastructure. <{{ execution.url }}|View execution>"
                   }
     - name: "Approval gate between plan and apply"
+      blueprintId: "terraform-approval-plan-apply"
       title: "Approval gate between plan and apply"
       description: "Runs <code>terraform plan</code>, pauses the flow on the plan output, waits for a named reviewer, then runs <code>terraform apply</code> against the same plan. The reviewer identity and timestamp are logged automatically. Retries the apply step on transient failure."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Webhook or schedule"
+          sublabel: "PR merge, on-demand"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Plan, gate, apply"
+          sublabel: "named reviewer logged"
+        tools:
+          - label: "terraform plan"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "terraform apply"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "Audit log"
+            pluginClass: "io.kestra.plugin.core.log.Log"
+        outcome:
+          label: "Applied + audited"
+          sublabel: "approver + timestamp"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.terraform.cli.TerraformCLI"
         - "io.kestra.plugin.core.flow.Pause"
@@ -338,9 +382,31 @@ blueprints:
             type: io.kestra.plugin.core.log.Log
             message: "Applied to {{ inputs.environment }} at {{ execution.startDate }} by {{ execution.namespace }}."
     - name: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      blueprintId: "terraform-ansible-argocd-chain"
       title: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
       description: "<code>terraform apply</code> provisions the VM and writes the private IP to a task artifact. <code>ansible-playbook</code> configures the app using that IP, with per-step retries. <code>argocd app sync</code> ships the deployment. Slack confirms when all three steps succeed."
       href: "/blueprints"
+      flowDiagram:
+        source:
+          label: "Release trigger"
+          sublabel: "on-demand or schedule"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Provision, configure, deploy"
+          sublabel: "outputs flow forward"
+        tools:
+          - label: "terraform apply"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "ansible-playbook"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "argocd sync"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "Slack confirm"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "VM live + deployed"
+          sublabel: "IP, hostname, app URL"
+          icon: "mdi:rocket-launch-outline"
       plugins:
         - "io.kestra.plugin.terraform.cli.TerraformCLI"
         - "io.kestra.plugin.ansible.cli.AnsibleCLI"

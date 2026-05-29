@@ -110,7 +110,7 @@ const faqItems = [
     description="One orchestrator across infrastructure and data: Terraform, Ansible, VMware, Nutanix, Proxmox, Docker, Argo CD, dbt Cloud, and dbt Core. Event-driven, declarative, self-hosted."
 >
     <section class="header-container">
-        <div class="header container">
+        <div class="orch-hero container">
             <div class="hero-logos">
                 <div class="hero-picto ks" set:html={kestraIcon} />
                 <div class="hero-plus" aria-hidden="true">
@@ -146,11 +146,21 @@ const faqItems = [
                 </div>
             </div>
             <h1>
-                Orchestrate <span
-                    id="hero-name"
-                    style={`color: ${entries[0].color}`}
-                    >{entries[0].toolName}</span
-                > with Kestra
+                Orchestrate <span class="rotator" id="hero-rotator">
+                    {
+                        entries.map((entry, i) => (
+                            <span
+                                class:list={[
+                                    "rotator-item",
+                                    { active: i === 0 },
+                                ]}
+                                style={`color: ${entry.color}`}
+                            >
+                                {entry.toolName}
+                            </span>
+                        ))
+                    }
+                </span> with Kestra
             </h1>
             <p>
                 One orchestrator across your infrastructure and data stack. Event-driven
@@ -259,33 +269,80 @@ const faqItems = [
 
 <script is:inline>
     ;(function () {
-        if (window.__orchCarouselTimer)
-            clearInterval(window.__orchCarouselTimer)
+        if (window.__orchTimer) {
+            clearInterval(window.__orchTimer)
+            window.__orchTimer = null
+        }
+        if (window.__orchVis) {
+            document.removeEventListener("visibilitychange", window.__orchVis)
+            window.__orchVis = null
+        }
+
+        var activeCategory = ""
+        var current = 0
+
+        function applyFilters() {
+            var grid = document.getElementById("orch-grid")
+            var search = document.getElementById("orch-search")
+            if (!grid) return
+            var q = ((search && search.value) || "").toLowerCase().trim()
+            var cards = grid.querySelectorAll(".card")
+            for (var i = 0; i < cards.length; i++) {
+                var card = cards[i]
+                var name = (card.getAttribute("data-name") || "").toLowerCase()
+                var category = card.getAttribute("data-category") || ""
+                var matchesSearch = !q || name.indexOf(q) !== -1
+                var matchesCat =
+                    !activeCategory || category === activeCategory
+                card.style.display = matchesSearch && matchesCat ? "" : "none"
+            }
+        }
+
+        function tick() {
+            var carousel = document.getElementById("hero-carousel")
+            var rotator = document.getElementById("hero-rotator")
+            if (!carousel || !rotator) return
+            var icons = carousel.querySelectorAll(".carousel-item")
+            var names = rotator.querySelectorAll(".rotator-item")
+            var total = icons.length
+            if (total === 0) return
+
+            if (!icons[current] || !icons[current].classList.contains("active")) {
+                for (var i = 0; i < icons.length; i++) {
+                    if (icons[i].classList.contains("active")) {
+                        current = i
+                        break
+                    }
+                }
+            }
+            for (var j = 0; j < icons.length; j++) {
+                var on = j === current
+                icons[j].classList.toggle("active", on)
+                names[j].classList.toggle("active", on)
+            }
+
+            icons[current].classList.remove("active")
+            names[current].classList.remove("active")
+            current = (current + 1) % total
+            icons[current].classList.add("active")
+            names[current].classList.add("active")
+        }
+
+        function start() {
+            if (window.__orchTimer) clearInterval(window.__orchTimer)
+            window.__orchTimer = setInterval(tick, 2800)
+        }
+
+        function stop() {
+            if (window.__orchTimer) {
+                clearInterval(window.__orchTimer)
+                window.__orchTimer = null
+            }
+        }
 
         function init() {
             var toggle = document.getElementById("orch-toggle")
-            var grid = document.getElementById("orch-grid")
             var search = document.getElementById("orch-search")
-            var activeCategory = ""
-
-            function applyFilters() {
-                if (!grid) return
-                var q = ((search && search.value) || "").toLowerCase().trim()
-                var cards = grid.querySelectorAll(".card")
-                for (var i = 0; i < cards.length; i++) {
-                    var card = cards[i]
-                    var name = (
-                        card.getAttribute("data-name") || ""
-                    ).toLowerCase()
-                    var category = card.getAttribute("data-category") || ""
-                    var matchesSearch = !q || name.indexOf(q) !== -1
-                    var matchesCat =
-                        !activeCategory || category === activeCategory
-                    card.style.display =
-                        matchesSearch && matchesCat ? "" : "none"
-                }
-            }
-
             if (toggle) {
                 toggle.addEventListener("click", function (e) {
                     var btn = e.target.closest(".toggle-btn")
@@ -298,44 +355,16 @@ const faqItems = [
                     applyFilters()
                 })
             }
-
-            if (search) {
-                search.addEventListener("input", applyFilters)
-            }
-
-            var carousel = document.getElementById("hero-carousel")
-            var heroName = document.getElementById("hero-name")
-            if (carousel && heroName) {
-                var items = carousel.querySelectorAll(".carousel-item")
-                var current = 0
-                var total = items.length
-
-                function updateHeroName(item) {
-                    heroName.textContent = item.getAttribute("data-name") || ""
-                    var color = item.getAttribute("data-color") || "#8465FF"
-                    heroName.style.color = color
-                }
-
-                window.__orchCarouselTimer = setInterval(function () {
-                    items[current].classList.remove("active")
-                    heroName.style.opacity = "0"
-                    setTimeout(function () {
-                        current = (current + 1) % total
-                        items[current].classList.add("active")
-                        updateHeroName(items[current])
-                        heroName.style.opacity = "1"
-                    }, 400)
-                }, 2800)
-            }
+            if (search) search.addEventListener("input", applyFilters)
+            start()
         }
 
-        if (!window.__orchInitDone) {
-            window.__orchInitDone = true
-            document.addEventListener("astro:page-load", init)
-            document.addEventListener("visibilitychange", function () {
-                if (!document.hidden) init()
-            })
+        window.__orchVis = function () {
+            if (document.hidden) stop()
+            else start()
         }
+        document.addEventListener("visibilitychange", window.__orchVis)
+
         init()
     })()
 </script>
@@ -346,7 +375,7 @@ const faqItems = [
             1400px auto;
         padding-inline: 1rem;
 
-        .header {
+        .orch-hero {
             max-width: 1180px;
             margin: 0 auto;
             padding-top: 4rem;
@@ -442,9 +471,30 @@ const faqItems = [
                 color: var(--ks-content-primary);
                 margin-bottom: 0.5rem;
 
-                span {
-                    color: var(--ks-border-active);
-                    transition: opacity 0.4s ease;
+                .rotator {
+                    position: relative;
+                    display: inline-grid;
+                    grid-template-areas: "stack";
+                    vertical-align: baseline;
+
+                    .rotator-item {
+                        grid-area: stack;
+                        opacity: 0;
+                        transition: opacity 0.6s ease;
+                        white-space: nowrap;
+                        pointer-events: none;
+
+                        &:not(.active) {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                        }
+
+                        &.active {
+                            opacity: 1;
+                            pointer-events: auto;
+                        }
+                    }
                 }
             }
 

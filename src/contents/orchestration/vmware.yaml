@@ -16,25 +16,27 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace VMware Aria Automation (vRA/vRO) with a workflow engine that listens to vCenter events, handles snapshot-gated change with rollback, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/servicenow'>ServiceNow</a>, and <a href='/orchestration/terraform'>Terraform</a> in one audited flow. Drop the Broadcom-priced vRA subscription; run per-zone control planes for regulated OT."
+
 pillars:
   title: "Above vCenter, around every VM operation."
   subtitle: "What Kestra wraps around vSphere: when actions fire, what gets a snapshot first, who approves a delete, and where the audit lives. Your vCenter and ESXi hosts stay in place. The vRA/vRO catalog gets replaced."
   items:
     - icon: "mdi:lightning-bolt-outline"
       title: "Event triggers on vCenter and ESXi lifecycle"
-      description: "The <code>vcenter.Trigger</code> and <code>esxi.Trigger</code> poll the API every minute or two for VM lifecycle events: created, removed, powered off, suspended, failed to power on. Filter by event type and a VM name regex. The payload reaches the flow as <code>trigger.events</code>, so cleanup, alerts, or DR steps run with the right VM in context."
+      description: "The vcenter.Trigger and esxi.Trigger from the <a href='/plugins/plugin-ee-vmware'>VMware plugin</a> poll vSphere every minute or two for VM lifecycle events: created, removed, powered off, suspended, failed to power on. Filter by event type and a VM name regex. The payload reaches the flow as trigger.events, so cleanup, alerts, or DR steps run with the right VM in context."
     - icon: "mdi:camera-outline"
       title: "Snapshot-first maintenance with automatic rollback"
-      description: "<code>CreateVmSnapshot</code> runs before patches, template refreshes, or risky reconfigurations. <code>RestoreVmFromSnapshot</code> reverts on a failed health check. The snapshot ID flows forward, so every patch run has a rollback target captured per execution."
+      description: "CreateVmSnapshot runs before patches, template refreshes, or risky reconfigurations. RestoreVmFromSnapshot reverts on a failed health check. The snapshot ID flows forward, so every patch run has a rollback target captured per execution."
     - icon: "mdi:transit-connection-variant"
       title: "vCenter clone, Ansible configure, ServiceNow register, in one flow"
-      description: "After <code>CloneVm</code> finishes, the VM's IP, hostname, and UUID flow into the next task. The <a href='/plugins/plugin-ansible'>Ansible plugin</a> joins the domain and installs agents. ServiceNow gets a new CMDB record. One execution ID across the whole chain, retries scoped to the failing step."
+      description: "After CloneVm finishes, the VM's IP, hostname, and UUID flow into the next task. <a href='/orchestration/ansible'>Ansible</a> joins the domain and installs agents. <a href='/orchestration/servicenow'>ServiceNow</a> gets a new CMDB record. One execution ID across the whole chain, retries scoped to the failing step."
     - icon: "mdi:shield-check-outline"
       title: "Approval gates and self-service forms in front of every destructive action"
       description: "The Pause task suspends the flow before delete, reset, or template conversion. A Kestra App turns the operation into a typed form: dropdowns for the VM, the snapshot, the datastore, the target environment. Operators submit. RBAC controls who can launch what. Same shape replaces the vRA self-service catalog."
     - icon: "mdi:network-outline"
       title: "Per-zone control plane for multi-domain isolation"
-      description: "Kestra runs as a self-hosted control plane inside each network zone, with remote workers close to the vSphere endpoint. No external connectivity, no shared control plane across regulated boundaries. One control plane per zone keeps blast radius contained."
+      description: "Kestra runs as a <a href='/enterprise'>self-hosted control plane</a> inside each network zone, with remote workers close to the vSphere endpoint. No external connectivity, no shared control plane across regulated boundaries. One control plane per zone keeps blast radius contained."
     - icon: "mdi:history"
       title: "Per-VM, per-event execution history"
       description: "Every operation captures the trigger source, the VM name, the snapshot taken, the operator, and the resulting state. The record is searchable by date, status, or VM. Auditors get evidence by default, attached to the execution that produced it."
@@ -46,7 +48,7 @@ useCases:
     - badge: "Full pipeline"
       badgeIcon: "mdi:pipe-disconnected"
       title: "Provision from a vCenter template, configure with Ansible, register in ServiceNow"
-      description: "<code>io.kestra.plugin.ee.vmware.vcenter.CloneVm</code> deploys a VM from a golden template. The VM's IP and hostname flow into <code>ansible-playbook</code>, which joins the domain, installs agents, and applies config. ServiceNow gets a new CMDB entry. Slack confirms. One execution ID across the whole chain."
+      description: "vcenter.CloneVm deploys a VM from a golden template. The VM's IP and hostname flow into <a href='/orchestration/ansible'>Ansible</a>, which joins the domain, installs agents, and applies config. <a href='/orchestration/servicenow'>ServiceNow</a> gets a new CMDB entry. <a href='/orchestration/slack'>Slack</a> confirms. One execution ID across the whole chain."
       flow:
         - node: "ServiceNow webhook"
           label: "approved ticket"
@@ -65,7 +67,7 @@ useCases:
           pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
       items:
         - title: "Step-level retries"
-          description: "Retry only the failed step. The <code>CloneVm</code> does not re-run when the playbook fails."
+          description: "Retry only the failed step. The CloneVm task does not re-run when the playbook fails."
         - title: "Outputs flow forward"
           description: "Pass the VM name, IP, and vCenter UUID into the Ansible inventory and the ServiceNow record."
         - title: "Single execution context"
@@ -75,7 +77,7 @@ useCases:
     - badge: "Operations"
       badgeIcon: "mdi:camera-outline"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
-      description: "<code>CreateVmSnapshot</code> captures the pre-patch state. A Shell or Ansible task runs the OS update over SSH. An HTTP probe checks the application after reboot. On failure, <code>RestoreVmFromSnapshot</code> rolls back automatically and Slack alerts the on-call. The snapshot ID is preserved per execution so the rollback always lands on the right state."
+      description: "CreateVmSnapshot captures the pre-patch state. A Shell or <a href='/orchestration/ansible'>Ansible</a> task runs the OS update over SSH. An HTTP probe checks the application after reboot. On failure, RestoreVmFromSnapshot rolls back automatically and <a href='/orchestration/slack'>Slack</a> alerts the on-call. The snapshot ID is preserved per execution so the rollback always lands on the right state."
       flow:
         - node: "cron trigger"
           label: "patch window"
@@ -97,9 +99,9 @@ useCases:
           pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
       items:
         - title: "Snapshot captured per run"
-          description: "<code>snapshotExtId</code> is stored in the execution outputs and reusable downstream."
+          description: "The snapshotExtId is stored in the execution outputs and reusable downstream."
         - title: "Automatic rollback on health failure"
-          description: "An <code>errors</code> branch fires <code>RestoreVmFromSnapshot</code> if the post-patch probe fails."
+          description: "An errors branch fires RestoreVmFromSnapshot if the post-patch probe fails."
         - title: "Replayable per VM"
           description: "Re-run the patch on the same VM with the same snapshot from the execution UI."
         - title: "On-call alert with execution link"
@@ -107,7 +109,7 @@ useCases:
     - badge: "Event-driven"
       badgeIcon: "mdi:lightning-bolt-outline"
       title: "Event-driven cleanup on vCenter VM removal"
-      description: "The <code>vcenter.Trigger</code> polls for VM removal events. When a VM disappears from vCenter, a <code>ForEach</code> loops over the events, removes the DNS A record, deletes the Active Directory computer object via PowerShell, and posts a CrowdStrike API call to hide the host. The whole offboarding sequence runs without a human in the loop."
+      description: "The vcenter.Trigger polls for VM removal events. When a VM disappears from vCenter, a ForEach loops over the events, removes the DNS A record, deletes the Active Directory computer object via PowerShell, and posts a CrowdStrike API call to hide the host. The whole offboarding sequence runs without a human in the loop."
       flow:
         - node: "vCenter Trigger"
           label: "VM_REMOVED"
@@ -128,12 +130,12 @@ useCases:
         - title: "Polling at PT1M or PT2M"
           description: "Sub-minute event detection without a webhook on vCenter."
         - title: "Filter by event type and VM name"
-          description: "Match only <code>VmRemovedEvent</code> on names matching a regex (production, staging, test)."
+          description: "Match only VmRemovedEvent on names matching a regex (production, staging, test)."
         - title: "Per-event execution"
           description: "Each removed VM gets its own ForEach iteration and its own log line."
         - title: "Idempotent cleanup steps"
           description: "Skip steps that already ran if the DNS or AD entry is already gone."
-      signal: "Published as the <code>vm-event-based-cleanup</code> blueprint in the Kestra catalog."
+      signal: "Published as the vm-event-based-cleanup blueprint in the Kestra catalog."
     - badge: "Self-service"
       badgeIcon: "mdi:account-multiple-outline"
       title: "Self-service VM operations behind a Kestra App"
@@ -163,27 +165,38 @@ useCases:
           description: "Every submission goes through the same audited, retry-aware execution."
           wide: true
 
-quotes:
-  - quote: "We eliminated the high cost and risk of VMware vRA. What used to take 6 months now takes 6 days with Kestra!"
-    author: "Principal Hosting · BHP"
-    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
-    logoFile: "bhp"
-    kpis:
-      - value: "-90%"
-        name: "Licensing cost vs Aria Automation"
-      - value: "30×"
-        name: "Faster time to deliver"
-      - value: "4+1"
-        name: "Isolated platforms (4 OT, 1 IT)"
+quotes: []
 
 blueprints:
   title: "Blueprints for VMware orchestration."
   lead: "One blueprint per use case above. Copy the YAML, point it at your vCenter, ship it."
   items:
     - name: "Provision, configure, register"
+      blueprintId: "vmware-provision-configure-register"
       title: "Provision from a vCenter template, configure with Ansible, register in ServiceNow"
-      description: "<code>CloneVm</code> deploys a VM from a golden template and emits its IP and hostname. <code>ansible-playbook</code> joins the domain and installs agents, with per-step retries. <code>ServiceNow.Post</code> lands a fresh CMDB record. Slack confirms when all three steps succeed."
-      href: "/blueprints?tags=Infrastructure"
+      description: "CloneVm deploys a VM from a golden template and emits its IP and hostname. <a href='/plugins/plugin-ansible'>ansible-playbook</a> joins the domain and installs agents, with per-step retries. <a href='/plugins/plugin-servicenow'>ServiceNow.Post</a> lands a fresh CMDB record. Slack confirms when all three steps succeed."
+      href: "/blueprints/vmware-provision-configure-register"
+      flowDiagram:
+        source:
+          label: "ServiceNow webhook"
+          sublabel: "approved provision ticket"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Provision and register"
+          sublabel: "clone, configure, CMDB"
+        tools:
+          - label: "vCenter clone"
+            pluginClass: "io.kestra.plugin.ee.vmware.vcenter.CloneVm"
+          - label: "Ansible playbook"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "ServiceNow CMDB"
+            pluginClass: "io.kestra.plugin.servicenow.Post"
+          - label: "Slack confirm"
+            pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+        outcome:
+          label: "VM in CMDB"
+          sublabel: "configured + audited"
+          icon: "mdi:check-circle-outline"
       plugins:
         - "io.kestra.plugin.ee.vmware.vcenter.CloneVm"
         - "io.kestra.plugin.ansible.cli.AnsibleCLI"
@@ -251,9 +264,31 @@ blueprints:
                 "text": ":rocket: {{ inputs.vm_name }} provisioned from {{ inputs.template_name }} ({{ outputs.clone_vm.vmIpAddress }}), configured, and registered in ServiceNow."
               }
     - name: "Snapshot-gated patching"
+      blueprintId: "vmware-safe-patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on vCenter, runs the OS update over SSH, probes the application, and restores the snapshot if the probe fails. The snapshot ID is preserved per execution so the rollback always lands on the right state."
-      href: "/blueprints?tags=Infrastructure"
+      href: "/blueprints/vmware-safe-patching"
+      flowDiagram:
+        source:
+          label: "Cron / vCenter event"
+          sublabel: "patch window"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Snapshot-gated patching"
+          sublabel: "rollback on failure"
+        tools:
+          - label: "vCenter snapshot"
+            pluginClass: "io.kestra.plugin.ee.vmware.vcenter.CreateVmSnapshot"
+          - label: "Shell / SSH"
+            pluginClass: "io.kestra.plugin.scripts.shell.Commands"
+          - label: "HTTP probe"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "Restore snapshot"
+            pluginClass: "io.kestra.plugin.ee.vmware.vcenter.RestoreVmFromSnapshot"
+        outcome:
+          label: "Patched + audited"
+          sublabel: "rollback ready per VM"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.ee.vmware.vcenter.CreateVmSnapshot"
         - "io.kestra.plugin.scripts.shell.Commands"
@@ -320,9 +355,31 @@ blueprints:
             url: "{{ secret('SLACK_WEBHOOK') }}"
             messageText: ":alert: Patch failed on {{ inputs.vm_name }}. Rolled back to {{ outputs.pre_patch_snapshot.snapshotName }}. <{{ execution.url }}|View execution>"
     - name: "Event-driven VM cleanup"
+      blueprintId: "vm-event-based-cleanup"
       title: "Event-driven cleanup on vCenter VM removal"
       description: "Listens for VM removal events on vCenter, then runs the offboarding sequence: log the event, remove the DNS A record, delete the Active Directory computer object, and notify CrowdStrike to hide the host. Each removed VM gets its own ForEach iteration."
-      href: "/blueprints?tags=Infrastructure"
+      href: "/blueprints/vm-event-based-cleanup"
+      flowDiagram:
+        source:
+          label: "vCenter VM_REMOVED"
+          sublabel: "polling trigger"
+          pluginClass: "io.kestra.plugin.ee.vmware.vcenter.Trigger"
+        workflow:
+          label: "Per-VM offboarding"
+          sublabel: "fan-out over events"
+        tools:
+          - label: "ForEach event"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "PowerShell DNS"
+            pluginClass: "io.kestra.plugin.scripts.powershell.Commands"
+          - label: "PowerShell AD"
+            pluginClass: "io.kestra.plugin.scripts.powershell.Commands"
+          - label: "CrowdStrike hide"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+        outcome:
+          label: "DNS, AD, EDR cleaned"
+          sublabel: "no orphan records"
+          icon: "mdi:check-circle-outline"
       plugins:
         - "io.kestra.plugin.ee.vmware.vcenter.Trigger"
         - "io.kestra.plugin.core.flow.ForEach"
@@ -439,23 +496,31 @@ comparison:
         - "Multi-cloud (proprietary connectors)"
         - "Possible, plugin-dependent"
 
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs VMware Aria Automation (vRA/vRO)"
+  description: "Side-by-side breakdown across vSphere lifecycle, multi-cloud reach, self-service catalogs, and developer ergonomics."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/vmware-cloud-foundation"
+
 faq:
   - question: "Does Kestra replace VMware vCenter and ESXi?"
-    answer: "No. vCenter and ESXi continue to run your VMs. Kestra calls the vCenter and ESXi APIs through the <code>io.kestra.plugin.ee.vmware</code> plugin to run the operations you used to script: <code>CloneVm</code>, <code>CreateVmSnapshot</code>, <code>RestoreVmFromSnapshot</code>, <code>UpdateVm</code>, and so on. The hypervisor stays where it is. Kestra orchestrates the workflow around it."
+    answer: "No. vCenter and ESXi continue to run your VMs. Kestra calls the vCenter and ESXi APIs through the <a href='/plugins/plugin-ee-vmware'>VMware plugin</a> to run the operations you used to script: CloneVm, CreateVmSnapshot, RestoreVmFromSnapshot, UpdateVm, and so on. The hypervisor stays where it is. Kestra orchestrates the workflow around it."
   - question: "What about vRealize Automation (vRA) and vRealize Orchestrator (vRO)?"
     answer: "vRA and vRO (now bundled as VMware Aria Automation) sit above vCenter as the automation and self-service layer. That is the layer Kestra replaces. The vRA service catalog becomes Kestra Apps with typed inputs and RBAC. vRO actions (JavaScript, PowerShell, or Python) become Kestra YAML flows that can still call the same scripts. vCenter and ESXi stay where they are."
   - question: "Does the plugin work with both vCenter-managed clusters and standalone ESXi hosts?"
-    answer: "Yes. The plugin ships two task groups: <code>io.kestra.plugin.ee.vmware.vcenter.*</code> for vCenter-managed environments, and <code>io.kestra.plugin.ee.vmware.esxi.*</code> for standalone ESXi hosts. The task names match (CreateVm, StartVm, CreateVmSnapshot, RestoreVmFromSnapshot, and so on), so the same flow shape works against either endpoint. Template and clone operations are vCenter-only."
+    answer: "Yes. The plugin ships two task groups: io.kestra.plugin.ee.vmware.vcenter.* for vCenter-managed environments, and io.kestra.plugin.ee.vmware.esxi.* for standalone ESXi hosts. The task names match (CreateVm, StartVm, CreateVmSnapshot, RestoreVmFromSnapshot, and so on), so the same flow shape works against either endpoint. Template and clone operations are vCenter-only."
   - question: "How do the vCenter and ESXi event triggers actually work?"
-    answer: "The <code>vcenter.Trigger</code> and <code>esxi.Trigger</code> poll the API on a configurable interval (default PT2M, supports PT1M). They emit events matching a <code>VmEventType</code> (VM_CREATED, VM_REMOVED, VM_POWERED_OFF, VM_SUSPENDED, VM_FAILED_TO_POWER_ON, and others) and a <code>vmNameRegex</code>. The events land in the flow as <code>trigger.events</code>, a list you iterate with <code>ForEach</code>. No webhook setup on vCenter, no extra service running."
+    answer: "The vcenter.Trigger and esxi.Trigger poll the API on a configurable interval (default PT2M, supports PT1M). They emit events matching a VmEventType (VM_CREATED, VM_REMOVED, VM_POWERED_OFF, VM_SUSPENDED, VM_FAILED_TO_POWER_ON, and others) and a vmNameRegex. The events land in the flow as trigger.events, a list you iterate with ForEach. No webhook setup on vCenter, no extra service running."
   - question: "Can I chain a vCenter clone with Terraform, Ansible, and ServiceNow in one flow?"
-    answer: "Yes. Each tool runs as a task in one Kestra flow. <code>CloneVm</code> emits the VM's IP, hostname, and UUID. The next Ansible task templates those into the inventory and runs the playbook. ServiceNow lands the CMDB record. If Ansible fails, Kestra retries only that step, the vCenter clone is not re-run. One execution ID, one audit trail, one place to debug."
+    answer: "Yes. Each tool runs as a task in one Kestra flow. CloneVm emits the VM's IP, hostname, and UUID. The next <a href='/orchestration/ansible'>Ansible</a> task templates those into the inventory and runs the playbook. <a href='/orchestration/servicenow'>ServiceNow</a> lands the CMDB record. If Ansible fails, Kestra retries only that step, the vCenter clone is not re-run. One execution ID, one audit trail, one place to debug."
   - question: "How does Kestra handle vCenter and ESXi credentials?"
-    answer: "Credentials come from Kestra's secrets backend (built-in, or HashiCorp Vault, CyberArk, AWS Secrets Manager, GCP Secret Manager) and are injected at task execution time. The plugin accepts <code>username</code> and <code>password</code> as templated strings, typically <code>{{ secret('VMWARE_VCENTER_USERNAME') }}</code> and <code>{{ secret('VMWARE_VCENTER_PASSWORD') }}</code>. Workers can run inside a restricted OT or DMZ network zone so the credentials never leave that boundary."
+    answer: "Credentials come from Kestra's secrets backend (built-in, or HashiCorp Vault, CyberArk, AWS Secrets Manager, GCP Secret Manager) and are injected at task execution time. The plugin accepts username and password as templated strings, typically rendered with the secret() function from VMWARE_VCENTER_USERNAME and VMWARE_VCENTER_PASSWORD. Workers can run inside a restricted OT or DMZ network zone so the credentials never leave that boundary."
   - question: "Is the VMware plugin Enterprise-only?"
-    answer: "Yes, the <code>io.kestra.plugin.ee.vmware</code> plugin is part of Kestra Enterprise. Kestra Enterprise also includes the Apps layer, RBAC, audit logs, worker isolation, and SSO that infrastructure teams replacing vRA/vRO typically need. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across Terraform, Ansible, and cloud APIs."
+    answer: "Yes, the io.kestra.plugin.ee.vmware plugin is part of <a href='/enterprise'>Kestra Enterprise</a>. Kestra Enterprise also includes the Apps layer, RBAC, audit logs, worker isolation, and SSO that infrastructure teams replacing vRA/vRO typically need. See <a href='/infra-automation'>Kestra for infrastructure automation</a> for the broader picture across <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/ansible'>Ansible</a>, and cloud APIs."
   - question: "Can Kestra run inside an air-gapped, multi-zone OT environment?"
-    answer: "Yes. Kestra ships self-hosted on Docker or Kubernetes, runs fully air-gapped, and supports per-zone control planes with remote workers close to each vCenter or ESXi endpoint. AD-backed authentication, least-privilege RBAC, and log shipping to the enterprise SIEM are all supported with no external dependency on Kestra's infrastructure."
+    answer: "Yes. Kestra ships self-hosted on Docker or <a href='/orchestration/kubernetes'>Kubernetes</a>, runs fully air-gapped, and supports per-zone control planes with remote workers close to each vCenter or ESXi endpoint. AD-backed authentication, least-privilege RBAC, and log shipping to the enterprise SIEM are all supported with no external dependency on Kestra's infrastructure."
 
 resources:
   title: "More on VMware and Kestra"
@@ -465,11 +530,6 @@ resources:
       description: "The VMware plugin end to end: vSphere, vCenter, ESXi lifecycle, snapshots, templates, and event-based triggers."
       href: "/blogs/control-vmware-with-kestra"
       image: "blogs/control-vmware-with-kestra/control-vmware-with-kestra.jpg"
-    - kind: "story"
-      title: "Securing hybrid cloud automation across IT and OT"
-      description: "How a Fortune 500 industrial company replaced VMware Aria Automation with Kestra, with cost reduction, faster delivery, and isolated control planes."
-      href: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
-      image: "customer-stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra/hero.jpg"
     - kind: "docs"
       title: "Automate infrastructure workflows in Kestra"
       description: "How Kestra orchestrates VMware, Docker, Terraform, OpenTofu, Ansible, and cloud CLIs in one declarative flow."

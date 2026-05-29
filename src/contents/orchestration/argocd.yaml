@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace homemade Argo CD trigger scripts with a workflow engine that listens to CI completions or image pushes, handles event-driven sync with approval gates and status polling, and chains <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/ansible'>Ansible</a>, and Argo CD in one audited flow. Cut deploy lag from Argo's Git-poll interval (minutes) to zero."
+
 pillars:
   title: "Around every sync, every revision, every cluster."
   subtitle: "Argo CD reconciles desired state from Git. Kestra wraps that controller with the orchestration layer above it: when a sync fires, what runs before, who approves the promotion to prod, and where the cross-tool audit trail lives. The Argo CD server, the Application objects, and the cluster reconciliation stay where they are."
@@ -198,9 +200,29 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Argo CD server, ship it."
   items:
     - name: "Event-driven sync on CI completion"
+      blueprintId: "argocd-event-driven-sync"
       title: "Sync Argo CD the moment CI passes, then poll until Healthy"
       description: "A GitHub Actions webhook triggers the flow with the new revision. Kestra calls apps.Sync, polls apps.Status until both syncStatus and healthStatus report green, then posts to Slack with the revision and application URL."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "CI webhook"
+          sublabel: "GitHub Actions, signed build"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Event-driven sync"
+          sublabel: "no Git poll lag"
+        tools:
+          - label: "apps.Sync"
+            pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+          - label: "apps.Status"
+            pluginClass: "io.kestra.plugin.argocd.apps.Status"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Synced + Healthy"
+          sublabel: "revision pinned at trigger"
+          icon: "mdi:check-circle-outline"
       plugins:
         - "io.kestra.plugin.core.trigger.Webhook"
         - "io.kestra.plugin.argocd.apps.Sync"
@@ -260,9 +282,31 @@ blueprints:
                 "text": ":alert: Argo CD sync failed for {{ inputs.application }} at {{ inputs.revision }}. <{{ execution.url }}|View execution>"
               }
     - name: "Terraform, Ansible, Argo CD chain"
+      blueprintId: "terraform-ansible-argocd-chain"
       title: "Provision the cluster, configure the nodes, deploy the app"
       description: "terraform apply provisions an EKS cluster. A Pause task gates before configuration. ansible-playbook configures the nodes. argocd app sync deploys the app. apps.Status waits for Healthy. Slack confirms or alerts. Per-step retries keep the chain moving on transient errors."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Release window"
+          sublabel: "scheduled or manual"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Provision, configure, deploy"
+          sublabel: "Terraform, Ansible, Argo CD"
+        tools:
+          - label: "terraform apply"
+            pluginClass: "io.kestra.plugin.terraform.cli.TerraformCLI"
+          - label: "ansible-playbook"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "apps.Sync"
+            pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+          - label: "apps.Status"
+            pluginClass: "io.kestra.plugin.argocd.apps.Status"
+        outcome:
+          label: "Stack live"
+          sublabel: "one execution ID, three tools"
+          icon: "mdi:rocket-launch-outline"
       plugins:
         - "io.kestra.plugin.terraform.cli.TerraformCLI"
         - "io.kestra.plugin.core.flow.Pause"
@@ -339,9 +383,31 @@ blueprints:
                 "text": ":alert: Chain failed for {{ inputs.application }}. Check which step broke. <{{ execution.url }}|View execution>"
               }
     - name: "Staged promotion with approval gate"
+      blueprintId: "argocd-single-tenant-wave-rollout"
       title: "Sync staging, smoke test, gate, then sync prod with the same revision"
       description: "The flow takes a revision SHA as input. Syncs the staging Argo app, polls until Healthy, runs a smoke test against the staging endpoint, pauses for a named reviewer, then syncs the prod Argo app at the same revision. Slack notifies at each stage."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Revision input"
+          sublabel: "Git SHA"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Staged promotion"
+          sublabel: "staging gate prod, same SHA"
+        tools:
+          - label: "apps.Sync staging"
+            pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+          - label: "Smoke probe"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "Pause / approve"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "apps.Sync prod"
+            pluginClass: "io.kestra.plugin.argocd.apps.Sync"
+        outcome:
+          label: "Promoted to prod"
+          sublabel: "named reviewer logged"
+          icon: "mdi:source-branch"
       plugins:
         - "io.kestra.plugin.argocd.apps.Sync"
         - "io.kestra.plugin.argocd.apps.Status"

@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace cron triggers and reusable workflow YAML with a workflow engine that fires workflow_dispatch on dbt completions, S3 events, or Kafka messages, handles cross-repo dispatch with approval gates outside the workflow itself, and chains Actions output with <a href='/orchestration/terraform'>Terraform</a>, dbt, and <a href='/orchestration/servicenow'>ServiceNow</a>. Dispatch the same workflow across every repo in one ForEach (matrices cannot span repos)."
+
 pillars:
   title: "Above the runner, around the workflow."
   subtitle: "GitHub Actions runs the job inside the runner. Kestra wraps everything around it: when a workflow_dispatch fires, what runs before, who approves the prod deploy, and where the cross-tool audit trail lives once the runner exits. The workflow YAML, the matrix, and the action marketplace stay where they are."
@@ -181,9 +183,31 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your GitHub PAT, point at your repo, ship it."
   items:
     - name: "Dispatch deploy workflow when dbt finishes"
+      blueprintId: "github-dispatch-deploy-on-dbt"
       title: "Trigger a GitHub Actions deploy when upstream data is ready"
       description: "Kestra catches the dbt completion webhook, runs a freshness check, dispatches the deploy workflow with the new revision, waits for the workflow_run completion event, then posts to Slack with the deploy URL."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "dbt completion"
+          sublabel: "webhook"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        workflow:
+          label: "Dispatch on data ready"
+          sublabel: "workflow_dispatch"
+        tools:
+          - label: "Freshness check"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "actions.RunWorkflow"
+            pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+          - label: "Wait workflow_run"
+            pluginClass: "io.kestra.plugin.core.flow.Pause"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Deployed on data"
+          sublabel: "not on commit"
+          icon: "mdi:rocket-launch-outline"
       plugins:
         - "io.kestra.plugin.core.trigger.Webhook"
         - "io.kestra.plugin.github.actions.RunWorkflow"
@@ -246,9 +270,31 @@ blueprints:
                 "text": ":alert: Dispatch failed for {{ inputs.revision }}. <{{ execution.url }}|View execution>"
               }
     - name: "Open issue on flow failure"
+      blueprintId: "create-github-issue-on-failure"
       title: "Errors branch opens a GitHub issue with execution context"
       description: "When a production flow fails, the errors branch finds the most recent PR touching the relevant code, opens a GitHub issue with the failing step and execution URL, and posts the same context as a PR comment."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Flow failure"
+          sublabel: "errors branch"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Failure to context"
+          sublabel: "issue + PR comment"
+        tools:
+          - label: "dbt build (fails)"
+            pluginClass: "io.kestra.plugin.dbt.cli.DbtCLI"
+          - label: "pulls.Search"
+            pluginClass: "io.kestra.plugin.github.pulls.Search"
+          - label: "issues.Create"
+            pluginClass: "io.kestra.plugin.github.issues.Create"
+          - label: "issues.Comment"
+            pluginClass: "io.kestra.plugin.github.issues.Comment"
+        outcome:
+          label: "Incident with context"
+          sublabel: "@oncall paged with logs"
+          icon: "mdi:message-outline"
       plugins:
         - "io.kestra.plugin.github.pulls.Search"
         - "io.kestra.plugin.github.issues.Create"
@@ -303,9 +349,31 @@ blueprints:
               :warning: A production flow that touches code in this PR has just failed.
               See execution: {{ execution.url }}
     - name: "Cross-repo workflow dispatch"
+      blueprintId: "github-cross-repo-dispatch"
       title: "Run the same workflow across every repo with a tag"
       description: "Searches the org for every repo with the platform-service topic, dispatches the security-scan.yml workflow per repo, waits for each workflow_run completion, and posts a single summary to Slack with per-repo pass or fail."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Nightly schedule"
+          sublabel: "cron 0 3 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Cross-repo dispatch"
+          sublabel: "matrices cannot span repos"
+        tools:
+          - label: "repositories.Search"
+            pluginClass: "io.kestra.plugin.github.repositories.Search"
+          - label: "ForEach repo"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "actions.RunWorkflow"
+            pluginClass: "io.kestra.plugin.github.actions.RunWorkflow"
+          - label: "Slack summary"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "All repos scanned"
+          sublabel: "one report, not N tabs"
+          icon: "mdi:magnify"
       plugins:
         - "io.kestra.plugin.github.repositories.Search"
         - "io.kestra.plugin.core.flow.ForEach"

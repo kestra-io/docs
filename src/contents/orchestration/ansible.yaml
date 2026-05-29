@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace Ansible Tower / AAP with a workflow engine that listens to cron, webhooks, or alerts, handles drift detection and rolling waves with per-host verification, and chains ansible-playbook with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/netbox'>NetBox</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the AAP subscription; halt a wave at the first failed health probe."
+
 pillars:
   title: "Around every playbook, every host, every wave."
   subtitle: "What Kestra wraps around your Ansible runs: when playbooks fire, what comes back per host through the callback, who approves the next wave, and where the audit lives. Your playbooks, roles, inventory, and Vault stay where they are."
@@ -159,10 +161,6 @@ quotes:
     author: "Crédit Agricole"
     storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
     logoFile: "credit-agricole"
-  - quote: "Ansible output parsing was a massive win, it's deterministic and made our life so much easier."
-    author: "Principal Hosting · BHP"
-    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
-    logoFile: "bhp"
   - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment: all orchestrated through Kestra."
     author: "Censhare"
     logoFile: "censhare"
@@ -172,9 +170,29 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your inventory, ship it."
   items:
     - name: "Check-mode drift detection"
+      blueprintId: "ansible-config-drift"
       title: "Nightly check-mode audit with the Kestra Ansible callback"
       description: "Runs the playbook with <code>--check --diff</code> nightly. The Kestra Ansible callback emits per-host structured output. A <code>ForEach</code> loops through hosts and posts a Slack alert only when <code>changed: true</code>. Clean enforcement runs stay quiet."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Nightly schedule"
+          sublabel: "cron 0 3 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Drift audit"
+          sublabel: "alert only on changed"
+        tools:
+          - label: "ansible --check"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "ForEach host"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "Slack alert"
+            pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+        outcome:
+          label: "Drifted hosts surfaced"
+          sublabel: "clean nights stay quiet"
+          icon: "mdi:magnify-scan"
       plugins:
         - "io.kestra.plugin.ansible.cli.AnsibleCLI"
         - "io.kestra.plugin.core.trigger.Schedule"
@@ -214,9 +232,31 @@ blueprints:
                 url: "{{ secret('SLACK_WEBHOOK') }}"
                 messageText: "Drift detected: {{ taskrun.value | jq('.msg') | first ?? 'config drift on host' }}"
     - name: "Rolling patch wave"
+      blueprintId: "ansible-rolling-patch-wave"
       title: "Rolling OS patch wave with serial and per-batch health probe"
       description: "<code>ansible-playbook</code> runs with <code>serial: 1</code> to patch one host at a time. Between batches a Kestra <code>core.http.Request</code> probes the application health endpoint. A failed probe halts the flow before the next batch."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Patch window"
+          sublabel: "scheduled or ad-hoc"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Rolling patch wave"
+          sublabel: "halt on probe fail"
+        tools:
+          - label: "ansible serial:1"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "ForEach host"
+            pluginClass: "io.kestra.plugin.core.flow.ForEach"
+          - label: "HTTP probe"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "Slack alert"
+            pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+        outcome:
+          label: "Fleet patched + verified"
+          sublabel: "halt before next batch"
+          icon: "mdi:shield-check-outline"
       plugins:
         - "io.kestra.plugin.ansible.cli.AnsibleCLI"
         - "io.kestra.plugin.core.http.Request"
@@ -272,9 +312,29 @@ blueprints:
                 url: "{{ secret('SLACK_WEBHOOK') }}"
                 messageText: ":alert: Health probe failed for {{ taskrun.value | jq('.host') | first }} after patching, wave halted."
     - name: "Dynamic inventory from NetBox"
+      blueprintId: "ansible-netbox-dynamic-inventory"
       title: "Build inventory from NetBox at run time, then play against it"
       description: "Queries NetBox for the device list at the start of the flow, writes <code>inventory.ini</code> from the result, then runs <code>ansible-playbook</code> against the fresh inventory. The same execution updates the ServiceNow CMDB with the per-host result."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Schedule"
+          sublabel: "or on-demand"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Inventory from NetBox"
+          sublabel: "play, then CMDB reconcile"
+        tools:
+          - label: "NetBox API"
+            pluginClass: "io.kestra.plugin.core.http.Request"
+          - label: "ansible-playbook"
+            pluginClass: "io.kestra.plugin.ansible.cli.AnsibleCLI"
+          - label: "ServiceNow CMDB"
+            pluginClass: "io.kestra.plugin.servicenow.Update"
+        outcome:
+          label: "Fresh inventory + CMDB"
+          sublabel: "no stale static file"
+          icon: "mdi:transit-connection-variant"
       plugins:
         - "io.kestra.plugin.core.http.Request"
         - "io.kestra.plugin.ansible.cli.AnsibleCLI"
@@ -394,6 +454,14 @@ comparison:
         - "Ansible-centric"
         - "Possible, action-dependent"
         - "Possible, plugin-dependent"
+
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs Ansible Automation Platform (Tower / AWX)"
+  description: "Side-by-side breakdown across event-driven runs, Ansible callback parsing, dynamic inventory, wave gating, and cross-tool chaining."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/ansible-automation-platform"
 
 faq:
   - question: "How does check-mode drift detection actually work?"

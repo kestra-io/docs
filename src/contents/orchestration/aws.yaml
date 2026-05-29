@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace EventBridge rule sprawl and Step Functions JSON with a workflow engine that listens to S3, SQS, or schedules, handles cross-account ops via stsRole, and chains S3, Lambda, Glue, Athena, and DynamoDB in one audited flow. Collapse rule + glue Lambda + Step Functions into one execution ID; cut idle compute with backlog-aware EMR Serverless."
+
 pillars:
   title: "One execution across S3, Lambda, EMR, Glue, and DynamoDB."
   subtitle: "AWS gives you the services. Kestra wires them together without EventBridge rule sprawl, without Step Functions JSON, and without Lambda functions whose only purpose is to call the next Lambda. The IAM model, the data, and the compute all stay in your account."
@@ -185,9 +187,31 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your AWS credentials in Kestra secrets, point at your resources, ship it."
   items:
     - name: "S3 file landed, fan out by prefix"
+      blueprintId: "aws-s3-fanout"
       title: "Route incoming S3 objects to dbt or Lambda based on prefix"
       description: "s3.Trigger polls the bucket. An If task routes /raw/orders/ to dbt build and /raw/clicks/ to a Lambda. Both paths publish to SNS on completion and notify Slack."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "S3 file landing"
+          sublabel: "prefix + regex filter"
+          pluginClass: "io.kestra.plugin.aws.s3.Trigger"
+        workflow:
+          label: "Fan out by prefix"
+          sublabel: "no EventBridge rules"
+        tools:
+          - label: "If branch"
+            pluginClass: "io.kestra.plugin.core.flow.If"
+          - label: "lambda.Invoke"
+            pluginClass: "io.kestra.plugin.aws.lambda.Invoke"
+          - label: "sns.Publish"
+            pluginClass: "io.kestra.plugin.aws.sns.Publish"
+          - label: "Slack notify"
+            pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
+        outcome:
+          label: "Routed + audited"
+          sublabel: "one execution per file"
+          icon: "mdi:cloud-upload-outline"
       plugins:
         - "io.kestra.plugin.aws.s3.Trigger"
         - "io.kestra.plugin.core.flow.If"
@@ -250,9 +274,31 @@ blueprints:
                 "text": ":file_folder: Processed {{ trigger.objects[0].key }}. <{{ execution.url }}|View>"
               }
     - name: "EMR Serverless backlog autoscale"
+      blueprintId: "aws-emr-serverless-spark"
       title: "Watch SQS depth on a schedule, spin Spark only when needed"
       description: "Every 5 minutes, the flow reads SQS queue depth via CloudWatch. If above threshold, it starts an EMR Serverless Spark job and polls until SUCCEEDED. Below threshold, the flow exits. No idle compute on quiet weekends."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Every 5 minutes"
+          sublabel: "schedule */5"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Backlog-driven Spark"
+          sublabel: "no idle clusters"
+        tools:
+          - label: "CloudWatch query"
+            pluginClass: "io.kestra.plugin.aws.cloudwatch.Query"
+          - label: "If gate"
+            pluginClass: "io.kestra.plugin.core.flow.If"
+          - label: "EMR Serverless"
+            pluginClass: "io.kestra.plugin.aws.emr.StartServerlessJobRun"
+          - label: "GetJobRun"
+            pluginClass: "io.kestra.plugin.aws.emr.GetJobRun"
+        outcome:
+          label: "Backlog drained"
+          sublabel: "compute only on demand"
+          icon: "mdi:chart-line"
       plugins:
         - "io.kestra.plugin.core.trigger.Schedule"
         - "io.kestra.plugin.aws.cloudwatch.Query"
@@ -320,9 +366,31 @@ blueprints:
                     "text": ":chart_with_upwards_trend: Drained backlog, job {{ outputs.start_job.jobRunId }} done."
                   }
     - name: "Glue ETL, Athena validation, DynamoDB write"
+      blueprintId: "aws-glue-athena-dynamodb"
       title: "Daily pipeline across three AWS services in one execution"
       description: "Starts a Glue job, polls until SUCCEEDED, runs an Athena validation query, gates a DynamoDB write on the row count. Failed validation pages on-call instead of writing bad data."
       href: "/blueprints?tags=Infrastructure"
+      flowDiagram:
+        source:
+          label: "Nightly schedule"
+          sublabel: "cron 0 2 * * *"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        workflow:
+          label: "Glue, Athena, DynamoDB"
+          sublabel: "validation gates the write"
+        tools:
+          - label: "glue.StartJobRun"
+            pluginClass: "io.kestra.plugin.aws.glue.StartJobRun"
+          - label: "glue.GetJobRun"
+            pluginClass: "io.kestra.plugin.aws.glue.GetJobRun"
+          - label: "athena.Query"
+            pluginClass: "io.kestra.plugin.aws.athena.Query"
+          - label: "dynamodb.PutItem"
+            pluginClass: "io.kestra.plugin.aws.dynamodb.PutItem"
+        outcome:
+          label: "Daily aggregate written"
+          sublabel: "row count in range"
+          icon: "mdi:database-arrow-right-outline"
       plugins:
         - "io.kestra.plugin.aws.glue.StartJobRun"
         - "io.kestra.plugin.aws.glue.GetJobRun"
@@ -471,6 +539,14 @@ comparison:
         - "Step Functions ASL is AWS-only"
         - "EventBridge rules are AWS-only"
         - "Custom code, portable but unsupported"
+
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs AWS Step Functions"
+  description: "Side-by-side breakdown across event sources, cross-account ops, EMR Serverless dispatch, multi-service chaining, and portability beyond AWS."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/aws-step-functions"
 
 faq:
   - question: "Does Kestra replace Step Functions?"
