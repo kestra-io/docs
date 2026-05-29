@@ -24,7 +24,6 @@ import { optimizeSvgIcon } from "~/utils/svgo"
 import { $fetchApiCached } from "~/utils/fetch"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
-import BouyguesLogo from "~/contents/customer-stories/bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra/logo.svg?raw"
 import RiversideLogo from "~/components/orchestrate/assets/riverside.svg?raw"
 import SlackLogo from "~/components/orchestrate/assets/slack.svg?raw"
 import FoundationDataLogo from "~/components/orchestrate/assets/foundation-data.svg?raw"
@@ -50,7 +49,6 @@ function getVersusLogo(filename: string): string {
 
 const LOGO_MAP: Record<string, string> = {
     gorgias: optimizeSvgIcon(GorgiasLogo, "gorgias-orch-logo"),
-    bouygues: optimizeSvgIcon(BouyguesLogo, "bouygues-orch-logo"),
     riverside: optimizeSvgIcon(RiversideLogo, "riverside-orch-logo"),
     slack: optimizeSvgIcon(SlackLogo, "slack-orch-logo"),
     "foundation-data": optimizeSvgIcon(FoundationDataLogo, "foundation-data-orch-logo"),
