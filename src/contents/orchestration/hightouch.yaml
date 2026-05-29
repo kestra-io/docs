@@ -195,15 +195,6 @@ quotes:
         value: "70+"
       - name: "Executions per month"
         value: "20,000+"
-  - quote: "When we discovered Kestra, it was instant love at first sight. It's the perfect solution to streamline all our projects, and it's now become our go-to orchestration platform."
-    author: "Hamis Badarou, Bouygues Immobilier (Valorissimo)"
-    logoFile: "bouygues"
-    storyLink: "/customer-stories/bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra"
-    kpis:
-      - name: "Conversion rate uplift"
-        value: "2x"
-      - name: "Marketing campaigns"
-        value: "Automated"
 
 blueprints:
   title: "Blueprints for Hightouch orchestration."
