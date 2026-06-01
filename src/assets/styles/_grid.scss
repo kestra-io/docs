@@ -1,0 +1,165 @@
+// Grid system — replaces Bootstrap containers, grid.
+// Uses $grid-breakpoints, $container-max-widths, $grid-gutter-width,
+// $container-padding-x, and $grid-row-columns from _variable.scss.
+
+// ─── Containers ───────────────────────────────────────────
+
+%container-base {
+    width: 100%;
+    padding-right: $container-padding-x;
+    padding-left: $container-padding-x;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+    @extend %container-base;
+}
+
+.container-fluid {
+    max-width: 100%;
+}
+
+// Responsive containers: each breakpoint size caps at its max-width
+@each $breakpoint, $container-max-width in $container-max-widths {
+    .container-#{$breakpoint} {
+        @include media-breakpoint-up($breakpoint) {
+            max-width: $container-max-width;
+        }
+    }
+}
+
+// .container caps at each breakpoint
+.container {
+    @each $breakpoint, $container-max-width in $container-max-widths {
+        @include media-breakpoint-up($breakpoint) {
+            max-width: $container-max-width;
+        }
+    }
+}
+
+// ─── Row ──────────────────────────────────────────────────
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: calc($grid-gutter-width * -0.5);
+    margin-left: calc($grid-gutter-width * -0.5);
+
+    > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc($grid-gutter-width * 0.5);
+        padding-left: calc($grid-gutter-width * 0.5);
+    }
+}
+
+// Gutter utilities (g-*, gx-*, gy-*)
+@each $size, $length in (0: 0, 1: 0.25rem, 2: 0.5rem, 3: 1rem, 4: 1.5rem, 5: 3rem) {
+    .g-#{$size},
+    .gx-#{$size} {
+        --bs-gutter-x: #{$length};
+        margin-right: calc(var(--bs-gutter-x) * -0.5);
+        margin-left: calc(var(--bs-gutter-x) * -0.5);
+
+        > * {
+            padding-right: calc(var(--bs-gutter-x) * 0.5);
+            padding-left: calc(var(--bs-gutter-x) * 0.5);
+        }
+    }
+
+    .g-#{$size},
+    .gy-#{$size} {
+        --bs-gutter-y: #{$length};
+        margin-top: calc(var(--bs-gutter-y) * -1);
+
+        > * {
+            margin-top: var(--bs-gutter-y);
+        }
+    }
+}
+
+// ─── Columns ──────────────────────────────────────────────
+
+// Generate columns for a given infix (empty string for xs)
+@mixin make-grid-columns($infix: "") {
+    @for $i from 1 through 12 {
+        .col#{$infix}-#{$i} {
+            flex: 0 0 auto;
+            width: calc(100% * $i / 12);
+        }
+    }
+
+    .col#{$infix} {
+        flex: 1 0 0%;
+    }
+
+    .col#{$infix}-auto {
+        flex: 0 0 auto;
+        width: auto;
+    }
+}
+
+// xs (no breakpoint prefix needed, but generate col-N as well)
+@include make-grid-columns("");
+
+// Responsive column classes
+@each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint);
+    @if $infix != "" {
+        @include media-breakpoint-up($breakpoint) {
+            @include make-grid-columns($infix);
+        }
+    }
+}
+
+// ─── Row columns ──────────────────────────────────────────
+
+@for $i from 1 through $grid-row-columns {
+    .row-cols-#{$i} > * {
+        flex: 0 0 auto;
+        width: calc(100% / $i);
+    }
+}
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint);
+    @if $infix != "" {
+        @include media-breakpoint-up($breakpoint) {
+            @for $i from 1 through $grid-row-columns {
+                .row-cols#{$infix}-#{$i} > * {
+                    flex: 0 0 auto;
+                    width: calc(100% / $i);
+                }
+            }
+        }
+    }
+}
+
+// ─── Offset ───────────────────────────────────────────────
+
+@mixin make-offsets($infix: "") {
+    @for $i from 0 through 11 {
+        .offset#{$infix}-#{$i} {
+            margin-left: if($i == 0, 0, calc(100% * $i / 12));
+        }
+    }
+}
+
+@include make-offsets("");
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint);
+    @if $infix != "" {
+        @include media-breakpoint-up($breakpoint) {
+            @include make-offsets($infix);
+        }
+    }
+}
