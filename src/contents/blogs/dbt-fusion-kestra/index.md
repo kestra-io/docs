@@ -4,10 +4,11 @@ description: "Kestra's dbt plugin now supports dbt Core v2.0 and the new Rust-ba
 date: 2026-06-01T17:00:00
 category: Solutions
 author:
-  name: Elliot Gunn
-  image: egunn
-  linkedin: https://www.linkedin.com/in/elliotgunn/
-  role: Product Marketing Manager
+  name: François Delbrayelle
+  image: fdelbrayelle
+  linkedin: https://www.linkedin.com/in/fdelbrayelle/
+  twitter: "@fdelbrayelle"
+  role: Lead Software Engineer
 image: ./main.png
 ---
 
