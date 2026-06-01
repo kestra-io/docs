@@ -77,12 +77,13 @@ kestractl flows list my.namespace --output json
 - `kv`: list, set, update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
 - `users`: list, get, create, update, delete, set group membership, set passwords, and manage API tokens for users. Requires Kestra EE; operates at the instance level (not tenant-scoped).
 - `groups`: list, get, create, update, delete groups and manage their members. Requires Kestra EE; tenant-scoped.
+- `roles`: list, get, create, update, and delete roles with resource-level permissions. Requires Kestra EE; tenant-scoped.
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
 
 ## IAM management (Enterprise Edition)
 
-The `users` and `groups` command groups require Kestra Enterprise Edition. `users` operates at the instance level while `groups` is tenant-scoped and uses the active tenant from your context.
+The `users`, `groups`, and `roles` command groups require Kestra Enterprise Edition. `users` operates at the instance level while `groups` and `roles` are tenant-scoped and use the active tenant from your context.
 
 ### Users
 
@@ -149,6 +150,53 @@ kestractl groups delete <group_id> --yes
 kestractl groups members list <group_id>
 kestractl groups members add <group_id> <user_id>
 kestractl groups members remove <group_id> <user_id>
+```
+
+### Roles
+
+A role carries a `permissions` payload: a map of resource type (e.g. `FLOW`, `EXECUTION`, `NAMESPACE`, `SECRET`, `KVSTORE`) to a list of permission levels (`READ`, `CREATE`, `UPDATE`, `DELETE`). Provide permissions either inline with the repeatable `--permission TYPE:LEVEL[,LEVEL]` flag or from a YAML/JSON file with `--permissions-file` — not both at once.
+
+::alert{type="warning"}
+Passing `--permission` or `--permissions-file` on `roles update` **replaces the entire permissions block** — it does not merge with the existing permissions. Omit both flags on update if you only want to change the name or description.
+::
+
+```bash
+# List / filter roles
+kestractl roles list
+kestractl roles list --query editor --output json
+kestractl roles list --page 1 --size 50 --sort name:asc
+
+# Get role details, including its permissions
+kestractl roles get <role_id>
+
+# Create a role (--name required; at least one --permission or --permissions-file required)
+kestractl roles create --name editor \
+  --description "Can edit flows and view executions" \
+  --permission FLOW:READ,CREATE,UPDATE \
+  --permission EXECUTION:READ
+
+# Create a role from a permissions file (YAML or JSON)
+kestractl roles create --name viewer --permissions-file perms.yaml
+```
+
+```yaml
+# perms.yaml
+FLOW:
+  - READ
+EXECUTION:
+  - READ
+```
+
+```bash
+# Update a role — only the flags you pass change; other attributes are preserved
+# Exception: --permission replaces the entire permissions block
+kestractl roles update <role_id> --description "Updated description"
+kestractl roles update <role_id> --permission FLOW:READ,CREATE,UPDATE,DELETE
+kestractl roles update <role_id> --default
+
+# Delete a role — prompts for confirmation; skip with --yes
+kestractl roles delete <role_id>
+kestractl roles delete <role_id> --yes
 ```
 
 ## Configuration
