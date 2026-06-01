@@ -24,7 +24,7 @@ pillars:
   items:
     - icon: "mdi:lightning-bolt-outline"
       title: "Event-driven Fabric jobs, not workspace cron"
-      description: "Fabric's scheduler fires items on a fixed cadence inside the workspace. Kestra triggers <code>io.kestra.plugin.microsoft.fabric.data.engineering.RunPipeline</code> the moment an upstream event lands: a webhook, an Azure Blob arrival, a <a href='/orchestration/kafka'>Kafka</a> message, or a schedule. The Fabric job runs on the event, not on the next workspace tick."
+      description: "Fabric's scheduler fires items on a fixed cadence inside the workspace. Kestra triggers <code>RunPipeline</code> the moment an upstream event lands: a webhook, an Azure Blob arrival, a <a href='/orchestration/kafka'>Kafka</a> message, or a schedule. The Fabric job runs on the event, not on the next workspace tick."
     - icon: "mdi:notebook-outline"
       title: "Notebooks, pipelines, and Spark as flow steps"
       description: "<code>RunNotebook</code>, <code>RunPipeline</code>, and <code>RunSparkJob</code> each submit a Fabric item job and wait for completion by default (polling every 5s). Each becomes one step in a larger Kestra flow, so a notebook can be bracketed by the load before it and the activation after it, with per-step retries."
