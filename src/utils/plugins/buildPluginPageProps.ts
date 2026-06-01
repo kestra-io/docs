@@ -275,8 +275,11 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         ),
     )
 
-    const ogImage = effectiveSubGroup
-        ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === effectiveSubGroup)?.subGroup}.svg`
+    const matchedSubGroup = effectiveSubGroup
+        ? subgroups.find((r) => slugify(r.title) === effectiveSubGroup)?.subGroup
+        : undefined
+    const ogImage = matchedSubGroup
+        ? `/meta/plugins/group-${matchedSubGroup}.svg`
         : `/meta/plugins/${pluginType ?? pluginName}.svg`
 
     const prunedRootPlugin = rootPlugin ? prunePluginsForSidebar([rootPlugin])[0] : undefined
