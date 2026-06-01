@@ -6,23 +6,96 @@ icon: /src/contents/docs/icons/padlock.svg
 description: Configure SSL/TLS encryption for Kestra to secure the UI and API access using self-signed or CA-signed certificates.
 ---
 
-Configure secure access to the Kestra UI via HTTPS.
+Configure secure access to the Kestra UI via HTTPS. The right approach depends on your deployment type:
 
-This page explains how to configure secure access via HTTPS to the Kestra UI.
+| Approach | Best for | Cert management |
+|---|---|---|
+| [Caddy reverse proxy](#using-caddy-as-a-reverse-proxy) | Docker/VM deployments, local dev | Automatic (Let's Encrypt or local CA) |
+| [Kubernetes Ingress + cert-manager](#using-ingress-with-tls-termination-recommended-for-production) | Kubernetes deployments | Automatic via cert-manager |
+| [Micronaut SSL config](#micronaut-ssl-configuration) | Air-gapped or no reverse proxy option | Manual (bring your own certs) |
+| [Self-signed certificates](#creating-self-signed-certificates) | Local testing only | Manual |
 
 ## Why use SSL/TLS encryption
 
-In short, adding TLS encryption to your environment provides the following benefits:
+Adding TLS encryption to your environment provides the following benefits:
 
 - Data is encrypted in transit, preventing sensitive data from being intercepted in "man-in-the-middle" attacks.
 
 - TLS adds a layer of trust by ensuring users know the URL they access is genuine (e.g., `https://mycompany.kestra.com/ui` is verified as an internal site).
 
-For further details, Cloudflare has a good write-up on [why you should use https](https://www.cloudflare.com/en-gb/learning/ssl/why-use-https/).
+For further details, see [Why use HTTPS?](https://www.cloudflare.com/en-gb/learning/ssl/why-use-https/) on the Cloudflare documentation.
+
+## Using Caddy as a reverse proxy
+
+[Caddy](https://caddyserver.com/) is a reverse proxy that manages HTTPS automatically. For public domains it obtains and renews Let's Encrypt certificates without any manual steps; for local development it generates a local CA and prompts once for system trust.
+
+### Local development (macOS)
+
+This setup gives multiple local Kestra instances clean HTTPS URLs (e.g. `https://oss`, `https://ee`) with a single local CA prompt.
+
+1. **Install Caddy**:
+   ```bash
+   brew install caddy
+   ```
+
+2. **Create a `~/Caddyfile`** with one `reverse_proxy` block per Kestra instance (adjust ports to match your instances):
+   ```
+   oss {
+       reverse_proxy localhost:8080
+   }
+
+   oss-dev {
+       reverse_proxy localhost:8081
+   }
+
+   ee {
+       reverse_proxy localhost:8082
+   }
+
+   ee-dev {
+       reverse_proxy localhost:8083
+   }
+   ```
+
+3. **Run Caddy**:
+   ```bash
+   sudo caddy run --config ~/Caddyfile
+   ```
+
+   Caddy generates a local CA on first run and prompts once to trust it in the macOS Keychain. After that, all configured hostnames are available over HTTPS with no browser warnings.
+
+:::alert{type="info"}
+For the short hostnames (e.g. `oss`, `ee`) to resolve, add them to `/etc/hosts`:
+```
+127.0.0.1 oss oss-dev ee ee-dev
+```
+:::
+
+### Production (public domain)
+
+For a publicly accessible Kestra instance, point your domain at the server and Caddy handles certificate issuance and renewal automatically via Let's Encrypt.
+
+```
+kestra.yourdomain.com {
+    reverse_proxy localhost:8080
+}
+```
+
+Run Caddy as a background service so it persists across reboots:
+
+```bash
+sudo caddy start --config /etc/caddy/Caddyfile
+```
+
+With this setup, Kestra itself runs on plain HTTP internally (`localhost:8080`) and Caddy terminates TLS at the edge — no changes to Kestra's Micronaut SSL configuration are needed.
+
+:::alert{type="info"}
+Kestra uses WebSockets for real-time execution log streaming. Caddy's `reverse_proxy` directive supports WebSocket upgrades by default, so no extra configuration is required.
+:::
 
 ## Creating self-signed certificates
 
-To get started in lower environments, you can create self-signed certificates using the OpenSSL library. Full details on the steps and how to examine the certificates and keys in more detail can be found in this [Micronaut article](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html).
+To get started in lower environments, create self-signed certificates using the OpenSSL library. For more detail on examining certificates and keys, see this [Micronaut article](https://guides.micronaut.io/latest/micronaut-security-x509-maven-groovy.html).
 
 :::alert{type="info"}
 While self-signed certificates encrypt traffic, they are considered unsuitable for production usage. They are deemed untrustworthy, as they do not come from a trusted Certificate Authority (CA) such as [Let's Encrypt](https://letsencrypt.org/). Follow your organization's best practices when choosing a CA provider.
@@ -79,9 +152,9 @@ keytool -import -trustcacerts -noprompt -alias ca \
         -storepass changeit -keypass changeit
 ```
 
-## Sample Kestra configuration with SSL enabled
+## Micronaut SSL configuration
 
-Enable HTTPS through the `micronaut` configuration settings. These are set at the root level within the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
+Configure HTTPS through the `micronaut` settings in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
 :::alert{type="info"}
 Ensure that you expose the secure port of the connection if different from the default port.
@@ -149,13 +222,14 @@ Ensure that you expose the secure port of the connection if different from the d
 ```
 
 ## Outbound SSL configuration
-If Kestra tasks make outbound calls to other services, secure the process by configuring SSL for outbound traffic. You can accomplish this in your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file by passing the following JVM options in the `JAVA_OPTS` environment variable:
+
+If Kestra tasks make outbound calls to services that require SSL, configure the JVM to trust your certificates by setting the following options in the `JAVA_OPTS` environment variable in your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md):
 
 ```yaml
 JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
 ```
 
-Below is an example configuration file with the newly added environment variable:
+The following example shows the full service configuration with `JAVA_OPTS` set:
 
 ```yaml
   kestra:
@@ -171,7 +245,7 @@ Below is an example configuration file with the newly added environment variable
     ports:
       - "8443:8443"
     environment:
-      JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit" # Add in the JVM options as an environment variable
+      JAVA_OPTS: "-Djavax.net.ssl.trustStore=/app/ssl/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit"
       KESTRA_CONFIGURATION: |
         micronaut:
           security:
@@ -223,8 +297,7 @@ Below is an example configuration file with the newly added environment variable
 
 Cross-site request forgery (CSRF) is an attack where a malicious website or email tricks a user's browser into performing unwanted actions on a trusted site while authenticated.
 
-To enable CSRF protection, you must ensure that your instance has TLS/SSL enabled.
-Once this is configured, add the following to your configuration file:
+CSRF protection requires TLS/SSL to be enabled on your instance. Once TLS is configured, add the following to your configuration file:
 
 ```yaml
 micronaut:
@@ -243,7 +316,7 @@ For Kubernetes deployments, you can enable HTTPS either by configuring TLS at th
 
 Most cloud providers expect TLS termination at the ingress controller. Here's how to configure HTTPS using Let's Encrypt certificates:
 
-1. **Install cert-manager** (automates certificate management — to select a different version, check the [available releases on GitHub](https://github.com/cert-manager/cert-manager/releases)):
+1. **Install cert-manager**. To use a different version, see [available releases on GitHub](https://github.com/cert-manager/cert-manager/releases):
    ```bash
    kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.17.1/cert-manager.yaml
    ```
@@ -295,7 +368,7 @@ Most cloud providers expect TLS termination at the ingress controller. Here's ho
 
 ### Using self-signed certificates (for testing)
 
-1. **Generate certificates** using the OpenSSL commands from the previous section.
+1. **Generate certificates** using the OpenSSL commands in the [Creating self-signed certificates](#creating-self-signed-certificates) section above.
 
 2. **Create TLS secret**:
    ```bash
