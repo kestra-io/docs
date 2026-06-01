@@ -39,7 +39,7 @@ resource "kestra_user" "example" {
 
 - `description` (String) The user description.
 - `first_name` (String) The user first name.
-- `groups` (List of String) The user groups id.
+- `groups` (List of String) The list of group ids the user belongs to. This list is sent to the API as a full replacement: any group membership not declared here will be removed on apply, including memberships managed outside Terraform or by other Terraform configurations. To manage individual memberships without overwriting others, use the `kestra_user_group_membership` resource instead, or set `lifecycle { ignore_changes = [groups] }` on this resource.
 - `last_name` (String) The user last name.
 - `namespace` (String) The linked namespace.
 
