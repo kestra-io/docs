@@ -34,7 +34,10 @@ quotePerson: Hamis Badarou
 quotePersonTitle: ""
 industry: Investment and Banking
 headquarter: Paris, France
+region: Europe
+companySize: "51–500"
 solution: "Solution for real-esrate investment "
+tagline: Leading French real estate developer and property investor
 companyName: ""
 cta: "What would change if your marketing data pipelines ran automatically—keeping every campaign fed with fresh, accurate data?"
 ---

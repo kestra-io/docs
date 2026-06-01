@@ -34,9 +34,10 @@ quotePerson: Lirav Duvshani
 quotePersonTitle: CEO/Data Architect @DataFlooder
 industry: Green IT
 headquarter: Lyon, France
-solution: Sopht is a French startup focused on Green ITOps. Their platform helps
-  organizations automate decarbonization strategies and track their
-  environmental and financial performance.
+region: Europe
+companySize: "1–50"
+solution: Sopht is a French startup focused on Green ITOps. Their platform helps organizations automate decarbonization strategies and track their environmental and financial performance.
+tagline: French startup automating Green ITOps and decarbonization tracking
 companyName: Sopht
 cta: "What would change if your green IT platform scaled from 1,200 to 6,200 daily jobs—with 99.5% reliability built in?"
 ---

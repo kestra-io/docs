@@ -29,25 +29,37 @@ interface Window {
 
 interface Story {
     id: string
+    rank: number
+    featured?: boolean
     title: string
     excerpt?: string
     description: string
+    metaTitle?: string
+    metaDescription?: string
     heroImage: string
     logo?: string
     logoDark?: string
     kpi1: string
     kpi2: string
     kpi3: string
+    kpi4?: string
     quote: string
     quotePerson: string
     quotePersonTitle: string
     industry: string
+    region: string
     headquarter: string
     solution: string
+    tagline?: string
+    companyName: string
+    intro?: string
+    deployment?: string
+    useCase?: string
+    companySize?: string
     tasks: string[]
     content: string
-    companyName: string
     featuredImage: string
+    cta?: string
 }
 interface PluginInformation {
     name?: string

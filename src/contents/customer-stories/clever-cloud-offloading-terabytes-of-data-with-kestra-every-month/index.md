@@ -33,8 +33,10 @@ quotePerson: Alexandre Burgoni
 quotePersonTitle: ""
 industry: Cloud Provider
 headquarter: Nantes, France
-solution: Clever Cloud is an IT Automation platform to manage all the ops work
-  while you focus on your business value
+region: Europe
+companySize: "51–500"
+solution: Clever Cloud is an IT Automation platform to manage all the ops work while you focus on your business value
+tagline: European cloud provider and IT automation platform
 companyName: ""
 cta: "What would change if your cloud data offloading ran at scale—processing terabytes reliably, every month, without manual intervention?"
 ---

@@ -29,7 +29,10 @@ quotePerson: Michele Memoli
 quotePersonTitle: ""
 industry: SaaS
 headquarter: London, United Kingdom
+region: Europe
+companySize: "1–50"
 solution: Modelisation tool for architects
+tagline: Collaborative architectural modeling and design tool
 companyName: ""
 cta: "What would change if your SaaS platform's backend workflows were fully orchestrated—deployments, data flows, and integrations running automatically?"
 ---

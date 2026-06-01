@@ -1,6 +1,7 @@
 ---
 title: Scaling Secure Infrastructure at Crédit Agricole with Kestra
 rank: 1
+featured: true
 description: This is the story of how CAGIP, the IT production arm of Crédit
   Agricole, transformed infrastructure operations and scaled data workflows
   across more than 100 clusters using Kestra.
@@ -34,7 +35,10 @@ quotePerson: Julien Legrand
 quotePersonTitle: "PO Data "
 industry: Banking
 headquarter: Paris, France
+region: Europe
+companySize: "5,000+"
 solution: CAGIP manage the whole infrastructure ecosystem for the Credit Agricole Group
+tagline: Infrastructure arm of France's largest retail banking group
 companyName: Crédit Agricole
 cta: "What would change if your bank's infrastructure scaled securely—automated across every team, with governance built into every workflow?"
 ---
