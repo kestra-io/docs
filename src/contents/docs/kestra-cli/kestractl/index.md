@@ -78,12 +78,13 @@ kestractl flows list my.namespace --output json
 - `users`: list, get, create, update, delete, set group membership, set passwords, and manage API tokens for users. Requires Kestra EE; operates at the instance level (not tenant-scoped).
 - `groups`: list, get, create, update, delete groups and manage their members. Requires Kestra EE; tenant-scoped.
 - `roles`: list, get, create, update, and delete roles with resource-level permissions. Requires Kestra EE; tenant-scoped.
+- `service-accounts` (aliases: `service-account`, `sa`): list, get, create, update, delete service accounts and manage their API tokens. Requires Kestra EE; instance-level (not tenant-scoped).
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
 
 ## IAM management (Enterprise Edition)
 
-The `users`, `groups`, and `roles` command groups require Kestra Enterprise Edition. `users` operates at the instance level while `groups` and `roles` are tenant-scoped and use the active tenant from your context.
+The `users`, `groups`, `roles`, and `service-accounts` command groups require Kestra Enterprise Edition. `users` and `service-accounts` operate at the instance level while `groups` and `roles` are tenant-scoped and use the active tenant from your context.
 
 ### Users
 
@@ -197,6 +198,42 @@ kestractl roles update <role_id> --default
 # Delete a role — prompts for confirmation; skip with --yes
 kestractl roles delete <role_id>
 kestractl roles delete <role_id> --yes
+```
+
+### Service accounts
+
+Service accounts are instance-level resources. The command can be shortened to `service-account` or `sa`.
+
+`update` is a partial update — only `--name` and `--description` are accepted. Super-admin status, tenant grants, and group membership cannot be changed after creation. Pass at least one of `--name` or `--description` or the command returns an error.
+
+```bash
+# List service accounts
+kestractl service-accounts list
+kestractl service-accounts list --output json
+kestractl service-accounts list --page 1 --size 50 --sort name:asc
+
+# Get service account details
+kestractl service-accounts get <service_account_id>
+
+# Create a service account (--name is required; lowercase alphanumeric and dashes)
+kestractl service-accounts create --name ci-bot --description "CI pipeline"
+
+# Create a super-admin service account with tenant access (--tenant-grant is repeatable)
+kestractl service-accounts create --name ops-bot --superadmin --tenant-grant main
+
+# Update name or description only (at least one flag required)
+kestractl service-accounts update <service_account_id> --description "Updated description"
+kestractl service-accounts update <service_account_id> --name new-bot-name
+
+# Delete a service account — prompts for confirmation; skip with --yes
+kestractl service-accounts delete <service_account_id>
+kestractl service-accounts delete <service_account_id> --yes
+
+# Manage API tokens (the full token value is shown only once, at creation)
+kestractl service-accounts tokens create <service_account_id> --name deploy-token
+kestractl service-accounts tokens create <service_account_id> --name short-lived --max-age P30D --extended
+kestractl service-accounts tokens list <service_account_id>
+kestractl service-accounts tokens delete <service_account_id> <token_id>
 ```
 
 ## Configuration
