@@ -75,8 +75,81 @@ kestractl flows list my.namespace --output json
 - `namespaces`: list and filter namespaces.
 - `nsfiles`: list, get, upload, and delete namespace files.
 - `kv`: list, set, update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
+- `users`: list, get, create, update, delete, set group membership, set passwords, and manage API tokens for users. Requires Kestra EE; operates at the instance level (not tenant-scoped).
+- `groups`: list, get, create, update, delete groups and manage their members. Requires Kestra EE; tenant-scoped.
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
+
+## IAM management (Enterprise Edition)
+
+The `users` and `groups` command groups require Kestra Enterprise Edition. `users` operates at the instance level while `groups` is tenant-scoped and uses the active tenant from your context.
+
+### Users
+
+::alert{type="warning"}
+Use `--user-password` to set a user's password — **not** `--password`. The `--password` flag authenticates the CLI itself with basic auth. Passing a user's new password to `--password` sends it as your own credentials.
+::
+
+```bash
+# List / filter users
+kestractl users list
+kestractl users list --query alice --output json
+
+# Get user details
+kestractl users get <user_id>
+
+# Create a user (--email is required)
+kestractl users create --email alice@example.com --first-name Alice --user-password 'S3cret!'
+kestractl users create --email bob@example.com --superadmin
+
+# Update a user — only the flags you pass change; other attributes are preserved
+kestractl users update <user_id> --first-name Alicia
+kestractl users update <user_id> --superadmin=false
+
+# Set a user's password
+kestractl users set-password <user_id> --user-password 'N3wPass!'
+
+# Assign a user to groups in the active tenant
+# Passing no --group clears all group memberships for that tenant
+kestractl users set-groups <user_id> --group <group_id>
+
+# Delete a user — prompts for confirmation; skip with --yes
+kestractl users delete <user_id>
+kestractl users delete <user_id> --yes
+
+# Manage a user's API tokens (the full token value is shown only once, at creation)
+kestractl users tokens create <user_id> --name ci-token
+kestractl users tokens list <user_id>
+kestractl users tokens delete <user_id> <token_id>
+```
+
+### Groups
+
+```bash
+# List / filter groups
+kestractl groups list
+kestractl groups list --query admins --output json
+
+# Get group details
+kestractl groups get <group_id>
+
+# Create a group (--name is required; --member is repeatable for initial members)
+kestractl groups create --name admins --description 'Platform admins'
+kestractl groups create --name admins --member <user_id> --member <user_id>
+
+# Update a group — only the flags you pass change; other attributes are preserved
+kestractl groups update <group_id> --name platform-admins
+kestractl groups update <group_id> --description 'Updated description'
+
+# Delete a group — prompts for confirmation; skip with --yes
+kestractl groups delete <group_id>
+kestractl groups delete <group_id> --yes
+
+# Manage group members
+kestractl groups members list <group_id>
+kestractl groups members add <group_id> <user_id>
+kestractl groups members remove <group_id> <user_id>
+```
 
 ## Configuration
 
