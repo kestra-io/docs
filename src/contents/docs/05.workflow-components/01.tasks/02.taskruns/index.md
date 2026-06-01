@@ -70,123 +70,33 @@ The logs show the following:
 }
 ```
 
-## Task run values
+## Loop iteration context
 
-Some [Flowable tasks](../00.flowable-tasks/index.md), such as [ForEach](../00.flowable-tasks/index.md) and [ForEachItem](../00.flowable-tasks/index.md#foreachitem), group tasks together. You can use `{{ taskrun.value }}` to access the value of a specific task run.
-
-In the example below, `foreach` iterates twice over the values `[1, 2]`:
+Inside a [Loop](../00.flowable-tasks/index.md#loop) task, each iteration runs as an isolated sub-execution. Use `{{ item.value }}` and `{{ item.index }}` to access the current iteration value and zero-based index from any task inside that sub-execution, including tasks nested inside `If`, `Parallel`, or other flowable tasks.
 
 ```yaml
 id: loop
 namespace: company.team
 
 tasks:
-  - id: foreach
-    type: io.kestra.plugin.core.flow.ForEach
-    values: [1, 2]
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3]
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message:
-        - "{{ taskrun }}"
-        - "{{ taskrun.value }}"
-        - "{{ taskrun.id }}"
-        - "{{ taskrun.startDate }}"
-        - "{{ taskrun.attemptsCount }}"
-        - "{{ taskrun.parentId }}"
-        - "{{ taskrun.iteration }}"
-```
-This produces two separate log entries, one with `1` and the other with `2`.
-
-### Parent task run values
-
-You can also use the `{{ parent.taskrun.value }}` expression to access a task run value from a parent task within nested flowable child tasks:
-
-```yaml
-id: loop
-namespace: company.team
-
-tasks:
-  - id: foreach
-    type: io.kestra.plugin.core.flow.ForEach
-    values: [1, 2]
-    tasks:
-      - id: log
-        type: io.kestra.plugin.core.log.Log
-        message: "{{ taskrun.value }}"
-      - id: if
-        type: io.kestra.plugin.core.flow.If
-        condition: "{{ true }}"
-        then:
-          - id: log_parent
-            type: io.kestra.plugin.core.log.Log
-            message: "{{ parent.taskrun.value }}"
+        message: |
+          value={{ item.value }}
+          index={{ item.index }}
+          taskrun.id={{ taskrun.id }}
+          taskrun.startDate={{ taskrun.startDate }}
+          taskrun.attemptsCount={{ taskrun.attemptsCount }}
+          taskrun.parentId={{ taskrun.parentId }}
 ```
 
-This iterates through the `log` and `if` tasks twice as there are two items in `values` property. The `log_parent` task logs the parent task run value as `1` and then `2`.
+For nested loops, `{{ item.parent.value }}` accesses the immediate enclosing loop's value, and `{{ item.parents[n].value }}` accesses deeper ancestors (`[0]` = immediate parent, `[1]` = grandparent, and so on).
 
-### Parent vs. parents in nested Flowable tasks
-
-With nested [Flowable tasks](../00.flowable-tasks/index.md), only the immediate parent is available through `taskrun.value`. To access a parent task higher up the tree, you can use the `parent` and the `parents` expressions.
-
-The following flow shows a more complex example with nested flowable parent tasks:
-
-```yaml
-id: each_switch
-namespace: company.team
-
-tasks:
-  - id: simple
-    type: io.kestra.plugin.core.log.Log
-    message:
-      - "{{ task.id }}"
-      - "{{ taskrun.startDate }}"
-
-  - id: hierarchy_1
-    type: io.kestra.plugin.core.flow.ForEach
-    values: ["caseA", "caseB"]
-    tasks:
-      - id: hierarchy_2
-        type: io.kestra.plugin.core.flow.Switch
-        value: "{{ taskrun.value }}"
-        cases:
-          caseA:
-            - id: hierarchy_2_a
-              type: io.kestra.plugin.core.debug.Return
-              format: "{{ task.id }}"
-          caseB:
-            - id: hierarchy_2_b_first
-              type: io.kestra.plugin.core.debug.Return
-              format: "{{ task.id }}"
-
-            - id: hierarchy_2_b_second
-              type: io.kestra.plugin.core.flow.ForEach
-              values: ["case1", "case2"]
-              tasks:
-                - id: switch
-                  type: io.kestra.plugin.core.flow.Switch
-                  value: "{{ taskrun.value }}"
-                  cases:
-                    case1:
-                      - id: switch_1
-                        type: io.kestra.plugin.core.log.Log
-                        message:
-                          - "{{ parents[0].taskrun.value }}"
-                          - "{{ parents[1].taskrun.value }}"
-                    case2:
-                      - id: switch_2
-                        type: io.kestra.plugin.core.log.Log
-                        message:
-                          - "{{ parents[0].taskrun.value }}"
-                          - "{{ parents[1].taskrun.value }}"
-  - id: simple_again
-    type: io.kestra.plugin.core.log.Log
-    message:
-      - "{{ task.id }}"
-      - "{{ taskrun.startDate }}"
-```
-
-The `parent` variable gives direct access to the first parent, while the `parents[INDEX]` gives you access to the parent higher up the tree.
+See [Loop iteration context](../../../expressions/01.context/index.mdx#loop-iteration-context) in the expressions reference for the full `item` variable table.
 
 :::collapse{title="Task Run JSON Object Example"}
 ```json

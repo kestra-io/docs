@@ -170,7 +170,7 @@ Here is the list of supported data types:
 - `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
 - `DURATION`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
 - `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="<input-id>"; filename="<file-name>"` (where `<input-id>` is the input name and `<file-name>` is the original filename of the file being uploaded), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
-- `JSON`: Must be a valid JSON string and will be converted to a typed form.
+- `JSON`: Must be a valid JSON string and will be converted to a typed form. Accepts an optional `jsonSchema` property (JSON Schema Draft 2020-12) to validate the structure of the input value at execution time.
 - `YAML`: Must be a valid YAML string.
 - `URI`: Must be a valid URI and will be kept as a string.
 - `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/05.security-and-secrets/index.md) in your [Kestra configuration](../../configuration/index.mdx) before using it.
@@ -197,13 +197,43 @@ Below is the list of available properties for all inputs regardless of their typ
 
 Kestra validates the `type` of each input. In addition to the type validation, some input types can be configured with validation rules that are enforced at execution time.
 
-- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html).
+- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html). Validator patterns are subject to a 10-second timeout; executions that exceed it are rejected with an error. The timeout is configurable via [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout).
+- `SECRET`: Supports the same `validator` regex property as `STRING`, with the same 10-second timeout applied before the value is encrypted. This ensures the secret is never stored if the pattern is unsafe.
 - `INT`: `min` and `max` define the allowed range.
 - `FLOAT`: `min` and `max` define the allowed range.
 - `DURATION`: `min` and `max` define the allowed range.
 - `DATE`: `after` and `before` properties help you ensure that the input value is within the allowed date range.
 - `TIME`: `after` and `before` properties help you ensure that the input value is within the allowed time range.
 - `DATETIME`: `after` and `before` properties help you ensure that the input value is within the allowed date and time range.
+- `JSON`: A `jsonSchema` property accepts a JSON Schema Draft 2020-12 string. If provided, the input value is validated against the schema at execution time. If the value does not conform, the execution is rejected before it starts.
+
+### Example: use JSON schema validation
+
+```yaml
+id: json_schema_validation
+namespace: company.team
+
+inputs:
+  - id: payload
+    type: JSON
+    jsonSchema: |
+      {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Hello, {{ inputs.payload.name }}!"
+```
+
+If you pass `{"name": 42}`, the execution will be rejected with a constraint violation before any task runs. If you pass `{"name": "Alice"}`, the flow proceeds normally.
 
 ### Example: use input validators in your flows
 

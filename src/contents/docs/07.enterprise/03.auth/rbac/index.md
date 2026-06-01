@@ -74,6 +74,7 @@ A Permission is a resource that can be accessed by a User or Group. Open the fol
 - `APP`
 - `AI_COPILOT`
 - `APPEXECUTION`
+- `MCP_SERVER`
 - `TEST`
 - `ASSET`
 - `USER`
@@ -106,6 +107,20 @@ Example (Flows):
 :::alert{type="info"}
 For a complete CRUD-to-endpoint mapping for every permission, see the [Permissions Reference](./permissions-reference/index.md).
 :::
+
+### MCP server permissions
+
+`MCP_SERVER` is a first-class RBAC resource that controls access to [Kestra MCP servers](../../../ai-tools/mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
+
+Default role assignments:
+
+| Role | Actions granted |
+|---|---|
+| Admin | All (`VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`) |
+| Editor / Developer | All (`VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`) |
+| Viewer | `VIEW`, `LIST` |
+
+In addition to these permissions, access to a **private** MCP server is also flow-scoped: a user can connect to a private server only if they have `FLOW.EXECUTE` on at least one namespace that contains a flow with an `McpToolTrigger` pointing at that server.
 
 ### Currently supported roles
 

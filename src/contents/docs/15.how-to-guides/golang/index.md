@@ -215,3 +215,60 @@ tasks:
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ![metrics](./metrics.png)
+
+## Automate Go with triggers
+
+You can also use Go code as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Go code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline Go code:
+
+```yaml
+id: go_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.go.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      package main
+
+      func main() {
+          panic("boom")
+      }
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Go commands instead:
+
+```yaml
+id: commands_trigger
+namespace: company.team
+
+triggers:
+  - id: commands_failure
+    type: io.kestra.plugin.scripts.go.CommandsTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: golang
+    commands:
+      - go run missing.go
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These trigger types support:
+
+- `interval` to control how often the script or commands run
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only on a transition from not matching to matching

@@ -202,11 +202,11 @@ After saving the flow and executing, we can see that Kestra successfully accesse
 
 ## Filter secrets by tags
 
-When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching [tags](../secrets-manager/index.md#default-tags). This is supported for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager.
+When integrating an external secrets manager in read-only mode, you can filter which secrets are visible in Kestra by matching [tags](../secrets-manager/index.md#default-tags). Set `read-only: true` and configure `filter-on-tags` with the key/value pairs to match.
 
-- Set `read-only: true` and configure `filter-on-tags.tags` as a map of key/value pairs to match.
-
-Below are example configurations for AWS Secrets Manager, Azure Key Vault, and Google Secret Manager:
+:::alert{type="info"}
+AWS Secrets Manager, Azure Key Vault, and Google Secret Manager use a nested `tags` sub-key under `filter-on-tags`. All other providers accept `filter-on-tags` as a flat map of key/value pairs.
+:::
 
 ```yaml
 kestra:
@@ -240,6 +240,168 @@ kestra:
         tags:
           application: kestra-production
 ```
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    read-only: true
+    vault:
+      filter-on-tags:
+        application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: cyberark
+    read-only: true
+    cyberark:
+      filter-on-tags:
+        application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: doppler
+    read-only: true
+    doppler:
+      filter-on-tags:
+        application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: 1password
+    read-only: true
+    1password:
+      filter-on-tags:
+        application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: beyondtrust
+    read-only: true
+    beyondtrust:
+      filter-on-tags:
+        application: kestra-production
+```
+
+```yaml
+kestra:
+  secret:
+    type: delinea
+    read-only: true
+    delinea:
+      filter-on-tags:
+        application: kestra-production
+```
+
+## Exclude secrets by tags
+
+Use `excluded-tags` to hide secrets from Kestra based on their tags. Any secret whose tags match at least one key-value pair in `excluded-tags` is excluded from Kestra's view, even if it would otherwise be included by `filter-on-tags`. This filter applies only when `read-only: true` is set.
+
+When both `filter-on-tags` and `excluded-tags` are configured, a secret must match all entries in `filter-on-tags` and must not match any entry in `excluded-tags`.
+
+The following examples exclude secrets tagged `hidden: "true"` for each supported provider:
+
+```yaml
+kestra:
+  secret:
+    type: aws-secret-manager
+    read-only: true
+    aws-secret-manager:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: azure-key-vault
+    read-only: true
+    azure-key-vault:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: google-secret-manager
+    read-only: true
+    google-secret-manager:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: vault
+    read-only: true
+    vault:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: cyberark
+    read-only: true
+    cyberark:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: doppler
+    read-only: true
+    doppler:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: 1password
+    read-only: true
+    1password:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: beyondtrust
+    read-only: true
+    beyondtrust:
+      excluded-tags:
+        hidden: "true"
+```
+
+```yaml
+kestra:
+  secret:
+    type: delinea
+    read-only: true
+    delinea:
+      excluded-tags:
+        hidden: "true"
+```
+
+:::alert{type="info"}
+AWS Secrets Manager does not support negative tag filtering in its `ListSecrets` API. Kestra evaluates `excluded-tags` client-side after fetching the secret list from AWS. For CyberArk, Doppler, 1Password, Vault, BeyondTrust, and Delinea, both `filter-on-tags` and `excluded-tags` are also evaluated client-side.
+:::
 
 ## Filter secrets by prefix
 

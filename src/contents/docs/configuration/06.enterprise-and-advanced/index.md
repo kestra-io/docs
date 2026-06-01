@@ -17,6 +17,7 @@ This area includes:
 
 - Enterprise license configuration
 - Enterprise Java security
+- gRPC TLS/mTLS for worker ↔ controller communication
 - UI sidebar customization
 - historical multi-tenancy and default tenant settings
 - custom links in the UI
@@ -87,6 +88,149 @@ kestra:
 ```
 
 The old multi-tenancy and default-tenant configuration was removed in `0.23.0`; keep it only in mind for migration work.
+
+## gRPC TLS/mTLS (EE only)
+
+Use this section when running Kestra in a distributed topology where the Worker Controller and Workers communicate over gRPC and you need to encrypt that channel. By default, gRPC traffic is plaintext. Enabling TLS here encrypts the controller ↔ worker channel; enabling mTLS additionally requires workers to present a certificate the controller trusts.
+
+This feature is active on any component with server type `CONTROLLER`, `WORKER`, or `STANDALONE`.
+
+### One-way TLS
+
+The controller presents a certificate; workers verify it against a truststore. Configure the controller (server side) with a keystore and the workers (client side) with a matching truststore:
+
+**Controller:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      key-store:
+        path: /etc/kestra/tls/controller-keystore.p12
+        type: PKCS12
+        password: "<keystore-password>"
+```
+
+**Worker:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      trust-store:
+        path: /etc/kestra/tls/ca-truststore.p12
+        type: PKCS12
+        password: "<truststore-password>"
+```
+
+If no truststore is provided on the worker side, the JVM default trust store is used. This is appropriate when the controller certificate is signed by a well-known CA.
+
+### Mutual TLS (mTLS)
+
+Set `client-auth: REQUIRE` on the controller to enforce that workers present a certificate. Both sides need a keystore and a truststore:
+
+**Controller:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      client-auth: REQUIRE
+      key-store:
+        path: /etc/kestra/tls/controller-keystore.p12
+        type: PKCS12
+        password: "<keystore-password>"
+      trust-store:
+        path: /etc/kestra/tls/ca-truststore.p12
+        type: PKCS12
+        password: "<truststore-password>"
+```
+
+**Worker:**
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      key-store:
+        path: /etc/kestra/tls/worker-keystore.p12
+        type: PKCS12
+        password: "<keystore-password>"
+      trust-store:
+        path: /etc/kestra/tls/ca-truststore.p12
+        type: PKCS12
+        password: "<truststore-password>"
+```
+
+`client-auth` also accepts `OPTIONAL`, which requests a client certificate but does not require one.
+
+### Authority override for static discovery
+
+When using static discovery, the gRPC channel authority is the synthetic value `controllers` rather than a real hostname. If the controller certificate's Subject Alternative Names (SANs) do not include `controllers`, TLS verification will fail. Set `authority-override` on the worker to a hostname that is present in the certificate's SANs:
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      authority-override: kestra-controller
+      trust-store:
+        path: /etc/kestra/tls/ca-truststore.p12
+        type: PKCS12
+        password: "<truststore-password>"
+```
+
+This is not needed with DNS-based discovery, where the authority is derived from the actual hostname.
+
+### JKS keystores
+
+PKCS12 is the recommended format. For JKS keystores, set `type: JKS`. JKS also supports a separate key password (used when the private key entry password differs from the store password):
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      key-store:
+        path: /etc/kestra/tls/keystore.jks
+        type: JKS
+        password: "<store-password>"
+        key-password: "<key-entry-password>"
+```
+
+### Development: skip certificate verification
+
+:::alert{type="warning"}
+`insecure-trust-all-certificates: true` disables CA verification entirely. Use only in local development or CI environments where certificates are self-signed and not managed. Never enable this in production.
+:::
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      insecure-trust-all-certificates: true
+```
+
+### Configuration reference
+
+| Property | Default | Description |
+| --- | --- | --- |
+| `kestra.grpc.tls.enabled` | `false` | Enable TLS for gRPC communication |
+| `kestra.grpc.tls.key-store.path` | — | Path to keystore file |
+| `kestra.grpc.tls.key-store.type` | `PKCS12` | Keystore format (`PKCS12` or `JKS`) |
+| `kestra.grpc.tls.key-store.password` | — | Keystore password |
+| `kestra.grpc.tls.key-store.key-password` | — | Private key entry password (JKS only) |
+| `kestra.grpc.tls.trust-store.path` | — | Path to truststore file |
+| `kestra.grpc.tls.trust-store.type` | `PKCS12` | Truststore format |
+| `kestra.grpc.tls.trust-store.password` | — | Truststore password |
+| `kestra.grpc.tls.client-auth` | `NONE` | Client auth mode: `NONE`, `OPTIONAL`, or `REQUIRE` |
+| `kestra.grpc.tls.insecure-trust-all-certificates` | `false` | Skip CA verification (development only) |
+| `kestra.grpc.tls.authority-override` | — | Override TLS authority for static discovery |
 
 ## Elasticsearch, Kafka, and indexing
 
@@ -267,6 +411,25 @@ kestra:
 ```
 
 If indexing falls behind, tune indexer batch settings before changing flow definitions. Those settings control how aggressively Kafka-backed events are flushed into Elasticsearch.
+
+## MCP server cache
+
+Each webserver node caches MCP server configuration in memory and hot-reloads it when a server is created, updated, or deleted. Two properties control this cache:
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.mcp.server-cache-config.maximum-size` | `500` | Maximum number of MCP server entries held in the cache. |
+| `kestra.mcp.server-cache-config.expire-after-access` | `PT5M` | Duration after which a cache entry expires if not accessed. |
+
+```yaml
+kestra:
+  mcp:
+    server-cache-config:
+      maximum-size: 200
+      expire-after-access: PT10M
+```
+
+Tune these only if you have a large number of MCP servers or tight memory constraints. The defaults are sufficient for most deployments.
 
 ## AI and isolated environments
 

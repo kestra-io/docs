@@ -132,7 +132,7 @@ tasks:
     values:
       my_key: "{{ kv('my_key') }}"
       simple_string: "{{ kv('simple_string') }}"
-      favorite_song: "{{ json(kv('json_kv')).song }}"
+      favorite_song: "{{ fromJson(kv('json_kv')).song }}"
 ```
 
 You can use the `io.kestra.plugin.core.kv.Set` task to create or modify any KV pair. When modifying existing values, you can leverage the `overwrite` boolean parameter to control whether to overwrite the existing value or fail if a value for that key already exists. By default, the `overwrite` parameter is set to `true` so that the existing value is always updated.
@@ -215,9 +215,9 @@ tasks:
 
 ### Read and parse JSON-type values from KV pairs
 
-To parse JSON values in Kestra's templated expressions, make sure to wrap the `kv()` call in the `json()` function like the following: `"{{ json(kv('your_json_key')).json_property }}"`.
+To parse JSON values in Kestra's templated expressions, wrap the `kv()` call in the `fromJson()` function: `"{{ fromJson(kv('your_json_key')).json_property }}"`.
 
-The following example demonstrates how to parse values from JSON-type KV pairs in a flow:
+This example sets a JSON KV pair and reads individual fields using `fromJson()`:
 ```yaml
 id: kv_json_flow
 namespace: company.team
@@ -239,10 +239,10 @@ tasks:
   - id: parse_json_kv
     type: io.kestra.plugin.core.log.Log
     message:
-      - "Author: {{ json(kv('favorite_song')).author }}"
-      - "Song: {{ json(kv('favorite_song')).song }}"
-      - "Album name: {{ json(kv('favorite_song')).album.name }}"
-      - "Album release date: {{ json(kv('favorite_song')).album.release_date }}"
+      - "Author: {{ fromJson(kv('favorite_song')).author }}"
+      - "Song: {{ fromJson(kv('favorite_song')).song }}"
+      - "Album name: {{ fromJson(kv('favorite_song')).album.name }}"
+      - "Album release date: {{ fromJson(kv('favorite_song')).album.release_date }}"
 
   - id: get
     type: io.kestra.plugin.core.kv.Get
@@ -250,7 +250,7 @@ tasks:
 
   - id: parse_json_from_kv
     type: io.kestra.plugin.core.log.Log
-    message: "Country: {{ json(outputs.get.value).album.name }}"
+    message: "Album name: {{ fromJson(outputs.get.value).album.name }}"
 ```
 
 

@@ -21,23 +21,22 @@ A trigger is a mechanism that automatically starts the execution of a flow.
     ></iframe>
 </div>
 
-Triggers can be either scheduled or event-based, giving you flexibility in how you automate workflow execution.
+Triggers can be either scheduled or event-based.
 
 ## Trigger types
 
-Kestra supports both **scheduled** and **external** events.
-
-Kestra supports five core trigger types:
+Kestra supports six core trigger types:
 
 - [Schedule trigger](./01.schedule-trigger/index.md) allows you to execute your flow on a regular cadence e.g. using a CRON expression and custom scheduling conditions.
 - [Flow trigger](./02.flow-trigger/index.md) allows you to execute your flow when another flow finishes its execution (based on a configurable list of states).
 - [Webhook trigger](./03.webhook-trigger/index.md) allows you to execute your flow based on an HTTP request emitted by a webhook.
 - [Polling trigger](./04.polling-trigger/index.md) allows you to execute your flow by polling external systems for the presence of data.
 - [Realtime trigger](./05.realtime-trigger/index.md) allows you to execute your flow when events happen with millisecond latency.
+- [MCP Tool trigger](./06.mcp-tool-trigger/index.md) allows you to expose your flow as a named tool on a Kestra MCP server, making it callable by AI agents such as Claude Desktop, Claude Code, and Cursor.
 
 Many other triggers are available from the plugins, such as triggers based on file detection events, e.g. the [S3 trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger), or a new message arrival in a message queue, such as the [SQS](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger) or [Kafka trigger](/plugins/plugin-kafka/io.kestra.plugin.kafka.trigger).
 
-### Trigger Common Properties
+### Trigger common properties
 
 The following properties are common to all triggers:
 
@@ -49,14 +48,15 @@ The following properties are common to all triggers:
 | `disabled`        | Set it to `true` to disable execution of the trigger.                                    |
 | `allowConcurrent` | Set it to `true` to allow multiple executions from this trigger to run at the same time. |
 | `workerGroup.key` | To execute this trigger on a specific Worker Group (EE).                                 |
+| `when`            | A Pebble expression that must evaluate to `true` for the trigger to fire.                |
 
 ## Trigger variables
 
 Triggers expose metadata through expressions. For example:
 
-– `{{ trigger.date }}` returns the current date for the [Schedule trigger](./01.schedule-trigger/index.md)
-– `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
-– `{{ trigger.rows }}` provides query results for triggers like [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger.
+- `{{ trigger.date }}` returns the current date for the [Schedule trigger](./01.schedule-trigger/index.md)
+- `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
+- `{{ trigger.rows }}` provides query results for triggers like the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger
 
 This example will log the date when the trigger executes the flow:
 
@@ -97,28 +97,56 @@ triggers:
       cron: "@hourly"
 ```
 
-## Conditions
+## `when` and `dependsOn`
 
-Conditions are criteria that determine when a trigger should create a new execution. Usually, they limit the scope of a trigger to a specific set of cases.
+Kestra 2.0 replaces the old `conditions` list on triggers with two composable properties:
 
-For example, you can restrict a Flow trigger to a specific namespace prefix or execution status, and you can restrict a Schedule trigger to a specific time of the week or month.
+### `when` — Pebble expression (all triggers)
 
-You can pass a list of conditions; in this case, all the conditions must match to enable the current action.
+Every trigger type supports a `when` property. It accepts a [Pebble expression](../../expressions/index.mdx) that is evaluated at trigger time. If the expression evaluates to a falsy value (`false`, `0`, empty string), the trigger does not fire.
 
-Available conditions include:
+Use `when` to express time-based conditions on Schedule triggers, to filter Webhook payloads, or to add a global guard on any trigger type:
 
-- [HasRetryAttempt](/plugins/core/condition/io.kestra.plugin.core.condition.hasretryattempt)
-- [MultipleCondition](/plugins/core)
-- [Not](/plugins/core/condition/io.kestra.plugin.core.condition.not)
-- [Or](/plugins/core/condition/io.kestra.plugin.core.condition.or)
-- [ExecutionFlow](/plugins/core/condition/io.kestra.plugin.core.condition.executionflow)
-- [ExecutionNamespace](/plugins/core/condition/io.kestra.plugin.core.condition.executionnamespace)
-- [ExecutionLabels](/plugins/core/condition/io.kestra.plugin.core.condition.executionlabels)
-- [ExecutionStatus](/plugins/core/condition/io.kestra.plugin.core.condition.executionstatus)
-- [ExecutionOutputs](/plugins/core/condition/io.kestra.plugin.core.condition.executionoutputs)
-- [Expression](/plugins/core/condition/io.kestra.plugin.core.condition.expression)
+```yaml
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
+    when: "{{ not isWeekend(trigger.date) and not isPublicHoliday(trigger.date, 'FR') }}"
+```
 
-You can also find datetime related conditions [on the Schedule trigger page](./01.schedule-trigger/index.md#schedule-conditions).
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    when: "{{ trigger.body.hello == 'world' }}"
+```
+
+For calendar-based scheduling, helper functions like `isWeekend()`, `isPublicHoliday()`, `isDayWeekInMonth()`, and `dayOfWeek()` are available. See [date and calendar helpers](../../expressions/index.mdx#date-and-calendar-helpers) in the expressions reference.
+
+### `dependsOn` — upstream flow dependencies (Flow trigger only)
+
+The [Flow trigger](./02.flow-trigger/index.md) replaces both `conditions` and `preconditions` with a `dependsOn` list. Each entry declares one upstream flow that must complete in a matching state. All entries must be satisfied before the trigger fires.
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+      - flowId: stg_marketing
+        namespace: company.team
+    window:
+      deadline: "09:00:00+01:00"
+```
+
+See the [Flow trigger documentation](./02.flow-trigger/index.md) for the full `dependsOn` and `window` property reference.
+
+:::alert{type="warning"}
+The `conditions` list is removed in Kestra 2.0. Flows that still use it will fail to parse after upgrading. See the [trigger conditions migration guide](../../11.migration-guide/v2.0.0/trigger-conditions-redesign/index.md) for before/after examples.
+:::
 
 ## Unlocking, enabling, and disabling triggers
 
@@ -213,12 +241,12 @@ When you add that flow to Kestra, you'll see that no Executions are created. To 
 
 ## The `stopAfter` property
 
-Kestra 0.15 introduced a generic `stopAfter` property which is a list of states that will disable the trigger after the flow execution has reached one of the states in the list.
+The `stopAfter` property is a list of states that disable the trigger after the flow execution reaches one of those states.
 
 This property is most useful with `Schedule` triggers and polling-based triggers such as HTTP, JDBC, or File Detection.
 
 :::alert{type="info"}
-Note that we don't handle any automatic trigger reenabling logic. After a trigger has been disabled due to the `stopAfter` state condition, you can take some action based on it and manually reenable the trigger.
+Kestra does not automatically re-enable a trigger after it has been disabled by `stopAfter`. You must re-enable it manually once you are ready to resume.
 :::
 
 ### Pause the schedule trigger after a failed execution
@@ -268,7 +296,7 @@ triggers:
           - SUCCESS
 ```
 
-Let's break down the above example:
+This example works as follows:
 
 1. The HTTP trigger will poll the API endpoint every 30 seconds to check if the price of a product is below $110.
 2. If the condition is met, the Execution will be created

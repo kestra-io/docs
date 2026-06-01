@@ -16,7 +16,6 @@ Each webhook URL requires a secret `key` to secure it. This prevents unauthorize
 type: io.kestra.plugin.core.trigger.Webhook
 ```
 
-A Webhook trigger enables triggering a flow from a webhook URL.
 When you create the trigger, you must provide a `key`. This `key` is embedded in the webhook URL: `/api/v1/main/executions/webhook/{namespace}/{flowId}/{key}`.
 
 For security, use a randomly generated string rather than something easy to guess. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL. Both the request body and headers are automatically available as variables inside your flow.
@@ -58,7 +57,7 @@ You can also copy the formed Webhook URL from the **Triggers** tab.
 
 ## Webhook response
 
-By default, a webhook trigger answers with JSON. When you need the caller to wait for a custom response (e.g., validation handshakes that require `text/plain`), enable `wait` and set the `responseContentType` to `text/plain`.
+By default, a webhook trigger responds with JSON. When you need the caller to wait for a custom response (e.g., validation handshakes that require `text/plain`), enable `wait` and set the `responseContentType` to `text/plain`.
 
 ```yaml
 triggers:
@@ -70,7 +69,6 @@ triggers:
     responseContentType: text/plain   # optional, defaults to application/json
 ```
 
-Behavior:
 - `wait: true` keeps the HTTP connection open until the flow finishes or hits the trigger’s timeout.
 - `returnOutputs: true` returns the flow outputs as the HTTP response body (JSON by default). Override with `responseContentType` for plaintext or other formats.
 
@@ -81,6 +79,28 @@ If your flow uses trigger variables (such as `{{ trigger.body }})`, you can test
 ![Webhook Trigger Test](./webhook-trigger-test.png)
 
 See the [Webhook trigger plugin documentation](/plugins/core/trigger/io.kestra.plugin.core.trigger.webhook) for a full list of properties and outputs.
+
+## Filtering webhook executions with `when`
+
+Use the `when` property to conditionally fire the trigger based on the request body or headers. The `when` value is a [Pebble expression](../../../expressions/index.mdx) evaluated against the incoming request. If the expression evaluates to a falsy value, Kestra ignores the request and no execution is created.
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    when: "{{ trigger.body.hello == 'world' }}"
+```
+
+You can combine multiple criteria in a single expression using `and` / `or`:
+
+```yaml
+triggers:
+  - id: webhook
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+    when: "{{ trigger.body.event == 'push' and trigger.headers['x-github-event'] == 'push' }}"
+```
 
 ### Return flow outputs in the webhook response
 

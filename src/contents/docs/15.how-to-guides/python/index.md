@@ -337,12 +337,13 @@ flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 
 Read more about it on the [execution page](../../05.workflow-components/03.execution/index.md).
 
-## Automate Python with Triggers
+## Automate Python with triggers
 
 You can combine your Python code with a trigger to automatically execute your code. There's a few key ways you can automate it:
 - Run on a schedule
 - Run when a webhook is called
 - Run when a file is available in a data lake or storage bucket
+- Run Python code on a polling interval and emit only when a condition matches
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FIOIvNwtKM8?si=l8NCFNKgE4cuY-Hn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -435,6 +436,61 @@ triggers:
     filter: FILES
     maxKeys: 1
 ```
+
+### Run Python as a polling trigger
+
+If you want the polling logic itself to be written in Python, you can use `ScriptTrigger` or `CommandsTrigger`. These triggers run Python code on an interval and start a flow execution only when the `exitCondition` matches the result.
+
+Use `ScriptTrigger` for inline Python code:
+
+```yaml
+id: python_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.python.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      raise Exception("boom")
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Python commands instead:
+
+```yaml
+id: python_commands_trigger
+namespace: company.team
+
+triggers:
+  - id: on_fail
+    type: io.kestra.plugin.scripts.python.CommandsTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: python:3.13-slim
+    commands:
+      - python3 -c "raise Exception('boom')"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These triggers support:
+
+- `interval` to control how often the Python code runs
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only when the condition changes from not matching to matching
+
+Use these trigger types when you want Python itself to decide whether a polling condition has been met, rather than relying on a separate external-system trigger.
 
 
 ## Execute GraalVM Task

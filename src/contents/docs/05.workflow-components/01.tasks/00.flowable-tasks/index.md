@@ -140,139 +140,325 @@ tasks:
 
 For more details, check out the [If Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.if).
 
-### ForEach
+### Loop
 
-This task executes a group of tasks for each value in the list.
+The `Loop` task iterates over a set of values and runs child tasks for each item. Unlike `ForEach`, each iteration runs in an isolated sub-execution with its own context.
 
-In the following example, the variable is static, but it could also be generated from a previous task output, starting any number of subtasks.
+`values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file.
 
 ```yaml
-id: foreach_example
+id: loop-basic
 namespace: company.team
 
 tasks:
-  - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: ["value 1", "value 2", "value 3"]
     tasks:
-      - id: before_if
-        type: io.kestra.plugin.core.debug.Return
-        format: "Before if {{ taskrun.value }}"
-      - id: if
-        type: io.kestra.plugin.core.flow.If
-        condition: '{{ taskrun.value == "value 2" }}'
-        then:
-          - id: after_if
-            type: io.kestra.plugin.core.debug.Return
-            format: "After if {{ parent.taskrun.value }}"
+      - id: log
+        type: io.kestra.plugin.core.log.Log
+        message: "index={{ item.index }} value={{ item.value }}"
 ```
 
-In this execution, you can access:
+Inside each iteration, use the `item` variable to access the iteration context:
 
-- The iteration value i.e., the index of a loop (the loop index starts at 0) using the syntax `{{ taskrun.iteration }}`
-- The output of a sibling task using the syntax `{{ outputs.sibling[taskrun.value].value }}`
+| Expression | Description |
+|---|---|
+| `{{ item.index }}` | Zero-based iteration index |
+| `{{ item.value }}` | Current iteration value |
+| `{{ item.key }}` | Current map key when `values` is a map; not set for list or URI values |
+| `{{ item.parent.index }}` | Index of the nearest enclosing loop (nested loops only) |
+| `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
+| `{{ item.parents[n].value }}` | Value of the nth ancestor loop, counting from innermost |
 
-This example shows how to run tasks in parallel for each value in the list. All child tasks of the parallel task run in parallel. However, due to the `concurrencyLimit` property set to 2, only two parallel task groups run at any given time.
+For more details on `item`, see [loop iteration context](../../../expressions/index.mdx#loop-iteration-context) in the expressions reference.
+
+#### Iterating over objects
+
+When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields — `item.value.field` does not work.
 
 ```yaml
-id: parallel_tasks_example
-namespace: company.team
-
 tasks:
-  - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - { id: 101, email: "a@example.com" }
+      - { id: 102, email: "b@example.com" }
+    fetchType: AUTO
+    outputs:
+      - id: user_id
+        type: INT
+        value: "{{ fromJson(item.value).id }}"
+      - id: email
+        type: STRING
+        value: "{{ fromJson(item.value).email }}"
+    tasks:
+      - id: log_user
+        type: io.kestra.plugin.core.log.Log
+        message: "User {{ fromJson(item.value).id }} -> {{ fromJson(item.value).email }}"
+```
+
+#### Concurrent execution
+
+By default (`concurrencyLimit: 1`), iterations run one at a time in order. Set `concurrencyLimit` to a higher value to run multiple iterations simultaneously, or `0` for no limit.
+
+```yaml
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    concurrencyLimit: 2
+    concurrencyLimit: 0
     tasks:
       - id: parallel
         type: io.kestra.plugin.core.flow.Parallel
         tasks:
-        - id: log
-          type: io.kestra.plugin.core.log.Log
-          message: Processing {{ parent.taskrun.value }}
-        - id: shell
-          type: io.kestra.plugin.scripts.shell.Commands
-          commands:
-            - sleep {{ parent.taskrun.value }}
+          - id: log
+            type: io.kestra.plugin.core.log.Log
+            message: "Processing {{ item.value }}"
+          - id: shell
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - "echo done {{ item.value }}"
 ```
 
-For more information on handling outputs generated from `ForEach`, check out the [dedicated loop how-to guide](../../../15.how-to-guides/loop/index.md) and the [Best Practices for ForEach and ForEachItem](../../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, including how to access [sibling task outputs correctly](../../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach) inside the loop.
+#### Failure propagation
 
-For processing items, or forwarding processing to a subflow, [ForEachItem](#foreachitem) is better suited.
-
-:::alert{type="info"}
-For more details, refer to the [ForEach Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach).
-:::
-
-### ForEachItem
-
-This task iterates over a list of items and runs a subflow for each item, or for each batch of items.
+By default (`transmitFailed: true`), a failed iteration causes the Loop task itself to fail. Set `transmitFailed: false` to let the loop continue even when individual iterations fail.
 
 ```yaml
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ inputs.file }}" # could be also an output variable {{ outputs.extract.uri }}
-    inputs:
-      file: "{{ taskrun.items }}" # items of the batch
-    batch:
-      rows: 4
-    namespace: company.team
-    flowId: subflow
-    revision: 1 # optional (default: latest)
-    wait: true # wait for the subflow execution
-    transmitFailed: true # fail the task run if the subflow execution fails
-    labels: # optional labels to pass to the subflow to be executed
-      key: value
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["ok", "fail", "ok"]
+    transmitFailed: false
+    tasks:
+      - id: maybe_fail
+        type: io.kestra.plugin.core.flow.If
+        condition: '{{ item.value == "fail" }}'
+        then:
+          - id: do_fail
+            type: io.kestra.plugin.core.execution.Fail
+        else:
+          - id: success
+            type: io.kestra.plugin.core.log.Log
+            message: "OK: {{ item.value }}"
 ```
 
-This executes the subflow `company.team.subflow` for each batch of items.
-To pass the batch of items to a subflow, you can use inputs. The example above uses an input of `FILE` type called `file` that takes the URI of an internal storage file containing the batch of items.
+#### Error handling per iteration
 
-The next example shows you how to access the outputs from each subflow executed. The ForEachItem automatically merges the URIs of the outputs from each subflow into a single file. The URI of this file is available through the `subflowOutputs` output.
+Use `errors:` to run tasks when an iteration fails, and `finally:` to run a block once after all iterations complete regardless of outcome. `errors:` requires `transmitFailed: false` — with the default `transmitFailed: true`, a failed iteration stops the loop before `errors:` can run. `finally:` always runs regardless of the `transmitFailed` setting.
 
 ```yaml
-id: for_each_item
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - ok
+      - boom
+      - ok
+    transmitFailed: false
+    tasks:
+      - id: maybe_fail
+        type: io.kestra.plugin.scripts.shell.Commands
+        commands:
+          - |
+            if [ "{{ item.value }}" = "boom" ]; then
+              echo "failing on {{ item.value }}" >&2
+              exit 1
+            fi
+            echo "ok {{ item.value }}"
+    errors:
+      - id: handle_error
+        type: io.kestra.plugin.core.log.Log
+        message: "Iteration {{ item.index }} ({{ item.value }}) failed"
+    finally:
+      - id: cleanup
+        type: io.kestra.plugin.core.log.Log
+        message: "Loop completed (with or without failures)"
+```
+
+#### Nested loops
+
+Loops can be nested to any depth. Because `item` is bound to the loop execution rather than individual task runs, flowable tasks nested inside a loop can access `item` directly without a `parent.` prefix.
+
+`item.parents[0]` is the immediate parent loop (same as `item.parent`), `item.parents[1]` is the next outer loop, and so on.
+
+```yaml
+tasks:
+  - id: outer
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["bucket1", "bucket2"]
+    tasks:
+      - id: middle
+        type: io.kestra.plugin.core.flow.Loop
+        values: [2025, 2026]
+        tasks:
+          - id: inner
+            type: io.kestra.plugin.core.flow.Loop
+            values: ["Jan", "Feb", "Mar"]
+            tasks:
+              - id: log
+                type: io.kestra.plugin.core.log.Log
+                message: "bucket={{ item.parents[1].value }} year={{ item.parent.value }} month={{ item.value }}"
+```
+
+#### Loop outputs
+
+By default, task outputs produced inside a loop are not accessible to tasks that run after the loop. Use the `outputs` property on the Loop task to explicitly declare which values to expose.
+
+```yaml
+id: loop-outputs
 namespace: company.team
 
 tasks:
-  - id: generate
-    type: io.kestra.plugin.scripts.shell.Script
-    script: |
-      for i in $(seq 1 10); do echo "$i" >> data; done
-    outputFiles:
-      - data
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["a", "b", "c"]
+    fetchType: AUTO
+    outputs:
+      - id: result
+        type: STRING
+        value: "{{ outputs.process.value }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.debug.Return
+        format: "processed {{ item.value }}"
 
-  - id: for_each_item
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.generate.outputFiles.data }}"
-    batch:
-      rows: 4
-    wait: true
-    flowId: my_subflow
-    namespace: company.team
-    inputs:
-       value: "{{ taskrun.items }}"
-
-  - id: for_each_outputs
+  - id: summary
     type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.forEachItem_merge.subflowOutputs }}" # Log the URI of the file containing the URIs of the outputs from each subflow
+    message: "Loop ran {{ outputs.loop.iterationCount }} iterations"
 ```
 
-:::alert{type="info"}
-For more details, refer to the [ForEachItem Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem).
-:::
+The loop also exposes monitoring outputs regardless of whether `outputs` is declared:
 
-#### `ForEach` vs `ForEachItem`
+| Output | Description |
+|---|---|
+| `iterationCount` | Total number of iterations |
+| `runningIterations` | Iterations still in progress |
+| `terminatedIterations` | Iterations that have finished |
 
-Both `ForEach` and `ForEachItem` are similar, but there are specific use cases that suit one over the other:
-- `ForEach` generates a lot of [Task Runs](../02.taskruns/index.md) which can impact performance.
-- `ForEachItem` generates separate executions using [Subflows](../../10.subflows/index.md) for the group of tasks. This scales better for larger datasets.
+The `fetchType` property controls how iteration outputs are collected: `FETCH` returns them inline in the execution context (suitable for small iteration counts), `STORE` writes them to internal storage and exposes a URI (preferred for large iteration counts), and `AUTO` (the default) chooses based on whether `values` is a URI.
 
-Read more about performance optimization in our [best practices guides](../../../14.best-practices/0.flows/index.md#tasks-in-the-same-execution).
+#### Processing large files
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/mkZcdbgxSWA?si=DXGrFU6m6XEOtZSN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+When `values` is a list of URIs from a [`Split`](/plugins/core/storage/io.kestra.plugin.core.storage.split) task, each iteration receives one chunk URI as `item.value`. Combine `Split`, `Loop`, and `Concat` to implement a map-reduce pattern: split a large file into chunks, process each chunk in parallel, then merge the per-chunk outputs into a single result.
+
+Passing `values: "{{ outputs.split.uris }}"` where `outputs.split.uris` is a **list** is different from passing a single file URI. When `values` is a list, each `item.value` is one element of that list. When `values` is a single URI string, Kestra iterates line-by-line through the file.
+
+```yaml
+id: map-reduce
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: to_ion
+    type: io.kestra.plugin.serdes.csv.CsvToIon
+    from: "{{ outputs.download.uri }}"
+
+  - id: split
+    type: io.kestra.plugin.core.storage.Split
+    from: "{{ outputs.to_ion.uri }}"
+    rows: 25
+
+  - id: per_chunk
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.split.uris }}"
+    concurrencyLimit: 4
+    fetchType: FETCH
+    outputs:
+      - id: data
+        type: STRING
+        value: "{{ outputs.aggregate.uri }}"
+    tasks:
+      - id: aggregate
+        type: io.kestra.plugin.transform.Aggregate
+        from: "{{ item.value }}"
+        outputType: STORE
+        groupBy: [customer_email]
+        aggregates:
+          orders:
+            expr: count()
+            type: INT
+          revenue:
+            expr: sum(todecimal(total))
+            type: DECIMAL
+
+  - id: concat
+    type: io.kestra.plugin.core.storage.Concat
+    files: "{{ loopOutputs(outputs.per_chunk.outputs, 'data') }}"
+    extension: .ion
+
+  - id: reduce
+    type: io.kestra.plugin.transform.Aggregate
+    from: "{{ outputs.concat.uri }}"
+    outputType: STORE
+    groupBy: [data.customer_email]
+    aggregates:
+      orders:
+        expr: sum(orders)
+        type: INT
+      revenue:
+        expr: sum(revenue)
+        type: DECIMAL
+```
+
+Use `fetchType: FETCH` to collect per-iteration output URIs inline, then pass them to `Concat` via `loopOutputs(outputs.per_chunk.outputs, 'data')`.
+
+#### Accessing loop outputs in a script task
+
+The following example runs a Python task inside a loop to compute a value, then reads the collected results in a subsequent Python task using the monitoring output and the Kestra Python SDK.
+
+```yaml
+id: loop-python-outputs
+namespace: company.team
+
+tasks:
+  - id: process_items
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5]
+    outputs:
+      - id: squared
+        type: INT
+        value: "{{ outputs.compute.vars.result }}"
+    tasks:
+      - id: compute
+        type: io.kestra.plugin.scripts.python.Script
+        dependencies:
+          - kestra
+        script: |
+          from kestra import Kestra
+          n = {{ item.value }}
+          Kestra.outputs({"result": n * n})
+
+  - id: analyze
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - kestra
+    script: |
+      from kestra import Kestra
+
+      iteration_count = {{ outputs.process_items.iterationCount }}
+
+      # outputs.process_items.outputs is a list of iteration results:
+      # [{"item": {"value": "1", "iteration": 1}, "outputs": {"squared": 1}}, ...]
+      all_outputs = {{ outputs.process_items.outputs | toJson }}
+
+      squared_values = [iteration["outputs"]["squared"] for iteration in all_outputs]
+
+      print(f"Processed {iteration_count} items")
+      print(f"Squared values: {squared_values}")
+      print(f"Sum of squares: {sum(squared_values)}")
+
+      Kestra.outputs({"total": sum(squared_values)})
+```
+
+`outputs.process_items.iterationCount` is always available after the loop finishes. `outputs.process_items.outputs` is a list of iteration results — each entry contains an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. To access the first iteration's output in an expression, use `outputs.process_items.outputs[0].outputs.squared`. To extract one output across all iterations as a list, use the `loopOutputs()` function: `{{ loopOutputs(outputs.process_items.outputs, 'squared') }}`.
+
+For more details, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
+
 
 ### LoopUntil
 

@@ -20,7 +20,7 @@ For example, you can use the [If task](/plugins/core/flow/io.kestra.plugin.core.
 
 The example below redesigns the flow to use a `SELECT` input for product category rather than a `STRING` URI, while still calling [dummyjson](https://dummyjson.com). An API request is made based on the selected category — `beauty` or `notebooks` (one does not exist).
 
-The `check_products` If task has a `condition` of `"{{ json(outputs.api.body).products | length > 0 }}"` (i.e., checking whether the API body is not empty and contains at least one product). The log message then depends on whether the actual product category exists or not. The `then` property defines the action for a true condition, and the `else` property defines the action for a false result.
+The `check_products` If task has a `condition` of `"{{ fromJson(outputs.api.body).products | length > 0 }}"` (i.e., checking whether the API body is not empty and contains at least one product). The log message then depends on whether the actual product category exists or not. The `then` property defines the action for a true condition, and the `else` property defines the action for a false result.
 
 ```yaml
 id: getting_started
@@ -41,11 +41,11 @@ tasks:
 
   - id: check_products
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.api.body).products | length > 0 }}"
+    condition: "{{ fromJson(outputs.api.body).products | length > 0 }}"
     then:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
-        message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
+        message: "Found {{ fromJson(outputs.api.body).products | length }} products for category {{ inputs.category }}"
       - id: python
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
@@ -87,31 +87,27 @@ Execute the flow twice, once with `beauty` and once with `notebooks` to examine 
 
 A common orchestration pattern is operating on a set of values. Kestra offers several approaches depending on your use case. The standalone examples below demonstrate each type.
 
-### ForEach
+### Loop
 
-The **ForEach** flowable task executes a group of tasks for each value in the list. There are many ways to implement ForEach for complex looping operations, possibly incorporating conditional flowable tasks or subtasks. See more examples in the [ForEach documentation](/plugins/core/flow/io.kestra.plugin.core.flow.foreach).
+The `Loop` flowable task iterates over a list of values and runs child tasks for each item. Each iteration runs as an isolated sub-execution. Access the current value with `{{ item.value }}` and the zero-based index with `{{ item.index }}`.
 
-As an introduction to the feature, the below example demonstrates using ForEach to make an API call to [OpenLibrary](https://openlibrary.org/dev/docs/api/search) to get a list of associated titles for each author in the list. The values are defined as a JSON string or an array, i.e., a list of string values `["value1", "value2"]` or a list of key-value pairs `[{"key": "value1"}, {"key": "value2"}]`.
-
-You can access the current iteration value using the variable `{{ taskrun.value }}`:
+Values can be a static list, a JSON array string, a map, or an ION file URI. The example below makes an API call for each author in the list:
 
 ```yaml
-id: for_loop_example
+id: loop_example
 namespace: tutorial
 
 tasks:
-  - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: ["pynchon", "dostoyevsky", "hedayat"]
     tasks:
       - id: api
         type: io.kestra.plugin.core.http.Request
-        uri: "https://openlibrary.org/search.json?author={{ taskrun.value }}&sort=new"
+        uri: "https://openlibrary.org/search.json?author={{ item.value }}&sort=new"
 ```
 
-After execution, the Gantt view shows separate runs for each of the three listed authors in the task.
-
-![forEach example](./for-each-author.png)
+After execution, the Gantt view shows a separate task group for each author. See the [Loop documentation](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) for output collection, nested loops, error handling, and map-reduce patterns.
 
 ### LoopUntil
 
@@ -147,11 +143,11 @@ This flow checks an HTTP endpoint every 30 seconds and stops either when it retu
 
 A common orchestration requirement is executing independent processes **in parallel**. For example, you can process data for each partition in parallel. This can significantly speed up the processing time.
 
-The flow below uses the `ForEach` flowable task to execute a list of `tasks` in parallel.
+The flow below uses the `Loop` flowable task with `concurrencyLimit: 0` to process all partitions simultaneously.
 
-1. The `concurrencyLimit` property with value `0` makes the list of `tasks` to execute in parallel.
+1. The `concurrencyLimit` property set to `0` removes the cap on parallel iterations.
 2. The `values` property defines the list of items to iterate over.
-3. The `tasks` property defines the list of tasks to execute for each item in the list. You can access the iteration value using the `{{ taskrun.value }}` variable.
+3. The `tasks` property defines the child tasks for each iteration. Access the iteration value with `{{ item.value }}`.
 
 ```yaml
 id: python_partitions
@@ -171,7 +167,7 @@ tasks:
       Kestra.outputs({'partitions': partitions})
 
   - id: processPartitions
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     concurrencyLimit: 0
     values: '{{ outputs.getPartitions.vars.partitions }}'
     tasks:
@@ -186,7 +182,7 @@ tasks:
           import time
           from kestra import Kestra
 
-          filename = '{{ taskrun.value }}'
+          filename = '{{ item.value }}'
           print(f"Reading and processing partition {filename}")
           nr_rows = random.randint(1, 1000)
           processing_time = random.randint(1, 20)

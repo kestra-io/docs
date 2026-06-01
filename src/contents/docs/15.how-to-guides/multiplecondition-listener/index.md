@@ -8,35 +8,20 @@ topics:
   - Kestra Workflow Components
 ---
 
-How to set up a Flow to only trigger when multiple conditions are met.
+How to set up a flow that only triggers when multiple upstream flows have all succeeded.
 
-In this tutorial, we’ll explore how to set up a flow in Kestra that only triggers when multiple conditions are met. Specifically, we will create a flow that only executes if two other flows, `multiplecondition-flow-a` and `multiplecondition-flow-b`, have executed successfully within the last 24 hours.
+In this guide, we’ll create a flow that only executes if two other flows, `multiplecondition_flow_a` and `multiplecondition_flow_b`, have each completed successfully within the last 24 hours. This pattern uses the `dependsOn` property on the Flow trigger.
 
-## Why Use Multiple Condition Listeners?
+## When to use this pattern
 
-The `MultipleCondition` listener allows you to build more complex workflows that depend on the success of several flows. For example, if you have two dependent tasks or processes that need to succeed before triggering another process, this listener ensures that the next workflow is only executed when both conditions are met within a specific time window.
+Use multiple upstream dependencies when a downstream process should only run after several independent upstream flows all succeed. For example, if you have separate ingestion flows for different data sources and want to run a transformation only after all sources have completed, `dependsOn` with a time window is the right tool.
 
-## Activation Process Overview
+## How it works
 
-The listener will trigger under the following conditions:
-
-1. Both `multiplecondition-flow-a` and `multiplecondition-flow-b` must have successful executions.
-2. The listener checks if both flows succeeded within the last 24 hours.
-3. If the conditions are met, the flow is activated, and the conditions reset.
-4. Future executions will only re-trigger the flow if both flows succeed again within another 24-hour window.
-
-## How the Process Works
-
-1. Time Window (P1D or 24 hours):
-
-   - The `MultipleCondition` listener checks if both flows (`multiplecondition-flow-a` and `multiplecondition-flow-b`) have been executed successfully within the past 24 hours.
-
-2. Resetting Conditions:
-
-   - Once the listener triggers, the conditions reset, meaning that even if one of the flows succeeds again, the listener won't trigger until both flows succeed within a new 24-hour period.
-
-3. Flow Dependency:
-   - This is particularly useful when you have flows that depend on each other or when the successful execution of multiple workflows is a prerequisite for a downstream task.
+1. Both `multiplecondition_flow_a` and `multiplecondition_flow_b` must complete successfully.
+2. Both must complete within the same 24-hour window (`window.every: P1D`).
+3. Once both conditions are satisfied, the listener flow triggers.
+4. The window resets each day, so both flows must succeed again within the next window to re-trigger the listener.
 
 ## First Flow: `multiplecondition_flow_a`
 
@@ -85,7 +70,7 @@ id: multiplecondition_listener
 namespace: company.team
 
 description: |
-  This flow will start only if `multiplecondition_flow_a` and `multiplecondition_flow_b` are successful during the last 24h.
+  This flow starts only if `multiplecondition_flow_a` and `multiplecondition_flow_b` both succeed within the same 24-hour window.
 
 tasks:
   - id: only_listener
@@ -95,44 +80,24 @@ tasks:
 triggers:
   - id: multiple_listen_flow
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - SUCCESS
-      - id: multiple
-        type: io.kestra.plugin.core.condition.MultipleCondition
-        window: P1D
-        windowAdvance: P0D
-        conditions:
-          flow_a:
-            type: io.kestra.plugin.core.condition.ExecutionFlow
-            namespace: company.team
-            flowId: multiplecondition_flow_a
-          flow_b:
-            type: io.kestra.plugin.core.condition.ExecutionFlow
-            namespace: company.team
-            flowId: multiplecondition_flow_b
+    dependsOn:
+      - flowId: multiplecondition_flow_a
+        namespace: company.team
+        states: [SUCCESS]
+      - flowId: multiplecondition_flow_b
+        namespace: company.team
+        states: [SUCCESS]
+    window:
+      every: P1D
 ```
 
-## Explanation of the Flow
+## Explanation of the flow
 
-1. Tasks Section:
+1. **Tasks** — `only_listener` outputs a static value when the trigger fires. Replace this with whatever downstream logic you need.
 
+2. **`dependsOn`** — declares two upstream flow dependencies. Both entries must be satisfied before the trigger fires. `states: [SUCCESS]` means only successful executions count.
 
-    - The task `only_listener` outputs a static value (`children`) when the trigger conditions are met. This part can be customized to perform more complex tasks after the conditions are satisfied.
-
-2. Triggers Section:
-
-
-    - The `multiple_listen_flow` trigger listens for both `multiplecondition_flow_a` and `multiplecondition_flow_b`.
-    - Execution Status Condition: Ensures that only successful executions (status `SUCCESS`) are considered.
-    - MultipleCondition: This condition checks that both `flow_a` and `flow_b` have successfully completed within the last 24 hours (`P1D`).
-
-3. Window:
-
-
-    - The `window: P1D` ensures that the listener checks for executions within the past 24 hours.
-    - The `windowAdvance: P0D` parameter ensures that the time window starts immediately, without any delay.
+3. **`window.every: P1D`** — defines a 24-hour evaluation window. Kestra accumulates upstream executions within this window and fires the trigger once all `dependsOn` entries are satisfied within the same window period.
 
 ## Expected Output
 
@@ -150,6 +115,4 @@ When both multiplecondition_flow_a and multiplecondition_flow_b succeed within 2
 
 ## Conclusion
 
-In this tutorial, we’ve demonstrated how to set up a `MultipleCondition` listener that checks for the success of multiple flows within a specified time window. This is a powerful feature for managing complex workflows that depend on the successful execution of multiple tasks.
-
-By using this listener, you can ensure that downstream processes are only triggered when all necessary upstream conditions are met.
+This guide demonstrated how to use `dependsOn` with a time window to trigger a flow only when multiple upstream flows all succeed within the same period. Use this pattern whenever a downstream process must wait on several independent upstream flows before running.

@@ -21,6 +21,8 @@ There are multiple ways to combine Kestra with Git:
 - [SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) syncs namespace files the same way.
 - [PushFlows](/plugins/plugin-git/io.kestra.plugin.git.pushflows) commits and pushes flow edits from the UI to Git, useful when you rely on the built-in editor but still want version history.
 - [PushNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.pushnamespacefiles) does the same for namespace files.
+- [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.SyncBlueprints) syncs Custom Blueprints from Git to Kestra (Enterprise Edition).
+- [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.PushBlueprints) commits and pushes Custom Blueprints from Kestra to Git (Enterprise Edition).
 - [Clone](https://kestra.io/plugins/plugin-git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
 - [TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) synchronizes all namespaces in a tenant, including flows, files, apps, tests, and dashboards.
 - [NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) keeps a single namespace in sync with a Git repo.
@@ -187,6 +189,15 @@ The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a
 - dbt projects via the [dbt CLI task](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli)
 - Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli), [OpenTofu CLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli), [Terragrunt CLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli), or [Ansible CLI](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli)
 - Docker builds via the [Docker Build task](/plugins/plugin-docker/io.kestra.plugin.docker.build)
+
+## Git SyncBlueprints and PushBlueprints
+
+[SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.SyncBlueprints) and [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.PushBlueprints) bring the same GitOps patterns to Custom Blueprints (Enterprise Edition).
+
+- **`SyncBlueprints`** – pulls blueprints from a Git directory into Kestra. Use this when a central team owns an approved blueprint library and needs to deploy it across environments. Set `delete: true` to treat Git as the sole source of truth and remove any blueprints not present in the repository.
+- **`PushBlueprints`** – exports blueprints from Kestra to Git. Use this when teams author blueprints in the UI and want version history or a pull request review workflow.
+
+See [Custom Blueprints](../07.enterprise/02.governance/custom-blueprints/index.md#version-control-for-custom-blueprints) for full examples and the blueprint YAML file format.
 
 ## Git TenantSync and NamespaceSync
 

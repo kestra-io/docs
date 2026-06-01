@@ -75,8 +75,166 @@ kestractl flows list my.namespace --output json
 - `namespaces`: list and filter namespaces.
 - `nsfiles`: list, get, upload, and delete namespace files.
 - `kv`: list, set, update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
+- `users`: list, get, create, update, delete, set group membership, set passwords, and manage API tokens for users. Requires Kestra EE; operates at the instance level (not tenant-scoped).
+- `groups`: list, get, create, update, delete groups and manage their members. Requires Kestra EE; tenant-scoped.
+- `roles`: list, get, create, update, and delete roles with resource-level permissions. Requires Kestra EE; tenant-scoped.
+- `service-accounts` (aliases: `service-account`, `sa`): list, get, create, update, delete service accounts and manage their API tokens. Requires Kestra EE; instance-level (not tenant-scoped).
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
+
+## IAM management (Enterprise Edition)
+
+The `users`, `groups`, `roles`, and `service-accounts` command groups require Kestra Enterprise Edition. `users` and `service-accounts` operate at the instance level while `groups` and `roles` are tenant-scoped and use the active tenant from your context.
+
+### Users
+
+::alert{type="warning"}
+Use `--user-password` to set a user's password — **not** `--password`. The `--password` flag authenticates the CLI itself with basic auth. Passing a user's new password to `--password` sends it as your own credentials.
+::
+
+```bash
+# List / filter users
+kestractl users list
+kestractl users list --query alice --output json
+
+# Get user details
+kestractl users get <user_id>
+
+# Create a user (--email is required)
+kestractl users create --email alice@example.com --first-name Alice --user-password 'S3cret!'
+kestractl users create --email bob@example.com --superadmin
+
+# Update a user — only the flags you pass change; other attributes are preserved
+kestractl users update <user_id> --first-name Alicia
+kestractl users update <user_id> --superadmin=false
+
+# Set a user's password
+kestractl users set-password <user_id> --user-password 'N3wPass!'
+
+# Assign a user to groups in the active tenant
+# Passing no --group clears all group memberships for that tenant
+kestractl users set-groups <user_id> --group <group_id>
+
+# Delete a user — prompts for confirmation; skip with --yes
+kestractl users delete <user_id>
+kestractl users delete <user_id> --yes
+
+# Manage a user's API tokens (the full token value is shown only once, at creation)
+kestractl users tokens create <user_id> --name ci-token
+kestractl users tokens list <user_id>
+kestractl users tokens delete <user_id> <token_id>
+```
+
+### Groups
+
+```bash
+# List / filter groups
+kestractl groups list
+kestractl groups list --query admins --output json
+
+# Get group details
+kestractl groups get <group_id>
+
+# Create a group (--name is required; --member is repeatable for initial members)
+kestractl groups create --name admins --description 'Platform admins'
+kestractl groups create --name admins --member <user_id> --member <user_id>
+
+# Update a group — only the flags you pass change; other attributes are preserved
+kestractl groups update <group_id> --name platform-admins
+kestractl groups update <group_id> --description 'Updated description'
+
+# Delete a group — prompts for confirmation; skip with --yes
+kestractl groups delete <group_id>
+kestractl groups delete <group_id> --yes
+
+# Manage group members
+kestractl groups members list <group_id>
+kestractl groups members add <group_id> <user_id>
+kestractl groups members remove <group_id> <user_id>
+```
+
+### Roles
+
+A role carries a `permissions` payload: a map of resource type (e.g. `FLOW`, `EXECUTION`, `NAMESPACE`, `SECRET`, `KVSTORE`) to a list of permission levels (`READ`, `CREATE`, `UPDATE`, `DELETE`). Provide permissions either inline with the repeatable `--permission TYPE:LEVEL[,LEVEL]` flag or from a YAML/JSON file with `--permissions-file` — not both at once.
+
+::alert{type="warning"}
+Passing `--permission` or `--permissions-file` on `roles update` **replaces the entire permissions block** — it does not merge with the existing permissions. Omit both flags on update if you only want to change the name or description.
+::
+
+```bash
+# List / filter roles
+kestractl roles list
+kestractl roles list --query editor --output json
+kestractl roles list --page 1 --size 50 --sort name:asc
+
+# Get role details, including its permissions
+kestractl roles get <role_id>
+
+# Create a role (--name required; at least one --permission or --permissions-file required)
+kestractl roles create --name editor \
+  --description "Can edit flows and view executions" \
+  --permission FLOW:READ,CREATE,UPDATE \
+  --permission EXECUTION:READ
+
+# Create a role from a permissions file (YAML or JSON)
+kestractl roles create --name viewer --permissions-file perms.yaml
+```
+
+```yaml
+# perms.yaml
+FLOW:
+  - READ
+EXECUTION:
+  - READ
+```
+
+```bash
+# Update a role — only the flags you pass change; other attributes are preserved
+# Exception: --permission replaces the entire permissions block
+kestractl roles update <role_id> --description "Updated description"
+kestractl roles update <role_id> --permission FLOW:READ,CREATE,UPDATE,DELETE
+kestractl roles update <role_id> --default
+
+# Delete a role — prompts for confirmation; skip with --yes
+kestractl roles delete <role_id>
+kestractl roles delete <role_id> --yes
+```
+
+### Service accounts
+
+Service accounts are instance-level resources. The command can be shortened to `service-account` or `sa`.
+
+`update` is a partial update — only `--name` and `--description` are accepted. Super-admin status, tenant grants, and group membership cannot be changed after creation. Pass at least one of `--name` or `--description` or the command returns an error.
+
+```bash
+# List service accounts
+kestractl service-accounts list
+kestractl service-accounts list --output json
+kestractl service-accounts list --page 1 --size 50 --sort name:asc
+
+# Get service account details
+kestractl service-accounts get <service_account_id>
+
+# Create a service account (--name is required; lowercase alphanumeric and dashes)
+kestractl service-accounts create --name ci-bot --description "CI pipeline"
+
+# Create a super-admin service account with tenant access (--tenant-grant is repeatable)
+kestractl service-accounts create --name ops-bot --superadmin --tenant-grant main
+
+# Update name or description only (at least one flag required)
+kestractl service-accounts update <service_account_id> --description "Updated description"
+kestractl service-accounts update <service_account_id> --name new-bot-name
+
+# Delete a service account — prompts for confirmation; skip with --yes
+kestractl service-accounts delete <service_account_id>
+kestractl service-accounts delete <service_account_id> --yes
+
+# Manage API tokens (the full token value is shown only once, at creation)
+kestractl service-accounts tokens create <service_account_id> --name deploy-token
+kestractl service-accounts tokens create <service_account_id> --name short-lived --max-age P30D --extended
+kestractl service-accounts tokens list <service_account_id>
+kestractl service-accounts tokens delete <service_account_id> <token_id>
+```
 
 ## Configuration
 

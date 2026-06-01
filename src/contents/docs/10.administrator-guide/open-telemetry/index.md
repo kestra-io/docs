@@ -54,6 +54,35 @@ Kestra propagates the trace context so that traces are correlated:
 - Flow execution traces correlate with parent flows when the `Subflow` or `ForEachItem` task is used.
 - External HTTP calls include the standard propagation header for downstream correlation.
 
+### Propagate trace context to scripts
+
+Scripts run in isolated containers, so OTel spans they generate start a new root trace by default. Pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable to parent those spans under the Kestra task span.
+
+`{{ trace.parent }}` holds the W3C [traceparent](https://www.w3.org/TR/trace-context/) header; it is empty when tracing is disabled.
+
+```yaml
+id: traced_script
+namespace: company.team
+
+tasks:
+  - id: run_python
+    type: io.kestra.plugin.scripts.python.Script
+    env:
+      TRACEPARENT: "{{ trace.parent }}"
+    script: |
+      from opentelemetry.propagate import extract
+      from opentelemetry.sdk.trace import TracerProvider
+      import os
+
+      ctx = extract({"traceparent": os.environ.get("TRACEPARENT", "")})
+      tracer = TracerProvider().get_tracer(__name__)
+
+      with tracer.start_as_current_span("my-span", context=ctx):
+          pass  # spans here appear as children of the Kestra task span
+```
+
+`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/index.md#default-execution-context-variables).
+
 ### Example: Jaeger with Docker Compose
 
 Enable [Jaeger](https://www.jaegertracing.io), an OpenTelemetry-compatible tracing platform, with Kestra in a Docker Compose configuration file:

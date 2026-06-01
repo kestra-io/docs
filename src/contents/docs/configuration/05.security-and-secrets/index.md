@@ -305,14 +305,21 @@ kestra:
       expire-after: P30D
 ```
 
-For username/password auth, enforce password complexity explicitly:
+For username/password auth, configure password complexity explicitly:
 
 ```yaml
 kestra:
   security:
     basic-auth:
-      password-regexp: "<regexp-rule>"
+      password-min-length: 8
+      password-require-special: true
+      password-min-digits: 1
+      password-min-lower-case: 1
+      password-min-upper-case: 1
+      password-allowed-special-characters: "!@#$%^&*"
 ```
+
+These rules apply anywhere Kestra asks a user to set or reset a password, including the initial setup flow, invitation acceptance, and user management screens.
 
 ### Delete configuration files after startup
 
@@ -383,6 +390,24 @@ kestra:
 
 :::alert{type="warning"}
 Keep the external process manager timeout longer than Kestra's own termination grace period. Otherwise Kubernetes, Docker, or systemd can kill the process before graceful shutdown finishes.
+:::
+
+## Regex timeout
+
+Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs. When a pattern exceeds the limit, the task fails immediately with a timeout error rather than hanging indefinitely.
+
+The default timeout is **10 seconds**. To change it, set `kestra.regex.timeout` in your configuration:
+
+```yaml
+kestra:
+  regex:
+    timeout: 30s
+```
+
+Accepts any [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) string (e.g., `5s`, `PT30S`, `1m`).
+
+:::alert{type="info"}
+The timeout is set once at startup and cannot be changed at runtime without restarting the server.
 :::
 
 ## Related docs
