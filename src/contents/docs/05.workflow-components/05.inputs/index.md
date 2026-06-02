@@ -157,13 +157,13 @@ Here is the list of supported data types:
 - `STRING`: Any string. Values are passed without parsing; for additional validation, use a regex `validator`.
 - `INT`: Must be a valid integer value (i.e., without any decimals).
 - `FLOAT`: Must be a valid float value (i.e., with decimals).
-- `SELECT`: Must be a valid string value from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
+- `SELECT`: Must be a valid string value from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Each entry in `values` can be a plain string (label and value are the same) or a `{label, value}` object (the UI shows `label`; `{{ inputs.x }}` resolves to `value`). Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
 
 :::alert{type="info"}
 **Note:** Due to [YAML allowing Scalar content](https://yaml.org/spec/1.1/current.html#id864510) to be presented in several formats, the boolean “true” might also be written as “yes” and “false” as “no”. To avoid errors using Yes/No in the `SELECT` input type, wrap them in quotation marks to preserve string format: "Yes", "No".
 :::
 
-- `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
+- `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Like `SELECT`, each entry in `values` can be a plain string or a `{label, value}` object. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
 - `BOOLEAN`: Must be `true` or `false` passed as strings.
 - `DATETIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time with the timezone expressed in UTC format; pass input of type DATETIME in a string format following the pattern `2042-04-02T04:20:42.000Z`.
 - `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
@@ -776,6 +776,54 @@ tasks:
 :::
 
 You can also [add these key-value pairs](../../06.concepts/05.kv-store/index.md) via the API or the UI.
+
+## Label/value pairs in SELECT and MULTISELECT inputs
+
+Each item in the `values` list can be a plain string or an object with `label` and `value` fields. When you use the object form, the UI dropdown shows `label` while `{{ inputs.x }}` resolves to `value`. Plain strings remain valid — a plain string is treated as an option where the label equals the value, and you can mix both forms in the same list.
+
+This decoupling is useful when you need a human-readable label (e.g., an account name) but need the flow to receive a technical identifier (e.g., an account ID).
+
+```yaml
+id: aws_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    values:
+      - label: "Production (Main)"
+        value: "123456789012"
+      - label: "Staging (Sandbox)"
+        value: "987654321098"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
+
+:::alert{type="info"}
+`{{ inputs.x }}`, `defaults`, `autoSelectFirst`, and validation all operate on the `value` field, not the `label`. If you set a `defaults` for a `{label, value}` option, use the `value` string. If `autoSelectFirst` is enabled, the first item's `value` is used as the default.
+:::
+
+The object form also works with `expression`-based dropdowns. When an expression returns a list of `{label, value}` objects — for example via a jq projection — the UI shows the labels while the flow receives the values:
+
+```yaml
+id: dynamic_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    expression: "{{ http(uri = 'https://api.example.com/accounts') | jq('.accounts[] | {label: .name, value: .id}') }}"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
 
 ## Custom values in SELECT and MULTISELECT inputs
 
