@@ -12,6 +12,8 @@
   to: "/docs/configuration"
 - regexp: "/docs/administrator-guide/configuration/enterprise-edition/secrets"
   to: "/docs/concepts/secret"
+- regexp: "/docs/concepts/secrets"
+  to: "/docs/concepts/secret"
 - regexp: "/docs/administrator-guide/deployment/kubernetes"
   to: "/docs/installation/kubernetes"
 - regexp: "/docs/administrator-guide/server-cli/?$"

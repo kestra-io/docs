@@ -7,14 +7,16 @@ tool:
   color: "#7B42BC"
 
 hero:
-  title: "Your Terraform runs, fully orchestrated."
-  description: "Trigger terraform plan on cron, on a Git push, or any event. Gate between plan and apply with the Pause task, retry the failed step on transient errors, and chain Terraform, Ansible, and ArgoCD in one execution history."
+  title: "Govern Terraform applies. Chain the downstream stack."
+  description: "Trigger terraform plan on cron, on a Git push, or any HTTP event. Gate between plan and apply with the Pause task, retry the failed step on transient errors, and chain Terraform, Ansible, and ArgoCD in one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"
   secondaryCta:
     label: "Get Started"
     href: "/get-started"
+
+nutshell: "Replace Atlantis and jump-box cron jobs with a workflow engine that listens to cron or Git pushes, handles scheduled drift detection and approval gates between plan and apply, and chains <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/argocd'>Argo CD</a>, and Terraform in one audited flow. Catch drift inside an hour instead of the next quarterly audit; state stays in your existing backend."
 
 pillars:
   title: "From plan to apply, end to end."
@@ -207,10 +209,10 @@ useCases:
           description: "List the new backend, confirm the state file is present, halt if not."
 
 quotes:
-  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment — all orchestrated through Kestra."
+  - quote: "Terraform provisions the VM, Ansible configures the application, ArgoCD handles the deployment. All orchestrated through Kestra."
     author: "Censhare"
     logoFile: "censhare"
-  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything — and this should resolve the issues we are facing currently with everyone working in parallel."
+  - quote: "Terraform is quite a big deal for us because that's basically how we work most of the day to roll out changes. Kestra will be the entity to roll out everything. This should resolve the issues we are facing currently with everyone working in parallel."
     author: "BSI Software"
     logoFile: "bsi"
   - quote: "I'm not sure we can do what we can do now with only Terraform and Ansible. The orchestration of Ansible is very poor compared to what we can do with Kestra. I doubt that we can only use Terraform and Ansible to do all our complex orchestration."
@@ -241,157 +243,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your state backend, ship it."
   items:
     - name: "Scheduled drift detection"
+      blueprintId: "terraform-drift-detection"
       title: "Scheduled drift detection"
       description: "Runs <code>terraform plan</code> hourly with <code>-detailed-exitcode</code>. If exit code 2 (changes detected), Kestra captures the full plan output and posts a Slack alert with a link to the execution. Replayable per run, no cron job on a jump box."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.terraform.cli.TerraformCLI"
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.core.flow.If"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: terraform-drift-detection
-        namespace: company.infra
-
-        triggers:
-          - id: hourly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 * * * *"
-
-        tasks:
-          - id: terraform_plan
-            type: io.kestra.plugin.terraform.cli.TerraformCLI
-            beforeCommands:
-              - terraform init
-            commands:
-              - terraform plan -detailed-exitcode 2>&1 | tee plan_output.txt
-            outputFiles:
-              - "plan_output.txt"
-            allowFailure: true
-            env:
-              AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-              AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-              AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
-
-          - id: check_drift
-            type: io.kestra.plugin.core.flow.If
-            condition: "{{ outputs.terraform_plan.exitCode == 2 }}"
-            then:
-              - id: alert_drift
-                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-                url: "{{ secret('SLACK_WEBHOOK') }}"
-                payload: |
-                  {
-                    "text": ":warning: Drift detected in production infrastructure. <{{ execution.url }}|View execution>"
-                  }
     - name: "Approval gate between plan and apply"
+      blueprintId: "terraform-approval-plan-apply"
       title: "Approval gate between plan and apply"
       description: "Runs <code>terraform plan</code>, pauses the flow on the plan output, waits for a named reviewer, then runs <code>terraform apply</code> against the same plan. The reviewer identity and timestamp are logged automatically. Retries the apply step on transient failure."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.terraform.cli.TerraformCLI"
-        - "io.kestra.plugin.core.flow.Pause"
-        - "io.kestra.plugin.core.log.Log"
-      code: |
-        id: terraform-apply-with-approval
-        namespace: company.infra
-
-        inputs:
-          - id: environment
-            type: SELECT
-            values: [staging, production]
-            defaults: staging
-
-        tasks:
-          - id: terraform_plan
-            type: io.kestra.plugin.terraform.cli.TerraformCLI
-            beforeCommands:
-              - terraform init -backend-config=env/{{ inputs.environment }}.tfbackend
-            commands:
-              - terraform plan -out=tfplan 2>&1 | tee plan_output.txt
-            outputFiles:
-              - "plan_output.txt"
-              - "tfplan"
-
-          - id: await_approval
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Plan complete for {{ inputs.environment }}.
-              Review the diff in plan_output.txt, then resume to apply.
-
-          - id: terraform_apply
-            type: io.kestra.plugin.terraform.cli.TerraformCLI
-            beforeCommands:
-              - terraform init -backend-config=env/{{ inputs.environment }}.tfbackend
-            commands:
-              - terraform apply -auto-approve tfplan 2>&1 | tee apply_output.txt
-            inputFiles:
-              tfplan: "{{ outputs.terraform_plan.outputFiles['tfplan'] }}"
-            outputFiles:
-              - "apply_output.txt"
-            retry:
-              type: constant
-              interval: PT5M
-              maxAttempt: 2
-
-          - id: audit_log
-            type: io.kestra.plugin.core.log.Log
-            message: "Applied to {{ inputs.environment }} at {{ execution.startDate }} by {{ execution.namespace }}."
     - name: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
+      blueprintId: "terraform-ansible-argocd-chain"
       title: "Provision with Terraform, configure with Ansible, deploy with ArgoCD"
       description: "<code>terraform apply</code> provisions the VM and writes the private IP to a task artifact. <code>ansible-playbook</code> configures the app using that IP, with per-step retries. <code>argocd app sync</code> ships the deployment. Slack confirms when all three steps succeed."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.terraform.cli.TerraformCLI"
-        - "io.kestra.plugin.ansible.cli.AnsibleCLI"
-        - "io.kestra.plugin.scripts.shell.Commands"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: provision-configure-deploy
-        namespace: company.platform
-
-        inputs:
-          - id: app_name
-            type: STRING
-
-        tasks:
-          - id: terraform_apply
-            type: io.kestra.plugin.terraform.cli.TerraformCLI
-            beforeCommands:
-              - terraform init
-            commands:
-              - terraform apply -auto-approve -var "app_name={{ inputs.app_name }}"
-              - terraform output -raw private_ip > private_ip.txt
-            outputFiles:
-              - "private_ip.txt"
-
-          - id: ansible_configure
-            type: io.kestra.plugin.ansible.cli.AnsibleCLI
-            inputFiles:
-              inventory.ini: |
-                [app]
-                {{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}
-              configure.yml: "{{ read(secret('ANSIBLE_PLAYBOOK')) }}"
-            commands:
-              - ansible-playbook -i inventory.ini configure.yml
-            retry:
-              type: constant
-              interval: PT2M
-              maxAttempt: 3
-
-          - id: argocd_sync
-            type: io.kestra.plugin.scripts.shell.Commands
-            commands:
-              - argocd app sync {{ inputs.app_name }} --auth-token {{ secret('ARGOCD_TOKEN') }} --server {{ secret('ARGOCD_SERVER') }}
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":rocket: {{ inputs.app_name }} provisioned ({{ read(outputs.terraform_apply.outputFiles['private_ip.txt']) }}), configured, and deployed."
-              }
-
 comparison:
   title: "Kestra vs Terraform orchestration alternatives"
   subtitle: "How Kestra compares to the platforms platform teams already use to run Terraform."

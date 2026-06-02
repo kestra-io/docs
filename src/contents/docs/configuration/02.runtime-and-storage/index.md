@@ -288,6 +288,40 @@ kestra:
       force-path-style: false
 ```
 
+:::alert{type="warning"}
+If you inject S3 credentials through Helm `extraEnvVars` or another environment-variable source, use double underscores on multi-word property names. `KESTRA_STORAGE_S3_ACCESS_KEY` can be parsed as `kestra.storage.s3.access.key` (nested), which the storage plugin rejects with a Jackson `UnrecognizedPropertyException` at startup. Use one of the working forms instead:
+
+```yaml
+# Helm values.yaml
+extraEnvVars:
+  - name: KESTRA_STORAGE_S3_ACCESS__KEY
+    valueFrom:
+      secretKeyRef:
+        name: my-s3-secret
+        key: access_key
+  - name: KESTRA_STORAGE_S3_SECRET__KEY
+    valueFrom:
+      secretKeyRef:
+        name: my-s3-secret
+        key: secret_key
+```
+
+Or keep the keys in YAML and interpolate from simpler env vars:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      access-key: "${S3_ACCESS_KEY}"
+      secret-key: "${S3_SECRET_KEY}"
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+```
+
+See [Environment variable conversion](../01.configuration-basics/index.md#environment-variable-conversion) for the full naming rule.
+:::
+
 If Kestra runs on EC2 or EKS with IAM roles, omit static credentials and keep only the region and bucket:
 
 ```yaml
@@ -442,6 +476,34 @@ kestra:
 ```
 
 If `service-account` is omitted, Kestra falls back to default GCP credentials, which is usually the right choice on GKE or GCE.
+
+:::alert{type="warning"}
+`KESTRA_STORAGE_GCS_PROJECT_ID` can be parsed as `kestra.storage.gcs.project.id` (nested) and rejected by the GCS storage plugin's Jackson mapper with `UnrecognizedPropertyException`. Use double underscores on the multi-word segment, or keep the configuration in YAML:
+
+```yaml
+# Helm values.yaml
+extraEnvVars:
+  - name: KESTRA_STORAGE_GCS_PROJECT__ID
+    value: "my-gcp-project"
+  - name: KESTRA_STORAGE_GCS_SERVICE__ACCOUNT
+    valueFrom:
+      secretKeyRef:
+        name: my-gcs-secret
+        key: service_account_json
+```
+
+```yaml
+kestra:
+  storage:
+    type: gcs
+    gcs:
+      bucket: "<bucket>"
+      project-id: "${GCS_PROJECT_ID}"
+      service-account: "${GCS_SERVICE_ACCOUNT}"
+```
+
+See [Environment variable conversion](../01.configuration-basics/index.md#environment-variable-conversion) for the full naming rule.
+:::
 
 ### Cloudflare R2
 

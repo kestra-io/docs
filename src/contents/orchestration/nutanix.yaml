@@ -1,5 +1,5 @@
-title: "Orchestrate Nutanix with Kestra: VMware exits, AHV day-2 ops, recovery points"
-description: "Orchestrate Nutanix from one flow: VMware-to-AHV waves with Move, crash- or app-consistent recovery points, DR replication, and Category-driven inventory."
+title: "Orchestrate Nutanix AHV with Kestra: day-2 ops, recovery points, DR replication"
+description: "Orchestrate Nutanix from one flow: crash- or app-consistent recovery points, cross-cluster DR replication, and Category-driven Prism inventory."
 
 tool:
   name: "Nutanix"
@@ -7,14 +7,16 @@ tool:
   color: "#024DA1"
 
 hero:
-  title: "Your Nutanix clusters, fully orchestrated."
-  description: "Coordinate VMware-to-AHV migrations in waves with Nutanix Move, capture crash- or app-consistent recovery points before patching, replicate them to a DR cluster on schedule, and slice Prism inventory by Category for chargeback or wave selection, all in one execution history."
+  title: "Run Nutanix AHV Day-2 ops from one flow."
+  description: "Capture app-consistent recovery points before patching, replicate them to a DR cluster on schedule, slice Prism inventory by Category for chargeback, and run VMware-to-AHV migration waves when the moment comes."
   cta:
     label: "Book a Demo"
     href: "/demo"
   secondaryCta:
     label: "Get Started"
     href: "/get-started"
+
+nutshell: "Replace Nutanix Self-Service (Calm) and X-Play with a workflow engine that listens to schedules or migration waves, handles crash- or app-consistent recovery points with cross-cluster DR replication, and chains AHV with <a href='/orchestration/vmware'>VMware</a>, <a href='/orchestration/ansible'>Ansible</a>, and <a href='/orchestration/servicenow'>ServiceNow</a>. Drop the Calm catalog license; cut VMware-to-AHV cutover risk to per-VM waves with rollback."
 
 pillars:
   title: "Around every AHV operation, across every cluster."
@@ -186,241 +188,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Prism Central, ship it."
   items:
     - name: "Safe patching with rollback"
+      blueprintId: "nutanix-safe-patching-workflow"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Provisions an AHV VM and creates a pre-patch recovery point through the v4 dataprotection API. Runs the OS update over SSH, waits for reboot, probes a health endpoint. The <code>errors</code> branch restores the recovery point and notifies Slack. Shipped as a working blueprint in the Kestra catalog."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.ee.nutanix.ahv.CreateVm"
-        - "io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot"
-        - "io.kestra.plugin.scripts.shell.Commands"
-        - "io.kestra.plugin.ee.nutanix.snapshot.RestoreVmSnapshot"
-        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
-      code: |
-        id: nutanix-safe-patching-workflow
-        namespace: company.team
-        description: Provision a Nutanix AHV VM, emit VM/snapshot assets, apply OS updates, and rollback automatically on failure.
-
-        inputs:
-          - id: vm_name
-            type: STRING
-            defaults: "prod-web-server-01"
-
-        tasks:
-          - id: provision_vm
-            type: io.kestra.plugin.ee.nutanix.ahv.CreateVm
-            wait: true
-            vm:
-              name: "{{ inputs.vm_name }}"
-              description: "VM created by Kestra"
-              cluster:
-                extId: "{{ secret('NUTANIX_CLUSTER_EXT_ID') }}"
-              resources:
-                numSockets: 1
-                numCoresPerSocket: 2
-                memorySizeBytes: 2147483648
-                disks: []
-
-          - id: safe_patching_block
-            type: io.kestra.plugin.core.flow.Sequential
-            tasks:
-              - id: pre_patch_snapshot
-                type: io.kestra.plugin.ee.nutanix.snapshot.CreateVmSnapshot
-                vmExtId: "{{ outputs.provision_vm.vmExtId }}"
-                snapshotName: "pre_patch_{{ execution.id }}"
-
-              - id: apply_updates
-                type: io.kestra.plugin.scripts.shell.Commands
-                commands:
-                  - ssh -o StrictHostKeyChecking=no admin@{{ outputs.provision_vm.vmIpAddresses[0] }} "sudo apt update && sudo apt upgrade -y && sudo reboot"
-
-              - id: wait_for_boot
-                type: io.kestra.plugin.core.flow.Pause
-                delay: PT1M
-
-              - id: health_check
-                type: io.kestra.plugin.core.http.Request
-                uri: "http://{{ outputs.provision_vm.vmIpAddresses[0] }}/health"
-                method: "GET"
-
-              - id: notify_success
-                type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-                url: "{{ secret('SLACK_WEBHOOK') }}"
-                messageText: ":white_check_mark: Patching succeeded for {{ inputs.vm_name }}."
-
-        errors:
-          - id: rollback
-            type: io.kestra.plugin.ee.nutanix.snapshot.RestoreVmSnapshot
-            snapshotExtId: "{{ outputs.safe_patching_block.pre_patch_snapshot.snapshotExtId }}"
-
-          - id: notify_oncall
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":alert: Patching failed for {{ inputs.vm_name }}, rolled back to pre-patch state. <{{ execution.url }}|View execution>"
-
-        pluginDefaults:
-          - type: io.kestra.plugin.ee.nutanix
-            values:
-              host: "{{ secret('NUTANIX_HOST') }}"
-              token: "{{ secret('NUTANIX_TOKEN') }}"
     - name: "VMware-to-AHV wave migration"
+      blueprintId: "nutanix-vmware-ahv-migration"
       title: "Coordinate a Nutanix Move wave: readiness check, gate, cutover, AHV start"
       description: "Drives Nutanix Move through the v2 REST API for one wave of VMs. Polls workload state until 5 (ready for cutover), pauses for a named approver, then issues the per-VM cutover action and powers the new AHV VM on. The vCenter source stays live until cutover succeeds."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.http.Request"
-        - "io.kestra.plugin.core.flow.Pause"
-        - "io.kestra.plugin.core.flow.ForEach"
-        - "io.kestra.plugin.ee.nutanix.ahv.StartVm"
-        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
-      code: |
-        id: nutanix-move-wave-cutover
-        namespace: company.platform
-        description: Coordinate a Nutanix Move wave from readiness check through per-VM cutover and AHV power-on.
-
-        inputs:
-          - id: move_plan_id
-            type: STRING
-            description: "Move migration plan ID created via the v2 API."
-          - id: wave_name
-            type: STRING
-            defaults: "wave-1"
-
-        variables:
-          move_base: "https://{{ secret('MOVE_HOST') }}/move/v2"
-
-        tasks:
-          - id: login
-            type: io.kestra.plugin.core.http.Request
-            uri: "{{ vars.move_base }}/users/login"
-            method: POST
-            contentType: application/json
-            body: |
-              {
-                "Spec": {
-                  "Username": "{{ secret('MOVE_USERNAME') }}",
-                  "Password": "{{ secret('MOVE_PASSWORD') }}"
-                }
-              }
-
-          - id: list_workloads
-            type: io.kestra.plugin.core.http.Request
-            uri: "{{ vars.move_base }}/plans/{{ inputs.move_plan_id }}/workloads/list"
-            method: GET
-            headers:
-              Authorization: "{{ outputs.login.body.Status.Token }}"
-
-          - id: await_approval
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Wave {{ inputs.wave_name }}: {{ outputs.list_workloads.body.Entities | length }} workloads ready.
-              Approve to cut over.
-
-          - id: cutover_each
-            type: io.kestra.plugin.core.flow.ForEach
-            values: "{{ outputs.list_workloads.body.Entities }}"
-            tasks:
-              - id: cutover
-                type: io.kestra.plugin.core.http.Request
-                uri: "{{ vars.move_base }}/plans/{{ inputs.move_plan_id }}/workloads/{{ json(taskrun.value).MetaData.UUID }}/action"
-                method: POST
-                headers:
-                  Authorization: "{{ outputs.login.body.Status.Token }}"
-                contentType: application/json
-                body: |
-                  { "Spec": { "Action": "cutover" } }
-
-              - id: start_ahv_vm
-                type: io.kestra.plugin.ee.nutanix.ahv.StartVm
-                vmExtId: "{{ json(taskrun.value).TargetVMUuid }}"
-
-          - id: notify
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":rocket: Wave `{{ inputs.wave_name }}` cut over, {{ outputs.list_workloads.body.Entities | length }} workloads now running on AHV."
-
-        pluginDefaults:
-          - type: io.kestra.plugin.ee.nutanix
-            values:
-              host: "{{ secret('NUTANIX_HOST') }}"
-              token: "{{ secret('NUTANIX_TOKEN') }}"
     - name: "Inventory and chargeback report"
+      blueprintId: "nutanix-inventory-chargeback"
       title: "Weekly chargeback report from Prism Central inventory"
       description: "Pulls VM inventory through <code>ListVms</code> with an OData filter, aggregates vCPU and memory by Category in Python, posts the summary to Slack, and appends a row to a Google Sheet. Flags any VM that lacks the expected owner Category."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.ee.nutanix.ahv.ListVms"
-        - "io.kestra.plugin.scripts.python.Script"
-        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
-        - "io.kestra.plugin.googleworkspace.sheets.AppendValues"
-      code: |
-        id: nutanix-inventory-chargeback
-        namespace: company.platform
-
-        triggers:
-          - id: weekly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 9 * * 1"
-
-        tasks:
-          - id: list_vms
-            type: io.kestra.plugin.ee.nutanix.ahv.ListVms
-            filter: "powerState eq 'ON'"
-            select: "name,numSockets,memorySizeBytes,categories"
-            fetchType: STORE
-
-          - id: aggregate_by_category
-            type: io.kestra.plugin.scripts.python.Script
-            inputFiles:
-              vms.ion: "{{ outputs.list_vms.uri }}"
-            outputFiles:
-              - "summary.json"
-              - "untagged.json"
-            script: |
-              import json, collections
-              from kestra import Kestra
-
-              # Read the VM list (ION format) into a list of dicts.
-              with open("vms.ion") as f:
-                  vms = [json.loads(line) for line in f if line.strip()]
-
-              by_dept = collections.defaultdict(lambda: {"vcpu": 0, "mem_gb": 0.0, "vms": 0})
-              untagged = []
-
-              for vm in vms:
-                  dept = next((c for c in vm.get("categories", []) if c.startswith("dept/")), None)
-                  if not dept:
-                      untagged.append(vm["name"])
-                      continue
-                  by_dept[dept]["vcpu"] += vm.get("numSockets", 0)
-                  by_dept[dept]["mem_gb"] += vm.get("memorySizeBytes", 0) / 1024**3
-                  by_dept[dept]["vms"] += 1
-
-              with open("summary.json", "w") as f:
-                  json.dump(by_dept, f)
-              with open("untagged.json", "w") as f:
-                  json.dump(untagged, f)
-
-              Kestra.outputs({"departments": len(by_dept), "untagged_count": len(untagged)})
-
-          - id: post_slack
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":bar_chart: Weekly chargeback: {{ outputs.aggregate_by_category.vars.departments }} departments tracked, {{ outputs.aggregate_by_category.vars.untagged_count }} VMs missing an owner Category."
-
-          - id: append_sheet
-            type: io.kestra.plugin.googleworkspace.sheets.AppendValues
-            serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
-            spreadsheetId: "{{ secret('CHARGEBACK_SHEET_ID') }}"
-            range: "Weekly!A:D"
-            values:
-              - ["{{ execution.startDate }}", "{{ outputs.aggregate_by_category.vars.departments }}", "{{ outputs.aggregate_by_category.vars.untagged_count }}", "{{ execution.id }}"]
-
-        pluginDefaults:
-          - type: io.kestra.plugin.ee.nutanix
-            values:
-              host: "{{ secret('NUTANIX_HOST') }}"
-              token: "{{ secret('NUTANIX_TOKEN') }}"
-
 comparison:
   title: "Kestra vs Nutanix orchestration alternatives"
   subtitle: "Kestra orchestrates around AHV, Prism Central, and Move. It replaces the Calm / Self-Service automation layer above them. The competitors below are the platforms Nutanix admins actually evaluate."
@@ -487,6 +268,14 @@ comparison:
         - "Multi-cloud (proprietary connectors)"
         - "Ansible-centric, broad collections"
 
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs HPE Morpheus"
+  description: "Side-by-side breakdown across HCI day-2 ops, self-service catalogs, multi-cloud reach, and cross-stack orchestration."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/morpheus"
+
 faq:
   - question: "Does Kestra replace AHV or Prism Central?"
     answer: "No. AHV stays as your hypervisor, Prism Central stays as your management plane. Kestra calls the Prism Central v4 APIs (VMM for VM lifecycle, dataprotection for recovery points) through the <code>io.kestra.plugin.ee.nutanix</code> plugin, and reaches other Nutanix surfaces (Move, Categories, LCM) through the generic <code>core.http.Request</code> task. Kestra orchestrates the workflow around your cluster, not the cluster itself."
@@ -529,8 +318,8 @@ resources:
       href: "/plugins/plugin-ee-nutanix"
 
 seeHow:
-  title: "Ready to coordinate VMware exits and AHV day-2 ops?"
-  description: "Keep Prism Central and AHV. Replace Calm / Self-Service with declarative YAML flows: Move waves, crash- or app-consistent recovery points, cross-cluster replication, Category-driven inventory and chargeback, all from one execution history."
+  title: "Ready to orchestrate Nutanix day-2 ops?"
+  description: "Keep Prism Central and AHV. Replace Calm / Self-Service with declarative YAML flows: crash- or app-consistent recovery points, cross-cluster replication, and Category-driven Prism inventory, all from one execution history."
   cta:
     label: "Book a Demo"
     href: "/demo"

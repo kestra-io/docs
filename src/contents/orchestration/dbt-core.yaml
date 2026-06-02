@@ -7,14 +7,16 @@ tool:
   color: "#FF694A"
 
 hero:
-  title: "Your dbt Core runs, fully orchestrated."
-  description: "Trigger dbt build on cron, after an Airbyte sync, or on a file landing in S3. Capture per-model test failures, retry only the failed step, replay any model from history, and chain Airbyte upstream and Hightouch downstream in one execution."
+  title: "Run dbt Core with enterprise-grade orchestration."
+  description: "Trigger dbt build on cron, after an Airbyte sync, or when a file lands in S3. Capture per-model test failures, retry only the failed step, replay any model from history, and chain Airbyte upstream and Hightouch downstream in one execution."
   cta:
     label: "Book a Demo"
     href: "/demo"
   secondaryCta:
     label: "Get Started"
     href: "/get-started"
+
+nutshell: "Run dbt Core with a workflow engine that listens to cron, Airbyte completions, or <a href='/orchestration/aws'>S3 events</a>, handles per-model retries with approval gates between staging and prod, and chains dbt with Airbyte, Hightouch, and the rest of your stack in one audited flow. <strong>West Bend Insurance</strong> estimates ~90% less Python glue code with an orchestrator around dbt."
 
 pillars:
   title: "Around every dbt build."
@@ -115,7 +117,7 @@ useCases:
         - title: "Outputs flow forward"
           description: "Pass artifacts and metadata between Airbyte, dbt, and Hightouch."
         - title: "Shared execution context"
-          description: "One execution ID across all three tools — one place to debug."
+          description: "One execution ID across all three tools. One place to debug."
         - title: "Single audit history"
           description: "Search every run by date, status, or trigger source from one UI."
     - badge: "Event-driven"
@@ -167,16 +169,16 @@ useCases:
         - title: "Same flow, two schedules"
           description: "Nightly full builds and on-demand targeted refreshes share one YAML."
         - title: "Tag / path / selector"
-          description: "Use any dbt selector syntax — Kestra forwards it unchanged."
+          description: "Use any dbt selector syntax. Kestra forwards it unchanged."
           wide: true
 
 quotes:
   - quote: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly!"
-    author: "Senior Data Engineer — Gorgias"
+    author: "Senior Data Engineer, Gorgias"
     storyLink: "/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra"
     logoFile: "gorgias"
-  - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle — you give flexibility, but you abstract that with a declarative approach."
-    author: "Lead Data Engineer — Riverside.fm"
+  - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle. You give flexibility, but you abstract that with a declarative approach."
+    author: "Lead Data Engineer, Riverside.fm"
     logoFile: "riverside"
   - quote: "In an analysis of our last pipeline, it was clear that if we had used dbt with an appropriate orchestrator, we would have cut out somewhere in the neighborhood of 90% of the Python code we wrote."
     author: "Kent Maxwell · West Bend Insurance"
@@ -186,149 +188,20 @@ blueprints:
   lead: "Production-ready workflows. Copy the YAML, wire it to your stack."
   items:
     - name: "Scheduled run with alerting"
+      blueprintId: "dbt-core-scheduled-alerting"
       title: "Scheduled run with alerting"
       description: "Runs <code>dbt run</code> then <code>dbt test</code> every morning at 5 AM. Any failure routes immediately to Slack with a link to the full execution, showing which task failed and the complete output. The team knows before they sit down for standup."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.dbt.cli.DbtCLI"
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: dbt-scheduled-run
-        namespace: company.data.dbt
-
-        triggers:
-          - id: nightly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 5 * * *"
-
-        tasks:
-          - id: dbt_run
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt run --target production
-            projectDir: "{{ secret('DBT_PROJECT_DIR') }}"
-            profiles: "{{ secret('DBT_PROFILES_YML') }}"
-
-          - id: dbt_test
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt test --target production
-            projectDir: "{{ secret('DBT_PROJECT_DIR') }}"
-            profiles: "{{ secret('DBT_PROFILES_YML') }}"
-
-        errors:
-          - id: alert_on_failure
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":warning: dbt run failed in *{{ flow.namespace }}*. <{{ execution.url }}|View execution>"
-              }
     - name: "Production run with approval gate"
+      blueprintId: "dbt-core-approval-gate"
       title: "Production run with approval gate"
       description: "Staging runs and tests first. The flow pauses for human review before promoting to production. Promotion proceeds only after explicit approval. The reviewer's identity and timestamp are logged automatically in the execution history."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.dbt.cli.DbtCLI"
-        - "io.kestra.plugin.core.flow.Pause"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: dbt-run-with-approval
-        namespace: company.data.dbt
-
-        inputs:
-          - id: target
-            type: STRING
-            displayName: dbt target
-            defaults: production
-
-        tasks:
-          - id: dbt_staging_run
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt run --target staging
-            projectDir: "{{ secret('DBT_PROJECT_DIR') }}"
-            profiles: "{{ secret('DBT_PROFILES_YML') }}"
-
-          - id: dbt_staging_test
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt test --target staging
-            projectDir: "{{ secret('DBT_PROJECT_DIR') }}"
-            profiles: "{{ secret('DBT_PROFILES_YML') }}"
-
-          - id: await_approval
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Staging tests passed. Review before promoting to production.
-              Target: {{ inputs.target }}
-
-          - id: dbt_prod_run
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt run --target {{ inputs.target }}
-            projectDir: "{{ secret('DBT_PROJECT_DIR') }}"
-            profiles: "{{ secret('DBT_PROFILES_YML') }}"
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":white_check_mark: dbt production run complete. <{{ execution.url }}|View execution>"
-              }
     - name: "Full data stack pipeline"
+      blueprintId: "airbyte-cloud-dbt"
       title: "Full data stack pipeline"
       description: "Airbyte ingests raw data, dbt builds all models and runs tests, Hightouch syncs the results downstream. All three steps run in a single flow. If dbt fails, Kestra retries it without re-running the Airbyte sync. This is the pattern Gorgias runs in production."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.airbyte.connections.Sync"
-        - "io.kestra.plugin.dbt.cli.DbtCLI"
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: modern-data-stack-pipeline
-        namespace: company.data.platform
-
-        triggers:
-          - id: daily
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 4 * * *"
-
-        tasks:
-          - id: airbyte_sync
-            type: io.kestra.plugin.airbyte.connections.Sync
-            connectionId: "{{ secret('AIRBYTE_CONNECTION_ID') }}"
-            url: "{{ secret('AIRBYTE_URL') }}"
-
-          - id: dbt_build
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt build --target production
-            projectDir: "{{ secret('DBT_PROJECT_DIR') }}"
-            profiles: "{{ secret('DBT_PROFILES_YML') }}"
-            retry:
-              type: constant
-              interval: PT5M
-              maxAttempt: 2
-
-          - id: hightouch_sync
-            type: io.kestra.plugin.scripts.shell.Commands
-            commands:
-              - >-
-                curl -X POST
-                "https://api.hightouch.io/api/v1/syncs/{{ secret('HIGHTOUCH_SYNC_ID') }}/trigger"
-                -H "Authorization: Bearer {{ secret('HIGHTOUCH_TOKEN') }}"
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":chart_with_upwards_trend: Pipeline complete: Airbyte ingested, dbt built, Hightouch synced."
-              }
-
 comparison:
   title: "Kestra vs dbt Core orchestration alternatives"
   subtitle: "How Kestra compares to the tools dbt Core teams are already using or evaluating."

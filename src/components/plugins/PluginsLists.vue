@@ -111,6 +111,8 @@
     const sortOptions = [
         { value: "A-Z", label: "Name A-Z" },
         { value: "Z-A", label: "Name Z-A" },
+        { value: "newest", label: "Newest" },
+        { value: "most-used", label: "Most used" },
     ]
 
     const props = defineProps<{
@@ -126,7 +128,7 @@
 
     const SEARCHABLE_FIELDS: (keyof CardPlugin)[] = ["title", "description", "name", "classes"]
 
-    const sortPlugins = (plugins: CardPlugin[], ascending: boolean, query: string) => {
+    const sortPlugins = (plugins: CardPlugin[], sort: string, query: string) => {
         const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
         const matchesAll = (value: string | undefined) =>
             tokens.length > 0 && tokens.every((t) => value?.toLowerCase().includes(t))
@@ -138,12 +140,21 @@
                 if (aStrong !== bStrong) return aStrong ? -1 : 1
             }
 
-            const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
-            const bCore = b.group === "io.kestra.plugin.core" && !b.subGroup
-            if (aCore !== bCore) return aCore ? -1 : 1
+            if (sort === "newest") {
+                const aDate = a.lastReleasedAt ? new Date(a.lastReleasedAt).getTime() : 0
+                const bDate = b.lastReleasedAt ? new Date(b.lastReleasedAt).getTime() : 0
+                if (aDate !== bDate) return bDate - aDate
+            } else if (sort === "most-used") {
+                const bCmp = (b.usageCount ?? 0) - (a.usageCount ?? 0)
+                if (bCmp !== 0) return bCmp
+            } else {
+                const aCore = a.group === "io.kestra.plugin.core" && !a.subGroup
+                const bCore = b.group === "io.kestra.plugin.core" && !b.subGroup
+                if (aCore !== bCore) return aCore ? -1 : 1
+            }
 
             const comparison = a.title.toLowerCase().localeCompare(b.title.toLowerCase())
-            return ascending ? comparison : -comparison
+            return sort === "Z-A" ? -comparison : comparison
         })
     }
 
@@ -176,7 +187,7 @@
     )
 
     const pluginsSlice = computed(() =>
-        sortPlugins(categoryFilteredPlugins.value, sortBy.value === "A-Z", searchQuery.value).slice(
+        sortPlugins(categoryFilteredPlugins.value, sortBy.value, searchQuery.value).slice(
             (currentPage.value - 1) * itemsPerPage.value,
             currentPage.value * itemsPerPage.value,
         ),
