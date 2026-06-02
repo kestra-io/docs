@@ -88,9 +88,9 @@ The `users`, `groups`, `roles`, and `service-accounts` command groups require Ke
 
 ### Users
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Use `--user-password` to set a user's password — **not** `--password`. The `--password` flag authenticates the CLI itself with basic auth. Passing a user's new password to `--password` sends it as your own credentials.
-::
+:::
 
 ```bash
 # List / filter users
@@ -157,9 +157,9 @@ kestractl groups members remove <group_id> <user_id>
 
 A role carries a `permissions` payload: a map of resource type (e.g. `FLOW`, `EXECUTION`, `NAMESPACE`, `SECRET`, `KVSTORE`) to a list of permission levels (`READ`, `CREATE`, `UPDATE`, `DELETE`). Provide permissions either inline with the repeatable `--permission TYPE:LEVEL[,LEVEL]` flag or from a YAML/JSON file with `--permissions-file` — not both at once.
 
-::alert{type="warning"}
+:::alert{type="warning"}
 Passing `--permission` or `--permissions-file` on `roles update` **replaces the entire permissions block** — it does not merge with the existing permissions. Omit both flags on update if you only want to change the name or description.
-::
+:::
 
 ```bash
 # List / filter roles
@@ -204,7 +204,7 @@ kestractl roles delete <role_id> --yes
 
 Service accounts are instance-level resources. The command can be shortened to `service-account` or `sa`.
 
-`update` is a partial update — only `--name` and `--description` are accepted. Super-admin status, tenant grants, and group membership cannot be changed after creation. Pass at least one of `--name` or `--description` or the command returns an error.
+`update` is a partial update — only `--name` and `--description` are accepted. Super-admin status, tenant grants, and group membership cannot be changed with `update`. Pass at least one of `--name` or `--description`; passing neither returns an error.
 
 ```bash
 # List service accounts

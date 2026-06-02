@@ -781,7 +781,7 @@ You can also [add these key-value pairs](../../06.concepts/05.kv-store/index.md)
 
 Each item in the `values` list can be a plain string or an object with `label` and `value` fields. When you use the object form, the UI dropdown shows `label` while `{{ inputs.x }}` resolves to `value`. Plain strings remain valid — a plain string is treated as an option where the label equals the value, and you can mix both forms in the same list.
 
-This decoupling is useful when you need a human-readable label (e.g., an account name) but need the flow to receive a technical identifier (e.g., an account ID).
+This is useful when the UI should show a human-readable label while the flow uses a technical identifier such as an account ID.
 
 ```yaml
 id: aws_account_selector

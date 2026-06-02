@@ -49,6 +49,15 @@ tasks:
 
 `read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs.
 
+For files in CSV, JSON, XML, YAML, or any other non-ION format, `read()` returns a `String`. For **binary ION files** — the format used by ION task outputs — `read()` returns `byte[]` to preserve binary fidelity. Pass the result directly to `fromIon()` to deserialize it:
+
+```twig
+{{ fromIon(read(outputs.transform.uri)) }}
+{{ fromIon(read(outputs.transform.uri), allRows=true) }}
+```
+
+Do not perform string operations such as `contains` directly on `read()` when the URI points to an ION task output — use `fromIon()` first.
+
 ## `fileURI()`
 
 Returns the internal URI of a namespace file without reading its contents. Use `fileURI()` when a task parameter expects a URI rather than inline content:
