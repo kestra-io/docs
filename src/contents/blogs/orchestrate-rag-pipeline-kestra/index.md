@@ -4,9 +4,9 @@ description: "Build an end-to-end RAG pipeline in declarative YAML with Kestra: 
 date: 2026-06-05T09:00:00
 category: Solutions
 author:
-  name: Virgile Fanucci
-  image: vfanucci
-  linkedin: https://www.linkedin.com/in/virgile-fanucci/
+  name: Will Russell
+  linkedin: https://www.linkedin.com/in/wrussell1999/
+  image: "wrussell"
 ---
 
 A Retrieval-Augmented Generation pipeline is easy to demo in a notebook and surprisingly hard to keep running. You load some documents, create embeddings, query them, and the answers look great. Then the documents change and nobody re-indexes them. A step fails halfway and you don't notice. There's no schedule, no retries, no record of what ran when. The notebook was never the problem — the *operating* of it is.
