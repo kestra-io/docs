@@ -659,3 +659,4 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Webhook Trigger in Kestra – Start Flows via HTTP](https://kestra.io/docs/workflow-components/triggers/webhook-trigger.md)
 - [MCP Tool Trigger in Kestra – Expose Flows as AI Tools](https://kestra.io/docs/workflow-components/triggers/mcp-tool-trigger.md)
 - [Variables in Kestra – Reuse Values Across Flows](https://kestra.io/docs/workflow-components/variables.md)
+- [feat(iam): manage bindings via CLI](https://kestra.io/docs/cli/commands/kestractl_bindings.md)
