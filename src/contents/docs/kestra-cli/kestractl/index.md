@@ -79,12 +79,13 @@ kestractl flows list my.namespace --output json
 - `groups`: list, get, create, update, delete groups and manage their members. Requires Kestra EE; tenant-scoped.
 - `roles`: list, get, create, update, and delete roles with resource-level permissions. Requires Kestra EE; tenant-scoped.
 - `service-accounts` (aliases: `service-account`, `sa`): list, get, create, update, delete service accounts and manage their API tokens. Requires Kestra EE; instance-level (not tenant-scoped).
+- `bindings`: list, get, create, and delete role bindings (the assignment of a role to a user or group). Requires Kestra EE; tenant-scoped.
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
 
 ## IAM management (Enterprise Edition)
 
-The `users`, `groups`, `roles`, and `service-accounts` command groups require Kestra Enterprise Edition. `users` and `service-accounts` operate at the instance level while `groups` and `roles` are tenant-scoped and use the active tenant from your context.
+The `users`, `groups`, `roles`, `service-accounts`, and `bindings` command groups require Kestra Enterprise Edition. `users` and `service-accounts` operate at the instance level while `groups`, `roles`, and `bindings` are tenant-scoped and use the active tenant from your context.
 
 ### Users
 
@@ -234,6 +235,36 @@ kestractl service-accounts tokens create <service_account_id> --name deploy-toke
 kestractl service-accounts tokens create <service_account_id> --name short-lived --max-age P30D --extended
 kestractl service-accounts tokens list <service_account_id>
 kestractl service-accounts tokens delete <service_account_id> <token_id>
+```
+
+### Bindings
+
+A binding assigns a role to a user or group, optionally scoped to a namespace. Bindings are tenant-scoped.
+
+```bash
+# List all bindings
+kestractl bindings list
+
+# Filter by subject type or ID
+kestractl bindings list --type USER --external-id <user_id>
+kestractl bindings list --type GROUP --external-id <group_id>
+
+# Filter by namespace
+kestractl bindings list --namespace company.team
+
+# Get binding details
+kestractl bindings get <binding_id>
+
+# Assign a role to a user tenant-wide
+kestractl bindings create --type USER --external-id <user_id> --role <role_id>
+
+# Assign a role to a group scoped to a namespace
+kestractl bindings create --type GROUP --external-id <group_id> --role <role_id> \
+  --namespace company.team
+
+# Delete a binding — prompts for confirmation; skip with --yes
+kestractl bindings delete <binding_id>
+kestractl bindings delete <binding_id> --yes
 ```
 
 ## Configuration
