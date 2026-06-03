@@ -1,15 +1,15 @@
 ---
 title: "What is MLOps? Machine Learning Operations Explained"
 description: "Explore Machine Learning Operations (MLOps) to automate and simplify ML workflows and deployments. Learn what MLOps is today!"
-metaTitle: "MLOps Explained: Automate & Scale Machine Learning Workflows"
-metaDescription: "Understand MLOps (Machine Learning Operations) and its role in automating, deploying, and monitoring ML models in production. Discover key components and benefits for scalable AI."
+metaTitle: "What is MLOps? Machine Learning Operations Guide | Kestra"
+metaDescription: "Learn what MLOps is, its core components, and how it automates the ML lifecycle — from training to deployment and monitoring. Build smarter pipelines."
 tag: ai
 date: 2026-05-15
 faq:
-  - question: "What are the 4 types of ML models?"
-    answer: "Machine learning models are broadly categorized by their learning approach: supervised learning (predicting outcomes from labeled data), unsupervised learning (finding patterns in unlabeled data), semi-supervised learning (combining small amounts of labeled data with large amounts of unlabeled data), and reinforcement learning (learning through trial and error with rewards)."
+  - question: "What are the key stages of an MLOps pipeline?"
+    answer: "An MLOps pipeline typically covers five stages: data preparation and feature engineering, model training and experiment tracking, model validation and testing, deployment (with strategies such as A/B testing or canary releases), and continuous monitoring for data drift and performance degradation. Continuous Training (CT) ties all stages together by automating retraining when performance drops."
   - question: "What is an MLOps engineer salary?"
-    answer: "MLOps engineer salaries vary significantly based on location, experience, and company size. In major tech hubs, entry-level MLOps engineers might start around $100,000-$130,000, while experienced professionals can earn upwards of $180,000-$250,000 annually, reflecting the specialized skills required to bridge software engineering and machine learning."
+    answer: "MLOps engineer salaries vary significantly based on location, experience, and company size. In 2026, the US national average sits around $130,000–$165,000, while senior MLOps engineers at large tech companies can reach $200,000–$260,000 in total compensation, reflecting the specialized skills required to bridge software engineering, data science, and cloud infrastructure."
   - question: "Is MLOps harder than DevOps?"
     answer: "Yes, in many ways MLOps is more complex than DevOps because it deals with not only code but also large datasets, ML models, retraining, and monitoring model drift. While DevOps focuses on automating software release cycles, MLOps adds layers of experimentation, data handling, model versioning, and ethical AI practices, making it inherently more challenging."
   - question: "Is ChatGPT AI or ML?"
@@ -26,7 +26,7 @@ Machine Learning Operations, or MLOps, has rapidly evolved from a niche concept 
 
 MLOps is a set of practices, cultural norms, and tools that automates and standardizes the machine learning lifecycle, from data preparation and model development to deployment and monitoring. Its primary goal is to unify the ML development process with the operational discipline of software engineering, enabling teams to build, test, deploy, and monitor machine learning models reliably and efficiently.
 
-Unlike traditional software, ML models are not just code; they are code combined with data and a trained algorithm. This tripartite nature introduces unique complexities that MLOps is designed to manage. By applying principles from DevOps—such as automation, continuous integration, and continuous delivery—to the ML lifecycle, MLOps makes the entire process more scalable, transparent, and auditable. You can explore more resources on [AI automation](/ai-automation) to see how these principles are applied in practice.
+Unlike traditional software, ML models are not just code; they are code combined with data and a trained algorithm. This tripartite nature introduces unique complexities that MLOps is designed to manage. By applying principles from DevOps—such as automation, continuous integration, and continuous delivery—to the ML lifecycle, MLOps makes the entire process more scalable, transparent, and auditable. You can explore more about [AI pipelines](/resources/ai/ai-pipeline) to see how these principles are applied in practice.
 
 ### Bridging the gap between ML and software engineering
 
@@ -80,7 +80,7 @@ This is the heart of MLOps automation, extending DevOps principles to the ML con
 - **Continuous Delivery (CD):** Automates the packaging and deployment of a trained model to a target environment. This ensures that a validated model can be released to production quickly and reliably.
 - **Continuous Training (CT):** A concept unique to MLOps, CT automates the process of retraining and deploying models. This can be triggered by performance degradation, new data availability, or on a fixed schedule.
 
-Integrating these pipelines often involves tools like [GitHub Actions for Kestra](/docs/version-control-cicd/cicd/github-action) to automate validation and deployment workflows.
+Integrating these pipelines often involves tools like [GitHub Actions for Kestra](/docs/version-control-cicd/cicd/github-action) to automate validation and deployment workflows. A well-structured [machine learning pipeline](/resources/ai/what-is-a-machine-learning-pipeline) ties together each of these automation layers into a repeatable, auditable process.
 
 ## Benefits of implementing MLOps
 
@@ -200,3 +200,5 @@ As the number of requests to a model grows, the inference infrastructure must be
 ### Ensuring model explainability and fairness
 
 As AI models make increasingly critical decisions, it's essential to understand how they arrive at their predictions and ensure they are not biased. This requires integrating tools for model interpretability (like SHAP or LIME) and fairness auditing into the MLOps pipeline. These checks can be automated to run before a model is deployed, ensuring that only transparent and fair models make it to production.
+
+For teams building AI systems that rely on large language models, [LLM evaluation](/resources/ai/llm-evaluation) and [model deployment](/resources/ai/model-deployment) strategies become equally important stages in a mature MLOps practice.

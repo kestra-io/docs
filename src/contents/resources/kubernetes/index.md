@@ -1,8 +1,8 @@
 ---
 title: "Kubernetes: Automating Containerized Applications"
 description: "Explore Kubernetes: understand its core concepts, architecture, and benefits for managing containerized applications. Learn how Kestra simplifies Kubernetes orchestration."
-metaTitle: "Kubernetes: Automating Containerized Applications"
-metaDescription: "Understand Kubernetes, its architecture, and benefits for containerized apps. Discover how Kestra enhances Kubernetes orchestration with declarative workflows."
+metaTitle: "Kubernetes: Automating Containerized Applications | Kestra"
+metaDescription: "Understand Kubernetes architecture, core concepts, and benefits for containerized apps. See how Kestra extends K8s with declarative workflow orchestration."
 tag: "infrastructure"
 date: 2026-05-02
 slug: "kubernetes"
@@ -17,8 +17,8 @@ faq:
     answer: "Kubernetes has a reputation for a steep learning curve due to its extensive feature set and complex concepts. While mastering it takes time and practice, starting with foundational concepts and hands-on tutorials can make the learning journey manageable for developers and operations professionals."
   - question: "Why are people moving away from Kubernetes?"
     answer: "Some organizations explore alternatives or complementary tools to Kubernetes due to its inherent operational complexity, high resource consumption, and the specialized expertise required for effective management at scale. For specific use cases, simpler or more opinionated solutions can offer better results with less overhead."
-  - question: "Can I learn Kubernetes in 2 days?"
-    answer: "Learning Kubernetes in just two days is challenging due to its breadth and depth. While you can grasp basic concepts and deploy a simple application, a comprehensive understanding and practical proficiency typically require more time and consistent hands-on experience. Bootcamps and intensive workshops can provide a solid foundation."
+  - question: "What is the difference between Kubernetes and a workflow orchestrator like Kestra?"
+    answer: "Kubernetes is an infrastructure platform for running and scaling containerized applications. A workflow orchestrator like Kestra is a higher-level control plane that coordinates multi-step business, data, and infrastructure processes—often by scheduling and managing jobs that run as Kubernetes pods. They are complementary: Kubernetes provides the compute fabric, while Kestra defines, triggers, and monitors the workflows that run on it."
 ---
 
 In the world of modern application development, managing containerized workloads at scale presents significant challenges. Teams grapple with ensuring high availability, seamless scaling, and efficient resource utilization across distributed environments. Without a robust orchestration layer, these tasks quickly become a source of operational complexity and manual toil, hindering agility and increasing the risk of downtime.
@@ -148,7 +148,7 @@ This is a common question, given Netflix's influence on cloud-native architectur
 
 While Kubernetes is a powerful platform for running applications, orchestrating the complex, multi-step, polyglot workflows *around* those applications often requires a higher-level control plane. This is where Kestra excels. Kestra acts as a universal orchestration layer that can manage not only Kubernetes resources but also the data, infrastructure, and business processes that interact with them.
 
-Kestra simplifies Kubernetes operations by allowing you to define and manage complex workflows using declarative YAML. Instead of writing brittle shell scripts or custom operators, you can use Kestra's rich set of plugins and flow-control logic to automate tasks like:
+Kestra simplifies Kubernetes operations by allowing you to define and manage complex workflows using declarative YAML. You can learn more about specific patterns in our guides on [Kubernetes workflow automation](/resources/infrastructure/kubernetes-workflow) and [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration). Instead of writing brittle shell scripts or custom operators, you can use Kestra's rich set of plugins and flow-control logic to automate tasks like:
 *   Deploying applications using the [kubectl plugin](/plugins/plugin-kubernetes/kubectl).
 *   Running [long-running, resource-intensive tasks](/docs/how-to-guides/long-running-intensive-tasks) as isolated pods.
 *   Automating the entire [lifecycle of a pod](/blueprints/k8-pod-lifecycle), from creation to cleanup.
@@ -171,7 +171,7 @@ tasks:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.25.3
+          image: nginx:1.26
           ports:
             - containerPort: 80
 ```
@@ -241,7 +241,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.25.3
+        image: nginx:1.26
         ports:
         - containerPort: 80
 ```

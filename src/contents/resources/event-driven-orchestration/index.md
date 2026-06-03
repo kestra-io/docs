@@ -1,8 +1,8 @@
 ---
 title: "Event-Driven Orchestration: A Practical Guide (with Examples)"
 description: "Learn what event-driven orchestration is, how it compares to choreography and SOA, and how to implement it with real YAML examples you can copy."
-metaTitle: "Event-Driven Orchestration: Definition, Patterns & Examples"
-metaDescription: "Understand event-driven orchestration, how it differs from choreography, SOA, and DDD, and see production YAML examples for webhooks, Kafka, S3, and SQS triggers."
+metaTitle: "Event-Driven Orchestration: Patterns & Examples"
+metaDescription: "Understand event-driven orchestration, how it differs from choreography, SOA, and DDD, with production YAML examples for webhooks, Kafka, S3, and SQS triggers."
 tag: infrastructure
 date: 2026-04-21
 faq:
@@ -10,8 +10,8 @@ faq:
     answer: "Event-driven orchestration is an architectural pattern where a central orchestrator starts and coordinates a workflow in response to an external event, such as a file arriving in object storage, a message landing on a queue, or an HTTP webhook call. The orchestrator decides the order of steps, handles retries, and owns the end-to-end process, while the events themselves decide when the workflow runs."
   - question: "What is the difference between event-driven orchestration and choreography?"
     answer: "In orchestration, a central engine controls the sequence of tasks and knows the full business process. In choreography, there is no central controller, each service independently reacts to events and emits new ones. Orchestration gives you observability, retries, and a single place to debug. Choreography gives you loose coupling but makes the end-to-end flow harder to trace. Event-driven orchestration combines both, event triggers start the process, but a central engine handles the sequencing."
-  - question: "How is event-driven architecture different from SOA?"
-    answer: "Service-Oriented Architecture (SOA) centers on services exposing synchronous interfaces, typically request-response over SOAP or REST. Event-driven architecture (EDA) centers on asynchronous events, producers emit events without knowing who consumes them. SOA tends toward tight coupling through shared contracts, while EDA favors loose coupling through event streams."
+  - question: "What is the difference between event-driven architecture and SOA?"
+    answer: "Service-Oriented Architecture (SOA) centers on services exposing synchronous interfaces, typically request-response over SOAP or REST. Event-driven architecture (EDA) centers on asynchronous events — producers emit events without knowing who consumes them. SOA emerged in the mid-1990s and tends toward tight coupling through shared contracts, while EDA favors loose coupling through event streams. Many modern systems combine both patterns."
   - question: "What is the difference between EDD and DDD?"
     answer: "Event-Driven Design (EDD) structures systems around events and asynchronous reactions between loosely coupled components. Domain-Driven Design (DDD) structures systems around business domain concepts, bounded contexts, and the ubiquitous language shared with domain experts. They are not mutually exclusive, many teams use DDD to define bounded contexts and EDD to connect them via events."
   - question: "What are the drawbacks of event-driven orchestration?"
@@ -20,7 +20,7 @@ faq:
     answer: "Avoid it for simple, strictly sequential workflows that run on a predictable schedule, small applications where a single cron job is enough, or strongly consistent transactions that require synchronous commits across systems. Event-driven patterns pay off when you have multiple upstream systems, unpredictable arrival times, or workloads that need to react in near real time."
 ---
 
-Event-driven orchestration has moved from a niche integration pattern to the default way modern teams connect data pipelines, microservices, and infrastructure operations. Files land in object storage, messages arrive on Kafka, webhooks fire from SaaS tools, and workflows need to start immediately, not at the next scheduled run.
+Event-driven orchestration has moved from a niche integration pattern to the default way modern teams connect [data pipelines](/resources/data/data-pipeline), microservices, and infrastructure operations. Files land in object storage, messages arrive on Kafka, webhooks fire from SaaS tools, and workflows need to start immediately, not at the next scheduled run.
 
 This guide defines event-driven orchestration, contrasts it with choreography, SOA, and domain-driven design, walks through an implementation with real YAML examples, and covers the trade-offs you should know before adopting it.
 
@@ -55,7 +55,7 @@ With event-driven orchestration, the order creation event (a new message on an `
 
 ### Real-time responsiveness
 
-Schedules are a poor fit when data arrival is unpredictable. An hourly cron that processes files from S3 adds up to an hour of latency on every upload. An event-driven trigger starts the workflow the moment the file lands, keeping end-to-end latency in the seconds. The same pattern powers high-throughput verticals — including event-driven orchestration for [automotive and connected-vehicle workloads](/use-cases/automotive) where telemetry must be processed as it streams in.
+Schedules are a poor fit when data arrival is unpredictable. An hourly cron that processes files from S3 adds up to an hour of latency on every upload. An event-driven trigger starts the workflow the moment the file lands, keeping end-to-end latency in the seconds. The same pattern powers high-throughput verticals — including infrastructure and [hybrid cloud automation](/resources/infrastructure/hybrid-cloud-automation) scenarios where telemetry and events must be processed as they stream in.
 
 ### Decoupling without losing visibility
 
@@ -67,7 +67,7 @@ Scheduled pipelines often run unnecessarily, scanning empty buckets or querying 
 
 ### Unified orchestration across domains
 
-The same engine can orchestrate data pipelines, infrastructure automation, and microservice choreography. A single platform handling all three means fewer tools to operate and consistent observability across data, AI, and infra workflows. This is the approach Kestra takes, with event-driven orchestration as a first-class primitive rather than an add-on.
+The same engine can orchestrate data pipelines, [infrastructure automation](/resources/infrastructure/it-automation-platform), and microservice choreography. A single platform handling all three means fewer tools to operate and consistent observability across data, AI, and infra workflows. This is the approach Kestra takes, with event-driven orchestration as a first-class primitive rather than an add-on.
 
 ## Event-driven orchestration vs. other approaches
 
@@ -84,7 +84,7 @@ Event-driven orchestration isn't a third option so much as a pragmatic combinati
 
 ### EDA vs. SOA
 
-Service-Oriented Architecture (SOA) predates event-driven architecture by a decade. The two differ in three main ways:
+Service-Oriented Architecture (SOA) emerged in the mid-1990s; event-driven architecture gained formal traction in the late 1990s and early 2000s. The two differ in three main ways:
 
 | Dimension | SOA | Event-Driven Architecture |
 | --- | --- | --- |
@@ -220,8 +220,8 @@ Event-driven orchestration shows up in three recurring patterns worth recognizin
 
 **Data pipeline automation.** File lands in S3 or GCS, orchestrator picks it up, runs validation, loads into the warehouse, triggers dbt, and notifies stakeholders. This replaces the classic "scheduled every hour, hope the data is there" pattern.
 
-**Microservice coordination.** An order event triggers a workflow that calls payment, inventory, shipping, and notification services in a defined sequence, with compensating actions on failure. The orchestrator acts as a saga coordinator — see how teams approach [microservices orchestration](/use-cases/microservices-orchestration) end-to-end.
+**Microservice coordination.** An order event triggers a workflow that calls payment, inventory, shipping, and notification services in a defined sequence, with compensating actions on failure. The orchestrator acts as a saga coordinator — the same model used in [data orchestration](/resources/data/data-orchestration) pipelines that span multiple services end-to-end.
 
-**Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications.
+**Infrastructure automation.** A webhook from a monitoring system triggers a remediation workflow: scale a cluster, rotate credentials, run a diagnostic, open an incident. The orchestrator ties together the cloud APIs, scripts, and notifications — a pattern covered in depth in [workflow management](/resources/infrastructure/workflow-management) guides.
 
 All three patterns share the same shape: an external event, a declarative workflow, and a single place to observe and debug every run.
