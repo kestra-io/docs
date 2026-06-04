@@ -14,9 +14,7 @@ How to manage access and permissions to your instance.
   <iframe src="https://www.youtube.com/embed/9I87QZJPl1Y?si=n0Izt0lK6BQ20Wfy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## RBAC – manage roles and permissions
-
-Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to Tenants, Namespaces, Flows and resources.
+Kestra Enterprise supports Role-Based Access Control (RBAC) to manage access to tenants, namespaces, flows, and resources.
 
 In Kestra you will find three types of entities:
 
@@ -28,7 +26,7 @@ In Kestra you will find three types of entities:
 * Groups: Represent a collection of **Users** and **Service Accounts**. Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
 * Service Accounts: Represents an **application**. They are considered Users when binding Role assignments.
 
-All theses entities can be assigned to a Role, which define what resources the User, Group, or Service Account can access. Note that these entities don’t belong to Namespaces, but their permissions can be limited to specific namespaces via Bindings (**IAM** page).
+All these entities can be assigned to a role, which defines what resources the user, group, or service account can access. These entities do not belong to namespaces, but their permissions can be limited to specific namespaces via bindings on the **IAM** page.
 
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings:
 
@@ -42,7 +40,7 @@ Users, service accounts, and groups can hold any number of roles simultaneously.
 
 ## Impersonate
 
-After assigning permissions to a User, Superadmins can impersonate Users to ensure their access is as intended. Impersonation switches your view immediately to that User's perspective and can be easily closed back to Superadmin view – a seamless way to test RBAC in one context.
+After assigning permissions to a User, Superadmins can impersonate Users to ensure their access is as intended. Impersonation switches your view to that user's perspective and can be closed back to the Superadmin view at any time.
 
 ![Impersonate](./impersonate-user.png)
 
@@ -118,8 +116,8 @@ Each resource defines its own set of allowed actions. Not every action applies t
 | `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
 | `GROUP` | `MANAGE_MEMBERS` |
 | `COPILOT` | `USE` (only action) |
-| `SYSTEM_SETTINGS` | — (only `VIEW` and `UPDATE`) |
-| `TENANT_SETTINGS` | — (only `VIEW` and `UPDATE`) |
+| `SYSTEM_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
+| `TENANT_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
 
 :::alert{type="info"}
 For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
@@ -148,11 +146,11 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 
 | Role | Description |
 |---|---|
-| **Admin** | All actions on all resources |
-| **Developer** | Full access to flows, executions, triggers, namespaces (including files), secrets, credentials, KV, dashboards, blueprints, apps, tests, assets, MCP servers, settings, and Copilot. No IAM resources. |
-| **Editor** | Full access to flows, executions, triggers, KV, dashboards, apps, tests, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, no IAM resources. |
-| **Launcher** | Execute flows and monitor executions (`EXECUTE`, `VIEW`, `LIST`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_*`, `FOLLOW`, `EXPORT`). Read-only on most other resources. No write access to flows. |
-| **Viewer** | `VIEW` and `LIST` only across core resources. No execution operations. |
+| **Admin** | All actions on all resources. |
+| **Developer** | Everything Editor has, plus: full namespace management (including file management and plugin default import), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
+| **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
 ## Superadmin and Admin
 
@@ -277,7 +275,7 @@ kestra auths users create <username> <password> --admin
 ```
 ## User lockout
 
-Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
+Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra locks the user for the `lock-duration` period after a `threshold` number of failed attempts within the `monitoring-window` duration. The snippet below lists the default values — adjust them based on your preferences:
 
 ```yaml
 kestra:
