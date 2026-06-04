@@ -57,14 +57,15 @@ When deployed, an MCP client connected to the `default` server will discover a t
 
 | Property | Required | Default | Description |
 |---|---|---|---|
-| `toolName` | Yes | — | Tool identifier shown to the AI agent. Must match `^[a-z0-9][a-z0-9_-]*$`. |
+| `toolName` | Yes | — | Tool identifier shown to the AI agent. Must contain only alphanumeric characters, hyphens, underscores, or dots, and must start and end with an alphanumeric character. Maximum 64 characters. |
 | `title` | Yes | — | Human-readable name shown to the AI agent. |
-| `toolDescription` | No | — | Description of the tool shown to the AI agent, used to decide when to invoke it. |
+| `toolDescription` | Yes | — | Description of the tool shown to the AI agent, used to decide when to invoke it. A well-written description significantly improves tool-selection accuracy. |
 | `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP server](../../../ai-tools/mcp-server/index.md). |
 | `annotations.readOnly` | No | `false` | Hint that this tool does not modify its environment. |
 | `annotations.destructive` | No | `true` | Hint that this tool may perform destructive updates. Only meaningful when `readOnly` is `false`. |
-| `annotations.openWorld` | No | `false` | Hint that this tool may interact with entities outside its closed domain. |
+| `annotations.openWorld` | No | `true` | Hint that this tool may interact with entities outside its closed domain. |
 | `annotations.idempotent` | No | `false` | Hint that calling the tool repeatedly with the same arguments has no additional effect. Only meaningful when `readOnly` is `false`. |
+| `annotations.returnDirect` | No | `false` | When `true`, the AI agent forwards the raw tool output to the user without further interpretation or summarisation. |
 
 Annotations are informational hints for MCP clients. They do not affect execution behavior.
 
@@ -97,5 +98,6 @@ Every execution created via MCP carries two [system labels](../../../06.concepts
 |---|---|
 | `system.from` | `mcp` |
 | `system.mcpServerId` | The `id` of the MCP server that invoked the tool |
+| `system.mcpSessionId` | The session ID of the MCP client connection |
 
 Filter executions by `system.from: mcp` in the Executions view to see all MCP-triggered runs.

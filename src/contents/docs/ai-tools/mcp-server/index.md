@@ -39,7 +39,7 @@ Each server has the following fields:
 | `description` | Optional description shown in the UI. |
 | `systemPrompt` | Instructions prepended to every AI agent session connected to this server. Use this to guide agent behavior — for example, to restrict which tools to call or define the agent's persona. |
 | `serverType` | `PRIVATE` (default) or `PUBLIC`. A private server requires authentication; a public server accepts unauthenticated connections. |
-| `authType` | `BASIC` (username/password, available in OSS and EE) or `API_TOKEN` (EE only). |
+| `authType` | `BASIC` (username/password, available in OSS and EE), `API_TOKEN` (EE only), or `OAUTH` (EE only). |
 
 ### Authentication types
 
@@ -47,9 +47,36 @@ Each server has the following fields:
 |---|---|---|
 | `BASIC` | OSS, EE | Username and password required on connect. |
 | `API_TOKEN` | EE only | API token required on connect. Rejected on OSS. |
-| OAuth2 | EE only | Required for browser-based MCP clients such as Claude web. Not yet available. |
+| `OAUTH` | EE only | OAuth 2.0 flow. Required for browser-based MCP clients such as Claude web. Configure the OAuth provider name via `oauthProvider`. |
 
 Keep servers private unless you have a specific reason to expose them publicly. A public server allows any MCP client to call any flow registered on it without authentication.
+
+### Configuring OAuth authentication
+
+`OAUTH` auth requires an OIDC provider configured in your Kestra instance — the same configuration used for SSO. See [SSO configuration](../../07.enterprise/03.auth/sso/index.md) for how to set up an OIDC provider under `micronaut.security.oauth2.clients`.
+
+Once a provider is configured, set `authType` to `OAUTH` on the MCP server. The `oauthProvider` field specifies which provider to use by its configured name:
+
+```yaml
+# kestra.yml
+micronaut:
+  security:
+    oauth2:
+      clients:
+        my-oidc-provider:
+          client-id: <client-id>
+          client-secret: <client-secret>
+          openid:
+            issuer: https://accounts.example.com
+```
+
+When a client connects to an `OAUTH`-protected MCP server and presents no token, the server responds with a `WWW-Authenticate` header pointing to the OAuth Protected Resource Metadata endpoint (RFC 9728). MCP-compliant clients such as Claude web discover the OIDC provider from this automatically and initiate the authorization code + PKCE flow — no manual client configuration is needed beyond the MCP server URL.
+
+:::alert{type="info"}
+The authenticating user must already have a Kestra account. The OAuth token's `email` or `preferred_username` claim is matched against existing Kestra users. If no matching user is found, the connection is rejected.
+:::
+
+If multiple OIDC providers are configured, set `oauthProvider` to the name of the specific provider (e.g. `my-oidc-provider` from the example above). If `oauthProvider` is omitted, the provider is matched automatically by the JWT's issuer claim.
 
 ## Connecting an AI agent client
 
@@ -70,7 +97,7 @@ The **Tool Flows** tab on each server lists all flows that have an `McpToolTrigg
 
 In the Enterprise Edition, `MCP_SERVER` is a first-class RBAC resource. See [RBAC](../../07.enterprise/03.auth/rbac/index.md#mcp-server-permissions) for the default role assignments.
 
-Access to a private server is also flow-scoped: a user can connect to a private MCP server only if they have `FLOW.EXECUTE` permission on at least one namespace that has a flow with an `McpToolTrigger` pointing at that server.
+Access to a private server is also flow-scoped: a user can connect to a private MCP server only if they have `FLOW: EXECUTE` permission on at least one namespace that has a flow with an `McpToolTrigger` pointing at that server.
 
 ## MCP server cache configuration
 

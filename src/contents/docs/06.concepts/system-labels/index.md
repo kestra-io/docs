@@ -98,3 +98,9 @@ In the Enterprise Edition, updating a read-only flow server-side is restricted t
 - Automatically set on every execution created by a Kestra MCP server
 - Value is the `id` of the MCP server that invoked the tool
 - Use this label together with `system.from: mcp` to identify which server triggered a specific execution
+
+### `system.mcpSessionId`
+
+- Automatically set on every execution created by a Kestra MCP server
+- Value is the session ID of the MCP client connection that triggered the execution
+- Use this label to correlate multiple executions that originated from the same agent session
