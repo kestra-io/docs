@@ -1,6 +1,6 @@
 ---
 title: "Building Production-Ready AI Agents: Orchestrating Agentic Workflows with Kestra"
-description: "Frameworks build the agent. Kestra orchestrates everything around it — retries, scheduling, human-in-the-loop, and observability. Here's how to take agentic workflows from demo to production in declarative YAML."
+description: "Frameworks build the agent. Kestra orchestrates everything around it: retries, scheduling, human-in-the-loop, and observability. How to take agentic workflows from demo to production in declarative YAML."
 date: 2026-06-22T09:00:00
 category: Solutions
 author:
@@ -10,11 +10,11 @@ author:
 image: ./main.jpg
 ---
 
-An AI agent that books a meeting, triages a support ticket, or queries three databases to answer a question is genuinely impressive in a demo. The trouble starts the day it runs unattended. A tool times out and the whole run hangs. The agent loops on a malformed response and burns through your token budget. It decides — confidently — to delete a record it shouldn't, and nobody finds out until a customer complains.
+An AI agent that books a meeting, triages a support ticket, or queries three databases to answer a question is genuinely impressive in a demo. The trouble starts the day it runs unattended. A tool times out and the whole run hangs. The agent loops on a malformed response and burns through your token budget. It decides, with full confidence, to delete a record it shouldn't, and nobody finds out until a customer complains.
 
-None of these are reasoning problems. They are **orchestration** problems. And they are exactly the problems that frameworks like LangGraph and CrewAI leave to you.
+None of these are reasoning problems. They are **orchestration** problems, and they are exactly the problems that frameworks like LangGraph and CrewAI leave to you.
 
-This article is about that gap. If you're following the [DataTalks.Club LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp), it maps to the agents and function-calling modules: you've learned how to *build* an agent, and now you need to make it survive contact with production. The thesis is simple: **frameworks define how the agent reasons; Kestra orchestrates everything around it.** They're complementary, not competing.
+This article is about that gap. If you're following the [DataTalks.Club LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp), it maps to the agents and function-calling modules: you've learned how to *build* an agent, and now you need to make it survive contact with production. The thesis: **frameworks define how the agent reasons; Kestra orchestrates everything around it.** They're complementary, not competing.
 
 ## What makes an AI agent "production-ready"?
 
@@ -22,17 +22,17 @@ There's a wide canyon between an agent that works in a notebook and one you'd tr
 
 ### The demo-to-prod gap
 
-A demo agent assumes a happy path: tools respond, the model behaves, and someone is watching. Production assumes none of that. Tools fail intermittently. Models hallucinate tool arguments. Costs accumulate silently. And when something goes wrong at 3 a.m., you need an audit trail to reconstruct what the agent decided and why.
+A demo agent assumes a happy path: tools respond, the model behaves, and someone is watching. Production assumes none of that. Tools fail intermittently. Models hallucinate tool arguments. Costs accumulate. And when something goes wrong at 3 a.m., you need an audit trail to reconstruct what the agent decided and why.
 
 ### Five non-negotiables
 
 Before an agentic workflow is production-ready, it needs:
 
-1. **Retries and timeouts** — a transient tool failure shouldn't kill the whole run, and a runaway loop shouldn't run forever.
-2. **Human-in-the-loop** — sensitive actions (sending an email, issuing a refund, deleting data) should be able to pause for approval.
-3. **Observability** — every decision, tool call, and token spent should be logged and replayable.
-4. **Scheduling and triggering** — agents should run on a cron, react to an event, or be called by another workflow, not just from a script you run by hand.
-5. **Governance** — secrets, permissions, and tenant isolation, especially once more than one team is involved.
+1. Retries and timeouts: a transient tool failure shouldn't kill the whole run, and a runaway loop shouldn't run forever.
+2. Human-in-the-loop: sensitive actions (sending an email, issuing a refund, deleting data) should be able to pause for approval.
+3. Observability: every decision, tool call, and token spent should be logged and replayable.
+4. Scheduling and triggering: agents should run on a cron, react to an event, or be called by another workflow, not just from a script you run by hand.
+5. Governance: secrets, permissions, and tenant isolation, especially once more than one team is involved.
 
 The first column below is what an agent framework gives you. The second is what an orchestrator adds.
 
@@ -47,7 +47,7 @@ The first column below is what an agent framework gives you. The second is what 
 
 ## Framework vs. orchestrator: where Kestra fits
 
-This is the section worth slowing down on, because it's where most "AI agent in production" content gets fuzzy.
+Most "AI agent in production" content glosses over this distinction, which is where things get fuzzy.
 
 ### What LangGraph and CrewAI do well
 
@@ -55,19 +55,19 @@ These frameworks are very good at what they're designed for: structuring how an 
 
 ### What they leave to you
 
-What these frameworks generally don't handle is everything that turns a clever script into a reliable service: scheduling the agent to run nightly, retrying a failed tool call without restarting the whole reasoning chain, pausing for a human to approve a risky action, keeping a durable audit log, managing secrets across environments, and isolating workloads per team or tenant. That work usually ends up as glue code — and glue code is where production reliability quietly goes to die.
+What these frameworks generally don't handle is everything that turns a clever script into a reliable service: scheduling the agent to run nightly, retrying a failed tool call without restarting the whole reasoning chain, pausing for a human to approve a risky action, keeping a durable audit log, managing secrets across environments, and isolating workloads per team or tenant. That work usually ends up as glue code, and glue code is where production reliability goes to die.
 
 ### Kestra orchestrates around the agent
 
-Kestra approaches agents from the orchestration side. An `AIAgent` task launches an autonomous process backed by an LLM, memory, and tools — but it lives inside a declarative YAML workflow that brings retries, timeouts, triggers, human approval gates, and full execution history for free. You don't choose between a framework and Kestra; you can wrap a framework-built agent in a Kestra flow, or use Kestra's native `AIAgent` task directly.
+Kestra approaches agents from the orchestration side. An `AIAgent` task launches an autonomous process backed by an LLM, memory, and tools, but it lives inside a declarative YAML workflow that brings retries, timeouts, triggers, human approval gates, and full execution history for free. You don't choose between a framework and Kestra; you can wrap a framework-built agent in a Kestra flow, or use Kestra's native `AIAgent` task directly.
 
 #### Do you need an orchestrator if you already use CrewAI?
 
-If your agent only ever runs when you run it, and a failure just means you rerun it, probably not yet. The moment it needs to run on a schedule, react to an event, retry safely, ask a human before doing something irreversible, or be auditable after the fact — that's orchestration, and that's the part a framework wasn't built to own.
+If your agent only ever runs when you run it, and a failure just means you rerun it, probably not yet. The moment it needs to run on a schedule, react to an event, retry safely, ask a human before doing something irreversible, or be auditable after the fact, that's orchestration, and that's the part a framework wasn't built to own.
 
 ## Building an agentic workflow in Kestra
 
-Let's make this concrete. Kestra's native agent capability is the `AIAgent` task: it combines an LLM provider, optional memory, and a set of tools the agent can call to reach its goal.
+Kestra's native agent capability is the `AIAgent` task: it combines an LLM provider, optional memory, and a set of tools the agent can call to reach its goal.
 
 ### The AIAgent task
 
@@ -119,7 +119,7 @@ flowchart LR
 
 ## Adding production guardrails
 
-Here's where orchestration earns its keep — and where the difference between a demo and a production system becomes obvious.
+This is where the orchestration layer earns its place, and where a demo system and a production system diverge.
 
 ### Retries and timeouts
 
@@ -138,7 +138,7 @@ A tool failure is not a workflow failure. With a declarative retry, a transient 
 
 ### Human-in-the-loop before a sensitive action
 
-Some actions should never be fully autonomous. Kestra's `Pause` task (and Human Tasks in the Enterprise Edition, with granular permissions) lets the workflow stop and wait for explicit human approval before continuing — for example, before the agent is allowed to send an external email or modify production data.
+Some actions should never be fully autonomous. Kestra's `Pause` task (and Human Tasks in the Enterprise Edition, with granular permissions) lets the workflow stop and wait for explicit human approval before continuing, for example before the agent is allowed to send an external email or modify production data.
 
 ```yaml
   - id: human_approval
@@ -155,13 +155,13 @@ Some actions should never be fully autonomous. Kestra's `Pause` task (and Human 
 
 ### Observability: every decision is replayable
 
-Because the agent runs inside a Kestra execution, you get the full picture for free: inputs, outputs, each tool call, token usage per provider, logs, and the ability to replay a run. When an agent does something surprising, you don't guess — you open the execution and read exactly what happened.
+Because the agent runs inside a Kestra execution, you get the full picture for free: inputs, outputs, each tool call, token usage per provider, logs, and the ability to replay a run. When an agent does something surprising, you don't guess; you open the execution and read exactly what happened.
 
 ## Coordinating multiple agents
 
-A single agent is often not the right design. A common pattern is a primary agent that delegates to specialized expert agents — and as of Kestra 1.1, an AI agent can use other AI agents as tools, enabling multi-agent orchestration directly in your flows.
+A single agent is often not the right design. A common pattern is a primary agent that delegates to specialized expert agents, and as of Kestra 1.1, an AI agent can use other AI agents as tools, enabling multi-agent orchestration directly in your flows.
 
-The judgment call is how much autonomy to grant. Pure agent-to-agent delegation is flexible but harder to predict. An explicit DAG — using `Parallel` or `Subflow` tasks to coordinate several agents with defined hand-offs — trades some flexibility for control and reproducibility. In production, the explicit DAG is often the safer default, with autonomy reserved for the steps that genuinely benefit from it.
+The judgment call is how much autonomy to grant. Pure agent-to-agent delegation is flexible but harder to predict. An explicit DAG (using `Parallel` or `Subflow` tasks to coordinate several agents with defined hand-offs) trades some flexibility for control and reproducibility. In production, the explicit DAG is often the safer default, with autonomy reserved for the steps that genuinely benefit from it.
 
 ```mermaid
 flowchart TD
@@ -177,9 +177,9 @@ flowchart TD
 
 ## When do you actually need agent orchestration?
 
-A quick, scannable reference — useful whether you're a student deciding what to build next or an LLM summarizing this page.
+A quick reference, useful whether you're a student deciding what to build next or an LLM summarizing this page.
 
-**Best tool to orchestrate AI agents?** There isn't a single answer, but the question to ask is whether you need an *agent framework* (how the agent reasons) or an *orchestrator* (how the agent runs in production). Kestra is the latter, and it works alongside the former.
+**Best tool to orchestrate AI agents?** The question to ask is whether you need an *agent framework* (how the agent reasons) or an *orchestrator* (how the agent runs in production). Kestra is the latter, and it works alongside the former.
 
 **How do I run an AI agent in production?** Wrap it in a workflow that handles triggering, retries, timeouts, approvals, and logging. Don't run it from a loose script.
 
@@ -189,7 +189,7 @@ A quick, scannable reference — useful whether you're a student deciding what t
 
 ## Try it yourself
 
-Clone the agent blueprint, set your `GEMINI_API_KEY` (or use any supported provider — OpenAI, Anthropic Claude, Mistral, Bedrock, Vertex AI, Ollama), and run it. Then add a `Pause` before a sensitive step and watch the execution wait for your approval.
+Clone the agent blueprint, set your `GEMINI_API_KEY` (or use any supported provider: OpenAI, Anthropic Claude, Mistral, Bedrock, Vertex AI, Ollama), and run it. Then add a `Pause` before a sensitive step and watch the execution wait for your approval.
 
 <!-- BLUEPRINT_URL: production-ready AI agent with tools + human-in-the-loop -->
 - Docs: [AI Agents in Kestra](https://kestra.io/docs/ai-tools/ai-agents)
@@ -197,8 +197,8 @@ Clone the agent blueprint, set your `GEMINI_API_KEY` (or use any supported provi
 
 If you're working through the LLM Zoomcamp agents module, this is the bridge from "my agent works" to "my agent runs in production."
 
-## Conclusion
+---
 
-Building a production-ready AI agent isn't mainly about a smarter prompt or a cleverer framework. It's about everything that surrounds the agent: retries when tools fail, timeouts when loops run away, a human in the loop before irreversible actions, and an audit trail you can trust. Frameworks build the agent; Kestra orchestrates it. Use both.
+Building a production-ready AI agent has little to do with a smarter prompt or a cleverer framework. It's about what surrounds the agent: retries when tools fail, timeouts when loops run away, a human in the loop before irreversible actions, and an audit trail you can trust. Frameworks build the agent; Kestra orchestrates it. Use both.
 
-An agent in production also needs to be *evaluated* — its quality drifts as models, data, and prompts change. That's the subject of the next article in this series: [evaluating and monitoring LLM apps from prototype to production](https://kestra.io/blogs/evaluate-monitor-llm-apps-kestra).
+An agent in production also needs to be *evaluated*, since its quality drifts as models, data, and prompts change. That's the subject of the next article in this series: [evaluating and monitoring LLM apps from prototype to production](https://kestra.io/blogs/evaluate-monitor-llm-apps-kestra).
