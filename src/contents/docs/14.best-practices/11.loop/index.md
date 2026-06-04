@@ -3,7 +3,7 @@ title: "Loop Task Best Practices in Kestra"
 h1: "Best Practices for the Loop Task"
 sidebarTitle: Loop
 icon: /src/contents/docs/icons/best-practices.svg
-description: Best practices for using the Loop task in Kestra — output collection, concurrency, error handling, large-file processing, and subflow isolation patterns.
+description: Best practices for using the Loop task in Kestra — output collection, concurrency, map-reduce patterns, error handling, large-file processing, and subflow isolation.
 ---
 
 Use `Loop` for all iteration needs in Kestra.
@@ -139,6 +139,91 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "{{ loopOutputs(outputs.per_chunk.outputs, 'result_uri') }}"
 ```
+
+## Map-reduce: collect and aggregate file outputs across iterations
+
+Use the map-reduce pattern when each iteration produces a file output that you need to combine and reduce after the loop.
+
+The structure is always the same:
+
+1. **Split** — break the input into chunk URIs
+2. **Loop** — process each chunk in parallel; declare a file URI as a `STRING` output
+3. **Concat** — stitch the per-iteration output files into one
+4. **Aggregate** (or any reduce task) — merge results across chunks
+
+The key is declaring the per-iteration output URI as a `STRING` in the Loop `outputs:` block, then using `loopOutputs()` to extract that list and pass it directly to `Concat`.
+
+```yaml
+id: elt_csv_split_loop_aggregate
+namespace: company.team
+
+tasks:
+  - id: download
+    type: io.kestra.plugin.core.http.Download
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
+
+  - id: to_ion
+    type: io.kestra.plugin.serdes.csv.CsvToIon
+    from: "{{ outputs.download.uri }}"
+    header: true
+
+  - id: split
+    type: io.kestra.plugin.core.storage.Split
+    from: "{{ outputs.to_ion.uri }}"
+    rows: 25
+
+  - id: per_chunk
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.split.uris }}"
+    concurrencyLimit: 4
+    fetchType: FETCH
+    outputs:
+      - id: data
+        type: STRING
+        value: "{{ outputs.aggregate.uri }}"
+    tasks:
+      - id: filter
+        type: io.kestra.plugin.transform.Filter
+        from: "{{ item.value }}"
+        where: todecimal(total) > 10
+
+      - id: aggregate
+        type: io.kestra.plugin.transform.Aggregate
+        from: "{{ outputs.filter.uri }}"
+        outputType: STORE
+        groupBy: [customer_email]
+        aggregates:
+          orders:
+            expr: count()
+            type: INT
+          revenue:
+            expr: sum(todecimal(total))
+            type: DECIMAL
+
+  - id: concat
+    type: io.kestra.plugin.core.storage.Concat
+    files: "{{ loopOutputs(outputs.per_chunk.outputs, 'data') }}"
+    extension: .ion
+
+  - id: reduce
+    type: io.kestra.plugin.transform.Aggregate
+    from: "{{ outputs.concat.uri }}"
+    outputType: STORE
+    groupBy: [customer_email]
+    aggregates:
+      orders:
+        expr: sum(orders)
+        type: INT
+      revenue:
+        expr: sum(revenue)
+        type: DECIMAL
+```
+
+Key points:
+
+- The Loop output declares type `STRING` even though the value is a file URI. `loopOutputs()` extracts strings, and `Concat` accepts a list of URI strings.
+- `fetchType: FETCH` keeps the per-iteration output objects in memory so `loopOutputs()` can read them immediately after the loop. Use `STORE` instead if you have hundreds of iterations.
+- The final `reduce` task re-aggregates because the same key (e.g. a customer) may appear in multiple chunks. The two-pass structure — per-chunk aggregate then cross-chunk reduce — is the canonical map-reduce pattern.
 
 ## Handle per-iteration failures
 

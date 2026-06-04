@@ -395,7 +395,7 @@ tasks:
     type: io.kestra.plugin.transform.Aggregate
     from: "{{ outputs.concat.uri }}"
     outputType: STORE
-    groupBy: [data.customer_email]
+    groupBy: [customer_email]
     aggregates:
       orders:
         expr: sum(orders)

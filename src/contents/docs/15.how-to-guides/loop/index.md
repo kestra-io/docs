@@ -8,9 +8,7 @@ topics:
 description: Learn how to iterate over a list of values in Kestra workflows using the Loop task, access iteration context, collect outputs, and run iterations in parallel.
 ---
 
-How to iterate over a list of values in your flow.
-
-In this guide, you will learn how to use the `Loop` task to iterate over a list of values and run tasks for each item. Each iteration runs as an isolated sub-execution with access to the current value via `item.value` and the zero-based index via `item.index`.
+Use the `Loop` task to iterate over a list of values and run tasks for each item. Each iteration runs as an isolated sub-execution with access to the current value via `item.value` and the zero-based index via `item.index`.
 
 ## Prerequisites
 
@@ -96,7 +94,7 @@ tasks:
 
 ## Run iterations in parallel
 
-Set `concurrencyLimit` to `0` to run all iterations simultaneously, or to a positive integer to cap how many run at once. Combine with an inner `Parallel` task to also parallelise work within each iteration.
+Set `concurrencyLimit` to a positive integer to cap how many iterations run at once. Setting it to `0` removes the cap entirely — only do this for small datasets where you understand the resource implications.
 
 ```yaml
 id: loop_parallel

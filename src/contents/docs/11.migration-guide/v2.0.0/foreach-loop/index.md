@@ -312,11 +312,9 @@ In `Loop`, each iteration runs in its own sub-execution. Task outputs inside an 
 
 | `fetchType` | Downstream access | When to use |
 |---|---|---|
+| `AUTO` | Default; uses `STORE` when `values` is a URI, `FETCH` otherwise | General use |
 | `FETCH` | `outputs.<loop_id>.outputs` — in-memory list of all iterations | Small iteration counts |
 | `STORE` | `outputs.<loop_id>.uri` — URI to a file in internal storage | Large iteration counts |
-| `FETCH_ONE` | Last iteration's outputs only | When each pass overwrites the previous result |
-| `AUTO` | Default; picks automatically based on whether `values` is a URI | General use |
-| `NONE` | Outputs not surfaced | When you only care about side effects |
 
 With `FETCH`, after the loop completes, `outputs.<loop_id>.outputs` is a list of iteration results — each entry has an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values. Access a single iteration by index: `outputs.<loop_id>.outputs[n].outputs.<output_id>`. To extract one output across all iterations as a list, use the [`loopOutputs()` function](../../../expressions/04.functions/04.workflow/index.mdx#loopoutputs). With `STORE`, the results are written to internal storage and exposed as `outputs.<loop_id>.uri` — use this for loops with large iteration counts where loading everything into memory is not practical.
 
