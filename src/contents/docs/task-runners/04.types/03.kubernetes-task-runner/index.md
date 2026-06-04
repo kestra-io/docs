@@ -25,6 +25,7 @@ If your cluster is configured with [RBAC](https://kubernetes.io/docs/reference/a
 - `pods`: get, create, delete, watch, list
 - `pods/log`: get, watch
 - `pods/exec`: get, watch
+- `secrets`: create, delete (required only when `credentials` is set for private registry access)
 
 The following role grants these authorizations:
 
@@ -43,6 +44,9 @@ rules:
 - apiGroups: [""]
   resources: ["pods/log"]
   verbs: ["get", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create", "delete"]
 ```
 
 Use the `serviceAccountName` property to assign a custom service account to the pod. When omitted, the namespace default service account is used, which must carry the required RBAC permissions above.
@@ -187,6 +191,50 @@ taskRunner:
   config:
     masterUrl: https://docker-for-desktop:6443
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+## Private registry credentials
+
+Use the `credentials` block to pull the task image from a private container registry. The runner creates an ephemeral `kubernetes.io/dockerconfigjson` imagePullSecret in the pod namespace, references it from the task pod, and deletes it when the pod is deleted.
+
+| Property | Required | Description |
+|---|---|---|
+| `registry` | No | Registry URL. If omitted, extracted from the `containerImage` name. |
+| `username` | No | Registry username. |
+| `password` | No | Registry password. |
+| `auth` | No | Base64-encoded `username:password` string. When set, used as-is; otherwise computed from `username` and `password`. |
+
+:::alert{type="warning"}
+Ensure the runner service account has `create` and `delete` permissions on `secrets` in the pod namespace. Without this, the runner cannot create the imagePullSecret and the pod will fail to start. See the [RBAC role](#overview) above.
+:::
+
+:::alert{type="info"}
+The `credentials` field names mirror those of the Docker task runner, so a flow switching from the Docker runner to the Kubernetes runner can reuse its credentials block unchanged.
+:::
+
+The following example pulls from a private Amazon ECR registry:
+
+```yaml
+id: private_registry_task
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: 123456789.dkr.ecr.eu-west-1.amazonaws.com/my-image:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      namespace: default
+      config:
+        masterUrl: https://eks-cluster.eu-west-1.eks.amazonaws.com
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+        oauthToken: "{{ secret('K8S_OAUTH_TOKEN') }}"
+      credentials:
+        registry: 123456789.dkr.ecr.eu-west-1.amazonaws.com
+        username: AWS
+        password: "{{ secret('ECR_PASSWORD') }}"
+    script: |
+      print("Running from a private registry image")
 ```
 
 ## Specifying resource requests
