@@ -274,7 +274,7 @@ kestra:
       name: default
       description: "Default role"
       permissions:
-        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+        FLOW: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "EXECUTE"]
 ```
 
 In multi-tenant environments, scope that role to one tenant:
@@ -286,7 +286,7 @@ kestra:
       name: default
       description: "Default role"
       permissions:
-        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+        FLOW: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "EXECUTE"]
       tenant-id: staging
 ```
 

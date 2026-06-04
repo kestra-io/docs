@@ -61,12 +61,36 @@ kestra:
       name: Editor
       description: Default Editor role
       permissions:
-        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
-        EXECUTION:
+        FLOW:
+          - VIEW
+          - LIST
           - CREATE
-          - READ
           - UPDATE
           - DELETE
+          - EXECUTE
+          - DISABLE
+          - ENABLE
+          - VALIDATE
+          - EXPORT
+          - IMPORT
+        EXECUTION:
+          - VIEW
+          - LIST
+          - UPDATE
+          - DELETE
+          - RESTART
+          - KILL
+          - REPLAY
+          - PAUSE
+          - RESUME
+          - CHANGE_LABELS
+          - ACCESS_LOGS
+          - ACCESS_OUTPUTS
+          - ACCESS_FILES
+          - EXPORT
+          - UNQUEUE
+          - FORCE_RUN
+          - FOLLOW
 ```
 
 :::alert{type="info"}

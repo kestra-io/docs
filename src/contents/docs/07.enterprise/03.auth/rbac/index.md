@@ -10,9 +10,6 @@ docId: iam
 
 How to manage access and permissions to your instance.
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/9I87QZJPl1Y?si=n0Izt0lK6BQ20Wfy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
 
 Kestra Enterprise supports Role-Based Access Control (RBAC) to manage access to tenants, namespaces, flows, and resources.
 
@@ -60,7 +57,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `NAMESPACE` | Namespaces and their files, plugin defaults |
 | `KVSTORE` | Key-value store entries |
 | `SECRET` | Secrets stored in the namespace |
-| `CREDENTIAL` | Credentials for external integrations |
+| `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
 
 **Apps and features** (tenant-scoped):
 

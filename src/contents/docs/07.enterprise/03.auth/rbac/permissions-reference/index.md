@@ -539,7 +539,7 @@ Notes
 ---
 
 :::collapse{title="TESTSUITE"}
-**Scope:** Namespace
+**Scope:** Tenant
 
 **Actions and their meaning**
 - `VIEW` / `LIST`: view tests and test results.
