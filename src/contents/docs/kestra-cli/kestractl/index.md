@@ -9,7 +9,7 @@ description: Manage Kestra flows, executions, namespaces, and files from the com
 
 Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, namespace files, and key-value pairs.
 
-For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](../kestra-server/index.mdx).
+For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](../kestra-server/index.md).
 
 ## Installation
 

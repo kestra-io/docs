@@ -184,7 +184,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Kestra Monitoring: Prometheus, Alerts, and Health Checks](https://kestra.io/docs/administrator-guide/monitoring.md)
 - [OpenTelemetry for Kestra: Traces, Metrics, and Logs](https://kestra.io/docs/administrator-guide/open-telemetry.md)
 - [Prometheus Metrics for Kestra: Reference and /prometheus Endpoint](https://kestra.io/docs/administrator-guide/prometheus-metrics.md)
-- [Purge Executions, Logs, and Files in Kestra](https://kestra.io/docs/administrator-guide/purge.md)
+- [Purge Executions, Logs, and Files in Kestra](https://kestra.io/docs/administrator-guide/purge.md): Scheduled purge patterns for executions, logs, KV pairs, namespace files, and orphaned execution storage; includes the isolated-worker-group cleanup pattern using PurgeStorage
 - [Software and Hardware Requirements to Run Kestra](https://kestra.io/docs/administrator-guide/requirements.md)
 - [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/administrator-guide/security-hardening.md)
 - [Server Heartbeats and Job Recovery in Kestra](https://kestra.io/docs/administrator-guide/server-lifecycle.md)
