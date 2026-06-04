@@ -324,27 +324,26 @@ public class LogsExamples {
 
 ### Stream logs live
 
-```java
-import io.kestra.sdk.model.Level;
+`followLogsFromExecution` returns a reactive `Flux<FollowLogEvent>`. Each `FollowLogEvent` carries the same fields as `LogEntry` (plus `tenantId`). The server sends an initial keepalive frame with all fields `null` — filter it out before processing.
 
+```java
 public class LogsExamples {
     public static void followLogs() {
         String executionId = "your-execution-id";
         String tenant = "main";
 
-        var event = KestraClients.INSTANCE.logs()
-            .followLogsFromExecution(executionId, tenant, null);
-
-        if (event != null && event.getData() != null) {
-            System.out.printf("[%s] %s%n",
-                event.getData().getLevel(), event.getData().getMessage());
-        }
+        KestraClients.INSTANCE.logs()
+            .followLogsFromExecution(executionId, tenant, null) // null = no filters
+            .filter(event -> event.getExecutionId() != null)    // skip keepalive frames
+            .doOnNext(event -> System.out.printf("[%s] %s%n",
+                event.getLevel(), event.getMessage()))
+            .blockLast(); // blocks until the stream ends
     }
 }
 ```
 
 :::alert{type="info"}
-Use `listLogsFromExecution` after an execution finishes. Use `followLogsFromExecution` to fetch the latest log event from a running execution.
+Use `listLogsFromExecution` after an execution finishes. Use `followLogsFromExecution` to stream logs in real time from a running execution.
 :::
 
 ---
