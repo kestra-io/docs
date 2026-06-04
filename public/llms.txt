@@ -518,6 +518,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [local.Delete recursive Default Changed to false](https://kestra.io/docs/migration-guide/v2.0.0/local-delete-recursive-default.md)
 - [pluginDefaults.forced Removed from Flows](https://kestra.io/docs/migration-guide/v2.0.0/plugin-defaults-forced-removed.md)
 - [RBAC Permissions Replaced by Resource and Action Model](https://kestra.io/docs/migration-guide/v2.0.0/rbac-action-model.md)
+- [Execution API Response Shape Changed](https://kestra.io/docs/migration-guide/v2.0.0/execution-api-response.md)
 - [Trigger Conditions Redesign](https://kestra.io/docs/migration-guide/v2.0.0/trigger-conditions-redesign.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
