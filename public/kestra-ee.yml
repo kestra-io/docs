@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.20
+  version: 1.3.21
 tags:
 - name: Flows
   description: Flows api
@@ -842,6 +842,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InstanceController.ApiPluginVersions"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/instance/versioned-plugins/{groupId}/{artifactId}/release-notes:
+    get:
+      tags:
+      - Plugins
+      summary: Fetch release notes content for a plugin version
+      description: Superadmin-only. Fetches and returns the Markdown release notes
+        for a given plugin artifact version.
+      operationId: getPluginReleaseNotesContent
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: artifactId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: version
+        in: query
+        required: true
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: getPluginReleaseNotesContent 200 response
+          content:
+            text/plain:
+              schema:
+                type: string
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -20499,6 +20534,9 @@ components:
           type: array
           items:
             type: string
+        releaseNotesUrl:
+          type: string
+          nullable: true
     InstanceController.ApiPluginArtifactList_PluginArtifact_:
       type: object
       properties:
@@ -20579,6 +20617,9 @@ components:
           type: string
         metadata:
           $ref: "#/components/schemas/PluginArtifactMetadata"
+        releaseNotesUrl:
+          type: string
+          nullable: true
     InstanceController.ApiServerInstance:
       type: object
       properties:

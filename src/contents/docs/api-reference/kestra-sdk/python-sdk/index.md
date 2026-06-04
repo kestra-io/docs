@@ -181,6 +181,8 @@ def follow_execution():
         execution_id=execution.id,
         tenant=tenant
     ):
+        if event.state is None:
+            continue  # keepalive frame
         print(event.state.current)
 ```
 
