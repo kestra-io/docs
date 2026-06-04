@@ -157,7 +157,9 @@ kestractl groups members remove <group_id> <user_id>
 
 ### Roles
 
-A role carries a `permissions` payload: a map of resource type (e.g. `FLOW`, `EXECUTION`, `NAMESPACE`, `SECRET`, `KVSTORE`) to a list of permission levels (`READ`, `CREATE`, `UPDATE`, `DELETE`). Provide permissions either inline with the repeatable `--permission TYPE:LEVEL[,LEVEL]` flag or from a YAML/JSON file with `--permissions-file` — not both at once.
+A role carries a `permissions` payload: a map of resource (e.g. `FLOW`, `EXECUTION`, `NAMESPACE`) to a list of actions (e.g. `VIEW`, `LIST`, `EXECUTE`). Provide permissions either inline with the repeatable `--permission TYPE:ACTION[,ACTION]` flag or from a YAML/JSON file with `--permissions-file` — not both at once.
+
+For the full list of resources and their valid actions, see the [RBAC permissions reference](../../07.enterprise/03.auth/rbac/permissions-reference/index.md).
 
 :::alert{type="warning"}
 Passing `--permission` or `--permissions-file` on `roles update` **replaces the entire permissions block** — it does not merge with the existing permissions. Omit both flags on update if you only want to change the name or description.
@@ -173,10 +175,10 @@ kestractl roles list --page 1 --size 50 --sort name:asc
 kestractl roles get <role_id>
 
 # Create a role (--name required; at least one --permission or --permissions-file required)
-kestractl roles create --name editor \
-  --description "Can edit flows and view executions" \
-  --permission FLOW:READ,CREATE,UPDATE \
-  --permission EXECUTION:READ
+kestractl roles create --name operator \
+  --description "Can edit and execute flows, monitor executions" \
+  --permission FLOW:VIEW,LIST,CREATE,UPDATE,DELETE,EXECUTE,DISABLE,ENABLE \
+  --permission EXECUTION:VIEW,LIST,ACCESS_LOGS,ACCESS_FILES,FOLLOW
 
 # Create a role from a permissions file (YAML or JSON)
 kestractl roles create --name viewer --permissions-file perms.yaml
@@ -185,16 +187,20 @@ kestractl roles create --name viewer --permissions-file perms.yaml
 ```yaml
 # perms.yaml
 FLOW:
-  - READ
+  - VIEW
+  - LIST
 EXECUTION:
-  - READ
+  - VIEW
+  - LIST
+  - ACCESS_LOGS
+  - FOLLOW
 ```
 
 ```bash
 # Update a role — only the flags you pass change; other attributes are preserved
 # Exception: --permission replaces the entire permissions block
 kestractl roles update <role_id> --description "Updated description"
-kestractl roles update <role_id> --permission FLOW:READ,CREATE,UPDATE,DELETE
+kestractl roles update <role_id> --permission FLOW:VIEW,LIST,CREATE,UPDATE,DELETE
 kestractl roles update <role_id> --default
 
 # Delete a role — prompts for confirmation; skip with --yes

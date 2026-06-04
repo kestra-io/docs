@@ -1,789 +1,852 @@
 ---
 title: RBAC Permissions Reference for Kestra Enterprise
-h1: RBAC Permissions Mapped to API Endpoints
-description: Reference for Kestra RBAC permissions and CRUD actions mapped to API endpoints. Use this to configure precise access controls for users and service accounts.
+h1: RBAC Resources and Actions Mapped to API Endpoints
+description: Reference for Kestra RBAC resources and actions mapped to API endpoints. Use this to design least-privilege roles and troubleshoot authorization errors.
 sidebarTitle: Permissions Reference
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 docId: iam
 ---
 
-This reference maps each RBAC Permission and Action to the Enterprise API endpoints that enforce it. Use it to design least-privilege roles and troubleshoot authorization errors.
+This reference maps each RBAC resource and action to the API endpoints that enforce it. Use it to design least-privilege roles and troubleshoot authorization errors.
 
 ## How to read this page
-- Endpoints are grouped by Permission and CRUD Action.
-- Endpoints marked with "any action" are accessible to any user who has the permission, regardless of which CRUD action (CREATE, READ, UPDATE, or DELETE) is assigned.
-- Some endpoints require multiple permissions; notes call out additional checks.
-- Namespace bindings apply to the namespace and all child namespaces.
 
-
-## Permissions reference
+- Endpoints are grouped by resource and action.
+- Each resource section gates all its endpoints: a user must have at least one valid action on the resource to reach any endpoint within it. Endpoints that do not check a specific action beyond this gate are marked "any action".
+- Some endpoints require permissions on more than one resource; notes call these out.
+- Namespace-scoped resources respect namespace bindings: access is evaluated against the namespace of the target item, and child namespaces inherit access.
 
 :::collapse{title="FLOW"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: create flows or namespace files; import flows.
-- Read: view flows, revisions, tasks, graphs, dependencies; export flows; read namespace files and triggers.
-- Update: modify flow source, tasks, enable or disable flows; move namespace files.
-- Delete: delete flows or namespace files.
+**Actions and their meaning**
+- `VIEW`: read a single flow, its graph, revisions, tasks, dependencies, and expressions context.
+- `LIST`: search or browse flows.
+- `CREATE`: create a flow. Creating a flow in a namespace that does not yet exist also requires `NAMESPACE: CREATE`.
+- `UPDATE`: modify a flow's source, tasks, or graph.
+- `DELETE`: delete a flow or its revisions.
+- `EXECUTE`: trigger an execution of a flow.
+- `DISABLE`: disable a flow.
+- `ENABLE`: enable a disabled flow.
+- `VALIDATE`: validate flow YAML. (Accessible with any `FLOW` action — no dedicated check.)
+- `EXPORT`: export flows as a ZIP archive.
+- `IMPORT`: import flows from an archive.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/flows` (YAML)
-- POST `/api/v1/{tenant}/flows` (JSON, deprecated)
-- POST `/api/v1/{tenant}/flows/{namespace}` (bulk upsert; also requires UPDATE and DELETE)
-- POST `/api/v1/{tenant}/flows/import` (imports require CREATE + UPDATE per flow)
-- POST `/api/v1/{tenant}/namespaces/{namespace}/files/directory`
-- POST `/api/v1/{tenant}/namespaces/{namespace}/files`
+VIEW
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/graph`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/revisions`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/tasks/{taskId}`
+- `GET /api/v1/{tenant}/flows/{namespace}/{id}/dependencies`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/dependencies`
+- `POST /api/v1/{tenant}/flows/expressions`
 
-Read
-- GET `/api/v1/{tenant}/flows/{namespace}/{id}`
-- GET `/api/v1/{tenant}/flows/{namespace}/{id}/graph`
-- POST `/api/v1/{tenant}/flows/graph` (any action; no action check)
-- GET `/api/v1/{tenant}/flows/{namespace}/{id}/revisions`
-- GET `/api/v1/{tenant}/flows/{namespace}/{id}/tasks/{taskId}`
-- GET `/api/v1/{tenant}/flows/search`
-- GET `/api/v1/{tenant}/flows/{namespace}`
-- GET `/api/v1/{tenant}/flows/source`
-- GET `/api/v1/{tenant}/flows/{namespace}/{id}/dependencies`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/dependencies`
-- GET `/api/v1/{tenant}/flows/distinct-namespaces` (any action; no action check)
-- POST `/api/v1/{tenant}/flows/validate` (any action; no action check)
-- POST `/api/v1/{tenant}/flows/validate/task` (JSON, any action; no action check)
-- POST `/api/v1/{tenant}/flows/validate/task` (YAML, any action; no action check)
-- POST `/api/v1/{tenant}/flows/validate/trigger` (any action; no action check)
-- GET `/api/v1/{tenant}/flows/export/by-query`
-- POST `/api/v1/{tenant}/flows/export/by-ids`
-- GET `/api/v1/{tenant}/flows/export/by-query/csv`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/files/search`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/files`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/files/stats`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/files/revisions`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/files/directory`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/files/export`
-- GET `/api/v1/{tenant}/triggers/search`
-- GET `/api/v1/{tenant}/triggers/{namespace}/{flowId}`
-- GET `/api/v1/{tenant}/triggers/export/by-query/csv`
+LIST
+- `GET /api/v1/{tenant}/flows/search`
+- `GET /api/v1/{tenant}/flows/{namespace}`
+- `GET /api/v1/{tenant}/flows/source`
+- `GET /api/v1/{tenant}/flows/distinct-namespaces` (any `FLOW` action)
+- `GET /api/v1/{tenant}/flows/deprecated`
 
-Update
-- PUT `/api/v1/{tenant}/flows/{namespace}/{id}` (YAML)
-- PUT `/api/v1/{tenant}/flows/{namespace}/{id}` (JSON, deprecated)
-- PATCH `/api/v1/{tenant}/flows/{namespace}/{id}/{taskId}`
-- POST `/api/v1/{tenant}/executions/{executionId}/eval/{taskRunId}`
-- POST `/api/v1/{tenant}/flows/bulk`
-- POST `/api/v1/{tenant}/flows/disable/by-query`
-- POST `/api/v1/{tenant}/flows/disable/by-ids`
-- POST `/api/v1/{tenant}/flows/enable/by-query`
-- POST `/api/v1/{tenant}/flows/enable/by-ids`
-- PUT `/api/v1/{tenant}/namespaces/{namespace}/files`
+CREATE
+- `POST /api/v1/{tenant}/flows` (single flow)
+- `POST /api/v1/{tenant}/flows/{namespace}` (bulk upsert; also requires `UPDATE` and `DELETE`)
 
-Delete
-- DELETE `/api/v1/{tenant}/flows/{namespace}/{id}`
-- DELETE `/api/v1/{tenant}/flows/delete/by-query`
-- DELETE `/api/v1/{tenant}/flows/delete/by-ids`
-- DELETE `/api/v1/{tenant}/namespaces/{namespace}/files`
+UPDATE
+- `PUT /api/v1/{tenant}/flows/{namespace}/{id}`
+- `PATCH /api/v1/{tenant}/flows/{namespace}/{id}/{taskId}`
+- `POST /api/v1/{tenant}/flows/bulk` (also requires `CREATE` and `DELETE`)
+- `POST /api/v1/{tenant}/executions/{executionId}/eval/{taskRunId}`
+- `POST /api/v1/{tenant}/executions/{executionId}/{taskRunId}/eval`
+
+DELETE
+- `DELETE /api/v1/{tenant}/flows/{namespace}/{id}`
+- `DELETE /api/v1/{tenant}/flows/{namespace}/{id}/revisions` (specific revisions)
+- `DELETE /api/v1/{tenant}/flows/delete/by-query`
+- `DELETE /api/v1/{tenant}/flows/delete/by-ids`
+
+EXECUTE
+- `POST /api/v1/{tenant}/executions/{namespace}/{id}` (create execution)
+- `POST /api/v1/{tenant}/executions/{namespace}/{id}/validate`
+- `GET /api/v1/{tenant}/executions/namespaces/{namespace}/flows`
+
+DISABLE
+- `POST /api/v1/{tenant}/flows/disable/by-query`
+- `POST /api/v1/{tenant}/flows/disable/by-ids`
+
+ENABLE
+- `POST /api/v1/{tenant}/flows/enable/by-query`
+- `POST /api/v1/{tenant}/flows/enable/by-ids`
+
+EXPORT
+- `GET /api/v1/{tenant}/flows/export/by-query`
+- `POST /api/v1/{tenant}/flows/export/by-ids`
+- `GET /api/v1/{tenant}/flows/export/by-query/csv` (streaming)
+
+IMPORT
+- `POST /api/v1/{tenant}/flows/import`
+
+VALIDATE (any `FLOW` action — no dedicated check)
+- `POST /api/v1/{tenant}/flows/validate`
+- `POST /api/v1/{tenant}/flows/validate/task`
+- `POST /api/v1/{tenant}/flows/validate/trigger`
 
 Notes
-- Trigger update operations require EXECUTION permissions, but trigger routes also require FLOW permission at the route level.
-- Creating a flow in a new namespace also requires NAMESPACE CREATE.
+- Webhook execution endpoints (`/executions/webhook/{namespace}/{id}/{key}`) are authorized by webhook key, not RBAC.
+- `POST /api/v1/{tenant}/flows/graph` has no action check.
 :::
+
+---
 
 :::collapse{title="EXECUTION"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: trigger or create executions; replay executions (creates new executions).
-- Read: view executions, graphs, logs, metrics, files, and exports.
-- Update: change state, pause or resume, restart, replay by ids, set labels, unqueue, force-run, update task run state.
-- Delete: delete executions and logs.
+**Actions and their meaning**
+- `VIEW`: read a single execution's details, graph, or associated flow.
+- `LIST`: search or browse executions.
+- `DELETE`: delete executions.
+- `RESTART`: restart one or more executions from the beginning or a specific task.
+- `KILL`: kill a running execution.
+- `REPLAY`: replay an execution (creates a new execution from a previous one).
+- `PAUSE`: pause a running execution.
+- `RESUME`: resume a paused execution.
+- `CHANGE_LABELS`: update labels on a terminated execution.
+- `ACCESS_LOGS`: read or stream execution logs.
+- `ACCESS_OUTPUTS`: read task run outputs.
+- `ACCESS_FILES`: download or preview execution output files.
+- `FOLLOW`: stream live execution status events via SSE.
+- `EXPORT`: export execution data as CSV.
+- `UNQUEUE`: move a queued execution out of the queue.
+- `FORCE_RUN`: force a paused or queued execution to run immediately.
+- `UPDATE`: change the state of a task run within an execution.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/executions/trigger/{namespace}/{id}` (deprecated)
-- POST `/api/v1/{tenant}/executions/{namespace}/{id}`
-- POST `/api/v1/{tenant}/executions/{namespace}/{id}/validate` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/replay`
-- POST `/api/v1/{tenant}/executions/{executionId}/replay-with-inputs`
-- POST `/api/v1/{tenant}/executions/replay/by-query` (any action; no action check)
-- GET `/api/v1/{tenant}/executions/namespaces` (requires CREATE)
-- GET `/api/v1/{tenant}/executions/namespaces/{namespace}/flows` (requires CREATE)
+VIEW
+- `GET /api/v1/{tenant}/executions/{executionId}`
+- `GET /api/v1/{tenant}/executions/{executionId}/graph`
+- `GET /api/v1/{tenant}/executions/{executionId}/flow`
+- `GET /api/v1/{tenant}/executions/flows/{namespace}/{flowId}`
 
-Read
-- GET `/api/v1/{tenant}/executions/search`
-- GET `/api/v1/{tenant}/executions`
-- GET `/api/v1/{tenant}/executions/{executionId}`
-- GET `/api/v1/{tenant}/executions/{executionId}/graph`
-- GET `/api/v1/{tenant}/executions/{executionId}/flow`
-- GET `/api/v1/{tenant}/executions/flows/{namespace}/{flowId}`
-- GET `/api/v1/{tenant}/executions/{executionId}/file`
-- GET `/api/v1/{tenant}/executions/{executionId}/file/metas`
-- GET `/api/v1/{tenant}/executions/{executionId}/file/preview`
-- GET `/api/v1/{tenant}/executions/{executionId}/follow`
-- GET `/api/v1/{tenant}/executions/{executionId}/follow-dependencies`
-- POST `/api/v1/{tenant}/executions/latest` (any action; no action check)
-- GET `/api/v1/{tenant}/executions/export/by-query/csv`
-- GET `/api/v1/{tenant}/logs/search`
-- GET `/api/v1/{tenant}/logs/{executionId}`
-- GET `/api/v1/{tenant}/logs/{executionId}/download`
-- GET `/api/v1/{tenant}/logs/{executionId}/follow`
-- GET `/api/v1/{tenant}/metrics/{executionId}`
-- GET `/api/v1/{tenant}/metrics/names/{namespace}/{flowId}`
-- GET `/api/v1/{tenant}/metrics/names/{namespace}/{flowId}/{taskId}`
-- GET `/api/v1/{tenant}/metrics/tasks/{namespace}/{flowId}`
-- GET `/api/v1/{tenant}/metrics/aggregates/{namespace}/{flowId}/{metric}`
-- GET `/api/v1/{tenant}/metrics/aggregates/{namespace}/{flowId}/{taskId}/{metric}`
+LIST
+- `GET /api/v1/{tenant}/executions/search`
+- `GET /api/v1/{tenant}/executions`
+- `GET /api/v1/{tenant}/executions/flows/{namespace}/{flowId}` (search by flow)
+- `GET /api/v1/{tenant}/executions/namespaces` (distinct namespaces with executions)
+- `POST /api/v1/{tenant}/executions/latest` (any `EXECUTION` action)
 
-Update
-- POST `/api/v1/{tenant}/executions/{executionId}/restart`
-- POST `/api/v1/{tenant}/executions/restart/by-ids`
-- POST `/api/v1/{tenant}/executions/restart/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/state`
-- POST `/api/v1/{tenant}/executions/{executionId}/change-status`
-- POST `/api/v1/{tenant}/executions/change-status/by-ids`
-- POST `/api/v1/{tenant}/executions/change-status/by-query` (any action; no action check)
-- DELETE `/api/v1/{tenant}/executions/{executionId}/kill{?isOnKillCascade}`
-- DELETE `/api/v1/{tenant}/executions/kill/by-ids`
-- DELETE `/api/v1/{tenant}/executions/kill/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/resume/validate` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/resume`
-- POST `/api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint`
-- POST `/api/v1/{tenant}/executions/resume/by-ids`
-- POST `/api/v1/{tenant}/executions/resume/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/pause`
-- POST `/api/v1/{tenant}/executions/pause/by-ids`
-- POST `/api/v1/{tenant}/executions/pause/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/labels`
-- POST `/api/v1/{tenant}/executions/labels/by-ids`
-- POST `/api/v1/{tenant}/executions/labels/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/unqueue`
-- POST `/api/v1/{tenant}/executions/unqueue/by-ids`
-- POST `/api/v1/{tenant}/executions/unqueue/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/{executionId}/force-run`
-- POST `/api/v1/{tenant}/executions/force-run/by-ids`
-- POST `/api/v1/{tenant}/executions/force-run/by-query` (any action; no action check)
-- POST `/api/v1/{tenant}/executions/replay/by-ids` (uses UPDATE in current implementation)
+DELETE
+- `DELETE /api/v1/{tenant}/executions/{executionId}`
+- `DELETE /api/v1/{tenant}/executions/by-ids`
+- `DELETE /api/v1/{tenant}/executions/by-query`
+- `DELETE /api/v1/{tenant}/logs/{executionId}` (delete logs for an execution)
+- `DELETE /api/v1/{tenant}/logs/{namespace}/{flowId}` (delete logs for a flow)
 
-Delete
-- DELETE `/api/v1/{tenant}/executions/{executionId}`
-- DELETE `/api/v1/{tenant}/executions/by-ids`
-- DELETE `/api/v1/{tenant}/executions/by-query` (any action; no action check)
-- DELETE `/api/v1/{tenant}/logs/{executionId}`
-- DELETE `/api/v1/{tenant}/logs/{namespace}/{flowId}` (any action; no action check)
+RESTART
+- `POST /api/v1/{tenant}/executions/{executionId}/restart`
+- `POST /api/v1/{tenant}/executions/restart/by-ids`
+- `POST /api/v1/{tenant}/executions/restart/by-query`
+
+KILL
+- `DELETE /api/v1/{tenant}/executions/{executionId}/kill`
+- `DELETE /api/v1/{tenant}/executions/kill/by-ids`
+- `DELETE /api/v1/{tenant}/executions/kill/by-query`
+
+REPLAY
+- `POST /api/v1/{tenant}/executions/{executionId}/replay`
+- `POST /api/v1/{tenant}/executions/{executionId}/replay-with-inputs`
+- `POST /api/v1/{tenant}/executions/replay/by-ids`
+- `POST /api/v1/{tenant}/executions/replay/by-query`
+
+PAUSE
+- `POST /api/v1/{tenant}/executions/{executionId}/pause`
+- `POST /api/v1/{tenant}/executions/pause/by-ids`
+- `POST /api/v1/{tenant}/executions/pause/by-query`
+
+RESUME
+- `POST /api/v1/{tenant}/executions/{executionId}/resume`
+- `POST /api/v1/{tenant}/executions/{executionId}/resume-from-breakpoint`
+- `POST /api/v1/{tenant}/executions/resume/by-ids`
+- `POST /api/v1/{tenant}/executions/resume/by-query`
+
+CHANGE_LABELS
+- `POST /api/v1/{tenant}/executions/{executionId}/labels`
+- `POST /api/v1/{tenant}/executions/labels/by-ids`
+- `POST /api/v1/{tenant}/executions/labels/by-query`
+
+ACCESS_LOGS
+- `GET /api/v1/{tenant}/logs/search`
+- `GET /api/v1/{tenant}/logs/{executionId}`
+- `GET /api/v1/{tenant}/logs/{executionId}/download`
+- `GET /api/v1/{tenant}/logs/{executionId}/follow` (SSE log stream)
+
+ACCESS_OUTPUTS
+- `GET /api/v1/{tenant}/outputs/{executionId}/{taskRunId}`
+- `GET /api/v1/{tenant}/outputs/{executionId}`
+
+ACCESS_FILES
+- `GET /api/v1/{tenant}/executions/{executionId}/file`
+- `GET /api/v1/{tenant}/executions/{executionId}/file/metas`
+- `GET /api/v1/{tenant}/executions/{executionId}/file/preview`
+
+FOLLOW
+- `GET /api/v1/{tenant}/executions/{executionId}/follow` (SSE execution state stream)
+- `GET /api/v1/{tenant}/executions/{executionId}/follow-dependencies`
+
+EXPORT
+- `GET /api/v1/{tenant}/executions/export/by-query/csv` (streaming)
+
+UNQUEUE
+- `POST /api/v1/{tenant}/executions/{executionId}/unqueue`
+- `POST /api/v1/{tenant}/executions/unqueue/by-ids`
+- `POST /api/v1/{tenant}/executions/unqueue/by-query`
+
+FORCE_RUN
+- `POST /api/v1/{tenant}/executions/{executionId}/force-run`
+- `POST /api/v1/{tenant}/executions/force-run/by-ids`
+- `POST /api/v1/{tenant}/executions/force-run/by-query`
+
+UPDATE
+- `POST /api/v1/{tenant}/executions/{executionId}/state`
+- `POST /api/v1/{tenant}/executions/change-status/by-ids`
+- `POST /api/v1/{tenant}/executions/change-status/by-query`
+- `POST /api/v1/{tenant}/executions/{executionId}/{taskRunId}/state`
 
 Notes
-- Webhook execution endpoints (`/executions/webhook/{namespace}/{id}/{key}`) are anonymous and are authorized by webhook key, not RBAC.
-- `GET /api/v1/{tenant}/logs/search` only checks that the EXECUTION permission exists (any action).
+- Webhook execution endpoints are authorized by webhook key only; RBAC is not checked.
+- Execution creation (`POST /executions/{namespace}/{id}`) checks `FLOW: EXECUTE`, not an `EXECUTION` action.
 :::
 
-:::collapse{title="TEMPLATE"}
+---
+
+:::collapse{title="TRIGGER"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: create templates or bulk update a namespace of templates.
-- Read: view templates, search, export, validate.
-- Update: update templates or bulk update a namespace of templates.
-- Delete: delete templates, bulk delete by query or ids.
+**Actions and their meaning**
+- `LIST`: search or browse triggers.
+- `UNLOCK`: unlock a locked trigger.
+- `RESTART`: restart a trigger.
+- `DISABLE` / `ENABLE`: disable or enable triggers (both operations currently check the `DISABLE` action).
+- `DELETE`: delete triggers.
+- `EXPORT`: export trigger configuration.
+- `BACKFILL`: create, pause, unpause, or delete a backfill on a schedule trigger.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/templates`
-- POST `/api/v1/{tenant}/templates/{namespace}` (bulk update; also requires UPDATE and DELETE)
-- POST `/api/v1/{tenant}/templates/import` (requires FLOW CREATE + UPDATE)
+LIST
+- `GET /api/v1/{tenant}/triggers/search`
+- `GET /api/v1/{tenant}/triggers/{namespace}/{flowId}`
 
-Read
-- GET `/api/v1/{tenant}/templates/{namespace}/{id}`
-- GET `/api/v1/{tenant}/templates/search`
-- GET `/api/v1/{tenant}/templates/distinct-namespaces` (any action; no action check)
-- POST `/api/v1/{tenant}/templates/validate` (any action; no action check)
-- GET `/api/v1/{tenant}/templates/export/by-query`
-- POST `/api/v1/{tenant}/templates/export/by-ids`
+UNLOCK
+- `POST /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}/unlock`
+- `POST /api/v1/{tenant}/triggers/unlock/by-ids`
 
-Update
-- PUT `/api/v1/{tenant}/templates/{namespace}/{id}`
-- POST `/api/v1/{tenant}/templates/{namespace}` (bulk update; also requires CREATE and DELETE)
+RESTART
+- `POST /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}/restart`
 
-Delete
-- DELETE `/api/v1/{tenant}/templates/{namespace}/{id}`
-- DELETE `/api/v1/{tenant}/templates/delete/by-query`
-- DELETE `/api/v1/{tenant}/templates/delete/by-ids`
+DISABLE / ENABLE
+- `POST /api/v1/{tenant}/triggers/disable/by-ids` (also used for re-enabling)
 
-Notes
-- `POST /api/v1/{tenant}/templates/import` uses FLOW CREATE and UPDATE permissions in the current implementation.
+DELETE
+- `DELETE /api/v1/{tenant}/triggers/{namespace}/{flowId}/{triggerId}`
+- `DELETE /api/v1/{tenant}/triggers/by-ids`
+- `DELETE /api/v1/{tenant}/triggers/by-query`
+
+EXPORT
+- `GET /api/v1/{tenant}/triggers/export/by-query` (streaming)
+
+BACKFILL
+- `POST /api/v1/{tenant}/triggers/backfills` (create)
+- `POST /api/v1/{tenant}/triggers/backfills/pause`
+- `POST /api/v1/{tenant}/triggers/backfills/pause/by-ids`
+- `POST /api/v1/{tenant}/triggers/backfills/unpause`
+- `POST /api/v1/{tenant}/triggers/backfills/unpause/by-ids`
+- `DELETE /api/v1/{tenant}/triggers/backfills`
+- `DELETE /api/v1/{tenant}/triggers/backfills/by-ids`
 :::
+
+---
 
 :::collapse{title="NAMESPACE"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: create namespaces.
-- Read: view namespaces, inherited variables, inherited plugin defaults, and export plugin defaults.
-- Update: update namespace metadata and import plugin defaults.
-- Delete: delete namespaces.
+**Actions and their meaning**
+- `VIEW`: read a namespace's details, inherited variables, and inherited plugin defaults.
+- `LIST`: search or browse namespaces.
+- `CREATE`: create a namespace.
+- `UPDATE`: update namespace configuration.
+- `DELETE`: delete a namespace.
+- `MANAGE_FILES`: all namespace file operations (search, read, create, move, delete, export).
+- `EXPORT_PLUGIN_DEFAULTS`: export a namespace's plugin defaults.
+- `IMPORT_PLUGIN_DEFAULTS`: import plugin defaults into a namespace.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/namespaces`
+VIEW
+- `GET /api/v1/{tenant}/namespaces/{id}`
+- `GET /api/v1/{tenant}/namespaces/{id}/inherited-variables`
+- `GET /api/v1/{tenant}/namespaces/{id}/inherited-plugindefaults`
 
-Read
-- POST `/api/v1/{tenant}/namespaces/autocomplete`
-- GET `/api/v1/{tenant}/namespaces/{id}`
-- GET `/api/v1/{tenant}/namespaces/search`
-- GET `/api/v1/{tenant}/namespaces/{id}/inherited-variables`
-- GET `/api/v1/{tenant}/namespaces/{id}/inherited-plugindefaults`
-- POST `/api/v1/{tenant}/namespaces/{id}/plugindefaults/export`
+LIST
+- `GET /api/v1/{tenant}/namespaces/search`
+- `POST /api/v1/{tenant}/namespaces/autocomplete`
 
-Update
-- PUT `/api/v1/{tenant}/namespaces/{id}`
-- POST `/api/v1/{tenant}/namespaces/{id}/plugindefaults/import`
+CREATE
+- `POST /api/v1/{tenant}/namespaces`
 
-Delete
-- DELETE `/api/v1/{tenant}/namespaces/{id}`
+UPDATE
+- `PUT /api/v1/{tenant}/namespaces/{id}`
+
+DELETE
+- `DELETE /api/v1/{tenant}/namespaces/{id}`
+
+MANAGE_FILES (all namespace file operations)
+- `GET /api/v1/{tenant}/namespaces/{namespace}/files/search`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/files`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/files/stats`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/files/revisions`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/files/directory`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/files/export`
+- `POST /api/v1/{tenant}/namespaces/{namespace}/files/directory` (create directory)
+- `POST /api/v1/{tenant}/namespaces/{namespace}/files` (create file)
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/files` (move file or directory)
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/files` (delete file or directory)
+
+EXPORT_PLUGIN_DEFAULTS
+- `POST /api/v1/{tenant}/namespaces/{id}/plugindefaults/export`
+
+IMPORT_PLUGIN_DEFAULTS
+- `POST /api/v1/{tenant}/namespaces/{id}/plugindefaults/import`
 :::
+
+---
 
 :::collapse{title="KVSTORE"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: create new KV entries.
-- Read: list or retrieve KV entries, including inherited entries.
-- Update: update existing KV entries.
-- Delete: delete KV entries.
+**Actions and their meaning**
+- `VIEW`: read a KV entry.
+- `LIST`: list or browse KV entries, including inherited entries.
+- `CREATE` / `UPDATE`: set a KV value (the same endpoint creates or updates depending on whether the key exists).
+- `DELETE`: delete KV entries.
 
 **Endpoints**
 
-Create
-- PUT `/api/v1/{tenant}/namespaces/{namespace}/kv/{key}` (creates if key does not exist)
+VIEW
+- `GET /api/v1/{tenant}/namespaces/{namespace}/kv/{key}`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/kv/{key}/detail`
 
-Read
-- GET `/api/v1/{tenant}/kv` (any action; no action check)
-- GET `/api/v1/{tenant}/namespaces/{namespace}/kv` (deprecated)
-- GET `/api/v1/{tenant}/namespaces/{namespace}/kv/inheritance`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/kv/{key}`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/kv/{key}/detail`
+LIST
+- `GET /api/v1/{tenant}/namespaces/{namespace}/kv`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/kv/inheritance`
 
-Update
-- PUT `/api/v1/{tenant}/namespaces/{namespace}/kv/{key}` (updates if key exists)
+CREATE / UPDATE
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/kv/{key}` (creates if key does not exist, updates if it does)
 
-Delete
-- DELETE `/api/v1/{tenant}/namespaces/{namespace}/kv/{key}`
-- DELETE `/api/v1/{tenant}/namespaces/{namespace}/kv`
-
-Notes
-- The PUT endpoint chooses CREATE vs UPDATE based on whether the key already exists.
+DELETE
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/kv/{key}`
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/kv` (bulk delete)
 :::
+
+---
 
 :::collapse{title="DASHBOARD"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create: create dashboards.
-- Read: view dashboards and charts.
-- Update: update dashboards and charts.
-- Delete: delete dashboards.
+**Actions and their meaning**
+- `VIEW` / `LIST`: read dashboards and their charts.
+- `CREATE`: create dashboards.
+- `UPDATE`: update dashboard configuration.
+- `DELETE`: delete dashboards.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/dashboards`
+VIEW / LIST (any `DASHBOARD` action — no dedicated per-action check at controller level)
+- `GET /api/v1/{tenant}/dashboards`
+- `GET /api/v1/{tenant}/dashboards/{id}`
+- `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}`
+- `POST /api/v1/{tenant}/dashboards/charts/preview`
+- `POST /api/v1/{tenant}/dashboards/validate`
+- `POST /api/v1/{tenant}/dashboards/validate/chart`
+- `POST /api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export/to-csv`
+- `POST /api/v1/{tenant}/dashboards/charts/export/to-csv`
 
-Read
-- GET `/api/v1/{tenant}/dashboards`
-- GET `/api/v1/{tenant}/dashboards/{id}`
-- POST `/api/v1/{tenant}/dashboards/{id}/charts/{chartId}`
-- POST `/api/v1/{tenant}/dashboards/charts/preview`
-- POST `/api/v1/{tenant}/dashboards/validate`
-- POST `/api/v1/{tenant}/dashboards/validate/chart`
-- POST `/api/v1/{tenant}/dashboards/{id}/charts/{chartId}/export/to-csv`
-- POST `/api/v1/{tenant}/dashboards/charts/export/to-csv`
+CREATE
+- `POST /api/v1/{tenant}/dashboards`
 
-Update
-- PUT `/api/v1/{tenant}/dashboards/{id}`
+UPDATE
+- `PUT /api/v1/{tenant}/dashboards/{id}`
 
-Delete
-- DELETE `/api/v1/{tenant}/dashboards/{id}`
-
-Notes
-- Read endpoints rely on repository-level permission checks (any DASHBOARD action); action-specific READ checks are not enforced at the controller level.
+DELETE
+- `DELETE /api/v1/{tenant}/dashboards/{id}`
 :::
+
+---
 
 :::collapse{title="SECRET"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: create secrets (implemented via UPDATE in current API).
-- Read: list and view secret metadata.
-- Update: update secret values or metadata.
-- Delete: delete secrets.
+**Actions and their meaning**
+- `VIEW` / `LIST`: list secrets and view their metadata. Secret values are never returned by the API.
+- `UPDATE`: create or update a secret (creation is enforced via this action).
+- `DELETE`: delete a secret.
 
 **Endpoints**
 
-Read
-- GET `/api/v1/{tenant}/secrets` (any action; no action check)
-- GET `/api/v1/{tenant}/namespaces/{namespace}/secrets`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/inherited-secrets`
+VIEW / LIST (any `SECRET` action)
+- `GET /api/v1/{tenant}/namespaces/{namespace}/secrets`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/inherited-secrets`
 
-Update
-- PUT `/api/v1/{tenant}/namespaces/{namespace}/secrets`
-- PATCH `/api/v1/{tenant}/namespaces/{namespace}/secrets/{key}`
+UPDATE
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/secrets`
+- `PATCH /api/v1/{tenant}/namespaces/{namespace}/secrets/{key}`
 
-Delete
-- DELETE `/api/v1/{tenant}/namespaces/{namespace}/secrets/{key}`
+DELETE
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/secrets/{key}`
 
 Notes
-- No endpoint currently checks SECRET CREATE; secret creation is enforced via UPDATE on `PUT /namespaces/{namespace}/secrets`.
+- `SECRET` has no `CREATE` action; creation uses `UPDATE`.
 :::
+
+---
 
 :::collapse{title="CREDENTIAL"}
-**Scope:** Namespace or global (tenant-level credentials)
+**Scope:** Namespace or tenant (depending on whether the credential is namespace-level or tenant-level)
 
-**CRUD meaning**
-- Create: create tenant or namespace credentials.
-- Read: list and view credentials.
-- Update: update credentials or test connections.
-- Delete: delete credentials.
+**Actions and their meaning**
+- `VIEW` / `LIST`: list and view credentials.
+- `CREATE`: create credentials.
+- `UPDATE`: update credentials or test a connection.
+- `DELETE`: delete credentials.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/credentials`
-- POST `/api/v1/{tenant}/namespaces/{namespace}/credentials`
+VIEW / LIST
+- `GET /api/v1/{tenant}/credentials`
+- `GET /api/v1/{tenant}/credentials/{id}`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/credentials`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/credentials/{name}`
+- `GET /api/v1/{tenant}/namespaces/{namespace}/credentials/inherited`
 
-Read
-- GET `/api/v1/{tenant}/credentials`
-- GET `/api/v1/{tenant}/credentials/{id}`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/credentials`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/credentials/{name}`
-- GET `/api/v1/{tenant}/namespaces/{namespace}/credentials/inherited`
+CREATE
+- `POST /api/v1/{tenant}/credentials`
+- `POST /api/v1/{tenant}/namespaces/{namespace}/credentials`
 
-Update
-- PUT `/api/v1/{tenant}/credentials/{id}`
-- POST `/api/v1/{tenant}/credentials/{id}/test`
-- PUT `/api/v1/{tenant}/namespaces/{namespace}/credentials/{name}`
-- POST `/api/v1/{tenant}/namespaces/{namespace}/credentials/{name}/test`
+UPDATE
+- `PUT /api/v1/{tenant}/credentials/{id}`
+- `POST /api/v1/{tenant}/credentials/{id}/test`
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/credentials/{name}`
+- `POST /api/v1/{tenant}/namespaces/{namespace}/credentials/{name}/test`
 
-Delete
-- DELETE `/api/v1/{tenant}/credentials/{id}`
-- DELETE `/api/v1/{tenant}/namespaces/{namespace}/credentials/{name}`
+DELETE
+- `DELETE /api/v1/{tenant}/credentials/{id}`
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/credentials/{name}`
 :::
+
+---
 
 :::collapse{title="BLUEPRINT"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create: create custom blueprints.
-- Read: list or view custom blueprints and templates.
-- Update: update custom blueprints.
-- Delete: delete custom blueprints.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view or browse custom blueprints.
+- `CREATE`: create a blueprint.
+- `UPDATE`: update a blueprint.
+- `DELETE`: delete a blueprint.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/blueprints/flows`
-- POST `/api/v1/{tenant}/blueprints/custom` (deprecated)
+VIEW / LIST
+- `GET /api/v1/{tenant}/blueprints/custom`
+- `GET /api/v1/{tenant}/blueprints/custom/{id}`
+- `GET /api/v1/{tenant}/blueprints/custom/{id}/source`
+- `GET /api/v1/{tenant}/blueprints/custom/tags`
+- `GET /api/v1/{tenant}/blueprints/flows/{id}`
+- `POST /api/v1/{tenant}/blueprints/flows/{id}/use-template`
 
-Read
-- GET `/api/v1/{tenant}/blueprints/custom`
-- GET `/api/v1/{tenant}/blueprints/custom/{id}`
-- GET `/api/v1/{tenant}/blueprints/custom/{id}/source`
-- GET `/api/v1/{tenant}/blueprints/custom/tags`
-- GET `/api/v1/{tenant}/blueprints/flow/{id}`
-- GET `/api/v1/{tenant}/blueprints/flows/{id}`
-- POST `/api/v1/{tenant}/blueprints/flows/{id}/use-template`
+CREATE
+- `POST /api/v1/{tenant}/blueprints/flows`
 
-Update
-- PUT `/api/v1/{tenant}/blueprints/flows/{id}`
-- PUT `/api/v1/{tenant}/blueprints/custom/{id}` (deprecated)
+UPDATE
+- `PUT /api/v1/{tenant}/blueprints/flows/{id}`
 
-Delete
-- DELETE `/api/v1/{tenant}/blueprints/flows/{id}`
-- DELETE `/api/v1/{tenant}/blueprints/custom/{id}` (deprecated)
+DELETE
+- `DELETE /api/v1/{tenant}/blueprints/flows/{id}`
 
 Notes
-- Community blueprint endpoints under `/api/v1/{tenant}/blueprints/community/...` do not use BLUEPRINT permission.
+- Community blueprint endpoints (`/blueprints/community/...`) do not require `BLUEPRINT` permission.
 :::
+
+---
 
 :::collapse{title="APP"}
-**Scope:** Global (tenant) with namespace checks on app definitions
+**Scope:** Tenant (with namespace checks when the app definition references a namespace)
 
-**CRUD meaning**
-- Create: create apps and import apps.
-- Read: view app source, search, export apps.
-- Update: update apps and enable or disable apps.
-- Delete: delete apps.
-
-**Endpoints**
-
-Create
-- POST `/api/v1/{tenant}/apps`
-- POST `/api/v1/{tenant}/apps/import`
-- POST `/api/v1/{tenant}/apps/preview` (requires global APP CREATE)
-
-Read
-- GET `/api/v1/{tenant}/apps/search`
-- GET `/api/v1/{tenant}/apps/catalog` (private apps also require APPEXECUTION READ)
-- GET `/api/v1/{tenant}/apps/tags`
-- GET `/api/v1/{tenant}/apps/{uid}`
-- POST `/api/v1/{tenant}/apps/export`
-
-Update
-- PUT `/api/v1/{tenant}/apps/{uid}`
-- POST `/api/v1/{tenant}/apps/{uid}/enable`
-- POST `/api/v1/{tenant}/apps/{uid}/disable`
-- POST `/api/v1/{tenant}/apps/enable`
-- POST `/api/v1/{tenant}/apps/disable`
-
-Delete
-- DELETE `/api/v1/{tenant}/apps/{uid}`
-- DELETE `/api/v1/{tenant}/apps`
-:::
-
-:::collapse{title="APPEXECUTION"}
-**Scope:** Namespace (checked when app access is PRIVATE)
-
-**CRUD meaning**
-- Create: not used for apps (execution happens via app dispatch).
-- Read: view apps and read execution artifacts through apps.
-- Update: dispatch app actions and stream updates.
-- Delete: not used.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view app source, search, and catalog.
+- `CREATE`: create or import apps.
+- `UPDATE`: update apps, enable, or disable them.
+- `DELETE`: delete apps.
+- `EXECUTE`: dispatch actions through an app (run the app).
+- `ACCESS_FILES`: download or preview files generated by an app execution.
+- `ACCESS_LOGS`: view app execution logs.
 
 **Endpoints**
 
-Read
-- GET `/api/v1/{tenant}/apps/view/{uid}` (PRIVATE apps require APPEXECUTION READ)
-- GET `/api/v1/{tenant}/apps/view/{id}/file/preview`
-- GET `/api/v1/{tenant}/apps/view/{id}/file/meta`
-- GET `/api/v1/{tenant}/apps/view/{id}/file/download`
-- GET `/api/v1/{tenant}/apps/view/{uid}/logs/download`
+VIEW / LIST
+- `GET /api/v1/{tenant}/apps/search`
+- `GET /api/v1/{tenant}/apps/catalog`
+- `GET /api/v1/{tenant}/apps/tags`
+- `GET /api/v1/{tenant}/apps/{uid}`
+- `GET /api/v1/{tenant}/apps/view/{uid}` (PRIVATE apps require `APP: EXECUTE` or equivalent access level)
 
-Update
-- POST `/api/v1/{tenant}/apps/view/{id}/dispatch/{dispatch}`
-- GET `/api/v1/{tenant}/apps/view/{id}/streams/{stream}`
+CREATE
+- `POST /api/v1/{tenant}/apps`
+- `POST /api/v1/{tenant}/apps/import`
+- `POST /api/v1/{tenant}/apps/preview`
+- `POST /api/v1/{tenant}/apps/export`
+
+UPDATE
+- `PUT /api/v1/{tenant}/apps/{uid}`
+- `POST /api/v1/{tenant}/apps/{uid}/enable`
+- `POST /api/v1/{tenant}/apps/{uid}/disable`
+- `POST /api/v1/{tenant}/apps/enable`
+- `POST /api/v1/{tenant}/apps/disable`
+
+DELETE
+- `DELETE /api/v1/{tenant}/apps/{uid}`
+- `DELETE /api/v1/{tenant}/apps`
+
+EXECUTE
+- `POST /api/v1/{tenant}/apps/view/{id}/dispatch/{dispatch}`
+- `GET /api/v1/{tenant}/apps/view/{id}/streams/{stream}`
+
+ACCESS_FILES
+- `GET /api/v1/{tenant}/apps/view/{id}/file/preview`
+- `GET /api/v1/{tenant}/apps/view/{id}/file/meta`
+- `GET /api/v1/{tenant}/apps/view/{id}/file/download`
+
+ACCESS_LOGS
+- `GET /api/v1/{tenant}/apps/view/{uid}/logs/download`
 
 Notes
-- App view endpoints are anonymous for PUBLIC apps; PRIVATE apps require APPEXECUTION permissions and, if configured, group membership.
+- PUBLIC apps are accessible without authentication for view and dispatch. PRIVATE apps require appropriate `APP` actions.
 :::
 
-:::collapse{title="ASSET"}
-**Scope:** Global (tenant) with namespace checks when an asset has a namespace
+---
 
-**CRUD meaning**
-- Create: create assets.
-- Read: view assets, search assets, and dependency or usage graphs.
-- Update: not used (create or replace is done via POST).
-- Delete: delete assets.
-
-**Endpoints**
-
-Create
-- POST `/api/v1/{tenant}/assets`
-
-Read
-- GET `/api/v1/{tenant}/assets/{id}`
-- GET `/api/v1/{tenant}/assets/{id}/dependencies`
-- GET `/api/v1/{tenant}/assets/search`
-- GET `/api/v1/{tenant}/assets/usages/search`
-
-Delete
-- DELETE `/api/v1/{tenant}/assets/{id}`
-- DELETE `/api/v1/{tenant}/assets/by-ids`
-- DELETE `/api/v1/{tenant}/assets/by-query`
-:::
-
-:::collapse{title="TEST"}
+:::collapse{title="TESTSUITE"}
 **Scope:** Namespace
 
-**CRUD meaning**
-- Create: create tests or run tests.
-- Read: view tests and test results.
-- Update: update tests or enable or disable tests.
-- Delete: delete tests.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view tests and test results.
+- `CREATE`: create a test.
+- `UPDATE`: update or enable/disable tests.
+- `DELETE`: delete tests.
+- `EXECUTE`: run tests.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/tests`
-- POST `/api/v1/{tenant}/tests/{namespace}/{id}/run`
-- POST `/api/v1/{tenant}/tests/run`
+VIEW / LIST
+- `GET /api/v1/{tenant}/tests/{namespace}/{id}`
+- `GET /api/v1/{tenant}/tests/search`
+- `POST /api/v1/{tenant}/tests/validate`
+- `GET /api/v1/{tenant}/tests/results/{id}`
+- `POST /api/v1/{tenant}/tests/results/search/last`
+- `GET /api/v1/{tenant}/tests/results/search`
 
-Read
-- GET `/api/v1/{tenant}/tests/{namespace}/{id}`
-- GET `/api/v1/{tenant}/tests/search`
-- POST `/api/v1/{tenant}/tests/validate`
-- GET `/api/v1/{tenant}/tests/results/{id}`
-- POST `/api/v1/{tenant}/tests/results/search/last`
-- GET `/api/v1/{tenant}/tests/results/search`
+CREATE
+- `POST /api/v1/{tenant}/tests`
 
-Update
-- PUT `/api/v1/{tenant}/tests/{namespace}/{id}`
-- POST `/api/v1/{tenant}/tests/disable/by-ids`
-- POST `/api/v1/{tenant}/tests/enable/by-ids`
+UPDATE
+- `PUT /api/v1/{tenant}/tests/{namespace}/{id}`
+- `POST /api/v1/{tenant}/tests/disable/by-ids`
+- `POST /api/v1/{tenant}/tests/enable/by-ids`
 
-Delete
-- DELETE `/api/v1/{tenant}/tests/{namespace}/{id}`
-- DELETE `/api/v1/{tenant}/tests/by-ids`
+DELETE
+- `DELETE /api/v1/{tenant}/tests/{namespace}/{id}`
+- `DELETE /api/v1/{tenant}/tests/by-ids`
+
+EXECUTE
+- `POST /api/v1/{tenant}/tests/{namespace}/{id}/run`
+- `POST /api/v1/{tenant}/tests/run`
 :::
+
+---
+
+:::collapse{title="ASSET"}
+**Scope:** Tenant (with namespace checks when the asset has a namespace)
+
+**Actions and their meaning**
+- `VIEW` / `LIST`: view assets and their dependency or usage graphs.
+- `CREATE`: create assets.
+- `DELETE`: delete assets.
+
+**Endpoints**
+
+VIEW / LIST
+- `GET /api/v1/{tenant}/assets/{id}`
+- `GET /api/v1/{tenant}/assets/{id}/dependencies`
+- `GET /api/v1/{tenant}/assets/search`
+- `GET /api/v1/{tenant}/assets/usages/search`
+
+CREATE
+- `POST /api/v1/{tenant}/assets`
+
+DELETE
+- `DELETE /api/v1/{tenant}/assets/{id}`
+- `DELETE /api/v1/{tenant}/assets/by-ids`
+- `DELETE /api/v1/{tenant}/assets/by-query`
+:::
+
+---
+
+:::collapse{title="MCP_SERVER"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `VIEW` / `LIST`: view MCP server configuration and registered tools.
+- `CREATE`: create an MCP server.
+- `UPDATE`: update an MCP server.
+- `DELETE`: delete an MCP server.
+
+Notes
+- Connecting an AI agent to a PRIVATE server also requires `FLOW: EXECUTE` on at least one namespace with a flow that has an `McpToolTrigger` pointing at that server.
+:::
+
+---
+
+:::collapse{title="COPILOT"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `USE`: access AI flow generation and Copilot features.
+
+**Endpoints**
+
+USE (any `COPILOT` action)
+- `POST /api/v1/{tenant}/ai/generate/flow`
+:::
+
+---
 
 :::collapse{title="AUDITLOG"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Read: search and export audit logs; read resource history and diffs.
+**Actions and their meaning**
+- `VIEW` / `LIST`: search audit logs and view diffs.
+- `EXPORT`: export audit logs.
 
 **Endpoints**
 
-Read
-- GET `/api/v1/{tenant}/auditlogs/search`
-- POST `/api/v1/{tenant}/auditlogs/find`
-- GET `/api/v1/{tenant}/auditlogs/history/{detailId}` (requires READ on the underlying resource)
-- GET `/api/v1/{tenant}/auditlogs/{id}/diff` (requires READ on the underlying resource or AUDITLOG READ; superadmin-only for certain resources)
-- GET `/api/v1/{tenant}/auditlogs/export`
+VIEW / LIST
+- `GET /api/v1/{tenant}/auditlogs/search`
+- `POST /api/v1/{tenant}/auditlogs/find`
+- `GET /api/v1/{tenant}/auditlogs/history/{detailId}`
+- `GET /api/v1/{tenant}/auditlogs/{id}/diff`
+
+EXPORT
+- `GET /api/v1/{tenant}/auditlogs/export`
 
 Notes
-- Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` are superadmin-only and are not controlled by AUDITLOG permissions.
+- Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are superadmin-only and are not controlled by `AUDITLOG` permissions.
 :::
+
+---
+
+:::collapse{title="SYSTEM_SETTINGS"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `VIEW`: read instance-level settings.
+- `UPDATE`: modify instance-level settings.
+:::
+
+---
+
+:::collapse{title="TENANT_SETTINGS"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `VIEW`: read tenant-level settings.
+- `UPDATE`: modify tenant-level settings.
+:::
+
+---
 
 :::collapse{title="USER"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create, Read, Update, Delete: manage users via SCIM provisioning endpoints.
-
-**Endpoints**
-
-Create
-- POST `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users`
-
-Read
-- GET `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users`
-- GET `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users/{id}`
-
-Update
-- PUT `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users/{id}`
-- PATCH `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users/{id}`
-
-Delete
-- DELETE `/api/v1/{tenant}/integrations/{integration}/scim/v2/Users/{id}`
+**Actions and their meaning**
+- `VIEW` / `LIST`: view user details and group membership.
+- `CREATE` / `UPDATE` / `DELETE`: manage users.
+- `MANAGE_GROUP_MEMBERSHIP`: update a user's group assignments.
+- `IMPERSONATE`: impersonate a user to test their access.
 
 Notes
-- IAM user management endpoints under `/api/v1/users` are superadmin-only and do not use USER permissions.
+- `USER` is not included in any of the standard managed roles (Viewer, Launcher, Editor, Developer). Only Admin includes it. Custom roles with `USER` actions are intended for platform administrators.
+- IAM user management endpoints under `/api/v1/users` (no tenant segment) are superadmin-only and do not require `USER` permissions.
 :::
 
-:::collapse{title="SERVICE_ACCOUNT"}
-**Scope:** Global (tenant)
-
-**CRUD meaning**
-- Create: create service accounts.
-- Read: list or view service accounts and API tokens.
-- Update: update service accounts and create API tokens.
-- Delete: delete service accounts or API tokens.
-
-**Endpoints**
-
-Create
-- POST `/api/v1/{tenant}/service-accounts`
-
-Read
-- GET `/api/v1/{tenant}/service-accounts/{id}`
-- GET `/api/v1/{tenant}/service-accounts/{id}/api-tokens`
-
-Update
-- PUT `/api/v1/{tenant}/service-accounts/{id}`
-- POST `/api/v1/{tenant}/service-accounts/{id}/api-tokens`
-
-Delete
-- DELETE `/api/v1/{tenant}/service-accounts/{id}`
-- DELETE `/api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}`
-
-Notes
-- Superadmin-only service account endpoints under `/api/v1/service-accounts` do not use SERVICE_ACCOUNT permissions.
-:::
+---
 
 :::collapse{title="GROUP"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create, Read, Update, Delete: manage groups.
-
-**Endpoints**
-
-Create
-- POST `/api/v1/{tenant}/groups`
-
-Read
-- GET `/api/v1/{tenant}/groups/{id}`
-- GET `/api/v1/{tenant}/groups/search`
-- POST `/api/v1/{tenant}/groups/autocomplete`
-- POST `/api/v1/{tenant}/groups/ids`
-
-Update
-- PUT `/api/v1/{tenant}/groups/{id}`
-
-Delete
-- DELETE `/api/v1/{tenant}/groups/{id}`
-
-Notes
-- SCIM group endpoints under `/api/v1/{tenant}/integrations/{integration}/scim/v2/Groups` use GROUP permissions for CRUD.
-:::
-
-:::collapse{title="GROUP_MEMBERSHIP"}
-**Scope:** Global (tenant)
-
-**CRUD meaning**
-- Create: add users to groups.
-- Read: list group members.
-- Update: update membership roles or replace a user's group list.
-- Delete: remove users from groups.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view groups and their members.
+- `CREATE`: create groups.
+- `UPDATE`: update group metadata.
+- `DELETE`: delete groups.
+- `MANAGE_MEMBERS`: add or remove members from a group.
 
 **Endpoints**
 
-Create
-- PUT `/api/v1/{tenant}/groups/{id}/members/{userId}`
+VIEW / LIST
+- `GET /api/v1/{tenant}/groups/{id}`
+- `GET /api/v1/{tenant}/groups/search`
+- `POST /api/v1/{tenant}/groups/autocomplete`
+- `POST /api/v1/{tenant}/groups/ids`
+- `GET /api/v1/{tenant}/groups/{id}/members`
 
-Read
-- GET `/api/v1/{tenant}/groups/{id}/members`
+CREATE
+- `POST /api/v1/{tenant}/groups`
 
-Update
-- PUT `/api/v1/{tenant}/groups/{id}/members/membership/{userId}`
-- PUT `/api/v1/{tenant}/users/{id}/groups`
+UPDATE
+- `PUT /api/v1/{tenant}/groups/{id}`
 
-Delete
-- DELETE `/api/v1/{tenant}/groups/{id}/members/{userId}`
+DELETE
+- `DELETE /api/v1/{tenant}/groups/{id}`
+
+MANAGE_MEMBERS
+- `PUT /api/v1/{tenant}/groups/{id}/members/{userId}`
+- `PUT /api/v1/{tenant}/groups/{id}/members/membership/{userId}`
+- `DELETE /api/v1/{tenant}/groups/{id}/members/{userId}`
+- `PUT /api/v1/{tenant}/users/{id}/groups`
 
 Notes
-- Group owners can manage membership without GROUP_MEMBERSHIP permission; non-owners require it.
+- SCIM group endpoints (`/integrations/{integration}/scim/v2/Groups`) also use `GROUP` permissions.
 :::
+
+---
 
 :::collapse{title="ROLE"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create, Read, Update, Delete: manage roles.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view roles and their permissions.
+- `CREATE`: create roles.
+- `UPDATE`: update roles.
+- `DELETE`: delete roles.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/roles`
+VIEW / LIST
+- `GET /api/v1/{tenant}/roles/{id}`
+- `GET /api/v1/{tenant}/roles/search`
+- `POST /api/v1/{tenant}/roles/autocomplete`
+- `POST /api/v1/{tenant}/roles/ids`
+- `GET /api/v1/{tenant}/acls/permissions` (any `ROLE` action)
+- `GET /api/v1/{tenant}/acls/actions` (any `ROLE` action)
 
-Read
-- GET `/api/v1/{tenant}/roles/{id}`
-- GET `/api/v1/{tenant}/roles/search`
-- POST `/api/v1/{tenant}/roles/autocomplete`
-- POST `/api/v1/{tenant}/roles/ids`
-- GET `/api/v1/{tenant}/acls/permissions` (any action; no action check)
-- GET `/api/v1/{tenant}/acls/actions` (any action; no action check)
+CREATE
+- `POST /api/v1/{tenant}/roles`
 
-Update
-- PUT `/api/v1/{tenant}/roles/{id}`
+UPDATE
+- `PUT /api/v1/{tenant}/roles/{id}`
 
-Delete
-- DELETE `/api/v1/{tenant}/roles/{id}`
+DELETE
+- `DELETE /api/v1/{tenant}/roles/{id}`
 :::
+
+---
 
 :::collapse{title="BINDING"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create, Read, Delete: manage bindings between users, groups, and roles.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view bindings.
+- `CREATE`: create a binding.
+- `DELETE`: delete a binding.
 
 **Endpoints**
 
-Create
-- POST `/api/v1/{tenant}/bindings`
-- POST `/api/v1/{tenant}/bindings/bulk`
+VIEW / LIST
+- `GET /api/v1/{tenant}/bindings/{id}`
+- `GET /api/v1/{tenant}/bindings/search`
 
-Read
-- GET `/api/v1/{tenant}/bindings/{id}`
-- GET `/api/v1/{tenant}/bindings/search`
+CREATE
+- `POST /api/v1/{tenant}/bindings`
+- `POST /api/v1/{tenant}/bindings/bulk`
 
-Delete
-- DELETE `/api/v1/{tenant}/bindings/{id}`
+DELETE
+- `DELETE /api/v1/{tenant}/bindings/{id}`
+
+Notes
+- Bindings are immutable. To change a binding's scope or roles, delete it and create a new one.
 :::
+
+---
+
+:::collapse{title="SERVICE_ACCOUNT"}
+**Scope:** Tenant
+
+**Actions and their meaning**
+- `VIEW` / `LIST`: view service accounts and their API tokens.
+- `CREATE`: create service accounts.
+- `UPDATE`: update service accounts and issue API tokens.
+- `DELETE`: delete service accounts or revoke API tokens.
+
+**Endpoints**
+
+VIEW / LIST
+- `GET /api/v1/{tenant}/service-accounts/{id}`
+- `GET /api/v1/{tenant}/service-accounts/{id}/api-tokens`
+
+CREATE
+- `POST /api/v1/{tenant}/service-accounts`
+
+UPDATE
+- `PUT /api/v1/{tenant}/service-accounts/{id}`
+- `POST /api/v1/{tenant}/service-accounts/{id}/api-tokens`
+
+DELETE
+- `DELETE /api/v1/{tenant}/service-accounts/{id}`
+- `DELETE /api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}`
+
+Notes
+- Superadmin-only endpoints under `/api/v1/service-accounts` (no tenant segment) do not use `SERVICE_ACCOUNT` permissions.
+:::
+
+---
 
 :::collapse{title="INVITATION"}
-**Scope:** Global (tenant)
+**Scope:** Tenant
 
-**CRUD meaning**
-- Create: create invitations.
-- Read: list or view invitations.
-- Delete: delete invitations.
-
-**Endpoints**
-Create
-- POST `/api/v1/{tenant}/invitations`
-
-Read
-- GET `/api/v1/{tenant}/invitations/search`
-- GET `/api/v1/{tenant}/invitations/email/{email}`
-- GET `/api/v1/{tenant}/invitations/{id}`
-
-Delete
-- DELETE `/api/v1/{tenant}/invitations/{id}`
-:::
-
-:::collapse{title="TENANT_ACCESS"}
-**Scope:** Global (tenant)
-
-**CRUD meaning**
-- Create: grant a user access to a tenant.
-- Read: list tenant access or fetch a user's tenant access.
-- Delete: revoke tenant access.
+**Actions and their meaning**
+- `VIEW` / `LIST`: view invitations.
+- `CREATE`: send an invitation.
+- `DELETE`: revoke an invitation.
 
 **Endpoints**
 
-Create
-- PUT `/api/v1/{tenant}/tenant-access/{userId}`
-- POST `/api/v1/{tenant}/tenant-access`
+VIEW / LIST
+- `GET /api/v1/{tenant}/invitations/search`
+- `GET /api/v1/{tenant}/invitations/email/{email}`
+- `GET /api/v1/{tenant}/invitations/{id}`
 
-Read
-- GET `/api/v1/{tenant}/tenant-access`
-- POST `/api/v1/{tenant}/tenant-access/autocomplete`
-- GET `/api/v1/{tenant}/tenant-access/{userId}`
+CREATE
+- `POST /api/v1/{tenant}/invitations`
 
-Delete
-- DELETE `/api/v1/{tenant}/tenant-access/{userId}`
-
-Notes
-- `GET /tenant-access/{userId}` is allowed for the authenticated user without TENANT_ACCESS permission; all other access requires the permission.
+DELETE
+- `DELETE /api/v1/{tenant}/invitations/{id}`
 :::
 
-:::collapse{title="IMPERSONATE"}
-**Scope:** Global (tenant)
+## Related
 
-**CRUD meaning**
-- Read: allow impersonation via the API header.
-
-**Endpoints**
-
-Read
-- Use `X-Kestra-Impersonate: user@example.com` on authenticated requests (requires IMPERSONATE READ).
-
-Notes
-- The IAM endpoint `POST /api/v1/users/{id}/impersonate` is superadmin-only and does not use IMPERSONATE permission.
-:::
-
-:::collapse{title="SETTING"}
-**Scope:** Global (tenant)
-
-**CRUD meaning**
-- Create, Read, Update, Delete: reserved for webserver settings.
-
-**Endpoints**
-- No API endpoints currently enforce SETTING permissions.
-:::
-
-:::collapse{title="AI_COPILOT"}
-**Scope:** Global (tenant)
-
-**CRUD meaning**
-- Read: access AI flow generation.
-
-**Endpoints**
-
-Read
-- POST `/api/v1/{tenant}/ai/generate/flow` (any action; no action check)
-:::
+- [RBAC overview](../index.md) — resources, actions, and managed roles explained
+- [RBAC action model migration guide](../../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) — how old CRUD permissions map to the new actions when upgrading from 1.x
+- [kestractl roles](../../../../kestra-cli/kestractl/index.md#roles) — create and manage roles from the CLI
