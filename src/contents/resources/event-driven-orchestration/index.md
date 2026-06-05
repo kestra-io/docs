@@ -1,7 +1,7 @@
 ---
 title: "Event-Driven Orchestration: A Practical Guide (with Examples)"
 description: "Learn what event-driven orchestration is, how it compares to choreography and SOA, and how to implement it with real YAML examples you can copy."
-metaTitle: "Event-Driven Orchestration: Patterns & Examples"
+metaTitle: "Event-Driven Orchestration: Patterns & Examples | Kestra"
 metaDescription: "Understand event-driven orchestration, how it differs from choreography, SOA, and DDD, with production YAML examples for webhooks, Kafka, S3, and SQS triggers."
 tag: infrastructure
 date: 2026-04-21

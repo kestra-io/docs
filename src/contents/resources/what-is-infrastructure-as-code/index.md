@@ -1,7 +1,7 @@
 ---
 title: "What is Infrastructure as Code (IaC)? Explained"
 description: "Understand Infrastructure as Code (IaC), its benefits, and how it automates IT infrastructure. Explore IaC with Kestra today!"
-metaTitle: "What is Infrastructure as Code (IaC)?"
+metaTitle: "What is Infrastructure as Code (IaC)? | Kestra"
 metaDescription: "Learn what Infrastructure as Code (IaC) is, its core principles, benefits, top tools, and how Kestra orchestrates IaC workflows declaratively across any cloud."
 tag: infrastructure
 date: 2026-05-15
