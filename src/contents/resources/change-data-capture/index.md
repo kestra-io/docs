@@ -1,23 +1,23 @@
 ---
 title: "What is Change Data Capture (CDC)?"
 description: "Change Data Capture (CDC) is a crucial technique for modern data architectures. This guide explores what CDC is, its operational mechanisms, and how it ensures real-time data synchronization across systems."
-metaTitle: "What is Change Data Capture (CDC)? Kestra Guide"
-metaDescription: "Learn what change data capture (CDC) is, how it works, and its benefits for data synchronization across modern data architectures."
+metaTitle: "What is Change Data Capture (CDC)? | Kestra"
+metaDescription: "Learn what change data capture (CDC) is, how it works, and how to implement it with Kestra. Compare log-based, trigger-based, and timestamp-based CDC methods."
 tag: data
 date: 2026-05-02
 faq:
+  - question: "What is change data capture (CDC)?"
+    answer: "Change Data Capture (CDC) is a set of software design patterns that identifies and tracks row-level changes—inserts, updates, and deletes—in a source database and makes those changes available to downstream systems in real time or near-real time, without requiring a full table scan."
   - question: "What is the difference between ETL and CDC?"
-    answer: "Change Data Capture (CDC) focuses on tracking and extracting only the modifications (inserts, updates, deletes) in a source system. Traditional ETL often involves batch processing of entire datasets. CDC provides a more granular, efficient approach, reducing the load on source systems and enabling near real-time data synchronization, often complementing or enhancing an ETL pipeline."
-  - question: "What is IBM change data capture?"
-    answer: "IBM Change Data Capture refers to IBM's suite of solutions that identify and record data change events from various sources, including relational and non-relational databases. These solutions integrate with IBM's data platforms to facilitate data synchronization, warehousing, and analytics. Kestra can orchestrate these vendor-specific CDC tools as part of a broader workflow."
+    answer: "Traditional ETL is batch-oriented: it extracts large volumes of data at scheduled intervals, transforms it, and loads it into a target system. CDC is event-driven: it captures only the incremental changes (inserts, updates, deletes) as they happen, providing a continuous, low-latency stream instead of bulk snapshots. The two techniques are complementary—CDC can serve as the extract phase of a modern real-time ETL or ELT pipeline."
+  - question: "What are the main methods of change data capture?"
+    answer: "The three most common CDC methods are: (1) Log-based CDC, which reads the database transaction log (e.g., PostgreSQL WAL, MySQL binlog) with minimal source-system impact; (2) Trigger-based CDC, which fires database triggers on every change to write events to a changelog table; and (3) Timestamp-based CDC, which polls tables for rows whose last-modified timestamp is newer than the previous extraction—simple to implement but unable to capture deletes."
   - question: "What is an example of change data capture?"
-    answer: "A common example of CDC is in retail. When a customer places an order, the transaction is recorded in an operational database. A CDC system captures this specific 'insert' event in real-time. This change can then trigger downstream processes, such as updating inventory, sending a confirmation email, or feeding a real-time analytics dashboard, ensuring immediate data consistency."
-  - question: "Does change data capture affect performance?"
-    answer: "The performance impact of CDC depends heavily on the method used. Trigger-based CDC can introduce overhead as it runs database triggers for every data modification. Log-based CDC, however, generally has minimal impact on source database performance as it reads transaction logs asynchronously, offloading the processing to a separate system. Proper implementation and monitoring are key to minimizing any performance degradation."
-  - question: "Will ETL be replaced by AI?"
-    answer: "AI is transforming ETL, not replacing it. While AI can automate parts of the ETL process, such as data mapping, quality checks, and anomaly detection, the core principles of data extraction, transformation, and loading remain. AI-powered tools enhance efficiency and intelligence, allowing engineers to focus on more complex tasks. CDC itself can feed real-time data into AI-driven ETL processes."
-  - question: "Is Excel an ETL tool?"
-    answer: "While Excel, especially with features like Power Query, can perform basic data extraction, transformation, and loading for small-scale tasks, it is not considered a robust enterprise-grade ETL tool. Its limitations in scalability, automation, error handling, and governance make it unsuitable for complex, high-volume, or mission-critical data integration pipelines. Dedicated ETL or orchestration tools are required for such scenarios."
+    answer: "A common example is an e-commerce platform. When a customer places an order, a log-based CDC tool like Debezium reads the INSERT event from the database transaction log, publishes it to a message broker like Kafka, and multiple services consume it in real time: the inventory service decrements stock, the shipping service starts fulfillment, and an analytics dashboard updates—all without tightly coupling those services to the orders database."
+  - question: "Does change data capture affect database performance?"
+    answer: "It depends on the method. Log-based CDC reads the transaction log asynchronously and has minimal impact on source database performance. Trigger-based CDC runs synchronously on every data modification and can add measurable overhead. Timestamp-based CDC requires periodic table scans, which add query load. For production workloads, log-based CDC is generally recommended."
+  - question: "What is IBM change data capture?"
+    answer: "IBM InfoSphere Data Replication (also referred to as IBM CDC) is IBM's enterprise suite for real-time data replication and change data capture. It supports sources including Db2, Oracle, and SQL Server, and targets such as Kafka, Snowflake, and Google BigQuery. It integrates with IBM DataStage for ETL and is available on-premises and within IBM Cloud Pak for Data."
 ---
 
 In the dynamic landscape of modern data architectures, keeping disparate systems synchronized and data consistently up-to-date is a perpetual challenge. Traditional batch processing often introduces latency, making real-time insights a distant goal. This is where Change Data Capture (CDC) emerges as a critical technique, fundamentally altering how organizations manage and react to data modifications.
@@ -28,7 +28,7 @@ This comprehensive guide will demystify Change Data Capture, exploring its core 
 
 Change Data Capture (CDC) is a set of software design patterns used to identify and track changes to data in a source database. Instead of extracting an entire dataset, CDC captures only the incremental changes—inserts, updates, and deletes—and makes them available in real time. This process allows other systems to respond to these changes as they happen, ensuring data consistency and enabling a wide range of real-time applications.
 
-The primary purpose of CDC is to maintain synchronization between different data stores with minimal impact on the source system. By capturing only the deltas, CDC avoids the resource-intensive overhead of full table scans and large batch transfers. This makes it a cornerstone of modern data integration, supporting everything from real-time analytics to zero-downtime database migrations. In an era where business decisions depend on the freshest possible data, CDC provides the mechanism to move from periodic batch updates to a continuous, event-driven flow of information. For more on this topic, explore our [resources for data articles](/resources/data).
+The primary purpose of CDC is to maintain synchronization between different data stores with minimal impact on the source system. By capturing only the deltas, CDC avoids the resource-intensive overhead of full table scans and large batch transfers. This makes it a cornerstone of modern [data orchestration](/resources/data/data-orchestration), supporting everything from real-time analytics to zero-downtime database migrations. In an era where business decisions depend on the freshest possible data, CDC provides the mechanism to move from periodic batch updates to a continuous, event-driven flow of information.
 
 ## How change data capture works
 
@@ -43,7 +43,7 @@ Several techniques exist for implementing CDC, each with its own trade-offs in t
 
 ### Batch processing vs. real-time CDC
 
-The distinction between batch and real-time processing is crucial in understanding the value of CDC.
+The distinction between batch and real-time processing is crucial in understanding the value of CDC. For a deeper comparison, see our guide on [batch vs. streaming processing](/resources/data/batch-vs-streaming-processing).
 - **Batch Processing:** Traditionally, data is extracted in large chunks at scheduled intervals (e.g., nightly). This creates data latency, meaning the target system is always out of sync with the source.
 - **Real-time CDC:** CDC systems capture changes as they occur and stream them immediately. This approach minimizes latency, allowing target systems to reflect the source's state within seconds or milliseconds. While batch processing is suitable for historical analysis, real-time CDC is essential for operational analytics, fraud detection, and other time-sensitive applications.
 
@@ -153,7 +153,7 @@ CDC is preferable when:
 
 ### How CDC complements ETL
 
-CDC and ETL are not mutually exclusive; they often work together. CDC can serve as the "Extract" phase in a modern, real-time ETL or ELT (Extract, Load, Transform) pipeline. Instead of a batch extract job, a CDC process continuously streams changes from the source, which are then transformed and loaded into the target system. This creates a more efficient, low-latency data pipeline.
+CDC and ETL are not mutually exclusive; they often work together. CDC can serve as the "Extract" phase in a modern, real-time [ETL or ELT pipeline](/resources/data/etl-vs-elt). Instead of a batch extract job, a CDC process continuously streams changes from the source, which are then transformed and loaded into the target system. This creates a more efficient, low-latency [data pipeline](/resources/data/data-pipeline).
 
 ## Exploring IBM and Microsoft's CDC solutions
 
@@ -184,20 +184,8 @@ id: debezium-postgres-listener
 namespace: company.team.production
 
 tasks:
-  - id: postgres-changes
-    type: io.kestra.plugin.debezium.postgres.Trigger
-    description: "Listen for CDC events from the customers table."
-    hostname: "{{ secret('POSTGRES_HOST') }}"
-    port: "{{ secret('POSTGRES_PORT') }}"
-    username: "{{ secret('POSTGRES_USER') }}"
-    password: "{{ secret('POSTGRES_PASSWORD') }}"
-    database: "sales"
-    tableWhitelist:
-      - "public.customers"
-
   - id: process-event
     type: io.kestra.plugin.scripts.python.Script
-    description: "Process the captured change event."
     script: |
       from kestra import Kestra
       import json
@@ -205,9 +193,20 @@ tasks:
       event = json.loads('{{ trigger.data }}')
       change_type = event['payload']['op']
       customer_id = event['payload']['after']['id']
-      
+
       print(f"Detected change '{change_type}' for customer ID: {customer_id}")
       Kestra.outputs({'customerId': customer_id, 'changeType': change_type})
+
+triggers:
+  - id: postgres-changes
+    type: io.kestra.plugin.debezium.postgres.Trigger
+    hostname: "{{ secret('POSTGRES_HOST') }}"
+    port: "{{ secret('POSTGRES_PORT') }}"
+    username: "{{ secret('POSTGRES_USER') }}"
+    password: "{{ secret('POSTGRES_PASSWORD') }}"
+    database: "sales"
+    includedTables:
+      - "public.customers"
 ```
 
 This declarative approach makes CDC pipelines easier to build, manage, and scale. You can find more examples in our [Blueprints library](/blueprints/listen-debezium).
