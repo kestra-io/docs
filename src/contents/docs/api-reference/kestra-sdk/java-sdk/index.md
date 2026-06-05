@@ -210,7 +210,7 @@ public class ExecutionsExamples {
 
 ## Follow an execution
 
-Fetch the latest SSE event for an execution. Use this to check the final state after triggering an execution.
+`followExecution` returns a reactive `Flux<Execution>` that streams state updates as the execution progresses. Each emission is an `Execution` object — skip entries where `getState()` is `null` (keepalive frames emitted by the server before the first real update).
 
 ```java
 public class ExecutionsExamples {
@@ -218,15 +218,12 @@ public class ExecutionsExamples {
         String executionId = "your-execution-id";
         String tenant = "main";
 
-        var event = KestraClients.INSTANCE.executions()
-            .followExecution(executionId, tenant);
-
-        if (event != null) {
-            System.out.printf("Event: %s%n", event.getId());
-            if (event.getData() != null) {
-                System.out.printf("Status: %s%n", event.getData().getState());
-            }
-        }
+        KestraClients.INSTANCE.executions()
+            .followExecution(executionId, tenant)
+            .filter(execution -> execution.getState() != null) // skip keepalive frames
+            .doOnNext(execution -> System.out.printf("[%s] %s%n",
+                execution.getId(), execution.getState().getCurrent()))
+            .blockLast(); // blocks until the execution stream ends
     }
 }
 ```
