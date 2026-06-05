@@ -269,7 +269,7 @@ comparison:
         - "Self-hosted (HCP for hosted)"
         - "Self-hosted"
     - feature: "Orchestrate beyond Proxmox"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Broad Ansible collections, Ansible-centric"
         - "Terraform providers, provisioning-centric"
