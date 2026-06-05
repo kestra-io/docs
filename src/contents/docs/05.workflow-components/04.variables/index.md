@@ -294,14 +294,14 @@ variables:
 
 tasks:
   - id: parallel
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     concurrencyLimit: 0
     values: "{{ vars.servers }}"
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
         message:
-           - "{{ taskrun.value }}" # for each element, prints the full JSON object (e.g., {"fqn":"server01.mydomain.io","user":"root"})
-           - "{{ json(taskrun.value).fqn }}" # prints the value for that key (e.g., server01.mydomain.io)
-           - "{{ json(taskrun.value).user }}" # prints the value for that key (e.g., root)
+           - "{{ item.value }}" # for each element, prints the full JSON object (e.g., {"fqn":"server01.mydomain.io","user":"root"})
+           - "{{ json(item.value).fqn }}" # prints the value for that key (e.g., server01.mydomain.io)
+           - "{{ json(item.value).user }}" # prints the value for that key (e.g., root)
 ```

@@ -114,7 +114,7 @@ See [Loop iteration context](../../../expressions/01.context/index.mdx#loop-iter
         {
           "name": "length",
           "tags": {
-            "format": "{{task.id}} > {{taskrun.value}} ⬅ {{taskrun.startDate}}"
+            "format": "{{task.id}} > {{item.value}} ⬅ {{taskrun.startDate}}"
           },
           "value": 45.0,
           "type": "counter"
@@ -122,7 +122,7 @@ See [Loop iteration context](../../../expressions/01.context/index.mdx#loop-iter
         {
           "name": "duration",
           "tags": {
-            "format": "{{task.id}} > {{taskrun.value}} ⬅ {{taskrun.startDate}}"
+            "format": "{{task.id}} > {{item.value}} ⬅ {{taskrun.startDate}}"
           },
           "type": "timer",
           "value": "PT0.007213673S"

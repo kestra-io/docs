@@ -39,7 +39,7 @@ System Labels are labels prefixed with `system.` that serve specific purposes. B
 
 ### `system.correlationId`
 
-- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks
+- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `Loop` tasks
 - Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage
 - Can also be set to a stable business key and used as an idempotency key for flows that must not process the same event twice
 - Use this label to filter all executions originating from a specific parent execution or business event.

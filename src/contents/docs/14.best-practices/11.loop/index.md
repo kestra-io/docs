@@ -227,7 +227,7 @@ Key points:
 
 ## Handle per-iteration failures
 
-Set `transmitFailed: false` to continue the loop when individual iterations fail. Use `errors:` to run tasks per failed iteration, and `finally:` for a one-time cleanup block after all iterations finish. `errors:` requires `transmitFailed: false`; `finally:` always runs regardless.
+Set `transmitFailed: false` to continue the loop when individual iterations fail. Use `errors:` to run tasks per failed iteration, and `finally:` for a one-time cleanup block after all iterations finish. `errors:` runs on failure regardless of `transmitFailed` — with `transmitFailed: false`, the loop continues to subsequent iterations after handling the error. `finally:` always runs regardless.
 
 ```yaml
 tasks:
@@ -301,7 +301,7 @@ tasks:
 | `io.kestra.plugin.transform.Filter` | Predicate | Keep only rows where a boolean expression holds. |
 | `io.kestra.plugin.transform.Map` | Project | Per-record rename, drop, or compute fields — SQL `SELECT`-style. |
 | `io.kestra.plugin.transform.Unnest` | Explode | Flatten an array field into one row per element, carrying sibling fields through. |
-| `io.kestra.plugin.core.flow.Subflow` | Isolate | Spawn a separate execution per iteration — own retries, own logs, own failure state. The `ForEachItem` replacement. |
+| `io.kestra.plugin.core.flow.Subflow` | Isolate | Spawn a separate execution per iteration — own retries, own logs, own failure state. |
 | `io.kestra.plugin.core.flow.Parallel` | Fan-out | Run independent task groups concurrently inside a single iteration. |
 
 ## Common mistakes to avoid

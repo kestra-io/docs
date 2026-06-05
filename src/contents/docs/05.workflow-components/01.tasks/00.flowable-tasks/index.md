@@ -142,7 +142,7 @@ For more details, check out the [If Task documentation](/plugins/core/flow/io.ke
 
 ### Loop
 
-The `Loop` task iterates over a set of values and runs child tasks for each item. Unlike `ForEach`, each iteration runs in an isolated sub-execution with its own context.
+The `Loop` task iterates over a set of values and runs child tasks for each item in an isolated sub-execution with its own context.
 
 `values` accepts a list, a JSON array string, a map, or an ION file URI. When `values` is a URI, Kestra performs one iteration per line of the file.
 
@@ -171,7 +171,7 @@ Inside each iteration, use the `item` variable to access the iteration context:
 | `{{ item.parent.value }}` | Value of the nearest enclosing loop (nested loops only) |
 | `{{ item.parents[n].value }}` | Value of the nth ancestor loop, counting from innermost |
 
-For more details on `item`, see [loop iteration context](../../../expressions/index.mdx#loop-iteration-context) in the expressions reference.
+For more details on `item`, see [loop iteration context](../../../expressions/01.context/index.mdx#loop-iteration-context) in the expressions reference.
 
 #### Iterating over objects
 
@@ -246,7 +246,7 @@ tasks:
 
 #### Error handling per iteration
 
-Use `errors:` to run tasks when an iteration fails, and `finally:` to run a block once after all iterations complete regardless of outcome. `errors:` requires `transmitFailed: false` — with the default `transmitFailed: true`, a failed iteration stops the loop before `errors:` can run. `finally:` always runs regardless of the `transmitFailed` setting.
+Use `errors:` to run tasks when an iteration fails, and `finally:` to run a block once after all iterations complete regardless of outcome. `errors:` runs within the failing iteration regardless of `transmitFailed` — with `transmitFailed: true` (default), the loop stops after the failing iteration completes; with `transmitFailed: false`, the loop continues to subsequent iterations. `finally:` always runs regardless.
 
 ```yaml
 tasks:
@@ -471,6 +471,9 @@ Key properties:
 - `condition` — expression evaluated after each iteration; has access to the child task outputs from the most recent run (e.g. `{{ outputs.checkStatus.code }}`).
 - `tasks` — the list of child tasks to run before re-evaluating the condition.
 - `checkFrequency` — optional guardrails that define `interval`, `maxIterations`, and/or `maxDuration` between repeats. (See the [LoopUntil migration note](../../../11.migration-guide/v0.23.0/loop-until-defaults/index.md) for default values.)
+- `failOnMaxReached` — if `true`, the task fails when `maxIterations` or `maxDuration` is reached without the condition becoming true. Default: `false` (the task succeeds when limits are reached).
+
+After the loop completes, `outputs.<task_id>.iterationCount` holds the total number of iterations (1-based). Use this in downstream tasks to report how many attempts were needed.
 
 Example: poll an API until it returns HTTP 200, checking every 30 seconds and stopping after 50 attempts if it never succeeds.
 

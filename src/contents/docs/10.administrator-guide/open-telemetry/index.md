@@ -51,7 +51,7 @@ When enabled, Kestra instruments:
 ### Trace correlation
 Kestra propagates the trace context so that traces are correlated:
 - The API call trace correlates with the execution it creates.
-- Flow execution traces correlate with parent flows when the `Subflow` or `ForEachItem` task is used.
+- Flow execution traces correlate with parent flows when the `Subflow` or `Loop` task is used.
 - External HTTP calls include the standard propagation header for downstream correlation.
 
 ### Propagate trace context to scripts
@@ -148,7 +148,7 @@ kestra:
 | `io.kestra.core.runners.Executor`      | Spans for each message in the execution queue     |
 | `io.kestra.core.runners.Worker`        | Spans for each runnable task execution            |
 | `io.kestra.plugin.core.flow.Subflow`   | Spans for each `Subflow` task execution           |
-| `io.kestra.plugin.core.flow.ForEachItem` | Spans for each `ForEachItem` task execution     |
+| `io.kestra.plugin.core.flow.Loop` | Spans for each `Loop` sub-execution     |
 
 ## Metrics
 

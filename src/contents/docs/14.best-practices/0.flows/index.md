@@ -33,7 +33,7 @@ Depending on the internal queue and repository implementation, there may be a ha
 
 While a flow can contain many tasks, it’s not recommended to include a large number of tasks within a single execution.
 
-A flow can contain either manually defined tasks or dynamically generated ones. While [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) and [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem) are powerful for looping over results, they can create hundreds of TaskRuns if used on large datasets. For example, a nested loop of 20 × 20 tasks results in **400 TaskRuns**.
+A flow can contain either manually defined tasks or dynamically generated ones. While the [Loop task](/plugins/core/flow/io.kestra.plugin.core.flow.loop) runs each iteration as an isolated sub-execution, a deeply nested loop can still generate a large number of sub-executions. For example, a nested loop of 20 × 20 tasks results in **400 sub-executions**.
 
 :::alert{type="warning"}
 Flows with **over 100 tasks** tend to experience performance degradation and longer execution times.
@@ -48,7 +48,7 @@ While powerful, this feature **should not be used to transfer large amounts of d
 
 For example, the [Query](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.query) task in BigQuery has a `fetch` property that retrieves query results as an output attribute. If the query returns a large dataset, the result will be stored in the execution context — meaning it will be serialized and deserialized on each task state change, severely impacting performance.
 
-This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) or [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task.
+This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) or [Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop) task.
 
 :::alert{type="info"}
 For large data volumes, use the `stores` property instead. Stored outputs are written to Kestra’s internal storage, and only the file URL is referenced in the execution context.

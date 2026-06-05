@@ -74,7 +74,7 @@ You can close, open, and reposition panels at any time. In the example below, th
 
 ![No Code Task Configuration](./no-code-tasks.png)
 
-5. **Add flow logic** — If, Switch, ForEach, and Subflow tasks — to control execution paths.
+5. **Add flow logic** — If, Switch, Loop, and Subflow tasks — to control execution paths.
 6. **Add a trigger** (schedule, file event, webhook) to automate runs.
 
 ![No Code Trigger Configuration](./no-code-trigger.png)

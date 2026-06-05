@@ -269,7 +269,7 @@ tasks:
     format: "First result: {{ outputs.loop.outputs[0].outputs.result }}"
 ```
 
-After the loop, `outputs.<loop_id>.outputs` is a list of per-iteration results — each entry has an `item` object (with `value`, `index`, and `key`) and an `outputs` map of the declared output values.
+After the loop, `outputs.<loop_id>.outputs` is a list of per-iteration results — each entry has an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values.
 
 - Access one iteration by index: `outputs.<loop_id>.outputs[n].outputs.<output_id>`
 - Extract one field across all iterations as a list: `{{ loopOutputs(outputs.<loop_id>.outputs, '<output_id>') }}`
