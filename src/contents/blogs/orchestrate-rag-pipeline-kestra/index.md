@@ -7,6 +7,7 @@ author:
   name: Will Russell
   linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
+  role: Lead Developer Advocate
 image: ./main.jpg
 ---
 
@@ -18,7 +19,7 @@ If you're following the [DataTalks.Club LLM Zoomcamp](https://github.com/DataTal
 
 ## What is RAG pipeline orchestration?
 
-RAG grounds an LLM's answers in your own data instead of letting it guess from training memory. For a full conceptual treatment, see Kestra's guide to [RAG pipeline orchestration](https://kestra.io/resources/ai/rag-pipeline); here we'll stay focused on building one.
+RAG grounds an LLM's answers in your own data instead of letting it guess from training memory. For a full conceptual treatment, see Kestra's guide to [RAG pipeline orchestration](/resources/ai/rag-pipeline); here we'll stay focused on building one.
 
 ### The two pipelines: indexing vs. retrieval
 
@@ -41,16 +42,12 @@ flowchart LR
     RAG --> ANS[Grounded answer]
 ```
 
-Once you've imported the flow, the topology view in the Kestra UI maps directly to the diagram above. You can see the ingestion and chat completion tasks alongside the vector store connection before running anything.
-
-![The RAG pipeline topology in the Kestra UI, showing the same flow as the diagram with tasks for ingestion and chat completion connected to a vector store.](./topology.png)
-
 ## Step 1: Ingestion, chunking, and embeddings
 
 The indexing pipeline is a single task: `IngestDocument`. It fetches your documents, splits them into chunks, generates embeddings with the provider you choose, and writes them to a vector store.
 
 ```yaml
-id: rag_pipeline
+id: rag_ingestion_pipeline
 namespace: company.ai
 
 tasks:
@@ -66,6 +63,7 @@ tasks:
     documentSplitter:
       splitter: PARAGRAPH
       maxSegmentSizeInChars: 4096
+      maxOverlapSizeInChars: 200
     fromExternalURLs:
       - https://raw.githubusercontent.com/kestra-io/docs/refs/heads/main/src/contents/blogs/release-1-1/index.md
 ```
@@ -109,6 +107,14 @@ When you outgrow the KV store (larger corpora, faster similarity search, persist
 Retrieval and generation are also one task: `ChatCompletion` with an embeddings store attached. It embeds the question with the *same* embedding model, retrieves the closest chunks, and asks the chat model to answer using them as context.
 
 ```yaml
+id: rag_pipeline
+namespace: company.ai
+
+inputs:
+  - id: question
+    type: STRING
+
+tasks:
   - id: chat_with_rag
     type: io.kestra.plugin.ai.rag.ChatCompletion
     chatProvider:
@@ -128,6 +134,10 @@ Retrieval and generation are also one task: `ChatCompletion` with an embeddings 
 ```
 
 A useful test: run the same question twice, once with the embeddings store attached and once without. The ungrounded version will often hallucinate specifics confidently. The grounded version will either answer from your documents or say it doesn't know. That gap is worth demonstrating to whoever owns the product.
+
+Here's what the flow looks like in the Kestra editor, with the `ChatCompletion` task visible in the topology view.
+
+![The chat flow in the Kestra UI, showing the YAML editor and topology view with the ChatCompletion task.](./rag_chat.png)
 
 ## Step 4: Scheduling and production hardening
 
@@ -150,16 +160,19 @@ tasks:
     # ... provider, embeddings, documentSplitter, sources as above
 ```
 
-A `Schedule` trigger re-indexes your sources automatically (nightly here) so answers stay fresh as documents change. `retry` absorbs transient failures like a rate limit or a flaky download without manual reruns, and `timeout` stops a stuck ingestion from hanging. Every run is a Kestra execution, so you get logs and full history in the UI without any extra setup. Monitoring quality over time is covered in a [later article in this series](https://kestra.io/blogs/evaluate-monitor-llm-apps-kestra).
+A `Schedule` trigger re-indexes your sources automatically (nightly here) so answers stay fresh as documents change. `retry` absorbs transient failures like a rate limit or a flaky download without manual reruns, and `timeout` stops a stuck ingestion from hanging. Every run is a Kestra execution, so you get logs and full history in the UI without any extra setup. Monitoring quality over time is covered in a [later article in this series](/blogs/evaluate-monitor-llm-apps-kestra).
+
+In the editor you can see the schedule trigger alongside the flow definition, and the topology view updates to reflect the scheduled entry point.
+
+![The scheduled flow in the Kestra UI, showing the YAML editor with the Schedule trigger and the updated topology view.](./schedule.png)
 
 ## Run it yourself
 
-Clone the blueprint, set your `GEMINI_API_KEY` secret, and run it. Start on `KestraKVStore` so there's nothing to install; switch the `embeddings` block to Qdrant or PGVector when you're ready to scale.
+[Copy the blueprint](https://kestra.io/blueprints/ai-rag-daily-ingestion-gemini), set your `GEMINI_API_KEY` secret, and run it. Start on `KestraKVStore` so there's nothing to install; switch the `embeddings` block to Qdrant or PGVector when you're ready to scale.
 
-<!-- BLUEPRINT_URL: end-to-end RAG pipeline — KestraKVStore, with Qdrant/PGVector variants -->
-- Docs: [RAG workflows in Kestra](https://kestra.io/docs/ai-tools/ai-rag-workflows)
-- Reference: [the RAG plugin](https://kestra.io/plugins/plugin-ai/rag) · [vector databases explained](https://kestra.io/resources/ai/vector-database)
+- Docs: [RAG workflows in Kestra](../../docs/ai-tools/ai-rag-workflows/index.md)
+- Reference: [the RAG plugin](/plugins/plugin-ai/rag) · [vector databases explained](/resources/ai/vector-database)
 
 If you're working through the LLM Zoomcamp orchestration module, this is the same pipeline shape you'll build in the RAG lessons. Clone it, then make it yours.
 
-Once the pipeline is running reliably, the natural next step is giving it more autonomy. [Building production-ready AI agents](https://kestra.io/blogs/orchestrate-ai-agents-kestra) covers how to apply the same orchestration patterns to agentic workflows.
+Once the pipeline is running reliably, the natural next step is giving it more autonomy. [Building production-ready AI agents](/blogs/orchestrate-ai-agents-kestra) covers how to apply the same orchestration patterns to agentic workflows.
