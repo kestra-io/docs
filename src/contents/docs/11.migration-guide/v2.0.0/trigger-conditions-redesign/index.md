@@ -43,6 +43,7 @@ These functions are introduced specifically for `when` expressions to replace ve
 | `isPublicHoliday` | `isPublicHoliday(date, countryCode[, subDivision])` | Returns `true` if the date is a public holiday. Backed by Jollyday. Optional third argument for sub-divisions (e.g. `'IDF'`). |
 | `isDayWeekInMonth` | `isDayWeekInMonth(date, dayOfWeek, position)` | Returns `true` if the date is the Nth occurrence of a weekday in its month. `position` accepts `FIRST`, `SECOND`, `THIRD`, `FOURTH`, or `LAST`. |
 | `isWeekend` | `isWeekend(date)` | Returns `true` if the date falls on Saturday or Sunday. |
+| `isLastWorkingDay` | `isLastWorkingDay(date[, workingDays])` | Returns `true` if the date is the last working day of its month. Working days default to Monday–Friday. Optional second argument overrides which days count as working days. |
 | `dayOfWeek` | `dayOfWeek(date)` | Returns the day name as a string (`MONDAY`, `TUESDAY`, …, `SUNDAY`). |
 | `hourOfDay` | `hourOfDay(date)` | Returns the hour as an integer (0–23). |
 | `dayOfMonth` | `dayOfMonth(date)` | Returns the day of the month as an integer (1–31). |
@@ -374,7 +375,7 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `Expression` on webhook body/headers | `{{ trigger.body.field == 'value' }}` or `{{ trigger.headers['X-Key'] == 'value' }}` |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
-For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/index.mdx#date-and-calendar-helpers) reference.
+For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/index.mdx#date-and-calendar-helpers) reference.
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers
 
@@ -515,7 +516,7 @@ triggers:
         namespace: company.team
         states: [SUCCESS]
     window:
-      every: PT1D
+      every: P1D
 ```
 
 The arbitrary string keys (`flow_a`, `flow_b`) are dropped — `dependsOn` is always a list. The `windowAdvance` property is removed with no direct equivalent.
@@ -957,7 +958,7 @@ The `window` property applies to Flow triggers and controls how Kestra accumulat
 |---|---|---|
 | Deadline | `deadline: "09:00:00+01:00"` | Upstream flows must complete by a fixed time each day |
 | Daily time range | `from: "06:00:00"` + `to: "12:00:00"` | Only executions within a daily time range count |
-| Fixed interval | `every: PT1D` + optional `offset: PT6H` | Recurring window of a fixed size, offset from midnight |
+| Fixed interval | `every: P1D` + optional `offset: PT6H` | Recurring window of a fixed size, offset from midnight |
 | Lookback | `lookback: PT1H` | Rolling window looking back from the current evaluation time |
 
 `fireOnce: true` can be added to any window type to limit the trigger to firing once per window period rather than every time conditions are met.
@@ -981,7 +982,7 @@ window:
 
 ```yaml
 window:
-  every: PT1D
+  every: P1D
   offset: PT6H
 ```
 
@@ -1022,7 +1023,7 @@ onMiss:
 |---|---|
 | `DAILY_TIME_DEADLINE` | `deadline: "09:00:00+01:00"` |
 | `DAILY_TIME_WINDOW` | `from: "06:00:00"` + `to: "12:00:00"` |
-| `DURATION_WINDOW` | `every: PT1D` + optional `offset: PT6H` |
+| `DURATION_WINDOW` | `every: P1D` + optional `offset: PT6H` |
 | `SLIDING_WINDOW` | `lookback: PT1H` |
 
 `preconditions.resetOnSuccess: true` maps to `window.fireOnce: true`.

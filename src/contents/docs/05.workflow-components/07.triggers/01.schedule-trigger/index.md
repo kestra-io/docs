@@ -95,9 +95,9 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 
 When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using a `when` Pebble expression.
 
-You can use the `{{ trigger.date }}` expression to access the current schedule date within the `when` expression. The [date and calendar helper functions](/docs/expressions#date-and-calendar-helpers) in the expressions reference cover all available date functions such as `isDayWeekInMonth()`, `dayOfWeek()`, `isWeekend()`, and `isPublicHoliday()`.
+You can use the `{{ trigger.date }}` expression to access the current schedule date within the `when` expression. The [date and calendar helper functions](../../../expressions/04.functions/06.dates/index.mdx) in the expressions reference cover all available date functions such as `isDayWeekInMonth()`, `dayOfWeek()`, `isWeekend()`, `isPublicHoliday()`, and `isLastWorkingDay()`.
 
-The `when` expression is evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the condition applied.
+The `when` expression is evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` reflect the date **with** the condition applied.
 
 Here's an example using a day-of-week check:
 
