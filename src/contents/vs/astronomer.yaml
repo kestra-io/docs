@@ -231,7 +231,7 @@ commonQuestions:
   - question: Astronomer manages Airflow infrastructure for me. What does Kestra offer?
     answer: "Kestra Cloud is a fully managed version of Kestra for teams who want the same hands-off infrastructure experience. For teams that prefer self-hosted, the open-source version runs on Docker Compose or Kubernetes in under 5 minutes. You're not dependent on a SaaS vendor for production uptime."
   - question: Does Kestra support the same data pipeline use cases as Airflow on Astronomer?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and data tool integrations as Airflow's provider ecosystem, defined in declarative YAML instead of Python operator classes."
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1400+ plugins, it covers the same AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and data tool integrations as Airflow's provider ecosystem, defined in declarative YAML instead of Python operator classes."
   - question: What about Astronomer's observability and lineage features?
     answer: "Kestra provides built-in execution logs, real-time metrics, Gantt charts, and distributed tracing for every workflow. For data lineage, Kestra integrates with OpenLineage and your existing data catalog. Astronomer's pipeline lineage and SLA monitoring are purpose-built Airflow features; Kestra's observability is workflow-level and spans all task types, not just data pipelines."
   - question: Can Kestra and Astronomer run in parallel during migration?

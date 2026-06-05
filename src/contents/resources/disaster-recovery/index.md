@@ -1,23 +1,23 @@
 ---
 title: "What is Disaster Recovery? Plan for Business Continuity"
 description: "Understand what disaster recovery is and how it protects your IT infrastructure. Learn to plan for business continuity and minimize disruptions."
-metaTitle: "What is Disaster Recovery? Plan for Business Continuity"
-metaDescription: "Explore IT disaster recovery, its types, and lifecycle. Learn to build, test, and automate your disaster recovery plan for business continuity with modern orchestration."
+metaTitle: "Disaster Recovery Planning & Automation | Kestra"
+metaDescription: "Learn how to build, test, and automate a disaster recovery plan. Reduce RTO and RPO with declarative orchestration workflows. Improve resilience today."
 tag: infrastructure
 date: 2026-05-01
 faq:
   - question: "What is IT disaster recovery?"
     answer: "IT disaster recovery (DR) is an organization's plan to restore access and functionality to critical IT infrastructure and data after a disruptive event. This includes natural disasters, cyberattacks, equipment failures, or human error, aiming to minimize downtime and ensure business continuity."
+  - question: "What is the difference between RTO and RPO in disaster recovery?"
+    answer: "Recovery Time Objective (RTO) is the maximum acceptable downtime — how long a system can be unavailable before causing unacceptable business impact. Recovery Point Objective (RPO) is the maximum acceptable data loss measured in time — for example, an RPO of one hour means data must be restorable to a state no more than one hour old. Both metrics guide how aggressively an organization must invest in backup and failover infrastructure."
   - question: "What are the common types of disaster recovery strategies?"
-    answer: "Common disaster recovery types include data center DR, focusing on dedicated recovery sites; network DR for communication infrastructure; virtualized DR for virtual machines; cloud DR leveraging cloud resources; and Disaster Recovery as a Service (DRaaS), where a third-party manages DR for you."
+    answer: "Common disaster recovery types include data center DR, focusing on dedicated recovery sites (cold, warm, or hot); network DR for communication infrastructure; virtualized DR for virtual machines; cloud DR leveraging cloud resources; and Disaster Recovery as a Service (DRaaS), where a third-party manages DR for you."
   - question: "What are the key stages in the disaster recovery lifecycle?"
     answer: "The disaster recovery lifecycle typically involves four stages: Preparation (planning and readiness), Response (immediate actions during a disaster), Recovery (restoring systems and data), and Mitigation (reducing future risks). Effective DR planning addresses each stage comprehensively."
-  - question: "What are the 'Four Cs' of effective disaster recovery planning?"
-    answer: "The 'Four Cs' of disaster recovery emphasize crucial aspects for successful partnerships and internal coordination: Communication (clear information flow), Cooperation (teams working together), Coordination (synchronized efforts), and Collaboration (shared goals and responsibilities). These ensure a unified response."
   - question: "What is the difference between disaster recovery and business continuity?"
     answer: "Disaster recovery (DR) focuses specifically on restoring IT systems and data after a disruption. Business continuity (BC), on the other hand, is a broader strategy that ensures an organization's critical business functions continue during and after a disaster, encompassing people, processes, and IT."
   - question: "How does orchestration improve disaster recovery?"
-    answer: "Orchestration platforms automate complex DR processes, from failover to data restoration and system re-provisioning. By defining DR steps as code, organizations can ensure consistent, repeatable, and faster recovery, reducing manual errors and human intervention during critical events."
+    answer: "Orchestration platforms automate complex DR processes, from failover to data restoration and system re-provisioning. By defining DR steps as code, organizations can ensure consistent, repeatable, and faster recovery, reducing manual errors and human intervention during critical events. Scheduled DR drills and automated validation further ensure plans work when they are needed most."
 ---
 
 In today's interconnected digital landscape, the unexpected is inevitable. From natural disasters to cyberattacks, or even simple human error, a disruptive event can cripple IT infrastructure and bring business operations to a halt. The ability to swiftly recover from such incidents isn't just a best practice—it's a critical imperative for maintaining trust, ensuring compliance, and safeguarding revenue.
@@ -26,7 +26,7 @@ This article delves into the world of IT disaster recovery (DR), explaining what
 
 ## What is disaster recovery?
 
-Disaster recovery is a strategic approach to preparing for and recovering from disruptive events that threaten an organization's IT infrastructure. It encompasses the policies, tools, and procedures required to restore critical systems and data, ensuring business operations can resume as quickly as possible.
+Disaster recovery is a strategic approach to preparing for and recovering from disruptive events that threaten an organization's IT infrastructure. It encompasses the policies, tools, and procedures required to restore critical systems and data, ensuring business operations can resume as quickly as possible. Understanding disaster recovery in the context of a broader [IT automation platform](/resources/infrastructure/it-automation-platform) strategy helps teams move from reactive incident response to proactive resilience.
 
 ### Defining IT disaster recovery
 
@@ -71,7 +71,7 @@ Choosing between on-premise and cloud-based DR involves a trade-off between cont
 *   **On-premise DR** offers complete control over the recovery environment and can be tailored to specific security and compliance needs. However, it requires significant capital investment in hardware and facilities, plus ongoing maintenance costs.
 *   **Cloud DR** provides greater flexibility, scalability, and often lower upfront costs. It allows organizations to pay only for the resources they use and can scale capacity on demand. The main trade-offs are less direct control and potential data transfer costs.
 
-Many organizations now opt for a hybrid model, combining on-premise resources for critical systems with cloud-based recovery for less sensitive applications.
+Many organizations now opt for a hybrid model, combining on-premise resources for critical systems with cloud-based recovery for less sensitive applications. See our guide to [hybrid cloud automation](/resources/infrastructure/hybrid-cloud-automation) for a deeper look at architecting these environments.
 
 ## The disaster recovery lifecycle
 
@@ -109,7 +109,7 @@ Operational resilience is the ability of an organization to adapt to and recover
 Modern disaster recovery requires speed, reliability, and precision—all areas where manual processes fall short. Orchestration platforms like Kestra transform DR by automating complex recovery workflows, reducing human error, and dramatically shortening recovery times. By defining DR as code, organizations can manage, test, and execute their recovery plans with the same rigor as their production software.
 
 Here’s how Kestra enables a more robust DR strategy:
-*   **Declarative Workflows:** DR plans are defined in simple, human-readable YAML files. This makes them easy to version control, review, and audit. You can manage your DR plan using [GitOps principles](https://kestra.io/docs/version-control-cicd/git), ensuring a single source of truth.
+*   **Declarative Workflows:** DR plans are defined in simple, human-readable YAML files. This makes them easy to version control, review, and audit. You can manage your DR plan using [GitOps principles](https://kestra.io/docs/version-control-cicd/git), ensuring a single source of truth. For teams adopting this approach, our [GitOps guide](/resources/infrastructure/gitops) covers the full workflow.
 *   **Automated Remediation:** Kestra can automatically trigger recovery workflows in response to alerts from monitoring systems. For example, JPMorgan Chase uses Kestra for automated remediation in its cybersecurity analytics workflows, a principle directly applicable to incident response.
 *   **Polyglot Execution:** DR often involves a mix of technologies. Kestra can orchestrate any tool or script needed for recovery, whether it's running a Python script to validate data, applying a [Terraform configuration](/orchestration/terraform) to provision new infrastructure, or executing a shell command to restart a service.
 *   **Automated Testing:** The best DR plan is one that is regularly tested. Kestra allows you to schedule automated DR drills and even use [built-in unit tests](https://kestra.io/docs/enterprise/governance/unit-tests) to validate your recovery flows, ensuring they will work when you need them most.
@@ -141,4 +141,4 @@ tasks:
     workingDir: "/app/terraform/standby-server"
 ```
 
-By leveraging a powerful orchestration platform, organizations like Crédit Agricole have successfully scaled their secure infrastructure, and companies like BHP have drastically reduced provisioning times—a key factor in rapid recovery. Kestra provides the control plane for a modern [infrastructure automation strategy](https://kestra.io/infra-automation), turning disaster recovery from a manual, error-prone process into a reliable, automated, and governed system. Explore our [infrastructure automation resources](https://kestra.io/resources/infrastructure) to learn more.
+By leveraging a powerful orchestration platform, organizations like Crédit Agricole have successfully scaled their secure infrastructure, and companies like BHP have drastically reduced provisioning times—a key factor in rapid recovery. Kestra provides the control plane for a modern [infrastructure automation strategy](https://kestra.io/infra-automation), turning disaster recovery from a manual, error-prone process into a reliable, automated, and governed system. Explore [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) for patterns that trigger recovery workflows automatically, or review [workflow management](/resources/infrastructure/workflow-management) for a broader look at how orchestration fits into your operational resilience strategy.
