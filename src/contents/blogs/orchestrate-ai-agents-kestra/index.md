@@ -50,13 +50,13 @@ The first column below is what an agent framework gives you. The second is what 
 
 Most "AI agent in production" content glosses over this distinction, which is where things get fuzzy.
 
-### What LangGraph and CrewAI do well
+### What frameworks do well
 
 These frameworks are very good at what they're designed for: structuring how an agent reasons. LangGraph gives you fine-grained control over agent state as a graph. CrewAI makes it easy to define roles and let multiple agents collaborate. If you need a custom reasoning loop or a particular multi-agent conversation pattern, reach for them. Nothing here argues against that.
 
 ### What they leave to you
 
-What these frameworks generally don't handle is everything that turns a clever script into a reliable service: scheduling the agent to run nightly, retrying a failed tool call without restarting the whole reasoning chain, pausing for a human to approve a risky action, keeping a durable audit log, managing secrets across environments, and isolating workloads per team or tenant. That work usually ends up as glue code, and glue code is where production reliability goes wrong.
+What these frameworks generally don't handle is everything that turns a clever script into a reliable service: scheduling the agent to run nightly, retrying a failed tool call without restarting the whole reasoning chain, pausing for a human to approve a risky action, keeping an audit log, managing secrets across environments, and isolating workloads per team or tenant. That work usually ends up as glue code, and glue code is where production reliability goes wrong.
 
 ### Kestra orchestrates around the agent
 
@@ -100,13 +100,10 @@ An agent without tools is just a chatbot. Kestra agents can use tools such as we
     tools:
       - type: io.kestra.plugin.ai.tool.TavilyWebSearch
         apiKey: "{{ secret('TAVILY_API_KEY') }}"
-      - type: io.kestra.plugin.ai.tool.KestraFlow
-        # the agent can call a tested, deterministic flow as a tool
+      - type: io.kestra.plugin.ai.tool.KestraFlow # the agent can call a tested, deterministic flow as a tool
         namespace: company.ops
         flowId: enrich_incident
 ```
-
-<!-- SCREENSHOT: AIAgent execution in the Kestra UI — the Gantt/topology view showing the agent's tool calls and decisions, so readers see the reasoning trace is observable, not a black box. -->
 
 ```mermaid
 flowchart LR
@@ -117,6 +114,10 @@ flowchart LR
     KF --> A
     A --> O[Final answer + tokenUsage]
 ```
+
+The flow topology in the Kestra UI shows the agent alongside its tools, giving you a clear picture of what the agent has access to before it even runs.
+
+![The AIAgent flow in the Kestra UI, showing the agent and its connected tools](./agent.png)
 
 ## Adding production guardrails
 
@@ -139,7 +140,7 @@ A tool failure is not a workflow failure. With a declarative retry, a transient 
 
 ### Human-in-the-loop before a sensitive action
 
-Some actions should never be fully autonomous, particularly anything that crosses an external boundary: sending an email, calling a third-party API, posting to Slack, issuing a refund. Kestra's `Pause` task (and Human Tasks in the Enterprise Edition, with granular permissions) lets the workflow stop and wait for explicit human approval before any of that happens.
+Some actions should never be fully autonomous, particularly anything that crosses an external boundary: sending an email, calling a third-party API, posting to Slack, issuing a refund. Kestra's [Pause](/plugins/core/flow/io.kestra.plugin.core.flow.pause) and [HumanTask](/plugins/core/flow/io.kestra.plugin.ee.flow.humantask) Tasks lets the workflow stop and wait for explicit human approval before any of that happens.
 
 ```yaml
   - id: human_approval
@@ -152,7 +153,9 @@ Some actions should never be fully autonomous, particularly anything that crosse
       - echo "Approved — executing the agent's recommended action."
 ```
 
-<!-- SCREENSHOT: a PAUSED execution in the Kestra UI with the Resume/approval control visible — this is the single most convincing visual for the "production-ready" claim, because it shows autonomy with a human safety valve. -->
+When the execution reaches the `Pause` task, it stops and waits. Nothing runs until a human explicitly resumes it from the UI or API.
+
+![A PAUSED execution in the Kestra UI, with the workflow halted and waiting for human approval](./human-approval.png)
 
 ### Observability: every decision is replayable
 
@@ -184,22 +187,18 @@ A quick reference, useful whether you're a student deciding what to build next o
 
 **How do I run an AI agent in production?** Wrap it in a workflow that handles triggering, retries, timeouts, approvals, and logging. Don't run it from a loose script.
 
-**Do I need an orchestrator if I already use LangGraph?** Not until your agent needs to be scheduled, triggered by events, retried safely, paused for human approval, or audited. At that point, yes.
+**Do I need an orchestrator if I already use a framework?** Not until your agent needs to be scheduled, triggered by events, retried safely, paused for human approval, or audited. At that point, yes.
 
 **What about cost control?** Timeouts, retry limits, and token-usage outputs per execution give you the levers to cap and monitor spend.
 
 ## Try it yourself
 
-Clone the agent blueprint, set your `GEMINI_API_KEY` (or use any supported provider: OpenAI, Anthropic Claude, Mistral, Bedrock, Vertex AI, Ollama), and run it. Then add a `Pause` before a sensitive step and watch the execution wait for your approval.
+Browse the [AI blueprints](https://kestra.io/blueprints?tags=AI) to find a use case close to yours, set your API key (Gemini, OpenAI, Anthropic Claude, Mistral, Bedrock, Vertex AI, and Ollama are all supported), and run it. Then add a `Pause` before a sensitive step and watch the execution wait for your approval. The blueprints cover a range of patterns from simple single-agent tasks to multi-agent pipelines, so it's worth scanning a few to see what's possible before you start building.
 
-<!-- BLUEPRINT_URL: production-ready AI agent with tools + human-in-the-loop -->
 - Docs: [AI Agents in Kestra](../../docs/ai-tools/ai-agents/index.md)
-- Concept: [agentic orchestration](/resources/ai/agentic-orchestration)
+- Concept: [agentic orchestration](../../resources/agentic-orchestration/index.md)
 
 If you're working through the LLM Zoomcamp agents module, this is the bridge from "my agent works" to "my agent runs in production."
 
----
-
 Building a production-ready AI agent has little to do with a smarter prompt or a cleverer framework. It's about what surrounds the agent: retries when tools fail, timeouts when loops run away, a human in the loop before irreversible actions, and an audit trail you can trust. Frameworks build the agent; Kestra orchestrates it. Use both.
 
-An agent in production also needs to be *evaluated*, since its quality drifts as models, data, and prompts change. That's the subject of the next article in this series: [evaluating and monitoring LLM apps from prototype to production](https://kestra.io/blogs/evaluate-monitor-llm-apps-kestra).
