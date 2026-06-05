@@ -10,12 +10,12 @@ faq:
     answer: "Data pipeline automation involves setting up automated processes to move, transform, and load data between various systems and applications, often across diverse platforms. This ensures data flows efficiently and reliably without manual intervention."
   - question: "Is ETL obsolete?"
     answer: "No, ETL is not obsolete. While ELT (Extract, Load, Transform) has gained popularity, ETL remains crucial for scenarios requiring data transformation before loading, such as anonymizing sensitive data for compliance or handling specific legacy system integrations."
-  - question: "How to create an automated data pipeline?"
-    answer: "To create an automated data pipeline, first identify your automation needs and data sources. Next, select appropriate tools for ingestion, transformation, and orchestration. Implement CI/CD for continuous validation, then set up robust monitoring, debugging, and scaling mechanisms."
+  - question: "How do you create an automated data pipeline?"
+    answer: "To create an automated data pipeline, first identify your data sources and required transformations, then select an orchestration platform to schedule and coordinate tasks. Define your pipeline as code (YAML, Python, or SQL), implement automated validation and testing, and add monitoring and alerting to detect failures early."
   - question: "What are the main 3 stages in a data pipeline?"
     answer: "The three main stages in a data pipeline are: 1. Data Ingestion/Collection: Gathering raw data from various sources. 2. Data Transformation/Processing: Cleaning, structuring, and enriching the data. 3. Data Loading/Storage: Delivering the processed data to its final destination, such as a data warehouse or lake."
-  - question: "Will ETL be replaced by AI?"
-    answer: "AI will not entirely replace ETL but will significantly transform it. AI enhances ETL by automating complex transformations, improving data quality, and optimizing processes. The core functions of extracting, transforming, and loading data will still be necessary, but AI will make them more intelligent and efficient."
+  - question: "What is the difference between ETL and ELT in pipeline automation?"
+    answer: "ETL (Extract, Transform, Load) transforms data before it reaches the warehouse, which is ideal for masking sensitive data or handling legacy systems. ELT (Extract, Load, Transform) loads raw data first and transforms it inside the warehouse using its compute power — a pattern well-suited to modern cloud data warehouses like Snowflake or BigQuery. The best choice depends on your compliance requirements, data volumes, and target platform."
   - question: "How does automation apply to CI/CD pipelines?"
     answer: "In CI/CD, automation streamlines the software delivery process, moving code changes through compilation, unit testing, integration testing, and deployment. This enables rapid iteration, continuous feedback, and consistent deployments, reducing manual errors and accelerating time to market."
 ---
@@ -26,11 +26,11 @@ This guide delves into the core concepts of data pipeline automation, exploring 
 
 ## What is data pipeline automation?
 
-Data pipeline automation is the process of setting up and managing the movement, transformation, and processing of data between systems with minimal human intervention. It involves using software and tools to define, schedule, and execute a series of data-related tasks in a repeatable and reliable manner.
+Data pipeline automation is the process of setting up and managing the movement, transformation, and processing of data between systems with minimal human intervention. A [data pipeline](/resources/data/data-pipeline) is the full sequence of steps that carries data from its source to its destination — automation is what makes that sequence reliable and repeatable. It involves using software and tools to define, schedule, and execute a series of data-related tasks in a repeatable and reliable manner.
 
 ### What does it mean to automate data pipelines?
 
-To automate a data pipeline means to create a system where data flows seamlessly from its source to its destination. This automation can be triggered by a schedule (e.g., every hour), an event (e.g., a new file arriving in a storage bucket), or an API call. The goal is to replace manual, error-prone steps—like running scripts, copying files, or monitoring jobs—with a resilient, self-operating workflow. An automated pipeline handles data ingestion, cleaning, validation, transformation, and loading into a target system such as a data warehouse, data lake, or analytics application.
+To automate a data pipeline means to create a system where data flows seamlessly from its source to its destination. This automation can be triggered by a [schedule](/resources/data/schedule-data-workflows) (e.g., every hour), an event (e.g., a new file arriving in a storage bucket), or an API call. The goal is to replace manual, error-prone steps—like running scripts, copying files, or monitoring jobs—with a resilient, self-operating workflow. An automated pipeline handles data ingestion, cleaning, validation, transformation, and loading into a target system such as a data warehouse, data lake, or analytics application.
 
 ### Key components of an automated data pipeline
 
@@ -65,7 +65,7 @@ By automating repetitive tasks, [data engineers](/use-cases/data-engineers) can 
 
 ### Improve data quality and reliability
 
-Manual data handling is a primary cause of data quality issues. A forgotten step, a typo in a script, or an inconsistent process can corrupt data and erode trust in analytics. Automation enforces consistency. Every time the pipeline runs, it follows the exact same predefined steps. By incorporating automated data validation and quality checks, pipelines can proactively identify and quarantine bad data, preventing it from contaminating downstream systems. This leads to more reliable datasets and more confident decision-making across the business.
+Manual data handling is a primary cause of [data quality](/resources/data/data-quality) issues. A forgotten step, a typo in a script, or an inconsistent process can corrupt data and erode trust in analytics. Automation enforces consistency. Every time the pipeline runs, it follows the exact same predefined steps. By incorporating automated data validation and quality checks, pipelines can proactively identify and quarantine bad data, preventing it from contaminating downstream systems. This leads to more reliable datasets and more confident decision-making across the business.
 
 ## How to create an automated data pipeline?
 
@@ -148,7 +148,7 @@ The three primary stages of a data pipeline are:
 
 ### Data ingestion and collection
 
-This initial stage involves connecting to data sources and extracting data. Sources can be incredibly diverse, including relational databases, NoSQL databases, SaaS application APIs, message queues like Kafka, and files in cloud storage like S3 or GCS. The goal is to move this raw data into a staging area where it can be processed. Tools like Airbyte or Fivetran, often orchestrated as part of a larger workflow, excel at this stage.
+This initial stage involves connecting to data sources and extracting data. Sources can be incredibly diverse, including relational databases, NoSQL databases, SaaS application APIs, message queues like Kafka, and files in cloud storage like [Amazon S3](/orchestration/aws) or GCS. The goal is to move this raw data into a staging area where it can be processed. Tools like Airbyte or Fivetran, often orchestrated as part of a larger workflow, excel at this stage.
 
 ### Data transformation and processing
 
@@ -159,7 +159,7 @@ Once ingested, the raw data is rarely in a usable format. The transformation sta
 *   **Structuring:** Converting data from formats like JSON or XML into a tabular structure.
 *   **Aggregating:** Summarizing data to create metrics and KPIs.
 
-Tools like dbt (for SQL-based transformations) and Spark (for large-scale data processing) are commonly used here. An orchestration tool can seamlessly chain ingestion and transformation steps, for example, by running an [Airbyte sync followed by a dbt transformation](/blueprints/airbyte-sync-parallel-with-dbt).
+Tools like dbt — orchestrated as [dbt Core](/orchestration/dbt-core) or [dbt Cloud](/orchestration/dbt-cloud) — and Spark (for large-scale data processing) are commonly used here. An orchestration tool can seamlessly chain ingestion and transformation steps, for example, by running an [Airbyte sync followed by a dbt transformation](/blueprints/airbyte-sync-parallel-with-dbt).
 
 ### Data loading and storage
 
@@ -192,7 +192,7 @@ The landscape of data integration has evolved significantly. While traditional E
 
 ### Is ETL obsolete?
 
-ETL is not obsolete, but its dominance has been challenged by ELT (Extract, Load, Transform). In the ELT pattern, raw data is loaded directly into the data warehouse, and transformations are performed in-place using the warehouse's powerful compute engine. This approach is well-suited for cloud data warehouses and allows for more flexibility, as the raw data is preserved. However, ETL remains the best choice for certain use cases, such as when sensitive data must be masked or anonymized *before* it lands in the warehouse for compliance reasons. The choice between [ETL and ELT](/blogs/2022-04-27-etl-vs-elt) depends on your specific architecture, tools, and requirements.
+ETL is not obsolete, but its dominance has been challenged by ELT (Extract, Load, Transform). Understanding the full [ETL workflow](/resources/data/etl-workflow) helps teams choose the right pattern. In the ELT pattern, raw data is loaded directly into the data warehouse, and transformations are performed in-place using the warehouse's powerful compute engine. This approach is well-suited for cloud data warehouses and allows for more flexibility, as the raw data is preserved. However, ETL remains the best choice for certain use cases, such as when sensitive data must be masked or anonymized *before* it lands in the warehouse for compliance reasons. The choice between [ETL and ELT](/resources/data/etl-vs-elt) depends on your specific architecture, tools, and requirements.
 
 ### Will ETL be replaced by AI?
 
@@ -207,7 +207,7 @@ Modern data integration goes beyond simple batch ETL. Key trends include:
 *   **Reverse ETL:** Syncing enriched data from the warehouse back into operational SaaS applications (like Salesforce or HubSpot).
 *   **Data Mesh:** A decentralized architectural approach where data is treated as a product, owned by domain-specific teams.
 
-A modern orchestration platform must be ableto support all these patterns, from batch jobs to event-driven workflows.
+A modern orchestration platform must be able to support all these patterns, from batch jobs to event-driven workflows.
 
 ## Tools and techniques for data pipeline automation
 
@@ -229,7 +229,7 @@ AWS, GCP, and Azure all offer managed services for building data pipelines, such
 
 ### Orchestration and scheduling
 
-Orchestration is the key to automating complex data pipelines. An orchestration platform is responsible for triggering workflows, managing dependencies between tasks, handling retries, and providing observability. While simple cron jobs can schedule individual scripts, a true orchestrator manages the entire end-to-end process. Kestra excels here by providing a single control plane to automate not just [data workflows](/data), but also [infrastructure automation](/infra-automation) and [AI pipelines](/ai-automation), creating a unified automation strategy across the organization.
+Orchestration is the key to automating complex data pipelines. A [data orchestration](/resources/data/data-orchestration) platform is responsible for triggering workflows, managing dependencies between tasks, handling retries, and providing observability. While simple cron jobs can schedule individual scripts, a true orchestrator manages the entire end-to-end process. Kestra excels here by providing a single control plane to automate not just [data workflows](/data), but also [infrastructure automation](/infra-automation) and [AI pipelines](/ai-automation), creating a unified automation strategy across the organization.
 
 ## Why Kestra is ideal for data pipeline automation
 
@@ -238,7 +238,7 @@ Kestra is designed from the ground up to address the challenges of modern data p
 *   **Declarative YAML Interface:** Workflows are defined in simple, human-readable YAML. This makes pipelines easy to understand, version control, and manage as code, aligning with GitOps best practices.
 *   **Language-Agnostic:** Kestra is not tied to a single language. It can run tasks written in Python, R, Julia, SQL, Node.js, and shell scripts as first-class citizens, allowing your team to use the best tool for every job.
 *   **Unified Platform:** Kestra is one of the few platforms that can orchestrate data, AI, and infrastructure workflows from a single control plane. This breaks down silos between teams and creates a cohesive automation strategy.
-*   **Extensive Plugin Ecosystem:** With over 1,200 plugins, Kestra offers out-of-the-box integrations for a vast array of databases, storage systems, and applications, dramatically reducing development time.
+*   **Extensive Plugin Ecosystem:** With over 1,400 plugins, Kestra offers out-of-the-box integrations for a vast array of databases, storage systems, and applications, dramatically reducing development time.
 *   **Built for Scale and Resilience:** The enterprise edition offers high availability, multi-tenancy, RBAC, and audit logs, providing the governance and reliability needed for mission-critical pipelines.
 
 By combining these capabilities, Kestra empowers [data teams](/features) to build sophisticated automated pipelines with less complexity and more confidence.

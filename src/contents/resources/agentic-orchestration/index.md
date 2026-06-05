@@ -1,8 +1,8 @@
 ---
 title: "What is Agentic Orchestration?"
 description: "Discover agentic orchestration, how it coordinates AI agents & automates complex workflows. Uncover its power for your enterprise today!"
-metaTitle: "What is Agentic Orchestration? Definition & Components"
-metaDescription: "Learn what agentic orchestration is, how it coordinates AI agents and automates complex workflows, and the components required to govern adaptive AI systems."
+metaTitle: "What is Agentic Orchestration? | Kestra"
+metaDescription: "Learn what agentic orchestration is, how it coordinates AI agents and automates complex workflows, and the governance components required for production AI."
 tag: ai
 date: 2026-04-29
 faq:
@@ -62,7 +62,7 @@ An orchestrator in agentic AI is the central nervous system of the multi-agent s
 *   **Governance and Compliance:** Enforcing security policies, managing access to tools, and creating auditable logs.
 *   **Error Handling and Escalation:** Managing exceptions and routing tasks to humans when agents fail or require oversight.
 
-The orchestrator transforms a collection of independent agents into a cohesive, goal-oriented system capable of handling complex, real-world business challenges. You can explore more [AI orchestration resources](/resources/ai) to understand the broader ecosystem and how Kestra enables [AI automation](/ai-automation).
+The orchestrator transforms a collection of independent agents into a cohesive, goal-oriented system capable of handling complex, real-world business challenges. You can explore how [agentic AI](/resources/ai/agentic-ai) underpins these systems, and how Kestra enables [AI automation](/ai-automation) across your entire enterprise stack.
 
 ## Agentic AI vs. Orchestrated AI: Understanding the Distinctions
 
@@ -76,7 +76,7 @@ The terms "agentic" and "orchestrated" are often used in discussions about AI, b
 
 ### What is the Difference Between an Agent and an Orchestrator?
 
-An **agent** is an autonomous entity that can perceive its environment, make decisions, and take actions to achieve goals. In the context of AI, an agent typically combines a large language model (LLM) for reasoning, a set of tools to interact with the world, and memory to maintain context.
+An **agent** is an autonomous entity that can perceive its environment, make decisions, and take actions to achieve goals. In the context of AI, an [AI agent](/resources/ai/ai-agent) typically combines a large language model (LLM) for reasoning, a set of tools to interact with the world, and memory to maintain context.
 
 An **orchestrator** is the framework that manages one or more agents. It provides the environment in which agents operate, defining the overarching business process, providing access to tools, handling communication between agents, and ensuring the entire system remains governed and observable. An agent is a player; the orchestrator is the coach that defines the game plan. For more on this, see our introduction to [autonomous orchestration with AI agents](/blogs/introducing-ai-agents).
 
@@ -155,7 +155,7 @@ Enterprises are deploying agentic workflows for mission-critical operations. For
 
 ### Designing and Implementing Agentic Workflows
 
-Implementing an agentic workflow involves a shift from writing code to defining goals and providing tools. The process typically includes:
+Implementing an [agentic workflow](/resources/ai/agentic-workflows) involves a shift from writing code to defining goals and providing tools. The process typically includes:
 
 1.  **Define the Objective:** Clearly state the business outcome the agentic system should achieve.
 2.  **Identify the Agents:** Break down the objective into roles and responsibilities for a multi-agent team.
@@ -182,7 +182,7 @@ The rise of agentic AI represents a paradigm shift in how software is built and 
 
 ### Impact on Multi-Agent Coordination Models
 
-Agentic engineering focuses on creating systems where multiple intelligent agents collaborate. This requires new architectural patterns for communication, shared memory, and conflict resolution. Developers are now designing not just the logic of an application, but the "rules of society" for their digital workforce.
+Agentic engineering focuses on creating systems where multiple intelligent agents collaborate. This requires new architectural patterns for communication, shared memory, and conflict resolution explored in [multi-agent system](/resources/ai/multi-agent-system) design. Developers are now designing not just the logic of an application, but the "rules of society" for their digital workforce.
 
 ### AI Agents as Digital Team Members
 
@@ -206,7 +206,7 @@ While specialization is a strength, it also creates dependencies. The orchestrat
 
 ### The Orchestration Problem: Technical vs. Discipline
 
-The core challenge of agentic orchestration is twofold. Technically, the platform must be scalable, resilient, and observable. As a discipline, it requires a new way of thinking about automation—focusing on governance, risk management, and human oversight. Simply connecting an LLM to an API is not enough; building a production-ready agentic system requires a platform designed for control and auditability.
+The core challenge of agentic orchestration is twofold. Technically, the platform must be scalable, resilient, and observable. As a discipline, it requires a new way of thinking about automation—focusing on governance, risk management, and human oversight. Simply connecting an LLM to an API is not enough; building a production-ready agentic system requires a platform designed for control and auditability. See how [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) complements agentic patterns by reacting to real-time signals across your infrastructure.
 
 ## How Kestra Powers Enterprise Agentic Orchestration
 
