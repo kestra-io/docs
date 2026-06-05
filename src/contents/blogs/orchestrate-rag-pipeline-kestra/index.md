@@ -8,7 +8,7 @@ author:
   linkedin: https://www.linkedin.com/in/wrussell1999/
   image: "wrussell"
   role: Lead Developer Advocate
-image: ./main.jpg
+image: ./main.png
 ---
 
 Most RAG pipelines start life in a notebook and that's where they stay. You get it working, the answers look good, and then at some point the source documents change and nobody re-indexes them. A step silently fails. There's no schedule, no retry, no log of what ran when.
