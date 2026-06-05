@@ -19,7 +19,7 @@ If you're following the [DataTalks.Club LLM Zoomcamp](https://github.com/DataTal
 
 ## What is RAG pipeline orchestration?
 
-RAG grounds an LLM's answers in your own data instead of letting it guess from training memory. For a full conceptual treatment, see Kestra's guide to [RAG pipeline orchestration](/resources/ai/rag-pipeline); here we'll stay focused on building one.
+RAG grounds an LLM's answers in your own data instead of letting it guess from training memory. For a full conceptual treatment, see Kestra's guide to [RAG pipeline orchestration](../../resources/rag-pipeline/index.md); here we'll stay focused on building one.
 
 ### The two pipelines: indexing vs. retrieval
 
@@ -160,7 +160,7 @@ tasks:
     # ... provider, embeddings, documentSplitter, sources as above
 ```
 
-A `Schedule` trigger re-indexes your sources automatically (nightly here) so answers stay fresh as documents change. `retry` absorbs transient failures like a rate limit or a flaky download without manual reruns, and `timeout` stops a stuck ingestion from hanging. Every run is a Kestra execution, so you get logs and full history in the UI without any extra setup. Monitoring quality over time is covered in a [later article in this series](/blogs/evaluate-monitor-llm-apps-kestra).
+A `Schedule` trigger re-indexes your sources automatically (nightly here) so answers stay fresh as documents change. `retry` absorbs transient failures like a rate limit or a flaky download without manual reruns, and `timeout` stops a stuck ingestion from hanging. Every run is a Kestra execution, so you get logs and full history in the UI without any extra setup.
 
 In the editor you can see the schedule trigger alongside the flow definition, and the topology view updates to reflect the scheduled entry point.
 
@@ -170,9 +170,10 @@ In the editor you can see the schedule trigger alongside the flow definition, an
 
 [Copy the blueprint](https://kestra.io/blueprints/ai-rag-daily-ingestion-gemini), set your `GEMINI_API_KEY` secret, and run it. Start on `KestraKVStore` so there's nothing to install; switch the `embeddings` block to Qdrant or PGVector when you're ready to scale.
 
-- Docs: [RAG workflows in Kestra](../../docs/ai-tools/ai-rag-workflows/index.md)
-- Reference: [the RAG plugin](/plugins/plugin-ai/rag) · [vector databases explained](/resources/ai/vector-database)
 
 If you're working through the LLM Zoomcamp orchestration module, this is the same pipeline shape you'll build in the RAG lessons. Clone it, then make it yours.
 
-Once the pipeline is running reliably, the natural next step is giving it more autonomy. [Building production-ready AI agents](/blogs/orchestrate-ai-agents-kestra) covers how to apply the same orchestration patterns to agentic workflows.
+Once the pipeline is running reliably, the natural next step is giving it more autonomy.
+
+- Docs: [RAG workflows in Kestra](../../docs/ai-tools/ai-rag-workflows/index.md)
+- Reference: [the RAG plugin](/plugins/plugin-ai/rag) · [vector databases explained](../../resources/vector-database/index.md)
