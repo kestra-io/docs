@@ -188,6 +188,58 @@ Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ![metrics](./metrics.png)
 
+## Automate Ruby with triggers
+
+You can use Ruby itself as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Ruby code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline Ruby code:
+
+```yaml
+id: ruby_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.ruby.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      raise "boom"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Ruby commands instead:
+
+```yaml
+id: ruby_commands_trigger
+namespace: company.team
+
+triggers:
+  - id: on_fail
+    type: io.kestra.plugin.scripts.ruby.CommandsTrigger
+    interval: PT5S
+    exitCondition: "exit 1"
+    edge: true
+    commands:
+      - ruby -e "raise 'boom'"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These trigger types support:
+
+- `interval` to control how often the script or commands run
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only on a transition from not matching to matching
+
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Ruby code directly on the JVM, with the potential for performance improvements. There are currently two tasks:

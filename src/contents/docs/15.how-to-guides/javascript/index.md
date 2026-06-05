@@ -262,7 +262,7 @@ triggers:
 tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
-    message: "Triggered with exitCode={{ trigger.exitCode }}"
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
 ```
 
 Use `CommandsTrigger` when you want to run Node.js commands instead:
@@ -276,13 +276,14 @@ triggers:
     type: io.kestra.plugin.scripts.node.CommandsTrigger
     interval: PT5S
     exitCondition: "exit 1"
+    edge: true
     commands:
       - node -e "throw new Error('boom')"
 
 tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
-    message: "Triggered with exitCode={{ trigger.exitCode }}"
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
 ```
 
 These trigger types support:

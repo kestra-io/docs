@@ -437,9 +437,9 @@ triggers:
     maxKeys: 1
 ```
 
-### Run Python as a polling trigger
+### Run Python code as a polling trigger
 
-If you want the polling logic itself to be written in Python, you can use `ScriptTrigger` or `CommandsTrigger`. These triggers run Python code on an interval and start a flow execution only when the `exitCondition` matches the result.
+You can also use Python itself as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Python code on an interval and start a flow execution only when the `exitCondition` matches.
 
 Use `ScriptTrigger` for inline Python code:
 

@@ -40,6 +40,8 @@ Each of these plugins provides two task types:
 - `Script` for short inline code in your flow definition.
 - `Commands` for code stored in files or split across multiple commands.
 
+Some plugins also provide `ScriptTrigger` and `CommandsTrigger` variants, which run code on a polling interval and start a flow execution only when an exit condition matches. See [Polling trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md) for the concept, and the language-specific guides below for working examples (Python, Shell, Ruby, Go, and JavaScript).
+
 Here is a minimal example that uses the Python `Script` task:
 
 ```yaml
