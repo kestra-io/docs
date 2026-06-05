@@ -78,7 +78,7 @@ Required:
 
 Optional:
 
-- `denied_services` (List of String) List of denied services.
+- `denied_services` (Set of String) Set of denied services.
 - `enabled` (Boolean) Whether isolation is enabled.
 
 
@@ -87,7 +87,7 @@ Optional:
 
 Optional:
 
-- `denied_services` (List of String) List of denied services.
+- `denied_services` (Set of String) Set of denied services.
 - `enabled` (Boolean) Whether isolation is enabled.
 
 
@@ -105,6 +105,8 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_namespace.example {{namespace}}
