@@ -1,6 +1,5 @@
 ---
 import Layout from "~/components/layout.astro"
-import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Header from "~/components/price/Header.astro"
 import HostSwitcher from "~/components/price/HostSwitcher.astro"
 import PriceGrid from "~/components/price/PriceGrid.astro"
@@ -78,10 +77,6 @@ const pricingSchema = {
         <script
             type="application/ld+json"
             set:html={JSON.stringify(pricingSchema)}
-        />
-        <SchemaSoftwareApplication
-            description="Compare Kestra plans. Start free and self-hosted with Open Source, scale with managed Cloud, or deploy Enterprise Edition for mission-critical workloads at scale."
-            url="https://kestra.io/pricing"
         />
     </Fragment>
     <div class="cont">

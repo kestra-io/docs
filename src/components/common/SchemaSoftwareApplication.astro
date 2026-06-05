@@ -1,19 +1,21 @@
 ---
 interface Props {
+    id?: string
     name?: string
     description?: string
     url?: string
+    isVariantOf?: string
 }
 
-const { name, description, url } = Astro.props
+const { id, name, description, url, isVariantOf } = Astro.props
 
 const canonicalUrl =
     url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
 
-const schema = {
+const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    "@id": "https://kestra.io/#software",
+    "@id": id ?? "https://kestra.io/#software",
     "name": name ?? "Kestra",
     "url": canonicalUrl,
     "description":
@@ -21,8 +23,7 @@ const schema = {
         "Open-source workflow orchestration platform for data pipelines, infrastructure automation, and AI workflows. YAML-native, language-agnostic, 1200+ plugins.",
     "applicationCategory": "DeveloperApplication",
     "applicationSubCategory": "Workflow Orchestration",
-    "operatingSystem": "Linux, macOS, Windows, Docker, Kubernetes",
-    "softwareVersion": "1.0",
+    "operatingSystem": "Linux, macOS, Windows",
     "downloadUrl": "https://github.com/kestra-io/kestra",
     "author": { "@id": "https://kestra.io/#organization" },
     "publisher": { "@id": "https://kestra.io/#organization" },
@@ -59,6 +60,10 @@ const schema = {
             "url": "https://kestra.io/demo",
         },
     ],
+}
+
+if (isVariantOf) {
+    schema.isVariantOf = { "@id": isVariantOf }
 }
 ---
 
