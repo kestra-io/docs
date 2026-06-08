@@ -194,9 +194,9 @@ blockquote.blockquote {
 }
 
 .btn-secondary {
-    background-color: var(--ks-background-button-secondary);
+    background-color: transparent;
     color: var(--ks-content-primary) !important;
-    border: 1px solid var(--ks-border-button-secondary);
+    border: 1px solid var(--ks-content-primary);
 
     &:hover {
         background: var(--ks-background-button-secondary-hover) !important;
