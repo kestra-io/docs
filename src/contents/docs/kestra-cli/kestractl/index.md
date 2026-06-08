@@ -1,15 +1,15 @@
 ---
-title: "kestractl: Kestra CLI for Flows and Executions"
-h1: Manage Flows, Executions, and Namespaces with kestractl
+title: "kestractl: Kestra CLI for Flows, IAM, and Plugins"
+h1: Manage Kestra Flows, IAM, and Plugins with kestractl
 sidebarTitle: kestractl
 icon: /src/contents/docs/icons/bash.svg
 editions: ["OSS","EE"]
-description: Manage Kestra flows, executions, namespaces, and files from the command line. The kestractl CLI provides full control over your instance without a UI.
+description: Manage Kestra flows, executions, namespaces, plugins, and IAM resources from the command line without a UI.
 ---
 
-Use `kestractl` to interact with the Kestra host API for flows, executions, namespaces, namespace files, and key-value pairs.
+Use `kestractl` to manage flows, executions, namespaces, namespace files, key-value pairs, plugins, and IAM resources. Most commands interact with the Kestra host API; `workers registration-tokens generate` runs entirely offline.
 
-For server components, plugins, and system maintenance commands, see the [Kestra Server CLI](../kestra-server/index.md).
+For server components and system maintenance commands (starting standalone servers, server-side plugin installation), see the [Kestra Server CLI](../kestra-server/index.md).
 
 ## Installation
 
@@ -81,6 +81,8 @@ kestractl flows list my.namespace --output json
 - `service-accounts` (aliases: `service-account`, `sa`): list, get, create, update, delete service accounts and manage their API tokens. Requires Kestra EE; instance-level (not tenant-scoped).
 - `bindings`: list, get, create, and delete role bindings (the assignment of a role to a user or group). Requires Kestra EE; tenant-scoped.
 - `invitations`: list, get, create, and delete user invitations. Requires Kestra EE; tenant-scoped.
+- `plugins`: list compatible plugins for a Kestra version and download them to a local directory.
+- `workers`: manage worker registration tokens.
 
 Use `kestractl --help` or `kestractl <command> --help` for the full command reference.
 
@@ -430,6 +432,20 @@ kestractl plugins download 2.0.0 \
 #### Enterprise plugin registry
 
 External secret managers (`aws-secret-manager`, `azure-key-vault`, `google-secret-manager`, and others) and the Elasticsearch/OpenSearch repository backends are not published to Maven Central. Use `--maven-repository` with your Kestra plugin registry credentials to download them.
+
+## Worker management
+
+### `kestractl workers registration-tokens generate`
+
+Generate a worker registration token. This command runs entirely offline — no running Kestra instance is required.
+
+```bash
+kestractl workers registration-tokens generate
+```
+
+The token is printed to stdout in the format `kwreg_<random>_<checksum>`.
+
+When deploying a standalone worker, you also need to download the core infrastructure plugins it requires. See [Bootstrap core plugins with `--from-config`](#bootstrap-core-plugins-with---from-config).
 
 ## Configuration
 
