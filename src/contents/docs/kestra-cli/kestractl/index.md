@@ -310,6 +310,127 @@ kestractl invitations delete <invitation_id>
 kestractl invitations delete <invitation_id> --yes
 ```
 
+## Plugin management
+
+The `plugins` command group manages the plugins a Kestra worker needs to start. Use it when deploying standalone or remote workers without Docker, where plugins must be pre-installed as JAR files.
+
+### `kestractl plugins list <version>`
+
+List all compatible plugins for a given Kestra version. Output is a single space-separated line of `groupId:artifactId:version` coordinates.
+
+```bash
+kestractl plugins list 2.0.0
+```
+
+Use `--output json` for full plugin metadata (groupId, artifactId, license, version).
+
+| Flag | Default | Description |
+|---|---|---|
+| `--edition` | `ALL` | Filter by edition: `ALL`, `OSS`, or `EE` |
+| `--from-config` | — | Derive required core plugins from one or more config files (see below) |
+| `--output` | `table` | Output format: `table` (space-separated coordinates) or `json` |
+
+### `kestractl plugins download [version]`
+
+Download plugins to a local directory. By default downloads all compatible plugins for the given version from Maven Central.
+
+```bash
+kestractl plugins download 2.0.0
+```
+
+The version argument is required unless `--plugins` is set.
+
+| Flag | Default | Description |
+|---|---|---|
+| `--plugins-dir` | `./plugins` | Directory to write downloaded JARs into |
+| `--edition` | `ALL` | Filter by edition: `ALL`, `OSS`, or `EE` |
+| `--plugins` | — | Explicit coordinates to download (`groupId:artifactId:version`, space-separated or repeated); bypasses API lookup and makes version optional |
+| `--from-config` | — | Download only the core plugins required by one or more config files; requires a version argument (see below) |
+| `--concurrency` | `1` | Number of parallel downloads |
+| `--keep-only-last-version` | `true` | Remove older versions of each plugin from the plugins directory after downloading |
+| `--force-redownload` | `false` | Re-download plugins even if they already exist |
+| `--global-timeout` | `5m` | Maximum total time for all downloads |
+| `--maven-repository` | Maven Central | Custom Maven repository base URL |
+| `--maven-username` | — | Username for Maven basic authentication |
+| `--maven-password` | — | Password for Maven basic authentication |
+
+The global `--header` flag (see [Global flags](#global-flags)) adds arbitrary HTTP headers to all requests, including Maven downloads — use it for bearer token authentication against a private registry.
+
+#### Custom Maven registry authentication
+
+```bash
+# Basic auth
+kestractl plugins download 2.0.0 \
+  --maven-repository https://nexus.example.com/repository/maven-central \
+  --maven-username myuser \
+  --maven-password mypassword
+
+# Bearer token (--header is a global flag)
+kestractl plugins download 2.0.0 \
+  --maven-repository https://nexus.example.com/repository/maven-central \
+  --header "Authorization:Bearer <token>"
+```
+
+### Bootstrap core plugins with `--from-config`
+
+Use `--from-config` when you need to determine which core infrastructure plugins a standalone worker needs before it can start. Pass one or more Kestra `application.yaml` files and the command reads four keys, mapping each to the plugin it requires:
+
+- `kestra.storage.type`
+- `kestra.secret.type`
+- `kestra.queue.type`
+- `kestra.repository.type`
+
+Bundled backends produce no output. Only backends that ship as a separate plugin appear in the output.
+
+| Category | Bundled (no plugin needed) | Requires a plugin |
+|---|---|---|
+| Storage (`kestra.storage.type`) | `local` | `s3`, `gcs`, `azure`, `minio`, `seaweedfs`, `cloudflare` |
+| Secret (`kestra.secret.type`) | `jdbc`, `elasticsearch` | `vault`, `aws-secret-manager`, `azure-key-vault`, `google-secret-manager`, `cyberark`, `doppler`, `1password`, `beyondtrust`, `delinea` |
+| Queue (`kestra.queue.type`) | `memory`, `h2`, `postgres`, `mysql`, `kafka` | — |
+| Repository (`kestra.repository.type`) | `memory`, `h2`, `postgres`, `mysql` | `elasticsearch`, `opensearch` |
+
+**Example:** a worker using S3 storage and AWS Secrets Manager needs two plugins:
+
+```bash
+kestractl plugins list 2.0.0 --from-config /etc/kestra/application.yaml
+# → io.kestra.storage:storage-s3:1.4.1
+```
+
+If all configured backends are bundled, the command exits cleanly with:
+
+```
+No core plugins required by the provided configuration (all configured backends are bundled in Kestra).
+```
+
+If a config key contains an unrecognized type, the command errors and lists supported values:
+
+```
+Error: unknown kestra.storage.type "unknownbackend" — no known core plugin mapping (supported: azure, cloudflare, gcs, local, minio, s3, seaweedfs)
+```
+
+#### Multiple config files
+
+Pass `--from-config` multiple times to merge configs. The last non-empty value per category wins — later files override earlier ones:
+
+```bash
+kestractl plugins download 2.0.0 \
+  --from-config /etc/kestra/application.yaml \
+  --from-config /etc/kestra/application-prod.yaml
+```
+
+#### Pipe pattern
+
+`--from-config` and `--plugins` are mutually exclusive on `download`. Use the pipe pattern to preview the required plugins before downloading:
+
+```bash
+kestractl plugins download 2.0.0 \
+  --plugins "$(kestractl plugins list 2.0.0 --from-config /etc/kestra/application.yaml)"
+```
+
+#### Enterprise plugin registry
+
+External secret managers (`aws-secret-manager`, `azure-key-vault`, `google-secret-manager`, and others) and the Elasticsearch/OpenSearch repository backends are not published to Maven Central. Use `--maven-repository` with your Kestra plugin registry credentials to download them.
+
 ## Configuration
 
 ### Global flags
