@@ -4,6 +4,7 @@ import YAML from "yaml"
 import { $fetchApiRawCached } from "~/utils/fetch"
 import { apiDocPath, VERSIONED_DOCS_PATH } from "~/utils/versionedDocs"
 import { getDocVersions } from "~/utils/docVersionsFetch"
+import { getDocChildren } from "~/utils/docChildrenFetch"
 import { renderVersionedDocHtml } from "~/utils/renderVersionedDoc"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
@@ -195,12 +196,18 @@ const versionedDocs = defineMiddleware(async (context, next) => {
     }
 
     try {
-        // Versions only feed the selector and are memoized, not fetched per request.
+        // Versions feed the selector and children feed the nav sidebar; both are
+        // memoized (not fetched per request) and fetched together.
+        const [versions, children] = await Promise.all([
+            getDocVersions(),
+            getDocChildren(version),
+        ])
         const html = await renderVersionedDocHtml({
             version,
             path,
             markdown,
-            versions: await getDocVersions(),
+            versions,
+            children,
         })
         return new Response(html, {
             headers: { "content-type": "text/html;charset=utf-8" },

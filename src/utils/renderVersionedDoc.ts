@@ -1,6 +1,9 @@
 import { createMarkdownProcessor } from "@astrojs/markdown-remark"
 import remarkDirective from "remark-directive"
 import {
+    buildDocTree,
+    currentDocKey,
+    docChildHref,
     frontmatterField,
     parseHomePageButtons,
     stripFrontmatter,
@@ -8,6 +11,8 @@ import {
     versionSelectOptions,
     HOMEPAGE_BUTTONS_RE,
     NAV,
+    type DocChildren,
+    type DocTreeNode,
     type DocVersion,
     type HomePageButton,
 } from "~/utils/versionedDocs"
@@ -181,6 +186,74 @@ function versionOptions(
         .join("")
 }
 
+// The keys to pre-expand: every ancestor of the current page, plus the page
+// itself ("docs/ui/dashboard" -> docs, docs/ui, docs/ui/dashboard). The whole
+// path to the active node is rendered open server-side, so it's visible without
+// JS and middle-/cmd-click on any link still works.
+function ancestorOpenKeys(activeKey: string): Set<string> {
+    const keys = new Set<string>()
+    let acc = ""
+    for (const part of activeKey.split("/")) {
+        acc = acc ? `${acc}/${part}` : part
+        keys.add(acc)
+    }
+    return keys
+}
+
+/** One tree node: a plain link if it's a leaf, else a <details> with its kids. */
+function sidebarNodeHtml(
+    node: DocTreeNode,
+    version: string,
+    activeKey: string,
+    openKeys: Set<string>,
+): string {
+    const isActive = node.path === activeKey
+    const link = `<a class="vd-tree-link${isActive ? " vd-tree-active" : ""}" href="${escapeHtml(
+        docChildHref(version, node.path),
+    )}"${isActive ? ' aria-current="page"' : ""}>${escapeHtml(node.title)}</a>`
+    if (!node.children.length) {
+        return `<li>${link}</li>`
+    }
+    const kids = node.children
+        .map((c) => sidebarNodeHtml(c, version, activeKey, openKeys))
+        .join("")
+    return `<li><details${openKeys.has(node.path) ? " open" : ""}><summary class="vd-tree-summary">${link}<span class="vd-tree-caret" aria-hidden="true">▸</span></summary><ul class="vd-tree-list">${kids}</ul></details></li>`
+}
+
+/**
+ * The left navigation sidebar, built server-side from the flat children map.
+ * The single "docs" root is surfaced as a top-level home link with its sections
+ * listed below it. Returns "" when there are no children (e.g. the endpoint
+ * failed) so the page degrades to a single content column.
+ */
+function sidebarHtml(
+    version: string,
+    children: DocChildren,
+    path: string,
+): string {
+    const tree = buildDocTree(children)
+    if (!tree.length) return ""
+    const activeKey = currentDocKey(path)
+    const openKeys = ancestorOpenKeys(activeKey)
+    const docsRoot = tree.find((n) => n.path === "docs")
+    const topNodes = docsRoot ? docsRoot.children : tree
+    const homeActive = activeKey === "docs"
+    const home = `<li><a class="vd-tree-link vd-tree-home${
+        homeActive ? " vd-tree-active" : ""
+    }" href="${escapeHtml(docChildHref(version, "docs"))}"${
+        homeActive ? ' aria-current="page"' : ""
+    }>${escapeHtml(docsRoot?.title ?? "Documentation")}</a></li>`
+    const items = topNodes
+        .map((n) => sidebarNodeHtml(n, version, activeKey, openKeys))
+        .join("")
+    return `<aside class="vd-sidebar" id="vd-sidebar">
+<button type="button" class="vd-sidebar-toggle" aria-controls="vd-sidebar-nav" aria-expanded="false">Documentation menu</button>
+<nav class="vd-sidebar-nav" id="vd-sidebar-nav" aria-label="Documentation">
+<ul class="vd-tree-list vd-tree-root">${home}${items}</ul>
+</nav>
+</aside>`
+}
+
 const STYLES = `
 :root { color-scheme: light dark; }
 * { box-sizing: border-box; }
@@ -230,6 +303,23 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, san
 .vd-button { display: inline-block; background: #7e3fef; color: #fff; text-decoration: none;
     font-weight: 600; padding: 0.6rem 1.2rem; border-radius: 0.5rem; }
 .vd-button:hover { background: #6b2fd6; }
+.vd-layout { display: flex; align-items: flex-start; }
+.vd-sidebar { flex: 0 0 18rem; width: 18rem; align-self: stretch; position: sticky; top: 0;
+    max-height: 100vh; overflow-y: auto; border-right: 1px solid #e3e5e8; padding: 1.5rem 1rem; }
+.vd-sidebar-toggle { display: none; }
+.vd-sidebar-nav { font-size: 0.9rem; }
+.vd-tree-list { list-style: none; margin: 0; padding: 0; }
+.vd-tree-list .vd-tree-list { margin-left: 0.6rem; padding-left: 0.4rem; border-left: 1px solid #e3e5e8; }
+.vd-tree-link { display: block; padding: 0.3rem 0.5rem; border-radius: 0.375rem; color: #1c1e21;
+    text-decoration: none; }
+.vd-tree-link:hover { background: #f5f3ff; color: #7e3fef; }
+.vd-tree-active { background: #f0eefe; color: #7e3fef; font-weight: 600; }
+.vd-tree-root > li > .vd-tree-link, .vd-tree-root > li > details > .vd-tree-summary { font-weight: 600; }
+.vd-tree-summary { display: flex; align-items: center; cursor: pointer; list-style: none; }
+.vd-tree-summary .vd-tree-link { flex: 1; }
+.vd-tree-caret { font-size: 0.7em; opacity: 0.6; padding: 0 0.4rem; transition: transform 0.15s; }
+details[open] > .vd-tree-summary .vd-tree-caret { transform: rotate(90deg); }
+.vd-layout .vd-content { flex: 1 1 auto; min-width: 0; }
 .vd-content { max-width: 880px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 .vd-content h1 { font-size: 2.25rem; line-height: 1.2; margin: 0 0 1.5rem; }
 .vd-content h2 { margin-top: 2.5rem; border-bottom: 1px solid #e3e5e8; padding-bottom: 0.3rem; }
@@ -274,6 +364,14 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, san
     .vd-dropdown-cols { flex-direction: column; gap: 0.75rem; }
     .vd-cta { text-align: center; }
     .vd-bar label { margin-left: auto; }
+    .vd-layout { flex-direction: column; }
+    .vd-sidebar { position: static; flex: none; width: 100%; max-height: none; overflow: visible;
+        border-right: 0; border-bottom: 1px solid #e3e5e8; padding: 0.5rem 1rem; }
+    .vd-sidebar-toggle { display: block; width: 100%; text-align: left; font: inherit;
+        font-weight: 600; color: #1c1e21; background: none; border: 0; cursor: pointer;
+        padding: 0.5rem; }
+    .vd-sidebar-nav { display: none; }
+    .vd-sidebar.vd-open .vd-sidebar-nav { display: block; }
 }
 @media (prefers-color-scheme: dark) {
     body { color: #e3e5e8; background: #16181d; }
@@ -298,6 +396,12 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, san
     .vd-alert-success { background: #18271b; }
     .vd-collapse { border-color: #2b2e36; }
     .vd-badge-v { background: #2b2540; color: #b9a8ff; }
+    .vd-sidebar { border-color: #2b2e36; }
+    .vd-tree-link { color: #e3e5e8; }
+    .vd-tree-link:hover { background: #2b2540; color: #b9a8ff; }
+    .vd-tree-active { background: #2b2540; color: #b9a8ff; }
+    .vd-tree-list .vd-tree-list { border-color: #2b2e36; }
+    .vd-sidebar-toggle { color: #e3e5e8; }
 }
 `
 
@@ -316,12 +420,29 @@ items.forEach(function(x){if(x!==it){x.classList.remove('vd-open');var xb=x.quer
 document.addEventListener('click',function(e){if(!e.target.closest('.vd-nav-item'))items.forEach(function(x){x.classList.remove('vd-open');var xb=x.querySelector('.vd-nav-toggle');if(xb)xb.setAttribute('aria-expanded','false');});});
 })();`
 
+// Sidebar behaviour, also framework-free: the mobile toggle reveals the tree
+// (collapsed by default to keep the small-screen header tidy), and on load the
+// active link is scrolled into the centre of the sidebar's OWN scroll area
+// (never the window) so deep pages don't open with their entry off-screen. The
+// tree's collapsible sections are native <details> with their ancestors opened
+// server-side, so they work with JS disabled too.
+const SIDEBAR_SCRIPT = `(function(){
+var sb=document.getElementById('vd-sidebar');
+if(!sb)return;
+var t=sb.querySelector('.vd-sidebar-toggle');
+if(t){t.addEventListener('click',function(){var o=sb.classList.toggle('vd-open');t.setAttribute('aria-expanded',o?'true':'false');});}
+var a=sb.querySelector('.vd-tree-active');
+if(a&&sb.scrollHeight>sb.clientHeight){var r=a.getBoundingClientRect(),sr=sb.getBoundingClientRect();sb.scrollTop+=(r.top-sr.top)-sb.clientHeight/2+a.offsetHeight/2;}
+})();`
+
 export interface VersionedDocInput {
     version: string
     /** path after the version, no leading slash, e.g. "tutorial/inputs" */
     path: string
     markdown: string
     versions: DocVersion[]
+    /** flat children map for the nav sidebar; omit/{} renders sidebar-less */
+    children?: DocChildren
 }
 
 /** Render a versioned doc page to a full standalone HTML document. */
@@ -330,6 +451,7 @@ export async function renderVersionedDocHtml({
     path,
     markdown,
     versions,
+    children = {},
 }: VersionedDocInput): Promise<string> {
     const title = frontmatterField(markdown, "title") ?? "Documentation"
     const h1 = frontmatterField(markdown, "h1") ?? title
@@ -345,6 +467,20 @@ export async function renderVersionedDocHtml({
     }
     md = stripUnsupportedMdc(md)
     const { code: body } = await processor.render(md)
+
+    const sidebar = sidebarHtml(version, children, path)
+    const article = `<main class="vd-content">
+<h1>${escapeHtml(h1)}</h1>
+${body}
+</main>`
+    // With a sidebar, lay it out beside the content; without one (children empty
+    // or the endpoint failed) keep the single centred content column.
+    const main = sidebar
+        ? `<div class="vd-layout">
+${sidebar}
+${article}
+</div>`
+        : article
 
     return `<!doctype html>
 <html lang="en">
@@ -376,11 +512,8 @@ ${versionOptions(versions, version, path)}
 </select>
 <button type="button" class="vd-burger" aria-label="Toggle navigation" aria-controls="vd-drawer" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
-<main class="vd-content">
-<h1>${escapeHtml(h1)}</h1>
-${body}
-</main>
-<script>${NAV_SCRIPT}</script>
+${main}
+<script>${NAV_SCRIPT}${SIDEBAR_SCRIPT}</script>
 </body>
 </html>`
 }

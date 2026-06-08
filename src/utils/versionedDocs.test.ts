@@ -2,6 +2,9 @@ import { describe, it, expect } from "vitest"
 import {
     VERSIONED_DOCS_PATH,
     apiDocPath,
+    buildDocTree,
+    currentDocKey,
+    docChildHref,
     docVersions,
     frontmatterField,
     parseHomePageButtons,
@@ -9,6 +12,7 @@ import {
     stripUnsupportedMdc,
     versionedHref,
     versionSelectOptions,
+    type DocChildren,
     type DocVersion,
 } from "./versionedDocs"
 
@@ -221,6 +225,105 @@ More.`
     it("returns null on malformed JSON instead of throwing", () => {
         const md = `:::HomePageButtons{ :buttons='[{bad}]'}\n:::`
         expect(parseHomePageButtons(md)).toBeNull()
+    })
+})
+
+describe("buildDocTree", () => {
+    it("nests children under parents from the flat, full-path keys", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/getting-started": { title: "Getting Started" },
+            "docs/getting-started/quickstart": { title: "Quickstart" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots.map((n) => n.path)).toEqual(["docs"])
+        const docs = roots[0]
+        expect(docs.children.map((n) => n.path)).toEqual([
+            "docs/getting-started",
+        ])
+        expect(docs.children[0].children.map((n) => n.title)).toEqual([
+            "Quickstart",
+        ])
+    })
+
+    it("handles a child listed BEFORE its parent (lazy parent build)", () => {
+        // The endpoint sometimes emits a child ahead of its parent. The parent
+        // must still get its real title (not a humanized placeholder) and the
+        // child must nest under it exactly once.
+        const children: DocChildren = {
+            "docs/ui/dashboard": { title: "Dashboard" },
+            "docs/ui": { title: "User Interface" },
+            docs: { title: "Documentation" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots.map((n) => n.path)).toEqual(["docs"])
+        const ui = roots[0].children.find((n) => n.path === "docs/ui")
+        expect(ui?.title).toBe("User Interface") // real title, not "Ui"
+        expect(ui?.children.map((n) => n.path)).toEqual(["docs/ui/dashboard"])
+    })
+
+    it("humanizes a node whose entry carries no title", () => {
+        const children = {
+            docs: { title: "Documentation" },
+            "docs/work-flow": { title: "" },
+            "docs/work-flow/tasks": { title: "Tasks" },
+        } as DocChildren
+        const roots = buildDocTree(children)
+        const parent = roots[0].children[0]
+        expect(parent.path).toBe("docs/work-flow")
+        expect(parent.title).toBe("Work Flow") // derived from the slug
+        expect(parent.children.map((n) => n.title)).toEqual(["Tasks"])
+    })
+
+    it("preserves the input (nav) order among siblings", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/b": { title: "B" },
+            "docs/a": { title: "A" },
+            "docs/c": { title: "C" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots[0].children.map((n) => n.title)).toEqual(["B", "A", "C"])
+    })
+
+    it("drops hideSidebar pages and their subtree (matches the latest sidebar)", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/brand-assets": { title: "Brand Assets", hideSidebar: true },
+            "docs/why-kestra": { title: "Why Kestra", hideSidebar: true },
+            "docs/why-kestra/details": { title: "Details" },
+            "docs/getting-started": { title: "Getting Started" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots[0].children.map((n) => n.path)).toEqual([
+            "docs/getting-started",
+        ])
+    })
+
+    it("returns [] for an empty map", () => {
+        expect(buildDocTree({})).toEqual([])
+    })
+})
+
+describe("docChildHref", () => {
+    it("maps the docs root to the version home", () => {
+        expect(docChildHref("1.3", "docs")).toBe("/docs/1.3")
+    })
+
+    it("maps a nested key to its versioned URL", () => {
+        expect(docChildHref("0.19", "docs/ui/dashboard")).toBe(
+            "/docs/0.19/ui/dashboard",
+        )
+    })
+})
+
+describe("currentDocKey", () => {
+    it("maps the version home (empty path) to the docs root key", () => {
+        expect(currentDocKey("")).toBe("docs")
+    })
+
+    it("prefixes a sub-path with docs/ and trims slashes", () => {
+        expect(currentDocKey("/ui/dashboard/")).toBe("docs/ui/dashboard")
     })
 })
 

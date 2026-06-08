@@ -228,6 +228,98 @@ export const NAV: NavGroup[] = [
     { label: "Pricing", href: "/pricing" },
 ]
 
+// ---------------------------------------------------------------------------
+// Documentation navigation tree (the versioned page's left sidebar).
+//
+// The /docs/docs/versions/{ver}.0/children endpoint returns a FLAT map keyed by
+// full path ("docs", "docs/getting-started", "docs/getting-started/quickstart"),
+// already sorted in navigation order. We rebuild the hierarchy from the path
+// segments. This is the RAW path hierarchy — unlike the latest-docs sidebar,
+// which groups pages into a handful of curated, hardcoded sections.
+// ---------------------------------------------------------------------------
+export interface DocChildMeta {
+    title: string
+    // Pages flagged hideSidebar (brand-assets, why-kestra) are omitted from the
+    // tree, mirroring the latest-docs sidebar (RecursiveNavSidebar.vue). The
+    // endpoint returns more fields (icon, isIndex, ...) but this JS-less page
+    // only needs the title and this flag.
+    hideSidebar?: boolean
+}
+/** Flat children-endpoint payload, keyed by full path ("docs", "docs/x", ...). */
+export type DocChildren = Record<string, DocChildMeta>
+
+export interface DocTreeNode {
+    /** full key, e.g. "docs/getting-started" */
+    path: string
+    title: string
+    children: DocTreeNode[]
+}
+
+const humanizeSegment = (key: string): string =>
+    (key.split("/").pop() ?? key)
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase())
+
+/**
+ * Rebuild the navigation tree from the flat, nav-ordered children map. Parents
+ * are created LAZILY: the endpoint sometimes lists a child before its parent (15
+ * such cases in 0.19), so a node may first appear as a placeholder (humanized
+ * title) when referenced as a parent, then get its real title when its own entry
+ * is reached. Each node is attached to its parent exactly once — when its OWN key
+ * is processed — so per-parent child order follows the global nav order, and no
+ * node is double-added regardless of input ordering.
+ *
+ * Relies on the parent-prefix invariant: every non-root key's parent prefix is
+ * itself a key (verified across all served versions — 0.19/0.20/0.22/1.0 — with
+ * 0 violations). If it ever breaks, an intermediate created only as a lazy parent
+ * (never seen as its own key) is never pushed to roots, so its whole subtree is
+ * silently dropped from the sidebar — acceptable while the invariant holds.
+ *
+ * Pages flagged hideSidebar (and their subtree) are dropped, matching the
+ * latest-docs sidebar; in served data these are always leaves.
+ */
+export function buildDocTree(children: DocChildren): DocTreeNode[] {
+    const hidden = Object.entries(children)
+        .filter(([, meta]) => meta?.hideSidebar)
+        .map(([key]) => key)
+    const isHidden = (key: string): boolean =>
+        hidden.some((h) => key === h || key.startsWith(`${h}/`))
+    const nodes = new Map<string, DocTreeNode>()
+    const roots: DocTreeNode[] = []
+    const getOrCreate = (key: string): DocTreeNode => {
+        let node = nodes.get(key)
+        if (!node) {
+            node = { path: key, title: humanizeSegment(key), children: [] }
+            nodes.set(key, node)
+        }
+        return node
+    }
+    for (const [key, meta] of Object.entries(children)) {
+        if (isHidden(key)) continue
+        const node = getOrCreate(key)
+        if (meta?.title) node.title = meta.title
+        const slash = key.lastIndexOf("/")
+        if (slash === -1) {
+            roots.push(node)
+        } else {
+            getOrCreate(key.slice(0, slash)).children.push(node)
+        }
+    }
+    return roots
+}
+
+/** Versioned URL for a children key. "docs" -> /docs/{v}; "docs/x" -> /docs/{v}/x. */
+export function docChildHref(version: string, key: string): string {
+    const rel = key.replace(/^docs(?:\/|$)/, "")
+    return rel ? `/docs/${version}/${rel}` : `/docs/${version}`
+}
+
+/** The children key for the page currently being viewed (path after the version). */
+export function currentDocKey(path: string): string {
+    const cleaned = path.replace(/^\/+|\/+$/g, "")
+    return cleaned ? `docs/${cleaned}` : "docs"
+}
+
 // Bespoke MDC components from the latest build (HomePageHeader, WhatsNew,
 // BigChildCards, SupportLinks, ...) have no markdown renderer here. Their
 // empty-bodied `:::Name{...}\n:::` blocks otherwise emit stray empty <div>s (or

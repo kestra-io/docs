@@ -228,3 +228,74 @@ describe("renderVersionedDocHtml navbar", () => {
         expect(html).not.toContain("<script src")
     })
 })
+
+describe("renderVersionedDocHtml sidebar", () => {
+    const children = {
+        docs: { title: "Documentation" },
+        "docs/getting-started": { title: "Getting Started" },
+        "docs/getting-started/quickstart": { title: "Quickstart" },
+        "docs/ui": { title: "User Interface" },
+        "docs/ui/dashboard": { title: "Dashboard" },
+    }
+    const withSidebar = (path: string) =>
+        renderVersionedDocHtml({
+            version: "1.3",
+            path,
+            markdown: "---\ntitle: T\n---\n# Hi",
+            versions: [],
+            children,
+        })
+
+    it("lays the content out next to a tree sidebar built from the children map", async () => {
+        const html = await withSidebar("ui/dashboard")
+        expect(html).toContain('class="vd-layout"')
+        expect(html).toContain('class="vd-sidebar"')
+        // top-level home link + sections
+        expect(html).toContain('href="/docs/1.3"')
+        expect(html).toContain("Getting Started")
+        expect(html).toContain("User Interface")
+        // nested child link uses the versioned URL
+        expect(html).toContain('href="/docs/1.3/ui/dashboard"')
+        expect(html).toContain('href="/docs/1.3/getting-started/quickstart"')
+    })
+
+    it("marks the current page active and opens its ancestor sections", async () => {
+        const html = await withSidebar("ui/dashboard")
+        // the active leaf is highlighted with aria-current
+        expect(html).toMatch(
+            /<a class="vd-tree-link vd-tree-active" href="\/docs\/1\.3\/ui\/dashboard" aria-current="page">/,
+        )
+        // its parent <details> is rendered open server-side (no JS needed)
+        expect(html).toMatch(/<details open><summary[\s\S]*?User Interface/)
+        // an unrelated section stays collapsed
+        expect(html).toMatch(/<details><summary[\s\S]*?Getting Started/)
+    })
+
+    it("collapses the tree behind a toggle and scrolls the active link into view", async () => {
+        const html = await withSidebar("ui/dashboard")
+        expect(html).toContain('class="vd-sidebar-toggle"')
+        expect(html).toContain('aria-controls="vd-sidebar-nav"')
+        // sidebar script is inlined alongside the nav script (no extra asset)
+        expect(html).toContain("vd-tree-active")
+        expect(html).toContain("scrollTop")
+        expect(html).not.toContain("<script src")
+    })
+
+    it("degrades to a single content column when there are no children", async () => {
+        const html = await renderVersionedDocHtml({
+            version: "1.3",
+            path: "x",
+            markdown: "---\ntitle: T\n---\n# Hi",
+            versions: [],
+            children: {},
+        })
+        expect(html).not.toContain('class="vd-layout"')
+        expect(html).not.toContain('class="vd-sidebar"')
+        expect(html).toContain('class="vd-content"')
+    })
+
+    it("renders sidebar-less when children are omitted entirely", async () => {
+        const html = await render(`---\ntitle: T\n---\n# Hi`)
+        expect(html).not.toContain('class="vd-sidebar"')
+    })
+})
