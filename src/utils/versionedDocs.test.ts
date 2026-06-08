@@ -7,6 +7,8 @@ import {
     docChildHref,
     docVersions,
     frontmatterField,
+    isVersionedAssetRef,
+    versionedAssetUrl,
     parseHomePageButtons,
     stripFrontmatter,
     stripUnsupportedMdc,
@@ -54,6 +56,48 @@ describe("apiDocPath", () => {
     it("trims surrounding slashes from the path", () => {
         expect(apiDocPath("0.19", "/tutorial/inputs/")).toBe(
             "/docs/docs/tutorial/inputs/versions/0.19.0",
+        )
+    })
+})
+
+describe("isVersionedAssetRef", () => {
+    it("matches a root-absolute path with a file extension", () => {
+        expect(isVersionedAssetRef("/docs/tutorial/x.png")).toBe(true)
+        expect(isVersionedAssetRef("/autocompletion.gif")).toBe(true)
+        expect(isVersionedAssetRef("/docs/a/b.c.svg")).toBe(true)
+    })
+
+    it("strips a query/hash before checking the extension", () => {
+        expect(isVersionedAssetRef("/docs/x.png?v=2")).toBe(true)
+        expect(isVersionedAssetRef("/docs/x.png#frag")).toBe(true)
+    })
+
+    it("leaves external and protocol-relative refs alone", () => {
+        expect(isVersionedAssetRef("https://cdn.example/x.png")).toBe(false)
+        expect(isVersionedAssetRef("//cdn.example/x.png")).toBe(false)
+        expect(isVersionedAssetRef("data:image/png;base64,AAAA")).toBe(false)
+    })
+
+    it("leaves relative refs and extension-less paths alone", () => {
+        expect(isVersionedAssetRef("./x.png")).toBe(false)
+        expect(isVersionedAssetRef("../x.png")).toBe(false)
+        expect(isVersionedAssetRef("/docs/tutorial/inputs")).toBe(false)
+        expect(isVersionedAssetRef("")).toBe(false)
+    })
+})
+
+describe("versionedAssetUrl", () => {
+    const api = "https://api.kestra.io/v1"
+
+    it("doubles 'docs' for a /docs-rooted asset (in-app domain prepend)", () => {
+        expect(versionedAssetUrl(api, "1.0", "/docs/tutorial/x.png")).toBe(
+            "https://api.kestra.io/v1/docs/docs/tutorial/x.png/versions/1.0.0",
+        )
+    })
+
+    it("keeps a single 'docs' for a bare-root asset", () => {
+        expect(versionedAssetUrl(api, "0.19", "/autocompletion.gif")).toBe(
+            "https://api.kestra.io/v1/docs/autocompletion.gif/versions/0.19.0",
         )
     })
 })

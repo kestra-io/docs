@@ -1,6 +1,7 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import YAML from "yaml"
+import { API_URL } from "astro:env/client"
 import { $fetchApiRawCached } from "~/utils/fetch"
 import { apiDocPath, VERSIONED_DOCS_PATH } from "~/utils/versionedDocs"
 import { getDocVersions } from "~/utils/docVersionsFetch"
@@ -208,6 +209,7 @@ const versionedDocs = defineMiddleware(async (context, next) => {
             markdown,
             versions,
             children,
+            apiUrl: API_URL,
         })
         return new Response(html, {
             headers: { "content-type": "text/html;charset=utf-8" },

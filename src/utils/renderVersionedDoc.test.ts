@@ -325,3 +325,75 @@ describe("renderVersionedDocHtml sidebar", () => {
         expect(html).not.toContain('class="vd-sidebar"')
     })
 })
+
+describe("renderVersionedDocHtml asset rewriting", () => {
+    it("re-points a /docs-rooted image at the versioned asset API (doubled docs)", async () => {
+        const html = await render(`---
+title: T
+---
+![diagram](/docs/tutorial/fundamentals/create_button.png)`)
+        expect(html).toContain(
+            'src="https://api.kestra.io/v1/docs/docs/tutorial/fundamentals/create_button.png/versions/1.3.0"',
+        )
+        // the raw, un-versioned ref must not survive
+        expect(html).not.toContain('src="/docs/tutorial/fundamentals/create_button.png"')
+    })
+
+    it("re-points a bare-root asset keeping a single docs (the single-docs discriminator)", async () => {
+        // Proves we mirror the in-app resourceUrl, NOT apiDocPath: apiDocPath
+        // always doubles "docs" and would 500 on this bare-root form.
+        const html = await render(`---
+title: T
+---
+![autocomplete](/autocompletion.gif)`)
+        expect(html).toContain(
+            'src="https://api.kestra.io/v1/docs/autocompletion.gif/versions/1.3.0"',
+        )
+        expect(html).not.toContain('src="/autocompletion.gif"')
+    })
+
+    it("leaves an external image URL untouched", async () => {
+        const html = await render(`---
+title: T
+---
+![ext](https://cdn.example.com/x.png)`)
+        expect(html).toContain('src="https://cdn.example.com/x.png"')
+        expect(html).not.toContain("/versions/1.3.0")
+    })
+
+    it("leaves a protocol-relative image URL untouched", async () => {
+        const html = await render(`---
+title: T
+---
+<img src="//cdn.example.com/x.png">`)
+        expect(html).toContain('src="//cdn.example.com/x.png"')
+        expect(html).not.toContain("/versions/1.3.0")
+    })
+
+    it("uses the injected apiUrl (the production-injected base, not the default)", async () => {
+        const html = await renderVersionedDocHtml({
+            version: "1.3",
+            path: "x",
+            markdown: `---\ntitle: T\n---\n![d](/docs/x.png)`,
+            versions: [],
+            apiUrl: "https://staging.example/v1",
+        })
+        expect(html).toContain(
+            'src="https://staging.example/v1/docs/docs/x.png/versions/1.3.0"',
+        )
+        expect(html).not.toContain("api.kestra.io")
+    })
+
+    it("re-points a raw-HTML video src and poster", async () => {
+        const html = await render(`---
+title: T
+---
+<video src="/docs/demo.mp4" poster="/docs/demo.png"></video>`)
+        expect(html).toContain(
+            'src="https://api.kestra.io/v1/docs/docs/demo.mp4/versions/1.3.0"',
+        )
+        expect(html).toContain(
+            'poster="https://api.kestra.io/v1/docs/docs/demo.png/versions/1.3.0"',
+        )
+    })
+})

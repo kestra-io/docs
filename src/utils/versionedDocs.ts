@@ -25,6 +25,37 @@ export function apiDocPath(version: string, path: string): string {
 }
 
 /**
+ * True for an asset reference we should re-point at the versioned asset API: a
+ * root-absolute path ending in a file extension (e.g. "/docs/tutorial/x.png",
+ * "/autocompletion.gif"). The whole doc corpus authors assets this way — there
+ * are no "./"/"../" relative refs — so a relative ref (which we'd need the page's
+ * own path to resolve, like the in-app ProseImg's "/./" substitution) is left
+ * untouched: it renders no worse than today and never occurs in practice.
+ * External (http(s)/protocol-relative/data/mailto/tel) and anchor refs are also
+ * left alone, so an external <iframe src> or //cdn asset is never rewritten.
+ */
+export function isVersionedAssetRef(src: string): boolean {
+    if (!src || !src.startsWith("/") || src.startsWith("//")) return false
+    return /\.[a-z0-9]+$/i.test(src.split(/[?#]/)[0])
+}
+
+/**
+ * Versioned asset URL, mirroring the Kestra in-app doc store's resourceUrl: the
+ * "/docs" controller domain is prepended to the raw (root-absolute) ref, then
+ * "/versions/{ver}.0". So "/docs/tutorial/x.png" -> {api}/docs/docs/tutorial/x.png
+ * /versions/{ver}.0 (the doubled "docs"), while a bare "/autocompletion.gif" ->
+ * {api}/docs/autocompletion.gif/versions/{ver}.0 (single "docs"). This is NOT
+ * apiDocPath, which always doubles "docs" and so 500s on the root-asset form.
+ */
+export function versionedAssetUrl(
+    apiUrl: string,
+    version: string,
+    src: string,
+): string {
+    return `${apiUrl}/docs${src}/versions/${version}.0`
+}
+
+/**
  * Parse the raw /v1/versions payload into deduped MAJOR.MINOR doc versions,
  * keeping only >= 0.19 (versions before that have no versioned docs), sorted
  * newest first. Integer compare on major/minor (NOT parseFloat — 0.2 < 0.19).

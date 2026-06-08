@@ -4,6 +4,8 @@ import {
     currentDocKey,
     docChildHref,
     frontmatterField,
+    isVersionedAssetRef,
+    versionedAssetUrl,
     versionSelectOptions,
     NAV,
     type DocChildren,
@@ -138,6 +140,41 @@ function serialize(node?: MdcNode): string {
         return `<${tag}${attrs(node.props ?? {})}>${inner}</${tag}>`
     }
     return (node.children ?? []).map(serialize).join("")
+}
+
+// Media element attrs that hold an asset URL. `poster` is video-only (img has
+// none). srcset and <a href>-to-asset are a conscious cut: zero occurrences in
+// the corpus (assets are exclusively markdown `![](...)` images), and srcset
+// would need descriptor-aware splitting.
+const ASSET_ATTRS: Record<string, string[]> = {
+    img: ["src"],
+    source: ["src"],
+    video: ["src", "poster"],
+    audio: ["src"],
+}
+
+// Pre-pass: re-point every asset reference at the versioned asset API, so a
+// versioned page references versioned resources (mirrors the in-app ProseImg +
+// doc store). Mutates the tree in place before serialize; only root-absolute
+// refs with a file extension are rewritten (see isVersionedAssetRef) — external
+// and relative refs are left alone.
+function rewriteAssetUrls(
+    node: MdcNode | undefined,
+    apiUrl: string,
+    version: string,
+): void {
+    if (!node) return
+    if (node.type === "element" && node.tag && node.props) {
+        for (const attr of ASSET_ATTRS[node.tag] ?? []) {
+            const v = node.props[attr]
+            if (typeof v === "string" && isVersionedAssetRef(v)) {
+                node.props[attr] = versionedAssetUrl(apiUrl, version, v)
+            }
+        }
+    }
+    for (const child of node.children ?? []) {
+        rewriteAssetUrls(child, apiUrl, version)
+    }
 }
 
 // createMarkdownParser is framework-agnostic (no Vue runtime) and runs on the
@@ -477,6 +514,8 @@ export interface VersionedDocInput {
     versions: DocVersion[]
     /** flat children map for the nav sidebar; omit/{} renders sidebar-less */
     children?: DocChildren
+    /** API base for versioned asset URLs (injected; defaulted for tests) */
+    apiUrl?: string
 }
 
 /** Render a versioned doc page to a full standalone HTML document. */
@@ -486,6 +525,7 @@ export async function renderVersionedDocHtml({
     markdown,
     versions,
     children = {},
+    apiUrl = "https://api.kestra.io/v1",
 }: VersionedDocInput): Promise<string> {
     const title = frontmatterField(markdown, "title") ?? "Documentation"
     const h1 = frontmatterField(markdown, "h1") ?? title
@@ -496,6 +536,7 @@ export async function renderVersionedDocHtml({
     // ":::" dialects, plus `:prop='json'` props) into a hast-like tree we
     // serialize ourselves — no Vue runtime, no "::"/component-name leak.
     const { body } = await parse(markdown)
+    rewriteAssetUrls(body as MdcNode, apiUrl, version)
     const bodyHtml = serialize(body as MdcNode)
 
     const sidebar = sidebarHtml(version, children, path)
