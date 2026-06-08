@@ -9,6 +9,7 @@ import mdx from "@astrojs/mdx"
 import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
+import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
@@ -60,6 +61,7 @@ export default defineConfig({
     ],
     markdown: {
         remarkPlugins: [
+            remarkGfm,
             remarkMermaid,
             remarkClassname,
             remarkDirective,
