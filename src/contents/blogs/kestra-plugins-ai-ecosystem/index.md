@@ -1,7 +1,7 @@
 ---
 title: "The Kestra Plugin Ecosystem for AI: From LLM Providers to Vector Databases"
 description: "Building AI pipelines means stitching together LLM calls, vector search, document ingestion, and data preprocessing. Kestra ships plugins for all of it. This post maps every plugin category that matters for AI workflows (outside of plugin-ai) so you know exactly what to reach for."
-date: 2026-05-26T09:00:00
+date: 2026-06-08T18:00:00
 category: Solutions
 author:
   name: François Delbrayelle
