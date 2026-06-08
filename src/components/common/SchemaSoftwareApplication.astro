@@ -12,9 +12,15 @@ const { id, name, description, url, isVariantOf } = Astro.props
 const canonicalUrl =
     url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
 
+// Multi-type: SoftwareApplication + Product
+// - SoftwareApplication keeps rich-result eligibility for software listings
+// - Product makes `isVariantOf` (and other Product-only properties) officially
+//   valid, since isVariantOf is defined on Product in schema.org and is not
+//   recognized on bare SoftwareApplication (CreativeWork descendant).
+// Standard pattern used by Notion, Linear, Atlassian, etc. for SaaS products.
 const schema: Record<string, unknown> = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "@type": ["SoftwareApplication", "Product"],
     "@id": id ?? "https://kestra.io/#software",
     "name": name ?? "Kestra",
     "url": canonicalUrl,
