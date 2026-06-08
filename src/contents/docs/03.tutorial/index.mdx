@@ -10,11 +10,15 @@ import ChildCard from "~/components/docs/ChildCard.astro"
 
 Use this tutorial to learn Kestra’s core concepts and build flows step by step.
 
+:::alert{type="info"}
+**Before you start:** Complete the [Quickstart](../01.quickstart/index.md) so you have Kestra running locally. This tutorial assumes you can open the Kestra UI at `http://localhost:8080`.
+:::
+
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/videoseries?si=hYpJnpp_lqtaFz-S&amp;list=PLEK3H8YwZn1o2KaCQqFeX4k7Yv2DPtuE1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Learn Kestra by building Flows step by step
+## What you can do with Kestra
 
 You can use Kestra to:
 
@@ -22,6 +26,15 @@ You can use Kestra to:
 - Interact with any system or language through plugins and tasks.
 - Orchestrate microservices, batch jobs, scripts, SQL queries, data syncs, dbt or Spark jobs, and other processes.
 
-This tutorial starts with a simple flow that makes an API request and then expands to use more of Kestra's core building blocks: Inputs, downstream tasks, scripts, Outputs, and Triggers. Later sections cover conditional flow logic, parallel task execution, and error handling.
+This tutorial is a sequence of six modules. Work through them in order — each one builds on the flow you created in the previous module:
+
+1. **Fundamentals** – Build your first Hello World flow and learn declarative workflow design.
+2. **Inputs** – Make flows dynamic and reusable by passing values in at runtime.
+3. **Outputs** – Pass data between tasks and flows.
+4. **Triggers** – Run flows automatically on a schedule or in response to events.
+5. **Flowable tasks** – Control execution logic with branching, loops, and parallel tasks.
+6. **Error handling** – Make flows resilient with automatic retries and alerts.
+
+After completing this tutorial, you will be able to build, automate, and debug a complete Kestra workflow that takes inputs, passes data between tasks, runs on a trigger, branches its logic, and recovers from failures.
 
 <ChildCard />
