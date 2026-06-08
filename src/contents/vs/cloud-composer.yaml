@@ -240,7 +240,7 @@ commonQuestions:
   - question: Cloud Composer handles Airflow upgrades for me. What does Kestra offer?
     answer: "Kestra upgrades run on your schedule: pull a new image, test in staging, and ship when your team is ready. There's no waiting for GCP to certify a version or schedule a maintenance window. Cloud Composer controls the upgrade cadence and typically lags the open-source Airflow release, including Airflow 3 support, by several months."
   - question: Does Kestra support the same data pipeline use cases as Cloud Composer?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same GCP integrations available through Airflow providers: BigQuery, GCS, Pub/Sub, Dataflow, and more. The difference is YAML task definitions instead of Python operator classes."
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1400+ plugins, it covers the same GCP integrations available through Airflow providers: BigQuery, GCS, Pub/Sub, Dataflow, and more. The difference is YAML task definitions instead of Python operator classes."
   - question: Can Kestra and Cloud Composer run in parallel during migration?
     answer: "Yes. Teams commonly run both during transition. Kestra can trigger Composer DAGs via the Airflow REST API, so you migrate incrementally: start new workflows in Kestra, move existing pipelines on your own timeline, and keep Composer running until you're confident in the switch."
   - question: How does Kestra handle multi-tenancy compared to Cloud Composer?

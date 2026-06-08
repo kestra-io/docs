@@ -12,7 +12,7 @@ Trigger workflows instantly as events occur, with millisecond latency.
 [Triggers](./index.md) in Kestra can listen to external events and start a workflow execution when the event occurs. Most triggers in Kestra **poll** external systems at regular intervals (e.g., every second) to detect new events. This is effective for batch-style data processing. However, business-critical workflows often demand immediate reactions — within milliseconds. **Realtime Triggers** address this need by listening directly for events and starting workflows as soon as they occur.
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## What are Realtime Triggers
