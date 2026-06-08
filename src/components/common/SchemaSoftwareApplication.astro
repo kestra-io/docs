@@ -1,0 +1,70 @@
+---
+interface Props {
+    id?: string
+    name?: string
+    description?: string
+    url?: string
+    isVariantOf?: string
+}
+
+const { id, name, description, url, isVariantOf } = Astro.props
+
+const canonicalUrl =
+    url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
+
+const schema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "@id": id ?? "https://kestra.io/#software",
+    "name": name ?? "Kestra",
+    "url": canonicalUrl,
+    "description":
+        description ??
+        "Open-source workflow orchestration platform for data pipelines, infrastructure automation, and AI workflows. YAML-native, language-agnostic, 1400+ plugins.",
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Workflow Orchestration",
+    "operatingSystem": "Linux, macOS, Windows",
+    "downloadUrl": "https://github.com/kestra-io/kestra",
+    "author": { "@id": "https://kestra.io/#organization" },
+    "publisher": { "@id": "https://kestra.io/#organization" },
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "offers": [
+        {
+            "@type": "Offer",
+            "name": "Kestra Open Source",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock",
+            "url": "https://github.com/kestra-io/kestra",
+        },
+        {
+            "@type": "Offer",
+            "name": "Kestra Cloud",
+            "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "priceType": "https://schema.org/InvoicePrice",
+                "description": "Pay only for what you use",
+            },
+            "availability": "https://schema.org/InStock",
+            "url": "https://kestra.io/pricing",
+        },
+        {
+            "@type": "Offer",
+            "name": "Kestra Enterprise Edition",
+            "priceSpecification": {
+                "@type": "UnitPriceSpecification",
+                "priceType": "https://schema.org/InvoicePrice",
+                "description": "Annual subscription — contact sales",
+            },
+            "availability": "https://schema.org/InStock",
+            "url": "https://kestra.io/demo",
+        },
+    ],
+}
+
+if (isVariantOf) {
+    schema.isVariantOf = { "@id": isVariantOf }
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
