@@ -250,7 +250,7 @@ comparison:
         - "Self-hosted runners"
         - "Self-hosted"
     - feature: "Orchestrate beyond Ansible"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Ansible-centric"
         - "Possible, action-dependent"

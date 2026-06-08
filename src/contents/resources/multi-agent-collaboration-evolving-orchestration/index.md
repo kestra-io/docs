@@ -1,24 +1,24 @@
 ---
 title: "Multi-Agent Collaboration via Evolving Orchestration"
 description: "Explore multi-agent collaboration via evolving orchestration. Learn how dynamic orchestrators improve AI agent systems. Optimize your LLM agents now!"
-metaTitle: "Multi-Agent Collaboration & Evolving AI Orchestration"
-metaDescription: "Explore how multi-agent collaboration with evolving orchestration enhances AI agent systems. Discover dynamic orchestrators for LLM agents to optimize performance and adaptability."
+metaTitle: "Multi-Agent Collaboration & Evolving Orchestration | Kestra"
+metaDescription: "Learn how multi-agent collaboration with evolving orchestration improves AI agent systems. See how dynamic orchestrators adapt LLM workflows for better results."
 tag: "ai"
 date: 2026-05-09
 slug: "multi-agent-collaboration-evolving-orchestration"
 faq:
   - question: "What does multi-agent orchestration mean?"
-    answer: "Multi-agent orchestration involves coordinating multiple AI agents to work together towards a common goal. It manages their interactions, task delegation, and overall workflow to achieve complex objectives more effectively than individual agents."
-  - question: "What is the key mechanism that enables effective collaboration between multiple AI agents?"
-    answer: "Effective collaboration in multi-agent systems is often enabled by a centralized orchestrator employing a 'puppeteer-style paradigm.' This orchestrator dynamically directs agents, assigning specialized roles and adapting their sequence and priority, often through mechanisms like reinforcement learning."
+    answer: "Multi-agent orchestration involves coordinating multiple AI agents to work together towards a common goal. It manages their interactions, task delegation, and overall workflow to achieve complex objectives more effectively than any individual agent could alone."
+  - question: "What is the puppeteer paradigm in multi-agent AI systems?"
+    answer: "The puppeteer paradigm is an orchestration model in which a centralized orchestrator (the 'puppeteer') dynamically directs specialized sub-agents ('puppets') in response to the evolving state of a task. Introduced in research accepted at NeurIPS 2025, the orchestrator is trained via reinforcement learning to adaptively sequence and prioritize agents, producing more compact and efficient reasoning than static multi-agent structures."
   - question: "Why is an orchestrator important in multi-agent systems?"
-    answer: "An orchestrator is crucial for the smooth operation of multi-agent systems by providing task delegation, coordination, and overall governance. It assigns work to specialized agents based on predefined rules, real-time signals, and workload awareness, ensuring efficient execution and problem-solving."
+    answer: "An orchestrator is crucial for the smooth operation of multi-agent systems by providing task delegation, coordination, and overall governance. It assigns work to specialized agents based on predefined rules, real-time signals, and workload awareness, ensuring efficient execution and handling failures gracefully."
   - question: "What is multi-model orchestration?"
-    answer: "Multi-model orchestration refers to integrating and managing several distinct AI models that collaborate on related tasks. Instead of relying on a single model, workflows strategically leverage different models, each chosen for its unique strengths to optimize specific outputs."
-  - question: "What is the difference between agent and orchestration?"
-    answer: "Agents provide capabilities and execute tasks, while orchestration provides the control and coordination layer. Agents often operate iteratively and in parallel within a multi-agent system, and the orchestrator manages their collective behavior rather than a linear input-to-output flow."
-  - question: "What is an example of a multi-agent system?"
-    answer: "A multi-agent system could be a customer service bot that uses specialized AI agents for different tasks: one agent for intent recognition, another for retrieving knowledge base articles, a third for escalating to a human, and a fourth for logging interactions. The orchestrator directs these agents based on the user's query and interaction flow."
+    answer: "Multi-model orchestration refers to integrating and managing several distinct AI models that collaborate on related tasks within a single workflow. Instead of relying on a single model, workflows strategically leverage different models — each chosen for its unique strengths — to optimize specific outputs and reduce cost."
+  - question: "What is the difference between an AI agent and orchestration?"
+    answer: "Agents provide capabilities and execute tasks, while orchestration provides the control and coordination layer. An AI agent perceives its environment and acts to achieve a goal (e.g., calling an API, running a script). Orchestration defines the rules of engagement, manages the flow of information between agents, and makes high-level decisions about strategy and sequencing."
+  - question: "How does declarative orchestration help manage evolving multi-agent systems?"
+    answer: "Declarative orchestration — where workflows are defined as code such as YAML — treats agent strategies as versioned artifacts. This enables GitOps practices: pull-request reviews for strategy changes, A/B testing of different orchestration logics, and instant rollbacks to a previous version if a new strategy underperforms in production."
 ---
 
 The promise of AI agents working together autonomously has long captivated technologists. Yet, transforming this vision into reliable, production-ready systems often hits a wall of complexity: how do you coordinate multiple intelligent agents, each with its own capabilities, without sacrificing control or visibility? Static, predefined workflows quickly falter in the face of dynamic, unpredictable AI interactions.
@@ -29,7 +29,7 @@ This is where evolving orchestration steps in. Far beyond simple task sequencing
 
 ### What does multi-agent orchestration mean?
 
-Multi-agent orchestration is the practice of coordinating multiple, often specialized, [AI agents](https://kestra.io/resources/ai/ai-agent) to achieve a common goal. Unlike single-agent systems that handle a task from start to finish, a multi-agent system breaks down a complex problem into sub-tasks, each handled by an agent best suited for the job.
+Multi-agent orchestration is the practice of coordinating multiple, often specialized, [AI agents](https://kestra.io/resources/ai/ai-agent) to achieve a common goal. Unlike single-agent systems that handle a task from start to finish, a [multi-agent system](https://kestra.io/resources/ai/multi-agent-system) breaks down a complex problem into sub-tasks, each handled by an agent best suited for the job.
 
 This collaborative approach offers significant benefits:
 *   **Efficiency:** Specialized agents perform their tasks more effectively than a single generalist agent.
@@ -100,10 +100,10 @@ Each of these agents could be a separate script, API call, or even another LLM. 
 
 ### What is multi-model orchestration?
 
-Multi-model orchestration is the practice of using multiple, different AI models within a single workflow. Instead of relying on a single, general-purpose model, this approach leverages the unique strengths of various specialized models. For example, a workflow might use:
+Multi-model orchestration is the practice of using multiple, different AI models within a single [agentic workflow](https://kestra.io/resources/ai/agentic-workflows). Instead of relying on a single, general-purpose model, this approach leverages the unique strengths of various specialized models. For example, a workflow might use:
 
-*   **Anthropic's Claude 3.5 Sonnet** for its reasoning capabilities to analyze a complex problem.
-*   **OpenAI's GPT-4o** for its code generation abilities to write a remediation script.
+*   **Anthropic's Claude 3.5 Sonnet** for its nuanced instruction-following and writing quality to analyze and summarize a complex problem.
+*   **OpenAI's GPT-4o** for its strong coding and multimodal abilities to write a remediation script.
 *   A smaller, fine-tuned open-source model for a simple classification task to reduce costs.
 
 A flexible orchestration platform with a rich plugin ecosystem makes this possible, allowing you to seamlessly integrate models from providers like [OpenAI](https://kestra.io/plugins/plugin-ai/provider/io.kestra.plugin.ai.provider.openai) and [Anthropic](https://kestra.io/plugins/plugin-ai/provider/io.kestra.plugin.ai.provider.anthropic) into a single, cohesive workflow.

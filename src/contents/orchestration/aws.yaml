@@ -277,7 +277,7 @@ postCompareCta:
 
 faq:
   - question: "Does Kestra replace Step Functions?"
-    answer: "Step Functions is great for AWS-native state machines that live entirely inside AWS, especially with deep integration into Lambda and Map states for parallel processing. Kestra is a general-purpose orchestrator that calls the AWS API as one of 1300+ plugins. Use Step Functions when every step is AWS and you want the ASL state machine. Use Kestra when the flow spans AWS plus non-AWS tools (dbt, Snowflake, Slack, GitHub, ServiceNow), needs approval gates from your team UI, and benefits from portable YAML over AWS-only ASL."
+    answer: "Step Functions is great for AWS-native state machines that live entirely inside AWS, especially with deep integration into Lambda and Map states for parallel processing. Kestra is a general-purpose orchestrator that calls the AWS API as one of 1400+ plugins. Use Step Functions when every step is AWS and you want the ASL state machine. Use Kestra when the flow spans AWS plus non-AWS tools (dbt, Snowflake, Slack, GitHub, ServiceNow), needs approval gates from your team UI, and benefits from portable YAML over AWS-only ASL."
   - question: "How does Kestra authenticate to AWS?"
     answer: "Standard AWS auth chain. Static credentials (accessKeyId, secretAccessKey) for local dev. Instance role for Kestra workers running on EC2 or ECS. IRSA (IAM Roles for Service Accounts) when Kestra runs on EKS. For cross-account ops, every task accepts stsRoleArn, stsRoleSessionName, and stsRoleExternalId to assume a role per task. Secrets go through Kestra's secrets backend; nothing AWS-credential-shaped lives in flow YAML."
   - question: "How does the S3 trigger handle high-throughput buckets?"

@@ -1,23 +1,23 @@
 ---
 title: "Automated Patch Management: A Complete Guide"
 description: "Unpatched systems drive most successful cyberattacks. Automated patch management closes the gap between vulnerability disclosure and deployment. Learn the stages, tools, and how to build a patching workflow that runs itself."
-metaTitle: "Automated Patch Management: Complete Guide"
-metaDescription: "Automated patch management streamlines updates, reduces manual effort, and closes security gaps. Learn the stages, tools, and best practices."
+metaTitle: "Automated Patch Management: Complete Guide | Kestra"
+metaDescription: "Automated patch management streamlines updates, reduces manual effort, and closes security gaps fast. Learn the five-stage cycle, top tools, and best practices."
 tag: infrastructure
 date: 2026-04-22
 faq:
   - question: "What is automated patch management?"
     answer: "Automated patch management uses software to identify missing updates, prioritize them by risk, test them, deploy them on a schedule, and report compliance — with minimal manual intervention. It shifts patching from a repetitive manual chore to a codified workflow that runs continuously in the background."
-  - question: "What are common automation systems used for patch management?"
-    answer: "Common tools include Automox (cloud-native, cross-OS, 580+ third-party apps), NinjaOne (multi-OS with AI-driven patch intelligence and 6,000+ apps), Red Hat Satellite (enterprise Linux fleet patching), Microsoft Intune and WSUS (Windows estates), and Ansible (script-based patching across heterogeneous fleets). Large organizations typically combine several, with orchestration tying them together."
+  - question: "What are common tools used for automated patch management?"
+    answer: "Common tools include Automox (cloud-native, cross-OS, 580+ third-party apps), NinjaOne (multi-OS with AI-driven Patch Intelligence and 6,000+ apps), Red Hat Satellite (enterprise RHEL fleet patching), Microsoft Intune (Windows estates; note: WSUS was deprecated by Microsoft in September 2024), and Ansible (script-based patching across heterogeneous fleets). Large organizations typically combine several, with an orchestration layer tying them together."
   - question: "What does patch management software do?"
     answer: "Patch management software applies vendor-issued updates to close security vulnerabilities and optimize software and device performance. It handles the full lifecycle: discovering missing patches, assessing priority, testing in non-production environments, deploying on a schedule, monitoring success or failure, and reporting compliance. It's typically considered a subset of vulnerability management."
   - question: "How do you automate server patching?"
     answer: "Automated server patching typically follows this pattern: a scheduled workflow queries the patch tool for available updates, groups servers into risk rings (dev, staging, canary, production), applies patches to the first ring with health checks, validates stability, then proceeds to the next ring. Failures trigger rollback and notify on-call engineers."
-  - question: "What exactly is patch management?"
-    answer: "Patch management is the process of applying vendor-issued updates to close security vulnerabilities and optimize the performance of software and devices. It covers discovery, assessment, testing, deployment, and reporting — and is typically considered a subset of vulnerability management, which covers the broader discipline of identifying and reducing risk."
+  - question: "What is the difference between patch management and vulnerability management?"
+    answer: "Patch management is the process of applying vendor-issued updates to close security vulnerabilities and improve software performance. Vulnerability management is the broader discipline of identifying, assessing, and reducing risk across the entire attack surface — which includes patching but also covers configuration hardening, compensating controls, and risk acceptance. Patch management is typically considered a subset of vulnerability management."
   - question: "How often should patches be applied?"
-    answer: "Critical security patches should deploy within 24-72 hours of disclosure for internet-facing systems and 7-14 days for internal systems. Non-critical patches typically follow a monthly cadence. Feature patches go through the normal change calendar. Automation is what makes aggressive SLAs realistic — manual processes can't keep up with modern disclosure timelines."
+    answer: "Critical security patches should deploy within 24-72 hours of disclosure for internet-facing systems and 7-14 days for internal systems. Non-critical patches typically follow a monthly cadence. Feature patches go through the normal change calendar. Automation is what makes aggressive SLAs realistic — manual processes can't keep up with modern disclosure timelines, especially as exploit windows have shrunk to hours in 2025-2026."
 ---
 
 Unpatched systems drive most successful cyberattacks — not zero-days, but known vulnerabilities with available fixes that simply weren't deployed in time. The gap between "patch released" and "patch applied across every machine" is where most breaches happen. Automated patch management closes that gap by turning a manual, error-prone process into a repeatable workflow that runs continuously in the background.
@@ -32,7 +32,7 @@ The term covers more than just running updates. A real automated patch managemen
 
 ## Why Patch Management Automation Is Critical for Security
 
-Patches are a race. When a vulnerability is disclosed, attackers start scanning for unpatched systems within hours. Manual patch management cycles — weekly scans, quarterly deployments, case-by-case approvals — simply can't keep up. Automation compresses the time-to-patch from weeks to hours, which is often the difference between a non-event and a breach.
+Patches are a race. When a vulnerability is disclosed, attackers start scanning for unpatched systems within hours. Manual patch management cycles — weekly scans, quarterly deployments, case-by-case approvals — simply can't keep up. Automation compresses the time-to-patch from weeks to hours, which is often the difference between a non-event and a breach. This urgency is why patch management automation is a core pillar of any mature [IT automation platform](/resources/infrastructure/it-automation-platform).
 
 Beyond speed, automation also closes two other common gaps:
 
@@ -77,7 +77,7 @@ Roll out patches to production on a staged schedule with health checks between s
 
 ### 5. Reporting
 
-Capture which systems were patched, which failed, and surface exceptions for human review. Compliance reports (for PCI, HIPAA, SOC 2, ISO 27001) are generated from this data rather than reconstructed after the fact.
+Capture which systems were patched, which failed, and surface exceptions for human review. Compliance reports (for PCI, HIPAA, SOC 2, ISO 27001) are generated from this data rather than reconstructed after the fact. This stage feeds directly into [disaster recovery](/resources/infrastructure/disaster-recovery) and audit readiness programs.
 
 ## A Concrete Example — Automated Patching Workflow
 
@@ -144,12 +144,12 @@ No single tool covers every OS, every environment, every compliance regime. Most
 | --- | --- | --- | --- |
 | **Automox** | Cloud-native fleets | Windows, macOS, Linux, 580+ apps | SaaS-only, less suited to air-gapped |
 | **NinjaOne** | Multi-OS MSP-style management | Broad OS + 6,000+ apps | More IT-ops focused than security-first |
-| **Red Hat Satellite** | Linux enterprise fleets | RHEL / CentOS / Fedora | Linux-only |
-| **Microsoft Intune / WSUS** | Windows estates | Windows + Microsoft stack | Windows-first |
+| **Red Hat Satellite** | Linux enterprise fleets | RHEL and RHEL-compatible distributions | Linux-only |
+| **Microsoft Intune** | Windows estates | Windows + Microsoft stack | Windows-first; WSUS was deprecated by Microsoft in Sept 2024 |
 | **Ansible** | Heterogeneous fleets | Any OS via modules | Script-based, needs orchestration on top |
 | **Tanium** | Security-focused large enterprise | Cross-platform | Expensive; heavy agent |
 
-The orchestration layer is what ties these tools together. [Ansible](/orchestration/ansible) handles the actual patching, Satellite owns the RHEL fleet, Intune owns the Windows estate — and a single orchestrator wraps them all in governed workflows with approvals, audit trails, and rollback logic.
+The orchestration layer is what ties these tools together. [Ansible](/orchestration/ansible) handles the actual patching, Satellite owns the RHEL fleet, Intune owns the Windows estate — and a single orchestrator wraps them all in governed workflows with approvals, audit trails, and rollback logic. Kestra's [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) model is particularly well-suited to this, letting patch workflows trigger automatically on vulnerability disclosure events.
 
 ## Choosing a Patch Management Solution
 
@@ -175,6 +175,6 @@ Five practices that separate mature patching programs from theatrical ones:
 
 ## Getting Started
 
-Automated patch management is less about the specific patching tool and more about the orchestration around it — approval gates, audit trails, rollback logic, and integration with the rest of the operations stack. The tool that scans and applies patches is replaceable; the orchestration layer is what makes the whole system governable.
+Automated patch management is less about the specific patching tool and more about the orchestration around it — approval gates, audit trails, rollback logic, and integration with the rest of the operations stack. The tool that scans and applies patches is replaceable; the orchestration layer is what makes the whole system governable. Teams that have already adopted [GitOps](/resources/infrastructure/gitops) for infrastructure often find it natural to version-control their patching policies alongside the rest of their infrastructure-as-code. Similarly, organizations building toward [hybrid cloud automation](/resources/infrastructure/hybrid-cloud-automation) benefit from a unified patching layer that spans on-prem and cloud estates.
 
 For teams evaluating orchestration for patching workflows, Kestra is open-source, self-hostable, and integrates natively with Ansible, SSH, cloud APIs, and vendor patching tools. Start with the [infrastructure automation hub](/infra-automation), explore [Assets for Infra Automation](/blogs/assets-for-infra-automation) for live inventory-driven patching, or read the broader case for [declarative infrastructure workflows](/blogs/infra-automation).

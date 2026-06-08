@@ -1,13 +1,15 @@
 // @ts-check
-import { defineConfig, envField, fontProviders } from "astro/config"
+import {defineConfig, envField, fontProviders, svgoOptimizer} from "astro/config"
 
 import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
+import node from "@astrojs/node"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
 import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
+import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
@@ -23,18 +25,26 @@ const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
 )
 
+// The Cloudflare adapter runs `astro dev` inside workerd, which breaks image
+// serving: the astro:assets endpoint (CJS picomatch) and /@fs assets both fail
+// (withastro/astro#15437). So use Node for local dev (Vite serves images via
+// sharp) and Cloudflare only for the build.
+const isDev = process.argv.includes("dev")
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
-    adapter: cloudflare({
-        sessionKVBindingName: "docs-session",
-        prerenderEnvironment: "node",
-        // only use cloudflare images in production
-        imageService:
-            process.env.NO_IMAGE_OPTIM === "true"
-                ? "passthrough"
-                : "cloudflare",
-    }),
+    adapter: isDev
+        ? node({ mode: "standalone" })
+        : cloudflare({
+              sessionKVBindingName: "docs-session",
+              prerenderEnvironment: "node",
+              // only use cloudflare images in production
+              imageService:
+                  process.env.NO_IMAGE_OPTIM === "true"
+                      ? "passthrough"
+                      : "cloudflare",
+          }),
     trailingSlash: "ignore",
     integrations: [
         vue({
@@ -51,6 +61,7 @@ export default defineConfig({
     ],
     markdown: {
         remarkPlugins: [
+            remarkGfm,
             remarkMermaid,
             remarkClassname,
             remarkDirective,
@@ -136,7 +147,7 @@ export default defineConfig({
         },
     ],
     experimental: {
-        svgo: {
+        svgOptimizer: svgoOptimizer({
             plugins: [
                 {
                     name: "preset-default",
@@ -148,7 +159,7 @@ export default defineConfig({
                 },
                 "removeDimensions",
             ],
-        },
+        }),
     },
     env: {
         schema: {
