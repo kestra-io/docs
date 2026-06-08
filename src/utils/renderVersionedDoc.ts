@@ -157,12 +157,15 @@ const escapeHtml = (s: string) =>
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
 
-/** Render the homepage CTA buttons as a row of styled links. */
+/**
+ * Render the homepage CTA buttons as a row of styled links, mirroring the live
+ * site's HomePageButtons: the first button is primary, the rest secondary.
+ */
 const buttonRowHtml = (buttons: HomePageButton[]): string =>
     `<div class="vd-buttons">${buttons
         .map(
-            (b) =>
-                `<a class="vd-button" href="${escapeHtml(b.href)}">${escapeHtml(b.label)}</a>`,
+            (b, i) =>
+                `<a class="vd-button ${i === 0 ? "vd-button-primary" : "vd-button-secondary"}" href="${escapeHtml(b.href)}">${escapeHtml(b.label)}</a>`,
         )
         .join("")}</div>`
 
@@ -323,10 +326,15 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, san
 .vd-cta:hover { background: #6b2fd6; }
 .vd-cta-secondary { background: #1c1e21; }
 .vd-cta-secondary:hover { background: #000; }
-.vd-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0 2rem; }
-.vd-button { display: inline-block; background: #7e3fef; color: #fff; text-decoration: none;
-    font-weight: 600; padding: 0.6rem 1.2rem; border-radius: 0.5rem; }
-.vd-button:hover { background: #6b2fd6; }
+.vd-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 3rem; }
+.vd-content .vd-button { display: inline-block; font-weight: 700; line-height: 1.5;
+    padding: 0.5rem 1rem; border-radius: 0.375rem; text-decoration: none; white-space: nowrap;
+    border: 1px solid transparent; }
+.vd-content .vd-button-primary { background: #631bff; color: #fff;
+    box-shadow: 0 0 14px 0 #BE62FF inset, 2px 2px 11px 0 #0000001a; }
+.vd-content .vd-button-primary:hover { background: #8465ff; color: #fff; }
+.vd-content .vd-button-secondary { background: #fff; color: #131316; border-color: #131316; }
+.vd-content .vd-button-secondary:hover { background: #131316; color: #fff; }
 .vd-layout { display: flex; align-items: flex-start; }
 .vd-sidebar { flex: 0 0 18rem; width: 18rem; align-self: stretch; position: sticky; top: 0;
     max-height: 100vh; overflow-y: auto; border-right: 1px solid #e3e5e8; padding: 1.5rem 1rem; }
@@ -414,6 +422,8 @@ details[open] > .vd-tree-summary .vd-tree-caret { transform: rotate(90deg); }
     .vd-content pre { background: #1c1e24; }
     .vd-content code { background: #2b2540; }
     .vd-content th, .vd-content td { border-color: #2b2e36; }
+    .vd-content .vd-button-secondary { background: #1c1c20; color: #fff; border-color: #fff; }
+    .vd-content .vd-button-secondary:hover { background: #fff; color: #131316; }
     .vd-alert { background: #201c30; }
     .vd-alert-warning { background: #2a2417; }
     .vd-alert-danger { background: #2a1a1b; }

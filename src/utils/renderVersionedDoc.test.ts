@@ -147,20 +147,23 @@ A paragraph with [a link](https://kestra.io).`)
         expect(html).toContain('href="https://kestra.io"')
     })
 
-    it("renders HomePageButtons as a styled link row, not leaking :buttons", async () => {
+    it("renders HomePageButtons as a styled link row, first primary then secondary, not leaking :buttons", async () => {
         const html = await render(`---
 title: T
 ---
 Welcome.
 
-:::HomePageButtons{ :buttons='[{"label":"Quickstart →","href":"/docs/quickstart#start-kestra"}]'}
+:::HomePageButtons{ :buttons='[{"label":"Quickstart →","href":"/docs/quickstart#start-kestra"},{"label":"Why Kestra?","href":"/docs/why-kestra"}]'}
 :::
 
 More.`)
         expect(html).toContain('class="vd-buttons"')
-        expect(html).toContain('class="vd-button"')
+        // first button is primary, the rest secondary (mirrors the live site)
+        expect(html).toContain('class="vd-button vd-button-primary"')
+        expect(html).toContain('class="vd-button vd-button-secondary"')
         expect(html).toContain("Quickstart →")
         expect(html).toContain('href="/docs/quickstart#start-kestra"')
+        expect(html).toContain("Why Kestra?")
         expect(html).not.toContain(":buttons")
         expect(html).not.toContain("HomePageButtons")
         // the container's closing ::: must be consumed too, not orphaned
