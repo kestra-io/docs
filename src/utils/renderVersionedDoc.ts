@@ -1,15 +1,10 @@
-import { createMarkdownProcessor } from "@astrojs/markdown-remark"
-import remarkDirective from "remark-directive"
+import { createMarkdownParser } from "@nuxtjs/mdc/runtime"
 import {
     buildDocTree,
     currentDocKey,
     docChildHref,
     frontmatterField,
-    parseHomePageButtons,
-    stripFrontmatter,
-    stripUnsupportedMdc,
     versionSelectOptions,
-    HOMEPAGE_BUTTONS_RE,
     NAV,
     type DocChildren,
     type DocTreeNode,
@@ -22,108 +17,137 @@ import { editionLabelAndColorByPrefix } from "~/utils/badgeMaps.mjs"
 import logoLight from "~/assets/logo-black.svg?raw"
 import logoDark from "~/assets/logo-white.svg?raw"
 
-// Minimal mdast node shape for the directive nodes remark-directive emits and
-// the hast-override children we build (type + data.hName/hProperties).
+// The @nuxtjs/mdc parser emits a hast-like tree: element nodes carry a kebab-case
+// `tag` and a `props` map (camelCase hast attrs), text nodes a `value`. We walk
+// it ourselves to emit JS-less HTML — the MDC Vue renderer needs a Vue runtime,
+// which the standalone page deliberately has none of.
 interface MdcNode {
     type: string
-    name?: string
-    attributes?: Record<string, string>
-    data?: { hName?: string; hProperties?: Record<string, unknown> }
+    tag?: string
+    props?: Record<string, unknown>
     children?: MdcNode[]
     value?: string
 }
 
-const hastEl = (
-    hName: string,
-    cls: string,
-    children: MdcNode[],
-): MdcNode => ({
-    type: "element",
-    data: { hName, hProperties: cls ? { class: cls } : {} },
-    children,
-})
-const hastText = (value: string): MdcNode => ({ type: "text", value })
+// Tags passed straight through as HTML. Anything else is treated as a bespoke
+// MDC component (alert/collapse/badge/home-page-buttons get styled; the rest
+// fall through to just their children — no "::"/component-name leak).
+const HTML_TAGS = new Set([
+    "p", "a", "strong", "em", "del", "code", "pre", "blockquote", "hr", "br",
+    "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li", "table", "thead",
+    "tbody", "tr", "th", "td", "img", "span", "div", "sup", "sub", "kbd",
+    "figure", "figcaption", "details", "summary", "section", "video", "source",
+    "iframe", "picture",
+])
+const VOID_TAGS = new Set(["img", "br", "hr", "source", "input", "meta", "link"])
+// MDC-internal props that aren't real HTML attributes.
+const DROP_PROPS = new Set(["code", "language", "meta", "__ignoreMap"])
 
-// Style the known MDC components by setting hast overrides on their directive
-// nodes — the same mechanism remark-custom-elements uses, but scoped to this
-// page: no bootstrap classes (only our self-contained vd-* classes) and no
-// throwing (a badge with no attributes just renders nothing). Unknown/relic
-// directives are left untouched so mdast-util-to-hast's default handler renders
-// them as a plain <div> with content preserved (no "::" leak).
-function styleDirective(node: MdcNode): void {
-    const name = (node.name ?? "").toLowerCase()
-    const attrs = node.attributes ?? {}
-    const data = node.data ?? (node.data = {})
-    if (name === "alert") {
-        data.hName = "div"
-        data.hProperties = { class: `vd-alert vd-alert-${attrs.type ?? "info"}` }
-    } else if (name === "collapse") {
-        data.hName = "details"
-        data.hProperties = { class: "vd-collapse" }
-        node.children = [
-            hastEl("summary", "", [hastText(attrs.title ?? "Details")]),
-            ...(node.children ?? []),
-        ]
-    } else if (name === "badge") {
-        const pills: MdcNode[] = []
-        if (attrs.version) {
-            pills.push(hastEl("span", "vd-badge-v", [hastText(attrs.version)]))
+/** Serialize an MDC props map to an HTML attribute string. */
+function attrs(props: Record<string, unknown>): string {
+    let out = ""
+    for (const [k, v] of Object.entries(props)) {
+        if (k.startsWith(":") || DROP_PROPS.has(k) || v === false || v == null) {
+            continue
         }
-        for (const e of (attrs.editions ?? "")
-            .split(",")
-            .map((x) => x.trim())
-            .filter(Boolean)) {
-            const label = editionLabelAndColorByPrefix[e]?.label ?? e
-            pills.push(hastEl("span", "vd-badge-v", [hastText(label)]))
+        const name = k === "className" ? "class" : k === "htmlFor" ? "for" : k
+        if (v === true) {
+            out += ` ${name}`
+            continue
         }
-        data.hName = "div"
-        data.hProperties = { class: "vd-badge" }
-        node.children = pills.length
-            ? [hastEl("span", "vd-badge-k", [hastText("Available on:")]), ...pills]
+        const val = Array.isArray(v) ? v.join(" ") : String(v)
+        if (name === "class" && !val) continue
+        out += ` ${name}="${escapeHtml(val)}"`
+    }
+    return out
+}
+
+/** The MDC parser leaves `:buttons='[…]'` as a raw JSON string prop. */
+function parseButtons(raw: unknown): HomePageButton[] {
+    if (Array.isArray(raw)) return raw as HomePageButton[]
+    if (typeof raw !== "string") return []
+    try {
+        const v = JSON.parse(raw)
+        return Array.isArray(v)
+            ? v.filter(
+                  (b) =>
+                      b &&
+                      typeof b.label === "string" &&
+                      typeof b.href === "string",
+              )
             : []
+    } catch {
+        return []
     }
 }
 
-function remarkVersionedDocComponents() {
-    return (tree: MdcNode) => {
-        const walk = (node: MdcNode) => {
-            if (
-                node.type === "containerDirective" ||
-                node.type === "leafDirective" ||
-                node.type === "textDirective"
-            ) {
-                styleDirective(node)
-                // An inline (text) directive we don't style — e.g. :PluginCount,
-                // an island with no SSR equivalent here — must stay inline so it
-                // doesn't split the surrounding paragraph into <p>…</p><div></div>.
-                if (node.type === "textDirective" && !node.data?.hName) {
-                    ;(node.data ??= {}).hName = "span"
-                }
-            }
-            node.children?.forEach(walk)
+/** "Available on:" pill row for ::badge{version editions}. */
+function badgeHtml(props: Record<string, unknown>): string {
+    const pills: string[] = []
+    if (props.version) {
+        pills.push(`<span class="vd-badge-v">${escapeHtml(String(props.version))}</span>`)
+    }
+    for (const e of String(props.editions ?? "")
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)) {
+        const label = editionLabelAndColorByPrefix[e]?.label ?? e
+        pills.push(`<span class="vd-badge-v">${escapeHtml(label)}</span>`)
+    }
+    if (!pills.length) return ""
+    return `<div class="vd-badge"><span class="vd-badge-k">Available on:</span>${pills.join("")}</div>`
+}
+
+// Style the handful of known MDC components with our self-contained vd-* markup.
+// `inner` is always appended: MDC's "::" (no closing fence) is a *block*
+// component that swallows the following content as its body, so dropping
+// children would drop real page content. Unknown components render as just
+// their children — graceful, no leak.
+function componentHtml(
+    tag: string,
+    props: Record<string, unknown>,
+    inner: string,
+): string {
+    switch (tag) {
+        case "alert":
+            return `<div class="vd-alert vd-alert-${escapeHtml(String(props.type ?? "info"))}">${inner}</div>`
+        case "collapse":
+            return `<details class="vd-collapse"><summary>${escapeHtml(String(props.title ?? "Details"))}</summary>${inner}</details>`
+        case "badge":
+            return badgeHtml(props) + inner
+        case "home-page-buttons": {
+            const buttons = parseButtons(props[":buttons"] ?? props.buttons)
+            return (buttons.length ? buttonRowHtml(buttons) : "") + inner
         }
-        walk(tree)
+        default:
+            return inner
     }
 }
 
-// createMarkdownProcessor is expensive to build; reuse one instance.
-// Syntax highlighting (shiki) themes aren't bundled for the Worker runtime,
-// so it's disabled — code blocks render as plain <pre><code>.
-//
-// remark-directive parses MDC "::" blocks (e.g. ::alert) into directive nodes;
-// remarkVersionedDocComponents then styles the known components (alert/collapse/
-// badge) and leaves everything else for mdast-util-to-hast's default <div>
-// handler, mirroring how the Kestra UI's MDC renderer styles known components
-// and falls back gracefully on unknown/relic ones — without leaking "::" text.
-let processorPromise: ReturnType<typeof createMarkdownProcessor> | null = null
-function getProcessor() {
-    if (!processorPromise) {
-        processorPromise = createMarkdownProcessor({
-            syntaxHighlight: false,
-            remarkPlugins: [remarkDirective, remarkVersionedDocComponents],
-        })
+/** Walk the MDC tree, emitting JS-less HTML. */
+function serialize(node?: MdcNode): string {
+    if (!node) return ""
+    if (node.type === "text") return escapeHtml(node.value ?? "")
+    if (node.type === "comment") return ""
+    if (node.type === "element") {
+        const tag = node.tag ?? ""
+        const inner = (node.children ?? []).map(serialize).join("")
+        if (!tag) return inner
+        if (!HTML_TAGS.has(tag)) return componentHtml(tag, node.props ?? {}, inner)
+        if (VOID_TAGS.has(tag)) return `<${tag}${attrs(node.props ?? {})}>`
+        return `<${tag}${attrs(node.props ?? {})}>${inner}</${tag}>`
     }
-    return processorPromise
+    return (node.children ?? []).map(serialize).join("")
+}
+
+// createMarkdownParser is framework-agnostic (no Vue runtime) and runs on the
+// Worker. It natively parses both MDC dialects in the corpus — "::" (0.19–0.24)
+// and ":::" (1.0/1.1) — including `:prop='json'` v-bind props, so no bespoke
+// pre-processing of the markdown is needed. It's expensive to build; reuse one.
+let parserPromise: ReturnType<typeof createMarkdownParser> | null = null
+function getParser() {
+    if (!parserPromise) parserPromise = createMarkdownParser()
+    return parserPromise
 }
 
 const escapeHtml = (s: string) =>
@@ -457,21 +481,17 @@ export async function renderVersionedDocHtml({
     const h1 = frontmatterField(markdown, "h1") ?? title
     const description = frontmatterField(markdown, "description")
 
-    const processor = await getProcessor()
-    let md = stripFrontmatter(markdown)
-    // Render the homepage CTA buttons in place (their `:buttons` syntax leaks
-    // otherwise), then drop the remaining empty bespoke MDC blocks.
-    const buttons = parseHomePageButtons(md)
-    if (buttons?.length) {
-        md = md.replace(HOMEPAGE_BUTTONS_RE, () => buttonRowHtml(buttons))
-    }
-    md = stripUnsupportedMdc(md)
-    const { code: body } = await processor.render(md)
+    const parse = await getParser()
+    // The parser strips frontmatter and parses the MDC body (both "::" and
+    // ":::" dialects, plus `:prop='json'` props) into a hast-like tree we
+    // serialize ourselves — no Vue runtime, no "::"/component-name leak.
+    const { body } = await parse(markdown)
+    const bodyHtml = serialize(body as MdcNode)
 
     const sidebar = sidebarHtml(version, children, path)
     const article = `<main class="vd-content">
 <h1>${escapeHtml(h1)}</h1>
-${body}
+${bodyHtml}
 </main>`
     // With a sidebar, lay it out beside the content; without one (children empty
     // or the endpoint failed) keep the single centred content column.

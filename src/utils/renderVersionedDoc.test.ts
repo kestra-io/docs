@@ -112,6 +112,29 @@ After.`)
         expect(html).toContain("After.")
     })
 
+    it("passes raw HTML blocks (video embeds, iframes) through to the output", async () => {
+        // Real homepages embed raw HTML — a video-container div wrapping a
+        // YouTube iframe. These must survive to the output, not be escaped or
+        // dropped.
+        const html = await render(`---
+title: T
+---
+Intro.
+
+<div class="video-container">
+<iframe width="560" src="https://www.youtube.com/embed/xnGYiWFM2uk" allowfullscreen></iframe>
+</div>
+
+Outro.`)
+        expect(html).toContain('class="video-container"')
+        expect(html).toContain("<iframe")
+        expect(html).toContain('src="https://www.youtube.com/embed/xnGYiWFM2uk"')
+        // not HTML-escaped into visible text
+        expect(html).not.toContain("&lt;iframe")
+        expect(html).toContain("Intro.")
+        expect(html).toContain("Outro.")
+    })
+
     it("still renders ordinary markdown", async () => {
         const html = await render(`---
 title: T
