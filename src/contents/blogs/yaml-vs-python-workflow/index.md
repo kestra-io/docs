@@ -3,7 +3,7 @@ title: "YAML vs Python Workflows: Which Is Better for Orchestration?"
 description: "Python excels at execution logic. YAML excels at defining workflows. Here's a practical breakdown of when to reach for each, and how modern orchestrators let you use both."
 metaTitle: "YAML vs Python Workflows: Orchestration Comparison"
 metaDescription: "Compare YAML vs Python workflows for orchestration. Understand their strengths, weaknesses, and when to choose each for defining and executing modern, scalable workflows."
-date: 2026-05-22T13:00:00
+date: 2026-06-15T13:00:00
 category: Tutorials
 tag: "orchestration"
 author:
