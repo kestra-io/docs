@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { DISABLE_GITHUB } from "astro:env/server"
+import { compareVersionsDesc } from "~/utils/plugins/compareVersions"
 
 export const prerender = false
 
@@ -14,22 +15,6 @@ export interface ReleaseInfo {
     publishedAt: string | null
     minCoreCompatibilityVersion?: string | null
     releaseNotesUrl?: string | null
-}
-
-/**
- * Compare two semver-ish version strings ("1.3.20", "1.10.2") for descending sort.
- * Date sort is wrong for repos with parallel release lines (e.g. Kestra core: 1.1.x and 1.3.x
- * release concurrently — a recent 1.1.x patch was appearing above older 1.3.x in the dropdown).
- */
-function compareVersionsDesc(a: string, b: string): number {
-    const partsA = a.split(".").map((n) => parseInt(n, 10) || 0)
-    const partsB = b.split(".").map((n) => parseInt(n, 10) || 0)
-    const len = Math.max(partsA.length, partsB.length)
-    for (let i = 0; i < len; i++) {
-        const diff = (partsB[i] ?? 0) - (partsA[i] ?? 0)
-        if (diff !== 0) return diff
-    }
-    return 0
 }
 
 export async function retrieveRepoReleases(repo: string) {
