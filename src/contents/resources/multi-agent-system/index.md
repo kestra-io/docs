@@ -1,30 +1,28 @@
 ---
 title: "What is a Multi-Agent System? Explore MAS Basics"
 description: "Understand what a multi-agent system (MAS) is, how AI agents collaborate, and its key components. Learn to build and apply multi-agent systems today."
-metaTitle: "What is a Multi-Agent System? Explore MAS Basics"
-metaDescription: "Understand what a multi-agent system (MAS) is, how AI agents collaborate, and its key components. Learn to build and apply multi-agent systems today."
+metaTitle: "What is a Multi-Agent System? Explore MAS Basics | Kestra"
+metaDescription: "Understand what a multi-agent system (MAS) is, how AI agents collaborate, and its key components. Learn to build and orchestrate multi-agent AI systems today."
 tag: ai
 date: 2026-05-02
 faq:
-  - question: "What defines an intelligent agent in a Multi-Agent System?"
-    answer: "An intelligent agent in a MAS is an autonomous entity capable of perceiving its environment, reasoning about its observations, making decisions, and acting to achieve specific goals. Key characteristics include autonomy, proactivity, reactivity, social ability, and goal-directed behavior, often leveraging AI models like LLMs for reasoning."
-  - question: "How do multi-agent systems compare to single-agent systems?"
-    answer: "Single-agent systems address problems with a single decision-making entity, suitable for well-defined, isolated tasks. Multi-agent systems, conversely, involve multiple agents collaborating or competing to solve complex, distributed problems, often outperforming single agents in scenarios requiring diverse expertise, robustness, or scalability."
+  - question: "What defines an intelligent agent in a multi-agent system?"
+    answer: "An intelligent agent in a MAS is an autonomous entity capable of perceiving its environment, reasoning about its observations, making decisions, and acting to achieve specific goals. Key characteristics include autonomy, proactivity, reactivity, social ability, and goal-directed behavior, often leveraging LLMs for reasoning."
+  - question: "How do multi-agent systems differ from single-agent systems?"
+    answer: "Single-agent systems use one decision-making entity, suited to well-defined, isolated tasks. Multi-agent systems involve multiple agents collaborating or competing to solve complex, distributed problems, outperforming single agents in scenarios requiring diverse expertise, fault tolerance, or parallelism."
   - question: "What are the main types of multi-agent systems?"
-    answer: "Multi-agent systems are broadly categorized into collaborative, competitive, and hybrid types. Collaborative systems feature agents working towards a shared objective, pooling resources and knowledge. Competitive systems involve agents with conflicting goals, where success for one may mean failure for another. Hybrid systems combine elements of both, adapting to varying scenarios."
+    answer: "Multi-agent systems are broadly categorized into collaborative, competitive, and hybrid types. Collaborative systems feature agents working towards a shared objective. Competitive systems involve agents with conflicting goals. Hybrid systems combine elements of both, adapting their interaction strategy to the context."
   - question: "How are LLMs integrated into multi-agent systems?"
-    answer: "LLMs can act as the 'brain' for individual agents, providing natural language understanding, reasoning, and generation capabilities. They enable agents to interpret complex instructions, communicate effectively, and perform sophisticated tasks by leveraging their vast knowledge. Kestra can orchestrate these LLM-powered agents, providing tools, memory, and governance."
-  - question: "What are common real-world applications of Multi-Agent Systems?"
-    answer: "MAS applications span various domains, including supply chain management, traffic control, disaster response, autonomous driving, financial trading, and complex scientific simulations. They are particularly effective in scenarios requiring distributed problem-solving, dynamic adaptation, and the coordination of heterogeneous components."
-  - question: "What are the challenges in designing a multi-agent system?"
-    answer: "Designing MAS involves challenges such as defining clear communication protocols, ensuring effective coordination and conflict resolution among agents, managing scalability, and maintaining overall system stability and performance. Debugging and ensuring the reliability of emergent behaviors also pose significant hurdles."
+    answer: "LLMs act as the reasoning engine for individual agents, providing natural language understanding, planning, and tool-use capabilities. They enable agents to interpret complex instructions, communicate effectively, and perform sophisticated tasks. Kestra can orchestrate these LLM-powered agents, providing tools, memory, and governance."
+  - question: "What are common real-world applications of multi-agent systems?"
+    answer: "MAS applications span supply chain management, autonomous vehicles, smart grids, financial trading, and complex scientific simulations such as drug discovery and climate modeling. They excel in scenarios requiring distributed problem-solving, dynamic adaptation, and coordination of heterogeneous components."
   - question: "Can Kestra orchestrate multi-agent systems?"
-    answer: "Yes, Kestra is designed to orchestrate multi-agent systems by providing a declarative control plane. It enables defining, deploying, and monitoring workflows where individual AI agents (including LLM-powered ones) can be managed, given tools, and coordinated to achieve complex goals, ensuring auditability and reliability."
+    answer: "Yes, Kestra is designed to orchestrate multi-agent systems by providing a declarative control plane. You define each agent as a task in a Kestra flow using YAML, wire their inputs and outputs, and Kestra handles execution, retries, observability, and auditability — keeping agent behavior repeatable and auditable."
 ---
 
 The rise of AI has fundamentally reshaped how we approach complex problems, but relying on a single, monolithic AI model often falls short when faced with distributed, dynamic, or multifaceted challenges. Just as human teams bring diverse skills to a project, artificial intelligence systems can achieve more when multiple specialized agents collaborate. This is the core principle behind Multi-Agent Systems (MAS).
 
-This article will demystify Multi-Agent Systems, exploring their fundamental components, the mechanics of agent interaction, and the distinct advantages they offer over single-agent architectures. We’ll delve into their practical applications, examine how Large Language Models (LLMs) are transforming MAS, and understand how platforms like Kestra provide the orchestration layer to build and govern these sophisticated, collaborative AI entities.
+This article will demystify Multi-Agent Systems, exploring their fundamental components, the mechanics of agent interaction, and the distinct advantages they offer over single-agent architectures. We’ll delve into their practical applications, examine how Large Language Models (LLMs) are transforming MAS, and understand how platforms like Kestra provide the orchestration layer to build and govern these sophisticated, collaborative AI entities. If you’re also exploring [agentic AI](https://kestra.io/resources/ai/agentic-ai) more broadly, or looking to build [agentic workflows](https://kestra.io/resources/ai/agentic-workflows) in production, those guides provide complementary context.
 
 ## Defining Multi-Agent Systems (MAS)
 
@@ -143,7 +141,7 @@ In the R&D sphere, MAS is a powerful tool for modeling complex systems. For inst
 
 The field of MAS is continually evolving. Future trends include the development of systems with greater autonomy and self-organization capabilities, improved human-agent teaming where AI and people collaborate seamlessly, and a growing focus on the ethical considerations of deploying autonomous agent systems.
 
-## Designing and Building Effective Multi--Agent Systems
+## Designing and Building Effective Multi-Agent Systems
 
 Creating a functional and efficient multi-agent system requires careful design, from defining individual agent behaviors to establishing robust collaboration strategies.
 
@@ -221,7 +219,7 @@ This declarative approach allows you to stop writing brittle glue code and inste
 
 LLMs are democratizing the development of sophisticated MAS. They lower the barrier to entry, allowing developers to create agents that can reason and communicate without needing to build complex AI models from scratch. This is leading to an explosion of new applications and is pushing the boundaries of what's possible with automated systems, including the ability for [AI agents to use other agents as tools](https://kestra.io/blogs/release-1-1).
 
-Multi-agent systems represent a powerful paradigm for building intelligent systems that can tackle complex, distributed problems. By leveraging the collaborative potential of multiple specialized agents, we can create solutions that are more robust, scalable, and adaptable than any single agent could be. The integration of LLMs has supercharged this field, but it has also highlighted the critical need for robust orchestration.
+Multi-agent systems represent a powerful paradigm for building intelligent systems that can tackle complex, distributed problems. By leveraging the collaborative potential of multiple specialized agents, we can create solutions that are more robust, scalable, and adaptable than any single agent could be. The integration of LLMs has supercharged this field, but it has also highlighted the critical need for robust orchestration — especially when agents must share data through an underlying [AI pipeline](https://kestra.io/resources/ai/ai-pipeline).
 
 Platforms like Kestra provide the essential control plane to design, deploy, and govern these systems, ensuring that as agents become more autonomous, their actions remain auditable, reliable, and aligned with business goals. The future of AI is not just about smarter models; it's about smarter collaboration, orchestrated effectively.
 

@@ -35,7 +35,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows in one platform"
       - "Any engineer ships workflows in YAML through Git and CI/CD"
       - "Event-driven at core: react to webhooks, file uploads, messages, and API events"
-      - "Open source with 1200+ plugins, transparent pricing, and no vendor lock-in"
+      - "Open source with 1400+ plugins, transparent pricing, and no vendor lock-in"
       - "Self-service for non-engineers via Kestra Apps with dynamic forms and approvals"
   competitor:
     title: Hybrid Cloud Management
@@ -231,7 +231,7 @@ platformStrengths:
     - title: Orchestration, not just provisioning
       description: "HPE Morpheus excels at provisioning and managing cloud resources. But modern teams need to orchestrate workflows that span data pipelines, infrastructure operations, business processes, and AI. Kestra is purpose-built for this: a single platform where a Terraform apply, a dbt run, an API call, and a Slack notification live in one declarative YAML flow."
     - title: Open source, transparent pricing
-      description: "Kestra's open-source core is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available without per-workload metering. HPE Morpheus uses proprietary per-workload licensing that scales with the number of managed instances."
+      description: "Kestra's open-source core is free with 1400+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available without per-workload metering. HPE Morpheus uses proprietary per-workload licensing that scales with the number of managed instances."
     - title: Event-driven from the start
       description: "Kestra was built event-driven from day one: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. HPE Morpheus focuses on catalog-driven provisioning and scheduled tasks. When your automation needs to react to real-time events across systems, Kestra's architecture is purpose-built for it."
 
@@ -268,7 +268,7 @@ commonQuestions:
   - question: Morpheus has a built-in CMDB. What does Kestra offer?
     answer: "Kestra does not include a built-in CMDB. Kestra integrates with external CMDBs like ServiceNow, or any system with an API, through HTTP Request tasks and dedicated plugins. If you need Kestra to register newly provisioned resources in a CMDB, that is a task in your YAML workflow. HPE Morpheus's built-in CMDB with brownfield discovery is a genuine differentiator for teams that need asset inventory and lifecycle management without a separate tool."
   - question: How does pricing compare between Kestra and Morpheus?
-    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud with transparent pricing. HPE Morpheus uses proprietary per-workload licensing based on the number of managed instances. As your infrastructure scales, Morpheus costs grow with workload count while Kestra pricing is based on compute infrastructure."
+    answer: "Kestra's open-source edition is free with 1400+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud with transparent pricing. HPE Morpheus uses proprietary per-workload licensing based on the number of managed instances. As your infrastructure scales, Morpheus costs grow with workload count while Kestra pricing is based on compute infrastructure."
   - question: Can Kestra and Morpheus work together?
     answer: "Yes. Some organizations use Morpheus as the cloud management and provisioning layer while Kestra orchestrates higher-level workflows that span data pipelines, infrastructure operations, and business processes. Kestra can trigger Morpheus API calls to provision resources as a step in a larger workflow, then continue with configuration, testing, deployment, and notification steps that Morpheus does not handle."
   - question: How hard is it to migrate from HPE Morpheus to Kestra?
