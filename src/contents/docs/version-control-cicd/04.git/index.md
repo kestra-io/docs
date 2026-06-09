@@ -203,7 +203,7 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
   - Requires the `namespace` property but not `kestraUrl` or `auth`; it relies on namespace-level RBAC and can be run by any user with sufficient permissions.
   - Ideal for teams that sync one namespace per repository, allowing owners to manage their own syncs.
   - The flow running this task does not need to live in the namespace being synced — a flow in `company.ops` can sync `company.team`.
-  - **Namespace creation**: In OSS, the target namespace must exist before the sync runs regardless of `sourceOfTruth` — create it manually first. In Enterprise Edition, `sourceOfTruth: GIT` creates the namespace automatically if it does not exist; `sourceOfTruth: KESTRA` requires the namespace to already exist.
+  - **Namespace creation**: When `sourceOfTruth: GIT`, the target namespace is created automatically if it does not exist — in both OSS and Enterprise Edition. When `sourceOfTruth: KESTRA`, the namespace must already exist.
 
 Both plugins support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
