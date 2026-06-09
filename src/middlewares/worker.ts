@@ -93,8 +93,14 @@ export default {
 
         // Enforce no-trailing-slash canonical URLs site-wide (SEO consolidation).
         // Cloudflare's `html_handling: drop-trailing-slash` is bypassed by
-        // `run_worker_first: true`, so the worker must do the 301 itself.
-        if (url.pathname.length > 1 && url.pathname.endsWith("/")) {
+        // `run_worker_first: true` (see PR #4547), so the worker must do the
+        // 301 itself. `/t/` is excluded because its trailing slash is part of
+        // the tracking payload forwarded to /login?next=...
+        if (
+            url.pathname.length > 1 &&
+            url.pathname.endsWith("/") &&
+            !url.pathname.startsWith("/t/")
+        ) {
             url.pathname = url.pathname.replace(/\/+$/, "")
             return Response.redirect(url.toString(), 301)
         }
