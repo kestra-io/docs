@@ -68,6 +68,23 @@ pluginDefaults:
 
 In this example, Docker and Python configurations are defined once in `pluginDefaults` rather than repeated in every task.
 
+## Precedence of plugin defaults
+
+Kestra applies non-forced plugin defaults from lowest to highest priority:
+
+1. Global plugin defaults (`kestra.plugins.defaults`)
+2. Namespace-level plugin defaults
+3. Flow-level `pluginDefaults`
+4. Properties defined directly on the task
+
+For forced defaults the direction reverses — the most privileged level wins:
+
+1. Global forced defaults (`kestra.plugins.defaults` with `forced: true`) ← highest priority
+2. Namespace-level forced defaults
+3. Flow-level forced defaults
+
+This means a global forced default cannot be overridden by a namespace-level forced default. Use global forced defaults for platform-wide policies that must apply unconditionally.
+
 ## Plugin defaults in a global configuration
 
 Plugin defaults can also be defined globally in your Kestra configuration, applying the same values across all flows. To centrally manage credentials for the `io.kestra.plugin.aws` plugin, add the following to your Kestra configuration:
