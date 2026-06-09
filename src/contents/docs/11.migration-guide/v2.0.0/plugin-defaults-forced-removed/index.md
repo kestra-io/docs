@@ -56,3 +56,9 @@ kestra:
         values:
           pullPolicy: NEVER
 ```
+
+## Global forced defaults take precedence over namespace forced defaults
+
+In Kestra 2.0, when both a global and a namespace-level plugin default have `forced: true` for the same plugin property, the global value wins. This is the intended enforcement direction: platform administrators control the global config and their settings cannot be overridden by namespace admins.
+
+If you relied on a namespace-level `forced` default overriding a global `forced` default — which was possible in earlier versions due to a precedence bug — review your configuration before upgrading. After upgrading, the global value will apply.

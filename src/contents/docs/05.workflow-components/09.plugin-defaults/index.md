@@ -138,18 +138,6 @@ kestra:
 
 This is equivalent to writing the same nested structure directly in a task. The `forced: true` attribute ensures these defaults override any values set at the task level.
 
-### Precedence of global, flow, and task values
-
-Kestra applies plugin defaults in this order:
-
-1. Global plugin defaults from `kestra.plugins.defaults`
-2. Flow-level `pluginDefaults`
-3. Properties defined directly on the task
-
-That means flow-level defaults override global defaults, and task properties override flow-level defaults.
-
-Global configuration and namespace-level plugin defaults support a `forced` property. Setting `forced: true` on a global or namespace-level default makes it override any value set directly on the task. This is intended for governance use cases — for example, enforcing a specific task runner across all flows in a namespace.
-
 ## Plugin Defaults Enterprise Edition
 
 :::alert{type="info"}
