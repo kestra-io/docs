@@ -229,6 +229,7 @@ Additionally, you can configure the following properties:
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
 - **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+- **Prefix**: `kestra.secret.vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret paths with that value, which is useful when sharing one Vault instance across multiple Kestra environments.
 
 Using the Token method with Root Engine has the following configuration:
 
