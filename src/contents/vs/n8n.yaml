@@ -4,7 +4,7 @@ competitorName: n8n
 category: Business Automation
 shortDescription: "Visual low-code app automation vs. code-first universal orchestration for any team or scale."
 seeHowTitle: "Getting Started with Declarative Orchestration"
-seeHowBody: "See how Kestra can simplify your workflows—and scale beyond app automation."
+seeHowBody: "See how Kestra can simplify your workflows and scale beyond app automation."
 
 brandColor:
   color: "#ea4b71"
@@ -46,7 +46,7 @@ businessValue:
       - Serves individual teams and developers
     shadowColor: "#FF9F7A"
     bulletColor: "#FF6B3D"
-  footerText: "n8n is a strong choice for connecting apps and prototyping automations visually, especially AI agent workflows. Kestra takes a different approach: declarative YAML, your existing Python, SQL, and Shell scripts without refactoring, production workflows with namespace-level isolation, and every execution step written to a persistence layer. If a workflow crashes mid-run in n8n, that state is gone. In Kestra, it isn't. One platform handles quick point-to-point automations. The other handles the workflows your business depends on."
+  footerText: "n8n is a strong choice for connecting apps and prototyping automations visually, especially AI agent workflows. Kestra takes a different approach: declarative YAML, your existing Python, SQL, and Shell scripts without refactoring, and production workflows with namespace-level isolation. When n8n crashes mid-run, it can tell you which nodes completed — but the workflow must restart from scratch. Kestra checkpoints every completed task, so a crashed worker means resuming from the last successful step, not starting over. One platform handles quick point-to-point automations. The other handles the workflows your business depends on."
 
 setupSpeed:
   title: Time to First Workflow
@@ -164,18 +164,18 @@ featureGrid:
     - feature: Multi-tenancy
       kestra: "Namespace isolation, RBAC per namespace"
       competitor: RBAC with project-level roles (no namespace isolation)
-    - feature: Air-gapped deployment
-      kestra: "✓ Supported"
-      competitor: Not available
-    - feature: AI approach
-      kestra: "Pipeline orchestration for any AI workload (visual or code-based)"
-      competitor: "Visual AI agent builder (LangChain, MCP, 12 vector stores, evaluations)"
+    - feature: Deployment
+      kestra: "Run on your own servers, any cloud, or air-gapped networks. No dependency on Kestra's infrastructure."
+      competitor: "Self-hosted or n8n Cloud; air-gapped environments not supported"
+    - feature: AI workloads
+      kestra: "Run AI pipelines in production: persistent execution state, step-level retries, and per-task container isolation"
+      competitor: "Visual AI agent builder (LangChain, MCP, vector stores); built for prototyping, not persistent production execution"
     - feature: Triggers
       kestra: "Schedule, webhook, flow, file detection, message queue, polling"
       competitor: "Schedule, webhook, SSE, Redis, workflow lifecycle, error, app-event"
-    - feature: State persistence
-      kestra: "All execution state written to a persistence layer — resume after crash or restart"
-      competitor: "In-memory execution by default — state is lost if the process crashes mid-flow"
+    - feature: Crash recovery
+      kestra: "Every completed task is checkpointed — resume or replay from the last successful step"
+      competitor: "Can reconstruct which nodes crashed vs. completed, but crashed workflows must be restarted from scratch"
     - feature: Failure handling
       kestra: "Retries with backoff, timeouts, allowed-failure policies, reprocessing"
       competitor: "Error workflows, retry logic"
@@ -183,8 +183,8 @@ featureGrid:
       kestra: "Built-in secrets manager, encrypted variables"
       competitor: "Encrypted credentials, external secrets integration"
     - feature: License
-      kestra: "Apache 2.0 (open-source)"
-      competitor: "Sustainable Use License (source-available)"
+      kestra: "Apache 2.0: fully open-source, no usage restrictions"
+      competitor: "Sustainable Use License: source-available, restricts commercial use"
     - feature: Plugins / Integrations
       kestra: "1,300+"
       competitor: "400+ built-in (1,000+ with community nodes)"
@@ -212,7 +212,7 @@ platformStrengths:
     - title: Minutes to first workflow
       description: "Build your first scheduled workflow in under 5 minutes with our <a href='/docs/quickstart'>Quickstart Guide</a>. No Node.js runtime to manage, no visual canvas required. Write YAML and execute."
     - title: Built for business-critical reliability
-      description: "Kestra writes every execution step to a persistence layer. If a worker crashes mid-run, state is preserved — nothing is lost, and workflows can be replayed or resumed from the last completed task. n8n holds execution state in memory by default, which is fine for prototyping. For production workflows that can't afford to lose state, Kestra is designed for that."
+      description: "Kestra checkpoints every completed task to a persistence layer. If a worker crashes mid-run, workflows can be replayed or resumed from the last successful step. n8n can reconstruct which nodes completed before a crash, but crashed workflows must restart from scratch. For automations where a missed step has real consequences — a failed ERP sync, an incomplete billing run — Kestra's execution model is built for that."
     - title: Orchestrate anything
       description: "Data pipelines, integration workflows, document processing, infrastructure provisioning, and AI workloads. One platform with container-level isolation and RBAC per namespace."
 
@@ -241,7 +241,7 @@ commonQuestions:
   - question: How is Kestra different from n8n?
     answer: "Kestra is a code-first orchestration platform for data pipelines, integration workflows, infrastructure automation, and AI workloads. n8n is a visual-first automation tool for connecting apps and building AI agent workflows. Kestra uses declarative YAML, runs on a distributed architecture with namespace isolation, and deploys through CI/CD. n8n uses a drag-and-drop canvas, runs on Node.js, and builds workflows in the browser. n8n gets you from zero to a working prototype fast. Kestra carries those workflows into production across teams."
   - question: Can Kestra handle AI workflows like n8n?
-    answer: "Yes, but differently. n8n has a visual AI agent builder with LangChain integration, 12 vector store integrations, MCP client and server nodes, and an evaluation node for testing agent outputs — great for prototyping chatbots and agent chains. Kestra orchestrates AI workloads the same way it orchestrates everything else: as steps in declarative pipelines with full state tracking, retries, and scheduling — built visually in the UI or in code. You can call any model API, run any ML framework, and package any environment in a Docker container. A single Kestra flow can handle data extraction, model training, evaluation, deployment, and monitoring as one end-to-end pipeline. If you need a visual agent builder, n8n excels. If you need production AI pipelines integrated with data and infrastructure workflows, Kestra is built for that."
+    answer: "Yes, but differently. n8n has a visual AI agent builder with LangChain integration, 12 vector store integrations, MCP client and server nodes, and an evaluation node for testing agent outputs, great for prototyping chatbots and agent chains. Kestra orchestrates AI workloads the same way it orchestrates everything else: as steps in declarative pipelines with full state tracking, retries, and scheduling — built visually in the UI or in code. You can call any model API, run any ML framework, and package any environment in a Docker container. A single Kestra flow can handle data extraction, model training, evaluation, deployment, and monitoring as one end-to-end pipeline. If you need a visual agent builder, n8n excels. If you need production AI pipelines integrated with data and infrastructure workflows, Kestra is built for that."
   - question: Can Kestra handle integration workflows, not just data pipelines?
     answer: "Yes. Kestra treats integration workflows the same as any other pipeline: a sequence of tasks with retries, scheduling, error handling, and full audit trails. Common patterns include syncing data between systems, processing files from cloud storage before loading into a database, chaining API calls with transformation steps, and triggering downstream processes from webhooks or message queues. More complex workflows, like reading a document, extracting structured fields with a Python script, and pushing the result into an enterprise system, are equally straightforward. Kestra has 1,400+ plugins covering file systems, cloud storage, databases, messaging queues, and REST APIs. Where n8n excels at quick SaaS-to-SaaS trigger automations built visually, Kestra is better suited for multi-step integration pipelines that need production-grade reliability, version control, and auditability."
   - question: How does Kestra handle my scripts?
@@ -251,6 +251,6 @@ commonQuestions:
   - question: How much time do I need to get started?
     answer: "Five minutes. Download the Docker Compose file, run docker compose up, and open the UI at localhost:8080. Pick a Blueprint, customize it, and execute. No Node.js runtime to configure, no database to provision separately. If you know YAML (or can read it), you can build workflows immediately."
   - question: What happens if a workflow crashes mid-execution?
-    answer: "In Kestra, nothing is lost. Every execution step writes its state to a persistence layer as it runs. If a worker crashes or restarts, in-progress executions can be resumed or replayed from the last completed task. This is built into the architecture — not an add-on. n8n holds execution state in memory by default, so if the process crashes mid-flow, that state is gone. For quick automations and prototyping, this trade-off is usually fine. For workflows that are business-critical — long-running data pipelines, financial processes, or anything where a missed step has real consequences — Kestra's persistence model is the right foundation."
+    answer: "In Kestra, every completed task is checkpointed to a persistence layer as it runs. If a worker crashes or restarts, executions can be resumed or replayed from the last successful step — not restarted from scratch. n8n does persist execution data and can reconstruct which nodes completed before a crash, but it has no step-level checkpointing. A crashed workflow in n8n must be restarted from the beginning. For quick automations and prototyping, this is usually fine. For workflows where a missed step has real consequences — a failed ERP sync, an incomplete billing run, a long-running data pipeline — Kestra's checkpoint model is the right foundation."
   - question: Is Kestra open-source like n8n?
     answer: "Kestra is Apache 2.0 licensed, fully open-source with no usage restrictions. n8n uses the Sustainable Use License, which is source-available but not open-source: it restricts competing use and requires a paid license for some commercial scenarios. Both offer enterprise editions with additional features."
