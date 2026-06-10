@@ -35,7 +35,7 @@ businessValue:
       - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly)"
       - "Event-driven at core: file arrivals, Kafka, webhooks, schedules"
       - "Self-service for non-engineers via Kestra Apps"
-      - "1200+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+      - "1400+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
   competitor:
     title: Enterprise Business Process Management
     list:
@@ -227,7 +227,7 @@ commonQuestions:
   - question: Does Kestra support human-in-the-loop workflows?
     answer: "Yes. Kestra includes native task types for human approval steps, pausing execution and waiting for input before continuing. Business users can interact through Kestra Apps without writing code. Camunda's Tasklist is more fully featured for structured human task management, with assignment rules, priorities, and forms purpose-built for approval-heavy processes in regulated industries."
   - question: How does Kestra connect to the data tools my team already uses?
-    answer: "Kestra ships with 1200+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, Redshift, PostgreSQL, and more—each a YAML task type that runs without any additional code. Camunda offers Connectors for common services, but the catalog is significantly smaller. For anything not covered by a pre-built connector, you write and deploy a job worker in Java, Node.js, or another supported SDK."
+    answer: "Kestra ships with 1400+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, Redshift, PostgreSQL, and more—each a YAML task type that runs without any additional code. Camunda offers Connectors for common services, but the catalog is significantly smaller. For anything not covered by a pre-built connector, you write and deploy a job worker in Java, Node.js, or another supported SDK."
   - question: What does migration from Camunda to Kestra look like?
     answer: "Kestra workflows are YAML-native, so migration means translating BPMN service tasks into Kestra task definitions and replacing Camunda job workers with script tasks. Your existing Python, SQL, and Shell logic runs unchanged inside Kestra Script tasks. Teams typically run both platforms in parallel during transition, migrating process by process."
   - question: How does Kestra handle compliance and audit requirements?

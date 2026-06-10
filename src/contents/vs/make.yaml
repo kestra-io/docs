@@ -208,7 +208,7 @@ platformStrengths:
     - title: No platform-imposed execution limits
       description: "Kestra flows run for as long as the task requires, from seconds to hours, with no ceiling on execution time. A dbt run against a large model, a Spark job processing overnight data, or a file export from cloud storage all complete at their natural pace. Retry logic, timeout configuration, and execution monitoring are available as YAML-level settings on every workflow."
     - title: Data pipelines as native workflows
-      description: "1,200+ plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven automations and business process workflows. DAG visualization and data-specific retry semantics are built in, not bolted on."
+      description: "1,400+ plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven automations and business process workflows. DAG visualization and data-specific retry semantics are built in, not bolted on."
     - title: Version control for every workflow change
       description: "Kestra flows are YAML files in a repository. Every modification is a commit, deployments are tracked, and rolling back a broken workflow is a git revert. Teams review automation changes in a pull request before they go live, the same process they use for any other production change."
 

@@ -256,7 +256,7 @@ comparison:
         - "Run history in Actions UI"
         - "Pipeline history"
     - feature: "Orchestrate beyond CI (data, infra, business workflows)"
-      kestra: "✓ 1300+ plugins"
+      kestra: "✓ 1400+ plugins"
       values:
         - "Build-focused"
         - "Build-focused"
