@@ -143,7 +143,7 @@
             string,
             string
         >
-        const kuid = localStorage.getItem("KUID")
+        const kuid = localStorage.getItem("KUID") || ""
 
         const hsq = ((window as any)._hsq ??= [])
         hsq.push([
@@ -184,7 +184,7 @@
                 },
             ],
             context: {
-                hutk: getHubspotTracking(),
+                hutk: getHubspotTracking() || undefined,
                 ipAddress: ipData.ip,
                 pageUri: props.routePath || window.location.pathname,
                 pageName: document.title,
