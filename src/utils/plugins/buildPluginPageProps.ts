@@ -1,4 +1,5 @@
 import {
+    extractPluginElements,
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
     subGroupName,
@@ -57,9 +58,21 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         pluginType ? (sidebarPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
     )
 
+    const rootPlugin = pluginsWithoutDeprecated.find((p) => p.subGroup === undefined)
+
+    // Total element classes (tasks, triggers, conditions, ...) on a plugin entry.
+    const elementCount = (p: Plugin | undefined) =>
+        p === undefined
+            ? 0
+            : Object.values(extractPluginElements(p)).reduce((n, arr) => n + arr.length, 0)
+
     const subGroupPlugins = pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined)
+    // Flatten to a single subgroup only when it covers the whole plugin's elements.
+    const singleSubgroupCoversRoot =
+        subGroupPlugins.length === 1 &&
+        elementCount(rootPlugin) === elementCount(subGroupPlugins[0])
     const effectiveSubGroup = subGroup
-        ?? (subGroupPlugins.length === 1 ? slugify(subGroupName(subGroupPlugins[0])) : undefined)
+        ?? (singleSubgroupCoversRoot ? slugify(subGroupName(subGroupPlugins[0])) : undefined)
 
     const subGroupWrapper = pluginsWithoutDeprecated.find(
         (p) => slugify(subGroupName(p)) === effectiveSubGroup,
@@ -75,8 +88,6 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               ]),
           )
         : {}
-
-    const rootPlugin = pluginsWithoutDeprecated.find((p) => p.subGroup === undefined)
 
     const currentSubgroupPlugin =
         !effectiveSubGroup || pluginType
