@@ -22,9 +22,7 @@ faq:
   - question: "What are the four main types of audit?"
     answer: "The four main types of audit commonly recognized are: financial audits (examining financial statements), operational audits (assessing efficiency and effectiveness of processes), compliance audits (checking adherence to regulations), and IT audits (evaluating information systems and security controls)."
 author: "Virgile Fanucci"
-image: "/images/resources/audit-logs-orchestration.jpg"
 ---
-```
 
 In today's complex, interconnected systems, understanding "who did what, when, and where" is paramount. From debugging critical data pipelines to ensuring compliance in highly regulated industries, the ability to trace every action within your orchestration environment is no longer a luxury—it's a necessity. Audit logs orchestration provides this vital transparency, transforming raw event data into actionable insights for security, governance, and operational excellence. This article will explore the fundamentals of audit logs in an orchestration context, outline best practices for their management, and demonstrate how platforms like Kestra empower engineers to build robust, auditable workflows.
 

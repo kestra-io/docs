@@ -20,7 +20,6 @@ faq:
   - question: "Can AI orchestration integrate with existing business tools?"
     answer: "Yes, effective AI orchestration platforms are designed to integrate seamlessly with a wide array of existing business tools, including CRM, ERP, messaging apps, cloud services, and databases. This is typically achieved through pre-built connectors, APIs, and webhook triggers, ensuring that AI-powered workflows can span across an organization's entire technology stack without disruption."
 ---
-```
 
 AI orchestration promises to automate complex workflows, but often seems out of reach for teams without deep technical expertise. The perception of requiring advanced coding skills or a dedicated engineering team can be a significant barrier for business users, founders, and operational staff. Yet, the demand for efficiency and intelligent automation continues to grow.
 
