@@ -11,7 +11,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. n8n: Orchestrate in Production, Not Just Connect Apps"
-  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads with production-grade reliability built in. One is built to prototype. The other is built to run."
+  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads with production-grade reliability built in. One is built to prototype. The other is built to run your business."
 
 philosophy:
   mainTitle: Two Platforms, Two Philosophies
