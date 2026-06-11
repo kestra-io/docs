@@ -210,7 +210,7 @@ platformStrengths:
     - title: Bring your own scripts
       description: "Bring your existing Python, SQL, Shell, Go, and R scripts. Define workflows in declarative YAML. No wrappers, no framework lock-in."
     - title: Built for business-critical reliability
-      description: "Kestra checkpoints every completed task to a persistence layer. If a worker crashes mid-run, workflows can be replayed or resumed from the last successful step. n8n can reconstruct which nodes completed before a crash, but crashed workflows must restart from scratch. For automations where a missed step has real consequences (a failed ERP sync, an incomplete billing run), Kestra's execution model is built for that."
+      description: "Kestra saves your place at every step. If something goes wrong mid-run, workflows pick up where they left off, not from the beginning."
     - title: Orchestrate anything
       description: "Data pipelines, integration workflows, document processing, infrastructure provisioning, and AI workloads. One platform with container-level isolation and RBAC per namespace."
 
