@@ -46,7 +46,7 @@ businessValue:
       - Serves individual teams and developers
     shadowColor: "#FF9F7A"
     bulletColor: "#FF6B3D"
-  footerText: "n8n is the right tool for connecting apps and prototyping automations fast. Kestra is built for the pipelines you can't afford to restart from scratch."
+  footerText: "n8n is the right tool when you need visual automation fast: connect apps, prototype agent workflows, iterate quickly. When the workflow becomes mission-critical, the requirements change. Kestra is built for that: step-level checkpointing, any-language execution, deployable anywhere, with the governance and audit trails production demands."
 
 setupSpeed:
   title: Time to First Workflow
