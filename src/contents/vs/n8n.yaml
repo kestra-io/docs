@@ -11,12 +11,12 @@ brandColor:
 
 intro:
   title: "Kestra vs. n8n: Orchestrate in Production, Not Just Connect Apps"
-  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads for teams of any size. One automates tasks. The other carries them into production across teams."
+  description: "n8n connects apps visually for fast automation. Kestra orchestrates data pipelines, integration workflows, infrastructure, and AI workloads with production-grade reliability built in. One is built to prototype. The other is built to run."
 
 philosophy:
   mainTitle: Two Platforms, Two Philosophies
   kestra:
-    title: "Universal Orchestration: Code-First at Scale"
+    title: "Production Orchestration: Code-First, Run Anywhere"
     description: "Write workflows in YAML. Run tasks in any language. Deploy through Git and CI/CD. Kestra orchestrates data pipelines, infrastructure, and AI workloads with isolated execution and team-level governance built in."
     subCardText: '"How do I orchestrate production workflows across teams and environments?"'
   competitor:
