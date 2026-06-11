@@ -34,7 +34,7 @@ businessValue:
       - Automate data pipelines, integration workflows, infrastructure, and AI workloads
       - "Cross-functional: data + platform + DevOps + business"
       - Production-grade reliability with retries, concurrency controls, and audit trails
-      - Workflows that survive failures: step-level checkpointing, retries, and full execution history
+      - "Workflows that survive failures: step-level checkpointing, retries, and full execution history"
       - Deploy on your own infrastructure, any cloud, or air-gapped networks
   competitor:
     title: App-to-App Automation
