@@ -186,7 +186,7 @@ featureGrid:
       kestra: "Apache 2.0: fully open-source, no usage restrictions"
       competitor: "Sustainable Use License: source-available, restricts commercial use"
     - feature: Plugins / Integrations
-      kestra: "1,300+"
+      kestra: "1,400+"
       competitor: "400+ built-in (1,000+ with community nodes)"
     - feature: Cloud
       kestra: "Early access"
