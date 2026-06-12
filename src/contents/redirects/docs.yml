@@ -68,6 +68,8 @@
   to: "/docs/quickstart"
 - regexp: "/docs/getting-started/quickstart"
   to: "/docs/quickstart"
+- regexp: "^/docs/how-to-guides/keycloak(/.*)?$"
+  to: "/docs/enterprise/auth/sso/keycloak"
 - regexp: "/docs/how-to-guides/using-secrets"
   to: "/docs/concepts/secret"
 - regexp: "/docs/migration-guide/([0-1]).(.*)"
