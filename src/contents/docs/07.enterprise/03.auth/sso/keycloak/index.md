@@ -99,6 +99,46 @@ Note: depending on the Keycloak configuration, you might want to tune the issuer
 
 For more configuration details, refer to the [Keycloak OIDC configuration guide](https://guides.micronaut.io/latest/micronaut-oauth2-keycloak-gradle-java.html).
 
+## Logout and session termination
+
+By default, clicking logout in Kestra clears the Kestra session but does not terminate the underlying Keycloak SSO session. The next login will skip the username and password prompt and automatically re-authenticate the user via the still-active Keycloak session.
+
+To fully terminate the Keycloak session on logout, add `end-session` to your configuration:
+
+```yaml
+micronaut:
+  security:
+    oauth2:
+      enabled: true
+      clients:
+        keycloak:
+          client-id: "{{clientId}}"
+          client-secret: "{{clientSecret}}"
+          openid:
+            issuer: "https://{{keyCloakServer}}/realms/{{yourRealm}}"
+            end-session:
+              enabled: true
+              url: "https://{{keyCloakServer}}/realms/{{yourRealm}}/protocol/openid-connect/logout"
+      endpoints:
+        logout:
+          get-allowed: true
+```
+
+If you also want to force users to re-enter their credentials on every Kestra login — even when an active Keycloak SSO session exists — add `?prompt=login` to the authorization URL:
+
+```yaml
+micronaut:
+  security:
+    oauth2:
+      clients:
+        keycloak:
+          openid:
+            authorization:
+              url: "https://{{keyCloakServer}}/realms/{{yourRealm}}/protocol/openid-connect/auth?prompt=login"
+```
+
+These two settings are independent: `end-session` controls what happens on logout, while `prompt=login` controls what happens on the next login attempt.
+
 ## Manage Groups via OIDC Claims
 
 If you are unable to use [SCIM with Keycloak](../../scim/keycloak/index.md), you can configure Kestra to source user groups from OIDC claims. In this setup, Keycloak acts as the single source of truth for user group membership. This method requires creating a `groups` client scope that exposes group membership via a claim in the ID Token.
