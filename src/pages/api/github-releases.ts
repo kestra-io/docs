@@ -43,19 +43,16 @@ export async function retrieveRepoReleases(repo: string) {
 
     try {
         const versions: ReleaseInfo[] = releases
-            .filter((release) => !release.draft)
+            .filter((release) => !release.draft && !release.tag_name.includes("SNAPSHOT"))
             .map((release) => ({
                 version: release.tag_name.replace(/^v/, ""),
                 publishedAt: release.published_at,
             }))
-            .filter((v) => {
-                const major = parseInt(v.version.split(".")[0])
-                return !isNaN(major) && major >= 1
-            })
             .toSorted((a, b) => {
-                const aTime = a.publishedAt ? Date.parse(a.publishedAt) : 0
-                const bTime = b.publishedAt ? Date.parse(b.publishedAt) : 0
-                return bTime - aTime
+                const parseParts = (v: string) => v.split(".").map((p) => parseInt(p, 10) || 0)
+                const [aMaj, aMin, aPat] = parseParts(a.version)
+                const [bMaj, bMin, bPat] = parseParts(b.version)
+                return bMaj - aMaj || bMin - aMin || bPat - aPat
             })
 
         return { versions }
