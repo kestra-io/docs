@@ -1,8 +1,8 @@
 ---
 title: "What Is a Data Pipeline? Definition, Architecture, and Tools"
 description: "Every modern business runs on data pipelines. Learn the architecture, the three stages (ingestion, transformation, loading), how pipelines differ from ETL, the main types (batch, streaming, event-driven), and how to choose the right tool."
-metaTitle: "What Is a Data Pipeline? Definition & Benefits"
-metaDescription: "A data pipeline moves data from sources to destinations through ingestion, transformation, and loading. Learn the architecture, types, and best tools."
+metaTitle: "What Is a Data Pipeline? Definition & Architecture | Kestra"
+metaDescription: "A data pipeline moves data from sources to destinations via ingestion, transformation, and loading. Learn the types, architecture, and how to choose tools."
 tag: data
 date: 2026-04-21
 faq:
@@ -49,7 +49,7 @@ Ingestion pulls data from its source system. Methods fall into two broad categor
 - **Batch ingestion** — pull data on a schedule (hourly, daily). Simple to reason about, fine for most analytics use cases.
 - **Streaming / CDC ingestion** — pull data continuously as it changes, via Change Data Capture, message queues (Kafka, Pub/Sub), or event streams. Required when latency matters.
 
-Tools like Airbyte, Fivetran, and custom Python scripts handle this stage for most teams.
+Tools like Airbyte, Fivetran, and custom Python scripts handle this stage for most teams. For a deeper look at ingestion patterns, see the [data ingestion guide](/resources/data/what-is-data-ingestion).
 
 ### Transformation
 
@@ -92,7 +92,7 @@ For a deeper comparison of ETL and ELT specifically, see [ETL vs ELT](/resources
 
 ## Types of Data Pipelines — Batch, Streaming, Event-Driven
 
-Three patterns dominate production data pipelines in 2026. Most teams use a mix.
+Three patterns dominate production data pipelines in 2026. Most teams use a mix. For a side-by-side breakdown, see [batch vs. streaming processing](/resources/data/batch-vs-streaming-processing).
 
 ### Batch Pipelines
 
@@ -106,7 +106,7 @@ Streaming pipelines process data continuously, one record (or micro-batch) at a 
 
 Event-driven pipelines sit between batch and streaming. They don't wait for a schedule — they trigger on events: a file landing in S3, a webhook firing, a message appearing on a queue. This pattern eliminates the "wait until the next run" tax of batch pipelines while staying simpler than full streaming architectures.
 
-Event-driven is increasingly the default for modern data teams. Kestra handles it natively — any of 1,200+ triggers can start a workflow, not just schedules.
+Event-driven is increasingly the default for modern data teams. Kestra handles it natively — any of 1,400+ triggers can start a workflow, not just schedules.
 
 ## Data Pipeline Examples — Real Pipelines in Production
 
@@ -174,18 +174,18 @@ tasks:
     format: PARQUET
 ```
 
-For teams on AWS specifically, Kestra replaces the legacy AWS Data Pipeline service (which AWS itself has deprecated in favor of newer tools) with a cloud-agnostic orchestrator that still integrates deeply with AWS services.
+For teams on AWS specifically, Kestra replaces the legacy AWS Data Pipeline service (which AWS closed to new customers in July 2025 and recommends migrating to AWS Glue, Step Functions, or MWAA) with a cloud-agnostic orchestrator that still integrates deeply with AWS services.
 
 ## Key Features of a Modern Data Pipeline
 
 Six features separate a data pipeline that scales from one that quietly rots in production:
 
 - **Reliability** — Every task fails eventually. Retries with exponential backoff, timeouts, idempotent task design, and clear error handlers are not nice-to-haves — they're what keeps the pipeline running while you sleep.
-- **Observability** — Logs alone aren't enough. You need per-task execution metrics, data volumes, latency, and SLA tracking. Answering "what broke?" in minutes instead of hours requires observability baked into the orchestrator, not bolted on.
+- **Observability** — Logs alone aren't enough. You need per-task execution metrics, data volumes, latency, and SLA tracking. Answering "what broke?" in minutes instead of hours requires observability baked into the orchestrator, not bolted on. See the [data observability guide](/resources/data/data-observability) for what to instrument.
 - **Lineage** — Knowing which tables depend on which upstream sources matters for impact analysis, debugging, and compliance. Modern orchestrators track pipeline lineage natively across tables, datasets, and infrastructure resources.
 - **Security** — Secrets management (API keys, credentials), role-based access control, audit logs, and support for air-gapped environments. Non-negotiable in regulated industries.
 - **Scalability** — Dynamic compute allocation (AWS Fargate, GCP Batch, Kubernetes), parallel task execution, concurrency controls, and partition-aware processing. What works on 1 GB breaks on 1 TB without these.
-- **Integration breadth** — 1,200+ plugins covering databases, cloud storage, SaaS APIs, messaging platforms, and ML frameworks. One engine to orchestrate the whole stack beats a fragmented tool chain every time.
+- **Integration breadth** — 1,400+ plugins covering databases, cloud storage, SaaS APIs, messaging platforms, and ML frameworks. One engine to orchestrate the whole stack beats a fragmented tool chain every time.
 
 ## Data Pipeline Tools — How Kestra Compares
 
@@ -197,7 +197,7 @@ The data pipeline tool landscape splits into two broad categories: orchestrators
 | **AWS Glue / Step Functions** | Orchestrator | Visual / JSON | ❌ (AWS) | AWS-native stacks |
 | **Informatica** | Legacy ETL suite | GUI / proprietary | ✅ | Enterprise shops with existing Informatica footprint |
 
-Kestra's positioning: an orchestrator that runs your existing ETL/ELT stack (Airbyte, dbt, Fivetran, Informatica) without replacing it. Declarative YAML makes it accessible to analytics engineers who write SQL, not just Python engineers. Event-driven triggers are first-class. Git versioning is native. And 1,200+ plugins cover the full data-plus-infra stack in a single engine.
+Kestra's positioning: an orchestrator that runs your existing ETL/ELT stack (Airbyte, dbt, Fivetran, Informatica) without replacing it. Declarative YAML makes it accessible to analytics engineers who write SQL, not just Python engineers. Event-driven triggers are first-class. Git versioning is native. And 1,400+ plugins cover the full data-plus-infra stack in a single engine.
 
 For direct head-to-head comparisons, see [Kestra vs Dagster](/vs/dagster), [Kestra vs Astronomer](/vs/astronomer), and [Kestra vs Temporal](/vs/temporal). For the broader Kestra approach to data teams, see [Declarative Orchestration for Modern Data Engineers](/data).
 

@@ -1,18 +1,16 @@
 ---
 title: "RAG Architecture: Enhance Your LLM Applications"
 description: "Explore RAG architecture with our comprehensive guide. Optimize large language models with external knowledge sources. Learn how RAG works!"
-metaTitle: "RAG Architecture for LLMs | Kestra Orchestration"
-metaDescription: "Master RAG architecture to enhance LLM applications. This guide covers core components, types, and practical implementation with Kestra's orchestration."
+metaTitle: "RAG Architecture: Build Reliable LLM Applications | Kestra"
+metaDescription: "Learn how RAG architecture enhances LLMs with real-time, domain-specific knowledge. Covers components, retrieval patterns, and RAG orchestration with Kestra."
 tag: "ai"
 date: 2026-05-06
 slug: "rag-architecture"
 faq:
   - question: "What is RAG architecture?"
     answer: "Retrieval-Augmented Generation (RAG) is an AI framework that enhances Large Language Models (LLMs) by giving them access to external, up-to-date knowledge bases. Instead of relying solely on their pre-trained knowledge, RAG models retrieve relevant information from a specified source (like documents or databases) and use it to inform their generated responses, leading to more accurate, relevant, and grounded outputs."
-  - question: "What is the difference between RAG and LLM?"
-    answer: "An LLM (Large Language Model) is a standalone generative model trained on vast datasets, capable of understanding and generating human-like text. RAG (Retrieval-Augmented Generation) is an architecture that *enhances* an LLM. It adds a retrieval step before generation, allowing the LLM to fetch real-time or specific external information to improve its responses, addressing limitations like hallucinations or outdated knowledge."
   - question: "Is ChatGPT a RAG model?"
-    answer: "Is ChatGPT a RAG model by default? No, ChatGPT is fundamentally a Generative Pre-trained Transformer (GPT), which is a type of Large Language Model (LLM). It only becomes a 'RAG system' when it uses features like 'Browse with Bing' to access external web data or when you upload files to a custom GPT for specific context, effectively adding a retrieval step."
+    answer: "No, ChatGPT is fundamentally a Generative Pre-trained Transformer (GPT), which is a type of Large Language Model (LLM). It only becomes a 'RAG system' when it uses features like ChatGPT Search to access live web data or when you upload files to a custom GPT for specific context, effectively adding a retrieval step."
   - question: "Who typically uses RAG architecture?"
     answer: "Common RAG use cases include customer support chatbots, internal knowledge search, and augmented search experiences that answer questions directly from company documents. Data engineers, ML engineers, and platform engineers often implement RAG to build reliable AI applications that require up-to-date, domain-specific, and verifiable information."
   - question: "How does RAG improve LLM accuracy?"
@@ -41,7 +39,7 @@ LLMs are trained on static datasets, which means their knowledge has a cutoff da
 
 ### Is ChatGPT a RAG Model?
 
-By default, ChatGPT is a standard LLM, not a RAG model. It generates responses based on the patterns and information present in its training data. However, it incorporates RAG-like capabilities through features such as "Browse with Bing," which allows it to retrieve live information from the web to answer queries. Similarly, when you upload documents to a custom GPT, you are creating a temporary RAG system where the model retrieves information from your provided files. These functionalities layer a retrieval mechanism on top of the base LLM, turning it into a RAG system for that specific interaction. This is similar to how developers build applications with [AI agents](https://kestra.io/resources/ai/ai-agent) that can access external tools and data sources.
+By default, ChatGPT is a standard LLM, not a RAG model. It generates responses based on the patterns and information present in its training data. However, it incorporates RAG-like capabilities through features such as ChatGPT Search, which allows it to retrieve live information from the web to answer queries. Similarly, when you upload documents to a custom GPT, you are creating a temporary RAG system where the model retrieves information from your provided files. These functionalities layer a retrieval mechanism on top of the base LLM, turning it into a RAG system for that specific interaction. This is similar to how developers build applications with [AI agents](https://kestra.io/resources/ai/ai-agent) that can access external tools and data sources.
 
 ## Core Components of RAG Architecture
 
@@ -58,7 +56,7 @@ The retrieval phase is responsible for finding and fetching the most relevant in
 
 Once the relevant document chunks are retrieved, the generation phase begins. This phase uses the power of an LLM to synthesize an answer.
 - **Prompt Augmentation:** The retrieved text is combined with the original user query to form an augmented prompt. This prompt provides the LLM with the necessary context to generate a factually grounded response.
-- **LLM Generation:** The augmented prompt is sent to an LLM (e.g., GPT-4, Claude 3). The model uses the provided context to craft a coherent, human-like answer that directly addresses the user's question. This is a core part of building [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows) and can be enhanced with autonomous [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
+- **LLM Generation:** The augmented prompt is sent to an LLM (e.g., GPT-5, Claude Opus 4). The model uses the provided context to craft a coherent, human-like answer that directly addresses the user's question. This is a core part of building [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows) and can be enhanced with autonomous [AI agents](https://kestra.io/docs/ai-tools/ai-agents).
 
 ### Key Benefits of RAG in AI
 
@@ -145,7 +143,7 @@ The ecosystem of tools for building RAG systems is growing. Frameworks like Lang
 
 ### Evaluating RAG System Performance
 
-Evaluating a RAG system is a multi-faceted task. Key metrics include:
+Evaluating a RAG system is a multi-faceted task that benefits from a systematic [LLM evaluation](https://kestra.io/resources/ai/llm-evaluation) strategy. Key metrics include:
 - **Retrieval Metrics:** Precision and recall measure how well the retriever finds relevant documents.
 - **Generation Metrics:** Fluency, coherence, and factual consistency assess the quality of the LLM's output.
 - **End-to-End Evaluation:** Ultimately, the system's success is measured by its ability to provide answers that are relevant, accurate, and helpful to the end-user.
@@ -193,4 +191,4 @@ Kestra provides the tools to fully automate and monitor your RAG system. You can
 
 RAG architecture has emerged as a critical pattern for building reliable, accurate, and context-aware generative AI applications. By separating knowledge from reasoning, it overcomes the inherent limitations of LLMs and unlocks their true potential for enterprise use.
 
-As these systems grow in complexity, the need for a robust orchestration layer becomes clear. Kestra provides a declarative control plane to manage the entire lifecycle of your RAG workflows, from data ingestion to generation, enabling you to build and scale informed AI solutions with confidence. To learn more, explore our [AI automation](https://kestra.io/ai-automation) platform or browse our other [AI resources](https://kestra.io/resources/ai).
+As these systems grow in complexity, the need for a robust orchestration layer becomes clear. Kestra provides a declarative control plane to manage the entire lifecycle of your RAG workflows, from data ingestion to generation, enabling you to build and scale informed AI solutions with confidence. Explore how [data orchestration](https://kestra.io/resources/data/data-orchestration) underpins reliable AI pipelines, or browse our other [AI resources](https://kestra.io/resources/ai).

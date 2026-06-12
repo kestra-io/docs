@@ -13,21 +13,21 @@ const resourceSections: Record<string, Section> = {
     },
     infrastructure: {
         metaTitle:
-            "Infrastructure Automation Resources: Terraform, Ansible & IaC Playbooks",
+            "Infrastructure Automation Resources: Terraform, Ansible, IaC",
         metaDescription:
             "Explore practical infrastructure automation resources — Terraform, Ansible, Kubernetes, and IaC orchestration patterns for modern platform engineering teams.",
     },
     data: {
         metaTitle:
-            "Data Engineering Resources: ETL, Orchestration & Pipeline Playbooks",
+            "Data Engineering Resources: ETL, Orchestration & Pipelines",
         metaDescription:
-            "Practical data engineering resources on orchestration, ETL/ELT pipelines, dbt, Snowflake, BigQuery, Databricks, and migrating from Airflow to a declarative orchestrator.",
+            "Practical data engineering resources on orchestration, ETL/ELT pipelines, dbt, Snowflake, Databricks, and migrating from Airflow to a declarative orchestrator.",
     },
     ai: {
         metaTitle:
-            "AI Orchestration Resources: LLMOps, RAG & Agentic Workflow Guides",
+            "AI Orchestration Resources: LLMOps, RAG & Agentic Workflows",
         metaDescription:
-            "AI orchestration resources covering LLMOps, RAG pipelines, agentic workflows, prompt management, and integrating Kestra with LangChain, LlamaIndex, and MCP servers.",
+            "AI orchestration resources covering LLMOps, RAG pipelines, agentic workflows, prompt management, and integrating Kestra with LangChain and MCP servers.",
     },
     whitepapers: {
         metaTitle: "Kestra Whitepapers: Orchestration Guides for Engineering Leaders",
