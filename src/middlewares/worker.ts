@@ -89,8 +89,24 @@ const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 
 export default {
     async fetch(request, env, ctx) {
+        const url = new URL(request.url)
+
+        // Enforce no-trailing-slash canonical URLs site-wide (SEO consolidation).
+        // Cloudflare's `html_handling: drop-trailing-slash` is bypassed by
+        // `run_worker_first: true` (see PR #4547), so the worker must do the
+        // 301 itself. `/t/` is excluded because its trailing slash is part of
+        // the tracking payload forwarded to /login?next=...
+        if (
+            url.pathname.length > 1 &&
+            url.pathname.endsWith("/") &&
+            !url.pathname.startsWith("/t/")
+        ) {
+            url.pathname = url.pathname.replace(/\/+$/, "")
+            return Response.redirect(url.toString(), 301)
+        }
+
         // Serve static assets directly without middleware overhead
-        if (/\.[a-zA-Z0-9]+$/.test(new URL(request.url).pathname)) {
+        if (/\.[a-zA-Z0-9]+$/.test(url.pathname)) {
             return handle(request, env, ctx)
         }
 
