@@ -36,7 +36,8 @@ region: Europe
 companySize: "51–500"
 solution: High Quality Pets Nutrition
 tagline: Premium pet nutrition brand
-companyName: ""
+companyName: Reglo
+useCase: Business Automation
 cta: "What would change if your ETL processes triggered automatically from a single command—no manual pipeline runs, just results?"
 ---
 

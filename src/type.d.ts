@@ -29,6 +29,7 @@ interface Window {
 
 interface Story {
     id: string
+    slug: string
     rank: number
     featured?: boolean
     title: string

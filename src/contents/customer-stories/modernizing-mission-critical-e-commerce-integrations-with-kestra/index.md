@@ -29,11 +29,12 @@ quotePerson: Rafael Bartalotti
 quotePersonTitle: Engineering and Architecture Manager
 industry: largest wine e-tailers in Latin America
 headquarter: São Paulo, Brazil
-region: Latin America
+region: South America
 companySize: "51–500"
 solution: E-commerce & Data Platform
 tagline: Latin America's largest wine e-commerce platform
 companyName: Víssimo
+useCase: Business Automation
 cta: "What would change if your e-commerce integrations ran mission-critical workflows automatically—keeping inventory, orders, and fulfillment in sync at scale?"
 ---
 

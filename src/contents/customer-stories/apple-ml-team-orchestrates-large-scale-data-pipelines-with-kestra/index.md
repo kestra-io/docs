@@ -33,6 +33,7 @@ companySize: "5,000+"
 solution: Apple is a global technology leader whose services, including the App Store, Apple Music, and device ecosystems, generate some of the world's largest data volumes, processed daily by a 200-engineer ML team.
 tagline: Global technology company behind iPhone, Mac, and the world's largest app marketplace
 companyName: Apple
+useCase: Data Orchestration
 cta: "What would change if your ML data pipelines processed at massive scale, orchestrating complex ETL workloads between your data warehouse and ML platform with declarative simplicity?"
 ---
 

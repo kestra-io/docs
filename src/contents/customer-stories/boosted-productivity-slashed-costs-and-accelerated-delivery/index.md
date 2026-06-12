@@ -37,6 +37,7 @@ companySize: "51–500"
 solution: Foundation Data is a technology company that empowers automotive groups and dealerships to take control of their digital advertising.
 tagline: Automotive digital advertising technology company
 companyName: Foundation Data
+useCase: Data Orchestration
 cta: "What would change if your advertising data pipelines delivered faster, at lower cost—boosting team productivity across every campaign?"
 ---
 

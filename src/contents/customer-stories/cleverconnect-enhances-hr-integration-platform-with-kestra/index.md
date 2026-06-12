@@ -35,7 +35,8 @@ region: Europe
 companySize: "51–500"
 solution: Leading HR tech company focused on AI-driven recruitment solutions.
 tagline: AI-driven recruitment and talent management platform
-companyName: ""
+companyName: CleverConnect
+useCase: Business Automation
 cta: "What would change if your HR integration workflows were fully automated—scaling with your business without added engineering overhead?"
 ---
 

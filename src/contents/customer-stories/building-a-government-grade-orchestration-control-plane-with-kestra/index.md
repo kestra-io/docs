@@ -35,6 +35,7 @@ companySize: "501–5,000"
 solution: Build a government-grade cloud service portal
 tagline: Government-owned IT service provider for German public administration
 companyName: Dataport
+useCase: IT Automation
 cta: "What would change if your public-sector cloud automation ran through a self-hosted orchestration control plane, built for governance, visibility, and scale?"
 ---
 

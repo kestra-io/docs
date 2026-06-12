@@ -39,7 +39,7 @@ tagline: European government IT provider managing SOC operations across multiple
 companyName: Government IT Provider
 intro: A European government IT services provider managing security operations across multiple German federal states needed to replace Palo Alto XSOAR after the vendor shifted new capabilities primarily to its cloud offering. With citizen data that cannot touch a commercial cloud by law, the SOC team evaluated five alternatives — purpose-built SOARs included — and selected Kestra. They built 100+ security workflows on top of it, covering the full alert lifecycle with no cloud dependencies.
 deployment: Self-hosted · Docker Compose · On-prem
-useCase: Security Operations Center alert orchestration — replacing Palo Alto XSOAR
+useCase: Security Automation
 cta: What would change if your security operations ran on a platform built to stay on-prem — actively developed, open source at its core, and fully under your control?
 ---
 

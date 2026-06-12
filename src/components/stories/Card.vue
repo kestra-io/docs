@@ -1,5 +1,5 @@
 <template>
-    <a :href="`/use-cases/stories/${story.id}`" class="story-card">
+    <a :href="`/customers/${story.slug}`" class="story-card">
         <span class="card-industry">{{ story.industry }}</span>
 
         <div class="card-header">
@@ -183,8 +183,8 @@
     }
 
     .card-kpi-value {
-        font-size: 0.9375rem;
-        font-weight: 700;
+        font-size: 1rem;
+        font-weight: 800;
         color: var(--ks-content-primary);
         line-height: 1.3;
     }

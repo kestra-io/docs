@@ -34,6 +34,7 @@ companySize: "501–5,000"
 solution: Pharmacy Retail
 tagline: Leading pharmacy retail chain operating in a highly regulated market
 companyName: Pharmacy Retailer
+useCase: IT Automation
 cta: "What would change if your mission-critical healthcare workflows ran reliably—meeting compliance requirements without the operational overhead?"
 ---
 

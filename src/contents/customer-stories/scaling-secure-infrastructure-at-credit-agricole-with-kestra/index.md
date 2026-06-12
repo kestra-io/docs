@@ -40,6 +40,7 @@ companySize: "5,000+"
 solution: CAGIP manage the whole infrastructure ecosystem for the Credit Agricole Group
 tagline: Infrastructure arm of France's largest retail banking group
 companyName: Crédit Agricole
+useCase: IT Automation
 cta: "What would change if your bank's infrastructure scaled securely—automated across every team, with governance built into every workflow?"
 ---
 
