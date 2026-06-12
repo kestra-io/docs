@@ -262,7 +262,7 @@ comparison:
         - "Centralized appliance"
         - "Self-hosted (Red Hat subscription)"
     - feature: "Orchestrate beyond Nutanix"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Nutanix-centric"
         - "Multi-cloud (proprietary connectors)"

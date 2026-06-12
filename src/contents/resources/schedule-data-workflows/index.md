@@ -1,8 +1,8 @@
 ---
 title: "Schedule Data Workflows: Orchestrate Your Data Flows"
 description: "Master data workflow scheduling with Kestra. Learn how declarative, event-driven orchestration unifies your data, AI, and infrastructure pipelines for enhanced reliability and efficiency."
-metaTitle: "Schedule Data Workflows with Kestra | Orchestration Guide"
-metaDescription: "Automate and orchestrate your data workflows effectively with Kestra. Learn about scheduling types, triggers, and best practices for reliable, event-driven data processing."
+metaTitle: "Schedule Data Workflows: Triggers & Best Practices | Kestra"
+metaDescription: "Schedule and automate data workflows with Kestra. Learn cron triggers, event-driven scheduling, backfills, and reliability best practices for data pipelines."
 tag: data
 date: 2026-05-02
 faq:
@@ -18,8 +18,8 @@ faq:
     answer: "A declarative approach, like Kestra's YAML-based definitions, offers several benefits: improved readability, easier version control and rollbacks, enhanced collaboration between technical and non-technical teams, and a clear separation of business logic from execution environment details. This leads to more robust and maintainable schedules."
   - question: "Can Kestra orchestrate both scheduled and event-driven data workflows?"
     answer: "Yes, Kestra is designed for both scheduled and event-driven orchestration. It supports cron-based schedules for recurring tasks, and real-time triggers (like webhooks, file arrival, or message queue events) to initiate workflows instantly in response to external events, providing maximum flexibility for diverse data processing needs."
-  - question: "What are the key scheduling algorithms in workflow management?"
-    answer: "Common scheduling algorithms include First-Come, First-Served (FCFS), Shortest Job Next (SJN), Priority Scheduling, Round Robin, and Multilevel Queue Scheduling. These algorithms determine the order and allocation of resources for tasks, optimizing for different goals such as throughput, latency, or fairness. Kestra's scheduler optimizes for efficiency and resource utilization based on task dependencies."
+  - question: "How do you handle backfills and missed schedule executions in Kestra?"
+    answer: "Kestra provides a built-in backfill feature accessible directly from the UI. Navigate to the Triggers tab on the flow's detail page and click Backfill executions to replay missed schedule intervals between a chosen start and end date. Backfills can be paused, resumed, or cancelled at any time, and you can attach custom labels to distinguish backfill runs from regular executions."
 ---
 
 In today's data-driven landscape, the sheer volume and velocity of information demand more than manual oversight. Data workflows, from simple ETL to complex machine learning pipelines, are the backbone of modern operations. Yet, without robust scheduling, these critical processes can become unreliable, inefficient, and a drain on engineering resources.
@@ -32,7 +32,7 @@ Before diving into scheduling, it's essential to understand the components being
 
 ### What is a data workflow?
 
-A data workflow is a sequence of automated tasks that process data from its source to its final destination. This lifecycle typically involves collecting raw data, cleaning and transforming it, and loading it into a system for analysis, reporting, or model training. Effective data workflows turn raw data into a strategic asset, enabling informed decision-making across an organization. They are the core responsibility of [data engineers](https://kestra.io/use-cases/data-engineers) who build and maintain these critical pipelines.
+A data workflow is a sequence of automated tasks that process data from its source to its final destination. This lifecycle typically involves collecting raw data, cleaning and transforming it, and loading it into a system for analysis, reporting, or model training. Effective data workflows turn raw data into a strategic asset, enabling informed decision-making across an organization. They are the core responsibility of [data engineers](https://kestra.io/use-cases/data-engineers) who build and maintain these critical pipelines. For a broader look at the discipline, see [what is data orchestration](/resources/data/data-orchestration).
 
 ### What is a workflow schedule?
 
@@ -41,7 +41,7 @@ A workflow schedule is the automated execution plan for a data workflow. Instead
 ### Different types of data workflows
 
 Data workflows are not a monolith; they serve various purposes within the data lifecycle. Common types include:
-- **Data Integration:** Moving data between systems, such as extracting from APIs and loading into a data warehouse, or scheduling recurring jobs across [database management workflows](/use-cases/databases-management). A classic example is an [ETL workflow](https://kestra.io/resources/data/etl-workflow).
+- **Data Integration:** Moving data between systems, such as extracting from APIs and loading into a data warehouse, or scheduling recurring jobs across [database management workflows](/use-cases/databases-management). A classic example is an [ETL workflow](/resources/data/etl-workflow).
 - **Data Transformation:** Cleaning, standardizing, and enriching raw data to make it usable for analysis. This often involves running scripts or dbt models.
 - **Data Analysis:** Preparing aggregated datasets for business intelligence and reporting tools.
 - **Machine Learning:** Orchestrating the steps to train, evaluate, and deploy machine learning models.
@@ -67,7 +67,7 @@ Automating your workflow schedules provides significant advantages beyond just k
 - **Error Handling:** Modern orchestration tools with schedulers include built-in retry logic and alerting, making pipelines more resilient.
 - **Cost Savings:** Optimize resource usage by running compute-intensive jobs during off-peak hours.
 
-Ultimately, the goal is to [automate your data pipeline](https://kestra.io/resources/data/automate-data-pipeline) to be as hands-off as possible, intervening only by exception.
+Ultimately, the goal is to [automate your data pipeline](/resources/data/automate-data-pipeline) to be as hands-off as possible, intervening only by exception.
 
 ## Core concepts of data workflow orchestration
 
@@ -86,7 +86,7 @@ True orchestration goes beyond a simple cron job. It encompasses a range of capa
 - **Parallelism:** Executing independent tasks concurrently to reduce overall runtime.
 - **Retries and Error Handling:** Automatically retrying failed tasks and defining custom logic for handling failures.
 - **Monitoring and Logging:** Providing centralized visibility into the status, performance, and output of every workflow.
-- **Declarative vs. Imperative:** [Kestra's declarative approach](https://kestra.io/vs/airflow) defines the "what" in a YAML file, leaving the "how" to the engine. This contrasts with imperative tools where the workflow logic is embedded in code.
+- **Declarative vs. Imperative:** [Kestra's declarative approach](https://kestra.io/vs/airflow) defines the "what" in a YAML file, leaving the "how" to the engine. This contrasts with imperative tools where the workflow logic is embedded in code. Teams evaluating alternatives can compare options with the [Airflow alternatives guide](/resources/data/airflow-alternatives).
 
 For a deeper dive into these concepts, explore the [fundamentals of workflow orchestration](https://kestra.io/blogs/introducing-kestra-fundamentals).
 
@@ -147,7 +147,7 @@ Kestra supports a wide variety of [triggers](https://kestra.io/docs/workflow-com
     - **Webhooks:** Initiating a flow via an HTTP request, perfect for API integrations.
     - **File Detection:** Starting a workflow when a new file arrives in S3, GCS, or a local filesystem.
     - **Message Queues:** Triggering a flow based on a new message in Kafka, SQS, or RabbitMQ.
-Kestra's support for real-time triggers enables data processing with millisecond latency, moving beyond traditional batch processing.
+Kestra's support for real-time triggers enables data processing with millisecond latency, moving beyond traditional [batch processing](/resources/data/batch-vs-streaming-processing).
 
 ### Common workflow structures
 
@@ -191,6 +191,6 @@ Effective data workflow scheduling requires more than a simple cron job. It dema
 
 With its declarative YAML interface, Kestra brings GitOps best practices to data orchestration, making your schedules version-controlled, auditable, and easy to manage. Its language-agnostic design means you can orchestrate anything, from [Python scripts and Databricks jobs](https://kestra.io/blogs/2024-03-12-kestra-databricks) to Terraform and Ansible playbooks.
 
-Kestra is not just a replacement for [legacy schedulers](https://kestra.io/vs/broadcom) or a simple [alternative to Airflow](https://kestra.io/vs/airflow); it's a comprehensive platform that unifies your entire technical stack. Whether you are managing [data pipelines](https://kestra.io/data), [infrastructure automation](https://kestra.io/infra-automation), or [AI workflows](https://kestra.io/ai-automation), Kestra provides the scheduling and orchestration capabilities you need.
+Kestra is not just a replacement for [legacy schedulers](https://kestra.io/vs/broadcom) or a simple [alternative to Airflow](https://kestra.io/vs/airflow); it's a comprehensive platform that unifies your entire technical stack. Whether you are managing [data pipelines](/resources/data/data-pipeline), [infrastructure automation](https://kestra.io/infra-automation), or [AI workflows](https://kestra.io/ai-automation), Kestra provides the scheduling and orchestration capabilities you need.
 
 Explore Kestra's [Enterprise Edition](https://kestra.io/enterprise) for advanced governance and security features, or get started with [Kestra Cloud](https://kestra.io/cloud) for a fully managed experience.

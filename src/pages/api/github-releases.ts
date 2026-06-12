@@ -39,7 +39,7 @@ async function fetchRepoReleases(repo: string): Promise<{ versions: ReleaseInfo[
 
     const releases = (await response.json()) as GitHubRelease[]
     const versions: ReleaseInfo[] = releases
-        .filter((release) => !release.draft)
+        .filter((release) => !release.draft && !release.tag_name.includes("SNAPSHOT"))
         .map((release) => ({
             version: release.tag_name.replace(/^v/, ""),
             publishedAt: release.published_at,

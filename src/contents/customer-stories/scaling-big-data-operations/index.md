@@ -35,10 +35,12 @@ quotePerson: Director of Engineering
 quotePersonTitle: ""
 industry: Customer Intelligence & AI-Powered Marketing
 headquarter: Conway, Arkansas, USA
-solution: Acxiom is a global leader in customer intelligence, identity
-  management, and AI-driven marketing solutions. It serves top-tier brands while
-  strictly adhering to global privacy regulations.
+region: North America
+companySize: "5,000+"
+solution: Acxiom is a global leader in customer intelligence, identity management, and AI-driven marketing solutions. It serves top-tier brands while strictly adhering to global privacy regulations.
+tagline: Global leader in customer intelligence and AI-driven marketing
 companyName: Acxiom
+useCase: Data Orchestration
 cta: "What would change if your big data operations scaled without limits—processing billions of records across your marketing intelligence platform?"
 ---
 

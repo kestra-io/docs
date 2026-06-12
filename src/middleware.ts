@@ -177,11 +177,11 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return response
     }
 
-    const storyIdMatch = context.url.pathname.match(/^\/use-cases\/stories\/(\d+)(?:-|$)/)
+    const storyIdMatch = context.url.pathname.match(/^\/(?:use-cases\/stories|customers)\/(\d+)(?:-|$)/)
     if (storyIdMatch) {
         const slug = legacyCustomerStoryIdToSlug[storyIdMatch[1]]
         if (slug) {
-            return sendRedirect(`/use-cases/stories/${slug}`)
+            return sendRedirect(`/customers/${slug}`)
         }
     }
 

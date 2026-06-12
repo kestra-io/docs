@@ -33,10 +33,12 @@ quotePerson: Product Owner
 quotePersonTitle: ""
 industry: Banking & Investment
 headquarter: New York City, USA
-solution: Helping power economic growth by creating opportunities for all
-  through business and community investments, local collaborations and policy
-  advocacy.
+region: North America
+companySize: "5,000+"
+solution: Helping power economic growth by creating opportunities for all through business and community investments, local collaborations and policy advocacy.
+tagline: Global financial services and investment banking leader
 companyName: JPMorgan Chase
+useCase: Security Automation
 cta: "What would change if your cybersecurity workflows orchestrated billions of rows automatically—protecting your organization at financial-industry scale?"
 ---
 

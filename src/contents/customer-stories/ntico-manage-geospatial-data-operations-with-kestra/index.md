@@ -31,8 +31,12 @@ quotePerson: Stephane Delos
 quotePersonTitle: ""
 industry: Consulting and Integrations
 headquarter: Villeneuve d'Ascq, France
+region: Europe
+companySize: "51–500"
 solution: Geospatial Data
-companyName: ""
+tagline: Geospatial data consulting and system integration
+companyName: Ntico
+useCase: Data Orchestration
 cta: "What would change if your geospatial data operations were fully orchestrated—automated end-to-end, without the integration complexity?"
 ---
 
