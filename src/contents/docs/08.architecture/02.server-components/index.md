@@ -45,7 +45,7 @@ Looking for runtime status? The **Instance – Services** view shows live health
 
 In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md), [Worker Groups](../../07.enterprise/04.scalability/worker-group/index.md) allow tasks and [Polling Triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md) to be executed on specific worker sets. They can be beneficial in various scenarios, such as using compute instances with GPUs, executing tasks on a specific OS, restricting backend access, and region-specific execution. A default worker group is recommended per [tenant](../10.multi-tenancy/index.md) or namespace.
 
-To specify a worker group for a task, use the `workerGroup.key` property in the task definition to point the task to a specific worker group key. If no worker group is specified, the task will be executed on the default worker group.
+To route a task to a specific Worker Group, add `workerSelector.tags` to the task definition with the tags matching the target Worker Queue. Tasks without a `workerSelector` run on the default Worker Group.
 
 :::alert{type="info"}
 Worker Groups are available in Kestra Enterprise Edition only, not in Kestra Cloud.
