@@ -1,6 +1,7 @@
 ---
 import Faq from "~/components/common/Faq.vue"
 import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Run from "~/components/features/core/Run.astro"
 import Stacked from "~/components/common/Stacked.astro"
@@ -52,6 +53,7 @@ const items = [
 <Layout {title} {description} headerTheme="lightText">
     <Fragment slot="head">
         <SchemaSoftwareApplication url="https://kestra.io/features" />
+        <SchemaFAQ items={items} />
     </Fragment>
     <div class="core">
         <Intro />
