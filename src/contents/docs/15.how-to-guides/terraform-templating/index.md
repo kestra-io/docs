@@ -303,9 +303,8 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
     transmitFailed: true
 
   - id: use_result
-    type: io.kestra.plugin.core.debug.Return
-    # Use the query result from the subflow
-    format: "{{ outputs.query_last_job.outputs.query_result }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.query_last_job.outputs.query_result }}"
 ```
 
 1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.

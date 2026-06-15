@@ -36,8 +36,8 @@ description: |
 
 tasks:
   - id: only
-    type: io.kestra.plugin.core.debug.Return
-    format: "from parents: {{ execution.id }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "from parents: {{ execution.id }}"
 ```
 
 This flow is a simple one that returns the execution ID as output. The listener checks whether this flow has executed successfully within the past 24 hours.
@@ -55,8 +55,8 @@ description: |
 
 tasks:
   - id: only
-    type: io.kestra.plugin.core.debug.Return
-    format: "from parents: {{ execution.id }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "from parents: {{ execution.id }}"
 ```
 
 Just like `multiplecondition_flow_a`, this flow also returns its execution ID. The listener will wait for both this and the first flow to succeed before activating the final flow.
@@ -74,8 +74,8 @@ description: |
 
 tasks:
   - id: only_listener
-    type: io.kestra.plugin.core.debug.Return
-    format: "children"
+    type: io.kestra.plugin.core.log.Log
+    message: "children"
 
 triggers:
   - id: multiple_listen_flow

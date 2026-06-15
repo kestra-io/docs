@@ -8,17 +8,13 @@ topics:
 description: Learn how to connect your Supabase Database to Kestra workflows using the PostgreSQL plugin to query, copy, and manage your data.
 ---
 
-Connect your Supabase Database to your workflows using the PostgreSQL plugin.
+Use the native [Supabase plugin](/plugins/plugin-supabase) for new integrations. This guide documents the PostgreSQL plugin approach for direct database access.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/DZcOlumKrtc?si=48PCtEOZwSgehiZ6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-:::alert{type="info"}
-There is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace these steps.
-:::
-
-Supabase is an open-source Backend-as-a-service (BaaS) platform that helps developers build applications faster and more efficiently. They provide a number of services, including hosted PostgreSQL databases, which can be used within Flows in Kestra.
+Supabase is an open-source Backend-as-a-service (BaaS) platform that provides hosted PostgreSQL databases you can query directly from Kestra flows.
 
 Before you begin, ensure you have a [Supabase account](https://supabase.com/) set up and a [Kestra installation](../../02.installation/index.mdx) running.
 

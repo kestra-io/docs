@@ -117,9 +117,9 @@ tasks:
     commands:
       - echo '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'
 
-  - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ outputs.shell_outputs_task.vars.test }}'
+  - id: log_vars
+    type: io.kestra.plugin.core.log.Log
+    message: '{{ outputs.shell_outputs_task.vars.test }}'
 ```
 
 _This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._

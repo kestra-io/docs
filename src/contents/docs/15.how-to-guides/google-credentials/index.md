@@ -141,7 +141,11 @@ pluginDefaults:
 
 ## Configuring Secrets in the Enterprise Edition
 
-In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, see the [secrets page](../../06.concepts/04.secret/index.md#secrets-in-the-enterprise-edition).
+In Kestra Enterprise Edition, secrets are managed directly from the UI — no base64 encoding required. Navigate to **Namespaces**, open the namespace where your flow runs, and go to the **Secrets** tab. Click **New secret**, set the key to `GCP_SERVICE_ACCOUNT`, and paste the service account JSON directly as the value.
+
+Reference it in your tasks with `{{ secret('GCP_SERVICE_ACCOUNT') }}`, exactly as shown in the examples above.
+
+To learn more about secret backends and enterprise secret managers, see the [secrets page](../../06.concepts/04.secret/index.md#secrets-in-the-enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
