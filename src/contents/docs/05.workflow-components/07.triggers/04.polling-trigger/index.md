@@ -12,7 +12,7 @@ Polling triggers repeatedly check an external system at a fixed interval. When n
 
 Kestra provides polling triggers for a wide variety of systems, including databases, message queues, cloud storage, and FTP servers.
 
-Polling triggers are not limited to external connectors. Some plugins also provide script-based polling triggers, allowing you to run code on an interval and emit only when a condition matches. The script plugins for [Python](../../../15.how-to-guides/python/index.md#run-python-code-as-a-polling-trigger), [Shell](../../../15.how-to-guides/shell/index.md#automate-shell-with-triggers), [Ruby](../../../15.how-to-guides/ruby/index.md#automate-ruby-with-triggers), [Go](../../../15.how-to-guides/golang/index.md#automate-go-with-triggers), and [JavaScript](../../../15.how-to-guides/javascript/index.md#automate-javascript-with-triggers) each provide `ScriptTrigger` and `CommandsTrigger` variants for polling with code or commands.
+Polling triggers are not limited to external connectors. Some plugins also provide script-based polling triggers, allowing you to run code on an interval and emit only when a condition matches. The script plugins for [Python](../../../15.how-to-guides/python/index.md#run-python-code-as-a-polling-trigger), [Shell](../../../15.how-to-guides/shell/index.md#automate-shell-with-triggers), and [JavaScript](../../../15.how-to-guides/javascript/index.md#automate-javascript-with-triggers) each provide `ScriptTrigger` and `CommandsTrigger` variants for polling with code or commands.
 
 The polling frequency is controlled by the `interval` property. When triggered, the flow has access to the polling results through the `trigger` variable, making the retrieved data immediately available for downstream tasks.
 

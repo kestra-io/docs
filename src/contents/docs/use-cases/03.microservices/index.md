@@ -21,7 +21,7 @@ Kestra can:
 - Retry failed services, keeping workflows robust and fault-tolerant
 - Send alerts or notifications on success or failure
 - Track logs, metrics, inputs, and outputs of each service execution
-- Roll back to earlier workflow [revisions](../../15.how-to-guides/rollback-and-revision-history/index.md) as needed.
+- Roll back to earlier workflow [revisions](../../09.ui/01.flows/index.md#revisions) as needed.
 
 ## Why Use Kestra for Microservices Orchestration?
 
