@@ -162,6 +162,17 @@ The CLI will:
 Node.js ≥ 18 is required. The scaffolder can also be run from inside an existing `ui/` directory if you want to add more components later.
 :::
 
+:::alert{type="warning"}
+After scaffolding, add `@kestra-io/design-system` as a **direct** dependency:
+
+```bash
+cd ui
+npm install @kestra-io/design-system
+```
+
+`@module-federation/vite` resolves shared package entries from its own `node_modules` path. Even though `@kestra-io/design-system` is already a dependency of `artifact-sdk`, the Module Federation build will fail unless it is also listed as a top-level dependency in your plugin's `package.json`.
+:::
+
 ## Project structure
 
 After scaffolding, the `ui/` directory looks like this:
@@ -210,8 +221,9 @@ npm install @kestra-io/kestra-sdk
 The Kestra host application calls `configureAxios()` once at boot, passing it the auth store, router, and other runtime dependencies. This call registers the EE-aware axios instance globally inside the SDK. Your plugin component only needs to import and call the typed API functions — the auth layer is already wired up by the time your component loads.
 
 ```ts
-// ✅ correct — import the typed function and call it
-import { execution, searchByExecution } from "@kestra-io/kestra-sdk";
+// ✅ correct — import from the appropriate subpath and call it
+import * as ExecutionAPI from "@kestra-io/kestra-sdk/executions";
+import * as MetricsAPI from "@kestra-io/kestra-sdk/metrics";
 
 // ❌ do not call configureAxios yourself — that's the host's responsibility
 // import { configureAxios } from "@kestra-io/kestra-sdk";
@@ -224,7 +236,8 @@ The SDK exposes flat async functions, one per API operation. Tenant is injected 
 
 ```ts
 import { ref, watch, computed } from "vue";
-import { execution, searchByExecution } from "@kestra-io/kestra-sdk";
+import * as ExecutionAPI from "@kestra-io/kestra-sdk/executions";
+import * as MetricsAPI from "@kestra-io/kestra-sdk/metrics";
 
 // Fetch task outputs from the full execution
 const fetchedOutputs = ref<Record<string, any> | null>(null);
@@ -233,7 +246,7 @@ const executionId = computed(() => props.execution?.id as string | undefined);
 watch(executionId, async (id) => {
   if (!id) return;
   try {
-    const exec = await execution({ path: { executionId: id } });
+    const exec = await ExecutionAPI.execution({ path: { executionId: id } });
     const tr = exec.taskRunList?.filter((r: any) => r.taskId === props.task.id).at(-1);
     fetchedOutputs.value = (tr as any)?.outputs ?? null;
   } catch { /* best-effort */ }
@@ -245,7 +258,7 @@ const metrics = ref<Array<{ name: string; value: number }>>([]);
 watch(executionId, async (id) => {
   if (!id) return;
   try {
-    const resp = await searchByExecution({ path: { executionId: id } });
+    const resp = await MetricsAPI.searchByExecution({ path: { executionId: id } });
     metrics.value = resp.results ?? [];
   } catch { /* best-effort */ }
 }, { immediate: true });
@@ -255,8 +268,8 @@ Key API functions for topology and log components:
 
 | Function | Import | Description |
 |---|---|---|
-| `flow` | `@kestra-io/kestra-sdk` | Fetch a flow definition (namespace, task config) |
-| `execution` | `@kestra-io/kestra-sdk` | Fetch a full execution with task run list |
+| `flow` | `@kestra-io/kestra-sdk/flows` | Fetch a flow definition (namespace, task config) |
+| `execution` | `@kestra-io/kestra-sdk/executions` | Fetch a full execution with task run list |
 | `searchByExecution` | `@kestra-io/kestra-sdk/metrics` | Fetch all metrics for an execution |
 | `listLogsFromExecution` | `@kestra-io/kestra-sdk/logs` | Fetch log entries for an execution |
 | `taskRunOutputs` | `@kestra-io/kestra-sdk/outputs` | Fetch outputs for a specific task run |
@@ -271,10 +284,10 @@ Wrap every SDK call in `try { … } catch { /* best-effort */ }`. In Storybook a
 For any SDK call that may legitimately return 404 (e.g. fetching a flow definition before the flow has been saved), pass `validateStatus` to route the 404 through the success path instead of the error interceptor:
 
 ```ts
-import { flow } from "@kestra-io/kestra-sdk";
+import * as FlowAPI from "@kestra-io/kestra-sdk/flows";
 
 try {
-  const f = await flow(
+  const f = await FlowAPI.flow(
     { path: { namespace: ns, id: fid } },
     { showMessageOnError: false, validateStatus: (s: number) => s === 200 || s === 404 },
   );
@@ -347,7 +360,8 @@ The snippet below is adapted from the BigQuery plugin ([plugin-gcp#599](https://
 <script setup lang="ts">
 import type { KnownSlotProps } from "@kestra-io/artifact-sdk";
 import { computed, ref, watch, useAttrs } from "vue";
-import { execution as fetchExecution, flow as fetchFlowDef } from "@kestra-io/kestra-sdk";
+import * as ExecutionAPI from "@kestra-io/kestra-sdk/executions";
+import * as FlowAPI from "@kestra-io/kestra-sdk/flows";
 
 // KnownSlotProps["topology-details"] includes taskType, task, execution, namespace, flowId, metrics
 const props = defineProps<KnownSlotProps["topology-details"]>();
@@ -365,7 +379,7 @@ async function loadFlowTask() {
   const fid = props.flowId;
   if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return;
   try {
-    const f = await fetchFlowDef({ path: { namespace: ns, id: fid } });
+    const f = await FlowAPI.flow({ path: { namespace: ns, id: fid } });
     const tasks = (f as any).tasks as any[] | undefined;
     flowTask.value = tasks?.find((t: any) => t.id === taskId.value) ?? null;
   } catch { /* best-effort */ }
@@ -390,7 +404,7 @@ const fetchedOutputs = ref<Record<string, any> | null>(null);
 watch(executionId, async (id) => {
   if (!id) return;
   try {
-    const exec = await fetchExecution({ path: { executionId: id } });
+    const exec = await ExecutionAPI.execution({ path: { executionId: id } });
     const tr = (exec.taskRunList as any[])?.filter((r: any) => r.taskId === taskId.value).at(-1);
     fetchedOutputs.value = (tr as any)?.outputs ?? null;
   } catch { /* best-effort */ }
