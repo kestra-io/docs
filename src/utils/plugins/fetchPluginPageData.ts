@@ -2,7 +2,7 @@ import { API_URL } from "astro:env/client"
 import type { JSONSchema } from "./schema"
 import type { Plugin, PluginMetadata } from "./plugin"
 
-import { $fetchApiCached, $fetchApiRawCached } from "~/utils/fetch"
+import { $fetchApiCached, $fetchApiRaw } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { retrieveRepoReleases } from "../../pages/api/github-releases"
@@ -104,7 +104,7 @@ export async function fetchPageDefinition(
 
     try {
         if (isVersioned) {
-            const response = await $fetchApiRawCached(url)
+            const response = await $fetchApiRaw(url)
             if (response.status === HTTP_ACCEPTED) {
                 return { status: "pending", page: null }
             }
@@ -149,7 +149,7 @@ export async function fetchVersionedSubgroups(
 ): Promise<VersionedSubgroupsResult> {
     const url = `/plugins/${pluginName}/versions/${version}/subgroups`
     try {
-        const response = await $fetchApiRawCached(url)
+        const response = await $fetchApiRaw(url)
         if (response.status === HTTP_ACCEPTED) {
             return { status: "pending", subgroups: null }
         }
