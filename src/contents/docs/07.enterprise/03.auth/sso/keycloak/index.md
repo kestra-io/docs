@@ -22,12 +22,12 @@ You can follow the steps described in the [Keycloak tutorial documentation](http
 
 Once in Keycloak, create a new client:
 
-![Create Client](../../../../15.how-to-guides/keycloak/client1.png)
-![Client Settings](../../../../15.how-to-guides/keycloak/client2.png)
+![Create Client](./client1.png)
+![Client Settings](./client2.png)
 
 Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as the valid redirect URI and `https://{{ yourKestraInstanceURL }}/logout` as the valid post-logout redirect URI.
 
-![Redirect URI](../../../../15.how-to-guides/keycloak/redirect-uri.png)
+![Redirect URI](./redirect-uri.png)
 
 ## Kestra Configuration
 
@@ -49,8 +49,8 @@ micronaut:
 
 You can retrieve the `clientId` and `clientSecret` via Keycloak user interface
 
-![Client ID](../../../../15.how-to-guides/keycloak/clientId.png)
-![Client Secret](../../../../15.how-to-guides/keycloak/clientSecret.png)
+![Client ID](./clientId.png)
+![Client Secret](./clientSecret.png)
 
 Don't forget to set a default role in your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md) to streamline the process of onboarding new users.
 
@@ -147,17 +147,17 @@ If you are unable to use [SCIM with Keycloak](../../scim/keycloak/index.md), you
 
 In Keycloak, go to **Client Scopes** and click **Create Client Scope**. Name it `groups`, set Type to **Default**, and keep Protocol as **OpenID Connect**.
 
-![Create Client Scope](../../../../15.how-to-guides/keycloak/01-groups_create_client_scope.png)
+![Create Client Scope](./01-groups_create_client_scope.png)
 
 ### Add a Group Membership Mapper
 
 In the newly created `groups` scope, go to the **Mappers** tab and click **Configure a new mapper**.
 
-![Add Mappers](../../../../15.how-to-guides/keycloak/02-add-mappers.png)
+![Add Mappers](./02-add-mappers.png)
 
 Select **Group Membership** from the list of available mapper types.
 
-![Configure Mapper](../../../../15.how-to-guides/keycloak/03-configure-mappers.png)
+![Configure Mapper](./03-configure-mappers.png)
 
 Configure the mapper with the following settings:
 - **Name**: `groups`
@@ -165,13 +165,13 @@ Configure the mapper with the following settings:
 - **Full group path**: Off
 - **Add to ID token**: On
 
-![Mapper Details](../../../../15.how-to-guides/keycloak/04-mapper-details.png)
+![Mapper Details](./04-mapper-details.png)
 
 ### Add the Client Scope to Your Client
 
 Go to **Clients**, select your Kestra client, and add the `groups` client scope.
 
-![Add Client Scope](../../../../15.how-to-guides/keycloak/05-add_client_scope.png)
+![Add Client Scope](./05-add_client_scope.png)
 
 ### Configure Kestra
 
