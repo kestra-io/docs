@@ -34,7 +34,7 @@ pillars:
     - icon: "mdi:clock-outline"
       title: "Scheduled batch prediction jobs"
       description: "Batch prediction runs on a schedule: fetch the input dataset from BigQuery, trigger a Vertex AI batch prediction job, wait for completion, and write the outputs back. Kestra chains these steps with per-step retries so a BigQuery write failure retries the write without re-running the prediction job."
-    - icon: "mdi:multimodal"
+    - icon: "mdi:image-multiple-outline"
       title: "Multimodal completion in pipelines"
       description: "Vertex AI supports text, image, video, and audio processing through <code>io.kestra.plugin.gcp.vertexai.MultimodalCompletion</code>. Kestra chains multimodal processing steps with upstream media ingestion and downstream annotation storage in one flow, triggered on GCS file arrival or a schedule."
     - icon: "mdi:eye-outline"
