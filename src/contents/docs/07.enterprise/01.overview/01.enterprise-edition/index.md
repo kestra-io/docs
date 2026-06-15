@@ -15,9 +15,9 @@ Designed for production workloads with high security and compliance requirements
 
 ## Key Features
 
-Kestra Enterprise is built on top of the [Open Source Edition](https://github.com/kestra-io/kestra) but features a different architecture. Below are the key differences between the two.
+Kestra Enterprise is an additive overlay on the [Open Source Edition](https://github.com/kestra-io/kestra) — it shares one codebase and preserves all open-source behavior while adding enterprise capabilities on top.
 
-⚡️**High Availability**: Kestra Enterprise is designed to be highly available and fault-tolerant. It uses a **Kafka** cluster as a backend for event-driven orchestration and **Elasticsearch** for storing logs and metrics. This not only improves performance but also eliminates single points of failure and enables the system to scale for large workloads.
+⚡️**High Availability**: Kestra Enterprise is designed to be highly available and fault-tolerant. It can use **Kafka**, **Redis**, **AMQP**, or **GCP Pub/Sub** as the queue backend, and **Elasticsearch** for the search and read model. This eliminates single points of failure and enables horizontal scaling for large workloads.
 
 ⚡️**Multi-Tenancy**: The Enterprise Edition supports multi-tenancy, enabling separate environments for different teams or projects. Each tenant is fully isolated, can have its own access control policies, and can optionally run with Worker Isolation and dedicated worker groups to prevent cross-tenant contention.
 

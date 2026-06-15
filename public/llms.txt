@@ -159,7 +159,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 Use this section for definitions, architecture questions, or understanding Kestra's internal design.
 
 - [Glossary](https://kestra.io/docs/glossary.md): Definitions of Kestra-specific and general orchestration terms
-- [Architecture](https://kestra.io/docs/architecture.md): How Kestra's components fit together — Webserver, Scheduler, Executor, Worker, Queue, and storage layers
+- [Architecture](https://kestra.io/docs/architecture.md): How Kestra's components fit together — six server roles (Executor, Worker Controller, Worker, Scheduler, Webserver, Indexer), pluggable queue backends, and storage layers
 - [Why Kestra](https://kestra.io/docs/why-kestra.md): How Kestra compares to other orchestration tools and where it is best suited
 
 ## Getting started

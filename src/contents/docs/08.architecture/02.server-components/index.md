@@ -6,34 +6,44 @@ sidebarTitle: Server components
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
-Detailed breakdown of the server components behind Kestra.
-
-Kestra consists of multiple server components that can be scaled independently.
-
-Each server component interacts with internal components ([Internal Storage](../data-components/index.md#internal-storage), [Queue](../01.main-components/index.md#queue), and [Repository](../01.main-components/index.md#repository)).
+Kestra runs six server roles that can be deployed as a single process or as independent, separately scaled services. Every role communicates exclusively through the [Queue](../01.main-components/index.md#queue) and reads shared state from the [Repository](../01.main-components/index.md#repository). Workers are the only role that accesses [Internal Storage](../data-components/index.md#internal-storage) and user infrastructure directly.
 
 ## Executor
 
-The **Executor** is a lightweight server component responsible for processing all executions and orchestrating the next tasks to run. It does not perform heavy computations itself, instead deferring actual task execution to [Workers](#worker).
+The **Executor** is a lightweight server component responsible for driving the execution state machine. Given a flow and an execution, it decides which task runs next, what state the execution is in, what to dispatch, what to retry, and when an execution terminates. It does not perform heavy computation itself — runnable tasks are dispatched to [Workers](#worker) via the [Worker Controller](#worker-controller).
 
-The Executor plays a central role in coordinating workflows based on the information it receives from the [Scheduler](#scheduler) and the [Queue](../01.main-components/index.md#queue). It handles specific types of tasks, such as:
+The Executor subscribes to the queue and handles:
 
 - [Flowable Tasks](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md)
 - [Flow Triggers](../../05.workflow-components/07.triggers/02.flow-trigger/index.md)
-- Templates *(deprecated)*
-- Listeners *(deprecated)*
+- Subflow and loop coordination
+- Concurrency limits, retries, SLA monitoring, and kill signals
 
-Although the Executor oversees all executions, it never interacts directly with your data.
+The Executor never interacts directly with user data or infrastructure.
 
-Because of its low resource usage, the Executor rarely needs to be scaled. However, in deployments with a very large number of executions, you can scale Executors horizontally to meet demand.
+Because of its low resource usage, the Executor rarely needs to be scaled. In deployments with very high execution volume, Executors can scale horizontally.
+
+## Worker Controller
+
+The **Worker Controller** is the sole communication point between the cluster and its workers. Workers never subscribe to the job queue or access the database directly — all job dispatch and result intake are funnelled through the Worker Controller.
+
+Each worker opens a persistent bidirectional gRPC stream to a Worker Controller and uses that stream for its lifetime:
+
+- The Worker Controller dispatches jobs from the queue onto the stream.
+- Workers return results, logs, and metrics over the same stream.
+- Kill signals and metadata changes are broadcast to all connected workers.
+
+Multiple Worker Controller instances can run in parallel. Workers discover available controllers through static endpoint lists, DNS, or self-registration in internal storage.
+
+gRPC transport is available in all editions. TLS, mTLS, and JWT-based worker authentication are Enterprise Edition features.
 
 ## Worker
 
-The **Worker** is a server component responsible for executing all [runnable tasks](../../05.workflow-components/01.tasks/01.runnable-tasks/index.md) and [Polling Triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md). These are received from the [Executor](#executor) and the [Scheduler](#scheduler), respectively.
+The **Worker** is a server component responsible for executing all [runnable tasks](../../05.workflow-components/01.tasks/01.runnable-tasks/index.md) and [Polling Triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md). Jobs are dispatched from the [Worker Controller](#worker-controller) over a gRPC stream.
 
-Workers are highly configurable and designed to handle a wide range of workloads — from simple API calls to heavy computational tasks. Internally, each Worker functions as a configurable thread pool, allowing you to define the number of threads per instance based on your workload requirements.
+Internally, each Worker runs as a configurable thread pool. Set the thread count per instance based on your workload — more threads for I/O-bound tasks, fewer for memory-intensive ones.
 
-You can deploy multiple Worker instances across different servers to scale horizontally. This flexibility enables efficient handling of parallel executions, especially in high-throughput environments.
+Deploy multiple Worker instances across different servers to scale horizontally. Each instance handles its assigned tasks independently, so adding workers increases throughput without coordination overhead.
 
 Because Workers directly execute tasks and triggers, they are the **only** server components that require access to external systems — such as databases, REST APIs, message brokers, and any other services your flows interact with.
 
