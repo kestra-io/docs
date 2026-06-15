@@ -34,10 +34,11 @@ The following diagram illustrates the structure of flows and unit tests together
 
 ## Configuration
 
-Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures` and `assertions`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
+Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures`, `assertions`, and an optional `expectedState`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
+- **expectedState** sets the terminal state the flow must reach for the test to pass. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state to test intentional failure paths.
 
 Common fixture types:
 - **files**: provide inline files or namespace file URIs the flow can read.
@@ -418,6 +419,44 @@ In this example:
 4. Downstream tasks can read the mocked output file as if the script had actually run
 
 This approach allows you to test the complete flow logic while avoiding the overhead and complexity of executing actual scripts during testing.
+
+## Assert expected failure state
+
+Some flows are designed to fail when conditions are not met — for example, a validation guard that uses `io.kestra.plugin.core.execution.Fail` to reject invalid inputs. The `expectedState` property on a test case lets you assert that a flow ends in a specific terminal state. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state.
+
+The following flow fails when the supplied quantity is not positive:
+
+```yaml
+id: order_validation
+namespace: company.team
+
+inputs:
+  - id: quantity
+    type: INT
+
+tasks:
+  - id: validate_quantity
+    type: io.kestra.plugin.core.execution.Fail
+    condition: "{{ inputs.quantity <= 0 }}"
+    errorMessage: "Order quantity must be greater than zero"
+```
+
+The test asserts that passing a negative value causes the expected failure:
+
+```yaml
+id: order_validation_tests
+namespace: company.team
+flowId: order_validation
+testCases:
+  - id: invalid_quantity_should_fail
+    type: io.kestra.core.tests.flow.UnitTest
+    expectedState: FAILED
+    fixtures:
+      inputs:
+        quantity: -1
+```
+
+When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test fails and reports both the expected and actual states.
 
 ## Available assertion operators
 

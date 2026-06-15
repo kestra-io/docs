@@ -1,12 +1,39 @@
 ---
 title: "Workflow Helper Functions in Kestra Expressions"
 h1: "Workflow Helper Functions"
-description: Reference for Kestra's workflow and execution helper functions — errorLogs(), currentEachOutput(), tasksWithState(), iterationOutput(), parentOutput(), and appLink().
+description: Reference for Kestra's workflow and execution helper functions — loopOutputs(), errorLogs(), tasksWithState(), and appLink().
 sidebarTitle: Workflow Functions
 icon: /src/contents/docs/icons/expression.svg
 ---
 
 This group is more situational, but it becomes valuable in complex flows where you need to inspect sibling results, build links back into Kestra, or summarize failures.
+
+## `loopOutputs()`
+
+Extracts a named output from every iteration of a [Loop](../../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) task and returns the values as an ordered list.
+
+**Prerequisite**: the Loop task must declare an `outputs:` block. Without it, `outputs.loop.outputs` does not exist and this function will fail.
+
+```twig
+{{ loopOutputs(outputs.myLoop.outputs, 'result') }}
+```
+
+The first argument must be the loop task's `.outputs` list. The second argument is the output ID — it must match an output ID declared in the Loop task's `outputs:` block. The function returns one value per iteration in order, with `null` for iterations where that key is missing.
+
+For a `Loop` over `["a", "b", "c"]` with a declared output `result`:
+
+```twig
+{{ loopOutputs(outputs.loop.outputs, 'result') }}
+{# → ["processed a", "processed b", "processed c"] #}
+```
+
+To access a single iteration directly, use list index notation:
+
+```twig
+{{ outputs.loop.outputs[0].outputs.result }}   {# first iteration's declared output #}
+{{ outputs.loop.outputs[0].item.value }}        {# first iteration's input value #}
+{{ outputs.loop.outputs[0].item.iteration }}    {# first iteration's zero-based index #}
+```
 
 ## `errorLogs()`
 
@@ -18,14 +45,6 @@ Prints all error logs from the current execution:
 
 It is most useful in `errors` blocks, where you need a compact summary of what failed without manually traversing task state objects.
 
-## `currentEachOutput()`
-
-Use it inside `ForEach` flows to avoid manual `taskrun.value` indexing:
-
-```twig
-{{ currentEachOutput(outputs.make_data).values.data }}
-```
-
 ## `tasksWithState()`
 
 Returns a list of task run objects matching the given state. Use it in error handlers or notifications to report which tasks failed:
@@ -35,24 +54,6 @@ Returns a list of task run objects matching the given state. Use it in error han
 ```
 
 Useful for building conditional logic or failure summaries based on task outcomes.
-
-## `iterationOutput()`
-
-Retrieves the output of a specific iteration from a previous task. Both arguments are optional — `taskId` defaults to the current task and `iteration` defaults to the previous iteration:
-
-```twig
-{{ iterationOutput(outputs.myTask).value }}
-{{ iterationOutput(outputs.myTask, 2).value }}
-```
-
-## `parentOutput()`
-
-Retrieves the output of a parent task. The optional `index` argument specifies which ancestor to target; omitting it returns the direct parent's output:
-
-```twig
-{{ parentOutput() }}
-{{ parentOutput(1) }}
-```
 
 ## `appLink()`
 

@@ -148,3 +148,31 @@ tasks:
 Note how the `outputFiles` property is used to specify the list of files to be persisted in Kestra's internal storage. The `outputFiles` property supports [glob patterns](https://en.wikipedia.org/wiki/Glob_(programming)).
 
 The subsequent task can access the output file by leveraging the syntax `{{outputs.yourTaskId.outputFiles['yourFileName.fileExtension']}}`.
+
+### Referencing output file paths inside the script
+
+For local runners (Process and Docker), writing files by plain name works because Kestra sets the process working directory automatically. For remote task runners (Kubernetes, AWS Batch, Azure Batch, etc.), the working directory is an execution-specific absolute path. Rather than constructing it manually with `{{ workingDir }}/filename`, you can use `{{ outputFiles["filename"] }}` to get the resolved absolute path by name:
+
+```yaml
+id: output_file_remote
+namespace: company.team
+
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      config:
+        masterUrl: https://my-cluster:6443
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+    outputFiles:
+      - out.txt
+    commands:
+      - echo "Hello from Kubernetes" > {{ outputFiles["out.txt"] }}
+```
+
+The `{{ outputFiles["filename"] }}` expression resolves to the absolute path of the named file in the task's working directory — the same value as `{{ workingDir }}/filename`. The same form is used in JDBC tasks (e.g., `COPY ... TO '{{ outputFiles["out.csv"] }}'`), so the pattern is consistent across task types.
+
+:::alert{type="info"}
+Only named files are available as Pebble expressions. Glob patterns such as `*.csv` are collected post-run but cannot be referenced as `{{ outputFiles["*.csv"] }}` inside the script. Declare named files for any output you need to reference by path, and use globs only for bulk collection.
+:::

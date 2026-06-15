@@ -8,15 +8,19 @@ topics:
 description: Use uv in Kestra to manage Python dependencies and virtual environments for faster and more reliable script execution.
 ---
 
-Manage your Python Dependencies in Kestra using `uv`.
+Manage Python dependencies in Kestra using `uv`.
+
+:::alert{type="info"}
+For most use cases, the native `dependencies` property on Python `Script` and `Commands` tasks is the simplest way to install packages — Kestra handles installation automatically without needing `beforeCommands`. Use `uv` when you need faster resolution, virtual environments with the Process runner, or a custom Docker image with `uv` pre-installed.
+:::
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/tyEbyhg6jmY?si=v_vQVfBUvKJD7-rn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-`uv` is a new Python package and project manager designed to be extremely fast. Written in rust, it aims to fix some of the pitfalls of pip while also combining multiple python dependency management tools like `virtualenv`, `poetry`, and more into one unified tool.
+`uv` is a fast Python package and project manager written in Rust. It combines tools like `virtualenv`, `poetry`, and `pip` into one unified interface and is pre-installed in Kestra's default Python image `kestrapy`.
 
-`uv` can be used in Kestra to install dependencies as well as manage virtual environments in combination with the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md).
+`uv` is useful in Kestra for managing virtual environments with the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md) or when you need explicit control over dependency resolution speed.
 
 ## Install Dependencies
 

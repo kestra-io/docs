@@ -192,6 +192,46 @@ The first SSE payload is an empty keepalive — skip it before processing subseq
 
 ---
 
+## Read execution logs
+
+### List logs
+
+Fetch all log entries for a completed execution:
+
+```python
+def list_logs():
+    tenant = "main"
+    logs = kestra_client.logs.list_logs_from_execution(
+        execution_id="your-execution-id",
+        tenant=tenant,
+        min_level="INFO",  # optional; filters to INFO and above
+    )
+    for entry in logs:
+        print(f"[{entry.level}] {entry.message}")
+```
+
+### Stream logs live
+
+`follow_logs_from_execution` yields `LogEntry` items as the execution produces them. The server sends an initial keepalive frame with all fields `None` — skip entries where `execution_id` is `None`.
+
+```python
+def follow_logs():
+    tenant = "main"
+    for entry in kestra_client.logs.follow_logs_from_execution(
+        execution_id="your-execution-id",
+        tenant=tenant,
+    ):
+        if entry.execution_id is None:
+            continue  # keepalive frame
+        print(f"[{entry.level}] {entry.message}")
+```
+
+:::alert{type="info"}
+The `min_level` parameter on `follow_logs_from_execution` is not applied by the Kestra 2.0 server — pass no filter and handle level filtering in the consumer loop if needed.
+:::
+
+---
+
 ## KV Store
 
 The KV Store lets you read and write key-value pairs scoped to a namespace.

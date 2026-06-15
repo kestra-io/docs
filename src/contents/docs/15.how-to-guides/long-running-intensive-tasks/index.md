@@ -98,7 +98,7 @@ At the end of the execution, the pod is deleted, and the logs remain available i
 
 ![dbt-pod-deleted-after-success](./pod_create_delete.png)
 
-## Embrace Kestra versality with Kubernetes Task Runners
+## Embrace Kestra versatility with Kubernetes Task Runners
 
 While podCreate provides deep control, it takes aways all the benefits of Kestra's rich plugins ecosystem, [dbt plugin](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli) in this case. Also it can be cumbersome to manage complex Kubernetes pod YAML specification for each task, especially when you have multiple commands to run.
 

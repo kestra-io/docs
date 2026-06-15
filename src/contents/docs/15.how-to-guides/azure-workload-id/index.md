@@ -191,42 +191,6 @@ Assuming other properties are populated to your desired values within the `value
 helm install -f values.yaml kestra kestra/kestra
 ```
 
-## Known Issues
-
-On earlier versions of the Kestra helm chart (<=0.19), it was not possible to define custom labels for individual pods. To use managed workload identity, the following label must be defined on the webserver, scheduler, and worker pods:
-
-```yaml
-azure.workload.identity/use: "true"
-```
-
-This configuration can also be provided in the values.yaml override by specifying the following `podLabels`:
-
-```yaml
-common:
-  podLabels:
-    azure.workload.identity/use: "true"
-```
-
-Should you be unable to upgrade at this time, here is a workaround:
-- Download the `latest` Kestra helm chart from https://helm.kestra.io
-- Navigate to file `templates/_helpers.tpl`
-- In the section `kestra.selectorsLabels`, add the required label to the list, e.g.:
-
-```yaml
-{{- define "kestra.selectorsLabels" -}}
-app.kubernetes.io/name: {{ include "kestra.name" . }}
-app.kubernetes.io/component: {{ .Component }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-azure.workload.identity/use: "true"
-{{- end -}}
-```
-
-Assuming the above chart is stored locally in `~/helm/kestra`, deploy Kestra using the following command:
-
-```shell
-helm install -f values.yaml kestra ~/helm/kestra
-```
-
 ## Next steps
 
 Following the steps above, you can use Azure Workload Identity in your Kestra Enterprise Edition instance. If you have any issues replicating this setup, don't hesitate to reach out [via Slack](https://kestra.io/slack) or open a support ticket.

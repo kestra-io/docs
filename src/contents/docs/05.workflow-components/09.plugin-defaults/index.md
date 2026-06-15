@@ -15,7 +15,7 @@ They work like default function arguments, helping you avoid repetition when tas
   <iframe src="https://www.youtube.com/embed/9zQTUeL0KMc?si=xOAqec_9X79-7YDp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Plugin Defaults on a flow-level
+## Plugin defaults at the flow level
 
 You can define plugin defaults in the `pluginDefaults` section to avoid repeating properties across multiple tasks of the same type. For example:
 
@@ -66,18 +66,7 @@ pluginDefaults:
       containerImage: python:slim
 ```
 
-In this example, Docker and Python configurations are defined once in `pluginDefaults`, instead of being repeated in every task. This approach helps to streamline the configuration process and reduce the chances of errors caused by inconsistent settings across different tasks.
-
-:::alert{type="info"}
-If you move required attributes into `pluginDefaults`, the UI code editor may show warnings about missing arguments, because defaults are only resolved at runtime. As long as `pluginDefaults` contains the relevant arguments, you can save the flow and ignore the warning displayed in the editor.
-
-![pluginDefaultsWarning](./warning.png)
-
-:::
-
-### `forced` attribute in `pluginDefaults`
-
-Setting `forced: true` in `pluginDefaults` ensures that default values override any properties defined directly in the task. By default, the value of the `forced` attribute is `false`.
+In this example, Docker and Python configurations are defined once in `pluginDefaults` rather than repeated in every task.
 
 ## Precedence of plugin defaults
 
@@ -98,7 +87,7 @@ This means a global forced default cannot be overridden by a namespace-level for
 
 ## Plugin defaults in a global configuration
 
-Plugin defaults can also be defined globally in your Kestra configuration, applying the same values across all flows. This is useful when you want to apply the same defaults across multiple flows. Let's say that you want to centrally manage the default values for the `io.kestra.plugin.aws` plugin to reuse the same credentials and region across all your flows. You can add the following to your Kestra configuration:
+Plugin defaults can also be defined globally in your Kestra configuration, applying the same values across all flows. To centrally manage credentials for the `io.kestra.plugin.aws` plugin, add the following to your Kestra configuration:
 
 ```yaml
 kestra:
@@ -111,7 +100,13 @@ kestra:
           region: "us-east-1"
 ```
 
-If you want to set defaults only for a specific task, you can do that too:
+Global plugin defaults must be configured under `kestra.plugins.defaults`.
+
+:::alert{type="info"}
+The legacy `kestra.tasks.defaults` property is still supported for backward compatibility, but it is deprecated. Use `kestra.plugins.defaults` for all new configurations.
+:::
+
+To set defaults for a specific task type only:
 
 ```yaml
 kestra:
@@ -149,11 +144,17 @@ This is equivalent to writing the same nested structure directly in a task. The 
 In the [Enterprise Edition](../../07.enterprise/index.mdx) or [Kestra Cloud](/cloud), plugin defaults can be configured directly in the UI under the **Plugin Defaults** tab of a Namespace.
 :::
 
-You can create them via form or directly as YAML code for the Namespace:
+You can create them from the Namespace UI using the guided form or YAML editor:
 
 ![Plugin Default Form Creation](./plugin-default-creation.png)
 
-Or click on **YAML** and, for example, paste the following:
+The add/edit dialog lets you:
+
+- choose a predefined plugin type or enter a custom plugin type
+- switch between a form view and a YAML view
+- preview the generated YAML for an existing plugin default
+
+If you switch to **YAML**, you can paste content such as:
 
 ```yaml
 - type: io.kestra.plugin.aws.s3.Upload
@@ -165,8 +166,12 @@ Or click on **YAML** and, for example, paste the following:
 
 ### Inherited Plugin Defaults
 
-Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
+Plugin Defaults are inherited from the parent Namespace to children Namespaces. In the example above, the image shows the Plugin Default was created in the `kestra.company` Namespace. Navigating to the **Plugin Defaults** tab of a child Namespace, for example `kestra.company.data`, shows the parent Namespace's Plugin Defaults together with the Namespace they come from. This avoids having to recreate Plugin Defaults across children Namespaces, but it still allows for the children Namespaces to maintain their own isolated defaults if needed.
 
 ![Plugin Default Inheritance](./inherited-plugin-defaults.png)
+
+### Import and export
+
+From the Namespace **Plugin Defaults** tab, you can also export the current Namespace plugin defaults to YAML and import them back into another Namespace. This is useful when promoting a curated set of defaults across environments or teams.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Qu8BDAn5EOUrGmwrfLyv?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Defaults | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>

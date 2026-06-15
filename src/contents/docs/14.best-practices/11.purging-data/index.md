@@ -33,8 +33,8 @@ Use this rule of thumb:
 
 | If you want to remove... | Prefer | Why |
 | --- | --- | --- |
-| Old execution records | [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
-| Old execution and trigger logs | [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs) | It is designed for bulk log cleanup |
+| Old execution records | [`PurgeExecutions`](/plugins/core/tasks/io.kestra.plugin.core.execution.purgeexecutions) | It permanently deletes execution metadata and related execution data |
+| Old execution logs, trigger logs, or both | [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs) | Use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently, or leave both `true` (default) to purge all logs |
 | Expired runtime state in the KV Store | [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv) or automatic KV expiration purge | It removes stale KV entries without treating them as static configuration |
 | Old Namespace file versions | [`PurgeFiles`](/plugins/core/namespace/io.kestra.plugin.core.namespace.purgefiles) | It applies retention rules to Namespace files and their versions |
 | Old asset records, usages, or lineage data | [`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) | It applies retention to asset-related records without touching executions or logs |
@@ -66,6 +66,8 @@ This is usually the right choice when:
 Best practice:
 
 - set separate retention periods for executions and logs if your teams use them differently
+- use `purgeExecutionLogs: false` to retain execution logs for failed workflow debugging while still purging trigger logs, or `purgeNonExecutionLogs: false` to do the reverse
+- set `batchSize` on `PurgeLogs` when purging large volumes of logs to limit the number of rows deleted per transaction
 - avoid deleting recent data that is still useful for troubleshooting failed workflows
 - run purge flows on a schedule instead of waiting for storage pressure
 

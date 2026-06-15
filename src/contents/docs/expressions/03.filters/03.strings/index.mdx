@@ -120,6 +120,31 @@ Escapes special characters in a string. The `type` argument controls which style
 {# output: Can\'t be here #}
 ```
 
+## Regex filters
+
+Three filters cover the most common regex operations:
+
+- `regexMatch(regex)` — returns `true` if the input contains a substring matching the pattern, `false` otherwise.
+- `regexReplace(regex, replacement)` — replaces all non-overlapping matches. Use `$1`, `$2`, … to reference capture groups in the replacement.
+- `regexExtract(regex, group)` — returns the first match or a specific capture group. `group` defaults to `0` (the whole match); returns `null` if there is no match.
+
+```twig
+{{ "hello world" | regexMatch("w[a-z]+") }}
+{# output: true #}
+{{ "2024-01-15" | regexReplace("(\\d{4})-(\\d{2})-(\\d{2})", "$3/$2/$1") }}
+{# output: 15/01/2024 #}
+{{ "order-12345-done" | regexExtract("\\d+") }}
+{# output: 12345 #}
+{{ "2024-01-15" | regexExtract("(\\d{4})-(\\d{2})-(\\d{2})", 1) }}
+{# output: 2024 #}
+```
+
+:::alert{type="warning"}
+Regex filter operations are subject to a **10-second timeout** to prevent ReDoS (catastrophic backtracking). If a pattern takes longer than the limit, the task fails with a timeout error.
+
+Patterns with nested quantifiers such as `(a+)+` applied to large inputs are most likely to trigger this. Use anchored, non-ambiguous patterns to avoid it. The timeout can be adjusted with [`kestra.regex.timeout`](../../../configuration/05.security-and-secrets/index.md#regex-timeout) in your Kestra configuration.
+:::
+
 ## Worked string filter example
 
 This flow builds a sanitized filename and a display-safe summary from a raw input title:

@@ -24,6 +24,19 @@ Queues and repositories must stay compatible:
 - JDBC queue with H2, MySQL, or PostgreSQL repository
 - Kafka queue with Elasticsearch repository in Enterprise Edition
 
+## Allocated CPU cores
+
+Kestra sizes several internal thread pools based on the number of CPU cores available to the process. By default, it uses the number of CPU cores reported by the runtime environment.
+
+If you want Kestra to size those pools using a different value, set `kestra.allocated-cpu-cores`:
+
+```yaml
+kestra:
+  allocated-cpu-cores: 2
+```
+
+This is useful when you want to limit how aggressively Kestra allocates worker, scheduler, and queue-related threads without changing container limits or host-level CPU settings.
+
 ## Database and datasources
 
 Start here if you are choosing the persistence layer for a new Kestra instance or moving from a local setup to a durable environment. In most teams, this is the first configuration page they revisit after initial installation.
@@ -212,6 +225,7 @@ Common options include:
 
 - `local` for local testing
 - `s3`
+- `s3files`
 - `gcs`
 - `azure`
 - `minio`
@@ -334,6 +348,44 @@ kestra:
       sts-role-session-duration: "<optional>"
       sts-endpoint-override: "<optional>"
 ```
+
+#### S3 Files compatibility mode
+
+If your bucket has [AWS S3 Files](https://aws.amazon.com/blogs/aws/launching-s3-files-making-s3-buckets-accessible-as-file-systems/) enabled, set `s3-files-compatible: true`. S3 Files requires bucket versioning, so Kestra enables versioning on the bucket during startup. Kestra will also hard-delete all object versions and delete markers instead of writing a single delete marker.
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      region: "<your-aws-region>"
+      bucket: "<your-s3-bucket-name>"
+      s3-files-compatible: true
+```
+
+:::alert{type="warning"}
+Do not enable this flag on a plain S3 bucket that is not using S3 Files. Once versioning is enabled on a bucket it cannot be fully disabled, only suspended.
+:::
+
+### S3 Files
+
+Use `s3files` when Kestra runs on a host where an [S3 Files](https://aws.amazon.com/blogs/aws/launching-s3-files-making-s3-buckets-accessible-as-file-systems/) NFS filesystem is already mounted locally. This backend reads and writes directly through the local filesystem — no S3 SDK or AWS credentials are required.
+
+Mount the NFS filesystem on every host that runs a Kestra component before configuring this backend. All components must share the same mount path.
+
+```yaml
+kestra:
+  storage:
+    type: s3files
+    s3files:
+      mount-path: "/mnt/s3files"
+```
+
+`mount-path` must point to a directory that exists and is readable and writable by the Kestra process. Kestra will not create the directory on startup.
+
+Object metadata is stored in `.meta` sidecar files alongside each object on the filesystem. Custom S3 object metadata is not exposed through this backend.
+
+If you prefer to keep the S3 SDK path (for example, because not every host has the NFS mount), use the standard `s3` backend with `s3-files-compatible: true` instead.
 
 ### MinIO
 
@@ -555,6 +607,8 @@ kestra:
 
 Use `html-head` sparingly for environment banners, extra CSS, or internal scripts that must load with the app shell.
 
+### Local file access
+
 To allow universal file access from host-mounted paths, both mount the directory and add it to the allowlist:
 
 ```yaml
@@ -566,6 +620,22 @@ kestra:
 ```
 
 Without the allowlist, file-access URIs pointing at local host paths will be rejected even if the path is mounted into the container.
+
+The `io.kestra.plugin.fs.local.Upload` and `io.kestra.plugin.fs.local.Uploads` tasks enforce their own `allowed-paths` check, independent of `kestra.local-files.allowed-paths`. Configure permitted directories under `plugins.configurations`:
+
+```yaml
+kestra:
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.fs.local.Uploads
+        values:
+          allowed-paths:
+            - /data/uploads
+      - type: io.kestra.plugin.fs.local.Upload
+        values:
+          allowed-paths:
+            - /data/uploads
+```
 
 ## When to use this page
 

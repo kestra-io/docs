@@ -93,6 +93,17 @@ kestra:
 Plugin defaults are evaluated by the Executor and propagated to other components, so every server should use the same `kestra.plugins.defaults`.
 :::
 
+`kestra.plugins.defaults` is the canonical global configuration key. The older `kestra.tasks.defaults` key is still recognized for compatibility, but it is deprecated and should be replaced.
+
+Precedence works as follows:
+
+- global plugin defaults provide the base values
+- flow-level `pluginDefaults` override global defaults
+- task properties override non-forced defaults
+- `forced: true` prevents the task from overriding that property
+
+Use non-forced defaults for convenience and consistency, and use forced defaults when the platform must enforce a value such as a specific task runner.
+
 Enable or preconfigure plugin features globally:
 
 ```yaml

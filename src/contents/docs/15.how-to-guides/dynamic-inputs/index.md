@@ -131,3 +131,25 @@ tasks:
 :::alert{type="info"}
 When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
 :::
+
+## Label/value pairs for decoupled dropdowns
+
+When your API returns structured data, use a `{label, value}` jq projection so the dropdown shows a human-readable label while `{{ inputs.x }}` resolves to the underlying technical identifier:
+
+```yaml
+id: dynamic_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    expression: "{{ http(uri = 'https://api.example.com/accounts') | jq('.accounts[] | {label: .name, value: .id}') }}"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
+
+The dropdown displays account names; `{{ inputs.aws_account }}` resolves to the account ID. The same pattern works with static `values` lists — see [Label/value pairs in SELECT and MULTISELECT inputs](../../05.workflow-components/05.inputs/index.md#labelvalue-pairs-in-select-and-multiselect-inputs).

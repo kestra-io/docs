@@ -39,7 +39,7 @@ System Labels are labels prefixed with `system.` that serve specific purposes. B
 
 ### `system.correlationId`
 
-- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `ForEachItem` tasks
+- Automatically set for every execution and propagated to downstream executions created by `Subflow` or `Loop` tasks
 - Represents the ID of the first execution in a chain of executions, enabling tracking of execution lineage
 - Can also be set to a stable business key and used as an idempotency key for flows that must not process the same event twice
 - Use this label to filter all executions originating from a specific parent execution or business event.
@@ -84,3 +84,23 @@ Once this label is set, the editor for this flow will be disabled in the UI.
 :::alert{type="info"}
 In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.
 :::
+
+---
+
+### `system.from`
+
+- Automatically set on every execution created by a Kestra MCP server
+- Value is always `mcp`
+- Use this label to filter all executions triggered by AI agents via the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md)
+
+### `system.mcpServerId`
+
+- Automatically set on every execution created by a Kestra MCP server
+- Value is the `id` of the MCP server that invoked the tool
+- Use this label together with `system.from: mcp` to identify which server triggered a specific execution
+
+### `system.mcpSessionId`
+
+- Automatically set on every execution created by a Kestra MCP server
+- Value is the session ID of the MCP client connection that triggered the execution
+- Use this label to correlate multiple executions that originated from the same agent session

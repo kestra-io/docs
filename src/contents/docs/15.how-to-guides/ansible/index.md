@@ -474,3 +474,5 @@ A trigger allows you to build a historical log of machine health in S3 and Slack
 ### Wrap up
 
 Ansible handles host-level automation — collecting facts, checking software package versions, remediating with the right package manager, and so much more. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
+
+If your playbooks handle sensitive data such as credentials or connection strings, see [Declare Explicit Outputs in Ansible Playbooks](../ansible-explicit-outputs/index.md) to control exactly what appears in `vars.outputs`.

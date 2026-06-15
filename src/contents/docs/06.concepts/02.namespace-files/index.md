@@ -30,12 +30,12 @@ namespace: company.team
 
 tasks:
   - id: for_each_row
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ trigger.rows }}"
     tasks:
       - id: return
         type: io.kestra.plugin.core.debug.Return
-        format: "{{ json(taskrun.value) }}"
+        format: "{{ fromJson(item.value) }}"
 
 triggers:
   - id: query_trigger

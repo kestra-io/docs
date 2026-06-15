@@ -1,7 +1,7 @@
 ---
 title: "Data Access Functions in Kestra Expressions"
 h1: "Data Access Functions"
-description: Reference for Kestra's data access functions — secret(), credential(), read(), fileURI(), kv(), encrypt(), and decrypt() — for resolving secrets, files, and stored values at runtime.
+description: Reference for Kestra's data access functions — secret(), env(), credential(), read(), fileURI(), kv(), encrypt(), and decrypt() — for resolving secrets, environment variables, files, and stored values at runtime.
 sidebarTitle: Data Access Functions
 icon: /src/contents/docs/icons/expression.svg
 ---
@@ -26,6 +26,39 @@ Arguments:
 - `subkey` — optional field to extract when the secret holds a JSON object
 
 Cross-namespace reads stay within the same tenant. In the Enterprise Edition, a flow may read another namespace's secrets by default; restrict this by configuring `allowedNamespaces` on the target namespace.
+
+## `env()`
+
+Reads an environment variable from the execution context by name. Use `env()` when the variable name is dynamic — composed at runtime from inputs or outputs — something not possible with the static `envs.varname` dot notation.
+
+```twig
+{{ env('API_HOST') }}
+{{ env('API_HOST', 'localhost') }}
+{{ env('api_url_' ~ inputs.environment) }}
+```
+
+Arguments:
+
+- `name` — the environment variable name, after normalization (lowercase, prefix stripped)
+- `default` — optional value returned when the variable is missing or empty
+
+Environment variables are exposed via the `envs` context map. By default, only variables prefixed with `ENV_` are available; the prefix is stripped and the name lowercased: `ENV_API_URL_PROD` is accessible as `env('api_url_prod')`. The prefix is configurable via `kestra.variables.env-vars-prefix` in the [runtime configuration](../../../configuration/02.runtime-and-storage/index.md).
+
+The key difference from `{{ envs.api_url_prod }}` is that the name argument accepts any expression, allowing the key to be composed dynamically:
+
+```yaml
+inputs:
+  - id: environment
+    type: STRING
+    defaults: prod
+
+tasks:
+  - id: log_url
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ env('api_url_' ~ inputs.environment) }}"
+```
+
+With `ENV_API_URL_PROD` and `ENV_API_URL_DEV` set in the host environment, running the flow with `environment` set to `prod` resolves to the production URL and `dev` to the development URL — without any `if`/`switch` logic in the flow.
 
 ## `credential()`
 
@@ -58,6 +91,15 @@ tasks:
 ```
 
 `read()` accepts both namespace files and internal-storage URIs, which makes it useful after download or transformation tasks that write files as outputs.
+
+For files in CSV, JSON, XML, YAML, or any other non-ION format, `read()` returns a `String`. For **binary ION files** — the format used by ION task outputs — `read()` returns `byte[]` to preserve binary fidelity. Pass the result directly to `fromIon()` to deserialize it:
+
+```twig
+{{ fromIon(read(outputs.transform.uri)) }}
+{{ fromIon(read(outputs.transform.uri), allRows=true) }}
+```
+
+Do not perform string operations such as `contains` directly on `read()` when the URI points to an ION task output — use `fromIon()` first.
 
 ## `fileURI()`
 
