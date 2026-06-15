@@ -42,6 +42,23 @@
                     </div>
                 </div>
             </div>
+            <div v-if="versions.length" class="version-select-wrapper mb-2">
+                <label for="docs-version" class="version-label">Version</label>
+                <select
+                    id="docs-version"
+                    class="version-select"
+                    @change="onVersionChange"
+                >
+                    <option value="">Latest ({{ versions[0].label }})</option>
+                    <option
+                        v-for="version in olderVersions"
+                        :key="version.label"
+                        :value="version.label"
+                    >
+                        {{ version.label }}
+                    </option>
+                </select>
+            </div>
             <div class="collapse bd-menu-collapse" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
@@ -72,6 +89,7 @@
     } from "~/components/docs/RecursiveNavSidebar.vue"
     import KSAIImg from "./assets/ks-ai.svg"
     import { activeSlug } from "~/utils/store"
+    import { versionedHref, type DocVersion } from "~/utils/versionedDocs"
 
     const props = defineProps({
         type: {
@@ -84,7 +102,25 @@
         slug: {
             type: String,
         },
+        versions: {
+            type: Array as PropType<DocVersion[]>,
+            default: () => [],
+        },
     })
+
+    // This island is `transition:persist`ed, so it survives client-side
+    // navigations and a baked-in path prop would go stale. Read the current doc
+    // path live from the URL instead, then full-navigate to the versioned page
+    // (served by the middleware, outside the prerendered route table).
+    const onVersionChange = (event: Event) => {
+        const version = (event.target as HTMLSelectElement).value
+        if (!version) return
+        window.location.href = versionedHref(version, window.location.pathname)
+    }
+
+    // The newest version is the latest docs, surfaced as "Latest (X)"; only the
+    // older versions get their own options.
+    const olderVersions = computed(() => props.versions.slice(1))
 
     onMounted(() => {
         activeSlug.value = props.slug || ""
@@ -173,6 +209,25 @@
             @include media-breakpoint-down(lg) {
                 width: 100%;
                 margin-top: $spacer;
+            }
+        }
+        .version-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: calc($spacer * 0.5);
+            .version-label {
+                color: var(--ks-content-tertiary);
+                font-size: $font-size-sm;
+            }
+            .version-select {
+                flex: 1;
+                padding: calc($spacer * 0.25) calc($spacer * 0.5);
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+                background-color: var(--ks-background-secondary);
+                border: $block-border;
+                border-radius: calc($spacer * 0.25);
+                cursor: pointer;
             }
         }
         .ai-button-wrapper {
