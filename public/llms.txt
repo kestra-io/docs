@@ -84,7 +84,7 @@ Use this section when deciding *how* to structure a flow or *which* pattern to u
 
 - [Best practices overview](https://kestra.io/docs/best-practices.md): Entry point for all design guidance
 - [Flow design](https://kestra.io/docs/best-practices/flows.md): How to structure, split, and reuse flows — when to use subflows vs tasks, and how to avoid oversized executions
-- [ForEach vs ForEachItem](https://kestra.io/docs/best-practices/foreach-and-foreachitem.md): When to use each loop primitive, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
+- [Loop task best practices](https://kestra.io/docs/best-practices/loop.md): When to use ForEach vs ForEachItem vs the Loop task, how to access sibling outputs inside loops with `outputs.task_id[taskrun.value]`, and common mistakes
 - [Outputs patterns](https://kestra.io/docs/best-practices/outputs.md): Clean patterns for producing and consuming task outputs across tasks and flows
 - [Credentials vs Secrets vs KV Store](https://kestra.io/docs/best-practices/credentials-vs-secrets-vs-kv-store.md): Decision guide for choosing the right storage backend for each type of value
 - [Secrets management](https://kestra.io/docs/best-practices/secrets-management.md): How to handle credentials and sensitive values safely in flows
@@ -222,7 +222,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Expressions with Namespace Files in Kestra](https://kestra.io/docs/best-practices/expressions-with-namespace-files.md)
 - [Choose the Right Fetch Pattern in Kestra](https://kestra.io/docs/best-practices/fetch-patterns.md)
 - [Flow Best Practices: Performance and Reliability](https://kestra.io/docs/best-practices/flows.md)
-- [ForEach vs ForEachItem in Kestra: When to Use Each](https://kestra.io/docs/best-practices/foreach-and-foreachitem.md)
+- [Loop Task Best Practices in Kestra](https://kestra.io/docs/best-practices/loop.md)
 - [Dev to Production in Kestra: Promote Flows Safely](https://kestra.io/docs/best-practices/from-dev-to-prod.md)
 - [Version Control with Git in Kestra](https://kestra.io/docs/best-practices/git.md)
 - [Managing Environments in Kestra: Dev, Prod & Tenants](https://kestra.io/docs/best-practices/manage-environments.md)
@@ -329,6 +329,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure Alerts in Kestra](https://kestra.io/docs/how-to-guides/alerting.md)
 - [Audit Machines and Tool Versions with Ansible in Kestra](https://kestra.io/docs/how-to-guides/ansible.md)
 - [Detect Ansible Config Drift with Kestra](https://kestra.io/docs/how-to-guides/ansible-config-drift.md)
+- [Declare Explicit Outputs in Ansible Playbooks with Kestra](https://kestra.io/docs/how-to-guides/ansible-explicit-outputs.md)
 - [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
 - [Deploy Kestra with ArgoCD](https://kestra.io/docs/how-to-guides/argocd.md)
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
@@ -355,7 +356,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Connect Web Apps to Kestra via Webhooks](https://kestra.io/docs/how-to-guides/js-webhook.md)
 - [Work with JSON in Kestra](https://kestra.io/docs/how-to-guides/json.md)
 - [Run Julia Inside Your Flows](https://kestra.io/docs/how-to-guides/julia.md)
-- [Configure Keycloak SSO in Kestra](https://kestra.io/docs/how-to-guides/keycloak.md)
 - [Set Up Secrets from a Helm Chart](https://kestra.io/docs/how-to-guides/kubernetes-secrets.md)
 - [Synchronize Local Flows in Kestra](https://kestra.io/docs/how-to-guides/local-flow-sync.md)
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
