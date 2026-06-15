@@ -31,11 +31,9 @@ const plugins = await Promise.all(
             title: plugin.title,
             name: plugin.name,
             artifactId: plugin.artifactId,
-            link:
-                `/plugins/${plugin.artifactId}` +
-                (`plugin-${plugin.name}` != plugin.artifactId
-                    ? "/" + plugin.name
-                    : ""),
+            // Link logos to the plugin group page (always 200) to avoid the
+            // 404 -> 301 hop the `/${plugin.name}` subgroup suffix caused for ~82 plugins.
+            link: `/plugins/${plugin.artifactId}`,
             group: plugin.group,
         }
     }),
