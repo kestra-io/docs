@@ -50,7 +50,7 @@ The core of the pipeline is the generative AI model itself. This involves select
 
 ### The role of linting and code quality checks
 
-AI-generated code must meet the same quality standards as human-written code. Integrating automated linting and static analysis is non-negotiable. Tools like Black and Ruff for Python or ESLint for TypeScript can be run automatically after code generation to enforce style consistency and catch common errors. An orchestration platform allows you to run these checks as distinct tasks in the pipeline, using simple [Python scripts](https://kestra.io/docs/how-to-guides/python) or [shell commands](https://kestra.io/docs/scripts/shell) to validate the AI's output before it proceeds to the next stage.
+AI-generated code must meet the same quality standards as human-written code. Integrating automated linting and static analysis is non-negotiable. Tools like Black and Ruff for Python or ESLint for TypeScript can be run automatically after code generation to enforce style consistency and catch common errors. An orchestration platform allows you to run these checks as distinct tasks in the pipeline, using simple [Python scripts](https://kestra.io/docs/how-to-guides/python) or shell commands to validate the AI's output before it proceeds to the next stage.
 
 ### Security and pre-check phases in the pipeline
 

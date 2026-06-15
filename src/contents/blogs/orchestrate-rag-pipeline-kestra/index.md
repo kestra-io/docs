@@ -19,7 +19,7 @@ If you're following the [DataTalks.Club LLM Zoomcamp](https://github.com/DataTal
 
 ## What is RAG pipeline orchestration?
 
-RAG grounds an LLM's answers in your own data instead of letting it guess from training memory. For a full conceptual treatment, see Kestra's guide to [RAG pipeline orchestration](../../resources/rag-pipeline/index.md); here we'll stay focused on building one.
+RAG grounds an LLM's answers in your own data instead of letting it guess from training memory. For a full conceptual treatment, see Kestra's guide to [RAG pipeline orchestration](/resources/ai/rag-pipeline); here we'll stay focused on building one.
 
 ### The two pipelines: indexing vs. retrieval
 
@@ -168,7 +168,7 @@ In the editor you can see the schedule trigger alongside the flow definition, an
 
 ## Run it yourself
 
-[Copy the blueprint](https://kestra.io/blueprints/ai-rag-daily-ingestion-gemini), set your `GEMINI_API_KEY` secret, and run it. Start on `KestraKVStore` so there's nothing to install; switch the `embeddings` block to Qdrant or PGVector when you're ready to scale.
+Copy the blueprint, set your `GEMINI_API_KEY` secret, and run it. Start on `KestraKVStore` so there's nothing to install; switch the `embeddings` block to Qdrant or PGVector when you're ready to scale.
 
 
 If you're working through the LLM Zoomcamp orchestration module, this is the same pipeline shape you'll build in the RAG lessons. Clone it, then make it yours.
@@ -176,4 +176,4 @@ If you're working through the LLM Zoomcamp orchestration module, this is the sam
 Once the pipeline is running reliably, the natural next step is giving it more autonomy.
 
 - Docs: [RAG workflows in Kestra](../../docs/ai-tools/ai-rag-workflows/index.md)
-- Reference: [the RAG plugin](/plugins/plugin-ai/rag) and [vector databases explained](../../resources/vector-database/index.md)
+- Reference: [the RAG plugin](/plugins/plugin-ai/rag) and [vector databases explained](/resources/ai/vector-database)

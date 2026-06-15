@@ -175,7 +175,7 @@ quotes:
   - quote: "Thank you Kestra for your great support and for providing a best-in-class platform to power our integrations!"
     author: "Patrick Ferreira, CleverConnect"
     logoFile: "cleverconnect"
-    storyLink: "/customer-stories/cleverconnect-enhances-hr-integration-platform-with-kestra"
+    storyLink: "/customers/cleverconnect-enhances-hr-integration-platform-with-kestra"
     kpis:
       - name: "Increase in connector dev speed"
         value: "10x"

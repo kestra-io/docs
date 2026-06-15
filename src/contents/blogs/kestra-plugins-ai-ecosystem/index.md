@@ -107,7 +107,7 @@ Three of its capabilities matter especially for AI work.
 
 **Markdown conversion.** `HtmlToMarkdown` turns verbose HTML into Markdown that carries the same structure in far fewer tokens, directly useful for RAG and LLM preprocessing. `MarkdownToText` strips formatting to clean plain text for embedding models that don't need markup; `MarkdownToHtml` covers the return trip for email templates or rich notifications.
 
-**TOON.** `JsonToToon` and `ToonToJson` convert between JSON and [TOON](/blogs/kestra-mcp-plugins-blueprints) (Token-Oriented Object Notation), a deterministic, indentation-based format with explicit structure and minimal quoting. For uniform arrays of objects it uses a tabular encoding that conveys the same data in far fewer tokens than JSON, lowering cost and latency on every inference call that passes structured context.
+**TOON.** `JsonToToon` and `ToonToJson` convert between JSON and [TOON](https://github.com/toon-format/toon) (Token-Oriented Object Notation), a deterministic, indentation-based format with explicit structure and minimal quoting. For uniform arrays of objects it uses a tabular encoding that conveys the same data in far fewer tokens than JSON, lowering cost and latency on every inference call that passes structured context.
 
 **Schema inference.** `InferAvroSchemaFromIon` scans an Ion file and emits a matching `.avsc` schema, removing the hand-written schema step before a conversion to Avro or Parquet.
 

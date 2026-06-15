@@ -24,7 +24,12 @@ export function prunePluginsForCards(
 ): CardPlugin[] {
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
-        const info = pluginsData[key] ?? {}
+
+        /** A foreign-package subgroup (e.g. plugin-ee-git's io.kestra.plugin.git) collides with another
+         *  plugin's group key, so fall back to the plugin's own group info. */
+        const isForeignSubgroup = p.subGroup !== undefined && !p.subGroup.startsWith(p.group)
+        const info = (isForeignSubgroup ? pluginsData[p.group] : pluginsData[key]) ?? {}
+
         const groupInfo = pluginsData[p.group]
 
         const classes = Object.entries(p)

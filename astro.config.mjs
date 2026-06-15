@@ -45,7 +45,7 @@ export default defineConfig({
                       ? "passthrough"
                       : "cloudflare",
           }),
-    trailingSlash: "ignore",
+    trailingSlash: "never",
     integrations: [
         vue({
             template: {
