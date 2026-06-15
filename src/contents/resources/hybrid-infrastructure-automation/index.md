@@ -110,7 +110,7 @@ Implementing hybrid automation requires a strategic approach that goes beyond ju
 
 ### Best practices for implementation
 
-To ensure success, organizations should follow key best practices. Start with small, well-defined projects to build momentum and demonstrate value. Standardize on a core set of tools and platforms to avoid fragmentation. Adopt a [GitOps approach](https://kestra.io/blogs/gitops) where the desired state of your infrastructure is defined in a Git repository, providing a single source of truth and an audit trail for all changes. Prioritize security from day one by integrating policy-as-code and secrets management. Finally, ensure comprehensive observability to monitor the health and performance of your automated workflows.
+To ensure success, organizations should follow key best practices. Start with small, well-defined projects to build momentum and demonstrate value. Standardize on a core set of tools and platforms to avoid fragmentation. Adopt a GitOps approach where the desired state of your infrastructure is defined in a Git repository, providing a single source of truth and an audit trail for all changes. Prioritize security from day one by integrating policy-as-code and secrets management. Finally, ensure comprehensive observability to monitor the health and performance of your automated workflows.
 
 ### Overcoming common challenges
 

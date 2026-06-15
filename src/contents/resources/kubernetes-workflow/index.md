@@ -43,7 +43,7 @@ Kubernetes provides the building blocks that workflows manipulate. Understanding
 *   **Services:** An abstraction that defines a logical set of Pods and a policy by which to access them. Workflows use Services to manage network traffic to applications.
 *   **Ingress:** Manages external access to the services in a cluster, typically HTTP. Workflows might configure Ingress rules to expose a newly deployed application.
 *   **Custom Resource Definitions (CRDs):** Extensions of the Kubernetes API that allow you to define your own object kinds. Workflow engines often use CRDs to represent workflows themselves as native Kubernetes objects.
-*   **Controllers & Operators:** The control loops that watch the state of your cluster and make changes to match the desired state. An operator is an application-specific controller that extends the Kubernetes API to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. You can [orchestrate Kubernetes with Kestra](https://kestra.io/docs/orchestration/kubernetes) to manage these components effectively.
+*   **Controllers & Operators:** The control loops that watch the state of your cluster and make changes to match the desired state. An operator is an application-specific controller that extends the Kubernetes API to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. You can orchestrate Kubernetes with Kestra to manage these components effectively.
 
 ## Orchestrating Parallel Jobs on Kubernetes
 
