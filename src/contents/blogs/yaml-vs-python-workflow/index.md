@@ -10,7 +10,7 @@ author:
   name: Elliot Gunn
   image: egunn
   role: Product Marketing Manager
-image: ./main.png
+image: ./main.jpg
 faq:
   - question: "Is YAML similar to Python?"
     answer: "YAML is a data serialization format, while Python is a programming language. While Python's indentation-based syntax might feel familiar, YAML is used for structured data representation, not for writing executable logic. Python can parse and generate YAML, but YAML itself is not a programming language."
