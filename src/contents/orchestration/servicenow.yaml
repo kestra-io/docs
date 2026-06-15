@@ -289,7 +289,7 @@ resources:
     - kind: "docs"
       title: "Ticket-driven orchestration with ServiceNow"
       description: "How to configure Business Rules, wire webhooks to Kestra triggers, and write runbooks that update tickets through the work."
-      href: "/docs/use-cases/business"
+      href: "/docs/use-cases"
     - kind: "resource"
       title: "Chain ServiceNow with Terraform"
       description: "The common pattern: a change request approval fires a Terraform apply, the ticket gets the plan output, the ticket closes with the apply result."

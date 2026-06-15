@@ -30,8 +30,12 @@ quotePerson: Daniel Theodorus
 quotePersonTitle: ""
 industry: Travel Industry
 headquarter: Jakarta, Indonesia
+region: Asia Pacific
+companySize: "51–500"
 solution: Flights and Hotels booking solution
-companyName: ""
+tagline: Online travel platform for flight and hotel bookings
+companyName: Airpaz
+useCase: Data Orchestration
 cta: "What would change if your travel data workflows ran smarter—automating the complex pipelines that power bookings, pricing, and experiences?"
 ---
 
