@@ -56,7 +56,6 @@ Available resource names include: `APP`, `BANNER`, `BINDING`, `BLUEPRINT`, `CRED
 - `--encryption-key`: a custom encryption key. If omitted, the instance encryption key (`kestra.encryption.secret-key`) is used. If neither is configured, the command fails.
 - `--no-encryption`: disable encryption. Use only for non-sensitive content such as seeding a demo instance.
 - `--include-data`: include execution data (executions, logs, metrics, audit logs, test runs). Excluded by default due to size.
-- `--log-level`: backup log level (`TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`). Default: `INFO`.
 
 When the backup completes, the CLI logs a summary and the internal storage URI of the archive:
 
