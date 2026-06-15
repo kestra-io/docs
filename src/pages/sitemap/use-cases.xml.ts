@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
-import { slugify } from "~/utils/slugify"
 import { sitemapResponse, formatLastMod, gitLastModified } from "~/utils/sitemap.ts"
 
 export const GET: APIRoute = async () => {
@@ -28,7 +27,7 @@ export const GET: APIRoute = async () => {
         }
 
         return {
-            loc: `https://kestra.io/use-cases/stories/${story.id}-${slugify(story.data.title ?? "--")}`,
+            loc: `https://kestra.io/use-cases/stories/${story.id}`,
             lastmod,
         }
     })
