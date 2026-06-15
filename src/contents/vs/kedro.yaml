@@ -1,0 +1,280 @@
+title: "Kestra vs. Kedro: Workflow Orchestration vs. ML Pipeline Framework"
+description: "Compare Kestra vs Kedro: Universal workflow orchestration in any language with YAML vs a Python framework for reproducible data science code. See features, setup time, and use cases."
+competitorName: Kedro
+category: "Data Orchestration"
+shortDescription: "Python framework for ML pipelines vs. declarative YAML orchestration for any language, any team."
+brandColor:
+  color: "#FFC800"
+
+intro:
+  title: "Kestra vs. Kedro: Workflow Orchestration vs. ML Pipeline Framework"
+  description: "Kedro is a Python framework that applies software engineering best practices to data science and ML code: project structure, data catalog management, and modular pipeline construction. Kestra is workflow orchestration for any stack, any language, and any team. One helps data scientists write better code. The other schedules, triggers, and monitors everything your engineering organization ships."
+
+philosophy:
+  mainTitle: Two Philosophies, Two Different Problems
+  kestra:
+    title: "Universal Orchestration: Any Language, Any Team"
+    description: "Declarative YAML workflows triggered by schedules, events, or APIs, executed in isolated containers, deployed through CI/CD. Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes across any stack without locking your team into a single language or framework."
+    subCardText: '"How do I schedule, trigger, and monitor workflows across every system my team owns?"'
+  competitor:
+    title: Python Framework for Reproducible Data Science
+    description: "A development framework that brings software engineering discipline to data science projects. Define pipelines as graphs of pure Python functions, manage datasets through a declarative catalog, and structure projects consistently across teams. Kedro itself is not an orchestrator: it integrates with Airflow, Kubeflow, and other schedulers to run in production."
+    shadowColor: "#FFC800"
+    subCardBg: "var(--ks-background-yellow-light)"
+    subCardText: '"How do I structure my data science code so it is reproducible and maintainable?"'
+
+businessValue:
+  mainTitle: "Code Structure and Orchestration Solve Different Problems"
+  kestra:
+    title: Production Workflow Orchestration
+    list:
+      - "Schedule, trigger, and monitor workflows across data pipelines, infrastructure jobs, and business processes from one place"
+      - "Event-driven: react to S3 file arrivals, database changes, Kafka messages, and webhooks in real time"
+      - "Multi-language: run Python, SQL, Bash, R, or Node.js without wrapping anything in a framework"
+      - "Open source with 26k+ GitHub stars and 1300+ plugins"
+      - "Self-service for non-engineers via Kestra Apps; enterprise RBAC and audit logs when needed"
+
+  competitor:
+    title: ML Pipeline Framework
+    list:
+      - "Structure data science code as modular, testable Python functions"
+      - "Data catalog for managing dataset versioning and I/O across environments"
+      - "Pipeline visualization via Kedro-Viz for code lineage and dependency graphs"
+      - "No built-in scheduler or trigger system: requires a separate orchestrator for production"
+      - "Python-only: tasks are pure Python functions connected through dataset dependencies"
+    shadowColor: "#FFC800"
+    bulletColor: "#D4A000"
+  footerText: "Kedro is the right choice when your goal is improving how a Python data science team writes, structures, and tests code. Its project templates, data catalog, and pipeline abstractions enforce consistency across large teams working on ML workflows. Use Kestra when you need production orchestration: scheduling runs, reacting to events, monitoring executions, coordinating systems beyond Python, and giving non-engineering teams visibility and control over automated workflows."
+
+setupSpeed:
+  title: Time to First Workflow
+  subtitle: "Kedro is a development framework, not a scheduler. Getting a Kedro pipeline running on a schedule requires installing Kedro, structuring your project using Kedro's conventions, and then wiring it to a separate orchestration system (Airflow, Kubeflow, Prefect, or similar). Kestra handles the full stack in one install: scheduling, triggering, and monitoring included."
+  kestra:
+    title:
+      one: "~5"
+      two: Minutes
+    description: "Download the Docker Compose file, spin it up, and you're ready. Database and config included. Open the UI, pick a Blueprint, run it. No Python environment to configure, no project templates to scaffold, no separate scheduler to wire up."
+    command: |
+      curl -o docker-compose.yml \
+      https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+      docker compose up
+
+      # Open localhost:8080
+      # Pick a Blueprint, run it. Done.
+    lang: sh
+  competitor:
+    title:
+      one: Hours to
+      two: Days
+    description: "Kedro requires scaffolding a project with its CLI, learning the data catalog YAML format, structuring nodes and pipelines in Python, and then connecting to a separate orchestration layer for production scheduling. The framework is powerful but has a meaningful learning curve before your first scheduled run."
+    shadowColor: "#FFC800"
+    command: |
+      pip install kedro
+      kedro new --name my_pipeline
+
+      # Structure project:
+      # conf/base/catalog.yml  (declare datasets)
+      # src/my_pipeline/nodes.py  (write Python functions)
+      # src/my_pipeline/pipeline.py  (connect nodes)
+
+      # Run locally:
+      kedro run
+
+      # For production scheduling: wire to Airflow, Kubeflow,
+      # or another orchestrator separately
+    lang: sh
+
+easeOfUse:
+  title: Workflow Definition That Any Engineer Can Read
+  kestra:
+    title: "Kestra: YAML that your whole team can own"
+    description: "YAML is readable on day 1. The <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, docs are embedded in the UI, and the <a href='/blueprints' target='_blank'>Blueprints library</a> has 200+ production-ready templates to start from. No framework concepts to learn before shipping your first scheduled pipeline."
+    code: |
+      id: daily_ml_pipeline
+      namespace: data.ml
+
+      triggers:
+        - id: daily
+          type: io.kestra.plugin.core.trigger.Schedule
+          cron: "0 6 * * *"
+
+      tasks:
+        - id: feature_engineering
+          type: io.kestra.plugin.scripts.python.Script
+          containerImage: python:3.11-slim
+          script: |
+            import pandas as pd
+            df = pd.read_parquet("s3://my-bucket/raw/features.parquet")
+            df_processed = df.fillna(0).dropna()
+            df_processed.to_parquet("/tmp/features_processed.parquet")
+
+        - id: train_model
+          type: io.kestra.plugin.scripts.python.Script
+          containerImage: python:3.11-slim
+          script: |
+            from sklearn.ensemble import RandomForestClassifier
+            import pandas as pd, joblib
+            df = pd.read_parquet("/tmp/features_processed.parquet")
+            X, y = df.drop("label", axis=1), df["label"]
+            model = RandomForestClassifier()
+            model.fit(X, y)
+            joblib.dump(model, "/tmp/model.pkl")
+
+        - id: notify
+          type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+          url: "{{ secret('SLACK_WEBHOOK') }}"
+          messageText: "Daily ML training complete"
+    lang: yaml
+  competitor:
+    title: "Kedro: Pure Python with framework conventions"
+    description: "Kedro pipelines are built from pure Python functions connected through a data catalog. The node-and-catalog pattern enforces clean I/O contracts between steps, but requires learning Kedro's project structure and catalog YAML format before writing your first pipeline. Scheduling is handled outside Kedro."
+    shadowColor: "#FFC800"
+    code: |
+      # conf/base/catalog.yml
+      raw_features:
+        type: pandas.ParquetDataset
+        filepath: s3://my-bucket/raw/features.parquet
+
+      processed_features:
+        type: pandas.ParquetDataset
+        filepath: data/02_intermediate/features_processed.parquet
+
+      trained_model:
+        type: pickle.PickleDataset
+        filepath: data/06_models/model.pkl
+
+      # src/my_pipeline/nodes.py
+      from sklearn.ensemble import RandomForestClassifier
+      import pandas as pd, joblib
+
+      def feature_engineering(raw_features: pd.DataFrame) -> pd.DataFrame:
+          return raw_features.fillna(0).dropna()
+
+      def train_model(processed_features: pd.DataFrame):
+          X = processed_features.drop("label", axis=1)
+          y = processed_features["label"]
+          model = RandomForestClassifier()
+          model.fit(X, y)
+          return model
+
+      # src/my_pipeline/pipeline.py
+      from kedro.pipeline import Pipeline, node, pipeline
+      from .nodes import feature_engineering, train_model
+
+      def create_pipeline(**kwargs) -> Pipeline:
+          return pipeline([
+              node(feature_engineering,
+                   inputs="raw_features",
+                   outputs="processed_features",
+                   name="feature_engineering_node"),
+              node(train_model,
+                   inputs="processed_features",
+                   outputs="trained_model",
+                   name="train_model_node"),
+          ])
+    lang: python
+
+visualPreview:
+  mainTitle: One Platform for Your Entire Technology Stack
+  kestra:
+    description: "Orchestrate data pipelines, ML training runs, infrastructure operations, and business processes across any cloud or on-premises environment. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and scheduled cron expressions. Run Kedro pipelines as one step in a broader workflow that spans systems and teams."
+  competitor:
+    description: "Kedro-Viz provides a visual representation of your pipeline DAG, showing node dependencies, dataset connections, and execution paths. Visualization is static and development-time, reflecting the code structure rather than live execution state. Runtime monitoring and alerting require the orchestration layer you connect Kedro to."
+    shadowColor: "#FFC800"
+
+featureGrid:
+  title: Kestra vs. Kedro at a Glance
+  tableData:
+    - feature: Primary purpose
+      kestra: "Workflow orchestration: schedule, trigger, monitor, and coordinate"
+      competitor: "Development framework: structure, catalog, and version data science code"
+    - feature: Built-in scheduler
+      kestra: "✓ Native cron and event triggers"
+      competitor: "No built-in scheduler; requires external orchestrator"
+    - feature: Workflow definition
+      kestra: Declarative YAML
+      competitor: "Python functions + catalog YAML + pipeline definitions"
+    - feature: Languages supported
+      kestra: "Any (Python, SQL, Bash, R, Node.js, Go)"
+      competitor: "Python only"
+    - feature: Event-driven triggers
+      kestra: "✓ Native (S3, webhooks, Kafka, database, API)"
+      competitor: "Not available; triggers handled by external orchestrator"
+    - feature: Execution monitoring
+      kestra: "✓ Real-time logs, Gantt charts, distributed tracing"
+      competitor: "Kedro-Viz for static pipeline structure; runtime monitoring via orchestrator"
+    - feature: Infrastructure automation
+      kestra: "✓ Native support"
+      competitor: Not designed for this
+    - feature: Self-service for non-engineers
+      kestra: "✓ Kestra Apps"
+      competitor: Not designed for this
+    - feature: Open source
+      kestra: "✓ Apache 2.0"
+      competitor: "✓ Apache 2.0"
+    - feature: Deployment model
+      kestra: "Self-hosted (Docker, Kubernetes) or Kestra Cloud"
+      competitor: "Python package; production deployment handled by orchestration layer"
+    - feature: Multi-tenancy and RBAC
+      kestra: "✓ Namespace isolation and RBAC out of the box"
+      competitor: "No built-in access control"
+    - feature: Data catalog
+      kestra: "Dataset management via plugin configuration"
+      competitor: "✓ First-class data catalog with dataset versioning and environment management"
+
+testimonials:
+  - quote: "Kestra has streamlined our data processes, reduced costs, and significantly enhanced our scalability and efficiency. It has truly been a critical asset in our digital transformation journey."
+    author: "Julien Henrion, Head of Data Engineering @ Leroy Merlin"
+    kpis:
+      - value: "+900%"
+        name: Data Production
+      - value: "+250"
+        name: Active Users
+      - value: "+5,000"
+        name: Workflows Created
+    storyLink: "/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent"
+
+platformStrengths:
+  title: Kestra Is Built for How Engineering Teams Work
+  features:
+    - title: Orchestration without a framework tax
+      description: "Before you can run a single Kedro pipeline on a schedule, you need a scaffolded project, a populated catalog.yml, nodes written to Kedro's function signature conventions, and a wired-up orchestrator. That investment pays off for large Python teams building long-lived ML projects. For teams who already have working Python scripts, SQL transforms, or shell jobs, Kestra lets you orchestrate those scripts directly in YAML without refactoring them into a framework. Your existing code runs as-is inside an isolated container."
+    - title: Schedule, trigger, and monitor from one place
+      description: "Kedro is a development-time tool. It does not schedule runs, send alerts on failures, provide real-time execution logs, or retry failed tasks. You need to wire Kedro to Airflow, Kubeflow, or another orchestrator to get those capabilities in production. Kestra handles all of it natively: cron schedules, event triggers, retry policies, real-time Gantt charts, and Slack or PagerDuty alerts on failure. One system instead of two."
+    - title: One platform beyond data pipelines
+      description: "Kedro is scoped to data science and ML workflows in Python. When a training run finishes and the next step is a Terraform apply, a Slack alert to a product team, or a trigger into a non-Python system, Kedro hands off to whatever orchestrator sits above it. In Kestra, that full sequence lives in one YAML file: the Kedro run, the Terraform step, the Slack notification, the approval gate before deployment."
+
+decisionGuide:
+  mainTitle: The Right Tool for the Right Job
+  kestra:
+    title: Choose Kestra When
+    list:
+      - "You need a scheduler, event triggers, and execution monitoring in production without operating a second system alongside your framework."
+      - "Your team works across languages: Python, SQL, Bash, R, and Node.js all need to participate in the same pipelines."
+      - "Workflows span beyond data science: infrastructure automation, business process coordination, and cross-team approvals live alongside your ML pipelines."
+      - "Non-engineering stakeholders need visibility and control over automated workflows without writing code."
+      - "You want Git-native workflow definitions that deploy through CI/CD and live in your existing repository."
+  competitor:
+    title: Choose Kedro When
+    list:
+      - "Your primary goal is improving code quality and reproducibility for a Python data science or ML team."
+      - "You want enforced project structure and data catalog conventions across a large team working on many experiments."
+      - "Pipeline visualization and data lineage at the code level (not the execution level) are important for your ML practice."
+      - "You are already running Airflow or Kubeflow and want a framework layer on top to standardize how pipelines are written."
+      - "Your workflows are exclusively Python and you want the node-and-catalog pattern for clean I/O contracts between steps."
+    shadowColor: "#FFC800"
+    bulletColor: "#D4A000"
+
+commonQuestions:
+  - question: Can I use Kedro and Kestra together?
+    answer: "Kedro and Kestra occupy different layers of the stack, and combining them is a common pattern. Kedro handles code structure: defining nodes, managing the data catalog, and enforcing project conventions for your Python data science work. Kestra handles the orchestration layer: scheduling Kedro pipeline runs, reacting to upstream events, chaining non-Python steps around Kedro, and monitoring execution in production. Run kedro run as a Script task in Kestra and you get the structure benefits of Kedro with the production operations of Kestra."
+  - question: Does Kestra replace what Kedro does?
+    answer: "Kestra replaces the orchestration layer above Kedro, not Kedro itself. Kedro handles code organization, data catalog management, and reproducibility for your Python data science work. Kestra handles scheduling, event triggers, execution monitoring, and coordinating systems outside Python. If your team values Kedro's project conventions and catalog abstractions, keep them. Kestra takes over at the point where Kedro hands off to an orchestrator."
+  - question: How does Kestra handle ML pipeline use cases without Kedro's data catalog?
+    answer: "Kestra pipelines pass outputs between tasks using its internal key-value store or by writing to cloud storage (S3, GCS, Azure Blob) between steps. Each task runs in an isolated container with explicit inputs and outputs, so data dependencies are clear in the YAML definition. For teams that need a richer dataset versioning and cataloging system, Kestra integrates with tools like MLflow, Delta Lake, or custom data catalogs through its 1300+ plugins."
+  - question: Is Kedro a workflow orchestrator?
+    answer: "Kedro's own documentation is explicit: it is not an orchestrator. The framework provides pipeline definitions, data catalog management, and project structure for Python code. To run those pipelines on a schedule or in response to events, you need a separate orchestrator such as Airflow, Kubeflow, Prefect, or Kestra. Kedro ships plugins for several of these to translate its pipeline definitions into the orchestrator's task format."
+  - question: How long does it take to get started with Kestra compared to Kedro?
+    answer: "Kestra runs in two commands with Docker Compose and has a UI at localhost:8080 where you can pick a Blueprint and run a workflow in about 5 minutes. Kedro requires installing the package, scaffolding a project with the CLI, learning the catalog YAML format, writing nodes and pipeline definitions in Python, and then connecting to a scheduler for production. Kedro's investment pays off for teams building structured, long-lived ML projects with strict reproducibility requirements. Kestra is running and scheduling your first workflow before that scaffolding is done."
+  - question: Can Kestra orchestrate Kedro pipelines in production?
+    answer: "Yes. Run kedro run as a Script task inside a Kestra workflow. Schedule it with a cron trigger, react to upstream data arriving in S3, chain downstream dbt models or notification steps after it completes, and get real-time execution logs and alerts through Kestra. The Kedro pipeline stays exactly as written; Kestra wraps it with the production scheduling, monitoring, and coordination layer."

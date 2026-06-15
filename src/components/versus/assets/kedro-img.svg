@@ -1,0 +1,78 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#FFFBE6"/>
+<g filter="url(#filter0_d_kedro)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#FFC800" shape-rendering="crispEdges"/>
+<!-- Nodes: Kedro node diamond shape -->
+<path d="M67 111L75 119L67 127L59 119Z" fill="currentColor"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Nodes</text>
+</g>
+<g filter="url(#filter1_d_kedro)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#FFC800" shape-rendering="crispEdges"/>
+<!-- Catalog: stacked data layer disks -->
+<rect x="164.334" y="110" width="20" height="5" rx="2.5" fill="currentColor"/>
+<rect x="164.334" y="118" width="20" height="5" rx="2.5" fill="currentColor"/>
+<rect x="164.334" y="126" width="20" height="5" rx="2.5" fill="currentColor"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Catalog</text>
+</g>
+<g filter="url(#filter2_d_kedro)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#FFC800" shape-rendering="crispEdges"/>
+<!-- Pipeline: connected node circles -->
+<circle cx="270.166" cy="121" r="4" fill="currentColor"/>
+<rect x="274.166" y="119.5" width="4" height="3" fill="currentColor"/>
+<circle cx="282.166" cy="121" r="4" fill="currentColor"/>
+<rect x="286.166" y="119.5" width="4" height="3" fill="currentColor"/>
+<circle cx="294.166" cy="121" r="4" fill="currentColor"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Pipeline</text>
+</g>
+<g filter="url(#filter3_d_kedro)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#FFC800" shape-rendering="crispEdges"/>
+<!-- Run: play triangle -->
+<path d="M381.5 111L399.5 121L381.5 131Z" fill="currentColor"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Run</text>
+</g>
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="currentColor"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="currentColor"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="currentColor"/>
+<defs>
+<filter id="filter0_d_kedro" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.784 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_kedro"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_kedro" result="shape"/>
+</filter>
+<filter id="filter1_d_kedro" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.784 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_kedro"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_kedro" result="shape"/>
+</filter>
+<filter id="filter2_d_kedro" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.784 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_kedro"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_kedro" result="shape"/>
+</filter>
+<filter id="filter3_d_kedro" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1.0 0 0 0 0 0.784 0 0 0 0 0 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_kedro"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_kedro" result="shape"/>
+</filter>
+</defs>
+</svg>

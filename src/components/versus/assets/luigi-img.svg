@@ -1,0 +1,82 @@
+<svg width="458" height="260" viewBox="0 0 458 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="458" height="260" rx="6" fill="#EAFAF0"/>
+<g filter="url(#filter0_d_luigi)">
+<rect x="25" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="25.5" y="98.5" width="83" height="63" rx="9.5" stroke="#28A745" shape-rendering="crispEdges"/>
+<!-- Task: document/class icon -->
+<path d="M72 110H60C58.9 110 58 110.9 58 112V130C58 131.1 58.9 132 60 132H74C75.1 132 76 131.1 76 130V114L72 110ZM72 111.5L74.5 114H72V111.5ZM62 120H73V122H62V120ZM62 124H73V126H62V124ZM62 116H70V118H62V116Z" fill="currentColor"/>
+<text x="67" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Task</text>
+</g>
+<g filter="url(#filter1_d_luigi)">
+<rect x="132.334" y="98" width="84" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="132.834" y="98.5" width="83" height="63" rx="9.5" stroke="#28A745" shape-rendering="crispEdges"/>
+<!-- Requires: dependency tree (parent + two children) -->
+<circle cx="174.334" cy="112" r="4" fill="currentColor"/>
+<rect x="172.834" y="116" width="3" height="4" fill="currentColor"/>
+<rect x="165.334" y="120" width="18" height="3" fill="currentColor"/>
+<rect x="165.334" y="123" width="3" height="4" fill="currentColor"/>
+<rect x="180.334" y="123" width="3" height="4" fill="currentColor"/>
+<circle cx="166.834" cy="130" r="4" fill="currentColor"/>
+<circle cx="181.834" cy="130" r="4" fill="currentColor"/>
+<text x="174.334" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Requires</text>
+</g>
+<g filter="url(#filter2_d_luigi)">
+<rect x="239.666" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="240.166" y="98.5" width="84" height="63" rx="9.5" stroke="#28A745" shape-rendering="crispEdges"/>
+<!-- run(): lightning bolt -->
+<path d="M285.166 110L275.166 122.5L282.166 122.5L279.166 132L289.166 118.5L282.166 118.5Z" fill="currentColor"/>
+<text x="282.166" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">run()</text>
+</g>
+<g filter="url(#filter3_d_luigi)">
+<rect x="348" y="98" width="85" height="64" rx="10" fill="white" shape-rendering="crispEdges"/>
+<rect x="348.5" y="98.5" width="84" height="63" rx="9.5" stroke="#28A745" shape-rendering="crispEdges"/>
+<!-- Output: file with outbound arrow -->
+<rect x="380" y="110" width="13" height="20" rx="2" fill="currentColor"/>
+<rect x="382" y="115" width="9" height="1.5" fill="white"/>
+<rect x="382" y="118.5" width="9" height="1.5" fill="white"/>
+<rect x="382" y="122" width="9" height="1.5" fill="white"/>
+<path d="M395 117L403 121L395 125V123H393V119H395V117Z" fill="currentColor"/>
+<text x="390.5" y="152" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="9.5" font-weight="700" fill="currentColor">Output</text>
+</g>
+<path d="M129.209 130L119.209 124.226V135.774L129.209 130ZM111.041 130V131H120.209V130V129H111.041V130Z" fill="currentColor"/>
+<path d="M237.084 130L227.084 124.226V135.774L237.084 130ZM218.916 130V131H228.084V130V129H218.916V130Z" fill="currentColor"/>
+<path d="M345.416 130L335.416 124.226V135.774L345.416 130ZM327.248 130V131H336.416V130V129H327.248V130Z" fill="currentColor"/>
+<defs>
+<filter id="filter0_d_luigi" x="25" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.157 0 0 0 0 0.655 0 0 0 0 0.271 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_luigi"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_luigi" result="shape"/>
+</filter>
+<filter id="filter1_d_luigi" x="132.334" y="98" width="84" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.157 0 0 0 0 0.655 0 0 0 0 0.271 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_luigi"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_luigi" result="shape"/>
+</filter>
+<filter id="filter2_d_luigi" x="239.666" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.157 0 0 0 0 0.655 0 0 0 0 0.271 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_luigi"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_luigi" result="shape"/>
+</filter>
+<filter id="filter3_d_luigi" x="348" y="98" width="85" height="67" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="3"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.157 0 0 0 0 0.655 0 0 0 0 0.271 0 0 0 1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_luigi"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_luigi" result="shape"/>
+</filter>
+</defs>
+</svg>
