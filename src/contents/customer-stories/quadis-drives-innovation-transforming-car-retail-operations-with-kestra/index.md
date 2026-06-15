@@ -33,9 +33,12 @@ quotePerson: Rubén Boniz Martinez
 quotePersonTitle: ""
 industry: Automotive
 headquarter: Madrid, Spain
-solution: Spain’s largest car retailer, providing a diverse range of vehicles
-  from prestigious manufacturers.
-companyName: ""
+region: Europe
+companySize: "501–5,000"
+solution: Spain’s largest car retailer, providing a diverse range of vehicles from prestigious manufacturers.
+tagline: Spain's largest car retailer
+companyName: Quadis
+useCase: Business Automation
 cta: "What would change if your automotive retail operations were fully automated—from inventory to customer experience, orchestrated end-to-end?"
 ---
 
