@@ -87,3 +87,13 @@
   to: "/customers"
 - regexp: "/use-cases/stories/valorissimo"
   to: "/customers/bouygues-immobilier-platform-orchestrate-its-marketing-data-with-kestra"
+
+# Legacy numbered slugs
+- regexp: "/use-cases/stories/32-apple's-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+  to: "/customers/apple"
+- regexp: "/use-cases/stories/23-boosted-productivity-slashed-costs-and-accelerated-delivery"
+  to: "/customers/foundation-data"
+- regexp: "/use-cases/stories/29-modernizing-missioncritical-workflows-in-a-highly-regulated-environment"
+  to: "/customers/pharmacy-retailer"
+- regexp: "/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+  to: "/customers/credit-agricole"
