@@ -153,7 +153,7 @@ featureGrid:
       kestra: Distributed, queue-based, horizontally scalable by default
       competitor: Node.js, horizontally scalable via queue mode (Redis + workers)
     - feature: Languages supported
-      kestra: "Agnostic (Python, R, Bash, Node.js, Go, SQL & more)"
+      kestra: "Agnostic (Python, R, Bash, Node.js, Go, Java, SQL & more)"
       competitor: JavaScript, Python (code nodes)
     - feature: Task isolation
       kestra: "Container per task"
