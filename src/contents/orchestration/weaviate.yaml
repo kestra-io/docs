@@ -31,7 +31,7 @@ pillars:
     - icon: "mdi:database-import-outline"
       title: "Scheduled batch upsert pipelines"
       description: "Keeping a Weaviate instance current often means periodic batch updates from a content system, a database, or a data lake. Kestra runs a scheduled fetch, embedding, and upsert as ordered steps. An upsert failure retries the upsert only, and every batch run is timestamped with its object count in the execution log."
-    - icon: "mdi:schema"
+    - icon: "mdi:database-cog-outline"
       title: "Schema initialization in deployment flows"
       description: "Weaviate schemas must exist before data can be written. Kestra can run <code>io.kestra.plugin.weaviate.SchemaCreate</code> as part of a deployment or environment setup flow, confirming schema creation before ingestion tasks run downstream. No manual console steps in the provisioning process."
     - icon: "mdi:magnify"
