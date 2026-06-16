@@ -204,7 +204,7 @@ The `DockerMcpClient` pulls the Kestra MCP server image and spins it up as a sid
 - **Get execution status** — check whether a run succeeded or failed
 - **Trigger an execution** — kick off a flow with specific inputs
 
-When a team member types `@kestra-bot show me the last 5 failed executions in company.analytics`, the agent calls the appropriate MCP tool, gets the data, formats it conversationally, and posts the answer back to Slack. All of this happens inside a single Kestra execution — fully observable, with logs you can inspect in the Kestra UI.
+When a team member types `@kestra-bot show me the last 5 executions in company.analytics`, the agent calls the appropriate MCP tool, gets the data, formats it conversationally, and posts the answer back to Slack. All of this happens inside a single Kestra execution — fully observable, with logs you can inspect in the Kestra UI.
 
 ## Taking It Further
 
