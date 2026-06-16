@@ -6,7 +6,7 @@ category: Solutions
 author:
   name: Benoit Pimpaud
   image: bpimpaud
-image: ./slack-agent-demo.png
+image: ./thumbnail.png
 ---
 
 Slack is where your team already lives. It's the natural place to surface automation: ask a question in a channel, get an intelligent answer back within seconds. With Kestra's Slack Trigger and AI plugin, you can wire up that loop in a single declarative YAML flow — no custom bot server required, no long-polling daemon to keep alive.
