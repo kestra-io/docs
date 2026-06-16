@@ -13,6 +13,10 @@ Slack is where your team already lives. It's the natural place to surface automa
 
 This post walks through the full setup: creating a Slack App, configuring the Kestra trigger, building a Gemini-powered responder, and then pushing further — turning your bot into an autonomous agent that can operate your Kestra instance directly from Slack.
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/QvBkoJ8kOds" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## How the Slack Trigger Works
 
 Kestra's Slack plugin (`io.kestra.plugin.slack.app.core.Trigger`) acts as a Slack App backend. When your app receives an event (an `app_mention`, a direct message, etc.), Slack sends a signed HTTP request to your Kestra instance. The trigger validates the signature, deserializes the event payload, and starts an execution — passing the message body and metadata as trigger outputs.
@@ -47,6 +51,10 @@ Store both values as [Kestra Secrets](https://kestra.io/docs/concepts/secret):
 - `SIGNING_SECRET` → your signing secret
 
 ### Event Subscriptions
+
+:::alert{type="info"}
+Slack verifies the **Request URL** by sending a challenge to it, so the target flow needs to exist in Kestra first. If you haven't deployed it yet, jump ahead to **Step 2** below, create the flow, and then come back to this section to set and verify the URL.
+:::
 
 Under **Event Subscriptions**, enable the feature and set the **Request URL** to your Kestra webhook endpoint:
 
