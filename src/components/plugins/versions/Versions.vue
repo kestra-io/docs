@@ -26,24 +26,26 @@
 
             <div v-if="isOpen" class="panel" role="listbox">
                 <div class="panel-label">Select version</div>
-                <a
-                    v-for="v in releaseVersions"
-                    :key="v?.version"
-                    :href="hrefFor(v?.version ?? '')"
-                    class="option"
-                    :class="{ selected: isActive(v?.version) }"
-                    role="option"
-                    :aria-selected="isActive(v?.version)"
-                >
-                    <span class="option-version">v{{ v?.version }}</span>
-                    <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
-                    <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
-                    <Check v-if="isActive(v?.version)" class="option-check" />
-                </a>
+                <div class="panel-options">
+                    <a
+                        v-for="v in releaseVersions"
+                        :key="v?.version"
+                        :href="hrefFor(v?.version ?? '')"
+                        class="option"
+                        :class="{ selected: isActive(v?.version) }"
+                        role="option"
+                        :aria-selected="isActive(v?.version)"
+                    >
+                        <span class="option-version">v{{ v?.version }}</span>
+                        <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
+                        <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
+                        <Check v-if="isActive(v?.version)" class="option-check" />
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="stats">
+        <div v-if="!isOpen" class="stats">
             <div class="stats-header">
                 <h6 class="stats-version">{{ activeVersion }}</h6>
                 <span v-if="isOnLatest" class="badge latest">Latest</span>
@@ -269,14 +271,19 @@
         isolation: isolate;
         left: 0;
         margin-top: 4px;
-        max-height: 240px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        overscroll-behavior: contain;
+        overflow: hidden;
         position: absolute;
         right: 0;
         top: 100%;
         z-index: 20;
+    }
+
+    /* Header (.panel-label) stays fixed; only the options scroll. */
+    .panel-options {
+        max-height: 200px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
 
         scrollbar-width: none;
         -ms-overflow-style: none;
