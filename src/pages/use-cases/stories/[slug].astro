@@ -1,18 +1,24 @@
 ---
-import type { GetStaticPaths } from "astro"
-import { getCollection, type CollectionEntry } from "astro:content"
+import { getCollection } from "astro:content"
 import { slugify } from "~/utils/slugify"
 
-export const getStaticPaths = (async () => {
-    const allEntries = await getCollection("customerStories")
-    return allEntries.map((entry) => ({
-        params: { slug: entry.id },
-        props: {
-            newSlug: entry.data.companyName ? slugify(entry.data.companyName) : entry.id,
-        },
-    }))
-}) satisfies GetStaticPaths
+// Render on-demand so Astro.redirect emits a real 301 redirect instead of a
+// prerendered meta-refresh HTML stub (a 200 response with no <head>, which is
+// what Screaming Frog flagged as "missing <head>").
+export const prerender = false
 
-const { newSlug } = Astro.props
-return Astro.redirect(`/customers/${newSlug}`, 301)
+const { slug } = Astro.params
+const entries = await getCollection("customerStories")
+const entry = entries.find((e) => e.id === slug)
+
+if (entry) {
+    const newSlug = entry.data.companyName
+        ? slugify(entry.data.companyName)
+        : entry.id
+    return Astro.redirect(`/customers/${newSlug}`, 301)
+}
+
+// Unknown slug (e.g. legacy numbered IDs like "19-..."): return a 404 so the
+// notFoundRedirect middleware can map it to the correct /customers/{slug}.
+return new Response(null, { status: 404 })
 ---
