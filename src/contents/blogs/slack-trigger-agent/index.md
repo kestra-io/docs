@@ -1,7 +1,7 @@
 ---
 title: "Building a Slack AI Agent with Kestra: From Trigger to Autonomous Bot"
 description: "Learn how to set up a Kestra Slack Trigger, respond to mentions with Gemini, and extend your bot into a fully autonomous AI agent using Kestra's AIAgent task and MCP tools."
-date: 2026-04-09T09:00:00
+date: 2026-06-16T09:00:00
 category: Solutions
 author:
   name: Benoit Pimpaud
