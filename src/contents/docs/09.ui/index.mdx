@@ -1,38 +1,40 @@
 ---
-title: "Kestra UI Guide: Dashboards, Flows & Logs"
-h1: "Navigate the Kestra UI: Flows, Executions, Logs & Admin"
-description: Navigate the Kestra User Interface. A guide to the main UI components including Flows, Executions, Logs, and Administration pages.
-sidebarTitle: User Interface
+title: "Kestra UI & No Code: Dashboards, Flows & Logs"
+h1: "Navigate the Kestra UI: Flows, No Code Editor, Executions & Admin"
+description: Navigate the Kestra UI and No Code editor. Build flows and dashboards visually or with YAML — covers Flows, Executions, Logs, and Administration pages.
+sidebarTitle: UI & No Code
 icon: /src/contents/docs/icons/ui.svg
 ---
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 
-Kestra comes with a rich web user interface located by default on port 8080.
+Kestra's web UI is available by default on port 8080.
 
-When you first navigate to the Kestra UI, you will see the **Welcome** page.
+When you first navigate to the Kestra UI, you see the **Welcome** page.
 
 ![Kestra User Interface Welcome Page](./01-Welcome.png)
 
-On this page, click on **Start Product Tour** to open the Kestra **Guided Tour**, which will guide you through creating and executing your first flow step by step.
+Click **Start Product Tour** to open the Kestra **Guided Tour**, which guides you through creating and executing your first flow step by step.
 
-On the left menu, you will see the following UI pages:
+The UI also includes a **No Code editor** for building flows and dashboards visually without writing YAML — available from the Flows and Dashboard pages.
 
-- The **Dashboards** page contains dashboards of visualizations for flow execution data and other metrics.
-- The **Flows** page shows you all of your flows, where you can create, edit, and execute them.
-- The **Executions** page provides a view to inspect and manage previous executions.
-- The **Logs** page gives access to all task logs from previous executions.
-- The **Namespaces** page lists all available namespaces and allows specific configurations to be set at the namespace level.
+The left menu includes the following pages:
+
+- The **Dashboards** page shows visualizations of flow execution data and metrics.
+- The **Flows** page lists all your flows, where you can create, edit, and execute them.
+- The **Executions** page lets you inspect and manage previous executions.
+- The **Logs** page shows all task logs from previous executions.
+- The **Namespaces** page lists all namespaces and lets you set namespace-level configurations.
 - The **Blueprints** page provides a catalog of ready-to-use flow examples.
 - The **Plugins** page provides a catalog of plugins you can use inside your flows.
-- The **Tenant** page provides a system overview, the full KV Store, a list of all triggers, and concurrency limits.
+- The **Tenant** page provides a system overview, the full KV Store, triggers, and concurrency limits.
 
-The [Kestra Enterprise Edition](../oss-vs-paid/index.md) comes with additional functionalities provided by the Kestra UI:
+[Kestra Enterprise Edition](../oss-vs-paid/index.md) adds the following pages to the UI:
 
-- The **Apps** page takes you to your list of Apps and is also where you create new Apps.
-- The **Tests** page takes you to your flow unit tests where you can view, edit, and create test assertions against your flows without creating executions.
+- The **Apps** page lists your Apps and lets you create new ones.
+- The **Tests** page shows your flow unit tests where you can view, edit, and create assertions without creating executions.
 - The **Assets** page lets you manage reusable assets available to your flows and apps.
-- The **Tenant** page provides a system overview, KV Store, secrets and credentials lists, a list of all triggers, audit logs, concurrency limits, the Apps Catalog, and IAM.
+- The **Tenant** page provides a system overview, KV Store, secrets and credentials, triggers, audit logs, concurrency limits, the Apps Catalog, and IAM.
 - The **Instance** page includes sections for Services, Versioned Plugins, tenant management, Worker Groups, Kill Switch, and Announcements.
 
 <div class="video-container">

@@ -3,6 +3,8 @@ description: "Compare Kestra vs Chef Enterprise Automation Stack (Progress Softw
 competitorName: Chef
 category: Infrastructure Automation
 shortDescription: "Agent-based Ruby configuration management vs. event-driven workflow orchestration in declarative YAML."
+seeHowTitle: "From Configuration Management to Workflow Orchestration"
+seeHowBody: "See how Kestra can orchestrate your infrastructure automation—including Chef—in declarative YAML workflows."
 
 brandColor:
   color: "#5ce500"
@@ -32,7 +34,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows in one platform"
       - "Event-driven triggers: webhooks, S3 uploads, Kafka messages, database changes, API events"
       - "Declarative YAML readable by any engineer on day one"
-      - "Open source with 1200+ plugins, transparent pricing, and no per-node licensing"
+      - "Open source with 1400+ plugins, transparent pricing, and no per-node licensing"
       - "Self-service for non-engineers via Kestra Apps with approval gates"
   competitor:
     title: "Infrastructure Configuration Management"
@@ -229,7 +231,7 @@ platformStrengths:
     - title: "No agents, no Ruby required"
       description: "Chef requires installing and maintaining chef-client on every managed node, plus Ruby expertise to write and test cookbooks. Kestra runs tasks in isolated Docker containers with no agents. Workflows are declarative YAML that any engineer can read, write, and deploy through Git."
     - title: "Open source, transparent pricing"
-      description: "Kestra's open-source core is free with 1200+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs) are available without per-node metering. Chef's proprietary licensing uses per-node pricing that scales with fleet size."
+      description: "Kestra's open-source core is free with 1400+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs) are available without per-node metering. Chef's proprietary licensing uses per-node pricing that scales with fleet size."
     - title: "Orchestration that includes configuration management"
       description: "Kestra can call Chef InSpec, Ansible playbooks, Terraform plans, and shell scripts as tasks within a single workflow. Instead of replacing your configuration management tools, Kestra coordinates them alongside data pipelines, approvals, and notifications in one auditable pipeline."
 
@@ -266,7 +268,7 @@ commonQuestions:
   - question: "Chef converges every 30 minutes. How does Kestra trigger operations?"
     answer: "Kestra is event-driven at its core. Workflows trigger on webhooks, S3 uploads, Kafka messages, database changes, cron schedules, API events, or manual execution. This means operations run when something actually happens, not on a fixed convergence interval. You can also schedule workflows on any cron expression if periodic execution is needed."
   - question: "How does Kestra's pricing compare to Chef?"
-    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-node metering. Chef Enterprise Automation Stack uses per-node licensing through Progress Software, where costs scale with the number of managed nodes."
+    answer: "Kestra's open-source edition is free with 1400+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-node metering. Chef Enterprise Automation Stack uses per-node licensing through Progress Software, where costs scale with the number of managed nodes."
   - question: "Can I migrate from Chef to Kestra?"
     answer: "The tools serve different purposes, so migration is more about shifting your automation strategy than a direct swap. Shell scripts and compliance profiles work as-is in Kestra tasks. For configuration management, teams typically adopt Ansible or Terraform within Kestra workflows as a replacement for Chef cookbooks. Start by building new orchestration workflows in Kestra while existing Chef infrastructure continues running, then evaluate which Chef workloads can move to containerized Kestra tasks."
   - question: "Does Kestra support compliance and audit requirements like Chef InSpec?"

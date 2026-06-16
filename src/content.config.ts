@@ -3,6 +3,7 @@ import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsSchema } from "./schemas/vs"
+import { orchestrationSchema } from "./schemas/orchestration"
 
 export const collections = {
     docs: defineCollection({
@@ -15,6 +16,7 @@ export const collections = {
             z.object({
                 title: z.string(),
                 h1: z.string().optional(),
+                updated: z.coerce.date().optional(),
                 sidebarTitle: z.string().optional(),
                 description: z.string().optional(),
                 icon: z.string().optional(),
@@ -68,6 +70,7 @@ export const collections = {
                     )
                     .optional(),
                 image: image().optional(),
+                updated: z.coerce.date().optional(),
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
@@ -91,6 +94,13 @@ export const collections = {
             base: "./src/contents/vs",
         }),
         schema: vsSchema,
+    }),
+    orchestration: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/orchestration",
+        }),
+        schema: orchestrationSchema,
     }),
     externalBlogs: defineCollection({
         loader: glob({
@@ -130,13 +140,21 @@ export const collections = {
                 kpi1: z.string(),
                 kpi2: z.string(),
                 kpi3: z.string(),
+                kpi4: z.string().optional(),
                 quote: z.string(),
                 quotePerson: z.string(),
                 quotePersonTitle: z.string(),
                 industry: z.string(),
+                region: z.string(),
                 headquarter: z.string(),
                 solution: z.string(),
+                tagline: z.string().optional(),
+                excerpt: z.string().optional(),
                 companyName: z.string(),
+                intro: z.string().optional(),
+                deployment: z.string().optional(),
+                useCase: z.string().optional(),
+                companySize: z.string().optional(),
                 cta: z.string().optional(),
             }),
     }),

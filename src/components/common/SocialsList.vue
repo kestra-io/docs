@@ -93,9 +93,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
-
     strong {
         margin-left: calc($spacer * 2);
     }

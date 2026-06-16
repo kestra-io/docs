@@ -6,17 +6,16 @@ icon: /src/contents/docs/icons/api.svg
 release: 1.0.0
 description: Integrate Kestra with Java using the official SDK. Learn to set up the client, configure authentication, and programmatically create and execute workflows.
 ---
-Interact with Kestra's API via Java SDK.
 
-## Use the Kestra Java SDK
+Use the Kestra Java SDK to interact with the Kestra API from Java applications.
 
-## Installation
+## Install the Java SDK
 
-Choose the installation method that matches your environment.
+Choose the installation method that matches your build tool.
 
-### For Maven users
+### Maven
 
-Add this dependency to your project's **POM** file:
+Add this dependency to your `pom.xml`:
 
 ```xml
 <dependency>
@@ -27,277 +26,418 @@ Add this dependency to your project's **POM** file:
 </dependency>
 ```
 
-### For Gradle users
+### Gradle
 
-Add this dependency to your **build.gradle** file:
+Add this dependency to your `build.gradle`:
 
 ```groovy
 implementation "io.kestra:kestra-api-client:1.0.0"
 ```
 
-### Manual installation
-
-If you prefer to install the JAR manually, first generate it:
-
-```shell
-./gradlew publishToMavenLocal
-```
-
 ---
 
-## Getting started
+## Configure the client
 
-Initialize the `KestraClient` and reuse it across your application. Run this minimal example to verify your client setup:
-
-```java
-import java.util.*;
-import io.kestra.client.KestraClient;  // Adjust import to your SDK package
-
-public class GettingStarted {
-    // Instantiate the client once and reuse it (e.g., as a singleton)
-    private static final KestraClient CLIENT = KestraClient.builder()
-        .url("http://localhost:8080")
-        .basicAuth("root@root.com", "Root!1234")  // or .tokenAuth("...") if you use tokens
-        .build();
-
-    public static void main(String[] args) {
-        // A lightweight example to confirm that the client was initialized
-        System.out.println("KestraClient initialized: " + (CLIENT != null));
-    }
-}
-```
-
-:::alert{type="info"}
-**Notes**
-- Set `.url(...)` to your Kestra API base URL (for example, `http://localhost:8080`).
-- Configure either **basic** or **bearer** authentication to match your environment.
-- Construct the client **once** (singleton/DI) and reuse it for all API calls.
-:::
-
----
-
-## Create a flow
-
-Create a flow by sending the YAML definition as a string. This matches what you’d define in the UI, but through the SDK.
+Initialize `KestraClient` once using the builder, then reuse it across your application. Read credentials from environment variables rather than hardcoding them.
 
 ```java
-import java.util.*;
-import io.kestra.client.KestraClient;
-
-public class FlowsExamples {
-    private static final KestraClient CLIENT = KestraClient.builder()
-        .url("http://localhost:8080")
-        .basicAuth("root@root.com", "Root!1234")
-        .build();
-
-    public static void createFlow() {
-        String tenant = "main";
-        String flowBody = """
-        id: myflow
-        namespace: my.namespace
-
-        inputs:
-          - id: key
-            type: STRING
-            defaults: 'empty'
-
-        tasks:
-          - id: hello
-            type: io.kestra.plugin.core.log.Log
-            message: Hello World! 🚀
-        """;
-
-        CLIENT.flows().createFlow(tenant, flowBody);
-        System.out.println("Flow created: my.namespace/myflow");
-    }
-}
-```
-
-:::alert{type="info"}
-**Important**
-- `flowBody` must be **valid YAML** for a Kestra flow. Invalid YAML or missing required fields will return a `4xx`.
-- Set the correct `tenant` for multi-tenant environments.
-- On success, the API returns the created flow (including metadata and source); you may log/inspect it as needed.
-:::
-
----
-
-## Update a flow
-
-Update by sending the full YAML for the flow (including the same `id`/`namespace`), then calling `updateFlow`.
-
-```java
-import java.util.*;
-import io.kestra.client.KestraClient;
-
-public class FlowsUpdates {
-    private static final KestraClient CLIENT = KestraClient.builder()
-        .url("http://localhost:8080")
-        .basicAuth("root@root.com", "Root!1234")
-        .build();
-
-    public static void updateFlow() {
-        String flowId = "myflow";
-        String namespace = "my.namespace";
-        String tenant = "main";
-
-        String updatedFlowBody = """
-        id: myflow
-        namespace: my.namespace
-
-        inputs:
-          - id: key
-            type: STRING
-            defaults: 'empty'
-
-        tasks:
-          - id: hello
-            type: io.kestra.plugin.core.log.Log
-            message: Updated! 🚀
-        """;
-
-        CLIENT.flows().updateFlow(namespace, flowId, tenant, updatedFlowBody);
-        System.out.println("Flow updated: my.namespace/myflow");
-    }
-}
-```
-
-:::alert{type="info"}
-**Tips**
-- Send the **full** YAML for updates (id/namespace must match the target).
-- Keep your flow YAML in source control for diffing/auditing alongside code.
-- If you frequently change only a few fields, consider templating your YAML in code.
-:::
-
----
-
-## Execute a flow
-
-Trigger an execution and optionally pass inputs, labels, or scheduling parameters. You can choose to block (`wait=true`) until completion or return immediately.
-
-```java
-import java.util.*;
-import io.kestra.client.KestraClient;
-import io.kestra.client.types.ExecutionKind; // Adjust to your SDK model package
-
-public class ExecutionsExamples {
-    private static final KestraClient CLIENT = KestraClient.builder()
-        .url("http://localhost:8080")
-        .basicAuth("root@root.com", "Root!1234")
-        .build();
-
-    public static void createExecution() {
-        String flowId = "myflow";
-        String namespace = "my.namespace";
-        String tenant = "main";
-        Boolean wait = false;                    // non-blocking call
-        List<String> labels = List.of("label1:created");
-        Integer revision = null;                 // latest
-        String scheduleDate = null;              // or ISO-8601 string, e.g. "2025-11-01T10:00:00Z"
-        List<String> breakpoints = List.of();    // task ids to pause at (for debugging)
-        ExecutionKind kind = ExecutionKind.NORMAL;
-
-        Map<String, Object> variables = Map.of();  // flow variables (if any)
-        Map<String, Object> inputs = new HashMap<>();
-        inputs.put("key", "value");                // matches the flow `inputs` definition
-
-        var exec = CLIENT.executions()
-            .createExecution(namespace, flowId, wait, tenant, labels, revision, scheduleDate, breakpoints, kind, variables, inputs);
-
-        System.out.println("Execution started: " + exec.getId());
-    }
-}
-```
-
-:::alert{type="info"}
-**Notes**
-- `wait=true` blocks until the execution finishes (useful for [synchronous flows/test runners](../../../15.how-to-guides/synchronous-executions-api/index.md#synchronous-executions-api)).
-- Use [`labels`](../../../05.workflow-components/08.labels/index.md) (e.g., `team:platform`) for search, routing, or reporting.
-- `scheduleDate` allows delayed start.
-- `breakpoints` pause at specific task IDs to debug step-by-step.
-:::
-
----
-
-## Follow (stream) an execution
-
-Stream execution events/logs as they happen. This is useful for building live console output or CI visibility.
-
-```java
-import java.util.*;
-import io.kestra.client.KestraClient;
-
-public class ExecutionStreaming {
-    private static final KestraClient CLIENT = KestraClient.builder()
-        .url("http://localhost:8080")
-        .basicAuth("root@root.com", "Root!1234")
-        .build();
-
-    public static void followExecution() {
-        String executionId = "yourExecutionId";
-        String tenant = "main";
-
-        CLIENT.executions().followExecution(executionId, tenant)
-            .doOnNext(execution -> {
-                System.out.printf("Event: %s | Status: %s%n", execution.getId(), execution.getState());
-            })
-            .doOnError(err -> {
-                System.err.println("Stream error: " + err.getMessage());
-            })
-            .doOnComplete(() -> {
-                System.out.println("Execution stream completed.");
-            })
-            .subscribe();
-    }
-}
-```
-
-:::alert{type="info"}
-**Tips**
-- Use `followExecution` in interactive tools or long-running services to surface progress in real time.
-- The first event is an empty keepalive payload — skip it before processing subsequent updates.
-- If you only need the final result, poll the execution by ID instead of streaming.
-- Consider backoff/retry logic when streaming over unstable networks.
-:::
-
----
-
-## Putting it together (recommended structure)
-
-Create one utility class to hold your client and reuse it everywhere:
-
-```java
-import io.kestra.client.KestraClient;
+import io.kestra.sdk.KestraClient;
 
 public final class KestraClients {
     private KestraClients() {}
 
     public static final KestraClient INSTANCE = KestraClient.builder()
         .url(System.getenv().getOrDefault("KESTRA_URL", "http://localhost:8080"))
-        // Choose one auth mechanism:
         .basicAuth(
             System.getenv().getOrDefault("KESTRA_USER", "root@root.com"),
             System.getenv().getOrDefault("KESTRA_PASS", "Root!1234")
         )
-        // .tokenAuth(System.getenv("KESTRA_TOKEN"))
+        // .tokenAuth(System.getenv("KESTRA_TOKEN"))  // use instead for bearer auth
         .build();
 }
 ```
 
-Then, in your feature classes:
+:::alert{type="info"}
+Construct the client once (singleton or DI) and reuse it. Use either `.basicAuth(...)` or `.tokenAuth(...)`, not both.
+:::
+
+---
+
+## Create a flow
+
+Send the flow definition as a YAML string. This matches what you would define in the UI.
 
 ```java
-public class MyFlows {
-    public void create() {
-        KestraClients.INSTANCE.flows().createFlow("main", "...yaml...");
+import io.kestra.sdk.KestraClient;
+
+public class FlowsExamples {
+    public static void createFlow() {
+        String tenant = "main";
+        String body = """
+        id: my_flow
+        namespace: my_namespace
+
+        tasks:
+          - id: hello
+            type: io.kestra.plugin.core.log.Log
+            message: Hello World!
+        """;
+
+        KestraClients.INSTANCE.flows().createFlow(tenant, body);
+        System.out.println("Flow created: my_namespace/my_flow");
     }
 }
 ```
 
 :::alert{type="info"}
-**Best practices**
-- Prefer **one** `KestraClient` per application (share via DI or a static holder).
-- Externalize **URL** and **auth** via environment variables or your config system.
-- Keep flow YAML as code (templates/strings) under version control for traceability.
-- Use **labels** and consistent naming for easier search, dashboards, and governance.
+`body` must be valid YAML. If a flow with the same `id` and `namespace` already exists, use `updateFlow` instead.
 :::
+
+---
+
+## Update a flow
+
+Send the full YAML — including the same `id` and `namespace` — to replace an existing flow.
+
+```java
+public class FlowsExamples {
+    public static void updateFlow() {
+        String id = "my_flow";
+        String namespace = "my_namespace";
+        String tenant = "main";
+
+        String body = """
+        id: my_flow
+        namespace: my_namespace
+
+        tasks:
+          - id: hello
+            type: io.kestra.plugin.core.log.Log
+            message: Updated message!
+        """;
+
+        KestraClients.INSTANCE.flows().updateFlow(id, namespace, tenant, body);
+        System.out.println("Flow updated: my_namespace/my_flow");
+    }
+}
+```
+
+---
+
+## Delete a flow
+
+Remove a flow by its `namespace`, `id`, and `tenant`.
+
+```java
+public class FlowsExamples {
+    public static void deleteFlow() {
+        String namespace = "my_namespace";
+        String id = "my_flow";
+        String tenant = "main";
+
+        KestraClients.INSTANCE.flows().deleteFlow(namespace, id, tenant);
+        System.out.println("Flow deleted: my_namespace/my_flow");
+    }
+}
+```
+
+:::alert{type="info"}
+Deleting a flow removes its definition. Execution history is retained unless you delete executions separately.
+:::
+
+---
+
+## Execute a flow
+
+Trigger an execution and optionally pass labels or scheduling parameters.
+
+```java
+import java.util.List;
+import java.time.OffsetDateTime;
+import io.kestra.sdk.ApiException;
+import io.kestra.sdk.model.ExecutionKind;
+
+public class ExecutionsExamples {
+    public static void createExecution() {
+        String namespace = "my_namespace";
+        String id = "my_flow";
+        String tenant = "main";
+        Boolean wait = false;
+
+        try {
+            KestraClients.INSTANCE.executions()
+                .createExecution(
+                    namespace, id, wait, tenant,
+                    List.of("team:platform"),  // labels
+                    null,                      // revision (null = latest)
+                    (OffsetDateTime) null,     // scheduleDate
+                    null,                      // breakpoint task ID
+                    ExecutionKind.NORMAL
+                );
+        } catch (ApiException e) {
+            if (e.getCode() != 0) throw e; // code 0 = deserialization-only; execution ran normally
+        }
+
+        System.out.println("Execution triggered");
+    }
+}
+```
+
+:::alert{type="warning"}
+In SDK 1.0.0, `createExecution` successfully triggers the execution but throws a deserialization exception when reading the response — the server returns a single JSON object while the SDK expects an array. The execution runs normally. The `try/catch` above suppresses this by re-throwing only on a non-zero status code.
+:::
+
+---
+
+## Delete an execution
+
+Delete an execution and optionally purge its logs, metrics, and storage.
+
+```java
+public class ExecutionsExamples {
+    public static void deleteExecution() {
+        String executionId = "your-execution-id";
+        String tenant = "main";
+
+        KestraClients.INSTANCE.executions()
+            .deleteExecution(executionId, true, true, true, tenant);
+        System.out.println("Execution deleted");
+    }
+}
+```
+
+---
+
+## Follow an execution
+
+`followExecution` returns a reactive `Flux<Execution>` that streams state updates as the execution progresses. Each emission is an `Execution` object — skip entries where `getState()` is `null` (keepalive frames emitted by the server before the first real update).
+
+```java
+public class ExecutionsExamples {
+    public static void followExecution() {
+        String executionId = "your-execution-id";
+        String tenant = "main";
+
+        KestraClients.INSTANCE.executions()
+            .followExecution(executionId, tenant)
+            .filter(execution -> execution.getState() != null) // skip keepalive frames
+            .doOnNext(execution -> System.out.printf("[%s] %s%n",
+                execution.getId(), execution.getState().getCurrent()))
+            .blockLast(); // blocks until the execution stream ends
+    }
+}
+```
+
+---
+
+## KV Store
+
+The KV Store lets you read and write key-value pairs scoped to a namespace.
+
+### List keys
+
+```java
+public class KVExamples {
+    public static void listKeys() {
+        String namespace = "my_namespace";
+        String tenant = "main";
+
+        var keys = KestraClients.INSTANCE.kv().listKeys(namespace, tenant);
+        keys.forEach(entry -> System.out.println("Key: " + entry.getKey()));
+    }
+}
+```
+
+### Get a value
+
+```java
+public class KVExamples {
+    public static void getKeyValue() {
+        String namespace = "my_namespace";
+        String tenant = "main";
+
+        var result = KestraClients.INSTANCE.kv()
+            .getKeyValue(namespace, "my_key", tenant);
+        System.out.println("Value: " + result.getValue());
+    }
+}
+```
+
+### Set a value
+
+```java
+public class KVExamples {
+    public static void setKeyValue() {
+        String namespace = "my_namespace";
+        String tenant = "main";
+
+        KestraClients.INSTANCE.kv()
+            .setKeyValue(namespace, "my_key", tenant, "my_value");
+        System.out.println("Key set");
+    }
+}
+```
+
+### Delete a key
+
+```java
+public class KVExamples {
+    public static void deleteKey() {
+        String namespace = "my_namespace";
+        String tenant = "main";
+
+        KestraClients.INSTANCE.kv().deleteKeyValue(namespace, "my_key", tenant);
+        System.out.println("Key deleted");
+    }
+}
+```
+
+---
+
+## Read execution logs
+
+Fetch or stream logs for an execution.
+
+### List logs
+
+```java
+import io.kestra.sdk.model.Level;
+
+public class LogsExamples {
+    public static void listLogs() {
+        String executionId = "your-execution-id";
+        String tenant = "main";
+
+        var logs = KestraClients.INSTANCE.logs()
+            .listLogsFromExecution(executionId, tenant,
+                null,  // minLevel (null = all levels)
+                null,  // taskRunId
+                null,  // taskId
+                null   // attempt
+            );
+
+        logs.forEach(log ->
+            System.out.printf("[%s] %s%n", log.getLevel(), log.getMessage()));
+    }
+}
+```
+
+### Stream logs live
+
+```java
+import io.kestra.sdk.model.Level;
+
+public class LogsExamples {
+    public static void followLogs() {
+        String executionId = "your-execution-id";
+        String tenant = "main";
+
+        var event = KestraClients.INSTANCE.logs()
+            .followLogsFromExecution(executionId, tenant, null);
+
+        if (event != null && event.getData() != null) {
+            System.out.printf("[%s] %s%n",
+                event.getData().getLevel(), event.getData().getMessage());
+        }
+    }
+}
+```
+
+:::alert{type="info"}
+Use `listLogsFromExecution` after an execution finishes. Use `followLogsFromExecution` to fetch the latest log event from a running execution.
+:::
+
+---
+
+## Manage triggers
+
+Search, enable or disable, unlock, and restart triggers for flows.
+
+### Search triggers
+
+```java
+public class TriggersExamples {
+    public static void searchTriggers() {
+        String tenant = "main";
+
+        var result = KestraClients.INSTANCE.triggers()
+            .searchTriggers(1, 50, tenant,
+                null,           // sort
+                null,           // filters
+                null,           // query string
+                "my_namespace", // namespace filter
+                null,           // workerId
+                null            // flowId
+            );
+
+        result.getResults().forEach(t -> {
+            var ctx = t.getTriggerContext();
+            System.out.printf("%s: disabled=%s%n",
+                ctx.getTriggerId(), ctx.getDisabled());
+        });
+    }
+}
+```
+
+### Disable or enable a trigger
+
+```java
+import io.kestra.sdk.model.TriggerControllerSetDisabledRequest;
+import io.kestra.sdk.model.Trigger;
+
+public class TriggersExamples {
+    public static void disableTrigger() {
+        String tenant = "main";
+
+        var request = new TriggerControllerSetDisabledRequest()
+            .addTriggersItem(new Trigger()
+                .namespace("my_namespace")
+                .flowId("my_flow")
+                .triggerId("my_schedule"))
+            .disabled(true);  // pass false to re-enable
+
+        KestraClients.INSTANCE.triggers()
+            .disabledTriggersByIds(tenant, request);
+        System.out.println("Trigger disabled");
+    }
+}
+```
+
+### Unlock a trigger
+
+Use `unlockTrigger` to unlock a trigger that is stuck in a locked state.
+
+```java
+public class TriggersExamples {
+    public static void unlockTrigger() {
+        String tenant = "main";
+
+        KestraClients.INSTANCE.triggers()
+            .unlockTrigger("my_namespace", "my_flow", "my_schedule", tenant);
+        System.out.println("Trigger unlocked");
+    }
+}
+```
+
+### Restart a trigger
+
+```java
+public class TriggersExamples {
+    public static void restartTrigger() {
+        String tenant = "main";
+
+        KestraClients.INSTANCE.triggers()
+            .restartTrigger("my_namespace", "my_flow", "my_schedule", tenant);
+        System.out.println("Trigger restarted");
+    }
+}
+```
+
+---
+
+## Best practices
+
+- **Reuse your client:** construct one `KestraClient` per application (singleton or DI).
+- **Externalize credentials:** read URL and auth from environment variables or your config system.
+- **Keep flow YAML as code:** store YAML strings or templates under version control for traceability.
+- **Use labels** for governance, search, and routing across executions.

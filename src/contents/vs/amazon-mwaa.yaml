@@ -3,6 +3,8 @@ description: "Compare Kestra vs Amazon MWAA: YAML-first universal orchestration 
 competitorName: Amazon MWAA
 category: Data Orchestration
 shortDescription: "AWS-managed Apache Airflow vs. open-source, multi-cloud YAML orchestration without vendor lock-in."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and run them on any cloud without the AWS lock-in."
 
 brandColor:
   color: "#FF9900"
@@ -235,7 +237,7 @@ commonQuestions:
   - question: What happens to my Airflow version on MWAA when Airflow 3 ships?
     answer: "MWAA's supported Airflow versions lag behind the open-source releases. Airflow 3 support on MWAA typically arrives months after the upstream release, and upgrading requires AWS to certify the version first. Kestra upgrades run on your schedule: pull a new image, test in staging, and ship when your team is ready."
   - question: Does Kestra support the same data pipeline use cases as MWAA?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same AWS integrations available through Airflow providers: S3, Glue, Redshift, Athena, and more. The difference is YAML task definitions instead of Python operator classes."
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1400+ plugins, it covers the same AWS integrations available through Airflow providers: S3, Glue, Redshift, Athena, and more. The difference is YAML task definitions instead of Python operator classes."
   - question: Can Kestra and MWAA run in parallel during migration?
     answer: "Yes. Teams commonly run both during transition. Kestra can trigger MWAA DAGs via the Airflow REST API, so you migrate incrementally: start new workflows in Kestra, move existing pipelines over on your timeline, and keep MWAA running until you're ready to switch off."
   - question: How does Kestra handle multi-tenancy compared to MWAA?

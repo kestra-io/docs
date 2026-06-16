@@ -232,7 +232,7 @@ const organizationSchema = {
 
         <slot name="head" />
 
-        <ClientRouter />
+       {import.meta.env.PROD && <ClientRouter />}
         <LoadingIndicator color="#a796ff" threshold={0} />
 
         {

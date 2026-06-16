@@ -1,8 +1,8 @@
 ---
 title: "Batch vs Streaming Processing: Differences, Use Cases & Trade-Offs"
 description: "Understand the real differences between batch and streaming processing, when each one wins, and how modern orchestration lets you run both with the same engine."
-metaTitle: "Batch vs Streaming Processing: Differences, Use Cases & Trade-Offs"
-metaDescription: "Understand the real differences between batch and streaming processing, when each one wins, and how modern orchestration lets you run both with the same engine."
+metaTitle: "Batch vs Streaming Processing: Key Differences | Kestra"
+metaDescription: "Learn when to use batch vs streaming processing, how each architecture works, and how modern orchestrators like Kestra let you run both from a single platform."
 tag: data
 date: 2026-04-21
 faq:
@@ -10,7 +10,7 @@ faq:
     answer: "Batch processing operates on bounded datasets — a finite set of records collected over a window (an hour, a day) and processed as one unit. Streaming processing operates on unbounded data — records arriving continuously, processed one at a time or in short windows with low latency. The fundamental difference is not technical, it is about the shape of the data: do you have all the input before you start, or does new input keep arriving?"
   - question: "When should you use streaming instead of batch processing?"
     answer: "Use streaming when latency directly affects business outcomes — fraud detection, real-time personalization, monitoring alerts, IoT reactions, or user-facing features that depend on fresh data. Use batch when the data arrives in bulk, the downstream consumer tolerates delay (reports, ML training, historical aggregations), or the cost of running always-on infrastructure outweighs the value of freshness."
-  - question: "Is batch processing still relevant in 2026?"
+  - question: "Is batch processing still relevant today?"
     answer: "Yes, batch remains the right answer for a large share of production workloads. Financial reporting, ML training, historical backfills, regulatory exports, and anything where the consumer reads hourly or daily do not benefit from streaming. The shift has not been 'batch to streaming' but 'batch-only to batch plus streaming', with the best platforms handling both."
   - question: "What is micro-batch processing and when should you use it?"
     answer: "Micro-batch processes data in small, frequent batches — every few seconds or minutes — rather than as a true continuous stream. It offers most of the freshness benefits of streaming with simpler operational semantics and lower cost. Use micro-batching when you need sub-minute latency but do not need millisecond reactions, or when your team's operational maturity does not yet justify a full streaming stack."
@@ -51,7 +51,7 @@ Batch processing collects records over a period, then runs a job that reads them
 
 A batch pipeline usually looks like this: a scheduler triggers the job (cron, or an orchestrator on a schedule), the job reads from a source (object storage, a database, an API), transforms the data, and writes to a destination (warehouse, data lake, another database). Execution is finite, resources are released when the job completes, and observability is retrospective — you look at what happened after it finished.
 
-Tools in this category include Apache Spark (in batch mode), dbt, Apache Airflow for orchestration, and modern engines like Kestra that treat scheduled execution as one primitive among many.
+Tools in this category include Apache Spark (in batch mode), dbt, Apache Airflow for orchestration, and modern engines like Kestra that treat scheduled execution as one primitive among many. See a broader comparison of [ETL pipeline tools](/resources/data/etl-pipeline-tools) for this category.
 
 ### Strengths
 
@@ -80,7 +80,7 @@ State is first-class: the processor often needs to maintain rolling aggregates, 
 
 - **Low latency**: results are available within milliseconds to seconds of the event occurring.
 - **Continuous insight**: dashboards, monitors, and reactive workflows get a live view of the system rather than periodic snapshots.
-- **Reactive workflows**: streaming enables use cases that are impossible with batch — fraud blocking, dynamic pricing, real-time recommendations, [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) that kicks off downstream work the instant an event lands.
+- **Reactive workflows**: streaming enables use cases that are impossible with batch — fraud blocking, dynamic pricing, real-time recommendations, [real-time pipelines for the automotive industry](/use-cases/automotive), and [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) that kicks off downstream work the instant an event lands.
 
 ### Weaknesses
 
@@ -173,7 +173,7 @@ Hybrid is the default for any system that serves both analytical and operational
 - **Real-time personalization**: content ranking, search suggestions, and product recommendations that must reflect the user's current session.
 - **IoT and sensor data**: continuous telemetry from devices that emit events unpredictably.
 - **Operational alerts**: monitoring systems that must fire within seconds of a threshold breach.
-- **Real-time CDC**: change-data-capture streams that keep derived stores in sync with operational databases.
+- **Real-time CDC**: [change-data-capture](/resources/data/change-data-capture) streams that keep derived stores in sync with operational databases.
 
 ### Hybrid use cases
 
@@ -184,7 +184,7 @@ Hybrid is the default for any system that serves both analytical and operational
 
 ## Orchestrating batch and streaming in a single platform
 
-Running separate orchestration tools for batch and streaming is one of the most common sources of operational complexity in data platforms. Different schedulers, different monitoring, different on-call procedures, different secrets management — and the inevitable "is the streaming side or the batch side broken" debugging exercise during incidents.
+Running separate orchestration tools for batch and streaming is one of the most common sources of operational complexity in data platforms. Different schedulers, different monitoring, different on-call procedures, different secrets management — and the inevitable "is the streaming side or the batch side broken" debugging exercise during incidents. [Data orchestration](/resources/data/data-orchestration) platforms that handle both paradigms natively eliminate this coordination gap.
 
 The alternative is a single orchestration layer that treats schedules, events, and realtime streams as variations on the same primitive: [a declarative definition](/blogs/declarative-from-day-one) of what should run when. This is the approach Kestra takes — and the foundation of Kestra becoming [the first real-time orchestration platform](/blogs/2024-06-25-kestra-become-real-time) to unify scheduled, event-driven, and streaming workloads under one engine.
 
@@ -248,7 +248,7 @@ Millisecond latency, one execution per transaction, same UI, same observability 
 
 The two paradigms can coexist in the same orchestrator, feeding each other. A batch job trains a model nightly; a streaming job uses it for inference; both report to the same monitoring layer. The orchestrator is not just scheduling tasks — it is [bridging the coordination gap across paradigms](/blogs/orchestration-differences) that used to require two separate tools.
 
-Observability across both is where the unified approach pays off most: a single execution URL per run, the same logs format, the same retry semantics, the same alerting. Debugging a "the dashboard is stale" incident becomes a single investigation instead of a cross-team triage.
+Observability across both is where the unified approach pays off most: a single execution URL per run, the same logs format, the same retry semantics, the same alerting. Debugging a "the dashboard is stale" incident becomes a single investigation instead of a cross-team triage. This is a key part of [data observability](/resources/data/data-observability) — having visibility into both batch and streaming pipelines from one place.
 
 ## Future of data processing
 

@@ -86,8 +86,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
     .versions-title {
         font-size: $font-size-sm;
         font-weight: 600;
@@ -228,7 +226,7 @@
                 }
 
                 small {
-                    color: color-palette.$base-gray-300;
+                    color: var(--ks-content-tertiary);
                     font-size: 10px;
                     font-weight: normal;
                     grid-column: 1;

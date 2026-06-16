@@ -21,9 +21,32 @@ interface Props {
 }
 
 const props = Astro.props as Props
+
+const techArticleSchema = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "@id": Astro.url.href,
+    "headline": props.pageTitle ?? props.title ?? "Kestra Documentation",
+    "url": Astro.url.href,
+    "inLanguage": "en",
+    ...(props.description ? { description: props.description } : {}),
+    "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://kestra.io/#website",
+    },
+    "about": {
+        "@type": "SoftwareApplication",
+        "@id": "https://kestra.io/#software",
+    },
+    "author": { "@id": "https://kestra.io/#organization" },
+    "publisher": { "@id": "https://kestra.io/#organization" },
+}
 ---
 
 <Layout title={props.title} description={props.description} image={props.image}>
+    <Fragment slot="head">
+        <script type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
+    </Fragment>
     <link rel="preload" as="image" href={squaredGrid.src} />
     <div
         style={{
@@ -68,6 +91,7 @@ const props = Astro.props as Props
 
             <div class="layout-docs">
                 <div class="bd-content">
+                    <blockquote class="llms-directive">For the complete documentation index, see <a href="/llms.txt">llms.txt</a>. For a full content snapshot, see <a href="/llms-full.txt">llms-full.txt</a>. Append <code>.md</code> to any <code>kestra.io/docs/*</code> URL for plain Markdown.</blockquote>
                     <slot />
                 </div>
             </div>
@@ -143,6 +167,18 @@ const props = Astro.props as Props
                 line-height: 2.5rem;
             }
         }
+    }
+
+    .llms-directive {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
     }
 
     :global(.medium-zoom-image) {

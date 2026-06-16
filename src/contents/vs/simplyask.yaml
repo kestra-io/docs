@@ -3,6 +3,8 @@ description: "Compare Kestra vs SimplyAsk (Symphona): Open-source workflow orche
 competitorName: SimplyAsk
 category: Business Automation
 shortDescription: "No-code business process automation for telco and operations teams vs. engineering-grade workflow orchestration with self-hosting and GitOps."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond no-code business process automation."
 
 brandColor:
   color: "#2563EB"
@@ -222,7 +224,7 @@ commonQuestions:
   - question: How do I migrate workflows from SimplyAsk to Kestra?
     answer: "SimplyAsk workflows are built visually in the Flow canvas and stored in a proprietary format. In Kestra, you replicate each workflow in declarative YAML, replacing SimplyAsk's canvas steps with the equivalent Kestra plugins (HTTP requests, script execution, Slack notifications, and more). The trigger model maps directly: schedules, webhooks, and API calls all work in Kestra. Most teams migrate incrementally, starting with workflows that require infrastructure execution or Git-native deployment, since those aren't possible in SimplyAsk."
   - question: Does Kestra support the same integrations as SimplyAsk Symphona?
-    answer: "Kestra has 1,200+ plugins covering cloud providers, databases, data warehouses, messaging systems, and APIs. SimplyAsk Flow integrates via REST API, SFTP, database connectors, and native connections to its own Symphona products (Converse, Serve, Resolve). For standard API integrations, both tools cover similar ground. Kestra's plugin library goes deeper on data and infrastructure tooling (Spark, dbt, Terraform, Kubernetes), while SimplyAsk has tighter integration with its bundled business ops suite."
+    answer: "Kestra has 1,400+ plugins covering cloud providers, databases, data warehouses, messaging systems, and APIs. SimplyAsk Flow integrates via REST API, SFTP, database connectors, and native connections to its own Symphona products (Converse, Serve, Resolve). For standard API integrations, both tools cover similar ground. Kestra's plugin library goes deeper on data and infrastructure tooling (Spark, dbt, Terraform, Kubernetes), while SimplyAsk has tighter integration with its bundled business ops suite."
   - question: Can Kestra be self-hosted or run in air-gapped environments?
     answer: "Yes. Kestra is open source and supports fully self-hosted deployment via Docker or Kubernetes, including air-gapped environments with no outbound internet access. SimplyAsk Symphona is a SaaS platform with no self-hosted option. For engineering firms operating in regulated industries or managing on-premises infrastructure, that's not a configuration trade-off; it's a hard blocker."
   - question: Can Kestra support non-technical users the way SimplyAsk's no-code canvas does?
