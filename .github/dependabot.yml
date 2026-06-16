@@ -15,9 +15,12 @@ updates:
     open-pull-requests-limit: 50
     labels: ["dependency-upgrade", "area/devops"]
 
-  # Maintain dependencies for NPM modules
+  # Maintain dependencies for NPM modules (core UI)
   - package-ecosystem: "npm"
     directory: "/"
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps)"
     schedule:
       interval: "weekly"
       day: "wednesday"
@@ -97,3 +100,4 @@ updates:
             "prettier",
             "prettier-*",
           ]
+

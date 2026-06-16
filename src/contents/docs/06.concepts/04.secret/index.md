@@ -57,6 +57,19 @@ For a concrete example of using secrets in flows, check out our dedicated [How-T
 
 Kestra [Enterprise Edition](../../07.enterprise/index.mdx) provides additional secret management backends and integrations with secrets managers. See the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page for more details.
 
+### Reading secrets from another namespace
+
+By default, `secret()` reads from the flow's own namespace. Pass a `namespace` argument to read a secret stored in a different namespace:
+
+```yaml
+tasks:
+  - id: use_shared_secret
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ secret('SHARED_TOKEN', namespace='shared.secrets') }}"
+```
+
+The secret is resolved using the target namespace's own secret backend, so a flow can read a value from a namespace backed by a different secrets manager. Cross-namespace reads stay within the same tenant. Access to another namespace's secrets is allowed by default; restrict it by configuring `allowedNamespaces` on the target namespace.
+
 ## Secrets in the Open-Source version
 
 When using the open-source version, sensitive variables can be managed using base64-encoded environment variables. The section below demonstrates several ways to encode those values and use them in your Kestra instance.

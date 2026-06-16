@@ -1,19 +1,19 @@
 ---
 title: "What Is Data Mesh Architecture? Principles, Pillars, and Real-World Implementation"
 description: "Data mesh architecture decentralizes data ownership across domains. The 4 principles, a real implementation (Leroy Merlin: +900% data production), and the tool stack."
-metaTitle: "What Is Data Mesh Architecture? Principles & Examples"
-metaDescription: "Data mesh architecture decentralizes data ownership across domains. Learn the 4 principles, a real implementation (Leroy Merlin: +900% data production), and tools."
+metaTitle: "Data Mesh Architecture: 4 Principles & Examples | Kestra"
+metaDescription: "Data mesh decentralizes data ownership to domain teams. Learn the 4 principles, a real implementation (Leroy Merlin: +900% data production), and compare tools."
 tag: data
 date: 2026-04-21
 faq:
   - question: "What is a data mesh architecture?"
     answer: "Data mesh architecture is a decentralized approach to data management where domain teams own their data as products, supported by a self-serve platform and federated governance. It addresses the scaling limits of centralized data lakes and warehouses by distributing ownership, while enforcing consistent governance policies across domains."
   - question: "What are the 4 pillars of data mesh?"
-    answer: "The 4 pillars of data mesh are: (1) domain-oriented decentralized data ownership, (2) data as a product, (3) self-serve data infrastructure as a platform, and (4) federated computational governance. These principles were introduced by Zhamak Dehghani in 2019."
+    answer: "The 4 pillars of data mesh are: (1) domain-oriented decentralized data ownership, (2) data as a product, (3) self-serve data infrastructure as a platform, and (4) federated computational governance. The first three principles were introduced by Zhamak Dehghani in her May 2019 article; the complete four-principle framework was published in December 2020."
   - question: "Is data mesh obsolete?"
     answer: "No. Data mesh isn't obsolete, but it has matured. Early 2020s hype framed it as a replacement for data lakes — in practice, most successful implementations combine data mesh principles (domain ownership, governance) with existing warehouses and lakes, rather than replacing them outright."
-  - question: "What are the 5 layers of a data platform?"
-    answer: "The 5 layers of a modern data platform are: data storage, data ingestion, data transformation, business intelligence and analytics, and data observability. A self-serve data platform in a data mesh must expose these as reusable primitives that domain teams can compose."
+  - question: "What is federated computational governance in data mesh?"
+    answer: "Federated computational governance means a cross-domain committee defines policy primitives — access control standards, data quality requirements, lineage standards, and compliance constraints — that apply everywhere. These policies are encoded into the self-serve platform where possible, so compliance is automatic. Domain teams have autonomy to build their own data products within these guardrails, rather than being free-form or under central control."
   - question: "How is data mesh different from a data lake?"
     answer: "A data lake is a centralized storage pattern — all raw data in one place, typically owned by a central team. A data mesh is a decentralized ownership pattern — domain teams own their data products. The two aren't mutually exclusive: many organizations run data mesh on top of existing lakes."
   - question: "Do I need to replace my data warehouse to adopt data mesh?"
@@ -40,7 +40,7 @@ An important clarification: data mesh is a paradigm, not a product. No vendor se
 
 ## The 4 Principles of Data Mesh
 
-The 4 pillars of data mesh are: (1) domain-oriented decentralized data ownership, (2) data as a product, (3) self-serve data infrastructure as a platform, and (4) federated computational governance. These principles were introduced by Zhamak Dehghani in 2019 and remain the definitional reference.
+The 4 pillars of data mesh are: (1) domain-oriented decentralized data ownership, (2) data as a product, (3) self-serve data infrastructure as a platform, and (4) federated computational governance. The first three were introduced by Zhamak Dehghani in her May 2019 article on martinfowler.com; the complete four-principle framework was published in December 2020 and remains the definitional reference.
 
 Each principle exists for a reason. Skip one and the architecture breaks in a predictable way.
 
@@ -77,8 +77,8 @@ This is where the modern orchestration stack earns its keep. Tools like [Kestra]
 Decentralization without governance is anarchy. Federated computational governance means a governance committee — usually one representative per major domain plus central platform engineering — defines the policy primitives that apply everywhere:
 
 - Authentication and access control standards
-- Data quality requirements (tests that must pass)
-- Lineage and metadata standards
+- [Data quality](/resources/data/data-quality) requirements (tests that must pass)
+- [Data lineage](/resources/data/data-lineage) and metadata standards
 - Privacy and compliance constraints (PII handling, retention, masking)
 - Interoperability standards (how cross-domain data products connect)
 
@@ -151,7 +151,7 @@ Data mesh doesn't pay off in quarter one. Pilot domains need support, the platfo
 
 No. Data mesh isn't obsolete, but it has matured. Early 2020s hype framed it as a replacement for data lakes — in practice, most successful implementations combine data mesh principles (domain ownership, governance) with existing warehouses and lakes, rather than replacing them outright. The principles remain relevant; the implementations have become more pragmatic.
 
-What you hear less of in 2026: "we're going full data mesh." What you hear more of: "we're adopting domain-oriented ownership on top of our existing lakehouse."
+What you hear less of in 2026: "we're going full data mesh." What you hear more of: "we're adopting domain-oriented ownership on top of our existing [lakehouse](/resources/data/lakehouse-architecture)."
 
 ## How Leroy Merlin Built a Data Mesh with Kestra
 
@@ -193,11 +193,11 @@ As the number of domains grows from three to ten to thirty, the federated govern
 
 Data mesh is not a product. It's a composition of tools, each solving one part of the architecture:
 
-- **Orchestration** — [Kestra](/), Airflow, Dagster, Prefect. For data mesh specifically, namespace isolation, declarative workflows, and RBAC are critical. See [Kestra vs Dagster](/vs/dagster) for a direct comparison.
+- **Orchestration** — [Kestra](/), Airflow, Dagster, Prefect. For data mesh specifically, namespace isolation, declarative workflows, and RBAC are critical. See the [Dagster alternatives guide](/resources/data/dagster-alternatives) for a comparison of orchestration options.
 - **Data catalog & governance** — DataHub, Collibra, Atlan, Unity Catalog (Databricks-native). The catalog is how domains discover each other's products.
 - **Data contracts** — emerging space. Tools like dbt's contracts, Great Expectations, and dedicated data contract platforms define the interface between producing and consuming domains.
 - **Storage** — warehouses (Snowflake, BigQuery, Redshift), lakes (S3, GCS, ADLS), lakehouses (Databricks, Iceberg). Data mesh is agnostic — different domains may use different stores.
-- **Observability** — Monte Carlo, Soda, OpenLineage-based tools. Data products need SLA monitoring, not just pipeline monitoring.
+- **Observability** — Monte Carlo, Soda, OpenLineage-based tools. Data products need SLA monitoring, not just pipeline monitoring. See the [data observability guide](/resources/data/data-observability) for tool comparisons.
 
 **Data mesh on AWS.** AWS-native implementations typically combine Lake Formation (permissions), Glue (catalog + ETL), and an orchestrator. Kestra works natively with AWS services and avoids the AWS-only lock-in if you expect cross-cloud deployment later.
 
@@ -207,4 +207,4 @@ Data mesh is not a product. It's a composition of tools, each solving one part o
 
 Data mesh architecture isn't a tool purchase. It's an organizational shift supported by the right platform primitives. The principles — domain ownership, data as a product, self-serve platform, federated governance — are clear; the implementation takes multiple quarters of deliberate work, executive sponsorship, and platform engineering.
 
-If you're evaluating orchestration specifically for a data mesh implementation, Kestra's namespace isolation, RBAC, and declarative YAML workflows are the operational primitives that made Leroy Merlin's architecture work. Explore [declarative orchestration for data teams](/data), or read the [data orchestration guide](/resources/data/data-orchestration) for the broader category.
+If you're evaluating orchestration specifically for a data mesh implementation, Kestra's namespace isolation, RBAC, and declarative YAML workflows are the operational primitives that made Leroy Merlin's architecture work. Explore the [data orchestration guide](/resources/data/data-orchestration) for the broader category, or see [how to automate data pipelines](/resources/data/automate-data-pipeline) for hands-on implementation patterns.

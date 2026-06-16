@@ -85,5 +85,13 @@ section {
     .items {
         width: 100%;
     }
+
+    .ans :deep(code:not(pre code)) {
+        border: none;
+        border-radius: var(--bs-border-radius);
+        color: var(--ks-content-secondary);
+        padding: 0 0.25rem;
+        background-color: var(--ks-background-function);
+    }
 }
 </style>

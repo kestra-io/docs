@@ -30,8 +30,12 @@ quotePerson: Platform Engineering Lead
 quotePersonTitle: ""
 industry: Enterprise Software (Regulated Industries)
 headquarter: Switzerland
+region: Europe
+companySize: "501–5,000"
 solution: Regulated Cloud Platform for Banking and Insurance Customers
-companyName: Software Provider Serving Regulated Industries
+tagline: Cloud platform provider for regulated banking and insurance industries
+companyName: Software Provider
+useCase: IT Automation
 cta: "What would change if your regulated-industry clients could self-serve cloud automation—with full governance and compliance built into every flow?"
 ---
 

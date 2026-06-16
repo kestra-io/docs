@@ -1,6 +1,6 @@
 import type { Loader } from "astro/loaders"
 import { $fetchApiCached } from "~/utils/fetch"
-import type { Plugin } from "@kestra-io/ui-libs"
+import type { Plugin } from "~/utils/plugins/plugin"
 import { z } from "astro:content"
 
 export default {

@@ -1,5 +1,6 @@
 import { API_URL } from "astro:env/client"
-import type { JSONSchema, Plugin, PluginMetadata } from "@kestra-io/ui-libs"
+import type { JSONSchema } from "./schema"
+import type { Plugin, PluginMetadata } from "./plugin"
 
 import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
@@ -59,6 +60,15 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
                 ).find(
                     (a) => a.version === v.version && normalizeRepoUrl(a.repository) === repoUrl,
                 )?.minCoreCompatibilityVersion
+
+                // Fallback for pre-1.0.0 versions not in the artifacts index:
+                // plugin 0.X.Y always required Kestra 0.X.0 by convention.
+                if (!v.minCoreCompatibilityVersion) {
+                    const parts = v.version.split(".")
+                    if (parts.length >= 2 && parseInt(parts[0]) === 0) {
+                        v.minCoreCompatibilityVersion = `0.${parts[1]}.0`
+                    }
+                }
             })
         } catch (e) {
             console.error("Artifacts annotation failed", e)

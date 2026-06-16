@@ -1,2 +1,8 @@
 /api/feeds
   Content-Type: application/json
+
+/.well-known/mcp
+  Content-Type: application/json
+
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable

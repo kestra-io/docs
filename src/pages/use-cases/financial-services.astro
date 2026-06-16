@@ -5,9 +5,10 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Snippets from "~/components/common/Snippets.vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -42,9 +43,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Financial Services & Insurance"
+const title = "Financial Services Workflow Automation & Orchestration"
 const description =
-    "One orchestration platform for banks, insurers, investment firms, and fintechs. Kestra runs the regulated workflows behind modern financial services and insurance. Claims, onboarding, payments, reporting, risk, and AI, orchestrated from one declarative control plane."
+    "Open-source workflow automation for banks, insurers, and fintechs. Orchestrate claims, payments, regulatory reporting, and fraud ops — self-hosted and compliant."
 
 const FLOW_STAGES = [
     {
@@ -505,15 +506,15 @@ const FAQ = [
     },
     {
         question: "How does Kestra fit alongside Airflow, Control-M, or IBM Workload Automation?",
-        answer: "Kestra is designed to replace them. Banks, insurers, lenders, and investment firms consolidate onto Kestra to retire Cron, Control-M, Autosys, Airflow, and hand-rolled schedulers. One control plane for data, infrastructure, and business workflows, with a plugin ecosystem spanning mainframe to cloud.",
+        answer: `Kestra is designed to replace them. Banks, insurers, lenders, and investment firms consolidate onto Kestra to retire Cron, <a href="/vs/control-m">Control-M</a>, <a href="/vs/broadcom">Autosys</a>, <a href="/vs/airflow">Airflow</a>, and hand-rolled schedulers. One control plane for data, infrastructure, and business workflows, with a plugin ecosystem spanning mainframe to cloud.`,
     },
     {
         question: "Does Kestra integrate with PagerDuty for incident response?",
-        answer: "Yes. The PagerDuty plugin fires events on flow failures, SLA breaches, or any conditional branch. Route by severity, deduplicate with custom keys, and attach the full execution ID so on-call engineers can replay the failing run in one click. Works the same way for claims pipelines, reconciliations, and regulatory submissions.",
+        answer: `Yes. The <a href="/vs/pagerduty">PagerDuty</a> plugin fires events on flow failures, SLA breaches, or any conditional branch. Route by severity, deduplicate with custom keys, and attach the full execution ID so on-call engineers can replay the failing run in one click. Works the same way for claims pipelines, reconciliations, and regulatory submissions.`,
     },
     {
         question: "Can Kestra replace VMware Aria Automation or other cloud-automation suites?",
-        answer: "Yes. Teams migrate off VMware Aria Automation, Aria Orchestrator, vRealize, and similar cloud-automation suites onto Kestra to unify cloud provisioning, platform automation, and business workflows in one declarative engine. Terraform, Ansible, shell, Python, and native API plugins cover the same provisioning and governance scenarios, with Git-backed flows, RBAC, and audit built in.",
+        answer: `Yes. Teams migrate off <a href="/vs/vmware-cloud-foundation">VMware Aria Automation</a>, Aria Orchestrator, vRealize, and similar cloud-automation suites onto Kestra to unify cloud provisioning, platform automation, and business workflows in one declarative engine. Terraform, Ansible, shell, Python, and native API plugins cover the same provisioning and governance scenarios, with Git-backed flows, RBAC, and audit built in.`,
     },
     {
         question: "What deployment options exist for restricted, sovereign, or air-gapped environments?",
@@ -531,11 +532,30 @@ const FAQ = [
         question: "Does Kestra support digital asset and BNPL workflows?",
         answer: "Yes. Orchestrate on-chain events, stablecoin settlement, wallet reconciliation, and buy-now-pay-later authorization alongside SWIFT, SEPA, and card rails. The same declarative model covers traditional and digital asset flows.",
     },
+    {
+        question: "How does Kestra compare to Apache Airflow for financial services workflows?",
+        answer: `<a href="/vs/airflow">Airflow</a> is Python-only and designed for data engineering DAGs. Kestra runs every language — Python, Java, R, shell, SQL — via declarative YAML, with built-in human approval gates, four-eyes controls, mainframe connectors, and immutable audit trails that Airflow lacks. Banks and insurers choose Kestra to replace Airflow when workflows extend beyond data pipelines into core operations, compliance, and business process automation.`,
+    },
+    {
+        question: "How does Kestra compare to Control-M or Autosys for financial services?",
+        answer: `<a href="/vs/control-m">Control-M</a> and <a href="/vs/broadcom">Autosys</a> are agent-based schedulers designed for batch. Kestra is event-driven, API-first, and runs in containers on Kubernetes. It handles the same batch scheduling workloads plus real-time event-driven flows, human approvals, and modern cloud-native integrations — with Git-backed flows instead of proprietary configuration. Financial services teams migrate from Control-M to Kestra to reduce licensing costs, eliminate batch windows, and unify data, infrastructure, and business workflows on one platform.`,
+    },
+    {
+        question: "What workflow automation tools are most commonly used in financial services and insurance?",
+        answer: `Common tools include <a href="/vs/control-m">Control-M</a>, <a href="/vs/ibm-workload-automation">IBM Workload Automation</a>, <a href="/vs/broadcom">Autosys</a>, <a href="/vs/stonebranch">Stonebranch</a>, <a href="/vs/airflow">Apache Airflow</a>, and homegrown Python schedulers. Kestra replaces all of them on a single open-source engine — running batch, event-driven, and human-in-the-loop workflows side-by-side, with YAML-backed flows in Git, self-hosted deployment, and a plugin ecosystem spanning mainframe to cloud-native.`,
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Workflow Automation and Orchestration"
+        audienceType="Banks, Insurers, Investment Firms, and Fintech Companies"
+        description={description}
+    />
     <div class="financial-services">
 
         <section class="hero">
@@ -547,8 +567,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    One orchestration platform for<br />
-                    <span class="gradient">regulated financial workflows.</span>
+                    Workflow automation for financial services<br />
+                    <span class="gradient">and insurance teams.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
@@ -630,8 +650,12 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Used by regulated teams across banking, insurance, investment, payments &amp; fintech</span>
                     <div class="hero-logos__row">
-                        <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
-                        <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
+                        <a href="/use-cases/stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows" aria-label="Read the JPMorgan Chase cybersecurity orchestration story">
+                            <Image src={JPMorganLogoImg} alt="JPMorgan Chase" class="hero-logos__item" />
+                        </a>
+                        <a href="/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra" aria-label="Read the Crédit Agricole customer story">
+                            <Image src={CreditAgricoleLogoImg} alt="Crédit Agricole" class="hero-logos__item" />
+                        </a>
                         <Image src={BloombergLogoImg} alt="Bloomberg" class="hero-logos__item" />
                         <Image src={TotalEnergiesLogoImg} alt="TotalEnergies Trading" class="hero-logos__item" />
                         <Image src={ICapitalLogoImg} alt="iCapital" class="hero-logos__item" />
@@ -645,7 +669,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    Any <span class="highlight">system</span>. Any <span class="highlight">workflow</span>. Any <span class="highlight">control model</span>.
+                    How <span class="highlight">financial services workflow automation</span> connects core systems, data, and approvals.
                 </h2>
                 <p class="flow__lead">
                     Claim, payment, customer, policy, portfolio event, or reporting deadline. The orchestration job is the same: connect systems, route exceptions, trigger actions, capture evidence.
@@ -685,7 +709,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>Every critical workflow in financial services and insurance.</h2>
+                    <h2>Workflow automation use cases in banking, insurance, and fintech.</h2>
                     <p>Core systems, money movement, risk and compliance, customer operations. One engine runs them all.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -710,7 +734,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    <span class="highlight">Enterprise-Grade</span> Orchestration for Every Regulated Workload.
+                    Financial workflow orchestration requirements: <span class="highlight">SOX, DORA, and four-eyes controls</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -722,51 +746,11 @@ const FAQ = [
             </div>
         </section>
 
-        <section class="build">
-            <div class="container">
-                <h2><span class="highlight">Blueprints</span> for financial services and insurance.</h2>
-                <p class="build__lead">Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI.</p>
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="header row g-0">
-                            {BUILD_TABS.map((tab, idx) => (
-                                <div
-                                    class:list={[
-                                        "col-6 col-md-3 header-tab",
-                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
-                                    ]}
-                                    data-tab-target={idx}
-                                >
-                                    {tab.name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {BUILD_TABS.map((tab, idx) => (
-                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
-                                <div class="panel panel-1">
-                                    <Snippets client:idle code={tab.code} lang="yaml" />
-                                </div>
-                                <div class="panel panel-2">
-                                    <h3 data-usal="fade-r">{tab.title}</h3>
-                                    <p data-usal="fade-l">{tab.description}</p>
-                                    <div class="plugins" data-usal="zoomin">
-                                        {tab.plugins.map(plugin => (
-                                            <div class="plugin-icon">
-                                                <TaskIcon cls={plugin.cls} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link class="goto" href={tab.href} data-usal="fade-r">
-                                        Explore Blueprints
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+        <BlueprintTabs
+            title={`Financial workflow automation <span class="highlight">examples and blueprints</span>.`}
+            lead="Production workflows, from claims triage to regulatory reporting. Copy the YAML. Wire it to your stack. Ship it through your CI."
+            items={BUILD_TABS.map((t) => ({ ...t, plugins: t.plugins.map((p) => p.cls) }))}
+        />
 
         <GoFurther />
 
@@ -802,15 +786,22 @@ const FAQ = [
     :global(html.dark) .financial-services {
         .flow,
         .workloads,
-        .build,
         .enterprise {
             background: #1C1C20;
         }
         :global(section.quotes-wrapper),
         :global(section.plugin-block),
-        :global(.see) {
+        :global(.see),
+        :global(.blueprint-tabs) {
             background: #1C1C20;
         }
+    }
+
+    :global(.blueprint-tabs h2 .highlight) {
+        background: linear-gradient(90deg, #{$fs-yellow}, #{$fs-yellow-bright});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero {
@@ -1496,171 +1487,6 @@ const FAQ = [
         }
     }
 
-    .build {
-        padding: 3rem 0 4.5rem;
-        background: var(--ks-background-primary);
-        border-bottom: $block-border;
-
-        .container {
-            max-width: 73.75rem;
-            margin: 0 auto;
-            padding-inline: 0;
-
-            h2 {
-                margin-bottom: 1rem;
-                padding-inline: $rem-1;
-                text-align: center;
-
-                .highlight { color: $fs-yellow; }
-
-                @include media-breakpoint-up(xl) { padding-inline: 0; }
-            }
-
-            .wrapper {
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-                border-radius: 13px;
-
-                @include media-breakpoint-down(xl) { border-radius: 0; }
-
-                .inner {
-                    border-radius: $rem-1;
-                    background: var(--ks-background-primary-inverse);
-                    overflow: clip;
-
-                    @include media-breakpoint-down(xxl) { border-radius: 0; }
-
-                    .header {
-                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
-
-                        & > div {
-                            padding: 1.1875rem $rem-2;
-                            font-size: $font-size-md;
-                            color: var(--ks-content-secondary-inverse);
-                            text-align: center;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-
-                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
-
-                            &.active {
-                                background: var(--ks-background-secondary-inverse);
-                                border-bottom: 1px solid var(--ks-border-active);
-                                color: var(--ks-content-primary-inverse);
-                                font-weight: 600;
-                            }
-                        }
-
-                        & .middle-part {
-                            border-left: 1px solid var(--ks-border-primary-inverse);
-                            border-right: 1px solid var(--ks-border-primary-inverse);
-                        }
-                    }
-
-                    .content {
-                        display: none;
-                        flex-direction: row;
-                        gap: $rem-2;
-                        padding: $rem-2;
-                        justify-content: center;
-
-                        &.active { display: flex; }
-
-                        @include media-breakpoint-down(xl) {
-                            flex-direction: column;
-                            align-items: center;
-                        }
-
-                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
-
-                        .panel {
-                            border-radius: 0.5rem;
-                            flex-shrink: 0;
-
-                            &.panel-1 {
-                                width: 39.4375rem;
-
-                                @include media-breakpoint-down(xl) { width: 100%; }
-
-                                :global(.code-card) {
-                                    border: 1px solid var(--ks-border-secondary-inverse);
-                                    background: var(--ks-background-input);
-                                    height: 100%;
-
-                                    :global(.code-inner) { transition: max-height 0.3s ease; }
-                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
-
-                                    &:global(:not(.is-expanded)) {
-                                        :global(.code-inner) { max-height: 27.9375rem !important; }
-                                    }
-                                }
-                            }
-
-                            &.panel-2 {
-                                position: relative;
-                                padding-top: $rem-2;
-                                color: var(--ks-content-primary-inverse);
-                                width: 27.5625rem;
-
-                                @include media-breakpoint-down(xl) {
-                                    width: 100%;
-                                    padding-top: 0;
-                                }
-
-                                p {
-                                    font-size: $font-size-lg;
-                                    margin-top: $rem-1;
-                                    margin-bottom: $rem-2;
-                                }
-
-                                .plugins {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    flex-wrap: wrap;
-
-                                    .plugin-icon {
-                                        width: 2.125rem;
-                                        height: 2.125rem;
-                                        padding: 0.375rem;
-                                        background: $white;
-                                        border: $block-border;
-                                        border-radius: $border-radius;
-                                    }
-                                }
-
-                                .goto {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    color: var(--ks-content-link-inverse);
-                                    font-weight: 600;
-
-                                    @include media-breakpoint-down(xl) {
-                                        position: relative;
-                                        margin-top: $rem-3;
-                                        float: right;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &__lead {
-            text-align: center;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            margin: 0 auto $rem-2;
-            max-width: 44rem;
-            padding-inline: $rem-1;
-        }
-    }
-
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1678,7 +1504,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $fs-yellow-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$fs-yellow-bright}, #{$fs-yellow-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
@@ -1714,22 +1545,3 @@ const FAQ = [
     }
 </style>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        for (const container of document.querySelectorAll(".build .inner")) {
-            container.addEventListener("click", (e) => {
-                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
-                const target = tab && (container as Element).querySelector(
-                    `[data-tab-content="${tab.dataset.tabTarget}"]`
-                )
-                if (!target) return
-
-                for (const el of container.querySelectorAll(".header-tab, .content")) {
-                    el.classList.remove("active")
-                }
-                tab.classList.add("active")
-                target.classList.add("active")
-            })
-        }
-    })
-</script>

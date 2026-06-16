@@ -23,9 +23,9 @@ const tags = await fetch(`${API_URL}/blueprints/versions/latest/tags`).then(
     (res) => res.json(),
 )
 
-const title = "Use cases for Modern Data Orchestration"
+const title = "Workflow Automation Use Cases & Industry Solutions"
 const description =
-    "Harness the value of your data, unlock new insights, and drive informed decision-making using Kestra's automation platform"
+    "Explore how Kestra's open-source workflow automation platform serves every industry and team — from financial services and healthcare to retail, automotive, and government."
 
 const MAIN_ITEMS = [
     {
@@ -84,6 +84,51 @@ const MAIN_ITEMS = [
     },
 ]
 
+const INDUSTRY_ITEMS = [
+    {
+        icon: "mdi:bank-outline",
+        title: "Financial Services & Insurance",
+        description:
+            "Workflow automation for banks, insurers, and fintechs. Orchestrate claims, onboarding, payments, regulatory reporting, and financial AI on one self-hosted engine.",
+        link: { href: "/use-cases/financial-services", text: "Explore financial services automation" },
+    },
+    {
+        icon: "mdi:hospital-building",
+        title: "Healthcare & Life Sciences",
+        description:
+            "HIPAA-compliant workflow automation for healthcare and life sciences. Orchestrate medical AI pipelines, genomics, and pharmacy supply chains with PHI inside your perimeter.",
+        link: { href: "/use-cases/healthcare", text: "Explore healthcare automation" },
+    },
+    {
+        icon: "mdi:store-outline",
+        title: "Retail & E-Commerce",
+        description:
+            "Retail workflow automation and data orchestration. Automate supply chain, ERP integration, and DataMesh pipelines across SAP, Shopify, and Salesforce.",
+        link: { href: "/use-cases/retail", text: "Explore retail automation" },
+    },
+    {
+        icon: "mdi:car-outline",
+        title: "Automotive & Manufacturing",
+        description:
+            "Workflow orchestration for automakers and suppliers. Connect shop floor, PLM, dealer network, and connected fleet. Automate quality, warranty, recall, and telemetry workflows.",
+        link: { href: "/use-cases/automotive", text: "Explore automotive automation" },
+    },
+    {
+        icon: "mdi:city-variant-outline",
+        title: "Government & Public Sector",
+        description:
+            "Workflow automation for government agencies and public sector IT. Self-hosted, air-gapped, and sovereign-deployment ready for infrastructure, SOC, and citizen-services workflows.",
+        link: { href: "/use-cases/public-services", text: "Explore public sector automation" },
+    },
+    {
+        icon: "mdi:code-braces",
+        title: "SaaS & Software Providers",
+        description:
+            "Orchestration infrastructure for software companies and consulting firms. Embed workflow automation in your product and run multi-tenant workloads on one open-source engine.",
+        link: { href: "/use-cases/software-providers", text: "Explore software provider solutions" },
+    },
+]
+
 const CAPABILITIES = [
     {
         title: "For Software Engineers",
@@ -116,12 +161,12 @@ const CAPABILITIES = [
                 <div class="container">
                     <div>
                         <h1 data-usal="fade-r">
-                            One Orchestrator. Every Workflow.
+                            Workflow Automation for Every Industry and Team
                         </h1>
                         <p data-usal="fade-l">
-                            Harness the value of your data, unlock new insights,
-                            and drive informed decision-making using Kestra's
-                            automation platform
+                            From financial services and healthcare to retail,
+                            automotive, and government — one open-source
+                            orchestration platform for every workflow.
                         </p>
                     </div>
                     <div
@@ -170,6 +215,12 @@ const CAPABILITIES = [
         }}
     />
     <Capabilities title=" - Find Out More" capabilities={CAPABILITIES} />
+    <CardGrid
+        title="Workflow Automation by Industry"
+        subtitle="Kestra serves regulated and complex industries with self-hosted, open-source orchestration — purpose-built for your compliance, scale, and integration requirements."
+        items={INDUSTRY_ITEMS}
+        align="left"
+    />
     <CustomerQuotes />
     <SeeHow>
         <Fragment slot="title">Scale With Kestra Enterprise Edition</Fragment>

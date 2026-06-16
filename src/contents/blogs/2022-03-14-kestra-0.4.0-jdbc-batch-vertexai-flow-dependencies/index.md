@@ -116,11 +116,11 @@ This is just the beginning for this plugin but we plan to support JSON and the P
 
 
 ## Singer plugins (Deprecated)
-We have made an evolutionary improvement on our [Singer plugins](/plugins/plugin-singer) (deprecated). Singer operates based on 2 concepts: taps (data source) and targets (destination, where you load the data). This model is smart, since you can work with many different sources, and each can be loaded to as many destinations as you need thanks to [Singer specifications](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
+We have made an evolutionary improvement on our [Singer plugins](/plugins) (deprecated). Singer operates based on 2 concepts: taps (data source) and targets (destination, where you load the data). This model is smart, since you can work with many different sources, and each can be loaded to as many destinations as you need thanks to [Singer specifications](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
 
 Previously, plugins had a single target task that incorporated a tap to load from one source to a single destination. Now we have 2 different tasks that allow you to download one time from a tap and send the same result to multiple destinations.
 
-Here is an example of loading [GitHub](/plugins/plugin-singer) from a repository to a [BigQuery Dataset](/plugins/plugin-singer):
+Here is an example of loading [GitHub](/plugins) from a repository to a [BigQuery Dataset](/plugins):
 
 ```yaml
 tasks:
@@ -173,7 +173,7 @@ You can still use Kestra's internal storage with any singer taps and use the dat
 
 ```
 
-We also added another singer destination [Oracle](/plugins/plugin-singer).
+We also added another singer destination [Oracle](/plugins).
 
 
 ## GCP

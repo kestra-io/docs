@@ -5,9 +5,10 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Snippets from "~/components/common/Snippets.vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -39,9 +40,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Healthcare & Life Sciences"
+const title = "Healthcare Data Orchestration & Workflow Automation"
 const description =
-    "The orchestration layer behind modern healthcare and life sciences. Run medical AI imaging, pharmacy supply chains, genomics pipelines, and HIPAA-compliant data operations on one open-source engine. PHI stays inside your perimeter."
+    "Open-source HIPAA-compliant workflow automation for healthcare and life sciences. Orchestrate medical AI, genomics, and pharmacy supply chains — PHI stays inside."
 
 const FLOW_STAGES = [
     {
@@ -518,11 +519,30 @@ const FAQ = [
         question: "How does Kestra support AI-assisted workflows while keeping humans in the loop?",
         answer: "Orchestrate OCR, LLM extraction, computer vision, and ML scoring alongside rule-based checks. Pause for human review at any decision point: case analyst confirmation, clinician sign-off, model promotion, exception handling. Models, prompts, and PHI stay inside your environment. Every model output and human decision is captured in the immutable audit trail.",
     },
+    {
+        question: "How does Kestra compare to Apache Airflow for healthcare data pipelines?",
+        answer: `<a href="/vs/airflow">Airflow</a> is Python-only and has no native HIPAA-specific controls. Kestra runs any language via YAML, ships with self-hosted and air-gapped deployment, scopes secrets per namespace so PHI never leaves your environment, and adds human-in-the-loop approval gates for clinical review flows. Healthcare and life-sciences teams move from Airflow to Kestra when they need compliance controls, multi-language ML support, or workflows that extend beyond data engineering.`,
+    },
+    {
+        question: "What workflow automation tools are most commonly used in healthcare and life sciences?",
+        answer: `Common tools include <a href="/vs/airflow">Apache Airflow</a>, <a href="/vs/azure-data-factory">Azure Data Factory</a>, Informatica, and homegrown Python schedulers. Kestra replaces all of them on a single open-source engine — running genomics jobs on Kubernetes, pharmacy supply-chain batch files, medical AI pipelines, and compliance reporting workflows side-by-side, with HIPAA-friendly self-hosted deployment and immutable audit logs for every execution.`,
+    },
+    {
+        question: "Is Kestra used in clinical trials, genomics, or bioinformatics?",
+        answer: "Yes. Kestra orchestrates bioinformatics and genomics pipelines — Nextflow, WDL, Snakemake, and custom Python/R scripts — alongside sequencing data ingestion, variant calling, and analysis result delivery. GPU workers on Kubernetes handle compute-intensive jobs. Audit trails, namespace isolation, and PHI policy controls support GxP and HIPAA requirements for clinical and research environments.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Healthcare Data Orchestration and Workflow Automation"
+        audienceType="Healthcare Providers, Life Sciences Companies, and Pharmaceutical Organizations"
+        description={description}
+    />
     <div class="healthcare">
 
         <section class="hero">
@@ -534,8 +554,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    The orchestration layer behind<br />
-                    <span class="gradient">modern healthcare and life sciences.</span>
+                    Healthcare workflow automation<br />
+                    <span class="gradient">for data, AI, and life sciences.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
@@ -617,7 +637,9 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by healthcare, pharmacy, and life-sciences teams</span>
                     <div class="hero-logos__row">
-                        <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
+                        <a href="/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment" aria-label="Read the Apotek Hjärtat pharmacy customer story">
+                            <Image src={ApotekHjartatLogoImg} alt="Apotek Hjärtat" class="hero-logos__item hero-logos__item--apotek" />
+                        </a>
                         <Image src={BrainlabLogoImg} alt="Brainlab" class="hero-logos__item hero-logos__item--brainlab" />
                         <Image src={SophiaGeneticsLogoImg} alt="SOPHIA GENETICS" class="hero-logos__item hero-logos__item--sophia" />
                     </div>
@@ -628,7 +650,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the workflows <span class="highlight">healthcare and life sciences run on</span>.
+                    How <span class="highlight">healthcare data orchestration</span> connects clinical, pharmacy, and research systems.
                 </h2>
                 <p class="flow__lead">
                     Medical AI pipelines. Pharmacy supply chains. Genomics workflows. HIPAA-compliant data operations.
@@ -670,7 +692,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What healthcare and life-sciences teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <h2>HIPAA-compliant workflow automation use cases in healthcare and life sciences.</h2>
                     <p>Real workloads from real institutions. Medical AI imaging across cardiac, oncology, and pathology. Pharmacy and supply-chain operations at scale. Secure genomics and life-sciences pipelines. HIPAA-compliant data and IT operations across multi-team estates.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -695,7 +717,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built to the bar <span class="highlight">healthcare IT</span> actually needs.
+                    Healthcare workflow automation requirements: <span class="highlight">HIPAA, GxP, and PHI controls</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -707,51 +729,11 @@ const FAQ = [
             </div>
         </section>
 
-        <section class="build">
-            <div class="container">
-                <h2>Patterns from real <span class="highlight">healthcare and life-sciences deployments</span>.</h2>
-                <p class="build__lead">Real workflows running today inside healthcare, pharmacy, medtech, and life-sciences teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="header row g-0">
-                            {BUILD_TABS.map((tab, idx) => (
-                                <div
-                                    class:list={[
-                                        "col-6 col-md-3 header-tab",
-                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
-                                    ]}
-                                    data-tab-target={idx}
-                                >
-                                    {tab.name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {BUILD_TABS.map((tab, idx) => (
-                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
-                                <div class="panel panel-1">
-                                    <Snippets client:idle code={tab.code} lang="yaml" />
-                                </div>
-                                <div class="panel panel-2">
-                                    <h3 data-usal="fade-r">{tab.title}</h3>
-                                    <p data-usal="fade-l">{tab.description}</p>
-                                    <div class="plugins" data-usal="zoomin">
-                                        {tab.plugins.map(plugin => (
-                                            <div class="plugin-icon">
-                                                <TaskIcon cls={plugin.cls} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link class="goto" href={tab.href} data-usal="fade-r">
-                                        Explore Blueprints
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+        <BlueprintTabs
+            title={`Healthcare data orchestration <span class="highlight">examples and blueprints</span>.`}
+            lead="Real workflows running today inside healthcare, pharmacy, medtech, and life-sciences teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals."
+            items={BUILD_TABS.map((t) => ({ ...t, plugins: t.plugins.map((p) => p.cls) }))}
+        />
 
         <GoFurther />
 
@@ -792,15 +774,22 @@ const FAQ = [
     :global(html.dark) .healthcare {
         .flow,
         .workloads,
-        .build,
         .enterprise {
             background: #1C1C20;
         }
         :global(section.quotes-wrapper),
         :global(section.plugin-block),
-        :global(.see) {
+        :global(.see),
+        :global(.blueprint-tabs) {
             background: #1C1C20;
         }
+    }
+
+    :global(.blueprint-tabs h2 .highlight) {
+        background: linear-gradient(90deg, #{$hc-green}, #{$hc-green-bright});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero {
@@ -1485,171 +1474,6 @@ const FAQ = [
         }
     }
 
-    .build {
-        padding: 3rem 0 4.5rem;
-        background: var(--ks-background-primary);
-        border-bottom: $block-border;
-
-        .container {
-            max-width: 73.75rem;
-            margin: 0 auto;
-            padding-inline: 0;
-
-            h2 {
-                margin-bottom: 1rem;
-                padding-inline: $rem-1;
-                text-align: center;
-
-                .highlight { color: $hc-green; }
-
-                @include media-breakpoint-up(xl) { padding-inline: 0; }
-            }
-
-            .wrapper {
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-                border-radius: 13px;
-
-                @include media-breakpoint-down(xl) { border-radius: 0; }
-
-                .inner {
-                    border-radius: $rem-1;
-                    background: var(--ks-background-primary-inverse);
-                    overflow: clip;
-
-                    @include media-breakpoint-down(xxl) { border-radius: 0; }
-
-                    .header {
-                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
-
-                        & > div {
-                            padding: 1.1875rem $rem-2;
-                            font-size: $font-size-md;
-                            color: var(--ks-content-secondary-inverse);
-                            text-align: center;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-
-                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
-
-                            &.active {
-                                background: var(--ks-background-secondary-inverse);
-                                border-bottom: 1px solid var(--ks-border-active);
-                                color: var(--ks-content-primary-inverse);
-                                font-weight: 600;
-                            }
-                        }
-
-                        & .middle-part {
-                            border-left: 1px solid var(--ks-border-primary-inverse);
-                            border-right: 1px solid var(--ks-border-primary-inverse);
-                        }
-                    }
-
-                    .content {
-                        display: none;
-                        flex-direction: row;
-                        gap: $rem-2;
-                        padding: $rem-2;
-                        justify-content: center;
-
-                        &.active { display: flex; }
-
-                        @include media-breakpoint-down(xl) {
-                            flex-direction: column;
-                            align-items: center;
-                        }
-
-                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
-
-                        .panel {
-                            border-radius: 0.5rem;
-                            flex-shrink: 0;
-
-                            &.panel-1 {
-                                width: 39.4375rem;
-
-                                @include media-breakpoint-down(xl) { width: 100%; }
-
-                                :global(.code-card) {
-                                    border: 1px solid var(--ks-border-secondary-inverse);
-                                    background: var(--ks-background-input);
-                                    height: 100%;
-
-                                    :global(.code-inner) { transition: max-height 0.3s ease; }
-                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
-
-                                    &:global(:not(.is-expanded)) {
-                                        :global(.code-inner) { max-height: 27.9375rem !important; }
-                                    }
-                                }
-                            }
-
-                            &.panel-2 {
-                                position: relative;
-                                padding-top: $rem-2;
-                                color: var(--ks-content-primary-inverse);
-                                width: 27.5625rem;
-
-                                @include media-breakpoint-down(xl) {
-                                    width: 100%;
-                                    padding-top: 0;
-                                }
-
-                                p {
-                                    font-size: $font-size-lg;
-                                    margin-top: $rem-1;
-                                    margin-bottom: $rem-2;
-                                }
-
-                                .plugins {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    flex-wrap: wrap;
-
-                                    .plugin-icon {
-                                        width: 2.125rem;
-                                        height: 2.125rem;
-                                        padding: 0.375rem;
-                                        background: $white;
-                                        border: $block-border;
-                                        border-radius: $border-radius;
-                                    }
-                                }
-
-                                .goto {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    color: var(--ks-content-link-inverse);
-                                    font-weight: 600;
-
-                                    @include media-breakpoint-down(xl) {
-                                        position: relative;
-                                        margin-top: $rem-3;
-                                        float: right;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &__lead {
-            text-align: center;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            margin: 0 auto $rem-2;
-            max-width: 44rem;
-            padding-inline: $rem-1;
-        }
-    }
-
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1667,7 +1491,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $hc-green-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$hc-green-bright}, #{$hc-green-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
@@ -1703,22 +1532,3 @@ const FAQ = [
     }
 </style>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        for (const container of document.querySelectorAll(".build .inner")) {
-            container.addEventListener("click", (e) => {
-                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
-                const target = tab && (container as Element).querySelector(
-                    `[data-tab-content="${tab.dataset.tabTarget}"]`
-                )
-                if (!target) return
-
-                for (const el of container.querySelectorAll(".header-tab, .content")) {
-                    el.classList.remove("active")
-                }
-                tab.classList.add("active")
-                target.classList.add("active")
-            })
-        }
-    })
-</script>

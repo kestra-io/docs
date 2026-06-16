@@ -3,6 +3,8 @@ description: "Compare Kestra vs Dagster: Universal workflow orchestration in any
 competitorName: Dagster
 category: Data Orchestration
 shortDescription: "Python-native data asset pipelines vs. universal workflow orchestration in any language with YAML."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your data pipelines—and scale beyond them."
 
 brandColor:
   color: "#4f44e0"

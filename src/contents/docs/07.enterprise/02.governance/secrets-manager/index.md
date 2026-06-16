@@ -50,6 +50,33 @@ Additionally, you can configure the following properties:
 - **Prefix**: `kestra.secret.aws-secret-manager.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret keys with that value. This allows sharing a single secrets backend across multiple Kestra instances.
 - **Endpoint Override**: `kestra.secret.aws-secret-manager.endpoint-override` is an optional property to replace the default AWS endpoint with an AWS-compatible service such as [MinIO](https://min.io/).
 
+## AWS SSM Parameter Store Configuration
+
+To use [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) as a secrets backend, make sure your AWS IAM user or role has the required permissions, including `ssm:PutParameter`, `ssm:GetParameter`, `ssm:DeleteParameter`, `ssm:DescribeParameters`, `ssm:AddTagsToResource`, `ssm:RemoveTagsFromResource`, and `ssm:ListTagsForResource`. Secrets are stored as `SecureString` parameters, so the role also needs `kms:Encrypt` and `kms:Decrypt` on the KMS key used for encryption.
+
+Authentication is configured the same way as AWS Secrets Manager:
+- Use `accessKeyId`, `secretKeyId`, and `region` properties.
+- Include a `sessionToken` alongside the above credentials.
+- If the above properties are not set, Kestra uses the default AWS authentication chain (AWS CLI profile, the `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`/`AWS_DEFAULT_REGION` environment variables, EKS Pod Identity, IRSA, or an instance profile).
+
+```yaml
+kestra:
+  secret:
+    type: aws-ssm-parameter-store
+    aws-ssm-parameter-store:
+      access-key-id: mysuperaccesskey
+      secret-key-id: mysupersecretkey
+      region: us-east-1
+```
+
+Secrets are stored as parameters named `<prefix>-<hash>`, with the namespace, tenant, and key kept as parameter tags. In read-only mode, Kestra reads existing parameters by their name, so a Parameter Store already populated outside Kestra can be used directly.
+
+Additionally, you can configure the following properties:
+
+- **Prefix**: `kestra.secret.aws-ssm-parameter-store.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret keys with that value, which allows sharing a single Parameter Store across multiple Kestra instances.
+- **KMS Key**: `kestra.secret.aws-ssm-parameter-store.kms-key-id` is an optional property to encrypt `SecureString` parameters with a customer-managed KMS key instead of the default `alias/aws/ssm` key.
+- **Endpoint Override**: `kestra.secret.aws-ssm-parameter-store.endpoint-override` is an optional property to replace the default AWS endpoint with an AWS-compatible service.
+
 ## Azure Key Vault configuration
 
 To configure [Azure Key Vault](https://azure.microsoft.com/products/key-vault/) as your secrets backend, make sure Kestra's user or service principal (`clientId`) has the necessary permissions, including:
@@ -202,6 +229,7 @@ Additionally, you can configure the following properties:
 - **Namespace**: `kestra.secret.vault.namespace` is an optional configuration available on [Vault Enterprise Pro](https://learn.hashicorp.com/vault/operations/namespaces) allowing you to set a global namespace for the Vault server instance.
 - **Engine Version**: `kestra.secret.vault.engine-version` is an optional property allowing you to set the KV Secrets Engine version of the Vault server instance. Default is `2`.
 - **Root Engine**: `kestra.secret.vault.root-engine` is an optional property allowing you to set the KV Secrets Engine of the Vault server instance. Default is `secret`.
+- **Prefix**: `kestra.secret.vault.prefix` is an optional property to store secrets separately for a different namespace, tenant, or instance. If configured, Kestra prefixes all secret paths with that value, which is useful when sharing one Vault instance across multiple Kestra environments.
 
 Using the Token method with Root Engine has the following configuration:
 

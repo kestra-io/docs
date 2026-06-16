@@ -3,6 +3,10 @@ description: "Compare Kestra vs Rundeck: declarative YAML orchestration with eve
 competitorName: "Rundeck"
 category: Infrastructure Automation
 shortDescription: "SSH-based runbook automation vs. declarative YAML orchestration with event-driven triggers."
+seeHowTitle: "Getting Started with Modern Runbook Orchestration"
+seeHowBody: "See how Kestra modernizes operational runbooks with declarative YAML and event-driven triggers."
+logoFile: "rundeck-full"
+imgFile: "rundeck-full"
 
 brandColor:
   color: "#f73f39"
@@ -173,7 +177,7 @@ featureGrid:
       kestra: Ansible as a step in multi-tool workflows with data passing
       competitor: Ansible plugin runs playbooks as standalone jobs
     - feature: Plugin ecosystem
-      kestra: 1,200+ plugins (cloud, data, DevOps, AI, ITSM)
+      kestra: 1,400+ plugins (cloud, data, DevOps, AI, ITSM)
       competitor: ~120 plugins (scripts, nodes, fewer cloud-native)
     - feature: Scalability
       kestra: Horizontally scalable via Kafka + worker groups
@@ -244,7 +248,7 @@ decisionGuide:
 
 commonQuestions:
   - question: "What is Rundeck and how does it differ from Kestra?"
-    answer: "Rundeck is an open-source runbook automation tool (now maintained as PagerDuty Process Automation OSS) that gives operations teams self-service access to scripts and Ansible playbooks via a web UI with fine-grained ACLs and SSH-based execution. Kestra is a broader orchestration platform: it covers everything Rundeck does for runbook automation and adds declarative YAML workflows, event-driven triggers, complex multi-step orchestration, 1,200+ plugins, and native Windows/PowerShell support. Where Rundeck treats each job as a standalone click-to-run action, Kestra coordinates jobs as steps in larger workflows with data passing, conditions, and parallelism."
+    answer: "Rundeck is an open-source runbook automation tool (now maintained as PagerDuty Process Automation OSS) that gives operations teams self-service access to scripts and Ansible playbooks via a web UI with fine-grained ACLs and SSH-based execution. Kestra is a broader orchestration platform: it covers everything Rundeck does for runbook automation and adds declarative YAML workflows, event-driven triggers, complex multi-step orchestration, 1,400+ plugins, and native Windows/PowerShell support. Where Rundeck treats each job as a standalone click-to-run action, Kestra coordinates jobs as steps in larger workflows with data passing, conditions, and parallelism."
   - question: "Can I migrate my existing Rundeck jobs to Kestra?"
     answer: "Yes. Rundeck jobs export as YAML or XML, and most of the step definitions map directly to Kestra task types. Shell command steps become io.kestra.plugin.scripts.shell.Commands tasks; Ansible steps become io.kestra.plugin.ansible.cli.AnsibleCLI tasks; notification steps become Slack or email plugin tasks. The Kestra team and community have documented migration patterns. Your existing node inventory and credentials can be referenced via Kestra's secrets manager and input parameters."
   - question: "Does Kestra support Rundeck's ACL/RBAC model?"

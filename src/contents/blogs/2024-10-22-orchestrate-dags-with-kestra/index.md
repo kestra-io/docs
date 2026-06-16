@@ -11,7 +11,7 @@ author:
 image: ./main.jpg
 ---
 
-[Airflow 2](/vs/airflow) is end-of-life. Whether your team is [upgrading to Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) or [evaluating a broader migration](../2026-01-18-enterprise-airflow-alternatives/index.md), the decision can’t wait much longer. But committing to a direction doesn’t mean committing to a big-bang cutover.
+[Airflow 2](/vs/airflow) is end-of-life. Whether your team is [upgrading to Airflow 3](../airflow-3-vs-airflow-2/index.md) or [evaluating a broader migration](../enterprise-airflow-alternatives/index.md), the decision can’t wait much longer. But committing to a direction doesn’t mean committing to a big-bang cutover.
 
 With Kestra, you can transition one workflow at a time. Keep what works in Airflow, move jobs into Kestra incrementally, and avoid the risk of a full rewrite while critical workflows are in production. Kestra’s [Airflow plugin](/plugins/plugin-airflow) lets you trigger and monitor Airflow DAGs directly from within Kestra, giving you a unified control plane across both systems from day one.
 

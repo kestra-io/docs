@@ -40,7 +40,7 @@ This is a list of paths on the file system that the Kestra Worker will be forbid
 
 This is a list of classes that can create threads. Here you can set a list of prefixes (namespace) classes that will be allowed. All others will be refused.
 
-For example, [GCP plugins](/plugins/plugin-gcp) will need to create a thread in order to reach the GCP API. Since this whole plugin is deemed safe, you can whitelist it.
+For example, [GCP plugins](/plugins/plugin-gcp) will need to create a thread in order to reach the GCP API. Because this whole plugin is deemed safe, you can authorize it.
 
 ### `kestra.ee.java-security.forbidden-class-prefix`
 
@@ -56,7 +56,7 @@ kestra:
 ```
 
 :::alert{type="warning"}
-Currently, all the official Kestra plugins are safe to be whitelisted **except** [all scripts plugins](../../../16.scripts/00.languages/index.md) since they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
+Currently, all the official Kestra plugins are safe to be authorized **except** [all scripts plugins](../../../16.scripts/00.languages/index.md) because they allow custom code to be created that can be read and written on the file system. Do not add these to the `forbidden-class-prefix`.
 :::
 
 ## Scripting isolation
