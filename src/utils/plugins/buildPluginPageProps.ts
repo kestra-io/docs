@@ -148,11 +148,20 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         )
     })()
 
+    // Title of the plugin/subgroup container this page belongs to, e.g.
+    // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
+    const containerTitle =
+        (rootPlugin
+            ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
+            : undefined) ?? pluginName
+
+    // Task pages prefix the bare class name with their container title (e.g.
+    // "AWS S3 Trigger") so <title> and <h1> are unique and descriptive. Without
+    // this, every plugin's "Trigger"/"Query"/"Create"/"Delete" task shared the
+    // same short, duplicated title across hundreds of pages.
     const headingTitle = pluginType
-        ? formatElementName(pluginType)
-        : ((rootPlugin
-              ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
-              : undefined) ?? pluginName)
+        ? `${containerTitle} ${formatElementName(pluginType)}`
+        : containerTitle
 
     const rootPluginTitle = rootPlugin
         ? getPluginTitle(rootPlugin, metadataMap)
