@@ -50,6 +50,36 @@ Use environment variables rather than hardcoding credentials. You can also use t
 
 ---
 
+## Configure timeouts
+
+By default, requests wait indefinitely. Pass a `timeout` argument to `KestraClient` to limit how long requests wait before raising `requests.Timeout`.
+
+Using a `Configuration` object:
+
+```python
+from kestrapy import Configuration, KestraClient
+
+configuration = Configuration(host="http://localhost:8080", username="root@root.com", password="Root!1234")
+
+kestra_client = KestraClient(configuration, timeout=30.0)        # float: connect + read combined
+kestra_client = KestraClient(configuration, timeout=(10.0, 300.0))  # tuple: (connect, read)
+kestra_client = KestraClient(configuration, timeout=None)        # None: no timeout (default)
+```
+
+Using keyword arguments directly:
+
+```python
+from kestrapy import KestraClient
+
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token", timeout=30.0)
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token", timeout=(10.0, 300.0))
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token", timeout=None)
+```
+
+The `timeout` value is forwarded directly to [`requests`](https://docs.python-requests.org/en/latest/user/advanced/#timeouts), so any form that `requests` accepts is valid.
+
+---
+
 ## Create a flow
 
 Pass the flow definition as a YAML string to [`create_flow`](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/FlowsApi.md#create_flow).

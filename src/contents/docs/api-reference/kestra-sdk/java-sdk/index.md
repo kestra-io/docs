@@ -63,6 +63,26 @@ Construct the client once (singleton or DI) and reuse it. Use either `.basicAuth
 
 ---
 
+## Configure timeouts
+
+By default, both connect and read timeouts are infinite. Configure them on the builder before calling long-running endpoints such as `runTestSuite`:
+
+```java
+import io.kestra.sdk.KestraClient;
+import java.time.Duration;
+
+KestraClient client = KestraClient.builder()
+    .url("https://kestra.example.com")
+    .tokenAuth(System.getenv("KESTRA_TOKEN"))
+    .connectTimeout(Duration.ofSeconds(10))  // time to establish the connection
+    .readTimeout(Duration.ofMinutes(30))     // time to wait for a response
+    .build();
+```
+
+Pass `Duration.ZERO` or omit the call to keep the default (infinite). Both methods accept any `java.time.Duration`.
+
+---
+
 ## Create a flow
 
 Send the flow definition as a YAML string. This matches what you would define in the UI.
