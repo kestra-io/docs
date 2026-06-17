@@ -1,6 +1,6 @@
 ---
-title: Develop a Plugin UI
-sidebarTitle: Develop a Plugin UI
+title: Develop Plugin Artifacts
+sidebarTitle: Develop Plugin Artifacts
 icon: /src/contents/docs/icons/dev.svg
 description: Learn how to build custom Vue.js UI components for your Kestra plugin, from scaffolding to Gradle integration, using Module Federation and the artifact-sdk.
 ---
@@ -9,15 +9,15 @@ Plugins can ship custom Vue.js frontend components that load directly into the K
 
 This lets you build domain-specific experiences: visualize a query plan in the topology view, render log output in a structured panel, or display task metadata in a rich card. The core UI stays lean; each plugin brings exactly the UI it needs.
 
-## Why plugin UIs?
+## Why plugin artifacts?
 
 Tasks in Kestra produce structured outputs and have rich configuration. But the default topology and log views are generic — they show raw YAML and plain text. When a task is query-centric, graph-centric, or data-heavy, that generic view loses signal.
 
-Plugin UIs let you close this gap without forking Kestra's core. A `topology-details` component can show a formatted query, estimated cost, or job metadata inline in the flow topology. A `log-details` component can structure log output into a readable table. This keeps the core UI generic and lets each plugin deliver the right experience for its domain.
+Plugin artifacts let you close this gap without forking Kestra's core. A `topology-details` component can show a formatted query, estimated cost, or job metadata inline in the flow topology. A `log-details` component can structure log output into a readable table. This keeps the core UI generic and lets each plugin deliver the right experience for its domain.
 
 ## Architecture
 
-Plugin UIs are built as **Vue.js micro-frontends** using [Module Federation](https://module-federation.io/). The plugin's `ui/` directory compiles to a federated JavaScript module, which is bundled into the plugin JAR under `src/main/resources/plugin-ui/`. At runtime, the Kestra host app discovers and loads these modules dynamically — no static linking required.
+Plugin artifacts are built as **Vue.js micro-frontends** using [Module Federation](https://module-federation.io/). The plugin's `ui/` directory compiles to a federated JavaScript module, which is bundled into the plugin JAR under `src/main/resources/plugin-ui/`. At runtime, the Kestra host app discovers and loads these modules dynamically — no static linking required.
 
 ```
 Plugin JAR
@@ -502,7 +502,7 @@ import type { Meta, StoryObj } from "@storybook/vue3";
 import QueryRunQueryTopologyDetails from "./components/QueryRunQueryTopologyDetails.vue";
 
 const meta: Meta<typeof QueryRunQueryTopologyDetails> = {
-  title: "Plugin UI / topology-details / QueryRunQueryTopologyDetails",
+  title: "Plugin Artifacts / topology-details / QueryRunQueryTopologyDetails",
   component: QueryRunQueryTopologyDetails,
   tags: ["autodocs"],
 };
