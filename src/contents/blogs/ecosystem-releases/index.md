@@ -40,7 +40,7 @@ schema:
         text: "Yes. Each ecosystem tool tracks the Kestra core it is compatible with, so releases are cut from version-specific branches. The person releasing tags the branch that matches the Kestra version the release targets."
 ---
 
-::::alert{type="info"}
+:::alert{type="info"}
 **Ecosystem vs. Plugins:** *Ecosystem* relates to all the tools we build to manage and operate Kestra itself, while *Plugins* are how Kestra connects to the rest of the world. This post is about releasing the **ecosystem** tools.
 :::
 
