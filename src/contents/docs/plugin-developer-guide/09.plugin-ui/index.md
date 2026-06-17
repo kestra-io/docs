@@ -33,7 +33,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Two slots are available in `@kestra-io/artifact-sdk` 0.1.x, with two more planned:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Three slots are available in `@kestra-io/artifact-sdk`, with one more planned:
 
 ### `topology-details`
 
@@ -87,10 +87,27 @@ Same as `topology-details`, `displayMode` is injected as an HTML attribute and m
 
 You can reuse the same Vue component file for both `topology-details` and `topology-task-drawer` — just register it under both slot names in `vite.config.ts` and use `displayMode` to adjust what is rendered (see [Configuring the exposed components](#configuring-the-exposed-components)).
 
+### `topology-task-modal`
+
+Renders as a **full-screen modal** (`KsDialog`) in the execution topology view when the user clicks "View details" on a runner-backed task node. It shares the exact same `propsSchema` as `topology-details` (defined in [`ui/packages/slot-contracts/src/topology-task-modal.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-modal.ts) in Kestra core).
+
+The modal is triggered by injecting `kestra:openTaskModal` — provided by the Kestra host via `LowCodeEditor.vue`. Plugin components that want to open the modal call this injection; you do not need to handle the dialog lifecycle yourself.
+
+```ts
+import { inject } from "vue"
+import type { KnownSlotProps } from "@kestra-io/artifact-sdk"
+
+defineProps<KnownSlotProps["topology-task-modal"]>()
+
+const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTaskModal")
+```
+
+This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
+
 ### `log-details` _(planned)_
 
 :::alert{type="info"}
-`log-details` is not yet registered in `@kestra-io/artifact-sdk` 0.1.x. The type definitions (`LogDetailsProps`, `LogEntry`) are exported by the SDK but the slot is not available for scaffolding yet. This section documents the planned contract.
+`log-details` is not yet available for scaffolding. The type definitions (`LogDetailsProps`, `LogEntry`) are exported by the SDK but the slot is not yet registered. This section documents the planned contract.
 :::
 
 Renders in the log view for a task execution attempt. Receives the task definition, the list of log entries, and the attempt number.
@@ -112,34 +129,6 @@ interface LogEntry {
   [key: string]: unknown;
 }
 ```
-
-### `topology-task-runner-details` _(planned)_
-
-:::alert{type="info"}
-`topology-task-runner-details` is not yet available in `@kestra-io/artifact-sdk` 0.1.x. This section documents the planned contract.
-:::
-
-
-Renders in the **execution topology view** when a task runner node is selected. The contract is defined in [`ui/packages/slot-contracts/src/topology-task-runner-details.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-runner-details.ts) in Kestra core:
-
-```ts
-import type { Execution, Task } from "@kestra-io/kestra-sdk"
-import { z } from "zod"
-
-export const propsSchema = z.object({
-    taskType: z.string(),
-    taskRunnerType: z.string(),
-    task: z.custom<Task>(),
-    taskRunner: z.record(z.string(), z.unknown()),
-    execution: z.custom<Execution>().optional(),
-    taskRun: z.record(z.string(), z.unknown()).optional(),
-    taskRunnerDetail: z.record(z.string(), z.unknown()).optional(),
-    namespace: z.string().optional(),
-    flowId: z.string().optional(),
-})
-```
-
-This slot targets task runner plugins (e.g. Docker, Kubernetes) and exposes the runner configuration, the task run state, and any runner-specific detail the backend enriches at runtime (`taskRunnerDetail`).
 
 ## Quick start
 
