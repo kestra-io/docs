@@ -33,7 +33,7 @@ The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handl
 
 ## Available UI slots
 
-Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Three slots are available in `@kestra-io/artifact-sdk`, with one more planned:
+Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Three slots are available in `@kestra-io/artifact-sdk`:
 
 ### `topology-details`
 
@@ -103,32 +103,6 @@ const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTas
 ```
 
 This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
-
-### `log-details` _(planned)_
-
-:::alert{type="info"}
-`log-details` is not yet available for scaffolding. The type definitions (`LogDetailsProps`, `LogEntry`) are exported by the SDK but the slot is not yet registered. This section documents the planned contract.
-:::
-
-Renders in the log view for a task execution attempt. Receives the task definition, the list of log entries, and the attempt number.
-
-```ts
-interface LogDetailsProps {
-  /** The task definition */
-  task: Record<string, unknown>;
-  /** Log lines produced by this task attempt */
-  logs: LogEntry[];
-  /** The attempt number (0-indexed) */
-  attemptNumber: number;
-}
-
-interface LogEntry {
-  level: "TRACE" | "DEBUG" | "INFO" | "WARN" | "ERROR";
-  message: string;
-  timestamp: string;
-  [key: string]: unknown;
-}
-```
 
 ## Quick start
 
