@@ -103,15 +103,3 @@ export async function $fetchApiRawCached(
 
     return await internalFetch(`${API_URL}${url}`, cachingConfig)
 }
-
-/**
- * Non-cached raw API fetch. Cloudflare then respects the API's own Cache-Control, so a ready (200)
- * versioned doc is still edge-cached while a transient 202 (generating) is not. The cacheEverything
- * variant would pin that 202 for an hour and make the page reload-loop while polling.
- */
-export async function $fetchApiRaw(
-    url: string,
-    init: RequestInit = {},
-): Promise<Response> {
-    return await internalFetch(`${API_URL}${url}`, init)
-}

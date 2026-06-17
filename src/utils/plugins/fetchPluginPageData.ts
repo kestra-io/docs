@@ -2,7 +2,7 @@ import { API_URL } from "astro:env/client"
 import type { JSONSchema } from "./schema"
 import type { Plugin, PluginMetadata } from "./plugin"
 
-import { $fetchApiCached, $fetchApiRaw } from "~/utils/fetch"
+import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { retrieveRepoReleases } from "../../pages/api/github-releases"
@@ -88,6 +88,13 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
     return { githubVersions, allPlugins, allPluginMetadata, pluginsInformations }
 }
 
+// Versioned endpoints return 202 while a version's docs are still generating. We need the raw Response
+// to read that status, and no edge-caching so a transient 202 isn't pinned (which would reload-loop the
+// page while it polls). So fetch directly rather than via the cached helpers.
+async function fetchVersionedRaw(url: string): Promise<Response> {
+    return fetch(`${API_URL}${url}`)
+}
+
 /**
  * Versioned endpoint may return 202 while the backend is generating docs for a cold (artifactId, version).
  * Caller can use status to render the latest version as fallback content with a loading banner, then poll.
@@ -104,7 +111,7 @@ export async function fetchPageDefinition(
 
     try {
         if (isVersioned) {
-            const response = await $fetchApiRaw(url)
+            const response = await fetchVersionedRaw(url)
             if (response.status === HTTP_ACCEPTED) {
                 return { status: "pending", page: null }
             }
@@ -149,7 +156,7 @@ export async function fetchVersionedSubgroups(
 ): Promise<VersionedSubgroupsResult> {
     const url = `/plugins/${pluginName}/versions/${version}/subgroups`
     try {
-        const response = await $fetchApiRaw(url)
+        const response = await fetchVersionedRaw(url)
         if (response.status === HTTP_ACCEPTED) {
             return { status: "pending", subgroups: null }
         }
