@@ -71,6 +71,8 @@ tasks:
 
 Use dot-notation to address nested fields (e.g. `user.profile.email`). A path that does not exist in a given record is silently skipped — the record is written as-is.
 
+Replace `export_task` with the ID of your upstream task that produces the JSON file.
+
 ```yaml
 id: pseudonymize_json_export
 namespace: company.team
@@ -95,6 +97,8 @@ tasks:
 ### Schedule a nightly refresh
 
 Wrap `Pseudonymize` in a scheduled flow to automatically clean a daily production export before it reaches staging.
+
+Set `vars.daily_export_uri` in the flow's **Variables** tab to the Kestra internal storage URI of your daily export file.
 
 ```yaml
 id: nightly_pseudonymize_export
