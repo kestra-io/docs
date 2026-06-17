@@ -1,5 +1,6 @@
 ---
 import Layout from "~/components/layout.astro"
+import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Hero from "~/components/home/Hero.astro"
 import Comparison from "~/components/home/Comparison.astro"
 import Stacked from "~/components/common/Stacked.astro"
@@ -16,6 +17,11 @@ const totalPlugins = await fetchTotalPluginsCount()
 ---
 
 <Layout headerTheme="darkHeader">
+    <Fragment slot="head">
+        <SchemaSoftwareApplication
+            url="https://kestra.io"
+        />
+    </Fragment>
     <div class="home-page">
         <Hero />
         <Comparison />

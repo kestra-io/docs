@@ -284,7 +284,7 @@ resources:
     - kind: "docs"
       title: "Slack as the integration point across your stack"
       description: "How to install a Kestra Slack app, configure scopes, notify from any upstream tool, schedule reports as Canvases, gate approvals, and export channel history."
-      href: "/docs/use-cases/business"
+      href: "/docs/use-cases"
     - kind: "resource"
       title: "Chain Slack approvals with Terraform and Argo CD"
       description: "The common pattern: Block Kit buttons gate a Terraform apply or an Argo CD sync. The reviewer identity is recorded in the execution history."
