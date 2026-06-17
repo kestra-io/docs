@@ -436,8 +436,6 @@ const pluginSchema = pluginType
         <script
             is:inline
             define:vars={{
-                // Task pages poll the specific definition; overview/subgroup pages poll the elements
-                // endpoint. Both flip to a terminal status (200/404) when generation finishes or fails.
                 pollUrl: pluginType
                     ? `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/definitions/${pluginType}`
                     : `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/subgroups`,
@@ -451,9 +449,6 @@ const pluginSchema = pluginType
                     attempts++
                     fetch(pollUrl, { method: "GET", cache: "no-store" })
                         .then(function (r) {
-                            // 202 = still generating → keep waiting. Any other status is terminal:
-                            // 200 (docs ready) or 404 (generation failed / unavailable). Reload so the
-                            // server re-renders the correct state (archived docs, or "not available").
                             if (r.status === 202) {
                                 if (attempts < maxPollAttempts) {
                                     setTimeout(tick, pollIntervalMs)
