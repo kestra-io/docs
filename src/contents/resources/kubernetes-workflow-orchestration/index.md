@@ -55,7 +55,7 @@ Argo is primarily used for orchestrating parallel jobs on Kubernetes. It excels 
 
 While Argo is Kubernetes-native, many general-purpose orchestrators can be deployed effectively on Kubernetes:
 
-- **Apache Airflow**: The long-standing incumbent in data orchestration, [Airflow can be deployed on Kubernetes](https://kestra.io/vs/apache-airflow) using its Kubernetes Executor. This allows each Airflow task to run in its own pod, providing excellent isolation. However, Airflow's Python-first, DAG-as-code paradigm and significant operational overhead remain, even on Kubernetes.
+- **Apache Airflow**: The long-standing incumbent in data orchestration, [Airflow can be deployed on Kubernetes](https://kestra.io/vs/airflow) using its Kubernetes Executor. This allows each Airflow task to run in its own pod, providing excellent isolation. However, Airflow's Python-first, DAG-as-code paradigm and significant operational overhead remain, even on Kubernetes.
 - **Prefect**: A modern, Pythonic alternative to Airflow, [Prefect also integrates well with Kubernetes](https://kestra.io/vs/prefect). It focuses on a superior developer experience for Python users and supports dynamic, parameterized workflows. Prefect is a strong choice for data teams that want a more flexible, code-centric model than Airflow without leaving the Python ecosystem.
 
 ### Orchestrating AI Workflows on Kubernetes

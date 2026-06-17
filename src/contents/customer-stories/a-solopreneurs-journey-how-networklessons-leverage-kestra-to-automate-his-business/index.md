@@ -35,8 +35,12 @@ quotePerson: Rene Molenaar
 quotePersonTitle: ""
 industry: Education Management
 headquarter: Netherlands
+region: Europe
+companySize: "1–50"
 solution: Educational platform that offers network lessons focused on Cisco technologies
-companyName: ""
+tagline: Online learning platform for Cisco network certifications
+companyName: NetworkLessons
+useCase: Business Automation
 cta: "What would change if you could automate your entire content and business workflow as a solo operator—without a dedicated engineering team?"
 ---
 

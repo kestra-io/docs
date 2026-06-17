@@ -17,7 +17,7 @@ philosophy:
   mainTitle: Two Approaches to Automation
   kestra:
     title: "Developer Self-Service Orchestration"
-    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Any engineer can build and ship workflows without waiting on a vendor or central team. Open source at the core, with 1200+ plugins and event-driven triggers built in from day one."
+    description: "Declarative YAML workflows versioned in Git, executed in isolated containers, deployed through CI/CD. Any engineer can build and ship workflows without waiting on a vendor or central team. Open source at the core, with 1400+ plugins and event-driven triggers built in from day one."
     subCardText: '"How do we let every team build and ship workflows without being locked into a single vendor or SaaS platform?"'
   competitor:
     title: SaaS-First Workload Automation
@@ -34,7 +34,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows"
       - "Any engineer ships workflows in YAML through Git and CI/CD"
       - "Event-driven at core: react to real events, not just batch schedules"
-      - "Open source with 1200+ plugins, no per-job licensing, and a thriving community of contributors"
+      - "Open source with 1400+ plugins, no per-job licensing, and a thriving community of contributors"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Enterprise SaaS Scheduling
@@ -236,7 +236,7 @@ platformStrengths:
     - title: No vendor lock-in, no black box
       description: "Redwood RunMyJobs is a proprietary SaaS platform. Your job definitions, execution history, and automation logic live inside their system. Kestra is open source. Workflows are YAML files in your Git repository. You own the code, the data, and the deployment. Run it on Docker, Kubernetes, or Kestra Cloud."
     - title: Open source, transparent pricing
-      description: "Kestra's open-source core is free with 1200+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. Redwood's proprietary licensing uses subscription-based pricing with usage tiers that can scale costs unpredictably as job volumes grow."
+      description: "Kestra's open-source core is free with 1400+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. Redwood's proprietary licensing uses subscription-based pricing with usage tiers that can scale costs unpredictably as job volumes grow."
     - title: Event-driven, not just scheduling
       description: "Kestra was built event-driven from the start: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows in open source. Redwood RunMyJobs is primarily a job scheduler. While it supports event-based triggers, the platform's core architecture is built around scheduled job execution."
 
@@ -248,7 +248,7 @@ decisionGuide:
       - "You want developers to build and ship workflows themselves through Git and CI/CD, not through a vendor's GUI."
       - "You need event-driven orchestration that reacts to real-time events, not just cron and batch schedules."
       - "Open source and transparent pricing matter. No per-job fees, no proprietary lock-in."
-      - "You want to orchestrate across clouds, data platforms, and infrastructure with 1200+ plugins."
+      - "You want to orchestrate across clouds, data platforms, and infrastructure with 1400+ plugins."
       - "Non-engineers need to trigger and monitor workflows without learning a new tool."
   competitor:
     title: Choose Redwood When
@@ -269,7 +269,7 @@ commonQuestions:
   - question: Redwood is SaaS-only. Can Kestra run in the cloud too?
     answer: "Yes. Kestra offers both self-hosted deployment (Docker, Kubernetes) and Kestra Cloud, a fully managed service. Unlike RunMyJobs, you have the flexibility to choose where your workflows run. Self-host for full control, use Kestra Cloud for a managed experience, or start with open source and move to cloud later. You are never locked into a single deployment model."
   - question: How does Kestra's pricing compare to Redwood RunMyJobs?
-    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. Redwood RunMyJobs uses subscription-based pricing with usage tiers. Costs can grow unpredictably as job volumes increase."
+    answer: "Kestra's open-source edition is free with 1400+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. Redwood RunMyJobs uses subscription-based pricing with usage tiers. Costs can grow unpredictably as job volumes increase."
   - question: Does Kestra support the same integrations as RunMyJobs?
     answer: "Kestra's 1200+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. RunMyJobs has native connectors for SAP, Oracle E-Business Suite, and PeopleSoft that Kestra doesn't replicate directly. For cloud-native and data platform integrations, Kestra's open plugin ecosystem offers broader coverage."
   - question: RunMyJobs handles finance close automation. Does Kestra have an equivalent?

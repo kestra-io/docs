@@ -1,8 +1,8 @@
 ---
 title: "ETL Workflow: How to Design, Orchestrate, and Scale Data Integration"
 description: "ETL workflows are more than the three-letter acronym. Learn how to design, orchestrate, and operate production-grade ETL with modern declarative tools."
-metaTitle: "ETL Workflow: Design, Orchestrate, and Scale"
-metaDescription: "Learn how to design, orchestrate, and operate production-grade ETL workflows. Explore the stages, ETL vs ELT trade-offs, and declarative orchestration with Kestra."
+metaTitle: "ETL Workflow: Design, Orchestrate, and Scale | Kestra"
+metaDescription: "Learn how to design, orchestrate, and operate production-grade ETL workflows. Explore ETL vs ELT trade-offs and declarative orchestration with Kestra."
 tag: data
 date: 2026-04-22
 faq:
@@ -12,8 +12,6 @@ faq:
     answer: "The canonical stages are Extract (collecting data from sources), Transform (cleaning, structuring, and enriching data), and Load (delivering data to a destination). In modern production workflows, these are often expanded to include additional critical stages like Cleansing, Validation, and Monitoring to ensure data quality and operational health."
   - question: "How does ETL compare to ELT?"
     answer: "ETL (Extract, Transform, Load) performs transformations before data is loaded into the target system, often useful for sensitive data or pre-processing. ELT (Extract, Load, Transform) loads raw data directly into a data warehouse first, then transforms it using the warehouse's compute power. ELT is favored by modern data warehouses for its flexibility and ability to retain raw data, while ETL remains relevant for specific use cases."
-  - question: "Is ETL the same as SQL?"
-    answer: "No, ETL is a broader data integration pattern, while SQL is a language used for querying and manipulating relational databases. While SQL is very commonly used for the 'Transform' stage in many ETL processes (especially in data warehouses), ETL workflows can also involve other languages like Python, R, or shell scripts for transformations, as well as various tools for extraction and loading."
   - question: "What are common challenges in operating ETL workflows?"
     answer: "Common challenges include ensuring reliable scheduling and execution, implementing robust error handling and retry mechanisms, managing backfills and ensuring data idempotency, providing comprehensive observability and alerting for failures or data quality issues, and versioning workflows to enable easy rollbacks and collaboration."
   - question: "How do modern ETL workflows integrate with tools like dbt and Airbyte?"
@@ -44,7 +42,7 @@ While "Extract, Transform, Load" provides a neat summary, production workflows i
 
 The first step is to pull data from its source. This isn't just a simple read operation. Production systems must handle:
 -   **Connectivity:** Securely connecting to a variety of sources, from relational databases and REST APIs to file systems like S3 or FTP servers.
--   **Loading Strategy:** Deciding between full loads (copying the entire dataset) and incremental loads (capturing only changes since the last run). Incremental loads, often using Change Data Capture (CDC) techniques, are more efficient for large datasets.
+-   **Loading Strategy:** Deciding between full loads (copying the entire dataset) and incremental loads (capturing only changes since the last run). Incremental loads, often using [Change Data Capture (CDC)](/resources/data/change-data-capture) techniques, are more efficient for large datasets.
 -   **Data Contracts:** Ensuring the source data schema hasn't changed unexpectedly, which could break downstream transformations.
 
 ### Transform & Cleanse: Shaping Data for Value
@@ -60,7 +58,7 @@ Tools like dbt are frequently used for SQL-based transformations, while Apache S
 ### Load: Delivering to the Destination
 
 Once transformed, the data is loaded into its final destination. Key considerations here include:
--   **Target System:** This could be a cloud data warehouse like Snowflake or BigQuery, a data lake, or another operational application.
+-   **Target System:** This could be a [cloud data warehouse](/resources/data/data-warehouse-etl) like Snowflake or BigQuery, a data lake, or another operational application.
 -   **Loading Pattern:** Data can be appended, overwritten, or upserted (updating existing records and inserting new ones).
 -   **Idempotency:** Ensuring that running the same load process multiple times with the same data produces the exact same result. This is critical for recovery after a failure.
 
@@ -83,7 +81,7 @@ Neither pattern is universally better; they serve different needs.
 | **Use Cases** | Good for sensitive data (PII can be removed before loading), complex pre-processing, or when the target system has limited compute power. | Ideal for modern cloud data warehouses, agile development (analysts can transform raw data themselves), and situations where future use cases for raw data are unknown. |
 | **Tooling** | Requires a distinct transformation tool or custom code. | Leverages the data warehouse's SQL engine, often managed with a tool like dbt. |
 
-The choice is strategic. ETL is still highly relevant for compliance and performance reasons, while ELT offers greater flexibility for modern analytics. For a deeper dive, see our comparison of [ETL vs. ELT](/blogs/2022-04-27-etl-vs-elt).
+The choice is strategic. ETL is still highly relevant for compliance and performance reasons, while ELT offers greater flexibility for modern analytics. For a deeper dive, see our comparison of [ETL vs. ELT](/resources/data/etl-vs-elt).
 
 ## Operational Challenges of Scaling ETL Workflows
 
@@ -98,7 +96,7 @@ Building an ETL script that works once is easy. Building an ETL workflow that ru
 
 ## Modern ETL with Declarative Orchestration
 
-Addressing these operational challenges is the core job of an orchestrator. The modern approach favors declarative orchestration, where you define the *what* (the desired state of your workflow) in a configuration file, and the engine handles the *how*.
+Addressing these operational challenges is the core job of a [data orchestration](/resources/data/data-orchestration) platform. The modern approach favors declarative orchestration, where you define the *what* (the desired state of your workflow) in a configuration file, and the engine handles the *how*.
 
 ### Why Declarative YAML for ETL Workflows?
 
@@ -124,7 +122,7 @@ Kestra is an open-source, declarative orchestration platform designed to solve t
 -   **Polyglot Tasks:** With a vast library of plugins, you can run anything from a shell command or Python script to a dbt model or Spark job as a native task.
 -   **Event-Driven Triggers:** Kestra has built-in triggers for schedules, webhooks, file detection, and more, making it easy to build reactive ETL workflows.
 
-By combining a declarative interface with a powerful, language-agnostic execution engine, Kestra provides a robust foundation for building and scaling [ETL pipelines](/docs/how-to-guides/etl-pipelines) across your entire organization. To explore more patterns and solutions, you can browse our full collection of [data resources](/resources/data) or learn how Kestra can power your [data platform](/data).
+By combining a declarative interface with a powerful, language-agnostic execution engine, Kestra provides a robust foundation for building and scaling [ETL pipelines](/docs/how-to-guides/etl-pipelines) across your entire organization. To explore more patterns and solutions, browse our [ETL pipeline tools guide](/resources/data/etl-pipeline-tools), the full [data resources](/resources/data) collection, or learn how Kestra can power your [data platform](/data).
 
 ### Example: An Opinionated Kestra ETL Workflow
 

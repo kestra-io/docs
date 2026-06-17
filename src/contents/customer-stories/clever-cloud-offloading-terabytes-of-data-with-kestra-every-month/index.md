@@ -1,10 +1,10 @@
 ---
-title: Clever Cloud, Offloading Terabytes of Data with Kestra Every Month
+title: Clever Cloud
 rank: 2
 description: This is the story of how Clever Cloud integrated Kestra to automate
   data offloading, significantly improving their system efficiency and data
   handling capacity.
-metaTitle: Clever Cloud Enhances Data Management with Kestr
+metaTitle: Clever Cloud Enhances Data Management with Kestra
 metaDescription: This is the story of how Clever Cloud integrated Kestra to
   automate data offloading, significantly improving their system efficiency and
   data handling capacity.
@@ -33,9 +33,12 @@ quotePerson: Alexandre Burgoni
 quotePersonTitle: ""
 industry: Cloud Provider
 headquarter: Nantes, France
-solution: Clever Cloud is an IT Automation platform to manage all the ops work
-  while you focus on your business value
+region: Europe
+companySize: "51–500"
+solution: Clever Cloud is an IT Automation platform to manage all the ops work while you focus on your business value
+tagline: European cloud provider and IT automation platform
 companyName: ""
+useCase: IT Automation
 cta: "What would change if your cloud data offloading ran at scale—processing terabytes reliably, every month, without manual intervention?"
 ---
 

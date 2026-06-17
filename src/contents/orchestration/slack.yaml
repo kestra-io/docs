@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Make Slack the meeting point for your stack with a workflow engine that listens to slash commands, Block Kit clicks, or any upstream completion (<a href='/orchestration/dbt-core'>dbt</a>, <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, <a href='/orchestration/aws'>AWS</a>), handles notification routing, Canvas reports, and approval gates, and chains Slack with the rest of your tools. Cut per-tool integration code: the same chats.Post fires from any of 1300+ plugins."
+nutshell: "Make Slack the meeting point for your stack with a workflow engine that listens to slash commands, Block Kit clicks, or any upstream completion (<a href='/orchestration/dbt-core'>dbt</a>, <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, <a href='/orchestration/aws'>AWS</a>), handles notification routing, Canvas reports, and approval gates, and chains Slack with the rest of your tools. Cut per-tool integration code: the same chats.Post fires from any of 1400+ plugins."
 
 pillars:
   title: "Around every workflow, every system, every channel."
@@ -284,7 +284,7 @@ resources:
     - kind: "docs"
       title: "Slack as the integration point across your stack"
       description: "How to install a Kestra Slack app, configure scopes, notify from any upstream tool, schedule reports as Canvases, gate approvals, and export channel history."
-      href: "/docs/use-cases/business"
+      href: "/docs/use-cases"
     - kind: "resource"
       title: "Chain Slack approvals with Terraform and Argo CD"
       description: "The common pattern: Block Kit buttons gate a Terraform apply or an Argo CD sync. The reviewer identity is recorded in the execution history."
