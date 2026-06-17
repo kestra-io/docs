@@ -121,7 +121,7 @@ Containerization is the modern standard for deploying applications. Using [Docke
 
 ### Securing your self-hosted orchestration environment
 
-Security is a primary responsibility in a self-hosted model. Implement strong [authentication and authorization (RBAC)](https://kestra.io/docs/enterprise/auth/rbac) to control access. Use a secure vault for managing [secrets](https://kestra.io/concepts/secret) like passwords and API keys, rather than hardcoding them in workflows. Apply network policies to restrict access to the orchestrator and its components, and follow [security hardening](https://kestra.io/docs/administrator-guide/security-hardening) guidelines provided by the project.
+Security is a primary responsibility in a self-hosted model. Implement strong [authentication and authorization (RBAC)](https://kestra.io/docs/enterprise/auth/rbac) to control access. Use a secure vault for managing secrets like passwords and API keys, rather than hardcoding them in workflows. Apply network policies to restrict access to the orchestrator and its components, and follow [security hardening](https://kestra.io/docs/administrator-guide/security-hardening) guidelines provided by the project.
 
 ### Troubleshooting common issues in self-hosted setups
 
