@@ -66,16 +66,11 @@ const versionState = resolveVersionState(
     githubVersions.versions?.[0]?.version,
 )
 
-// Canonicalize: requesting the latest as /vX.Y.Z/ → 301 to the unversioned URL.
-// Enforces the invariant that versioned URLs only point at *older* versions, so every
-// downstream branch can read versionState.isArchived without ambiguity.
 if (versionState.isLatestRequested) {
     return Astro.redirect(versionState.canonicalPathname, 301)
 }
 
-// A version segment that was never released (typo / stale link) is a bad URL → 404.
-// Guard on a non-empty release list so a failed/rate-limited releases fetch doesn't
-// turn every archived URL into a false 404.
+// Guard on a non-empty list so a rate-limited releases fetch doesn't 404 every archived URL.
 const knownVersions = githubVersions.versions ?? []
 if (
     versionState.isArchived &&
@@ -85,8 +80,6 @@ if (
     return new Response(null, { status: 404, statusText: "Not found" })
 }
 
-// The backend projects the live subgroup structure onto the version's class set; we just swap
-// this plugin's entries. versionElements (the flattened class set) backs the FQCN-redirect logic.
 let versionElements: Set<string> | null = null
 let versionElementsStatus: "ready" | "pending" | "unavailable" = "unavailable"
 
@@ -162,7 +155,7 @@ if (!versionState.version) {
         if (mappedUrl && mappedUrl !== pathname)
             return Astro.redirect(mappedUrl, 301)
     } catch {
-        // do nothing if plugin not found
+        // ignore
     }
 }
 
@@ -178,11 +171,6 @@ const [pageResult, { blueprintCounts, relatedBlogs }] = await Promise.all([
     fetchSecondaryData(pluginName),
 ])
 
-// Versioned-doc UX. For an archived URL the backend answers one of:
-//   pending     → docs are generating in the background. Show latest as fallback + a loading
-//                 banner, and let the client poll until the versioned doc is ready.
-//   unavailable → either the task didn't exist in this (already-indexed) version, or the version's
-//                 docs can't be served at all (JAR removed from Maven / not in our catalog).
 let pendingVersionedDoc = false
 let unavailableVersionedDoc = false
 let pageResolved: typeof pageResult = pageResult
@@ -191,20 +179,14 @@ if (versionState.isArchived && pluginType) {
         pendingVersionedDoc = true
         pageResolved = await fetchPageDefinition(pluginType)
     } else if (pageResult.status === "unavailable") {
-        // Version is indexed and has other tasks, just not this FQCN → the task didn't exist in
-        // this release. Send the user to the version root so they can see what did exist.
         const versionHasOtherTasks = versionElements !== null && versionElements.size > 0
         if (versionHasOtherTasks) {
             return Astro.redirect(`/plugins/${pluginName}/v${versionState.version}`, 301)
         }
-        // A real release whose docs we cannot serve. Keep latest docs visible and tell the user
-        // the archived version is unavailable (no redirect, no polling).
         unavailableVersionedDoc = true
         pageResolved = await fetchPageDefinition(pluginType)
     }
 } else if (versionState.isArchived && !pluginType) {
-    // Overview / subgroup page (no specific class). The /subgroups endpoint's status drives the
-    // banner: pending = loading + poll; unavailable = "not available"; ready = sidebar filtered.
     if (versionElementsStatus === "pending") {
         pendingVersionedDoc = true
     } else if (versionElementsStatus === "unavailable") {
