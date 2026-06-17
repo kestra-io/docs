@@ -31,6 +31,34 @@ The `manifest.json` is the contract between the plugin and the host. It tells Ke
 
 The [`@kestra-io/artifact-sdk`](https://github.com/kestra-io/artifact-sdk) handles all the Module Federation configuration, manifest generation, and shared dependencies. You write a Vue component; the SDK takes care of the bundling contract.
 
+```mermaid
+graph LR
+    subgraph CORE["Kestra Core"]
+        SC["slot-contracts\n(topology-details\ntopology-task-drawer\ntopology-task-modal)"]
+        HOST["Host UI\nconfigureAxios\nkestra:openTaskModal"]
+        MFH["Module Federation\nruntime loader"]
+    end
+
+    subgraph NPM["NPM packages"]
+        ART["@kestra-io/artifact-sdk\nKnownSlotProps · vite.config\nscaffolder CLI"]
+        SDK["@kestra-io/kestra-sdk\nexecutions · flows\nmetrics · logs"]
+    end
+
+    subgraph PLUGIN["Plugin"]
+        VUE["Vue component"]
+        VCFG["vite.config.ts"]
+        JAR["Plugin JAR\nplugin-ui.js + manifest.json"]
+    end
+
+    SC -->|"types published as"| ART
+    HOST -->|"configures axios for"| SDK
+    ART -->|"KnownSlotProps types"| VUE
+    ART -->|"MF build config"| VCFG
+    SDK -->|"typed API calls"| VUE
+    VUE & VCFG -->|"compiled/bundled into"| JAR
+    JAR -->|"loaded at runtime"| MFH
+```
+
 ## Available UI slots
 
 Each plugin component targets a specific **slot** — a named extension point in the Kestra UI. Slots are defined in Kestra core (OSS) and distributed via the `@kestra-io/artifact-sdk` package. Kestra core owns the runtime contract (what props are injected, what `manifest.json` shape is accepted); the SDK exposes the corresponding TypeScript types and powers the scaffolding CLI. Three slots are available in `@kestra-io/artifact-sdk`:
