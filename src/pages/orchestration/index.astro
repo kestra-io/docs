@@ -13,6 +13,7 @@ const totalPlugins = await fetchTotalPluginsCount()
 const CATEGORY_MAP: Record<string, string> = {
     airbyte: "Data",
     ansible: "Infrastructure",
+    apify: "Data",
     argocd: "Infrastructure",
     aws: "Cloud",
     bigquery: "Data",
@@ -133,8 +134,7 @@ const faqItems = [
                             d="M11 3v16M3 11h16"
                             stroke="#8465FF"
                             stroke-width="2.5"
-                            stroke-linecap="round"
-                        ></path>
+                            stroke-linecap="round"></path>
                     </svg>
                 </div>
                 <div class="hero-carousel" id="hero-carousel">
@@ -171,8 +171,9 @@ const faqItems = [
                 </span> with Kestra
             </h1>
             <p>
-                One orchestrator across your infrastructure and data stack. Event-driven
-                triggers, approval gates, per-step retries, cross-tool chains.
+                One orchestrator across your infrastructure and data stack.
+                Event-driven triggers, approval gates, per-step retries,
+                cross-tool chains.
             </p>
             <div class="search-wrapper">
                 <input
@@ -300,8 +301,7 @@ const faqItems = [
                 var name = (card.getAttribute("data-name") || "").toLowerCase()
                 var category = card.getAttribute("data-category") || ""
                 var matchesSearch = !q || name.indexOf(q) !== -1
-                var matchesCat =
-                    !activeCategory || category === activeCategory
+                var matchesCat = !activeCategory || category === activeCategory
                 card.style.display = matchesSearch && matchesCat ? "" : "none"
             }
         }
@@ -315,7 +315,10 @@ const faqItems = [
             var total = icons.length
             if (total === 0) return
 
-            if (!icons[current] || !icons[current].classList.contains("active")) {
+            if (
+                !icons[current] ||
+                !icons[current].classList.contains("active")
+            ) {
                 for (var i = 0; i < icons.length; i++) {
                     if (icons[i].classList.contains("active")) {
                         current = i

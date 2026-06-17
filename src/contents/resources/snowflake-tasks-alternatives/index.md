@@ -156,7 +156,7 @@ Prefect is an open-source workflow management system that focuses on developer e
 - **Cloud-First Model:** While open-source, the most robust features often lean towards its managed cloud offering.
 - **Newer Ecosystem:** While growing rapidly, its plugin ecosystem is smaller than more established platforms like Airflow or Kestra.
 
-**Best for:** Python-only data and ML teams that prioritize developer experience, dynamic flows, and a modern alternative to Airflow without leaving the [Python ecosystem](/use-cases/python-workflows).
+**Best for:** Python-only data and ML teams that prioritize developer experience, dynamic flows, and a modern alternative to Airflow without leaving the Python ecosystem.
 
 ## Broader Snowflake Competitors and their Offerings
 While the above tools offer direct alternatives for *orchestrating* tasks that Snowflake Tasks handle, a broader view might involve considering alternative data platforms that also offer their own task management or orchestration capabilities. These platforms often compete with Snowflake itself, providing different approaches to data warehousing, analytics, and integrated workflow management.
