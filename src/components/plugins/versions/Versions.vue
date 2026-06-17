@@ -11,6 +11,7 @@
                 aria-haspopup="listbox"
                 :aria-expanded="isOpen"
             >
+                <span class="trigger-version">{{ activeVersion }}</span>
                 <span
                     v-if="isOnLatest"
                     class="badge latest"
@@ -19,7 +20,6 @@
                     v-else
                     class="badge archived"
                 >Archived</span>
-                <span class="trigger-version">{{ activeVersion }}</span>
                 <MenuUp v-if="isOpen" class="trigger-chevron" />
                 <MenuDown v-else class="trigger-chevron" />
             </button>
@@ -46,11 +46,6 @@
         </div>
 
         <div v-if="!isOpen" class="stats">
-            <div class="stats-header">
-                <h6 class="stats-version">{{ activeVersion }}</h6>
-                <span v-if="isOnLatest" class="badge latest">Latest</span>
-                <span v-else class="badge archived">Archived</span>
-            </div>
             <small class="stats-date">{{ formatDate(activeVersionInfo?.publishedAt) }}</small>
             <a
                 v-if="releaseNotesHref"
@@ -199,6 +194,7 @@
     .dropdown {
         margin-bottom: 0.75rem;
         padding-top: 0.75rem;
+        position: relative;
     }
 
     .trigger {
@@ -226,10 +222,13 @@
         }
 
         .trigger-version {
-            flex: 1;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        .trigger-chevron {
+            margin-left: auto;
         }
 
         .trigger-chevron :deep(svg) {
@@ -269,12 +268,15 @@
         border: 1px solid var(--ks-border-secondary);
         border-radius: 0.5rem;
         isolation: isolate;
-        left: 0;
+        left: auto;
         margin-top: 4px;
+        max-width: min(420px, 90vw);
+        min-width: 100%;
         overflow: hidden;
         position: absolute;
         right: 0;
         top: 100%;
+        width: max-content;
         z-index: 20;
     }
 
@@ -332,10 +334,10 @@
 
         .option-date {
             color: var(--ks-content-secondary);
+            flex-shrink: 0;
             font-size: $font-size-xs;
             margin-left: auto;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .option-check :deep(svg) {
@@ -348,22 +350,6 @@
         display: flex;
         flex-direction: column;
         gap: 0.35rem;
-
-        .stats-header {
-            align-items: center;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .stats-version {
-            color: var(--ks-content-primary);
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
 
         .stats-date {
             color: var(--ks-content-secondary);
