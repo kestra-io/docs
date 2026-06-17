@@ -93,6 +93,4 @@ Worker groups come in when the deployment needs to span locations: a second clou
 
 The component model stays the same at any scale. What changes is how many of each component you run, where you run the workers, and which backend you've wired in underneath.
 
-For teams building with AI coding agents, Kestra also exposes a [Model Context Protocol server](../kestra-mcp-docs/index.md) at `https://api.kestra.io/v1/mcp`. An agent connected to it can discover plugins, inspect task schemas, and retrieve Blueprint YAML without leaving the conversation. The same endpoint works with Claude Code, Codex CLI, Gemini CLI, and any other MCP-compatible client.
-
 Kestra is open source. You can [get started in minutes](../../docs/02.installation/index.md) with Docker, one command, first workflow running in under five minutes. If you're scoping a deployment across regions, business units, or regulated infrastructure, [Book a Demo](/demo) and we can work through the architecture together.

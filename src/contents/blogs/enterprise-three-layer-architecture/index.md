@@ -43,7 +43,7 @@ The question that comes up in almost every enterprise deployment: when do you us
 
 It comes down to whether groups need separate user management. If different business units need their own user bases, their own admin control, and zero visibility into each other's work, tenants are the answer. If they're within the same organization and the requirement is project-level separation, different teams, different workflows, different access levels, namespaces are sufficient.
 
-Tenants create a hard wall. Namespaces create partitions within the same managed space.
+Think of it like a building: tenants are floors, namespaces are apartments on those floors. A floor has its own access system and its own admin, with no visibility into what's happening on other floors. An apartment divides space within a floor, each with its own locks and boundaries, but still under the same building management. Tenants create that floor-level separation. Namespaces organize the space within it.
 
 Here's how tenants and namespaces relate to each other within a single Kestra cluster.
 
