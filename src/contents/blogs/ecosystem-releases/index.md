@@ -9,6 +9,35 @@ authors:
     image: jmaire
     role: Plugins and Ecosystem Engineer
 image: ./main.png
+schema:
+  "@context": "https://schema.org"
+  "@type": "FAQPage"
+  mainEntity:
+    - "@type": "Question"
+      name: "What changed in our release process?"
+      acceptedAnswer:
+        "@type": "Answer"
+        text: "Every ecosystem tool now releases the same way: a release happens only when someone pushes a version tag, and that tag states the version. Merging code no longer ships anything on its own."
+    - "@type": "Question"
+      name: "Does merging code to the main branch trigger a release?"
+      acceptedAnswer:
+        "@type": "Answer"
+        text: "No. Code can land on the main branch freely; nothing reaches users until someone deliberately pushes a version tag. Everyday development and the act of shipping are fully decoupled."
+    - "@type": "Question"
+      name: "How is the version number decided?"
+      acceptedAnswer:
+        "@type": "Answer"
+        text: "It is stated explicitly on the tag. To release 1.3.0, you tag 1.3.0. There is no inference from commit messages and no guessing from history: the tag is the single source of truth for the version."
+    - "@type": "Question"
+      name: "Does every tool publish the same way under the hood?"
+      acceptedAnswer:
+        "@type": "Answer"
+        text: "No, and that is intentional. The Go SDK uses GoReleaser, the Java SDK publishes to Maven Central, the JavaScript SDK to npm, and the Python SDK to PyPI. We unified the trigger and the contract (a tag means a release, and the tag names the version), not the per-ecosystem publishing mechanics."
+    - "@type": "Question"
+      name: "Do release tags need to match a specific Kestra version?"
+      acceptedAnswer:
+        "@type": "Answer"
+        text: "Yes. Each ecosystem tool tracks the Kestra core it is compatible with, so releases are cut from version-specific branches. The person releasing tags the branch that matches the Kestra version the release targets."
 ---
 
 ::::alert{type="info"}
@@ -64,3 +93,20 @@ One thing this model still asks you to stay mindful of: a release tag has to tar
 The interesting part of this work wasn't a clever new tool : it was *removing* cleverness. We traded a set of bespoke, partly-automated release flows for one boring, explicit rule that every engineer can hold in their head: **push a tag to ship; the tag is the version.**
 
 Automation is great when it removes toil. But automation that quietly makes decisions for you, like *what version to release and when*, can cost more in confusion than it saves in keystrokes. Sometimes the best release process is the one that does exactly what you told it to, and nothing more.
+
+## Frequently asked questions
+
+### What changed in our release process?
+Every ecosystem tool now releases the same way: a release happens **only when someone pushes a version tag**, and that tag states the version. Merging code no longer ships anything on its own.
+
+### Does merging code to the main branch trigger a release?
+No. Code can land on the main branch freely; nothing reaches users until someone deliberately pushes a version tag. Everyday development and the act of shipping are fully decoupled.
+
+### How is the version number decided?
+It's stated explicitly on the tag. To release `1.3.0`, you tag `1.3.0`. There's no inference from commit messages and no guessing from history — the tag is the single source of truth for the version.
+
+### Does every tool publish the same way under the hood?
+No, and that's intentional. The Go SDK uses GoReleaser, the Java SDK publishes to Maven Central, the JavaScript SDK to npm, and the Python SDK to PyPI. We unified the **trigger and the contract** — a tag means a release, and the tag names the version — not the per-ecosystem publishing mechanics.
+
+### Do release tags need to match a specific Kestra version?
+Yes. Each ecosystem tool tracks the Kestra core it's compatible with, so releases are cut from version-specific branches. The person releasing tags the branch that matches the Kestra version the release targets.
