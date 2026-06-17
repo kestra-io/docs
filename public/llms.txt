@@ -341,6 +341,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Build Dynamic Flows in Kestra](https://kestra.io/docs/how-to-guides/dynamic-flows.md)
 - [Create a Dynamic Dropdown for Inputs](https://kestra.io/docs/how-to-guides/dynamic-inputs.md)
 - [Build ETL Pipelines in Kestra](https://kestra.io/docs/how-to-guides/etl-pipelines.md)
+- [Generate and Pseudonymize Test Data in Kestra](https://kestra.io/docs/how-to-guides/generate-and-pseudonymize-data.md)
 - [Validate and Deploy Flows with GitHub Actions](https://kestra.io/docs/how-to-guides/github-actions.md)
 - [Back Up GitHub Repos with Kestra Playground](https://kestra.io/docs/how-to-guides/github-repo-backup.md)
 - [Configure a Google Service Account in Kestra](https://kestra.io/docs/how-to-guides/google-credentials.md)
