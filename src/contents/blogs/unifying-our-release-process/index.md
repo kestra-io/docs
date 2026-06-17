@@ -1,5 +1,5 @@
 ---
-title: "Making Releases Boring Again: How We Unified Our Release Process"
+title: "How We Unified Our Release Process for ecosystem tools?"
 description: "We maintain SDKs in several languages, a CLI, and an infrastructure-as-code provider (each with its own way of cutting a release). Here's how we replaced that patchwork with a single rule: push a tag to ship, and the tag is the version."
 date: 2026-06-17T10:00:00
 category: Engineering
