@@ -1,5 +1,5 @@
 ---
-title: "How We Unified Our Release Process for Ecosystem tools?"
+title: "How We Unified Our Release Process for Ecosystem Tools"
 description: "We maintain SDKs in several languages, a CLI, and an infrastructure-as-code provider (each with its own way of cutting a release). Here's how we replaced that patchwork with a single rule: push a tag to ship, and the tag is the version."
 date: 2026-06-17T10:00:00
 category: Engineering
@@ -44,11 +44,11 @@ schema:
 **Ecosystem vs. Plugins:** *Ecosystem* relates to all the tools we build to manage and operate Kestra itself, while *Plugins* are how Kestra connects to the rest of the world. This post is about releasing the **ecosystem** tools.
 :::
 
-We ship more than one thing. Alongside Kestra itself, we maintain a set of client SDKs in several languages, a command-line tool ([kestractl](https://kestra.io/docs/kestra-cli/kestractl)), and an infrastructure-as-code provider (our [Terraform provider](https://kestra.io/docs/terraform)). Over time, each of these had grown its own way of cutting a release.
+We ship more than one thing. Alongside Kestra itself, we maintain a set of [client SDKs](../../docs/api-reference/kestra-sdk/index.md) in several languages, a command-line tool ([kestractl](../../docs/kestra-cli/kestractl/index.md)), and an infrastructure-as-code provider (our [Terraform provider](../../docs/13.terraform/index.mdx)). Over time, each of these had grown its own way of cutting a release.
 
-That sounds harmless, but it added up to real friction. So we spent a morning making our releases boring.
+Those differences added up to real friction. So we spent a morning making our releases boring, and the change is visible to anyone using these tools: whatever version you install was deliberately tagged and shipped.
 
-## The situation before
+## Before: four release conventions across four components
 
 Every component released slightly differently, and the inconsistency was its own kind of cost.
 
@@ -58,28 +58,28 @@ Every component released slightly differently, and the inconsistency was its own
 
 None of this was broken, exactly. But every release carried a little tax of "wait, how does *this* one work again?"
 
-## What we wanted instead
+## What every release should guarantee
 
 One mental model, everywhere. The goals were simple:
 
-1. **A release is an explicit, human decision** : never an accidental byproduct of merging code.
+1. **A release is an explicit, human decision**: never an accidental byproduct of merging code.
 2. **The version is stated up front**, not inferred after the fact.
 3. **The same procedure applies to every component**, so knowledge transfers instantly from one project to the next.
 
-## What we did
+## A single rule: push a tag to ship
 
 We standardized on a single model: **a release happens when, and only when, someone pushes a version tag.**
 
 That one sentence carries the whole design:
 
 - **Merging code never ships anything.** Code can land on the main branch all day; nothing reaches users until a person decides "this is the version we want to release" and tags it. The everyday flow of development is completely decoupled from the act of shipping.
-- **The tag is the single source of truth for the version.** Whatever version you put on the tag is exactly what gets published : no inference, no guessing from commit history, no surprises. To release version 1.3.0, you tag 1.3.0. That's it.
+- **The tag is the single source of truth for the version.** Whatever version you put on the tag is exactly what gets published: no inference, no guessing from commit history, no surprises. To release version 1.3.0, you tag 1.3.0. That's it.
 - **We removed the automatic, commit-driven releases.** The mechanism that derived versions from commit messages and released straight off the main branch is gone. It optimized for a kind of automation we decided we didn't want: we'd rather releases be rare, deliberate, and obvious than frequent, implicit, and occasionally accidental.
 - **We aligned the version format** so tags look the same across components. No more per-project dialects to memorize.
 
 We also kept one important nuance: not every component publishes the same way under the hood. Different languages and ecosystems have genuinely different publishing mechanics. The Go SDK is built and released by GoReleaser, the Java SDK is pushed to Maven Central, the JavaScript SDK is published to npm, and the Python SDK is uploaded to PyPI. We didn't try to flatten those real differences. What we unified was the **trigger and the contract**: everywhere, a tag means a release, and the tag names the version. *How* the artifact then gets built and published can stay native to each ecosystem.
 
-One thing this model still asks you to stay mindful of: a release tag has to target the *right* Kestra version. Each ecosystem tool tracks the Kestra core it's compatible with, so we cut releases from version-specific branches. The tag makes the version explicit but it's on the person releasing to tag the branch that matches the Kestra release it's meant for, so a `1.3.0` of a tool lines up with the Kestra version it actually supports.
+One thing this model still asks you to stay mindful of: a release tag has to target the *right* Kestra version. Each ecosystem tool tracks the Kestra core it's compatible with, so we cut releases from version-specific branches. The tag makes the version explicit but the person releasing needs to tag from the branch that matches the intended Kestra version, so a `1.3.0` tool release lines up with the right Kestra core.
 
 ## Why this is better
 
@@ -90,9 +90,11 @@ One thing this model still asks you to stay mindful of: a release tag has to tar
 
 ## The takeaway
 
-The interesting part of this work wasn't a clever new tool : it was *removing* cleverness. We traded a set of bespoke, partly-automated release flows for one boring, explicit rule that every engineer can hold in their head: **push a tag to ship; the tag is the version.**
+The interesting part of this work wasn't a clever new tool: it was *removing* cleverness. We traded a set of bespoke, partly-automated release flows for one boring, explicit rule that every engineer can hold in their head: **push a tag to ship; the tag is the version.**
 
 Automation is great when it removes toil. But automation that quietly makes decisions for you, like *what version to release and when*, can cost more in confusion than it saves in keystrokes. Sometimes the best release process is the one that does exactly what you told it to, and nothing more.
+
+Whether you're exploring Kestra for the first time or already running it in production, the ecosystem tools around it ([kestractl](../../docs/kestra-cli/kestractl/index.md), [client SDKs](../../docs/api-reference/kestra-sdk/index.md), and the [Terraform provider](../../docs/13.terraform/index.mdx)) all follow the same release convention now: push a tag, the tag is the version. Whatever version you install, it was deliberately shipped.
 
 ## Frequently asked questions
 
@@ -103,10 +105,10 @@ Every ecosystem tool now releases the same way: a release happens **only when so
 No. Code can land on the main branch freely; nothing reaches users until someone deliberately pushes a version tag. Everyday development and the act of shipping are fully decoupled.
 
 ### How is the version number decided?
-It's stated explicitly on the tag. To release `1.3.0`, you tag `1.3.0`. There's no inference from commit messages and no guessing from history — the tag is the single source of truth for the version.
+It's stated explicitly on the tag. To release `1.3.0`, you tag `1.3.0`. There's no inference from commit messages and no guessing from history. The tag is the single source of truth for the version.
 
 ### Does every tool publish the same way under the hood?
-No, and that's intentional. The Go SDK uses GoReleaser, the Java SDK publishes to Maven Central, the JavaScript SDK to npm, and the Python SDK to PyPI. We unified the **trigger and the contract** — a tag means a release, and the tag names the version — not the per-ecosystem publishing mechanics.
+No, and that's intentional. The Go SDK uses GoReleaser, the Java SDK publishes to Maven Central, the JavaScript SDK to npm, and the Python SDK to PyPI. We unified the **trigger and the contract** (a tag means a release, and the tag names the version), not the per-ecosystem publishing mechanics.
 
 ### Do release tags need to match a specific Kestra version?
 Yes. Each ecosystem tool tracks the Kestra core it's compatible with, so releases are cut from version-specific branches. The person releasing tags the branch that matches the Kestra version the release targets.
