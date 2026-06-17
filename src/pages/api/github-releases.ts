@@ -19,8 +19,6 @@ export interface ReleaseInfo {
 
 async function fetchRepoReleases(repo: string): Promise<{ versions: ReleaseInfo[] }> {
     const headers: Record<string, string> = { "User-Agent": "request" }
-    const token = process.env.GITHUB_TOKEN
-    if (token) headers["Authorization"] = `Bearer ${token}`
 
     const response = await fetch(
         `https://api.github.com/repos/kestra-io/${repo}/releases?per_page=100`,

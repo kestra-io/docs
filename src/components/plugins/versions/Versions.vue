@@ -2,48 +2,14 @@
     <div v-if="releaseVersions.length > 0" class="versions-block">
         <strong class="versions-title">Versions</strong>
 
-        <div class="dropdown" ref="root">
-            <button
-                type="button"
-                class="trigger"
-                :class="{ open: isOpen }"
-                @click="isOpen = !isOpen"
-                aria-haspopup="listbox"
-                :aria-expanded="isOpen"
-            >
-                <span class="trigger-version">{{ activeVersion }}</span>
-                <span
-                    v-if="isOnLatest"
-                    class="badge latest"
-                >Latest</span>
-                <span
-                    v-else
-                    class="badge archived"
-                >Archived</span>
-                <MenuUp v-if="isOpen" class="trigger-chevron" />
-                <MenuDown v-else class="trigger-chevron" />
-            </button>
-
-            <div v-if="isOpen" class="panel" role="listbox">
-                <div class="panel-label">Select version</div>
-                <div class="panel-options">
-                    <a
-                        v-for="v in releaseVersions"
-                        :key="v?.version"
-                        :href="hrefFor(v?.version ?? '')"
-                        class="option"
-                        :class="{ selected: isActive(v?.version) }"
-                        role="option"
-                        :aria-selected="isActive(v?.version)"
-                    >
-                        <span class="option-version">v{{ v?.version }}</span>
-                        <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
-                        <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
-                        <Check v-if="isActive(v?.version)" class="option-check" />
-                    </a>
-                </div>
-            </div>
-        </div>
+        <VersionDropdown
+            v-model:open="isOpen"
+            :release-versions="releaseVersions"
+            :plugin-name="pluginName"
+            :plugin-type="pluginType"
+            :current-tail="currentTail"
+            :current-version="currentVersion"
+        />
 
         <div v-if="!isOpen" class="stats">
             <small class="stats-date">{{ formatDate(activeVersionInfo?.publishedAt) }}</small>
@@ -96,13 +62,12 @@
 </template>
 
 <script setup lang="ts">
-    import { computed, onBeforeUnmount, onMounted, ref } from "vue"
+    import { ref } from "vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
-    import MenuDown from "vue-material-design-icons/MenuDown.vue"
-    import MenuUp from "vue-material-design-icons/MenuUp.vue"
-    import Check from "vue-material-design-icons/Check.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import VersionDropdown from "./VersionDropdown.vue"
+    import { useVersions } from "./useVersions"
 
     const props = defineProps<{
         releaseVersions: ReleaseInfo[]
@@ -114,34 +79,10 @@
         currentVersion?: string
     }>()
 
+    const { activeVersionInfo, releaseNotesHref, hrefFor, formatDate } = useVersions(props)
+
     const isOpen = ref(false)
     const isPreviousOpen = ref(false)
-    const root = ref<HTMLElement | null>(null)
-
-    const latestVersion = computed(() => props.releaseVersions[0]?.version ?? "")
-    const activeVersion = computed(() => props.currentVersion ?? latestVersion.value)
-    const activeVersionInfo = computed<ReleaseInfo | undefined>(
-        () => props.releaseVersions.find(v => v?.version === activeVersion.value),
-    )
-    const isOnLatest = computed(() => !props.currentVersion || props.currentVersion === latestVersion.value)
-    const isActive = (v?: string | null) => !!v && v === activeVersion.value
-    const isLatestVersion = (v?: string | null) => !!v && v === latestVersion.value
-
-    const releaseNotesHref = computed(() => {
-        const info = activeVersionInfo.value
-        if (!info) return undefined
-        if (props.releasesUrl) return `${props.releasesUrl}/tag/v${info.version}`
-        return info.releaseNotesUrl ?? undefined
-    })
-
-    const hrefFor = (v: string) => {
-        if (!props.pluginName || !v) return "#"
-        const rawTail = props.currentTail ?? props.pluginType ?? ""
-        const tail = rawTail ? `/${rawTail.replace(/^\/+/, "")}` : ""
-        return v === latestVersion.value
-            ? `/plugins/${props.pluginName}${tail}`
-            : `/plugins/${props.pluginName}/v${v}${tail}`
-    }
 
     const goTo = (v?: string | null) => {
         if (!v) return
@@ -152,35 +93,6 @@
         const target = e?.target as HTMLDetailsElement | null
         isPreviousOpen.value = !!target?.open
     }
-
-    const formatDate = (publishedAt?: string | null): string => {
-        if (!publishedAt) return ""
-        return new Intl.DateTimeFormat("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-        }).format(new Date(publishedAt))
-    }
-
-    const onDocumentClick = (e: MouseEvent) => {
-        if (!isOpen.value) return
-        if (root.value && !root.value.contains(e.target as Node)) {
-            isOpen.value = false
-        }
-    }
-
-    const onKeydown = (e: KeyboardEvent) => {
-        if (e.key === "Escape") isOpen.value = false
-    }
-
-    onMounted(() => {
-        document.addEventListener("click", onDocumentClick)
-        document.addEventListener("keydown", onKeydown)
-    })
-    onBeforeUnmount(() => {
-        document.removeEventListener("click", onDocumentClick)
-        document.removeEventListener("keydown", onKeydown)
-    })
 </script>
 
 <style lang="scss" scoped>
@@ -189,161 +101,6 @@
         font-size: $font-size-sm;
         font-weight: 600;
         padding-bottom: 0;
-    }
-
-    .dropdown {
-        margin-bottom: 0.75rem;
-        padding-top: 0.75rem;
-        position: relative;
-    }
-
-    .trigger {
-        align-items: center;
-        background: var(--ks-background-input);
-        border: 1px solid var(--ks-border-secondary);
-        border-radius: 0.5rem;
-        color: var(--ks-content-primary);
-        cursor: pointer;
-        display: flex;
-        font-size: 1.1rem;
-        font-weight: 700;
-        gap: 0.6rem;
-        padding: 0.4rem 0.85rem;
-        text-align: left;
-        width: 100%;
-
-        &.open {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        &:hover {
-            background-color: var(--ks-border-primary);
-        }
-
-        .trigger-version {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .trigger-chevron {
-            margin-left: auto;
-        }
-
-        .trigger-chevron :deep(svg) {
-            color: var(--ks-content-secondary);
-            font-size: 1.2rem;
-        }
-    }
-
-    .badge {
-        align-items: center;
-        border-radius: 999px;
-        display: inline-flex;
-        flex-shrink: 0;
-        font-size: $font-size-xs;
-        font-weight: 600;
-        line-height: 1;
-        padding: 0.25rem 0.55rem;
-
-        &.latest {
-            background: var(--ks-background-tag-success);
-            color: var(--ks-content-tag-success);
-        }
-
-        &.archived {
-            background: #2E2B00;
-            color: #FFF870;
-        }
-
-        &.small {
-            font-size: 10px;
-            padding: 0.15rem 0.45rem;
-        }
-    }
-
-    .panel {
-        background-color: var(--ks-background-primary);
-        border: 1px solid var(--ks-border-secondary);
-        border-radius: 0.5rem;
-        isolation: isolate;
-        left: auto;
-        margin-top: 4px;
-        max-width: min(420px, 90vw);
-        min-width: 100%;
-        overflow: hidden;
-        position: absolute;
-        right: 0;
-        top: 100%;
-        width: max-content;
-        z-index: 20;
-    }
-
-    /* Header (.panel-label) stays fixed; only the options scroll. */
-    .panel-options {
-        max-height: 200px;
-        overflow-x: hidden;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-    }
-
-    .panel-label {
-        background-color: var(--ks-background-input);
-        border-bottom: 1px solid var(--ks-border-primary);
-        border-top-left-radius: 0.45rem;
-        border-top-right-radius: 0.45rem;
-        color: var(--ks-content-secondary);
-        font-size: $font-size-xs;
-        padding: 0.4rem 0.85rem;
-    }
-
-    .option {
-        align-items: center;
-        color: var(--ks-content-primary);
-        display: flex;
-        font-size: $font-size-xs;
-        gap: 0.5rem;
-        padding: 0.5rem 0.85rem;
-        text-decoration: none;
-        white-space: nowrap;
-
-        &:hover {
-            background: var(--ks-border-primary);
-        }
-
-        &.selected {
-            background: rgba(132, 5, 255, 0.15);
-
-            .option-version {
-                color: var(--ks-content-link);
-            }
-        }
-
-        .option-version {
-            font-size: $font-size-sm;
-            font-weight: 700;
-        }
-
-        .option-date {
-            color: var(--ks-content-secondary);
-            flex-shrink: 0;
-            font-size: $font-size-xs;
-            margin-left: auto;
-            white-space: nowrap;
-        }
-
-        .option-check :deep(svg) {
-            color: var(--ks-content-link);
-            font-size: 0.95rem;
-        }
     }
 
     .stats {
