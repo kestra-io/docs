@@ -1,7 +1,7 @@
 ---
 title: "The executor/worker split: the design decision behind Kestra's distributed architecture"
 description: "The architectural reasoning behind Kestra's executor/worker separation, and what it means for replica counts, backend selection, and extending execution across regions, on-premises clusters, and GPU hardware."
-date: 2026-06-12T09:00:00
+date: 2026-06-15T09:00:00
 category: Engineering
 author:
   name: Parham Parvizi
