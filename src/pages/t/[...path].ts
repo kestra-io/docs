@@ -5,7 +5,24 @@ import type { APIRoute } from "astro"
 const proxyDomain = new URL("https://eu.posthog.com/")
 const staticProxyDomain = new URL("https://eu-assets.i.posthog.com/static/")
 
+// Every Kestra instance (cloud, custom domains, OSS self-hosted) loads this
+// proxy cross-origin, so analytics ingest responses must be CORS-readable. The
+// endpoint only proxies public PostHog ingestion (the token is public and the
+// cookie header is stripped below), so a wildcard origin without credentials is
+// safe here.
+const corsHeaders = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
+}
+
 export const ALL: APIRoute = async ({ request, clientAddress }) => {
+    // Answer CORS preflight locally instead of forwarding it upstream.
+    if (request.method === "OPTIONS") {
+        return new Response(null, { status: 204, headers: corsHeaders })
+    }
+
     const requestUrl = new URL(request.url)
     let realUrl = requestUrl.pathname.substring(2, requestUrl.pathname.length) + (requestUrl.search ? "?" + requestUrl.searchParams.toString() : "")
 
@@ -58,8 +75,12 @@ export const ALL: APIRoute = async ({ request, clientAddress }) => {
 
     const response = await fetch(forwardedRequest)
 
+    // Override any upstream value so a single, well-defined ACAO is returned.
+    const headers = new Headers(response.headers)
+    headers.set("Access-Control-Allow-Origin", "*")
+
     return new Response(response.body, {
         status: response.status,
-        headers: response.headers,
+        headers,
     })
 }
