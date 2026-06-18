@@ -76,11 +76,11 @@ export const ALL: APIRoute = async ({ request, clientAddress }) => {
     const response = await fetch(forwardedRequest)
 
     // Override any upstream value so a single, well-defined ACAO is returned.
-    const headers = new Headers(response.headers)
-    headers.set("Access-Control-Allow-Origin", "*")
+    const responseHeaders = new Headers(response.headers)
+    responseHeaders.set("Access-Control-Allow-Origin", "*")
 
     return new Response(response.body, {
         status: response.status,
-        headers,
+        headers: responseHeaders,
     })
 }
