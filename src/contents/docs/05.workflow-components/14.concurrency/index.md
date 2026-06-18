@@ -83,8 +83,6 @@ concurrency:
 tasks:
   - id: wait
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 10
 ```
@@ -120,8 +118,6 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
       - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
 ```
 
 Next, trigger multiple Executions of that flow and watch the `Concurrency` tab showing the active slots and queued Executions.

@@ -273,8 +273,6 @@ tasks:
 
   - id: pass_downstream
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - echo "{{ outputs.next_date_unix.value }}"
 ```

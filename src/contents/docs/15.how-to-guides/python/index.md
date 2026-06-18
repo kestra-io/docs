@@ -236,8 +236,6 @@ tasks:
 
   - id: log_downloads
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat {{ outputs.outputs_metrics.outputFiles['downloads.txt'] }}
 ```

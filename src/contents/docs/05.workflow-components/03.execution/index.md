@@ -232,8 +232,6 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     inputFiles:
       myfile.json: "{{ inputs.myCustomFileInput }}"
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat myfile.json
 ```
@@ -288,8 +286,6 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
       - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
 ```
 
 2) Execute the flow via an API call:
@@ -492,8 +488,6 @@ inputs:
 tasks:
   - id: for_each_item
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat "{{ inputs.items }}"
 

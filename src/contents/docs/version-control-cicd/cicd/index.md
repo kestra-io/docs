@@ -116,16 +116,12 @@ tasks:
       - id: validate-flows
         type: io.kestra.plugin.scripts.shell.Commands
         description: "Validate flows from Git before deploying them."
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
         commands:
           - /app/kestra flow validate flows/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
 
       - id: deploy-flows
         type: io.kestra.plugin.scripts.shell.Commands
         description: "Deploy flows to production namespaces."
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
         commands:
           - /app/kestra flow namespace update prod flows/prod/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"
           - /app/kestra flow namespace update prod.marketing flows/prod.marketing/ --server http://localhost:8080 --api-token "{{ secret('KESTRA_API_TOKEN') }}"

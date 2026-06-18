@@ -173,8 +173,6 @@ tasks:
       - python schedule.py "{{ trigger.date ?? inputs.date }}" {{ inputs.country }}
     beforeCommands:
       - pip install workalendar
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
 
   - id: log
     type: io.kestra.plugin.core.log.Log

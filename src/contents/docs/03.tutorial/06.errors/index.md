@@ -178,8 +178,6 @@ namespace: company.team
 tasks:
   - id: fail_four_times
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - 'if [ "{{ taskrun.attemptsCount }}" -eq 4 ]; then exit 0; else exit 1; fi'
     retry:

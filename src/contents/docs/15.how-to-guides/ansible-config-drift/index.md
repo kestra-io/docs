@@ -59,8 +59,6 @@ tasks:
     type: io.kestra.plugin.ansible.cli.AnsibleCLI
     namespaceFiles:
       enabled: true
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     ansibleConfig: |
       [defaults]
       interpreter_python = auto_silent

@@ -128,8 +128,6 @@ namespace: company.team
 tasks:
   - id: python_output
     type: io.kestra.plugin.scripts.python.Script
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     outputFiles:
       - "*.txt"
     script: |
@@ -139,8 +137,6 @@ tasks:
 
   - id: read_output
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat {{ outputs.python_output.outputFiles['myfile.txt'] }}
 ```

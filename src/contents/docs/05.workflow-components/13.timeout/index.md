@@ -43,8 +43,6 @@ description: This flow will always fail because of a timeout.
 tasks:
   - id: costly_query
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 10
     timeout: PT5S

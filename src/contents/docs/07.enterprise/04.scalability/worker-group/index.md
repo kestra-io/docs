@@ -60,8 +60,6 @@ namespace: company.team
 tasks:
   - id: wait
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 10
     workerGroup:
@@ -170,8 +168,6 @@ namespace: company.team
 tasks:
   - id: wait
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 10
 

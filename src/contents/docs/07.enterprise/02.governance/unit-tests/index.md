@@ -371,8 +371,6 @@ namespace: company.team
 tasks:
   - id: generate_output_file
     type: io.kestra.plugin.scripts.shell.Script
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     outputFiles:
       - out.txt
     script: |

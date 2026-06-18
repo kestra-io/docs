@@ -453,15 +453,11 @@ tasks:
     tasks:
       - id: first
         type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "{{ taskrun.id }}" > {{ workingDir }}/stay.txt'
 
       - id: second
         type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
         commands:
           - |
             echo '::{"outputs": {"stay":"'$(cat {{ workingDir }}/stay.txt)'"}}::'
@@ -536,8 +532,6 @@ tasks:
     tasks:
       - id: ok
         type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "started after manual validation"'
 
@@ -547,8 +541,6 @@ tasks:
     tasks:
       - id: waited
         type: io.kestra.plugin.scripts.shell.Commands
-        taskRunner:
-          type: io.kestra.plugin.core.runner.Process
         commands:
           - 'echo "start after 5 minutes"'
 ```

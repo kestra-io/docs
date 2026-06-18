@@ -41,8 +41,6 @@ description: This flow retries 4 times and succeeds on the 5th attempt
 tasks:
 - id: failed
   type: io.kestra.plugin.scripts.shell.Commands
-  taskRunner:
-    type: io.kestra.plugin.core.runner.Process
   commands:
   - 'if [ "{{taskrun.attemptsCount}}" -eq 4 ]; then exit 0; else exit 1; fi'
   retry:

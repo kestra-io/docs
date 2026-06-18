@@ -114,8 +114,6 @@ tasks:
 
   - id: check_output_file
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat {{ outputs.py_outputs.outputFiles['myoutput.json'] }}
 ```

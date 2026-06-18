@@ -76,8 +76,6 @@ tasks:
 
   - id: log_subflow_output
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - cat "{{ outputs.subflow_call.outputs.some_output }}"
 ```

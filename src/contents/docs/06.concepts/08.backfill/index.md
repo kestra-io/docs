@@ -21,8 +21,6 @@ tasks:
       scheduledDate: "{{trigger.date ?? execution.startDate}}"
   - id: external_system_export
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
     commands:
       - echo "processing data for {{trigger.date ?? execution.startDate}}"
       - sleep $((RANDOM % 5 + 1))

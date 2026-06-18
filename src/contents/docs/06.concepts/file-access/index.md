@@ -38,8 +38,6 @@ tasks:
 pluginDefaults:
   - type: io.kestra.plugin.scripts.python.Commands
     values:
-      taskRunner:
-        type: io.kestra.plugin.core.runner.Process
       commands:
         - python hello.py
 ```
