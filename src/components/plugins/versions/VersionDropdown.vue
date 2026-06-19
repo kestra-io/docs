@@ -21,8 +21,8 @@
                 v-model="query"
                 type="text"
                 class="panel-search"
-                placeholder="Search version or Kestra"
-                aria-label="Search by version or Kestra version"
+                placeholder="Search version"
+                aria-label="Search by plugin version or Kestra version"
             />
             <div class="panel-options">
                 <a
