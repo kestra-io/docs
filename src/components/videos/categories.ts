@@ -1,6 +1,9 @@
 export const categories = new Map([
     ["all", "All videos"],
-    ["deep-dive", "Deep Dive Tutorials"],
-    ["quick-start", "Quick Start Tutorials"],
+    ["getting-started", "Getting Started"],
+    ["data", "Data"],
+    ["ai", "AI"],
+    ["infrastructure", "Infrastructure"],
     ["feature-highlight", "Feature Highlight"],
+    ["webinar", "Webinar"],
 ])
