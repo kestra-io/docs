@@ -234,7 +234,8 @@
         width: 100%;
 
         &::placeholder {
-            color: var(--ks-content-secondary);
+            color: var(--ks-content-tertiary);
+            opacity: 0.7;
         }
     }
 
