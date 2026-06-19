@@ -39,7 +39,7 @@
                         <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
                         <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
                     </span>
-                    <span v-if="v?.minCoreCompatibilityVersion" class="option-sub">Min. Kestra ver: <strong>{{ v.minCoreCompatibilityVersion }}</strong></span>
+                    <span v-if="v?.minCoreCompatibilityVersion" class="option-sub">Min. Kestra ver.: <strong>{{ v.minCoreCompatibilityVersion }}</strong></span>
                 </a>
                 <div v-if="filteredVersions.length === 0" class="panel-empty">
                     No matching versions
