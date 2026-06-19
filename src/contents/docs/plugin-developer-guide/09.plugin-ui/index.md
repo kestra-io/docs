@@ -2,7 +2,7 @@
 title: Develop Plugin Artifacts
 sidebarTitle: Develop Plugin Artifacts
 icon: /src/contents/docs/icons/dev.svg
-description: Learn how to build custom Vue.js UI components for your Kestra plugin, from scaffolding to Gradle integration, using Module Federation and the artifact-sdk.
+description: Build custom Vue.js UI components for your Kestra plugin using Module Federation and the artifact-sdk.
 ---
 
 Plugins can ship custom Vue.js frontend components that load directly into the Kestra UI at runtime, without any changes to Kestra core.
