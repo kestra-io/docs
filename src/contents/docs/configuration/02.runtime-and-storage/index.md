@@ -404,9 +404,14 @@ kestra:
       region: "default"
       bucket: my-bucket
       part-size: 5MB
+      # httpConnectTimeout: PT10S  # optional; omit to use OkHttp default (10 s)
+      # httpReadTimeout: PT10S     # optional; omit to use OkHttp default (10 s)
+      # httpWriteTimeout: PT10S    # optional; omit to use OkHttp default (10 s)
 ```
 
 If MinIO uses `MINIO_DOMAIN`, enable `kestra.storage.minio.vhost: true` and keep `endpoint` set to the base domain rather than `bucket.domain`.
+
+If large bucket operations such as `deleteByPrefix()` produce `SocketException: Socket closed` errors on heavily loaded or large buckets, increase `httpReadTimeout` or set it to `PT0S` to disable the timeout entirely.
 
 ### SeaweedFS
 
@@ -425,7 +430,7 @@ kestra:
 
 ### Outscale Object Storage
 
-Outscale uses the MinIO-compatible backend type. The main thing that changes is the endpoint and the requirement to keep TLS enabled:
+Outscale uses the MinIO-compatible backend type. The endpoint and TLS requirement are the only differences:
 
 ```yaml
 kestra:
