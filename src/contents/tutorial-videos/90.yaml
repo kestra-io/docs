@@ -1,7 +1,10 @@
-title: "What's New in Kestra 1.2: Assets, Templated Custom Blueprints, and New Plugins!"
-description: "Kestra 1.2 delivers asset management, templated custom blueprints, namespace file versioning, enhanced concurrent execution capabilities, ..."
-category: "Feature Highlight"
+title: "Is AI Replacing Tech Writers? (Full Webinar)"
+description: "In this live webinar, AJ, the sole technical writer at Kestra, explains
+  how he uses AI to manage over 1,400 plugin references, product docs, and release
+  posts. He shares his insights on where to draw the line between automation and human
+  review to build an efficient, scalable documentation workflow."
+category: "Webinar"
 author: "Kestra"
-url: "https://youtube.com/watch?v=k_iOLFYyiuM"
-publicationDate: "2026-01-17T00:00:00.000"
-contentType: "Feature Highlight"
+url: "https://www.youtube.com/live/F0BtDzOqsX8?si=V4p2x_wrMBOFef8L"
+publicationDate: "2026-06-19T00:00:00.000"
+contentType: "Webinar"

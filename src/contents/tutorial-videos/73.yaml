@@ -1,7 +1,9 @@
-title: "What is a Data Lake? Data Engineering Basics with Kestra"
-description: "Data Lakes are a key part of data engineering, but what are they? In this video, Will dives into the problem before data lakes with a ..."
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
 category: "Data"
 author: "Kestra"
-url: "https://youtube.com/watch?v=tIf01lpweVg"
-publicationDate: "2025-12-05T00:00:00.000"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
 contentType: "Data"
