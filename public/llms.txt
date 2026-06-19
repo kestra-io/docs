@@ -365,6 +365,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
 - [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
 - [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
+- [Deploy to OpenShift with Kestra](https://kestra.io/docs/how-to-guides/openshift.md)
 - [Parallel vs. Sequential Tasks in Kestra](https://kestra.io/docs/how-to-guides/parallel-vs-sequential.md)
 - [Pause and Resume Flows in Kestra](https://kestra.io/docs/how-to-guides/pause-resume.md)
 - [Run Perl Inside Your Flows](https://kestra.io/docs/how-to-guides/perl.md)
