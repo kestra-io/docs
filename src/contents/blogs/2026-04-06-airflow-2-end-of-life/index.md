@@ -58,7 +58,7 @@ Running unsupported software in a production data environment isn't a risk most 
 
 ## What the Airflow 3 upgrade actually costs
 
-[Airflow 3](../2026-01-27-airflow-3-vs-airflow-2/index.md) is not a drop-in upgrade. The official migration guide lists several breaking changes:
+[Airflow 3](../airflow-3-vs-airflow-2/index.md) is not a drop-in upgrade. The official migration guide lists several breaking changes:
 
 - **SubDAGs are gone.** If you used SubDAGs for modular pipeline logic, you need to replace them with Task Groups or dynamic task mapping. SubDAGs were already deprecated in Airflow 2.x, but if you never got around to removing them, now you have to.
 - **Deprecated context variables are removed.** Several execution context variables that still worked in Airflow 2.x are gone in Airflow 3. Any DAG that references them will break.
@@ -75,7 +75,7 @@ EOL is an opportunity to reconsider that decision. Switching costs are lower rig
 
 Many teams will upgrade without seriously evaluating alternatives because that could genuinely be the right call for some of them. But it's worth asking the question before committing several engineering weeks to Airflow-specific work that won't transfer anywhere else.
 
-If you want a broader view of what's available at this crossroads, we've covered [enterprise Airflow alternatives](../2026-01-18-enterprise-airflow-alternatives/index.md) in a separate post.
+If you want a broader view of what's available at this crossroads, we've covered [enterprise Airflow alternatives](../enterprise-airflow-alternatives/index.md) in a separate post.
 
 ## The alternative lift is comparable, not smaller
 

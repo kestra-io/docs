@@ -1,5 +1,6 @@
 ---
 import Layout from "~/components/layout.astro"
+import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Header from "~/components/price/Header.astro"
 import HostSwitcher from "~/components/price/HostSwitcher.astro"
 import PriceGrid from "~/components/price/PriceGrid.astro"
@@ -13,6 +14,9 @@ const description =
 ---
 
 <Layout {title} {description}>
+    <Fragment slot="head">
+        <SchemaSoftwareApplication url="https://kestra.io/pricing" />
+    </Fragment>
     <div class="cont">
         <Header>
             <HostSwitcher slot="switcher" />

@@ -3,6 +3,8 @@ description: "Compare Kestra vs Tray.ai: Open-source workflow orchestration for 
 competitorName: Tray.ai
 category: Business Automation
 shortDescription: "Enterprise SaaS integration and AI agent platform vs. engineering-grade orchestration with self-hosting and GitOps."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond enterprise iPaaS."
 
 brandColor:
   color: "#1E3A8A"
@@ -230,7 +232,7 @@ commonQuestions:
   - question: How do I migrate from Tray.ai to Kestra?
     answer: "Map each Tray.ai workflow step to the equivalent Kestra plugin. HTTP connectors, schedule triggers, Slack and email notifications, and webhook-based flows translate directly. For Tray.ai's 700+ pre-built connectors, Kestra's 1,200+ plugin library covers the most common enterprise targets: Salesforce, AWS, GCP, Azure, databases, and data warehouses. For systems without a native plugin, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with data and infrastructure workflows while keeping Tray.ai for complex enterprise SaaS integrations during the transition."
   - question: Can Kestra handle the enterprise app integrations Tray.ai offers?
-    answer: "Kestra's 1,200+ plugins cover the most common enterprise integration targets: Salesforce, AWS, GCP, Slack, databases, data warehouses, and more. For systems without a native plugin, the HTTP plugin handles any REST API and Script tasks can call any SDK or CLI tool. Tray.ai's 700+ pre-built connectors are optimized for deep SaaS integrations with minimal custom configuration. For teams whose critical integrations involve common enterprise platforms, Kestra's coverage is sufficient. For teams that rely on Tray.ai's specific pre-built enterprise connectors for Workday, SAP, or ServiceNow, those reduce integration time."
+    answer: "Kestra's 1,400+ plugins cover the most common enterprise integration targets: Salesforce, AWS, GCP, Slack, databases, data warehouses, and more. For systems without a native plugin, the HTTP plugin handles any REST API and Script tasks can call any SDK or CLI tool. Tray.ai's 700+ pre-built connectors are optimized for deep SaaS integrations with minimal custom configuration. For teams whose critical integrations involve common enterprise platforms, Kestra's coverage is sufficient. For teams that rely on Tray.ai's specific pre-built enterprise connectors for Workday, SAP, or ServiceNow, those reduce integration time."
   - question: How does Tray.ai's AI agent capability compare to Kestra's approach?
     answer: "Tray.ai's Merlin Agent Builder is purpose-built for creating and governing AI agents, with native MCP server support, identity controls, and enterprise guardrails. Kestra orchestrates AI workflows as part of broader pipelines: calling LLM APIs, processing outputs, routing results, and triggering downstream systems, all in deterministic YAML with full observability. If your primary goal is deploying governed conversational or autonomous AI agents across enterprise systems, Tray.ai is designed for that. If your AI workloads are steps inside data pipelines or infrastructure workflows that need reliable orchestration, Kestra handles that natively."
   - question: How does Kestra handle compliance requirements that Tray.ai covers?

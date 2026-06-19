@@ -56,7 +56,7 @@ Similarly, for Kubernetes installations, run a pod with the migration script (`-
 
 :::alert{type="warning"}
 If you upgrade to **1.1.0** without running the migration script, the **Key-Value Store** and **Secrets** pages in the UI will appear empty.
-This is only a **UI issue** — your flows and tasks will continue to run normally and access their values as expected.
+Flows and tasks will continue to run normally. However, there is an additional impact: KV items and secrets stored in namespaces that contain no flows will be **silently excluded from metadata backups** — they will not appear in the backup archive and will be absent after restore.
 
 To fix the UI display, run the migration command above.
 It’s safe to execute this migration **retroactively** after the upgrade if needed.

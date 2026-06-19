@@ -26,11 +26,15 @@ kpi3: |-
 quote: With Kestra, orchestration stopped being a fragile point in the
   architecture and became a stable foundation for the business.
 quotePerson: Rafael Bartalotti
-quotePersonTitle: Engineering Manager
+quotePersonTitle: Engineering and Architecture Manager
 industry: largest wine e-tailers in Latin America
 headquarter: São Paulo, Brazil
+region: South America
+companySize: "51–500"
 solution: E-commerce & Data Platform
+tagline: Latin America's largest wine e-commerce platform
 companyName: Víssimo
+useCase: Business Automation
 cta: "What would change if your e-commerce integrations ran mission-critical workflows automatically—keeping inventory, orders, and fulfillment in sync at scale?"
 ---
 
@@ -65,14 +69,17 @@ As volume and complexity increased, so did operational cost, incident frequency,
 
 ## The turning point: cost optimization exposed structural limits
 
-In 2025, Víssimo launched a broader technology optimization and FinOps initiative, with a clear goal: **scale sustainably by simplifying the platform and reducing structural inefficiencies**.
+In 2024, Víssimo launched a broader technology optimization and FinOps initiative, with a clear goal: **scale sustainably by simplifying the platform and reducing structural inefficiencies**.
 
-This process made two things clear:
+That work surfaced two structural problems. The iPaaS and lambda-heavy BI stack were expensive and hard to govern. And without true orchestration, every incident required hands-on intervention from the same small group of specialists.
 
-- The existing iPaaS and lambda-heavy BI architecture were becoming costly and hard to govern.
-- The lack of true orchestration was amplifying operational risk and complexity.
+The path forward became clear in quarterly steps:
 
-The team evaluated several orchestration options, including n8n, Temporal, Prefect, and Airflow. Kestra emerged as the most balanced solution for their needs.
+- **Q1/2025**: iPaaS and BI lambdas identified as structural bottlenecks; the team evaluated n8n, Temporal, Prefect, Airflow, and Kestra
+- **Q2/2025**: Kestra consolidates the BI and ETL stack
+- **Q3/2025**: Kestra consolidates iPaaS
+
+Kestra emerged as the most balanced solution—the best fit across open source, declarative YAML, native state and replay, full observability, and a mental model that maps naturally to e-commerce flows.
 
 > “It became clear that Kestra allowed us to consolidate responsibilities that were previously split across multiple tools—without increasing complexity.”
 
@@ -89,7 +96,7 @@ It allowed Víssimo to:
 - Gain **native observability and traceability** without bolting on external systems
 - Reduce total cost of ownership compared to iPaaS and lambda-centric architectures
 
-Most importantly, Kestra enabled orchestration to be treated as **core infrastructure**.
+Kestra made orchestration **core infrastructure**, not a peripheral concern layered on top of existing flows.
 
 ## The solution: orchestration as the backbone
 
@@ -105,7 +112,38 @@ Kestra was deployed on Kubernetes and operated as a production-grade platform, w
 - **Control plane**: orchestration, state, retries, visibility
 - **Workers**: execution, scaling, and isolation
 
-This separation proved critical during high-load scenarios and large-scale reprocessing.
+Under high load and during large-scale reprocessing, that separation is what held.
+
+Here's a representative workflow from the order-to-ERP integration, showing how resilience is declared rather than coded:
+
+```yaml
+id: order_to_erp_pipeline
+namespace: ecommerce.production
+
+labels:
+  order_id: "{{ trigger.orderId }}" # idempotency by business key
+
+triggers:
+  - id: order_created
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: 4wjtkzwVGBM9yKnjm3yv8r
+
+concurrency:
+  limit: 50         # protects ERP from burst
+  behavior: QUEUE   # absorbs peak without crashing legacy
+
+tasks:
+  - id: push_to_sap
+    type: io.kestra.plugin.core.http.Request
+    timeout: PT30S   # expected failure, handled declaratively
+    retry:
+      type: exponential
+      maxAttempts: 5
+      interval: PT1M
+      maxInterval: PT5M
+```
+
+Timeout, retry, concurrency, and idempotency are workflow contracts—not scattered defensive code.
 
 ## What they run on the platform
 
@@ -124,7 +162,7 @@ Resilience is modeled directly in workflows through:
 - Concurrency control to protect legacy systems
 - Safe, repeatable reprocessing without data duplication
 
-## The results: resilience, clarity, and measurable ROI
+## The results: 40% BI cost reduction, zero Black Friday incidents
 
 The impact was both operational and financial:
 
@@ -136,17 +174,15 @@ The impact was both operational and financial:
 > “It was the most predictable and controlled Black Friday we’ve ever experienced.”
 > 
 
-Native workflow observability shifted operations from reactive firefighting to proactive control, while reducing dependency on individual expertise.
+Failures that once required a specialist to diagnose now appeared directly in the workflow log.
 
 ## What’s next
 
-With a stable orchestration foundation in place, Víssimo is expanding Kestra’s role:
+With a stable orchestration foundation in place, Víssimo is expanding Kestra’s role across additional business processes and omnichannel flows.
 
-- Automating additional business processes
-- Exploring AI-driven workflows and self-healing patterns
-- Strengthening omnichannel and reverse-ETL use cases
+On AI, the team’s view is direct: without orchestration it’s unpredictable. An AI agent with no replay, no audit trail, and no determinism isn’t automation—it’s operational variability. Kestra gives AI tasks the same contract as any other workflow step: replay on failure, idempotency by business key, SLA and timeout enforcement, full audit trail, and governance from day one.
 
-What started as cost optimization became a strategic transformation: **orchestration as a platform capability**, supporting growth with predictability, governance, and resilience.
+What started as a cost optimization review ended with a transformed architecture. BI costs fell 40%, iPaaS spend dropped by an order of magnitude, and Black Friday 2025 ran without a single incident.
 
 
 >A big thank you to [Rafael Bartalotti](https://www.linkedin.com/in/rafaelbartalotti/) Engineering Manager at Víssimo for sharing his story with us.

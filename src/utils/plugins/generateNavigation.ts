@@ -1,5 +1,6 @@
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
-import { isEntryAPluginElementPredicate, slugify, subGroupName } from "@kestra-io/ui-libs"
+import type { Plugin, PluginElement } from "./plugin"
+import { isEntryAPluginElementPredicate, subGroupName } from "./plugin"
+import { slugify } from "../slugify"
 import type { NavItem } from "~/utils/navigation"
 import { toNavTitle } from "./all"
 
@@ -60,7 +61,7 @@ export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Nav
                             children: buildElementNav(p, url),
                         }
                     })
-                : buildElementNav(subGroups[0] ?? wrappers[0], rootUrl)
+                : buildElementNav(root, rootUrl)
 
             return {
                 title: toNavTitle(root.title),

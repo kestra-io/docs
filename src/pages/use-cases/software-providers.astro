@@ -5,9 +5,10 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Snippets from "~/components/common/Snippets.vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -41,9 +42,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Software, Consulting & Service Providers"
+const title = "Workflow Orchestration for SaaS & Software Providers"
 const description =
-    "One orchestration engine for every client, every product, every delivery. Onboard customers, ship environments, and run multi-tenant workloads on the platform your delivery team already wants."
+    "Open-source orchestration for software vendors, consulting firms, and MSPs. Embed workflow automation in your product and run multi-tenant workloads at scale."
 
 const FLOW_STAGES = [
     {
@@ -484,7 +485,7 @@ const FAQ = [
     },
     {
         question: "How does Kestra fit alongside Airflow, Prefect, Temporal, n8n, and existing Python or cron orchestration?",
-        answer: "Kestra is the open-source modernization path. Most teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Open standards throughout (YAML, REST, OIDC, OpenTelemetry), 1,200+ plugins, and a clear exit path for every workflow. The pattern modern SaaS teams use to retire DAG-only orchestrators and DIY scripts without breaking production.",
+        answer: `Kestra is the open-source modernization path off <a href="/vs/airflow">Airflow</a>, <a href="/vs/prefect">Prefect</a>, <a href="/vs/temporal">Temporal</a>, and <a href="/vs/n8n">n8n</a>. Most teams start by wrapping existing jobs as Kestra flows, then migrate workflow by workflow at their own pace. No big-bang cutover, no freezing of existing automation. Open standards throughout (YAML, REST, OIDC, OpenTelemetry), 1,400+ plugins, and a clear exit path for every workflow. The pattern modern SaaS teams use to retire DAG-only orchestrators and DIY scripts without breaking production.`,
     },
     {
         question: "Does Kestra support GitOps, Terraform, and IaC-driven flow deployment?",
@@ -518,11 +519,30 @@ const FAQ = [
         question: "What kind of support and Customer Success do enterprise software and services teams get?",
         answer: "Enterprise plans include 24x7 support, a dedicated Slack channel with the engineering team, a Customer Success Program staffed with implementation experts, and a clear escalation path for production issues. Quarterly business reviews, joint roadmap discussions, and named contacts for upgrades and migrations. The cadence software vendors and consultancies expect from a platform their delivery teams depend on.",
     },
+    {
+        question: "How does Kestra compare to Temporal or Camunda for embedding in a software product?",
+        answer: `<a href="/vs/temporal">Temporal</a> requires code-first Java/Go/TypeScript workers and has no no-code UI for business users. <a href="/vs/camunda">Camunda</a> is BPMN-centric with significant modeling overhead. Kestra ships as a single deployable unit with a declarative YAML engine, REST API, a self-service App UI for non-engineers, and a Terraform provider for fleet deployment. Software vendors embed Kestra as the orchestration backbone in their product and expose Kestra Apps to customers as the self-service workflow UI — no orchestration expertise required from end users.`,
+    },
+    {
+        question: "What is the best workflow orchestration platform for multi-tenant SaaS products?",
+        answer: "Kestra's namespace isolation maps directly to SaaS tenancy — each customer or workspace owns their namespace, flows, secrets, and execution history. One control plane serves hundreds of tenants with namespace-level RBAC, per-tenant audit logs, and dedicated worker groups for performance isolation. The Terraform provider deploys and manages namespaces at fleet scale. Software vendors use Kestra to power the automation layer inside their SaaS product without building orchestration infrastructure from scratch.",
+    },
+    {
+        question: "How do consulting and managed-service firms use Kestra for client delivery?",
+        answer: "Consulting and MSP teams use Kestra to standardize delivery across client engagements. One shared control plane with namespace isolation separates client environments, secrets, and workflows. Git-backed YAML flows travel with the engagement — no configuration drift between environments. The Terraform provider deploys standard namespace templates at the start of each engagement, cutting setup time from days to minutes.",
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Workflow Orchestration for Software and Managed Service Providers"
+        audienceType="SaaS Companies, Software Vendors, Consulting Firms, and Managed Service Providers"
+        description={description}
+    />
     <div class="software-providers">
 
         <section class="hero">
@@ -534,8 +554,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    One orchestration engine for<br />
-                    <span class="gradient">every client, every product, every delivery.</span>
+                    Workflow orchestration for<br />
+                    <span class="gradient">software providers and consulting firms.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
@@ -617,11 +637,15 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by software vendors, SaaS platforms, consultancies &amp; managed-service providers</span>
                     <div class="hero-logos__row">
-                        <Image src={AmdocsLogoImg} alt="Amdocs" class="hero-logos__item hero-logos__item--amdocs" />
+                        <a href="/use-cases/stories/amdocs-delivers-integration-environments-as-a-service-with-kestra" aria-label="Read the Amdocs customer story">
+                            <Image src={AmdocsLogoImg} alt="Amdocs" class="hero-logos__item hero-logos__item--amdocs" />
+                        </a>
                         <Image src={AcxiomLogoImg} alt="Acxiom" class="hero-logos__item hero-logos__item--acxiom" />
                         <Image src={KPMGLogoImg} alt="KPMG" class="hero-logos__item hero-logos__item--kpmg" />
                         <Image src={HCLLogoImg} alt="HCL" class="hero-logos__item hero-logos__item--hcl" />
-                        <Image src={SophtLogoImg} alt="Sopht" class="hero-logos__item hero-logos__item--sopht" />
+                        <a href="/use-cases/stories/sopht-scales-its-green-itops-platform-with-kestra" aria-label="Read the Sopht customer story">
+                            <Image src={SophtLogoImg} alt="Sopht" class="hero-logos__item hero-logos__item--sopht" />
+                        </a>
                     </div>
                 </div>
             </div>
@@ -630,7 +654,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the <span class="highlight">platforms software and services teams ship</span>.
+                    How <span class="highlight">multi-tenant workflow orchestration</span> powers SaaS, consulting, and MSP delivery.
                 </h2>
                 <p class="flow__lead">
                     Customer onboarding. Environment-as-a-Service. Multi-tenant data pipelines. AI in your product.
@@ -672,7 +696,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What <span class="workloads__highlight">you can build</span> on Kestra for your customers, your platform, and your team.</h2>
+                    <h2>Workflow orchestration use cases for SaaS products, consulting delivery, and managed services.</h2>
                     <p>Twelve concrete patterns, from onboarding the next customer to retiring the brittle Python holding your platform together. Build each one once. Run it across every tenant, every environment, every client. Replayable per execution, audit-ready by default.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -697,7 +721,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built for the <span class="highlight">platform and delivery teams</span> behind your product.
+                    SaaS orchestration requirements: <span class="highlight">multi-tenant isolation, Terraform, and embedding</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -709,51 +733,11 @@ const FAQ = [
             </div>
         </section>
 
-        <section class="build">
-            <div class="container">
-                <h2>Patterns from real <span class="highlight">software and services deployments</span>.</h2>
-                <p class="build__lead">Real workflows running today inside SaaS platforms, consultancies, and managed-service teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="header row g-0">
-                            {BUILD_TABS.map((tab, idx) => (
-                                <div
-                                    class:list={[
-                                        "col-6 col-md-3 header-tab",
-                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
-                                    ]}
-                                    data-tab-target={idx}
-                                >
-                                    {tab.name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {BUILD_TABS.map((tab, idx) => (
-                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
-                                <div class="panel panel-1">
-                                    <Snippets client:idle code={tab.code} lang="yaml" />
-                                </div>
-                                <div class="panel panel-2">
-                                    <h3 data-usal="fade-r">{tab.title}</h3>
-                                    <p data-usal="fade-l">{tab.description}</p>
-                                    <div class="plugins" data-usal="zoomin">
-                                        {tab.plugins.map(plugin => (
-                                            <div class="plugin-icon">
-                                                <TaskIcon cls={plugin.cls} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link class="goto" href={tab.href} data-usal="fade-r">
-                                        Explore Blueprints
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+        <BlueprintTabs
+            title={`SaaS and MSP workflow orchestration <span class="highlight">examples and blueprints</span>.`}
+            lead="Real workflows running today inside SaaS platforms, consultancies, and managed-service teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals."
+            items={BUILD_TABS.map((t) => ({ ...t, plugins: t.plugins.map((p) => p.cls) }))}
+        />
 
         <GoFurther />
 
@@ -795,15 +779,22 @@ const FAQ = [
     :global(html.dark) .software-providers {
         .flow,
         .workloads,
-        .build,
         .enterprise {
             background: #1C1C20;
         }
         :global(section.quotes-wrapper),
         :global(section.plugin-block),
-        :global(.see) {
+        :global(.see),
+        :global(.blueprint-tabs) {
             background: #1C1C20;
         }
+    }
+
+    :global(.blueprint-tabs h2 .highlight) {
+        background: linear-gradient(90deg, #{$sw-magenta}, #{$sw-magenta-bright});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero {
@@ -1495,171 +1486,6 @@ const FAQ = [
         }
     }
 
-    .build {
-        padding: 3rem 0 4.5rem;
-        background: var(--ks-background-primary);
-        border-bottom: $block-border;
-
-        .container {
-            max-width: 73.75rem;
-            margin: 0 auto;
-            padding-inline: 0;
-
-            h2 {
-                margin-bottom: 1rem;
-                padding-inline: $rem-1;
-                text-align: center;
-
-                .highlight { color: $sw-magenta; }
-
-                @include media-breakpoint-up(xl) { padding-inline: 0; }
-            }
-
-            .wrapper {
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-                border-radius: 13px;
-
-                @include media-breakpoint-down(xl) { border-radius: 0; }
-
-                .inner {
-                    border-radius: $rem-1;
-                    background: var(--ks-background-primary-inverse);
-                    overflow: clip;
-
-                    @include media-breakpoint-down(xxl) { border-radius: 0; }
-
-                    .header {
-                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
-
-                        & > div {
-                            padding: 1.1875rem $rem-2;
-                            font-size: $font-size-md;
-                            color: var(--ks-content-secondary-inverse);
-                            text-align: center;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-
-                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
-
-                            &.active {
-                                background: var(--ks-background-secondary-inverse);
-                                border-bottom: 1px solid var(--ks-border-active);
-                                color: var(--ks-content-primary-inverse);
-                                font-weight: 600;
-                            }
-                        }
-
-                        & .middle-part {
-                            border-left: 1px solid var(--ks-border-primary-inverse);
-                            border-right: 1px solid var(--ks-border-primary-inverse);
-                        }
-                    }
-
-                    .content {
-                        display: none;
-                        flex-direction: row;
-                        gap: $rem-2;
-                        padding: $rem-2;
-                        justify-content: center;
-
-                        &.active { display: flex; }
-
-                        @include media-breakpoint-down(xl) {
-                            flex-direction: column;
-                            align-items: center;
-                        }
-
-                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
-
-                        .panel {
-                            border-radius: 0.5rem;
-                            flex-shrink: 0;
-
-                            &.panel-1 {
-                                width: 39.4375rem;
-
-                                @include media-breakpoint-down(xl) { width: 100%; }
-
-                                :global(.code-card) {
-                                    border: 1px solid var(--ks-border-secondary-inverse);
-                                    background: var(--ks-background-input);
-                                    height: 100%;
-
-                                    :global(.code-inner) { transition: max-height 0.3s ease; }
-                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
-
-                                    &:global(:not(.is-expanded)) {
-                                        :global(.code-inner) { max-height: 27.9375rem !important; }
-                                    }
-                                }
-                            }
-
-                            &.panel-2 {
-                                position: relative;
-                                padding-top: $rem-2;
-                                color: var(--ks-content-primary-inverse);
-                                width: 27.5625rem;
-
-                                @include media-breakpoint-down(xl) {
-                                    width: 100%;
-                                    padding-top: 0;
-                                }
-
-                                p {
-                                    font-size: $font-size-lg;
-                                    margin-top: $rem-1;
-                                    margin-bottom: $rem-2;
-                                }
-
-                                .plugins {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    flex-wrap: wrap;
-
-                                    .plugin-icon {
-                                        width: 2.125rem;
-                                        height: 2.125rem;
-                                        padding: 0.375rem;
-                                        background: $white;
-                                        border: $block-border;
-                                        border-radius: $border-radius;
-                                    }
-                                }
-
-                                .goto {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    color: var(--ks-content-link-inverse);
-                                    font-weight: 600;
-
-                                    @include media-breakpoint-down(xl) {
-                                        position: relative;
-                                        margin-top: $rem-3;
-                                        float: right;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &__lead {
-            text-align: center;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            margin: 0 auto $rem-2;
-            max-width: 44rem;
-            padding-inline: $rem-1;
-        }
-    }
-
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1677,7 +1503,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $sw-magenta-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$sw-magenta-bright}, #{$sw-magenta-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
@@ -1713,22 +1544,3 @@ const FAQ = [
     }
 </style>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        for (const container of document.querySelectorAll(".build .inner")) {
-            container.addEventListener("click", (e) => {
-                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
-                const target = tab && (container as Element).querySelector(
-                    `[data-tab-content="${tab.dataset.tabTarget}"]`
-                )
-                if (!target) return
-
-                for (const el of container.querySelectorAll(".header-tab, .content")) {
-                    el.classList.remove("active")
-                }
-                tab.classList.add("active")
-                target.classList.add("active")
-            })
-        }
-    })
-</script>

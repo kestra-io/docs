@@ -3,6 +3,7 @@ import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsSchema } from "./schemas/vs"
+import { orchestrationSchema } from "./schemas/orchestration"
 
 export const collections = {
     docs: defineCollection({
@@ -94,6 +95,13 @@ export const collections = {
         }),
         schema: vsSchema,
     }),
+    orchestration: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/orchestration",
+        }),
+        schema: orchestrationSchema,
+    }),
     externalBlogs: defineCollection({
         loader: glob({
             pattern: "./**/index.yml",
@@ -132,13 +140,21 @@ export const collections = {
                 kpi1: z.string(),
                 kpi2: z.string(),
                 kpi3: z.string(),
+                kpi4: z.string().optional(),
                 quote: z.string(),
                 quotePerson: z.string(),
                 quotePersonTitle: z.string(),
                 industry: z.string(),
+                region: z.string(),
                 headquarter: z.string(),
                 solution: z.string(),
+                tagline: z.string().optional(),
+                excerpt: z.string().optional(),
                 companyName: z.string(),
+                intro: z.string().optional(),
+                deployment: z.string().optional(),
+                useCase: z.string().optional(),
+                companySize: z.string().optional(),
                 cta: z.string().optional(),
             }),
     }),

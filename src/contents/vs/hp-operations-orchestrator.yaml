@@ -3,6 +3,8 @@ description: "Compare Kestra vs HP Operations Orchestrator (HP OO / Micro Focus 
 competitorName: "HP Operations Orchestrator"
 category: Infrastructure Automation
 shortDescription: "Legacy Java-based runbook automation vs. cloud-native declarative orchestration in YAML."
+seeHowTitle: "Modernizing Legacy IT Automation with Kestra"
+seeHowBody: "See how enterprises replace HP OO and other legacy runbook tools with Kestra's declarative platform."
 
 brandColor:
   color: "#0096d6"
@@ -30,7 +32,7 @@ businessValue:
     title: "Modern IT Orchestration Platform"
     list:
       - "Declarative YAML workflows—version-controlled, testable, CI/CD deployable"
-      - "1,200+ plugins for cloud, ITSM, Ansible, Terraform, PowerShell, databases"
+      - "1,400+ plugins for cloud, ITSM, Ansible, Terraform, PowerShell, databases"
       - "Self-service Apps with dynamic, API-backed forms and inline approvals"
       - "Flat worker-based pricing—no per-execution or per-content-pack fees"
       - "Cloud-native: Kubernetes, Docker, air-gapped—no Java application server required"
@@ -212,7 +214,7 @@ platformStrengths:
   title: "Kestra Is What HP OO Would Be If Built Today"
   features:
     - title: "No Content Packs, No Vendor Lock-In"
-      description: "Kestra's 1,200+ plugins are open-source, versioned with the platform, and integrate with the full modern stack—cloud APIs, Ansible, Terraform, Kubernetes, ITSM, and databases. No separate content pack licenses, no version compatibility matrix to manage."
+      description: "Kestra's 1,400+ plugins are open-source, versioned with the platform, and integrate with the full modern stack—cloud APIs, Ansible, Terraform, Kubernetes, ITSM, and databases. No separate content pack licenses, no version compatibility matrix to manage."
     - title: "Git-Native From Day One"
       description: "Every workflow is a YAML file that lives in your Git repository. Deploy through CI/CD pipelines, review in pull requests, roll back to any previous version. No proprietary flow designer required—use VS Code, vim, or any editor you already use."
     - title: "Migrate Legacy Flows Without Starting Over"

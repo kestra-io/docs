@@ -9,7 +9,7 @@ const navigationTree = {
         "Tutorial",
         "Architecture",
         "Contribute to Kestra",
-        "User Interface",
+        "UI & No Code",
         // "Video Tutorials"
     ],
     "Build with Kestra": [
@@ -17,7 +17,6 @@ const navigationTree = {
         "Concepts",
         "Multi-Language Script Tasks",
         "AI Tools",
-        "No Code",
         "Version Control & CI/CD",
         "Plugin Developer Guide",
         "Use Cases",
@@ -44,6 +43,14 @@ const navigationTree = {
 export function getNavigationTree(
     docsPages: CollectionEntry<"docs">[],
 ) {
+    // Sort docs by filePath to ensure consistent ordering
+    docsPages.sort((a, b) => {
+        if (a.filePath && b.filePath) {
+            return a.filePath.localeCompare(b.filePath)
+        }
+        return a.id.localeCompare(b.id)
+    })
+
     // build the initial tree structure by finding each title in the navigationTree
     // then build the navigation tree
     const navigationTreeResult: NavigationItem[] = []

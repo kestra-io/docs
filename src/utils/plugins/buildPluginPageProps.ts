@@ -1,11 +1,12 @@
 import {
+    extractPluginElements,
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
-    slugify,
     subGroupName,
     type Plugin,
     type PluginMetadata,
-} from "@kestra-io/ui-libs"
+} from "./plugin"
+import { slugify } from "../slugify"
 
 import {
     formatElementName,
@@ -24,16 +25,39 @@ interface BuildPluginPagePropsInput {
     subGroup: string | undefined
     pluginType: string | undefined
     pathname: string
-
     pageNames: Record<string, string>
     allPlugins: Plugin[]
     allPluginMetadata: PluginMetadata[]
-
     blueprintCounts: Record<string, number>
     relatedBlogs: any[]
-
     page: PluginPage | null
     sidebarPluginData: PluginPage | null
+}
+
+/** Drop a lone subgroup that only re-groups a foreign-package subset of the root (e.g. plugin-ee-git's
+ *  io.kestra.plugin.git tasks), so the page shows one flat task list instead of hiding the root's own tasks. */
+function dropRedundantSubgroup(plugins: Plugin[]): Plugin[] {
+    const subgroups = plugins.filter((p) => p.subGroup !== undefined)
+    const root = plugins.find((p) => p.subGroup === undefined)
+
+    if (subgroups.length !== 1 || !root) {
+        return plugins
+    }
+
+    const subgroupClasses = new Set(
+        Object.values(extractPluginElements(subgroups[0])).flat(),
+    )
+
+    const rootHasOwnTasks = (Object.entries(root) as [string, { cls: string; title?: string }[]][])
+        .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+        .flatMap(([, value]) => value)
+        .some((element) => element.title && !subgroupClasses.has(element.cls))
+
+    if (!rootHasOwnTasks) {
+        return plugins
+    }
+
+    return plugins.filter((p) => p.subGroup === undefined)
 }
 
 export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
@@ -53,8 +77,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const subgroups = allPlugins.filter((r) => r.name === pluginName)
 
-    const pluginsWithoutDeprecated: Plugin[] = filterPluginsWithoutDeprecated(
-        pluginType ? (sidebarPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
+    const pluginsWithoutDeprecated: Plugin[] = dropRedundantSubgroup(
+        filterPluginsWithoutDeprecated(
+            pluginType
+                ? (sidebarPluginData?.body?.plugins ?? [])
+                : (page?.body?.plugins ?? []),
+        ),
     )
 
     const subGroupPlugins = pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined)
@@ -151,6 +179,9 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const tocEntry = (id: string, text: string): TocLink => ({ id, depth: TOC_DEPTH, text })
 
+    const extractFirstHeading = (markdown: string): string | undefined =>
+        markdown.match(/^#{1,6}\s+(.+)$/m)?.[1]?.trim()
+
     const generateTocForPluginElements = (wrapper: Plugin): TocLink[] =>
         Object.entries(wrapper)
             .filter(([key]) => isEntryAPluginElementPredicate(key, wrapper[key as keyof Plugin]))
@@ -238,7 +269,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         return [
             ...baseTocLinks,
             ...(isRootView && rootPlugin?.longDescription
-                ? [tocEntry("how-to-use-this-plugin", "How to use this plugin")]
+                ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
             ...(isRootView && currentPluginVideos?.length > 0
                 ? [tocEntry("see-it-in-action", "See it in action")]

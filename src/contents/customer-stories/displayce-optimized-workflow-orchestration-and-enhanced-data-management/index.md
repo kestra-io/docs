@@ -35,9 +35,12 @@ quotePerson: Engineer at Displayce
 quotePersonTitle: ""
 industry: Advertising
 headquarter: Bordeaux, France
-solution: Displayce optimises the purchase, impact and quality of digital
-  out-of-home campaigns on over 1 million digital screens worldwide.
-companyName: ""
+region: Europe
+companySize: "51–500"
+solution: Displayce optimises the purchase, impact and quality of digital out-of-home campaigns on over 1 million digital screens worldwide.
+tagline: Digital out-of-home advertising platform across 1 million+ screens worldwide
+companyName: Displayce
+useCase: Data Orchestration
 cta: "What would change if your advertising data workflows ran faster—orchestrated automatically across every campaign and digital screen?"
 ---
 

@@ -4,6 +4,10 @@
 >
 > **For agents and LLMs:** Append `.md` to any `kestra.io/docs/*` URL to retrieve that page as plain Markdown, or set `Accept: text/markdown` on the request. For a full content snapshot of all pages, see [/llms-full.txt](/llms-full.txt). For the complete documentation index, see [/llms.txt](/llms.txt).
 
+## Tools & Capability Discovery
+
+- [MCP Server Config](https://kestra.io/.well-known/mcp): Use this to connect an agent to Kestra's orchestration tools.
+
 ## Core model
 
 Understanding these five concepts is enough to read and write most Kestra flows. Everything else in this file builds on them.
@@ -19,6 +23,7 @@ Understanding these five concepts is enough to read and write most Kestra flows.
 This section covers two distinct things: (1) guidance for AI agents interacting with Kestra, and (2) Kestra features for building AI and LLM-powered workflows. If you are an AI agent helping a user with Kestra, start with Agent Skills. If the user wants to build AI workflows on top of Kestra, use the remaining links.
 
 - [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
+- [Kestra MCP resources](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible AI tool to live Kestra plugin docs, blueprints, and documentation at runtime — no training data required
 - [AI Tools overview](https://kestra.io/docs/ai-tools.md): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
 - [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot.md): Generate and refine flow YAML from natural language prompts inside the Kestra UI
 - [AI Agents](https://kestra.io/docs/ai-tools/ai-agents.md): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
@@ -145,7 +150,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
-- [No-code editor](https://kestra.io/docs/no-code.md): Build and configure flows visually without writing YAML using the drag-and-drop editor
+- [No Code editor](https://kestra.io/docs/ui/flows.md): Build and configure flows visually without writing YAML — form-based editing that generates schema-validated YAML in real time
 
 ## Reference
 
@@ -170,6 +175,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Administrator Guide: Operate and Secure Your Cluster](https://kestra.io/docs/administrator-guide.md)
 - [Backup and Restore Kestra: Flows, Secrets, and Executions](https://kestra.io/docs/administrator-guide/backup-and-restore.md)
 - [Fix Basic Authentication Issues in Kestra](https://kestra.io/docs/administrator-guide/basic-auth-troubleshooting.md)
+- [Adding a Self-Signed Certificate to Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/custom-ca-kubernetes.md)
 - [Docker-in-Docker Behind a Proxy: Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/dind-behind-proxy.md)
 - [High Availability in Kestra: Scale Workers and Webservers](https://kestra.io/docs/administrator-guide/high-availability.md)
 - [JVM CPU Limits for Kestra on Kubernetes](https://kestra.io/docs/administrator-guide/jvm-cpu-limits.md)
@@ -188,6 +194,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Webserver URL, Reverse Proxy, and Forward Proxy Setup](https://kestra.io/docs/administrator-guide/webserver-url.md)
 - [AI Tools in Kestra: Copilot, Agents & RAG Workflows](https://kestra.io/docs/ai-tools.md)
 - [Agent Skills – Operate Kestra from AI Coding Agents](https://kestra.io/docs/ai-tools/agent-skills.md)
+- [Kestra MCP Resources – Connect AI Coding Agents to Live Plugin Docs and Blueprints](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md)
 - [AI Agents in Kestra – Autonomous Orchestration](https://kestra.io/docs/ai-tools/ai-agents.md)
 - [AI Copilot in Kestra – Generate and Edit Flows](https://kestra.io/docs/ai-tools/ai-copilot.md)
 - [RAG Workflows in Kestra – Retrieval-Augmented Generation](https://kestra.io/docs/ai-tools/ai-rag-workflows.md)
@@ -195,6 +202,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [API Reference: Enterprise and Open Source Editions](https://kestra.io/docs/api-reference.md)
 - [Cloud & Enterprise API Reference for Kestra](https://kestra.io/docs/api-reference/enterprise.md)
 - [SDK Language Clients for the Kestra API](https://kestra.io/docs/api-reference/kestra-sdk.md)
+- [Go SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/go-sdk.md)
 - [Java SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/java-sdk.md)
 - [JavaScript SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/javascript-sdk.md)
 - [Python SDK for Kestra: Client Setup and Examples](https://kestra.io/docs/api-reference/kestra-sdk/python-sdk.md)
@@ -319,6 +327,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Audit Machines and Tool Versions with Ansible in Kestra](https://kestra.io/docs/how-to-guides/ansible.md)
 - [Detect Ansible Config Drift with Kestra](https://kestra.io/docs/how-to-guides/ansible-config-drift.md)
 - [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
+- [Deploy Kestra with ArgoCD](https://kestra.io/docs/how-to-guides/argocd.md)
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
 - [Ceph Storage for Kestra via MinIO S3 Gateway](https://kestra.io/docs/how-to-guides/ceph.md)
 - [Use Cloudflare R2 with MinIO Gateway for Kestra](https://kestra.io/docs/how-to-guides/cloudflare-r2.md)
@@ -356,6 +365,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
 - [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
 - [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
+- [Deploy to OpenShift with Kestra](https://kestra.io/docs/how-to-guides/openshift.md)
 - [Parallel vs. Sequential Tasks in Kestra](https://kestra.io/docs/how-to-guides/parallel-vs-sequential.md)
 - [Pause and Resume Flows in Kestra](https://kestra.io/docs/how-to-guides/pause-resume.md)
 - [Run Perl Inside Your Flows](https://kestra.io/docs/how-to-guides/perl.md)
@@ -478,7 +488,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [FILE Input API: Capture Filename on Upload (0.24.0)](https://kestra.io/docs/migration-guide/v0.24.0/capture-filename.md)
 - [IAM and API Endpoint Changes in Kestra 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/endpoint-changes.md)
 - [LangChain4j to Plugin AI Migration in Kestra 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/renaming-langchain4j-plugin-ai.md)
-- [maxAttempt renamed maxAttempts](https://kestra.io/docs/migration-guide/v0.24.0/retries-maxAttempts.md)
+- [maxAttempt renamed maxAttempts](https://kestra.io/docs/migration-guide/v0.24.0/retries-maxattempts.md)
 - [Kestra 1.0.0 Migration Guide – Milestone Release Changes](https://kestra.io/docs/migration-guide/v1.0.0.md)
 - [Custom Plugin Package Structure Changes in Kestra 1.0](https://kestra.io/docs/migration-guide/v1.0.0/custom-plugin-packages.md)
 - [Helm Chart Updates in Kestra 1.0.0 for Production](https://kestra.io/docs/migration-guide/v1.0.0/helm-charts.md)
@@ -500,9 +510,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Enterprise License Upgrade in Kestra 1.3.0](https://kestra.io/docs/migration-guide/v1.3.0/ee-license-upgrade.md)
 - [File-Listing Plugins Default to 25 Results in 1.3.0](https://kestra.io/docs/migration-guide/v1.3.0/file-listing-default-limit.md)
 - [LTS Migration: Kestra 1.0 to 1.3 Upgrade Guide](https://kestra.io/docs/migration-guide/v1.3.0/lts-migration.md)
-- [No Code in Kestra: Build Flows & Dashboards Visually](https://kestra.io/docs/no-code.md)
-- [No Code Dashboards in Kestra: Design Without YAML](https://kestra.io/docs/no-code/no-code-dashboards.md)
-- [No Code Flow Building in Kestra: Skip the YAML](https://kestra.io/docs/no-code/no-code-flow-building.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
 - [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)
@@ -594,12 +601,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Pass Outputs Between Tasks in Kestra](https://kestra.io/docs/tutorial/outputs.md)
 - [Add Triggers to Automate Kestra Flows](https://kestra.io/docs/tutorial/triggers.md)
 - [Kestra UI Guide: Dashboards, Flows & Logs](https://kestra.io/docs/ui.md)
-- [Blueprints in the Kestra UI – Find and Use Templates](https://kestra.io/docs/ui/blueprints.md)
-- [Bookmarks in the Kestra UI – Star and Revisit Pages](https://kestra.io/docs/ui/bookmarks.md)
 - [Dashboards in Kestra UI: Monitor Executions](https://kestra.io/docs/ui/dashboard.md)
 - [Executions in the Kestra UI – Inspect and Manage Runs](https://kestra.io/docs/ui/executions.md)
 - [Flows in the Kestra UI – Browse, Edit, Execute](https://kestra.io/docs/ui/flows.md)
-- [Logs in Kestra UI: Search and Filter Task Output](https://kestra.io/docs/ui/logs.md)
 - [Namespaces in Kestra UI: Manage Resources](https://kestra.io/docs/ui/namespaces.md)
 - [Playground in Kestra UI: Build Flows Task by Task](https://kestra.io/docs/ui/playground.md)
 - [Settings in Kestra UI: Themes, Timezone & Editor](https://kestra.io/docs/ui/settings.md)

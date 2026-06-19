@@ -5,9 +5,10 @@ import { Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import Link from "~/components/common/Link.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import SchemaService from "~/components/common/SchemaService.astro"
 import Quotes from "~/components/common/Quotes.vue"
-import Snippets from "~/components/common/Snippets.vue"
-import TaskIcon from "~/components/common/TaskIcon.vue"
+import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import NoGapGrid from "~/components/common/NoGapGrid.vue"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -43,9 +44,9 @@ const HERO_TAGS = [
     { label: `${totalPlugins}+ open-source plugins`, icon: "mdi:puzzle-outline" },
 ]
 
-const title = "Kestra for Retail & Commerce"
+const title = "Retail & E-Commerce Workflow Automation"
 const description =
-    "The data and workflow control plane for modern retail. Scale data platforms across teams, automate business workflows, and modernize legacy ERP and supply-chain integration. From DataMesh at scale to ERP modernization to AI-assisted customer service automation."
+    "Open-source workflow automation for retail and e-commerce. Automate supply chain, ERP, and DataMesh pipelines across SAP, Shopify, and Salesforce — at scale."
 
 const FLOW_STAGES = [
     {
@@ -526,11 +527,30 @@ const FAQ = [
         question: "How does Kestra scale through Black Friday, product launches, and peak-season spikes?",
         answer: "Horizontal worker scaling absorbs traffic spikes without architectural changes. Queue-backed triggers and per-namespace rate controls protect downstream systems. Pre-peak dry runs are replayable against production code, so launch-day behaviour is known before launch day. Real customers run business-critical pipelines on the same engine year-round.",
     },
+    {
+        question: "How does Kestra compare to Informatica or Azure Data Factory for retail data orchestration?",
+        answer: `Informatica and <a href="/vs/azure-data-factory">Azure Data Factory</a> are proprietary platforms with high licensing costs and limited infrastructure scope. Kestra is open-source Apache 2.0, runs any language and tool, and covers the same ETL/ELT workloads plus business process automation, API integrations, and self-service ops — with no per-connector licensing. Retail teams use Kestra to consolidate data pipelines, ERP integrations, and operational workflows on one engine.`,
+    },
+    {
+        question: "How does Kestra handle DataMesh architectures in retail?",
+        answer: `Kestra's namespace isolation maps directly to DataMesh domain ownership. Each domain team owns their namespace, flows, secrets, and data products. Centralized RBAC and audit logs give platform teams governance across the mesh without owning domain logic. <a href="/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent">Leroy Merlin runs DataMesh at scale on Kestra</a> — +900% in data production, 250+ active users, and 5,000+ workflows created.`,
+    },
+    {
+        question: "What workflow automation platforms do retail and e-commerce companies use?",
+        answer: `Common platforms include Informatica, Talend, <a href="/vs/airflow">Apache Airflow</a>, <a href="/vs/azure-data-factory">Azure Data Factory</a>, and custom scripts. Kestra replaces them on one self-hosted open-source engine — connecting SAP, Oracle ERP, Salesforce Commerce, Shopify, Gorgias, and warehouse systems side-by-side, with DataMesh-ready namespace isolation, multi-language support, and no per-connector licensing fees.`,
+    },
 ]
 
 ---
 
 <Layout {title} {description} headerTheme="lightText">
+    <SchemaFAQ items={FAQ} slot="head" />
+    <SchemaService
+        slot="head"
+        serviceType="Retail and E-Commerce Workflow Automation"
+        audienceType="Retail Companies, E-Commerce Businesses, and Supply Chain Teams"
+        description={description}
+    />
     <div class="retail">
 
         <section class="hero">
@@ -542,8 +562,8 @@ const FAQ = [
                 </div>
 
                 <h1 data-usal="fade-u">
-                    The data + workflow control plane<br />
-                    <span class="gradient">for modern retail.</span>
+                    Retail workflow automation<br />
+                    <span class="gradient">and data orchestration at scale.</span>
                 </h1>
 
                 <p class="subtitle" data-usal="fade-l">
@@ -625,8 +645,12 @@ const FAQ = [
                 <div class="hero-logos" data-usal="fade-u">
                     <span class="hero-logos__label">Trusted by retail, commerce, and consumer-goods teams</span>
                     <div class="hero-logos__row">
-                        <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item hero-logos__item--leroy" />
-                        <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item hero-logos__item--gorgias" />
+                        <a href="/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent" aria-label="Read the Leroy Merlin DataMesh customer story">
+                            <Image src={LeroyMerlinLogoImg} alt="Leroy Merlin" class="hero-logos__item hero-logos__item--leroy" />
+                        </a>
+                        <a href="/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra" aria-label="Read the Gorgias customer story">
+                            <Image src={GorgiasLogoImg} alt="Gorgias" class="hero-logos__item hero-logos__item--gorgias" />
+                        </a>
                         <Image src={AuchanLogoImg} alt="Auchan" class="hero-logos__item hero-logos__item--auchan" />
                         <Image src={DecathlonLogoImg} alt="Decathlon" class="hero-logos__item hero-logos__item--decathlon" />
                         <Image src={IntersportLogoImg} alt="Intersport" class="hero-logos__item hero-logos__item--intersport" />
@@ -640,7 +664,7 @@ const FAQ = [
         <section class="flow">
             <div class="container-xxl">
                 <h2 class="flow__title text-center">
-                    One control plane for the workflows <span class="highlight">retail teams actually run</span>.
+                    How <span class="highlight">retail workflow automation</span> connects ERP, e-commerce, and supply chain.
                 </h2>
                 <p class="flow__lead">
                     Data pipelines per business domain. Approval workflows in front of merchandising and ops.
@@ -682,7 +706,7 @@ const FAQ = [
         <section class="workloads">
             <div class="container">
                 <div class="workloads__head">
-                    <h2>What retail teams <span class="workloads__highlight">actually run</span> on Kestra.</h2>
+                    <h2>Workflow automation use cases in retail and e-commerce.</h2>
                     <p>Real workloads from real retail and commerce teams. DataMesh at enterprise scale. ERP modernization at global brands. Workflow automation across DIY, fashion, and consumer goods. Customer service context one click away. Mission-critical integration replaced one workflow at a time.</p>
                 </div>
                 {WORKLOAD_CATEGORIES.map(cat => (
@@ -707,7 +731,7 @@ const FAQ = [
         <section class="enterprise">
             <div class="container-xxl">
                 <h2 class="enterprise__title" data-usal="fade-r">
-                    Built to the bar <span class="highlight">retail platform teams</span> actually need.
+                    Retail data orchestration requirements: <span class="highlight">DataMesh, RBAC, and scale</span>.
                 </h2>
                 <NoGapGrid items={ENTERPRISE_FEATURES}>
                     <div class="feature-card feature-card--cta">
@@ -719,51 +743,11 @@ const FAQ = [
             </div>
         </section>
 
-        <section class="build">
-            <div class="container">
-                <h2>Patterns from real <span class="highlight">retail deployments</span>.</h2>
-                <p class="build__lead">Real workflows running today inside retail, commerce, and consumer-goods teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals.</p>
-                <div class="wrapper">
-                    <div class="inner">
-                        <div class="header row g-0">
-                            {BUILD_TABS.map((tab, idx) => (
-                                <div
-                                    class:list={[
-                                        "col-6 col-md-3 header-tab",
-                                        { active: idx === 0, "middle-part": idx > 0 && idx < BUILD_TABS.length - 1 },
-                                    ]}
-                                    data-tab-target={idx}
-                                >
-                                    {tab.name}
-                                </div>
-                            ))}
-                        </div>
-
-                        {BUILD_TABS.map((tab, idx) => (
-                            <div class:list={["content", { active: idx === 0 }]} data-tab-content={idx}>
-                                <div class="panel panel-1">
-                                    <Snippets client:idle code={tab.code} lang="yaml" />
-                                </div>
-                                <div class="panel panel-2">
-                                    <h3 data-usal="fade-r">{tab.title}</h3>
-                                    <p data-usal="fade-l">{tab.description}</p>
-                                    <div class="plugins" data-usal="zoomin">
-                                        {tab.plugins.map(plugin => (
-                                            <div class="plugin-icon">
-                                                <TaskIcon cls={plugin.cls} />
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <Link class="goto" href={tab.href} data-usal="fade-r">
-                                        Explore Blueprints
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </section>
+        <BlueprintTabs
+            title={`Retail workflow automation <span class="highlight">examples and blueprints</span>.`}
+            lead="Real workflows running today inside retail, commerce, and consumer-goods teams. Copy the YAML, adapt to your stack, deploy through your existing CI and approvals."
+            items={BUILD_TABS.map((t) => ({ ...t, plugins: t.plugins.map((p) => p.cls) }))}
+        />
 
         <GoFurther />
 
@@ -803,15 +787,22 @@ const FAQ = [
     :global(html.dark) .retail {
         .flow,
         .workloads,
-        .build,
         .enterprise {
             background: #1C1C20;
         }
         :global(section.quotes-wrapper),
         :global(section.plugin-block),
-        :global(.see) {
+        :global(.see),
+        :global(.blueprint-tabs) {
             background: #1C1C20;
         }
+    }
+
+    :global(.blueprint-tabs h2 .highlight) {
+        background: linear-gradient(90deg, #{$rt-purple}, #{$rt-purple-bright});
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero {
@@ -1516,171 +1507,6 @@ const FAQ = [
         }
     }
 
-    .build {
-        padding: 3rem 0 4.5rem;
-        background: var(--ks-background-primary);
-        border-bottom: $block-border;
-
-        .container {
-            max-width: 73.75rem;
-            margin: 0 auto;
-            padding-inline: 0;
-
-            h2 {
-                margin-bottom: 1rem;
-                padding-inline: $rem-1;
-                text-align: center;
-
-                .highlight { color: $rt-purple; }
-
-                @include media-breakpoint-up(xl) { padding-inline: 0; }
-            }
-
-            .wrapper {
-                border: 1px solid var(--ks-border-primary);
-                box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
-                border-radius: 13px;
-
-                @include media-breakpoint-down(xl) { border-radius: 0; }
-
-                .inner {
-                    border-radius: $rem-1;
-                    background: var(--ks-background-primary-inverse);
-                    overflow: clip;
-
-                    @include media-breakpoint-down(xxl) { border-radius: 0; }
-
-                    .header {
-                        border-bottom: 1px solid var(--ks-border-secondary-inverse);
-
-                        & > div {
-                            padding: 1.1875rem $rem-2;
-                            font-size: $font-size-md;
-                            color: var(--ks-content-secondary-inverse);
-                            text-align: center;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-
-                            @include media-breakpoint-down(sm) { font-size: $font-size-sm; }
-
-                            &.active {
-                                background: var(--ks-background-secondary-inverse);
-                                border-bottom: 1px solid var(--ks-border-active);
-                                color: var(--ks-content-primary-inverse);
-                                font-weight: 600;
-                            }
-                        }
-
-                        & .middle-part {
-                            border-left: 1px solid var(--ks-border-primary-inverse);
-                            border-right: 1px solid var(--ks-border-primary-inverse);
-                        }
-                    }
-
-                    .content {
-                        display: none;
-                        flex-direction: row;
-                        gap: $rem-2;
-                        padding: $rem-2;
-                        justify-content: center;
-
-                        &.active { display: flex; }
-
-                        @include media-breakpoint-down(xl) {
-                            flex-direction: column;
-                            align-items: center;
-                        }
-
-                        @include media-breakpoint-down(sm) { padding: $rem-2 $rem-1; }
-
-                        .panel {
-                            border-radius: 0.5rem;
-                            flex-shrink: 0;
-
-                            &.panel-1 {
-                                width: 39.4375rem;
-
-                                @include media-breakpoint-down(xl) { width: 100%; }
-
-                                :global(.code-card) {
-                                    border: 1px solid var(--ks-border-secondary-inverse);
-                                    background: var(--ks-background-input);
-                                    height: 100%;
-
-                                    :global(.code-inner) { transition: max-height 0.3s ease; }
-                                    :global(.mdc-renderer pre) { padding: 0 1rem 1rem 1rem; }
-
-                                    &:global(:not(.is-expanded)) {
-                                        :global(.code-inner) { max-height: 27.9375rem !important; }
-                                    }
-                                }
-                            }
-
-                            &.panel-2 {
-                                position: relative;
-                                padding-top: $rem-2;
-                                color: var(--ks-content-primary-inverse);
-                                width: 27.5625rem;
-
-                                @include media-breakpoint-down(xl) {
-                                    width: 100%;
-                                    padding-top: 0;
-                                }
-
-                                p {
-                                    font-size: $font-size-lg;
-                                    margin-top: $rem-1;
-                                    margin-bottom: $rem-2;
-                                }
-
-                                .plugins {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    flex-wrap: wrap;
-
-                                    .plugin-icon {
-                                        width: 2.125rem;
-                                        height: 2.125rem;
-                                        padding: 0.375rem;
-                                        background: $white;
-                                        border: $block-border;
-                                        border-radius: $border-radius;
-                                    }
-                                }
-
-                                .goto {
-                                    position: absolute;
-                                    bottom: 0;
-                                    right: 0;
-                                    color: var(--ks-content-link-inverse);
-                                    font-weight: 600;
-
-                                    @include media-breakpoint-down(xl) {
-                                        position: relative;
-                                        margin-top: $rem-3;
-                                        float: right;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        &__lead {
-            text-align: center;
-            color: var(--ks-content-secondary);
-            font-size: $font-size-lg;
-            margin: 0 auto $rem-2;
-            max-width: 44rem;
-            padding-inline: $rem-1;
-        }
-    }
-
     .enterprise {
         padding: 140px 1rem 80px;
         gap: 40px;
@@ -1698,7 +1524,12 @@ const FAQ = [
             margin-bottom: 2.5rem;
             text-align: center;
 
-            .highlight { color: $rt-purple-bright; }
+            .highlight {
+                background: linear-gradient(90deg, #{$rt-purple-bright}, #{$rt-purple-light});
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
         }
 
         :global(.features-grid) {
@@ -1734,22 +1565,3 @@ const FAQ = [
     }
 </style>
 
-<script>
-    document.addEventListener("astro:page-load", () => {
-        for (const container of document.querySelectorAll(".build .inner")) {
-            container.addEventListener("click", (e) => {
-                const tab = (e.target as Element).closest(".header-tab") as HTMLElement
-                const target = tab && (container as Element).querySelector(
-                    `[data-tab-content="${tab.dataset.tabTarget}"]`
-                )
-                if (!target) return
-
-                for (const el of container.querySelectorAll(".header-tab, .content")) {
-                    el.classList.remove("active")
-                }
-                tab.classList.add("active")
-                target.classList.add("active")
-            })
-        }
-    })
-</script>

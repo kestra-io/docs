@@ -5,7 +5,7 @@ date: 2024-03-13T16:15:00
 category: Solutions
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
   medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
@@ -161,7 +161,7 @@ CloudQuery doesn't support as many source and destination connectors as data int
 
 ## Moving your CloudQuery syncs to production using Kestra
 
-Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](../2023-07-28-duckdb-vs-motherduck/index.md), a serverless DuckDB service in the cloud.
+Both CloudQuery and [Kestra](https://github.com/kestra-io/kestra) follow a declarative approach, and you can combine them to build an end-to-end data ingestion workflow that runs on schedule or is based on external events. Here is an example of a Kestra flow that runs a CloudQuery sync every day at midnight. The sync will collect data from Hacker News API and load it to [MotherDuck](../duckdb-vs-motherduck/index.md), a serverless DuckDB service in the cloud.
 
 ```yaml
 id: hackernews_to_motherduck

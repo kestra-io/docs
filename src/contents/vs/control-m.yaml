@@ -3,6 +3,8 @@ description: "Compare Kestra vs BMC Control-M: Open-source, developer-first orch
 competitorName: Control-M
 category: Infrastructure Automation
 shortDescription: "Proprietary enterprise job scheduling vs. open-source, developer-first orchestration in YAML."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond legacy batch scheduling."
 
 brandColor:
   color: "#00b2a9"
@@ -221,7 +223,7 @@ platformStrengths:
     - title: No agents, no ops tickets
       description: "Control-M requires installing and maintaining agents on every target host, with changes routed through a central operations team. Kestra runs tasks in isolated Docker containers. Engineers deploy through Git and CI/CD, the same way they deploy application code."
     - title: Open source, transparent pricing
-      description: "Kestra's open-source core is free with 1200+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. Control-M's proprietary licensing uses per-job metering with execution volume caps."
+      description: "Kestra's open-source core is free with 1400+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-job metering. Control-M's proprietary licensing uses per-job metering with execution volume caps."
     - title: Event-driven, not just batch
       description: "Kestra was built event-driven from the start: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows in open source. Control-M added event-driven capabilities in its January 2026 SaaS release (26.01), but the core architecture remains schedule-first."
 
@@ -255,7 +257,7 @@ commonQuestions:
   - question: Control-M has native mainframe support. Does Kestra?
     answer: "Kestra is not designed for mainframe job scheduling. If you have significant mainframe workloads, Control-M or a dedicated mainframe scheduler is the right tool for that layer. However, many organizations use Kestra for everything except mainframe, reducing their Control-M footprint and licensing costs to only where it's truly needed."
   - question: How does Kestra's pricing compare to Control-M?
-    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. Control-M's SaaS pricing uses per-job licensing with execution volume caps. Enterprise pricing is custom."
+    answer: "Kestra's open-source edition is free with 1400+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-job metering. Control-M's SaaS pricing uses per-job licensing with execution volume caps. Enterprise pricing is custom."
   - question: Does Kestra support the same integrations as Control-M?
     answer: "Kestra's 1200+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. Control-M has native connectors for SAP, mainframe systems, and managed file transfer (SFTP, AS2, PGP) that Kestra doesn't replicate directly. For cloud-native and data platform integrations, both tools cover the same ground."
   - question: How does Kestra handle access control compared to Control-M?

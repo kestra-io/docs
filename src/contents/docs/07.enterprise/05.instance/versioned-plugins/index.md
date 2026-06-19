@@ -1,22 +1,26 @@
 ---
-title: "Versioned Plugins in Kestra Enterprise: Multi-Version"
-h1: Install Multiple Plugin Versions to Support Legacy Flows
-description: Manage plugin versions in Kestra Enterprise. Install multiple versions of the same plugin to support legacy flows while upgrading others safely.
+title: "Versioned Plugins in Kestra Enterprise: Install and Test Any Version"
+h1: Install and Run Multiple Plugin Versions Simultaneously
+description: Run multiple versions of any plugin side-by-side across your Kestra instance. Build, test, and ship plugin updates from a jar file without disrupting existing flows — and upgrade on your own timeline.
 sidebarTitle: Versioned Plugins
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
 ---
 
-Use multiple versions of a plugin depending on your instance requirements and upgrade path.
+Install multiple versions of any plugin and run them simultaneously across all your flows — assigned at the task, flow, namespace, or instance level.
 
-## Versioned plugins – manage plugin upgrades
+## Versioned Plugins – build, ship, and iterate with confidence
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Versioned plugins simplify the upgrade process. They allow you to pin older plugin versions to your production and legacy flows while using the latest version for newer flows, enabling granular version management in your Kestra instance.
+Versioned plugins give you fine-grained control over which plugin version runs in each flow, namespace, or across your entire instance. Common use cases include:
+
+- **Build and iterate on plugins**: Upload a custom plugin directly from a `.jar` file and test it immediately in any flow — no instance restart required.
+- **Ship fixes to production fast**: When Kestra ships a new or patched plugin, install it via the UI or API and point specific flows to the new version within minutes.
+- **Upgrade on your own timeline**: Run the latest plugin version in new flows while existing flows stay pinned to a stable version until you're ready to migrate.
 
 ## Configuration
 

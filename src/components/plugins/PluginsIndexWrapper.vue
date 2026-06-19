@@ -2,8 +2,8 @@
     import { onMounted, onUnmounted, ref } from "vue"
     import { navigate } from "astro:transitions/client"
 
-    import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
-    import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
+    import { type Plugin, type PluginMetadata } from "~/utils/plugins/plugin"
+    import PluginIndex from "~/components/plugins/PluginIndex.vue"
 
     import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
 

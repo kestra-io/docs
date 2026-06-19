@@ -1,258 +1,275 @@
 ---
 title: "JavaScript SDK for Kestra: Client Setup and Examples"
 h1: Install and Configure the Kestra JavaScript SDK
+sidebarTitle: JavaScript SDK
 description: Integrate Kestra with JavaScript using the official SDK. Install the library, configure the client, and programmatically create and execute workflows.
 icon: /src/contents/docs/icons/api.svg
 release: 1.2.0
 ---
 
-Interact with Kestra's API via the JavaScript SDK.
+Use the Kestra JavaScript SDK to interact with the Kestra API from Node.js applications.
 
 ## Install the JavaScript SDK
 
-This guide shows how to create and execute flows programmatically with the JavaScript SDK.
-Before starting, ensure your Kestra instance is reachable (for example via `KESTRA_API_URL`), and keep credentials in environment variables or an `.env` file:
+Store credentials in environment variables:
 
 ```bash
-KESTRA_API_URL=http://localhost:8080
+KESTRA_BASE_URL=http://localhost:8080
 KESTRA_USERNAME=root@root.com
 KESTRA_PASSWORD=Root!1234
-# KESTRA_TOKEN=...            # optional if you use token auth instead of basic auth
 ```
 
-Install the SDK (and `dotenv` if you want to load `.env` automatically):
+Install the SDK:
 
 ```shell
 npm install @kestra-io/kestra-sdk
-npm install dotenv --save-dev
+```
+
+## Configure the client
+
+Call `configureClient` once at application startup, then call `setSelectedTenant` to set the active tenant. Both are applied globally — you do not need to pass connection details or tenant to individual method calls.
+
+```javascript
+import { configureClient } from "@kestra-io/kestra-sdk";
+import { setSelectedTenant } from "@kestra-io/kestra-sdk/shared";
+
+configureClient({
+  baseURL: process.env.KESTRA_BASE_URL ?? "http://localhost:8080",
+  auth: () => `${process.env.KESTRA_USERNAME}:${process.env.KESTRA_PASSWORD}`,
+});
+
+setSelectedTenant("main");
 ```
 
 :::alert{type="info"}
-**Notes**
-- Prefer environment variables over hardcoding credentials.
-- Use **either** username/password (basic auth) or an access token (bearer).
-- Reuse a single `KestraClient` instance throughout your application.
+For bearer token authentication, set `auth: () => process.env.KESTRA_TOKEN` and pass the token directly.
 :::
 
-### Configure the client
-
-Initialize the client once and share it:
+Each API group is a separate subpath module. Import only what you need:
 
 ```javascript
-import 'dotenv/config';
-import KestraClient from '@kestra-io/kestra-sdk';
-
-const client = new KestraClient(
-  process.env.KESTRA_API_URL ?? 'http://localhost:8080',
-  process.env.KESTRA_TOKEN ?? '',            // accessToken (preferred if set)
-  process.env.KESTRA_USERNAME ?? 'root@root.com',
-  process.env.KESTRA_PASSWORD ?? 'Root!1234'
-);
-
-export default client;
+import * as Flows from "@kestra-io/kestra-sdk/flows";
+import * as Executions from "@kestra-io/kestra-sdk/executions";
+import * as Kv from "@kestra-io/kestra-sdk/kv";
+import * as Triggers from "@kestra-io/kestra-sdk/triggers";
 ```
 
 ---
 
 ## Create a flow
 
-Send the flow definition as YAML. This mirrors what you would define in the UI.
+Send the flow definition as a YAML string:
 
 ```javascript
-import client from './client.js'; // the shared client above
+import * as Flows from "@kestra-io/kestra-sdk/flows";
 
 async function createFlow() {
-  const tenant = 'main';
   const body = `id: my_flow
 namespace: my_namespace
 tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
-    message: Hello World! 🚀
+    message: Hello World!
 `;
 
-  const created = await client.flowsApi.createFlow(tenant, body);
-  console.log('Flow created:', created?.id ?? 'my_flow');
+  const created = await Flows.createFlow({ body });
+  console.log("Flow created:", created.id);
 }
-
-createFlow().catch(console.error);
 ```
 
 :::alert{type="info"}
-**Important**
-- `body` must be valid flow YAML. Invalid YAML or missing fields returns a `4xx`.
-- Ensure the correct `tenant` for multi-tenant setups.
-- The response contains the created flow (including metadata and source).
-:::
-
----
-
-## Update a flow
-
-Send the full YAML (including the same `id` and `namespace`) to update a flow.
-
-```javascript
-import 'dotenv/config';
-import client from './client.js';
-
-async function updateFlow() {
-  const tenant = 'main';
-  const namespace = 'company.team';
-  const id = 'my_flow';
-
-  const body = `id: ${id}
-namespace: ${namespace}
-tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World! with update 🚀
-`;
-
-  const updated = await client.flowsApi.updateFlow(namespace, id, tenant, body);
-  console.log('Flow updated:', updated?.id ?? `${namespace}/${id}`);
-}
-
-updateFlow().catch(console.error);
-```
-
-:::alert{type="info"}
-**Tips**
-- Provide the **full** YAML on update; partial payloads are not merged.
-- Keep flow YAML in source control for versioning and code review.
-- Reuse the same `tenant`/`namespace`/`id` to target the correct flow.
+`body` must be valid flow YAML. If a flow with the same `id` and `namespace` already exists, use `updateFlow` instead.
 :::
 
 ---
 
 ## Delete a flow
 
-Remove a flow by `namespace`/`id`/`tenant`.
+Remove a flow by its `namespace` and `id`:
 
 ```javascript
-import 'dotenv/config';
-import client from './client.js';
+import * as Flows from "@kestra-io/kestra-sdk/flows";
 
 async function deleteFlow() {
-  const tenant = 'main';
-  const namespace = 'company.team';
-  const id = 'my_flow';
-
-  const deleted = await client.flowsApi.deleteFlow(namespace, id, tenant);
-  console.log('Flow deleted:', deleted || 'No data returned');
+  await Flows.deleteFlow({ namespace: "my_namespace", id: "my_flow" });
+  console.log("Flow deleted");
 }
-
-deleteFlow().catch(console.error);
 ```
 
 :::alert{type="info"}
-**Notes**
-- Deleting a flow removes its definition; executions remain in history unless separately deleted.
-- Ensure you target the correct `tenant` before deleting.
+Deleting a flow removes its definition. Execution history is retained unless you delete executions separately.
 :::
 
 ---
 
 ## Execute a flow
 
-Trigger an execution and optionally pass inputs, labels, or scheduling parameters.
+Trigger an execution and optionally wait for it to complete:
 
 ```javascript
-import client from './client.js';
+import * as Executions from "@kestra-io/kestra-sdk/executions";
 
 async function executeFlow() {
-  const tenant = 'main';
-  const namespace = 'company.team';
-  const flowId = 'my_flow';
-  const wait = true; // set false for a non-blocking call
-
-  const exec = await client.executionsApi.createExecution(namespace, flowId, wait, tenant);
-  console.log('Execution started:', exec?.id ?? 'No data returned');
+  const exec = await Executions.createExecution({
+    namespace: "my_namespace",
+    id: "my_flow",
+    wait: true,  // set false for a non-blocking call
+  });
+  console.log("Execution started:", exec.id);
 }
-
-executeFlow().catch(console.error);
 ```
-
-:::alert{type="info"}
-**Notes**
-- `wait=true` blocks until the execution finishes (handy for tests/CLI).
-- You can also pass labels, schedule dates, breakpoints, variables, and inputs — see the method signature for optional parameters.
-- For multi-tenant setups, set the correct `tenant` value.
-:::
 
 ---
 
 ## Delete an execution
 
-Delete an execution and optionally purge logs, metrics, and internal storage.
+Delete an execution and optionally purge its logs, metrics, and storage:
 
 ```javascript
-import client from './client.js';
+import * as Executions from "@kestra-io/kestra-sdk/executions";
 
 async function deleteExecution() {
-  const executionId = '6nN8Eqt0sq5gXJDj6NjfgO';
-  const tenant = 'main';
-  const opts = {
+  await Executions.deleteExecution({
+    executionId: "your-execution-id",
     deleteLogs: true,
     deleteMetrics: true,
     deleteStorage: true,
-  };
-
-  const deleted = await client.executionsApi.deleteExecution(executionId, tenant, opts);
-  console.log('Execution deleted:', deleted || 'No data returned');
+  });
+  console.log("Execution deleted");
 }
+```
 
-deleteExecution().catch(console.error);
+---
+
+## Follow an execution
+
+Stream live execution state updates. `followExecution` returns a `{ stream }` object where `stream` is an async iterable of execution events:
+
+```javascript
+import * as Executions from "@kestra-io/kestra-sdk/executions";
+
+async function followExecution() {
+  const { stream } = await Executions.followExecution({
+    executionId: "your-execution-id",
+  });
+
+  for await (const evt of stream) {
+    if (!evt.state) continue; // skip keepalive frames
+    console.log(`Status: ${evt.state.current}`);
+    if (evt.state.current === "SUCCESS" || evt.state.current === "FAILED") break;
+  }
+}
 ```
 
 :::alert{type="info"}
-**Notes**
-- Use the flags to remove associated logs/metrics/storage when needed.
-- Ensure you target the correct `tenant` and execution ID before deleting.
+The server emits an initial keepalive event with no `state` — skip it before processing updates.
 :::
 
 ---
 
-## Follow (stream) an execution
+## KV Store
 
-Stream execution events/logs for live feedback.
+The KV Store lets you read and write key-value pairs scoped to a namespace.
+
+### Set a value
 
 ```javascript
-import client from './client.js';
+import * as Kv from "@kestra-io/kestra-sdk/kv";
 
-async function followExecution() {
-  const executionId = 'your-execution-id';
-  const tenant = 'main';
-
-  const stream = client.executionsApi.followExecution(executionId, tenant);
-
-  stream.onmessage = (event) => {
-    const data = JSON.parse(event.data || '{}');
-    if (!data || !data.state) return; // first message may be empty (keepalive)
-    console.log(`Event: ${data.id} | Status: ${data.state.current}`);
-  };
-
-  stream.onerror = (err) => {
-    console.error('Stream error:', err);
-    stream.close();
-  };
+async function setKvValue() {
+  await Kv.setKeyValue({ namespace: "my_namespace", key: "my_key", body: "my_value" });
+  console.log("Key set");
 }
-
-followExecution().catch(console.error);
 ```
 
-:::alert{type="info"}
-**Tips**
-- The first SSE payload is an empty keepalive — skip it before processing updates.
-- If you only need the final result, poll the execution by ID instead of streaming.
-- Add retry/backoff when streaming over unstable networks.
-:::
+### Get a value
+
+```javascript
+import * as Kv from "@kestra-io/kestra-sdk/kv";
+
+async function getKvValue() {
+  const result = await Kv.keyValue({ namespace: "my_namespace", key: "my_key" });
+  console.log("Value:", result?.value);
+}
+```
+
+### Delete a key
+
+```javascript
+import * as Kv from "@kestra-io/kestra-sdk/kv";
+
+async function deleteKvKey() {
+  await Kv.deleteKeyValue({ namespace: "my_namespace", key: "my_key" });
+  console.log("Key deleted");
+}
+```
+
+---
+
+## Manage triggers
+
+### Search triggers
+
+```javascript
+import * as Triggers from "@kestra-io/kestra-sdk/triggers";
+
+async function searchTriggers() {
+  const result = await Triggers.searchTriggers({ page: 1, size: 50 });
+  result.results?.forEach(t => {
+    console.log(`${t.triggerContext?.triggerId}: disabled=${t.triggerContext?.disabled}`);
+  });
+}
+```
+
+### Disable or enable a trigger
+
+```javascript
+import * as Triggers from "@kestra-io/kestra-sdk/triggers";
+
+async function disableTrigger() {
+  await Triggers.disabledTriggersByIds({
+    triggers: [{ namespace: "my_namespace", flowId: "my_flow", triggerId: "my_schedule" }],
+    disabled: true,  // pass false to re-enable
+  });
+  console.log("Trigger disabled");
+}
+```
+
+### Restart a trigger
+
+```javascript
+import * as Triggers from "@kestra-io/kestra-sdk/triggers";
+
+async function restartTrigger() {
+  await Triggers.restartTrigger({
+    namespace: "my_namespace",
+    flowId: "my_flow",
+    triggerId: "my_schedule",
+  });
+  console.log("Trigger restarted");
+}
+```
+
+### Unlock a trigger
+
+```javascript
+import * as Triggers from "@kestra-io/kestra-sdk/triggers";
+
+async function unlockTrigger() {
+  await Triggers.unlockTrigger({
+    namespace: "my_namespace",
+    flowId: "my_flow",
+    triggerId: "my_schedule",
+  });
+  console.log("Trigger unlocked");
+}
+```
 
 ---
 
 ## Best practices
 
-- **Reuse your client:** Create one `KestraClient` and share it across your app.
-- **Externalize config:** Keep URL/auth in env vars or your config system.
-- **Validate YAML:** Invalid flow YAML returns `422` responses.
-- **Automate:** Combine `createFlow` + `createExecution` for CI/CD pipelines.
-- **Label consistently:** Use labels for governance, search, and routing.
+- **Configure once:** call `configureClient` and `setSelectedTenant` once at startup and reuse them globally.
+- **Externalize config:** keep URL and auth in environment variables.
+- **Validate YAML:** invalid flow YAML returns `422` responses.
+- **Use labels** for governance, search, and routing across executions.
