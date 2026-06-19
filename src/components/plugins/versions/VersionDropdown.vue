@@ -21,8 +21,8 @@
                 v-model="query"
                 type="text"
                 class="panel-search"
-                placeholder="Search version"
-                aria-label="Search version"
+                placeholder="Search version or Kestra"
+                aria-label="Search by version or Kestra version"
             />
             <div class="panel-options">
                 <a
@@ -34,9 +34,12 @@
                     role="option"
                     :aria-selected="isActive(v?.version)"
                 >
-                    <span class="option-version">v{{ v?.version }}</span>
-                    <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
-                    <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
+                    <span class="option-top">
+                        <span class="option-version">v{{ v?.version }}</span>
+                        <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
+                        <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
+                    </span>
+                    <span v-if="v?.minCoreCompatibilityVersion" class="option-sub">Min. Kestra ver: <strong>{{ v.minCoreCompatibilityVersion }}</strong></span>
                 </a>
                 <div v-if="filteredVersions.length === 0" class="panel-empty">
                     No matching versions
@@ -74,7 +77,11 @@
     const filteredVersions = computed(() => {
         const q = query.value.trim().toLowerCase()
         if (!q) return props.releaseVersions
-        return props.releaseVersions.filter((v) => v?.version?.toLowerCase().includes(q))
+        return props.releaseVersions.filter(
+            (v) =>
+                v?.version?.toLowerCase().includes(q)
+                || v?.minCoreCompatibilityVersion?.toLowerCase().includes(q),
+        )
     })
 
     // Reset the filter and focus the search each time the panel opens.
@@ -113,6 +120,7 @@
         margin-bottom: 0.75rem;
         padding-top: 0.75rem;
         position: relative;
+        z-index: 30;
     }
 
     .trigger {
@@ -200,7 +208,7 @@
 
     /* Search stays fixed, only the options scroll. */
     .panel-options {
-        max-height: 200px;
+        max-height: 220px;
         overflow-x: hidden;
         overflow-y: auto;
         overscroll-behavior: contain;
@@ -232,19 +240,18 @@
 
     .panel-empty {
         color: var(--ks-content-secondary);
-        font-size: $font-size-xs;
+        font-size: $font-size-xxs;
         padding: 0.6rem 0.85rem;
     }
 
     .option {
-        align-items: center;
+        align-items: flex-start;
         color: var(--ks-content-primary);
         display: flex;
-        font-size: $font-size-xs;
-        gap: 0.5rem;
+        flex-direction: column;
+        gap: 0.15rem;
         padding: 0.5rem 0.85rem;
         text-decoration: none;
-        white-space: nowrap;
 
         &:hover {
             background: var(--ks-border-primary);
@@ -258,6 +265,13 @@
             }
         }
 
+        .option-top {
+            align-items: center;
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
         .option-version {
             font-size: $font-size-sm;
             font-weight: 700;
@@ -266,9 +280,20 @@
         .option-date {
             color: var(--ks-content-secondary);
             flex-shrink: 0;
-            font-size: $font-size-xs;
+            font-size: $font-size-xxs;
             margin-left: auto;
             white-space: nowrap;
+        }
+
+        .option-sub {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-xxs;
+            font-weight: 500;
+
+            strong {
+                color: var(--ks-content-secondary);
+                font-weight: 700;
+            }
         }
     }
 </style>
