@@ -4,6 +4,6 @@ export const categories = new Map([
     ["data", "Data"],
     ["ai", "AI"],
     ["infrastructure", "Infrastructure"],
-    ["feature-highlight", "Feature Highlight"],
+    ["whats-new", "What's New"],
     ["webinar", "Webinar"],
 ])

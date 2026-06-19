@@ -40,15 +40,15 @@ const tutorialVideo = {
     total: filteredVideos.length,
 }
 
-const title = `Video Tutorials: ${currentCategory}`
-const description = `Get started with our Video Tutorials: ${currentCategory}`
+const title = currentCategory ? `Videos: ${currentCategory} | Kestra` : `Videos | Kestra`
+const description = `Watch the latest videos from Kestra`
 ---
 
 <Layout title={title} description={description}>
     <Mesh>
         <div>
-            <h1>Video Tutorials</h1>
-            <p>Get started with our video tutorials</p>
+            <h1>Videos</h1>
+            <p>Watch the latest videos from Kestra</p>
         </div>
         <Subscribe client:visible class="margin" />
     </Mesh>
