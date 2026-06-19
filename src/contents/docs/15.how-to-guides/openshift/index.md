@@ -31,7 +31,7 @@ kestra plugins install io.kestra.plugin:plugin-kubernetes:1.9.4
 
 The flow below applies three resources to OpenShift in a single `kubectl.Apply` task using multi-document YAML (`---` separators): a `Deployment`, a `Service`, and a `Route`.
 
-The image reference is a flow input, so an upstream build task can pass a freshly built tag directly into this step without editing the manifest.
+The image reference is a flow input, so the same flow can deploy any image without editing the manifest.
 
 ```yaml
 id: openshift_deploy_python_app
