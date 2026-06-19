@@ -318,7 +318,12 @@ kestra:
       region: "default"
       bucket: my-bucket
       part-size: 5MB
+      # http-connect-timeout: PT10S  # OkHttp default; null uses the 10s built-in default
+      # http-read-timeout: PT10S     # set to PT0S to disable (infinite wait) — recommended for large buckets or long PurgeExecutions operations
+      # http-write-timeout: PT10S    # OkHttp default; null uses the 10s built-in default
 ```
+
+The three timeout fields (`http-connect-timeout`, `http-read-timeout`, `http-write-timeout`) are optional. When omitted, OkHttp's built-in 10-second default applies to each. Setting a field to `PT0S` disables that timeout entirely (infinite wait); this is particularly useful for `http-read-timeout` to prevent a `SocketException` during `listObjects` on large buckets or long-running `PurgeExecutions` operations.
 
 If MinIO uses `MINIO_DOMAIN`, enable `kestra.storage.minio.vhost: true` and keep `endpoint` set to the base domain rather than `bucket.domain`.
 
