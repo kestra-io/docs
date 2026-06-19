@@ -15,7 +15,11 @@ The `kubectl.Apply` task in the Kubernetes plugin supports OpenShift's OAuth tok
 
 - A running OpenShift cluster
 - The `oc` CLI installed and authenticated (`oc login`)
-- The [Kubernetes plugin](/plugins/plugin-kubernetes) installed in your Kestra instance
+- The [Kubernetes plugin](/plugins/plugin-kubernetes) version 1.9.4 or later installed in your Kestra instance:
+
+```bash
+kestra plugins install io.kestra.plugin:plugin-kubernetes:1.9.4
+```
 - Two Kestra secrets:
 
 | Secret | How to obtain |
@@ -53,7 +57,6 @@ tasks:
         labels:
           app: python-app
       spec:
-        replicas: 2
         selector:
           matchLabels:
             app: python-app
@@ -133,7 +136,7 @@ tasks:
 - Replace the `image` input default with the full registry path for your image.
 - Set `namespace: my-project` to the target OpenShift project name.
 - Adjust the readiness and liveness probe `path` if your application does not expose a `/health` endpoint on port 8080.
-- Adjust `replicas`, resource requests, and limits to match your workload.
+- Adjust resource requests and limits to match your workload.
 
 ## Design notes
 
@@ -148,6 +151,12 @@ OpenShift uses `route.openshift.io/v1 Route` for external access rather than a s
 ### `imagePullPolicy: Always`
 
 When the image tag is dynamic (a git SHA or build number passed from an upstream task), `IfNotPresent` can silently run a stale cached layer if the tag has been reused. `Always` ensures the declared image is what actually runs.
+
+### `spec.replicas` and the Developer Sandbox
+
+The OpenShift Developer Sandbox runs a `member-operator` that takes server-side apply ownership of `spec.replicas` on all Deployments for quota enforcement. Declaring `replicas` in your manifest causes a 409 field manager conflict. Omit it entirely — the Sandbox defaults to 1 replica.
+
+On a production OpenShift cluster without `member-operator`, you can safely declare `replicas`.
 
 ### ImageStream
 
