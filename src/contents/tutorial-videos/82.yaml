@@ -1,10 +1,9 @@
-title: "Automate with YAML: Faster to write, easier to own, ready for AI"
-description: "YAML is becoming the preferred format for modern orchestration as it
-  handles multi-language tasks without wrappers and provides schema-bound reliability
-  for AI-generated workflows. Join this session to learn how to build and scale production-ready
-  workflows using a YAML-first approach."
-category: "Webinar"
+title: "I Migrated an Airflow DAG in 2 Minutes using this Claude Skill"
+description: "Learn how to migrate Airflow 2 DAGs to Kestra using a new agent skill
+  that automatically converts Python business logic into declarative YAML and deployable
+  Kestra flows."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=xpxNK47jRBA"
-publicationDate: "2026-04-23T00:00:00.000"
-contentType: "Webinar"
+url: "https://www.youtube.com/watch?v=5JL6gVtI6FE"
+publicationDate: "2026-04-03T00:00:00.000"
+contentType: "Data"

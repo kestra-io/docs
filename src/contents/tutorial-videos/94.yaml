@@ -1,0 +1,9 @@
+title: "Amazon Ion Explained: The Format Hiding Inside Your Kestra Workflows"
+description: "Amazon Ion is a richly-typed superset of JSON used internally by Kestra
+  to provide a robust type system for data pipelines. This video explains how Ion
+  compares to JSON and demonstrates how it works in practice within the Kestra platform."
+category: "Getting Started"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=FJzVjObF418"
+publicationDate: "2026-05-19T00:00:00.000"
+contentType: "Getting Started"

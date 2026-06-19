@@ -1,9 +1,10 @@
-title: "Do Agent Skills Replace MCP?"
-description: "Learn the difference between MCP (Model Context Protocol) and agent
-  skills, why people confuse them, and how they actually work together in a real-world
-  environment."
-category: "AI"
+title: "Automate with YAML: Faster to write, easier to own, ready for AI"
+description: "YAML is becoming the preferred format for modern orchestration as it
+  handles multi-language tasks without wrappers and provides schema-bound reliability
+  for AI-generated workflows. Join this session to learn how to build and scale production-ready
+  workflows using a YAML-first approach."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=yVUb71BsG7Y"
-publicationDate: "2026-05-26T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=xpxNK47jRBA"
+publicationDate: "2026-04-23T00:00:00.000"
+contentType: "Webinar"
