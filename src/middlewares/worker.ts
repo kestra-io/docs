@@ -1,6 +1,7 @@
 import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
+import { proxyTracking } from "../utils/trackingProxy";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -90,6 +91,16 @@ const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 export default {
     async fetch(request, env, ctx) {
         const url = new URL(request.url)
+
+        // Proxy PostHog analytics directly, before Astro can apply
+        // `trailingSlash: "never"`. posthog-js posts to /t/i/v0/e/ with a
+        // trailing slash; letting Astro 301 it strips the slash with a redirect
+        // that has no CORS header, which breaks every cross-origin instance.
+        // Must also run before the static-asset check below (/t/static/* paths
+        // have file extensions).
+        if (url.pathname.startsWith("/t/")) {
+            return proxyTracking(request)
+        }
 
         // Enforce no-trailing-slash canonical URLs site-wide (SEO consolidation).
         // Cloudflare's `html_handling: drop-trailing-slash` is bypassed by
