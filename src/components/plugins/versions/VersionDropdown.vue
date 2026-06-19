@@ -16,10 +16,17 @@
         </button>
 
         <div v-if="open" class="panel" role="listbox">
-            <div class="panel-label">Select version</div>
+            <input
+                ref="searchInput"
+                v-model="query"
+                type="text"
+                class="panel-search"
+                placeholder="Search version"
+                aria-label="Search version"
+            />
             <div class="panel-options">
                 <a
-                    v-for="v in releaseVersions"
+                    v-for="v in filteredVersions"
                     :key="v?.version"
                     :href="hrefFor(v?.version ?? '')"
                     class="option"
@@ -30,18 +37,19 @@
                     <span class="option-version">v{{ v?.version }}</span>
                     <span v-if="isLatestVersion(v?.version)" class="badge latest small">Latest</span>
                     <span class="option-date">{{ formatDate(v?.publishedAt) }}</span>
-                    <Check v-if="isActive(v?.version)" class="option-check" />
                 </a>
+                <div v-if="filteredVersions.length === 0" class="panel-empty">
+                    No matching versions
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { onBeforeUnmount, onMounted, ref } from "vue"
+    import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
     import MenuDown from "vue-material-design-icons/MenuDown.vue"
     import MenuUp from "vue-material-design-icons/MenuUp.vue"
-    import Check from "vue-material-design-icons/Check.vue"
     import type { ReleaseInfo } from "../../../pages/api/github-releases"
     import { useVersions } from "./useVersions"
 
@@ -60,6 +68,24 @@
         useVersions(props)
 
     const root = ref<HTMLElement | null>(null)
+    const searchInput = ref<HTMLInputElement | null>(null)
+    const query = ref("")
+
+    const filteredVersions = computed(() => {
+        const q = query.value.trim().toLowerCase()
+        if (!q) return props.releaseVersions
+        return props.releaseVersions.filter((v) => v?.version?.toLowerCase().includes(q))
+    })
+
+    // Reset the filter and focus the search each time the panel opens.
+    watch(
+        () => props.open,
+        (isOpen) => {
+            if (!isOpen) return
+            query.value = ""
+            nextTick(() => searchInput.value?.focus())
+        },
+    )
 
     const onDocumentClick = (e: MouseEvent) => {
         if (!props.open) return
@@ -172,7 +198,7 @@
         z-index: 20;
     }
 
-    /* Header (.panel-label) stays fixed; only the options scroll. */
+    /* Search stays fixed, only the options scroll. */
     .panel-options {
         max-height: 200px;
         overflow-x: hidden;
@@ -187,14 +213,27 @@
         }
     }
 
-    .panel-label {
+    .panel-search {
         background-color: var(--ks-background-input);
+        border: none;
         border-bottom: 1px solid var(--ks-border-primary);
         border-top-left-radius: 0.45rem;
         border-top-right-radius: 0.45rem;
+        color: var(--ks-content-primary);
+        font-size: $font-size-xs;
+        outline: none;
+        padding: 0.45rem 0.85rem;
+        width: 100%;
+
+        &::placeholder {
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    .panel-empty {
         color: var(--ks-content-secondary);
         font-size: $font-size-xs;
-        padding: 0.4rem 0.85rem;
+        padding: 0.6rem 0.85rem;
     }
 
     .option {
@@ -230,11 +269,6 @@
             font-size: $font-size-xs;
             margin-left: auto;
             white-space: nowrap;
-        }
-
-        .option-check :deep(svg) {
-            color: var(--ks-content-link);
-            font-size: 0.95rem;
         }
     }
 </style>
