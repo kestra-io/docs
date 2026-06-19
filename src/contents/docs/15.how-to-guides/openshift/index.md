@@ -9,7 +9,7 @@ editions: ["OSS", "EE"]
 description: Use the Kubernetes plugin's kubectl.Apply task to deploy a containerized application to a Red Hat OpenShift cluster, exposing it externally via a TLS-terminated Route.
 ---
 
-The `kubectl.Apply` task in the Kubernetes plugin supports OpenShift's OAuth token authentication and OpenShift-specific resource types, so you can deploy to OpenShift the same way you would any standard cluster.
+The [`kubectl.Apply`](/plugins/plugin-kubernetes/kubectl/io.kestra.plugin.kubernetes.kubectl.apply) task in the Kubernetes plugin supports OpenShift's OAuth token authentication and OpenShift-specific resource types, so you can deploy to OpenShift the same way you would any standard cluster.
 
 ## Prerequisites
 
