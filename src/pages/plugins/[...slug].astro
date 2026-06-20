@@ -415,41 +415,64 @@ const pluginSchema = pluginType
 
 {
     pendingVersionedDoc && pluginName && versionState.version && (
-        <script
-            is:inline
-            define:vars={{
-                pollUrl: pluginType
-                    ? `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/definitions/${pluginType}`
-                    : `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/subgroups`,
-                pollIntervalMs: 4000,
-                maxPollAttempts: 75,
-            }}
-        >
-            (function pollVersionedDoc() {
-                let attempts = 0
-                function tick() {
-                    attempts++
-                    fetch(pollUrl, { method: "GET", cache: "no-store" })
-                        .then(function (r) {
-                            if (r.status === 202) {
-                                if (attempts < maxPollAttempts) {
-                                    setTimeout(tick, pollIntervalMs)
-                                }
-                                return
-                            }
-                            window.location.reload()
-                        })
-                        .catch(function () {
-                            if (attempts < maxPollAttempts) {
-                                setTimeout(tick, pollIntervalMs)
-                            }
-                        })
-                }
-                setTimeout(tick, pollIntervalMs)
-            })()
-        </script>
+        <div
+            id="versioned-doc-poller"
+            data-poll-url={pluginType
+                ? `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/definitions/${pluginType}`
+                : `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/subgroups`}
+            data-poll-interval="4000"
+            data-max-attempts="75"
+            hidden
+        />
     )
 }
+
+<script>
+    import { navigate } from "astro:transitions/client"
+
+    // While an archived version's docs generate, the backend returns 202. Poll until it flips to a
+    // terminal status, then swap to the ready page. A soft View Transitions navigation re-renders the
+    // archived docs in place (no tab spinner, no full-page flash); fall back to reload when the router
+    // isn't active (e.g. dev, where ClientRouter is prod-only).
+    function startVersionedDocPoll() {
+        const el = document.getElementById("versioned-doc-poller")
+        if (!el) return
+
+        const pollUrl = el.dataset.pollUrl
+        const pollIntervalMs = Number(el.dataset.pollInterval) || 4000
+        const maxPollAttempts = Number(el.dataset.maxAttempts) || 75
+        if (!pollUrl) return
+
+        let attempts = 0
+        const refresh = () => {
+            try {
+                navigate(window.location.href, { history: "replace" })
+            } catch {
+                window.location.reload()
+            }
+        }
+
+        const tick = () => {
+            attempts++
+            fetch(pollUrl, { cache: "no-store" })
+                .then((r) => {
+                    if (r.status === 202) {
+                        if (attempts < maxPollAttempts) setTimeout(tick, pollIntervalMs)
+                        return
+                    }
+                    refresh()
+                })
+                .catch(() => {
+                    if (attempts < maxPollAttempts) setTimeout(tick, pollIntervalMs)
+                })
+        }
+        setTimeout(tick, pollIntervalMs)
+    }
+
+    startVersionedDocPoll()
+    // Re-arm after a soft navigation lands on another still-generating archived page.
+    document.addEventListener("astro:page-load", startVersionedDocPoll)
+</script>
 
 <style lang="scss">
     .bd-main {
