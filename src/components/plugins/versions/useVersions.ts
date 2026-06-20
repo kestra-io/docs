@@ -49,7 +49,6 @@ export function useVersions(props: VersionProps) {
     }
 
     return {
-        latestVersion,
         activeVersion,
         activeVersionInfo,
         isOnLatest,

@@ -64,12 +64,16 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
                     .replace(/\.git$/, "")
             const repoUrl = `https://github.com/kestra-io/${githubReleaseRepo}`
 
+            // Index min-core by version once, instead of scanning the flattened artifact list per release.
+            const minCoreByVersion = new Map<string, string>()
+            for (const a of Object.values(artifactsData).flat() as any[]) {
+                if (a?.minCoreCompatibilityVersion && normalizeRepoUrl(a.repository) === repoUrl) {
+                    minCoreByVersion.set(a.version, a.minCoreCompatibilityVersion)
+                }
+            }
+
             githubVersions.versions?.forEach((v: any) => {
-                v.minCoreCompatibilityVersion = (
-                    Object.values(artifactsData).flat() as any[]
-                ).find(
-                    (a) => a.version === v.version && normalizeRepoUrl(a.repository) === repoUrl,
-                )?.minCoreCompatibilityVersion
+                v.minCoreCompatibilityVersion = minCoreByVersion.get(v.version)
 
                 // Fallback for pre-1.0.0 versions not in the artifacts index:
                 // plugin 0.X.Y always required Kestra 0.X.0 by convention.
