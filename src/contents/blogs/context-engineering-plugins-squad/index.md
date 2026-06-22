@@ -12,7 +12,7 @@ author:
 image: ./main.png
 ---
 
-At Kestra, building a new plugin feature involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours — not because the work is hard, but because it is thorough.
+At Kestra, building a new plugin feature involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours for a basic or medium-complexity task — and several days for a comprehensive, multi-task plugin — not because the work is hard, but because it is thorough.
 
 We asked a different question: what if we kept the thoroughness and removed the repetition?
 
@@ -50,7 +50,17 @@ Most teams skip directly from L2 to L3 and stall there, because scripted automat
 
 ## The Entrypoint: GitHub Issues as Machine-Readable Specs
 
-The workflow starts where all feature work starts: a GitHub issue.
+The workflow starts where all feature work starts: a GitHub issue. But before any issue is written, a more fundamental question has to be answered — **why does this work exist?**
+
+Every plugin feature on the backlog has an origin. It is either:
+- A **customer signal** — a request surfaced by the Sales or Customer Success squads, with real names and real use cases attached
+- A **Dev Marketing initiative** — a plugin that strengthens an integration story, a category, or a release theme
+- An **internal bet** — the squad believes a new connector or capability is strategically valuable, before external demand has materialized
+- **Innovation** — an experiment, a proof-of-concept, something nobody asked for yet
+
+This is product thinking, and it belongs at the very start of the SDLC. The answer shapes the spec: a customer-signal issue names the use case and the success criterion. A Dev Marketing issue frames the plugin in the context of the integration story it supports. An innovation issue admits its exploratory nature upfront and scopes the acceptance criteria accordingly.
+
+An issue that skips the "why" is an issue that will be built correctly and shipped to nobody.
 
 We write issues differently now. A good issue for this workflow is a complete business and technical specification in markdown. It includes:
 - A description of the desired behavior
@@ -69,7 +79,7 @@ Here is the full lifecycle, with the exact skills and agents at each step.
 
 **Actor: any squad member (human)**
 
-The squad member runs `/kestra-plugin-managing-issues` with a description or an existing issue URL. The skill asks whether this is a new feature, a bug fix, or a reformat of an existing issue, then generates a fully structured GitHub issue body following Kestra plugin conventions — acceptance criteria, YAML examples, affected tasks — and posts it to the correct repository.
+The squad member runs `/kestra-plugin-managing-issues` with a description or an existing issue URL. The skill first asks about the origin of the work — customer signal, Dev Marketing initiative, internal bet, or innovation — then asks whether this is a new feature, a bug fix, or a reformat of an existing issue. From those answers, it generates a fully structured GitHub issue body following Kestra plugin conventions — acceptance criteria, YAML examples, affected tasks, and a clear statement of why the work exists — and posts it to the correct repository.
 
 The issue becomes the contract for everything that follows. Weak spec in, weak output out.
 
