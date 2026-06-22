@@ -7,7 +7,7 @@ metaDescription: Foundation Data replaced SuperMetrics, Prefect, and dbt Cloud w
 heroImage: ./hero.png
 featured: true
 featuredImage: ./hero.png
-logo: ./logo.svg
+logo: ./logo.png
 logoDark: ./logo-dark.svg
 tasks:
   - io.kestra.plugin.dbt.cli.DbtCLI
