@@ -93,7 +93,10 @@ triggers:
   - id: on_new_trade
     type: io.kestra.plugin.kafka.Trigger
     topic: incoming_trades
-    serde: JSON
+    groupId: trade-settlement
+    properties:
+      bootstrap.servers: "{{ secret('KAFKA_BOOTSTRAP_SERVERS') }}"
+    valueDeserializer: JSON
 ```
 
 ### Case studies: Real-world impact with Kestra

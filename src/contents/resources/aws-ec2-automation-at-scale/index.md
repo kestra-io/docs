@@ -1,4 +1,3 @@
-```yaml
 ---
 title: "AWS EC2 Automation at Scale: A Comprehensive Guide"
 description: "Learn how to implement AWS EC2 automation at scale to optimize performance, reduce costs, and ensure application availability. Get started with our expert guide!"
@@ -21,7 +20,6 @@ faq:
   - question: "What are common challenges in managing EC2 at scale?"
     answer: "Common challenges include predicting demand fluctuations, ensuring cost-efficiency, maintaining consistent configurations, and integrating EC2 actions with broader infrastructure or data pipelines. Automation helps address these by providing dynamic, policy-driven management."
 ---
-```
 
 Managing cloud infrastructure at scale often feels like a constant balancing act between performance, availability, and cost. For organizations relying on AWS EC2, manually provisioning and de-provisioning instances to match fluctuating demand is not just inefficient—it's a recipe for downtime and budget overruns. The solution lies in robust automation.
 
@@ -133,7 +131,7 @@ tasks:
     type: io.kestra.plugin.aws.cli.AwsCLI
     commands:
       - aws autoscaling set-desired-capacity --auto-scaling-group-name my-asg --desired-capacity 5
-    if: "{{ outputs.check_s3_load.objects_count > 100 }}"
+    runIf: "{{ (outputs.check_s3_load.objects | length) > 100 }}"
 
   # ... further processing tasks
 ```

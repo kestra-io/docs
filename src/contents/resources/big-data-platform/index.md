@@ -4,7 +4,7 @@ description: "Explore what a big data platform is, its essential components, and
 metaTitle: "Big Data Platform: Definition, Components & Kestra | Kestra"
 metaDescription: "Understand big data platforms, their key features, and practical use cases. Discover how Kestra simplifies orchestration across your complex data ecosystem."
 tag: "data"
-date: 2026-06-25
+date: 2026-06-22
 slug: "big-data-platform"
 faq:
   - question: "What is a big data platform?"
@@ -22,7 +22,6 @@ faq:
   - question: "What are the common use cases for big data platforms?"
     answer: "Common use cases include enhancing customer experience through personalization, driving business intelligence with comprehensive insights, enabling real-time analytics for operational efficiency, powering fraud detection, and supporting advanced machine learning model training and deployment."
 author: "Kestra"
-image: "/images/blog/big-data-platform.webp"
 ---
 
 The term "big data" often conjures images of immense datasets, but the real challenge isn't just the data itself—it's building and managing the robust infrastructure to harness it. Modern enterprises grapple with data arriving at unprecedented volume, velocity, and variety, demanding more than traditional data management solutions can offer.

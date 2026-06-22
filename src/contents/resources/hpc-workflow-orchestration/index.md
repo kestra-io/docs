@@ -1,4 +1,3 @@
-```yaml
 ---
 title: "HPC workflow orchestration: simplify complex tasks"
 description: "High-performance computing (HPC) tasks demand robust coordination. This guide explores how declarative workflow orchestration streamlines complex simulations, data processing, and AI model training on HPC systems, boosting efficiency and accelerating insights."
@@ -22,10 +21,8 @@ faq:
     answer: "Kestra simplifies HPC orchestration by offering a declarative, YAML-based approach to define complex workflows. Its language-agnostic execution engine and robust plugin ecosystem allow it to integrate with diverse HPC tools and cloud environments, providing centralized visibility, automated resource management, and event-driven capabilities."
   - question: "What are the benefits of declarative HPC orchestration?"
     answer: "Declarative HPC orchestration offers several benefits, including improved reproducibility due to version-controlled YAML definitions, enhanced operational efficiency through automation, better resource utilization, and simplified debugging. It allows teams to manage complex HPC tasks with greater agility and reduced manual effort."
-author: "..."
-image: "..."
 ---
-```
+
 High-Performance Computing (HPC) underpins scientific discovery, AI innovation, and large-scale data analytics, yet managing these complex, distributed workloads can be daunting. From coordinating intricate simulations to orchestrating massive data processing jobs, traditional methods often struggle with scale, reliability, and reproducibility. The sheer volume of data and compute resources involved demands a more sophisticated approach.
 
 This guide delves into HPC workflow orchestration, explaining how a declarative platform unifies these diverse tasks. We'll explore the fundamental concepts of HPC, clarify the distinction between workflows and orchestration, and demonstrate how modern tools can streamline job management, enhance efficiency, and accelerate insights across your high-performance computing environment.
@@ -121,20 +118,20 @@ description: "Orchestrates a Slurm job submission and monitors its completion."
 tasks:
   - id: submit_slurm_job
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER # Or Kubernetes runner if deployed on K8s
-    docker:
-      image: "ubuntu/slurm-client:latest" # Example Slurm client image
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker # Or the Kubernetes task runner if deployed on K8s
+    containerImage: "ubuntu/slurm-client:latest" # Example Slurm client image
     commands:
       # Submit the batch script and capture the job ID
       - "JOB_ID=$(sbatch --parsable my_simulation_script.sh)"
-      # Pass the job ID to downstream tasks
-      - "echo '::set-output name=slurm_job_id::'${JOB_ID}"
+      # Pass the job ID to downstream tasks as a Kestra output
+      - "echo '::{\"outputs\":{\"slurm_job_id\":\"'\"$JOB_ID\"'\"}}::'"
 
   - id: monitor_job_status
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER
-    docker:
-      image: "ubuntu/slurm-client:latest"
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: "ubuntu/slurm-client:latest"
     commands:
       # Check if the job is still running or pending. Fails if job is not found or completed.
       - "squeue -j {{ outputs.submit_slurm_job.vars.slurm_job_id }} -h"
@@ -145,9 +142,9 @@ tasks:
 
   - id: get_final_status
     type: io.kestra.plugin.scripts.shell.Commands
-    runner: DOCKER
-    docker:
-      image: "ubuntu/slurm-client:latest"
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: "ubuntu/slurm-client:latest"
     commands:
       # Retrieve the final state of the job (e.g., COMPLETED, FAILED)
       - "sacct -j {{ outputs.submit_slurm_job.vars.slurm_job_id }} --format=State -n -P"

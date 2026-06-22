@@ -21,7 +21,7 @@ faq:
 
 In today's complex, distributed IT environments, managing access to automated workflows is a significant challenge. Unauthorized access or accidental modifications can lead to security breaches, data corruption, or operational downtime. As organizations increasingly rely on workflow orchestration to automate critical data, AI, and infrastructure processes, the need for robust access control becomes paramount.
 
-This article explores Role-Based Access Control (RBAC) in the context of workflow orchestration. We'll define RBAC, explain its core principles, and demonstrate how it secures your automation landscape. You'll learn how platforms like [Kestra](/ ) provide a unified, declarative approach to implement granular permissions, ensuring that only the right people and systems can interact with your vital workflows.
+This article explores Role-Based Access Control (RBAC) in the context of workflow orchestration. We'll define RBAC, explain its core principles, and demonstrate how it secures your automation landscape. You'll learn how platforms like [Kestra](/) provide a unified, declarative approach to implement granular permissions, ensuring that only the right people and systems can interact with your vital workflows.
 
 ## Understanding Role-Based Access Control (RBAC)
 
