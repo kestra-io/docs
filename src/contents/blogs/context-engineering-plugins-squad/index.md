@@ -154,6 +154,10 @@ The reviewer returns one of three verdicts: **APPROVE**, **REQUEST CHANGES**, or
 
 Runs browser-based QA against Kestra Enterprise Edition, exercising the scenarios from the issue's acceptance criteria. Complexity classification (Simple / Standard / Complex) determines the depth of coverage. On FAIL, the failing scenarios route back to the developer agent for a correction cycle.
 
+Before running flows, the skill checks whether the required secrets are already present on the Kestra instance. If any are missing, it pauses and asks the user to add them before continuing — so QA never silently fails due to a missing credential.
+
+For plugins that require an external service — a cloud provider, a database, a message broker — the skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://github.com/kestra-io/floci) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
+
 ### Step 5 — Review, Merge, and Release
 
 **Actor: squad member (human)**
