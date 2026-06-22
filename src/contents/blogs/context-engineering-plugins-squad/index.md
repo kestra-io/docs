@@ -166,6 +166,8 @@ No agent has implicit knowledge about Kestra plugin conventions. Everything it k
 
 ## The Human Role After Context Engineering
 
+Software Engineers have always lived at the intersection of Product, Software Architecture, and Outcomes — translating business intent into working systems while making the design decisions that shape what gets built and why. That was true before AI coding tools existed. In 2026, with agents handling the mechanical execution layer, it is even more true: the craft moves up the stack, not out of the picture.
+
 The developer's role shifted from typing code to curating context.
 
 Writing issue specs that are complete enough to be machine-parseable is harder than writing vague tickets. Reviewing a generated plan critically is faster than writing it from scratch, but requires genuine domain expertise. Reviewing a pull request that already passes tests and QA requires a different kind of attention — less syntax, more semantics.
