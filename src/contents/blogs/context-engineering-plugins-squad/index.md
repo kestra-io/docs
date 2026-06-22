@@ -108,6 +108,8 @@ Before implementation begins, the orchestrator verifies two things:
 
 Both checks are hard gates. If either fails, the workflow stops with a clear error message. This is not a formality — it is the mechanism that keeps humans in control of what gets built and who authorized it. The approver can be a different person than the one who wrote the issue or ran the planning step.
 
+If the approver is not satisfied with the plan, they leave a comment on the issue explaining what needs to change. The squad member reruns `/kestra-plugin-planning` — which picks up the feedback from the issue thread — and a revised plan is posted. This loop continues until `/plan-approved` is posted. No implementation starts until it does.
+
 ### Step 4 — Implement `/kestra-plugin-implementing` or `/kestra-plugin-implementing-multiple`
 
 **Actor: any squad member (human) → orchestrator → sub-agents**
