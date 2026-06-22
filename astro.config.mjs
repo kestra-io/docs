@@ -296,6 +296,9 @@ export default defineConfig({
                     __dirname,
                     "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
                 ),
+                // Mirror the tsconfig `~/*` paths so the alias also resolves
+                // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
+                "~": path.resolve(__dirname, "src"),
             },
         },
         css: {
