@@ -230,7 +230,7 @@ Skills and agents solve this at the architecture level: the knowledge lives in o
 
 When the hub is updated and rebuilt, every repository picks up the change immediately — no copy, no commit, no propagation step. The symlinked directories are excluded from each plugin repository's `.gitignore` so they are never accidentally committed.
 
-Setting up or refreshing symlinks on a new repository is a one-command operation: the `/kestra-agents-update` skill pulls the latest hub changes and creates or repairs all symlinks automatically.
+Setting up or refreshing symlinks on a new repository is a one-command operation: the `kestra-agents-update` script from Plugin Devtools pulls the latest hub changes and creates or repairs all symlinks automatically.
 
 No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
 
