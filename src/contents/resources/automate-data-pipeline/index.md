@@ -44,7 +44,7 @@ A robust automated data pipeline consists of several interconnected components w
 *   **Monitoring and Alerting:** Mechanisms to track the health of the pipeline, log performance metrics, and notify teams of failures or anomalies.
 *   **Version Control:** Integrating the pipeline definition with a system like Git to track changes, collaborate, and enable CI/CD practices.
 
-These components come together to form a complete [flow](/docs/concepts/flow) that reliably delivers data for business use.
+These components come together to form a complete [flow](/docs/workflow-components/flow) that reliably delivers data for business use.
 
 ## Why is data pipeline automation important?
 
