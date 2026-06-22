@@ -25,9 +25,9 @@ kpi3: |-
 kpi4: |-
   ##### 99%
   pipeline success rate
-quote: We went from 2,000 to 2,800 dealers — 40% growth — and our cloud bill went up maybe 10%. I don't think people realize how much Jack has made our systems efficient.
-quotePerson: Mike Heidner
-quotePersonTitle: SVP, Analytics
+quote: Kestra completely transformed our operational workflows. We now deploy new pipelines rapidly, easily manage our integrations, and have vastly improved our productivity and cost efficiency.
+quotePerson: Jack Perry
+quotePersonTitle: Head of Data Operations
 industry: Advertising
 headquarter: Leesburg, VA
 region: Americas
@@ -108,7 +108,7 @@ An orchestrator that could run <strong class="problem-close-key">any language, d
 </div>
 <div class="result-item">
 <div class="result-metric">40% client growth at 10% cloud cost increase</div>
-<div class="result-desc">Foundation Data grew from 2,000 dealership clients to 2,800 between 2024 and 2025. Their cloud bill grew roughly 10%. The architecture scaled horizontally without requiring proportional infrastructure spend or additional headcount.</div>
+<div class="result-desc">Foundation Data grew from 2,000 dealership clients to 2,800 between 2024 and 2025. Their cloud bill grew roughly 10%. The architecture scaled horizontally without requiring proportional infrastructure spend or additional headcount. <em class="inline-quote">"We went from 2,000 to 2,800 dealers — 40% growth — and our cloud bill went up maybe 10%. I don't think people realize how much Jack has made our systems efficient."</em> — Mike Heidner, SVP Analytics</div>
 </div>
 <div class="result-item">
 <div class="result-metric">99% pipeline success rate</div>
