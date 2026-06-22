@@ -104,7 +104,9 @@ The squad member runs `/kestra-plugin-planning` with the issue URL. A planning a
 - **Edge Cases** — boundary conditions the implementation must handle
 - **Docs Impact** — whether user-facing documentation needs updating
 
-The plan is posted as a comment on the GitHub issue. No code is written at this stage. The squad member reads the plan, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
+A plan is not always the output. Before generating one, the skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the skill queries the Kestra MCP server for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
+
+Only when the issue is clearly a plugin code change does the skill generate and post the structured plan. The squad member reads it, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
 
 ### Step 3 — Approval Gate `/plan-approved`
 
