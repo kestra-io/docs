@@ -191,7 +191,7 @@ The human touchpoints that remain are the ones that should remain:
 | Trigger implementation | Any squad member | `/kestra-plugin-implementing` or `-multiple` |
 | Review and merge | Squad member | PR review, merge, release |
 
-Agents handle execution. Humans own decisions.
+At L4a, agents handle execution; humans own decisions. Advancing to L4b or L5a does not change that principle — it changes which decisions are worth a human's attention.
 
 ## Going Further: L4b and L5a
 
