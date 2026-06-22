@@ -80,7 +80,7 @@ A **skill** is a procedural instruction set: a numbered sequence of steps, decis
 
 An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are skills.
 
-The distinction matters because agents can be reused across skills, updated independently, and invoked directly when needed.
+The distinction matters because agents can be reused across skills, updated independently, and invoked directly when needed. For example, `kestra-plugin-code-reviewer` can be called manually to review a colleague's PR outside of the full workflow, and `/kestra-plugin-doing-qa` can be run standalone to perform a non-regression QA pass on an existing branch.
 :::
 
 Here is the full lifecycle, with the exact skills and agents at each step.
