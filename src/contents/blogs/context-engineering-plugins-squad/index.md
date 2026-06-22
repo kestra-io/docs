@@ -190,7 +190,7 @@ Token breakdown for the same session:
 
 The cost figure covers the full cycle: planning, implementation, code review, and QA. The developer agent and QA together consume about 70% of the token budget — which is expected, since they do the most work.
 
-But the headline number understates the change. Manual processes routinely compress some steps under time pressure — planning gets light, code review skims, QA skips failure scenarios and non-regression coverage. With agents, every issue gets thorough planning, detailed review across four tracks, and comprehensive QA. The quality floor rises alongside the speed.
+But the headline number understates the change. Manual processes routinely compress some steps under time pressure — planning gets light, code review skims, QA gets cut short. With agents, every issue gets thorough planning, detailed review across four tracks, and QA that covers happy paths, failure scenarios, and non-regression. The quality floor rises alongside the speed.
 
 ### How We Keep the Cost Down
 
