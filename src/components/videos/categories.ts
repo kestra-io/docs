@@ -3,7 +3,7 @@ export const categories = new Map([
     ["getting-started", "Getting Started"],
     ["whats-new", "What's New"],
     ["data", "Data"],
-    ["ai", "AI"],
     ["infrastructure", "Infrastructure"],
-    ["webinar", "Webinar"],
+    ["ai", "AI"],
+    ["webinar", "Webinars"],
 ])

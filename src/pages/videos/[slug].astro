@@ -19,7 +19,8 @@ const { slug } = Astro.params
 
 const currentCategory = slug ? (categories.get(slug) ?? "") : ""
 
-const currentCategoryFilter = slug === "all" ? "" : currentCategory
+const categoryFilterMap: Record<string, string> = { "Webinars": "Webinar" }
+const currentCategoryFilter = slug === "all" ? "" : (categoryFilterMap[currentCategory] ?? currentCategory)
 
 const allVideos = await getCollection("tutorialVideos")
 
