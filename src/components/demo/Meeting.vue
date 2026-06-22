@@ -56,8 +56,6 @@
                 const fn = form["first-name"].value
                 const ln = form["last-name"].value
                 const em = form["email"].value
-                const co = form["company"].value
-                const ph = form["phone"].value
                 const emp = form["employees"].value
 
                 hsq.push([
@@ -66,8 +64,6 @@
                         email: em,
                         firstname: fn,
                         lastname: ln,
-                        company: co,
-                        phone: ph,
                         kuid: localStorage.getItem("KUID") || "",
                     },
                 ])
@@ -80,8 +76,6 @@
                         { objectTypeId: "0-1", name: "email", value: em },
                         { objectTypeId: "0-1", name: "firstname", value: fn },
                         { objectTypeId: "0-1", name: "lastname", value: ln },
-                        { objectTypeId: "0-1", name: "company", value: co },
-                        { objectTypeId: "0-1", name: "phone", value: ph },
                         {
                             objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
                             name: COMPANY_SIZE_PROPERTY,
@@ -247,7 +241,7 @@
                         autocomplete="given-name"
                         type="text"
                         class="form-control"
-                        placeholder="First name"
+                        placeholder="First name *"
                         required
                     />
                 </div>
@@ -262,7 +256,7 @@
                         autocomplete="family-name"
                         type="text"
                         class="form-control"
-                        placeholder="Last name"
+                        placeholder="Last name *"
                         required
                     />
                 </div>
@@ -276,82 +270,30 @@
                         name="email"
                         type="email"
                         class="form-control"
-                        placeholder="Company email"
+                        placeholder="Company email *"
                         required
                     />
                 </div>
 
                 <div class="col-12">
-                    <label for="demo-company" class="form-label mb-0">
-                        Company
+                    <label for="demo-employees" class="form-label mb-0">
+                        Number of employees
                     </label>
-                    <input
-                        id="demo-company"
-                        name="company"
-                        autocomplete="organization"
-                        type="text"
+                    <select
+                        id="demo-employees"
+                        name="employees"
                         class="form-control"
-                        placeholder="Company"
                         required
-                    />
-                </div>
-
-                <div class="col-12 employees-field">
-                    <label class="d-block mb-1">Number of employees</label>
-                    <div class="form-check">
-                        <input
-                            id="demo-employees-1"
-                            name="employees"
-                            type="radio"
-                            class="form-check-input"
-                            value="below 100"
-                            required
-                        />
-                        <label class="form-check-label" for="demo-employees-1">
-                            below 100
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                            id="demo-employees-2"
-                            name="employees"
-                            type="radio"
-                            class="form-check-input"
-                            value="between 100 and 999"
-                            required
-                        />
-                        <label class="form-check-label" for="demo-employees-2">
+                    >
+                        <option value="" disabled selected>
+                            Number of employees *
+                        </option>
+                        <option value="below 100">below 100</option>
+                        <option value="between 100 and 999">
                             between 100 and 999
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                            id="demo-employees-3"
-                            name="employees"
-                            type="radio"
-                            class="form-check-input"
-                            value="1000+"
-                            required
-                        />
-                        <label class="form-check-label" for="demo-employees-3">
-                            1000+
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <label for="demo-phone" class="form-label mb-0">
-                        Phone number
-                    </label>
-                    <input
-                        id="demo-phone"
-                        name="phone"
-                        autocomplete="tel"
-                        type="tel"
-                        class="form-control"
-                        placeholder="Phone number"
-                        required
-                    />
+                        </option>
+                        <option value="1000+">1000+</option>
+                    </select>
                 </div>
 
                 <div class="col-12 mt-3">
@@ -530,6 +472,9 @@
                 }
                 .form-label {
                     opacity: 0;
+                }
+                select.form-control:invalid {
+                    color: var(--bs-secondary-color);
                 }
             }
             @include media-breakpoint-down(md) {
