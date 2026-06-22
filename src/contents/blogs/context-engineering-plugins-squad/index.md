@@ -26,7 +26,7 @@ Prompt engineering is about crafting the right question. Context Engineering is 
 
 A well-prompted agent can write a Kestra task that compiles. A context-engineered agent can write one that follows Kestra plugin conventions, passes the test suite, handles edge cases correctly, includes YAML usage examples, and creates a pull request with the right reviewer team and a valid issue link in the body — on the first attempt.
 
-The difference is not cleverness. It is structure: explicit domain knowledge encoded as **skills** (focused markdown instruction sets under 500 lines each), deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
+The difference is not cleverness. It is structure: explicit domain knowledge encoded as **Skills** (focused markdown instruction sets under 500 lines each), deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
 
 This is Context Engineering. It does not replace developer judgment — it channels it into the right moments.
 
@@ -41,8 +41,8 @@ Before describing the workflow, it helps to locate where we are. We map agentic 
 | L3 | Scripted | Deterministic, human-designed automation — fixed steps, no agent autonomy. |
 | **L4a** | **Supervised Agentic** | **Dynamic multi-agent workflows with explicit human approval gates.** |
 | L4b | Autonomous Agentic | Agents run end-to-end without human checkpoints. |
-| L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own skills. |
-| L5b | Self-Authoring | Agents create new agents and skills from scratch. |
+| L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own Skills. |
+| L5b | Self-Authoring | Agents create new agents and Skills from scratch. |
 
 The Plugins & Ecosystem Squad operates at **L4a**: agents handle execution, humans own decisions. Every approval gate is an explicit checkpoint — not an accidental pause.
 
@@ -74,24 +74,24 @@ The issue is not a ticket. It is the contract — and it drives the entire softw
 ## The SDLC: Who Does What, and When
 
 :::alert{type="info"}
-**skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
+**Skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
 
-A **skill** is a procedural instruction set: a numbered sequence of steps, decision points, and success conditions that runs in the main context window. It is invoked by a human (e.g. `/kestra-plugin-planning`) and may orchestrate other steps or spawn agents. Think of it as a runbook the AI follows on your behalf.
+A **Skill** is a procedural instruction set: a numbered sequence of steps, decision points, and success conditions that runs in the main context window. It is invoked by a human (e.g. `/kestra-plugin-planning`) and may orchestrate other steps or spawn agents. Think of it as a runbook the AI follows on your behalf.
 
-An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are skills.
+An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a Skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are Skills.
 
-The distinction matters because agents can be reused across skills, updated independently, and invoked directly when needed. For example, `kestra-plugin-code-reviewer` can be called manually to review a colleague's PR outside of the full workflow, and `/kestra-plugin-doing-qa` can be run standalone to perform a non-regression QA pass on an existing branch.
+The distinction matters because agents can be reused across Skills, updated independently, and invoked directly when needed. For example, `kestra-plugin-code-reviewer` can be called manually to review a colleague's PR outside of the full workflow, and `/kestra-plugin-doing-qa` can be run standalone to perform a non-regression QA pass on an existing branch.
 :::
 
-Existing frameworks like [BMAD](https://bmad.fr/), [Git Spec Kit](https://github.com/github/spec-kit), or [Superpowers](https://github.com/obra/Superpowers) cover similar ground but are deliberately generic. We evaluated them and chose not to adopt any: generic methodologies give generic results. Our skills and agents encode Kestra plugin conventions, Kestra-specific security rules, Kestra's test and annotation patterns, and the squad's own review instincts. That specificity is the point. Keeping the surface area small and domain-specific — KISS — is what makes the agents reliable enough to trust on real issues.
+Existing frameworks like [BMAD](https://bmad.fr/), [Git Spec Kit](https://github.com/github/spec-kit), or [Superpowers](https://github.com/obra/Superpowers) cover similar ground but are deliberately generic. We evaluated them and chose not to adopt any: generic methodologies give generic results. Our Skills and agents encode Kestra plugin conventions, Kestra-specific security rules, Kestra's test and annotation patterns, and the squad's own review instincts. That specificity is the point. Keeping the surface area small and domain-specific — KISS — is what makes the agents reliable enough to trust on real issues.
 
-Here is the full lifecycle, with the exact skills and agents at each step.
+Here is the full lifecycle, with the exact Skills and agents at each step.
 
 ### Step 1 — Write the Issue `/kestra-plugin-managing-issues`
 
 **Actor: any squad member (human)**
 
-The squad member runs `/kestra-plugin-managing-issues` with a description or an existing issue URL. The skill first asks about the origin of the work — customer signal, Dev Marketing initiative, internal bet, or innovation — then asks whether this is a new feature, a bug fix, or a reformat of an existing issue. From those answers, it generates a fully structured GitHub issue body following Kestra plugin conventions — acceptance criteria, YAML examples, affected tasks, and a clear statement of why the work exists — and posts it to the correct repository.
+The squad member runs `/kestra-plugin-managing-issues` with a description or an existing issue URL. The Skill first asks about the origin of the work — customer signal, Dev Marketing initiative, internal bet, or innovation — then asks whether this is a new feature, a bug fix, or a reformat of an existing issue. From those answers, it generates a fully structured GitHub issue body following Kestra plugin conventions — acceptance criteria, YAML examples, affected tasks, and a clear statement of why the work exists — and posts it to the correct repository.
 
 The issue becomes the contract for everything that follows. Weak spec in, weak output out.
 
@@ -106,15 +106,15 @@ The squad member runs `/kestra-plugin-planning` with the issue URL. A planning a
 - **Edge Cases** — boundary conditions the implementation must handle
 - **Docs Impact** — whether user-facing documentation needs updating
 
-A plan is not always the output. Before generating one, the skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the skill queries the Kestra MCP server for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
+A plan is not always the output. Before generating one, the Skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the Skill queries the Kestra MCP server for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
 
-Only when the issue is clearly a plugin code change does the skill generate and post the structured plan. The squad member reads it, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
+Only when the issue is clearly a plugin code change does the Skill generate and post the structured plan. The squad member reads it, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
 
 ### Step 3 — Approval Gate `/plan-approved`
 
 **Actor: any kestra-io org member (human)**
 
-This step does not require a skill. The approver posts `/plan-approved` as a comment on the issue. That is all.
+This step does not require a Skill. The approver posts `/plan-approved` as a comment on the issue. That is all.
 
 Before implementation begins, the orchestrator verifies two things:
 1. An **exact** `/plan-approved` comment body exists (partial matches are rejected)
@@ -128,18 +128,18 @@ If the approver is not satisfied with the plan, they leave a comment on the issu
 
 **Actor: any squad member (human) → orchestrator → sub-agents**
 
-The squad member runs one of two skills depending on the scope:
+The squad member runs one of two Skills depending on the scope:
 
 - **`/kestra-plugin-implementing <issue-url>`** — single issue, sequential execution
 - **`/kestra-plugin-implementing-multiple <issue-url-1> <issue-url-2> ...`** — multiple approved issues run in parallel via an agent team, one teammate per issue
 
 Again, this can be a different person than the ones who wrote the issue or approved the plan.
 
-Once the orchestrator confirms the approval gate, it drives two sub-agents and one skill in sequence:
+Once the orchestrator confirms the approval gate, it drives two sub-agents and one Skill in sequence:
 
 #### `kestra-plugin-developer` — the developer
 
-Reads the issue and the approved plan, then targets the listed files directly — no broad codebase exploration, since the planning skill already mapped the relevant classes and design decisions. Implements the full feature in one batch: writes the code, runs the Gradle test suite, fixes any failures within the same session, and opens a pull request with the correct reviewer team (`kestra-io/plugins`), a `closes:` link to the issue, and a description that matches what was implemented.
+Reads the issue and the approved plan, then targets the listed files directly — no broad codebase exploration, since the planning Skill already mapped the relevant classes and design decisions. Implements the full feature in one batch: writes the code, runs the Gradle test suite, fixes any failures within the same session, and opens a pull request with the correct reviewer team (`kestra-io/plugins`), a `closes:` link to the issue, and a description that matches what was implemented.
 
 #### `kestra-plugin-code-reviewer` — the reviewer
 
@@ -156,15 +156,15 @@ The reviewer returns one of three verdicts: **APPROVE**, **REQUEST CHANGES**, or
 
 #### `/kestra-plugin-doing-qa` — end-to-end testing
 
-Runs browser-based QA against Kestra Enterprise Edition. The skill derives test scenarios from the issue's acceptance criteria, presents them to the human for review, and waits for confirmation before executing — so the squad can add, remove, or adjust scenarios before any browser automation starts. Complexity classification (Simple / Standard / Complex) determines the depth of coverage. On FAIL, the failing scenarios route back to the developer agent for a correction cycle.
+Runs browser-based QA against Kestra Enterprise Edition. The Skill derives test scenarios from the issue's acceptance criteria, presents them to the human for review, and waits for confirmation before executing — so the squad can add, remove, or adjust scenarios before any browser automation starts. Complexity classification (Simple / Standard / Complex) determines the depth of coverage. On FAIL, the failing scenarios route back to the developer agent for a correction cycle.
 
-Before running flows, the skill checks whether the required secrets are already present on the Kestra instance. If any are missing, it pauses and asks the user to add them before continuing — so QA never silently fails due to a missing credential.
+Before running flows, the Skill checks whether the required secrets are already present on the Kestra instance. If any are missing, it pauses and asks the user to add them before continuing — so QA never silently fails due to a missing credential.
 
-For plugins that require an external service — a cloud provider, a database, a message broker — the skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://github.com/kestra-io/floci) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
+For plugins that require an external service — a cloud provider, a database, a message broker — the Skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://github.com/kestra-io/floci) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
 
 ### A Note on Plugin Devtools
 
-**Plugin Devtools** is an internal private repository that provides the squad's local toolchain: running a Kestra instance, deploying plugins locally for development and testing, and releasing plugins to the registry. The QA skill relies on Plugin Devtools to start Kestra Enterprise Edition and hot-deploy the plugin under test before exercising the acceptance criteria in the browser. Step 5 uses it again for the final release.
+**Plugin Devtools** is an internal private repository that provides the squad's local toolchain: running a Kestra instance, deploying plugins locally for development and testing, and releasing plugins to the registry. The QA Skill relies on Plugin Devtools to start Kestra Enterprise Edition and hot-deploy the plugin under test before exercising the acceptance criteria in the browser. Step 5 uses it again for the final release.
 
 ### Step 5 — Review, Merge, and Release
 
@@ -189,7 +189,7 @@ Token breakdown for the same session:
 | Budget item | Share |
 |---|---|
 | Skills + agents definitions loaded into context | ~20K tokens (~6% of input) |
-| Developer agent + QA skill | ~70% of total input |
+| Developer agent + QA Skill | ~70% of total input |
 | Planning (Opus) + implementation and review (Sonnet) | 100% of cost |
 
 The cost figure covers the full cycle: planning, implementation, code review, and QA. The developer agent and QA together consume about 70% of the token budget — which is expected, since they do the most work.
@@ -200,7 +200,7 @@ But the headline number understates the change. Manual processes routinely compr
 
 Token consumption in agentic workflows grows faster than linearly: every turn adds to the context window that all subsequent turns must read. We use three techniques to counteract this.
 
-**Pass the plan to the developer.** The planning skill maps the relevant classes and design decisions upfront and posts them as a structured comment on the issue. The developer agent reads that comment and targets the listed files directly — skipping broad codebase exploration. Eliminating even a few exploration turns has an outsized effect: each saved turn roughly halves its own cost because context window growth is roughly triangular.
+**Pass the plan to the developer.** The planning Skill maps the relevant classes and design decisions upfront and posts them as a structured comment on the issue. The developer agent reads that comment and targets the listed files directly — skipping broad codebase exploration. Eliminating even a few exploration turns has an outsized effect: each saved turn roughly halves its own cost because context window growth is roughly triangular.
 
 **Compact at strategic points.** The workflow issues `/compact` — a context pruning command — at three specific moments: mid-implementation (after all files are written, before running tests), after the developer agent returns, and after QA (which accumulates significant browser and terminal history). Each compaction flushes turn history while preserving the essential state, keeping the context window lean for the next heavy stage.
 
@@ -212,15 +212,15 @@ These optimizations together saved nearly $1 per issue compared to the unoptimiz
 
 The agents work because the knowledge they need is explicit and version-controlled.
 
-A central hub — a private repository called `engineering-ai-hub` — holds all skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
+A central hub — a private repository called `engineering-ai-hub` — holds all Skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
 
-skills are tool-agnostic at the source level. A build step generates Claude Code and OpenCode formats from a single markdown source, so the same knowledge works across AI coding tools.
+Skills are tool-agnostic at the source level. A build step generates Claude Code and OpenCode formats from a single markdown source, so the same knowledge works across AI coding tools.
 
 ### Distributing to Plugin Repositories via Symlinks
 
 Kestra maintains around 200 plugin repositories. The naive alternative — an `AGENTS.md` file at the root of each repository — would require duplicating hundreds of lines of Kestra plugin conventions across every repo and keeping them in sync by hand. Any update to a guideline, a new edge case discovered, a security rule added — all of it would need to be propagated to 200+ files manually. That approach doesn't scale.
 
-skills and agents solve this at the architecture level: the knowledge lives in one place, and the repositories just point to it. Each plugin repository holds a set of symlinks pointing directly into the hub's build output:
+Skills and agents solve this at the architecture level: the knowledge lives in one place, and the repositories just point to it. Each plugin repository holds a set of symlinks pointing directly into the hub's build output:
 
 ```
 .claude/agents  → ../engineering-ai-hub/.claude/agents
@@ -236,7 +236,7 @@ Setting up or refreshing symlinks on a new repository is a one-command operation
 
 No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
 
-The skills and agents described here are not a first draft. The squad has been iterating on them for more than three months, refining instructions after every session where something went wrong, every review cycle that exposed a gap, every QA failure that revealed a missing guardrail. The workflow has been battle-tested on over 100 real issues. Each improvement is a pull request on the hub — reviewed, merged, and instantly live across all plugin repositories via the symlinks.
+The Skills and agents described here are not a first draft. The squad has been iterating on them for more than three months, refining instructions after every session where something went wrong, every review cycle that exposed a gap, every QA failure that revealed a missing guardrail. The workflow has been battle-tested on over 100 real issues. Each improvement is a pull request on the hub — reviewed, merged, and instantly live across all plugin repositories via the symlinks.
 
 ## The Human Role After Context Engineering
 
@@ -273,10 +273,10 @@ The release gate — human merge and publish — is the last to go, and may neve
 
 At L5a, agents emit structured telemetry about where they struggle. Planning agents flag issues where the spec was ambiguous. Developer agents flag patterns where the first implementation consistently fails code review. QA agents flag scenarios that reliably surface failures.
 
-That telemetry becomes the input for skills & agents improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the skills & agents that govern those parts. It can also identify gaps — recurring scenarios not covered by any existing skill or agent — and propose creating new ones from scratch. A human reviews the proposal, approves it, and the change is applied via an automatically opened pull request on the hub.
+That telemetry becomes the input for Skills & agents improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the Skills & agents that govern those parts. A human reviews the proposal, approves it, and the change is applied via an automatically opened pull request on the hub.
 
-The architecture we built supports L5a: skills & agents are version-controlled markdown files, agent output is structured and capturable, and the feedback loops already exist between QA, code review, and the developer agent. The missing piece is the telemetry layer and the self-improvement agent that reads it. That is the next thing we are building.
+The architecture we built supports L5a: Skills & agents are version-controlled markdown files, agent output is structured and capturable, and the feedback loops already exist between QA, code review, and the developer agent. The missing piece is the telemetry layer and the self-improvement agent that reads it. That is the next thing we are building.
 
 ---
 
-The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
+The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as Skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
