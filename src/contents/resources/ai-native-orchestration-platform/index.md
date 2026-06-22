@@ -136,7 +136,7 @@ For teams seeking flexibility and control, open-source frameworks are a compelli
 *   **Kestra** stands out with its declarative, YAML-based approach that unifies data, AI, and infrastructure workflows. Its language-agnostic design and extensive plugin library make it a versatile choice for multi-domain orchestration.
 *   **[Prefect](https://kestra.io/vs/prefect)** is a strong choice for Python-centric teams, offering a modern developer experience for defining workflows as Python code.
 *   **Dagster** appeals to analytics engineering teams with its asset-centric paradigm, which provides strong data lineage and observability.
-*   **[Argo Workflows](https://kestra.io/vs/argo-workflows)** is a powerful, Kubernetes-native solution ideal for teams that want their orchestration to live entirely within the Kubernetes control plane.
+*   **Argo Workflows** is a powerful, Kubernetes-native solution ideal for teams that want their orchestration to live entirely within the Kubernetes control plane.
 
 ### Agentic AI Orchestration for Autonomous Workflows
 
