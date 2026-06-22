@@ -12,97 +12,133 @@ author:
 image: ./main.png
 ---
 
-At Kestra, building a new plugin feature typically involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run end-to-end QA, and finally ship. A senior engineer can do this in around four hours. Not because the work is hard, but because it is thorough.
+At Kestra, building a new plugin feature involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours — not because the work is hard, but because it is thorough.
 
 We asked a different question: what if we kept the thoroughness and removed the repetition?
 
-This post describes how the Plugins & Ecosystem Squad introduced **Context Engineering** into its development workflow — and what happened when we let AI agents handle the mechanical parts while humans stayed in control of the decisions that actually matter.
+This post describes how the Plugins & Ecosystem Squad introduced **Context Engineering** into its development workflow, and what happened when we let AI agents handle the mechanical parts while humans stayed in control of the decisions that actually matter.
 
-I presented this approach at [DevLille 2026](https://github.com/fdelbrayelle/workflow-superpowers). Everything you read here is reproducible and transferable to your own team.
+I presented this approach at [DevLille 2026](https://github.com/fdelbrayelle/workflow-superpowers), with live terminal recordings of a full cycle on a real Kestra issue.
 
-## Why Prompt Engineering is Not Enough
+## Why Prompt Engineering Is Not Enough
 
 Prompt engineering is about crafting the right question. Context Engineering is about building the right environment.
 
 A well-prompted agent can write a Kestra task that compiles. A context-engineered agent can write one that follows Kestra plugin conventions, passes the test suite, handles edge cases correctly, includes YAML usage examples, and creates a pull request with the right reviewer team and a valid issue link in the body — on the first attempt.
 
-The difference is not cleverness. It is structure: explicit domain knowledge encoded as **Skills** (focused markdown instruction sets), deterministic **workflow steps** with numbered sequence and clear success conditions, **feedback loops** that send QA failures back to the developer agent for correction, and **human approval gates** at the decisions that matter.
+The difference is not cleverness. It is structure: explicit domain knowledge encoded as **Skills** (focused markdown instruction sets under 500 lines each), deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
 
-This combination is what we call Context Engineering. It does not replace developer judgment — it channels it into the right moments.
+This is Context Engineering. It does not replace developer judgment — it channels it into the right moments.
+
+## The Agentic AI Maturity Model
+
+Before describing the workflow, it helps to locate where we are. We map agentic AI adoption across six levels:
+
+| Level | Name | Description |
+|-------|------|-------------|
+| L1 | Manual | Prompts typed into a chat UI. Copy-paste driven. |
+| L2 | Augmented | Copilot suggestions inline while a human codes. |
+| L3 | Scripted | Deterministic, human-designed automation — fixed steps, no agent autonomy. |
+| **L4a** | **Supervised Agentic** | **Dynamic multi-agent workflows with explicit human approval gates.** |
+| L4b | Autonomous Agentic | Agents run end-to-end without human checkpoints. |
+| L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own Skills. |
+| L5b | Self-Authoring | Agents create new agents and Skills from scratch. |
+
+The Plugins & Ecosystem Squad operates at **L4a**. Agents handle execution; humans own decisions. Every approval gate is an explicit checkpoint — not an accidental pause.
+
+Most teams skip directly from L2 to L3 and stall there, because scripted automation breaks when requirements change. The jump to L4a — where agents adapt dynamically within a structured context — is where real productivity gains begin.
 
 ## The Entrypoint: GitHub Issues as Machine-Readable Specs
 
 The workflow starts where all feature work starts: a GitHub issue.
 
-We write issues differently now. A good issue for this workflow is a complete business and technical specification in markdown. It includes a description of the desired behavior, acceptance criteria as a checklist, and one or more YAML usage examples showing what a correct implementation looks like from the user's perspective. No ambiguity. No "we'll figure it out during implementation."
+We write issues differently now. A good issue for this workflow is a complete business and technical specification in markdown. It includes:
+- A description of the desired behavior
+- Acceptance criteria as a checklist
+- One or more YAML usage examples showing what a correct implementation looks like from the user's perspective
 
-This dual-audience design is intentional. A human engineer can read the issue and understand what to build. An AI agent can parse the same file and extract acceptance criteria, affected plugin classes, edge cases to handle, and expected outputs.
+This dual-audience design is intentional. A human engineer can read the issue and understand what to build. An AI agent can parse the same file and extract acceptance criteria, affected plugin classes, edge cases to handle, and expected outputs. No ambiguity. No "we'll figure it out during implementation."
 
 The issue is not a ticket. It is the contract.
 
-## The AI Maturity Framework
+## The Workflow: Who Does What, and When
 
-Before describing the workflow, it helps to know where we are on the map.
+Here is the full lifecycle, with the exact skills and agents at each step.
 
-We think about agentic AI adoption in levels:
+### Step 1 — Write the Issue `/kestra-plugin-managing-issues`
 
-| Level | Description |
-|-------|-------------|
-| L1 | Manual UI prompts — copy-paste in a chat interface |
-| L2 | Augmented — copilot suggestions inline while coding |
-| L3 | Scripted — deterministic, human-designed automation |
-| **L4a** | **Supervised Agentic — dynamic multi-agent with human approval gates** |
-| L4b | Autonomous — unsupervised agents |
-| L5a | Self-optimizing — agents that update their own instructions |
-| L5b | Self-authoring — agents that create new agents |
+**Actor: any squad member (human)**
 
-The Plugins & Ecosystem Squad operates at **L4a**. Agents handle execution; humans own decisions. The approval gates are explicit checkpoints, not accidental pauses.
+The squad member runs `/kestra-plugin-managing-issues` with a description or an existing issue URL. The skill asks whether this is a new feature, a bug fix, or a reformat of an existing issue, then generates a fully structured GitHub issue body following Kestra plugin conventions — acceptance criteria, YAML examples, affected tasks — and posts it to the correct repository.
 
-## The Workflow in Five Phases
+The issue becomes the contract for everything that follows. Weak spec in, weak output out.
 
-### Phase 0 — Planning
+### Step 2 — Generate the Plan `/kestra-plugin-planning`
 
-An engineer runs `/kestra-plugin-planning` with an issue URL. A planning agent reads the issue, queries the Kestra MCP server for relevant task schemas and blueprints, and generates a structured plan covering:
+**Actor: any squad member (human) → agent**
 
-- **Design** — architectural approach and any tradeoffs
+The squad member runs `/kestra-plugin-planning` with the issue URL. A planning agent reads the issue, queries the [Kestra MCP server](/blogs/kestra-mcp-docs) for relevant task schemas and blueprints, and generates a structured implementation plan covering four sections:
+
+- **Design** — architectural approach and tradeoffs
 - **Tasks** — implementation steps as a checklist
 - **Edge Cases** — boundary conditions the implementation must handle
 - **Docs Impact** — whether user-facing documentation needs updating
 
-The plan is posted as a GitHub comment on the issue. No code is written at this stage.
+The plan is posted as a comment on the GitHub issue. No code is written at this stage. The squad member reads the plan, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
 
-The engineer reads the plan, asks questions, requests changes, or accepts it. When the plan is correct, they comment exactly `/plan-approved` on the issue.
+### Step 3 — Approval Gate `/plan-approved`
 
-### Phase 1 — Approval Gate
+**Actor: any kestra-io org member (human)**
 
-Before any implementation begins, the orchestrator verifies two things:
+This step does not require a skill. The approver posts `/plan-approved` as a comment on the issue. That is all.
 
-1. An exact `/plan-approved` comment body exists on the issue (partial matches do not count)
-2. The commenter is a member of the `kestra-io` GitHub organization
+Before implementation begins, the orchestrator verifies two things:
+1. An **exact** `/plan-approved` comment body exists (partial matches are rejected)
+2. The commenter is a verified member of the `kestra-io` GitHub organization
 
-If either check fails, the workflow stops with a clear error message. This is not a formality. It is the mechanism that keeps humans in control of what gets built and who authorized it.
+Both checks are hard gates. If either fails, the workflow stops with a clear error message. This is not a formality — it is the mechanism that keeps humans in control of what gets built and who authorized it. The approver can be a different person than the one who wrote the issue or ran the planning step.
 
-### Phase 2 — Implementation
+### Step 4 — Implement `/kestra-plugin-implementing` or `/kestra-plugin-implementing-multiple`
 
-Once approved, a developer agent runs a full batch implementation. It reads the issue and the approved plan, writes the code, runs the test suite, and opens a pull request — all in one session.
+**Actor: any squad member (human) → orchestrator → sub-agents**
 
-The agent follows strict conventions throughout: correct `@Schema` annotations for UI generation, proper `@Plugin` metadata, TDD where tests can be written before implementation, no gratuitous abstractions, and backward compatibility as a default assumption.
+The squad member runs one of two skills depending on the scope:
 
-After tests pass, a code review agent reads the full branch diff and returns one of three verdicts: **APPROVE**, **REQUEST CHANGES**, or **BLOCK**. REQUEST CHANGES triggers another implementation cycle. BLOCK stops the workflow and surfaces the problem for human review. There is a five-cycle retry limit — an infinite loop is not a recovery strategy.
+- **`/kestra-plugin-implementing <issue-url>`** — single issue, sequential execution
+- **`/kestra-plugin-implementing-multiple <issue-url-1> <issue-url-2> ...`** — multiple approved issues run in parallel via an agent team, one teammate per issue
 
-### Phase 3 — QA
+Again, this can be a different person than the ones who wrote the issue or approved the plan.
 
-A QA skill runs browser-based end-to-end tests against Kestra Enterprise Edition. It exercises the scenarios described in the issue's acceptance criteria, validates the plugin behavior from a user perspective, and returns a **PASS** or **FAIL** report.
+Once the orchestrator confirms the approval gate, it drives three sub-agents in sequence:
 
-On FAIL, the failing scenarios are routed back to the developer agent as a new implementation cycle. The loop continues until QA passes or the retry limit is reached.
+#### `kestra-plugin-developer` — the coder
 
-Complexity classification shapes the depth of testing. A simple new property on an existing task gets lighter coverage than a new task with multi-format output processing.
+Reads the issue and the approved plan. Implements the full feature in one batch: writes the code, runs the Gradle test suite, fixes any failures within the same session, and opens a pull request with the correct reviewer team (`kestra-io/plugins`), a `closes:` link to the issue, and a description that matches what was implemented.
 
-### Phase 4 — Ship
+#### `kestra-plugin-code-reviewer` — the reviewer
 
-The final step assesses whether user-facing documentation needs updating, performs a final cumulative PR review, and prepares the PR for human merge. The squad member reviews the generated pull request, asks any remaining questions, and merges when satisfied.
+Reviews the full cumulative branch diff across **four independent tracks**:
 
-The release itself — publishing the plugin to the registry — stays with the human. That one stays intentional.
+| Track | What it checks |
+|-------|----------------|
+| **Business Requirements** | Does the implementation actually address the acceptance criteria from the issue? Any gaps, scope creep, or missing cases? |
+| **Kestra Guidelines** | Correct `@Schema` annotations, proper `@Plugin` metadata, TDD conventions, backward compatibility — the shared coding standards that the developer agent also follows. |
+| **Security (OWASP Top 10)** | Tenant isolation, secrets in logs, Pebble template injection, unsafe deserialization, vulnerable dependencies introduced without justification, and more — applied to every changed file in the Java/Kestra context. |
+| **Performance** | Memory leaks from unclosed streams, unbounded allocation, O(n²) loops over user-controlled collections, thread-safety on shared state, blocking calls where async is available, regex compiled per iteration instead of as a static constant. |
+
+The reviewer returns one of three verdicts: **APPROVE**, **REQUEST CHANGES**, or **BLOCK**. REQUEST CHANGES triggers another implementation cycle. BLOCK surfaces the problem for human review. A five-cycle retry limit prevents infinite loops.
+
+#### `/kestra-plugin-doing-qa` — end-to-end testing
+
+Runs browser-based QA against Kestra Enterprise Edition, exercising the scenarios from the issue's acceptance criteria. Complexity classification (Simple / Standard / Complex) determines the depth of coverage. On FAIL, the failing scenarios route back to the developer agent for a correction cycle.
+
+### Step 5 — Review, Merge, and Release
+
+**Actor: squad member (human)**
+
+The human reviews the generated pull request. The PR arrives with a reviewed diff, passing tests, and a QA report — not raw output to triage. The reviewer focuses on semantics and product judgment, not syntax.
+
+When satisfied, they merge and release via the Plugins Devtools. The release stays with the human — intentionally.
 
 ## What the Numbers Look Like
 
@@ -114,56 +150,59 @@ For a medium-complexity feature — a new Kestra task with CSV and JSON processi
 | Speedup | — | **~8×** |
 | Cost per issue | — | ~$1.65 (≈340K input tokens) |
 
-The cost figure covers the full cycle: planning, implementation, code review, and QA. The token distribution is skewed toward the developer agent and QA, which together consume about 70% of the budget.
+The cost figure covers the full cycle: planning, implementation, code review, and QA. The developer agent and QA together consume about 70% of the token budget.
 
-But the headline number undersells the change. With a manual process, engineers routinely skip or compress some steps — planning gets light, code review skims, QA covers the happy path. With agents, every issue gets thorough planning, detailed code review, and comprehensive QA. The quality floor rises, not just the speed.
+But the headline number understates the change. Manual processes routinely compress some steps under time pressure — planning gets light, code review skims, QA covers only the happy path. With agents, every issue gets thorough planning, detailed review across four tracks, and comprehensive QA. The quality floor rises alongside the speed.
 
-## How the Knowledge is Structured
+## How the Knowledge Is Structured
 
-The agents work because the knowledge they need is explicit.
+The agents work because the knowledge they need is explicit and version-controlled.
 
-A central hub holds the Skills and agent definitions. Skills are markdown instruction files, each under 500 lines, encoding one area of domain expertise: plugin coding conventions, PR conventions, QA testing strategy, documentation impact criteria. Agent definitions are system prompts that reference the relevant Skills and describe the agent's identity, responsibilities, and constraints.
+A central hub holds all Skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
 
-This structure has a few important properties. Skills are composable — the developer agent and the code reviewer agent both reference the shared plugin guidelines, so they operate from the same conventions without duplication. Skills are version-controlled, so changes are reviewable and reversible. And Skills are tool-agnostic at the source level — a build step generates tool-specific formats for Claude Code and OpenCode from a single markdown source.
+Skills are tool-agnostic at the source level. A build step generates Claude Code and OpenCode formats from a single markdown source, so the same knowledge works across AI coding tools.
 
-No agent in this system has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
+No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
 
 ## The Human Role After Context Engineering
 
-The most common concern when introducing AI agents into a development workflow is that developers become passive. The opposite happened.
+The developer's role shifted from typing code to curating context.
 
-The developer's role shifted from typing code to curating context. Writing issue specs that are complete enough to be machine-parseable is harder than writing vague tickets. Reviewing a generated plan critically is faster than writing it from scratch, but requires genuine domain expertise to do well. Reviewing a generated pull request that already passes tests and QA requires a different kind of attention — less syntax, more semantics.
+Writing issue specs that are complete enough to be machine-parseable is harder than writing vague tickets. Reviewing a generated plan critically is faster than writing it from scratch, but requires genuine domain expertise. Reviewing a pull request that already passes tests and QA requires a different kind of attention — less syntax, more semantics.
 
-The human touchpoints that remain are exactly the ones that should remain:
-- Writing and refining the specification
-- Approving the implementation plan
-- Reviewing the generated pull request
-- Merging and releasing to production
+The human touchpoints that remain are the ones that should remain:
 
-Agents handle execution. Humans own decisions. That distinction is not a compromise — it is the design.
+| Step | Who | What |
+|------|-----|------|
+| Write the issue | Any squad member | Spec authoring with `/kestra-plugin-managing-issues` |
+| Approve the plan | Any kestra-io org member | `/plan-approved` comment on the issue |
+| Trigger implementation | Any squad member | `/kestra-plugin-implementing` or `-multiple` |
+| Review and merge | Squad member | PR review, merge, release |
 
-## What Transfers to Your Team
+Agents handle execution. Humans own decisions.
 
-The specific agents and skills we built encode Kestra plugin conventions. They will not transfer directly to a team building a different kind of software. The methodology will.
+## Going Further: L4b and L5a
 
-Every team has domain knowledge that currently lives in senior engineers' heads. Context Engineering externalizes that knowledge into structured, executable form. The process is the same regardless of domain:
+The current workflow sits at L4a — supervised agentic, with explicit human approval gates. Two natural next levels are within reach.
 
-1. Identify the repeatable workflow
-2. Map the human decision points that must stay human
-3. Encode the domain knowledge as explicit Skills
-4. Wire the Skills into a sequential workflow with feedback loops
-5. Test against real issues until the output quality matches what a senior engineer would produce
+### L4b — Autonomous Agentic
 
-The workflow presented here — planning, approval gate, batch implementation, automated code review, browser QA, ship — is a starting template, not a final answer. Every squad will tune it to their own conventions, their own quality bar, their own definition of done.
+At L4a, humans approve plans and review PRs. At L4b, those gates are selectively removed for classes of issues that have demonstrated reliable output quality. A bug fix with a clearly reproducible test case may not need a plan approval step. A documentation-only change may not need human PR review before merge.
 
-## What We Are Building Toward
+The path to L4b is evidence-based: instrument each gate, measure how often human feedback changes the outcome, and remove gates where the change rate is below a meaningful threshold. Every gate that stays is a gate that earns its place.
 
-The current workflow sits at L4a: supervised agentic, with explicit human approval gates. The logical next step is reducing friction at the gates that have proven reliable enough to trust — not removing oversight, but relocating it to the moments where it creates the most value.
+The release gate — human merge and publish — is the last to go, and may never go. Autonomous release capability requires a level of trust in end-to-end correctness that takes time to establish and can only be built incrementally.
 
-Longer term, the most interesting direction is self-optimization: agents that emit telemetry about where plans fail, where QA finds the most issues, where code review catches the most problems — and propose improvements to the Skills that govern their own behavior. That is L5a. We are not there yet. But the architecture is designed to get there.
+### L5a — Self-Optimizing
+
+At L5a, agents emit structured telemetry about where they struggle. Planning agents flag issues where the spec was ambiguous. Developer agents flag patterns where the first implementation consistently fails code review. QA agents flag scenarios that reliably surface failures.
+
+That telemetry becomes the input for Skill improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the Skills that govern those parts. A human reviews the proposal, approves it, and the Skill is updated.
+
+The architecture we built supports L5a: Skills are version-controlled markdown files, agent output is structured and capturable, and the feedback loops already exist between QA, code review, and the developer agent. The missing piece is the telemetry layer and the Skill-improvement agent that reads it. That is the next thing we are building.
 
 ---
 
-The full talk, demo recordings, and the slides from DevLille 2026 are available at [github.com/fdelbrayelle/workflow-superpowers](https://github.com/fdelbrayelle/workflow-superpowers). The repository includes asciinema recordings of a live planning and implementation session on a real Kestra issue.
+The full talk, demo recordings, and slides from DevLille 2026 are at [github.com/fdelbrayelle/workflow-superpowers](https://github.com/fdelbrayelle/workflow-superpowers), including asciinema recordings of a live planning and implementation session on a real Kestra issue.
 
-If you are building something similar for your own team, reach out. Context Engineering is more useful when the methodology is shared.
+If you are building something similar for your own team — the methodology transfers even when the Skills do not. Reach out.
