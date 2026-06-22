@@ -271,7 +271,7 @@ The release gate — human merge and publish — is the last to go, and may neve
 
 At L5a, agents emit structured telemetry about where they struggle. Planning agents flag issues where the spec was ambiguous. Developer agents flag patterns where the first implementation consistently fails code review. QA agents flag scenarios that reliably surface failures.
 
-That telemetry becomes the input for Skills & Agents improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the Skills that govern those parts. A human reviews the proposal, approves it, and the Skill is updated.
+That telemetry becomes the input for Skills & Agents improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the Skills & Agents that govern those parts. A human reviews the proposal, approves it, and the Skill is updated.
 
 The architecture we built supports L5a: Skills are version-controlled markdown files, agent output is structured and capturable, and the feedback loops already exist between QA, code review, and the developer agent. The missing piece is the telemetry layer and the Skill-improvement agent that reads it. That is the next thing we are building.
 
