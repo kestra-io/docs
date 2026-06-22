@@ -11,6 +11,7 @@ import { slugify } from "../slugify"
 import {
     formatElementName,
     formatElementType,
+    formatPluginName,
     getBlueprintsHeading,
     getPluginTitle,
 } from "~/utils/plugins/pluginUtils"
@@ -157,6 +158,41 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     const rootPluginTitle = rootPlugin
         ? getPluginTitle(rootPlugin, metadataMap)
         : pluginName
+
+    // Unique SEO meta title for individual task pages — includes plugin/service context
+    // to prevent the "Upload | Kestra" × N duplicate-title problem across plugins.
+    // H1 (headingTitle) stays short; only the <title> tag gets the enriched version.
+    // Titles are sourced from the plugin metadata (getPluginTitle reads metadataMap[key].title
+    // populated from the plugins API) and fall back to the formatted plugin name.
+    const seoTitle = (() => {
+        if (!pluginType) return headingTitle
+        const taskName = formatElementName(pluginType)
+        // Core plugin tasks are unique by nature — no risk of cross-plugin duplicates
+        if (pluginName === "core") return taskName
+        // Find the subgroup plugin for context (currentSubgroupPlugin is undefined when
+        // pluginType is set, so we look it up directly from the full plugin list)
+        const subgroupPlugin = effectiveSubGroup
+            ? pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
+            : undefined
+        const subgroupTitle = subgroupPlugin
+            ? getPluginTitle(subgroupPlugin, metadataMap) || formatPluginName(effectiveSubGroup)
+            : null
+        if (subgroupTitle && subgroupTitle !== rootPluginTitle) {
+            // Skip the parent name when the subgroup already contains it
+            // (e.g. "Google Cloud" + "Cloud Storage (GCS)" → just "Cloud Storage (GCS)")
+            const subLower = subgroupTitle.toLowerCase()
+            const rootLower = rootPluginTitle.toLowerCase()
+            const overlaps =
+                subLower.includes(rootLower) ||
+                rootLower
+                    .split(/\s+/)
+                    .some((w) => w.length > 2 && subLower.includes(w.toLowerCase()))
+            return overlaps
+                ? `${taskName} ${subgroupTitle}`
+                : `${taskName} ${rootPluginTitle} ${subgroupTitle}`
+        }
+        return `${taskName} ${rootPluginTitle}`
+    })()
 
     let combinedDescription = currentPageMetadata?.description
     const bodyText = (currentPageMetadata as any)?.body
@@ -312,6 +348,7 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     return {
         headingTitle,
+        seoTitle,
         headingDescription,
         ogImage,
 

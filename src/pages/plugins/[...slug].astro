@@ -102,6 +102,7 @@ const {
     currentPluginMetadata,
     metadataMap,
     headingTitle,
+    seoTitle,
     headingDescription,
     pageNamesHeading,
     currentPageIcon,
@@ -206,7 +207,7 @@ const pluginSchema = pluginType
       }
 ---
 
-<Layout title={headingTitle} description={headingDescription} image={ogImage}>
+<Layout title={seoTitle} description={headingDescription} image={ogImage}>
     <Fragment slot="head">
         <script
             type="application/ld+json"
