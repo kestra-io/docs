@@ -152,7 +152,7 @@ The reviewer returns one of three verdicts: **APPROVE**, **REQUEST CHANGES**, or
 
 #### `/kestra-plugin-doing-qa` — end-to-end testing
 
-Runs browser-based QA against Kestra Enterprise Edition, exercising the scenarios from the issue's acceptance criteria. Complexity classification (Simple / Standard / Complex) determines the depth of coverage. On FAIL, the failing scenarios route back to the developer agent for a correction cycle.
+Runs browser-based QA against Kestra Enterprise Edition. The skill derives test scenarios from the issue's acceptance criteria, presents them to the human for review, and waits for confirmation before executing — so the squad can add, remove, or adjust scenarios before any browser automation starts. Complexity classification (Simple / Standard / Complex) determines the depth of coverage. On FAIL, the failing scenarios route back to the developer agent for a correction cycle.
 
 Before running flows, the skill checks whether the required secrets are already present on the Kestra instance. If any are missing, it pauses and asks the user to add them before continuing — so QA never silently fails due to a missing credential.
 
