@@ -24,6 +24,7 @@
     "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.9",
     "@astrojs/cloudflare": "^14.0.0",
     "@astrojs/markdown-remark": "^7.2.0",
     "@astrojs/mdx": "^7.0.0",
@@ -75,6 +76,7 @@
     "slugify": "^1.6.9",
     "strip-indent": "^4.1.1",
     "svgo": "^4.0.1",
+    "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",
     "vue": "^3.5.38",
