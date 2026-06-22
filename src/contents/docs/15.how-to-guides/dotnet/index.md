@@ -8,7 +8,9 @@ topics:
   - Scripting
 ---
 
-Run C# code directly in your flows using [dotnet-script](https://github.com/dotnet-script/dotnet-script). Write inline `.csx` scripts with NuGet package references, or run arbitrary `dotnet` CLI commands inside a .NET SDK container.
+Run C# code directly in your flows using [dotnet-script](https://github.com/dotnet-script/dotnet-script). 
+
+Write inline `.csx` scripts with NuGet package references, or run arbitrary `dotnet` CLI commands inside a .NET SDK container.
 
 ## Scripts
 
