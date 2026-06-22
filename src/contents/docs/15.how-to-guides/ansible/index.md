@@ -361,7 +361,7 @@ ok: [localhost] => {
 
 ### Run it from Kestra
 
-Embed the playbook in your flow's YAML inline, and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli):
+Embed the playbook in your flow's YAML inline, and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli):
 
 ```yaml
 id: system_report
@@ -382,7 +382,7 @@ tasks:
       - ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files/index.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli).
+Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files/index.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli).
 
 ![Namespace Files](./flow-namespace-files.png)
 
@@ -410,7 +410,7 @@ After the run, the `outputFiles` property allows you to preview or download `sys
 
 ### Upload the report to S3
 
-Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../../06.concepts/04.secret/index.md):
+Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../../06.concepts/04.secret/index.md):
 
 ```yaml
 id: system_report_to_s3

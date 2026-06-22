@@ -166,9 +166,9 @@ Realtime triggers listen to events in real time and start a workflow execution a
 - a new message is published to a [Pulsar topic](/plugins/plugin-pulsar/io.kestra.plugin.pulsar.realtimetrigger)
 - a new message is published to an [AMQP queue](/plugins/plugin-amqp/io.kestra.plugin.amqp.realtimetrigger)
 - a new message is published to an [MQTT queue](/plugins/plugin-mqtt/io.kestra.plugin.mqtt.realtimetrigger)
-- a new message is published to an [AWS SQS queue](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
-- a new message is published to [Google Pub/Sub](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
-- a new message is published to [Azure Event Hubs](/plugins/plugin-azure/eventhubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
+- a new message is published to an [AWS SQS queue](/plugins/plugin-aws/aws-sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
+- a new message is published to [Google Pub/Sub](/plugins/plugin-gcp/google-cloud-pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
+- a new message is published to [Azure Event Hubs](/plugins/plugin-azure/azure-event-hubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
 - a new message is published to a [NATS subject](/plugins/plugin-nats/nats-core/io.kestra.plugin.nats.core.realtimetrigger)
 - a new item is added to a [Redis list](/plugins/plugin-redis/redis-list/io.kestra.plugin.redis.list.realtimetrigger)
 - a new row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).

@@ -53,7 +53,7 @@ From the `General purpose buckets` page, search for the newly created bucket, an
 
 ### Getting the data into S3 bucket
 
-Navigate to the Kestra UI, and create a new flow. We will download the CSV file containing products data using the [HTTP Download task](/plugins/core/http/io.kestra.plugin.core.http.download). We will then convert the CSV data into ION format using the [CsvToIon task](/plugins/plugin-serdes/csv/io.kestra.plugin.serdes.csv.csvtoion), and then from ION format into a parquet file using [IonToParquet task](/plugins/plugin-serdes/parquet/io.kestra.plugin.serdes.parquet.iontoparquet). Finally, we will upload the parquet file into the recently created S3 general purpose bucket inside the `data` folder using [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload).
+Navigate to the Kestra UI, and create a new flow. We will download the CSV file containing products data using the [HTTP Download task](/plugins/core/http/io.kestra.plugin.core.http.download). We will then convert the CSV data into ION format using the [CsvToIon task](/plugins/plugin-serdes/csv/io.kestra.plugin.serdes.csv.csvtoion), and then from ION format into a parquet file using [IonToParquet task](/plugins/plugin-serdes/parquet/io.kestra.plugin.serdes.parquet.iontoparquet). Finally, we will upload the parquet file into the recently created S3 general purpose bucket inside the `data` folder using [S3 Upload task](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.upload).
 
 This is how the Kestra flow will look like:
 
