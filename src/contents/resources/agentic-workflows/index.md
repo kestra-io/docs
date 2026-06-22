@@ -86,13 +86,13 @@ For [software engineers](/use-cases/software-engineers), agentic workflows are b
 
 ### Automating Repository Tasks with GitHub Agentic Workflows
 
-GitHub is a prime example of a platform embracing agentic workflows. Their "GitHub Agentic Workflows" initiative allows developers to automate repository management using natural language. For instance, you could create a workflow that instructs an agent to "triage new issues by adding the 'bug' label if the description contains the word 'error', and assign it to the on-call engineer." The agent can interact with the GitHub API to [create issues](/plugins/plugin-github/issues/io.kestra.plugin.github.issues.create), add labels, and manage projects. This offloads repetitive administrative tasks, allowing developers to focus on coding after they [clone a repository](/plugins/plugin-git/io.kestra.plugin.git.clone).
+GitHub is a prime example of a platform embracing agentic workflows. Their "GitHub Agentic Workflows" initiative allows developers to automate repository management using natural language. For instance, you could create a workflow that instructs an agent to "triage new issues by adding the 'bug' label if the description contains the word 'error', and assign it to the on-call engineer." The agent can interact with the GitHub API to [create issues](/plugins/plugin-github/github-issues/io.kestra.plugin.github.issues.create), add labels, and manage projects. This offloads repetitive administrative tasks, allowing developers to focus on coding after they [clone a repository](/plugins/plugin-git/io.kestra.plugin.git.clone).
 
 ## Kestra's Approach to Agentic Workflows
 
 ### Declarative Orchestration for AI Agents
 
-Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/concepts/flow).
+Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/workflow-components/flow).
 
 This declarative model serves as a critical set of guardrails. It ensures that even as the AI agent makes autonomous decisions, its actions are confined within a version-controlled, observable, and secure environment. This answers a key question in enterprise AI: how to grant autonomy without sacrificing control. For more on [why Kestra](/docs/why-kestra) is built this way, see our documentation.
 
