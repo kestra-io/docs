@@ -430,7 +430,6 @@ const pluginSchema = pluginType
                 ? `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/definitions/${pluginType}`
                 : `${API_URL}/plugins/${pluginName}/versions/${versionState.version}/subgroups`}
             data-poll-interval="4000"
-            data-max-attempts="75"
             hidden
         />
     )
@@ -443,16 +442,31 @@ const pluginSchema = pluginType
     // terminal status, then swap to the ready page. A soft View Transitions navigation re-renders the
     // archived docs in place (no tab spinner, no full-page flash); fall back to reload when the router
     // isn't active (e.g. dev, where ClientRouter is prod-only).
+    const MAX_INTERVAL_MS = 15000
+    const MAX_DURATION_MS = 5 * 60 * 1000
+
+    let activeTimer: ReturnType<typeof setTimeout> | null = null
+    let resume: (() => void) | null = null
+
+    function clearPoll() {
+        if (activeTimer !== null) clearTimeout(activeTimer)
+        activeTimer = null
+        resume = null
+    }
+
     function startVersionedDocPoll() {
+        // Single-flight: cancel any running loop so re-arming (or the double init from astro:page-load
+        // firing on initial load) can never run two loops at once.
+        clearPoll()
+
         const el = document.getElementById("versioned-doc-poller")
         if (!el) return
-
         const pollUrl = el.dataset.pollUrl
-        const pollIntervalMs = Number(el.dataset.pollInterval) || 4000
-        const maxPollAttempts = Number(el.dataset.maxAttempts) || 75
         if (!pollUrl) return
 
-        let attempts = 0
+        const startedAt = Date.now()
+        let intervalMs = Number(el.dataset.pollInterval) || 4000
+
         const refresh = () => {
             try {
                 navigate(window.location.href, { history: "replace" })
@@ -461,22 +475,39 @@ const pluginSchema = pluginType
             }
         }
 
+        const schedule = () => {
+            if (Date.now() - startedAt >= MAX_DURATION_MS) {
+                clearPoll()
+                return
+            }
+            // Don't poll a backgrounded tab; the visibilitychange handler resumes it.
+            if (document.hidden) {
+                resume = schedule
+                return
+            }
+            activeTimer = setTimeout(tick, intervalMs)
+            // Back off gradually so a slow or stuck generation doesn't hammer the endpoint.
+            intervalMs = Math.min(Math.round(intervalMs * 1.5), MAX_INTERVAL_MS)
+        }
+
         const tick = () => {
-            attempts++
+            activeTimer = null
             fetch(pollUrl, { cache: "no-store" })
                 .then((r) => {
-                    if (r.status === 202) {
-                        if (attempts < maxPollAttempts) setTimeout(tick, pollIntervalMs)
-                        return
-                    }
-                    refresh()
+                    if (r.status === 202) schedule()
+                    else refresh()
                 })
-                .catch(() => {
-                    if (attempts < maxPollAttempts) setTimeout(tick, pollIntervalMs)
-                })
+                .catch(schedule)
         }
-        setTimeout(tick, pollIntervalMs)
+
+        resume = schedule
+        schedule()
     }
+
+    // One listener: resume the current loop when the tab returns to the foreground.
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden && activeTimer === null && resume) resume()
+    })
 
     startVersionedDocPoll()
     // Re-arm after a soft navigation lands on another still-generating archived page.
