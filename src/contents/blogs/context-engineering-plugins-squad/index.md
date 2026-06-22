@@ -109,9 +109,9 @@ The squad member runs one of two skills depending on the scope:
 
 Again, this can be a different person than the ones who wrote the issue or approved the plan.
 
-Once the orchestrator confirms the approval gate, it drives three sub-agents in sequence:
+Once the orchestrator confirms the approval gate, it drives two sub-agents and one skill in sequence:
 
-#### `kestra-plugin-developer` — the coder
+#### `kestra-plugin-developer` — the developer
 
 Reads the issue and the approved plan. Implements the full feature in one batch: writes the code, runs the Gradle test suite, fixes any failures within the same session, and opens a pull request with the correct reviewer team (`kestra-io/plugins`), a `closes:` link to the issue, and a description that matches what was implemented.
 
