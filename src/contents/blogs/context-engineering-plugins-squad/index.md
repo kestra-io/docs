@@ -1,6 +1,6 @@
 ---
-title: "Context Engineering in Practice: How We Automated Plugin Development at Kestra"
-description: "How Kestra's Plugins & Ecosystem Squad introduced Context Engineering to automate the full plugin development lifecycle — from GitHub issue to merged PR — cutting delivery time from 4 hours to 30 minutes using structured AI agents and human-in-the-loop approval gates."
+title: "Context Engineering in Practice: Automating the Plugin SDLC at Kestra"
+description: "How Kestra's Plugins & Ecosystem Squad introduced Context Engineering to automate the full software development lifecycle (SDLC) for plugins — from GitHub issue to merged PR — cutting delivery time from 4 hours to 30 minutes using structured AI agents and human-in-the-loop approval gates."
 date: 2026-06-25T09:00:00
 category: Solutions
 author:
@@ -59,9 +59,9 @@ We write issues differently now. A good issue for this workflow is a complete bu
 
 This dual-audience design is intentional. A human engineer can read the issue and understand what to build. An AI agent can parse the same file and extract acceptance criteria, affected plugin classes, edge cases to handle, and expected outputs. No ambiguity. No "we'll figure it out during implementation."
 
-The issue is not a ticket. It is the contract.
+The issue is not a ticket. It is the contract — and it drives the entire software development lifecycle (SDLC) that follows.
 
-## The Workflow: Who Does What, and When
+## The SDLC: Who Does What, and When
 
 Here is the full lifecycle, with the exact skills and agents at each step.
 
