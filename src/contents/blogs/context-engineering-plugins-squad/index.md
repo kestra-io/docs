@@ -74,7 +74,7 @@ The issue is not a ticket. It is the contract — and it drives the entire softw
 ## The SDLC: Who Does What, and When
 
 :::alert{type="info"}
-**Skills and agents are both plain markdown files** — but they behave differently.
+**Skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
 
 A **skill** is a procedural instruction set: a numbered sequence of steps, decision points, and success conditions that runs in the main context window. It is invoked by a human (e.g. `/kestra-plugin-planning`) and may orchestrate other steps or spawn agents. Think of it as a runbook the AI follows on your behalf.
 
