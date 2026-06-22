@@ -277,4 +277,4 @@ The architecture we built supports L5a: Skills are version-controlled markdown f
 
 ---
 
-If you are building something similar for your own team — the methodology transfers even when the Skills do not. Reach out.
+The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as Skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
