@@ -87,7 +87,7 @@ The issue becomes the contract for everything that follows. Weak spec in, weak o
 
 **Actor: any squad member (human) → agent**
 
-The squad member runs `/kestra-plugin-planning` with the issue URL. A planning agent reads the issue, queries the [Kestra MCP server](/blogs/kestra-mcp-docs) for relevant task schemas and blueprints, and generates a structured implementation plan covering four sections:
+The squad member runs `/kestra-plugin-planning` with the issue URL. A planning agent reads the issue, queries the [Kestra MCP server](/blogs/kestra-mcp-docs) for relevant task schemas, blueprints, and documentation, and generates a structured implementation plan covering four sections:
 
 - **Design** — architectural approach and tradeoffs
 - **Tasks** — implementation steps as a checklist
