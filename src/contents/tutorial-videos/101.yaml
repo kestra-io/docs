@@ -1,8 +1,10 @@
-title: "The Best Intro to Workflow Orchestration Is a Video Game"
-description: "Will Russell explores how Factorio’s automation and error-handling mechanics
-  teach the fundamental principles of workflow orchestration."
-category: "Getting Started"
+title: "Automate with YAML: Faster to write, easier to own, ready for AI"
+description: "YAML is becoming the preferred format for modern orchestration as it
+  handles multi-language tasks without wrappers and provides schema-bound reliability
+  for AI-generated workflows. Join this session to learn how to build and scale production-ready
+  workflows using a YAML-first approach."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=orHWPS571d4"
-publicationDate: "2026-04-21T00:00:00.000"
-contentType: "Getting Started"
+url: "https://www.youtube.com/watch?v=xpxNK47jRBA"
+publicationDate: "2026-04-23T00:00:00.000"
+contentType: "Webinar"

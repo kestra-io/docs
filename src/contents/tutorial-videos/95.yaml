@@ -1,9 +1,9 @@
-title: "I Migrated an Airflow DAG in 2 Minutes using this Claude Skill"
-description: "Learn how to migrate Airflow 2 DAGs to Kestra using a new agent skill
-  that automatically converts Python business logic into declarative YAML and deployable
-  Kestra flows."
-category: "Data"
+title: "From Cron Job to Event-Driven: Automating my YouTube Workflow"
+description: "Learn how to use Kestra's new YouTube VideoTrigger to automatically
+  open a GitHub PR when a new video is published, eliminating the need for manual
+  updates or polling logic."
+category: "Infrastructure"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=5JL6gVtI6FE"
-publicationDate: "2026-04-03T00:00:00.000"
-contentType: "Data"
+url: "https://www.youtube.com/watch?v=jICOZjTsTPg"
+publicationDate: "2026-04-07T00:00:00.000"
+contentType: "Infrastructure"

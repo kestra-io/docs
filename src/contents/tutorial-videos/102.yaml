@@ -1,10 +1,7 @@
-title: "Automate with YAML: Faster to write, easier to own, ready for AI"
-description: "YAML is becoming the preferred format for modern orchestration as it
-  handles multi-language tasks without wrappers and provides schema-bound reliability
-  for AI-generated workflows. Join this session to learn how to build and scale production-ready
-  workflows using a YAML-first approach."
-category: "Webinar"
+title: "Why Claude Routines Break Down in Production"
+description: "Learn what Claude Routines is and if it can replace the need for an orchestrator."
+category: "AI"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=xpxNK47jRBA"
-publicationDate: "2026-04-23T00:00:00.000"
-contentType: "Webinar"
+url: "https://www.youtube.com/watch?v=La2JNtMVow4"
+publicationDate: "2026-04-28T00:00:00.000"
+contentType: "AI"

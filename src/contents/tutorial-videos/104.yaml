@@ -1,8 +1,8 @@
-title: "Building a Slack AI Agent: From Trigger to Autonomous Bot"
-description: "Learn how to use Kestra's Slack Trigger and AI plugin to build an intelligent,
-  Gemini-powered responder and autonomous agent using a single declarative YAML flow."
-category: "AI"
+title: "Learn the Kestra Fundamentals with Kestra Academy"
+description: "Master workflow orchestration with the Kestra Fundamentals course, which
+  takes you from the basics to building real-world automations and earning your certification."
+category: "Getting Started"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=QvBkoJ8kOds"
-publicationDate: "2026-04-30T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=EjNvS69nUVE"
+publicationDate: "2026-05-04T00:00:00.000"
+contentType: "Getting Started"

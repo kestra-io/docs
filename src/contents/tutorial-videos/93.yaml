@@ -1,9 +1,9 @@
-title: "What Are Agent Skills? (And Why You Should Build Your Own!)"
-description: "What if you never had to write the same prompt twice? That's exactly
-  what agent skills make possible — reusable instruction packs that make your AI agents
-  smarter and faster to build."
-category: "AI"
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=8VDS3aJ-g-c"
-publicationDate: "2026-03-24T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
+contentType: "Data"
