@@ -214,7 +214,9 @@ Skills are tool-agnostic at the source level. A build step generates Claude Code
 
 ### Distributing to Plugin Repositories via Symlinks
 
-Kestra maintains around 200 plugin repositories. Copying the hub's generated files into each one would make updates expensive to propagate. Instead, each plugin repository holds a set of symlinks pointing directly into the hub's build output:
+Kestra maintains around 200 plugin repositories. The naive alternative — an `AGENTS.md` file at the root of each repository — would require duplicating hundreds of lines of Kestra plugin conventions across every repo and keeping them in sync by hand. Any update to a guideline, a new edge case discovered, a security rule added — all of it would need to be propagated to 200+ files manually. That approach doesn't scale.
+
+Skills and agents solve this at the architecture level: the knowledge lives in one place, and the repositories just point to it. Each plugin repository holds a set of symlinks pointing directly into the hub's build output:
 
 ```
 .claude/agents  → ../engineering-ai-hub/.claude/agents
