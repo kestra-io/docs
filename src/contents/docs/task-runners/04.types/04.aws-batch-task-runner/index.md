@@ -294,10 +294,83 @@ tasks:
 ```
 
 :::alert{type="warning"}
-CloudWatch log streaming for EKS requires the EKS cluster to have CloudWatch logging configured, for example via [Fluent Bit](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html) or the CloudWatch agent. Without cluster-level logging, task logs will not appear in Kestra.
+EKS log streaming requires the `amazon-cloudwatch-observability` addon to be installed on your cluster. Without it, task logs will not appear in Kestra. See step 4 below.
 :::
 
-To set up an EKS cluster for use with AWS Batch, follow the [AWS getting started with AWS Batch on Amazon EKS](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html) guide.
+### Setting up an EKS cluster for AWS Batch
+
+The steps below walk through creating an EKS cluster and configuring it for AWS Batch. Replace `<cluster>`, `<region>`, and `<account-id>` with your values throughout.
+
+#### 1. Create the cluster
+
+If you do not already have an EKS cluster, create one using `eksctl`. This also configures `kubectl`:
+
+```bash
+eksctl create cluster --name <cluster> --region <region>
+```
+
+#### 2. Create the namespace and apply RBAC
+
+AWS Batch runs jobs in a dedicated Kubernetes namespace and requires specific RBAC permissions:
+
+```bash
+kubectl create namespace aws-batch
+```
+
+Download the RBAC manifests from the [AWS getting started guide](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html), save them to `aws-batch-rbac.yaml`, then apply:
+
+```bash
+kubectl apply -f aws-batch-rbac.yaml
+```
+
+#### 3. Add the IAM identity mapping
+
+AWS Batch uses a service-linked role to manage pods. Because access entries do not work for service-linked roles, use `eksctl create iamidentitymapping` to register it:
+
+```bash
+eksctl create iamidentitymapping --cluster <cluster> --region <region> \
+  --arn arn:aws:iam::<account-id>:role/AWSServiceRoleForBatch --username aws-batch
+```
+
+#### 4. Install the CloudWatch addon
+
+To stream pod logs to CloudWatch, install the `amazon-cloudwatch-observability` addon. The node IAM role must have the `CloudWatchAgentServerPolicy` policy attached:
+
+```bash
+aws eks create-addon \
+  --cluster-name <cluster> \
+  --addon-name amazon-cloudwatch-observability \
+  --region <region>
+```
+
+#### 5. Create the compute environment
+
+Create an EKS-backed Batch compute environment. Use an instance type supported by AWS Batch such as `m5` — `t3` is rejected. Do not set a service role; Batch uses its service-linked role automatically:
+
+```bash
+aws batch create-compute-environment \
+  --region <region> \
+  --compute-environment-name kestra-eks \
+  --type MANAGED \
+  --state ENABLED \
+  --eks-configuration eksClusterArn=<cluster-arn>,kubernetesNamespace=aws-batch \
+  --compute-resources type=EC2,allocationStrategy=BEST_FIT_PROGRESSIVE,minvCpus=0,maxvCpus=16,instanceTypes=m5.large,subnets=<subnets>,securityGroupIds=<sg>,instanceRole=<node-instance-profile>
+```
+
+The `instanceRole` value is the ARN of the EC2 instance profile attached to your EKS node group (not a bare IAM role ARN).
+
+#### 6. Create the job queue
+
+```bash
+aws batch create-job-queue \
+  --region <region> \
+  --job-queue-name kestra-eks-q \
+  --state ENABLED \
+  --priority 1 \
+  --compute-environment-order order=1,computeEnvironment=kestra-eks
+```
+
+Once both resources are created, copy the compute environment ARN and job queue ARN into your flow's `computeEnvironmentArn` and `jobQueueArn` properties.
 
 ## Full step-by-step guide: setting up AWS Batch from scratch
 
