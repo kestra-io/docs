@@ -102,5 +102,21 @@
     "@rollup/rollup-darwin-arm64": "^4.62.2",
     "@rollup/rollup-darwin-x64": "^4.62.2",
     "@rollup/rollup-linux-x64-gnu": "^4.62.2"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.6": true,
+    "@scarf/scarf@1.4.0": true,
+    "@tree-sitter-grammars/tree-sitter-yaml@0.7.1": true,
+    "tree-sitter@0.22.4": true,
+    "tree-sitter@0.21.1": true,
+    "vue-demi@0.14.10": true,
+    "sharp@0.34.5": true,
+    "core-js@3.49.0": true,
+    "core-js-pure@3.49.0": true,
+    "esbuild@0.28.1": true,
+    "fsevents@2.3.2": true,
+    "fsevents@2.3.3": true,
+    "tree-sitter-json@0.24.8": true,
+    "workerd@1.20260617.1": true
   }
 }
