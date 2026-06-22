@@ -125,7 +125,7 @@ Once the orchestrator confirms the approval gate, it drives two sub-agents and o
 
 #### `kestra-plugin-developer` — the developer
 
-Reads the issue and the approved plan. Implements the full feature in one batch: writes the code, runs the Gradle test suite, fixes any failures within the same session, and opens a pull request with the correct reviewer team (`kestra-io/plugins`), a `closes:` link to the issue, and a description that matches what was implemented.
+Reads the issue and the approved plan, then targets the listed files directly — no broad codebase exploration, since the planning skill already mapped the relevant classes and design decisions. Implements the full feature in one batch: writes the code, runs the Gradle test suite, fixes any failures within the same session, and opens a pull request with the correct reviewer team (`kestra-io/plugins`), a `closes:` link to the issue, and a description that matches what was implemented.
 
 #### `kestra-plugin-code-reviewer` — the reviewer
 
@@ -160,11 +160,31 @@ For a medium-complexity feature — a new Kestra task with CSV and JSON processi
 |--|--------|-------------|
 | Time | ~4 hours | ~30 minutes |
 | Speedup | — | **~8×** |
-| Cost per issue | — | ~$1.65 (≈340K input tokens) |
+| Cost per issue | — | ~$1.65 (≈340K input + 30K output tokens) |
 
-The cost figure covers the full cycle: planning, implementation, code review, and QA. The developer agent and QA together consume about 70% of the token budget.
+Token breakdown for the same session:
+
+| Budget item | Share |
+|---|---|
+| Skills + agent definitions loaded into context | ~20K tokens (~6% of input) |
+| Developer agent + QA skill | ~70% of total input |
+| Planning (Opus) + implementation and review (Sonnet) | 100% of cost |
+
+The cost figure covers the full cycle: planning, implementation, code review, and QA. The developer agent and QA together consume about 70% of the token budget — which is expected, since they do the most work.
 
 But the headline number understates the change. Manual processes routinely compress some steps under time pressure — planning gets light, code review skims, QA covers only the happy path. With agents, every issue gets thorough planning, detailed review across four tracks, and comprehensive QA. The quality floor rises alongside the speed.
+
+### How We Keep the Cost Down
+
+Token consumption in agentic workflows grows faster than linearly: every turn adds to the context window that all subsequent turns must read. We use three techniques to counteract this.
+
+**Pass the plan to the developer.** The planning skill maps the relevant classes and design decisions upfront and posts them as a structured comment on the issue. The developer agent reads that comment and targets the listed files directly — skipping broad codebase exploration. Eliminating even a few exploration turns has an outsized effect: each saved turn roughly halves its own cost because context window growth is roughly triangular.
+
+**Compact at strategic points.** The workflow issues `/compact` — a context pruning command — at three specific moments: mid-implementation (after all files are written, before running tests), after the developer agent returns, and after QA (which accumulates significant browser and terminal history). Each compaction flushes turn history while preserving the essential state, keeping the context window lean for the next heavy stage.
+
+**Filter terminal output with `rtk`.** All shell commands in the workflow are proxied through `rtk`, a token-optimizing CLI layer that strips redundant output from `git`, `gradle`, `gh`, and similar tools before it enters the context window. On a full implementation session this saves 60–90% of terminal output tokens.
+
+These optimizations together saved nearly $1 per issue compared to the unoptimized baseline — a cost reduction of more than 35% with no change to output quality.
 
 ## How the Knowledge Is Structured
 
