@@ -26,7 +26,7 @@ Prompt engineering is about crafting the right question. Context Engineering is 
 
 A well-prompted agent can write a Kestra task that compiles. A context-engineered agent can write one that follows Kestra plugin conventions, passes the test suite, handles edge cases correctly, includes YAML usage examples, and creates a pull request with the right reviewer team and a valid issue link in the body — on the first attempt.
 
-The difference is not cleverness. It is structure: explicit domain knowledge encoded as **Skills** (focused markdown instruction sets under 500 lines each), deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
+The difference is not cleverness. It is structure: explicit domain knowledge encoded as **skills** (focused markdown instruction sets under 500 lines each), deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
 
 This is Context Engineering. It does not replace developer judgment — it channels it into the right moments.
 
@@ -41,8 +41,8 @@ Before describing the workflow, it helps to locate where we are. We map agentic 
 | L3 | Scripted | Deterministic, human-designed automation — fixed steps, no agent autonomy. |
 | **L4a** | **Supervised Agentic** | **Dynamic multi-agent workflows with explicit human approval gates.** |
 | L4b | Autonomous Agentic | Agents run end-to-end without human checkpoints. |
-| L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own Skills. |
-| L5b | Self-Authoring | Agents create new agents and Skills from scratch. |
+| L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own skills. |
+| L5b | Self-Authoring | Agents create new agents and skills from scratch. |
 
 The Plugins & Ecosystem Squad operates at **L4a**: agents handle execution, humans own decisions. Every approval gate is an explicit checkpoint — not an accidental pause.
 
@@ -74,7 +74,7 @@ The issue is not a ticket. It is the contract — and it drives the entire softw
 ## The SDLC: Who Does What, and When
 
 :::alert{type="info"}
-**Skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
+**skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
 
 A **skill** is a procedural instruction set: a numbered sequence of steps, decision points, and success conditions that runs in the main context window. It is invoked by a human (e.g. `/kestra-plugin-planning`) and may orchestrate other steps or spawn agents. Think of it as a runbook the AI follows on your behalf.
 
@@ -186,7 +186,7 @@ Token breakdown for the same session:
 
 | Budget item | Share |
 |---|---|
-| Skills + agent definitions loaded into context | ~20K tokens (~6% of input) |
+| skills + agent definitions loaded into context | ~20K tokens (~6% of input) |
 | Developer agent + QA skill | ~70% of total input |
 | Planning (Opus) + implementation and review (Sonnet) | 100% of cost |
 
@@ -210,15 +210,15 @@ These optimizations together saved nearly $1 per issue compared to the unoptimiz
 
 The agents work because the knowledge they need is explicit and version-controlled.
 
-A central hub — a private repository called `engineering-ai-hub` — holds all Skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
+A central hub — a private repository called `engineering-ai-hub` — holds all skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
 
-Skills are tool-agnostic at the source level. A build step generates Claude Code and OpenCode formats from a single markdown source, so the same knowledge works across AI coding tools.
+skills are tool-agnostic at the source level. A build step generates Claude Code and OpenCode formats from a single markdown source, so the same knowledge works across AI coding tools.
 
 ### Distributing to Plugin Repositories via Symlinks
 
 Kestra maintains around 200 plugin repositories. The naive alternative — an `AGENTS.md` file at the root of each repository — would require duplicating hundreds of lines of Kestra plugin conventions across every repo and keeping them in sync by hand. Any update to a guideline, a new edge case discovered, a security rule added — all of it would need to be propagated to 200+ files manually. That approach doesn't scale.
 
-Skills and agents solve this at the architecture level: the knowledge lives in one place, and the repositories just point to it. Each plugin repository holds a set of symlinks pointing directly into the hub's build output:
+skills and agents solve this at the architecture level: the knowledge lives in one place, and the repositories just point to it. Each plugin repository holds a set of symlinks pointing directly into the hub's build output:
 
 ```
 .claude/agents  → ../engineering-ai-hub/.claude/agents
@@ -234,7 +234,7 @@ Setting up or refreshing symlinks on a new repository is a one-command operation
 
 No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
 
-The Skills and agents described here are not a first draft. The squad has been iterating on them for more than three months, refining instructions after every session where something went wrong, every review cycle that exposed a gap, every QA failure that revealed a missing guardrail. The workflow has been battle-tested on over 100 real issues. Each improvement is a pull request on the hub — reviewed, merged, and instantly live across all plugin repositories via the symlinks.
+The skills and agents described here are not a first draft. The squad has been iterating on them for more than three months, refining instructions after every session where something went wrong, every review cycle that exposed a gap, every QA failure that revealed a missing guardrail. The workflow has been battle-tested on over 100 real issues. Each improvement is a pull request on the hub — reviewed, merged, and instantly live across all plugin repositories via the symlinks.
 
 ## The Human Role After Context Engineering
 
@@ -271,10 +271,10 @@ The release gate — human merge and publish — is the last to go, and may neve
 
 At L5a, agents emit structured telemetry about where they struggle. Planning agents flag issues where the spec was ambiguous. Developer agents flag patterns where the first implementation consistently fails code review. QA agents flag scenarios that reliably surface failures.
 
-That telemetry becomes the input for Skills & Agents improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the Skills & Agents that govern those parts. A human reviews the proposal, approves it, and the Skill is updated.
+That telemetry becomes the input for skills & agents improvement proposals. An L5a system does not just execute the workflow — it identifies which parts of the workflow produce the most errors and proposes concrete edits to the skills & agents that govern those parts. It can also identify gaps — recurring scenarios not covered by any existing skill or agent — and propose creating new ones from scratch. A human reviews the proposal, approves it, and the change is applied via an automatically opened pull request on the hub.
 
-The architecture we built supports L5a: Skills are version-controlled markdown files, agent output is structured and capturable, and the feedback loops already exist between QA, code review, and the developer agent. The missing piece is the telemetry layer and the Skill-improvement agent that reads it. That is the next thing we are building.
+The architecture we built supports L5a: skills & agents are version-controlled markdown files, agent output is structured and capturable, and the feedback loops already exist between QA, code review, and the developer agent. The missing piece is the telemetry layer and the self-improvement agent that reads it. That is the next thing we are building.
 
 ---
 
-The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as Skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
+The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
