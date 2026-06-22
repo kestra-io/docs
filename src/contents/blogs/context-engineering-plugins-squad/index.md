@@ -208,9 +208,25 @@ These optimizations together saved nearly $1 per issue compared to the unoptimiz
 
 The agents work because the knowledge they need is explicit and version-controlled.
 
-A central hub holds all Skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
+A central hub — a private repository called `engineering-ai-hub` — holds all Skills and agent definitions. The developer agent and the code reviewer agent both reference the same shared Kestra plugin guidelines — so they operate from identical conventions without duplication. When a convention changes, one file changes and both agents pick it up immediately.
 
 Skills are tool-agnostic at the source level. A build step generates Claude Code and OpenCode formats from a single markdown source, so the same knowledge works across AI coding tools.
+
+### Distributing to Plugin Repositories via Symlinks
+
+Kestra maintains around 200 plugin repositories. Copying the hub's generated files into each one would make updates expensive to propagate. Instead, each plugin repository holds a set of symlinks pointing directly into the hub's build output:
+
+```
+.claude/agents  → ../engineering-ai-hub/.claude/agents
+.claude/skills  → ../engineering-ai-hub/.claude/skills
+.claude/hooks   → ../engineering-ai-hub/.claude/hooks
+.opencode/agents → ../engineering-ai-hub/.opencode/agents
+.opencode/skills → ../engineering-ai-hub/.opencode/skills
+```
+
+When the hub is updated and rebuilt, every repository picks up the change immediately — no copy, no commit, no propagation step. The symlinked directories are excluded from each plugin repository's `.gitignore` so they are never accidentally committed.
+
+Setting up or refreshing symlinks on a new repository is a one-command operation: the `/kestra-agents-update` skill pulls the latest hub changes and creates or repairs all symlinks automatically.
 
 No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
 
