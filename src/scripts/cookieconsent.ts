@@ -1,4 +1,4 @@
-import * as CookieConsent from "vanilla-cookieconsent"
+import CookieConsent from "vanilla-cookieconsent"
 import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"

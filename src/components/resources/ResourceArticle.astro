@@ -85,17 +85,20 @@ const faqSchema =
                 />
             )}
             <script
+                is:inline
                 type="application/ld+json"
                 set:html={JSON.stringify(jsonLinkedData)}
             />
             {page.schema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(page.schema)}
                 />
             )}
             {faqSchema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(faqSchema)}
                 />
