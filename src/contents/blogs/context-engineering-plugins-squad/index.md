@@ -164,7 +164,7 @@ For plugins that require an external service — a cloud provider, a database, a
 
 The human reviews the generated pull request. The PR arrives with a reviewed diff, passing tests, and a QA report — not raw output to triage. The reviewer focuses on semantics and product judgment, not syntax.
 
-When satisfied, they merge and release via the Plugins Devtools. The release stays with the human — intentionally.
+When satisfied, they merge and release via the Plugin Devtools. The release stays with the human — intentionally.
 
 ## What the Numbers Look Like
 
