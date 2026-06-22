@@ -73,6 +73,16 @@ The issue is not a ticket. It is the contract — and it drives the entire softw
 
 ## The SDLC: Who Does What, and When
 
+:::alert{type="info"}
+**Skills and agents are both plain markdown files** — but they behave differently.
+
+A **skill** is a procedural instruction set: a numbered sequence of steps, decision points, and success conditions that runs in the main context window. It is invoked by a human (e.g. `/kestra-plugin-planning`) and may orchestrate other steps or spawn agents. Think of it as a runbook the AI follows on your behalf.
+
+An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are skills.
+
+The distinction matters because agents can be reused across skills, updated independently, and invoked directly when needed.
+:::
+
 Here is the full lifecycle, with the exact skills and agents at each step.
 
 ### Step 1 — Write the Issue `/kestra-plugin-managing-issues`
