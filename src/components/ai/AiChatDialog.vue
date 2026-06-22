@@ -435,8 +435,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "variable";
-
     .overlay {
         position: fixed;
         inset: 0;
