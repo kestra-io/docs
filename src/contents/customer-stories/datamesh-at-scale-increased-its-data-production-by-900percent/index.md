@@ -35,7 +35,7 @@ tagline: Global home improvement and gardening retailer
 companyName: Leroy Merlin France
 useCase: Data Orchestration
 deployment: Self-hosted (Kubernetes)
-intro: Leroy Merlin France, a subsidiary of ADEO Group managing data operations for 80,000+ employees across 140 stores, needed to replace a fragmented legacy scheduling stack and a failing Airflow deployment with a platform that could support self-service data engineering at scale. Starting in May 2020, they built a full DataOps lifecycle on Kestra: GitOps deployment, a custom ingest plugin, Enterprise RBAC, and a Data Mesh architecture where individual squads publish their own data products. Today the platform orchestrates 5,000+ flows, serves 250+ active engineers, and has been a cornerstone of LMFR's data operations for over six years.
+intro: "Leroy Merlin France, a subsidiary of ADEO Group managing data operations for 80,000+ employees across 140 stores, needed to replace a fragmented legacy scheduling stack and a failing Airflow deployment with a platform that could support self-service data engineering at scale. Starting in May 2020, they built a full DataOps lifecycle on Kestra: GitOps deployment, a custom ingest plugin, Enterprise RBAC, and a Data Mesh architecture where individual squads publish their own data products. Today the platform orchestrates 5,000+ flows, serves 250+ active engineers, and has been a cornerstone of LMFR's data operations for over six years."
 cta: "What would change if your data mesh produced 9× more data, automating the pipelines that power your entire retail operation?"
 ---
 
