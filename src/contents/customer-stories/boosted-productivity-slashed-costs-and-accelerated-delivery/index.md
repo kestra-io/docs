@@ -5,7 +5,7 @@ description: This is the story of how Foundation Data consolidated their entire 
 metaTitle: "Foundation Data & Kestra: One Engineer, 50+ Pipelines, 2,800 Clients"
 metaDescription: Foundation Data replaced SuperMetrics, Prefect, and dbt Cloud with Kestra, cutting toolchain costs by more than 90% and enabling a solo engineer to serve 2,800 automotive dealerships.
 heroImage: ./hero.png
-featured: true
+featured: false
 featuredImage: ./hero.png
 logo: ./logo.png
 logoDark: ./logo-dark.svg
