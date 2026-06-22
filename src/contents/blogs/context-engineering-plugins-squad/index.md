@@ -44,7 +44,7 @@ Before describing the workflow, it helps to locate where we are. We map agentic 
 | L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own Skills. |
 | L5b | Self-Authoring | Agents create new agents and Skills from scratch. |
 
-The Plugins & Ecosystem Squad operates at **L4a**. Agents handle execution; humans own decisions. Every approval gate is an explicit checkpoint — not an accidental pause.
+The Plugins & Ecosystem Squad operates at **L4a**: agents handle execution, humans own decisions. Every approval gate is an explicit checkpoint — not an accidental pause.
 
 Most teams skip directly from L2 to L3 and stall there, because scripted automation breaks when requirements change. The jump to L4a — where agents adapt dynamically within a structured context — is where real productivity gains begin.
 
