@@ -32,7 +32,7 @@ This is Context Engineering. It does not replace developer judgment — it chann
 
 ## The Agentic AI Maturity Model
 
-Before describing the workflow, it helps to locate where we are. We map agentic AI adoption across six levels:
+Before describing the workflow, it helps to locate where we are. We map agentic AI adoption across five levels, with two sub-levels each for L4 and L5:
 
 | Level | Name | Description |
 |-------|------|-------------|
