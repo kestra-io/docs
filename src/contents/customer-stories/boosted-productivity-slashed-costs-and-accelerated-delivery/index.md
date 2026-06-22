@@ -47,7 +47,7 @@ cta: "What would change if one engineer could orchestrate 50+ pipelines, serve 2
 <div class="problem-item">
 <span class="problem-number">01</span>
 <div class="problem-title">Python-only orchestration couldn't run the language the workload required</div>
-<div class="problem-desc">Foundation Data's OEM data extraction jobs query dealership APIs that are rate-limited. Python's threading model capped concurrent requests at 3. Go's concurrency model supports 50 to 60 simultaneous requests. For extraction jobs that were taking 2 to 3 hours, that difference meant finishing in under an hour or missing SLAs entirely. The orchestrator needed to run Go natively, not as a workaround but as a first-class execution target.</div>
+<div class="problem-desc">Foundation Data's OEM data extraction jobs query dealership APIs that are rate-limited. Python's threading model capped concurrent requests at 3. Go's concurrency model supports 50 to 60 simultaneous requests. For extraction jobs that were taking 2 to 3 hours, that difference meant finishing in under an hour or missing SLAs entirely. The orchestrator needed to run Go natively, not as a workaround but as a first-class execution target. <em class="inline-quote">"We've had problems in the past where like it's released and it's broken stuff, and we had to wait for like a day or two to get it fixed. Our legacy tools just couldn't scale and adapt to our operational needs."</em> — Jack Perry</div>
 </div>
 <div class="problem-item">
 <span class="problem-number">02</span>
@@ -73,28 +73,28 @@ An orchestrator that could run <strong class="problem-close-key">any language, d
 <div class="fix-check">✓</div>
 <div>
 <div class="fix-title">Language-agnostic task runners: Go, Python, Bash, SQL in the same pipeline</div>
-<div class="fix-desc">Kestra's task runners execute code in isolated containers, without forcing a single runtime. Foundation Data's OEM extraction jobs now run as Go containers. dbt transformations run as dbt Core. Python and Bash tasks run alongside them in the same flow. <em class="inline-quote">"That's really what enabled us to do what we want to do"</em>: task runners were the capability that made the switch worth evaluating. Extraction time dropped from 2 to 3 hours to under an hour.</div>
+<div class="fix-desc">Kestra's task runners execute code in isolated containers, without forcing a single runtime. Foundation Data's OEM extraction jobs now run as Go containers. dbt transformations run as dbt Core. Python and Bash tasks run alongside them in the same flow. Extraction time dropped from 2 to 3 hours to under an hour. <em class="inline-quote">"Kestra's architecture and ease of use immediately appealed to us. The YAML-based approach dramatically simplified our workflow management, letting us deploy faster and scale seamlessly."</em> — Jack Perry</div>
 </div>
 </div>
 <div class="fix-item">
 <div class="fix-check">✓</div>
 <div>
 <div class="fix-title">Full toolchain consolidation: SuperMetrics, Prefect, and dbt Cloud all replaced</div>
-<div class="fix-desc">SuperMetrics was decommissioned. dbt Cloud was replaced with dbt Core, orchestrated directly by Kestra. Prefect workspace fees were eliminated. The monthly toolchain cost fell by more than 90%, leaving almost entirely BigQuery compute.</div>
+<div class="fix-desc">SuperMetrics was decommissioned. dbt Cloud was replaced with dbt Core, orchestrated directly by Kestra. Prefect workspace fees were eliminated. The monthly toolchain cost fell by more than 90%, leaving almost entirely BigQuery compute. <em class="inline-quote">"The cost savings with Kestra have been tremendous. Moving away from Supermetrics immediately slashed our monthly spend, while Kestra's enhanced concurrency management further optimized our costs."</em> — Jack Perry</div>
 </div>
 </div>
 <div class="fix-item">
 <div class="fix-check">✓</div>
 <div>
 <div class="fix-title">Full infrastructure managed through Terraform, including Kestra itself</div>
-<div class="fix-desc">Foundation Data's entire Kestra environment (namespaces, secrets, users, flows, and Apps) is declared in Terraform and deployed from Git. That was a hard requirement from day one of the company's independent existence. Kestra was the only orchestrator in the evaluation that supported it.</div>
+<div class="fix-desc">Foundation Data's entire Kestra environment (namespaces, secrets, users, flows, and Apps) is declared in Terraform and deployed from Git. That was a hard requirement from day one of the company's independent existence. Kestra was the only orchestrator in the evaluation that supported it. <em class="inline-quote">"Kestra empowered us with a real DevOps-centric approach. Our deployment pipeline is streamlined, and our team can scale rapidly without ever sacrificing stability."</em> — Jack Perry</div>
 </div>
 </div>
 <div class="fix-item">
 <div class="fix-check">✓</div>
 <div>
 <div class="fix-title">Kestra Apps: non-engineers triggering complex workflows with guardrails</div>
-<div class="fix-desc">The measurement team uses a Kestra App built by Jack to manage Google Analytics across all 2,800 dealership websites. The App presents 30 to 40 conditional inputs, routes users through the right options, and handles six or seven underlying subflows automatically. Concurrency controls cap execution at Google Tag Manager's rate limit of 200 requests per minute, queuing simultaneous runs rather than letting them collide. <em class="inline-quote">"That queuing system is really key. If someone triggered two runs at once, we'd hit their rate limits right away. Now it queues them up."</em></div>
+<div class="fix-desc">The measurement team uses a Kestra App built by Jack to manage Google Analytics across all 2,800 dealership websites. The App presents 30 to 40 conditional inputs, routes users through the right options, and handles six or seven underlying subflows automatically. Concurrency controls cap execution at Google Tag Manager's rate limit of 200 requests per minute, queuing simultaneous runs rather than letting them collide. <em class="inline-quote">"Deploying workflows went from a cumbersome task to something we handle effortlessly in minutes. Our engineers are now free to focus on innovation rather than troubleshooting manual scripts."</em> — Jack Perry</div>
 </div>
 </div>
 </div>
@@ -112,11 +112,11 @@ An orchestrator that could run <strong class="problem-close-key">any language, d
 </div>
 <div class="result-item">
 <div class="result-metric">99% pipeline success rate</div>
-<div class="result-desc">Under the previous orchestrator, pipeline failures came roughly every other day. Kestra has had one failure in fourteen months. <em class="inline-quote">"Before this last stretch, I hadn't touched Kestra in four months. It just runs."</em></div>
+<div class="result-desc">Under the previous orchestrator, pipeline failures came roughly every other day. Kestra has had one failure in fourteen months. <em class="inline-quote">"Switching to a dedicated Kestra cloud instance was seamless and immediately improved our operational stability. The performance gains and additional control we received have been invaluable."</em> — Jack Perry</div>
 </div>
 <div class="result-item">
 <div class="result-metric">One engineer, 50+ production workflows</div>
-<div class="result-desc">Jack Perry manages the full data stack as Foundation Data's sole data engineer. Three outsourced data contractors were let go. Mike Heidner, Foundation Data's SVP of Analytics, monitors pipeline health and executes flows himself from the Kestra UI daily. <em class="inline-quote">"Today I approved five flows in Kestra just sitting there. Two clicks of a button. I feel like I'm more aware of what's going on with our data pipelines than I ever was before."</em></div>
+<div class="result-desc">Jack Perry manages the full data stack as Foundation Data's sole data engineer. Three outsourced data contractors were let go. Mike Heidner, Foundation Data's SVP of Analytics, monitors pipeline health and executes flows himself from the Kestra UI daily. <em class="inline-quote">"Today I approved five flows in Kestra just sitting there. Two clicks of a button. I feel like I'm more aware of what's going on with our data pipelines than I ever was before."</em> — Mike Heidner, SVP Analytics. <em class="inline-quote">"Kestra has fundamentally changed the way we manage our data workflows. We now deploy pipelines faster, manage integrations, and scale confidently. It's essential for our continued growth and success."</em> — Jack Perry</div>
 </div>
 </div>
 
