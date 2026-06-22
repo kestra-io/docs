@@ -8,5 +8,5 @@
   to: "/blogs"
 - regexp: "/changelog"
   to: "/docs/changelog"
-- regexp: "/videos(.*)"
-  to: "/tutorial-videos$1"
+- regexp: "/tutorial-videos(.*)"
+  to: "/videos$1"
