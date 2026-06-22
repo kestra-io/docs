@@ -18,7 +18,7 @@ We asked a different question: what if we kept the thoroughness and removed the 
 
 This post describes how the Plugins & Ecosystem Squad introduced **Context Engineering** into its development workflow, and what happened when we let AI agents handle the mechanical parts while humans stayed in control of the decisions that actually matter.
 
-I presented this approach at [DevLille 2026](https://github.com/fdelbrayelle/workflow-superpowers), with live terminal recordings of a full cycle on a real Kestra issue.
+I presented this approach at [DevLille 2026](https://github.com/fdelbrayelle/workflow-superpowers), with live terminal recordings of a full cycle on a [real Kestra issue](https://github.com/kestra-io/plugin-datagen/issues/53).
 
 ## Why Prompt Engineering Is Not Enough
 
@@ -215,6 +215,6 @@ The architecture we built supports L5a: Skills are version-controlled markdown f
 
 ---
 
-The full talk, demo recordings, and slides from DevLille 2026 are at [github.com/fdelbrayelle/workflow-superpowers](https://github.com/fdelbrayelle/workflow-superpowers), including asciinema recordings of a live planning and implementation session on a real Kestra issue.
+The full talk, demo recordings, and slides from DevLille 2026 are at [github.com/fdelbrayelle/workflow-superpowers](https://github.com/fdelbrayelle/workflow-superpowers), including asciinema recordings of a live planning and implementation session on a [real Kestra issue](https://github.com/kestra-io/plugin-datagen/issues/53).
 
 If you are building something similar for your own team — the methodology transfers even when the Skills do not. Reach out.
