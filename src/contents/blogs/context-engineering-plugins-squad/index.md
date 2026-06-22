@@ -158,6 +158,10 @@ Before running flows, the skill checks whether the required secrets are already 
 
 For plugins that require an external service — a cloud provider, a database, a message broker — the skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://github.com/kestra-io/floci) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
 
+### A Note on Plugin Devtools
+
+**Plugin Devtools** is an internal private repository that provides the squad's local toolchain: running a Kestra instance, deploying plugins locally for development and testing, and releasing plugins to the registry. The QA skill relies on Plugin Devtools to start Kestra Enterprise Edition and hot-deploy the plugin under test before exercising the acceptance criteria in the browser. Step 5 uses it again for the final release.
+
 ### Step 5 — Review, Merge, and Release
 
 **Actor: squad member (human)**
