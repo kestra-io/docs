@@ -171,6 +171,11 @@ kestractl flows update-concurrency my.namespace my-flow --running 10
 # Generate a graph topology from a flow source file (without deploying)
 kestractl flows generate-graph-from-source --file flow.yaml
 
+# Show the graph topology of an existing deployed flow
+kestractl flows graph my.namespace my-flow
+kestractl flows graph my.namespace my-flow --revision 3 --output json
+kestractl flows graph my.namespace my-flow --subflow task-a --subflow task-b
+
 # List available Pebble expressions for a flow YAML file
 kestractl flows expressions --file my-flow.yaml
 kestractl flows expressions --file my-flow.yaml --task-id my-task
@@ -243,8 +248,10 @@ kestractl executions kill-by-query --filter STATE:EQUALS:RUNNING
 # Labels
 kestractl executions set-labels 2TLGqHrXC9k8BczKJe5djX env=prod team=platform
 
-# Trigger an execution via webhook
+# Trigger an execution via webhook (--method GET|POST|PUT; --path appends a URL suffix)
 kestractl executions trigger-webhook my.namespace my-flow my-webhook-key
+kestractl executions trigger-webhook my.namespace my-flow my-webhook-key --method POST
+kestractl executions trigger-webhook my.namespace my-flow my-webhook-key --method PUT --path extra/segment
 
 # Graph and flow info
 kestractl executions flow-graph      2TLGqHrXC9k8BczKJe5djX
@@ -446,6 +453,25 @@ kestractl dashboards update <id> --file my-dashboard.yaml
 
 # Delete a dashboard
 kestractl dashboards delete <id>
+
+# Show the tenant's default dashboard settings
+kestractl dashboards defaults
+
+# Validate a dashboard or chart definition
+kestractl dashboards validate       --file my-dashboard.yaml
+kestractl dashboards validate-chart --file my-chart.yaml
+
+# Preview a chart's data without saving it
+kestractl dashboards preview-chart --file my-chart.yaml --output json
+
+# Fetch data for a chart of an existing dashboard
+kestractl dashboards chart-data <dashboard-id> <chart-id>
+kestractl dashboards chart-data <dashboard-id> <chart-id> --file filters.yaml --output json
+
+# Export chart data as CSV
+kestractl dashboards export-chart-csv      --file my-chart.yaml --output-file chart.csv
+kestractl dashboards export-chart-data-csv <dashboard-id> <chart-id> --output-file chart.csv
+kestractl dashboards export-chart-data-csv <dashboard-id> <chart-id> --file filters.yaml --output-file chart.csv
 ```
 
 ## Apps (Enterprise Edition)
@@ -476,6 +502,27 @@ kestractl apps export --output-file apps.zip
 # Import apps from a ZIP archive
 kestractl apps import --file apps.zip
 
+# Bulk enable / disable / delete multiple apps
+kestractl apps bulk-enable  uid-1 uid-2 uid-3
+kestractl apps bulk-disable uid-1 uid-2 uid-3
+kestractl apps bulk-delete  uid-1 uid-2 --yes
+
+# List all tags used across apps
+kestractl apps tags
+
+# Search apps from the catalog
+kestractl apps catalog
+kestractl apps catalog --query reporting --output json
+
+# Inspect files produced by an app execution view
+kestractl apps file-meta    <view-id> --path /path/to/file
+kestractl apps file-preview <view-id> --path /path/to/file --max-rows 50
+kestractl apps file-preview <view-id> --path /path/to/file --max-rows 50 --encoding UTF-8
+
+# Download logs for an app execution
+kestractl apps logs <view-id> --min-level ERROR --output-file app.log
+kestractl apps logs <view-id> --execution-id <exec-id> --task-id my-task --output-file app.log
+
 # Delete an app
 kestractl apps delete <id>
 ```
@@ -495,6 +542,24 @@ kestractl assets create --file my-asset.yaml
 
 # Delete an asset
 kestractl assets delete <id>
+
+# Show an asset's dependency graph
+kestractl assets dependencies <id>
+kestractl assets dependencies <id> --expand-all --output json
+kestractl assets dependencies <id> --destination-only --output json
+
+# Bulk-delete assets by IDs or by query filters
+kestractl assets delete-by-ids id1 id2 id3
+kestractl assets delete-by-query --namespace my.namespace
+kestractl assets delete-by-query --filter NAMESPACE:EQUALS:my.namespace --purge
+
+# Inspect and manage lineage events
+kestractl assets lineage-events list --output json
+kestractl assets lineage-events delete-by-query --namespace my.namespace
+
+# Inspect and manage asset usages
+kestractl assets usages list --output json
+kestractl assets usages delete-by-query --namespace my.namespace
 ```
 
 ## Blueprints
@@ -509,12 +574,27 @@ kestractl blueprints community search --tag python --tag sql
 kestractl blueprints community get    <id>
 kestractl blueprints community source <id>
 
+# Show the graph topology of a community blueprint
+kestractl blueprints community graph <id> --output json
+kestractl blueprints community graph <id> --kind FLOW --output json
+
 # Manage internal flow blueprints (Enterprise Edition)
 kestractl blueprints flow list
 kestractl blueprints flow get    <id>
-kestractl blueprints flow create --file blueprint.yaml
-kestractl blueprints flow update <id> --file blueprint.yaml
+kestractl blueprints flow get    <id> --legacy
+kestractl blueprints flow create --title "My Blueprint" --source-file blueprint.yaml --tag etl
+kestractl blueprints flow update <id> --title "My Blueprint" --source-file blueprint.yaml
 kestractl blueprints flow delete <id>
+
+# Generate a flow from a flow blueprint template
+kestractl blueprints flow use-template <id> --input env=prod --input region=eu
+
+# Manage custom (internal) blueprints (Enterprise Edition)
+kestractl blueprints custom get    <id>
+kestractl blueprints custom source <id>
+kestractl blueprints custom create --title "My Blueprint" --source-file blueprint.yaml
+kestractl blueprints custom update <id> --title "My Blueprint" --source-file blueprint.yaml
+kestractl blueprints custom delete <id>
 ```
 
 ## Test suites (Enterprise Edition)
@@ -593,6 +673,10 @@ kestractl users change-my-password --old-password 'OldPass!' --new-password 'N3w
 # Grant or revoke super-admin status
 kestractl users set-super-admin <user_id> --super-admin
 kestractl users set-super-admin <user_id> --super-admin=false
+
+# Mark a user as restricted, or lift the restriction
+kestractl users set-restricted <user_id> --restricted=true
+kestractl users set-restricted <user_id> --restricted=false
 
 # Delete an auth method for a user
 kestractl users delete-auth-method <user_id> BASIC_AUTH
