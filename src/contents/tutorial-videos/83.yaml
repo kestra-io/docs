@@ -1,9 +1,7 @@
-title: "From Cron Job to Event-Driven: Automating my YouTube Workflow"
-description: "Learn how to use Kestra's new YouTube VideoTrigger to automatically
-  open a GitHub PR when a new video is published, eliminating the need for manual
-  updates or polling logic."
-category: "Infrastructure"
+title: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, New GitHub Action and New Plugins"
+description: "Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces enterprise-grade ..."
+category: "What's New"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=jICOZjTsTPg"
-publicationDate: "2026-04-07T00:00:00.000"
-contentType: "Infrastructure"
+url: "https://youtube.com/watch?v=LjiEmutGdNY"
+publicationDate: "2026-03-03T08:01:24-08:00"
+contentType: "What's New"

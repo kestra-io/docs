@@ -1,9 +1,9 @@
-title: "Amazon Ion Explained: The Format Hiding Inside Your Kestra Workflows"
-description: "Amazon Ion is a richly-typed superset of JSON used internally by Kestra
-  to provide a robust type system for data pipelines. This video explains how Ion
-  compares to JSON and demonstrates how it works in practice within the Kestra platform."
-category: "Getting Started"
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=FJzVjObF418"
-publicationDate: "2026-05-19T00:00:00.000"
-contentType: "Getting Started"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
+contentType: "Data"
