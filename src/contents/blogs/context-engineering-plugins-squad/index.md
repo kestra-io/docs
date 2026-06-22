@@ -1,6 +1,6 @@
 ---
 title: "Context Engineering in Practice: Automating the Plugin SDLC at Kestra"
-description: "How Kestra's Plugins & Ecosystem Squad introduced Context Engineering to automate the full software development lifecycle (SDLC) for plugins — from GitHub issue to merged PR — cutting delivery time from 4 hours to 30 minutes using structured AI agents and human-in-the-loop approval gates."
+description: "How Kestra's Plugins & Ecosystem Squad introduced Context Engineering to automate the full software development lifecycle (SDLC) for plugins — from GitHub issue to merged PR — cutting delivery time from 4 hours — and even way more — to 30 minutes using structured AI agents and human-in-the-loop approval gates."
 date: 2026-06-25T09:00:00
 category: Solutions
 author:
