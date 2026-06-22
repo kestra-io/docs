@@ -7,7 +7,6 @@ author:
   name: Anuun Chinbat
   image: "achinbat"
 image: ./main.jpg
-canonical: https://dlthub.com/docs/blog/dlt-kestra-demo-blog
 ---
 
 ## THE PROBLEM
