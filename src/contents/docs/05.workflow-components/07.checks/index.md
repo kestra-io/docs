@@ -19,7 +19,7 @@ Checks are useful to enforce business rules on inputs (e.g., allowed values, dat
 
 Each item in `checks` supports the following properties:
 
-- `condition` *(required)*: Pebble expression that must evaluate to a boolean. For example, you can design checks against Inputs, Key-Value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components.
+- `condition` *(required)*: Pebble expression that must render to a real boolean `true` or `false`. For example, you can design checks against Inputs, Key-Value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components. A value that renders to anything else (for example the string `"true"`/`"yes"`, or a number) is treated as a **failed** check. From Kestra 2.0 this property is also available as `when`.
 - `message` *(required)*: Text displayed when the condition is false.
 - `style` *(optional, default `INFO`)*: Visual style for the message. One of `ERROR`, `SUCCESS`, `WARNING`, `INFO`.
 - `behavior` *(optional, default `BLOCK_EXECUTION`)*: How the flow should react when the condition is false. One of:
@@ -36,6 +36,13 @@ When clicking **Execute**, with an `ERROR` message display set in the flow code,
 ### Multiple checks
 
 If several checks fail, the most restrictive behavior wins in this priority order: `BLOCK_EXECUTION` → `FAIL_EXECUTION` → `CREATE_EXECUTION`. This lets you mix hard stops with softer warnings in the same flow.
+
+### Evaluation behavior
+
+Two behaviors are worth keeping in mind when writing a check's `condition`:
+
+- **The condition must render to a real boolean.** Evaluation is strict: only a boolean `true` passes. A condition that renders to anything else — the string `"true"` or `"yes"`, a number, etc. — is treated as a **failed** check. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
+- **An un-evaluatable condition always blocks.** If the condition cannot be evaluated at all (for example an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, **regardless of the `behavior` and `style` you declared**. This is intentional — a broken gate must never let a run through. Fix the expression (and reference only variables that exist at validation time) to restore your declared behavior.
 
 ## Examples
 
