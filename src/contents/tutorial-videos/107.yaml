@@ -1,9 +1,7 @@
-title: "kestractl: Manage and Deploy Flows Directly from the CLI"
-description: "Managing multiple environments and keeping local development in sync
-  can be a messy process. In this video, Will demonstrates how kestractl makes deploying
-  and managing your Kestra workflows easy and consistent."
-category: "Infrastructure"
+title: "Why Claude Routines Break Down in Production"
+description: "Learn what Claude Routines is and if it can replace the need for an orchestrator."
+category: "AI"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=8XeKFM8ovv4"
-publicationDate: "2026-05-21T00:00:00.000"
-contentType: "Infrastructure"
+url: "https://www.youtube.com/watch?v=La2JNtMVow4"
+publicationDate: "2026-04-28T00:00:00.000"
+contentType: "AI"

@@ -1,9 +1,8 @@
-title: "DAGs vs Workflows: Are They the Same Thing?"
-description: "Developer Advocate Will Russell explains the differences between a DAG
-  and a Workflow in data engineering through practical examples to clarify how these
-  commonly confused terms actually differ."
+title: "The Best Intro to Workflow Orchestration Is a Video Game"
+description: "Will Russell explores how Factorio’s automation and error-handling mechanics
+  teach the fundamental principles of workflow orchestration."
 category: "Getting Started"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
-publicationDate: "2026-05-12T00:00:00.000"
+url: "https://www.youtube.com/watch?v=orHWPS571d4"
+publicationDate: "2026-04-21T00:00:00.000"
 contentType: "Getting Started"

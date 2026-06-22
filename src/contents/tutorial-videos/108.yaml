@@ -1,9 +1,8 @@
-title: "Do Agent Skills Replace MCP?"
-description: "Learn the difference between MCP (Model Context Protocol) and agent
-  skills, why people confuse them, and how they actually work together in a real-world
-  environment."
+title: "Building a Slack AI Agent: From Trigger to Autonomous Bot"
+description: "Learn how to use Kestra's Slack Trigger and AI plugin to build an intelligent,
+  Gemini-powered responder and autonomous agent using a single declarative YAML flow."
 category: "AI"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=yVUb71BsG7Y"
-publicationDate: "2026-05-26T00:00:00.000"
+url: "https://www.youtube.com/watch?v=QvBkoJ8kOds"
+publicationDate: "2026-04-30T00:00:00.000"
 contentType: "AI"

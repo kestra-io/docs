@@ -1,8 +1,9 @@
-title: "The Best Intro to Workflow Orchestration Is a Video Game"
-description: "Will Russell explores how Factorio’s automation and error-handling mechanics
-  teach the fundamental principles of workflow orchestration."
-category: "Getting Started"
+title: "From Cron Job to Event-Driven: Automating my YouTube Workflow"
+description: "Learn how to use Kestra's new YouTube VideoTrigger to automatically
+  open a GitHub PR when a new video is published, eliminating the need for manual
+  updates or polling logic."
+category: "Infrastructure"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=orHWPS571d4"
-publicationDate: "2026-04-21T00:00:00.000"
-contentType: "Getting Started"
+url: "https://www.youtube.com/watch?v=jICOZjTsTPg"
+publicationDate: "2026-04-07T00:00:00.000"
+contentType: "Infrastructure"

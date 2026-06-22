@@ -1,9 +1,7 @@
-title: "Migrate or Upgrade? Airflow 2 EOL"
-description: "With Airflow 2 reaching end of life in 2026, this video explores whether
-  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
-  tool like Kestra."
-category: "Data"
+title: "Never Miss a Failed Workflow Again: Kestra Errors, Retries & Namespace Alerts | Kestra Tutorial 2026"
+description: "Workflows fail — flaky APIs, outages, bad data. In this final Kestra tutorial, Developer Advocate Amara Graham walks you through Kestra's built-in error handling tools: the errors property for running cleanup or alert tasks on failure, per-task retry configuration for handling transient errors, and namespace-level monitoring flows that centralize failure alerts across all your workflows without touching each flow individually. By the end, you'll know how to take your Kestra workflows from prototype to production-ready."
+category: "Getting Started"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=y3zf99LyRng"
-publicationDate: "2026-03-27T00:00:00.000"
-contentType: "Data"
+url: "https://youtube.com/watch?v=1XzHGwkSrsI"
+publicationDate: "2026-03-09T11:05:00-07:00"
+contentType: "Getting Started"

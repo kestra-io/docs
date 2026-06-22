@@ -1,10 +1,9 @@
-title: "Is AI Replacing Tech Writers?"
-description: "In this video, AJ, the sole technical writer at Kestra, explains how he
-  uses AI to manage over 1,400 plugin references, product docs, and release posts. He
-  shares his insights on where to draw the line between automation and human review to
-  build an efficient, scalable documentation workflow."
-category: "AI"
+title: "DAGs vs Workflows: Are They the Same Thing?"
+description: "Developer Advocate Will Russell explains the differences between a DAG
+  and a Workflow in data engineering through practical examples to clarify how these
+  commonly confused terms actually differ."
+category: "Data"
 author: "Kestra"
-url: "https://youtu.be/Ol5Z1-rV49k?si=xiYBZ1o66phtzRZy"
-publicationDate: "2026-06-19T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
+publicationDate: "2026-05-12T00:00:00.000"
+contentType: "Data"

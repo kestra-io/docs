@@ -1,9 +1,9 @@
-title: "Claude 101: Chat vs Cowork vs Code - Which One Do You Actually Need?"
-description: "This video provides a breakdown of the three products in the Claude
-  model family—Claude Chat, Claude Cowork, and Claude Code—explaining what they are
-  and who they are for."
-category: "AI"
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=ER7fnAZkayE"
-publicationDate: "2026-04-14T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
+contentType: "Data"
