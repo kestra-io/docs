@@ -12,7 +12,7 @@ Run C# code directly in your flows using [dotnet-script](https://github.com/dotn
 
 ## Scripts
 
-Use `io.kestra.plugin.scripts.dotnet.Script` to write C# code inline in your flow. The script is written to a temporary `.csx` file and executed with `dotnet-script`, which is installed automatically before each run.
+Use `io.kestra.plugin.scripts.dotnet.Script` to write C# code inline in your flow. The script is written to a temporary `.csx` file and executed with `dotnet-script`, which is installed automatically before each run. The default container image is `mcr.microsoft.com/dotnet/sdk:10.0`; set `containerImage` to override it, for example to pin an older SDK version.
 
 ```yaml
 id: dotnet_script
