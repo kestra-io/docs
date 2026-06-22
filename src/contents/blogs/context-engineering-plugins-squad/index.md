@@ -186,7 +186,7 @@ Token breakdown for the same session:
 
 | Budget item | Share |
 |---|---|
-| skills + agent definitions loaded into context | ~20K tokens (~6% of input) |
+| Skills + agents definitions loaded into context | ~20K tokens (~6% of input) |
 | Developer agent + QA skill | ~70% of total input |
 | Planning (Opus) + implementation and review (Sonnet) | 100% of cost |
 
