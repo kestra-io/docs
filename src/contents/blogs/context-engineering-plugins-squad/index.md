@@ -101,16 +101,21 @@ flowchart TD
     F --> G[["GATE — /plan-approved\nkestra-io org member"]]
     G -.->|"↺ revision needed"| F
     G -->|"comment on issue"| GH
-    G -->|approved| H["/kestra-plugin-implementing\nor -multiple"]
-    H --> I["kestra-plugin-developer\nImplement · Tests"]
-    I --> PR[(Pull Request)]
-    PR --> J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
-    J -.->|"↺ REQUEST CHANGES (max 5)"| I
+    G -->|approved| I
+
+    subgraph IMPL["/kestra-plugin-implementing (or -multiple)"]
+        I["kestra-plugin-developer\nImplement · Tests · Opens PR"]
+        J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
+        L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
+        I --> J
+        J -.->|"↺ REQUEST CHANGES (max 5)"| I
+        J -->|APPROVE| L
+        L -.->|"↺ FAIL"| I
+    end
+
     J -->|BLOCK| K([Human escalation])
-    J -->|APPROVE| L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
-    L -.->|"↺ FAIL"| I
     L -->|PASS| M[["GATE — PR Review\nSquad member"]]
-    M -->|"reviews PR diff\nQA report · test results"| PR
+    M -->|"reviews diff · QA report · test results"| PR[(Pull Request)]
     PR -->|merged| N([Merge & Release · Plugin Devtools])
     N --> DONE
 
@@ -121,7 +126,7 @@ flowchart TD
 
     class G,M humanGate
     class I,J agentStep
-    class B,C,H,L skillStep
+    class B,C,L skillStep
     class GH,PR artifact
 ```
 
