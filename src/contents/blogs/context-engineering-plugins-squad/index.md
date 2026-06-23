@@ -95,7 +95,7 @@ flowchart TD
     C["/kestra-plugin-planning\nKestra MCP · Triage"] --> D{Usage\nproblem?}
     D -->|Yes| E[Fix comment on issue]
     E --> S{Solved?}
-    S -->|Yes| DONE([Issue closed])
+    S -->|Yes| DONE(["🎉 Issue closed"])
     S -.->|"↺ No — needs a plan"| GH
     D -->|No| F["Structured Plan\nDesign · Tasks · Edge Cases · Docs"]
     F --> G[["👨‍💻 GATE — /plan-approved\nkestra-io org member"]]
