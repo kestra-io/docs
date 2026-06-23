@@ -138,6 +138,7 @@ const METRIC_THRESHOLD = 0.3
 async function runLighthouse(url, chromePort) {
     // Dynamic import so this module doesn't fail at parse-time if lighthouse
     // is not installed (e.g. when the script is imported for testing).
+    // @ts-ignore - optional CI-only dependency, not in package.json
     const { default: lighthouse } = await import("lighthouse")
 
     const result = await lighthouse(url, {
@@ -197,7 +198,7 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
 /**
  * Extracts scores and metrics from a Lighthouse result object.
  *
- * @param {import('lighthouse').Result} lhr
+ * @param {any} lhr
  * @returns {{ scores: Scores; metrics: Metrics }}
  */
 function extractResults(lhr) {
@@ -367,6 +368,7 @@ function buildMarkdown(output, baseline) {
 // ---------------------------------------------------------------------------
 
 async function main() {
+    // @ts-ignore - optional CI-only dependency, not in package.json
     const chromeLauncher = await import("chrome-launcher")
 
     console.log(`\nLighthouse Benchmark`)

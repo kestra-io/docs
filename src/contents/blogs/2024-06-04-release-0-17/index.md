@@ -71,7 +71,7 @@ When you use the Subflow task, you'll [now](https://github.com/kestra-io/kestra/
 </div>
 
 ### Print Context for Debugging
-Related to **Autocompletion**, we've added a `printContext()` function for debugging purposes. This [new function](https://github.com/kestra-io/kestra/issues/3537) will print the full Execution context, including all variables, inputs, outputs, and other execution metadata.
+Related to **Autocompletion**, we've added a `fetchContext()` function for debugging purposes. This [new function](https://github.com/kestra-io/kestra/issues/3537) will print the full Execution context, including all variables, inputs, outputs, and other execution metadata.
 
 ---
 

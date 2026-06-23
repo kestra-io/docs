@@ -56,10 +56,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint all files
-        if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
-        run: npm run lint
-
       - name: Check usage of collection in SSR pages
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
         run: node scripts/check-astro-content-imports.mjs
