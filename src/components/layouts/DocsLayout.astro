@@ -4,6 +4,7 @@ import Layout from "~/components/layout.astro"
 import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
+import { getDocVersions } from "~/utils/docVersionsFetch"
 import squaredGrid from "~/assets/squared-grid.svg"
 
 const navigation = await buildDocsNavigation()
@@ -21,6 +22,10 @@ interface Props {
 }
 
 const props = Astro.props as Props
+
+// Version selector data. Fetched once per build (memoized); lets readers jump
+// from the latest docs to a pinned version (served by the middleware).
+const docVersionList = await getDocVersions()
 
 const techArticleSchema = {
     "@context": "https://schema.org",
@@ -67,6 +72,7 @@ const techArticleSchema = {
             type="docs"
             navigation={navigation}
             slug={props.activeStem}
+            versions={docVersionList}
             client:idle
             transition:persist
         />
