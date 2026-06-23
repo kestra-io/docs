@@ -40,7 +40,7 @@
 - regexp: "/use-cases/stories/htch-building-the-best-architect-collaborative-web-tool-with-kestra"
   to: "/customers/htch-building-the-best-architect-collaborative-web-tool-with-kestra"
 - regexp: "/use-cases/stories/modernizing-mission-critical-e-commerce-integrations-with-kestra"
-  to: "/customers/vissimo"
+  to: "/customers/vissimo-group"
 - regexp: "/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment"
   to: "/customers/pharmacy-retailer"
 - regexp: "/use-cases/stories/ntico-manage-geospatial-data-operations-with-kestra"
