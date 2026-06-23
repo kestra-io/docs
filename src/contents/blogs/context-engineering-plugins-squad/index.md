@@ -229,7 +229,8 @@ For a medium-complexity feature — a new Kestra task with CSV and JSON processi
 |--|--------|-------------|
 | Time | ~4 hours | ~30 minutes |
 | Speedup | — | **~8×** |
-| Cost per issue | — | ~$1.65 (≈340K input + 30K output tokens) |
+| Cost per issue (unoptimized) | — | ~$2.70 |
+| Cost per issue (optimized) | — | ~$1.65 (≈340K input + 30K output tokens) |
 
 Token breakdown for the same session:
 
@@ -253,7 +254,7 @@ Token consumption in agentic workflows grows faster than linearly: every turn ad
 
 **Filter terminal output with `rtk`.** All shell commands in the workflow are proxied through `rtk`, a token-optimizing CLI layer that strips redundant output from `git`, `gradle`, `gh`, and similar tools before it enters the context window. On a full implementation session this saves 60–90% of terminal output tokens.
 
-These optimizations together saved nearly $1 per issue compared to the unoptimized baseline — a cost reduction of more than 35% with no change to output quality.
+These optimizations together cut the cost from ~$2.70 to ~$1.65 per issue — a reduction of nearly 40% with no change to output quality.
 
 ## How the Knowledge Is Structured
 
