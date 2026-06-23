@@ -60,7 +60,7 @@ The Plugins & Ecosystem Squad operates at **L4a**: agents handle execution, huma
 
 Most teams skip directly from L2 to L3 and stall there, because scripted automation breaks when requirements change. The jump to L4a — where agents adapt dynamically within a structured context — is where real productivity gains begin.
 
-## The Entrypoint: GitHub Issues as Machine-Readable Specs
+## GitHub Issues as Machine-Readable Specs
 
 The workflow starts where all feature work starts: a GitHub issue. But before any issue is written, a more fundamental question has to be answered — **why does this work exist?**
 
@@ -70,9 +70,9 @@ Every plugin feature on the backlog has an origin. It is either:
 - An **internal bet** — the squad believes a new connector or capability is strategically valuable, before external demand has materialized
 - **Innovation** — an experiment, a proof-of-concept, something nobody asked for yet
 
-This is product thinking, and it belongs at the very start of the SDLC. The answer shapes the spec: a customer-signal issue names the use case and the success criterion. A Dev Marketing issue frames the plugin in the context of the integration story it supports. An innovation issue admits its exploratory nature upfront and scopes the acceptance criteria accordingly.
+This is product thinking, and it belongs at the very start of the software development lifecycle (SDLC). The answer shapes the spec: a customer-signal issue names the use case and the success criterion. A Dev Marketing issue frames the plugin in the context of the integration story it supports. An innovation issue admits its exploratory nature upfront and scopes the acceptance criteria accordingly.
 
-An issue that skips the "why" is an issue that will be built correctly and shipped to nobody.
+An issue that skips the "why" is an issue that may be built correctly but shipped to nobody.
 
 We write issues differently now. A good issue for this workflow is a complete business and technical specification in markdown. It includes:
 - A description of the desired behavior
@@ -81,7 +81,7 @@ We write issues differently now. A good issue for this workflow is a complete bu
 
 This dual-audience design is intentional. A human engineer can read the issue and understand what to build. An AI agent can parse the same file and extract acceptance criteria, affected plugin classes, edge cases to handle, and expected outputs. No ambiguity. No "we'll figure it out during implementation."
 
-The issue is not a ticket. It is the contract — and it drives the entire software development lifecycle (SDLC) that follows.
+The issue is not a ticket. It is the contract — and it drives the entire SDLC that follows.
 
 ## The SDLC: Who Does What, and When
 
