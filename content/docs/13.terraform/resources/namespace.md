@@ -27,10 +27,10 @@ k2:
     v1: 1
 EOT
   plugin_defaults = <<EOT
-- type: io.kestra.plugin.core.log.Log
+- type: io.kestra.core.tasks.log.Log
   values:
     message: first {{flow.id}}
-- type: io.kestra.plugin.core.debug.Return
+- type: io.kestra.core.tasks.debugs.Return
   values:
     format: first {{flow.id}}
 EOT

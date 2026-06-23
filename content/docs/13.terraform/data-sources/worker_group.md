@@ -23,9 +23,9 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 ### Required
 
 - `id` (String) The worker group id.
+- `key` (String) The worker group key.
 
 ### Read-Only
 
+- `allowed_tenants` (String) The list of tenants allowed to use the worker group.
 - `description` (String) The worker group description.
-- `key` (String) The worker group key.
-- `name` (String) The worker group display name.
