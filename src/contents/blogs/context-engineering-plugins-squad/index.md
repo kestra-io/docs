@@ -122,7 +122,8 @@ flowchart TD
 
     J -->|BLOCK| K(["👨‍💻 Human escalation"])
     PR --> M[["👨‍💻 GATE — PR Review\nSquad member"]]
-    M -->|merged| N(["👨‍💻 Merge & Release"])
+    M -.->|"↺ revision needed"| I
+    M --> N(["👨‍💻 Merge & Release"])
     N --> DONE
 
     classDef humanGate fill:#b36b00,stroke:#7a4800,color:#fff,font-weight:bold
