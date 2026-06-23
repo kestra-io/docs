@@ -284,6 +284,8 @@ Setting up or refreshing symlinks on a new repository is a one-command operation
 
 No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
 
+The QA Skill came first — built as a proof of concept to test whether structured instructions could reliably drive browser automation against a live Kestra instance. It worked. That early success seeded the rest: the planning Skill, then the developer and reviewer agents, and eventually the full orchestrated cycle described in this post.
+
 The Skills and agents described here are not a first draft. The squad has been iterating on them for more than three months, refining instructions after every session where something went wrong, every review cycle that exposed a gap, every QA failure that revealed a missing guardrail. The workflow has been battle-tested on over 100 real issues. Each improvement is a pull request on the hub — reviewed, merged, and instantly live across all plugin repositories via the symlinks.
 
 ## The Human Role After Context Engineering
