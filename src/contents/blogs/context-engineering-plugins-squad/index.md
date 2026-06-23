@@ -105,9 +105,9 @@ flowchart TD
     G -->|approved| I
 
     subgraph IMPL["/kestra-plugin-implementing (or -multiple)"]
-        I["kestra-plugin-developer\nCode & Tests"]
-        J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Performance"]
-        L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
+        I["① kestra-plugin-developer\nCode & Tests"]
+        J["② kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Performance"]
+        L["③ /kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
         PR[(Pull Request)]
         I -->|"opens"| PR
         I --> J
