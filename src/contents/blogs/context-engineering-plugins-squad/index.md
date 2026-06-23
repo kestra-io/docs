@@ -16,6 +16,8 @@ At Kestra, building a new plugin feature involves the same repeatable steps ever
 
 We asked a different question: what if we kept the thoroughness and removed the repetition?
 
+It started with a single experiment: a QA Skill to test whether structured instructions could reliably drive browser automation against a live Kestra instance. It worked. That early success seeded the rest — the planning Skill, then the developer and reviewer agents, and eventually the full orchestrated cycle described in this post.
+
 This post describes how the Plugins & Ecosystem Squad introduced **Context Engineering** into its development workflow, and what happened when we let AI agents handle the mechanical parts while humans stayed in control of the decisions that actually matter.
 
 I presented this approach at [DevLille 2026](https://github.com/fdelbrayelle/workflow-superpowers), with live terminal recordings of a full cycle on a [real Kestra issue](https://github.com/kestra-io/plugin-datagen/issues/53).
@@ -283,8 +285,6 @@ When the hub is updated and rebuilt, every repository picks up the change immedi
 Setting up or refreshing symlinks on a new repository is a one-command operation: the `kestra-agents-update` script from Plugin Devtools pulls the latest hub changes and creates or repairs all symlinks automatically.
 
 No agent has implicit knowledge about Kestra plugin conventions. Everything it knows, it was told — explicitly, in writing, by engineers who have shipped plugins.
-
-The QA Skill came first — built as a proof of concept to test whether structured instructions could reliably drive browser automation against a live Kestra instance. It worked. That early success seeded the rest: the planning Skill, then the developer and reviewer agents, and eventually the full orchestrated cycle described in this post.
 
 The Skills and agents described here are not a first draft. The squad has been iterating on them for more than three months, refining instructions after every session where something went wrong, every review cycle that exposed a gap, every QA failure that revealed a missing guardrail. The workflow has been battle-tested on over 100 real issues. Each improvement is a pull request on the hub — reviewed, merged, and instantly live across all plugin repositories via the symlinks.
 
