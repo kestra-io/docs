@@ -116,7 +116,7 @@ flowchart TD
     J -->|BLOCK| K(["👨‍💻 Human escalation"])
     L -->|PASS| M[["👨‍💻 GATE — PR Review\nSquad member"]]
     M -->|"reviews diff · QA report · test results"| PR[(Pull Request)]
-    PR -->|merged| N([Merge & Release · Plugin Devtools])
+    PR -->|merged| N(["👨‍💻 Merge & Release"])
     N --> DONE
 
     classDef humanGate fill:#f5a623,stroke:#c47d00,color:#000,font-weight:bold
