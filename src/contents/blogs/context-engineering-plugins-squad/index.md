@@ -207,7 +207,7 @@ Runs browser-based QA against Kestra Enterprise Edition. The Skill derives test 
 
 Before running flows, the Skill checks whether the required secrets are already present on the Kestra instance. If any are missing, it pauses and asks the user to add them before continuing — so QA never silently fails due to a missing credential.
 
-For plugins that require an external service — a cloud provider, a database, a message broker — the Skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://github.com/kestra-io/floci) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
+For plugins that require an external service — a cloud provider, a database, a message broker — the Skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://floci.io/) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
 
 ### A Note on Plugin Devtools
 
