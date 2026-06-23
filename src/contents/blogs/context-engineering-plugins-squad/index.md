@@ -93,20 +93,26 @@ flowchart TD
     B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"] --> GH
     GH[(GitHub Issue)] --> C
     C["/kestra-plugin-planning\nKestra MCP · Triage"] --> D{Usage\nproblem?}
-    D -->|Yes| E([Fix comment on issue])
+    D -->|Yes| E[Fix comment on issue]
+    E --> S{Solved?}
+    S -->|Yes| DONE([Issue closed])
+    S -.->|"↺ No — needs a plan"| GH
     D -->|No| F["Structured Plan\nDesign · Tasks · Edge Cases · Docs"]
     F --> G[["GATE — /plan-approved\nkestra-io org member"]]
     G -.->|"↺ revision needed"| F
     G -->|"comment on issue"| GH
     G -->|approved| H["/kestra-plugin-implementing\nor -multiple"]
-    H --> I["kestra-plugin-developer\nImplement · Tests · Open PR"]
-    I --> J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
+    H --> I["kestra-plugin-developer\nImplement · Tests"]
+    I --> PR[(Pull Request)]
+    PR --> J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
     J -.->|"↺ REQUEST CHANGES (max 5)"| I
     J -->|BLOCK| K([Human escalation])
     J -->|APPROVE| L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
     L -.->|"↺ FAIL"| I
     L -->|PASS| M[["GATE — PR Review\nSquad member"]]
-    M --> N([Merge & Release · Plugin Devtools])
+    M -->|"reviews PR diff\nQA report · test results"| PR
+    PR -->|merged| N([Merge & Release · Plugin Devtools])
+    N --> DONE
 
     classDef humanGate fill:#f5a623,stroke:#c47d00,color:#000,font-weight:bold
     classDef agentStep fill:#4a7cc7,stroke:#2c5aa0,color:#fff
@@ -116,7 +122,7 @@ flowchart TD
     class G,M humanGate
     class I,J agentStep
     class B,C,H,L skillStep
-    class GH artifact
+    class GH,PR artifact
 ```
 
 ### Step 1 — Write the Issue `/kestra-plugin-managing-issues`
