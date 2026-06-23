@@ -66,7 +66,7 @@
     })
 
     const useCases = computed(() => {
-        const set = new Set(props.stories.map((s) => s.useCase).filter(Boolean))
+        const set = new Set(props.stories.map((s) => s.useCaseShort).filter(Boolean))
         return Array.from(set).sort()
     })
 
@@ -75,7 +75,7 @@
         return props.stories.filter((s) => {
             const industryMatch = !activeIndustry.value || s.industry === activeIndustry.value
             const regionMatch = !activeRegion.value || s.region === activeRegion.value
-            const useCaseMatch = !activeUseCase.value || s.useCase === activeUseCase.value
+            const useCaseMatch = !activeUseCase.value || s.useCaseShort === activeUseCase.value
             const companySizeMatch = !activeCompanySize.value || s.companySize === activeCompanySize.value
             return industryMatch && regionMatch && useCaseMatch && companySizeMatch
         })

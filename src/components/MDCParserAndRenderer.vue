@@ -6,6 +6,9 @@
         :key="content"
         class="mdc-renderer"
     />
+    <div v-else-if="parseError" class="parse-error">
+        <strong>MDC parse error:</strong> {{ parseError }}
+    </div>
     <div v-else class="skeleton"></div>
 </template>
 
@@ -18,13 +21,25 @@
     }>()
 
     const docAst = ref<any>()
+    const parseError = ref<string>()
 
     async function parseContent() {
-        const parse = await getMDCParser()
-        if (!props.content) {
-            throw new Error("No content provided to MDCParserAndRenderer.vue")
+        try {
+            const parse = await getMDCParser()
+            if (!props.content) {
+                throw new Error("No content provided to MDCParserAndRenderer.vue")
+            }
+            const result = await parse(props.content)
+            if (!result?.body) {
+                parseError.value = `Parser returned empty body. AST keys: ${Object.keys(result ?? {}).join(", ")}`
+                console.error("[MDCParserAndRenderer] empty body:", result)
+            } else {
+                docAst.value = result
+            }
+        } catch (e: any) {
+            parseError.value = e?.message ?? String(e)
+            console.error("[MDCParserAndRenderer] parse failed:", e)
         }
-        docAst.value = await parse(props.content)
     }
 
     onMounted(async () => {
@@ -77,6 +92,15 @@
         100% {
             background-position: 40px 40px;
         }
+    }
+
+    .parse-error {
+        background: #fee;
+        border: 1px solid #f88;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        color: #c00;
+        font-size: 0.875rem;
     }
 
     .skeleton {

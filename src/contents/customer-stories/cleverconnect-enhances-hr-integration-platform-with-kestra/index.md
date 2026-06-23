@@ -12,6 +12,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.mongodb.Load
   - io.kestra.plugin.kubernetes.PodCreate
@@ -36,7 +37,8 @@ companySize: "51–500"
 solution: Leading HR tech company focused on AI-driven recruitment solutions.
 tagline: AI-driven recruitment and talent management platform
 companyName: CleverConnect
-useCase: Business Automation
+useCase: Accelerating connector development 10x to build hundreds of HR system integrations for an AI-driven recruitment platform
+useCaseShort: Business Automation
 cta: "What would change if your HR integration workflows were fully automated—scaling with your business without added engineering overhead?"
 ---
 

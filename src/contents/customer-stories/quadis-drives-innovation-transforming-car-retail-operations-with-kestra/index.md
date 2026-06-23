@@ -11,6 +11,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.azure.cli.AzCLI
   - io.kestra.plugin.docker.Build
@@ -38,7 +39,8 @@ companySize: "501–5,000"
 solution: Spain’s largest car retailer, providing a diverse range of vehicles from prestigious manufacturers.
 tagline: Spain's largest car retailer
 companyName: Quadis
-useCase: Business Automation
+useCase: Automating daily financial reports and customer communications for Spain's largest car retailer after replacing Pentaho ETL tools
+useCaseShort: Business Automation
 cta: "What would change if your automotive retail operations were fully automated—from inventory to customer experience, orchestrated end-to-end?"
 ---
 

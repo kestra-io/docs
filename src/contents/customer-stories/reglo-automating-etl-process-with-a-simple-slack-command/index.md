@@ -37,7 +37,8 @@ companySize: "51–500"
 solution: High Quality Pets Nutrition
 tagline: Premium pet nutrition brand
 companyName: Reglo
-useCase: Business Automation
+useCase: Triggering Airbyte ingestion and dbt transformations from a single Slack command for a French premium pet nutrition e-commerce brand
+useCaseShort: Business Automation
 cta: "What would change if your ETL processes triggered automatically from a single command—no manual pipeline runs, just results?"
 ---
 

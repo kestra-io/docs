@@ -12,6 +12,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.aws.athena.Query
   - io.kestra.plugin.aws.s3.CreateBucket
@@ -36,7 +37,8 @@ companySize: "51–500"
 solution: Geospatial Data
 tagline: Geospatial data consulting and system integration
 companyName: Ntico
-useCase: Data Orchestration
+useCase: Orchestrating 250+ geospatial datasets from satellite imagery and public APIs for a housing intelligence platform, cutting processing costs 50%
+useCaseShort: Data Orchestration
 cta: "What would change if your geospatial data operations were fully orchestrated—automated end-to-end, without the integration complexity?"
 ---
 

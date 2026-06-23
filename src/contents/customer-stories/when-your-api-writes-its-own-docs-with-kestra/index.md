@@ -13,6 +13,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.jdbc.postgresql.Query
   - io.kestra.plugin.docker.Run
@@ -39,7 +40,8 @@ companySize: "51–500"
 solution: Gravitee brings modern DevOps principles to API management with built-in support for GitOps, Kubernetes, and APIOps.
 tagline: Open-source API management platform for modern DevOps teams
 companyName: Gravitee
-useCase: API Management
+useCase: Orchestrating AI-powered OpenAPI spec generation and ML model pipelines so Gravitee customers can auto-document their APIs with one click
+useCaseShort: API Management
 cta: "What would change if your API documentation wrote itself—every release automatically synchronized with what's actually deployed?"
 ---
 

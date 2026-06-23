@@ -12,6 +12,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.core.http.Request
   - io.kestra.plugin.core.flow.Subflow
@@ -38,7 +39,8 @@ companySize: "51–500"
 solution: Clever Cloud is an IT Automation platform to manage all the ops work while you focus on your business value
 tagline: European cloud provider and IT automation platform
 companyName: ""
-useCase: IT Automation
+useCase: Automating 20TB of weekly monitoring data offloading for a European PaaS provider, reducing manual tasks by 80%
+useCaseShort: Infrastructure Orchestration
 cta: "What would change if your cloud data offloading ran at scale—processing terabytes reliably, every month, without manual intervention?"
 ---
 

@@ -25,17 +25,21 @@ const toStory = (e: (typeof allEntries)[0]) => ({
     featuredImage: e.data.featuredImage.src,
     logo: e.data.logo?.src,
     logoDark: e.data.logoDark?.src,
+    logoIcon: e.data.logoIcon?.src,
     content: e.body ?? "",
 })
 
 const stories = allEntries.map(toStory)
 
-const featuredEntry = allEntries.find((e) => e.data.featured) ?? allEntries[0]
-const featuredStory = toStory(featuredEntry)
+const featuredEntries = [
+    ...allEntries.filter((e) => e.data.featured),
+    ...allEntries.filter((e) => !e.data.featured),
+].slice(0, 5)
+const featuredStories = featuredEntries.map(toStory)
 ---
 
 <Layout title={title} description={description}>
-    <StoryGallery featuredStory={featuredStory}>
+    <StoryGallery featuredStories={featuredStories}>
         <StoriesList
             slot="stories"
             stories={stories}

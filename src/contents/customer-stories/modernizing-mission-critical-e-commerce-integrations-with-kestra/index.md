@@ -9,6 +9,7 @@ featured: false
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.core.trigger.Webhook
   - io.kestra.plugin.core.http.Request
@@ -34,7 +35,8 @@ companySize: "< 100"
 solution: Víssimo Group is the holding company behind Evino (Brazil's largest digital wine e-tailer) and Grand Cru (premium physical wine retail). Together they run mission-critical commerce integrations, ERP synchronization, and BI pipelines across Magento, SAP, and a shared data platform serving both brands.
 tagline: Brazil's leading premium wine e-commerce and retail group
 companyName: Víssimo Group
-useCase: E-commerce Orchestration
+useCase: Consolidating an iPaaS and AWS Lambdas onto one platform to cut costs 90% and run Brazil's premium wine group's first zero-incident Black Friday
+useCaseShort: E-commerce Orchestration
 deployment: Kestra OSS (self-hosted)
 intro: "Víssimo Group runs two premium wine brands in Brazil, Evino and Grand Cru, on a shared integration and data backbone spanning e-commerce platforms, ERPs, and BI. That backbone had grown organically: an iPaaS for commerce integrations, AWS Lambdas for BI pipelines, and scattered scripts filling the gaps. Under peak load it showed its limits. A 2024 FinOps review confirmed the structural problem. Víssimo consolidated both tool layers onto Kestra, cutting BI costs by 40%, reducing integration spend to roughly 10% of previous iPaaS levels, and running its first zero-incident Black Friday."
 cta: "What would change if your most critical e-commerce flows were observable, replayable, and governed from a single platform?"

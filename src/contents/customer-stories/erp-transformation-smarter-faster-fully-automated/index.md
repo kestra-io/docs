@@ -41,7 +41,8 @@ companySize: "5,000+"
 solution: Fila has evolved into a global sportswear brand, known for its high-quality and stylish clothing and accessories.
 tagline: Global sportswear brand with a century-long legacy
 companyName: Fila
-useCase: Business Automation
+useCase: Orchestrating ERP and supply chain workflows across 70+ countries during a global IT transformation
+useCaseShort: Business Automation
 cta: "What would change if your ERP processes were fully automated—transforming months of manual work into streamlined, end-to-end flows?"
 ---
 

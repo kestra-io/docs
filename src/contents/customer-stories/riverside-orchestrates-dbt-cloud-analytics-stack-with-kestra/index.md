@@ -39,7 +39,8 @@ tagline: Remote recording platform for podcasts and video interviews
 companyName: Riverside
 intro: Riverside is a podcast recording and editing platform used by creators and media teams worldwide. Their analytics engineering team runs the company's internal data operations — ELT ingestion into Snowflake, sequential dbt Cloud transformation jobs, Metaplane data quality checks, and Hightouch reverse ETL to downstream platforms. Six tools in total, all with dependencies on each other, all previously running on isolated time-based schedules with no actual handoff between them. The team evaluated Astronomer, Dagster, Mage, and Orchestra. All four were rejected. Airflow was too complex for a team of SQL and YAML practitioners. Dagster required too steep a learning curve. Orchestra abstracted too much away. They chose Kestra Cloud and connected their full analytics stack without rewriting a single pipeline.
 deployment: Cloud · Kestra Cloud · GCP
-useCase: Data Orchestration
+useCase: Connecting dbt Cloud, Snowflake, Metaplane, and Hightouch into a single dependency-aware pipeline without rewriting a single existing script
+useCaseShort: Data Orchestration
 cta: What would your analytics team build if your pipelines ran in sync, with no framework overhead and no infrastructure to manage?
 ---
 

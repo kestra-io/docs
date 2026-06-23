@@ -36,7 +36,8 @@ companySize: "5,000+"
 solution: Global leader in heavy industry across the globe
 tagline: Global Fortune 500 heavy industry manufacturer
 companyName: Fortune 500 Company
-useCase: IT Automation
+useCase: Replacing VMware Aria Automation to deliver isolated per-OT-asset orchestration 30x faster at 90% lower licensing cost for a Fortune 500 industrial manufacturer
+useCaseShort: Infrastructure Orchestration
 cta: "What would change if your hybrid cloud automation ran securely across every OT domain—isolated by design, auditable by default?"
 ---
 

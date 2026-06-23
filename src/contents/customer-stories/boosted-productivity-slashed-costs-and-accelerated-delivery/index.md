@@ -35,7 +35,8 @@ companySize: "< 100"
 solution: Foundation Data is a technology company that powers marketing analytics and digital advertising intelligence for automotive dealerships across the United States. They handle the data infrastructure behind OEM integrations, dbt transformations, BigQuery analytics, and Looker dashboards for over 2,800 dealership clients.
 tagline: Data and analytics partner for automotive dealerships
 companyName: Foundation Data
-useCase: Data Orchestration
+useCase: Replacing SuperMetrics, Prefect, and dbt Cloud with one platform to cut toolchain costs 90% and serve 2,800 automotive dealerships
+useCaseShort: Data Orchestration
 deployment: Kestra Cloud
 intro: "Foundation Data serves over 2,800 automotive dealerships across the United States. One engineer runs the entire data stack. That ratio became possible because of two decisions made early in the company's life as an independent entity: commit to Infrastructure as Code from day one, and find an orchestrator that could run Go. Both pointed to Kestra."
 cta: "What would change if one engineer could orchestrate 50+ pipelines, serve 2,800 clients, and still have time to innovate?"

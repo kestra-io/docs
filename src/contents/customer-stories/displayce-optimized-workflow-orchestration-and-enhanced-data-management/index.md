@@ -40,7 +40,8 @@ companySize: "51–500"
 solution: Displayce optimises the purchase, impact and quality of digital out-of-home campaigns on over 1 million digital screens worldwide.
 tagline: Digital out-of-home advertising platform across 1 million+ screens worldwide
 companyName: Displayce
-useCase: Data Orchestration
+useCase: Cutting processing time 40% by centralizing orchestration across dbt, ClickHouse, and S3 for a digital out-of-home ad platform covering 1M+ screens
+useCaseShort: Data Orchestration
 cta: "What would change if your advertising data workflows ran faster—orchestrated automatically across every campaign and digital screen?"
 ---
 

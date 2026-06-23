@@ -34,7 +34,8 @@ companySize: "1–50"
 solution: Modelisation tool for architects
 tagline: Collaborative architectural modeling and design tool
 companyName: HTCH
-useCase: Business Automation
+useCase: Orchestrating Kafka events, S3 uploads, and 3D file transformations for a collaborative architectural design web platform
+useCaseShort: Business Automation
 cta: "What would change if your SaaS platform's backend workflows were fully orchestrated—deployments, data flows, and integrations running automatically?"
 ---
 
