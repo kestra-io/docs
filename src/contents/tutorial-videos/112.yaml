@@ -1,9 +1,9 @@
-title: "From Cron Job to Event-Driven: Automating my YouTube Workflow"
-description: "Learn how to use Kestra's new YouTube VideoTrigger to automatically
-  open a GitHub PR when a new video is published, eliminating the need for manual
-  updates or polling logic."
-category: "Deep Dive Tutorials"
+title: "kestractl: Manage and Deploy Flows Directly from the CLI"
+description: "Managing multiple environments and keeping local development in sync
+  can be a messy process. In this video, Will demonstrates how kestractl makes deploying
+  and managing your Kestra workflows easy and consistent."
+category: "Infrastructure"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=jICOZjTsTPg"
-publicationDate: "2026-04-07T00:00:00.000"
-contentType: "Deep Dive Tutorials"
+url: "https://www.youtube.com/watch?v=8XeKFM8ovv4"
+publicationDate: "2026-05-21T00:00:00.000"
+contentType: "Infrastructure"

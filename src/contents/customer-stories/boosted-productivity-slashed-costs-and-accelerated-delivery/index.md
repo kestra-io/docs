@@ -1,120 +1,140 @@
 ---
-title: Boosted Productivity, Slashed Costs, and Accelerated Delivery
-rank: 2
-description: This is the story of how Foundation Data, a leading marketing and
-  advertising partner for major automotive brands across the USA, streamlined
-  their data orchestration and significantly enhanced operational efficiency
-  using Kestra.
-metaTitle: Foundation Data, Boosted Productivity, Slashed Costs, and Accelerated
-  Delivery with Kestra
-metaDescription: This is the story of how Foundation Data, a leading marketing
-  and advertising partner for major automotive brands across the USA,
-  streamlined their data orchestration and significantly enhanced operational
-  efficiency using Kestra.
+title: How One Engineer Manages 50+ Production Pipelines for 2,800 Automotive Clients
+rank: 1
+description: This is the story of how Foundation Data consolidated their entire data stack on Kestra, replacing three tools, cutting toolchain costs by more than 90%, and giving one engineer the leverage to keep up with 40% client growth.
+metaTitle: "Foundation Data & Kestra: One Engineer, 50+ Pipelines, 2,800 Clients"
+metaDescription: Foundation Data replaced SuperMetrics, Prefect, and dbt Cloud with Kestra, cutting toolchain costs by more than 90% and enabling a solo engineer to serve 2,800 automotive dealerships.
 heroImage: ./hero.png
+featured: false
 featuredImage: ./hero.png
 logo: ./logo.png
 logoDark: ./logo-dark.svg
-tasks: []
+tasks:
+  - io.kestra.plugin.dbt.cli.DbtCLI
+  - io.kestra.plugin.gcp.bigquery.Query
+  - io.kestra.plugin.git.Clone
 kpi1: |-
   ##### 50+
-  Workflows in production
+  workflows in production
 kpi2: |-
   ##### 10x
-  Faster workflow deployment
+  faster to build
 kpi3: |-
-  ##### Thousands
-  of dollars saved each month
-quote: “Kestra completely transformed our operational workflows. We now deploy
-  new pipelines rapidly, easily manage our integrations, and have vastly
-  improved our productivity and cost efficiency.”
+  ##### >90%
+  toolchain cost reduction
+kpi4: |-
+  ##### 99%
+  pipeline success rate
+quote: Kestra completely transformed our operational workflows. We now deploy new pipelines rapidly, easily manage our integrations, and have vastly improved our productivity and cost efficiency.
 quotePerson: Jack Perry
 quotePersonTitle: Head of Data Operations
 industry: Advertising
-headquarter: Ashburn, VA.
-region: North America
-companySize: "51–500"
-solution: Foundation Data is a technology company that empowers automotive groups and dealerships to take control of their digital advertising.
-tagline: Automotive digital advertising technology company
+headquarter: Leesburg, VA
+region: Americas
+companySize: "< 100"
+solution: Foundation Data is a technology company that powers marketing analytics and digital advertising intelligence for automotive dealerships across the United States. They handle the data infrastructure behind OEM integrations, dbt transformations, BigQuery analytics, and Looker dashboards for over 2,800 dealership clients.
+tagline: Data and analytics partner for automotive dealerships
 companyName: Foundation Data
 useCase: Data Orchestration
-cta: "What would change if your advertising data pipelines delivered faster, at lower cost—boosting team productivity across every campaign?"
+deployment: Kestra Cloud
+intro: "Foundation Data serves over 2,800 automotive dealerships across the United States. One engineer runs the entire data stack. That ratio became possible because of two decisions made early in the company's life as an independent entity: commit to Infrastructure as Code from day one, and find an orchestrator that could run Go. Both pointed to Kestra."
+cta: "What would change if one engineer could orchestrate 50+ pipelines, serve 2,800 clients, and still have time to innovate?"
 ---
 
-## About Foundation Data
+## The problem
 
-Foundation Data is a strategic partner for some of the largest automotive brands across the United States, specializing in high-impact marketing and data-driven advertising solutions. Serving prestigious car dealerships and automotive enterprises, Foundation Data's mission revolves around delivering targeted and measurable advertising campaigns that directly drive dealership performance and profitability.
+<div class="problem-list">
+<div class="problem-item">
+<span class="problem-number">01</span>
+<div class="problem-title">Python-only orchestration couldn't run the language the workload required</div>
+<div class="problem-desc">Foundation Data's OEM data extraction jobs query dealership APIs that are rate-limited. Python's threading model capped concurrent requests at 3. Go's concurrency model supports 50 to 60 simultaneous requests. For extraction jobs that were taking 2 to 3 hours, that difference meant finishing in under an hour or missing SLAs entirely. The orchestrator needed to run Go natively, not as a workaround but as a first-class execution target. <em class="inline-quote">"We've had problems in the past where like it's released and it's broken stuff, and we had to wait for like a day or two to get it fixed. Our legacy tools just couldn't scale and adapt to our operational needs."</em> — Jack Perry</div>
+</div>
+<div class="problem-item">
+<span class="problem-number">02</span>
+<div class="problem-title">A three-tool stack with mounting costs and no path to Infrastructure as Code</div>
+<div class="problem-desc">As Foundation Data spun out as an independent company in mid-2025, the cost structure needed to work at the new entity's scale. The existing toolchain carried significant fixed costs: SuperMetrics for data fetching, dbt Cloud for transformations, and Prefect workspace environments on top. The orchestration layer had no Terraform support, which blocked Foundation Data's commitment to deploy everything as versioned, rollback-able infrastructure. The toolchain wasn't just expensive; it was architecturally incompatible with how the team wanted to build.</div>
+</div>
+<div class="problem-item">
+<span class="problem-number">03</span>
+<div class="problem-title">Non-technical users needed to trigger complex workflows without engineering help</div>
+<div class="problem-desc">Foundation Data's measurement team (four or five analysts who monitor Google Analytics across 2,800 dealership websites) needed to trigger workflows on demand: updating tags, running audits, syncing changes across hundreds of dealer sites simultaneously. These workflows involve 30 to 40 conditional inputs and six or seven underlying subflows. The team couldn't route every request through the engineering queue, and they couldn't give analysts access to raw pipeline tooling.</div>
+</div>
+</div>
 
-To successfully orchestrate complex marketing data workflows for their large automotive clients, Foundation Data needed a robust, scalable solution that could keep pace with the rapid growth of their customer base, extensive marketing data volume, and increasingly complex operational demands.
+<div class="problem-close">
+<div class="problem-close-prefix">// The requirement</div>
+An orchestrator that could run <strong class="problem-close-key">any language, deploy via Terraform, and give non-engineers controlled access to complex workflows</strong>, without requiring a second engineer to manage it.
+</div>
 
----
+## What Kestra fixed
 
-## Foundation Data’s Challenge: Overcoming the Limits of Legacy Systems
+<div class="fix-list">
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Language-agnostic task runners: Go, Python, Bash, SQL in the same pipeline</div>
+<div class="fix-desc">Kestra's task runners execute code in isolated containers, without forcing a single runtime. Foundation Data's OEM extraction jobs now run as Go containers. dbt transformations run as dbt Core. Python and Bash tasks run alongside them in the same flow. Extraction time dropped from 2 to 3 hours to under an hour. <em class="inline-quote">"Kestra's architecture and ease of use immediately appealed to us. The YAML-based approach dramatically simplified our workflow management, letting us deploy faster and scale seamlessly."</em> — Jack Perry</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Full toolchain consolidation: SuperMetrics, Prefect, and dbt Cloud all replaced</div>
+<div class="fix-desc">SuperMetrics was decommissioned. dbt Cloud was replaced with dbt Core, orchestrated directly by Kestra. Prefect workspace fees were eliminated. The monthly toolchain cost fell by more than 90%, leaving almost entirely BigQuery compute. <em class="inline-quote">"The cost savings with Kestra have been tremendous. Moving away from Supermetrics immediately slashed our monthly spend, while Kestra's enhanced concurrency management further optimized our costs."</em> — Jack Perry</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Full infrastructure managed through Terraform, including Kestra itself</div>
+<div class="fix-desc">Foundation Data's entire Kestra environment (namespaces, secrets, users, flows, and Apps) is declared in Terraform and deployed from Git. That was a hard requirement from day one of the company's independent existence. Kestra was the only orchestrator in the evaluation that supported it. <em class="inline-quote">"Kestra empowered us with a real DevOps-centric approach. Our deployment pipeline is streamlined, and our team can scale rapidly without ever sacrificing stability."</em> — Jack Perry</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Kestra Apps: non-engineers triggering complex workflows with guardrails</div>
+<div class="fix-desc">The measurement team uses a Kestra App built by Jack to manage Google Analytics across all 2,800 dealership websites. The App presents 30 to 40 conditional inputs, routes users through the right options, and handles six or seven underlying subflows automatically. Concurrency controls cap execution at Google Tag Manager's rate limit of 200 requests per minute, queuing simultaneous runs rather than letting them collide. <em class="inline-quote">"Deploying workflows went from a cumbersome task to something we handle effortlessly in minutes. Our engineers are now free to focus on innovation rather than troubleshooting manual scripts."</em> — Jack Perry</div>
+</div>
+</div>
+</div>
 
-Foundation Data initially relied heavily on manual scripting and traditional data management tools, including Supermetrics, for marketing analytics. While these tools served adequately at the start, Fundation Direct quickly outgrew them as their customer base expanded. The existing solutions lacked flexibility, scalability, and were costly, with monthly expenses counted in thousands of dollars. Additionally, managing manual scripts was cumbersome, inefficient, and prone to errors.
+## Outcomes
 
-*"We've had problems in the past where like it's released and it's broken stuff, and we had to wait for like a day or two  to get it fixed. Our legacy tools just couldn't scale and adapt to our operational needs."* — **Jack Perry**
+<div class="results-list">
+<div class="result-item">
+<div class="result-metric">>90% toolchain cost reduction</div>
+<div class="result-desc">Foundation Data replaced a three-tool stack with a single orchestration platform. Consolidating onto Kestra cut toolchain costs by more than 90%, leaving almost entirely BigQuery compute. That shift funded the operational model that lets one engineer run the whole thing.</div>
+</div>
+<div class="result-item">
+<div class="result-metric">40% client growth at 10% cloud cost increase</div>
+<div class="result-desc">Foundation Data grew from 2,000 dealership clients to 2,800 between 2024 and 2025. Their cloud bill grew roughly 10%. The architecture scaled horizontally without requiring proportional infrastructure spend or additional headcount. <em class="inline-quote">"We went from 2,000 to 2,800 dealers — 40% growth — and our cloud bill went up maybe 10%. I don't think people realize how much Jack has made our systems efficient."</em> — Mike Heidner, SVP Analytics</div>
+</div>
+<div class="result-item">
+<div class="result-metric">99% pipeline success rate</div>
+<div class="result-desc">Under the previous orchestrator, pipeline failures came roughly every other day. Kestra has had one failure in fourteen months. <em class="inline-quote">"Switching to a dedicated Kestra cloud instance was seamless and immediately improved our operational stability. The performance gains and additional control we received have been invaluable."</em> — Jack Perry</div>
+</div>
+<div class="result-item">
+<div class="result-metric">One engineer, 50+ production workflows</div>
+<div class="result-desc">Jack Perry manages the full data stack as Foundation Data's sole data engineer. Three outsourced data contractors were let go. Mike Heidner, Foundation Data's SVP of Analytics, monitors pipeline health and executes flows himself from the Kestra UI daily. <em class="inline-quote">"Today I approved five flows in Kestra just sitting there. Two clicks of a button. I feel like I'm more aware of what's going on with our data pipelines than I ever was before."</em> — Mike Heidner, SVP Analytics. <em class="inline-quote">"Kestra has fundamentally changed the way we manage our data workflows. We now deploy pipelines faster, manage integrations, and scale confidently. It's essential for our continued growth and success."</em> — Jack Perry</div>
+</div>
+</div>
 
-The team at Foundation Data realized they required a solution that would streamline their workflow orchestration, significantly reduce costs, and allow quick and efficient deployment of new data pipelines. They also sought to maintain operational stability during upgrades and transitions without manual interventions or workflow disruptions.
+## Kestra at Foundation Data
 
----
+Foundation Data runs on Kestra Cloud (GCP US Central, dedicated instance). Jack Perry manages the environment entirely through Terraform: namespaces, secrets, user permissions, flow definitions, and Kestra Apps are all declared in code and deployed from Git. Adding a new OEM data source means writing Go code for the extraction logic and a Kestra flow definition for the orchestration; the infrastructure is a merge.
 
-## Why Foundation Data Chose Kestra
+OEM extraction jobs run in containerized Go workers that query dealership APIs with 50 to 60 concurrent requests. The previous Python-based approach was limited to 3 concurrent requests, turning a rate-limited API into a multi-hour bottleneck. dbt Core runs directly inside Kestra, replacing dbt Cloud without changing any transformation logic. BigQuery is the analytics target; Looker dashboards sit on top for client-facing reporting.
 
-Fundation Direct evaluated several workflow orchestration platforms before ultimately selecting Kestra. Kestra stood out because of its intuitive YAML-based workflows, seamless integration capabilities, and granular execution management. Its API-first architecture allowed effortless integration with Fundation Direct’s existing Terraform-based infrastructure, drastically reducing the overhead associated with manual scripting and enabling quicker workflow deployments.
+The measurement team's workflow (monitoring and updating Google Analytics across 2,800 dealership websites) runs through a Kestra App. Analysts trigger updates on demand through a guided interface. Concurrency controls and API rate-limit queuing are declared in the flow definition, not written into application code, which means they're visible, reviewable, and consistent regardless of who triggers the workflow.
 
-*"Kestra’s architecture and ease of use immediately appealed to us. The YAML-based approach dramatically simplified our workflow management, letting us deploy faster and scale seamlessly."* — **Jack Perry**
-
----
-
-## Streamlining Workflow Deployment and Management
-
-With Kestra, Fundation Direct can now deploy and manage new workflows in minutes instead of days or weeks. The YAML-based configuration greatly simplifies the process, enabling quick iterations and agile updates. Each workflow is clearly defined, easy to manage, and deployable through Terraform, significantly enhancing productivity.
-
-*"Deploying workflows went from a cumbersome task to something we handle effortlessly in minutes. Our engineers are now free to focus on innovation rather than troubleshooting manual scripts."* — **Jack Perry**
-
-Kestra also streamlined Fundation Direct's CI/CD processes. With automated deployments managed via Git and Terraform, transitioning workflows between Dev, Release, and Prod environments has become seamless. A merge in Git now automatically triggers a deployment, enabling rapid delivery in hours or days instead of weeks.
-
----
-
-## Optimizing Costs and Improving Efficiency
-
-The switch from Supermetrics to Kestra brought substantial financial savings, with Fundation Direct now managing their data workflows for significantly lower costs, primarily covering their BigQuery expenses. Additionally, Kestra’s capability to manage execution concurrency through YAML configuration provided further operational efficiencies not available with their previous solution.
-
-*"The cost savings with Kestra have been tremendous. Moving away from Supermetrics immediately slashed our monthly spend, while Kestra's enhanced concurrency management further optimized our costs."* — **Jack Perry**
-
----
-
-## Ensuring Stability with Dedicated Instances
-
-Initially part of Kestra’s multi-tenant Alpha program, Fundation Direct transitioned smoothly to Kestra’s dedicated cloud instance. This shift significantly enhanced performance, security, and upgrade stability, ensuring seamless operational continuity.
-
-*"Switching to a dedicated Kestra cloud instance was seamless and immediately improved our operational stability. The performance gains and additional control we received have been invaluable."* — **Jack Perry**
-
-Fundation Direct can now confidently deploy updates, manage Dev and Prod environments, and reliably test new Kestra releases before full production rollout.
-
----
-
-## Empowering Operational Agility and Rapid Scaling
-
-Fundation Direct has fully embraced Kestra’s agile orchestration capabilities, enabling rapid, incremental deployments. Using Terraform for automated deployments and Kestra’s YAML configurations, their DevOps workflow now follows a streamlined “merge equals deployment” principle. This approach allows Fundation Direct to maintain operational agility and rapid scaling capability, critical for serving major automotive brands efficiently.
-
-*"Kestra empowered us with a real DevOps-centric approach. Our deployment pipeline is streamlined, and our team can scale rapidly without ever sacrificing stability."* — **Jack Perry**
-
----
-
-## Enhanced Security and Governance
-
-With Kestra’s secure and dedicated cloud environment, Fundation Direct achieved improved security, governance, and compliance capabilities. Kestra's recent SOC 2 certification further solidified trust and confidence among their enterprise automotive clients.
-
-*"Kestra’s SOC 2 certification is huge for us. Our clients trust us even more knowing we’re backed by a certified, secure orchestration solution."* — **Jack Perry**
-
----
-
-## Conclusion: Driving Future Growth with Kestra
-
-Fundation Direct continues to expand their adoption of Kestra, exploring new use cases to further enhance their marketing data workflows. The robust orchestration platform has transformed their operational efficiency, significantly reduced costs, and empowered rapid scaling to meet the growing demands of the automotive industry.
-
-*"Kestra has fundamentally changed the way we manage our data workflows. We deploy pipelines faster, manage integrations , and scale confidently. It’s essential for our continued growth and success."* — **Jack Perry**
-
-Kestra is now a foundational element in Fundation Direct’s operational strategy, ensuring scalable, and efficient data orchestration across their extensive and growing client base.
+<div class="stack-row">
+<span class="stack-pill">Kestra Cloud</span>
+<span class="stack-pill">Go</span>
+<span class="stack-pill">Python</span>
+<span class="stack-pill">BigQuery</span>
+<span class="stack-pill">dbt Core</span>
+<span class="stack-pill">Terraform</span>
+<span class="stack-pill">Looker</span>
+<span class="stack-pill">Google Tag Manager</span>
+</div>

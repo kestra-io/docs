@@ -19,7 +19,8 @@ const { slug } = Astro.params
 
 const currentCategory = slug ? (categories.get(slug) ?? "") : ""
 
-const currentCategoryFilter = slug === "all" ? "" : currentCategory
+const categoryFilterMap: Record<string, string> = { "Webinars": "Webinar" }
+const currentCategoryFilter = slug === "all" ? "" : (categoryFilterMap[currentCategory] ?? currentCategory)
 
 const allVideos = await getCollection("tutorialVideos")
 
@@ -40,15 +41,15 @@ const tutorialVideo = {
     total: filteredVideos.length,
 }
 
-const title = `Video Tutorials: ${currentCategory}`
-const description = `Get started with our Video Tutorials: ${currentCategory}`
+const title = currentCategory ? `Videos: ${currentCategory} | Kestra` : `Videos | Kestra`
+const description = `Watch the latest videos from Kestra`
 ---
 
 <Layout title={title} description={description}>
     <Mesh>
         <div>
-            <h1>Video Tutorials</h1>
-            <p>Get started with our video tutorials</p>
+            <h1>Videos</h1>
+            <p>Watch the latest videos from Kestra</p>
         </div>
         <Subscribe client:visible class="margin" />
     </Mesh>
@@ -56,7 +57,7 @@ const description = `Get started with our Video Tutorials: ${currentCategory}`
         <Tabs
             categories={categories}
             modelValue={slug || "all"}
-            rootHref="/tutorial-videos"
+            rootHref="/videos"
         />
         <div class="container">
             <TutorialsGrid
