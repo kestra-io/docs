@@ -22,12 +22,12 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 
 ### Required
 
-- `key` (String) The worker group key.
+- `key` (String) The worker group identifier.
 
 ### Optional
 
-- `allowed_tenants` (List of String) The list of tenants allowed to use the worker group.
 - `description` (String) The worker group description.
+- `name` (String) The worker group display name.
 
 ### Read-Only
 

@@ -19,7 +19,7 @@ resource "kestra_template" "example" {
   content     = <<EOT
 tasks:
   - id: t2
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
