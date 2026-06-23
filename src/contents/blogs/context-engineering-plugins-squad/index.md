@@ -81,7 +81,7 @@ We write issues differently now. A good issue for this workflow is a complete bu
 
 This dual-audience design is intentional. A human engineer can read the issue and understand what to build. An AI agent can parse the same file and extract acceptance criteria, affected plugin classes, edge cases to handle, and expected outputs. No ambiguity. No "we'll figure it out during implementation."
 
-The issue is not a ticket. It is the contract — and it drives the entire SDLC that follows.
+The issue serves as the contract that drives the entire SDLC that follows.
 
 ## The SDLC: Who Does What, and When
 
