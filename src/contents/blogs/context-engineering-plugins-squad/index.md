@@ -12,7 +12,7 @@ author:
 image: ./main.png
 ---
 
-At Kestra, building a new plugin feature involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours for a basic or medium-complexity task (and several days for a comprehensive, multi-task plugin). The work is thorough.
+At Kestra, building a new plugin feature (or fixing a bug) involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours for a basic or medium-complexity task (and several days for a comprehensive, multi-task plugin). The work is thorough.
 
 We asked a different question: what if we kept the thoroughness and removed the repetition?
 
@@ -35,9 +35,15 @@ This is Context Engineering. It does not replace developer judgment — it chann
 :::alert{type="info"}
 **Skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
 
+&nbsp;
+
 A **Skill** is a procedural instruction set: numbered steps, decision points, and success conditions that run in the main context window. Invoked by a human (e.g. `/kestra-plugin-planning`), it may orchestrate other steps or spawn agents.
 
+&nbsp;
+
 An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a Skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are Skills.
+
+&nbsp;
 
 The distinction matters because agents can be reused across Skills, updated independently, and invoked directly when needed. For example, `kestra-plugin-code-reviewer` can be called manually to review a colleague's PR outside of the full workflow, and `/kestra-plugin-doing-qa` can be run standalone to perform a non-regression QA pass on an existing branch.
 :::
