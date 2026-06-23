@@ -128,7 +128,7 @@ flowchart TD
     classDef humanGate fill:#b36b00,stroke:#7a4800,color:#fff,font-weight:bold
     classDef agentStep fill:#4a7cc7,stroke:#2c5aa0,color:#fff
     classDef skillStep fill:#5aaa5a,stroke:#3d7d3d,color:#fff
-    classDef artifact fill:#e8e8e8,stroke:#888,color:#000
+    classDef artifact fill:#777,stroke:#555,color:#fff
 
     class G,M humanGate
     class I,J agentStep
