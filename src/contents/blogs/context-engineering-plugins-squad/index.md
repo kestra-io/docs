@@ -1,6 +1,6 @@
 ---
 title: "Context Engineering in Practice: Automating the Plugin SDLC at Kestra"
-description: "How Kestra's Plugins & Ecosystem Squad introduced Context Engineering to automate the full software development lifecycle (SDLC) for plugins — from GitHub issue to merged PR — cutting delivery time from 4 hours — and even way more — to 30 minutes using structured AI agents and human-in-the-loop approval gates."
+description: "How Kestra's Plugins & Ecosystem Squad introduced Context Engineering to automate the full software development lifecycle (SDLC) for plugins, from GitHub issue to merged PR, cutting delivery time from 4 hours (sometimes several days) to 30 minutes using structured AI agents and human-in-the-loop approval gates."
 date: 2026-06-25T09:00:00
 category: Engineering
 author:
@@ -12,7 +12,7 @@ author:
 image: ./main.png
 ---
 
-At Kestra, building a new plugin feature involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours for a basic or medium-complexity task — and several days for a comprehensive, multi-task plugin — not because the work is hard, but because it is thorough.
+At Kestra, building a new plugin feature involves the same repeatable steps every time: read the issue, design an approach, write the code, run the tests, open a pull request, get it reviewed, run QA, and ship. A senior engineer can do this in around four hours for a basic or medium-complexity task (and several days for a comprehensive, multi-task plugin). The work is thorough.
 
 We asked a different question: what if we kept the thoroughness and removed the repetition?
 
@@ -24,7 +24,7 @@ I presented this approach at [DevLille 2026](https://github.com/fdelbrayelle/wor
 
 ## Why Prompt Engineering Is Not Enough
 
-Prompt engineering is about crafting the right question. Context Engineering is about building the right environment.
+Context Engineering is about building the right environment, not just crafting the right question.
 
 A well-prompted agent can write a Kestra task that compiles. A context-engineered agent can write one that follows Kestra plugin conventions, passes the test suite, handles edge cases correctly, includes YAML usage examples, and creates a pull request with the right reviewer team and a valid issue link in the body — on the first attempt.
 
@@ -56,7 +56,7 @@ Before describing the workflow, it helps to locate where we are. We map agentic 
 | L5a | Self-Optimizing | Agents emit telemetry and propose improvements to their own Skills. |
 | L5b | Self-Authoring | Agents create new agents and Skills from scratch. |
 
-The Plugins & Ecosystem Squad operates at **L4a**: agents handle execution, humans own decisions. Every approval gate is an explicit checkpoint — not an accidental pause.
+The Plugins & Ecosystem Squad operates at **L4a**: agents handle execution, humans own decisions. Every approval gate is an explicit checkpoint, not an accidental pause.
 
 Most teams skip directly from L2 to L3 and stall there, because scripted automation breaks when requirements change. The jump to L4a — where agents adapt dynamically within a structured context — is where real productivity gains begin.
 
@@ -65,10 +65,10 @@ Most teams skip directly from L2 to L3 and stall there, because scripted automat
 The workflow starts where all feature work starts: a GitHub issue. But before any issue is written, a more fundamental question has to be answered — **why does this work exist?**
 
 Every plugin feature on the backlog has an origin. It is either:
-- A **customer signal** — a request surfaced by the Sales or Customer Success squads, with real names and real use cases attached
-- A **Dev Marketing initiative** — a plugin that strengthens an integration story, a category, or a release theme
-- An **internal bet** — the squad believes a new connector or capability is strategically valuable, before external demand has materialized
-- **Innovation** — an experiment, a proof-of-concept, something nobody asked for yet
+- A request surfaced by Sales or Customer Success, with real names and use cases attached
+- A plugin that strengthens an integration story, a category, or a release theme
+- A connector the squad believes is strategically valuable, before external demand has materialized
+- An experiment or proof-of-concept, not yet externally requested
 
 This is product thinking, and it belongs at the very start of the software development lifecycle (SDLC). The answer shapes the spec: a customer-signal issue names the use case and the success criterion. A Dev Marketing issue frames the plugin in the context of the integration story it supports. An innovation issue admits its exploratory nature upfront and scopes the acceptance criteria accordingly.
 
@@ -149,14 +149,14 @@ The issue becomes the contract for everything that follows. Weak spec in, weak o
 
 **Actor: any squad member (human) → agent**
 
-The squad member runs `/kestra-plugin-planning` with the issue URL. A planning agent reads the issue, queries the [Kestra MCP server](/blogs/kestra-mcp-docs) for relevant task schemas, blueprints, and documentation, and generates a structured implementation plan covering four sections:
+The squad member runs `/kestra-plugin-planning` with the issue URL. A planning agent reads the issue, queries the [Kestra MCP server](../kestra-mcp-docs/index.md) for relevant task schemas, blueprints, and documentation, and generates a structured implementation plan covering four sections:
 
-- **Design** — architectural approach and tradeoffs
-- **Tasks** — implementation steps as a checklist
-- **Edge Cases** — boundary conditions the implementation must handle
-- **Docs Impact** — whether user-facing documentation needs updating
+- **Design**: architectural approach and tradeoffs
+- **Tasks**: implementation steps as a checklist
+- **Edge Cases**: boundary conditions the implementation must handle
+- **Docs Impact**: whether user-facing documentation needs updating
 
-A plan is not always the output. Before generating one, the Skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the Skill queries the [Kestra MCP server](/blogs/kestra-mcp-docs) for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
+A plan is not always the output. Before generating one, the Skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the Skill queries the [Kestra MCP server](../kestra-mcp-docs/index.md) for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
 
 Only when the issue is clearly a plugin code change does the Skill generate and post the structured plan. The squad member reads it, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
 
@@ -164,7 +164,7 @@ Only when the issue is clearly a plugin code change does the Skill generate and 
 
 **Actor: any kestra-io org member (human)**
 
-This step does not require a Skill. The approver posts `/plan-approved` as a comment on the issue. That is all.
+This step does not require a Skill. The approver posts `/plan-approved` as a comment on the issue.
 
 Before implementation begins, the orchestrator verifies two things:
 1. An **exact** `/plan-approved` comment body exists (partial matches are rejected)
@@ -251,9 +251,9 @@ But the headline number understates the change. Manual processes routinely compr
 
 Token consumption in agentic workflows grows faster than linearly: every turn adds to the context window that all subsequent turns must read. We use three techniques to counteract this.
 
-**Pass the plan to the developer.** The planning Skill maps the relevant classes and design decisions upfront and posts them as a structured comment on the issue. The developer agent reads that comment and targets the listed files directly — skipping broad codebase exploration. Eliminating even a few exploration turns has an outsized effect: each saved turn roughly halves its own cost because context window growth is roughly triangular.
+**Pass the plan to the developer.** The planning Skill maps the relevant classes and design decisions upfront and posts them as a structured comment on the issue. The developer agent reads that comment and targets the listed files directly, skipping broad codebase exploration. Eliminating even a few exploration turns has an outsized effect: each saved turn roughly halves its own cost because context window growth is roughly triangular.
 
-**Compact at strategic points.** The workflow issues `/compact` — a context pruning command — at three specific moments: mid-implementation (after all files are written, before running tests), after the developer agent returns, and after QA (which accumulates significant browser and terminal history). Each compaction flushes turn history while preserving the essential state, keeping the context window lean for the next heavy stage.
+**Compact at strategic points.** The workflow issues `/compact` (a context pruning command) at three specific moments: mid-implementation (after all files are written, before running tests), after the developer agent returns, and after QA (which accumulates significant browser and terminal history). Each compaction flushes turn history while preserving the essential state, keeping the context window lean for the next heavy stage.
 
 **Filter terminal output with `rtk`.** All shell commands in the workflow are proxied through `rtk`, a token-optimizing CLI layer that strips redundant output from `git`, `gradle`, `gh`, and similar tools before it enters the context window. On a full implementation session this saves 60–90% of terminal output tokens.
 
@@ -330,6 +330,6 @@ The architecture we built supports L5a: Skills & agents are version-controlled m
 
 ---
 
-The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as Skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
+The real invitation is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as Skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
 
-What comes after context engineering is loop engineering: wrapping agents in verification, event-driven, and hill-climbing loops so the system not only executes but continuously improves itself — closing the gap between what the agent does today and what your team would have done instead.
+What comes after context engineering is loop engineering: wrapping agents in verification, event-driven, and hill-climbing loops so the system not only executes but improves over time, closing the gap between what the agent does today and what your team would have done instead.
