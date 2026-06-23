@@ -280,3 +280,5 @@ The architecture we built supports L5a: Skills & agents are version-controlled m
 ---
 
 The deeper invitation here is not to copy this workflow — it is to look at your own squad and ask: what does your team know that an agent does not? What conventions, guardrails, and review instincts live only in people's heads? Write those down as Skills and agents. Test them on real issues. Iterate. The stack will keep changing; the knowledge your team encodes will not.
+
+What comes after context engineering is loop engineering: wrapping agents in verification, event-driven, and hill-climbing loops so the system not only executes but continuously improves itself — closing the gap between what the agent does today and what your team would have done instead.
