@@ -93,7 +93,7 @@ Argo Workflows is an open-source, container-native workflow engine for orchestra
 
 While powerful, its tight coupling to Kubernetes means it's not a fit for non-containerized workloads or teams without strong K8s expertise.
 
-**Best for:** Teams with a strong Kubernetes footprint and expertise, needing to orchestrate containerized workloads, CI/CD, or ML training pipelines directly within their K8s clusters. Discover how it compares to a broader orchestrator in our [Kestra vs. Argo Workflows](https://kestra.io/vs/argo-workflows) page. See also [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration) for related patterns.
+**Best for:** Teams with a strong Kubernetes footprint and expertise, needing to orchestrate containerized workloads, CI/CD, or ML training pipelines directly within their K8s clusters. See also [Kubernetes workflow orchestration](/resources/infrastructure/kubernetes-workflow-orchestration) for related patterns.
 
 ### 7. Databricks Workflows: Lakehouse-Native Data & AI Orchestration
 

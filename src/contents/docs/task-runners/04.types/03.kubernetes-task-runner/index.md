@@ -10,6 +10,10 @@ editions: ["EE", "Cloud"]
 
 Run tasks as Kubernetes pods.
 
+:::tip
+This page covers running Kestra **tasks** as Kubernetes pods. To deploy applications **to** a Kubernetes or OpenShift cluster from a flow, see the [Deploy to OpenShift how-to guide](../../../15.how-to-guides/openshift/index.md).
+:::
+
 ## Overview
 
 This plugin is available only in the [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md) (EE) and Kestra Cloud. The task runner is container-based, so the `containerImage` property must be set. To access the task's working directory, use either the `{{ workingDir }}` Pebble expression or the `WORKING_DIR` environment variable. Input files and namespace files are available in this directory.

@@ -25,6 +25,7 @@ Kestra provides dedicated script plugins for these languages:
 - [Node.js](/plugins/plugin-script-node)
 - [Shell](/plugins/plugin-script-shell)
 - [PowerShell](/plugins/plugin-script-powershell)
+- [.NET (C#)](/plugins/plugin-script-dotnet)
 - [Julia](/plugins/plugin-script-julia)
 - [Ruby](/plugins/plugin-script-ruby)
 - [Go](/plugins/plugin-script-go)
@@ -80,6 +81,7 @@ Use these guides for complete examples, outputs, metrics, and dependency managem
 - [Run JavaScript inside your flows](../../15.how-to-guides/javascript/index.md)
 - [Run Shell scripts inside your flows](../../15.how-to-guides/shell/index.md)
 - [Run PowerShell inside your flows](../../15.how-to-guides/powershell/index.md)
+- [Run C# inside your flows](../../15.how-to-guides/dotnet/index.md)
 
 ## Run other languages with the Shell plugin
 
