@@ -1,0 +1,3 @@
+# Customer page slug changes — /customers/* → /customers/*
+- regexp: "^/customers/vissimo-how-vissimo-consolidated-an-ipaas-and-aws-lambdas-onto-one-orchestration-platform/?$"
+  to: "/customers/vissimo-group"
