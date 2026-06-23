@@ -89,22 +89,34 @@ Here is the full lifecycle, with the exact Skills and agents at each step.
 
 ```mermaid
 flowchart TD
-    A([GitHub Issue]) --> B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"]
-    B --> C["/kestra-plugin-planning\nKestra MCP query · Triage"]
-    C --> D{Usage problem?}
+    A([Squad member]) --> B
+    B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"] --> GH
+    GH[(GitHub Issue)] --> C
+    C["/kestra-plugin-planning\nKestra MCP · Triage"] --> D{Usage\nproblem?}
     D -->|Yes| E([Fix comment on issue])
     D -->|No| F["Structured Plan\nDesign · Tasks · Edge Cases · Docs"]
-    F --> G{Plan approved?}
-    G -->|Changes needed| F
-    G -->|"/plan-approved"| H["/kestra-plugin-implementing\nor -multiple"]
+    F --> G[["GATE — /plan-approved\nkestra-io org member"]]
+    G -.->|"↺ revision needed"| F
+    G -->|"comment on issue"| GH
+    G -->|approved| H["/kestra-plugin-implementing\nor -multiple"]
     H --> I["kestra-plugin-developer\nImplement · Tests · Open PR"]
     I --> J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
-    J -->|REQUEST CHANGES| I
+    J -.->|"↺ REQUEST CHANGES (max 5)"| I
     J -->|BLOCK| K([Human escalation])
     J -->|APPROVE| L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
-    L -->|FAIL| I
-    L -->|PASS| M["PR Review — squad member"]
-    M --> N([Merge & Release\nPlugin Devtools])
+    L -.->|"↺ FAIL"| I
+    L -->|PASS| M[["GATE — PR Review\nSquad member"]]
+    M --> N([Merge & Release · Plugin Devtools])
+
+    classDef humanGate fill:#f5a623,stroke:#c47d00,color:#000,font-weight:bold
+    classDef agentStep fill:#4a7cc7,stroke:#2c5aa0,color:#fff
+    classDef skillStep fill:#5aaa5a,stroke:#3d7d3d,color:#fff
+    classDef artifact fill:#e8e8e8,stroke:#888,color:#000
+
+    class G,M humanGate
+    class I,J agentStep
+    class B,C,H,L skillStep
+    class GH artifact
 ```
 
 ### Step 1 — Write the Issue `/kestra-plugin-managing-issues`
