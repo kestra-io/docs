@@ -209,10 +209,6 @@ Before running flows, the Skill checks whether the required secrets are already 
 
 For plugins that require an external service — a cloud provider, a database, a message broker — the Skill can spin up the dependency locally. It uses a Docker Compose file for self-contained services, or [Floci](https://floci.io/) for cloud provider emulation, so QA runs against a real stack without requiring live cloud accounts.
 
-### A Note on Plugin Devtools
-
-**Plugin Devtools** is an internal private repository that provides the squad's local toolchain: running a Kestra instance, deploying plugins locally for development and testing, and releasing plugins to the registry. The QA Skill relies on Plugin Devtools to start Kestra Enterprise Edition and hot-deploy the plugin under test before exercising the acceptance criteria in the browser. Step 5 uses it again for the final release.
-
 ### Step 5 — Review, Merge, and Release
 
 **Actor: squad member (human)**
@@ -220,6 +216,10 @@ For plugins that require an external service — a cloud provider, a database, a
 The human reviews the generated pull request. The PR arrives with a reviewed diff, passing tests, and a QA report — not raw output to triage. The reviewer focuses on semantics and product judgment, not syntax.
 
 When satisfied, they merge and release via the Plugin Devtools. The release stays with the human — intentionally.
+
+### A Note on Plugin Devtools
+
+**Plugin Devtools** is an internal private repository that provides the squad's local toolchain: running a Kestra instance, deploying plugins locally for development and testing, and releasing plugins to the registry. The QA Skill relies on Plugin Devtools to start Kestra Enterprise Edition and hot-deploy the plugin under test before exercising the acceptance criteria in the browser. Step 5 uses it again for the final release.
 
 ## What the Numbers Look Like
 
