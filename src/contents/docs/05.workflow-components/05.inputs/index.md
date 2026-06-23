@@ -733,6 +733,19 @@ tasks:
 When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
 :::
 
+### Dynamic inputs from a subflow
+
+For cases that require complex logic — running a script, calling a CLI command, or executing multi-step tasks — use the `subflow()` Pebble function in the `expression:` property. `subflow()` runs a flow synchronously at form render time and populates the dropdown from its outputs:
+
+```yaml
+inputs:
+  - id: region
+    type: SELECT
+    expression: "{{ subflow(namespace='company.ops', id='fetch_regions').outputs.region_list }}"
+```
+
+See [Populate a dropdown from a subflow](../../15.how-to-guides/dynamic-inputs/index.md#populate-a-dropdown-from-a-subflow) for a full example and constraints.
+
 ## Conditional inputs for interactive workflows
 
 You can set up inputs that depend on other inputs, letting further inputs be conditionally displayed based on user choices. This is useful for use cases such as approval workflows or dynamic resource provisioning.
