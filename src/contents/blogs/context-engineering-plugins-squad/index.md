@@ -102,7 +102,7 @@ flowchart TD
     F --> G[["👨‍💻 GATE — /plan-approved\nkestra-io org member"]]
     G -.->|"↺ revision needed"| F
     G -->|"comment on issue"| GH
-    G -->|approved| I
+    G -->|approved| IMPL
 
     subgraph IMPL["/kestra-plugin-implementing (or -multiple)"]
         I["① kestra-plugin-developer\nCode & Tests"]
