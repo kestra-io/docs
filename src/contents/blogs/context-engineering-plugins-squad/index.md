@@ -16,7 +16,7 @@ At Kestra, building a new plugin feature involves the same repeatable steps ever
 
 We asked a different question: what if we kept the thoroughness and removed the repetition?
 
-It started with a single experiment: a QA Skill to test whether structured instructions could reliably drive browser automation against a live Kestra instance. It worked. That early success seeded the rest — the planning Skill, then the developer and reviewer agents, and eventually the full orchestrated cycle described in this post.
+It started with a single experiment: a QA Skill to test whether structured instructions could reliably drive browser automation against a live Kestra instance. It worked. That early success seeded the rest — the Planning Skill, then the developer and reviewer agents, and eventually the full orchestrated cycle described in this post.
 
 This post describes how the Plugins & Ecosystem Squad introduced **Context Engineering** into its development workflow, and what happened when we let AI agents handle the mechanical parts while humans stayed in control of the decisions that actually matter.
 
@@ -28,9 +28,19 @@ Prompt engineering is about crafting the right question. Context Engineering is 
 
 A well-prompted agent can write a Kestra task that compiles. A context-engineered agent can write one that follows Kestra plugin conventions, passes the test suite, handles edge cases correctly, includes YAML usage examples, and creates a pull request with the right reviewer team and a valid issue link in the body — on the first attempt.
 
-The difference is not cleverness. It is structure: explicit domain knowledge encoded as **Skills** (focused markdown instruction sets under 500 lines each), deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
+Structure drives that gap: explicit domain knowledge encoded as **Skills**, deterministic workflow steps with clear success conditions, feedback loops that route QA failures back to the developer agent for correction, and **human approval gates** at the decisions that create the most value.
 
 This is Context Engineering. It does not replace developer judgment — it channels it into the right moments.
+
+:::alert{type="info"}
+**Skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
+
+A **Skill** is a procedural instruction set: numbered steps, decision points, and success conditions that run in the main context window. Invoked by a human (e.g. `/kestra-plugin-planning`), it may orchestrate other steps or spawn agents.
+
+An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a Skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are Skills.
+
+The distinction matters because agents can be reused across Skills, updated independently, and invoked directly when needed. For example, `kestra-plugin-code-reviewer` can be called manually to review a colleague's PR outside of the full workflow, and `/kestra-plugin-doing-qa` can be run standalone to perform a non-regression QA pass on an existing branch.
+:::
 
 ## The Agentic AI Maturity Model
 
@@ -74,16 +84,6 @@ This dual-audience design is intentional. A human engineer can read the issue an
 The issue is not a ticket. It is the contract — and it drives the entire software development lifecycle (SDLC) that follows.
 
 ## The SDLC: Who Does What, and When
-
-:::alert{type="info"}
-**Skills and agents are both plain markdown files** — but they behave differently. They run on [Claude Code](https://claude.ai/code) and [OpenCode](https://opencode.ai), with a build step that generates both formats from a single markdown source.
-
-A **Skill** is a procedural instruction set: a numbered sequence of steps, decision points, and success conditions that runs in the main context window. It is invoked by a human (e.g. `/kestra-plugin-planning`) and may orchestrate other steps or spawn agents. Think of it as a runbook the AI follows on your behalf.
-
-An **agent** is a role definition: a system prompt that describes a specific persona, its responsibilities, and its constraints. When a Skill spawns an agent, that agent runs in its own isolated context window — no shared history with the orchestrator — and returns a structured result when done. The developer and the reviewer are agents; the planning and implementation steps are Skills.
-
-The distinction matters because agents can be reused across Skills, updated independently, and invoked directly when needed. For example, `kestra-plugin-code-reviewer` can be called manually to review a colleague's PR outside of the full workflow, and `/kestra-plugin-doing-qa` can be run standalone to perform a non-regression QA pass on an existing branch.
-:::
 
 Existing frameworks like [BMAD](https://bmad.fr/), [Git Spec Kit](https://github.com/github/spec-kit), or [Superpowers](https://github.com/obra/Superpowers) cover similar ground but are deliberately generic. We evaluated them and chose not to adopt any: generic methodologies give generic results. Our Skills and agents encode Kestra plugin conventions, Kestra-specific security rules, Kestra's test and annotation patterns, and the squad's own review instincts. That specificity is the point. Keeping the surface area small and domain-specific — KISS — is what makes the agents reliable enough to trust on real issues.
 
@@ -156,7 +156,7 @@ The squad member runs `/kestra-plugin-planning` with the issue URL. A planning a
 - **Edge Cases** — boundary conditions the implementation must handle
 - **Docs Impact** — whether user-facing documentation needs updating
 
-A plan is not always the output. Before generating one, the Skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the Skill queries the Kestra MCP server for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
+A plan is not always the output. Before generating one, the Skill triages the issue: if it looks like a usage problem — a misconfiguration, a missing property, a flow that can be fixed without touching plugin code — the Skill queries the [Kestra MCP server](/blogs/kestra-mcp-docs) for the relevant documentation and blueprints, and posts a fix attempt directly as a comment on the issue instead. No plan, no implementation cycle, no `/plan-approved` required. The reporter gets unblocked immediately.
 
 Only when the issue is clearly a plugin code change does the Skill generate and post the structured plan. The squad member reads it, asks questions if needed, and — when satisfied — posts exactly `/plan-approved` on the issue.
 
