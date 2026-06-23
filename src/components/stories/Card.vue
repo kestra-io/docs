@@ -75,6 +75,7 @@
         display: flex;
         flex-direction: column;
         gap: 0;
+        height: 100%;
         padding: 1.5rem;
         border-radius: 1rem;
         border: 1px solid var(--ks-border-secondary);
@@ -199,7 +200,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: 0.75rem;
+        margin-top: auto;
+        padding-top: 0.75rem;
         gap: 0.5rem;
     }
 
