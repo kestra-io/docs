@@ -92,7 +92,7 @@ Here is the full lifecycle, with the exact Skills and agents at each step.
 ```mermaid
 flowchart TD
     EXT(["🌐 External / Community"]) -->|"opens issue directly"| GH
-    A(["👨‍💻 Squad member"]) --> B
+    A(["👨‍💻 Squad member"]) -->|"addresses a Product need"| B
     B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"] --> GH
     GH[(GitHub Issue)] --> C
     C["/kestra-plugin-planning\nMCP · Design · Tasks · Edge Cases · Docs"] --> D{Usage\nproblem?}
