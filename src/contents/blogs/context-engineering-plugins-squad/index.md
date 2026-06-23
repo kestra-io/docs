@@ -93,7 +93,7 @@ flowchart TD
     A(["👨‍💻 Squad member\nproduct issue"]) --> B
     B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"] --> GH
     GH[(GitHub Issue)] --> C
-    C["/kestra-plugin-planning\nKestra MCP · Triage"] --> D{Usage\nproblem?}
+    C["/kestra-plugin-planning\nMCP · Design · Tasks · Edge Cases · Docs"] --> D{Usage\nproblem?}
     D -->|Yes| E[Fix comment on issue]
     E --> S{Solved?}
     S -->|Yes| DONE(["🎉 Issue closed"])
@@ -106,18 +106,20 @@ flowchart TD
 
     subgraph IMPL["/kestra-plugin-implementing (or -multiple)"]
         I["kestra-plugin-developer\nImplement · Tests · Opens PR"]
-        J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
+        J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Performance"]
         L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
+        PR[(Pull Request)]
         I --> J
         J -.->|"↺ REQUEST CHANGES (max 5)"| I
         J -->|APPROVE| L
+        J -->|"posts code review"| PR
         L -.->|"↺ FAIL"| I
+        L -->|"posts QA results"| PR
     end
 
     J -->|BLOCK| K(["👨‍💻 Human escalation"])
-    L -->|PASS| M[["👨‍💻 GATE — PR Review\nSquad member"]]
-    M -->|"reviews diff · QA report · test results"| PR[(Pull Request)]
-    PR -->|merged| N(["👨‍💻 Merge & Release"])
+    PR --> M[["👨‍💻 GATE — PR Review\nSquad member"]]
+    M -->|merged| N(["👨‍💻 Merge & Release"])
     N --> DONE
 
     classDef humanGate fill:#f5a623,stroke:#c47d00,color:#000,font-weight:bold
