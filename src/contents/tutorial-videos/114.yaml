@@ -1,9 +1,9 @@
-title: "Amazon Ion Explained: The Format Hiding Inside Your Kestra Workflows"
-description: "Amazon Ion is a richly-typed superset of JSON used internally by Kestra
-  to provide a robust type system for data pipelines. This video explains how Ion
-  compares to JSON and demonstrates how it works in practice within the Kestra platform."
+title: "DAGs vs Workflows: Are They the Same Thing?"
+description: "Developer Advocate Will Russell explains the differences between a DAG
+  and a Workflow in data engineering through practical examples to clarify how these
+  commonly confused terms actually differ."
 category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=FJzVjObF418"
-publicationDate: "2026-05-19T00:00:00.000"
+url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
+publicationDate: "2026-05-12T00:00:00.000"
 contentType: "Data"

@@ -1,9 +1,7 @@
-title: "Migrate or Upgrade? Airflow 2 EOL"
-description: "With Airflow 2 reaching end of life in 2026, this video explores whether
-  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
-  tool like Kestra."
-category: "Data"
+title: "What Airflow's Model Gets Right and Where it Breaks"
+description: "Benoit and Will walk through where Airflow's architecture holds up and where it strains, compare it to Kestra's declarative approach, and demo AI-assisted DAG migration from Python to YAML."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=y3zf99LyRng"
-publicationDate: "2026-03-27T00:00:00.000"
-contentType: "Data"
+url: "https://www.youtube.com/watch?v=cI_mzTNYiQo"
+publicationDate: "2026-03-26T00:00:00.000"
+contentType: "Webinar"

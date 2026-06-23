@@ -1,9 +1,9 @@
-title: "I Migrated an Airflow DAG in 2 Minutes using this Claude Skill"
-description: "Learn how to migrate Airflow 2 DAGs to Kestra using a new agent skill
-  that automatically converts Python business logic into declarative YAML and deployable
-  Kestra flows."
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
 category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=5JL6gVtI6FE"
-publicationDate: "2026-04-03T00:00:00.000"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
 contentType: "Data"

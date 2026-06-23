@@ -1,7 +1,9 @@
-title: "One Control Plane, Any Infrastructure"
-description: "Parham and Elliot demo how Kestra handles team isolation, multi-region routing, and enterprise-scale execution from a single control plane using Namespaces, Tenants, and Worker Groups."
-category: "Webinar"
+title: "Do Agent Skills Replace MCP?"
+description: "Learn the difference between MCP (Model Context Protocol) and agent
+  skills, why people confuse them, and how they actually work together in a real-world
+  environment."
+category: "AI"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=ARJ2G7B_pao"
-publicationDate: "2026-06-04T00:00:00.000"
-contentType: "Webinar"
+url: "https://www.youtube.com/watch?v=yVUb71BsG7Y"
+publicationDate: "2026-05-26T00:00:00.000"
+contentType: "AI"
