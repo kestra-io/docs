@@ -87,6 +87,26 @@ Existing frameworks like [BMAD](https://bmad.fr/), [Git Spec Kit](https://github
 
 Here is the full lifecycle, with the exact Skills and agents at each step.
 
+```mermaid
+flowchart TD
+    A([GitHub Issue]) --> B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"]
+    B --> C["/kestra-plugin-planning\nKestra MCP query · Triage"]
+    C --> D{Usage problem?}
+    D -->|Yes| E([Fix comment on issue])
+    D -->|No| F["Structured Plan\nDesign · Tasks · Edge Cases · Docs"]
+    F --> G{Plan approved?}
+    G -->|Changes needed| F
+    G -->|"/plan-approved"| H["/kestra-plugin-implementing\nor -multiple"]
+    H --> I["kestra-plugin-developer\nImplement · Tests · Open PR"]
+    I --> J["kestra-plugin-code-reviewer\nBusiness · Guidelines · Security · Perf"]
+    J -->|REQUEST CHANGES| I
+    J -->|BLOCK| K([Human escalation])
+    J -->|APPROVE| L["/kestra-plugin-doing-qa\nBrowser QA · Scenarios"]
+    L -->|FAIL| I
+    L -->|PASS| M["PR Review — squad member"]
+    M --> N([Merge & Release\nPlugin Devtools])
+```
+
 ### Step 1 — Write the Issue `/kestra-plugin-managing-issues`
 
 **Actor: any squad member (human)**
