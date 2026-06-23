@@ -1,7 +1,9 @@
-title: "Kestra 1.3 introduces Kill Switch, Credentials, kestractl, New GitHub Action and New Plugins"
-description: "Kestra 1.3 focuses on developer automation, safer production operations, and centralized authentication. This release introduces enterprise-grade ..."
-category: "Feature Highlight"
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
+category: "Data"
 author: "Kestra"
-url: "https://youtube.com/watch?v=LjiEmutGdNY"
-publicationDate: "2026-03-03T08:01:24-08:00"
-contentType: "Feature Highlight"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
+contentType: "Data"

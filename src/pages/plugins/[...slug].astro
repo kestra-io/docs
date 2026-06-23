@@ -1,8 +1,6 @@
 ---
 export const prerender = false
 
-import { slugify } from "~/utils/slugify"
-import { subGroupName } from "~/utils/plugins/plugin"
 
 import Layout from "~/components/layout.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
@@ -209,6 +207,7 @@ const pluginSchema = pluginType
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
     <Fragment slot="head">
         <script
+            is:inline
             type="application/ld+json"
             set:html={JSON.stringify(pluginSchema)}
         />

@@ -89,7 +89,7 @@ const pluginIcons = await Promise.all(
                                 <p>{description}</p>
                                 {connectors && (
                                     <p class="connectors">
-                                        {pluginIcons.map((icon, index) => (
+                                        {pluginIcons.map((icon) => (
                                             <span set:html={icon} />
                                         ))}
                                         {totalPlugins}+ plugins
