@@ -113,7 +113,7 @@ flowchart TD
         PR[(Pull Request)]
         I -->|"opens"| PR
         I --> J
-        J -.->|"↺ REQUEST CHANGES (max 5)"| I
+        J -.->|"↺ REQUEST CHANGES (max 5 iterations)"| I
         J -->|APPROVE| L
         J -->|"posts code review"| PR
         L -.->|"↺ FAIL"| I
