@@ -69,7 +69,7 @@ jobs:
       - name: Deploy Worker
         id: prod-deploy
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref == 'refs/heads/main' }}
-        uses: cloudflare/wrangler-action@v3.14.1
+        uses: cloudflare/wrangler-action@v4.0.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -78,7 +78,7 @@ jobs:
       - name: Deploy Preview Worker
         id: preview-deploy
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' }}
-        uses: cloudflare/wrangler-action@v3.14.1
+        uses: cloudflare/wrangler-action@v4.0.0
         with:
           apiToken: ${{ secrets.CLOUDFLARE_ACCOUNT_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
