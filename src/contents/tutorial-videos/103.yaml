@@ -1,9 +1,9 @@
-title: "Claude 101: Chat vs Cowork vs Code - Which One Do You Actually Need?"
-description: "This video provides a breakdown of the three products in the Claude
-  model family—Claude Chat, Claude Cowork, and Claude Code—explaining what they are
-  and who they are for."
-category: "AI"
+title: "I Migrated an Airflow DAG in 2 Minutes using this Claude Skill"
+description: "Learn how to migrate Airflow 2 DAGs to Kestra using a new agent skill
+  that automatically converts Python business logic into declarative YAML and deployable
+  Kestra flows."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=ER7fnAZkayE"
-publicationDate: "2026-04-14T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=5JL6gVtI6FE"
+publicationDate: "2026-04-03T00:00:00.000"
+contentType: "Data"

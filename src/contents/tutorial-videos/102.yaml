@@ -1,8 +1,9 @@
-title: "Triage Vulnerabilities with Kestra, Gemini, and Notion"
-description: "Learn how to use Kestra's Notion plugins to automate vulnerability tracking
-  and documentation in this enterprise-like demo with Developer Advocate Amara Graham."
-category: "AI"
+title: "Migrate or Upgrade? Airflow 2 EOL"
+description: "With Airflow 2 reaching end of life in 2026, this video explores whether
+  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
+  tool like Kestra."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=eUo9Q5aFRkU"
-publicationDate: "2026-04-10T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=y3zf99LyRng"
+publicationDate: "2026-03-27T00:00:00.000"
+contentType: "Data"

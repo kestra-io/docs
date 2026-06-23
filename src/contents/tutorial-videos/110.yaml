@@ -1,9 +1,10 @@
-title: "DAGs vs Workflows: Are They the Same Thing?"
-description: "Developer Advocate Will Russell explains the differences between a DAG
-  and a Workflow in data engineering through practical examples to clarify how these
-  commonly confused terms actually differ."
-category: "Data"
+title: "Automate with YAML: Faster to write, easier to own, ready for AI"
+description: "YAML is becoming the preferred format for modern orchestration as it
+  handles multi-language tasks without wrappers and provides schema-bound reliability
+  for AI-generated workflows. Join this session to learn how to build and scale production-ready
+  workflows using a YAML-first approach."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
-publicationDate: "2026-05-12T00:00:00.000"
-contentType: "Data"
+url: "https://www.youtube.com/watch?v=xpxNK47jRBA"
+publicationDate: "2026-04-23T00:00:00.000"
+contentType: "Webinar"
