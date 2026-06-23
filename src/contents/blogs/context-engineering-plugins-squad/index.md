@@ -89,7 +89,7 @@ Here is the full lifecycle, with the exact Skills and agents at each step.
 
 ```mermaid
 flowchart TD
-    A([Squad member]) --> B
+    A(["👨‍💻 Squad member"]) --> B
     B["/kestra-plugin-managing-issues\nStructured spec · YAML examples"] --> GH
     GH[(GitHub Issue)] --> C
     C["/kestra-plugin-planning\nKestra MCP · Triage"] --> D{Usage\nproblem?}
@@ -98,7 +98,7 @@ flowchart TD
     S -->|Yes| DONE([Issue closed])
     S -.->|"↺ No — needs a plan"| GH
     D -->|No| F["Structured Plan\nDesign · Tasks · Edge Cases · Docs"]
-    F --> G[["GATE — /plan-approved\nkestra-io org member"]]
+    F --> G[["👨‍💻 GATE — /plan-approved\nkestra-io org member"]]
     G -.->|"↺ revision needed"| F
     G -->|"comment on issue"| GH
     G -->|approved| I
@@ -113,8 +113,8 @@ flowchart TD
         L -.->|"↺ FAIL"| I
     end
 
-    J -->|BLOCK| K([Human escalation])
-    L -->|PASS| M[["GATE — PR Review\nSquad member"]]
+    J -->|BLOCK| K(["👨‍💻 Human escalation"])
+    L -->|PASS| M[["👨‍💻 GATE — PR Review\nSquad member"]]
     M -->|"reviews diff · QA report · test results"| PR[(Pull Request)]
     PR -->|merged| N([Merge & Release · Plugin Devtools])
     N --> DONE
