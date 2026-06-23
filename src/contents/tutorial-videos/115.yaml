@@ -1,10 +1,9 @@
-title: "Is AI Replacing Tech Writers?"
-description: "In this video, AJ, the sole technical writer at Kestra, explains how he
-  uses AI to manage over 1,400 plugin references, product docs, and release posts. He
-  shares his insights on where to draw the line between automation and human review to
-  build an efficient, scalable documentation workflow."
-category: "AI"
+title: "kestractl: Manage and Deploy Flows Directly from the CLI"
+description: "Managing multiple environments and keeping local development in sync
+  can be a messy process. In this video, Will demonstrates how kestractl makes deploying
+  and managing your Kestra workflows easy and consistent."
+category: "Infrastructure"
 author: "Kestra"
-url: "https://youtu.be/Ol5Z1-rV49k?si=xiYBZ1o66phtzRZy"
-publicationDate: "2026-06-19T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=8XeKFM8ovv4"
+publicationDate: "2026-05-21T00:00:00.000"
+contentType: "Infrastructure"

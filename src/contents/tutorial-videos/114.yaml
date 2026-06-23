@@ -1,10 +1,9 @@
-title: "How Kestra Uses AI to Write Docs"
-description: "In this live webinar, AJ, the sole technical writer at Kestra, explains
-  how he uses AI to manage over 1,400 plugin references, product docs, and release
-  posts. He shares his insights on where to draw the line between automation and human
-  review to build an efficient, scalable documentation workflow."
-category: "Webinar"
+title: "Amazon Ion Explained: The Format Hiding Inside Your Kestra Workflows"
+description: "Amazon Ion is a richly-typed superset of JSON used internally by Kestra
+  to provide a robust type system for data pipelines. This video explains how Ion
+  compares to JSON and demonstrates how it works in practice within the Kestra platform."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=F0BtDzOqsX8"
-publicationDate: "2026-06-19T00:00:00.000"
-contentType: "Webinar"
+url: "https://www.youtube.com/watch?v=FJzVjObF418"
+publicationDate: "2026-05-19T00:00:00.000"
+contentType: "Data"

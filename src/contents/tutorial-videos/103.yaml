@@ -1,9 +1,9 @@
-title: "Claude 101: Chat vs Cowork vs Code - Which One Do You Actually Need?"
-description: "This video provides a breakdown of the three products in the Claude
-  model family—Claude Chat, Claude Cowork, and Claude Code—explaining what they are
-  and who they are for."
-category: "AI"
+title: "From Cron Job to Event-Driven: Automating my YouTube Workflow"
+description: "Learn how to use Kestra's new YouTube VideoTrigger to automatically
+  open a GitHub PR when a new video is published, eliminating the need for manual
+  updates or polling logic."
+category: "Infrastructure"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=ER7fnAZkayE"
-publicationDate: "2026-04-14T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=jICOZjTsTPg"
+publicationDate: "2026-04-07T00:00:00.000"
+contentType: "Infrastructure"

@@ -1,8 +1,8 @@
-title: "Building a Slack AI Agent: From Trigger to Autonomous Bot"
-description: "Learn how to use Kestra's Slack Trigger and AI plugin to build an intelligent,
-  Gemini-powered responder and autonomous agent using a single declarative YAML flow."
-category: "AI"
+title: "The Best Intro to Workflow Orchestration Is a Video Game"
+description: "Will Russell explores how Factorio’s automation and error-handling mechanics
+  teach the fundamental principles of workflow orchestration."
+category: "Getting Started"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=QvBkoJ8kOds"
-publicationDate: "2026-04-30T00:00:00.000"
-contentType: "AI"
+url: "https://www.youtube.com/watch?v=orHWPS571d4"
+publicationDate: "2026-04-21T00:00:00.000"
+contentType: "Getting Started"

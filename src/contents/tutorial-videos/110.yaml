@@ -1,9 +1,7 @@
-title: "DAGs vs Workflows: Are They the Same Thing?"
-description: "Developer Advocate Will Russell explains the differences between a DAG
-  and a Workflow in data engineering through practical examples to clarify how these
-  commonly confused terms actually differ."
-category: "Data"
+title: "Why Claude Routines Break Down in Production"
+description: "Learn what Claude Routines is and if it can replace the need for an orchestrator."
+category: "AI"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
-publicationDate: "2026-05-12T00:00:00.000"
-contentType: "Data"
+url: "https://www.youtube.com/watch?v=La2JNtMVow4"
+publicationDate: "2026-04-28T00:00:00.000"
+contentType: "AI"

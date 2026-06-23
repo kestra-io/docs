@@ -1,9 +1,8 @@
-title: "Migrate or Upgrade? Airflow 2 EOL"
-description: "With Airflow 2 reaching end of life in 2026, this video explores whether
-  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
-  tool like Kestra."
-category: "Data"
+title: "Orchestration & Kestra 101 Webinar"
+description: "What is orchestration, and when do you actually need it? Join Amara
+  and Parham for a live, beginner-friendly introduction to ..."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=y3zf99LyRng"
-publicationDate: "2026-03-27T00:00:00.000"
-contentType: "Data"
+url: "https://youtube.com/watch?v=N0LXeyIfIKI"
+publicationDate: "2026-03-13T00:00:00.000"
+contentType: "Webinar"
