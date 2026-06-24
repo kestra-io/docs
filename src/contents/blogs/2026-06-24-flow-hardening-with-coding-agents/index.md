@@ -91,7 +91,7 @@ It's clean. It's correct. It even has nice defensive touches — typed inputs, a
 
 ## An advisor, not an autocomplete
 
-Instead of asking the agent to "add some retries," we pointed it at a **flow-hardening skill** — a set of instructions written by Kestra engineers who have operated these workloads. The skill doesn't make the model smarter; it makes it *disciplined*. A few of the rules it enforces:
+Instead of asking the agent to "add some retries," we pointed it at a [**flow-hardening skill**](https://github.com/kestra-io/agent-skills) — a set of instructions written by Kestra engineers who have operated these workloads. The skill doesn't make the model smarter; it makes it *disciplined*. A few of the rules it enforces:
 
 - **The schema is the source of truth.** Before recommending any property, the agent fetches the live Kestra flow schema and verifies the property exists for this version. No hallucinated fields, no version traps (`maxAttempts` vs the older `maxAttempt`).
 - **Classify before you retry.** Every task is sorted into *safe* (read-only), *conditionally safe* (a write with a natural idempotency key), or *unsafe/unknown* (an opaque write). A blind retry on a non-idempotent write is treated as a **critical** mistake, not a convenience — a retried insert duplicates data.
@@ -218,6 +218,6 @@ This is what moves coding agents from "great for prototypes" to "trusted for pro
 
 ## Try it
 
-The flows above are intentionally small so the reasoning is easy to follow — the same approach scales to flows with cloud jobs, scripts, and non-idempotent writes, where the idempotency judgment earns its keep. If you're building automation with a coding agent, the lesson is simple: pair it with skills authored by people who know the domain, and let it audit before it edits.
+The flows above are intentionally small so the reasoning is easy to follow — the same approach scales to flows with cloud jobs, scripts, and non-idempotent writes, where the idempotency judgment earns its keep. If you're building automation with a coding agent, the lesson is simple: pair it with skills authored by people who know the domain, and let it audit before it edits. The flow-hardening skill used here — along with others — lives in [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills).
 
 If you have questions, reach out via [Slack](/slack) or open [a GitHub issue](https://github.com/kestra-io/kestra). If you like the project, give us [a GitHub star](https://github.com/kestra-io/kestra) and join [the community](/slack).
