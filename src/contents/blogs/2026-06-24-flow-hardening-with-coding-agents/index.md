@@ -16,7 +16,7 @@ schema:
       name: "Can a coding agent make a Kestra flow production-ready?"
       acceptedAnswer:
         "@type": "Answer"
-        text: "A coding agent can scaffold a working flow in seconds, but production-readiness — retries, timeouts, failure handling, concurrency control, and idempotency — requires domain judgment. When that judgment is encoded as an agent skill authored by experienced engineers, the agent stops guessing and starts advising: it audits the flow against a severity taxonomy, classifies each task by idempotency before recommending a retry, and validates every property against the live Kestra schema."
+        text: "A coding agent can scaffold a working flow in seconds, but production-readiness — retries, timeouts, failure handling, concurrency control, and idempotency — requires domain judgment. When that judgment is encoded as an agent skill — distilled from experienced engineers and the customers running Kestra in production and critical environments — the agent stops guessing and starts advising: it audits the flow against a severity taxonomy, classifies each task by idempotency before recommending a retry, and validates every property against the live Kestra schema."
     - "@type": "Question"
       name: "Why is a blind retry dangerous in a data pipeline?"
       acceptedAnswer:
@@ -33,7 +33,7 @@ Ask a coding agent to "write a Kestra flow that pulls weather data for a city an
 
 The bottleneck is everything that happens *after* it works once on your laptop. Does it survive a flaky API? A hung download? A schedule that fires before the previous run finishes? A transient 500 at 3 a.m. when nobody is watching? That gap — between *runs* and *runs in production* — is where automation projects quietly fall apart.
 
-This is the part people assume AI can't help with, because it looks like it requires taste and scar tissue. It does. But taste and scar tissue can be written down. When the Kestra team's production knowledge is packaged as an **agent skill**, the coding agent stops behaving like an autocomplete and starts behaving like a senior reviewer sitting next to you.
+This is the part people assume AI can't help with, because it looks like it requires taste and scar tissue. It does. But taste and scar tissue can be written down. That knowledge doesn't only come from the Kestra team — it's earned alongside the many customers running Kestra in critical, high-stakes production environments, who surface the failure modes that matter. When that hard-won knowledge is packaged as an **agent skill**, the coding agent stops behaving like an autocomplete and starts behaving like a senior reviewer sitting next to you.
 
 This post walks through exactly that, using two small example flows we recently hardened. They're deliberately simple — meant to illustrate the *approach*, not to stand in for a real production pipeline.
 
@@ -91,7 +91,7 @@ It's clean. It's correct. It even has nice defensive touches — typed inputs, a
 
 ## An advisor, not an autocomplete
 
-Instead of asking the agent to "add some retries," we pointed it at a [**flow-hardening skill**](https://github.com/kestra-io/agent-skills) — a set of instructions written by Kestra engineers who have operated these workloads. The skill doesn't make the model smarter; it makes it *disciplined*. A few of the rules it enforces:
+Instead of asking the agent to "add some retries," we pointed it at a [**flow-hardening skill**](https://github.com/kestra-io/agent-skills) — a set of instructions distilled from Kestra's own engineers and from the customers running these workloads in production and mission-critical environments. The skill doesn't make the model smarter; it makes it *disciplined*. A few of the rules it enforces:
 
 - **The schema is the source of truth.** Before recommending any property, the agent fetches the live Kestra flow schema and verifies the property exists for this version. No hallucinated fields, no version traps (`maxAttempts` vs the older `maxAttempt`).
 - **Classify before you retry.** Every task is sorted into *safe* (read-only), *conditionally safe* (a write with a natural idempotency key), or *unsafe/unknown* (an opaque write). A blind retry on a non-idempotent write is treated as a **critical** mistake, not a convenience — a retried insert duplicates data.
@@ -212,9 +212,9 @@ triggers:
 
 It's tempting to read this and conclude "the AI hardened the flow." It's more accurate to say the AI *applied the Kestra team's hardening playbook*, faithfully and quickly. The model supplied the language fluency and the tireless attention to every task; the skill supplied the judgment — what to check, how severe each gap is, when a retry is a fix and when it's a foot-gun, and when to do nothing at all.
 
-That division of labor is the whole point. A general-purpose model left to its own devices will happily add a retry to a payment task. A model guided by a skill that encodes idempotency tiers, a severity taxonomy, and "validate against the live schema" produces changes you can actually merge. The expertise of an experienced team like Kestra's isn't replaced by the agent — it's *amplified* by it, and made available to every engineer who runs the skill.
+That division of labor is the whole point. A general-purpose model left to its own devices will happily add a retry to a payment task. A model guided by a skill that encodes idempotency tiers, a severity taxonomy, and "validate against the live schema" produces changes you can actually merge. That expertise — earned by Kestra's engineers *and* by the many organizations running Kestra in production and mission-critical systems — isn't replaced by the agent; it's *amplified* by it, and made available to every engineer who runs the skill.
 
-This is what moves coding agents from "great for prototypes" to "trusted for production." Deterministic automation doesn't come from a clever prompt. It comes from domain knowledge, written down once by people who've been paged at 3 a.m., and then enforced consistently on every flow the agent touches.
+This is what moves coding agents from "great for prototypes" to "trusted for production." Deterministic automation doesn't come from a clever prompt. It comes from hard-won domain knowledge — from the teams and operators who've been paged at 3 a.m. running Kestra at scale — written down once and then enforced consistently on every flow the agent touches.
 
 ## Try it
 
