@@ -1,30 +1,28 @@
 <template>
-    <MDCRenderer
-        v-if="docAst?.body"
-        :body="docAst.body"
-        :data="docAst.data"
+    <div
+        v-if="htmlContent"
         :key="content"
         class="mdc-renderer"
+        v-html="htmlContent"
     />
     <div v-else class="skeleton"></div>
 </template>
 
 <script lang="ts" setup>
-    import { getMDCParser, MDCRenderer } from "@kestra-io/ui-libs"
+    import { marked } from "marked"
     import { onMounted, ref, watch } from "vue"
 
     const props = defineProps<{
         content: string
     }>()
 
-    const docAst = ref<any>()
+    const htmlContent = ref<string>("")
 
     async function parseContent() {
-        const parse = await getMDCParser()
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        docAst.value = await parse(props.content)
+        htmlContent.value = await marked.parse(props.content)
     }
 
     onMounted(async () => {
