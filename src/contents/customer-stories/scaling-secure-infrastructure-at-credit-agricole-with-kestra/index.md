@@ -20,15 +20,15 @@ tasks:
   - io.kestra.plugin.scripts.python.Script
 kpi1: |+
   ##### 7
-  Data Teams Unified 
+  data teams unified
 
 
 kpi2: |-
   ##### 100+
-  Managed Clusters
+  managed clusters
 kpi3: |-
   ##### Security-First
-  Orchestration
+  orchestration
 quote: Kestra allowed us to move from fragmented automation to a unified control
   plane—secure, scalable, and manageable by all our teams.
 quotePerson: Julien Legrand

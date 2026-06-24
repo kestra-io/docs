@@ -2,8 +2,8 @@
     <div class="sidebar">
         <div class="sidebar-logo">
             <img
-                v-if="story.logo"
-                :src="story.logo"
+                v-if="story.logoIcon || story.logo"
+                :src="story.logoIcon ?? story.logo"
                 :alt="displayName"
                 loading="lazy"
             />

@@ -1,5 +1,4 @@
 ---
-import LogoBar from "~/components/home/LogoBar.astro"
 import FeaturedCarousel from "~/components/stories/FeaturedCarousel.vue"
 
 interface FeaturedStory {
@@ -56,12 +55,6 @@ const storiesWithKpis = featuredStories.map((story) => ({
 
         <FeaturedCarousel stories={storiesWithKpis} client:idle />
     </div>
-
-    <div class="logo-bar-outer">
-        <div class="container">
-            <LogoBar />
-        </div>
-    </div>
 </section>
 
 <section class="stories-list-section">
@@ -110,16 +103,6 @@ const storiesWithKpis = featuredStories.map((story) => ({
             line-height: 1.65;
             margin: 0 auto;
             max-width: 560px;
-        }
-    }
-
-    .logo-bar-outer {
-        border-top: 1px solid rgba(255, 255, 255, 0.07);
-        padding: 2rem 1rem;
-
-        .container {
-            max-width: 1180px;
-            padding-bottom: 0;
         }
     }
 

@@ -21,10 +21,10 @@ tasks:
   - io.kestra.plugin.aws.cli.AwsCLI
 kpi1: |-
   ##### X2
-  Team Efficiency
+  team efficiency
 kpi2: |-
   ##### Simplified
-  Workflow Management
+  workflow management
 kpi3: |-
   ##### Terabytes
   of data parsed from APIs

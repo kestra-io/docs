@@ -12,6 +12,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cloud.TriggerRun
   - io.kestra.plugin.aws.s3.CreateBucket
@@ -20,10 +21,10 @@ tasks:
   - io.kestra.plugin.jdbc.postgresql.Trigger
 kpi1: |-
   ##### 40%
-  Reduction of processing time
+  reduction of processing time
 kpi2: |+
   ##### 50%
-  Increase in workflow efficiency
+  increase in workflow efficiency
 
 
 kpi3: |-

@@ -22,19 +22,20 @@ tasks:
   - io.kestra.plugin.jdbc.mysql.Query
 kpi1: |-
   ##### 2.5 Million
-  Monthly Executions
+  monthly executions
 kpi2: |-
   ##### 2000+
-  Workflows
+  workflows
 kpi3: |-
   ##### 25+
-  Engineers working with Kestra
+  engineers working with Kestra
 quote: Kestra has changed how we handle data orchestration. Instead of spending
   days fixing issues, we now have full visibility and control. As we scale,
   having a system that grows with us is invaluable
 quotePerson: John Kim
 quotePersonTitle: IT Lead
-industry: Retail & Manufacturing
+industry: Retail
+industry2: Manufacturing
 headquarter: Seoul, South Korea
 region: Asia Pacific
 companySize: "5,000+"

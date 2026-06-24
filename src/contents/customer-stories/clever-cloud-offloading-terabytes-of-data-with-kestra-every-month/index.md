@@ -20,13 +20,13 @@ tasks:
   - io.kestra.plugin.core.flow.EachSequential
 kpi1: |-
   ##### 20TB
-  of Data Managed Weekly
+  of data managed weekly
 kpi2: |-
   ##### 80% 
-  Reduction in Manual Data Offloading Tasks
+  reduction in manual data offloading tasks
 kpi3: |-
   ##### 50%
-   Increase in Data Processing Speed
+   increase in data processing speed
 quote: Kestra’s automation capabilities significantly improved our data
   management processes. By automating key tasks, we optimized our workflow
   execution and made complex data processing more manageable.

@@ -15,17 +15,18 @@ tasks:
   - io.kestra.plugin.core.flow.Parallel
 kpi1: |-
   ##### Days → Hours
-  Environment delivery time
+  environment delivery time
 kpi2: |-
   ##### Validated on Delivery
-  Test-ready environments out of the box
+  test-ready environments out of the box
 kpi3: |-
   ##### 2 Months
-  From evaluation to production
+  from evaluation to production
 quote: From a technical point of view, Kestra sits at the first place.
 quotePerson: Alex Lernerman
 quotePersonTitle: DevOps Engineer, Amdocs
-industry: Telecom & Technology Services
+industry: Telecom
+industry2: Technology Services
 headquarter: Chesterfield, Missouri, United States
 region: North America
 companySize: "5,000+"

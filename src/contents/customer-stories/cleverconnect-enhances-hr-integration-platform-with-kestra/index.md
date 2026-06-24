@@ -19,13 +19,13 @@ tasks:
   - io.kestra.plugin.git.Clone
 kpi1: |-
   ##### 10x
-  Increase in Connector Development Speed
+  increase in connector development speed
 kpi2: |
   ##### 2 Months
-  to Production Readiness
+  to production readiness
 kpi3: |-
   ##### Hundreds
-  Of new connectors created
+  of new connectors created
 quote: Thank you Kestra for your great support and for providing a best-in-class
   platform to power our integrations!
 quotePerson: Patrick Ferreira

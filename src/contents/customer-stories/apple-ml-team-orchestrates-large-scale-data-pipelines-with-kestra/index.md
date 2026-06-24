@@ -8,6 +8,7 @@ heroImage: ./hero.jpeg
 featuredImage: ./hero.jpeg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.scripts.python.Commands
   - io.kestra.plugin.aws.s3.Upload
@@ -15,18 +16,18 @@ tasks:
   - io.kestra.plugin.core.flow.Parallel
 kpi1: |-
   ##### 200
-  ML Engineers on Kestra
+  ML engineers on Kestra
 kpi2: |-
   ##### Language-Agnostic
-  Declarative YAML Pipelines
+  declarative YAML pipelines
 kpi3: |-
   ##### Massive Scale
-  ETL Across App Store, Apple Music & More
+  ETL across App Store, Apple Music & more
 quote: I want to highlight their robustness, which is crucial at our scale. Few
   companies operate at this level, especially in AI/ML.
 quotePerson: Senior Engineering Manager
 quotePersonTitle: Apple ML Team
-industry: Technology
+industry: Technology Services
 headquarter: Cupertino, USA
 region: North America
 companySize: "5,000+"

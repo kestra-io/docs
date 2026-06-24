@@ -18,7 +18,7 @@ tasks:
   - io.kestra.plugin.scripts.python.Commands
 kpi1: |+
   ##### ZERO
-  Downtime
+  downtime
 
 
 kpi2: |-

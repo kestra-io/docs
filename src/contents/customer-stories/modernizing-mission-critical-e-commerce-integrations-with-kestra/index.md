@@ -9,7 +9,6 @@ featured: false
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
-logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.core.trigger.Webhook
   - io.kestra.plugin.core.http.Request
@@ -18,7 +17,7 @@ kpi1: |-
   BI and ETL cost reduction
 kpi2: |-
   ##### 90%
-  Integration cost reduction
+  integration cost reduction
 kpi3: |-
   ##### 0 incidents
   Black Friday
@@ -28,7 +27,8 @@ kpi4: |-
 quote: With Kestra, orchestration stopped being a fragile point in the architecture and became a stable foundation for the business.
 quotePerson: Rafael Bartalotti
 quotePersonTitle: Engineering and Architecture Manager
-industry: E-commerce & Retail
+industry: E-commerce
+industry2: Retail
 headquarter: São Paulo, Brazil
 region: Americas
 companySize: "< 100"

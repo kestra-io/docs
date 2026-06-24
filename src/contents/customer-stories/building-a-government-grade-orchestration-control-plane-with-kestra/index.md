@@ -18,13 +18,13 @@ tasks:
   - io.kestra.plugin.jdbc.postgresql.Trigger
 kpi1: |-
   ##### 1 Control Plane
-  For private-cloud automation
+  for private-cloud automation
 kpi2: |-
   ##### 3 Weeks
-  To validate compliancy
+  to validate compliancy
 kpi3: |-
   ##### 0 Dependency
-  Fully self-hosted by design
+  fully self-hosted by design
 quote: Kestra gives us a modern orchestration platform we can run ourselves
   without compromising on governance.
 quotePerson: Platform Architect

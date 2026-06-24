@@ -146,6 +146,7 @@ export const collections = {
                 quotePerson: z.string(),
                 quotePersonTitle: z.string(),
                 industry: z.string(),
+                industry2: z.string().optional(),
                 region: z.string(),
                 headquarter: z.string(),
                 solution: z.string(),

@@ -29,6 +29,7 @@ const props = defineProps<{ stories: StorySlide[] }>()
 
 const trackRef = ref<HTMLElement | null>(null)
 const currentIdx = ref(0)
+const maxIdx = ref(props.stories.length - 1)
 
 const GAP = 16
 
@@ -37,19 +38,32 @@ function cardWidth(): number {
     return el?.offsetWidth ?? 0
 }
 
-function goTo(i: number) {
-    if (!trackRef.value) return
-    trackRef.value.scrollTo({ left: i * (cardWidth() + GAP), behavior: "smooth" })
-    currentIdx.value = i
+// Last index where the final card sits flush at the right edge — stops the
+// nav from scrolling into empty space past the end (and "phantom" presses).
+function computeMaxIdx() {
+    const track = trackRef.value
+    const w = cardWidth()
+    if (!track || w === 0) { maxIdx.value = Math.max(0, props.stories.length - 1); return }
+    // Derive the last index from the real scroll range so it lands exactly at
+    // the end — avoids two indices mapping to the same (clamped) max scroll.
+    const maxScroll = track.scrollWidth - track.clientWidth
+    maxIdx.value = Math.max(0, Math.round(maxScroll / (w + GAP)))
 }
 
-function prev() { goTo(Math.max(0, currentIdx.value - 1)) }
-function next() { goTo(Math.min(props.stories.length - 1, currentIdx.value + 1)) }
+function goTo(i: number) {
+    if (!trackRef.value) return
+    const clamped = Math.min(Math.max(0, i), maxIdx.value)
+    trackRef.value.scrollTo({ left: clamped * (cardWidth() + GAP), behavior: "smooth" })
+    currentIdx.value = clamped
+}
+
+function prev() { goTo(currentIdx.value - 1) }
+function next() { goTo(currentIdx.value + 1) }
 
 function onScroll() {
     const w = cardWidth()
     if (!trackRef.value || w === 0) return
-    currentIdx.value = Math.round(trackRef.value.scrollLeft / (w + GAP))
+    currentIdx.value = Math.min(maxIdx.value, Math.round(trackRef.value.scrollLeft / (w + GAP)))
 }
 
 let autoTimer: ReturnType<typeof setInterval> | null = null
@@ -57,7 +71,7 @@ let autoTimer: ReturnType<typeof setInterval> | null = null
 function startAuto() {
     if (autoTimer) return
     autoTimer = setInterval(() => {
-        goTo((currentIdx.value + 1) % props.stories.length)
+        goTo(currentIdx.value >= maxIdx.value ? 0 : currentIdx.value + 1)
     }, 12000)
 }
 
@@ -68,7 +82,9 @@ function stopAuto() {
 let ro: ResizeObserver
 onMounted(() => {
     trackRef.value?.addEventListener("scroll", onScroll, { passive: true })
+    computeMaxIdx()
     ro = new ResizeObserver(() => {
+        computeMaxIdx()
         if (trackRef.value) trackRef.value.scrollLeft = 0
         currentIdx.value = 0
     })
@@ -154,7 +170,7 @@ onUnmounted(() => {
         <button
             class="fc-arrow"
             @click="next"
-            :disabled="currentIdx >= stories.length - 1"
+            :disabled="currentIdx >= maxIdx"
             aria-label="Next story"
         >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">

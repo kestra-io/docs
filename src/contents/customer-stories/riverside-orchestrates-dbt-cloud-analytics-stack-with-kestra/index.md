@@ -6,6 +6,7 @@ metaTitle: How Riverside Connected dbt Cloud, Snowflake, and Hightouch Into a Si
 metaDescription: Riverside's analytics engineering team connected dbt Cloud, Snowflake, and Hightouch into a single dependency-aware pipeline using Kestra Cloud. No rewrites, no Python framework, no infrastructure to manage.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cloud.TriggerRun
   - io.kestra.plugin.scripts.python.Script
@@ -14,7 +15,6 @@ tasks:
 kpi1: |
   6+
   data tools orchestrated
-  ELT sources, dbt Cloud, Metaplane, Hightouch, and more
 kpi2: |
   4
   orchestrators evaluated
@@ -30,7 +30,8 @@ kpi4: |
 quote: Simply powerful yet simple enough.
 quotePerson: Hernán Estrin
 quotePersonTitle: Analytics Engineering Lead, Riverside
-industry: Media Tech / SaaS
+industry: Media Tech
+industry2: SaaS
 headquarter: Tel Aviv, Israel
 region: North America
 companySize: "51–500"

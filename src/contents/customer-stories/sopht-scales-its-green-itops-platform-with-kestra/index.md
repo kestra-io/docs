@@ -21,13 +21,13 @@ tasks:
   - io.kestra.plugin.scripts.python.Script
 kpi1: |-
   ##### Plug & Play Terraform
-  Managed Flow Activation
+  managed flow activation
 kpi2: |-
   ##### 99.5%
-  Job Success Rate
+  job success rate
 kpi3: |-
   ##### Multi-Tenant
-  Customer Isolated Orchestration
+  customer isolated orchestration
 quote: Kestra’s declarative model and Terraform integration gave us exactly what
   we needed to build customer-specific pipelines, automate deployment, and
   monitor everything reliably.

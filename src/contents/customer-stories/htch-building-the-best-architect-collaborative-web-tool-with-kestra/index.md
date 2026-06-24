@@ -17,13 +17,13 @@ tasks:
   - io.kestra.core.tasks.scripts.Python
 kpi1: |-
   ##### Easy
-  Kafka Integration
+  Kafka integration
 kpi2: |-
   ##### Terabytes
   uploaded to S3
 kpi3: |-
   ##### FULL
-  CI/CD from dev to Prod
+  CI/CD from dev to prod
 quote: The flows are pretty epic, I'm quite proud of what I've created.
 quotePerson: Michele Memoli
 quotePersonTitle: ""

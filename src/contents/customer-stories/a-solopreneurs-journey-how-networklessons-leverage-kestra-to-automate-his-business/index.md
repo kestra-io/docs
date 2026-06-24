@@ -21,13 +21,13 @@ tasks:
   - io.kestra.plugin.aws.lambda.Invoke
 kpi1: |-
   ##### Cut
-  Maintenance time
+  maintenance time
 kpi2: |-
   ##### Increased
-  Response rate to customers
+  response rate to customers
 kpi3: |-
   ##### Improved
-  Automation capabilities
+  automation capabilities
 quote: Being used to Python orchestration frameworks, using Kestra has been
   refreshing! Integration with my APIs, ChatGPT, and migrating my AWS Lambda
   functions is effortless with Kestra. It works so well. I'm sticking to Kestra!

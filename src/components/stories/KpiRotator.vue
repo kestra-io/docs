@@ -45,7 +45,7 @@ onUnmounted(() => {
             <transition name="kpi-fade" mode="out-in">
                 <div :key="currentIdx" class="kpi-row">
                     <div v-for="kpi in visible" :key="kpi.value" class="kpi-item">
-                        <span class="kpi-value">{{ kpi.value }}</span>
+                        <span class="kpi-value" v-html="kpi.value"></span>
                         <span class="kpi-label">{{ kpi.label }}</span>
                     </div>
                 </div>
@@ -71,7 +71,7 @@ onUnmounted(() => {
 /* fixed height wrapper prevents card height jumps during transition */
 .kpi-row-outer {
     position: relative;
-    height: calc(2rem + 1.3rem + 0.15rem + 0.8125rem * 1.4 * 2);
+    height: calc(2rem + 1.3rem + 0.15rem + 0.8125rem * 1.4 * 2 + 0.625rem);
     overflow: hidden;
 }
 

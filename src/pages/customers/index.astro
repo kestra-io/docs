@@ -31,11 +31,23 @@ const toStory = (e: (typeof allEntries)[0]) => ({
 
 const stories = allEntries.map(toStory)
 
-const featuredEntries = [
-    ...allEntries.filter((e) => e.data.featured),
-    ...allEntries.filter((e) => !e.data.featured),
-].slice(0, 5)
-const featuredStories = featuredEntries.map(toStory)
+// Featured carousel — explicit, CEO-curated order (by entry id / folder name)
+const featuredOrder = [
+    "scaling-secure-infrastructure-at-credit-agricole-with-kestra",      // Crédit Agricole
+    "erp-transformation-smarter-faster-fully-automated",                 // Fila
+    "datamesh-at-scale-increased-its-data-production-by-900percent",     // Leroy Merlin France
+    "orchestrating-cybersecurity-for-100-users-and-billions-of-rows",    // J.P. Morgan
+    "riverside-orchestrates-dbt-cloud-analytics-stack-with-kestra",      // Riverside
+    "modernizing-mission-critical-e-commerce-integrations-with-kestra",  // Víssimo Group
+    "amdocs-delivers-integration-environments-as-a-service-with-kestra", // Amdocs
+    "when-your-api-writes-its-own-docs-with-kestra",                     // Gravitee
+    "gorgias-using-declarative-data-engineering-orchestration-with-kestra", // Gorgias
+    "scaling-big-data-operations",                                       // Acxiom
+]
+const featuredStories = allEntries
+    .filter((e) => featuredOrder.includes(e.id))
+    .sort((a, b) => featuredOrder.indexOf(a.id) - featuredOrder.indexOf(b.id))
+    .map(toStory)
 ---
 
 <Layout title={title} description={description}>

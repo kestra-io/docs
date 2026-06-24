@@ -49,6 +49,7 @@ interface Story {
     quotePerson: string
     quotePersonTitle: string
     industry: string
+    industry2?: string
     region: string
     headquarter: string
     solution: string

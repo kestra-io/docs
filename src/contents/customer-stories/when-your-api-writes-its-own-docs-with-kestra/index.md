@@ -21,13 +21,13 @@ tasks:
   - io.kestra.plugin.core.http.Request
 kpi1: |-
   ##### Zero
-  Customer training needed
+  customer training needed
 kpi2: |-
   ##### 50%
-  Reduction of Pipelines maintenance time
+  reduction of pipelines maintenance time
 kpi3: |-
   ##### 2
-  Engineers to build the product
+  engineers to build the product
 quote: Our goal is for Kestra to become the go-to solution across the
   organization whenever data wrangling and complex pipeline orchestration are
   needed.

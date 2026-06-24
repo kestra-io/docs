@@ -20,19 +20,20 @@ tasks:
   - io.kestra.plugin.dbt.cli.Build
 kpi1: |-
   ##### Plug&Play
-  Integrations 
+  integrations
 kpi2: |-
   ##### 2x
-  Increased Conversion Rates
+  increased conversion rates
 kpi3: |-
   ##### Automated
-  Marketing Campaigns
+  marketing campaigns
 quote: When we discovered Kestra, it was instant love at first sight! It's the
   perfect solution to streamline all our projects, and it's now become our go-to
   orchestration platform
 quotePerson: Hamis Badarou
 quotePersonTitle: ""
-industry: Investment and Banking
+industry: Investment
+industry2: Banking
 headquarter: Paris, France
 region: Europe
 companySize: "51–500"

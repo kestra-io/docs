@@ -31,7 +31,8 @@ quote: For the first time, with Kestra, our analysts weren’t waiting for
   changed everything.
 quotePerson: Product Owner
 quotePersonTitle: ""
-industry: Banking & Investment
+industry: Banking
+industry2: Investment
 headquarter: New York City, USA
 region: North America
 companySize: "5,000+"

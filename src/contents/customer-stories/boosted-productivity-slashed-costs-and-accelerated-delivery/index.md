@@ -9,6 +9,7 @@ featured: false
 featuredImage: ./hero.png
 logo: ./logo.png
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cli.DbtCLI
   - io.kestra.plugin.gcp.bigquery.Query

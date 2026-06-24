@@ -17,17 +17,18 @@ tasks:
   - io.kestra.plugin.scripts.python.Script
 kpi1: |
   ##### Declarative
-  Dynamic & Metadata-Driven Workflows
+  dynamic & metadata-driven workflows
 kpi2: |-
   ##### 120+
-  Engineers Empowered with Simplified Orchestration
+  engineers empowered
 kpi3: |-
   ##### 50+
-  Customers Isolated in Multi-tenant Environments
+  customers isolated in multi-tenant environments
 quote: Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently.
 quotePerson: Director of Engineering
 quotePersonTitle: ""
-industry: Customer Intelligence & AI-Powered Marketing
+industry: Customer Intelligence
+industry2: Marketing
 headquarter: "Conway, Arkansas, USA"
 region: North America
 companySize: "5,000+"

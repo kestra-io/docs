@@ -19,7 +19,7 @@ tasks:
   - io.kestra.plugin.jdbc.postgresql.Trigger
 kpi1: |-
   ##### Terabytes
-  Of geospatial data managed
+  of geospatial data managed
 kpi2: |-
   ##### 50%
   cost reduction of processing
@@ -30,7 +30,7 @@ quote: Ntico is one of the first fans of Kestra! We use Kestra in our data
   projects and are not surprised by the community's interest. It’s a must-try!
 quotePerson: Stephane Delos
 quotePersonTitle: ""
-industry: Consulting and Integrations
+industry: Consulting
 headquarter: Villeneuve d'Ascq, France
 region: Europe
 companySize: "51–500"

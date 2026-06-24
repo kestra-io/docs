@@ -18,13 +18,13 @@ tasks:
   - io.kestra.plugin.scripts.python.Script
 kpi1: |-
   ##### 100%
-  Automation runs auditable and traceable
+  automation runs auditable and traceable
 kpi2: |-
   ##### 0
-  Uncontrolled access
+  uncontrolled access
 kpi3: |-
   ##### 3 Environments
-  Regulated, standardized & Isolated
+  regulated, standardized & isolated
 quote: Kestra turned automation into a governed platform instead of a collection
   of scripts.
 quotePerson: Platform Engineering Lead

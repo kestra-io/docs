@@ -16,7 +16,7 @@ tasks:
   - io.kestra.plugin.git.Clone
 kpi1: |-
   ##### +900%
-  In Data Production
+  in data production
 kpi2: |-
   ##### +250
   active users

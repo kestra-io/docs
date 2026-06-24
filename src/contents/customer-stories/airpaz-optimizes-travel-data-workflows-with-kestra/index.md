@@ -17,13 +17,13 @@ tasks:
   - io.kestra.plugin.jdbc.clickhouse.Query
 kpi1: |-
   ##### 70%
-  Reduction in manual data processing
+  reduction in manual data processing
 kpi2: |-
   ##### Improved
   data pipeline reliability
 kpi3: |-
   ##### 10
-  Connected Sources
+  connected sources
 quote: Thank you for your hard work in creating this good software. It is
   beginner-friendly and easy to customize.
 quotePerson: Daniel Theodorus

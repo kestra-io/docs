@@ -1,6 +1,9 @@
 <template>
     <a :href="`/customers/${story.slug}`" class="story-card">
-        <span class="card-industry">{{ story.industry }}</span>
+        <div class="card-industries">
+            <span class="card-industry">{{ story.industry }}</span>
+            <span v-if="story.industry2" class="card-industry">{{ story.industry2 }}</span>
+        </div>
 
         <div class="card-header">
             <div class="card-logo">
@@ -93,11 +96,18 @@
         }
     }
 
-    .card-industry {
+    .card-industries {
         align-self: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.375rem;
         margin-top: -1rem;
         margin-right: -1rem;
         margin-bottom: 0.75rem;
+    }
+
+    .card-industry {
         font-size: 0.625rem;
         font-weight: 600;
         color: #8405ff;
