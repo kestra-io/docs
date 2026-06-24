@@ -30,6 +30,8 @@ To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner cr
 2. The _main_ container that fetches input files into the `{{ workingDir }}` directory and runs the task.
 3. An _after_-container that fetches output files using `outputFiles` to make them available from the Kestra UI for download and preview.
 
+The before- and after-containers use the `amazon/aws-cli` image. If your environment restricts which images can be pulled (ECR pull-through cache, VPC egress policy, or image allowlist), ensure this image is accessible.
+
 **EKS:** Uses [EKS job definitions](https://docs.aws.amazon.com/batch/latest/userguide/jobs-eks.html) with a Kubernetes pod. Sidecar containers run as pod containers using the same S3-based file transfer pattern. The main container command is wrapped in `/bin/sh -c`, so the container image must include `/bin/sh`.
 
 Since the working directory of the container isn’t known in advance, you must define the working and output directories explicitly. For example, use `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.

@@ -258,6 +258,7 @@ These settings are lighter-weight than the Micronaut server settings above. Use 
 
 The webserver-related configuration also includes:
 
+- disabling the UI to run the webserver API-only
 - Google Analytics ID
 - additional HTML tags
 - mail server settings
@@ -278,6 +279,24 @@ kestra:
 ```
 
 Mail server settings are useful when you need platform emails for invitations and notifications.
+
+### Disabling the UI (API-only mode)
+
+The bundled web UI is enabled by default. Set `kestra.webserver.ui.enabled` to `false` to run the webserver as an API-only service — useful when Kestra is driven entirely through the REST API or fronted by your own application, and you don't want the UI exposed.
+
+```yaml
+kestra:
+  webserver:
+    ui:
+      enabled: false
+```
+
+When the UI is disabled:
+
+- requests to `/ui/**` return `404`, and `/` no longer redirects to the UI;
+- the REST API (`/api/v1/**`) and health endpoints keep working as usual.
+
+The setting can also be provided through the `KESTRA_WEBSERVER_UI_ENABLED` environment variable.
 
 ## Typical use cases
 

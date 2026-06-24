@@ -18,7 +18,7 @@ Manage and distribute logs across your entire infrastructure.
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
+Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, OpenTelemetry, and Dash0.
 
 ## Log shipper properties
 
@@ -488,6 +488,32 @@ tasks:
         endpoint: "http://localhost:12201/gelf"
         graylogHost: "Kestra"
         chunk: 1000
+```
+
+### Dash0
+
+This example exports logs to [Dash0](https://www.dash0.com/) via OTLP/HTTP. Set `endpoint` to the ingestion URL for your Dash0 region. Set `dataset` to route logs to a named dataset, or omit it to use the Dash0 `default` dataset.
+
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: dash0LogExporter
+        type: io.kestra.plugin.ee.dash0.LogExporter
+        endpoint: https://ingress.eu-west-1.aws.dash0.com/v1/logs
+        authToken: "{{ secret('DASH0_AUTH_TOKEN') }}"
+        dataset: my-dataset
 ```
 
 ## Audit log shipper

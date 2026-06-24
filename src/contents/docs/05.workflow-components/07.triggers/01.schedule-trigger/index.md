@@ -52,11 +52,7 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 11 * * 1"
-    conditions:
-      - type: io.kestra.plugin.core.condition.DayWeekInMonth
-        date: "{{ trigger.date }}"
-        dayOfWeek: "MONDAY"
-        dayInMonth: "FIRST"
+    when: "{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}"
 ```
 
 A schedule that runs daily at midnight US Eastern time:
@@ -95,26 +91,15 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 :::
 
 
-## Schedule conditions
+## Refining schedules with `when`
 
-When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using `conditions`.
+When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using a `when` Pebble expression.
 
-You **must** use the `{{ trigger.date }}` expression on the property `date` of the current schedule.
+You can use the `{{ trigger.date }}` expression to access the current schedule date within the `when` expression. The [date and calendar helper functions](../../../expressions/04.functions/06.dates/index.mdx) in the expressions reference cover all available date functions such as `isDayWeekInMonth()`, `dayOfWeek()`, `isWeekend()`, `isPublicHoliday()`, and `isLastWorkingDay()`.
 
-This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the conditions applied.
+The `when` expression is evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` reflect the date **with** the condition applied.
 
-The list of core conditions that can be used are:
-
- - [DateTimeBetween](/plugins/core/condition/io.kestra.plugin.core.condition.datetimebetween)
- - [DayWeek](/plugins/core/condition/io.kestra.plugin.core.condition.dayweek)
- - [DayWeekInMonth](/plugins/core/condition/io.kestra.plugin.core.condition.dayweekinmonth)
- - [Not](/plugins/core/condition/io.kestra.plugin.core.condition.not)
- - [Or](/plugins/core/condition/io.kestra.plugin.core.condition.or)
- - [Weekend](/plugins/core/condition/io.kestra.plugin.core.condition.weekend)
- - [PublicHoliday](/plugins/core/condition/io.kestra.plugin.core.condition.publicholiday)
- - [TimeBetween](/plugins/core/condition/io.kestra.plugin.core.condition.timebetween)
-
-Here's an example using the `DayWeek` condition:
+Here's an example using a day-of-week check:
 
 ```yaml
 id: conditions
@@ -129,9 +114,7 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
-    conditions:
-      - type: io.kestra.plugin.core.condition.DayWeek
-        dayOfWeek: "THURSDAY"
+    when: "{{ dayOfWeek(trigger.date) == 'THURSDAY' }}"
 ```
 
 ## Recover missed schedules

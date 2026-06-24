@@ -137,7 +137,7 @@ tasks:
       }
 
   - id: create_tasks
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ outputs.create_task_fields.response | jq('.tasks') | first }}"
     tasks:
       - id: create_task
@@ -149,9 +149,9 @@ tasks:
           Authorization: "Bearer {{ secret('TODOIST_API_TOKEN') }}"
         body: |
           {
-            "content": "{{ taskrun.value | jq('.title') | first }}",
-            "description": "{{ taskrun.value | jq('.description') | first }}",
-            "due_datetime": "{{ taskrun.value | jq('.due_date') | first }}"
+            "content": "{{ item.value | jq('.title') | first }}",
+            "description": "{{ item.value | jq('.description') | first }}",
+            "due_datetime": "{{ item.value | jq('.due_date') | first }}"
           }
 ```
 :::

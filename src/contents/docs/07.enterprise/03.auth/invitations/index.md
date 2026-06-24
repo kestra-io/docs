@@ -41,6 +41,8 @@ You can check the box to **Create user directly (skip invitation)** if one is no
 
 When a user receives an invitation, they can click on the link in the email to accept it. The user will be redirected to the Kestra login page, where they set up their account (i.e., create a password), or log in using SSO if it's enabled.
 
+If password-based login is enabled, the password they choose must satisfy the instance password policy configured under `kestra.security.basic-auth`. See [Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) for the available password policy settings.
+
 ## Invite expiration time
 
 Users have 7 days to accept the invitation. After this period, the invitation will expire and must be reissued.

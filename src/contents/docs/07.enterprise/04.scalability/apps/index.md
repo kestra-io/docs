@@ -200,7 +200,7 @@ The App Catalog is where users can find available apps. You can filter apps by n
 
 ![apps_catalog](./apps_catalog.png)
 
-Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with at least `APP`-Read and `APPEXECUTION`-Read permissions in that tenant can reach this URL (adding all `APPEXECUTION` permissions is recommended).
+Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with at least `APP: VIEW` permission in that tenant can reach this URL.
 
 The catalog page requires authentication, so it is never publicly accessible. Users see only the apps they are permitted to see based on their RBAC permissions. You can limit visibility to specific groups by setting the `groups` property in the `access` block:
 
@@ -348,7 +348,7 @@ For `PUBLIC` apps, execution IDs exposed through file download or log links are 
 
 ### Private access for using apps
 
-When an app is set to `PRIVATE`, only authenticated users with the `APPEXECUTION` permission on the app’s namespace can open or submit it. You can further narrow access to specific IAM groups using the `groups` field:
+When an app is set to `PRIVATE`, only authenticated users with `APP: EXECUTE` permission on the app’s namespace can open or submit it. You can further narrow access to specific IAM groups using the `groups` field:
 
 ```yaml
 access:
@@ -358,15 +358,15 @@ access:
     - Finance
 ```
 
-Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APPEXECUTION` permission on the namespace. If `groups` is omitted, any authenticated user with `APPEXECUTION` permission on the namespace can use the app.
+Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app.
 
-The `APPEXECUTION` permission is also namespace-scoped. A user with `APPEXECUTION` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
+`APP: EXECUTE` is namespace-scoped. A user with `APP: EXECUTE` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
 
 This makes the `PRIVATE` + `groups` combination useful when you want to allow a specific group of business stakeholders or external partners to use an app without giving them access to the broader Kestra UI.
 
 ### Private access for building apps
 
-The `APP` permission controls who can create, read, update, or delete apps within a tenant. Like `APPEXECUTION`, it can be scoped to specific namespaces. Unlike `APPEXECUTION`, which governs the ability to submit requests through an app, `APP` governs the ability to build and manage apps.
+The `APP` resource controls who can create, view, update, or delete apps within a tenant. It can be scoped to specific namespaces. `APP: EXECUTE`, `APP: ACCESS_FILES`, and `APP: ACCESS_LOGS` govern the ability to submit requests through an app and access its artifacts; the remaining `APP` actions govern the ability to build and manage apps.
 
 ---
 

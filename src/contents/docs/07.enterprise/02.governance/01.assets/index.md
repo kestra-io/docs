@@ -443,19 +443,19 @@ tasks:
               model_layer: staging
 
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - passenger_count
       - trip_distance
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
-        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
+        sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;
         assets:
           inputs:
               - id: trips
           outputs:
-              - id: avg_{{taskrun.value}}
+              - id: avg_{{item.value}}
                 type: io.kestra.plugin.ee.assets.Table
                 namespace: "{{flow.namespace}}"
                 metadata:
@@ -473,7 +473,7 @@ pluginDefaults:
 
 2. **Staging Layer**: The `trips` table is created and registered with `model_layer: staging` metadata. This becomes an intermediate asset that mart layers will consume.
 
-3. **Dynamic Mart Creation**: The `ForEach` task generates two mart tables:
+3. **Dynamic Mart Creation**: The `Loop` task generates two mart tables:
    - `avg_passenger_count`
    - `avg_trip_distance`
 
@@ -521,20 +521,20 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ inputs.teams }}"
     tasks:
       - id: create_bucket
         type: io.kestra.plugin.aws.cli.AwsCLI
         commands:
-          - aws s3 mb s3://kestra-{{ taskrun.value | slugify }}-bucket
+          - aws s3 mb s3://kestra-{{ item.value | slugify }}-bucket
         assets:
           outputs:
-            - id: kestra-{{ taskrun.value | slugify }}-bucket
+            - id: kestra-{{ item.value | slugify }}-bucket
               type: AWS_BUCKET
               metadata:
                 provider: s3
-                address: s3://kestra-{{ taskrun.value | slugify }}-bucket
+                address: s3://kestra-{{ item.value | slugify }}-bucket
 
 pluginDefaults:
   - type: io.kestra.plugin.aws
@@ -641,12 +641,12 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{inputs.assets}}"
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "{{taskrun.value}}"
+        message: "{{item.value}}"
 ```
 
 **Filter assets by namespace:**

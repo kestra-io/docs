@@ -22,6 +22,15 @@ Running workflows in isolated environments reduces the impact of potential malic
 - **Ephemeral compute** — use Kestra's native [Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) to auto-scale ephemeral compute nodes, which are destroyed after each run to ensure no residual state.
 - **Minimum host permissions** - grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
+## Transport security (EE only)
+
+In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. Enterprise Edition supports TLS encryption and mutual TLS (mTLS) to authenticate both sides of the connection:
+
+- **One-way TLS** — the controller presents a certificate; workers verify it. Encrypts the channel without requiring worker certificates.
+- **Mutual TLS (mTLS)** — both controller and worker present certificates. Use this when you need strong identity verification between components, not just encryption.
+
+See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference.
+
 ## Plugin and code validation
 
 To prevent the execution of malicious code, you can implement several strategies:

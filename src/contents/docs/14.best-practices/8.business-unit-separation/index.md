@@ -51,7 +51,7 @@ You can configure dedicated resources for each namespace:
 - **Team-based organization**: Separate flows and resources by team within the same tenant, maintaining visibility for users with appropriate permissions.
 - **Project-based organization**: Create separate namespaces for projects that need limited isolation while retaining workflow visibility.
 - **Dependency management**: Namespaces support cross-team dependencies (e.g., subflows or triggers), simplifying dependency tracking.
-- **RBAC control**: Namespaces allow granular role-based access. A user might have `READ` access in one namespace and full CRUD permissions in another.
+- **RBAC control**: Namespaces allow granular role-based access. A user might have view-only access in one namespace and full management permissions in another.
 
 ## Summary of when to use tenants vs. namespaces
 

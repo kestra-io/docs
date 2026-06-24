@@ -10,13 +10,8 @@ docId: iam
 
 How to manage access and permissions to your instance.
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/9I87QZJPl1Y?si=n0Izt0lK6BQ20Wfy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
 
-## RBAC – manage roles and permissions
-
-Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to Tenants, Namespaces, Flows and resources.
+Kestra Enterprise supports Role-Based Access Control (RBAC) to manage access to tenants, namespaces, flows, and resources.
 
 In Kestra you will find three types of entities:
 
@@ -28,7 +23,7 @@ In Kestra you will find three types of entities:
 * Groups: Represent a collection of **Users** and **Service Accounts**. Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
 * Service Accounts: Represents an **application**. They are considered Users when binding Role assignments.
 
-All theses entities can be assigned to a Role, which define what resources the User, Group, or Service Account can access. Note that these entities don’t belong to Namespaces, but their permissions can be limited to specific namespaces via Bindings (**IAM** page).
+All these entities can be assigned to a role, which defines what resources the user, group, or service account can access. These entities do not belong to namespaces, but their permissions can be limited to specific namespaces via bindings on the **IAM** page.
 
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings:
 
@@ -36,82 +31,123 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 ## Roles and Bindings
 
-A Role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`, `NAMESPACE`, `SECRET`, etc.) and an **Action** (
-e.g., `CREATE`). The **Role** itself does not grant any permissions. Through the **IAM** page, you are able to assign a Role to a User, Service Account, or Group, which creates a **Binding**.
+A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
 
-This Binding grants the permissions defined by that Role to the User, Service Account, or Group. Select any IAM entity (User, Group, etc.), and assign the desired Role. There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces; make sure to test their access with the [Impersonate](../rbac/index.md#impersonate) feature.
-
-Once a Role has been created, you can assign that Role to Users and Groups. Optionally, when you assign the Role to an entity (User, Group, or Service Account), you can specify the Binding to a specific Namespace(s). A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a User assigned to a Role specifying the `prod` namespace automatically grants access to the `prod.engineering` namespace as well. Note that you can [configure a default role](../../../configuration/05.security-and-secrets/index.md) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](../sso/index.md).
+Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). Use [Impersonate](#impersonate) to verify a user's effective permissions after assigning roles.
 
 ## Impersonate
 
-After assigning permissions to a User, Superadmins can impersonate Users to ensure their access is as intended. Impersonation switches your view immediately to that User's perspective and can be easily closed back to Superadmin view – a seamless way to test RBAC in one context.
+After assigning permissions to a User, Superadmins can impersonate Users to ensure their access is as intended. Impersonation switches your view to that user's perspective and can be closed back to the Superadmin view at any time.
 
 ![Impersonate](./impersonate-user.png)
 
 ![Stop Impersonating User](./stop-impersonate-user.png)
 
-### Permissions
+### Resources
 
-A Permission is a resource that can be accessed by a User or Group. Open the following to view all supported permissions:
+A resource is a category of product entity or capability that can be controlled through RBAC. Each resource has its own set of allowed actions.
 
-:::collapse{title="Permissions"}
-- `FLOW`
-- `EXECUTION`
-- `TEMPLATE`
-- `NAMESPACE`
-- `KVSTORE`
-- `DASHBOARD`
-- `SECRET`
-- `CREDENTIAL`
-- `GROUP`
-- `ROLE`
-- `BINDING`
-- `AUDITLOG`
-- `BLUEPRINT`
-- `IMPERSONATE`
-- `SETTING`
-- `APP`
-- `AI_COPILOT`
-- `APPEXECUTION`
-- `TEST`
-- `ASSET`
-- `USER`
-- `SERVICE_ACCOUNT`
-- `TENANT_ACCESS`
-- `INVITATION`
-- `GROUP_MEMBERSHIP`
-- `CREDENTIALS`
-- `AI_COPILOT`
+**Core resources** (namespace-scoped — bindings can restrict access to specific namespaces):
 
-:::alert{type="warning"}
-The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/v0.24.0/endpoint-changes/index.md#rbac-updates)
-:::
+| Resource | Description |
+|---|---|
+| `FLOW` | Flows, their revisions, graphs, and dependencies |
+| `EXECUTION` | Executions, their state, logs, outputs, and files |
+| `TRIGGER` | Triggers attached to flows |
+| `NAMESPACE` | Namespaces and their files, plugin defaults |
+| `KVSTORE` | Key-value store entries |
+| `SECRET` | Secrets stored in the namespace |
+| `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
+
+**Apps and features** (tenant-scoped):
+
+| Resource | Description |
+|---|---|
+| `DASHBOARD` | Custom dashboards |
+| `BLUEPRINT` | Custom blueprints |
+| `APP` | Apps and their executions |
+| `TESTSUITE` | Unit tests |
+| `ASSET` | Data assets and lineage |
+| `MCP_SERVER` | MCP servers exposing flows as AI tools |
+| `COPILOT` | AI Copilot flow generation |
+
+**Administration** (tenant-scoped):
+
+| Resource | Description |
+|---|---|
+| `USER` | Users in the tenant |
+| `GROUP` | Groups and their members |
+| `ROLE` | RBAC roles |
+| `BINDING` | Role-to-entity bindings |
+| `SERVICE_ACCOUNT` | Service accounts |
+| `INVITATION` | User invitations |
+| `AUDITLOG` | Audit log entries |
+| `SYSTEM_SETTINGS` | Instance-level settings |
+| `TENANT_SETTINGS` | Tenant-level settings |
 
 ### Actions
 
-An Action is the CRUD verb allowed on a given resource (Flow, Execution, Secret, KV, Namespace, etc.). Supported Actions map directly to HTTP operations:
+Each resource defines its own set of allowed actions. Not every action applies to every resource.
 
-- `CREATE` → typically `POST` the resource (e.g., create a flow, secret, KV entry).
-- `READ`   → `GET` to list or view the resource; no writes.
-- `UPDATE` → `PUT`/`PATCH` to modify an existing resource; cannot create new ones.
-- `DELETE` → `DELETE` to remove the resource.
+**Common actions** (available on most resources):
 
-Example (Flows):
-- `CREATE` lets you `POST /api/v1/{tenant}/flows`
-- `READ` lets you `GET /api/v1/{tenant}/flows/*`
-- `UPDATE` lets you `PUT /api/v1/{tenant}/flows/{flowId}`
-- `DELETE` lets you `DELETE /api/v1/{tenant}/flows/delete/by-ids`
+| Action | Meaning |
+|---|---|
+| `VIEW` | Read a single item's details |
+| `LIST` | Search or browse items |
+| `CREATE` | Create a new item |
+| `UPDATE` | Modify an existing item |
+| `DELETE` | Remove an item |
+
+**Resource-specific actions:**
+
+| Resource | Additional actions |
+|---|---|
+| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
+| `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
+| `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
+| `NAMESPACE` | `MANAGE_FILES` (all namespace file operations), `EXPORT_PLUGIN_DEFAULTS`, `IMPORT_PLUGIN_DEFAULTS` |
+| `APP` | `EXECUTE`, `ACCESS_FILES`, `ACCESS_LOGS` |
+| `TESTSUITE` | `EXECUTE` |
+| `AUDITLOG` | `EXPORT` |
+| `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
+| `GROUP` | `MANAGE_MEMBERS` |
+| `COPILOT` | `USE` (only action) |
+| `SYSTEM_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
+| `TENANT_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
 
 :::alert{type="info"}
-For a complete CRUD-to-endpoint mapping for every permission, see the [Permissions Reference](./permissions-reference/index.md).
+For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
+
+If you are upgrading from Kestra 1.x, see the [RBAC action model migration guide](../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) for how old CRUD permissions map to the new actions and what was dropped.
 :::
 
-### Currently supported roles
+### MCP server permissions
 
-Currently, Kestra only creates an **Admin** role by default. That role grants full access to **all resources**.
+`MCP_SERVER` is a first-class RBAC resource that controls access to [Kestra MCP servers](../../../ai-tools/mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
 
-Apart from **Admin**, Kestra has the managed Roles: Developer, Editor, Launcher, and Viewer. Each Role's permissions can be viewed from **IAM - Roles**. Superadmins can create additional Roles with custom permission combinations in addition to Kestra-managed roles. Users can be assigned multiple Roles.
+Default role assignments:
+
+| Role | Actions granted |
+|---|---|
+| Admin | All (`VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`) |
+| Developer / Editor | All (`VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`) |
+| Launcher | — (not included) |
+| Viewer | `VIEW`, `LIST` |
+
+In addition to these permissions, access to a **private** MCP server is also flow-scoped: a user can connect to a private server only if they have `FLOW: EXECUTE` on at least one namespace that contains a flow with an `McpToolTrigger` pointing at that server.
+
+### Managed roles
+
+Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Superadmins can create additional custom roles on top of these. Users can hold multiple roles.
+
+| Role | Description |
+|---|---|
+| **Admin** | All actions on all resources. |
+| **Developer** | Everything Editor has, plus: full namespace management (including file management and plugin default import), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
+| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
+| **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
+| **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
 ## Superadmin and Admin
 
@@ -126,8 +162,8 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 | Feature                             | Admin (scoped to a tenant if enabled)              | Super Admin                                          |
 |-------------------------------------|----------------------------------------------------|------------------------------------------------------|
 | Access Level                        | By default as all permissions, depends on the Role | Manages tenants and IAM across all tenants           |
-| Tenant Management                   | No                                                 | Create/Update/Read/Delete tenants across all tenants |
-| User/Role/Group/Bindings Management | Has the permission by default                      | Create/Update/Read/Delete across all tenants         |
+| Tenant Management                   | No                                                 | View, create, update, delete tenants across all tenants |
+| User/Role/Group/Bindings Management | Has the permission by default                      | View, create, update, delete across all tenants         |
 | Flow/Execution Management           | Has the permission by default                      | No                                                   |
 | Set Super Admin privilege           | No                                                 | Yes                                                  |
 :::
@@ -236,7 +272,7 @@ kestra auths users create <username> <password> --admin
 ```
 ## User lockout
 
-Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
+Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra locks the user for the `lock-duration` period after a `threshold` number of failed attempts within the `monitoring-window` duration. The snippet below lists the default values — adjust them based on your preferences:
 
 ```yaml
 kestra:
@@ -305,5 +341,5 @@ This is a safety feature to prevent accidental changes to existing permissions.
 
 :::collapse{title="What happens if you delete a Group?"}
 
-All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However, Users and Services Accounts will still exist.
+All users and service accounts in that group lose the permissions granted by bindings attached to it. The users and service accounts themselves still exist.
 :::

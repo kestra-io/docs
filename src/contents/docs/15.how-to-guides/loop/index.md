@@ -1,16 +1,14 @@
 ---
 title: Loop Over a List of Values
-h1: Iterate Over Lists with the ForEach Task
+h1: Iterate Over Lists with the Loop Task
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
 topics:
   - Kestra Workflow Components
-description: Learn how to iterate over lists of values in Kestra workflows using the ForEach task to execute tasks for each item efficiently.
+description: Learn how to iterate over a list of values in Kestra workflows using the Loop task, access iteration context, collect outputs, and run iterations in parallel.
 ---
 
-How to iterate over a list of values in your flow.
-
-In this guide, you will learn how to iterate over a list of values using the `ForEach` task. This task enables you to loop through a list of values and execute specific tasks for each value in the list. This approach is useful for scenarios where multiple similar tasks need to be run for different inputs.
+Use the `Loop` task to iterate over a list of values and run tasks for each item. Each iteration runs as an isolated sub-execution with access to the current value via `item.value` and the zero-based index via `item.index`.
 
 ## Prerequisites
 
@@ -19,70 +17,109 @@ Before you begin:
 - Deploy [Kestra](../../02.installation/index.mdx) in your preferred development environment.
 - Ensure you have a [basic understanding of how to run Kestra flows.](../../03.tutorial/index.mdx)
 
-## Loop over nested lists of values
+## Basic iteration
 
-This example demonstrates how to use `ForEach` to loop over a list of strings and then loop through a nested list for each string.
-
-You can access the current iteration value using the variable `{{ taskrun.value }}` or `{{ parent.taskrun.value }}` if you are in a nested child task. Additionally, you can access the batch or iteration number with `{{ taskrun.iteration }}`.
-
-To see the flow in action, define the `each_nested` flow as shown below:
+The simplest use of `Loop` iterates over a static list and runs child tasks for each item. The example below makes an API call for each author in the list.
 
 ```yaml
-id: each_nested
+id: loop_basic
 namespace: company.team
 
 tasks:
-  - id: 1_each
-    type: io.kestra.plugin.core.flow.ForEach
-    values: '["s1", "s2", "s3"]'
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["pynchon", "dostoyevsky", "hedayat"]
     tasks:
-      - id: 1-1_return
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
-      - id: 1-2_each
-        type: io.kestra.plugin.core.flow.ForEach
-        values: '["a a", "b b"]'
-        tasks:
-          - id: 1-2-1_return
-            type: io.kestra.plugin.core.debug.Return
-            format: "{{task.id}} > {{taskrun.value}} > {{taskrun.startDate}}"
-          - id: 1-2-2_return
-            type: io.kestra.plugin.core.debug.Return
-            format: "{{task.id}} > {{ outputs['1-2-1_return'].s1[taskrun.value].value }} >> get {{ outputs['1-2-1_return']['s1'][taskrun.value].value }} > {{taskrun.startDate}}"
-      - id: 1-3_return
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{task.id}} > {{ outputs['1-1_return'][taskrun.value].value }} > {{taskrun.startDate}}"
-  - id: 2_return
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{task.id}} > {{outputs['1-2-1_return'].s1['a a'].value}}"
+      - id: api
+        type: io.kestra.plugin.core.http.Request
+        uri: "https://openlibrary.org/search.json?author={{ item.value }}&sort=new"
 ```
 
-Save and execute the `each_nested` flow.
+Inside each iteration:
+- `{{ item.value }}` — the current value from the list
+- `{{ item.index }}` — the zero-based position (0, 1, 2, …)
 
-The above flow, when executed, iterates over a nested list of values, logging messages at each level of iteration to track the processing of both the outer and inner list items.
+After execution, the Gantt view shows a separate task group for each author.
 
-Within the flow:
+When `values` contains objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to access fields — `item.value.field` does not work.
 
-- `1_each`: Uses the `ForEach` task to iterate over the list `["s1", "s2", "s3"]`. For each value, it runs the nested tasks defined within.
+## Nested loops
 
-  - `1-1_return`: Logs the task ID, the current list value, and the task run start time.
+To iterate over multiple dimensions, nest `Loop` tasks. The inner loop accesses the outer loop's value with `{{ item.parent.value }}`. For three or more levels, `{{ item.parents[1].value }}` is the grandparent — `item.parents[0]` is the same as `item.parent`.
 
-  - `1-2_each`: Iterates over a second list `["a a", "b b"]` and runs a set of tasks for each value in this nested list.
+```yaml
+id: loop_nested
+namespace: company.team
 
-    - `1-2-1_return`: Logs the task ID, the nested list value, and the start time of the task run.
+tasks:
+  - id: outer
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["bucket1", "bucket2"]
+    tasks:
+      - id: inner
+        type: io.kestra.plugin.core.flow.Loop
+        values: [2025, 2026]
+        tasks:
+          - id: log
+            type: io.kestra.plugin.core.log.Log
+            message: "bucket={{ item.parent.value }} year={{ item.value }}"
+```
 
-    - `1-2-2_return`: Logs a custom output from `1-2-1_return`, which shows how to access outputs from previous iterations within the nested loop.
+## Collect outputs across iterations
 
-  - `1-3_return`: Logs the output from `1-1_return` after the inner loop is completed and displays the corresponding value processed in the outer loop.
+By default, outputs produced inside a loop are not visible to tasks that run after it. Declare an `outputs:` block on the Loop task to surface values explicitly. After the loop, `outputs.loop.outputs` is a list of per-iteration results. Use `loopOutputs()` to extract one field across all iterations as a flat list.
 
-- `2_return`: Fetches the output from the nested loop (`1-2-1_return` for the value `a a`) and logs it.
+```yaml
+id: loop_outputs
+namespace: company.team
 
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: ["alpha", "beta", "gamma"]
+    fetchType: AUTO
+    outputs:
+      - id: label
+        type: STRING
+        value: "{{ outputs.process.value }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.debug.Return
+        format: "processed {{ item.value }}"
+
+  - id: read_outputs
+    type: io.kestra.plugin.core.log.Log
+    message: "All results: {{ loopOutputs(outputs.loop.outputs, 'label') }}"
+```
+
+## Run iterations in parallel
+
+Set `concurrencyLimit` to a positive integer to cap how many iterations run at once. Setting it to `0` removes the cap entirely — only do this for small datasets where you understand the resource implications.
+
+```yaml
+id: loop_parallel
+namespace: company.team
+
+tasks:
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    concurrencyLimit: 0
+    tasks:
+      - id: parallel
+        type: io.kestra.plugin.core.flow.Parallel
+        tasks:
+          - id: log
+            type: io.kestra.plugin.core.log.Log
+            message: "Processing {{ item.value }}"
+          - id: shell
+            type: io.kestra.plugin.scripts.shell.Commands
+            commands:
+              - "echo done {{ item.value }}"
+```
 
 ## Next steps
 
-Now that you've seen how to loop over a list of values using `ForEach`, you can apply this technique to any scenario where multiple iterations of similar tasks are needed. You can further extend this flow by:
-- Adding more complex nested loops.
-- Using dynamic input values instead of hardcoded lists.
-- Logging or processing additional data from each iteration.
-
-For more advanced use cases, refer to Kestra’s official [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task documentation and the [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md) guide, which covers how to access sibling task outputs inside and outside the loop, when to use `ForEachItem` instead, and common mistakes to avoid.
+- For the full Loop property reference, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).
+- For output collection patterns, error handling, and map-reduce examples, see the [Flowable Tasks](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) reference.
+- For Loop best practices, see the [Loop best practices guide](../../14.best-practices/11.loop/index.md).

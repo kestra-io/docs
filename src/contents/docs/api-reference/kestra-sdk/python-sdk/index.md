@@ -50,6 +50,36 @@ Use environment variables rather than hardcoding credentials. You can also use t
 
 ---
 
+## Configure timeouts
+
+By default, requests wait indefinitely. Pass a `timeout` argument to `KestraClient` to limit how long requests wait before raising `requests.Timeout`.
+
+Using a `Configuration` object:
+
+```python
+from kestrapy import Configuration, KestraClient
+
+configuration = Configuration(host="http://localhost:8080", username="root@root.com", password="Root!1234")
+
+kestra_client = KestraClient(configuration, timeout=30.0)        # float: connect + read combined
+kestra_client = KestraClient(configuration, timeout=(10.0, 300.0))  # tuple: (connect, read)
+kestra_client = KestraClient(configuration, timeout=None)        # None: no timeout (default)
+```
+
+Using keyword arguments directly:
+
+```python
+from kestrapy import KestraClient
+
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token", timeout=30.0)
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token", timeout=(10.0, 300.0))
+kestra_client = KestraClient(host="http://localhost:8080", token="your-api-token", timeout=None)
+```
+
+The `timeout` value is forwarded directly to [`requests`](https://docs.python-requests.org/en/latest/user/advanced/#timeouts), so any form that `requests` accepts is valid.
+
+---
+
 ## Create a flow
 
 Pass the flow definition as a YAML string to [`create_flow`](https://github.com/kestra-io/client-sdk/blob/main/python-sdk/docs/FlowsApi.md#create_flow).
@@ -188,6 +218,46 @@ def follow_execution():
 
 :::alert{type="info"}
 The first SSE payload is an empty keepalive — skip it before processing subsequent events. Use `follow_execution` for CI/CD pipelines or real-time dashboards.
+:::
+
+---
+
+## Read execution logs
+
+### List logs
+
+Fetch all log entries for a completed execution:
+
+```python
+def list_logs():
+    tenant = "main"
+    logs = kestra_client.logs.list_logs_from_execution(
+        execution_id="your-execution-id",
+        tenant=tenant,
+        min_level="INFO",  # optional; filters to INFO and above
+    )
+    for entry in logs:
+        print(f"[{entry.level}] {entry.message}")
+```
+
+### Stream logs live
+
+`follow_logs_from_execution` yields `LogEntry` items as the execution produces them. The server sends an initial keepalive frame with all fields `None` — skip entries where `execution_id` is `None`.
+
+```python
+def follow_logs():
+    tenant = "main"
+    for entry in kestra_client.logs.follow_logs_from_execution(
+        execution_id="your-execution-id",
+        tenant=tenant,
+    ):
+        if entry.execution_id is None:
+            continue  # keepalive frame
+        print(f"[{entry.level}] {entry.message}")
+```
+
+:::alert{type="info"}
+The `min_level` parameter on `follow_logs_from_execution` is not applied by the Kestra 2.0 server — pass no filter and handle level filtering in the consumer loop if needed.
 :::
 
 ---
