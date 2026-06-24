@@ -6,6 +6,7 @@ import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
 import { retrieveRepoReleases } from "~/utils/plugins/repoReleases"
+import { compareVersionsDesc } from "~/utils/plugins/compareVersions"
 import type { PluginPage } from "./types"
 
 const EE_RELEASES_PAGE_SIZE = 100
@@ -86,6 +87,37 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
             })
         } catch (e) {
             console.error("Artifacts annotation failed", e)
+        }
+    }
+
+    // Fallback so a rate-limited/empty GitHub releases response does not blank the version panel.
+    // OSS plugins are in the artifacts catalog (already fetched above); core ships in the CLI and is
+    // not a catalog artifact, so it falls back to the core versions endpoint instead. Dates are kept
+    // when present (EE artifacts carry publishedAt; OSS/core fallbacks have none until the backend fills it).
+    if (!isEePlugin && !githubVersions.versions?.length) {
+        try {
+            if (pluginName === "core") {
+                const coreVersions = await $fetchApiCached<{ version: string }[]>(`/versions`)
+                githubVersions.versions = coreVersions
+                    .filter((v) => {
+                        const major = parseInt(v.version.split(".")[0])
+                        return !isNaN(major) && major >= 1
+                    })
+                    .map((v) => ({ version: v.version, publishedAt: null }))
+                    .toSorted((a, b) => compareVersionsDesc(a.version, b.version))
+            } else {
+                githubVersions.versions = (Object.values(artifactsData).flat() as any[])
+                    .filter((a) => a?.version)
+                    .map((a) => ({
+                        version: a.version,
+                        publishedAt: a.publishedAt ?? null,
+                        minCoreCompatibilityVersion: a.minCoreCompatibilityVersion,
+                        releaseNotesUrl: a.releaseNotesUrl,
+                    }))
+                    .toSorted((a, b) => compareVersionsDesc(a.version, b.version))
+            }
+        } catch (e) {
+            console.error("Version list fallback failed", e)
         }
     }
 
