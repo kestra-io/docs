@@ -1,5 +1,5 @@
 ---
-title: "Flow Hardening with Coding Agents as Advisors"
+title: "Your AI Wrote the Flow. Will It Survive Production?"
 description: "Coding agents are great at scaffolding Kestra flows. Turning those flows into automation that survives production is a different skill — and that's exactly where domain-expert knowledge, encoded as an agent skill, turns a fast autocomplete into a reliable advisor. Here's how an agent hardened two small example weather-extraction flows."
 date: 2026-06-24T09:00:00
 category: Solutions
