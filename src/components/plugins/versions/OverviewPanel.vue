@@ -81,7 +81,7 @@
     import Github from "vue-material-design-icons/Github.vue"
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
     import Versions from "./Versions.vue"
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
     import kestraIcon from "../assets/kestra.svg"
     import conapiIcon from "../assets/conapi.svg"
 

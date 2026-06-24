@@ -71,7 +71,7 @@
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
     import type { TocLink } from "~/utils/plugins/types"
 
     const MIN_DEPTH = 2

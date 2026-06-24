@@ -53,7 +53,7 @@
     import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue"
     import MenuDown from "vue-material-design-icons/MenuDown.vue"
     import MenuUp from "vue-material-design-icons/MenuUp.vue"
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
     import { useVersions } from "./useVersions"
 
     const props = defineProps<{

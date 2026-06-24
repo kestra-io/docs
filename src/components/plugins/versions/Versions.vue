@@ -33,7 +33,7 @@
 <script setup lang="ts">
     import { ref } from "vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
     import VersionDropdown from "./VersionDropdown.vue"
     import { useVersions } from "./useVersions"
 

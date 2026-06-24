@@ -1,5 +1,5 @@
 import { computed } from "vue"
-import type { ReleaseInfo } from "../../../pages/api/github-releases"
+import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
 
 export interface VersionProps {
     releaseVersions: ReleaseInfo[]

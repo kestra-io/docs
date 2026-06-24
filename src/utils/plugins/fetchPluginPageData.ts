@@ -5,7 +5,7 @@ import type { Plugin, PluginMetadata } from "./plugin"
 import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
 import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
-import { retrieveRepoReleases } from "../../pages/api/github-releases"
+import { retrieveRepoReleases } from "~/utils/plugins/repoReleases"
 import type { PluginPage } from "./types"
 
 const EE_RELEASES_PAGE_SIZE = 100
