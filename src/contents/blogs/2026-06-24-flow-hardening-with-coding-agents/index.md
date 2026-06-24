@@ -1,6 +1,6 @@
 ---
 title: "Flow Hardening with Coding Agents as Advisors"
-description: "Coding agents are great at scaffolding Kestra flows. Turning those flows into automation that survives production is a different skill — and that's exactly where domain-expert knowledge, encoded as an agent skill, turns a fast autocomplete into a reliable advisor. Here's how an agent hardened two real weather-extraction flows."
+description: "Coding agents are great at scaffolding Kestra flows. Turning those flows into automation that survives production is a different skill — and that's exactly where domain-expert knowledge, encoded as an agent skill, turns a fast autocomplete into a reliable advisor. Here's how an agent hardened two small example weather-extraction flows."
 date: 2026-06-24T09:00:00
 category: Solutions
 author:
@@ -35,7 +35,7 @@ The bottleneck is everything that happens *after* it works once on your laptop. 
 
 This is the part people assume AI can't help with, because it looks like it requires taste and scar tissue. It does. But taste and scar tissue can be written down. When the Kestra team's production knowledge is packaged as an **agent skill**, the coding agent stops behaving like an autocomplete and starts behaving like a senior reviewer sitting next to you.
 
-This post walks through exactly that, using two real flows we recently hardened.
+This post walks through exactly that, using two small example flows we recently hardened. They're deliberately simple — meant to illustrate the *approach*, not to stand in for a real production pipeline.
 
 ## Generation is easy. Hardening is the hard part.
 
