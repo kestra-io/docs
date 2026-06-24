@@ -30,7 +30,7 @@
     "@astrojs/mdx": "^7.0.0",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/vue": "^7.0.0",
-    "@cloudflare/workers-types": "^4.20260621.1",
+    "@cloudflare/workers-types": "^4.20260624.1",
     "@gtm-support/vue-gtm": "^3.2.0",
     "@iconify-json/mdi": "^1.2.3",
     "@kestra-io/topology": "^0.0.2",
@@ -59,9 +59,9 @@
     "lottie-web": "^5.13.0",
     "medium-zoom": "^1.1.0",
     "mermaid": "^11.15.0",
-    "oxfmt": "^0.55.0",
-    "oxlint": "^1.70.0",
-    "posthog-js": "^1.391.7",
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
+    "posthog-js": "^1.393.0",
     "prettier": "^3.8.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
@@ -82,7 +82,7 @@
     "vue": "^3.5.38",
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel": "^0.17.0",
-    "wrangler": "^4.103.0"
+    "wrangler": "^4.104.0"
   },
   "devDependencies": {
     "@astrojs/node": "^11.0.0",
