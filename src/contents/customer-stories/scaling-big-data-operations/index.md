@@ -30,7 +30,7 @@ quotePersonTitle: ""
 industry: Customer Intelligence
 industry2: Marketing
 headquarter: "Conway, Arkansas, USA"
-region: North America
+region: Americas
 companySize: "5,000+"
 solution: Acxiom is a data technology company that provides customer data management, data integration, and marketing intelligence to global enterprise brands. Through its Axiom Cloud platform, Acxiom helps clients ingest, validate, cleanse, and enrich data at scale, with each client running as an isolated tenant in a dedicated pipeline environment.
 tagline: Global leader in customer intelligence and AI-driven marketing

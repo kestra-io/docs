@@ -29,7 +29,7 @@ quote: Kestra turned automation into a governed platform instead of a collection
   of scripts.
 quotePerson: Platform Engineering Lead
 quotePersonTitle: ""
-industry: Enterprise Software (Regulated Industries)
+industry: Cloud Provider
 headquarter: Switzerland
 region: Europe
 companySize: "501–5,000"

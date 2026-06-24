@@ -196,14 +196,40 @@ onUnmounted(() => {
 
 <style scoped>
 /* ── track ── */
-.fc-carousel-row {
-    display: flex;
+/* desktop: arrows flank the track, dots centered below.
+   mobile: track full-width, arrows drop to the bottom row flanking the dots. */
+.fc-root {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+        "prev track next"
+        "nav  nav   nav";
     align-items: center;
-    gap: 0.75rem;
+    column-gap: 0.75rem;
+    row-gap: 1.25rem;
+}
+
+/* promote the row's children (arrows + track) into the .fc-root grid */
+.fc-carousel-row {
+    display: contents;
+}
+
+.fc-carousel-row > .fc-arrow:first-child { grid-area: prev; }
+.fc-carousel-row > .fc-arrow:last-child  { grid-area: next; }
+
+@media (max-width: 767px) {
+    .fc-root {
+        grid-template-areas:
+            "track track track"
+            "prev  nav   next";
+        column-gap: 0.5rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
 }
 
 .fc-track {
-    flex: 1;
+    grid-area: track;
     min-width: 0;
 }
 
@@ -464,9 +490,9 @@ onUnmounted(() => {
 
 /* ── nav ── */
 .fc-nav {
+    grid-area: nav;
     display: flex;
     justify-content: center;
-    padding-top: 1.25rem;
 }
 
 .fc-arrow {

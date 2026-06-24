@@ -34,7 +34,7 @@ quotePersonTitle: ""
 industry: Banking
 industry2: Investment
 headquarter: New York City, USA
-region: North America
+region: Americas
 companySize: "5,000+"
 solution: Helping power economic growth by creating opportunities for all through business and community investments, local collaborations and policy advocacy.
 tagline: Global financial services and investment banking leader

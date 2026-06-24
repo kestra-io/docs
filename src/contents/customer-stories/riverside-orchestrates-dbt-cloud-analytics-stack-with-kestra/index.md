@@ -33,7 +33,7 @@ quotePersonTitle: Analytics Engineering Lead, Riverside
 industry: Media Tech
 industry2: SaaS
 headquarter: Tel Aviv, Israel
-region: North America
+region: Americas
 companySize: "51–500"
 solution: Orchestration layer connecting ELT ingestion, sequential dbt Cloud jobs, Metaplane data quality gates, and Hightouch reverse ETL across Riverside's Snowflake-based analytics stack
 tagline: Remote recording platform for podcasts and video interviews

@@ -29,7 +29,7 @@ quotePerson: Senior Engineering Manager
 quotePersonTitle: Apple ML Team
 industry: Technology Services
 headquarter: Cupertino, USA
-region: North America
+region: Americas
 companySize: "5,000+"
 solution: Apple is a global technology leader whose services, including the App Store, Apple Music, and device ecosystems, generate some of the world's largest data volumes, processed daily by a 200-engineer ML team.
 tagline: Global technology company behind iPhone, Mac, and the world's largest app marketplace
