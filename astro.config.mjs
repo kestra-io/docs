@@ -1,5 +1,11 @@
 // @ts-check
-import {defineConfig, envField, fontProviders, svgoOptimizer} from "astro/config"
+import {
+    defineConfig,
+    envField,
+    fontProviders,
+    svgoOptimizer,
+} from "astro/config"
+import { unified } from "@astrojs/markdown-remark"
 
 import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
@@ -60,74 +66,76 @@ export default defineConfig({
         icon(),
     ],
     markdown: {
-        remarkPlugins: [
-            remarkGfm,
-            remarkMermaid,
-            remarkClassname,
-            remarkDirective,
-            remarkCustomElements,
-            // when internal docs links we point to real files
-            // while in the docs generated we want to point to urls with generated ids
-            // @ts-expect-error bad types in astro
-            [
-                customRemarkLinkRewrite,
-                {
-                    /**
-                     *
-                     * @param {string} url
-                     * @param {{basename?: string, dirname?: string}} file
-                     * @returns
-                     */
-                    replacer(url, file) {
-                        if (url.startsWith(".")) {
-                            // Extract hash fragment before processing relative URLs
-                            let hash = ""
-                            if (url.includes("#")) {
-                                const hashIndex = url.indexOf("#")
-                                hash = url.slice(hashIndex)
-                                url = url.slice(0, hashIndex)
-                            }
-
-                            // if the file basename starts with index.
-                            if (
-                                file.basename &&
-                                file.basename.startsWith("index.")
-                            ) {
-                                // if the url start with ./
-                                if (url.startsWith("./") && file.dirname) {
-                                    // we preprend to the path the last part of the dirname
-                                    url = path.join(
-                                        path.basename(file.dirname),
-                                        url.slice(2),
-                                    )
+        processor: unified({
+            remarkPlugins: [
+                remarkGfm,
+                remarkMermaid,
+                remarkClassname,
+                remarkDirective,
+                remarkCustomElements,
+                // when internal docs links we point to real files
+                // while in the docs generated we want to point to urls with generated ids
+                // @ts-expect-error bad types in astro
+                [
+                    customRemarkLinkRewrite,
+                    {
+                        /**
+                         *
+                         * @param {string} url
+                         * @param {{basename?: string, dirname?: string}} file
+                         * @returns
+                         */
+                        replacer(url, file) {
+                            if (url.startsWith(".")) {
+                                // Extract hash fragment before processing relative URLs
+                                let hash = ""
+                                if (url.includes("#")) {
+                                    const hashIndex = url.indexOf("#")
+                                    hash = url.slice(hashIndex)
+                                    url = url.slice(0, hashIndex)
                                 }
 
-                                // if the url starts with ../
-                                if (url.startsWith("../")) {
-                                    // we replace ../ by ./
-                                    url = "./" + url.slice(3)
-                                }
-                            }
+                                // if the file basename starts with index.
+                                if (
+                                    file.basename &&
+                                    file.basename.startsWith("index.")
+                                ) {
+                                    // if the url start with ./
+                                    if (url.startsWith("./") && file.dirname) {
+                                        // we preprend to the path the last part of the dirname
+                                        url = path.join(
+                                            path.basename(file.dirname),
+                                            url.slice(2),
+                                        )
+                                    }
 
-                            return generateId({ entry: url }) + hash
-                        }
-                        return url
+                                    // if the url starts with ../
+                                    if (url.startsWith("../")) {
+                                        // we replace ../ by ./
+                                        url = "./" + url.slice(3)
+                                    }
+                                }
+
+                                return generateId({ entry: url }) + hash
+                            }
+                            return url
+                        },
                     },
-                },
+                ],
             ],
-        ],
-        rehypePlugins: [
-            rehypeHeadingIds,
-            rehypeAutolinkHeadings,
-            rehypeImgPlugin,
-            [
-                rehypeExternalLinks,
-                {
-                    target: "_blank",
-                    rel: ["noopener", "noreferrer"],
-                },
+            rehypePlugins: [
+                rehypeHeadingIds,
+                rehypeAutolinkHeadings,
+                rehypeImgPlugin,
+                [
+                    rehypeExternalLinks,
+                    {
+                        target: "_blank",
+                        rel: ["noopener", "noreferrer"],
+                    },
+                ],
             ],
-        ],
+        }),
     },
     image: {
         layout: "constrained",
@@ -288,6 +296,9 @@ export default defineConfig({
                     __dirname,
                     "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
                 ),
+                // Mirror the tsconfig `~/*` paths so the alias also resolves
+                // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
+                "~": path.resolve(__dirname, "src"),
             },
         },
         css: {

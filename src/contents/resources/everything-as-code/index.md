@@ -161,7 +161,7 @@ While the benefits of EaC are significant, the transition can present challenges
 ### Overcoming complexity in large-scale environments
 
 As more of the system is codified, the amount of code can grow rapidly, leading to its own complexity. To manage this, apply software engineering principles:
-- **Modularity:** Break down large configurations into smaller, reusable modules. Kestra supports this through [subflows](https://kestra.io/docs/concepts/subflows).
+- **Modularity:** Break down large configurations into smaller, reusable modules. Kestra supports this through subflows.
 - **Organization:** Use clear naming conventions and a logical directory structure. Kestra's [namespaces](https://kestra.io/docs/workflow-components/namespace) help organize workflows hierarchically.
 - **Documentation:** Document your code, especially the "why" behind design decisions.
 
@@ -197,7 +197,7 @@ EaC requires the ability to interact with a diverse set of tools and languages. 
 
 ### GitOps for workflows and resources
 
-Kestra provides first-class support for GitOps. You can [synchronize your workflows, namespace files, and even dashboards directly from a Git repository](https://kestra.io/docs/version-control-cicd/git). This means your orchestration platform's state is always in sync with your single source of truth in Git, enabling true [GitOps superpowers for all your workflows](https://kestra.io/blogs/gitops-superpowers).
+Kestra provides first-class support for GitOps. You can [synchronize your workflows, namespace files, and even dashboards directly from a Git repository](https://kestra.io/docs/version-control-cicd/git). This means your orchestration platform's state is always in sync with your single source of truth in Git, enabling true GitOps superpowers for all your workflows.
 
 ### Unifying data, AI, and infrastructure orchestration
 

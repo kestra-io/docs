@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.22
+  version: 1.3.24
 tags:
 - name: Flows
   description: Flows api
@@ -3216,6 +3216,44 @@ paths:
       responses:
         "200":
           description: previewApp 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/apps/preview/dispatch/{dispatch}:
+    post:
+      tags:
+      - Apps
+      summary: Dispatch for the given app source (preview).
+      operationId: previewDispatchApp
+      parameters:
+      - name: dispatch
+        in: path
+        description: The ID to dispatch
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The app source (part '__kestra_app_source__') and the dispatch
+          data
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              items:
+                type: string
+                format: binary
+      responses:
+        "200":
+          description: previewDispatchApp 200 response
           content:
             application/json:
               schema:
@@ -19174,10 +19212,14 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError:
+      required:
+      - message
       type: object
       properties:
         message:
           type: string
+        renderError:
+          type: boolean
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -23724,6 +23766,7 @@ components:
       - MULTISELECT
       - YAML
       - EMAIL
+      - FORM
     UnitTest:
       required:
       - assertions

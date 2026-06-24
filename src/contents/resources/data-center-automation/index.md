@@ -63,7 +63,7 @@ Data center automation applies to a wide range of operational tasks. Common use 
 ### What are the top 5 automation tools?
 While the "best" tool depends on the specific task, a typical data center automation stack includes several key players:
 1.  **Ansible:** An agentless configuration management tool used for application deployment, configuration, and orchestration. It excels at procedural, task-based automation.
-2.  **Terraform:** A leading [Infrastructure as Code tool](/orchestrate/terraform) for provisioning and managing infrastructure declaratively across multiple cloud providers and on-premises environments.
+2.  **Terraform:** A leading [Infrastructure as Code tool](/orchestration/terraform) for provisioning and managing infrastructure declaratively across multiple cloud providers and on-premises environments.
 3.  **Kubernetes:** The de-facto standard for container orchestration, automating the deployment, scaling, and management of containerized applications.
 4.  **Workload Automation Platforms (e.g., Control-M):** Traditional enterprise schedulers designed for managing complex batch jobs and dependencies, often in large, heterogeneous environments.
 5.  **Universal Orchestrators (e.g., Kestra):** Modern platforms that act as a control plane to integrate and coordinate all the other tools, managing end-to-end workflows across different domains.

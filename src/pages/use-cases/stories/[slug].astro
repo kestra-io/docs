@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from "astro"
-import { getCollection, type CollectionEntry } from "astro:content"
+import { getCollection } from "astro:content"
 import { slugify } from "~/utils/slugify"
 
 export const getStaticPaths = (async () => {
@@ -13,6 +13,5 @@ export const getStaticPaths = (async () => {
     }))
 }) satisfies GetStaticPaths
 
-const { newSlug } = Astro.props
-return Astro.redirect(`/customers/${newSlug}`, 301)
+return Astro.redirect(`/customers/${Astro.props.newSlug}`, 301)
 ---
