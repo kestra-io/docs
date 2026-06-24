@@ -49,7 +49,7 @@ const storiesWithKpis = featuredStories.map((story) => ({
 <section class="stories-hero">
     <div class="container">
         <div class="hero-intro">
-            <h1>Trusted worldwide as the default<br />workflow orchestration platform.</h1>
+            <h1>Trusted worldwide as the default<br />workflow orchestration platform<span class="accent-dot">.</span></h1>
             <p class="hero-sub">Browse stories from engineering teams across every industry. Find the use case that matches yours — and see exactly how they built it.</p>
         </div>
 
@@ -95,6 +95,10 @@ const storiesWithKpis = featuredStories.map((story) => ({
             color: white;
             letter-spacing: -0.02em;
             margin: 0 0 1rem;
+
+            .accent-dot {
+                color: #f62e76;
+            }
         }
 
         .hero-sub {

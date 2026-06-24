@@ -21,21 +21,23 @@
             </div>
         </div>
 
-        <p v-if="story.useCase" class="card-use-case">
-            <span class="card-use-case-label">→</span> {{ story.useCase }}
-        </p>
+        <div class="card-bottom">
+            <p v-if="story.useCase" class="card-use-case">
+                <span class="card-use-case-label">→</span> {{ story.useCase }}
+            </p>
 
-        <KpiRotator :kpis="kpis" />
+            <KpiRotator :kpis="kpis" />
 
-        <div class="card-footer">
-            <span class="card-plugins-label">Plugins Used :</span>
-            <div class="card-tasks">
-                <div
-                    class="task-icon-wrap"
-                    v-for="task in story.tasks.slice(0, 4)"
-                    :key="task"
-                >
-                    <TaskIcon :cls="task" />
+            <div class="card-footer">
+                <span class="card-plugins-label">Plugins Used :</span>
+                <div class="card-tasks">
+                    <div
+                        class="task-icon-wrap"
+                        v-for="task in story.tasks.slice(0, 4)"
+                        :key="task"
+                    >
+                        <TaskIcon :cls="task" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -175,6 +177,12 @@
         min-height: calc(0.8125rem * 1.5 * 3);
     }
 
+    /* the bottom group (use-case + KPIs + footer) sticks to the bottom,
+       so its position is independent of the .card-short-desc height */
+    .card-bottom {
+        margin-top: auto;
+    }
+
     .card-use-case {
         font-size: 0.8125rem;
         line-height: 1.5;
@@ -196,7 +204,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: auto;
         padding-top: 0.75rem;
         gap: 0.5rem;
     }
