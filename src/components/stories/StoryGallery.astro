@@ -140,13 +140,25 @@ const storiesWithKpis = featuredStories.map((story) => ({
             font-size: 0.9375rem;
             font-weight: 600;
             color: var(--ks-content-primary);
-            margin-right: auto;
+            flex-shrink: 0;
         }
 
+        /* large: all 4 filters in one row · tablet: 2×2 · mobile: 1 column */
         .filters {
-            display: flex;
+            flex: 1;
+            min-width: 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 0.75rem;
-            flex-wrap: wrap;
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: minmax(0, 1fr);
+            }
         }
 
         .filter-select {
@@ -162,7 +174,7 @@ const storiesWithKpis = featuredStories.map((story) => ({
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2387858f' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 0.75rem center;
-            width: 200px;
+            width: 100%;
             transition: border-color 0.15s;
 
             &:focus {
