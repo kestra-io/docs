@@ -21,7 +21,8 @@
     "lint": "oxlint --fix",
     "format": "oxfmt . --write && prettier --write **/*.astro",
     "test:visual": "playwright test",
-    "test:visual:update": "playwright test --update-snapshots"
+    "test:visual:update": "playwright test --update-snapshots",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
@@ -86,7 +87,8 @@
   },
   "devDependencies": {
     "@astrojs/node": "^11.0.0",
-    "@playwright/test": "^1.61.0"
+    "@playwright/test": "^1.61.0",
+    "vitest": "^4.1.8"
   },
   "engines": {
     "node": ">= 14",

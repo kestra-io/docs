@@ -180,7 +180,7 @@ useCases:
 quotes:
   - quote: "Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently."
     author: "Director of Engineering, Acxiom"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 blueprints:
   title: "Blueprints for AWS orchestration."
