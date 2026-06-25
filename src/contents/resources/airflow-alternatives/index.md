@@ -54,7 +54,7 @@ Kestra is an open-source, event-driven orchestration platform that unifies data,
 - **Declarative YAML:** Workflows are defined in simple, human-readable YAML. This makes them easy to version control, review in pull requests, and manage with GitOps practices. Non-engineers can understand and even contribute to workflow logic.
 - **Polyglot & Language-Agnostic:** Kestra runs any code, anywhere. It has first-class support for Python, SQL, Bash, R, Node.js, and Java, as well as Docker containers, without requiring Python wrappers.
 - **Event-Driven by Default:** Kestra is built for modern, event-driven architectures. It can trigger workflows from webhooks, message queues (Kafka, SQS), file detections (S3, GCS), and more, with millisecond-level latency.
-- **Unified Orchestration:** Unlike tools focused solely on data, Kestra is a universal orchestrator. Teams at companies like [Apple and Crédit Agricole](https://kestra.io/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra) use it to coordinate everything from infrastructure provisioning with Terraform to complex AI pipelines.
+- **Unified Orchestration:** Unlike tools focused solely on data, Kestra is a universal orchestrator. Teams at companies like [Apple and Crédit Agricole](https://kestra.io/customers/apple) use it to coordinate everything from infrastructure provisioning with Terraform to complex AI pipelines.
 - **Lower Operational Overhead:** Built on a robust JVM-based architecture, Kestra is a single binary that simplifies deployment and scaling compared to Airflow's complex distributed system.
 
 ```yaml

@@ -162,7 +162,7 @@ By offloading these tasks to an automated workflow, the team can focus its limit
 
 ### Empowering founders and non-technical staff
 
-Founders and early employees are often generalists, not technical specialists. AI orchestration platforms empower them to build the solutions they need without hiring expensive developers or consultants. A marketing manager can build a lead nurturing workflow, an operations lead can automate inventory checks, and a founder can create a system to track key business metrics—all on their own. This self-service capability is crucial for agile, fast-moving companies. As seen in [customer stories](/use-cases/stories), companies like [CleverConnect](/blogs/2023-11-21-clever-connect-hr-tech) leverage orchestration to scale their core business operations efficiently.
+Founders and early employees are often generalists, not technical specialists. AI orchestration platforms empower them to build the solutions they need without hiring expensive developers or consultants. A marketing manager can build a lead nurturing workflow, an operations lead can automate inventory checks, and a founder can create a system to track key business metrics—all on their own. This self-service capability is crucial for agile, fast-moving companies. As seen in [customer stories](/customers), companies like [CleverConnect](/blogs/2023-11-21-clever-connect-hr-tech) leverage orchestration to scale their core business operations efficiently.
 
 ### Scaling operations with AI, simply
 

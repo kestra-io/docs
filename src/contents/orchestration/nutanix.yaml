@@ -180,7 +180,7 @@ useCases:
 quotes:
   - quote: "Kestra allowed us to move from fragmented automation to a unified control plane, secure, scalable, and manageable by all our teams."
     author: "Julien Legrand, PO Data · Crédit Agricole"
-    storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    storyLink: "/customers/credit-agricole"
     logoFile: "credit-agricole"
 
 blueprints:
