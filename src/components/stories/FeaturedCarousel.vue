@@ -58,7 +58,8 @@ function goTo(i: number) {
 }
 
 function prev() { goTo(currentIdx.value - 1) }
-function next() { goTo(currentIdx.value + 1) }
+// at the end, loop naturally back to the first slide
+function next() { goTo(currentIdx.value >= maxIdx.value ? 0 : currentIdx.value + 1) }
 
 function onScroll() {
     const w = cardWidth()
@@ -170,7 +171,6 @@ onUnmounted(() => {
         <button
             class="fc-arrow"
             @click="next"
-            :disabled="currentIdx >= maxIdx"
             aria-label="Next story"
         >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
