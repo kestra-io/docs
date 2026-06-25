@@ -121,6 +121,22 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
         }
     }
 
+    // Restrict the dropdown to versions that actually exist for THIS artifact. GitHub releases are
+    // repo-wide, so a monorepo (e.g. plugin-scripts ships dotnet, python, shell...) lists every repo
+    // release for each sub-plugin — a sub-plugin like plugin-script-dotnet (introduced at 1.9.0) would
+    // otherwise offer 1.2.0 etc. and 404 on archived docs. The artifacts index holds the full per-artifact
+    // history, so intersect with it. Guarded: if the intersection is empty (index lag, EE, or core, which
+    // is not a catalog artifact), keep the original list so the panel never blanks.
+    if (!isEePlugin && pluginName !== "core" && githubVersions.versions?.length) {
+        const artifactVersions = new Set(
+            (Object.values(artifactsData).flat() as any[]).map((a) => a?.version).filter(Boolean),
+        )
+        if (artifactVersions.size) {
+            const filtered = githubVersions.versions.filter((v: any) => artifactVersions.has(v.version))
+            if (filtered.length) githubVersions.versions = filtered
+        }
+    }
+
     return { githubVersions, allPlugins, allPluginMetadata, pluginsInformations }
 }
 
