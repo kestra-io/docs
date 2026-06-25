@@ -17,12 +17,16 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import type { CollectionEntry } from "astro:content"
     import dayjs from "dayjs"
-    import { tagLabel, tagStyle } from "./tags"
+    import { tagLabel, tagStyle, type ResourceTag } from "./tags"
 
     const props = defineProps<{
-        resource: CollectionEntry<"resources">
+        resource: {
+            data: {
+                tag: ResourceTag
+                date?: string | Date
+            }
+        }
     }>()
 
     const tagName = computed(() => tagLabel[props.resource.data.tag])
