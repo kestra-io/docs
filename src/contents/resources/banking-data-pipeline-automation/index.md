@@ -100,7 +100,7 @@ triggers:
 ```
 
 ### Case studies: Real-world impact with Kestra
-Leading financial institutions are already leveraging Kestra to modernize their operations. For instance, [JPMorgan Chase](https://kestra.io/use-cases/stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows) uses Kestra to orchestrate cybersecurity analytics workflows that process billions of rows and trigger automated remediation actions. Similarly, [Crédit Agricole](https://kestra.io/use-cases/stories/19-scaling-secure-infrastructure-at-credit-agricole-with-kestra) replaced a complex web of scripts and cron jobs with Kestra, creating a unified and secure orchestration layer for their infrastructure. These examples, highlighted in our [Series A announcement](https://kestra.io/blogs/kestra-series-a), demonstrate Kestra's capacity to handle mission-critical workflows at enterprise scale.
+Leading financial institutions are already leveraging Kestra to modernize their operations. For instance, [JPMorgan Chase](https://kestra.io/customers/jpmorgan-chase) uses Kestra to orchestrate cybersecurity analytics workflows that process billions of rows and trigger automated remediation actions. Similarly, [Crédit Agricole](https://kestra.io/customers/credit-agricole) replaced a complex web of scripts and cron jobs with Kestra, creating a unified and secure orchestration layer for their infrastructure. These examples, highlighted in our [Series A announcement](https://kestra.io/blogs/kestra-series-a), demonstrate Kestra's capacity to handle mission-critical workflows at enterprise scale.
 
 ## Addressing Challenges in Financial Data Orchestration
 

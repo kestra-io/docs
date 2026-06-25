@@ -152,7 +152,7 @@ An [AI agent](https://kestra.io/resources/ai/ai-agent) is a system that can perc
 
 ### How Agentic AI Platforms Revolutionize Business
 
-The applications of agentic AI are vast. In cybersecurity, agents can autonomously detect threats and execute remediation workflows. In IT operations, they can diagnose system failures and attempt repairs without human intervention. Leading tech companies are already leveraging this paradigm; for instance, [Apple's ML team orchestrates large-scale data pipelines with Kestra](https://kestra.io/use-cases/stories/32-apple's-ml-team-orchestrates-large-scale-data-pipelines-with-kestra) to manage complex dependencies across their services. This level of automation frees up human experts to focus on more strategic tasks, driving significant efficiency gains.
+The applications of agentic AI are vast. In cybersecurity, agents can autonomously detect threats and execute remediation workflows. In IT operations, they can diagnose system failures and attempt repairs without human intervention. Leading tech companies are already leveraging this paradigm; for instance, [Apple's ML team orchestrates large-scale data pipelines with Kestra](https://kestra.io/customers/apple) to manage complex dependencies across their services. This level of automation frees up human experts to focus on more strategic tasks, driving significant efficiency gains.
 
 ### Coordinating AI Agents for Collaborative Teams
 
