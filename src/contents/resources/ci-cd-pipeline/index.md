@@ -158,6 +158,6 @@ For example, a single Kestra workflow can:
 4. Deploy an application to that infrastructure.
 5. Notify a Slack channel upon completion.
 
-This unification breaks down the silos between application CI/CD, data engineering, and infrastructure automation. Companies like Crédit Agricole and BHP leverage Kestra to manage complex, cross-domain workflows at scale, achieving the reliability and speed that CI/CD promises. By providing a single control plane, Kestra allows you to truly [orchestrate your entire infrastructure](/infra-automation) and development lifecycle.
+This unification breaks down the silos between application CI/CD, data engineering, and infrastructure automation. Companies like Crédit Agricole and other Fortune 500 enterprises leverage Kestra to manage complex, cross-domain workflows at scale, achieving the reliability and speed that CI/CD promises. By providing a single control plane, Kestra allows you to truly [orchestrate your entire infrastructure](/infra-automation) and development lifecycle.
 
 To explore more resources on this topic, check out our guides on [infrastructure automation](/resources/infrastructure).
