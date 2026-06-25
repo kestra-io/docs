@@ -21,7 +21,7 @@ Agent Skills follow an emerging standard for giving AI tools domain-specific kno
 
 ## Available Skills
 
-Kestra provides two skills in the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository.
+Kestra provides four skills in the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository.
 
 ### kestra-flow
 
@@ -42,6 +42,28 @@ Generate, modify, or debug Kestra Flow YAML grounded in the live flow schema —
 
 ```plaintext
 Use kestra-flow to write a flow that polls a REST API every 30 minutes and stores the result in KV store.
+```
+
+### kestra-flow-hardening
+
+Audit existing flows and add production-hardening controls — the consulting counterpart to `kestra-flow`. It is **audit-first**: it produces a severity-ranked findings report (risk, caveat, and proposed fix per finding), then applies only the edits you confirm.
+
+**Use when:**
+- Hardening one or more flows for production
+- Auditing flows for resilience, idempotency, and guardrail gaps
+- Adding retries, timeouts, error handling, concurrency limits, SLAs, or idempotency guards
+
+**Covers:**
+- Severity-ranked audit report (Critical / High / Medium / Low) with risk, caveat, and proposed fix per finding
+- Idempotency judgment — never recommends a blind retry on a non-idempotent write; flags the dedup-guard vs. retry-if-safe branches
+- Proportional auditing calibrated by flow signals (triggers, side-effects, namespace environment); "already sound" is a valid result
+- Surgical, schema-validated edits applied on confirmation, inline and structure-preserving
+- Version- and edition-aware (OSS / EE), with EE-only patterns labeled and given an OSS fallback
+
+**Example prompt:**
+
+```plaintext
+Use kestra-flow-hardening to audit the flows in ./flows and add retries, timeouts, and failure alerting where they're missing.
 ```
 
 ### kestra-ops
@@ -67,10 +89,32 @@ Operate Kestra using `kestractl` for flow, execution, namespace, and namespace-f
 Use kestra-ops to validate and deploy all flows in ./flows to prod.namespace with fail-fast enabled.
 ```
 
+### migrate-airflow-kestra
+
+Migrate an Apache Airflow DAG to a production-ready Kestra flow, preserving task dependencies and parallelism.
+
+**Use when:**
+- Converting an Airflow DAG (`.py`) to a Kestra flow YAML
+- Translating `@task`-decorated functions or operators into Kestra tasks
+- Preserving Airflow parallel execution (fan-out/fan-in) in Kestra
+
+**Covers:**
+- Reading and analysing the Airflow DAG structure, tasks, and dependencies
+- Fetching the live Kestra schema from `https://api.kestra.io/v1/plugins/schemas/flow`
+- Extracting Python business logic into namespace files
+- Generating schema-validated Kestra flow YAML with correct task ordering and parallelism
+- Mapping Airflow XCom data passing to Kestra `outputFiles`/`inputFiles`
+
+**Example prompt:**
+
+```plaintext
+Use migrate-airflow-kestra to migrate dags/ingest_pipeline.py from Airflow to Kestra, output to kestra/.
+```
+
 ## Prerequisites
 
 - **AI coding agent**: Claude Code, Cursor, Windsurf, OpenAI Codex, OpenCode, or any agent that supports skill files
-- **For kestra-flow**: `curl` and network access to `https://api.kestra.io`
+- **For kestra-flow, kestra-flow-hardening, and migrate-airflow-kestra**: `curl` and network access to `https://api.kestra.io`
 - **For kestra-ops**: [`kestractl`](../../kestra-cli/kestractl/index.md) installed with valid credentials
 
 ## Setup
@@ -95,7 +139,7 @@ curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/ke
   -o .claude/skills/kestra-ops/SKILL.md
 ```
 
-Repeat for any other skill you need (e.g. `kestra-flow`). Adjust the target directory for your agent — `.cursor/rules/` for Cursor, `.agents/skills/` for OpenAI Codex, etc.
+Repeat for any other skill you need (e.g. `kestra-flow`). Adjust the target directory for your agent — `.cursor/rules/` for Cursor, `.agents/skills/` for OpenAI Codex, etc. Some skills ship supporting files alongside `SKILL.md` (for example, `kestra-flow-hardening` includes `references/hardening-patterns.md`) — copy the whole skill directory so those files are available. Using `skills.sh` handles this automatically.
 
 ## Example Workflows
 
@@ -110,6 +154,17 @@ in KV store under the key "latest_metrics".
 ```
 
 The agent will fetch the live schema, generate valid YAML with a `Schedule` trigger and `io.kestra.plugin.core.kv.Set` task, and output ready-to-deploy flow code.
+
+### Harden a flow for production with kestra-flow-hardening
+
+Ask your agent to audit an existing flow and add resilience controls before promoting it to production:
+
+```plaintext
+Use kestra-flow-hardening to audit ./flows/extract.yaml and add retries,
+timeouts, and failure alerting where they're missing.
+```
+
+The agent will produce a severity-ranked findings report — for example, flagging missing retries on external HTTP calls (Medium), a silent fallback masking a geocoding failure (data-correctness risk), and no failure alerting on a scheduled flow (High) — then apply only the fixes you confirm, validating each edit against the live schema.
 
 ### Validate and deploy with kestra-ops
 
