@@ -150,7 +150,7 @@ The theory of agentic orchestration comes to life in its real-world applications
 Enterprises are deploying agentic workflows for mission-critical operations. For instance, as detailed in our [Series A announcement](/blogs/kestra-series-a), leading companies use Kestra for:
 
 *   **Cybersecurity Analytics (JPMorgan Chase):** Agents analyze billions of data points to detect threats, then trigger automated remediation workflows, escalating to human analysts only when necessary.
-*   **Infrastructure Provisioning (BHP):** An agentic system replaced a legacy platform to automate global infrastructure provisioning, reducing a process that took months down to a few days.
+*   **Infrastructure Provisioning (Fortune 500 mining):** An agentic system replaced a legacy platform to automate global infrastructure provisioning, reducing a process that took months down to a few days.
 *   **AI/ML Pipelines (Apple):** Hundreds of engineers orchestrate large-scale, adaptive pipelines for services like the App Store and Apple Music, where agents manage data preparation, model training, and deployment.
 
 ### Designing and Implementing Agentic Workflows

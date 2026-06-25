@@ -94,7 +94,7 @@ With Kestra, you can define end-to-end workflows in declarative YAML, treating y
 4.  Run data quality checks.
 5.  Notify a Slack channel upon completion.
 
-This approach unifies your automation efforts, providing a single platform for observability, auditability, and governance. Companies like **BHP** have used Kestra to replace legacy systems, reducing infrastructure provisioning time from six months to just six days. Similarly, **Crédit Agricole** replaced fragmented scripts and cron jobs with Kestra to create a single, auditable orchestration layer for their infrastructure. For more details, explore how you can [automate infrastructure with Kestra, Ansible, and Terraform](/blogs/2024-04-16-infrastructure-orchestration-using-kestra).
+This approach unifies your automation efforts, providing a single platform for observability, auditability, and governance. **Fortune 500 enterprises** have used Kestra to replace legacy systems, reducing infrastructure provisioning time from six months to just six days. Similarly, **Crédit Agricole** replaced fragmented scripts and cron jobs with Kestra to create a single, auditable orchestration layer for their infrastructure. For more details, explore how you can [automate infrastructure with Kestra, Ansible, and Terraform](/blogs/2024-04-16-infrastructure-orchestration-using-kestra).
 
 Here is a simple Kestra flow that runs a Terraform plan and apply:
 ```yaml
