@@ -64,7 +64,7 @@ The potential applications for agentic AI span nearly every industry, moving fro
 
 In the enterprise, agentic AI is being deployed to automate complex, multi-step processes that previously required significant human expertise and intervention.
 *   **Cybersecurity Analytics:** Leading financial institutions like JPMorgan Chase use agentic workflows to analyze billions of security events, identify threats, and trigger automated remediation actions, reducing response times from hours to seconds.
-*   **Infrastructure Provisioning:** Global companies like BHP have replaced legacy automation tools with agentic systems to manage infrastructure. This has allowed them to provision complex cloud and on-prem resources in days instead of months, all governed by declarative, auditable workflows.
+*   **Infrastructure Provisioning:** Global Fortune 500 enterprises have replaced legacy automation tools with agentic systems to manage infrastructure. This has allowed them to provision complex cloud and on-prem resources in days instead of months, all governed by declarative, auditable workflows.
 *   **AI/ML Pipelines:** Tech giants like Apple leverage agentic orchestration to manage large-scale AI pipelines. These systems handle data preparation, model training, versioning, and deployment, ensuring reproducibility and reliability across hundreds of engineers.
 
 ### Real-World Examples: Automation and Problem-Solving
