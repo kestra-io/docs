@@ -21,7 +21,7 @@ const { version, latestHref, pending = false, unavailable = false } = Astro.prop
             </span>
         ) : unavailable ? (
             <span class="message">
-                Couldn't load archived docs for <strong>v{version}</strong>. Showing the latest version instead.
+                Archived docs for <strong>v{version}</strong> are not available. Showing the latest version instead.
             </span>
         ) : (
             <span class="message">
