@@ -175,7 +175,7 @@ useCases:
 quotes:
   - quote: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly!"
     author: "Senior Data Engineer, Gorgias"
-    storyLink: "/use-cases/stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra"
+    storyLink: "/customers/gorgias"
     logoFile: "gorgias"
   - quote: "To us, introducing Dagster or Prefect was adding something we need to learn. We needed something that I can do out of a box. What we liked about Kestra is that you are kind of in the middle. You give flexibility, but you abstract that with a declarative approach."
     author: "Lead Data Engineer, Riverside.fm"
