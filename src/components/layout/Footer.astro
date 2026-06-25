@@ -128,9 +128,12 @@ const FOOTER_SECTIONS: Section[] = [
                                             >
                                                 {link.text}
                                                 {link.badge && (
-                                                    <span class="badge">
-                                                        {link.badge}
-                                                    </span>
+                                                    <>
+                                                        {" "}
+                                                        <span class="badge">
+                                                            {link.badge}
+                                                        </span>
+                                                    </>
                                                 )}
                                             </a>
                                         </li>
