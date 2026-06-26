@@ -9,6 +9,7 @@ featured: true
 featuredImage: ./featured.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.databricks.job.CreateJob
   - io.kestra.plugin.kubernetes.PodCreate
@@ -16,24 +17,26 @@ tasks:
   - io.kestra.plugin.scripts.python.Script
 kpi1: |
   ##### Declarative
-  Dynamic & Metadata-Driven Workflows
+  dynamic & metadata-driven workflows
 kpi2: |-
   ##### 120+
-  Engineers Empowered with Simplified Orchestration
+  engineers empowered
 kpi3: |-
   ##### 50+
-  Customers Isolated in Multi-tenant Environments
+  customers isolated in multi-tenant environments
 quote: Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently.
 quotePerson: Director of Engineering
 quotePersonTitle: ""
-industry: Customer Intelligence & AI-Powered Marketing
+industry: Customer Intelligence
+industry2: Marketing
 headquarter: "Conway, Arkansas, USA"
-region: North America
+region: Americas
 companySize: "5,000+"
 solution: Acxiom is a data technology company that provides customer data management, data integration, and marketing intelligence to global enterprise brands. Through its Axiom Cloud platform, Acxiom helps clients ingest, validate, cleanse, and enrich data at scale, with each client running as an isolated tenant in a dedicated pipeline environment.
 tagline: Global leader in customer intelligence and AI-driven marketing
 companyName: Acxiom
-useCase: Data Orchestration
+useCase: Running 50+ enterprise clients in fully isolated multi-tenant pipelines on the Axiom Cloud platform
+useCaseShort: Data Orchestration
 deployment: Self-hosted (Kubernetes)
 intro: Most orchestration deployments start as internal tools. Acxiom built something different. The company embedded Kestra as the orchestration layer at the base of its Axiom Cloud product suite, where every enterprise client runs as an isolated tenant with dedicated workers, secrets, and storage. What began as a single data ingestion product has expanded into a multi-product platform, with Kestra providing the shared foundation beneath all of it, serving 50+ enterprise clients from a single, consistent deployment model.
 cta: "What would your data operations look like if every enterprise client ran on its own isolated pipeline environment?"
