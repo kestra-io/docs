@@ -678,6 +678,21 @@ Commonly used properties for `topology-details`:
 | `heightWithExecution` | `number` | Height (in px) of the detail panel after execution |
 | `customAction` | `object` | Adds a button on the task node that opens a drawer for a specific task property (e.g. a SQL query) |
 
+### Sizing the node
+
+`height` and `heightWithExecution` are not hints — the host reserves exactly that many pixels for the node and anchors the dashed connector that leaves the **bottom** of the node at that declared height. They must match your component's **real rendered height** (the node header the host draws, plus your component, plus borders):
+
+- **Too small** — your content overflows the reserved box, so the bottom connector is drawn behind the node body and appears stunted or missing, while the top connector still looks normal.
+- **Too large** — an empty gap appears between the end of your content and the start of the bottom connector.
+
+The two values are read in different contexts: the flow editor topology (no execution) uses `height`, and the execution topology uses `heightWithExecution`. Set **both** — typically to the same value, since a component with a fixed layout renders at the same height either way. Setting only one leaves the node mis-sized on the other view.
+
+Because these values are static, measure the rendered component once and re-measure only if its layout changes.
+
+:::alert{type="info"}
+A reliable way to get the value: build the plugin, open the node in the topology with the component visible, and read the rendered height of the node element in your browser's dev tools. Round to the nearest pixel.
+:::
+
 ### `customAction`
 
 The `customAction` property lets the host render an action button directly on the task node in the topology. When clicked, the host opens a drawer displaying the specified task property with syntax highlighting:
