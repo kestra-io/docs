@@ -294,10 +294,83 @@ tasks:
 ```
 
 :::alert{type="warning"}
-CloudWatch log streaming for EKS requires the EKS cluster to have CloudWatch logging configured, for example via [Fluent Bit](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html) or the CloudWatch agent. Without cluster-level logging, task logs will not appear in Kestra.
+EKS log streaming requires the `amazon-cloudwatch-observability` addon to be installed on your cluster. Without it, task logs will not appear in Kestra. See step 4 below.
 :::
 
-To set up an EKS cluster for use with AWS Batch, follow the [AWS getting started with AWS Batch on Amazon EKS](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html) guide.
+### Setting up an EKS cluster for AWS Batch
+
+The steps below walk through creating an EKS cluster and configuring it for AWS Batch. Replace `<cluster>`, `<region>`, and `<account-id>` with your values throughout.
+
+#### 1. Create the cluster
+
+If you do not already have an EKS cluster, create one using `eksctl`. This also configures `kubectl`:
+
+```bash
+eksctl create cluster --name <cluster> --region <region>
+```
+
+#### 2. Create the namespace and apply RBAC
+
+AWS Batch runs jobs in a dedicated Kubernetes namespace and requires specific RBAC permissions:
+
+```bash
+kubectl create namespace aws-batch
+```
+
+Download the RBAC manifests from the [AWS getting started guide](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html), save them to `aws-batch-rbac.yaml`, then apply:
+
+```bash
+kubectl apply -f aws-batch-rbac.yaml
+```
+
+#### 3. Add the IAM identity mapping
+
+AWS Batch uses a service-linked role to manage pods. Because access entries do not work for service-linked roles, use `eksctl create iamidentitymapping` to register it:
+
+```bash
+eksctl create iamidentitymapping --cluster <cluster> --region <region> \
+  --arn arn:aws:iam::<account-id>:role/AWSServiceRoleForBatch --username aws-batch
+```
+
+#### 4. Install the CloudWatch addon
+
+To stream pod logs to CloudWatch, install the `amazon-cloudwatch-observability` addon. The node IAM role must have the `CloudWatchAgentServerPolicy` policy attached:
+
+```bash
+aws eks create-addon \
+  --cluster-name <cluster> \
+  --addon-name amazon-cloudwatch-observability \
+  --region <region>
+```
+
+#### 5. Create the compute environment
+
+Create an EKS-backed Batch compute environment. Use an instance type supported by AWS Batch such as `m5` — `t3` is rejected. Do not set a service role; Batch uses its service-linked role automatically:
+
+```bash
+aws batch create-compute-environment \
+  --region <region> \
+  --compute-environment-name kestra-eks \
+  --type MANAGED \
+  --state ENABLED \
+  --eks-configuration eksClusterArn=<cluster-arn>,kubernetesNamespace=aws-batch \
+  --compute-resources type=EC2,allocationStrategy=BEST_FIT_PROGRESSIVE,minvCpus=0,maxvCpus=16,instanceTypes=m5.large,subnets=<subnets>,securityGroupIds=<sg>,instanceRole=<node-instance-profile>
+```
+
+The `instanceRole` value is the ARN of the EC2 instance profile attached to your EKS node group (not a bare IAM role ARN).
+
+#### 6. Create the job queue
+
+```bash
+aws batch create-job-queue \
+  --region <region> \
+  --job-queue-name kestra-eks-q \
+  --state ENABLED \
+  --priority 1 \
+  --compute-environment-order order=1,computeEnvironment=kestra-eks
+```
+
+Once both resources are created, copy the compute environment ARN and job queue ARN into your flow's `computeEnvironmentArn` and `jobQueueArn` properties.
 
 ## Full step-by-step guide: setting up AWS Batch from scratch
 
@@ -370,9 +443,9 @@ Make sure to copy the ARN of the role. You will need it later.
 
 #### Create the `ecsTaskRole` IAM role
 
-On top of the Execution Role, we will also need a Task Role that includes S3 access permissions to store files.
+In addition to the execution role, you need a task role with S3 access permissions.
 
-First, we'll need to create a policy the role can use for accessing S3.
+First, create a policy for S3 access.
 
 1. Open the [IAM console](https://console.aws.amazon.com/iam).
 2. In the navigation menu, choose **Policies**.
@@ -422,11 +495,11 @@ Now create a new role with the same trust policy as above. Attach the new policy
       ]
     }
     ```
-5. Click on **Next**
-6. Search for the new policy and check the box on the left. Once you've done this, select **Next**.
+5. Select **Next**.
+6. Search for the new policy and check the box on the left, then select **Next**.
    ![role_permission](./role_permission.png)
-7. Then, for **Role Name**, enter `ecsTaskRole`
-6. Finally, click on **Create role**.
+7. For **Role Name**, enter `ecsTaskRole`.
+8. Select **Create role**.
 
 #### AWS Batch setup
 
@@ -446,7 +519,7 @@ You should see the following text recommending the use of Fargate:
 
 > "We recommend using Fargate in most scenarios. Fargate launches and scales the compute to closely match the resource requirements that you specify for the container. With Fargate, you don't need to over-provision or pay for additional servers. You also don't need to worry about the specifics of infrastructure-related parameters such as instance type. When the compute environment needs to be scaled up, jobs that run on Fargate resources can get started more quickly. Typically, it takes a few minutes to spin up a new Amazon EC2 instance. However, jobs that run on Fargate can be provisioned in about 30 seconds. The exact time required depends on several factors, including container image size and number of jobs. [Learn more](https://docs.aws.amazon.com/batch/latest/userguide/fargate.html)."
 
-We will follow that advice and use Fargate for this tutorial.
+Select Fargate for this walkthrough.
 
 #### Step 1: Select Orchestration type
 
@@ -454,25 +527,25 @@ Select **Fargate** and click on **Next**.
 
 #### Step 2: Create a compute environment
 
-Add a name for your compute environment — here, we chose `kestra`. You can keep the default settings for everything. Select the VPC and subnets you want to use — you can use the default VPC and subnets and the default VPC security group. Then, click on Next.
+Add a name for your compute environment — for example, `kestra`. Keep the default settings. Select the VPC and subnets you want to use — the default VPC, subnets, and security group all work. Then select **Next**.
 
 ![batch5](./batch5.png)
 
 #### Step 3: Create a job queue
 
-Now we can create a job queue. Here, we also name it `kestra`. You can keep the default settings. Then, click on Next:
+Name the job queue — for example, `kestra`. Keep the default settings. Then select **Next**:
 
 ![batch6](./batch6.png)
 
 #### Step 4: Create a job definition
 
-Finally, create a job definition. Here, we name it also `kestra`. Under Execution role, select the role we created earlier (`ecsTaskExecutionRole`). Besides that, you can keep default settings for everything else (we adjusted the image to ``ghcr.io/kestra-io/pydata:latest`` but that's totally optional). Then, click on **Next**:
+Create a job definition named `kestra`. Under **Execution role**, select the role you created earlier (`ecsTaskExecutionRole`). Keep default settings for everything else (you can optionally set the image to `ghcr.io/kestra-io/pydata:latest`). Then select **Next**:
 
 ![batch7](./batch7.png)
 
 #### Step 5: Create a job
 
-Finally, create a job named `kestra`. Click **Next** to review settings:
+Create a job named `kestra`. Select **Next** to review settings:
 
 ![batch8](./batch8.png)
 
@@ -494,19 +567,19 @@ Copy the ARN of the compute environment and job queue. You will need to add thes
 
 ![batch12](./batch12.png)
 
-### Create an S3 Bucket
+### Create an S3 bucket
 
 Create an S3 bucket to store input and output files. To do this, open **S3** → **Create bucket**.
 
 ![s3_create](./s3_create.png)
 
-Next you'll need to add a name and leave everything else as a default value.
+Add a name and leave everything else at its default.
 
 ![s3_bucket_name](./s3_bucket_name.png)
 
 Scroll to the bottom and select **Create bucket**.
 
-Now that we have a bucket, we'll need to add the name into Kestra.
+Add the bucket name to your Kestra flow.
 
 ### Run your Kestra task on AWS ECS Fargate
 

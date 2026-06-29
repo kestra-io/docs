@@ -8148,6 +8148,9 @@ components:
               - A MAJOR.MINOR version (e.g., `1.1`).
               - A MAJOR.MINOR.PATCH version, optionally with any qualifier
                 (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
+        pluginDefaultsRef:
+          title: Reference (`ref`) of the `pluginDefaults` to apply to this trigger.
+          type: string
         description:
           type: string
         conditions:
@@ -8881,10 +8884,14 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError:
+      required:
+      - message
       type: object
       properties:
         message:
           type: string
+        renderError:
+          type: boolean
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -10184,6 +10191,10 @@ components:
           type: string
         forced:
           type: boolean
+        ref:
+          title: Optional reference id used to apply this default only to plugins
+            that opt in via `pluginDefaultsRef`.
+          type: string
         values:
           type: object
           additionalProperties: false
@@ -10661,6 +10672,9 @@ components:
               - A MAJOR.MINOR version (e.g., `1.1`).
               - A MAJOR.MINOR.PATCH version, optionally with any qualifier
                 (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
+        pluginDefaultsRef:
+          title: Reference (`ref`) of the `pluginDefaults` to apply to this task.
+          type: string
         description:
           type: string
         retry:
@@ -10922,6 +10936,7 @@ components:
       - MULTISELECT
       - YAML
       - EMAIL
+      - FORM
     ValidateConstraintViolation:
       required:
       - index

@@ -23,6 +23,7 @@ Understanding these five concepts is enough to read and write most Kestra flows.
 This section covers two distinct things: (1) guidance for AI agents interacting with Kestra, and (2) Kestra features for building AI and LLM-powered workflows. If you are an AI agent helping a user with Kestra, start with Agent Skills. If the user wants to build AI workflows on top of Kestra, use the remaining links.
 
 - [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
+- [Kestra MCP resources](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible AI tool to live Kestra plugin docs, blueprints, and documentation at runtime — no training data required
 - [AI Tools overview](https://kestra.io/docs/ai-tools.md): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
 - [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot.md): Generate and refine flow YAML from natural language prompts inside the Kestra UI
 - [AI Agents](https://kestra.io/docs/ai-tools/ai-agents.md): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
@@ -54,7 +55,7 @@ Use this section when you need to write or debug a `{{ ... }}` expression — to
 - [Execution context variables](https://kestra.io/docs/expressions/context.md): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
 - [Pebble syntax](https://kestra.io/docs/expressions/syntax.md): Conditionals, loops, operators, tags, tests, and multiline JSON bodies
 - [Filter reference](https://kestra.io/docs/expressions/filters.md): `date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, and all other Pebble filters with examples
-- [Function reference](https://kestra.io/docs/expressions/functions.md): `render()`, `printContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
+- [Function reference](https://kestra.io/docs/expressions/functions.md): `render()`, `fetchContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
 
 ## Finding and using plugins
 
@@ -193,6 +194,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Webserver URL, Reverse Proxy, and Forward Proxy Setup](https://kestra.io/docs/administrator-guide/webserver-url.md)
 - [AI Tools in Kestra: Copilot, Agents & RAG Workflows](https://kestra.io/docs/ai-tools.md)
 - [Agent Skills – Operate Kestra from AI Coding Agents](https://kestra.io/docs/ai-tools/agent-skills.md)
+- [Kestra MCP Resources – Connect AI Coding Agents to Live Plugin Docs and Blueprints](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md)
 - [AI Agents in Kestra – Autonomous Orchestration](https://kestra.io/docs/ai-tools/ai-agents.md)
 - [AI Copilot in Kestra – Generate and Edit Flows](https://kestra.io/docs/ai-tools/ai-copilot.md)
 - [RAG Workflows in Kestra – Retrieval-Augmented Generation](https://kestra.io/docs/ai-tools/ai-rag-workflows.md)
@@ -363,6 +365,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
 - [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
 - [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
+- [Deploy to OpenShift with Kestra](https://kestra.io/docs/how-to-guides/openshift.md)
 - [Parallel vs. Sequential Tasks in Kestra](https://kestra.io/docs/how-to-guides/parallel-vs-sequential.md)
 - [Pause and Resume Flows in Kestra](https://kestra.io/docs/how-to-guides/pause-resume.md)
 - [Run Perl Inside Your Flows](https://kestra.io/docs/how-to-guides/perl.md)
@@ -485,7 +488,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [FILE Input API: Capture Filename on Upload (0.24.0)](https://kestra.io/docs/migration-guide/v0.24.0/capture-filename.md)
 - [IAM and API Endpoint Changes in Kestra 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/endpoint-changes.md)
 - [LangChain4j to Plugin AI Migration in Kestra 0.24.0](https://kestra.io/docs/migration-guide/v0.24.0/renaming-langchain4j-plugin-ai.md)
-- [maxAttempt renamed maxAttempts](https://kestra.io/docs/migration-guide/v0.24.0/retries-maxAttempts.md)
+- [maxAttempt renamed maxAttempts](https://kestra.io/docs/migration-guide/v0.24.0/retries-maxattempts.md)
 - [Kestra 1.0.0 Migration Guide – Milestone Release Changes](https://kestra.io/docs/migration-guide/v1.0.0.md)
 - [Custom Plugin Package Structure Changes in Kestra 1.0](https://kestra.io/docs/migration-guide/v1.0.0/custom-plugin-packages.md)
 - [Helm Chart Updates in Kestra 1.0.0 for Production](https://kestra.io/docs/migration-guide/v1.0.0/helm-charts.md)

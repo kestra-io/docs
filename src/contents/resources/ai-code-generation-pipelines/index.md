@@ -50,7 +50,7 @@ The core of the pipeline is the generative AI model itself. This involves select
 
 ### The role of linting and code quality checks
 
-AI-generated code must meet the same quality standards as human-written code. Integrating automated linting and static analysis is non-negotiable. Tools like Black and Ruff for Python or ESLint for TypeScript can be run automatically after code generation to enforce style consistency and catch common errors. An orchestration platform allows you to run these checks as distinct tasks in the pipeline, using simple [Python scripts](https://kestra.io/docs/how-to-guides/python) or [shell commands](https://kestra.io/docs/scripts/shell) to validate the AI's output before it proceeds to the next stage.
+AI-generated code must meet the same quality standards as human-written code. Integrating automated linting and static analysis is non-negotiable. Tools like Black and Ruff for Python or ESLint for TypeScript can be run automatically after code generation to enforce style consistency and catch common errors. An orchestration platform allows you to run these checks as distinct tasks in the pipeline, using simple [Python scripts](https://kestra.io/docs/how-to-guides/python) or shell commands to validate the AI's output before it proceeds to the next stage.
 
 ### Security and pre-check phases in the pipeline
 
@@ -112,7 +112,7 @@ There are several ways to integrate AI into your workflows. The most direct meth
 
 ### Examples from large-scale data pipelines
 
-Leading tech companies are already leveraging AI in their complex pipelines. Meta, for instance, used AI to map undocumented dependencies in their vast data processing systems. At Apple, Kestra is used to orchestrate [large-scale machine learning and data pipelines](https://kestra.io/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra), where the principles of automated generation and validation are critical. These examples show that orchestrating complex, polyglot environments is key to successfully applying AI at scale, a task for which a universal orchestrator is perfectly suited when building [ETL pipelines](https://kestra.io/docs/how-to-guides/etl-pipelines).
+Leading tech companies are already leveraging AI in their complex pipelines. Meta, for instance, used AI to map undocumented dependencies in their vast data processing systems. At Apple, Kestra is used to orchestrate [large-scale machine learning and data pipelines](https://kestra.io/customers/apple), where the principles of automated generation and validation are critical. These examples show that orchestrating complex, polyglot environments is key to successfully applying AI at scale, a task for which a universal orchestrator is perfectly suited when building [ETL pipelines](https://kestra.io/docs/how-to-guides/etl-pipelines).
 
 ## Benefits and Challenges of AI Code Generation Pipelines
 

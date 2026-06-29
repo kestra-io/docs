@@ -24,7 +24,7 @@ The leading alternatives to Argo Workflows in 2026 include Kestra, Flyte, Prefec
 
 ## Understanding Argo Workflows and its Core Purpose
 
-Argo Workflows is an open-source, container-native workflow engine designed specifically to orchestrate parallel jobs on Kubernetes. Workflows are defined as Kubernetes Custom Resources (CRs), allowing them to be managed with standard Kubernetes tools like `kubectl`. It excels at tasks requiring container-level parallelism and dependency management, making it a strong choice for CI/CD pipelines, batch processing, and machine learning model training. Its core strength is its tight integration with the Kubernetes ecosystem, using YAML to define complex Directed Acyclic Graphs (DAGs) of containerized tasks. For a direct comparison, see our [Kestra vs. Argo Workflows](https://kestra.io/vs/argo-workflows) page.
+Argo Workflows is an open-source, container-native workflow engine designed specifically to orchestrate parallel jobs on Kubernetes. Workflows are defined as Kubernetes Custom Resources (CRs), allowing them to be managed with standard Kubernetes tools like `kubectl`. It excels at tasks requiring container-level parallelism and dependency management, making it a strong choice for CI/CD pipelines, batch processing, and machine learning model training. Its core strength is its tight integration with the Kubernetes ecosystem, using YAML to define complex Directed Acyclic Graphs (DAGs) of containerized tasks.
 
 ## Why Look for an Alternative to Argo Workflows?
 
@@ -83,7 +83,7 @@ Temporal is a workflow-as-code platform for building durable, stateful applicati
 
 Selecting the ideal Argo Workflows alternative depends on your team's specific needs and existing ecosystem.
 
-*   **For data engineering teams:** Consider Kestra, Prefect, or Dagster for robust data pipeline orchestration. Kestra offers broad integration and a declarative approach, while Prefect and Dagster excel for Python-centric teams, with Dagster providing unique asset-centric governance. Explore Kestra for [Data Automation](https://kestra.io/data-automation).
+*   **For data engineering teams:** Consider Kestra, Prefect, or Dagster for robust data pipeline orchestration. Kestra offers broad integration and a declarative approach, while Prefect and Dagster excel for Python-centric teams, with Dagster providing unique asset-centric governance. Explore Kestra for [Data Automation](https://kestra.io/data).
 *   **For infrastructure and DevOps teams:** While Argo Workflows is K8s-native, Kestra provides a broader orchestration control plane that can manage infrastructure automation alongside other domains, offering a unified GitOps approach. See how Kestra enables [Infrastructure Automation](https://kestra.io/infra-automation).
 *   **For AI and ML platform teams:** Flyte is purpose-built for ML pipelines with strong reproducibility. Kestra offers a flexible platform to orchestrate diverse AI workflows, including RAG and agentic systems, integrating with various ML tools. Learn more about [AI Automation](https://kestra.io/ai-automation) with Kestra.
 *   **For small teams getting started:** Kestra's open-source edition provides a powerful yet accessible entry point with its YAML-first approach and comprehensive UI. Prefect also offers a developer-friendly experience for Python users.

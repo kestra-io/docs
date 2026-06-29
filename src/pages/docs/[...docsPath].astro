@@ -56,10 +56,6 @@ const editUrl = doc.filePath
     ? `https://github.com/kestra-io/docs/edit/main/${doc.filePath.replace(/.*\/content\//, "content/")}`
     : undefined
 
-const images = import.meta.glob<{ default: ImageMetadata }>(
-    "/src/contents/docs/icons/*.svg",
-)
-const icon = doc.data?.icon ? (await images[doc.data.icon]()).default.src : null
 ---
 
 <LayoutDocs

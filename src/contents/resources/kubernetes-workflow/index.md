@@ -43,13 +43,13 @@ Kubernetes provides the building blocks that workflows manipulate. Understanding
 *   **Services:** An abstraction that defines a logical set of Pods and a policy by which to access them. Workflows use Services to manage network traffic to applications.
 *   **Ingress:** Manages external access to the services in a cluster, typically HTTP. Workflows might configure Ingress rules to expose a newly deployed application.
 *   **Custom Resource Definitions (CRDs):** Extensions of the Kubernetes API that allow you to define your own object kinds. Workflow engines often use CRDs to represent workflows themselves as native Kubernetes objects.
-*   **Controllers & Operators:** The control loops that watch the state of your cluster and make changes to match the desired state. An operator is an application-specific controller that extends the Kubernetes API to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. You can [orchestrate Kubernetes with Kestra](https://kestra.io/docs/orchestration/kubernetes) to manage these components effectively.
+*   **Controllers & Operators:** The control loops that watch the state of your cluster and make changes to match the desired state. An operator is an application-specific controller that extends the Kubernetes API to create, configure, and manage instances of complex stateful applications on behalf of a Kubernetes user. You can orchestrate Kubernetes with Kestra to manage these components effectively.
 
 ## Orchestrating Parallel Jobs on Kubernetes
 
 ### Argo Workflows: a container-native engine for Kubernetes
 
-When discussing Kubernetes workflows, [Argo Workflows](https://kestra.io/vs/argo-workflows) is often the first tool that comes to mind. It's an open-source, container-native workflow engine designed specifically for orchestrating parallel jobs on Kubernetes. Its key strength lies in its tight integration with the Kubernetes ecosystem.
+When discussing Kubernetes workflows, Argo Workflows is often the first tool that comes to mind. It's an open-source, container-native workflow engine designed specifically for orchestrating parallel jobs on Kubernetes. Its key strength lies in its tight integration with the Kubernetes ecosystem.
 
 Workflows in Argo are defined as Kubernetes CRDs in YAML, making them first-class citizens of the cluster. Each step in a workflow runs as a separate container inside a pod. This model is exceptionally well-suited for CI/CD pipelines, machine learning tasks, and any process that can be broken down into discrete, containerized steps. For teams deeply invested in a Kubernetes-native approach, Argo provides a powerful and familiar paradigm for automation. Its focus on container-level parallelism makes it a strong contender among [enterprise Airflow alternatives](https://kestra.io/blogs/enterprise-airflow-alternatives) for platform engineering teams.
 

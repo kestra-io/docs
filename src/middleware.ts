@@ -170,11 +170,18 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return response
     }
 
-    const storyIdMatch = context.url.pathname.match(/^\/use-cases\/stories\/(\d+)(?:-|$)/)
+    // A versioned plugin URL (/plugins/<name>/vX.Y.Z/...) only 404s when the version was never
+    // released. Let that 404 surface instead of letting the /plugins/plugin-*.* catch-all rewrite
+    // it to the plugin root (a soft-404). Real-but-unavailable versions render latest, not a 404.
+    if (/^\/plugins\/[^/]+\/v\d+\.\d+\.\d+(\/|$)/.test(context.url.pathname)) {
+        return response
+    }
+
+    const storyIdMatch = context.url.pathname.match(/^\/(?:use-cases\/stories|customers)\/(\d+)(?:-|$)/)
     if (storyIdMatch) {
         const slug = legacyCustomerStoryIdToSlug[storyIdMatch[1]]
         if (slug) {
-            return sendRedirect(`/use-cases/stories/${slug}`)
+            return sendRedirect(`/customers/${slug}`)
         }
     }
 

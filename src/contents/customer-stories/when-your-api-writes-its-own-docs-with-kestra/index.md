@@ -13,6 +13,7 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.jdbc.postgresql.Query
   - io.kestra.plugin.docker.Run
@@ -20,13 +21,13 @@ tasks:
   - io.kestra.plugin.core.http.Request
 kpi1: |-
   ##### Zero
-  Customer training needed
+  customer training needed
 kpi2: |-
   ##### 50%
-  Reduction of Pipelines maintenance time
+  reduction of pipelines maintenance time
 kpi3: |-
   ##### 2
-  Engineers to build the product
+  engineers to build the product
 quote: Our goal is for Kestra to become the go-to solution across the
   organization whenever data wrangling and complex pipeline orchestration are
   needed.
@@ -34,9 +35,13 @@ quotePerson: Rémi Sultan
 quotePersonTitle: AI/ML Lead
 industry: API Management
 headquarter: Denver, Colorado, USA
-solution: Gravitee brings modern DevOps principles to API management with
-  built-in support for GitOps, Kubernetes, and APIOps.
+region: Americas
+companySize: "51–500"
+solution: Gravitee brings modern DevOps principles to API management with built-in support for GitOps, Kubernetes, and APIOps.
+tagline: Open-source API management platform for modern DevOps teams
 companyName: Gravitee
+useCase: Orchestrating AI-powered OpenAPI spec generation and ML model pipelines so Gravitee customers can auto-document their APIs with one click
+useCaseShort: API Management
 cta: "What would change if your API documentation wrote itself—every release automatically synchronized with what's actually deployed?"
 ---
 
