@@ -53,8 +53,8 @@ Task Runners are primarily used in tasks from the [Script Plugin](https://github
 - [Ansible](/plugins/plugin-ansible)
 - [Terraform](/plugins/plugin-terraform)
 - [Modal](/plugins/plugin-modal)
-- [AWS CLI](/plugins/plugin-aws/cli/io.kestra.plugin.aws.cli.awscli)
-- [GCloud CLI](/plugins/plugin-gcp/cli/io.kestra.plugin.gcp.cli.gcloudcli)
-- [Azure CLI](/plugins/plugin-azure/cli/io.kestra.plugin.azure.cli.azcli)
+- [AWS CLI](/plugins/plugin-aws/aws-cli/io.kestra.plugin.aws.cli.awscli)
+- [GCloud CLI](/plugins/plugin-gcp/google-cloud-cli/io.kestra.plugin.gcp.cli.gcloudcli)
+- [Azure CLI](/plugins/plugin-azure/azure-cli/io.kestra.plugin.azure.cli.azcli)
 
 Whenever you see a task capable of executing a `script` or a series of `commands`, it’s a script-based task that can leverage a `taskRunner` to define where and how that task runs.

@@ -115,7 +115,7 @@ Three of its capabilities matter especially for AI work.
 
 Models are sensitive to input quality, and most of what determines that quality happens before the embedding call. Kestra offers transformation layers from lightweight expression-based transforms up to full SQL modeling.
 
-[`plugin-transform`](/plugins/plugin-transform) operates on Kestra's internal record streams. The `Records` module covers `Filter` (boolean expressions), `Map` (field projection, and the natural place to chunk text before embedding), `Select` (renaming), `Aggregate` (grouping with sum/count/avg), `Unnest` (flattening nested arrays), and `Zip` (merging streams by index). The `Grok` module parses unstructured text with named patterns, and the `JSONata` module reshapes JSON, handy for normalizing an LLM's output before anything downstream consumes it.
+[`plugin-transform`](/plugins) operates on Kestra's internal record streams. The `Records` module covers `Filter` (boolean expressions), `Map` (field projection, and the natural place to chunk text before embedding), `Select` (renaming), `Aggregate` (grouping with sum/count/avg), `Unnest` (flattening nested arrays), and `Zip` (merging streams by index). The `Grok` module parses unstructured text with named patterns, and the `JSONata` module reshapes JSON, handy for normalizing an LLM's output before anything downstream consumes it.
 
 [`plugin-datagen`](/plugins/plugin-datagen) generates synthetic data with Faker-based generators. `Generate` produces configurable batches as JSON, CSV, or SQL, and a `RealtimeTrigger` drives continuous generation for streaming pipelines. The main AI use is reproducible training and evaluation datasets that never touch production data.
 
@@ -125,7 +125,7 @@ Models are sensitive to input quality, and most of what determines that quality 
 
 When nothing pre-built fits, Kestra runs arbitrary code across 18 language runtimes.
 
-[`plugin-scripts`](/plugins/plugin-scripts) runs `Script` and `Commands` tasks for Python, Node.js, R, Julia, Go, Ruby, Shell, Perl, PHP, Lua, Deno, Bun, JBang, Groovy, Jython, Nashorn, and more. The Python task supports pip and UV, so installing `transformers`, `torch`, or any other library is a line of config and the environment is reproducible. This is the escape hatch for custom inference logic, fine-tuning jobs, or integrations no dedicated plugin covers.
+[`plugin-scripts`](/plugins) runs `Script` and `Commands` tasks for Python, Node.js, R, Julia, Go, Ruby, Shell, Perl, PHP, Lua, Deno, Bun, JBang, Groovy, Jython, Nashorn, and more. The Python task supports pip and UV, so installing `transformers`, `torch`, or any other library is a line of config and the environment is reproducible. This is the escape hatch for custom inference logic, fine-tuning jobs, or integrations no dedicated plugin covers.
 
 [`plugin-graalvm`](/plugins/plugin-graalvm) runs Python, JavaScript, and Ruby in-process via GraalVM, with no container to start. `Eval` runs inline scripts and `FileTransform` applies a script to a file. The tradeoff is that GraalVM's Python compatibility is narrower than CPython's, so it suits lightweight transforms and preprocessing rather than heavy ML workloads.
 
@@ -172,7 +172,7 @@ Beyond compute and storage, pipelines need reliable transport and versioning.
 A typical RAG pipeline draws on four to six of these groups in sequence:
 
 1. **Ingest**: [`plugin-tika`](/plugins/plugin-tika) parses source documents; [`plugin-apify`](/plugins/plugin-apify) scrapes web content
-2. **Transform**: [`plugin-transform`](/plugins/plugin-transform) cleans and chunks the text; [`plugin-serdes`](/plugins/plugin-serdes) converts formats
+2. **Transform**: [`plugin-transform`](/plugins) cleans and chunks the text; [`plugin-serdes`](/plugins/plugin-serdes) converts formats
 3. **Embed**: [`plugin-openai`](/plugins/plugin-openai) or [`plugin-huggingface`](/plugins/plugin-huggingface) generates the vectors
 4. **Index**: [`plugin-weaviate`](/plugins/plugin-weaviate), [`plugin-pinecone`](/plugins/plugin-pinecone), or [`plugin-opensearch`](/plugins/plugin-opensearch) stores them
 5. **Retrieve and generate**: [`plugin-anthropic`](/plugins/plugin-anthropic) or [`plugin-gemini`](/plugins/plugin-gemini) answers using the retrieved context
@@ -193,7 +193,7 @@ Kestra ships dedicated plugins for [Anthropic](/plugins/plugin-anthropic), [Open
 [`plugin-weaviate`](/plugins/plugin-weaviate) and [`plugin-pinecone`](/plugins/plugin-pinecone) are purpose-built for vector storage and retrieval. [`plugin-opensearch`](/plugins/plugin-opensearch) and [`plugin-elasticsearch`](/plugins/plugin-elasticsearch) provide hybrid BM25 + k-NN search. [`plugin-typesense`](/plugins/plugin-typesense) and [`plugin-meilisearch`](/plugins/plugin-meilisearch) offer lightweight alternatives. [`plugin-mongodb`](/plugins/plugin-mongodb) supports Atlas Vector Search. [`plugin-redis`](/plugins/plugin-redis) covers embedding caching. [`plugin-neo4j`](/plugins/plugin-neo4j) handles knowledge graph retrieval.
 
 ### How do I run custom Python or ML code in Kestra?
-[`plugin-scripts`](/plugins/plugin-scripts) runs Python `Script` and `Commands` tasks with pip or UV dependency management; install any ML library inline. For lightweight transforms without container overhead, [`plugin-graalvm`](/plugins/plugin-graalvm) runs Python, JavaScript, and Ruby in-process via GraalVM.
+[`plugin-scripts`](/plugins) runs Python `Script` and `Commands` tasks with pip or UV dependency management; install any ML library inline. For lightweight transforms without container overhead, [`plugin-graalvm`](/plugins/plugin-graalvm) runs Python, JavaScript, and Ruby in-process via GraalVM.
 
 ### Which Kestra plugin is best for RAG document ingestion?
 [`plugin-tika`](/plugins/plugin-tika) (`Parse` task) handles PDFs, Office formats, HTML, images (with OCR), and dozens more: one task covers the full enterprise document corpus. For web content, [`plugin-apify`](/plugins/plugin-apify) adds web scraping via Apify actors.

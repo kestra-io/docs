@@ -89,7 +89,11 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 
 export default {
-    async fetch(request, env, ctx) {
+    async fetch(
+        request: Parameters<typeof handle>[0],
+        env: Parameters<typeof handle>[1],
+        ctx: Parameters<typeof handle>[2],
+    ) {
         const url = new URL(request.url)
 
         // Proxy PostHog analytics directly, before Astro can apply
@@ -134,4 +138,4 @@ export default {
         }
         return await next()
     },
-} satisfies ExportedHandler;
+}

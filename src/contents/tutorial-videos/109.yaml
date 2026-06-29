@@ -1,9 +1,8 @@
-title: "Migrate or Upgrade? Airflow 2 EOL"
-description: "With Airflow 2 reaching end of life in 2026, this video explores whether
-  you should upgrade to Airflow 3 or use the opportunity to migrate to a new orchestration
-  tool like Kestra."
-category: "Deep Dive Tutorials"
+title: "The Best Intro to Workflow Orchestration Is a Video Game"
+description: "Will Russell explores how Factorio’s automation and error-handling mechanics
+  teach the fundamental principles of workflow orchestration."
+category: "Getting Started"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=y3zf99LyRng"
-publicationDate: "2026-03-27T00:00:00.000"
-contentType: "Deep Dive Tutorials"
+url: "https://www.youtube.com/watch?v=orHWPS571d4"
+publicationDate: "2026-04-21T00:00:00.000"
+contentType: "Getting Started"
