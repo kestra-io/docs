@@ -5,6 +5,9 @@
         class="mdc-renderer"
         v-html="htmlContent"
     />
+    <div v-else-if="parseError" class="parse-error">
+        <strong>MDC parse error:</strong> {{ parseError }}
+    </div>
     <div v-else class="skeleton"></div>
 </template>
 
@@ -75,6 +78,15 @@
         100% {
             background-position: 40px 40px;
         }
+    }
+
+    .parse-error {
+        background: #fee;
+        border: 1px solid #f88;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        color: #c00;
+        font-size: 0.875rem;
     }
 
     .skeleton {

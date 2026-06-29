@@ -1,12 +1,15 @@
 <template>
     <a :href="`/customers/${story.slug}`" class="story-card">
-        <span class="card-industry">{{ story.industry }}</span>
+        <div class="card-industries">
+            <span class="card-industry">{{ story.industry }}</span>
+            <span v-if="story.industry2" class="card-industry">{{ story.industry2 }}</span>
+        </div>
 
         <div class="card-header">
             <div class="card-logo">
                 <img
-                    v-if="story.logo"
-                    :src="story.logo"
+                    v-if="story.logoIcon || story.logo"
+                    :src="story.logoIcon ?? story.logo"
                     :alt="displayName"
                     loading="lazy"
                 />
@@ -18,22 +21,23 @@
             </div>
         </div>
 
-        <div v-if="kpis.length" class="card-kpis">
-            <div v-for="(kpi, i) in kpis" :key="i" class="card-kpi">
-                <span class="card-kpi-value">{{ kpi.value }}</span>
-                <span class="card-kpi-label">{{ kpi.label }}</span>
-            </div>
-        </div>
+        <div class="card-bottom">
+            <p v-if="story.useCase" class="card-use-case">
+                <span class="card-use-case-label">→</span> {{ story.useCase }}
+            </p>
 
-        <div class="card-footer">
-            <span class="card-plugins-label">Plugins Used :</span>
-            <div class="card-tasks">
-                <div
-                    class="task-icon-wrap"
-                    v-for="task in story.tasks.slice(0, 4)"
-                    :key="task"
-                >
-                    <TaskIcon :cls="task" />
+            <KpiRotator :kpis="kpis" />
+
+            <div class="card-footer">
+                <span class="card-plugins-label">Plugins Used :</span>
+                <div class="card-tasks">
+                    <div
+                        class="task-icon-wrap"
+                        v-for="task in story.tasks.slice(0, 4)"
+                        :key="task"
+                    >
+                        <TaskIcon :cls="task" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,6 +47,7 @@
 <script setup lang="ts">
     import { computed } from "vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
+    import KpiRotator from "~/components/stories/KpiRotator.vue"
 
     const props = defineProps<{
         story: Story
@@ -93,15 +98,22 @@
         }
     }
 
-    .card-industry {
+    .card-industries {
         align-self: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.375rem;
         margin-top: -1rem;
         margin-right: -1rem;
         margin-bottom: 0.75rem;
+    }
+
+    .card-industry {
         font-size: 0.625rem;
         font-weight: 600;
-        color: var(--ks-content-link);
-        background: rgba(99, 27, 255, 0.08);
+        color: #8405ff;
+        background: #ece7f8;
         border: 1px solid rgba(99, 27, 255, 0.15);
         border-radius: 999px;
         padding: 0.2rem 0.625rem;
@@ -162,45 +174,36 @@
         color: var(--ks-content-secondary);
         line-height: 1.5;
         margin: 0;
+        min-height: calc(0.8125rem * 1.5 * 3);
     }
 
-    .card-kpis {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        border-top: 1px solid var(--ks-border-secondary);
-        border-bottom: 1px solid var(--ks-border-secondary);
-        margin-top: 1.25rem;
+    /* the bottom group (use-case + KPIs + footer) sticks to the bottom,
+       so its position is independent of the .card-short-desc height */
+    .card-bottom {
+        margin-top: auto;
     }
 
-    .card-kpi {
-        display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-        padding: 1rem 0;
-
-        &:nth-child(odd) {
-            padding-right: 1.5rem;
-        }
-    }
-
-    .card-kpi-value {
-        font-size: 1rem;
-        font-weight: 800;
-        color: var(--ks-content-primary);
-        line-height: 1.3;
-    }
-
-    .card-kpi-label {
+    .card-use-case {
         font-size: 0.8125rem;
+        line-height: 1.5;
         color: var(--ks-content-secondary);
-        line-height: 1.4;
+        border-top: 1px solid var(--ks-border-secondary);
+        margin: 1.25rem 0 0;
+        padding: 1rem 0;
+        min-height: calc(0.8125rem * 1.5 * 3 + 2rem);
+    }
+
+    .card-use-case-label {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: var(--ks-content-tertiary);
+        white-space: nowrap;
     }
 
     .card-footer {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-top: auto;
         padding-top: 0.75rem;
         gap: 0.5rem;
     }
