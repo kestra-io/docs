@@ -4,18 +4,12 @@
         class="bd-toc d-lg-flex justify-content-end"
     >
         <div>
-            <a
-                v-if="markdownBody"
-                role="button"
-                class="copy-md"
-                :class="{ copied: isCopied }"
-                @click.prevent="copyPageContent"
-            >
-                <div class="copy-md-content">
-                    <component :is="isCopied ? Check : ContentCopy" class="copy-icon" />
-                    <span class="copy-text">{{ isCopied ? 'Copied!' : 'Copy as Markdown' }}</span>
-                </div>
-            </a>
+            <MarkdownActionsMenu
+                v-if="markdownBody && pagePath"
+                :markdown-body="markdownBody"
+                :page-path="pagePath"
+                :page-title="pageTitle"
+            />
 
             <template v-if="links?.length" class="bd-contents-list">
                 <button
@@ -91,12 +85,11 @@
 
 <script setup lang="ts">
     import { nextTick, ref, onUnmounted } from "vue"
-    import { useClipboard, useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
+    import { useEventListener, useScroll, useThrottleFn } from "@vueuse/core"
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
-    import Check from "vue-material-design-icons/Check.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
+    import MarkdownActionsMenu from "~/components/docs/MarkdownActionsMenu.vue"
 
     export interface TocLink {
         id: string
@@ -115,7 +108,8 @@
             capitalize?: boolean,
             class?: string,
             markdownBody?: string,
-
+            pagePath?: string,
+            pageTitle?: string,
         }>(),
         {
             links: () => [],
@@ -224,9 +218,6 @@
 
     useEventListener("scroll", handleScroll)
     onUnmounted(() => manualScrollTimer && clearTimeout(manualScrollTimer))
-
-    const { copy, copied: isCopied } = useClipboard()
-    const copyPageContent = () => props.markdownBody && copy(props.markdownBody.trim())
 </script>
 
 <style lang="scss" scoped>
@@ -356,27 +347,6 @@
             padding-top: 0;
         }
 
-        .copy-md {
-            display: flex;
-            padding: 1.25rem 0;
-            @include media-breakpoint-up(lg) {
-                padding: 1.25rem;
-            }
-            cursor: pointer;
-            color: var(--ks-content-primary);
-            &:hover, &.copied {
-                color: var(--ks-content-link);
-            }
-            .copy-md-content {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                border: $block-border;
-                padding: 0.35rem $rem-1;
-                border-radius: 0.25rem;
-                font-size: $font-size-xs;
-            }
-        }
         hr {
             border-color: var(--bs-gray-600);
         }
