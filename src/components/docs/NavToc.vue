@@ -9,6 +9,7 @@
                 :markdown-body="markdownBody"
                 :page-path="pagePath"
                 :page-title="pageTitle"
+                :page-url="pageUrl"
             />
 
             <template v-if="links?.length" class="bd-contents-list">

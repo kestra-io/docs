@@ -34,7 +34,7 @@ export function useMarkdownActions(context: MaybeRefOrGetter<MarkdownActionConte
             pageUrl: urls.value.pageUrl,
         })
 
-        if (targetUrl) {
+        if (targetUrl && typeof window !== "undefined") {
             window.open(targetUrl, "_blank", "noopener,noreferrer")
         }
     }

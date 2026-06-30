@@ -61,7 +61,7 @@
     }
 
     const triggerIcon = computed(() => (copied.value ? Check : ContentCopy))
-    const triggerLabel = computed(() => (copied.value ? "Copied!" : "Copy Page"))
+    const triggerLabel = computed(() => (copied.value ? "Copied!" : "Copy as Markdown"))
 
     const actionLabel = (action: MarkdownActionDefinition) => {
         if (action.id === "copy" && copied.value && action.successLabel) {
