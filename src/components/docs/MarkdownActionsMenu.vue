@@ -7,11 +7,9 @@
             aria-expanded="false"
             aria-label="Markdown actions"
         >
-            <div class="markdown-actions-trigger-content">
-                <component :is="triggerIcon" class="action-icon" />
-                <span class="action-text">{{ triggerLabel }}</span>
-                <ChevronDown class="chevron-icon" />
-            </div>
+            <component :is="triggerIcon" class="action-icon" />
+            <span class="action-text">{{ triggerLabel }}</span>
+            <ChevronDown class="chevron-icon" />
         </button>
 
         <ul class="dropdown-menu markdown-actions-menu">
@@ -88,27 +86,42 @@
 
     .markdown-actions-trigger {
         display: flex;
-        padding: 0;
-        border: 0;
-        background: transparent;
-        cursor: pointer;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.25rem 0.75rem;
+        border: $block-border;
+        border-color: var(--ks-border-primary);
+        border-radius: 0.25rem;
+        background-color: var(--ks-background-input);
         color: var(--ks-content-primary);
+        font-size: 0.875rem;
+        font-weight: normal;
+        cursor: pointer;
+        transition: border-color 0.2s ease;
 
-        &:hover,
-        &:focus,
-        &:focus-visible {
-            color: var(--ks-content-link);
+        &:hover {
+            border-color: var(--ks-border-active);
+            background-color: var(--ks-background-input);
+            color: var(--ks-content-primary);
+        }
+
+        &:focus {
+            border-color: var(--ks-border-active);
+            box-shadow: 0 0 0 0.25rem rgba(var(--ks-border-active), 0.25);
+            background-color: var(--ks-background-input);
+            color: var(--ks-content-primary);
             outline: none;
         }
 
-        .markdown-actions-trigger-content {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: $block-border;
-            padding: 0.35rem $rem-1;
-            border-radius: 0.25rem;
-            font-size: $font-size-xs;
+        &::after {
+            display: none;
+        }
+
+        .action-text {
+            flex-shrink: 0;
+            text-align: left;
+            flex: 1;
+            font-size: 12px;
         }
     }
 
@@ -120,7 +133,7 @@
         background-color: var(--ks-background-input);
         border: $block-border;
         border-radius: 0.25rem;
-        padding: 0.25rem 0;
+        padding: 0;
         min-width: 12rem;
     }
 
@@ -129,17 +142,25 @@
         align-items: center;
         gap: 0.5rem;
         width: 100%;
-        padding: 0.35rem 0.75rem;
+        padding: 0.25rem 0.75rem;
         border: 0;
         background: transparent;
         color: var(--ks-content-primary);
-        font-size: $font-size-xs;
+        font-size: 12px;
         text-align: left;
+        transition: background-color 0.2s ease;
 
         &:hover,
         &:focus {
-            background-color: rgba(255, 255, 255, 0.08);
-            color: var(--ks-content-link);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--ks-content-primary);
+        }
+
+        html.light & {
+            &:hover,
+            &:focus {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
         }
     }
 
@@ -155,16 +176,15 @@
 
     .chevron-icon {
         display: flex;
-        margin-left: 0.125rem;
-        transition: transform 0.3s;
+        margin-left: auto;
 
         :deep(svg) {
-            width: 14px;
-            height: 14px;
+            font-size: 20px;
+            transition: transform 0.2s ease;
         }
     }
 
-    .show .chevron-icon {
+    .show .chevron-icon :deep(svg) {
         transform: rotate(180deg);
     }
 </style>
