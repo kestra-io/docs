@@ -11,9 +11,9 @@ author:
 image: ./main.jpg
 ---
 
-An AI agent that books a meeting, triages a support ticket, or queries three databases to answer a question is genuinely impressive in a demo. The trouble starts the day it runs unattended: tools hang, loops spin on malformed responses, and the agent makes a confident call to delete something it shouldn't, with no one watching to catch it.
+An AI agent that books a meeting, triages a support ticket, or queries three databases to answer a question is genuinely impressive in a demo. The trouble starts when it runs unattended: tools hang, loops spin on malformed responses, and the agent makes a confident call to delete something it shouldn't, with no one watching to stop it.
 
-None of these are reasoning problems. They are orchestration problems, and they are exactly the problems that frameworks like LangGraph and CrewAI leave to you.
+None of these are reasoning problems. They are orchestration problems, and they are exactly the problems that frameworks leave for you to figure out.
 
 This article is about that gap. If you're following the [DataTalks.Club LLM Zoomcamp](https://github.com/DataTalksClub/llm-zoomcamp), it maps to the agents and function-calling modules: you've learned how to *build* an agent, and now you need to make it survive in production. The thesis: **frameworks define how the agent reasons; Kestra orchestrates everything around it.** They're complementary, not competing.
 
@@ -52,11 +52,11 @@ Most "AI agent in production" content glosses over this distinction, which is wh
 
 ### What frameworks do well
 
-These frameworks are very good at what they're designed for: structuring how an agent reasons. LangGraph gives you fine-grained control over agent state as a graph. CrewAI makes it easy to define roles and let multiple agents collaborate. If you need a custom reasoning loop or a particular multi-agent conversation pattern, reach for them. Nothing here argues against that.
+These frameworks are very good at what they're designed for: structuring how an agent reasons. LangGraph gives you fine-grained control over agent state as a graph; others make it easy to define roles and coordinate multiple agents around a shared goal. If you need a custom reasoning loop or a particular multi-agent conversation pattern, reach for them. Nothing here argues against that.
 
 ### What they leave to you
 
-What these frameworks generally don't handle is everything that turns a clever script into a reliable service: scheduling the agent to run nightly, retrying a failed tool call without restarting the whole reasoning chain, pausing for a human to approve a risky action, keeping an audit log, managing secrets across environments, and isolating workloads per team or tenant. That work usually ends up as glue code, and glue code is where production reliability goes wrong.
+What these frameworks generally don't handle is everything that turns a clever script into a reliable service: scheduling the agent to run nightly, retrying a failed tool call without restarting the whole reasoning chain, pausing for a human to approve a risky action, keeping an audit log, managing secrets across environments, and isolating workloads per team or tenant. That work usually ends up as glue code, and glue code is where production reliability becomes challenging.
 
 ### Kestra orchestrates around the agent
 
