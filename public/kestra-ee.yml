@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.25
+  version: 1.3.26
 tags:
 - name: Flows
   description: Flows api
@@ -2608,8 +2608,9 @@ paths:
     delete:
       tags:
       - Users
-      summary: Update user password
-      description: Superadmin-only. Updates whether a user is a superadmin.
+      summary: Delete user auth method
+      description: Superadmin-only. Deletes a specific authentication method from
+        a user.
       operationId: deleteUserAuthMethod
       parameters:
       - name: id
@@ -2667,7 +2668,7 @@ paths:
       tags:
       - Users
       summary: Update user password
-      description: Superadmin-only. Updates whether a user is a superadmin.
+      description: Superadmin-only. Updates the password of a user.
       operationId: patchUserPassword
       parameters:
       - name: id
