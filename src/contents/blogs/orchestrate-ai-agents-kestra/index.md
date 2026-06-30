@@ -1,7 +1,7 @@
 ---
 title: "Building Production-Ready AI Agents: Orchestrating Agentic Workflows with Kestra"
 description: "Frameworks build the agent. Kestra orchestrates everything around it: retries, scheduling, human-in-the-loop, and observability. How to take agentic workflows from demo to production in declarative YAML."
-date: 2026-07-01T09:00:00
+date: 2026-06-30T09:00:00
 category: Solutions
 author:
   name: Will Russell
