@@ -1,5 +1,5 @@
 ---
-import { getMDCParser, MDCRenderer } from "@kestra-io/ui-libs"
+import { marked } from "marked"
 
 const props = Astro.props as {
     content: string
@@ -7,8 +7,7 @@ const props = Astro.props as {
 
 const { content, ...rest } = props
 
-const parse = await getMDCParser()
-const docAst = await parse(content)
+const htmlContent = await marked.parse(content)
 ---
 
-<MDCRenderer body={docAst.body} data={docAst.data} key={content} {...rest} />
+<div set:html={htmlContent} {...rest} />

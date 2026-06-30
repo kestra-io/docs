@@ -1,10 +1,9 @@
 <template>
-    <MDCRenderer
-        v-if="docAst?.body"
-        :body="docAst.body"
-        :data="docAst.data"
+    <div
+        v-if="htmlContent"
         :key="content"
         class="mdc-renderer"
+        v-html="htmlContent"
     />
     <div v-else-if="parseError" class="parse-error">
         <strong>MDC parse error:</strong> {{ parseError }}
@@ -13,33 +12,20 @@
 </template>
 
 <script lang="ts" setup>
-    import { getMDCParser, MDCRenderer } from "@kestra-io/ui-libs"
+    import { marked } from "marked"
     import { onMounted, ref, watch } from "vue"
 
     const props = defineProps<{
         content: string
     }>()
 
-    const docAst = ref<any>()
-    const parseError = ref<string>()
+    const htmlContent = ref<string>("")
 
     async function parseContent() {
-        try {
-            const parse = await getMDCParser()
-            if (!props.content) {
-                throw new Error("No content provided to MDCParserAndRenderer.vue")
-            }
-            const result = await parse(props.content)
-            if (!result?.body) {
-                parseError.value = `Parser returned empty body. AST keys: ${Object.keys(result ?? {}).join(", ")}`
-                console.error("[MDCParserAndRenderer] empty body:", result)
-            } else {
-                docAst.value = result
-            }
-        } catch (e: any) {
-            parseError.value = e?.message ?? String(e)
-            console.error("[MDCParserAndRenderer] parse failed:", e)
+        if (!props.content) {
+            throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
+        htmlContent.value = await marked.parse(props.content)
     }
 
     onMounted(async () => {
