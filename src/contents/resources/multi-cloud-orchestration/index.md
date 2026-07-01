@@ -28,7 +28,7 @@ Multi-cloud orchestration is the discipline of making that patchwork behave like
 
 Multi-cloud orchestration is the methodology used to manage workload operations across multiple cloud providers through automation. It covers infrastructure provisioning, load balancing, network coordination, patching, and workload lifecycle — all from a single governed execution layer spanning AWS, Azure, GCP, and other providers.
 
-The underlying idea is simple: instead of running separate automation toolchains for each cloud (AWS Step Functions here, Azure Logic Apps there, custom scripts on-prem), a single orchestration layer coordinates workflows across every environment. One workflow can provision a database in AWS, trigger a Kubernetes job on GCP, update a DNS record in Cloudflare, and notify a Slack channel — without the team rebuilding that logic three times for three clouds.
+The underlying idea is simple: instead of running separate automation toolchains for each cloud (AWS Step Functions here, Azure Logic Apps there, custom scripts on-prem), a single orchestration layer coordinates workflows across every environment. One workflow can provision a database in AWS, trigger a Kubernetes job on GCP, update a DNS record in Cloudflare, and notify a Slack channel — without the team rebuilding that logic three times for three clouds. This is the same neutral-control-plane principle that underpins [data orchestration](/resources/data/data-orchestration) — coordinating pipelines across systems rather than clouds — which is why a single engine can increasingly govern both.
 
 ## Multi-Cloud vs. Hybrid Cloud vs. Cloud Orchestration
 
