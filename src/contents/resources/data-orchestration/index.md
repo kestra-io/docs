@@ -18,6 +18,12 @@ faq:
     answer: "Cron jobs work at small scale but lack retries, dependency tracking, observability, and alerting. A dedicated orchestrator adds all of these — essential once you have more than a handful of interdependent pipelines or any production reliability requirement."
   - question: "How does data orchestration relate to data mesh?"
     answer: "In a data mesh, each domain owns its data products independently. A data orchestrator provides the shared platform that makes this decentralization work: namespace isolation, RBAC, and federated governance let multiple domain teams operate on one orchestration layer without stepping on each other."
+  - question: "Is Kafka a data orchestration tool?"
+    answer: "No. Apache Kafka is a distributed event-streaming platform — it moves and buffers data in real time, but it doesn't coordinate multi-step workflows, manage dependencies between tasks, or handle retries across a pipeline. Kafka is used with an orchestrator like Airflow or Kestra, which coordinates the workflow that reacts to Kafka events, rather than being an orchestrator itself."
+  - question: "What are the most common data orchestration tools?"
+    answer: "The most common are the open-source orchestrators Apache Airflow, Kestra, Dagster, and Prefect, alongside cloud-managed options like AWS Step Functions, Azure Data Factory, and Google Cloud Composer."
+  - question: "What are the three main stages in a data pipeline?"
+    answer: "Source, transformation, and destination — data is pulled from a source, transformed into a usable shape, and delivered to a destination such as a data warehouse."
 ---
 
 The average enterprise data stack in 2026 has more than ten tools working together: a warehouse, an ingestion tool, a transformation framework, a BI layer, a streaming platform, multiple cloud services, and a handful of custom scripts nobody wants to touch. None of them run themselves. Something has to trigger them, sequence them, handle their failures, and tell you when something went wrong. That something is **data orchestration**.
@@ -178,9 +184,13 @@ The orchestrator market in 2026 has five dominant players plus a long tail. Each
 
 | Tool | Workflow language | Triggers | Best for |
 | --- | --- | --- | --- |
-| **Airflow / Astronomer** | Python DAGs | Schedule + sensors | Python-heavy data teams, large existing community |
+| **Kestra** | YAML (tasks in any language) | Schedule + events | Cross-stack teams mixing SQL, Python, and Shell; declarative, event-driven workloads |
+| **Apache Airflow / Astronomer** | Python DAGs | Schedule + sensors | Python-heavy data teams, large existing community |
+| **Dagster** | Python (asset-oriented) | Schedule + sensors | Teams that model pipelines as data assets |
 | **Prefect** | Python | Schedule + events | Python teams that want modern DAG UX |
 | **Windmill** | Scripts + flows | Schedule + events | Developer scripts, smaller teams |
+
+Alongside the open-source orchestrators — **Airflow**, **Kestra**, **Dagster**, and **Prefect** — the major clouds offer managed options: **AWS Step Functions**, **Azure Data Factory**, and **Google Cloud Composer** (managed Airflow). These integrate tightly with their own ecosystems but introduce vendor lock-in and consumption-based pricing that is hard to predict. For a deeper, regularly updated ranking of the tooling, see our guide to the [top data orchestration platforms](/blogs/top-data-orchestration-platforms).
 
 The choice comes down to three questions:
 
@@ -195,6 +205,10 @@ For direct head-to-head comparisons: [Kestra vs Airflow](/vs/airflow), [Kestra v
 No. Snowflake is a cloud data warehouse. It includes basic task scheduling through Snowflake Tasks and Streams, which can trigger SQL procedures on a schedule — but this is not general orchestration. It manages storage and in-warehouse compute; it doesn't coordinate ingestion from Airbyte, transformations in dbt, notifications to Slack, or loads into other systems.
 
 The right pattern is to pair Snowflake with a general orchestrator. Kestra (or Airflow, or Dagster) handles the cross-stack coordination; Snowflake handles the queries. They're complementary, not alternatives.
+
+## Is Kafka a Data Orchestration Tool?
+
+No. Apache Kafka is a distributed event-streaming platform — it moves and buffers data in real time, but it doesn't coordinate multi-step workflows, manage dependencies between tasks, or handle retries across a pipeline. Kafka is frequently *used with* an orchestrator, not instead of one: Kafka transports the events, and a tool like Airflow or Kestra orchestrates the pipeline that reacts to them. The two are complementary layers, not competitors.
 
 ## Challenges in Adopting Data Orchestration
 
