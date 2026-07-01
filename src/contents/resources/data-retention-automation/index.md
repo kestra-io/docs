@@ -4,7 +4,7 @@ description: "Automating data retention policies is crucial for compliance, risk
 metaTitle: "Data Retention Automation: Policies & Compliance | Kestra"
 metaDescription: "Automate data retention policies for regulatory compliance, reduced legal risk, and efficient data lifecycle management. Learn how Kestra helps."
 tag: "data"
-date: 2026-07-15
+date: 2026-07-01
 slug: "data-retention-automation"
 faq:
   - question: "What is data retention automation?"
