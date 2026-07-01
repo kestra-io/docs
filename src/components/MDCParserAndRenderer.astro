@@ -1,13 +1,20 @@
 ---
-import { marked } from "marked"
+import { getMarked } from "~/markdown/marked-shiki"
 
 const props = Astro.props as {
     content: string
+    class?: string
 }
 
-const { content, ...rest } = props
+const { content, class: className, ...rest } = props
 
-const htmlContent = await marked.parse(content)
+const htmlContent = await getMarked().parse(content)
 ---
 
-<div set:html={htmlContent} {...rest} />
+<div class:list={["mdc-renderer", className]} set:html={htmlContent} {...rest} />
+
+<style is:global lang="scss">
+    html.dark .mdc-renderer pre code span {
+        color: var(--shiki-dark) !important;
+    }
+</style>
