@@ -4,7 +4,7 @@ description: "High-performance computing (HPC) tasks demand robust coordination.
 metaTitle: "HPC Workflow Orchestration: Simplify Complex Computing"
 metaDescription: "Orchestrate high-performance computing (HPC) workflows to tackle complex simulations, AI training, and data processing. Kestra's declarative platform boosts efficiency and simplifies management."
 tag: "infrastructure"
-date: 2026-05-28
+date: 2026-07-01
 slug: "hpc-workflow-orchestration"
 faq:
   - question: "What are HPC workflows?"
@@ -23,138 +23,181 @@ faq:
     answer: "Declarative HPC orchestration offers several benefits, including improved reproducibility due to version-controlled YAML definitions, enhanced operational efficiency through automation, better resource utilization, and simplified debugging. It allows teams to manage complex HPC tasks with greater agility and reduced manual effort."
 ---
 
-High-Performance Computing (HPC) underpins scientific discovery, AI innovation, and large-scale data analytics, yet managing these complex, distributed workloads can be daunting. From coordinating intricate simulations to orchestrating massive data processing jobs, traditional methods often struggle with scale, reliability, and reproducibility. The sheer volume of data and compute resources involved demands a more sophisticated approach.
+High-Performance Computing is no longer confined to research labs running monolithic batch jobs. Today's HPC environments mix interactive workloads, petabyte-scale datasets, and AI/ML training across hybrid and multi-cloud infrastructure. That power comes with complexity. Managing these interdependent tasks with a job scheduler alone leads to fragmentation, manual errors, and operations no one can see into.
 
-This guide delves into HPC workflow orchestration, explaining how a declarative platform unifies these diverse tasks. We'll explore the fundamental concepts of HPC, clarify the distinction between workflows and orchestration, and demonstrate how modern tools can streamline job management, enhance efficiency, and accelerate insights across your high-performance computing environment.
+HPC workflow orchestration is the answer. It provides the control plane that unifies these workloads, guarantees reproducibility, uses expensive hardware efficiently, and folds AI steps into the same pipeline as the compute. This article explains where traditional scheduling falls short, the patterns that modern HPC orchestration relies on, and how Kestra delivers a declarative, unified solution for these demanding environments.
 
-## Understanding HPC Workflows
+## The Evolving Landscape of High-Performance Computing
 
-### What are HPC workflows?
+### What is an HPC workflow today?
 
-HPC workflows are sequences of complex, data-intensive tasks distributed across a large number of compute resources to be processed in parallel. Unlike standard business applications, these workflows are designed to solve problems that are too large or intricate for a single machine. Common applications include scientific simulations (e.g., climate modeling, computational fluid dynamics), large-scale AI model training, and advanced data analytics.
+Traditionally, an [HPC workflow](/resources/infrastructure/hpc-workflow) meant large-scale, tightly coupled batch jobs on a specialized supercomputer: CPU-bound simulations in Fortran or C++, queued through schedulers like SLURM or LSF. The goal was to maximize throughput for a fairly uniform set of tasks.
 
-The defining characteristics of HPC workflows are their demand for high throughput, low-latency communication between compute nodes, and their ability to handle massive datasets, often in the terabyte or petabyte range. A well-structured [data pipeline](https://kestra.io/resources/data/data-pipeline) is essential for feeding these systems, and effective [data orchestration](https://kestra.io/resources/data/data-orchestration) is required to manage the entire process from start to finish.
+The modern landscape is different. It is defined by heterogeneity and distribution:
+
+*   **Diverse workloads:** Alongside batch jobs, HPC clusters now run interactive sessions for data exploration, real-time processing, and AI/ML training and inference.
+*   **Data-intensive computing:** The bottleneck has shifted from compute to data. Moving and processing petabyte-scale datasets is now an integral part of the workflow, not an afterthought.
+*   **AI and ML integration:** HPC trains the large models behind modern AI. That requires orchestrating a full [AI pipeline](/resources/ai/ai-pipeline), from data ingestion and preparation through distributed training to deployment.
+*   **Hybrid and multi-cloud:** Teams mix on-premises clusters, private clouds, and public cloud (AWS Batch, Azure CycleCloud) to reach specialized hardware like GPUs and TPUs and to control cost. That spreads resources, and the management problem, across many environments.
+
+This reality calls for a control plane that looks past a single cluster's job queue and manages end-to-end processes across the whole ecosystem.
 
 ### What are the three key components of HPC?
 
-A high-performance computing environment is built on three foundational pillars that work in concert to deliver massive computational power:
+Every HPC environment stands on three pillars, and orchestration touches all of them:
 
-1.  **Compute:** This is the processing core of the HPC system, consisting of thousands of powerful CPUs, GPUs, or other specialized accelerators. These nodes work in parallel to execute different parts of a computational task simultaneously. Modern HPC systems often leverage [Kubernetes](https://kestra.io/resources/infrastructure/kubernetes) to manage and scale these containerized compute resources dynamically.
-2.  **Storage:** HPC requires high-throughput, parallel file systems capable of providing rapid access to enormous datasets for all compute nodes. Systems like Lustre, GPFS, or BeeGFS are designed to handle the intense I/O operations characteristic of HPC workloads, ensuring that data access does not become a bottleneck.
-3.  **Network:** A high-speed, low-latency interconnect network is crucial for enabling rapid communication between compute nodes and between nodes and storage. Technologies like InfiniBand or Omni-Path provide the necessary bandwidth to support the massive data transfers and synchronization required for parallel processing. The efficiency of the entire system relies on the performance of this network fabric and the broader [infrastructure automation](https://kestra.io/resources/infrastructure/automation) that maintains it.
+*   **Compute:** the CPU and GPU nodes that run the calculations. Orchestration decides which jobs land on which nodes and when.
+*   **Storage:** high-throughput parallel file systems (Lustre, GPFS) that keep those nodes fed with data. Orchestration stages data in and collects results out.
+*   **Network:** low-latency interconnects such as InfiniBand that link nodes so a single job can span hundreds of them. Orchestration coordinates the multi-node steps that depend on it.
 
-## Orchestration in High-Performance Computing
+## Why a Job Scheduler Is Not Enough
 
-### What is an orchestration workflow?
+### What is the difference between a workflow and orchestration?
 
-An orchestration workflow is an automated process that coordinates and manages a series of complex, multi-step tasks across distributed systems. In the context of HPC, this goes far beyond simple job scheduling. It involves managing the entire lifecycle of a computational job, including:
+A *workflow* is the sequence of steps that make up a job: fetch data, preprocess it, run a simulation, write results. *Orchestration* is the system that executes that sequence reliably, manages the dependencies between steps, retries failures, and records what happened.
 
-*   **Resource Provisioning:** Dynamically allocating compute nodes, storage, and network resources.
-*   **Data Staging:** Moving large datasets from long-term storage to the high-performance file system before a job starts.
-*   **Job Submission:** Interfacing with HPC schedulers like Slurm or PBS to submit the computational task.
-*   **Monitoring and Error Handling:** Tracking job progress, detecting failures, and executing predefined recovery procedures.
-*   **Result Collection:** Moving output data back to archival storage and cleaning up temporary files.
+Schedulers like SLURM are excellent at queuing jobs and allocating resources inside one cluster. They were never built to manage a process that fetches data from a cloud object store, preprocesses it on a local cluster, runs a simulation on a cloud HPC service, and writes results to a database. A dedicated orchestration platform exists to:
 
-A robust [orchestrator](https://kestra.io/resources/data/orchestrator) is critical for making these processes reliable, repeatable, and efficient, especially in environments that rely on [event-driven orchestration](https://kestra.io/resources/infrastructure/event-driven-orchestration) to react to changing conditions.
+*   **Manage cross-system dependencies:** workflows routinely span schedulers, object stores, cloud APIs, and databases. Orchestration runs each step in the right order, across each system.
+*   **Guarantee reproducibility and auditability:** in research and regulated industries, reproducing a result is mandatory. Orchestration keeps a version-controlled record of the exact workflow, parameters, and data used for every run.
+*   **Use expensive hardware efficiently:** a single view across all workflows lets the platform decide when and where to run jobs, preventing contention and idle GPU time.
+*   **Recover from failure:** retries, error branches, and alerting mean a single failed step can trigger a recovery, notify an operator, or run a cleanup, instead of killing a multi-day computation.
+*   **Connect heterogeneous stacks:** modern HPC mixes schedulers, storage systems, cloud APIs, and many languages. Orchestration is the layer that lets them work together, which helps [solve complex orchestration problems](/resources/infrastructure/orchestration-problems-complexity) without piling on more tooling.
 
-### What is the difference between workflow and orchestration?
+### Where does orchestration sit in the HPC stack?
 
-While often used interchangeably, "workflow" and "orchestration" represent different levels of abstraction. Understanding the distinction is key to managing complex systems effectively.
+Orchestration does not replace your scheduler; it sits above it and ties the pieces together. Each layer keeps the job it is good at:
 
-*   A **workflow** is a predefined, repeatable sequence of tasks designed to achieve a specific outcome. For example, a workflow could define the steps to process a single dataset: load data, run a transformation script, and save the result.
+*   **Cluster schedulers (SLURM, LSF, PBS Pro):** own resource allocation and the job queue inside a single on-premises cluster. Kestra submits jobs to them and tracks state.
+*   **Cloud batch services (AWS Batch, Azure CycleCloud):** provision and scale compute on demand for burst capacity. Kestra triggers and monitors these jobs natively.
+*   **Container platforms (Kubernetes):** run GPU pods and containerized steps. Kestra dispatches work to them and collects artifacts.
+*   **The orchestrator (Kestra):** spans all of the above, owning the cross-system dependencies, data movement, retries, approvals, and the audit trail.
 
-*   **Orchestration** is the automated coordination and management of multiple, often interdependent, workflows and systems to achieve a larger, dynamic goal. It’s the "conductor" that ensures all the individual "musicians" (workflows, services, scripts) play in harmony. Orchestration handles resource allocation, dependency management, and error handling across heterogeneous environments, providing a unified control plane for complex operations. You can learn more about the [differences between various types of orchestration](https://kestra.io/blogs/orchestration-differences) to see how this applies across domains.
+Reading the stack this way avoids a common mistake: trying to force a single-cluster scheduler to coordinate a workflow that crosses clusters, clouds, and data stores. The scheduler keeps doing what it does well, and the orchestrator handles the rest.
 
-## Revolutionizing HPC Job Orchestration
-
-### The challenges of traditional HPC job management
-
-Historically, managing jobs on HPC systems involved manual scripting and direct interaction with command-line schedulers. This approach is fraught with challenges that hinder productivity and scalability:
-
-*   **Manual Scripting:** Reliance on complex shell scripts to manage dependencies and job submissions is error-prone and difficult to maintain.
-*   **Brittle Dependencies:** A failure in one step can cause the entire chain of jobs to fail without a clear recovery path.
-*   **Lack of Visibility:** It's difficult to get a centralized view of job status, resource usage, and historical performance.
-*   **Inefficient Resource Allocation:** Manual processes often lead to underutilized or over-provisioned resources, increasing costs.
-*   **Reproducibility Issues:** Recreating the exact conditions of a past computation for verification or reuse can be nearly impossible.
-
-These issues create significant operational overhead, and teams often [struggle to solve orchestration problems without adding more complexity](https://kestra.io/resources/infrastructure/orchestration-problems-complexity).
-
-### Declarative orchestration for HPC
-
-A declarative approach to orchestration transforms HPC job management. Instead of writing imperative scripts that detail *how* to perform each step, teams define the desired end state in a simple, human-readable format like YAML. This paradigm offers several advantages:
-
-*   **Reproducibility:** Workflows defined as code in YAML can be version-controlled with Git, ensuring that every computation is fully reproducible.
-*   **GitOps:** This enables [GitOps](https://kestra.io/resources/infrastructure/gitops) practices, where changes to workflows are managed through pull requests, providing auditability and collaboration.
-*   **Decoupling:** [Declarative data orchestration](https://kestra.io/features/declarative-data-orchestration) separates the workflow logic from the underlying execution environment, making it easy to run the same workflow on different HPC clusters or cloud platforms.
-*   **Polyglot Tasks:** Teams can use the best tool for the job, integrating Python, Shell, R, or any other language into a single, cohesive workflow.
+## Key Challenges in HPC Workflow Management
 
 ### What are the types of workflows in modern HPC systems?
 
-Modern orchestration platforms unify various types of workflows that are common in HPC environments:
+Modern clusters run two workload types with very different needs, and a real orchestrator has to serve both:
 
-*   **Data Workflows:** These include ETL processes, data quality checks, and large-scale data ingestion required to prepare datasets for HPC simulations. Kestra provides a robust platform for all [data-related automation](https://kestra.io/data).
-*   **AI/ML Workflows:** HPC is central to training large models. These workflows orchestrate hyperparameter tuning, distributed training jobs, and RAG pipelines. This is a core part of modern [AI automation](https://kestra.io/ai-automation).
-*   **Infrastructure Workflows:** Managing the HPC environment itself, including provisioning compute clusters, configuring software, and monitoring resource health, can be automated. This is a key component of [infrastructure automation](https://kestra.io/infra-automation).
-*   **Scientific Simulation Workflows:** These are the classic HPC use cases, involving complex, multi-stage computations that may run for days or weeks.
+*   **Batch jobs** are long-running, non-interactive, and can wait in a queue. A multi-day climate simulation is a batch job.
+*   **Interactive workloads** need resources immediately and give a user real-time feedback. A data scientist exploring a dataset in a notebook is running an interactive workload.
 
-## Kestra for HPC Workflow Orchestration
+The challenge is managing both without standing up separate, siloed systems. An orchestration platform must submit and monitor long-running batch jobs while also triggering on-demand interactive sessions, allocating resources dynamically and preventing one from starving the other.
 
-Kestra provides a unified, declarative control plane to manage the diverse workloads found in HPC environments. Its language-agnostic and platform-neutral design makes it an ideal solution for orchestrating complex tasks across on-premises clusters and cloud resources.
+### Integrating AI and data pipelines into HPC
 
-Key features that benefit HPC orchestration include:
+The convergence of AI and HPC creates a data-management problem. Training a large model can require terabytes staged from a data lake to the cluster's high-performance file system. The orchestrator has to manage that movement, then chain data preparation, training, validation, and deployment into one flow. The ability to [automate data pipelines](/resources/data/automate-data-pipeline) matters as much as managing the compute itself, especially for workloads like a [RAG pipeline](/resources/ai/rag-pipeline) that combines retrieval and inference.
 
-*   **Language-Agnostic Execution:** Kestra can run scripts and binaries in any language, allowing teams to integrate existing HPC tools and schedulers like Slurm or PBS via simple Shell tasks.
-*   **Kubernetes-Native:** Deploying Kestra on [Kubernetes](https://kestra.io/orchestration/kubernetes) enables flexible, dynamic resource allocation, scaling compute resources up or down based on workload demands.
-*   **Robust Plugin Ecosystem:** With hundreds of [plugins](https://kestra.io/plugins), Kestra seamlessly integrates with cloud services like AWS Batch, Azure Batch, and Google Batch, as well as storage solutions like Amazon S3 and [Azure Data Lake Storage (ADLS)](https://kestra.io/plugins/plugin-azure/adls).
-*   **Event-Driven Capabilities:** Workflows can be triggered by events such as the arrival of a new file in a storage bucket, enabling reactive and efficient processing pipelines.
+## Modern Approaches to HPC Workflow Orchestration
 
-Below is an example of a Kestra flow that submits a job to a Slurm cluster and monitors its status.
+### Declarative workflows and GitOps for HPC
+
+The most reliable way to manage complex workflows is to define them as code. A declarative, [YAML-first orchestration](/blogs/yaml-for-workflow-orchestration) model lets teams state the desired end state of a workflow in a human-readable file, and brings [GitOps](/resources/infrastructure/gitops) practices to HPC:
+
+*   **Versioning:** every workflow change is tracked in Git, with a complete history.
+*   **Collaboration:** scientists and engineers iterate on workflow design through pull requests, using tools they already know.
+*   **Auditability:** the Git history is a definitive log of who changed what and when.
+*   **Reproducibility:** any version of a workflow can be checked out and re-run to reproduce a result exactly.
+
+### Event-driven architectures for dynamic HPC tasks
+
+Not all HPC work runs on a cron timer. The arrival of a new dataset in an S3 bucket can trigger a processing pipeline; a signal from a monitoring system can launch a diagnostic run. An [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) model lets HPC environments react, launching computations precisely when they are needed instead of polling or waiting for the next scheduled window.
+
+## Kestra: A Unified Control Plane for HPC Workflows
+
+Kestra is an open-source, declarative orchestration platform that gives modern HPC environments a single control plane. It is built for the heterogeneity and scale of today's high-performance work.
+
+Organizations already run infrastructure operations on Kestra at scale. Crédit Agricole's IT production arm (CAGIP) transformed its infrastructure operations and scaled workflows across more than 100 clusters. A Fortune 500 industrial company replaced VMware Aria Automation to secure hybrid cloud automation across both IT and operational technology. Dataport, Germany's public-sector IT provider, standardized API-driven orchestration on its private cloud.
+
+Kestra's capabilities map directly onto HPC needs:
+
+*   **Declarative YAML:** define everything from a single script to a multi-stage pipeline in version-controllable YAML.
+*   **Polyglot execution:** run code in the languages common to HPC, including [Python](/features/code-in-any-language/python), R, and Bash, with no wrapper code.
+*   **Plugin ecosystem:** out-of-the-box connectivity to cloud providers (AWS, Azure, GCP), databases, messaging systems, and DevOps tools.
+*   **Hybrid and multi-cloud:** deploy on-premises, in a private cloud, or on a [Kubernetes](/orchestration/kubernetes) cluster to manage HPC resources wherever they live.
+*   **Visibility:** a central UI shows every execution, log, and metric in real time, which shortens debugging.
+*   **Human-in-the-loop:** insert approval steps so a person can sign off before a costly or sensitive job proceeds.
+
+### Orchestrating a SLURM job over SSH
+
+Most on-premises HPC still runs through SLURM. Kestra submits and polls SLURM jobs by running shell commands over SSH, so an existing cluster needs no new agent. The workflow below stages input, submits a job with `sbatch`, waits for completion, then collects results:
 
 ```yaml
-id: hpc-slurm-job
-namespace: scientific.simulations
-description: "Orchestrates a Slurm job submission and monitors its completion."
+id: slurm_hpc_job
+namespace: company.hpc
 
 tasks:
-  - id: submit_slurm_job
+  - id: stage_input
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker # Or the Kubernetes task runner if deployed on K8s
-    containerImage: "ubuntu/slurm-client:latest" # Example Slurm client image
     commands:
-      # Submit the batch script and capture the job ID
-      - "JOB_ID=$(sbatch --parsable my_simulation_script.sh)"
-      # Pass the job ID to downstream tasks as a Kestra output
-      - "echo '::{\"outputs\":{\"slurm_job_id\":\"'\"$JOB_ID\"'\"}}::'"
+      - "scp ./input.dat user@login-node:/scratch/run/input.dat"
 
-  - id: monitor_job_status
+  - id: submit_and_wait
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: "ubuntu/slurm-client:latest"
     commands:
-      # Check if the job is still running or pending. Fails if job is not found or completed.
-      - "squeue -j {{ outputs.submit_slurm_job.vars.slurm_job_id }} -h"
-    retry:
-      type: constant
-      interval: PT30S
-      maxAttempts: 60 # Retry for 30 minutes
+      - "ssh user@login-node 'sbatch --wait /scratch/run/simulation.sbatch'"
+    dependsOn:
+      - stage_input
 
-  - id: get_final_status
+  - id: collect_results
     type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.scripts.runner.docker.Docker
-    containerImage: "ubuntu/slurm-client:latest"
     commands:
-      # Retrieve the final state of the job (e.g., COMPLETED, FAILED)
-      - "sacct -j {{ outputs.submit_slurm_job.vars.slurm_job_id }} --format=State -n -P"
-    # Further tasks could parse logs, move results to storage, or trigger alerts.
+      - "scp user@login-node:/scratch/run/results.out ./results.out"
+    dependsOn:
+      - submit_and_wait
 ```
 
-This declarative workflow automates the entire process of job submission and monitoring, providing visibility and reliability. You can explore [why Kestra](https://kestra.io/docs/why-kestra) is built for such use cases or check out blueprints for similar parallel workloads, like [running Python on AWS Batch](https://kestra.io/blueprints/aws-batch-terraform-git).
+### Bursting to the cloud with AWS Batch
 
-## The Future of HPC Automation with Kestra
+When on-premises capacity runs out, the same orchestration pattern bursts to the cloud. Here Kestra stages data to S3, runs the computation on AWS Batch, then collects the output, all from one declarative file. The [AWS Batch blueprint](/blueprints/aws-batch-terraform-git) shows a fuller example, and GPU work can run through the [Kubernetes GPU pod blueprint](/blueprints/kubernetes-gpu-pod-artifact):
 
-As high-performance computing continues to evolve, the demand for flexible, scalable, and unified orchestration will only grow. The convergence of HPC with AI, big data, and cloud computing requires a platform that can bridge these domains seamlessly.
+```yaml
+id: aws_hpc_batch_job
+namespace: company.hpc
 
-Kestra is designed to be this future-proof control plane. By providing a declarative, language-agnostic, and event-driven foundation, Kestra empowers scientific and engineering teams to automate their most complex workflows. This allows them to focus on innovation and discovery, not on the underlying infrastructure. Explore our [resources](https://kestra.io/resources) to learn more about modern [infrastructure automation](https://kestra.io/resources/infrastructure) or see how [Kestra Cloud](https://kestra.io/cloud) can manage the platform for you.
+inputs:
+  - id: inputDataPath
+    type: STRING
+    defaults: "s3://my-hpc-data/input.csv"
+  - id: outputPath
+    type: STRING
+    defaults: "s3://my-hpc-results/output.csv"
+
+tasks:
+  - id: prepare_data
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - "aws s3 cp {{ inputs.inputDataPath }} /mnt/data/input.csv"
+
+  - id: run_hpc_job_on_aws_batch
+    type: io.kestra.plugin.aws.batch.Job
+    jobName: "my-hpc-computation"
+    jobQueue: "my-hpc-job-queue"
+    jobDefinition: "my-hpc-job-definition"
+    parameters:
+      INPUT_FILE: "/mnt/data/input.csv"
+      OUTPUT_FILE: "/mnt/data/output.csv"
+    dependsOn:
+      - prepare_data
+
+  - id: collect_results
+    type: io.kestra.plugin.scripts.shell.Commands
+    commands:
+      - "aws s3 cp /mnt/data/output.csv {{ inputs.outputPath }}"
+    dependsOn:
+      - run_hpc_job_on_aws_batch
+```
+
+## Designing Efficient and Scalable HPC Workflows with Kestra
+
+Reliable HPC workflows go past simple job submission. With Kestra you can apply a few practices that keep them efficient at scale:
+
+*   **Modularity:** break large workflows into smaller, reusable subflows so they are easier to develop, test, and maintain.
+*   **Resilience:** set retry policies and error-handling logic to recover from the transient failures that are common in large distributed systems.
+*   **Resource control:** use dynamic task generation to scale work up or down with demand, which keeps cloud spend in check.
+*   **Security and compliance:** apply [workflow governance](/resources/infrastructure/workflow-governance) and use [RBAC](/resources/infrastructure/rbac-workflow-orchestration) to control who can run or change critical workflows, with audit logs for reporting.
+*   **Performance:** Kestra is built for high concurrency; its [published benchmarks](/docs/performance/benchmark) show how it handles large execution volumes.
+
+As HPC keeps merging with AI, data analytics, and cloud computing, the need for a flexible, unified orchestration layer only grows. Platforms that combine declarative definitions, event-driven triggers, and hybrid-cloud reach are set to become the backbone of the next generation of high-performance computing. To start building, explore the full [documentation](/docs).
