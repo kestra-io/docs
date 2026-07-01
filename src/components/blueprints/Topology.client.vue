@@ -141,6 +141,10 @@
         fill: var(--ks-content-primary) !important;
     }
 
+    :deep(.vue-flow__controls-button) {
+        font-size: 12px;
+    }
+
     :deep(.dot) {
         color: var(--ks-content-primary) !important;
     }
