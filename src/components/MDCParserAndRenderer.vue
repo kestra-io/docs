@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts" setup>
-    import { marked } from "marked"
     import { onMounted, ref, watch } from "vue"
+    import { getMarked } from "~/markdown/marked-shiki"
 
     const props = defineProps<{
         content: string
@@ -25,7 +25,7 @@
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        htmlContent.value = await marked.parse(props.content)
+        htmlContent.value = await getMarked().parse(props.content)
     }
 
     onMounted(async () => {
@@ -118,6 +118,16 @@
                 transform: translateX(100%);
             }
         }
+    }
+</style>
+
+<!-- Shiki dual-theme: token colors apply inline (light); switch to the dark
+     theme via the per-token `--shiki-dark` CSS variable when `.dark` is set on
+     <html>. Not scoped so it reaches the v-html output; namespaced under
+     .mdc-renderer to avoid leaks. -->
+<style lang="scss">
+    html.dark .mdc-renderer pre code span {
+        color: var(--shiki-dark) !important;
     }
 </style>
 

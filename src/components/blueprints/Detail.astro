@@ -1,0 +1,140 @@
+---
+import Snippets from "~/components/common/Snippets.astro"
+import BlueprintMarkdown from "~/components/blueprints/BlueprintMarkdown.vue"
+import Topology from "~/components/blueprints/Topology.client.vue"
+
+interface Props {
+    page: {
+        id: string | number
+        title: string
+        includedTasks?: string[]
+    }
+    description: string
+    flow: string
+    graph?: any
+}
+
+const { page, description, flow, graph } = Astro.props as Props
+---
+
+<section>
+    <div class="container-xxl">
+        <div class="wrapper">
+            <div class="snippets">
+                <Snippets
+                    code={flow}
+                    lang="yaml"
+                    expandThreshold={25}
+                    noCollapse
+                />
+            </div>
+            <div class="topology">
+                <div class="card">
+                    <div class="card-body">
+                        <Topology
+                            client:only="vue"
+                            flowGraph={graph}
+                            source={flow}
+                            id={String(page.id)}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<BlueprintMarkdown
+    client:only="vue"
+    page={page}
+    description={description}
+/>
+
+<style lang="scss">
+    $compact-panel-height: 660px;
+
+    section {
+        padding: 0 $rem-1;
+        background-color: var(--ks-background-primary);
+    }
+
+    .wrapper {
+        display: flex;
+        gap: $rem-1;
+        padding-bottom: $rem-4;
+
+        @include media-breakpoint-down(xl) {
+            flex-direction: column;
+        }
+
+        .snippets {
+            flex: 1 1 0;
+            min-width: 0;
+            min-height: $compact-panel-height;
+
+            @include media-breakpoint-down(xl) {
+                flex: 1 1 auto;
+                max-width: none;
+            }
+
+            :global(.code-card) {
+                height: $compact-panel-height;
+                display: flex;
+                flex-direction: column;
+            }
+
+            :global(.code-card.is-expandable:not(.is-expanded) .code-inner) {
+                max-height: none !important;
+                overflow: hidden;
+                mask-image: linear-gradient(
+                    to bottom,
+                    var(--ks-background-primary) 70%,
+                    transparent 100%
+                ) !important;
+            }
+
+            :global(.code-card.is-expanded) {
+                height: auto;
+            }
+
+            :global(.code-card .code-inner) {
+                flex: 1;
+            }
+        }
+
+        .topology {
+            flex: 0 0 580px;
+            max-width: 580px;
+            min-width: 0;
+            min-height: $compact-panel-height;
+            display: flex;
+            flex-direction: column;
+
+            @include media-breakpoint-down(xl) {
+                max-width: none;
+                height: 500px;
+                min-height: auto;
+                flex: 1 1 auto;
+            }
+
+            .card {
+                flex: 1;
+                border-radius: 8px;
+                border: $block-border;
+                overflow: clip;
+
+                .card-body {
+                    height: 100%;
+                    padding: 0;
+                    background-color: var(--ks-background-secondary);
+                    display: flex;
+                    flex-direction: column;
+
+                    & > * {
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+</style>

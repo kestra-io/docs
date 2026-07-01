@@ -12,7 +12,8 @@
       "~/composables/*": ["./src/composables/*"],
       "~/utils/*": ["./src/utils/*"],
       "~/components/*": ["./src/components/*"],
-      "~/contents/*": ["./src/contents/*"]
+      "~/contents/*": ["./src/contents/*"],
+      "~/*": ["./src/*"]
     }
   }
 }

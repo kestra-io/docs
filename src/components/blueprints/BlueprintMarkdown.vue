@@ -69,8 +69,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .markdown {
         padding: 0 $rem-1;
         background-color: var(--ks-background-primary);

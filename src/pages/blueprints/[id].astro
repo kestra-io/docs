@@ -3,7 +3,7 @@ export const prerender = false
 import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Header from "~/components/blueprints/Header.astro"
-import Detail from "~/components/blueprints/Detail.vue"
+import Detail from "~/components/blueprints/Detail.astro"
 import Related from "~/components/blueprints/Related.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import { randomSortFunction } from "~/utils/random"
@@ -58,7 +58,6 @@ const description = pageData.metaDescription
 <Layout title={title} description={description}>
     <Header page={pageData} slug={id} tags={tags} />
     <Detail
-        client:only
         page={pageData}
         description={pageData.description}
         flow={pageData.flow}
