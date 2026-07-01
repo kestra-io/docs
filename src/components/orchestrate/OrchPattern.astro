@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import Snippets from "~/components/common/Snippets.astro"
+import Snippets from "~/components/common/Snippets.vue"
 import Topology from "~/components/blueprints/Topology.client.vue"
 
 interface BlueprintItem {
@@ -74,7 +74,7 @@ const hasTabs = tabs.length > 0
                                         )}
                                     </div>
                                     {bp.render?.source || bp.code ? (
-                                        <Snippets code={bp.render?.source ?? bp.code ?? ''} lang="yaml" />
+                                        <Snippets client:idle code={bp.render?.source ?? bp.code ?? ''} lang="yaml" />
                                     ) : (
                                         <div class="code-pending">
                                             <p class="code-pending__lead">{bp.description}</p>

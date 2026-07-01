@@ -1,6 +1,6 @@
 ---
 import Link from "~/components/common/Link.astro"
-import Snippets from "~/components/common/Snippets.astro"
+import Snippets from "~/components/common/Snippets.vue"
 import TaskIcon from "~/components/common/TaskIcon.vue"
 
 interface BlueprintItem {
@@ -65,7 +65,7 @@ const {
                             data-tab-content={idx}
                         >
                             <div class="panel panel-1">
-                                <Snippets code={bp.code} lang={lang} />
+                                <Snippets client:idle code={bp.code} lang={lang} />
                             </div>
                             <div class="panel panel-2">
                                 <h3>{bp.title}</h3>
