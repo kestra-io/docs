@@ -86,7 +86,7 @@ This is the list of areas in which Kestra easily beats the competition:
 - **Separation of programming logic from the flow code** - Since data flows are written in YAML, it can be challenging to work with complex and long scripts from different programming languages. The good news is that you can host them on GitHub, and only point to them in your Kestra flows. By doing this, you're keeping the flow code short and tidy, but you also have the ability to change the programming logic at any time, without the need to revisit the workflow YAML code.
 - **Scalable architecture** - The architecture is built on top of time-tested technologies such as Postgres, Kafka, and Elasticsearch, so you can rest assured scalability won't be an issue.
 - **Live documentation** - As soon as you define a plugin type when designing a data flow, you'll be able to split the editor screen so the corresponding documentation and examples are shown on the right side.
-- **Excellent documentation and blueprints** - Not only does Kestra offer extensive documentation, but there are also more than [390+ blueprints](/blueprints) showing you exactly how to design your data flows to achieve a certain task.
+- **Excellent documentation and blueprints** - Not only does Kestra offer extensive documentation, but there are also [blueprints](/blueprints) showing you exactly how to design your data flows to achieve a certain task.
 
 
 ### 3. Azure Data Factory
