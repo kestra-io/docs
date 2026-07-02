@@ -207,7 +207,7 @@ The orchestration layer and the execution layer were always meant to be separate
 
 The best way to pressure-test this argument is to read a few real workflows. If the separation of orchestration and execution is real, it should be obvious in the YAML.
 
-- **Browse real workflows.** Kestra's [Blueprints](/blueprints) are production-ready workflow templates written in YAML. A few worth reading to see the orchestration/execution separation in practice:
+- **Browse real workflows.** Kestra's [260+ Blueprints](/blueprints) are production-ready workflow templates written in YAML. A few worth reading to see the orchestration/execution separation in practice:
   - *ETL:* [Getting started: data engineering pipeline](/blueprints/data-engineering-pipeline) (download → Python → DuckDB, the simplest end-to-end example), [REST API to DuckDB with Python and Polars](/blueprints/api-python-sql) (Python runs as an external process; the separation is explicit), [extract, transform, and load in parallel to S3 and Postgres](/blueprints/api-json-to-postgres) (adds parallelism)
   - *Beyond ETL:* [dbt pipeline on Postgres from Git](/blueprints/dbt-postgres) (YAML handles scheduling and Git sync; SQL handles transformation), [governed analytics assets with DuckDB](/blueprints/data-pipeline-assets) (raw → staging → mart layers with built-in lineage tracking), [real-time MySQL monitoring with Debezium](/blueprints/debezium-mysql-realtime-trigger) (event-driven trigger rather than a cron schedule)
 - **Use agent-skills.** Point your AI coding assistant at the [kestra-flow skill](https://github.com/kestra-io/agent-skills) and describe what you want to build.

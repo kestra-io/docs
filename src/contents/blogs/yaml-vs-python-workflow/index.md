@@ -186,7 +186,7 @@ Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) extends this further: describe 
 ## Where to go from here
 
 - **Read the architectural case.** [YAML-First Orchestration](/blogs/yaml-for-workflow-orchestration) makes the argument for why separating the coordination layer from the execution layer is the right call, with examples from infrastructure and analytics tooling that already went declarative.
-- **Browse more workflows.** Kestra's [Blueprints](/blueprints) are production-ready YAML workflow templates covering data pipelines, infrastructure automation, and business processes.
+- **Browse more workflows.** Kestra's [260+ Blueprints](/blueprints) are production-ready YAML workflow templates covering data pipelines, infrastructure automation, and business processes.
 - **Try Python orchestration.** The Python orchestration docs show how Python scripts run as Kestra tasks, with full access to libraries and dependencies.
 - **Try it live.** [Install Kestra](/docs/quickstart) (one Docker command), open the editor, and paste any example from this post. The visual editor shows the DAG topology updating as you type.
 - **Why Kestra.** For a broader look at the design decisions behind YAML-first orchestration, [Why Kestra](/docs/why-kestra) covers the architectural reasoning.
