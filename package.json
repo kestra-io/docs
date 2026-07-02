@@ -64,7 +64,7 @@
     "oxfmt": "^0.55.0",
     "oxlint": "^1.70.0",
     "posthog-js": "^1.391.7",
-    "prettier": "^3.8.4",
+    "prettier": "^3.9.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-vue": "^1.1.6",
     "rapidoc": "^9.3.8",
