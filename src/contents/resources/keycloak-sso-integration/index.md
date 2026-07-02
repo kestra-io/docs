@@ -4,7 +4,7 @@ description: "Learn how to integrate Keycloak for Single Sign-On (SSO) to centra
 metaTitle: "Keycloak SSO Integration for Workflow Orchestration | Kestra"
 metaDescription: "Integrate Keycloak SSO to secure apps and automate access management — configure Keycloak, master protocols, and orchestrate workflow security with Kestra."
 tag: "infrastructure"
-date: 2026-07-08
+date: 2026-07-01
 slug: "keycloak-sso-integration"
 faq:
   - question: "How does SSO work with Keycloak?"
