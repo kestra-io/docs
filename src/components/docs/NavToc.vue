@@ -10,6 +10,9 @@
                 :page-path="pagePath"
                 :page-title="pageTitle"
                 :page-url="pageUrl"
+                :edit-url="editUrl"
+                :stem="stem"
+                :extension="extension"
             />
 
             <template v-if="links?.length" class="bd-contents-list">
@@ -78,7 +81,7 @@
             </template>
 
             <div class="d-none d-lg-block pt-2 bd-social-list">
-                <SocialsList :editUrl :stem :extension />
+                <SocialsList />
             </div>
         </div>
     </div>
@@ -102,7 +105,6 @@
     const props = withDefaults(
         defineProps<{
             links?: TocLink[],
-            editLink?: boolean,
             extension?: string,
             stem?: string,
             editUrl?: string,
@@ -111,6 +113,7 @@
             markdownBody?: string,
             pagePath?: string,
             pageTitle?: string,
+            pageUrl?: string,
         }>(),
         {
             links: () => [],
