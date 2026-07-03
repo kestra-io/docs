@@ -346,3 +346,32 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 * * * *"
 ```
+
+## Git SyncApps and SyncUnitTests
+
+These tasks are available in the Enterprise Edition only.
+
+[SyncApps](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncapps) and [SyncUnitTests](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncunittests) treat Git as the source of truth for apps and unit tests, following the same sync pattern as flows and namespace files.
+
+Both tasks accept an optional `namespace` property. When set, only apps or unit tests in that namespace and its child namespaces are synced, and with `delete: true` only those resources are eligible for deletion. When left empty, the task operates across all apps or unit tests in the tenant, which is the default. Set `namespace` to keep one-repo-per-namespace setups safe to run with `delete: true` without touching resources owned by other namespaces.
+
+```yaml
+id: sync_apps_from_git
+namespace: company.ops
+tasks:
+  - id: git
+    type: io.kestra.plugin.ee.git.SyncApps
+    namespace: company.team
+    delete: true
+    url: https://github.com/my-org/company-team
+    branch: main
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    dryRun: true
+triggers:
+  - id: every_full_hour
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+```
+
+Dashboards are not attached to a namespace, so [SyncDashboards](/plugins/plugin-git/io.kestra.plugin.git.syncdashboards) has no namespace scoping and operates across all dashboards in the tenant.
