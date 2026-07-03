@@ -9,6 +9,10 @@ Plugins can ship custom Vue.js frontend components that load directly into the K
 
 This lets you build domain-specific experiences: visualize a query plan in the topology view, render log output in a structured panel, or display task metadata in a rich card. The core UI stays lean; each plugin brings exactly the UI it needs.
 
+:::alert{type="info"}
+Plugin artifacts are available starting in **Kestra 2.0.0**.
+:::
+
 ## Why plugin artifacts?
 
 Tasks in Kestra produce structured outputs and have rich configuration. But the default topology and log views are generic — they show raw YAML and plain text. When a task is query-centric, graph-centric, or data-heavy, that generic view loses signal.
@@ -71,6 +75,13 @@ Renders in the **execution topology view** when a task node is selected. The con
 import type { Execution, MetricEntry, Task } from "@kestra-io/kestra-sdk"
 import { z } from "zod"
 
+export const progressEventSchema = z.object({
+    taskId: z.string(),
+    taskRunId: z.string(),
+    step: z.string(),
+    timestamp: z.string(),
+})
+
 export const propsSchema = z.object({
     taskType: z.string(),
     task: z.custom<Task>(),
@@ -78,12 +89,13 @@ export const propsSchema = z.object({
     namespace: z.string().optional(),
     flowId: z.string().optional(),
     metrics: z.custom<MetricEntry>().array(),
+    progress: progressEventSchema.array(),
 })
 ```
 
 `Task`, `Execution`, and `MetricEntry` are imported from `@kestra-io/kestra-sdk`.
 
-Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. `metrics` is always an array (empty before execution).
+Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. `metrics` is always an array (empty before execution). `progress` is covered in [Tracking live task progress](#tracking-live-task-progress) below.
 
 The host also injects `displayMode` as an HTML attribute — it is not in the props type, so it lands in `attrs`. Use `useAttrs()` to read it:
 
@@ -131,6 +143,70 @@ const openTaskModal = inject<(ctx: Record<string, any>) => void>("kestra:openTas
 ```
 
 This slot is the right choice when a task runner (e.g. AWS Batch, Docker, Kubernetes) needs a rich detail view that goes beyond what fits in the compact topology node or the `topology-details` panel.
+
+## Tracking live task progress
+
+Tasks that go through multiple lifecycle steps before finishing — a batch job, a runner provisioning an external resource — can report progress while still running, instead of waiting for outputs and metrics to materialize at completion.
+
+Task code reports a step with `RunContext#emitProgress`:
+
+```java
+runContext.emitProgress("pod.created", "Pod scheduled on node gke-cluster-1");
+
+// or backdate the event to a real timestamp known only after the fact,
+// e.g. a Kubernetes condition's lastTransitionTime
+runContext.emitProgress("pod.running", "Pod is running", podStartedAt);
+```
+
+Each call emits a regular INFO log line carrying a typed `progress` key, so it rides the existing log queue — no separate channel or endpoint is needed. `step` is an opaque, plugin-defined identifier (e.g. `"pod.created"`); `message` is the human-readable text shown in the log console.
+
+The `topology-details` slot (and any slot sharing its `propsSchema`) picks these up automatically: `progress` is an array of `{ taskId, taskRunId, step, timestamp }` entries, fed live from the execution's follow-logs stream while the task run is in progress.
+
+```ts
+const props = defineProps<KnownSlotProps["topology-details"]>();
+const steps = computed(() => props.progress ?? []);
+```
+
+Use `progress` to render a step indicator or timeline while `hasExecution` is true but before outputs and metrics are available — it updates live, whereas outputs and metrics only materialize once the task run completes.
+
+### Rendering a stepper
+
+The `ui/` directory is a standalone Vue app, so you're not limited to `@kestra-io/design-system` — any Vue 3 component library works. [Element Plus](https://element-plus.org/) ships a ready-made `<el-steps>` component that's a natural fit for `progress`:
+
+```bash
+cd ui
+npm install element-plus
+```
+
+```vue
+<!-- ui/src/components/QueryRunQueryTopologyDetails.vue -->
+<script setup lang="ts">
+import type { KnownSlotProps } from "@kestra-io/artifact-sdk";
+import { computed } from "vue";
+import { ElSteps, ElStep } from "element-plus";
+import "element-plus/es/components/steps/style/css";
+import "element-plus/es/components/step/style/css";
+
+const props = defineProps<KnownSlotProps["topology-details"]>();
+
+// progress events land one SSE message at a time and aren't guaranteed to arrive in order
+const orderedSteps = computed(() =>
+  [...props.progress].sort((a, b) => a.timestamp.localeCompare(b.timestamp))
+);
+</script>
+
+<template>
+  <el-steps :active="orderedSteps.length" finish-status="success" align-center>
+    <el-step v-for="s in orderedSteps" :key="s.step" :title="s.step" />
+  </el-steps>
+</template>
+```
+
+`active` set to the number of steps received so far marks everything up to the latest one as done; new entries pushed into `progress` advance the stepper live as the task runs.
+
+:::alert{type="warning"}
+`RunContext#emitProgress` requires your plugin to build against `kestraVersion = 1.3.27` (or later) in `gradle.properties` — it ships in Kestra core, not the artifact-sdk.
+:::
 
 ## Quick start
 
