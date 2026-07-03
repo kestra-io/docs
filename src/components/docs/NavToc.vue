@@ -111,6 +111,7 @@
             markdownBody?: string,
             pagePath?: string,
             pageTitle?: string,
+            pageUrl?: string,
         }>(),
         {
             links: () => [],
