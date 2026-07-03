@@ -183,6 +183,16 @@ const heroClass = [
                     background-color: transparent !important;
                     color: var(--ks-content-primary) !important;
                     border-color: var(--ks-border-button-secondary) !important;
+
+                    html.dark & {
+                        color: $white !important;
+                        border-color: $white !important;
+
+                        &:hover {
+                            background-color: $white !important;
+                            color: $black !important;
+                        }
+                    }
                 }
             }
         }

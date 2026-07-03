@@ -194,13 +194,24 @@ blockquote.blockquote {
 }
 
 .btn-secondary {
-    background-color: transparent;
+    background-color: var(--ks-background-button-secondary);
     color: var(--ks-content-primary) !important;
-    border: 1px solid var(--ks-content-primary);
+    border: 1px solid var(--ks-border-button-secondary);
 
     &:hover {
         background: var(--ks-background-button-secondary-hover) !important;
         color: var(--ks-content-btn-secondary-hover) !important;
+    }
+
+    html.dark & {
+        background-color: transparent;
+        color: $white !important;
+        border-color: $white;
+
+        &:hover {
+            background-color: $white !important;
+            color: $black !important;
+        }
     }
 }
 
