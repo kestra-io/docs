@@ -1,12 +1,14 @@
 ---
 import BlueprintsCarousel from "~/components/common/BlueprintsCarousel.astro"
+import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 
 const { blueprints } = Astro.props
+const totalBlueprints = await fetchTotalBlueprintsCount()
 ---
 
 <section>
     <div class="container">
-        <h1><span class="highlight">250+ Blueprints,</span> Ready to Build.</h1>
+        <h1><span class="highlight">{totalBlueprints}+ Blueprints,</span> Ready to Build.</h1>
         <p>
             Jump start your workflows with a growing library of workflow
             templates
