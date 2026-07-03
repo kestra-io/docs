@@ -58,6 +58,14 @@ export function resolveActionUrl(
             return buildChatGptUrl(urls, context.pageTitle)
         case "claude":
             return buildClaudeUrl(urls, context.pageTitle)
+        case "edit":
+            if (context.editUrl) {
+                return context.editUrl
+            }
+            if (context.stem && context.extension) {
+                return `https://github.com/kestra-io/docs/edit/main/content/${context.stem}.${context.extension}`
+            }
+            return undefined
         default:
             return undefined
     }
@@ -80,5 +88,9 @@ export const MARKDOWN_ACTIONS: MarkdownActionDefinition[] = [
     {
         id: "claude",
         label: "Open in Claude",
+    },
+    {
+        id: "edit",
+        label: "Edit This Page",
     },
 ]
