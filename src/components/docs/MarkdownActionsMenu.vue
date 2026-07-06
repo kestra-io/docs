@@ -34,6 +34,7 @@
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
+    import Github from "vue-material-design-icons/Github.vue"
     import { useMarkdownActions } from "~/composables/useMarkdownActions"
     import type { MarkdownActionDefinition, MarkdownActionId } from "~/utils/markdown-actions"
 
@@ -42,6 +43,9 @@
         pagePath: string
         pageTitle?: string
         pageUrl?: string
+        editUrl?: string
+        stem?: string
+        extension?: string
     }>()
 
     const context = computed(() => ({
@@ -49,11 +53,15 @@
         pagePath: props.pagePath,
         pageTitle: props.pageTitle,
         pageUrl: props.pageUrl,
+        editUrl: props.editUrl,
+        stem: props.stem,
+        extension: props.extension,
     }))
 
     const { actions, copied, executeAction } = useMarkdownActions(context)
 
     const actionIcons: Record<MarkdownActionId, typeof ContentCopy> = {
+        edit: Github,
         copy: ContentCopy,
         view: FileDocumentOutline,
         chatgpt: OpenInNew,

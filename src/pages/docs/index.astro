@@ -22,20 +22,21 @@ const editUrl = doc.filePath
 >
     <h1 slot="title" class="py-0 title">{doc.data?.h1 ?? doc.data?.title}</h1>
 
-    <NavToc
-        client:visible
-        links={headings.map((heading) => ({
-            id: heading.slug,
-            text: heading.text,
-            depth: heading.depth,
-        }))}
-        slot="headings"
-        class="right-menu"
-        {editUrl}
-        markdownBody={doc.body}
-        pagePath="/docs"
-        pageTitle={doc.data?.title}
-    />
+    <Fragment slot="headings">
+        <NavToc
+            client:visible
+            links={headings.map((heading) => ({
+                id: heading.slug,
+                text: heading.text,
+                depth: heading.depth,
+            }))}
+            class="right-menu"
+            {editUrl}
+            markdownBody={doc.body}
+            pagePath="/docs"
+            pageTitle={doc.data?.title}
+        />
+    </Fragment>
 
     <div class="bd-content">
         <Content />
