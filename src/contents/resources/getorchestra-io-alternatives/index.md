@@ -22,7 +22,6 @@ faq:
   - question: "What should I look for in an alternative's integration ecosystem?"
     answer: "A strong integration ecosystem is crucial. Look for native plugins or easy connectivity to your existing data warehouses (Snowflake, BigQuery), cloud services (AWS, GCP, Azure), messaging queues (Kafka), transformation tools (dbt), and AI providers (OpenAI, Anthropic). Kestra's extensive plugin library is a key differentiator in this regard."
 author: "Kestra Team"
-image: "/resources/getorchestra-io-alternatives/cover.png"
 ---
 
 The landscape of data and AI orchestration is dynamic, with platforms constantly evolving to meet the complex demands of modern enterprises. Getorchestra.io has positioned itself as a unified control plane for data and AI workflows, offering tools for building, monitoring, and managing pipelines. However, as teams scale, diversify their tech stacks, or refine their operational preferences, the search for an alternative often begins. Whether driven by a need for greater deployment flexibility, a more extensive plugin ecosystem, or a different approach to workflow definition and governance, exploring other options is a strategic move.
