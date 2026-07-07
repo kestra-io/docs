@@ -107,6 +107,10 @@ The following policy is the minimum set required by the task runner:
 The `batch:CreateJobQueue`, `batch:UpdateJobQueue`, `batch:DeleteJobQueue`, and `batch:DescribeJobQueues` permissions are only required when `jobQueueArn` is not configured — the task runner will create and clean up a job queue automatically in that case. If you always provide a `jobQueueArn`, you can omit those four permissions.
 :::
 
+:::alert{type="info"}
+`logs:StartLiveTail` is only required when `streamLogs` is left at its default of `true`. If you set `streamLogs: false`, you can omit this permission — see [Log streaming](#log-streaming) below.
+:::
+
 Replace `<executionRoleArn>`, `<serviceRoleArn>`, `<taskRoleArn>`, and `<accountId>` with the values from your AWS account. If you use a different region, update the CloudWatch Logs ARN accordingly.
 
 :::alert{type="info"}
@@ -657,6 +661,14 @@ The task runner exposes several optional properties for tuning behavior and auth
 |---|---|---|
 | `resume` | `true` | When `true`, if the Kestra worker is restarted while a job is running, it will reconnect to the existing job rather than submitting a new one. Requires a `jobQueueArn` to be configured. |
 | `delete` | `true` | When `true`, the job definition, any auto-created job queue, and the S3 working-directory prefix are deleted after the job completes. Set to `false` to retain resources for debugging — note that a task retry may then reconnect to the previous (failed) job. |
+
+### Log streaming
+
+| Property | Default | Description |
+|---|---|---|
+| `streamLogs` | `true` | When `true`, the task runner streams container logs in real time using CloudWatch Logs Live Tail. Set to `false` to disable streaming and instead fetch logs only once the job completes. |
+
+Set `streamLogs: false` for cost-sensitive workloads, since Live Tail is billed separately from standard CloudWatch Logs ingestion. It's also recommended when authenticating with role-chained or short-lived STS credentials (see [STS role assumption](#sts-role-assumption)) — Live Tail keeps a stream open for the entire job duration, and credentials that expire before the job finishes will cause the stream to fail.
 
 ### EKS: service account and IRSA
 

@@ -246,7 +246,7 @@ This integration provides the flexibility to build powerful, automated processes
 
 ### Improving operational efficiency and governance with declarative orchestration
 
-The "everything-as-code" approach that Kestra brings to Keycloak integration delivers significant efficiency gains. Platform teams can build reusable, version-controlled components for common IAM tasks, reducing duplication and ensuring consistency. This model allowed BHP to reduce its infrastructure provisioning time from six months to just six days.
+The "everything-as-code" approach that Kestra brings to Keycloak integration delivers significant efficiency gains. Platform teams can build reusable, version-controlled components for common IAM tasks, reducing duplication and ensuring consistency. This model allowed a Fortune 500 mining company to reduce its infrastructure provisioning time from six months to just six days.
 
 This declarative model is a core principle of [Infrastructure as Code](/resources/infrastructure/what-is-infrastructure-as-code), and applying it to identity management brings a new level of rigor and scalability. It's a key reason why modern [software providers](/use-cases/software-providers) are embedding orchestration directly into their products.
 

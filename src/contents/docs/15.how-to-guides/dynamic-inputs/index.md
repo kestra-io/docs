@@ -160,7 +160,7 @@ outputs:
     value: "{{ outputs.get_regions.vars.regions }}"
 ```
 
-The `::{"outputs":{"key":"value"}}::` line is Kestra's [script output format](../../07.scripts/06.outputs-metrics.md) — it's how `shell.Commands` tasks publish named values that downstream expressions can reference via `outputs.<task_id>.vars.<key>`.
+The `::{"outputs":{"key":"value"}}::` line is Kestra's [script output format](../../16.scripts/06.outputs-metrics/index.md) — it's how `shell.Commands` tasks publish named values that downstream expressions can reference via `outputs.<task_id>.vars.<key>`.
 
 **Step 2 — Reference it from a SELECT input in your main flow:**
 

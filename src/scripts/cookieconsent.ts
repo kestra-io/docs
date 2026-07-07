@@ -1,4 +1,4 @@
-import * as CookieConsent from "vanilla-cookieconsent"
+import { run as runCookieConsent } from "vanilla-cookieconsent"
 import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
@@ -6,7 +6,6 @@ import { GTM_ID } from "astro:env/client"
 
 const isEurope =
     Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
-const cookieConsent = CookieConsent
 
 window.addEventListener("DOMContentLoaded", () => {
     const enabledAnalytics = async () => {
@@ -88,7 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     document.documentElement.classList.add("cc--darkmode")
 
-    cookieConsent.run({
+    runCookieConsent({
         mode: isEurope ? "opt-in" : "opt-out",
         manageScriptTags: true,
         disablePageInteraction: true,

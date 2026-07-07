@@ -33,6 +33,13 @@ When you click **Execute**, the modal displays the `message` as soon as an input
 
 If several checks fail, the most restrictive behavior wins in this priority order: `BLOCK_EXECUTION` → `FAIL_EXECUTION` → `CREATE_EXECUTION`. This lets you mix hard stops with softer warnings in the same flow.
 
+### Evaluation behavior
+
+Keep these rules in mind when writing `condition` expressions:
+
+- **The condition must evaluate to a boolean `true`.** Only a real boolean passes — not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
+- **An unevaluatable condition always blocks.** If the condition cannot be evaluated (for example, an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, regardless of the `behavior` and `style` you declared. Fix the expression and reference only variables that exist at validation time to restore your declared behavior.
+
 ## Examples
 
 ### Simple guard

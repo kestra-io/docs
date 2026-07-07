@@ -85,17 +85,20 @@ const faqSchema =
                 />
             )}
             <script
+                is:inline
                 type="application/ld+json"
                 set:html={JSON.stringify(jsonLinkedData)}
             />
             {page.schema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(page.schema)}
                 />
             )}
             {faqSchema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(faqSchema)}
                 />
@@ -108,7 +111,7 @@ const faqSchema =
         />
         <TwoColumnStickyLayout>
             <div slot="sidebar" class="resource-sidebar">
-                <ResourceDetails resource={post} />
+                <ResourceDetails resource={post as any} />
                 <BlogToc client:load links={links} />
                 <div class="socials-desktop">
                     <BlogSocials

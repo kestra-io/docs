@@ -2,8 +2,8 @@
     <div class="sidebar">
         <div class="sidebar-logo">
             <img
-                v-if="story.logo"
-                :src="story.logo"
+                v-if="story.logoIcon || story.logo"
+                :src="story.logoIcon ?? story.logo"
                 :alt="displayName"
                 loading="lazy"
             />
@@ -26,9 +26,9 @@
                 <div class="sidebar-field-label">Deployment</div>
                 <div class="sidebar-field-value">{{ story.deployment }}</div>
             </div>
-            <div v-if="story.useCase" class="sidebar-field">
+            <div v-if="story.useCaseShort" class="sidebar-field">
                 <div class="sidebar-field-label">Use case</div>
-                <div class="sidebar-field-value">{{ story.useCase }}</div>
+                <div class="sidebar-field-value">{{ story.useCaseShort }}</div>
             </div>
             <div v-if="story.tasks?.length" class="sidebar-field">
                 <div class="sidebar-field-label">Tech stack</div>
@@ -104,7 +104,7 @@
         height: 4.5rem;
         border-radius: 0.625rem;
         border: 1px solid var(--ks-border-secondary);
-        background: var(--ks-background-secondary);
+        background: #000;
         display: flex;
         align-items: center;
         justify-content: center;
