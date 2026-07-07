@@ -4,7 +4,7 @@ description: "Explore Kafka Connect, an open-source framework for building scala
 metaTitle: "Kafka Connect: Data Streaming & Orchestration | Kestra"
 metaDescription: "Kafka Connect streams data between Kafka and external systems. Kestra orchestrates Kafka pipelines, improving reliability, error handling, and governance."
 tag: "data"
-date: 2026-07-09
+date: 2026-07-07
 slug: "kafka-connect"
 faq:
   - question: "What is Kafka Connect?"

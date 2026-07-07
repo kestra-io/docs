@@ -4,7 +4,7 @@ description: "UiPath is a leader in Robotic Process Automation (RPA). Understand
 metaTitle: "What Is UiPath? RPA Platform Explained"
 metaDescription: "UiPath is the leading RPA platform. Learn what it does, how its Orchestrator and robots work, and when a declarative alternative like Kestra fits better."
 tag: "infrastructure"
-date: 2026-07-08
+date: 2026-07-07
 slug: "what-is-uipath"
 faq:
   - question: "What exactly does UiPath do?"

@@ -1,10 +1,10 @@
 ---
 title: "Kafka Streams: Real-time Processing Explained and Orchestrated"
 description: "Understand Kafka Streams, its core concepts, and how it differs from Kafka Consumers. Learn to orchestrate Kafka Streams applications with Kestra for declarative, scalable real-time data processing."
-metaTitle: "Kafka Streams: Real-time Processing with Kestra | Kestra"
+metaTitle: "Kafka Streams: Real-Time Processing Explained"
 metaDescription: "Explore Kafka Streams for real-time data processing on Apache Kafka. Learn its architecture, use cases, and how Kestra orchestrates these applications."
 tag: "data"
-date: 2026-07-15
+date: 2026-07-07
 slug: "kafka-streams"
 faq:
   - question: "What is a Kafka stream?"
@@ -18,7 +18,6 @@ faq:
   - question: "Do Netflix use Kafka?"
     answer: "Yes, Netflix uses Kafka extensively across its observability stack and for various real-time data processing needs. For example, the Title Health microservice at Netflix ingests real-time title impression events via Kafka to validate content availability, recommendations, and localization across thousands of monthly launches, showcasing Kafka's critical role in their operations."
 ---
-```
 
 > **TL;DR** — Kafka Streams is a client library for Apache Kafka that enables developers to build real-time stream processing applications. It provides high-level APIs to process data directly from Kafka topics, allowing for scalable, fault-tolerant, and stateful computations on streaming data.
 

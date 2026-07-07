@@ -4,7 +4,7 @@ description: "The Medallion Architecture organizes data into Bronze, Silver, and
 metaTitle: "Medallion Architecture for Data Lakehouses | Kestra"
 metaDescription: "Medallion Architecture structures lakehouse data into Bronze, Silver, Gold layers. Learn its benefits, challenges, and how to build reliable data pipelines."
 tag: "data"
-date: 2026-07-15
+date: 2026-07-07
 slug: "medallion-architecture"
 faq:
   - question: "What is the Medallion Architecture?"

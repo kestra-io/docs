@@ -4,7 +4,7 @@ description: "The Python `subprocess` module enables scripts to run external pro
 metaTitle: "Python Subprocess: Orchestrating External Commands | Kestra"
 metaDescription: "Master Python's `subprocess` module for external command execution. Learn how Kestra orchestrates subprocess calls with robust error handling and scalability."
 tag: "data"
-date: 2026-07-08
+date: 2026-07-07
 slug: "python-subprocess"
 faq:
   - question: "What is a subprocess in Python?"

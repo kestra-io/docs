@@ -4,7 +4,7 @@ description: "Explore Python virtual environments, their role in dependency isol
 metaTitle: "Python Virtual Environments: Isolation & Orchestration"
 metaDescription: "Master Python virtual environments for dependency isolation and consistent project management. Discover how Kestra orchestrates reproducible Python workflows."
 tag: "data"
-date: 2026-07-11
+date: 2026-07-07
 slug: "python-virtual-environment"
 faq:
   - question: "What is a Python virtual environment?"
@@ -23,9 +23,7 @@ faq:
     answer: "Kestra's Python tasks can execute scripts within isolated virtual environments, ensuring consistent dependency resolution and runtime. By defining environment setup (like `uv venv` and `uv pip install`) directly in your YAML workflow, Kestra guarantees reproducible Python code execution across any environment."
   - question: "How do I remove a Python virtual environment?"
     answer: "To remove a virtual environment, first deactivate it if it's active. Then, simply delete the virtual environment directory (e.g., `rm -rf myenv` on Linux/macOS or `Remove-Item -Recurse -Force myenv` on Windows). This removes all associated Python packages and the environment itself."
-author: "Benoit Marti"
 ---
-```
 
 > **TL;DR** — A Python virtual environment creates an isolated space for Python projects, allowing each project to manage its own dependencies without conflicts. This ensures consistent and reproducible development, testing, and production environments for Python applications.
 

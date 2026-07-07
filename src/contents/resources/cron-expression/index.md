@@ -4,7 +4,7 @@ description: "Understand cron expressions, their syntax, and how they define sch
 metaTitle: "Cron Expression Explained: Syntax & Examples | Kestra"
 metaDescription: "Master cron expressions for precise task scheduling. Learn syntax, patterns, and how Kestra orchestrates reliable, event-driven workflows with them."
 tag: infrastructure
-date: 2026-07-10
+date: 2026-07-07
 slug: cron-expression
 faq:
   - question: "What is a cron expression?"
