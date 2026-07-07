@@ -335,9 +335,9 @@ kestra:
       sts-endpoint-override: "<optional>"
 ```
 
-### MinIO
+### S3-compatible storage (MinIO, Ceph, SeaweedFS, Garage)
 
-MinIO is a good self-hosted choice when you want object storage behavior without depending on a cloud provider:
+Use `type: minio` for any S3-compatible object storage endpoint — including self-hosted options like MinIO, Ceph, SeaweedFS, and Garage:
 
 ```yaml
 kestra:
@@ -373,7 +373,7 @@ kestra:
 
 ### Outscale Object Storage
 
-Outscale uses the MinIO-compatible backend type. The main thing that changes is the endpoint and the requirement to keep TLS enabled:
+Outscale uses the S3-compatible backend type (`type: minio`). The main thing that changes is the endpoint and the requirement to keep TLS enabled:
 
 ```yaml
 kestra:
