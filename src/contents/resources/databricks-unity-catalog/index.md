@@ -41,16 +41,16 @@ Its architecture is built on a three-level namespace: `catalog.schema.object`.
 -   **Schema (Database):** The second layer, containing tables, views, volumes, models, and functions.
 -   **Objects:** The assets themselves, such as tables, views, and ML models.
 
-This structure allows for fine-grained access control using standard ANSI SQL commands (`GRANT`, `REVOKE`). Permissions can be set at any level, from the entire catalog down to individual columns and rows. A key feature is its ability to automatically capture [data lineage](resources/data/data-lineage) across all workloads, whether they are run in SQL, Python, R, or Scala. This provides a clear audit trail of how data is transformed, which is crucial for compliance and debugging in complex [data orchestration](resources/data/data-orchestration) environments.
+This structure allows for fine-grained access control using standard ANSI SQL commands (`GRANT`, `REVOKE`). Permissions can be set at any level, from the entire catalog down to individual columns and rows. A key feature is its ability to automatically capture [data lineage](/resources/data/data-lineage) across all workloads, whether they are run in SQL, Python, R, or Scala. This provides a clear audit trail of how data is transformed, which is crucial for compliance and debugging in complex [data orchestration](/resources/data/data-orchestration) environments.
 
 ## Unity Catalog's Core Features and Why They Matter
 
 Unity Catalog moves beyond basic metadata management to provide a comprehensive governance framework for both data and AI. Its features are designed to address the complexities of modern data platforms.
 
 -   **Centralized Metadata and Security:** By managing metadata and access policies at the account level, Unity Catalog ensures consistency across all workspaces. This eliminates the risk of conflicting permissions and simplifies administration.
--   **Unified Governance for Data and AI:** Unity Catalog governs not just tables and files but also AI assets like ML models and feature stores. This unified approach is critical for effective [MLOps](resources/ai/what-is-mlops), as it allows teams to manage the entire lifecycle of an AI application under one security model.
+-   **Unified Governance for Data and AI:** Unity Catalog governs not just tables and files but also AI assets like ML models and feature stores. This unified approach is critical for effective [MLOps](/resources/ai/what-is-mlops), as it allows teams to manage the entire lifecycle of an AI application under one security model.
 -   **Secure Data Sharing:** Built-in Delta Sharing allows organizations to securely share live data with external partners without copying or moving it, all while maintaining granular control over access.
--   **Rich Auditing and Lineage:** Detailed audit logs track all actions performed against governed assets, while automatic lineage provides visibility into data flows. This combination is essential for maintaining [data quality](resources/data/data-quality) and meeting regulatory requirements.
+-   **Rich Auditing and Lineage:** Detailed audit logs track all actions performed against governed assets, while automatic lineage provides visibility into data flows. This combination is essential for maintaining [data quality](/resources/data/data-quality) and meeting regulatory requirements.
 
 A common point of confusion is the difference between the legacy Hive Metastore and Unity Catalog. The Hive Metastore is a workspace-level service inherited from the Hadoop ecosystem. It lacks centralized governance, fine-grained access controls, and support for AI assets. Unity Catalog is the modern, account-level replacement designed specifically for the lakehouse, offering superior scalability, security, and a unified view across the entire Databricks account.
 
@@ -64,7 +64,7 @@ This is where the need for an external orchestrator becomes clear. Unity Catalog
 -   Implement sophisticated error handling, retries, and alerting that span the entire end-to-end process.
 -   Provide a single pane of glass for monitoring and managing a pipeline that includes both Databricks and non-Databricks components.
 
-An orchestration platform like Kestra complements Unity Catalog by managing the entire workflow from end to end. It can interact with the Unity Catalog API to manage governed assets as part of a larger, more complex [ETL orchestration tool alternative](resources/data/etl-orchestration-tool-alternatives).
+An orchestration platform like Kestra complements Unity Catalog by managing the entire workflow from end to end. It can interact with the Unity Catalog API to manage governed assets as part of a larger, more complex [ETL orchestration tool alternative](/resources/data/etl-orchestration-tool-alternatives).
 
 ## Orchestrate Databricks Unity Catalog with Kestra: Managing Data Assets
 
@@ -112,9 +112,9 @@ tasks:
 
 What's worth noticing in this flow:
 -   **Declarative Asset Management:** The entire lifecycle of creating a schema and table is defined as code, making it versionable, auditable, and repeatable.
--   **Seamless Integration:** Kestra uses the native [Databricks plugin](plugins/plugin-databricks) to interact with both DBFS for file storage and Databricks SQL for DDL/DML operations, all within one workflow.
+-   **Seamless Integration:** Kestra uses the native [Databricks plugin](/plugins/plugin-databricks) to interact with both DBFS for file storage and Databricks SQL for DDL/DML operations, all within one workflow.
 -   **Credential Security:** All sensitive information like hostnames, tokens, and warehouse IDs are managed securely using Kestra's secrets management.
--   **End-to-End Visibility:** Kestra provides centralized logging, execution tracking, and outputs for each step, offering a complete picture of the asset management process, which you can see in this guide on [interacting with Databricks using Kestra](blogs/2024-03-12-kestra-databricks). You can find more examples in our [Databricks SQL blueprint](blueprints/databricks-sql).
+-   **End-to-End Visibility:** Kestra provides centralized logging, execution tracking, and outputs for each step, offering a complete picture of the asset management process, which you can see in this guide on [interacting with Databricks using Kestra](/blogs/2024-03-12-kestra-databricks). You can find more examples in our [Databricks SQL blueprint](/blueprints/databricks-sql).
 
 ## Where Databricks Unity Catalog Pays Off for Data & AI Teams
 
@@ -122,9 +122,9 @@ By centralizing governance, Unity Catalog delivers significant value across vari
 
 -   **Streamlined Compliance:** For regulated industries, UC provides the auditing and lineage tracking necessary to demonstrate compliance with standards like GDPR and HIPAA.
 -   **Secure Data Sharing:** It enables a "data mesh" architecture by allowing different business domains to securely share data assets with each other and with external partners.
--   **Governed MLOps:** Teams can manage the entire model lifecycle—from feature engineering to deployment—under a consistent governance framework, ensuring reproducibility and security. Check our list of [Databricks alternatives](resources/data/databricks-alternatives) to see how this compares with other platforms.
+-   **Governed MLOps:** Teams can manage the entire model lifecycle—from feature engineering to deployment—under a consistent governance framework, ensuring reproducibility and security. Check our list of [Databricks alternatives](/resources/data/databricks-alternatives) to see how this compares with other platforms.
 -   **Multi-Cloud Strategy:** Organizations operating across multiple clouds can use Unity Catalog to apply consistent governance policies, simplifying management and reducing risk.
--   **Reduced Operational Overhead:** Centralizing metadata eliminates redundant administrative work across workspaces, freeing up data teams to focus on higher-value tasks. This is a key consideration when evaluating [Databricks Workflows alternatives](resources/data/databricks-workflows-alternatives).
+-   **Reduced Operational Overhead:** Centralizing metadata eliminates redundant administrative work across workspaces, freeing up data teams to focus on higher-value tasks. This is a key consideration when evaluating [Databricks Workflows alternatives](/resources/data/databricks-workflows-alternatives).
 
 By acting as the single source of truth for governance, Unity Catalog empowers data and AI teams to innovate faster while maintaining control and security over their most valuable assets.
 
