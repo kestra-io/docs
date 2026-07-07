@@ -4,7 +4,7 @@ description: "Explore Databricks Unity Catalog, its role in unifying data and AI
 metaTitle: "Databricks Unity Catalog: Lakehouse Governance | Kestra"
 metaDescription: "Understand Databricks Unity Catalog for unified data and AI governance. Learn its features, how it differs from Metastore, and how to orchestrate UC workflows."
 tag: "data"
-date: 2026-07-10
+date: 2026-07-07
 slug: "databricks-unity-catalog"
 faq:
   - question: "What is the difference between Databricks Metastore and Unity Catalog?"
