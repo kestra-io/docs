@@ -4,7 +4,7 @@ description: "Explore Python's logging module, its core concepts, and the challe
 metaTitle: "Python Logging & Centralized Workflow Management | Kestra"
 metaDescription: "Master Python logging for data & AI. This guide covers core concepts, advanced techniques, and how Kestra centralizes logs for observability & compliance."
 tag: "data"
-date: 2026-07-08
+date: 2026-07-07
 slug: "python-logging"
 faq:
   - question: "Why is Python logging important for data and AI workflows?"
