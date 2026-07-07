@@ -31,7 +31,7 @@ This guide provides an in-depth comparison to help you navigate their difference
 
 ## How Databricks and Snowflake Work
 
-Understanding the architectural foundations of Databricks and Snowflake is the first step to choosing the right tool. They represent two different paradigms for building a [big data platform](resources/data/big-data-platform): the lakehouse and the cloud data warehouse.
+Understanding the architectural foundations of Databricks and Snowflake is the first step to choosing the right tool. They represent two different paradigms for building a [big data platform](/resources/data/big-data-platform): the lakehouse and the cloud data warehouse.
 
 ### Databricks: The Unified Lakehouse for Data, Analytics, and AI
 
