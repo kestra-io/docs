@@ -37,7 +37,7 @@ export const collections = {
     }),
     blogs: defineCollection({
         loader: glob({
-            pattern: "./**/*.md{,x}",
+            pattern: ["./**/*.md{,x}", "!./CLAUDE.md"],
             base: "./src/contents/blogs",
             generateId: (opts) => generateId(opts).toLowerCase(),
         }),

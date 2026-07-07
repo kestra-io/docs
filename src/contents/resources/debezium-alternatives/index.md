@@ -4,7 +4,7 @@ description: "Explore the leading Debezium alternatives for real-time change dat
 metaTitle: "Debezium Alternatives: Top CDC Tools for Data Pipelines"
 metaDescription: "Explore the best Debezium alternatives: top open-source, managed, and Kafka-less CDC tools like Kestra, Airbyte, and Maxwell for your data streaming needs."
 tag: "data"
-date: 2026-07-08
+date: 2026-07-07
 slug: "debezium-alternatives"
 faq:
   - question: "What is the difference between Maxwell and Debezium?"

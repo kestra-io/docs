@@ -4,7 +4,7 @@ description: "UiPath is a leader in Robotic Process Automation (RPA). Understand
 metaTitle: "What Is UiPath? RPA Platform Explained"
 metaDescription: "UiPath is the leading RPA platform. Learn what it does, how its Orchestrator and robots work, and when a declarative alternative like Kestra fits better."
 tag: "infrastructure"
-date: 2026-07-08
+date: 2026-07-07
 slug: "what-is-uipath"
 faq:
   - question: "What exactly does UiPath do?"
@@ -46,7 +46,7 @@ This evolution includes features like:
 - **Process Mining:** Tools that analyze business processes to identify bottlenecks and opportunities for automation.
 - **AI Agents:** More sophisticated bots that can handle exceptions, make simple decisions, and learn from new data.
 
-By integrating these technologies, UiPath aims to move beyond simple task automation to orchestrate end-to-end business processes, positioning itself as a key component of an enterprise's [IT automation platform](resources/infrastructure/it-automation-platform).
+By integrating these technologies, UiPath aims to move beyond simple task automation to orchestrate end-to-end business processes, positioning itself as a key component of an enterprise's [IT automation platform](/resources/infrastructure/it-automation-platform).
 
 ## Key Components of the UiPath Platform
 
