@@ -117,6 +117,11 @@ contributor-facing instructions are in the docs contributor guide.
   `h1`, and `description` remain owned by the SEO lead.
 - **Dev-server caveat:** the content layer caches rendered pages, so after editing a
   fragment, restart the dev server (or touch a consumer page) to see the change.
+- **Automated guards:** `src/utils/snippetLibrary.test.ts` enforces the catalog
+  invariants (every snippet cataloged, consumed, and free of relative links) on every
+  test run. `node scripts/content-reuse-scan.mjs` finds near-duplicate blocks and
+  forked variants of existing snippets ("snippet shadows") — run it periodically or
+  before a reuse-focused editing pass.
 
 ## Localization
 
