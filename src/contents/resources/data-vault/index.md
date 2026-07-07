@@ -4,7 +4,7 @@ description: "Data Vault modeling offers a flexible, scalable, and auditable app
 metaTitle: "Data Vault Modeling: Architecture & Orchestration | Kestra"
 metaDescription: "Data Vault modeling: architecture, benefits, and orchestration. Learn about its hubs, links, and satellites, plus how Kestra orchestrates robust data ingestion."
 tag: "data"
-date: 2026-07-08
+date: 2026-07-07
 slug: "data-vault"
 faq:
   - question: "What is a Data Vault?"
