@@ -22,7 +22,10 @@ deduplicate text for its own sake — it is to make the docs trustworthy under c
    candidates are whole admonitions, complete command blocks, full step sequences,
    entire example flows. If you are tempted to single-source half a sentence, don't:
    the reading flow of each page matters more than deduplicating a few words. For
-   short recurring sentences, standardize the wording manually instead.
+   short recurring sentences, standardize the wording manually instead. This is the
+   [ARID principle](https://www.writethedocs.org/guide/writing/docs-principles/#arid)
+   — *Accept (some) Repetition In Documentation*. Prose is not code; applying DRY
+   rigidly to documentation produces fragile, unreadable sources.
 
 2. **Design for future updates, not current convenience.** Before creating a shared
    fragment, ask: *when this content changes, should every page that uses it change
@@ -40,19 +43,29 @@ deduplicate text for its own sake — it is to make the docs trustworthy under c
 4. **One canonical home per fact.** Definitions and conceptual explanations should
    live on one authoritative page; other pages link to it rather than restating it.
    Transclusion is for content that must appear inline on several pages (notices,
-   commands); linking is for content the reader can follow a reference to.
+   commands); linking is for content the reader can follow a reference to. Give
+   pages clearly disjoint scopes so the same information is never maintained in
+   parallel (Write the Docs calls this the
+   [Unique principle](https://www.writethedocs.org/guide/writing/docs-principles/#unique)).
 
-5. **Broken reuse must fail loudly.** A reference to a missing or renamed fragment
+5. **Keep reuse shallow and legible.** A contributor reading a page's source should
+   be able to predict what renders. Prefer one level of inclusion; avoid snippets
+   built from other snippets, and never bury a simple sentence under layers of
+   indirection. Just because the mechanism supports composition doesn't mean a page
+   should require unwinding it — when the reuse plumbing becomes harder to follow
+   than the duplication it replaced, the duplication was cheaper.
+
+6. **Broken reuse must fail loudly.** A reference to a missing or renamed fragment
    should fail the build, never render as literal markup or silently disappear.
    Every rendering path — HTML pages, raw-markdown endpoints, machine-readable
    exports — must resolve reuse the same way, so human and AI readers see identical
    content.
 
-6. **Reuse is a shared vocabulary, so keep it cataloged.** A fragment nobody can
+7. **Reuse is a shared vocabulary, so keep it cataloged.** A fragment nobody can
    find is a fragment somebody will duplicate. Every reusable fragment gets a
-   catalog entry recording what it contains and which pages consume it. Check the
-   catalog before writing a new fragment; update it whenever you add, change, or
-   retire one.
+   catalog entry recording what it contains and which pages consume it, organized
+   by domain so contributors can browse by area. Check the catalog before writing
+   a new fragment; update it whenever you add, change, or retire one.
 
 ## When to create a shared fragment
 
@@ -71,6 +84,11 @@ Do **not** create one when:
   (principle 4).
 - The content is a short sentence woven into surrounding prose. Standardize the
   wording; don't fragment the page source for a negligible maintenance win.
+- The fragment would reproduce a page's *primary* content on another public page.
+  Large blocks of identical indexable content compete with each other in search
+  results (traffic cannibalization) — search engines rank one copy and hide the
+  rest. Small notices and commands are fine; whole sections are not. When two
+  pages need the same substantial explanation, one owns it and the other links.
 
 ## How
 
@@ -86,6 +104,11 @@ contributor-facing instructions are in the docs contributor guide.
 - **Editing a shared fragment edits every consumer page.** Before changing one,
   check its consumer list in the catalog and skim at least two consumers to make
   sure the new wording still fits their context.
+- **Improve for yourself, improve for everyone.** If a shared fragment's wording
+  doesn't fit your page, resist copying it out and tweaking a private variant —
+  that recreates the drift the fragment exists to prevent. Either improve the
+  shared source (if the improvement holds for all consumers) or conclude the
+  content isn't truly shared and unlink your page from it deliberately.
 - **PR review enforces the strategy.** A PR that adds another copy of an existing
   block should be redirected to the shared fragment. A PR that edits one copy of a
   block that exists elsewhere should be redirected to edit the source fragment.
@@ -100,3 +123,11 @@ contributor-facing instructions are in the docs contributor guide.
 The docs are currently English-only. If localization is introduced, shared fragments
 localize as units — one fragment file per locale — which is another reason to keep
 them self-contained and free of mid-sentence context.
+
+## References
+
+This strategy follows the [Write the Docs documentation principles](https://www.writethedocs.org/guide/writing/docs-principles/),
+in particular **ARID** (accept some repetition) and **Unique** (disjoint scope per
+source), and the reuse pitfalls cataloged in Anna Gasparyan's
+[Content reuse — a productivity booster or a vicious circle?](https://blog.jetbrains.com/writerside/2022/08/content-reuse-a-productivity-booster-or-a-vicious-circle/)
+(variant proliferation, over-nested includes, traffic cannibalization).
