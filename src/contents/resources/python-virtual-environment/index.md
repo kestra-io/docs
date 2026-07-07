@@ -24,7 +24,6 @@ faq:
   - question: "How do I remove a Python virtual environment?"
     answer: "To remove a virtual environment, first deactivate it if it's active. Then, simply delete the virtual environment directory (e.g., `rm -rf myenv` on Linux/macOS or `Remove-Item -Recurse -Force myenv` on Windows). This removes all associated Python packages and the environment itself."
 author: "Benoit Marti"
-image: "/images/resources/python-virtual-environment.png"
 ---
 ```
 
