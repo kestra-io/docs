@@ -29,6 +29,9 @@ Rules (short version — the strategy doc is authoritative):
 | `install/deployment-support.md` | Closing support paragraph: Slack + CI/CD guide pointers | All 7 VM and managed-Kubernetes install guides (`04`–`06`, `08`–`11` under `02.installation`) |
 | `enterprise/scim-prerequisites.md` | Multi-tenancy prerequisite (config YAML + upgrade alert) for SCIM | `07.enterprise/03.auth/scim/{okta,keycloak,microsoft-entra-id,authentik}` |
 | `enterprise/scim-setup-steps.md` | Kestra-side UI steps to create a SCIM provisioning integration | `07.enterprise/03.auth/scim/{okta,keycloak,microsoft-entra-id,authentik}` |
+| `enterprise/scim-disable-note.md` | Behavior note: disabling/removing a SCIM integration | `07.enterprise/03.auth/scim/{okta,keycloak,microsoft-entra-id,authentik}` |
+| `enterprise/scim-iam-role.md` | Auto-created `SCIMProvisioner` role/service account + why no USERS DELETE | `07.enterprise/03.auth/scim/{okta,keycloak,microsoft-entra-id,authentik}` |
+| `cicd/readonly-label.md` | Info alert: set `system.readOnly` label on CI/CD-managed flows | `version-control-cicd/cicd` index + `{01.github-action,02.gitlab,03.terraform,05-azure-devops,06.bitbucket-pipes,07.kubernetes-operator}` |
 
 When Worker Groups availability changes (e.g., Cloud support ships), edit
 `worker-groups-cloud.md` once — all five consumer pages update at the next build.

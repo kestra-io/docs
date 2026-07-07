@@ -13,14 +13,7 @@ Use Terraform to provision, manage, and automate changes to Kestra resources.
 The [official Kestra Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest) lets you manage Kestra resources as code.
 You can define flows, templates, and namespaces declaratively — Terraform will handle creation, updates, and deletions automatically.
 
-:::alert{type="info"}
-For flows managed through CI/CD or infrastructure-as-code, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
-
-```yaml
-labels:
-  system.readOnly: true
-```
-:::
+::snippet{name="cicd/readonly-label"}
 
 ---
 

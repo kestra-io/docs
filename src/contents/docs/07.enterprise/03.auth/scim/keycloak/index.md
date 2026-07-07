@@ -37,7 +37,7 @@ The Secret Token is a long string (approx. 200 characters) used to authenticate 
 
 ### Enable or Disable SCIM Integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests to that integration endpoint will be rejected.
+::snippet{name="enterprise/scim-disable-note"}
 
 ![scim3](../okta/scim3.png)
 
@@ -48,20 +48,11 @@ At first, you can disable the integration to configure your Keycloak SCIM integr
 
 ### IAM Role and Service Account
 
-When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
+::snippet{name="enterprise/scim-iam-role"}
 
-1. Role `SCIMProvisioner` with the following permissions:
-   - `GROUPS`: `CREATE`, `READ` `UPDATE`, `DELETE`
-   - `USERS`: `CREATE`, `READ`, `UPDATE`
-   - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
-  ![scim4](../okta/scim4.png)
+![scim4](../okta/scim4.png)
 
-2. Service Account with an API Token which was previously displayed as the Secret Token for the integration:
-  ![scim5](../okta/scim5.png)
-
-:::alert{type="info"}
-Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user using our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
-:::
+![scim5](../okta/scim5.png)
 
 ## Keycloak SCIM setup
 
