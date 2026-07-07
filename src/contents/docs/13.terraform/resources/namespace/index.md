@@ -10,9 +10,7 @@ description: The kestra_namespace resource allows you to manage namespaces in Ke
 
 Manages a Kestra Namespace.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example Usage
 

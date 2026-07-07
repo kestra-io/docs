@@ -10,9 +10,7 @@ description: The kestra_user resource allows you to manage users in Kestra using
 
 Manages a Kestra User.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

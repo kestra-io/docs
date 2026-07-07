@@ -10,9 +10,7 @@ description: The kestra_user_api_tokens data source allows you to read user API 
 
 Use this data source to access information about the API tokens of a Kestra User.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 
 

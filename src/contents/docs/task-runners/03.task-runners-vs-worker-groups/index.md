@@ -37,9 +37,7 @@ The table below summarizes the differences between task runners and worker group
 | **Latency**           | High latency (seconds, up to minutes) | Low latency (milliseconds)                  |
 | **Cost Efficiency**   | Suitable for infrequent tasks         | Suitable for frequent or long-running tasks |
 
-:::alert{type="info"}
-Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
-:::
+::snippet{name="worker-groups-cloud"}
 
 ## Use cases
 

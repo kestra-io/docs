@@ -3,6 +3,7 @@
 import { render, getCollection, type CollectionEntry } from "astro:content"
 import { buildDocsNavigation } from "../../utils/buildDocsNavigation"
 import { resolveDocsPagePath } from "../../utils/markdown-actions"
+import expandReusableMarkdown from "../../utils/expandReusableMarkdown"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
@@ -79,7 +80,7 @@ const editUrl = doc.filePath
             links={headingsProcessed}
             client:visible
             {editUrl}
-            markdownBody={doc.body}
+            markdownBody={expandReusableMarkdown(doc.body ?? "")}
             pagePath={resolveDocsPagePath(doc.id)}
             pageTitle={doc.data?.title}
         />

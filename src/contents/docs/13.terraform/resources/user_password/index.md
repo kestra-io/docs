@@ -10,9 +10,7 @@ description: The kestra_user_password resource allows you to manage user passwor
 
 Manages a Kestra User Basic Auth Password.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

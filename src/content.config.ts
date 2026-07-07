@@ -8,7 +8,9 @@ import { orchestrationSchema } from "./schemas/orchestration"
 export const collections = {
     docs: defineCollection({
         loader: glob({
-            pattern: "./**/*.md{,x}",
+            // _snippets holds reusable fragments (see CONTENT_REUSE.md),
+            // not standalone pages
+            pattern: ["./**/*.md{,x}", "!./_snippets/**"],
             base: "./src/contents/docs",
             generateId,
         }),

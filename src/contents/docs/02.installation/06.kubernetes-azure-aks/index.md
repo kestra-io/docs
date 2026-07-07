@@ -44,9 +44,7 @@ kubectl get svc
 ## Install Kestra on Azure AKS
 Add the Kestra Helm chart repository and install Kestra:
 
-```shell
-helm repo add kestra https://helm.kestra.io/
-helm install my-kestra kestra/kestra
+```bash file=src/contents/docs/_snippets/install/helm-install-kestra.sh
 ```
 
 ## Launch Azure Database for PostgreSQL servers
@@ -171,4 +169,4 @@ Once the load balancer is deployed, you can access the Kestra UI through the ALB
 
 ## Next steps
 
-Reach out via [Slack](/slack) if you encounter any issues or have any questions regarding deploying Kestra to production.
+::snippet{name="install/deployment-support"}

@@ -2,6 +2,7 @@
 import NavToc from "~/components/docs/NavToc.vue"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import { getEntry, render } from "astro:content"
+import expandReusableMarkdown from "~/utils/expandReusableMarkdown"
 const doc = await getEntry("docs", "<index>")
 if (!doc) {
     throw new Error("Index document not found")
@@ -32,7 +33,7 @@ const editUrl = doc.filePath
             }))}
             class="right-menu"
             {editUrl}
-            markdownBody={doc.body}
+            markdownBody={expandReusableMarkdown(doc.body ?? "")}
             pagePath="/docs"
             pageTitle={doc.data?.title}
         />

@@ -23,14 +23,7 @@ Launch Kestra locally, create a simple flow, and run your first execution in a f
 
 Once Docker is running, start Kestra with a single command:
 
-```bash
-docker run --pull=always --rm -it -p 8080:8080 --user=root \
-  --name kestra \
-  -v kestra_data:/app/storage \
-  -v kestra_db:/app/data \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /tmp:/tmp \
-  kestra/kestra:latest server local
+```bash file=src/contents/docs/_snippets/install/docker-run.sh
 ```
 
 If you re-run the command and Docker reports `You have to remove (or rename) that container to be able to reuse that name.`, remove the old container with `docker rm -f kestra` or pick a different `--name`.

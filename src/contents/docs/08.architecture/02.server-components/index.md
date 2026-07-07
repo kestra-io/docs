@@ -47,9 +47,7 @@ In the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-editio
 
 To specify a worker group for a task, use the `workerGroup.key` property in the task definition to point the task to a specific worker group key. If no worker group is specified, the task will be executed on the default worker group.
 
-:::alert{type="info"}
-Worker Groups are available in Kestra Enterprise Edition only, not in Kestra Cloud.
-:::
+::snippet{name="worker-groups-cloud"}
 
 ## Scheduler
 

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import expandReusableMarkdown from "~/utils/expandReusableMarkdown"
 
 export async function getStaticPaths() {
     const docsPages = await getCollection("docs")
@@ -7,7 +8,7 @@ export async function getStaticPaths() {
         params: { docsPath: doc.id },
         props: {
             title: doc.data.title,
-            source: doc.body,
+            source: expandReusableMarkdown(doc.body ?? ""),
         },
     }))
 }

@@ -14,27 +14,12 @@ Sync users and groups from Okta to Kestra using SCIM.
 ## Prerequisites
 
 - **Okta Account**: An account with administrative privileges is required to configure SCIM provisioning.
-- **Enable multi-tenancy in Kestra**: Tenants must be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
 
-```yaml
-kestra:
-  ee:
-    tenants:
-      enabled: true
-```
-
-:::alert{type="info"}
-Tenants are enabled by default. Please refer to the [Migration Guide](../../../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
-:::
+::snippet{name="enterprise/scim-prerequisites"}
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
-2. Click on the `Create` button in the top right corner of the page.
-3. Fill in the following fields:
-   - **Name**: Enter a name for the provisioning integration.
-   - **Description**: Provide a brief description of the integration.
-   - **Provisioning Type**: Currently, only SCIM 2.0 is supported — leave the default selection and click `Save`.
+::snippet{name="enterprise/scim-setup-steps"}
 
 ![scim1](./scim1_okta.png)
 

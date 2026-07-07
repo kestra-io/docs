@@ -18,9 +18,7 @@ Make sure you have already installed:
 ## Download the Docker Compose file
 Download the Docker Compose file using the following command:
 
-```bash
-curl -o docker-compose.yml \
-https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+```bash file=src/contents/docs/_snippets/install/download-docker-compose.sh
 ```
 
 If you don't have `curl` installed, you can download the [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml) manually and save it as `docker-compose.yml`.

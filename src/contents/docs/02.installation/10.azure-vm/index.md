@@ -65,9 +65,7 @@ To check your installation, run `sudo docker version` and `sudo docker compose v
 
 Download the official Docker-Compose file:
 
-```bash
-curl -o docker-compose.yml \
-https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+```bash file=src/contents/docs/_snippets/install/download-docker-compose.sh
 ```
 
 Use an editor such as Vim to modify the `docker-compose.yml`, set basic authentication to `true`, and configure your basic authentication credentials to secure your Kestra instance.
@@ -196,6 +194,4 @@ For more information on Azure Blob storage configuration, check out the [Runtime
 
 This setup provides a simple starting point for running Kestra in production on a single machine. For a deployment to a distributed Kubernetes cluster, check the [Azure AKS deployment guide](../06.kubernetes-azure-aks/index.md).
 
-Reach out via [Slack](/slack) if you encounter any issues or have any questions regarding deploying Kestra to production.
-
-Also, check the [CI/CD guide](../../version-control-cicd/cicd/index.md) to automate your workflow deployments based on changes in Git.
+::snippet{name="install/deployment-support"}

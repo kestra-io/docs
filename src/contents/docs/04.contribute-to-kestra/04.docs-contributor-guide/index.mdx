@@ -369,6 +369,25 @@ tasks:
 
 The supported languages for code blocks are fully listed in the `useShiki.ts` file in the repository, and if you need something new added, you can make an addition there.
 
+### Reusable content (snippets)
+
+Content that must stay identical across several pages — edition notices, install commands, shared warnings — is single-sourced in the snippet library at `src/contents/docs/_snippets/`. Never copy such a block from one page to another; include it instead.
+
+Include a Markdown snippet with a `::snippet` directive:
+
+```markdown
+::snippet{name="worker-groups-cloud"}
+```
+
+Include a shared code file as a code block with the `file=` meta:
+
+````markdown
+```bash file=src/contents/docs/_snippets/install/docker-run.sh
+```
+````
+
+Both are expanded at build time, and a reference to a missing snippet fails the build. Before creating a new snippet or editing an existing one, read the [content reuse strategy](https://github.com/kestra-io/docs/blob/main/CONTENT_REUSE.md) — it defines when a snippet is appropriate, the authoring rules (site-absolute links, no page-specific context), and the catalog you must keep up to date.
+
 ### How to use images
 
 Images are a key part of the documentation. We couple images used on a page within the page directory. The Apps documentation markdown page and its associated images are contained in the same folder to keep assets together and to make them easy to find and add. Taking this guide as an example, an image we used earlier in the guide appears in the markdown as follows:

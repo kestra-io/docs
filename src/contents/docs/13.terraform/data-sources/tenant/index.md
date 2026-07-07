@@ -10,9 +10,7 @@ description: The kestra_tenant data source allows you to read tenants in Kestra 
 
 Use this data source to access information about an existing Kestra Tenant.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

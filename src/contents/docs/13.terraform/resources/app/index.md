@@ -10,9 +10,7 @@ description: The kestra_app resource allows you to manage apps in Kestra using T
 
 Manages an App resource.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 
 
