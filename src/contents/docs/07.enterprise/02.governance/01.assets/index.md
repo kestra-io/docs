@@ -631,6 +631,7 @@ Returns an array of asset objects. Each object contains:
 ```yaml
 id: check_asset
 namespace: company.team
+
 tasks:
   - id: log
     type: io.kestra.plugin.core.log.Log
