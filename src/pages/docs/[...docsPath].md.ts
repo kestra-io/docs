@@ -1,24 +1,23 @@
 import type { APIRoute } from "astro"
-import { getEntry } from "astro:content"
+import { getCollection } from "astro:content"
+
+export async function getStaticPaths() {
+    const docsPages = await getCollection("docs")
+    return docsPages.map((doc) => ({
+        params: { docsPath: doc.id },
+        props: {
+            title: doc.data.title,
+            source: doc.body,
+        },
+    }))
+}
 
 /**
- * Respond with the raw markdown content of a doc page.
- * To be used by AI or other tools that want to consume the markdown content directly.
- * The index page (/docs.md) is handled by the dedicated docs.md.ts endpoint.
+ * respond with the raw markdown content of the doc page.
+ * to be used by AI or other tools that want to consume the markdown content directly.
  */
-export const GET: APIRoute = async ({ params }) => {
-    const docsPath = params.docsPath
-
-    if (!docsPath) {
-        return new Response("Not found", { status: 404 })
-    }
-
-    const doc = await getEntry("docs", docsPath)
-    if (!doc) {
-        return new Response("Not found", { status: 404 })
-    }
-
-    return new Response(`# ${doc.data.title}\n\n${doc.body}`, {
+export const GET: APIRoute = ({ props }) => {
+    return new Response(`# ${props.title}\n\n${props.source}`, {
         status: 200,
         headers: {
             "Content-Type": "text/markdown; charset=utf-8",
