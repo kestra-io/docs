@@ -556,6 +556,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
 - [Google Batch Task Runner: Run Tasks on Cloud VMs](https://kestra.io/docs/task-runners/types/google-batch-task-runner.md)
 - [Google Cloud Run Task Runner: Serverless Task Execution](https://kestra.io/docs/task-runners/types/google-cloudrun-task-runner.md)
+- [Google Compute Engine Task Runner: Run Tasks on Compute Engine VMs](https://kestra.io/docs/task-runners/types/google-computeengine-task-runner.md)
 - [Kubernetes Task Runner – Run Tasks as K8s Pods](https://kestra.io/docs/task-runners/types/kubernetes-task-runner.md)
 - [Process Task Runner – Run Tasks as Local Processes](https://kestra.io/docs/task-runners/types/process-task-runner.md)
 - [Kestra Terraform Provider: Manage Resources as IaC](https://kestra.io/docs/terraform.md)
