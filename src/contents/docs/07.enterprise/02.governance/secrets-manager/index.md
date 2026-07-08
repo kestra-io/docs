@@ -366,6 +366,27 @@ kestra:
   - **folderId**: The folder ID in Delinea Secret Server where Kestra secrets are stored. Required for write operations.
   - **secretTemplateId**: The secret template ID used when creating new secrets. Required for write operations.
 
+### Reading multi-field Delinea secrets
+
+Delinea secrets store structured credentials — for example, an Active Directory secret template typically holds a password, username, and domain as separate fields. Kestra exposes these through the `secret()` expression function.
+
+By default, `secret()` returns only the password field:
+
+```twig
+{{ secret('AD_CREDS') }}
+```
+
+Pass `full=true` to retrieve all fields at once as a structured object. The `value` key holds the password; `metadata` holds all other non-password, non-notes template fields keyed by their Delinea item slug:
+
+```twig
+{% set creds = secret('AD_CREDS', full=true) %}
+{{ creds.value }}            {# password #}
+{{ creds.metadata.username }}
+{{ creds.metadata.domain }}
+```
+
+The keys available under `creds.metadata` depend on the fields defined in your Delinea secret template. The `notes` field is always excluded.
+
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:
