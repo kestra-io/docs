@@ -132,6 +132,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 - [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
 - [Apps](https://kestra.io/docs/enterprise/scalability/apps.md): Build and publish lightweight form-based UIs on top of flows for non-technical users
 - [Flow Quotas](https://kestra.io/docs/workflow-components/quotas.md): Cap how many executions a flow can create within a time window — use `CANCEL` or `FAIL` behavior when the limit is exceeded
+- [Reusable Inputs](https://kestra.io/docs/workflow-components/reusable-inputs.md): Define a named input group once at the namespace level and reference it across multiple flows via `type: REUSABLE_INPUTS`; children resolve as `{{ inputs.<refId>.<childId> }}`
 
 **Instance management**
 - [Maintenance mode](https://kestra.io/docs/enterprise/instance/maintenance-mode.md): Pause execution scheduling without stopping the server
@@ -648,6 +649,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Plugin Defaults in Kestra – Set Task-Level Defaults](https://kestra.io/docs/workflow-components/plugin-defaults.md)
 - [Plugins in Kestra: Tasks, Triggers, Integrations](https://kestra.io/docs/workflow-components/plugins.md)
 - [Flow Quotas in Kestra: Rate-Limit Execution Creation](https://kestra.io/docs/workflow-components/quotas.md)
+- [Reusable Inputs in Kestra Enterprise](https://kestra.io/docs/workflow-components/reusable-inputs.md)
 - [Task Retries in Kestra – Handle Transient Failures](https://kestra.io/docs/workflow-components/retries.md)
 - [Workflow SLAs in Kestra – Assert Duration Targets](https://kestra.io/docs/workflow-components/sla.md)
 - [Execution States in Kestra: Full Lifecycle Guide](https://kestra.io/docs/workflow-components/states.md)

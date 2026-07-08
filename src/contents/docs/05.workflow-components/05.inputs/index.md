@@ -176,6 +176,7 @@ Here is the list of supported data types:
 - `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/05.security-and-secrets/index.md) in your [Kestra configuration](../../configuration/index.mdx) before using it.
 - `ARRAY`: Must be a valid JSON array or a YAML list. The `itemType` property is required to ensure validation of the type of the array items.
 - `FORM`: Groups related inputs under a shared `displayName` and `description`. When a flow contains at least one FORM input, the Execute modal renders a multi-step wizard — one step per FORM group plus any ungrouped inputs, then a recap. Children are referenced as `{{ inputs.<form_id>.<child_id> }}`. FORM inputs cannot be nested and do not support `defaults` or `prefill`.
+- `REUSABLE_INPUTS` (Enterprise Edition): References a named input group defined at the namespace level. Children are inlined under the reference id and accessed as `{{ inputs.<refId>.<childId> }}`. See [Reusable Inputs](../22.reusable-inputs/index.md) for details.
 
 All `FILE` inputs are automatically uploaded to Kestra's [internal storage](../../08.architecture/data-components/index.md#internal-storage) and accessible to all tasks. After the upload, the input variable will contain a fully qualified URL of the form `kestra:///.../.../` that will be automatically managed by Kestra and can be used as-is within any task.
 
