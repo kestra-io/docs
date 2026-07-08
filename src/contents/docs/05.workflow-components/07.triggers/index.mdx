@@ -57,8 +57,9 @@ Triggers expose metadata through expressions. For example:
 - `{{ trigger.date }}` returns the current date for the [Schedule trigger](./01.schedule-trigger/index.md)
 - `{{ trigger.uri }}` returns the file or message for file detection or message arrival events
 - `{{ trigger.rows }}` provides query results for triggers like the [PostgreSQL Query](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) trigger
+- `{{ trigger._context.id }}` and `{{ trigger._context.type }}` return the ID and fully-qualified type of the trigger that started the execution — available for every trigger type
 
-This example will log the date when the trigger executes the flow:
+This example logs the date when the trigger executes the flow:
 
 ```yaml
 id: variables
@@ -81,6 +82,39 @@ The **templated variables** above are only available when the execution is creat
 
 **You don't need an extra task to consume** the file or message from the event. Kestra downloads it automatically to **internal storage** and makes it available in your flow via the `{{ trigger.uri }}` variable. Check the documentation of a specific trigger and [Blueprints](/blueprints) with the **Trigger** tag for more details and examples.
 :::
+
+### Identifying the trigger in a multi-trigger flow
+
+When a flow has multiple triggers, use `{{ trigger._context.id }}` and `{{ trigger._context.type }}` to determine which trigger started the current execution. Unlike trigger-specific variables such as `trigger.date`, these two fields are available for every trigger type.
+
+The flow below branches based on which trigger started the execution:
+
+```yaml
+id: multi_trigger_flow
+namespace: company.team
+
+tasks:
+  - id: check_trigger
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ trigger._context.type == 'io.kestra.plugin.core.trigger.Schedule' }}"
+    then:
+      - id: scheduled_path
+        type: io.kestra.plugin.core.log.Log
+        message: "Started by schedule '{{ trigger._context.id }}' on {{ trigger.date }}"
+    else:
+      - id: webhook_path
+        type: io.kestra.plugin.core.log.Log
+        message: "Started by webhook '{{ trigger._context.id }}'"
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+  - id: api
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: my_secret_key
+```
 
 Each trigger ID is limited to a single active execution at a time. If a scheduled execution is still running, the next one will be queued instead of started immediately. For instance, if an execution from a flow with a `Schedule` trigger with ID `hourly` is still in a `Running` state, another one will not be started. However, you can still trigger the same flow manually (from the UI or API), and the scheduled executions will not be affected.
 
