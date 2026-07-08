@@ -131,6 +131,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 **Scalability**
 - [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
 - [Apps](https://kestra.io/docs/enterprise/scalability/apps.md): Build and publish lightweight form-based UIs on top of flows for non-technical users
+- [Flow Quotas](https://kestra.io/docs/workflow-components/quotas.md): Cap how many executions a flow can create within a time window — use `CANCEL` or `FAIL` behavior when the limit is exceeded
 
 **Instance management**
 - [Maintenance mode](https://kestra.io/docs/enterprise/instance/maintenance-mode.md): Pause execution scheduling without stopping the server
@@ -338,6 +339,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Use Dataform in Kestra](https://kestra.io/docs/how-to-guides/dataform.md)
 - [Manage dbt Projects with Kestra's Code Editor](https://kestra.io/docs/how-to-guides/dbt.md)
 - [Use Debezium Tasks and Triggers in Kestra](https://kestra.io/docs/how-to-guides/debezium.md)
+- [Run C# Inside Your Flows](https://kestra.io/docs/how-to-guides/dotnet.md)
 - [Build Dynamic Flows in Kestra](https://kestra.io/docs/how-to-guides/dynamic-flows.md)
 - [Create a Dynamic Dropdown for Inputs](https://kestra.io/docs/how-to-guides/dynamic-inputs.md)
 - [Build ETL Pipelines in Kestra](https://kestra.io/docs/how-to-guides/etl-pipelines.md)
@@ -643,6 +645,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Workflow Outputs in Kestra: Share Data Between Tasks](https://kestra.io/docs/workflow-components/outputs.md)
 - [Plugin Defaults in Kestra – Set Task-Level Defaults](https://kestra.io/docs/workflow-components/plugin-defaults.md)
 - [Plugins in Kestra: Tasks, Triggers, Integrations](https://kestra.io/docs/workflow-components/plugins.md)
+- [Flow Quotas in Kestra: Rate-Limit Execution Creation](https://kestra.io/docs/workflow-components/quotas.md)
 - [Task Retries in Kestra – Handle Transient Failures](https://kestra.io/docs/workflow-components/retries.md)
 - [Workflow SLAs in Kestra – Assert Duration Targets](https://kestra.io/docs/workflow-components/sla.md)
 - [Execution States in Kestra: Full Lifecycle Guide](https://kestra.io/docs/workflow-components/states.md)

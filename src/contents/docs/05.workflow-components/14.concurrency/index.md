@@ -36,6 +36,7 @@ For example, if you set the concurrency `limit` to 2, only two executions of tha
 - Throttling worker CPU/RAM usage — tune worker thread pools or task runners instead.
 - Replacing task-level limits — use task runner settings (e.g., container resources) and retry/backoff for per-task control.
 - Broad platform protection — use platform sizing and queue configuration rather than flow-level concurrency locks.
+- Capping how many executions are **created** over time — use [Quotas](../21.quotas/index.md) (Enterprise Edition) for time-window rate limits instead.
 
 ```yaml
 id: concurrency_example
