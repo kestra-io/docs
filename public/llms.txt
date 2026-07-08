@@ -153,6 +153,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
+- [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
 - [No Code editor](https://kestra.io/docs/ui/flows.md): Build and configure flows visually without writing YAML — form-based editing that generates schema-validated YAML in real time
 
 ## Reference
@@ -628,6 +629,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Kubernetes Operator in Kestra: GitOps for Flows](https://kestra.io/docs/version-control-cicd/cicd/kubernetes-operator.md)
 - [Terraform for Kestra – Manage Resources as Code](https://kestra.io/docs/version-control-cicd/cicd/terraform.md)
 - [Version Control with Git: Sync, Push, and Clone Flows](https://kestra.io/docs/version-control-cicd/git.md)
+- [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/version-control-cicd/vscode.md)
 - [Why Kestra: Simpler, More Powerful Orchestration](https://kestra.io/docs/why-kestra.md)
 - [Workflow Components in Kestra: Complete Reference](https://kestra.io/docs/workflow-components.md)
 - [afterExecution Tasks in Kestra – Post-Run Actions](https://kestra.io/docs/workflow-components/afterexecution.md)
