@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { onMounted, ref, useTemplateRef } from "vue"
+    import { onMounted, onUnmounted, ref, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import { useGtm } from "@gtm-support/vue-gtm"
     import identify from "~/utils/identify"
@@ -183,7 +183,28 @@
         }
     }
 
+    // HubSpot's Meetings embed lives in a cross-origin iframe and posts a
+    // message to the parent window once a booking is confirmed. The confirmation
+    // happens entirely inside the iframe, so there is no parent-page navigation
+    // to hang a conversion on. We listen for that message and redirect to a
+    // dedicated /thank-you page, giving Google Ads a distinct URL to track the
+    // "Book a Demo" conversion against.
+    const onHubSpotMessage = (event: MessageEvent) => {
+        if (event.data?.meetingBookSucceeded) {
+            posthog.capture("bookdemo_confirmed")
+            gtm?.trackEvent({
+                event: "bookdemo_confirmed",
+                noninteraction: false,
+            })
+            // Full navigation (not the client-side router) so the /thank-you
+            // page fires a real page load for the conversion tag.
+            window.location.assign("/thank-you")
+        }
+    }
+
     onMounted(() => {
+        window.addEventListener("message", onHubSpotMessage)
+
         if (getHubspotTracking() === null) {
             const base = getGeoMeetingUrl()
             const current = new URLSearchParams(window.location.search)
@@ -194,6 +215,10 @@
             })
             valid.value = true
         }
+    })
+
+    onUnmounted(() => {
+        window.removeEventListener("message", onHubSpotMessage)
     })
 </script>
 
