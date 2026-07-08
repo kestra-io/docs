@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Free Tools for Data & Platform Teams — Kestra</title>
+  <title>Orchestration TCO Calculator — Kestra Free Tools</title>
   <style>
   :root {
     --bg: #fbfbfd; --surface: #ffffff; --surface-2: #f4f3f9; --border: #e6e4ee;
@@ -133,36 +133,156 @@
   .toast.on { opacity: 1; }
   footer.note { margin-top: 40px; font-size: 12.5px; color: var(--ink-3); max-width: 70ch; }
 
-  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 26px; }
-  .tool-card { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; box-shadow: var(--shadow); transition: border-color .15s ease, transform .15s ease; }
-  .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  @media (prefers-reduced-motion: reduce) { .tool-card { transition: none; } .tool-card:hover { transform: none; } }
-  .tool-card .ic { font-size: 26px; }
-  .tool-card h2 { font-size: 17px; margin: 10px 0 6px; letter-spacing: -.01em; }
-  .tool-card p { font-size: 13.5px; color: var(--ink-2); margin: 0 0 12px; }
-  .tool-card .go { color: var(--accent); font-weight: 700; font-size: 13.5px; }
+  .crumb { font-size: 13px; margin-bottom: 18px; }
+  .crumb a { color: var(--accent); text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="crumb"><a href="/tools/">← All free tools</a></div>
   <div class="eyebrow">Kestra · Free tools</div>
-  <h1>Free tools for data &amp; platform teams <span class="proto-badge">PROTOTYPE V1</span></h1>
-  <p class="sub">Practical, no-signup tools built by the Kestra team. Every calculator shows its assumptions; every converter shows its work.</p>
-  <div class="tool-grid">
-    <a class="tool-card" href="/tools/tco-calculator/">
-      <div class="ic">🧮</div><h2>Orchestration TCO Calculator</h2>
-      <p>Compare the real annual cost of self-managed Airflow, managed services, and Kestra — assumptions included, all editable.</p>
-      <span class="go">Calculate your TCO →</span></a>
-    <a class="tool-card" href="/tools/airflow-to-kestra-converter/">
-      <div class="ic">🔁</div><h2>Airflow DAG → Kestra Converter</h2>
-      <p>Paste a DAG, get declarative YAML — with an honest report of what converted, what needs review, and what didn't.</p>
-      <span class="go">Convert a DAG →</span></a>
-    <a class="tool-card" href="/tools/orchestrator-quiz/">
-      <div class="ic">🎯</div><h2>Which Orchestrator Are You?</h2>
-      <p>Five questions, four personas, zero mercy. Find out where your orchestration really stands.</p>
-      <span class="go">Take the quiz →</span></a>
-  </div>
-  <footer class="note">Prototype v1 — 07/2026. URLs and content pending product validation (scoping doc: free-tools-scoping.md).</footer>
+  <h1>Orchestration TCO Calculator <span class="proto-badge">PROTOTYPE V1</span></h1>
+  <p class="sub">Compare the annual total cost of ownership of your current orchestration setup vs Kestra OSS and Kestra Cloud — with every assumption visible and editable.</p>
+  <section class="panel active" id="tco" role="tabpanel">
+    <div class="banner">⚠️ <span><b>Transparency is the product:</b> every assumption below is visible and editable — unlike black-box calculators. Default values are placeholders to validate with product/CS before launch.</span></div>
+    <div class="grid">
+      <div class="card">
+        <h2>Your setup</h2>
+        <div class="row2">
+          <div><label for="wf">Active workflows</label><input type="number" id="wf" value="150" min="1"></div>
+          <div><label for="runs">Executions / day</label><input type="number" id="runs" value="2000" min="1"></div>
+        </div>
+        <div class="row2">
+          <div><label for="team">Data team size</label><input type="number" id="team" value="5" min="1"></div>
+          <div><label for="cost">Loaded cost / engineer / yr ($)</label><input type="number" id="cost" value="150000" step="5000"></div>
+        </div>
+        <label for="setup">Current orchestration</label>
+        <select id="setup">
+          <option value="self">Self-managed Airflow</option>
+          <option value="mwaa">Amazon MWAA</option>
+          <option value="astro">Astronomer</option>
+          <option value="composer">Cloud Composer</option>
+        </select>
+        <label for="inc">Orchestration incidents / month</label>
+        <input type="number" id="inc" value="2" min="0">
+        <details class="assump">
+          <summary>Assumptions — edit me</summary>
+          <h3>% of engineer time on orchestrator upkeep</h3>
+          <div class="row2">
+            <div><label for="mCur">Current setup (%)</label><input type="number" id="mCur" value="18" min="0" max="60"></div>
+            <div><label for="mOss">Kestra OSS (%)</label><input type="number" id="mOss" value="5" min="0" max="60"></div>
+          </div>
+          <div class="row2">
+            <div><label for="mCloud">Kestra Cloud (%)</label><input type="number" id="mCloud" value="3" min="0" max="60"></div>
+            <div><label for="incH">Hours lost / incident (2 eng)</label><input type="number" id="incH" value="3" min="0"></div>
+          </div>
+          <h3>Infra &amp; license ($ / month, at your scale)</h3>
+          <div class="row2">
+            <div><label for="iCur">Current setup infra+license</label><input type="number" id="iCur" value="1500" step="50"></div>
+            <div><label for="iOss">Kestra OSS infra</label><input type="number" id="iOss" value="450" step="50"></div>
+          </div>
+          <div class="row2">
+            <div><label for="iCloud">Kestra Cloud plan</label><input type="number" id="iCloud" value="1200" step="50"></div>
+            <div></div>
+          </div>
+        </details>
+      </div>
+      <div class="card">
+        <h2>Annual total cost of ownership</h2>
+        <div class="stat"><span class="n" id="saving">—</span><span class="l" id="savingLabel">estimated annual saving with Kestra</span></div>
+        <div class="cols">
+          <div class="col"><div class="t" id="curName">Current</div><div class="v" id="curTotal">—</div><div class="d">per year</div></div>
+          <div class="col win"><div class="t">Kestra OSS</div><div class="v" id="ossTotal">—</div><div class="d" id="ossDelta">—</div></div>
+          <div class="col"><div class="t">Kestra Cloud</div><div class="v" id="cloudTotal">—</div><div class="d" id="cloudDelta">—</div></div>
+        </div>
+        <div class="chart" id="tcoChart" aria-label="TCO breakdown by cost category"></div>
+        <div class="legend">
+          <span><i class="sw" style="background:var(--s1)"></i>Infra &amp; license</span>
+          <span><i class="sw" style="background:var(--s2)"></i>Engineer upkeep time</span>
+          <span><i class="sw" style="background:var(--s3)"></i>Incident cost</span>
+        </div>
+        <details><summary style="cursor:pointer;font-size:13px;color:var(--ink-2);font-weight:600;">Breakdown table</summary>
+          <table class="break" id="tcoTable"></table>
+        </details>
+        <div class="gate">
+          <p><b>Get the detailed report</b> — full methodology, your numbers, 3-year projection (PDF).</p>
+          <form onsubmit="event.preventDefault(); toast('Prototype — HubSpot form + PDF generation go here (MQL = engagement)');">
+            <input type="email" placeholder="work email" required aria-label="work email"><button class="btn">Send report</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="scope-strip"><span>Effort <b>S — 1-2 weeks</b> (client-side, no backend)</span><span>Owner <b>Virgile + product/CS for cost defaults</b></span><span>KPI <b>MQLs (gated report → HubSpot)</b></span><span>SEO <b>3 satellite pages: astronomer/mwaa/composer pricing (~340 US/mo)</b></span></div>
+  </section>
+  <footer class="note">Prototype v1 — 07/2026. Values and mappings are placeholders pending product validation. Part of the Kestra free-tools suite: <a href="/tools/">see all tools</a>.</footer>
 </div>
+<div class="toast" id="toast"></div>
+<script>
+// ---------- shared ----------
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', 'false'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.setAttribute('aria-selected', 'true');
+    document.getElementById(t.dataset.panel).classList.add('active');
+  }));
+  function toast(msg) {
+    const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('on');
+    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2600);
+  }
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+
+// ---------- TCO ----------
+  const SETUPS = { self: 'Self-managed Airflow', mwaa: 'Amazon MWAA', astro: 'Astronomer', composer: 'Cloud Composer' };
+  const INFRA_DEFAULTS = { self: 1500, mwaa: 900, astro: 1750, composer: 850 };
+  const MAINT_DEFAULTS = { self: 18, mwaa: 8, astro: 7, composer: 8 };
+  const $ = id => document.getElementById(id);
+
+  $('setup').addEventListener('change', () => {
+    $('iCur').value = INFRA_DEFAULTS[$('setup').value];
+    $('mCur').value = MAINT_DEFAULTS[$('setup').value];
+    calcTco();
+  });
+  ['wf','runs','team','cost','inc','mCur','mOss','mCloud','incH','iCur','iOss','iCloud'].forEach(id =>
+    $(id).addEventListener('input', calcTco));
+
+  function calcTco() {
+    const team = +$('team').value || 0, cost = +$('cost').value || 0, inc = +$('inc').value || 0;
+    const runs = +$('runs').value || 0, scale = 1 + Math.max(0, (runs - 2000)) / 10000;
+    const hourly = cost / 2080, incHours = +$('incH').value || 0;
+    const mk = (infraMo, maintPct, incFactor) => {
+      const infra = infraMo * scale * 12;
+      const maint = team * cost * (maintPct / 100);
+      const incidents = inc * 12 * incHours * 2 * hourly * incFactor;
+      return { infra, maint, incidents, total: infra + maint + incidents };
+    };
+    const cur = mk(+$('iCur').value, +$('mCur').value, 1);
+    const oss = mk(+$('iOss').value, +$('mOss').value, 0.5);
+    const cloud = mk(+$('iCloud').value, +$('mCloud').value, 0.3);
+
+    $('curName').textContent = SETUPS[$('setup').value];
+    $('curTotal').textContent = fmt(cur.total);
+    $('ossTotal').textContent = fmt(oss.total);
+    $('cloudTotal').textContent = fmt(cloud.total);
+    $('ossDelta').textContent = (oss.total <= cur.total ? '−' : '+') + fmt(Math.abs(cur.total - oss.total)).slice(1) + ' vs current';
+    $('cloudDelta').textContent = (cloud.total <= cur.total ? '−' : '+') + fmt(Math.abs(cur.total - cloud.total)).slice(1) + ' vs current';
+    const best = Math.min(oss.total, cloud.total);
+    const save = cur.total - best;
+    $('saving').textContent = (save >= 0 ? '−' : '+') + fmt(Math.abs(save)).slice(1) + ' / yr';
+    $('savingLabel').textContent = save >= 0
+      ? `estimated saving with Kestra (${Math.round(save / cur.total * 100)}% of current TCO)`
+      : 'at this scale the current setup is cheaper — talk to us anyway';
+
+    const rows = [['Current', cur], ['Kestra OSS', oss], ['Kestra Cloud', cloud]];
+    const max = Math.max(cur.total, oss.total, cloud.total) || 1;
+    $('tcoChart').innerHTML = rows.map(([name, r]) => {
+      const segs = [['s1', r.infra, 'Infra & license'], ['s2', r.maint, 'Engineer upkeep'], ['s3', r.incidents, 'Incidents']]
+        .map(([c, v, lab]) => `<div class="seg" style="background:var(--${c});width:${(v / max * 100).toFixed(1)}%" title="${lab}: ${fmt(v)}"></div>`).join('');
+      return `<div class="bar-row"><div class="bar-label">${name}</div><div class="bar">${segs}</div><div class="bar-total">${fmt(r.total)}</div></div>`;
+    }).join('');
+    $('tcoTable').innerHTML = '<tr><th>Column</th><th>Infra & license</th><th>Upkeep time</th><th>Incidents</th><th>Total / yr</th></tr>' +
+      rows.map(([name, r]) => `<tr><td>${name}</td><td>${fmt(r.infra)}</td><td>${fmt(r.maint)}</td><td>${fmt(r.incidents)}</td><td><b>${fmt(r.total)}</b></td></tr>`).join('');
+  }
+  calcTco();
+</script>
 </body>
 </html>

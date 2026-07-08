@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Free Tools for Data & Platform Teams — Kestra</title>
+  <title>Which Orchestrator Are You? — Kestra Free Tools</title>
   <style>
   :root {
     --bg: #fbfbfd; --surface: #ffffff; --surface-2: #f4f3f9; --border: #e6e4ee;
@@ -133,36 +133,95 @@
   .toast.on { opacity: 1; }
   footer.note { margin-top: 40px; font-size: 12.5px; color: var(--ink-3); max-width: 70ch; }
 
-  .tool-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; margin-top: 26px; }
-  .tool-card { display: block; text-decoration: none; color: var(--ink); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; box-shadow: var(--shadow); transition: border-color .15s ease, transform .15s ease; }
-  .tool-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-  @media (prefers-reduced-motion: reduce) { .tool-card { transition: none; } .tool-card:hover { transform: none; } }
-  .tool-card .ic { font-size: 26px; }
-  .tool-card h2 { font-size: 17px; margin: 10px 0 6px; letter-spacing: -.01em; }
-  .tool-card p { font-size: 13.5px; color: var(--ink-2); margin: 0 0 12px; }
-  .tool-card .go { color: var(--accent); font-weight: 700; font-size: 13.5px; }
+  .crumb { font-size: 13px; margin-bottom: 18px; }
+  .crumb a { color: var(--accent); text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="crumb"><a href="/tools/">← All free tools</a></div>
   <div class="eyebrow">Kestra · Free tools</div>
-  <h1>Free tools for data &amp; platform teams <span class="proto-badge">PROTOTYPE V1</span></h1>
-  <p class="sub">Practical, no-signup tools built by the Kestra team. Every calculator shows its assumptions; every converter shows its work.</p>
-  <div class="tool-grid">
-    <a class="tool-card" href="/tools/tco-calculator/">
-      <div class="ic">🧮</div><h2>Orchestration TCO Calculator</h2>
-      <p>Compare the real annual cost of self-managed Airflow, managed services, and Kestra — assumptions included, all editable.</p>
-      <span class="go">Calculate your TCO →</span></a>
-    <a class="tool-card" href="/tools/airflow-to-kestra-converter/">
-      <div class="ic">🔁</div><h2>Airflow DAG → Kestra Converter</h2>
-      <p>Paste a DAG, get declarative YAML — with an honest report of what converted, what needs review, and what didn't.</p>
-      <span class="go">Convert a DAG →</span></a>
-    <a class="tool-card" href="/tools/orchestrator-quiz/">
-      <div class="ic">🎯</div><h2>Which Orchestrator Are You?</h2>
-      <p>Five questions, four personas, zero mercy. Find out where your orchestration really stands.</p>
-      <span class="go">Take the quiz →</span></a>
-  </div>
-  <footer class="note">Prototype v1 — 07/2026. URLs and content pending product validation (scoping doc: free-tools-scoping.md).</footer>
+  <h1>Which orchestrator are you? <span class="proto-badge">PROTOTYPE V1</span></h1>
+  <p class="sub">Five questions, brutally honest. Find out your orchestration persona — and what to do about it.</p>
+  <section class="panel active" id="quiz" role="tabpanel">
+    <div class="grid">
+      <div class="card" id="quizCard">
+        <h2>Which orchestrator are you? <span style="font-weight:400;color:var(--ink-3);font-size:13px;">5 questions, brutally honest</span></h2>
+        <div class="q"><p>1. How do your workflows get triggered today?</p>
+          <label><input type="radio" name="q1" value="cron"> A cron on a VM someone is afraid to touch</label>
+          <label><input type="radio" name="q1" value="sched"> Scheduled DAGs in Airflow (or a fork of it)</label>
+          <label><input type="radio" name="q1" value="event"> Events, webhooks, APIs — real time when possible</label>
+          <label><input type="radio" name="q1" value="manual"> Someone remembers to run a script</label></div>
+        <div class="q"><p>2. Who builds the pipelines?</p>
+          <label><input type="radio" name="q2" value="py"> Python engineers only — it’s code or nothing</label>
+          <label><input type="radio" name="q2" value="mixed"> A mix: SQL analysts, data engineers, some ops</label>
+          <label><input type="radio" name="q2" value="ui"> Mostly clicks in a vendor UI</label></div>
+        <div class="q"><p>3. A pipeline fails at 3am. What happens?</p>
+          <label><input type="radio" name="q3" value="morning"> We find out at 9am from a stakeholder</label>
+          <label><input type="radio" name="q3" value="retry"> Retries kick in, alert fires, runbook exists</label>
+          <label><input type="radio" name="q3" value="what"> Which pipeline?</label></div>
+        <div class="q"><p>4. Your appetite for managing orchestration infra?</p>
+          <label><input type="radio" name="q4" value="love"> We enjoy tuning schedulers and executors</label>
+          <label><input type="radio" name="q4" value="tolerate"> We tolerate it — it’s not why we were hired</label>
+          <label><input type="radio" name="q4" value="zero"> Zero. Managed or nothing</label></div>
+        <div class="q"><p>5. AI agents in your workflows?</p>
+          <label><input type="radio" name="q5" value="already"> Already orchestrating LLM calls / agents</label>
+          <label><input type="radio" name="q5" value="soon"> Exploring — governance is the worry</label>
+          <label><input type="radio" name="q5" value="no"> Not yet</label></div>
+        <button class="btn" onclick="scoreQuiz()">Get my result</button>
+      </div>
+      <div class="card">
+        <div id="quizPlaceholder" style="color:var(--ink-3);font-size:14px;">Your result appears here — with a shareable verdict and a tailored next step.</div>
+        <div class="quiz-result" id="quizResult">
+          <div class="eyebrow" style="margin-bottom:4px;">Your orchestration persona</div>
+          <h3 id="qrTitle"></h3>
+          <p id="qrBody" style="margin:0 0 14px;"></p>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button class="btn" onclick="toast('Prototype — CTA routes per persona: docs quickstart, converter, or Cloud trial');" id="qrCta"></button>
+            <button class="btn ghost" onclick="toast('Prototype — share card (og:image per persona) for the LinkedIn/X loop');">Share my result</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scope-strip"><span>Effort <b>XS — days</b></span><span>Pure link-bait / social loop — <b>persona og:images</b> feed the share loop</span><span>KPI <b>shares, assisted sign-ups</b></span></div>
+  </section>
+  <footer class="note">Prototype v1 — 07/2026. Values and mappings are placeholders pending product validation. Part of the Kestra free-tools suite: <a href="/tools/">see all tools</a>.</footer>
 </div>
+<div class="toast" id="toast"></div>
+<script>
+// ---------- shared ----------
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', 'false'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.setAttribute('aria-selected', 'true');
+    document.getElementById(t.dataset.panel).classList.add('active');
+  }));
+  function toast(msg) {
+    const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('on');
+    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2600);
+  }
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+const $ = id => document.getElementById(id);
+// ---------- Quiz ----------
+  function scoreQuiz() {
+    const v = q => (document.querySelector(`input[name="${q}"]:checked`) || {}).value;
+    const a = [v('q1'), v('q2'), v('q3'), v('q4'), v('q5')];
+    if (a.some(x => !x)) { toast('Answer all 5 questions first'); return; }
+    let persona;
+    if (a[0] === 'cron' || a[0] === 'manual' || a[2] === 'what' || a[2] === 'morning')
+      persona = { t: 'The Cron Survivor', b: 'Your orchestration is a collection of scripts held together by hope. The good news: you can skip the Airflow detour entirely — declarative, event-driven orchestration with retries and alerting out of the box is one YAML file away.', c: 'Start with the 10-min quickstart' };
+    else if (a[0] === 'sched' && (a[3] === 'tolerate' || a[3] === 'zero'))
+      persona = { t: 'The Airflow Power User (ready for a third option)', b: 'You know DAGs inside out — and you also know what maintaining them costs. Your retries and runbooks would port in an afternoon, and your analysts could finally contribute without writing Python.', c: 'Try the DAG → YAML converter' };
+    else if (a[4] === 'already' || a[4] === 'soon')
+      persona = { t: 'The Agentic Architect', b: 'You are orchestrating (or about to orchestrate) AI agents — which means governance, auditability and real execution matter more than ever. A transparent, declarative control layer beats a black-box runtime.', c: 'See AI agent orchestration in Kestra' };
+    else
+      persona = { t: 'The Declarative-Ready', b: 'Mixed team, event-driven ambitions, low appetite for infra babysitting: you are the textbook case for declarative orchestration. Everything as code, but code your whole team can read.', c: 'Start a Kestra Cloud trial' };
+    $('qrTitle').textContent = persona.t;
+    $('qrBody').textContent = persona.b;
+    $('qrCta').textContent = persona.c;
+    $('quizPlaceholder').style.display = 'none';
+    $('quizResult').classList.add('show');
+  }
+</script>
 </body>
 </html>
