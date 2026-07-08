@@ -281,13 +281,14 @@ Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. 
 To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
-secret:
-  type: doppler
-  doppler:
-    token: YOUR_TOKEN
-    config: kestra_unit_test
-    project: kestra_unit_test
-    secretNamePrefix: kestra
+kestra:
+  secret:
+    type: doppler
+    doppler:
+      token: YOUR_TOKEN
+      project: my-project
+      config: production
+      secret-name-prefix: kestra   # optional
 ```
 
 **Configuration properties:**
@@ -295,7 +296,9 @@ secret:
 * **token**: Your Doppler service token.
 * **project**: The Doppler project containing the secrets.
 * **config**: The Doppler config/environment to read from.
-* **secretNamePrefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+* **secret-name-prefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+* **connect-timeout**: Optional. HTTP connection timeout when calling the Doppler API. Defaults to `PT15S` (15 seconds).
+* **read-timeout**: Optional. HTTP read timeout when calling the Doppler API. Defaults to `PT60S` (60 seconds).
 
 ## 1Password Configuration
 
