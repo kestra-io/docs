@@ -386,7 +386,7 @@ By combining different blocks, you can create a custom UI that guides users thro
 
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content`                                                                                 | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
+| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
 | `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 
@@ -406,6 +406,60 @@ When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/ind
 | `TaskOutputs`            | RUNNING, PAUSE, RESUME, SUCCESS                                         | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
 Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
+
+### Dynamic content in the OPEN state
+
+The `Markdown` block's `content` property is a Pebble template. When the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` is available in the render context and updates as the user interacts with the form. Display blocks can show context-sensitive content — such as a description that changes when a user changes a dropdown value.
+
+The flow below exposes a `product` input:
+
+```yaml
+id: software_request
+namespace: company.team
+
+inputs:
+  - id: product
+    type: SELECT
+    values:
+      - Adobe
+      - Figma
+      - Slack
+    defaults: Adobe
+
+tasks:
+  - id: process
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing request for {{ inputs.product }}"
+```
+
+The app renders the current selection in a Markdown block that updates as the user changes the dropdown:
+
+```yaml
+id: software_request_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Software Request Form
+namespace: company.team
+flowId: software_request
+access:
+  type: PRIVATE
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "You are requesting access to: **{{ inputs.product }}**"
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: SUCCESS
+        content: Your request has been submitted.
+```
+
+Before the user interacts with the form, `{{ inputs.* }}` resolves to each input's default value. In other states (RUNNING, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
 
 ### File preview and download
 
