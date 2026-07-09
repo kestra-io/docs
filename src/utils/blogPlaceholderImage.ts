@@ -215,5 +215,5 @@ export async function generateBlogPlaceholder(options: BlogPlaceholderOptions): 
     )
 
     const svg = await satori(tree as Parameters<typeof satori>[0], { width: WIDTH, height: HEIGHT, fonts })
-    return sharp(Buffer.from(svg)).png().toBuffer()
+    return sharp(Buffer.from(svg)).webp({ quality: 85 }).toBuffer()
 }

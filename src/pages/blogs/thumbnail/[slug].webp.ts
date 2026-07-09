@@ -18,15 +18,15 @@ export const getStaticPaths = (async () => {
 
 export const GET: APIRoute = async ({ props }) => {
     const { title, category, date, author, authors } = props.data
-    const png = await generateBlogPlaceholder({
+    const webp = await generateBlogPlaceholder({
         title,
         category,
         date,
         authors: authors ?? (author ? [author] : []),
     })
-    return new Response(new Uint8Array(png), {
+    return new Response(new Uint8Array(webp), {
         headers: {
-            "Content-Type": "image/png",
+            "Content-Type": "image/webp",
             "Cache-Control": "public, max-age=31536000, immutable",
         },
     })

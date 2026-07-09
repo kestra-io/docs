@@ -3,5 +3,5 @@
 // the Cloudflare Worker can use it; the generator itself lives in
 // blogPlaceholderImage.ts and only runs during prerendering.
 export function blogPlaceholderUrl(postId: string): string {
-    return `/blogs/thumbnail/${postId.toLowerCase()}.png`
+    return `/blogs/thumbnail/${postId.toLowerCase()}.webp`
 }
