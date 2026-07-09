@@ -1,0 +1,10 @@
+title: "Data Tools Are Simple. Making Them Work Together Is The Hard Part"
+description: "Postgres works. Your scripts work. Getting them to run together reliably
+  is the part that breaks. We walk through a realistic scenario: CSVs, a Python cleaning
+  step, a Postgres load, and show what cron jobs vs. an orchestrator like Kestra actually
+  look like in practice. Same tools, completely different level of reliability and visibility."
+category: "Data"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=_1mVIkJMqfM"
+publicationDate: "2026-06-25T00:00:00.000"
+contentType: "Data"
