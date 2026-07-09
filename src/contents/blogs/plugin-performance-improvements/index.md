@@ -5,7 +5,7 @@ date: 2026-07-01T13:00:00
 category: Engineering
 author:
   name: Malay Dewangan
-  linkedin: https://www.linkedin.com/in/malay-dewangan/
+  linkedin: https://www.linkedin.com/in/malay-dewangan-156b58186/
   image: mdewangan
   role: Software Engineer
 image: ./main.jpg
