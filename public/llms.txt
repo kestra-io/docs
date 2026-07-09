@@ -346,6 +346,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure a Google Service Account in Kestra](https://kestra.io/docs/how-to-guides/google-credentials.md)
 - [Connect Google Sheets to Kestra](https://kestra.io/docs/how-to-guides/google-sheets.md)
 - [Make HTTP Requests Inside Your Flows](https://kestra.io/docs/how-to-guides/http-request.md)
+- [Automate IAM Management with Tasks](https://kestra.io/docs/how-to-guides/iam-automation.md)
 - [Prevent Duplicate Executions with Correlation IDs](https://kestra.io/docs/how-to-guides/idempotency.md)
 - [Pass Inputs via an API Call](https://kestra.io/docs/how-to-guides/inputs-api.md)
 - [Validate Inputs with the Enum Data Type](https://kestra.io/docs/how-to-guides/inputs-enum.md)
