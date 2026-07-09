@@ -53,7 +53,10 @@ function loadLogo() {
 
 async function loadAvatar(slug?: string): Promise<string | null> {
     if (!slug) return null
-    for (const suffix of ["", "-round", "-sm"]) {
+    // "-round" and "-sm" are pre-cropped square headshots; the bare filename
+    // is often a full-body or non-square portrait, so prefer the square
+    // variants and only fall back to the bare name if neither exists.
+    for (const suffix of ["-round", "-sm", ""]) {
         try {
             const data = await readFile(path.join(ASSETS_DIR, "teams", `${slug}${suffix}.png`))
             return `data:image/png;base64,${data.toString("base64")}`
@@ -88,6 +91,7 @@ function avatarNode(image: string | null, name: string) {
             width: AVATAR_SIZE,
             height: AVATAR_SIZE,
             style: {
+                objectFit: "cover",
                 borderRadius: "50%",
                 border: "3px solid rgba(255,255,255,0.35)",
             },
