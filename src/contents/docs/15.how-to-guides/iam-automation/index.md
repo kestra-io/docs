@@ -22,16 +22,14 @@ IAM tasks require Kestra Enterprise Edition or Kestra Cloud. The executing servi
 All IAM tasks inherit `kestraUrl` and `auth` from `AbstractKestraTask`.
 
 - `kestraUrl` defaults to `{{ kestra.url }}`, which resolves to the current Kestra instance. Omit it when targeting the same instance.
-- `auth` accepts an API token or HTTP Basic credentials. When `auth` is omitted entirely, the task falls back to the execution's automatic authentication context.
-
-The recommended pattern for production flows is an API token stored as a secret:
+- `auth` is required. Use an API token stored as a secret:
 
 ```yaml
 auth:
   apiToken: "{{ secret('KESTRA_API_TOKEN') }}"
 ```
 
-If the flow runs under a service account that already has IAM permissions, you can omit `auth` and the task uses that context automatically.
+The API token must belong to a user or service account with the appropriate IAM permissions for the operations the flow performs.
 
 ## Onboard a user
 
@@ -130,7 +128,7 @@ tasks:
     type: io.kestra.plugin.kestra.ee.iam.bindings.Set
     auth:
       apiToken: "{{ secret('KESTRA_API_TOKEN') }}"
-    subjectType: SERVICE_ACCOUNT
+    subjectType: USER
     externalId: "{{ outputs.create_sa.id }}"
     roleId: "{{ inputs.role_id }}"
 
@@ -180,7 +178,7 @@ Like `serviceAccounts.Set`, `groups.Set` upserts by name and outputs the group `
 | `io.kestra.plugin.kestra.ee.iam.roles.Set` | Create or update a role (upsert by name) |
 | `io.kestra.plugin.kestra.ee.iam.roles.List` | List roles |
 | `io.kestra.plugin.kestra.ee.iam.roles.Delete` | Delete a role by ID |
-| `io.kestra.plugin.kestra.ee.iam.bindings.Set` | Attach a role to a user, group, or service account |
+| `io.kestra.plugin.kestra.ee.iam.bindings.Set` | Attach a role to a user or group (use `USER` for service accounts) |
 | `io.kestra.plugin.kestra.ee.iam.serviceAccounts.Set` | Create or update a service account (upsert by name) |
 | `io.kestra.plugin.kestra.ee.iam.serviceAccounts.List` | List service accounts |
 | `io.kestra.plugin.kestra.ee.iam.serviceAccounts.Delete` | Delete a service account by ID |
