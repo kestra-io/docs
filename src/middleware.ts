@@ -1,6 +1,12 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import YAML from "yaml"
+import { API_URL } from "astro:env/client"
+import { $fetchApiRawCached } from "~/utils/fetch"
+import { apiDocPath, VERSIONED_DOCS_PATH } from "~/utils/versionedDocs"
+import { getDocVersions } from "~/utils/docVersionsFetch"
+import { getDocChildren } from "~/utils/docChildrenFetch"
+import { renderVersionedDocHtml } from "~/utils/renderVersionedDoc"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
     eager: true,
@@ -158,6 +164,61 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     return next()
 })
 
+// Serve /docs/{major.minor}/... from api.kestra.io, rendered inline. Latest docs
+// don't match the version regex and fall through to Astro's static handling.
+const versionedDocs = defineMiddleware(async (context, next) => {
+    const match = VERSIONED_DOCS_PATH.exec(context.url.pathname)
+    if (!match) {
+        return next()
+    }
+
+    const version = match[1]
+    const path = (match[2] ?? "").replace(/^\/+|\/+$/g, "")
+
+    let markdown: string | null = null
+    try {
+        const docRes = await $fetchApiRawCached(apiDocPath(version, path))
+        markdown = await docRes.text()
+    } catch {
+        markdown = null
+    }
+
+    // Page doesn't exist for this version (markdown null), or it failed to
+    // render (a malformed relic directive can throw): fall back to the version
+    // home, unless we're already there (avoid a redirect loop) -> latest docs.
+    const fallback = () =>
+        new Response("", {
+            status: 302,
+            headers: { Location: path === "" ? "/docs" : `/docs/${version}` },
+        })
+
+    if (markdown === null) {
+        return fallback()
+    }
+
+    try {
+        // Versions feed the selector and children feed the nav sidebar; both are
+        // memoized (not fetched per request) and fetched together.
+        const [versions, children] = await Promise.all([
+            getDocVersions(),
+            getDocChildren(version),
+        ])
+        const html = await renderVersionedDocHtml({
+            version,
+            path,
+            markdown,
+            versions,
+            children,
+            apiUrl: API_URL,
+        })
+        return new Response(html, {
+            headers: { "content-type": "text/html;charset=utf-8" },
+        })
+    } catch {
+        return fallback()
+    }
+})
+
 const notFoundRedirect = defineMiddleware(async (context, next) => {
     // disable for tracking
     if (context.url.pathname.startsWith("/t/")) {
@@ -212,5 +273,6 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 export const onRequest = sequence(
     logger,
     incomingRedirect,
+    versionedDocs,
     notFoundRedirect,
 )
