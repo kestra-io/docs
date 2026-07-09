@@ -21,6 +21,7 @@ import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import {
+    fetchElementVersions,
     fetchInitialPluginData,
     fetchPageDefinition,
     fetchSecondaryData,
@@ -252,6 +253,27 @@ if (
 }
 
 const latestVersion = githubVersions.versions?.[0]
+
+// Scope the dropdown to versions where the current element exists (class fqcn or subpackage).
+const scopeElement =
+    pluginType ??
+    (subGroup
+        ? allPlugins.find(
+              (p) =>
+                  (p.name ?? "").toLowerCase() === (pluginName ?? "").toLowerCase() &&
+                  matchesSubGroup(p, subGroup),
+          )?.subGroup
+        : undefined)
+
+let dropdownVersions = githubVersions
+if (scopeElement && githubVersions.versions?.length) {
+    const scopedSet = new Set(await fetchElementVersions(scopeElement))
+    if (scopedSet.size) {
+        const filtered = githubVersions.versions.filter((v: any) => scopedSet.has(v.version))
+        if (filtered.length) dropdownVersions = { ...githubVersions, versions: filtered }
+    }
+}
+
 const imageUrl = `${Astro.site}${ogImage.replace(/^\//, "")}`
 
 const pluginSchema = pluginType
@@ -406,7 +428,7 @@ const pluginSchema = pluginType
         <div slot="aside">
             <RightSideBar
                 links={pageWithToc.body.toc?.links}
-                version={githubVersions}
+                version={dropdownVersions}
                 releasesUrl={githubReleasesUrl}
                 categories={currentPluginCategories}
                 metadata={currentPluginMetadata}
