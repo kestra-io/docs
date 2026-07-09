@@ -189,6 +189,234 @@ Outro.`)
     })
 })
 
+describe("renderVersionedDocHtml heading ids and fences", () => {
+    it("gives headings clean, stable ids across repeated renders", async () => {
+        // The memoized parser's slugger leaks state across renders, minting
+        // "outputs-2", "outputs-3"… for the same heading on each request.
+        const md = `---
+title: T
+---
+## How to Retrieve Outputs
+
+## Debug Expressions`
+        const first = await render(md)
+        const second = await render(md)
+        expect(first).toContain('id="how-to-retrieve-outputs"')
+        expect(first).toContain('id="debug-expressions"')
+        expect(second).toContain('id="how-to-retrieve-outputs"')
+    })
+
+    it("dedupes duplicate headings within one page", async () => {
+        const html = await render(`---
+title: T
+---
+## Setup
+
+## Setup`)
+        expect(html).toContain('id="setup"')
+        expect(html).toContain('id="setup-1"')
+    })
+
+    it("labels fenced code blocks with their language", async () => {
+        const html = await render(`---
+title: T
+---
+\`\`\`yaml
+id: hello
+\`\`\``)
+        expect(html).toContain('data-lang="yaml"')
+        expect(html).toContain("pre[data-lang]:after")
+    })
+})
+
+describe("renderVersionedDocHtml bespoke components", () => {
+    it("renders HomePageHeader's title as a heading instead of dropping it", async () => {
+        const html = await render(`---
+title: T
+---
+:::HomePageHeader{title="What is Kestra?"}
+:::`)
+        expect(html).toContain("<h2")
+        expect(html).toContain("What is Kestra?")
+        expect(html).not.toContain("HomePageHeader")
+    })
+
+    it("substitutes a static quantity for the inline :PluginCount island", async () => {
+        const html = await render(`---
+title: T
+---
+Thanks to :PluginCount plugins, building is easy.`)
+        expect(html).toContain("Thanks to hundreds of plugins")
+    })
+
+    it("renders SupportLinks as the live site's static card row", async () => {
+        const html = await render(`---
+title: T
+---
+:::SupportLinks
+:::`)
+        expect(html).toContain('class="vd-support"')
+        expect(html).toContain('href="https://kestra.io/slack"')
+        expect(html).toContain("Community Slack")
+        expect(html).toContain('href="https://github.com/kestra-io/kestra"')
+        expect(html).not.toContain("SupportLinks")
+    })
+
+    it("trims the trailing rule and spacer left by dropped components", async () => {
+        const html = await render(`---
+title: T
+---
+Real content.
+
+---
+
+:::WhatsNew{title="x"}
+:::
+
+<div style="height: 50px"></div>`)
+        expect(html).toContain("Real content.")
+        expect(html).not.toContain("<hr")
+        expect(html).not.toContain("height: 50px")
+    })
+
+    it("keeps a mid-document rule", async () => {
+        const html = await render(`---
+title: T
+---
+Before.
+
+---
+
+After.`)
+        expect(html).toContain("<hr")
+        expect(html).toContain("After.")
+    })
+})
+
+describe("renderVersionedDocHtml data-driven components", () => {
+    const children = {
+        docs: { title: "Welcome" },
+        "docs/getting-started": {
+            title: "Getting Started",
+            description: "Follow the [Quickstart Guide](./01.quickstart.md) to install.",
+            icon: "/docs/icons/start.svg",
+        },
+        "docs/getting-started/quickstart": { title: "Quickstart" },
+        "docs/use-cases": { title: "Use Cases" },
+        "docs/use-cases/dbt": { title: "dbt", description: "Run dbt." },
+        "docs/use-cases/python": { title: "Python" },
+        "docs/hidden": { title: "Hidden", hideSidebar: true },
+    }
+    const renderWith = (path: string, markdown: string) =>
+        renderVersionedDocHtml({
+            version: "1.3",
+            path,
+            markdown: `---\ntitle: T\n---\n${markdown}`,
+            versions: [],
+            children,
+        })
+
+    it("renders a bare ChildCard as the current page's child cards", async () => {
+        const html = await renderWith("getting-started", ":::ChildCard\n:::")
+        expect(html).toContain('class="vd-cards"')
+        expect(html).toContain('href="/docs/1.3/getting-started/quickstart"')
+        expect(html).toContain("Quickstart")
+        expect(html).not.toContain("ChildCard")
+    })
+
+    it("renders BigChildCards from its directory with title, icon and plain-text description", async () => {
+        const html = await renderWith(
+            "",
+            ':::BigChildCards{directory="/docs/use-cases" title="What is possible"}\n:::',
+        )
+        expect(html).toContain("<h2")
+        expect(html).toContain("What is possible")
+        expect(html).toContain('href="/docs/1.3/use-cases/dbt"')
+        expect(html).toContain("Run dbt.")
+        expect(html).not.toContain("BigChildCards")
+        // the 0.19-era pageUrl variant targets the same data
+        const html019 = await renderWith(
+            "",
+            ':::ChildCard{pageUrl="/docs/getting-started/"}\n:::',
+        )
+        expect(html019).toContain('href="/docs/1.3/getting-started/quickstart"')
+        // icon is versioned like any asset; description markdown is unwrapped
+        const htmlHome = await renderWith("", ":::ChildCard\n:::")
+        expect(htmlHome).toContain(
+            'src="https://api.kestra.io/v1/docs/docs/icons/start.svg/versions/1.3.0"',
+        )
+        expect(htmlHome).toContain("Follow the Quickstart Guide to install.")
+        expect(htmlHome).not.toContain('href="/docs/1.3/hidden"')
+    })
+
+    it("renders nothing for ChildCard when the children map is empty", async () => {
+        const html = await render(`---\ntitle: T\n---\n:::ChildCard\n:::`)
+        expect(html).not.toContain('class="vd-cards"')
+        expect(html).not.toContain("ChildCard")
+    })
+
+    it("re-points absolute /docs links that exist in this version", async () => {
+        const html = await renderWith(
+            "getting-started",
+            "[qs](/docs/getting-started/quickstart#start) [gone](/docs/not-in-this-version) [versioned](/docs/1.1/foo) [home](/docs)",
+        )
+        expect(html).toContain('href="/docs/1.3/getting-started/quickstart#start"')
+        expect(html).toContain('href="/docs/not-in-this-version"')
+        expect(html).toContain('href="/docs/1.1/foo"')
+        expect(html).toContain('href="/docs/1.3"')
+    })
+
+    it("re-points the HomePageButtons CTA hrefs too", async () => {
+        const html = await renderWith(
+            "",
+            `:::HomePageButtons{ :buttons='[{"label":"Quickstart","href":"/docs/getting-started/quickstart#go"},{"label":"Ext","href":"/pricing"}]'}\n:::`,
+        )
+        expect(html).toContain('href="/docs/1.3/getting-started/quickstart#go"')
+        expect(html).toContain('href="/pricing"')
+    })
+
+    it("renders a breadcrumb trail with children titles", async () => {
+        const html = await renderWith("getting-started/quickstart", "Body.")
+        expect(html).toContain('class="vd-breadcrumb"')
+        expect(html).toContain('href="/docs/1.3"')
+        expect(html).toContain('href="/docs/1.3/getting-started"')
+        expect(html).toContain(">Getting Started</a>")
+        expect(html).toContain("<span>Quickstart</span>")
+    })
+
+    it("renders prev/next footer cards from nav order, skipping hidden pages", async () => {
+        const html = await renderWith("use-cases/dbt", "Body.")
+        expect(html).toContain('class="vd-pn-row"')
+        expect(html).toContain(">Previous</span>")
+        expect(html).toContain(">Next</span>")
+        expect(html).toContain('href="/docs/1.3/use-cases"')
+        expect(html).toContain('href="/docs/1.3/use-cases/python"')
+    })
+
+    it("renders a right-rail TOC when the page has 2+ section headings", async () => {
+        const html = await renderWith("getting-started", "## One\n\ntext\n\n## Two\n\n### Two Sub")
+        expect(html).toContain('class="vd-toc"')
+        expect(html).toContain('href="#one"')
+        expect(html).toContain('href="#two"')
+        expect(html).toContain('class="vd-toc-sub"')
+    })
+
+    it("skips the TOC for a page with a single heading", async () => {
+        const html = await renderWith("getting-started", "## Only One")
+        expect(html).not.toContain('class="vd-toc"')
+    })
+})
+
+describe("renderVersionedDocHtml chrome extras", () => {
+    it("loads brand fonts from a stable CDN URL and ships a copy-button script", async () => {
+        const html = await render(`---\ntitle: T\n---\nBody.`)
+        expect(html).toContain("fonts.googleapis.com/css2?family=Mona+Sans")
+        expect(html).toContain("JetBrains+Mono")
+        expect(html).toContain("vd-copy")
+        expect(html).toContain("navigator.clipboard")
+    })
+})
+
 describe("renderVersionedDocHtml navbar", () => {
     const nav = () =>
         renderVersionedDocHtml({
@@ -382,6 +610,64 @@ title: T
             'src="https://staging.example/v1/docs/docs/x.png/versions/1.3.0"',
         )
         expect(html).not.toContain("api.kestra.io")
+    })
+
+    it("rewrites relative source links to versioned pretty URLs", async () => {
+        const html = await renderVersionedDocHtml({
+            version: "1.3",
+            path: "tutorial/outputs",
+            markdown: `---
+title: T
+---
+See [storage](../07.architecture/09.internal-storage.md) and [expr](../expressions/index.md#syntax).`,
+            versions: [],
+        })
+        expect(html).toContain('href="/docs/1.3/architecture/internal-storage"')
+        expect(html).toContain('href="/docs/1.3/expressions#syntax"')
+        expect(html).not.toContain(".md")
+    })
+
+    it("resolves version-home relative links inside the version", async () => {
+        // Without rewriting, "./01.getting-started/01.quickstart.md" on
+        // /docs/0.19 resolves against /docs/ and silently exits versioned docs.
+        const html = await renderVersionedDocHtml({
+            version: "1.3",
+            path: "",
+            markdown: `---
+title: T
+---
+[Quickstart](./01.getting-started/01.quickstart.md)`,
+            versions: [],
+        })
+        expect(html).toContain('href="/docs/1.3/getting-started/quickstart"')
+    })
+
+    it("resolves an index page's links inside its own directory", async () => {
+        const html = await renderVersionedDocHtml({
+            version: "1.3",
+            path: "tutorial",
+            markdown: `---
+title: T
+---
+[Fundamentals](./01.fundamentals.md)`,
+            versions: [],
+            children: {
+                docs: { title: "Docs" },
+                "docs/tutorial": { title: "Tutorial" },
+                "docs/tutorial/fundamentals": { title: "Fundamentals" },
+            },
+        })
+        expect(html).toContain('href="/docs/1.3/tutorial/fundamentals"')
+    })
+
+    it("leaves absolute, anchor and external links untouched", async () => {
+        const html = await render(`---
+title: T
+---
+[abs](/docs/why-kestra) [ext](https://kestra.io/slack) [anchor](#here)`)
+        expect(html).toContain('href="/docs/why-kestra"')
+        expect(html).toContain('href="https://kestra.io/slack"')
+        expect(html).toContain('href="#here"')
     })
 
     it("re-points a raw-HTML video src and poster", async () => {

@@ -56,6 +56,65 @@ export function versionedAssetUrl(
 }
 
 /**
+ * True for an in-content href that should be resolved against the versioned
+ * docs tree: a relative path ("./x.md", "../y/z.md", "plugins/a.md"). Absolute
+ * paths, anchors and anything with a scheme (http:, mailto:, data:) are left
+ * alone.
+ */
+export function isRelativeDocHref(href: string): boolean {
+    if (!href || href.startsWith("/") || href.startsWith("#")) return false
+    return !/^[a-z][a-z0-9+.-]*:/i.test(href)
+}
+
+/**
+ * The directory the page's own markdown lives in, which relative links resolve
+ * against. A page that has children in the flat map is a directory index
+ * (docs/06.tutorial/index.md) so its links resolve inside itself; a leaf page
+ * (docs/06.tutorial/05.outputs.md) resolves against its parent. The version
+ * home ("") is docs/index.md -> "".
+ */
+export function docLinkBaseDir(path: string, children: DocChildren): string {
+    const cleaned = path.replace(/^\/+|\/+$/g, "")
+    if (!cleaned) return ""
+    const prefix = `docs/${cleaned}/`
+    if (Object.keys(children).some((k) => k.startsWith(prefix))) return cleaned
+    const slash = cleaned.lastIndexOf("/")
+    return slash === -1 ? "" : cleaned.slice(0, slash)
+}
+
+/**
+ * Rewrite a relative in-content link to its versioned pretty URL. Old markdown
+ * links to the SOURCE files ("../07.architecture/09.internal-storage.md"),
+ * whose "NN." ordering prefixes and ".md" extension never appear in routes —
+ * left verbatim, every such link 302s back to the version home. So: resolve
+ * against the page's own directory, dropping ordering prefixes, ".md" and
+ * "index" segments, and re-root under /docs/{version} (like the live site's
+ * link handling, but keeping the reader inside the version).
+ */
+export function resolveVersionedDocLink(
+    version: string,
+    baseDir: string,
+    href: string,
+): string {
+    const cut = href.search(/[?#]/)
+    const path = cut === -1 ? href : href.slice(0, cut)
+    const suffix = cut === -1 ? "" : href.slice(cut)
+    const parts: string[] = baseDir ? baseDir.split("/") : []
+    for (const raw of path.split("/")) {
+        if (raw === "" || raw === ".") continue
+        if (raw === "..") {
+            parts.pop()
+            continue
+        }
+        const seg = raw.replace(/^\d+\./, "").replace(/\.md$/i, "")
+        if (seg === "index") continue
+        parts.push(seg)
+    }
+    const rel = parts.join("/")
+    return (rel ? `/docs/${version}/${rel}` : `/docs/${version}`) + suffix
+}
+
+/**
  * Parse the raw /v1/versions payload into deduped MAJOR.MINOR doc versions,
  * keeping only >= 0.19 (versions before that have no versioned docs), sorted
  * newest first. Integer compare on major/minor (NOT parseFloat — 0.2 < 0.19).
@@ -271,10 +330,12 @@ export const NAV: NavGroup[] = [
 export interface DocChildMeta {
     title: string
     // Pages flagged hideSidebar (brand-assets, why-kestra) are omitted from the
-    // tree, mirroring the latest-docs sidebar (RecursiveNavSidebar.vue). The
-    // endpoint returns more fields (icon, isIndex, ...) but this JS-less page
-    // only needs the title and this flag.
+    // tree, mirroring the latest-docs sidebar (RecursiveNavSidebar.vue).
     hideSidebar?: boolean
+    /** short markdown-flavored summary, feeds the ChildCard grids */
+    description?: string
+    /** root-absolute icon ref ("/docs/icons/x.svg"), versioned like any asset */
+    icon?: string
 }
 /** Flat children-endpoint payload, keyed by full path ("docs", "docs/x", ...). */
 export type DocChildren = Record<string, DocChildMeta>
@@ -337,6 +398,56 @@ export function buildDocTree(children: DocChildren): DocTreeNode[] {
         }
     }
     return roots
+}
+
+/**
+ * Direct (one-segment-deeper) children of a node in the flat map, in nav
+ * order, skipping hideSidebar pages — the data behind the ChildCard grids.
+ */
+export function directDocChildren(
+    children: DocChildren,
+    parentKey: string,
+): { key: string; meta: DocChildMeta }[] {
+    const prefix = `${parentKey}/`
+    return Object.entries(children)
+        .filter(
+            ([key, meta]) =>
+                key.startsWith(prefix) &&
+                !key.slice(prefix.length).includes("/") &&
+                !meta?.hideSidebar,
+        )
+        .map(([key, meta]) => ({ key, meta }))
+}
+
+/**
+ * Previous/next page around `currentKey` in the flat map's nav order (the map
+ * is depth-first nav-ordered, so adjacency IS the reading order), skipping
+ * hideSidebar pages like the sidebar does.
+ */
+export function prevNextDocs(
+    children: DocChildren,
+    currentKey: string,
+): { prev?: { key: string; title: string }; next?: { key: string; title: string } } {
+    const entries = Object.entries(children).filter(([, m]) => !m?.hideSidebar)
+    const idx = entries.findIndex(([k]) => k === currentKey)
+    if (idx === -1) return {}
+    const at = (i: number) => {
+        const e = entries[i]
+        return e ? { key: e[0], title: e[1]?.title ?? e[0] } : undefined
+    }
+    return { prev: at(idx - 1), next: at(idx + 1) }
+}
+
+/**
+ * Children descriptions are markdown-flavored ("Follow the [Quickstart
+ * Guide](./01.quickstart.md)…"); cards want plain text, so unwrap links and
+ * strip inline markers.
+ */
+export function plainDocText(md: string): string {
+    return md
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, "$1")
+        .replace(/[`*_]/g, "")
+        .trim()
 }
 
 /** Versioned URL for a children key. "docs" -> /docs/{v}; "docs/x" -> /docs/{v}/x. */

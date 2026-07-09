@@ -3,8 +3,14 @@ import {
     buildDocTree,
     currentDocKey,
     docChildHref,
+    directDocChildren,
+    docLinkBaseDir,
     frontmatterField,
+    isRelativeDocHref,
     isVersionedAssetRef,
+    plainDocText,
+    prevNextDocs,
+    resolveVersionedDocLink,
     versionedAssetUrl,
     versionSelectOptions,
     NAV,
@@ -100,6 +106,16 @@ function badgeHtml(props: Record<string, unknown>): string {
     return `<div class="vd-badge"><span class="vd-badge-k">Available on:</span>${pills.join("")}</div>`
 }
 
+// Everything the serializer needs beyond the tree itself: version/apiUrl for
+// URL building and the children map for the data-driven components (ChildCard
+// grids, prev/next). pageKey is the children key of the page being rendered.
+interface RenderCtx {
+    version: string
+    apiUrl: string
+    children: DocChildren
+    pageKey: string
+}
+
 // Style the handful of known MDC components with our self-contained vd-* markup.
 // `inner` is always appended: MDC's "::" (no closing fence) is a *block*
 // component that swallows the following content as its body, so dropping
@@ -109,6 +125,7 @@ function componentHtml(
     tag: string,
     props: Record<string, unknown>,
     inner: string,
+    ctx: RenderCtx,
 ): string {
     switch (tag) {
         case "alert":
@@ -118,28 +135,89 @@ function componentHtml(
         case "badge":
             return badgeHtml(props) + inner
         case "home-page-buttons": {
-            const buttons = parseButtons(props[":buttons"] ?? props.buttons)
+            const buttons = parseButtons(props[":buttons"] ?? props.buttons).map(
+                (b) =>
+                    b.href.startsWith("/docs")
+                        ? { ...b, href: repointAbsoluteDocHref(b.href, ctx) }
+                        : b,
+            )
             return (buttons.length ? buttonRowHtml(buttons) : "") + inner
+        }
+        // The home hero component only contributes its section title here.
+        case "home-page-header":
+            return (
+                (props.title ? `<h2>${escapeHtml(String(props.title))}</h2>` : "") +
+                inner
+            )
+        // Inline live-count island; a static quantity beats a hole mid-sentence
+        // ("Thanks to  plugins…").
+        case "plugin-count":
+            return "hundreds of" + inner
+        // Static on the live site too — mirrored as a JS-less card row.
+        case "support-links":
+            return SUPPORT_LINKS_HTML + inner
+        // Card grids of a directory's pages, fed by the children map already on
+        // hand for the sidebar. Bare ChildCard lists the current page's own
+        // children; pageUrl (0.19 era) / directory (BigChildCards) target
+        // another node. Renders nothing when the data isn't there.
+        case "child-card":
+        case "big-child-cards": {
+            const target = props.pageUrl ?? props.directory
+            const key =
+                typeof target === "string"
+                    ? `docs/${target.replace(/^\/?docs\/?/, "").replace(/\/+$/, "")}`.replace(/\/$/, "")
+                    : ctx.pageKey
+            const title = props.title
+                ? `<h2>${escapeHtml(String(props.title))}</h2>`
+                : ""
+            return title + childCardsHtml(key, ctx) + inner
         }
         default:
             return inner
     }
 }
 
+/** The vd- card grid for a node's direct children (title, description, icon). */
+function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
+    const cards = directDocChildren(ctx.children, parentKey)
+    if (!cards.length) return ""
+    const items = cards
+        .map(({ key, meta }) => {
+            const icon =
+                meta.icon && isVersionedAssetRef(meta.icon)
+                    ? `<img class="vd-card-icon" src="${escapeHtml(
+                          versionedAssetUrl(ctx.apiUrl, ctx.version, meta.icon),
+                      )}" alt="" width="24" height="24" loading="lazy">`
+                    : ""
+            const desc = meta.description
+                ? `<p>${escapeHtml(plainDocText(meta.description))}</p>`
+                : ""
+            return `<a class="vd-card" href="${escapeHtml(
+                docChildHref(ctx.version, key),
+            )}">${icon}<h3>${escapeHtml(meta.title ?? key.split("/").pop() ?? key)}</h3>${desc}</a>`
+        })
+        .join("")
+    return `<div class="vd-cards">${items}</div>`
+}
+
+const SUPPORT_LINKS_HTML = `<div class="vd-support"><a href="https://kestra.io/slack"><h3>Community Slack</h3><p>Discuss topics with other users and kestra Team</p></a><a href="https://github.com/kestra-io/kestra"><h3>GitHub</h3><p>Give our open-source project a star</p></a><a href="https://kestra.io/demo"><h3>Help Center</h3><p>Contact support for help with your Enterprise account</p></a></div>`
+
 /** Walk the MDC tree, emitting JS-less HTML. */
-function serialize(node?: MdcNode): string {
+function serialize(node: MdcNode | undefined, ctx: RenderCtx): string {
     if (!node) return ""
     if (node.type === "text") return escapeHtml(node.value ?? "")
     if (node.type === "comment") return ""
     if (node.type === "element") {
         const tag = node.tag ?? ""
-        const inner = (node.children ?? []).map(serialize).join("")
+        const inner = (node.children ?? []).map((c) => serialize(c, ctx)).join("")
         if (!tag) return inner
-        if (!HTML_TAGS.has(tag)) return componentHtml(tag, node.props ?? {}, inner)
+        if (!HTML_TAGS.has(tag)) {
+            return componentHtml(tag, node.props ?? {}, inner, ctx)
+        }
         if (VOID_TAGS.has(tag)) return `<${tag}${attrs(node.props ?? {})}>`
         return `<${tag}${attrs(node.props ?? {})}>${inner}</${tag}>`
     }
-    return (node.children ?? []).map(serialize).join("")
+    return (node.children ?? []).map((c) => serialize(c, ctx)).join("")
 }
 
 // Media element attrs that hold an asset URL. `poster` is video-only (img has
@@ -153,27 +231,131 @@ const ASSET_ATTRS: Record<string, string[]> = {
     audio: ["src"],
 }
 
-// Pre-pass: re-point every asset reference at the versioned asset API, so a
-// versioned page references versioned resources (mirrors the in-app ProseImg +
-// doc store). Mutates the tree in place before serialize; only root-absolute
-// refs with a file extension are rewritten (see isVersionedAssetRef) — external
-// and relative refs are left alone.
-function rewriteAssetUrls(
-    node: MdcNode | undefined,
-    apiUrl: string,
-    version: string,
-): void {
+const HEADING_TAGS = new Set(["h1", "h2", "h3", "h4", "h5", "h6"])
+
+/** Concatenated text content of a node (for heading slugs). */
+function textOf(node: MdcNode): string {
+    if (node.type === "text") return node.value ?? ""
+    return (node.children ?? []).map(textOf).join("")
+}
+
+const slugify = (s: string): string =>
+    s
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/\s+/g, "-")
+
+interface TransformCtx {
+    apiUrl: string
+    version: string
+    /** directory of the page's own markdown, for relative link resolution */
+    baseDir: string
+    /** flat children map, to validate absolute /docs/... link targets */
+    children: DocChildren
+    /** per-render slug dedup (the parser's own slugger leaks across renders) */
+    slugCounts: Map<string, number>
+}
+
+/**
+ * Old markdown's absolute links ("/docs/getting-started/quickstart") point at
+ * the LATEST docs, silently ejecting the reader from the version they chose.
+ * Re-root them under /docs/{version} when the children map confirms the page
+ * exists in this version; otherwise (page since added, or the map failed to
+ * load) leave them on latest, which at least resolves.
+ */
+function repointAbsoluteDocHref(
+    href: string,
+    ctx: { version: string; children: DocChildren },
+): string {
+    const cut = href.search(/[?#]/)
+    const path = cut === -1 ? href : href.slice(0, cut)
+    const suffix = cut === -1 ? "" : href.slice(cut)
+    const rel = path.replace(/^\/docs\/?/, "").replace(/\/+$/, "")
+    if (/^\d+\.\d+(\/|$)/.test(rel)) return href // already versioned
+    if (!rel) return ctx.children.docs ? `/docs/${ctx.version}${suffix}` : href
+    if (!ctx.children[`docs/${rel}`]) return href
+    return `/docs/${ctx.version}/${rel}${suffix}`
+}
+
+// Pre-pass over the parsed tree, mutating in place before serialize:
+// - asset refs re-pointed at the versioned asset API (mirrors the in-app
+//   ProseImg + doc store); only root-absolute refs with a file extension (see
+//   isVersionedAssetRef) — external and protocol-relative refs are left alone
+// - relative in-content links resolved to versioned pretty URLs (the raw
+//   source-relative "NN.foo.md" hrefs are all dead routes)
+// - heading ids regenerated per render: the memoized parser's slugger state
+//   leaks across renders, minting "foo-2", "foo-3"… for the same heading
+// - fence language surfaced as data-lang for the CSS label
+function transformTree(node: MdcNode | undefined, ctx: TransformCtx): void {
     if (!node) return
     if (node.type === "element" && node.tag && node.props) {
         for (const attr of ASSET_ATTRS[node.tag] ?? []) {
             const v = node.props[attr]
             if (typeof v === "string" && isVersionedAssetRef(v)) {
-                node.props[attr] = versionedAssetUrl(apiUrl, version, v)
+                node.props[attr] = versionedAssetUrl(ctx.apiUrl, ctx.version, v)
             }
+        }
+        if (node.tag === "a") {
+            const href = node.props.href
+            if (typeof href === "string" && isRelativeDocHref(href)) {
+                node.props.href = resolveVersionedDocLink(
+                    ctx.version,
+                    ctx.baseDir,
+                    href,
+                )
+            } else if (
+                typeof href === "string" &&
+                (href === "/docs" || href.startsWith("/docs/") || href.startsWith("/docs#"))
+            ) {
+                node.props.href = repointAbsoluteDocHref(href, ctx)
+            }
+        }
+        if (HEADING_TAGS.has(node.tag)) {
+            const slug = slugify(textOf(node)) || "section"
+            const n = ctx.slugCounts.get(slug) ?? 0
+            ctx.slugCounts.set(slug, n + 1)
+            node.props.id = n ? `${slug}-${n}` : slug
+        }
+        if (node.tag === "pre" && typeof node.props.language === "string") {
+            node.props["data-lang"] = node.props.language
         }
     }
     for (const child of node.children ?? []) {
-        rewriteAssetUrls(child, apiUrl, version)
+        transformTree(child, ctx)
+    }
+}
+
+// Components whose HTML is (partly) built from attributes or page data, so
+// they render content even with no children — never trailing residue.
+const ATTR_DRIVEN_COMPONENTS = new Set([
+    "badge", "home-page-buttons", "home-page-header", "plugin-count",
+    "support-links", "child-card", "big-child-cards",
+])
+
+/**
+ * A trailing node that serializes to nothing visible: whitespace, comments, an
+ * <hr>, an empty spacer <div>, or a dropped bespoke component. Old homepages
+ * end with "---" + component blocks we don't render, leaving a dangling rule
+ * and spacer at the bottom of the page.
+ */
+function isTrailingResidue(node: MdcNode): boolean {
+    if (node.type === "text") return !(node.value ?? "").trim()
+    if (node.type === "comment") return true
+    if (node.type !== "element") return false
+    if (node.tag === "hr") return true
+    const empty = !(node.children ?? []).some((c) => !isTrailingResidue(c))
+    if (node.tag === "div") return empty
+    if (!HTML_TAGS.has(node.tag ?? "") && !ATTR_DRIVEN_COMPONENTS.has(node.tag ?? "")) {
+        return empty
+    }
+    return false
+}
+
+function trimTrailingResidue(body: MdcNode): void {
+    const kids = body.children ?? []
+    while (kids.length && isTrailingResidue(kids[kids.length - 1])) {
+        kids.pop()
     }
 }
 
@@ -318,11 +500,90 @@ function sidebarHtml(
 </aside>`
 }
 
+/** "Docs / Tutorial / Outputs" trail above the h1, titles from the children map. */
+function breadcrumbHtml(
+    version: string,
+    path: string,
+    children: DocChildren,
+): string {
+    if (!path || !children.docs) return ""
+    const segs = path.split("/")
+    const crumbs = [
+        `<a href="${escapeHtml(docChildHref(version, "docs"))}">Docs</a>`,
+    ]
+    let acc = "docs"
+    for (const seg of segs.slice(0, -1)) {
+        acc = `${acc}/${seg}`
+        const title = children[acc]?.title ?? seg
+        crumbs.push(
+            `<a href="${escapeHtml(docChildHref(version, acc))}">${escapeHtml(title)}</a>`,
+        )
+    }
+    const lastTitle =
+        children[`docs/${path}`]?.title ?? segs[segs.length - 1]
+    crumbs.push(`<span>${escapeHtml(lastTitle)}</span>`)
+    return `<nav class="vd-breadcrumb" aria-label="Breadcrumb">${crumbs.join(
+        '<span class="vd-bc-sep">/</span>',
+    )}</nav>`
+}
+
+/** Previous/Next footer cards from the children map's nav order. */
+function prevNextHtml(
+    version: string,
+    children: DocChildren,
+    pageKey: string,
+): string {
+    const { prev, next } = prevNextDocs(children, pageKey)
+    if (!prev && !next) return ""
+    const card = (
+        node: { key: string; title: string } | undefined,
+        label: string,
+        cls: string,
+    ) =>
+        node
+            ? `<a class="vd-pn ${cls}" href="${escapeHtml(
+                  docChildHref(version, node.key),
+              )}"><span class="vd-pn-k">${label}</span><span class="vd-pn-t">${escapeHtml(node.title)}</span></a>`
+            : "<span></span>"
+    return `<nav class="vd-pn-row" aria-label="Pagination">${card(prev, "Previous", "vd-pn-prev")}${card(next, "Next", "vd-pn-next")}</nav>`
+}
+
+/** h2/h3 entries for the right-rail TOC (ids already stabilized by the pre-pass). */
+function collectHeadings(
+    node: MdcNode,
+    out: { id: string; text: string; level: number }[],
+): void {
+    if (node.type === "element" && (node.tag === "h2" || node.tag === "h3")) {
+        const id = node.props?.id
+        if (typeof id === "string") {
+            out.push({
+                id,
+                text: textOf(node),
+                level: node.tag === "h2" ? 2 : 3,
+            })
+        }
+    }
+    for (const child of node.children ?? []) collectHeadings(child, out)
+}
+
+/** Right-rail "On this page" TOC; skipped when the page has < 2 headings. */
+function tocHtml(headings: { id: string; text: string; level: number }[]): string {
+    if (headings.length < 2) return ""
+    const items = headings
+        .map(
+            (h) =>
+                `<li${h.level === 3 ? ' class="vd-toc-sub"' : ""}><a href="#${escapeHtml(h.id)}">${escapeHtml(h.text)}</a></li>`,
+        )
+        .join("")
+    return `<aside class="vd-toc"><nav aria-label="On this page"><p class="vd-toc-title">On this page</p><ul>${items}</ul></nav></aside>`
+}
+
 const STYLES = `
 :root { color-scheme: light dark; }
 * { box-sizing: border-box; }
-body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    line-height: 1.7; color: #1c1e21; background: #fff; }
+body { margin: 0; font-family: "Mona Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5; color: #131316; background: #fff; }
+pre, code, kbd { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
 .vd-bar { display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
     padding: 0.75rem 1.5rem; border-bottom: 1px solid #e3e5e8; background: #fff;
     font-size: 0.9rem; }
@@ -389,23 +650,75 @@ body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, san
 .vd-tree-caret { font-size: 0.7em; opacity: 0.6; padding: 0 0.4rem; transition: transform 0.15s; }
 details[open] > .vd-tree-summary .vd-tree-caret { transform: rotate(90deg); }
 .vd-layout .vd-content { flex: 1 1 auto; min-width: 0; }
-.vd-content { max-width: 880px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-.vd-content h1 { font-size: 2.25rem; line-height: 1.2; margin: 0 0 1.5rem; }
-.vd-content h2 { margin-top: 2.5rem; border-bottom: 1px solid #e3e5e8; padding-bottom: 0.3rem; }
-.vd-content pre { background: #f5f5f7; padding: 1rem; border-radius: 0.5rem; overflow: auto; }
+.vd-content { max-width: 768px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+.vd-content h1 { font-size: 2.5rem; font-weight: 600; line-height: 1.2; margin: 0 0 1.5rem; }
+.vd-content h2 { font-size: 2.125rem; font-weight: 600; margin-top: 4rem; }
+.vd-content pre { background: #f5f5f7; padding: 1rem; border-radius: 0.5rem; overflow: auto;
+    font-size: 0.875rem; position: relative; }
+.vd-copy { position: absolute; top: 0.35rem; right: 0.5rem; font: inherit;
+    font-size: 0.7rem; padding: 0.15rem 0.5rem; border: 1px solid #c9ccd1;
+    border-radius: 0.25rem; background: #fff; color: #5c6370; cursor: pointer; }
+.vd-copy:hover { color: #7e3fef; border-color: #7e3fef; }
 .vd-content code { background: #f0eefe; padding: 0.1em 0.35em; border-radius: 0.25rem;
-    font-size: 0.9em; }
-.vd-content pre code { background: none; padding: 0; }
-.vd-content a { color: #7e3fef; }
+    font-size: 0.875rem; }
+.vd-content pre code { background: none; padding: 0; font-size: inherit; }
+.vd-content pre[data-lang] { position: relative; padding-top: 1.5rem; }
+/* single-colon :after — double-colon anywhere on the page trips the MDC-leak canary */
+.vd-content pre[data-lang]:after { content: attr(data-lang); position: absolute;
+    top: 0.5rem; right: 3.5rem; font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.05em; color: #9aa0a6; }
+.vd-content a { color: #631bff; text-decoration: none; }
+.vd-content a:hover { text-decoration: underline; }
 .vd-content img { max-width: 100%; height: auto; }
 .vd-content table { border-collapse: collapse; width: 100%; }
-.vd-content th, .vd-content td { border: 1px solid #e3e5e8; padding: 0.5rem 0.75rem; }
+.vd-content th, .vd-content td { border: 0; border-bottom: 1px solid #e3e5e8;
+    padding: 0.75rem 1rem; text-align: left; }
+.vd-content .vd-support { display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1rem; margin: 1.5rem 0 3rem; }
+.vd-content .vd-support a { border: 1px solid #e3e5e8; border-radius: 0.5rem;
+    padding: 1rem; color: inherit; }
+.vd-content .vd-support a:hover { border-color: #7e3fef; text-decoration: none; }
+.vd-content .vd-support h3 { margin: 0; font-size: 1.125rem; }
+.vd-content .vd-support p { color: #5c6370; margin: 0.5rem 0 0; font-size: 0.875rem;
+    line-height: 1.6; }
+.vd-content .vd-cards { display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1rem; margin: 1.5rem 0; }
+.vd-content .vd-card { border: 1px solid #e3e5e8; border-radius: 0.75rem;
+    padding: 1rem; color: inherit; }
+.vd-content .vd-card:hover { border-color: #7e3fef; text-decoration: none; }
+.vd-content .vd-card-icon { display: block; margin-bottom: 0.6rem; }
+.vd-content .vd-card h3 { margin: 0; font-size: 1.06rem; }
+.vd-content .vd-card p { color: #5c6370; margin: 0.4rem 0 0; font-size: 0.875rem;
+    line-height: 1.6; }
+.vd-breadcrumb { font-size: 0.85rem; margin-bottom: 1rem; color: #5c6370; }
+.vd-breadcrumb a { color: #5c6370; }
+.vd-bc-sep { margin: 0 0.4rem; opacity: 0.6; }
+.vd-pn-row { display: flex; justify-content: space-between; gap: 1rem;
+    margin-top: 3rem; border-top: 1px solid #e3e5e8; padding-top: 1.5rem; }
+.vd-content .vd-pn { display: flex; flex-direction: column; gap: 0.2rem;
+    border: 1px solid #e3e5e8; border-radius: 0.5rem; padding: 0.75rem 1rem;
+    color: inherit; max-width: 48%; }
+.vd-content .vd-pn:hover { border-color: #7e3fef; text-decoration: none; }
+.vd-pn-next { margin-left: auto; text-align: right; }
+.vd-pn-k { font-size: 0.75rem; color: #5c6370; }
+.vd-pn-t { font-weight: 600; }
+.vd-toc { flex: 0 0 14rem; width: 14rem; position: sticky; top: 0;
+    max-height: 100vh; overflow-y: auto; padding: 2.5rem 1rem; font-size: 0.85rem; }
+.vd-toc-title { margin: 0 0 0.5rem; font-weight: 700; font-size: 0.75rem;
+    text-transform: uppercase; letter-spacing: 0.05em; color: #9aa0a6; }
+.vd-toc ul { list-style: none; margin: 0; padding: 0; }
+.vd-toc li { margin: 0.3rem 0; }
+.vd-toc-sub { padding-left: 0.85rem; }
+.vd-toc a { color: #5c6370; text-decoration: none; }
+.vd-toc a:hover { color: #7e3fef; }
+@media (max-width: 1199px) { .vd-toc { display: none; } }
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; margin: 1.5rem 0; }
 .video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .vd-alert { margin: 1.5rem 0; padding: 0.75rem 1rem; border-left: 4px solid #7e3fef;
     border-radius: 0.25rem; background: #f6f3ff; }
 .vd-alert > :first-child { margin-top: 0; }
 .vd-alert > :last-child { margin-bottom: 0; }
+.vd-alert-info { border-left-color: #4d62e5; background: #dbe0ff; color: #0542b6; }
 .vd-alert-warning { border-left-color: #e8a33d; background: #fdf6ec; }
 .vd-alert-danger { border-left-color: #e5484d; background: #fdecec; }
 .vd-alert-success { border-left-color: #46a758; background: #ecf6ee; }
@@ -433,7 +746,12 @@ details[open] > .vd-tree-summary .vd-tree-caret { transform: rotate(90deg); }
     .vd-dropdown-cols { flex-direction: column; gap: 0.75rem; }
     .vd-cta { text-align: center; }
     .vd-bar label { margin-left: auto; }
-    .vd-layout { flex-direction: column; }
+    /* stretch, not flex-start — and no auto margins: cross-axis auto margins
+       defeat stretch, shrink-to-fitting the content column to its widest <pre> */
+    .vd-layout { flex-direction: column; align-items: stretch; }
+    .vd-layout .vd-content { margin: 0; }
+    .vd-content .vd-support { grid-template-columns: 1fr; }
+    .vd-content .vd-cards { grid-template-columns: 1fr; }
     .vd-sidebar { position: static; flex: none; width: 100%; max-height: none; overflow: visible;
         border-right: 0; border-bottom: 1px solid #e3e5e8; padding: 0.5rem 1rem; }
     .vd-sidebar-toggle { display: block; width: 100%; text-align: left; font: inherit;
@@ -455,10 +773,26 @@ details[open] > .vd-tree-summary .vd-tree-caret { transform: rotate(90deg); }
     .vd-cta-secondary { background: #2b2e36; }
     .vd-cta-secondary:hover { background: #3a3e48; }
     .vd-bar select { background: #16181d; border-color: #2b2e36; }
-    .vd-content h2 { border-color: #2b2e36; }
+    .vd-content a { color: #cdc5ff; }
     .vd-content pre { background: #1c1e24; }
     .vd-content code { background: #2b2540; }
     .vd-content th, .vd-content td { border-color: #2b2e36; }
+    .vd-content .vd-support a { border-color: #2b2e36; }
+    .vd-content .vd-support a:hover { border-color: #7e3fef; }
+    .vd-content .vd-support p { color: #9aa0a6; }
+    .vd-content .vd-card { border-color: #2b2e36; }
+    .vd-content .vd-card:hover { border-color: #7e3fef; }
+    .vd-content .vd-card p { color: #9aa0a6; }
+    .vd-breadcrumb, .vd-breadcrumb a { color: #9aa0a6; }
+    .vd-pn-row { border-color: #2b2e36; }
+    .vd-content .vd-pn { border-color: #2b2e36; }
+    .vd-content .vd-pn:hover { border-color: #7e3fef; }
+    .vd-pn-k { color: #9aa0a6; }
+    .vd-toc a { color: #9aa0a6; }
+    .vd-toc a:hover { color: #b9a8ff; }
+    .vd-copy { background: #1c1e24; border-color: #2b2e36; color: #9aa0a6; }
+    .vd-copy:hover { color: #b9a8ff; border-color: #b9a8ff; }
+    .vd-alert-info { background: #1a2040; color: #aab8ff; }
     .vd-content .vd-button-secondary { background: #1c1c20; color: #fff; border-color: #fff; }
     .vd-content .vd-button-secondary:hover { background: #fff; color: #131316; }
     .vd-alert { background: #201c30; }
@@ -506,6 +840,16 @@ var a=sb.querySelector('.vd-tree-active');
 if(a&&sb.scrollHeight>sb.clientHeight){var r=a.getBoundingClientRect(),sr=sb.getBoundingClientRect();sb.scrollTop+=(r.top-sr.top)-sb.clientHeight/2+a.offsetHeight/2;}
 })();`
 
+// Copy buttons are injected at runtime (needs the clipboard API anyway), so the
+// serialized HTML stays plain and clipboard-less contexts get no dead button.
+const COPY_SCRIPT = `(function(){
+if(!navigator.clipboard)return;
+document.querySelectorAll('.vd-content pre').forEach(function(p){
+var b=document.createElement('button');b.type='button';b.className='vd-copy';b.textContent='Copy';
+b.addEventListener('click',function(){var c=p.querySelector('code');navigator.clipboard.writeText(c?c.innerText:p.innerText).then(function(){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy';},1500);});});
+p.appendChild(b);});
+})();`
+
 export interface VersionedDocInput {
     version: string
     /** path after the version, no leading slash, e.g. "tutorial/inputs" */
@@ -536,22 +880,38 @@ export async function renderVersionedDocHtml({
     // ":::" dialects, plus `:prop='json'` props) into a hast-like tree we
     // serialize ourselves — no Vue runtime, no "::"/component-name leak.
     const { body } = await parse(markdown)
-    rewriteAssetUrls(body as MdcNode, apiUrl, version)
-    const bodyHtml = serialize(body as MdcNode)
+    transformTree(body as MdcNode, {
+        apiUrl,
+        version,
+        baseDir: docLinkBaseDir(path, children),
+        children,
+        slugCounts: new Map(),
+    })
+    trimTrailingResidue(body as MdcNode)
+    const pageKey = currentDocKey(path)
+    const ctx: RenderCtx = { version, apiUrl, children, pageKey }
+    const bodyHtml = serialize(body as MdcNode, ctx)
+    const headings: { id: string; text: string; level: number }[] = []
+    collectHeadings(body as MdcNode, headings)
 
     const sidebar = sidebarHtml(version, children, path)
+    const toc = tocHtml(headings)
     const article = `<main class="vd-content">
-<h1>${escapeHtml(h1)}</h1>
+${breadcrumbHtml(version, path, children)}<h1>${escapeHtml(h1)}</h1>
 ${bodyHtml}
+${prevNextHtml(version, children, pageKey)}
 </main>`
-    // With a sidebar, lay it out beside the content; without one (children empty
-    // or the endpoint failed) keep the single centred content column.
-    const main = sidebar
-        ? `<div class="vd-layout">
+    // With a sidebar or TOC, lay them out beside the content; without either
+    // (children empty or the endpoint failed, few headings) keep the single
+    // centred content column.
+    const main =
+        sidebar || toc
+            ? `<div class="vd-layout">
 ${sidebar}
 ${article}
+${toc}
 </div>`
-        : article
+            : article
 
     return `<!doctype html>
 <html lang="en">
@@ -561,6 +921,9 @@ ${article}
 <title>${escapeHtml(title)} | Kestra ${escapeHtml(version)} docs</title>
 ${description ? `<meta name="description" content="${escapeHtml(description)}">` : ""}
 <meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>${STYLES}</style>
 </head>
 <body>
@@ -584,7 +947,7 @@ ${versionOptions(versions, version, path)}
 <button type="button" class="vd-burger" aria-label="Toggle navigation" aria-controls="vd-drawer" aria-expanded="false"><span></span><span></span><span></span></button>
 </header>
 ${main}
-<script>${NAV_SCRIPT}${SIDEBAR_SCRIPT}</script>
+<script>${NAV_SCRIPT}${SIDEBAR_SCRIPT}${COPY_SCRIPT}</script>
 </body>
 </html>`
 }

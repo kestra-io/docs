@@ -6,8 +6,14 @@ import {
     currentDocKey,
     docChildHref,
     docVersions,
+    directDocChildren,
+    docLinkBaseDir,
     frontmatterField,
+    plainDocText,
+    prevNextDocs,
+    isRelativeDocHref,
     isVersionedAssetRef,
+    resolveVersionedDocLink,
     versionedAssetUrl,
     parseHomePageButtons,
     stripFrontmatter,
@@ -98,6 +104,76 @@ describe("versionedAssetUrl", () => {
     it("keeps a single 'docs' for a bare-root asset", () => {
         expect(versionedAssetUrl(api, "0.19", "/autocompletion.gif")).toBe(
             "https://api.kestra.io/v1/docs/autocompletion.gif/versions/0.19.0",
+        )
+    })
+})
+
+describe("isRelativeDocHref", () => {
+    it("matches source-relative doc links", () => {
+        expect(isRelativeDocHref("./01.fundamentals.md")).toBe(true)
+        expect(isRelativeDocHref("../07.architecture/09.internal-storage.md")).toBe(true)
+        expect(isRelativeDocHref("plugins/plugin-script-python/foo.md")).toBe(true)
+    })
+
+    it("leaves absolute, anchor and scheme'd hrefs alone", () => {
+        expect(isRelativeDocHref("/docs/getting-started/quickstart")).toBe(false)
+        expect(isRelativeDocHref("#start-kestra")).toBe(false)
+        expect(isRelativeDocHref("https://kestra.io")).toBe(false)
+        expect(isRelativeDocHref("mailto:hello@kestra.io")).toBe(false)
+        expect(isRelativeDocHref("")).toBe(false)
+    })
+})
+
+describe("docLinkBaseDir", () => {
+    const children: DocChildren = {
+        docs: { title: "Docs" },
+        "docs/tutorial": { title: "Tutorial" },
+        "docs/tutorial/fundamentals": { title: "Fundamentals" },
+    }
+
+    it("is the page itself for a directory index (has children)", () => {
+        expect(docLinkBaseDir("tutorial", children)).toBe("tutorial")
+    })
+
+    it("is the parent for a leaf page", () => {
+        expect(docLinkBaseDir("tutorial/fundamentals", children)).toBe("tutorial")
+        expect(docLinkBaseDir("why-kestra", children)).toBe("")
+    })
+
+    it("is the root for the version home", () => {
+        expect(docLinkBaseDir("", children)).toBe("")
+    })
+})
+
+describe("resolveVersionedDocLink", () => {
+    it("strips ordering prefixes and .md, resolving against the base dir", () => {
+        expect(
+            resolveVersionedDocLink("1.0", "tutorial", "../07.architecture/09.internal-storage.md"),
+        ).toBe("/docs/1.0/architecture/internal-storage")
+        expect(resolveVersionedDocLink("1.0", "tutorial", "./01.fundamentals.md")).toBe(
+            "/docs/1.0/tutorial/fundamentals",
+        )
+    })
+
+    it("resolves version-home links without dropping the version segment", () => {
+        expect(
+            resolveVersionedDocLink("0.19", "", "./01.getting-started/01.quickstart.md"),
+        ).toBe("/docs/0.19/getting-started/quickstart")
+    })
+
+    it("drops index segments and keeps the anchor", () => {
+        expect(
+            resolveVersionedDocLink("1.0", "tutorial", "../expressions/index.md#syntax"),
+        ).toBe("/docs/1.0/expressions#syntax")
+    })
+
+    it("clamps .. at the docs root", () => {
+        expect(resolveVersionedDocLink("1.0", "", "../../foo.md")).toBe("/docs/1.0/foo")
+    })
+
+    it("maps a link to a directory index onto the version home", () => {
+        expect(resolveVersionedDocLink("1.0", "getting-started", "../index.md")).toBe(
+            "/docs/1.0",
         )
     })
 })
@@ -346,6 +422,65 @@ describe("buildDocTree", () => {
 
     it("returns [] for an empty map", () => {
         expect(buildDocTree({})).toEqual([])
+    })
+})
+
+describe("directDocChildren", () => {
+    const children: DocChildren = {
+        docs: { title: "Docs" },
+        "docs/a": { title: "A" },
+        "docs/a/one": { title: "One" },
+        "docs/a/two": { title: "Two", hideSidebar: true },
+        "docs/a/one/deep": { title: "Deep" },
+        "docs/b": { title: "B" },
+    }
+
+    it("lists only one-segment-deeper children in map order", () => {
+        expect(directDocChildren(children, "docs/a").map((c) => c.key)).toEqual([
+            "docs/a/one",
+        ])
+        expect(directDocChildren(children, "docs").map((c) => c.key)).toEqual([
+            "docs/a",
+            "docs/b",
+        ])
+    })
+
+    it("returns empty for a leaf or unknown key", () => {
+        expect(directDocChildren(children, "docs/b")).toEqual([])
+        expect(directDocChildren(children, "docs/nope")).toEqual([])
+    })
+})
+
+describe("prevNextDocs", () => {
+    const children: DocChildren = {
+        docs: { title: "Docs" },
+        "docs/a": { title: "A" },
+        "docs/hidden": { title: "H", hideSidebar: true },
+        "docs/b": { title: "B" },
+    }
+
+    it("returns nav-order neighbours, skipping hidden pages", () => {
+        const { prev, next } = prevNextDocs(children, "docs/a")
+        expect(prev?.key).toBe("docs")
+        expect(next?.key).toBe("docs/b")
+        expect(next?.title).toBe("B")
+    })
+
+    it("omits prev at the start and next at the end", () => {
+        expect(prevNextDocs(children, "docs").prev).toBeUndefined()
+        expect(prevNextDocs(children, "docs/b").next).toBeUndefined()
+    })
+
+    it("returns nothing for an unknown page", () => {
+        expect(prevNextDocs(children, "docs/nope")).toEqual({})
+    })
+})
+
+describe("plainDocText", () => {
+    it("unwraps markdown links and strips inline markers", () => {
+        expect(
+            plainDocText("Follow the [Quickstart Guide](./01.quickstart.md) to install `kestra` **now**."),
+        ).toBe("Follow the Quickstart Guide to install kestra now.")
     })
 })
 
