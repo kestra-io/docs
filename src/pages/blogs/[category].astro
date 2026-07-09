@@ -9,6 +9,7 @@ import Layout from "~/components/layout.astro"
 import Subscribe from "~/components/layout/Subscribe.vue"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
 import { allBlogCategories } from "~/components/blogs/categories"
+import { blogPlaceholderUrl } from "~/utils/blogPlaceholderUrl"
 
 export const getStaticPaths = (() => {
     return Array.from(allBlogCategories.keys()).map((category) => ({
@@ -29,16 +30,20 @@ const sortedBlogs = await Promise.all(
             )
         })
         .map(async (blog) => {
-            const image = await getImage({
-                src: blog.data.image ?? "",
-                format: "webp",
-                width: 800,
-            })
+            const image = blog.data.image
+                ? (
+                      await getImage({
+                          src: blog.data.image,
+                          format: "webp",
+                          width: 800,
+                      })
+                  ).src
+                : blogPlaceholderUrl(blog.id)
             return {
                 ...blog,
                 data: {
                     ...blog.data,
-                    image: image.src,
+                    image,
                 },
             }
         }),
