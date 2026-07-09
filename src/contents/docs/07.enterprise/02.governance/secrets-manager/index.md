@@ -390,6 +390,31 @@ Pass `full=true` to retrieve all fields at once as a structured object. The `val
 
 The keys available under `creds.metadata` depend on the fields defined in your Delinea secret template. The `notes` field is always excluded.
 
+## Bitwarden Configuration
+
+Kestra integrates with [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) as an external secrets backend. Secrets stay end-to-end encrypted in Bitwarden and are decrypted client-side by Kestra workers at runtime, which keep them only in memory. No Bitwarden CLI or native SDK is required.
+
+To use Bitwarden, create a machine account with an access token and grant it access to the project holding your secrets. Then add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
+
+```yaml
+kestra:
+  secret:
+    type: bitwarden
+    bitwarden:
+      accessToken: YOUR_ACCESS_TOKEN
+      organizationId: YOUR_ORGANIZATION_ID
+      apiUrl: https://api.bitwarden.com
+      identityUrl: https://identity.bitwarden.com
+```
+
+**Configuration properties:**
+
+* **accessToken**: Machine account access token used to authenticate with Bitwarden and to decrypt secrets client-side.
+* **organizationId**: The Bitwarden organization the machine account belongs to.
+* **apiUrl**: Bitwarden API URL. Defaults to the US cloud (`https://api.bitwarden.com`). Use `https://api.bitwarden.eu` for EU cloud, or your instance URL for self-hosted.
+* **identityUrl**: Bitwarden identity URL. Defaults to `https://identity.bitwarden.com`. Use `https://identity.bitwarden.eu` for EU cloud, or your instance URL for self-hosted.
+* **projectId**: Optional. Restrict resolution to a single Bitwarden project.
+
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 
 Kestra also supports internal secret backend. For the JDBC backend (H2, PostgreSQL, or MySQL), the following configuration allows you to set secret backend:
