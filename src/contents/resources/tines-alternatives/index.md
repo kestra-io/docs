@@ -18,7 +18,6 @@ faq:
   - question: "When should I consider a SOAR platform?"
     answer: "You should consider a SOAR platform if your security team is overwhelmed by manual tasks, requires faster incident response, or needs to integrate and automate actions across a diverse set of security tools. SOAR helps standardize processes, reduce human error, and improve the overall efficiency of your security operations."
 ---
-```
 As security operations grow in complexity, the need for robust automation platforms becomes critical. Tines has emerged as a prominent no-code solution, helping security teams automate repetitive tasks and orchestrate incident response. However, as organizations seek to unify security workflows with broader IT, data, and AI automation initiatives, many are exploring alternatives that offer greater flexibility, a more code-centric approach, or a wider scope of orchestration capabilities.
 
 This article dives into the top Tines alternatives for 2026, including Kestra, n8n, Torq, Tracecat, and other dedicated SOAR platforms. We'll evaluate each based on their strengths, limitations, and ideal use cases, providing a framework to help you choose the right platform to enhance your security orchestration and IT automation strategy.

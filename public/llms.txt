@@ -6,7 +6,7 @@
 
 ## Tools & Capability Discovery
 
-- [MCP Server Config](https://kestra.io/.well-known/mcp): Use this to connect an agent to Kestra's orchestration tools.
+- [MCP Server Config](https://kestra.io/.well-known/mcp.json): Use this to connect an agent to Kestra's orchestration tools.
 
 ## Core model
 

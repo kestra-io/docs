@@ -41,12 +41,12 @@ Local storage behavior differs between standalone and distributed deployments:
 - ✅ **Distributed with ReadWriteMany**: OK for distributed services (rarely available)
 - ❌ **Host storage sharing**: NOT recommended — difficult to achieve reliably
 
-When `ReadWriteMany` is unavailable, use cloud storage (S3, GCS, Azure) or distributed object storage (MinIO, Ceph, SeaweedFS, Garage).
+When `ReadWriteMany` is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
 :::
 
 Scalable alternatives are available as plugins:
 
-- [Storage MinIO](https://github.com/kestra-io/storage-minio) — supports [MinIO](https://min.io/), [AWS S3](https://aws.amazon.com/s3/), and other S3-compatible systems.
+- [Storage MinIO](https://github.com/kestra-io/storage-minio) — for [AWS S3](https://aws.amazon.com/s3/) and any S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) — for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) — for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 

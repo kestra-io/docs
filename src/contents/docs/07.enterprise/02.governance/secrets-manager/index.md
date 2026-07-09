@@ -281,13 +281,14 @@ Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. 
 To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
-secret:
-  type: doppler
-  doppler:
-    token: YOUR_TOKEN
-    config: kestra_unit_test
-    project: kestra_unit_test
-    secretNamePrefix: kestra
+kestra:
+  secret:
+    type: doppler
+    doppler:
+      token: YOUR_TOKEN
+      project: my-project
+      config: production
+      secret-name-prefix: kestra   # optional
 ```
 
 **Configuration properties:**
@@ -295,7 +296,9 @@ secret:
 * **token**: Your Doppler service token.
 * **project**: The Doppler project containing the secrets.
 * **config**: The Doppler config/environment to read from.
-* **secretNamePrefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+* **secret-name-prefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+* **connect-timeout**: Optional. HTTP connection timeout when calling the Doppler API. Defaults to `PT15S` (15 seconds).
+* **read-timeout**: Optional. HTTP read timeout when calling the Doppler API. Defaults to `PT60S` (60 seconds).
 
 ## 1Password Configuration
 
@@ -365,6 +368,27 @@ kestra:
   - **domain**: Optional. Active Directory domain for on-premise deployments using domain accounts.
   - **folderId**: The folder ID in Delinea Secret Server where Kestra secrets are stored. Required for write operations.
   - **secretTemplateId**: The secret template ID used when creating new secrets. Required for write operations.
+
+### Reading multi-field Delinea secrets
+
+Delinea secrets store structured credentials — for example, an Active Directory secret template typically holds a password, username, and domain as separate fields. Kestra exposes these through the `secret()` expression function.
+
+By default, `secret()` returns only the password field:
+
+```twig
+{{ secret('AD_CREDS') }}
+```
+
+Pass `full=true` to retrieve all fields at once as a structured object. The `value` key holds the password; `metadata` holds all other non-password, non-notes template fields keyed by their Delinea item slug:
+
+```twig
+{% set creds = secret('AD_CREDS', full=true) %}
+{{ creds.value }}            {# password #}
+{{ creds.metadata.username }}
+{{ creds.metadata.domain }}
+```
+
+The keys available under `creds.metadata` depend on the fields defined in your Delinea secret template. The `notes` field is always excluded.
 
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 

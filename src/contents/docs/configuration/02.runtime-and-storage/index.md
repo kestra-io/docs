@@ -387,9 +387,9 @@ Object metadata is stored in `.meta` sidecar files alongside each object on the 
 
 If you prefer to keep the S3 SDK path (for example, because not every host has the NFS mount), use the standard `s3` backend with `s3-files-compatible: true` instead.
 
-### MinIO
+### S3-compatible storage (MinIO, Ceph, SeaweedFS, Garage)
 
-MinIO is a good self-hosted choice when you want object storage behavior without depending on a cloud provider:
+Use `type: minio` for any S3-compatible object storage endpoint — including self-hosted options like MinIO, Ceph, SeaweedFS, and Garage:
 
 ```yaml
 kestra:
@@ -430,7 +430,7 @@ kestra:
 
 ### Outscale Object Storage
 
-Outscale uses the MinIO-compatible backend type. The endpoint and TLS requirement are the only differences:
+Outscale uses the S3-compatible backend type (`type: minio`). The main thing that changes is the endpoint and the requirement to keep TLS enabled:
 
 ```yaml
 kestra:
