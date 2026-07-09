@@ -184,7 +184,7 @@ new InsertOneModel<>(new Document(values));
 
 The Map was already sitting in memory. The JSON string was built and immediately thrown away on every single document. It turns out `org.bson.Document` is both a Map and a Bson, so the driver takes it directly and the whole string step just disappears.
 
-![MongoDB double serialization concept](./mongodb-concept.svg)
+![MongoDB double serialization concept](./mongodb-concept.png)
 
 AverageTime mode, allocation from the gc profiler.
 
