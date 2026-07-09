@@ -364,6 +364,97 @@ try {
 ```
 :::
 
+## Rendering Pebble expressions
+
+Task configuration is authored with [Pebble expressions](../../expressions/index.mdx): a `sql` property might be `SELECT * FROM {{ vars.dataset }}.users`, a `projectId` might be `{{ inputs.project }}`. The raw `task` config your component receives (from props or a `flow` fetch) still holds these **unrendered** templates. Showing `{{ vars.dataset }}` in a details panel is rarely what a user wants — they want the resolved value.
+
+The `@kestra-io/kestra-sdk/expressions` subpath exposes `renderExpressions`, a wrapper over the `POST /expressions/render` backend endpoint. It takes a list of expression strings and returns a `{ rendered }` map keyed by the **original** string, so you can look each value back up after resolution.
+
+This is the approach used by the BigQuery plugin's topology component ([plugin-gcp#658](https://github.com/kestra-io/plugin-gcp/pull/658)), which resolves `projectId`, `location`, and `sql` for display.
+
+### Usage
+
+```ts
+import { ref, computed, watch } from "vue";
+import { renderExpressions } from "@kestra-io/kestra-sdk/expressions";
+
+// Raw config values — these may contain {{ … }} templates
+const projectId = computed(() => props.task?.projectId as string | undefined);
+const location  = computed(() => props.task?.location  as string | undefined);
+const sql       = computed(() => props.task?.sql       as string | undefined);
+
+const executionId = computed(() => props.execution?.id as string | undefined);
+
+// A value that still looks like a URL template ("{namespace}") isn't a usable context value.
+const resolved = (v?: string) => (v && !v.startsWith("{") ? v : undefined);
+
+// Only strings that actually contain a Pebble expression are worth a round-trip.
+const EXPRESSION_RE = /\{\{.*?}}/;
+const rendered = ref<Record<string, string>>({});
+
+async function loadRenderedExpressions() {
+  const values = [projectId.value, location.value, sql.value].filter(
+    (v): v is string => typeof v === "string" && EXPRESSION_RE.test(v),
+  );
+  if (!values.length) {
+    rendered.value = {};
+    return;
+  }
+  try {
+    const { rendered: result } = await renderExpressions(
+      {
+        expressions: values,
+        tenant: window.localStorage.getItem("selectedTenant") ?? undefined,
+        executionId: executionId.value,
+        namespace: resolved(props.namespace),
+        flowId: resolved(props.flowId),
+      },
+      {
+        // Best-effort display call: keep failures off the host's global error UI.
+        validateStatus: (s: number) => s === 200 || s === 404,
+        showMessageOnError: false,
+      },
+    );
+    rendered.value = result ?? {};
+  } catch {
+    // Drop rendered values so display() falls back to the raw template.
+    rendered.value = {};
+  }
+}
+
+watch(
+  [projectId, location, sql, executionId, () => props.namespace, () => props.flowId],
+  loadRenderedExpressions,
+  { immediate: true },
+);
+
+// Returns the rendered value, falling back to the raw template.
+const display = (value?: string) =>
+  value === undefined ? undefined : (rendered.value[value] ?? value);
+```
+
+In the template, render `display(projectId)` instead of `projectId` — a resolvable expression shows its value, and everything else shows the original string unchanged.
+
+### Resolution context
+
+The context you pass determines what the expressions can resolve against, in order of specificity:
+
+- **`executionId`** — resolves against a specific execution (its inputs, outputs, and trigger data). Available post-execution.
+- **`namespace` + `flowId`** — resolves against the flow's scope (namespace variables, flow-level values). Available pre-execution, in the flow editor.
+- **globals** — namespace and global-level values are the fallback when neither execution nor flow context is supplied.
+
+Guard `namespace` and `flowId` with the `startsWith("{")` check described in [`topology-details`](#topology-details): during some render phases they arrive as unresolved URL templates (`"{namespace}"`), which are not valid context.
+
+:::alert{type="warning"}
+**Rendering is display-only and best-effort.** The backend uses a *restricted* display engine: functions with side effects or external lookups (`env()`, `kv()`, `secret()`), and references to variables that don't exist in the given context, are returned **unchanged** rather than resolved. Never rely on `renderExpressions` for anything but display — the raw template is always the source of truth, and your `display()` helper must fall back to it on any failure.
+:::
+
+:::alert{type="info"}
+**Pass `tenant` explicitly on EE.** A plugin artifact bundles its own copy of `@kestra-io/kestra-sdk`, whose global tenant stays at the `"main"` default and is *not* updated by the host's `setSelectedTenant`. Read the active tenant from where the host persists it — `window.localStorage.getItem("selectedTenant")` — so requests hit the right tenant on a non-`main` Enterprise Edition instance. On single-tenant OSS, `"main"` is already correct and the value can be omitted.
+
+This differs from other SDK calls (executions, metrics, flows), where tenant *is* injected automatically — the `/expressions/render` wrapper takes it as an explicit field.
+:::
+
 ## Configuring the exposed components
 
 The `vite.config.ts` file declares which components are exposed and under which task types:
