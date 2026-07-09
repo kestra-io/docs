@@ -241,7 +241,7 @@ tasks:
       print("Running from a private registry image")
 ```
 
-## Specifying resource requests
+## Resource requests
 
 Use the `resources` property to set CPU and memory requests and limits on the main task container. Both `cpu` and `memory` accept static values or Pebble expressions, so you can drive them from flow inputs at runtime.
 
@@ -534,7 +534,7 @@ taskRunner:
 | `output` | — | A Pebble expression evaluated against the task's output map to extract the token string. |
 | `cache` | `PT5M` | How long the fetched token is reused before the provider runs the task again. Set to `PT0S` to disable caching. |
 
-## Using plugin defaults to avoid repetition
+## Plugin defaults
 
 You can use `pluginDefaults` to avoid repeating configuration across multiple tasks. For example, you can set the `pullPolicy` to `ALWAYS` for all tasks in a namespace:
 
@@ -654,6 +654,34 @@ Update the following arguments with your own values:
 - `clusterProjectId`: the ID of your Google Cloud project.
 
 After running the command, access your config with `kubectl config view --minify --flatten` to replace `caCertData`, `masterUrl`, and `username`.
+
+## Execution details
+
+When you open an execution in the topology view, each Kubernetes task runner task shows a visual step tracker that displays progress through the pod lifecycle in real time. Each step shows its status and elapsed duration as it completes.
+
+| Step | Completes when |
+|---|---|
+| `pod.created` | Always |
+| `pod.scheduled` | Always |
+| `files.uploaded` | `inputFiles` or `namespaceFiles` are set |
+| `task.running` | Always |
+| `files.retrieved` | `outputFiles` or `outputDir` are set |
+| `pod.deleted` | Always |
+
+All six steps are always shown in the tracker; steps that do not apply (no input or output files configured) remain in a waiting state. A long `files.uploaded` step suggests large or numerous input files; a long `files.retrieved` step suggests large outputs.
+
+**Show Details modal — Configuration:**
+- Namespace
+- Pull policy (when set)
+- Service account name (when set)
+- CPU and memory requests and limits (when set)
+- Node selector labels (when set)
+
+**Show Details modal — Pod details (post-execution):**
+- Pod name and node it ran on — useful for `kubectl logs` and `kubectl exec` debugging
+- Pod phase badge (Succeeded / Failed)
+- Scheduling wait — time between pod creation and the pod entering `Running` state; a long value indicates cluster pressure, a slow image pull, or insufficient node capacity
+- Per-container exit codes
 
 ### Amazon Elastic Kubernetes Service (EKS)
 

@@ -272,3 +272,32 @@ You can also confirm job creation directly in the Google Cloud Console:
 After the task completes, the runner automatically shuts down. You can review output artifacts in Kestra's **Outputs** tab:
 
 ![outputs](./outputs.png)
+
+## Execution details
+
+When you open an execution in the topology view, the topology node for a Google Batch task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+
+**Topology node:**
+
+| Field | Description |
+|---|---|
+| Runner | Task runner type |
+| Region | GCP region where the job runs |
+| Project | GCP project ID |
+| Job name | GCP Batch job resource name |
+| Duration | Elapsed or total execution time |
+
+**Show Details modal:**
+
+*Configuration:*
+- Project ID and region
+- Service account
+- Staging GCS bucket
+- Whether the job deletes on completion (`delete` flag)
+- Whether an existing job will be resumed on Worker restart (`resume` flag)
+- Configured timeout
+
+*Post-execution:*
+- Job name — GCP resource identifier for the Batch job
+- Resumed or new — whether the job reused an existing run or was freshly created
+- Deletion triggered — whether the job was deleted after completion

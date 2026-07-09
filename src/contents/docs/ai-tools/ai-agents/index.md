@@ -27,7 +27,7 @@ To start using this feature, you can add an [**AI Agent**](/plugins/plugin-ai/ag
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/KL8TVCdgVc4nS5OTS6VS?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Agent 3 | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-To demonstrate, below is a flow that summarizes arbitrary text with controllable length and language. Each component of the flow is broken down.
+The following flow summarizes arbitrary text with controllable length and language. Each component of the flow is broken down below.
 
 ```yaml
 id: simple_summarizer_agent
@@ -98,23 +98,23 @@ pluginDefaults:
 
 ### Inputs
 
-The goal of the AI Agent is to summarize text. The flow uses three inputs -- `summary_length`, `language`, and `text` -- to control the length, language, and source text for the summary.
+The flow uses three inputs — `summary_length`, `language`, and `text` — to control the summary length, language, and source text.
 
-All inputs have a default value, and more or less can be used and referenced in downstream agentic tasks depending on the use case with [expressions](../../expressions/index.mdx). When executing the flow, all the inputs can be selected or modified from the defaults.
+All inputs have a default value. Any of them can be referenced in downstream tasks with [expressions](../../expressions/index.mdx). When executing the flow, any input can be selected or modified from its default.
 
 ![AI Agent Flow Inputs](./ai-agent-inputs.png)
 
-Continuing below for reference, we select `short` for the summary length and German (`de`) for the summary language.
+The example selects `short` for the summary length and German (`de`) for the summary language.
 
 ### Tasks
 
-In the flow, there are two tasks using the [AI Agent plugin](/plugins/plugin-ai/agent): `multilingual_agent` and `english_brevity`. The first task, `multilingual_agent`, includes the `systemMessage` property which dictates the system message to the LLM provider. The system message references the input selections for the desired summary length and in what language to generate the summary in. It also defines what should be outputted when the input is short, medium, or long.
+The flow has two tasks using the [AI Agent plugin](/plugins/plugin-ai/agent): `multilingual_agent` and `english_brevity`. The first task, `multilingual_agent`, uses the `systemMessage` property to set the agent's role and behavior. The system message references the input selections for summary length and language, and defines what to output for each length option.
 
-Now that the AI Agent is familiar with its role, the `prompt` property tells it what to do, which is to summarize the inputted text. Taking a look at the output for a short summary, the `multilingual_agent` task does provide a 1–2 sentence summary of Kestra in German.
+The `prompt` property instructs the agent to summarize the input text. For a short summary, `multilingual_agent` produces a 1–2 sentence German summary of Kestra.
 
 ![AI Agent Initial Summary](./ai-agent-summary.png)
 
-Following `multilingual_agent` is the `english_brevity` task, which only needs a `prompt` because the `systemMessage` moves downstream in the flow. Whether a shorter English translation is needed, or the original outputted summary is in a different language, the `english_brevity` task provides a different output to match the need. In the execution context, the output is abbreviated and limited to exactly one sentence per the prompt.
+The `english_brevity` task only needs a `prompt` because the `systemMessage` is inherited from plugin defaults. Whether the original output is in a different language or needs shortening, `english_brevity` produces a one-sentence English summary.
 
 ![AI Agent Abbreviated Summary](./ai-agent-brevity.png)
 
@@ -233,3 +233,24 @@ Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprot
 - [**StreamableHttpMcpClient**](/plugins/plugin-ai/tool/streamablehttpmcpclient) — connects to an MCP server over HTTP streaming.
 
 The [Kestra Python MCP server](https://github.com/kestra-io/mcp-server-python) is an example of an external MCP server you can connect to from a Kestra AI Agent task using one of the clients above.
+
+## Execution details
+
+When you open an execution in the topology view, the details panel for `AIAgent`, `ChatCompletion`, and `rag.ChatCompletion` tasks shows the LLM configuration and post-execution context for each call.
+
+**Pre-execution:**
+- Model name and provider
+- System prompt (collapsible)
+- Tools available to the agent
+- RAG retriever and embedding store configuration (when applicable)
+
+**Post-execution:**
+
+| Signal | Description |
+|---|---|
+| LLM response | The final text or JSON output rendered inline |
+| Tool call timeline | Each tool invocation in order: name, arguments, and result |
+| Token usage | Input tokens, output tokens, total, and an estimated cost by provider and model |
+| Reasoning chain | Intermediate responses and extended thinking steps when present |
+| RAG sources | Retrieved chunks ranked by similarity score, showing which context grounded the answer |
+| Finish reason | Why the model stopped: natural stop, max tokens reached, or a guardrail trigger |

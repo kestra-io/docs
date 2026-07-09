@@ -322,3 +322,28 @@ Once the task is complete, Azure automatically shuts down the runner.
 You can view the generated outputs in the **Outputs** tab in Kestra, which includes the information produced by the Azure Batch task runner from the Python script:
 
 ![outputs](./outputs.png)
+
+## Execution details
+
+When you open an execution in the topology view, the details panel for an Azure Batch task shows job configuration and post-execution resource metrics.
+
+Azure Batch is the only task runner that emits detailed CPU and I/O metrics — the post-execution panel is especially useful for right-sizing pool nodes and diagnosing performance bottlenecks.
+
+**Pre-execution:**
+- Batch account endpoint
+- Pool ID
+- Container image
+- Blob storage container used for file staging
+
+**Post-execution:**
+
+| Signal | Description |
+|---|---|
+| Job ID | Reference for looking up the job in the Azure Portal |
+| Pool ID | The pool where the job ran |
+| Wall clock | Total elapsed time from job start to finish |
+| CPU kernel | Kernel CPU time consumed by the container |
+| CPU user | User CPU time consumed by the container |
+| I/O read | Read operation count and total GiB read |
+| I/O write | Write operation count and total GiB written |
+| Container exit code | Container exit code |

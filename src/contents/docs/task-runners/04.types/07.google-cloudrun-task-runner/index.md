@@ -387,3 +387,32 @@ You can also verify job creation in the Google Cloud Console:
 ![jobs](./jobs.png)
 
 After the task completes, the Cloud Run job is automatically deleted to free up resources.
+
+## Execution details
+
+When you open an execution in the topology view, the topology node for a Google Cloud Run task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+
+**Topology node:**
+
+| Field | Description |
+|---|---|
+| Runner | Task runner type |
+| Region | GCP region where the job runs |
+| Project | GCP project ID |
+| Job name | GCP Cloud Run job resource name |
+| Duration | Elapsed or total execution time |
+
+**Show Details modal:**
+
+*Configuration:*
+- Project ID and region
+- Service account
+- Staging GCS bucket
+- Whether the job deletes on completion (`delete` flag)
+- Whether an existing job will be resumed on Worker restart (`resume` flag)
+- Configured timeout
+
+*Post-execution:*
+- Job name — GCP resource identifier for the Cloud Run job
+- Resumed or new — whether the job reused an existing run or was freshly created
+- Deletion triggered — whether the job was deleted after completion

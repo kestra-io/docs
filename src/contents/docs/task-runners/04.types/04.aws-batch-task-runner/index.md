@@ -21,7 +21,7 @@ To launch tasks on AWS Batch, you need to understand three key concepts:
 To get started quickly, use [this blueprint](/blueprints/aws-batch-terraform-git) to provision all required resources for running containers on ECS Fargate.
 :::
 
-## How does the AWS Batch task runner work?
+## How the AWS Batch task runner works
 
 To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner creates sidecar containers that handle S3 file transfers alongside the main container. The approach differs by compute environment type.
 
@@ -701,3 +701,32 @@ taskRunner:
 | `stsRoleSessionName` | Session name tag attached to the assumed-role session (optional). |
 | `stsEndpointOverride` | Override the STS endpoint URL (optional, useful in GovCloud or custom environments). |
 | `stsRoleSessionDuration` | Duration of the assumed-role session (optional; defaults to the AWS minimum). |
+
+## Execution details
+
+When you open an execution in the topology view, the topology node for an AWS Batch task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+
+**Topology node:**
+
+| Field | Description |
+|---|---|
+| Compute env | Compute environment name (tail of the ARN) |
+| Compute type | The resolved compute type (Fargate, EC2, or EKS) |
+| Status | Current or final job status (post-execution only) |
+| Duration | Elapsed or total execution time (post-execution only) |
+
+**Show Details modal:**
+
+*Configuration:*
+- Compute environment and compute type
+- Job queue (tail of the ARN, or "auto-created" when not specified)
+- Region and AWS account ID
+- Configured CPU and memory
+- S3 bucket used for file staging
+
+*Post-execution:*
+- Job ID — reference for looking up the job in the AWS Console or CLI
+- Status and reason — SUCCEEDED or FAILED; `statusReason` shown when the job fails
+- Duration — derived from the job's `startedAt` and `stoppedAt` timestamps
+- Compute type — with the configured CPU and memory values
+- CloudWatch log group — reference path for finding full logs outside Kestra
