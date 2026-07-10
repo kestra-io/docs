@@ -49,6 +49,7 @@
         subgroupBlueprintCounts?: Record<string, number>
         metadataMap?: Record<string, PluginMetadata>
         schemas?: Record<string, { title?: string }>
+        showLongDescription?: boolean
     }>()
 </script>
 
@@ -63,6 +64,7 @@
         :subgroup-blueprint-counts
         :metadata-map
         :schemas
+        :show-long-description
         :active-id="activeId"
         @navigate="navigate"
     >
