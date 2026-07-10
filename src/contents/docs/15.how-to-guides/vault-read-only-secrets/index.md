@@ -56,7 +56,7 @@ kestra:
       secret-path-prefix: app1
       token:
         token: my-vault-access-token
-      read-only: true
+    read-only: true
 ```
 
 `secret-path-prefix: app1` limits Kestra's view to secrets under the `app1` path — in this example, `db` and `api`.
