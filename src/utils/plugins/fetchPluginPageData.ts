@@ -143,7 +143,8 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
 // Versions where an element exists (class fqcn or subpackage prefix). [] on failure so callers keep the full list.
 export async function fetchElementVersions(fqcn: string): Promise<string[]> {
     try {
-        return await $fetchApiCached<string[]>(`/plugins/${fqcn}/versions`)
+        const res = await $fetchApiCached<{ version: string }[]>(`/plugins/${fqcn}/versions`)
+        return res.map((v) => v.version)
     } catch (e) {
         console.error("Element versions fetch failed", e)
         return []
