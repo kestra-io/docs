@@ -15,7 +15,7 @@ Configure HashiCorp Vault as a read-only secrets backend so Kestra reads secrets
 - A Kestra Enterprise namespace configured to use a dedicated secrets manager.
 - A Vault token with read access to the relevant secret paths.
 
-For background on how read-only mode differs from normal mode, see [Secrets manager modes](../../07.enterprise/02.governance/secrets-manager/index.md#secrets-manager-modes).
+For background on how read-only mode differs from managed mode, see [Secrets manager modes](../../07.enterprise/02.governance/secrets-manager/index.md#secrets-manager-modes).
 
 ## Vault secret structure
 
