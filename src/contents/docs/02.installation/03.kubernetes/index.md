@@ -183,6 +183,53 @@ kubectl get pods -l app.kubernetes.io/name=kestra
 
 Kestra configuration is provided through Helm values and rendered into ConfigMaps and Secrets.
 
+All Kestra-specific options live under `configurations.application`. The content of this block is identical to what you would put in a standalone `application.yml` — the Helm chart passes it through as-is. Every property documented in the [configuration section](../../configuration/index.mdx) is valid here.
+
+### Production example
+
+A typical production `values.yaml` configures the database, storage backend, and secrets manager together:
+
+```yaml
+configurations:
+  application:
+    kestra:
+      storage:
+        type: s3
+        s3:
+          bucket: my-kestra-bucket
+          region: us-east-1
+      secret:
+        type: aws-secret-manager
+        aws-secret-manager:
+          region: us-east-1
+      queue:
+        type: postgres
+      repository:
+        type: postgres
+
+    datasources:
+      postgres:
+        url: jdbc:postgresql://postgres:5432/kestra
+        driverClassName: org.postgresql.Driver
+        username: kestra
+        password: ${POSTGRES_PASSWORD}
+```
+
+Inject credentials from a Kubernetes Secret using `common.extraEnvFrom`:
+
+```yaml
+common:
+  extraEnvFrom:
+    - secretRef:
+        name: postgres-credentials  # Secret must contain POSTGRES_PASSWORD
+```
+
+For the full property reference for each area, see:
+
+- [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md) — storage backends (S3, GCS, Azure, MinIO, and more) and datasource configuration
+- [Security and Secrets](../../configuration/05.security-and-secrets/index.md) — secrets backends
+- [Configuration basics](../../configuration/01.configuration-basics/index.md) — queue and repository type selection, environment variables, property naming, and override patterns
+
 ### Minimal example (H2 database for testing only)
 
 ```yaml
@@ -196,7 +243,7 @@ configurations:
       storage:
         type: local
         local:
-          basePath: "/app/storage"
+          base-path: "/app/storage"
 
     datasources:
       h2:
