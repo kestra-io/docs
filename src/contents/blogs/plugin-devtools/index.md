@@ -21,7 +21,7 @@ Plugin Devtools is our answer to both. It is an internal repository of standalon
 - Keep every script usable by an agent through the Bash tool, so the agent runs `kestra-plugin-shadowjar plugin-mqtt --restart-kestra` rather than improvising the whole flow.
 - Stop agents reinventing the wheel. A named command the agent can call is cheaper in tokens and more reliable than a paragraph of reconstructed shell.
 
-That last point is the one people underestimate. A script is a contract. The agent does not need to know how a release avoids duplicate tags or why `gradlew.bat` keeps showing up as modified; it needs to know the command exists and what it does. The messy knowledge lives in the script, versioned once, instead of being re-explained in every agent context.
+That last point is the one people underestimate. A script is a contract. The agent does not need to know how a release avoids duplicate tags or shuts down the daemons it leaks; it needs to know the command exists and what it does. The messy knowledge lives in the script, versioned once, instead of being re-explained in every agent context.
 
 ## Two ways in
 
@@ -57,6 +57,21 @@ kestra-core-run --docker        # OSS from a Docker image (ephemeral H2)
 kestra-core-run -b develop      # checkout, pull, then start
 kestra-core-run status          # what is running, with URLs
 kestra-core-run restart         # kill everything and restart
+```
+
+Once it is up (or on `kestra-core-run status`), it prints a summary you can act on right away:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  Kestra OSS [v0.24.0-12-ga1b2c3d4e5 · feat/my-feature a1b2c3d4e5]
+  UI   → http://oss.kestra.repo.localhost:1355/ui/
+  Dev  → http://localhost:5176/
+  API  → http://localhost:8080/api/v1/
+  DB   → postgres://localhost:5432/kestra_oss_feat_my_feature
+  Auth → admin@example.com / dev-password
+  Logs → /tmp/kestra-backend.log  /tmp/kestra-frontend.log
+  Boot → 47s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 Docker instances can run side by side on separate ports, so you can compare two versions at once. When a Gradle build fails, the script prints the actual compiler `error:` lines inline instead of leaving you to grep the log. Small thing, saves a minute every time.
@@ -153,7 +168,7 @@ kestra-agents-update plugins
 
 `kestra-plugin-release` is the most careful script in the repo, because releasing is where mistakes are expensive. It scans every plugin for unreleased commits in parallel (cached for 30 minutes), shows a badge next to each, and offers four modes: standard (pick a bump per plugin), batch (one bump for all), auto (bump inferred from conventional commit messages), and hotfix (cherry-pick onto an existing tag). It suggests the version bump from the commit history, checks whether a tag already exists before releasing, and derives the version from the last released tag rather than a possibly-stale local file.
 
-It also carries a good deal of hard-won operational knowledge. It shuts down the Gradle daemons a release spawns so a batch run does not saturate RAM, and it handles a long-standing `gradlew.bat` line-ending quirk that otherwise breaks releases three different ways. That is exactly the kind of thing you do not want an agent (or a human) rediscovering under pressure.
+It also carries a good deal of hard-won operational knowledge, like shutting down the Gradle daemons a release spawns so a batch run does not saturate RAM. That is exactly the kind of thing you do not want an agent (or a human) rediscovering under pressure.
 
 ```bash
 # ❌ By hand, per plugin: check unreleased commits, pick a bump, verify
@@ -236,6 +251,6 @@ kestra-laptop-setup
 
 ## Why this shape works
 
-The pattern that keeps paying off is that a script is a shared contract between a human and an agent. When we teach the squad a new command, the agents get it for free, because the same binary is on the same PATH and the Bash tool calls it the same way. When we fix a sharp edge once (the daemon leak, the wrapper line endings, the duplicate-tag check), the fix lives in one versioned place, and neither a teammate nor an agent has to relearn it.
+The pattern that keeps paying off is that a script is a shared contract between a human and an agent. When we teach the squad a new command, the agents get it for free, because the same binary is on the same PATH and the Bash tool calls it the same way. When we fix a sharp edge once (the daemon leak, the duplicate-tag check), the fix lives in one versioned place, and neither a teammate nor an agent has to relearn it.
 
 We did not set out to build an agent framework. We set out to stop typing the same fifteen commands, and it turned out the scripts that made us faster made the agents faster too, for the same reason: the knowledge is written down once, and running it costs almost nothing.
