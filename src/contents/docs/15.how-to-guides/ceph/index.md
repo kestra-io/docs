@@ -6,16 +6,15 @@ stage: Intermediate
 topics:
 - DevOps
 - Object Storage
-description: Set up a local Ceph cluster using cephadm and expose it to Kestra via MinIO Gateway for S3-compatible object storage.
+description: Set up a local Ceph cluster using cephadm and connect Kestra directly to the Ceph Rados Gateway S3 endpoint.
 ---
 
-This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and expose a S3-compatible endpoint (Rados Gateway).
-MinIO will act as a gateway to Ceph, and Kestra will continue to use MinIO as its object storage.
+This guide demonstrates how to deploy a local Ceph cluster using [`cephadm`](https://docs.ceph.com/en/latest/cephadm/) and connect Kestra directly to its S3-compatible Rados Gateway (RGW) endpoint using `type: minio`.
 
 ---
 
 :::alert{type="warning"}
-This guide is intended for **local testing only**. It sets up a single-node Ceph cluster using `cephadm` and exposes it via MinIO in gateway mode. This configuration is **not suitable for production** use.
+This guide is intended for **local testing only**. It sets up a single-node Ceph cluster using `cephadm`. This configuration is **not suitable for production** use.
 :::
 
 ## Install `cephadm`
@@ -73,13 +72,13 @@ This sets up:
 
 ---
 
-### 📋 Check Ceph status
+### Check Ceph status
 
 ```sh
 sudo cephadm shell -- ceph -s
 ```
 
-> The `ceph` CLI is only available inside the `cephadm` shell.
+The `ceph` CLI is only available inside the `cephadm` shell.
 
 ---
 
@@ -125,68 +124,40 @@ ss -tuln | grep ':80'
 
 ## Create a Ceph S3 User
 
-Generate credentials for MinIO to use:
+Generate credentials for Kestra to use:
 
 ```sh
-sudo cephadm shell -- radosgw-admin user create --uid="demo" --display-name="Demo User"
+sudo cephadm shell -- radosgw-admin user create --uid="kestra" --display-name="Kestra Storage"
 ```
 
 Copy the `access_key` and `secret_key` from the output.
 
 ---
 
-## Connect MinIO to Ceph (Gateway Mode)
-
-MinIO proxies all S3 requests to Ceph RGW.
-
-### `docker-compose.yml`
-
-```yaml
-version: '3.8'
-
-services:
-  minio:
-    image: minio/minio:latest
-    container_name: minio-ceph-gateway
-    command: gateway s3 http://host.docker.internal:80
-    environment:
-      MINIO_ROOT_USER: ABCDEF1234567890
-      MINIO_ROOT_PASSWORD: abc/xyz890foobar==
-    ports:
-      - "9000:9000"
-    restart: always
-```
-
-> Replace `MINIO_ROOT_USER` and `MINIO_ROOT_PASSWORD` with the credentials from the RGW user you just created.
-
----
-
-## Validate with MinIO Client
+## Create a bucket
 
 ```sh
-mc alias set ceph http://localhost:9000 ABCDEF1234567890 abc/xyz890foobar==
-mc mb ceph/kestra-bucket
-mc ls ceph
+sudo cephadm shell -- radosgw-admin bucket create --bucket=kestra-bucket --uid=kestra
 ```
 
 ---
 
-## Use in Kestra (no changes)
+## Configure Kestra
 
-Your existing `application-psql.yml` remains valid:
+Ceph RGW exposes a native S3-compatible endpoint. Point Kestra directly at it using `type: minio`:
 
 ```yaml
-storage:
-  type: minio
-  minio:
-    endpoint: localhost
-    port: 9000
-    bucket: kestra-bucket
-    access-key: ABCDEF1234567890
-    secret-key: abc/xyz890foobar==
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: localhost
+      port: 80
+      secure: false
+      bucket: kestra-bucket
+      access-key: YOUR_CEPH_ACCESS_KEY
+      secret-key: YOUR_CEPH_SECRET_KEY
 ```
-
-Kestra will talk to MinIO as usual, and MinIO will write to Ceph transparently.
 
 ---
 
@@ -213,18 +184,6 @@ tasks:
           json.dump(data, f)
 ```
 
-Validate the output:
-
-```sh
-mc cat ceph/kestra-bucket/main/company/team/ceph_test_flow/...
-```
-
-Expected:
-
-```json
-{"message": "stored in Ceph"}
-```
-
 ---
 
 ## Cleanup a Broken Cluster
@@ -241,10 +200,6 @@ sudo cephadm rm-cluster --force --zap-osds --fsid <fsid>
 
 ## References
 
-- 🧰 [cephadm Install Guide](https://docs.ceph.com/en/latest/cephadm/install/)
-- 🔐 [RGW User Management](https://docs.ceph.com/en/latest/radosgw/admin/#user-management)
-- 🎯 [MinIO Gateway S3](https://docs.min.io/docs/minio-gateway-for-s3.html)
-
----
-
-You now have a local Ceph cluster backing MinIO for object storage, and Kestra continues to function without any change in configuration.
+- [cephadm Install Guide](https://docs.ceph.com/en/latest/cephadm/install/)
+- [RGW User Management](https://docs.ceph.com/en/latest/radosgw/admin/#user-management)
+- [Kestra storage configuration](../../configuration/02.runtime-and-storage/index.md#minio--s3-compatible)
