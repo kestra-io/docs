@@ -516,6 +516,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [RBAC Permissions Replaced by Resource and Action Model](https://kestra.io/docs/migration-guide/v2.0.0/rbac-action-model.md)
 - [Execution API Response Shape Changed](https://kestra.io/docs/migration-guide/v2.0.0/execution-api-response.md)
 - [Trigger Conditions Redesign](https://kestra.io/docs/migration-guide/v2.0.0/trigger-conditions-redesign.md)
+- [Helm Chart gRPC Worker-Controller Changes in Kestra 2.0.0](https://kestra.io/docs/migration-guide/v2.0.0/helm-grpc-worker-controller.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
 - [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)
