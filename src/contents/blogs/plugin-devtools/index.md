@@ -23,15 +23,9 @@ Plugin Devtools is our answer to both. It is an internal repository of standalon
 
 That last point is the one people underestimate. A script is a contract. The agent does not need to know how a release avoids duplicate tags or why `gradlew.bat` keeps showing up as modified; it needs to know the command exists and what it does. The messy knowledge lives in the script, versioned once, instead of being re-explained in every agent context.
 
-## One install, two ways in
+## Two ways in
 
-```bash
-git clone git@github.com:kestra-io/plugin-devtools.git ~/dev/plugin-devtools && ~/dev/plugin-devtools/install.sh
-```
-
-The installer detects macOS, Ubuntu, Debian, or Fedora and pulls the handful of dependencies the scripts lean on (`git`, `curl`, `jq`, `gum`, `gh`, ripgrep). Re-running it is safe: it skips what is already there.
-
-From then on there are two entry points. Humans who do not want to remember flags open the `gum`-based TUI:
+Once the scripts are on your PATH there are two entry points. Humans who do not want to remember flags open the `gum`-based TUI:
 
 ```bash
 plugin-devtools   # alias: plugdev
