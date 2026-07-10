@@ -1,0 +1,226 @@
+---
+import { Icon } from "astro-icon/components"
+
+import EarlyAdopterForm from "~/components/early-adopter-program/Form.vue"
+
+const BENEFITS = [
+    {
+        icon: "mdi:rocket",
+        title: "Run it Early",
+        desc: "Get pre-release builds of the rearchitected 2.0 core, with a head start on evaluating and planning your migration before GA.",
+    },
+    {
+        icon: "mdi:lifebuoy",
+        title: "Get guidance",
+        desc: "Weekly group office hours with Kestra engineers and product, plus a shared Slack channel for questions along the way.",
+    },
+    {
+        icon: "mdi:map-outline",
+        title: "Shape the roadmap",
+        desc: "Your feedback goes straight to the team, and design partners get first say on what we prioritize.",
+        wide: true,
+    },
+]
+---
+
+<section class="header">
+    <div class="row m-0">
+        <div class="col-xl-6 col-12 left">
+            <div class="title" data-usal="fade-r">
+                <h1>
+                    Join the <span class="highlight">Early <br /> Adopter </span>
+                    Program
+                </h1>
+                <span class="version" aria-hidden="true"
+                    >2<span class="dot"></span>0</span
+                >
+            </div>
+
+            <h3 class="intro" data-usal="fade-r">
+                Kestra 2.0 is coming. Be among the first to run it — and help
+                shape what ships.
+            </h3>
+
+            <div class="benefits">
+                {
+                    BENEFITS.map((benefit, index) => (
+                        <div
+                            class:list={["benefit", { wide: benefit.wide }]}
+                            data-usal={`fade-u delay-${index * 50}`}
+                        >
+                            <div class="heading">
+                                <Icon name={benefit.icon} class="icon" />
+                                <h5>{benefit.title}</h5>
+                            </div>
+                            <p>{benefit.desc}</p>
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-12 right">
+            <div class="form-box" data-usal="zoomin-d">
+                <EarlyAdopterForm client:idle />
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .header {
+        overflow: hidden;
+
+        .left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: $rem-2;
+            padding: $rem-2;
+            background: url("~/components/cloud/assets/left-bg.png") no-repeat
+                center / cover;
+
+            @include media-breakpoint-up(lg) {
+                padding: 5rem 7.75rem;
+            }
+
+            .title {
+                display: flex;
+                align-items: center;
+                gap: $rem-2;
+
+                @include media-breakpoint-down(md) {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: $rem-1;
+                }
+            }
+
+            .version {
+                --grad: linear-gradient(180deg, #100a36 0%, #3b76ec 100%);
+                --shadow: rgba(60, 53, 248, 0.45);
+
+                :global(html.dark) & {
+                    --grad: linear-gradient(180deg, #b9c0ff 0%, #3b76ec 100%);
+                    --shadow: rgba(123, 140, 255, 0.5);
+                }
+
+                flex-shrink: 0;
+                font-size: 7rem;
+                @include media-breakpoint-down(md) {
+                    font-size: 5rem;
+                }
+                font-weight: 800;
+                line-height: 1;
+                white-space: nowrap;
+                user-select: none;
+                color: var(--ks-background-body);
+                background: var(--grad);
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-stroke: 2px transparent;
+                filter: drop-shadow(-2px 2px 2.57px var(--shadow));
+
+                @media (min-width: 1200px) and (max-width: 1549px) {
+                    font-size: 4.5rem;
+                }
+
+                .dot {
+                    display: inline-block;
+                    width: 0.14em;
+                    height: 0.14em;
+                    margin: 0 0.05em;
+                    border: 1px solid transparent;
+                    border-radius: 2.57px;
+                    background:
+                        linear-gradient(
+                                var(--ks-background-body),
+                                var(--ks-background-body)
+                            )
+                            padding-box,
+                        var(--grad) border-box;
+                    box-shadow: -1.71px 1.71px 2.57px var(--shadow);
+                }
+            }
+
+            .intro {
+                margin: 0;
+                @include media-breakpoint-up(md) {
+                    width: 612px;
+                }
+            }
+
+            .benefits {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.8rem;
+
+                @include media-breakpoint-down(md) {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+            .benefit {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                @include media-breakpoint-up(lg) {
+                    max-width: 291.5px;
+                }
+
+                &.wide {
+                    grid-column: 1 / -1;
+
+                    @include media-breakpoint-up(lg) {
+                        max-width: 612px;
+                    }
+
+                    @include media-breakpoint-down(md) {
+                        grid-column: auto;
+                    }
+                }
+
+                .heading {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.625rem;
+
+                    .icon {
+                        flex-shrink: 0;
+                        font-size: 1.5rem;
+                        color: var(--ks-icon-color);
+                    }
+
+                    h5 {
+                        margin: 0;
+                    }
+                }
+
+                p {
+                    margin: 0;
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-secondary);
+                }
+            }
+        }
+
+        .right {
+            display: flex;
+            padding: 0 $rem-1;
+            @include media-breakpoint-up(lg) {
+                padding: $rem-4 $rem-1;
+            }
+            background: #141414
+                url("~/components/early-adopter-program/assets/bg-early.png")
+                no-repeat left / contain;
+
+            .form-box {
+                display: flex;
+                flex: 1;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    }
+</style>
