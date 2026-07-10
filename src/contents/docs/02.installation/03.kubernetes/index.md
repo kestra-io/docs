@@ -226,7 +226,7 @@ common:
 
 For the full property reference for each area, see:
 
-- [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md) — storage backends (S3, GCS, Azure, MinIO, and more) and datasource configuration
+- [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md) — storage backends (S3, GCS, Azure, and more) and datasource configuration
 - [Security and Secrets](../../configuration/05.security-and-secrets/index.md) — secrets backends
 - [Configuration basics](../../configuration/01.configuration-basics/index.md) — queue and repository type selection, environment variables, property naming, and override patterns
 
