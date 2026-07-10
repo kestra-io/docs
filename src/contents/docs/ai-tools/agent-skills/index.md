@@ -21,7 +21,7 @@ Agent Skills follow an emerging standard for giving AI tools domain-specific kno
 
 ## Available Skills
 
-Kestra provides four skills in the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository.
+Kestra provides multiple skills in the [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills) repository.
 
 ### kestra-flow
 
