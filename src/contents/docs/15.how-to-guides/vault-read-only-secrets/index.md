@@ -131,7 +131,7 @@ Vault held the secret at the path `business-unit/my-app` (in the `admin` namespa
 
 ![Vault UI showing the business-unit secret engine and my-app path](./read-only-secrets-2.png)
 
-Kestra resolved `NEON_PASSWORD` from that path at runtime, without storing or caching the value beyond the execution.
+Kestra resolved `NEON_PASSWORD` from that path at runtime. The value is not persisted; it is cached in memory (~60s, configurable).
 
 ## Related
 
