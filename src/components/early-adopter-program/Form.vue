@@ -124,7 +124,7 @@
                         class="btn btn-primary w-100"
                         :disabled="submitting"
                     >
-                        {{ submitting ? "Sending..." : "Join the Program" }}
+                        {{ submitting ? "Sending..." : "Apply to program" }}
                     </button>
                 </div>
             </form>
@@ -134,7 +134,7 @@
             <div class="badge">
                 <CheckBoldIcon />
             </div>
-            <h3>You're on the list!</h3>
+            <h3>Application Submitted</h3>
             <p class="subtitle">
                 Thanks for your interest in <strong>Kestra 2.0</strong>. <br>
                 We'll review your request and confirm within a few business days.
