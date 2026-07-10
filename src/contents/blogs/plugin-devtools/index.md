@@ -1,6 +1,6 @@
 ---
 title: "Plugin Devtools: shell scripts our squad and our agents both run"
-description: "Inside Plugin Devtools, the internal repository of shell scripts the Plugins & Ecosystem Squad uses to move faster across 170+ plugin repos, and that our AI agents call straight through the Bash tool instead of re-deriving the same commands and burning tokens."
+description: "Inside Plugin Devtools, the internal repository of shell scripts the Plugins & Ecosystem Squad uses to move faster across 200+ plugin repos, and that our AI agents call straight through the Bash tool instead of re-deriving the same commands and burning tokens."
 date: 2026-07-10T09:00:00
 category: Engineering
 author:
@@ -11,7 +11,7 @@ author:
   role: Lead Software Engineer
 ---
 
-The Plugins & Ecosystem Squad maintains more than 170 plugin, storage, and secret repositories. A single day can mean spinning up a local Kestra stack, building a shadow JAR, checking which repos have unpushed work, merging a wave of Dependabot PRs, and cutting a few releases. None of it is hard. All of it is repetitive, and every repetition is a chance to forget a flag, point Vite at the wrong port, or release a version that was already tagged.
+The Plugins & Ecosystem Squad maintains more than 200 plugin, storage, and secret repositories. A single day can mean spinning up a local Kestra stack, building a shadow JAR, checking which repos have unpushed work, merging a wave of Dependabot PRs, and cutting a few releases. None of it is hard. All of it is repetitive, and every repetition is a chance to forget a flag, point Vite at the wrong port, or release a version that was already tagged.
 
 We had a second, quieter problem too. Once we started routing plugin work through AI agents (see our earlier post on [automating the plugin SDLC](/blogs/context-engineering-plugins-squad)), the agents hit the exact same friction. Ask an agent to "deploy plugin-mqtt locally and restart Kestra" and it will happily reconstruct the Gradle task, the JAR-finding logic, the copy-into-plugins step, and the restart, from scratch, every time. That is slow, it is error-prone, and it costs a surprising number of tokens to re-derive something we already know how to do.
 
@@ -64,7 +64,7 @@ kestra-plugin-shadowjar plugin-mqtt --restart-kestra
 
 The two together are the tight edit-build-see loop: change code, `kestra-plugin-shadowjar plugin-x --restart-kestra`, refresh the browser.
 
-## Fleet management across 170+ repos
+## Fleet management across 200+ repos
 
 Working against one repo is easy. Working against the whole org is where the scripts earn their keep.
 
