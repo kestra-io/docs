@@ -3,6 +3,7 @@ title: "Plugin Devtools: shell scripts our squad and our agents both run"
 description: "Inside Plugin Devtools, the internal repository of shell scripts the Plugins & Ecosystem Squad uses to move faster across 200+ plugin repos, and that our AI agents call straight through the Bash tool instead of re-deriving the same commands and burning tokens."
 date: 2026-07-10T09:00:00
 category: Engineering
+image: ./main.jpg
 author:
   name: François Delbrayelle
   linkedin: https://www.linkedin.com/in/fdelbrayelle/
@@ -22,16 +23,6 @@ Plugin Devtools is our answer to both. It is an internal repository of standalon
 - Stop agents reinventing the wheel. A named command the agent can call is cheaper in tokens and more reliable than a paragraph of reconstructed shell.
 
 That last point is the one people underestimate. A script is a contract. The agent does not need to know how a release avoids duplicate tags or shuts down the daemons it leaks; it needs to know the command exists and what it does. The messy knowledge lives in the script, versioned once, instead of being re-explained in every agent context.
-
-## Two ways in
-
-Once the scripts are on your PATH there are two entry points. Humans who do not want to remember flags open the `gum`-based TUI:
-
-```bash
-plugin-devtools   # alias: plugdev
-```
-
-Everything the TUI does is a plain script underneath, and that is deliberate. The menu is a convenience wrapper; the scripts are the product. Agents skip the menu entirely and call the scripts by name with arguments, which is why nearly every one accepts non-interactive flags that bypass the `gum` prompts.
 
 ## The inner loop: run Kestra, deploy a plugin
 
@@ -59,7 +50,7 @@ kestra-core-run status          # what is running, with URLs
 kestra-core-run restart         # kill everything and restart
 ```
 
-Once it is up (or on `kestra-core-run status`), it prints a summary you can act on right away:
+Once it is up (or on `kestra-core-run status`), it prints an actionable summary right away:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -74,11 +65,11 @@ Once it is up (or on `kestra-core-run status`), it prints a summary you can act 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Docker instances can run side by side on separate ports, so you can compare two versions at once. When a Gradle build fails, the script prints the actual compiler `error:` lines inline instead of leaving you to grep the log. Small thing, saves a minute every time.
+Docker instances can run side by side on separate ports, so two versions can be compared at once. When a Gradle build fails, the script prints the actual compiler `error:` lines inline instead of leaving the log to grep through by hand. Small thing, saves a minute every time.
 
-Once you have edited plugin source, `kestra-plugin-shadowjar` builds the shadow JAR and deploys it into your plugins directory under Kestra's artifact naming convention. Multi-module plugins produce one JAR per submodule, and the script handles all of them, cleans out stale versions, and can restart Kestra afterward.
+Once plugin source is edited, `kestra-plugin-shadowjar` builds the shadow JAR and deploys it into the local plugins directory under Kestra's artifact naming convention. Multi-module plugins produce one JAR per submodule, and the script handles all of them, cleans out stale versions, and can restart Kestra afterward.
 
-❌ By hand you would run:
+❌ By hand:
 
 ```bash
 cd ~/dev/plugin-kafka && ./gradlew shadowJar
@@ -102,17 +93,17 @@ The two together are the tight edit-build-see loop: change code, `kestra-plugin-
 
 Working against one repo is easy. Working against the whole org is where the scripts earn their keep.
 
-`kestra-plugins-repositories-clone-missing` fetches the current list of `plugin-*`, `storage-*`, and `secret-*` repos from GitHub and clones whatever you are missing, skipping archived and template repos. Run it from your dev directory whenever the org has grown.
+`kestra-plugins-repositories-clone-missing` fetches the current list of `plugin-*`, `storage-*`, and `secret-*` repos from GitHub and clones whatever is missing locally, skipping archived and template repos. Run it from the dev directory whenever the org has grown.
 
 ```bash
 # ❌ By hand: open github.com/kestra-io, scroll 200+ repos,
-#    work out which ones you don't have, clone them one at a time.
+#    work out which ones are missing, clone them one at a time.
 
 # ✅ With the script:
 cd ~/dev && kestra-plugins-repositories-clone-missing
 ```
 
-`kestra-plugins-status` surveys local git state across every clone and groups the results: uncommitted changes, repos left on a feature branch, unpushed commits, repos behind `origin/main`. It is read-only unless you ask it to fetch first, and it answers "what is the state of my clones right now?" in about a second instead of 50 manual `git status` calls. Handy before a release session or after a week away.
+`kestra-plugins-status` surveys local git state across every clone and groups the results: uncommitted changes, repos left on a feature branch, unpushed commits, repos behind `origin/main`. It is read-only unless asked to fetch first, and it answers "what is the state of the clones right now?" in about a second instead of 50 manual `git status` calls. Handy before a release session or after a week away.
 
 ```bash
 # ❌ By hand: cd into each repo, git status, git log @{u}.., repeat 200+ times.
@@ -121,7 +112,7 @@ cd ~/dev && kestra-plugins-repositories-clone-missing
 kestra-plugins-status
 ```
 
-`kestra-plugins-pull` switches each repo to `main` and runs `git pull --ff-only`, skipping any repo with local changes so your work is never touched.
+`kestra-plugins-pull` switches each repo to `main` and runs `git pull --ff-only`, skipping any repo with local changes so uncommitted work is never touched.
 
 ```bash
 # ❌ By hand:
@@ -168,7 +159,7 @@ kestra-agents-update plugins
 
 `kestra-plugin-release` is the most careful script in the repo, because releasing is where mistakes are expensive. It scans every plugin for unreleased commits in parallel (cached for 30 minutes), shows a badge next to each, and offers four modes: standard (pick a bump per plugin), batch (one bump for all), auto (bump inferred from conventional commit messages), and hotfix (cherry-pick onto an existing tag). It suggests the version bump from the commit history, checks whether a tag already exists before releasing, and derives the version from the last released tag rather than a possibly-stale local file.
 
-It also carries a good deal of hard-won operational knowledge, like shutting down the Gradle daemons a release spawns so a batch run does not saturate RAM. That is exactly the kind of thing you do not want an agent (or a human) rediscovering under pressure.
+It also carries a good deal of hard-won operational knowledge, like shutting down the Gradle daemons a release spawns so a batch run does not saturate RAM. That is exactly the kind of thing nobody wants an agent (or a human) rediscovering under pressure.
 
 ```bash
 # ❌ By hand, per plugin: check unreleased commits, pick a bump, verify
@@ -189,7 +180,7 @@ kestra-plugins-release-list 1.1 1.2    # a range
 kestra-plugins-release-list --notes    # with changelog highlights
 ```
 
-Two dashboards cover incoming work. `kestra-plugins-issues` searches open issues org-wide and loads them into a filterable table (by status, assignee, `kind/*` label, or release), then opens the one you pick in the browser. `kestra-plugins-prs` does the same for pull requests, showing CI status, review state, and age in one table, sorted so failing CI and changes-requested reviews float to the top.
+Two dashboards cover incoming work. `kestra-plugins-issues` searches open issues org-wide and loads them into a filterable table (by status, assignee, `kind/*` label, or release), then opens the picked one in the browser. `kestra-plugins-prs` does the same for pull requests, showing CI status, review state, and age in one table, sorted so failing CI and changes-requested reviews float to the top.
 
 ```bash
 # ❌ By hand: open each repo's Issues (or Pull requests) tab, juggle
@@ -229,10 +220,10 @@ kestra-kestractl-api-coverage
 
 ## The bookends of the day
 
-`kestra-recap` fetches everything you touched across the kestra-io org on your last working day (yesterday, or the previous Friday on a Monday), groups it by repo, collapses cross-repo work into a single line, and prints a Slack-ready standup block. Paste it, fill in the "Today" section, done.
+`kestra-recap` fetches everything touched across the kestra-io org on the last working day (yesterday, or the previous Friday on a Monday), groups it by repo, collapses cross-repo work into a single line, and prints a Slack-ready standup block. Paste it, fill in the "Today" section, done.
 
 ```bash
-# ❌ By hand: filter GitHub by your username, copy PR titles and URLs
+# ❌ By hand: filter GitHub by username, copy PR titles and URLs
 #    one by one, format the Slack message from memory.
 
 # ✅ With the script:
