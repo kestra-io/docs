@@ -9696,6 +9696,9 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
+        progress:
+          type: string
+          nullable: true
     Map_Object.Object_:
       type: object
       properties:
