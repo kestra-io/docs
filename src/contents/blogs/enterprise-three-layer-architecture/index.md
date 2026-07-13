@@ -1,7 +1,7 @@
 ---
 title: "From 37 million monthly executions: how enterprise teams structure Kestra at scale"
 description: "How enterprise teams structure Kestra for scale, isolation, and data residency. Covers the tenant vs. namespace decision framework and worker group patterns for regulated and hybrid deployments."
-date: 2026-06-10T09:00:00
+date: 2026-07-08T09:00:00
 category: Solutions
 author:
   name: Parham Parvizi
