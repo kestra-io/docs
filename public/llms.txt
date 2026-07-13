@@ -526,6 +526,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Develop a Kestra Condition Plugin](https://kestra.io/docs/plugin-developer-guide/condition.md)
 - [Plugin Contribution Guidelines for Kestra](https://kestra.io/docs/plugin-developer-guide/contribution-guidelines.md)
 - [Document Your Kestra Plugin with Annotations](https://kestra.io/docs/plugin-developer-guide/document.md)
+- [Develop a Kestra File Renderer Plugin](https://kestra.io/docs/plugin-developer-guide/file-renderer.md)
 - [Gradle Configuration for Kestra Plugins](https://kestra.io/docs/plugin-developer-guide/gradle.md)
 - [Build and Publish a Kestra Plugin](https://kestra.io/docs/plugin-developer-guide/publish.md)
 - [Set Up for Kestra Plugin Development](https://kestra.io/docs/plugin-developer-guide/setup.md)
