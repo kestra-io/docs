@@ -8,6 +8,7 @@ author:
   linkedin: https://www.linkedin.com/in/malay-dewangan-156b58186/
   image: mdewangan
   role: Software Engineer
+image: ./main.png
 ---
 
 Plugins are how Kestra talks to the outside world: databases, message queues, object stores, and APIs. They sit on the hot path of almost every execution, so a small inefficiency in a plugin quietly becomes a big one once you are moving millions of rows or thousands of messages.
