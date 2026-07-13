@@ -254,24 +254,20 @@ if (
 
 const latestVersion = githubVersions.versions?.[0]
 
-// Scope the dropdown to versions where the current element exists (class fqcn or subpackage).
-const scopeElement =
-    pluginType ??
-    (subGroup
-        ? allPlugins.find(
-              (p) =>
-                  (p.name ?? "").toLowerCase() === (pluginName ?? "").toLowerCase() &&
-                  matchesSubGroup(p, subGroup),
-          )?.subGroup
-        : undefined)
+// Scope the dropdown to versions where the current element exists: its fqcn on a class page,
+// its subpackage on a subgroup page. Falls back to the full list when nothing matches.
+const subGroupFqcn = subGroup
+    ? allPlugins.find(
+          (p) => (p.name ?? "").toLowerCase() === (pluginName ?? "").toLowerCase() && matchesSubGroup(p, subGroup),
+      )?.subGroup
+    : undefined
+const scopeElement = pluginType ?? subGroupFqcn
 
 let dropdownVersions = githubVersions
 if (scopeElement && githubVersions.versions?.length) {
-    const scopedSet = new Set(await fetchElementVersions(scopeElement))
-    if (scopedSet.size) {
-        const filtered = githubVersions.versions.filter((v: any) => scopedSet.has(v.version))
-        if (filtered.length) dropdownVersions = { ...githubVersions, versions: filtered }
-    }
+    const scoped = new Set(await fetchElementVersions(scopeElement))
+    const filtered = githubVersions.versions.filter((v: any) => scoped.has(v.version))
+    if (filtered.length) dropdownVersions = { ...githubVersions, versions: filtered }
 }
 
 const imageUrl = `${Astro.site}${ogImage.replace(/^\//, "")}`
