@@ -69,4 +69,4 @@ Leroy Merlin's 37 million monthly executions needed the infrastructure layer to 
 
 The layers are designed to be independent. A single-tenant, single-region deployment can still use dozens of namespaces. A multi-tenant, multi-region deployment can have a single namespace per tenant. When a compliance requirement adds a new region, you add a worker group. When a new business unit needs its own environment, you add a tenant. The work is configuration, not rebuilding.
 
-Kestra is open source. You can [get started in minutes](../../docs/02.installation/index.md) with Docker, one command, first workflow running in under five minutes. If you're scoping a deployment across regions, business units, or regulated infrastructure, [Book a Demo](/demo) and we can work through the architecture together.
+Kestra is open source. You can [get started in minutes](../../docs/02.installation/index.md) with Docker, one command, first workflow running in under five minutes. If you're scoping a deployment across regions, business units, or regulated infrastructure, [book a demo](/demo) and we can work through the architecture together.
