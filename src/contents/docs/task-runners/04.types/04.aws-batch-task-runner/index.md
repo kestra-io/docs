@@ -53,6 +53,10 @@ The task runner maps AWS Batch job statuses to exit codes as follows:
 
 ## Minimum permissions required
 
+:::alert{type="warning"}
+**Running on Kestra Cloud?** The Cloud control plane runs outside your AWS account and has no EC2 instance profile or EKS IRSA to supply a base AWS identity. Static `accessKeyId` / `secretKeyId` credentials are required. See [Running from Kestra Cloud](#running-from-kestra-cloud) for the full details before configuring authentication.
+:::
+
 To submit and monitor AWS Batch jobs, the IAM principal used by Kestra needs permission to create, tag, inspect, and clean up Batch job definitions and jobs. It also needs permission to pass the ECS roles used by the job and to read the AWS Batch log group.
 
 The following policy is the minimum set required by the task runner:
@@ -382,8 +386,8 @@ Once both resources are created, copy the compute environment ARN and job queue 
 
 To use the AWS Batch task runner, you must configure resources in your AWS account. You can set up the environment in two ways:
 
-1. Using Terraform to provision all necessary resources using a simple `terraform apply` command.
-2. Creating the resources step by step from the AWS Management Console.
+1. Use Terraform to provision all required resources with a single `terraform apply` command.
+2. Create the resources step by step from the AWS Management Console.
 
 
 <div class="video-container">
@@ -403,7 +407,7 @@ You will need:
 
 Follow the instructions in the [aws-batch README](https://github.com/kestra-io/deployment-templates/blob/main/aws/terraform/aws-batch/README.md) in the [terraform-deployments-templates](https://github.com/kestra-io/deployment-templates/tree/main) repository to provision resources using Terraform. You can also use [this blueprint](/blueprints/aws-batch-terraform-git), which creates all required resources in a single Kestra workflow execution.
 
-Here is a list of resources that will be created:
+The Terraform configuration creates the following resources:
 - **AWS Security Group:** a security group for AWS Batch jobs with egress to the internet (required to be able to download public Docker images in your script tasks).
 - **AWS IAM Roles and Policies:** IAM roles and policies for AWS Batch and ECS Task Execution, including permissions for S3 access (S3 is used to store input and output files for container access).
 - **AWS Batch Compute Environment:** a managed ECS Fargate compute environment named `kestraFargateEnvironment`.
@@ -527,7 +531,7 @@ You should see the following text recommending the use of Fargate:
 
 Select Fargate for this walkthrough.
 
-#### Step 1: Select Orchestration type
+#### Step 1: Select orchestration type
 
 Select **Fargate** and click on **Next**.
 
@@ -694,6 +698,10 @@ taskRunner:
   computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
 ```
 
+:::alert{type="warning"}
+**This example is keyless only when Kestra runs inside AWS.** On a self-hosted instance on EC2 or EKS, the AWS SDK uses the instance profile or IRSA to make the `sts:AssumeRole` call without static keys. On **Kestra Cloud**, no such ambient identity exists — you must supply `accessKeyId` and `secretKeyId` alongside `stsRoleArn`. See [Running from Kestra Cloud](#running-from-kestra-cloud).
+:::
+
 | Property | Description |
 |---|---|
 | `stsRoleArn` | ARN of the IAM role to assume. |
@@ -701,3 +709,43 @@ taskRunner:
 | `stsRoleSessionName` | Session name tag attached to the assumed-role session (optional). |
 | `stsEndpointOverride` | Override the STS endpoint URL (optional, useful in GovCloud or custom environments). |
 | `stsRoleSessionDuration` | Duration of the assumed-role session (optional; defaults to the AWS minimum). |
+
+## Running from Kestra Cloud
+
+Kestra Cloud's control plane runs outside your AWS account. It has no EC2 instance profile, EKS IRSA, or other ambient AWS identity. The following differences apply compared to a self-hosted Kestra instance running inside your own AWS environment.
+
+### Authentication on Cloud
+
+**Static credentials are required.** Supply `accessKeyId` and `secretKeyId` in the task runner configuration, stored as [secrets](../../../06.concepts/04.secret/index.md):
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  region: eu-central-1
+  accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+  secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+  computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
+  jobQueueArn: "arn:aws:batch:eu-central-1:123456789012:job-queue/kestraJobQueue"
+  executionRoleArn: "arn:aws:iam::123456789012:role/kestraEcsTaskExecutionRole"
+  taskRoleArn: "arn:aws:iam::123456789012:role/ecsTaskRole"
+```
+
+**STS role assumption requires base credentials.** On a self-hosted instance running on EC2 or EKS, the AWS SDK uses the instance profile or IRSA to call `sts:AssumeRole` without static keys. On Kestra Cloud, you must supply base `accessKeyId` and `secretKeyId` alongside `stsRoleArn` — the STS call cannot proceed without them:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  region: eu-central-1
+  accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+  secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+  stsRoleArn: "arn:aws:iam::123456789012:role/kestra-batch-role"
+  stsRoleExternalId: "{{ secret('STS_EXTERNAL_ID') }}"
+  stsRoleSessionName: kestra-session
+  computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
+```
+
+**OIDC / Web Identity Federation is not currently supported.** Kestra Cloud does not act as an OIDC identity provider, so `AssumeRoleWithWebIdentity` (the approach used by GitHub Actions and similar systems) is not available. There is no fully keyless path from Kestra Cloud to your AWS account today. If your security policy requires no long-lived static credentials, contact [Kestra support](https://kestra.io/slack) to discuss alternatives or to ask about roadmap plans for a keyless Cloud-to-AWS path.
+
+### Network access
+
+Kestra Cloud makes HTTPS calls to the AWS Batch and S3 APIs from a fixed set of egress IPs. If your AWS environment uses VPC endpoint policies, S3 bucket policies, or SCPs that restrict API access by source IP, you need to allowlist the Kestra Cloud egress ranges. Contact [Kestra support](https://kestra.io/slack) to obtain the current egress IP list for your region.
