@@ -32,6 +32,8 @@ Rules (short version — the strategy doc is authoritative):
 | `enterprise/scim-disable-note.md` | Behavior note: disabling/removing a SCIM integration | `07.enterprise/03.auth/scim/{okta,keycloak,microsoft-entra-id,authentik}` |
 | `enterprise/scim-iam-role.md` | Auto-created `SCIMProvisioner` role/service account + why no USERS DELETE | `07.enterprise/03.auth/scim/{okta,keycloak,microsoft-entra-id,authentik}` |
 | `cicd/readonly-label.md` | Info alert: set `system.readOnly` label on CI/CD-managed flows | `version-control-cicd/cicd` index + `{01.github-action,02.gitlab,03.terraform,05-azure-devops,06.bitbucket-pipes,07.kubernetes-operator}` |
+| `cloud/cloud-setup-differs.md` | Info alert: setup may differ on Kestra Cloud (self-hosted steps shown) | `task-runners/04.types/{aws-batch,kubernetes,google-batch,google-cloudrun,azure-batch}` |
+| `cloud/cloud-not-available.md` | Info alert: this page covers self-hosted infra not applicable to Kestra Cloud | `10.administrator-guide/{backup-and-restore,high-availability}`, `02.installation/12.standalone-server`, `kestra-cli/kestra-server` |
 
 When Worker Groups availability changes (e.g., Cloud support ships), edit
 `worker-groups-cloud.md` once — all five consumer pages update at the next build.

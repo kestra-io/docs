@@ -10,6 +10,8 @@ description: Run Kestra tasks as serverless containers on Google Cloud Run for s
 
 Run tasks as containers on Google Cloud Run.
 
+::snippet{name="cloud/cloud-setup-differs"}
+
 ## Overview
 
 The Google Cloud Run task runner deploys the container for each task as a Cloud Run Job. When no file operations are configured, the container starts in the root directory — use the `{{ workingDir }}` Pebble expression or the `WORKING_DIR` environment variable to reference input files and outputs rather than relying on the current directory.

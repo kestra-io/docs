@@ -9,6 +9,8 @@ description: Design and configure Kestra for High Availability (HA) to ensure fa
 
 Kestra is designed for high availability and fault tolerance. This page explains how to configure your deployment to ensure continuous operation.
 
+::snippet{name="cloud/cloud-not-available"}
+
 Highly available systems are built to keep running even in the event of component or infrastructure failures. This is achieved by eliminating single points of failure and introducing redundancy across critical services.
 
 In Kestra, high availability is achieved by running multiple instances of each core component — including the `webserver` (API), `scheduler`, `executor`, `indexer`, and `workers`. This ensures that if one instance fails, the system can continue to operate without interruption.

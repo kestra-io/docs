@@ -10,6 +10,8 @@ description: Execute Kestra tasks using Google Batch to provision and manage com
 
 Run tasks as containers on Google Cloud VMs.
 
+::snippet{name="cloud/cloud-setup-differs"}
+
 ## Offload tasks to Google Cloud Batch
 
 The Google Batch task runner deploys a container for each task on a specified Google Cloud Batch VM.

@@ -10,6 +10,8 @@ description: Execute Kestra tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS 
 
 Run tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS compute environments.
 
+::snippet{name="cloud/cloud-setup-differs"}
+
 ## Offload tasks to AWS Batch
 
 To launch tasks on AWS Batch, you need to understand three key concepts:

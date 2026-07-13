@@ -10,6 +10,8 @@ editions: ["EE", "Cloud"]
 
 Run tasks as Kubernetes pods.
 
+::snippet{name="cloud/cloud-setup-differs"}
+
 :::tip
 This page covers running Kestra **tasks** as Kubernetes pods. To deploy applications **to** a Kubernetes or OpenShift cluster from a flow, see the [Deploy to OpenShift how-to guide](../../../15.how-to-guides/openshift/index.md).
 :::

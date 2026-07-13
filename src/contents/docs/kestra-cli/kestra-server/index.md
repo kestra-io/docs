@@ -9,6 +9,8 @@ description: Reference guide for Kestra CLI commands to manage servers, flows, p
 
 Use `kestra` to interact with the Kestra server and database
 
+::snippet{name="cloud/cloud-not-available"}
+
 ## Use the Kestra server CLI effectively
 
 This page includes CLI commands and options for both Open Source and Enterprise editions. Enterprise-only operations are marked with (EE) where relevant.
