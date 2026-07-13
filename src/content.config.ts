@@ -74,9 +74,6 @@ export const collections = {
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
-                // Override the canonical URL, e.g. for content syndicated from
-                // another site. Rendered in <head> by the layout.
-                canonical: z.string().optional(),
             }),
     }),
     legal: defineCollection({

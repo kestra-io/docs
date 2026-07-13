@@ -8,6 +8,11 @@ author:
   image: "achinbat"
 image: ./main.jpg
 ---
+<head>
+
+<link rel="canonical" href="https://dlthub.com/docs/blog/dlt-kestra-demo-blog"/>
+
+</head>
 
 ## THE PROBLEM
 
