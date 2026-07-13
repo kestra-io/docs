@@ -191,7 +191,7 @@ testimonials:
         name: Dropped jobs since migration
       - value: "3x"
         name: Faster mean time to resolution
-    storyLink: "/use-cases/stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows"
+    storyLink: "/customers/jpmorgan-chase"
 
 platformStrengths:
   title: Kestra Is Built for Engineering Teams, Not Just Operations

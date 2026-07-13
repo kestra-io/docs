@@ -403,6 +403,10 @@ By combining different blocks, you can create a custom UI that guides users thro
 
 Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
 
+:::alert{type="info"}
+When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.
+:::
+
 ### File preview and download
 
 The `Outputs` and `TaskOutputs` blocks can render file download links for outputs stored in Kestra's internal storage. File preview, metadata, and download are only available when:

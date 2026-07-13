@@ -21,9 +21,9 @@ const CACHE_TTL = 60 * 60 * 24 // 24 hours
 
 export async function fetchPluginIconCached(
     cls: string,
-    runtime: App.Locals["runtime"],
+    runtime: { env: ENV },
 ): Promise<string> {
-    const kv = runtime.env.ICON_CACHE as KVNamespace
+    const kv = runtime.env.ICON_CACHE
     const cacheKey = `icon:${cls}`
 
     const cached = await kv?.get(cacheKey)

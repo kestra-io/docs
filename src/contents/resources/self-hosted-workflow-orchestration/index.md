@@ -62,7 +62,7 @@ Kestra is language-agnostic, allowing you to run scripts in Python, R, Shell, No
 
 ### Other notable self-hosted workflow engines
 
-*   **Argo Workflows:** A Kubernetes-native workflow engine where workflows are defined as Kubernetes Custom Resource Definitions (CRDs). It's an excellent choice for teams deeply invested in the Kubernetes ecosystem, particularly for ML and data processing jobs. See how it compares to [Kestra vs. Argo Workflows](https://kestra.io/vs/argo-workflows).
+*   **Argo Workflows:** A Kubernetes-native workflow engine where workflows are defined as Kubernetes Custom Resource Definitions (CRDs). It's an excellent choice for teams deeply invested in the Kubernetes ecosystem, particularly for ML and data processing jobs.
 *   **Prefect:** A modern, Python-based orchestrator known for its developer-friendly experience and dynamic workflow capabilities. It offers a strong alternative to Airflow for Python-heavy teams. Explore the differences in our [Prefect vs. Kestra comparison](https://kestra.io/vs/prefect).
 *   **n8n:** A visual workflow automation tool that can be self-hosted. It excels at connecting SaaS applications and APIs, making it a powerful "self-hosted Zapier" for business and operational teams. For more details, check out [n8n vs. Kestra](https://kestra.io/vs/n8n).
 

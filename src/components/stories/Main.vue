@@ -14,7 +14,7 @@
                 :key="i"
                 class="metric-cell"
             >
-                <span class="metric-value">{{ kpi.value }}</span>
+                <span class="metric-value" v-html="kpi.value"></span>
                 <div class="metric-label">{{ kpi.label }}</div>
                 <div v-if="kpi.context" class="metric-context">{{ kpi.context }}</div>
             </div>

@@ -11,9 +11,11 @@ import GoFurther from "~/components/get-started/GoFurther.astro"
 import Testimonial from "~/components/home/Testimonial.astro"
 
 import { $fetchApiCached } from "~/utils/fetch"
+import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 
 const { results: blueprints } = await $fetchApiCached(`/blueprints/versions/latest?page=1&size=6`)
 const tags = await $fetchApiCached(`/blueprints/versions/latest/tags`)
+const totalBlueprints = await fetchTotalBlueprintsCount()
 
 const title = "Get Started with Kestra"
 const description =
@@ -43,7 +45,7 @@ const description =
     <RunAnywhere />
     <Differentiators />
     <BlueprintsGrid
-        title='Start From <span class="highlight">250+ Blueprints</span>'
+        title={`Start From <span class="highlight">${totalBlueprints}+ Blueprints</span>`}
         subtitle="Production-ready workflow templates for data, AI, and infrastructure. Copy, customize, deploy."
         {blueprints}
         {tags}
