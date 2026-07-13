@@ -53,7 +53,7 @@ Tenants in Kestra can be managed in various ways: from the UI, CLI, API, or Terr
 
 ### Creating a Tenant from the UI
 
-Tenants can be created and managed directly through Kestra's user interface. Go to **Instance -> Tenants**. Then, click on the **Create** button:
+Go to **Instance → Tenants** and click **Create**:
 ![create tenant from the UI](./tenant-create.png)
 
 Fill in the form and click **Save**:
@@ -147,7 +147,7 @@ Note that there is an exception to this rule if a tenant is created by a Superad
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-To configure a dedicated storage and secrets backend per tenant, navigate to the **Instance - Tenants** in the UI and click on the **Details** button of the tenant you'd like to configure. Then, select the storage and secrets backend you want to use for that tenant:
+To configure a dedicated storage and secrets backend per tenant, go to **Instance → Tenants**, open **Details** for the tenant, and select the storage and secrets backend:
 
 ![tenants-dedicated-internal-storage](./tenants-dedicated-internal-storage.png)
 

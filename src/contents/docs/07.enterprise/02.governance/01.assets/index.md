@@ -483,9 +483,6 @@ pluginDefaults:
 - **Dependency Tracking**: Know exactly which tables depend on others before making schema changes
 - **Audit Trail**: Track which workflows created each table and when
 
-See the flow in action in this interactive demo:
-
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/MXR1KD6by4izutxRMMNK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Data Pipeline Assets | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 :::
 

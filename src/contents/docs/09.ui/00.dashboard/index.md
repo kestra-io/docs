@@ -8,9 +8,7 @@ icon: /src/contents/docs/icons/ui.svg
 
 Get insights into your workflows with Dashboards.
 
-The first time you access the main **Dashboard**, you'll see the **Welcome Page** and you can click **Create my first flow** to launch a Guided Tour.
-
-Once you have executed a flow, you will see your flow executions in the dashboard.
+The first time you access the **Dashboard**, a welcome screen helps you get started. Once you have executed a flow, your execution data appears here.
 
 ## Dashboard page
 
@@ -47,7 +45,7 @@ The No Code editor lets you design dashboards directly in the UI using structure
 
 #### Quick start
 
-Navigate to the **Dashboards** tab, click **Default Dashboard**, and select **+ Create Dashboard**.
+From **Dashboards**, select **Default Dashboard** and click **+ Create Dashboard**.
 
 ![Create Dashboard](./create-dashboard.png)
 
@@ -356,7 +354,7 @@ The `content` shorthand (used in earlier examples) sets plain text content direc
 
 ## Create a new custom dashboard as code
 
-Clicking on the `+ Create new dashboard` button opens a code editor where you can define the dashboard layout and data sources as code.
+The **+ Create new dashboard** button opens a code editor where you can define the dashboard layout and data sources as code.
 
 The top-level dashboard properties are:
 
@@ -493,7 +491,7 @@ To see all available properties to configure a custom dashboard as code, see exa
 
 ## Exporting data
 
-Table data can be exported as a CSV file by hovering over the top-right corner and clicking the download icon. This enables dashboard users to build custom queries in Dashboards and to export data with one click without having to worry about pagination.
+Export table data as CSV using the download icon in the top-right corner of a table chart — no pagination required.
 
 ![Dashboard Table Export](./dashboard-table-export.png)
 

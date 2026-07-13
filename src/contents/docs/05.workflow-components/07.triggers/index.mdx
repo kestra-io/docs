@@ -213,10 +213,10 @@ However, this approach requires changing the source code. A simpler approach is 
 
 ### Disabling a trigger from the UI
 
-You can disable or re-enable a trigger from the UI. Here is how you can do it:
+To disable or re-enable a trigger:
 
-1. Go to the `Flows` page and click on the flow you want to disable the trigger for.
-2. Go to the `Triggers` tab and click on the `Enabled` toggle next to the trigger you want to disable. You can re-enable it by clicking the toggle again.
+1. Open the flow and go to the **Triggers** tab.
+2. Toggle **Enabled** next to the trigger. Toggle again to re-enable.
 
 ![triggers_flow](./triggers_flow.png)
 
@@ -269,7 +269,7 @@ triggers:
       maxRecords: 10
 ```
 
-When you add that flow to Kestra, you'll see that no Executions are created. To troubleshoot this, you can go to the `Triggers` tab on the Flow's page and **expand the logs** of the trigger that is causing the issue. You'll see a detailed error message that will help you identify the problem:
+When you add that flow to Kestra, no executions are created. To troubleshoot, go to the **Triggers** tab on the flow's page and expand the logs for the failing trigger. A detailed error message identifies the problem:
 
 ![invalid_trigger_configuration](./invalid_trigger_configuration.png)
 
@@ -341,7 +341,7 @@ This example works as follows:
 
 [Flow](./02.flow-trigger/index.md), [Schedule](./01.schedule-trigger/index.md), and [Polling triggers](./04.polling-trigger/index.md) have locks to avoid concurrent trigger evaluation and concurrent execution of a flow for a trigger.
 
-To see a list of triggers and inspect their current status, go to the **Administration -> Triggers** section in the Kestra UI. From here, you can unlock a trigger if it is locked. Note that doing so raises a risk of concurrent trigger evaluation or flow execution for this trigger if you unlock it manually.
+To view trigger status and unlock a stuck trigger, open **Administration → Triggers**. Manually unlocking a trigger risks concurrent evaluation or duplicate executions.
 
 ## Setting inputs inside of triggers
 

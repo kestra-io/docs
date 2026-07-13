@@ -96,7 +96,7 @@ If you want inspiration beyond the examples on this page, browse the Apps-focuse
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-To create a new app, go to the **Apps** page in the main UI and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
+To create a new app, go to **Apps** and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
 
 You can set `disabled: true` in the YAML to create an app in an inactive state. A disabled app does not appear in the catalog and cannot be opened via its URL until you enable it. This is useful for staging an app before you are ready to release it.
 
@@ -240,7 +240,7 @@ Here, you can give your catalog a display title, set a primary banner display co
 Currently, the uploaded banner display image must be an `.svg` file.
 :::
 
-Once saved, navigate to the Apps Catalog, and see your branding:
+Once saved, open the **Apps Catalog** to see your branding:
 
 ![Apps Catalog Branding](./customized-catalog.png)
 
@@ -310,7 +310,7 @@ tags:
   - Analytics
 ```
 
-Once added, navigate to the Apps Catalog, and a new thumbnail will display on the connected app to help designate its use case:
+Once added, open the **Apps Catalog** — a new thumbnail displays on the connected app:
 
 ![App with thumbnail](./app-with-icon.png)
 
@@ -322,7 +322,7 @@ Each app has a unique URL that you can share with others. When someone opens the
 
 The URL format is: `https://yourHost/ui/tenantId/apps/appUid`, for example `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
 
-You can copy the URL from the Apps Catalog page in the Kestra UI.
+Copy the URL from the **Apps Catalog**.
 
 :::alert{type="info"}
 App URL generation relies on the `kestra.url` server configuration property. If this property is not set, generated links may be broken or missing. Set it to the externally reachable base URL of your Kestra instance, for example `kestra.url: https://kestra.example.com`.

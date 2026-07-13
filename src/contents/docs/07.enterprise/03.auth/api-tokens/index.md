@@ -31,7 +31,7 @@ Currently, we support API tokens as an authentication mechanism for the followin
 
 ## How to create a User API token
 
-To create an API token, navigate to your profile in the bottom left corner of the Kestra UI and click on **+ Create API Token**.
+Open your profile and click **+ Create API Token**.
 
 ![user-api-token](./user-api-token.png)
 
@@ -47,15 +47,13 @@ Fill in the form with the required information, including the `Name`, `Descripti
 **Note:** you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that automatically prolongs the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. This toggle is disabled by default.
 :::
 
-Once you confirm the API token creation, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location, as it will not be displayed again.
+Once confirmed, copy the token and store it securely — it won't be shown again.
 
 ![copy-and-save](./copy-and-save.png)
 
 ## How to create a Service Account API token
 
-To create an API token for a Service Account, navigate to the `Administration` section and click the `Service Accounts` page.
-
-Then, go to the `API Tokens` tab and click the `Create` button:
+Go to **Administration → Service Accounts**, open the **API Tokens** tab, and click **Create**:
 
 ![api-token](./api-token.png)
 
@@ -67,7 +65,7 @@ Fill in the form with the required information including the `Name`, `Descriptio
 **Note:** same as for a user token, you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
 :::
 
-Once you confirm the API token creation via the **Generate** button, the token will be generated and displayed in the UI. Make sure to copy the token and store it in a secure location as it will not be displayed again.
+Once generated, copy the token and store it securely — it won't be shown again.
 
 ![api-token3](./api-token3.png)
 

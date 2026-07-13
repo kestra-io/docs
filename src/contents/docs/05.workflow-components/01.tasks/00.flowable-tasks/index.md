@@ -744,7 +744,7 @@ tasks:
 
 :::alert{type="info"}
 A Pause task without delay waits indefinitely until the task state is changed to **Running**.
-For this: go to the **Gantt** tab of the **Execution** page, click on the task, select **Change status** on the contextual menu, and select **Mark as RUNNING** on the form. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.pause).
+To do this: on the **Gantt** tab of the execution, click the task, select **Change status**, and choose **Mark as RUNNING**. This makes the task run until its end. For more details, refer to the [Pause Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.pause).
 :::
 
 ### DAG

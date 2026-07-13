@@ -89,7 +89,7 @@ tasks:
       - python scripts/hello.py
 ```
 
-The **Execute** button allows you to run your flow directly from the Code Editor. Click on the **Execute** button to run your flow. You then see the Execution running, and once you navigate to the **Logs** tab, you should see a friendly message ``Hello from the Editor!`` in the logs.
+The **Execute** button allows you to run your flow directly from the Code Editor. Click **Execute** to run the flow. The **Logs** tab shows a friendly message ``Hello from the Editor!``.
 
 ### Namespace Files Revision History
 

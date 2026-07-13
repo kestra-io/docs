@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/ui.svg
 
 Manage all resources associated with a Namespace in one place.
 
-The **Namespaces** tab in the UI for Open Source users displays all Namespaces associated with different flows in your Kestra instance.
+The **Namespaces** page lists all namespaces in your Kestra instance.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=9gVEROGc5hXcIJR2" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -28,7 +28,7 @@ The **Overview** tab is the default landing page of a Namespace. It displays das
 
 ## Flows
 
-The **Flows** tab lists all flows within the Namespace. It displays key information such as the flow ID, labels, last execution date and status, and execution statistics. Selecting the **details** button on a flow opens its detailed page.
+The **Flows** tab lists all flows within the namespace, showing flow ID, labels, last execution date and status, and execution statistics.
 
 ![Flows](./flows-namespaces.png)
 

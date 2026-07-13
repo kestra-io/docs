@@ -65,19 +65,19 @@ When you execute a flow with labels, those labels are automatically applied to i
 
 ![labels2](./labels2.png)
 
-## Set execution labels when executing a flow from the UI
+## Set execution labels manually
 
-When executing flows manually from the UI, you can override and define new labels at the execution's start by expanding the **Advanced configuration** section:
+When executing a flow manually, expand **Advanced configuration** to override or define labels at start:
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/XwOQtqdZGZE?si=2jA71fRTDBkBF76P" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
-You can set labels from the UI even after an execution completes. This helps with collaboration and troubleshooting.
+You can also set labels after an execution completes — useful for collaboration and troubleshooting.
 
 For example, you can add a label to a failed execution to indicate its status, such as whether it has been acknowledged, is being investigated, or has been resolved.
 
-To set labels from the UI, go to the **Overview** tab of an execution and click **Set labels**. You can add multiple labels at once.
+Go to the **Overview** tab of an execution and click **Set labels** to add one or more labels.
 
 ![labels3](./labels3.png)
 

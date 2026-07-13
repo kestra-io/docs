@@ -39,7 +39,7 @@ From the **Secrets** tab, you can edit, delete, and copy your secret to your cli
 
 ![Secrets EE](./secrets-ee-0.png)
 
-### Adding a new Secret from the UI
+### Adding a new secret
 
 If you are using a managed Kestra version, you can add **new Secrets** directly from the UI. In the left navigation menu, go to **Namespaces** and select the namespace to which you want to add a new secret. Next, add a new secret within the Secrets tab.
 

@@ -114,7 +114,7 @@ You can use the following execution expressions in your flow.
 
 ## Execute a flow from the UI
 
-You can trigger a flow manually from the Kestra UI by clicking the **Execute** button on the flow page. This is useful when you want to test a flow or run it on demand.
+Click **Execute** on the flow page to trigger a run manually for testing or on-demand use.
 
 ![execute_button](./execute_button.png)
 
@@ -327,7 +327,7 @@ You will see output similar to the following:
 }
 ```
 
-You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
+Click that URL to follow execution progress, or return it from your application to the user who initiated the flow.
 
 Keep in mind that you need to configure the URL of your Kestra instance within your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
 

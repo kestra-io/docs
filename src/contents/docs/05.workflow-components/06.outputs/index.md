@@ -343,11 +343,11 @@ tasks:
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/ion/employees.ion
 ```
 
-On flow execution, the file is downloaded into the Kestra internal storage. When you go to the Outputs tab for this execution, the `uri` attribute of the `download` task contains the file location on Kestra's internal storage and has a Download and a Preview button.
+On flow execution, the file is downloaded into the Kestra internal storage. In the **Outputs** tab for this execution, the `uri` attribute of the `download` task contains the file location in Kestra's internal storage, with **Download** and **Preview** buttons.
 
 ![preview_button](./preview_button.png)
 
-On clicking the Preview button, you can preview the contents of the file in a tabular format, making it extremely easy to check the contents of the file without downloading it.
+**Preview** displays the file contents in a tabular format without downloading.
 
 ![preview](./preview.png)
 

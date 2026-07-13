@@ -9,9 +9,7 @@ icon: /src/contents/docs/icons/ui.svg
 
 Manage your flows in one place.
 
-On the **Flows** page, you see a list of flows that you can edit and execute. You can also create a new flow in the top-right corner.
-
-Click a flow ID or the eye icon to open a flow.
+The **Flows** page lists all flows. Click a flow ID to open it, or create a new flow from the top-right corner.
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
@@ -93,7 +91,7 @@ You can also skip YAML with the [AI Copilot](../../ai-tools/ai-copilot/index.md)
 
 ### Topology view
 
-The **Topology** view allows you to visualize the structure of your flow. This is especially useful when you have complex flows with multiple branches of logic. From the bottom left corner of the Topology view, you can zoom in, zoom out, and export your flow topology as a `.png` file.
+The **Topology** view allows you to visualize the structure of your flow. This is especially useful when you have complex flows with multiple branches of logic. Zoom controls and a `.png` export are available in the bottom-left corner of the Topology view.
 
 ![Topology](./topology-editor.png)
 
@@ -134,8 +132,6 @@ You can view the history of your flow code changes under the **Revisions** tab. 
 ![Blueprints Editor](./revisions.png)
 
 ## Dependencies
-
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/k3WASzX7Oi0F1kRHOBKj?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dependencies | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 The **Dependencies** page shows the relationship dependencies between other flows and the selected flow, and lets you navigate between them.
 

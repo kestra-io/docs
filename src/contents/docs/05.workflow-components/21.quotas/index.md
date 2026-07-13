@@ -60,7 +60,7 @@ quotas:
 
 ### Namespace level
 
-Define quotas on a namespace to apply limits to all flows within that namespace. Open the namespace in the UI, navigate to the **Quotas** section in the namespace settings, and add one or more quota entries.
+Define quotas on a namespace to apply limits to all flows within that namespace. Open the namespace, go to the **Quotas** section, and add one or more quota entries.
 
 Namespace quotas apply to every flow whose namespace matches or is a child of the configured namespace.
 

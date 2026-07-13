@@ -12,7 +12,7 @@ Replay allows you to re-run a workflow execution from any chosen task run.
   <iframe src="https://www.youtube.com/embed/RvNc3gLXMEs?si=sBuEo3yPfJvi4K48" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-By using Replay, you can re-run a workflow execution from any selected task run. To do that, simply go to the Gantt view of the chosen workflow execution (it doesn't need to be a Failed execution, it can be an execution in any state) and click on the task run you want to re-run. Additionally, you can re-run an execution or bulk executions from the **Executions** tab with the option to use the latest revision.
+By using Replay, you can re-run a workflow execution from any selected task run. To do that, open the **Gantt** tab of any execution (not just failed ones) and click the task run to re-run it. You can also re-run a single execution or bulk executions from the **Executions** page with the option to use the latest revision.
 
 ![replay6](./replay6.png)
 
@@ -144,7 +144,7 @@ tasks:
 ```
 :::
 
-Now, you can go to the previously failed Execution and click on the `to_parquet` task run to re-run it (either from the Gantt or from the Logs view).
+Open the previously failed execution and click the `to_parquet` task run to re-run it — from the **Gantt** or **Logs** tab.
 
 ![Replay Task](./replay-task.png)
 

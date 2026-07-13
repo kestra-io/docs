@@ -34,13 +34,13 @@ Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p
 
 ### Secrets
 
-On the Namespaces page, select the Namespace where you want to define the secrets and go to the **Secrets** tab. Here, you will see all existing secrets associated with this Namespace. Click on **Add a secret** button on the top right corner of the page.
+On the namespace page, go to the **Secrets** tab and click **Add a secret**.
 
 ![add_secret.png](./add_secret.png)
 
-Define the secret by entering its key and value. Save the secret by clicking on the **Save** button at the bottom.
+Define the secret by entering its key and value. Save the secret.
 
-The secret key should now start appearing on the **Secrets** tab. You can edit the secret's value or delete the secret by clicking on the appropriate button towards the right of the secret row. You can reference the secret in the flow by using the key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
+The secret key now appears on the **Secrets** tab. Edit or delete it using the action buttons on the right. Reference the secret in flows using its key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
 
 For APIs that issue short-lived access tokens (e.g., OAuth2), create a [Credential](../../03.auth/credentials/index.md) that relies on these secrets and fetch the token in flows with `{{ credential('your_credential_key') }}`.
 
@@ -70,7 +70,7 @@ When building new flows in a Namespace, Namespace secrets are accessible from th
 
 Plugin Defaults can also be defined at the Namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same Namespace.
 
-On the Namespaces page, select the Namespace where you want to define the plugin defaults and navigate to the **Plugin Defaults** tab.
+On the namespace page, open the **Plugin Defaults** tab.
 
 ![Define Plugin Defaults](./plugindefaults-namespaces.png)
 
@@ -115,7 +115,7 @@ On the Namespace **Edit** page, open the **Default authentication** section and 
 
 Variables defined at the Namespace level can be used in any flow defined under the same Namespace using the syntax: `{{ namespace.variable_name }}`.
 
-On the Namespaces page, select the Namespace where you want to define the variables. Go to the **Variables** tab. You can now define the variables on this page. Save the changes by clicking the **Save** button at the bottom of the page.
+On the namespace page, go to the **Variables** tab, define the variables, and save.
 
 ![define_variables.png](./define_variables.png)
 
@@ -142,7 +142,7 @@ When building new flows in a Namespace, Namespace variables are accessible from 
 
 ### From the UI
 
-The video below shows how you can create a Namespace from the Kestra UI. After creating a Namespace, we're adding:
+The video below shows how to create a namespace and add:
 - several new secrets
 - a nested Namespace variable that references one of these secrets
 - a list of plugin defaults helping to use those pre-configured secrets and variables in all the tasks from the AWS and Git plugins.
@@ -153,7 +153,7 @@ The video below shows how you can create a Namespace from the Kestra UI. After c
 
 ### From Terraform
 
-The following example reproduces the UI steps using Terraform, so that you know how to perform the same steps both from the UI and programmatically.
+The following example reproduces those steps in Terraform.
 
 To create a Namespace from Terraform, use the [kestra_namespace](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) resource.
 
@@ -306,6 +306,6 @@ kestra_password = "your-kestra-password"
 
 ## Allowed Namespaces
 
-When you navigate to any Namespace and go to the **Edit** tab, you can explicitly configure which Namespaces are allowed to access flows and other resources related to that Namespace. 
+On the **Edit** tab of any namespace, configure which namespaces are allowed to access its flows and resources.
 
 By default, **all Namespaces** are allowed. To restrict access, **select specific Namespaces** — access automatically extends to each selected namespace's children.

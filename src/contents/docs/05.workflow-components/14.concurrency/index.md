@@ -90,7 +90,7 @@ tasks:
       - sleep 10
 ```
 
-As you can see in the UI, the third execution failed as the first two executions were still running.
+The third execution fails because the first two are still running.
 
 ![concurrency_fail](./concurrency_fail.png)
 
@@ -100,7 +100,7 @@ When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger
 Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
 :::
 
-## Tracking concurrency slots from the UI
+## Tracking concurrency slots
 
 The `Concurrency` tab on the `Flow` page lets you track and troubleshoot concurrency issues. It shows a progress bar with the number of active slots compared to the total slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
 

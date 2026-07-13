@@ -39,7 +39,7 @@ Each row in the table represents a distinct event with several columns providing
 
 ## How to see a full diff of a specific event
 
-To see a full diff of a specific event, click on the icon in the **Changes** column. The expanded view shows the full diff of the event side-by-side, including the `before` and `after` states of a given resource:
+To see a full diff of a specific event, click the icon in the **Changes** column. The expanded view shows the full diff of the event side-by-side, including the `before` and `after` states of a given resource:
 
 ![Changes Diff](./changes_diff.png)
 
@@ -51,7 +51,7 @@ For example, you can filter for all events related to a specific namespace by ty
 
 ![Filter by Namespace](./audit-logs-filter.png)
 
-To further filter for a specific event, you can click on the relevant tag in the `Details` column, and it automatically adds the filter to the view.
+To filter for a specific event, click the relevant tag in the **Details** column to add it as a filter.
 
 ## How to Purge Audit Logs
 

@@ -156,7 +156,7 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 
 Backfills are replays of missed schedule intervals between a defined start and end date.
 
-To backfill the missed executions, go to the `Triggers` tab on the flow's detail page and click on the `Backfill executions` button.
+To backfill the missed executions, use **Backfill executions** on the flow's **Triggers** tab.
 
 ![backfill1](../../../06.concepts/08.backfill/backfill1.png)
 

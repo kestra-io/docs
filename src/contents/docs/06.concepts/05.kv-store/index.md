@@ -20,8 +20,6 @@ However, in certain scenarios, your workflow might need to share data beyond pas
 
 KV Store allows you to store any data in a convenient key-value format. You can create them directly from the UI, via dedicated tasks, Terraform, or through the API.
 
-The KV store is a powerful tool that allows you to build stateful workflows and share data across executions and workflows.
-
 ## How KV store fits into Kestra's architecture
 
 Kestra's architecture has been designed to offer a transparent separation between the orchestration and data processing capabilities. Kestra's [Executor](../../08.architecture/02.server-components/index.md#executor) is responsible for executing tasks and workflows without directly interacting with the user's infrastructure. The Executor relies on [Workers](../../08.architecture/02.server-components/index.md#worker), which are stateless processes that carry out the computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
@@ -55,9 +53,7 @@ Key value pairs are defined at a namespace level, and you can access them from t
 
 You can create and read KV pairs across namespaces as long as those namespaces are [allowed](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces).
 
-## UI: How to Create, Read, Update and Delete KV pairs from the UI
-
-Kestra follows a philosophy of Everything as Code and also from the UI. Therefore, you can create, read, update, and delete KV pairs both from the UI and Code.
+## Manage KV pairs in the UI
 
 Here is a list of the different ways to manage KV pairs:
 1. **Kestra UI**: select a Namespace and go to the KV Store tab — from here, you can create, edit, and delete KV pairs.
@@ -72,21 +68,19 @@ The sections below provide detailed instructions on how to create and manage KV 
 
 ### Create new KV pairs from the UI
 
-You can create, read, update, and delete KV pairs from the UI in the following way:
-
-1. Navigate to the `Namespaces` page from the left navigation menu and select the namespace where you want to create the KV pair.
+1. Open the namespace where you want to create the KV pair.
   ![navigate_to_namespace](./navigate_to_namespace.png)
-2. Go to the `KV Store` tab. This is where you can see all the KV pairs associated with this namespace.
+2. Open the **KV Store** tab.
   ![navigate_to_keystore](./navigate_to_keystore.png)
-3. Click on `New Key-Value` button in the top right corner to create a new KV pair. Enter a name for the `Key` and assign a suitable `Type` for the value — it can be a string, number, boolean, datetime, date, duration, or JSON.
+3. Click **New Key-Value** to create a KV pair. Enter a `Key` name and `Type` — string, number, boolean, datetime, date, duration, or JSON.
   ![create_kv_pair](./create_kv_pair.png)
 4. Enter the value in the `Value` field.
 5. Optionally, you can configure a Time to Live (TTL) for the KV pair. The dropdown contains some standard durations. You can also select `Custom duration` to enter a custom duration as a string in ISO 8601 duration format.
 6. Finally, `Save` the changes. Your new KV pair should now be displayed in the list of KV pairs for that namespace.
 
-### Update, Delete, and Copy KV pairs from the UI
+### Update, delete, and copy KV pairs
 
-You can edit, delete, or copy any KV pair by clicking on the associated button on the right side of each KV pair. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY') }}`) so you can use it directly in your flow.
+Edit, delete, or copy any KV pair using the action buttons on the right. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY') }}`) so you can use it directly in your flow.
 
 ![edit_delete_kv_pair](./edit_delete_kv_pair.png)
 
