@@ -57,16 +57,9 @@ Choose the backend based on where your organization already stores secrets. In p
 
 Kestra can be configured to use a secrets backend through `kestra.secret.*`.
 
-This page covers:
-
-- AWS Secrets Manager
-- Azure Key Vault
-- Google Secret Manager
-- HashiCorp Vault
-- JDBC
-- secret tags
-- secret cache
-- isolation options
+:::alert{type="info"}
+For the full backend reference — including all supported backends, complete property tables, permissions, credential resolution order, and read-only mode — see [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md).
+:::
 
 Base structure:
 

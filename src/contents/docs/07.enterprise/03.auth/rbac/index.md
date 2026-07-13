@@ -19,6 +19,7 @@ In Kestra you will find three types of entities:
   - [Invite users](../invitations/index.md) to your instance or tenant from the UI
   - Sync users from an external identity provider using [SCIM](../scim/index.mdx)
   - Create users directly using [Terraform](../../../13.terraform/index.mdx)
+  - Automate user onboarding, offboarding, and group management from inside a flow using [IAM tasks](../../../15.how-to-guides/iam-automation/index.md)
 
 * Groups: Represent a collection of **Users** and **Service Accounts**. Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
 * Service Accounts: Represents an **application**. They are considered Users when binding Role assignments.
