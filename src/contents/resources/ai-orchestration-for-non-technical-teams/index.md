@@ -71,7 +71,7 @@ The foundation of a user-friendly platform is its approach to workflow creation.
 *   **No-Code:** This refers to a purely visual development environment. Users can build entire workflows by dragging and dropping pre-built blocks, connecting them, and configuring their properties through simple forms. This approach is ideal for straightforward, linear processes and requires zero programming knowledge.
 *   **Low-Code:** This provides a middle ground. While much of the workflow can be built visually, the platform allows for small snippets of code (like YAML configurations or simple expressions) to handle more complex logic or custom transformations. This "escape hatch" provides flexibility without demanding full development skills.
 
-Kestra's platform embraces both, offering a [no-code flow builder](/docs/no-code/no-code-flow-building) for visual design alongside a declarative YAML interface that is easy for non-technical users to read and understand.
+Kestra's platform embraces both, offering a [no-code flow builder](/docs/ui/flows) for visual design alongside a declarative YAML interface that is easy for non-technical users to read and understand.
 
 ### Intuitive interfaces for seamless workflow design
 
@@ -162,7 +162,7 @@ By offloading these tasks to an automated workflow, the team can focus its limit
 
 ### Empowering founders and non-technical staff
 
-Founders and early employees are often generalists, not technical specialists. AI orchestration platforms empower them to build the solutions they need without hiring expensive developers or consultants. A marketing manager can build a lead nurturing workflow, an operations lead can automate inventory checks, and a founder can create a system to track key business metrics—all on their own. This self-service capability is crucial for agile, fast-moving companies. As seen in [customer stories](/use-cases/stories), companies like [CleverConnect](/blogs/2023-11-21-clever-connect-hr-tech) leverage orchestration to scale their core business operations efficiently.
+Founders and early employees are often generalists, not technical specialists. AI orchestration platforms empower them to build the solutions they need without hiring expensive developers or consultants. A marketing manager can build a lead nurturing workflow, an operations lead can automate inventory checks, and a founder can create a system to track key business metrics—all on their own. This self-service capability is crucial for agile, fast-moving companies. As seen in [customer stories](/customers), companies like [CleverConnect](/blogs/2023-11-21-clever-connect-hr-tech) leverage orchestration to scale their core business operations efficiently.
 
 ### Scaling operations with AI, simply
 

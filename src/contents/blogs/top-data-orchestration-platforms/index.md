@@ -15,7 +15,7 @@ The goal of this article is to **make you feel less overwhelmed**. There are man
 
 We'll take a high-level look at five of the best orchestration tools: Airflow, Kestra, [Azure Data Factory](/vs/azure-data-factory), [Prefect](/vs/prefect), and [AWS Step Functions](/vs/aws-step-functions). We'll discuss what makes each tool unique, who it's best suited for, pros, cons, and pricing.
 
-But before diving into the tools, let's discuss briefly what orchestration tools are and why you need them.
+But before diving into the tools, let's discuss briefly what orchestration tools are and why you need them. For the category definition, see [what is data orchestration](/resources/data/data-orchestration).
 
 
 ## What is an orchestration tool and why you need one

@@ -144,7 +144,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of properties available in the Azure Batch task runner, see the [Azure plugin documentation](/plugins/plugin-ee-azure/runner/io.kestra.plugin.ee.azure.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
+For a full list of properties available in the Azure Batch task runner, see the [Azure plugin documentation](/plugins/plugin-ee-azure/azure-runner/io.kestra.plugin.ee.azure.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
 :::
 
 ## Full step-by-step guide: setting up Azure Batch from scratch

@@ -31,7 +31,7 @@ To limit context switching, we added a contextual panel in the flow editor displ
 
 ### Improved EachSequential and EachParallel value definition
 
-[EachSequential](/plugins/core/flow/io.kestra.plugin.core.flow.eachsequential) and [EachParallel](/plugins/core/flow/io.kestra.plugin.core.flow.eachparallel) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
+[EachSequential](/plugins/core/flow) and [EachParallel](/plugins/core/flow) are powerful tasks that allow to process a set of tasks multiple times based on some variables. Previously, the variable can only be defined as a string: now, it can be an array of strings or an array of objects.
 
 :::alert{type="info"}
 Now use [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) or [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem).
@@ -77,7 +77,7 @@ And we also improved the quality of the [plugin documentation](/plugins), we hop
 
 ## Plugins
 
-Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-microsoft365/teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh/io.kestra.plugin.fs.ssh.command) task so send shell commands to a remote server with the SSH protocol.
+Kestra 0.8.0 introduces new plugins like the  [Google Cloud Dataproc serverless](/plugins/plugin-gcp/#dataproc) plugin to launch Dataproc batches (Spark) from Kestra, the [Microsoft Teams notification](/plugins/plugin-microsoft365/teams) plugin to send notification messages to Microsoft Teams and the [SSH Command](/plugins/plugin-fs/ssh-secure-shell/io.kestra.plugin.fs.ssh.command) task so send shell commands to a remote server with the SSH protocol.
 
 ## Enterprise Edition
 

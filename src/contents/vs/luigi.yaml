@@ -215,7 +215,7 @@ testimonials:
         name: Active Workflows
       - value: "25+"
         name: Engineers on Platform
-    storyLink: "/use-cases/stories/erp-transformation-smarter-faster-fully-automated"
+    storyLink: "/customers/fila"
 
 platformStrengths:
   title: Kestra Is Built for Teams Who Have Outgrown Batch-Only Pipelines
