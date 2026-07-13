@@ -4,28 +4,36 @@ sidebarTitle: pluginDefaults.forced Removed from Flows
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0
 editions: ["OSS", "EE"]
-description: The forced property is removed from flow-level pluginDefaults in Kestra 2.0. Use namespace-level Plugin Defaults or global configuration to enforce defaults that tasks cannot override.
+description: The forced property is removed from flow-level pluginDefaults in Kestra 2.0. In 2.0, pluginDefaults is removed entirely — migrate to Policies (EE) or inline task values (OSS).
 ---
 
 The `forced` property is removed from flow-level `pluginDefaults` in Kestra 2.0.
 
 :::alert{type="warning"}
-Flows that include `forced: true` inside a `pluginDefaults` block will fail to parse after upgrading to 2.0.0. Remove this property before upgrading.
+Flows that include `forced: true` inside a `pluginDefaults` block fail to parse after upgrading to 2.0.0. Remove this property before upgrading.
+:::
+
+:::alert{type="info"}
+**`pluginDefaults` is removed entirely in 2.0.0** — not just `forced: true`. After removing `forced: true`, migrate the remaining `pluginDefaults` entries. See the full [pluginDefaults Removed migration guide](../plugin-defaults-removed/index.md).
 :::
 
 ## Why the change
 
-`forced: true` in a flow's `pluginDefaults` let a flow author override any value a task explicitly set. This created a security problem: a regular user editing a flow could use `forced: true` to override plugin defaults that a platform administrator had configured at the namespace or tenant level. Platform administrators are now solely responsible for enforcing defaults, and must do so at the namespace or global configuration level.
+`forced: true` in a flow's `pluginDefaults` let a flow author override any value a task explicitly set. This created a security problem: a regular user editing a flow could use `forced: true` to override plugin defaults that a platform administrator had configured at the namespace or tenant level.
 
-Flow-level `pluginDefaults` continue to work for setting convenient defaults — they just can no longer override what a task explicitly declares.
+In 2.0, `pluginDefaults` is removed in favor of [Policies](../../../07.enterprise/02.governance/policies/index.md) (EE), which give platform administrators centralized, enforceable control over plugin configuration.
 
 ## Migration steps
 
-1. Search all flows for `pluginDefaults` blocks that include `forced: true`.
-2. Remove the `forced: true` line from each flow.
-3. If you need to prevent tasks from overriding a default, move that default to the namespace **Plugin Defaults** tab (Enterprise Edition) or to the `kestra.plugins.defaults` section of your global Kestra configuration.
+1. Search all flows for `pluginDefaults` blocks that include `forced: true`:
 
-**Before**
+```bash
+grep -rl "forced:" flows/
+```
+
+2. Remove the `forced: true` line from each flow.
+
+**Before:**
 
 ```yaml
 pluginDefaults:
@@ -35,7 +43,7 @@ pluginDefaults:
       pullPolicy: NEVER
 ```
 
-**After**
+**After (as an interim step):**
 
 ```yaml
 pluginDefaults:
@@ -44,21 +52,4 @@ pluginDefaults:
       pullPolicy: NEVER
 ```
 
-To enforce the value so tasks cannot override it, configure `forced: true` at the global or namespace level instead:
-
-```yaml
-# kestra.yml — global configuration
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.scripts.runner.docker.Docker
-        forced: true
-        values:
-          pullPolicy: NEVER
-```
-
-## Global forced defaults take precedence over namespace forced defaults
-
-In Kestra 2.0, when both a global and a namespace-level plugin default have `forced: true` for the same plugin property, the global value wins. This is the intended enforcement direction: platform administrators control the global config and their settings cannot be overridden by namespace admins.
-
-If you relied on a namespace-level `forced` default overriding a global `forced` default — which was possible in earlier versions due to a precedence bug — review your configuration before upgrading. After upgrading, the global value will apply.
+3. Migrate the remaining `pluginDefaults` entries. See [pluginDefaults Removed](../plugin-defaults-removed/index.md) for the complete guide covering all scopes (flow-level, namespace-level, and global configuration) and the equivalent Policy DSL for Enterprise Edition.

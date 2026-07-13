@@ -7,6 +7,10 @@ icon: /src/contents/docs/icons/flow.svg
 docId: plugin-defaults
 ---
 
+:::alert{type="warning"}
+**Removed in Kestra 2.0.** The `pluginDefaults` keyword is removed at all scopes — flow level, namespace level, and global configuration. In Enterprise Edition, use [Policies](../../07.enterprise/02.governance/policies/index.md) instead. See the [pluginDefaults Removed migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md) for upgrade steps.
+:::
+
 Plugin defaults are default values applied to every task of a given type within one or more flows.
 
 They work like default function arguments, helping you avoid repetition when tasks or plugins frequently use the same values.
