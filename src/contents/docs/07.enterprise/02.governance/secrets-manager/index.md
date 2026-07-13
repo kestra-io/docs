@@ -281,13 +281,14 @@ Kestra integrates with [Doppler](https://api.doppler.com) as a secrets backend. 
 To use Doppler, generate a Doppler service token with access to the desired project and config. Then, add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
 
 ```yaml
-secret:
-  type: doppler
-  doppler:
-    token: YOUR_TOKEN
-    config: kestra_unit_test
-    project: kestra_unit_test
-    secretNamePrefix: kestra
+kestra:
+  secret:
+    type: doppler
+    doppler:
+      token: YOUR_TOKEN
+      project: my-project
+      config: production
+      secret-name-prefix: kestra   # optional
 ```
 
 **Configuration properties:**
@@ -295,7 +296,9 @@ secret:
 * **token**: Your Doppler service token.
 * **project**: The Doppler project containing the secrets.
 * **config**: The Doppler config/environment to read from.
-* **secretNamePrefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+* **secret-name-prefix**: Optional prefix added to all secret keys to avoid collisions and share a Doppler backend across multiple Kestra instances or namespaces.
+* **connect-timeout**: Optional. HTTP connection timeout when calling the Doppler API. Defaults to `PT15S` (15 seconds).
+* **read-timeout**: Optional. HTTP read timeout when calling the Doppler API. Defaults to `PT60S` (60 seconds).
 
 ## 1Password Configuration
 
@@ -365,6 +368,52 @@ kestra:
   - **domain**: Optional. Active Directory domain for on-premise deployments using domain accounts.
   - **folderId**: The folder ID in Delinea Secret Server where Kestra secrets are stored. Required for write operations.
   - **secretTemplateId**: The secret template ID used when creating new secrets. Required for write operations.
+
+### Reading multi-field Delinea secrets
+
+Delinea secrets store structured credentials — for example, an Active Directory secret template typically holds a password, username, and domain as separate fields. Kestra exposes these through the `secret()` expression function.
+
+By default, `secret()` returns only the password field:
+
+```twig
+{{ secret('AD_CREDS') }}
+```
+
+Pass `full=true` to retrieve all fields at once as a structured object. The `value` key holds the password; `metadata` holds all other non-password, non-notes template fields keyed by their Delinea item slug:
+
+```twig
+{% set creds = secret('AD_CREDS', full=true) %}
+{{ creds.value }}            {# password #}
+{{ creds.metadata.username }}
+{{ creds.metadata.domain }}
+```
+
+The keys available under `creds.metadata` depend on the fields defined in your Delinea secret template. The `notes` field is always excluded.
+
+## Bitwarden Configuration
+
+Kestra integrates with [Bitwarden Secrets Manager](https://bitwarden.com/products/secrets-manager/) as an external secrets backend. Secrets stay end-to-end encrypted in Bitwarden and are decrypted client-side by Kestra workers at runtime, which keep them only in memory. No Bitwarden CLI or native SDK is required.
+
+To use Bitwarden, create a machine account with an access token and grant it access to the project holding your secrets. Then add the following configuration either globally in your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) or per-namespace using the **Secrets** tab with a dedicated secret manager.
+
+```yaml
+kestra:
+  secret:
+    type: bitwarden
+    bitwarden:
+      accessToken: YOUR_ACCESS_TOKEN
+      organizationId: YOUR_ORGANIZATION_ID
+      apiUrl: https://api.bitwarden.com
+      identityUrl: https://identity.bitwarden.com
+```
+
+**Configuration properties:**
+
+* **accessToken**: Machine account access token used to authenticate with Bitwarden and to decrypt secrets client-side.
+* **organizationId**: The Bitwarden organization the machine account belongs to.
+* **apiUrl**: Bitwarden API URL. Defaults to the US cloud (`https://api.bitwarden.com`). Use `https://api.bitwarden.eu` for EU cloud, or your instance URL for self-hosted.
+* **identityUrl**: Bitwarden identity URL. Defaults to `https://identity.bitwarden.com`. Use `https://identity.bitwarden.eu` for EU cloud, or your instance URL for self-hosted.
+* **projectId**: Optional. Restrict resolution to a single Bitwarden project.
 
 ## JDBC (Postgres, H2, MySQL) Secret Manager
 

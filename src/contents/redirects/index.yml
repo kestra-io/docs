@@ -2,6 +2,8 @@
   to: "/sitemap/index.xml"
 - regexp: "/slack(.*)"
   to: https://api.kestra.io/v1/communities/slack/redirect
+- regexp: "/trust"
+  to: https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604
 - regexp: "/terms-and-services"
   to: "/enterprise-license-agreement"
 - regexp: "/blog"

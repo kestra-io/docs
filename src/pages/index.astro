@@ -9,6 +9,7 @@ import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
 import Testimonial from "~/components/home/Testimonial.astro"
 import Blueprints from "~/components/home/Blueprints.astro"
 import ClosingCTA from "~/components/home/ClosingCTA.astro"
+import EarlyAdopterBanner from "~/components/early-adopter-program/EarlyAdopterBanner.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
@@ -54,6 +55,7 @@ const totalPlugins = await fetchTotalPluginsCount()
         </GetStarted>
         <Blueprints />
         <ClosingCTA />
+        <EarlyAdopterBanner />
     </div>
 </Layout>
 
