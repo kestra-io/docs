@@ -22,7 +22,7 @@ To launch a task on Azure Batch, there are two main concepts to understand:
 
 To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the Azure Batch task runner relies on [resource files](https://learn.microsoft.com/en-us/azure/batch/resource-files) and [output files](https://learn.microsoft.com/en-us/rest/api/batchservice/task/add?view=rest-batchservice-2023-11-01&tabs=HTTP), which transit through [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs).
 
-Since the working directory of the container is not known in advance, you must explicitly define both the working directory and the output directory when using the Azure Batch runner. For example, use `cat {{ workingDir }}/myFile.txt` rather than `cat myFile.txt`.
+The container does not start in the Kestra working directory. Use `{{ workingDir }}` or `WORKING_DIR` to reference input and output files — for example, `cat {{ workingDir }}/myFile.txt` rather than `cat myFile.txt`.
 
 The following Pebble expressions and environment variables are available inside the container at runtime:
 

@@ -32,7 +32,7 @@ To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner cr
 
 **EKS:** Uses [EKS job definitions](https://docs.aws.amazon.com/batch/latest/userguide/jobs-eks.html) with a Kubernetes pod. Sidecar containers run as pod containers using the same S3-based file transfer pattern. The main container command is wrapped in `/bin/sh -c`, so the container image must include `/bin/sh`.
 
-Since the working directory of the container isn’t known in advance, you must define the working and output directories explicitly. For example, use `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
+The container does not start in the Kestra working directory. Use `{{ workingDir }}` or `WORKING_DIR` to reference input and output files — for example, `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
 
 ### Exit codes
 
