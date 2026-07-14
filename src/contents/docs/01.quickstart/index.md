@@ -56,6 +56,22 @@ Open `http://localhost:8080` in your browser. You will see the Kestra UI when th
 The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
 :::
 
+## Stop and reset Kestra
+
+To stop the container, press `Ctrl+C` in the terminal where it's running. Because the `docker run` command uses `--rm`, the container is removed automatically on exit — but the `kestra_data` and `kestra_db` Docker volumes are preserved.
+
+When you re-run the same `docker run` command, Kestra picks up those volumes and your previous state (flows, executions, and your user account) is restored. If the sign-up page appears again, your account already exists — sign in with the credentials you created on the first run.
+
+To start completely fresh, remove the volumes before re-running:
+
+```bash
+docker volume rm kestra_data kestra_db
+```
+
+:::alert{type="info"}
+If you find yourself stopping and restarting Kestra frequently, the [Docker Compose installation](../02.installation/03.docker-compose/index.md) is easier to manage and gives you more control over configuration.
+:::
+
 ## Next steps
 
 You've taken the product tour, executed your first flow, and explored Kestra. Next, follow the documentation in this order to build on what you've learned:
