@@ -1,18 +1,16 @@
 <template>
     <div
         v-if="code"
-        :class="['code-card', { 'is-expandable': isExpandable, 'is-expanded': isExpanded }]"
+        :class="[
+            'code-card',
+            { 'is-expandable': isExpandable, 'is-expanded': isExpanded },
+        ]"
     >
         <div class="code-inner">
             <div class="code-container">
-                <MDCParserAndRenderer
-                    :content="markdownCode"
-                />
+                <MDCParserAndRenderer :content="markdownCode" />
             </div>
-            <Copy
-                :code="props.code"
-                class="snippet-copy"
-            />
+            <Copy :code="props.code" class="snippet-copy" />
         </div>
 
         <button
@@ -45,7 +43,9 @@
 
     const isExpanded = ref(false)
 
-    const lineCount = computed(() => (props.code ? props.code.trim().split("\n").length : 0))
+    const lineCount = computed(() =>
+        props.code ? props.code.trim().split("\n").length : 0,
+    )
     const isExpandable = computed(() => lineCount.value > props.expandThreshold)
 
     const markdownCode = computed(() => {
@@ -53,7 +53,9 @@
     })
 
     const expandText = computed(() => {
-        return isExpanded.value ? "See less" : `See all ${lineCount.value} lines`
+        return isExpanded.value
+            ? "See less"
+            : `See all ${lineCount.value} lines`
     })
 
     const toggleExpand = () => {
@@ -90,14 +92,14 @@
             :deep(.mdc-renderer) {
                 margin-bottom: 0;
 
-                :deep(pre) {
+                pre {
                     background: var(--ks-background-primary) !important;
                     margin: 0;
                     overflow: hidden !important;
                     border: none;
                 }
 
-                :deep(code) {
+                code {
                     font-size: $font-size-sm;
                     line-height: 1.6;
                 }
@@ -107,7 +109,11 @@
         &.is-expandable {
             .code-inner {
                 max-height: 350px;
-                mask-image: linear-gradient(to bottom, var(--ks-background-primary) 70%, transparent 100%);
+                mask-image: linear-gradient(
+                    to bottom,
+                    var(--ks-background-primary) 70%,
+                    transparent 100%
+                );
             }
         }
 

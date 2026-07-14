@@ -18,7 +18,7 @@ Manage and distribute logs across your entire infrastructure.
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, and OpenTelemetry.
+Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, Huawei Cloud LTS, and OpenTelemetry.
 
 ## Log shipper properties
 
@@ -489,6 +489,40 @@ tasks:
         graylogHost: "Kestra"
         chunk: 1000
 ```
+
+### Huawei Cloud LTS
+
+This example exports logs to [Huawei Cloud Log Tank Service (LTS)](https://www.huaweicloud.com/intl/en-us/product/lts.html). The following example flow triggers a daily batch and ships logs to an LTS log stream. Refer to the [Huawei EE Plugin Documentation](/plugins/plugin-ee-huawei) for more property details.
+
+```yaml
+id: log_shipper
+namespace: company.team
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    delete: false
+    logExporters:
+      - id: huawei_lts
+        type: io.kestra.plugin.ee.huawei.lts.LogExporter
+        region: eu-west-101
+        projectId: "{{ secret('HUAWEI_PROJECT_ID') }}"
+        accessKeyId: "{{ secret('HUAWEI_ACCESS_KEY_ID') }}"
+        secretAccessKey: "{{ secret('HUAWEI_SECRET_ACCESS_KEY') }}"
+        logGroupId: "{{ secret('HUAWEI_LOG_GROUP_ID') }}"
+        logStreamId: "{{ secret('HUAWEI_LOG_STREAM_ID') }}"
+        chunk: 1000
+```
+
+The Huawei Cloud LTS exporter authenticates with Huawei Cloud using either static AK/SK credentials (`accessKeyId` and `secretAccessKey`), a pre-obtained `securityToken`, or inline IAM STS credential exchange via `temporaryCredentials`. The `logGroupId` and `logStreamId` are UUIDs that you can copy from the LTS console (they are not the human-readable group and stream names).
 
 ## Audit log shipper
 

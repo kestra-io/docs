@@ -1,30 +1,31 @@
 <template>
-    <MDCRenderer
-        v-if="docAst?.body"
-        :body="docAst.body"
-        :data="docAst.data"
+    <div
+        v-if="htmlContent"
         :key="content"
         class="mdc-renderer"
+        v-html="htmlContent"
     />
+    <div v-else-if="parseError" class="parse-error">
+        <strong>MDC parse error:</strong> {{ parseError }}
+    </div>
     <div v-else class="skeleton"></div>
 </template>
 
 <script lang="ts" setup>
-    import { getMDCParser, MDCRenderer } from "@kestra-io/ui-libs"
     import { onMounted, ref, watch } from "vue"
+    import { getMarked } from "~/markdown/marked-shiki"
 
     const props = defineProps<{
         content: string
     }>()
 
-    const docAst = ref<any>()
+    const htmlContent = ref<string>("")
 
     async function parseContent() {
-        const parse = await getMDCParser()
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        docAst.value = await parse(props.content)
+        htmlContent.value = await getMarked().parse(props.content)
     }
 
     onMounted(async () => {
@@ -79,6 +80,15 @@
         }
     }
 
+    .parse-error {
+        background: #fee;
+        border: 1px solid #f88;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        color: #c00;
+        font-size: 0.875rem;
+    }
+
     .skeleton {
         display: inline-block;
         position: relative;
@@ -108,6 +118,16 @@
                 transform: translateX(100%);
             }
         }
+    }
+</style>
+
+<!-- Shiki dual-theme: token colors apply inline (light); switch to the dark
+     theme via the per-token `--shiki-dark` CSS variable when `.dark` is set on
+     <html>. Not scoped so it reaches the v-html output; namespaced under
+     .mdc-renderer to avoid leaks. -->
+<style lang="scss">
+    html.dark .mdc-renderer pre code span {
+        color: var(--shiki-dark) !important;
     }
 </style>
 

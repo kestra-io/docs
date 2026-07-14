@@ -9,8 +9,6 @@ Run Kestra on Windows using the standalone executable JAR — no Docker required
 
 One use case for this setup is running a Windows remote worker as part of a [worker group](../../07.enterprise/04.scalability/worker-group/index.md), allowing Windows-native scripts such as PowerShell or batch commands to be executed within a broader Kestra deployment.
 
-For a production-grade setup on Windows, consider running Kestra through [Docker Compose with WSL 2](../03.docker-compose/index.md) instead.
-
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/Pyr0AKLFfBc?si=sdgYcOftlDoq5_Cs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
@@ -129,9 +127,9 @@ The JDBC secret backend stores secrets in the same PostgreSQL database as Kestra
 
 For the full list of configuration options, see the [Configuration guide](../../configuration/index.mdx).
 
-## Alternative: Docker Compose with WSL 2
+## Local development: Docker Compose with WSL 2
 
-For a production-ready setup on Windows, Docker Compose running inside WSL 2 is the recommended approach. It pairs Kestra with a PostgreSQL container and avoids the limitations of the H2 embedded database.
+For local evaluation or development on Windows, you can run Kestra via Docker Compose inside WSL 2. This pairs Kestra with a PostgreSQL container and avoids the limitations of the H2 embedded database, but WSL 2 is not recommended for production Windows Server workloads — use the standalone JAR with an external PostgreSQL database for those deployments.
 
 **Prerequisites:**
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/) with the **WSL 2 backend** enabled. In Docker Desktop, go to **Settings → Resources → WSL Integration** and confirm you are using WSL 2 rather than the Windows backend. Docker runs significantly better for Kestra under WSL 2.

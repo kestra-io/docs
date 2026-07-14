@@ -5,9 +5,10 @@ interface Props {
     description?: string
     url?: string
     isVariantOf?: string
+    featureList?: string[]
 }
 
-const { id, name, description, url, isVariantOf } = Astro.props
+const { id, name, description, url, isVariantOf, featureList } = Astro.props
 
 const canonicalUrl =
     url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
@@ -65,6 +66,10 @@ const schema: Record<string, unknown> = {
 if (isVariantOf) {
     schema.isVariantOf = { "@id": isVariantOf }
 }
+
+if (featureList && featureList.length > 0) {
+    schema.featureList = featureList
+}
 ---
 
-<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

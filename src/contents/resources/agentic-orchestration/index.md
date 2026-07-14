@@ -4,7 +4,7 @@ description: "Discover agentic orchestration, how it coordinates AI agents & aut
 metaTitle: "What is Agentic Orchestration? | Kestra"
 metaDescription: "Learn what agentic orchestration is, how it coordinates AI agents and automates complex workflows, and the governance components required for production AI."
 tag: ai
-date: 2026-04-29
+date: 2026-07-01
 faq:
   - question: "What is the difference between agentic and orchestration?"
     answer: "'Agentic' refers to the quality of an AI system having autonomous, goal-driven actors (agents). 'Orchestration' refers to the framework that coordinates these agents, along with other systems and people, to achieve a larger business process. Agentic is about the actor; orchestration is about the system managing the actors."
@@ -26,196 +26,192 @@ faq:
     answer: "Common pitfalls include underestimating the need for governance, giving agents access to too many or poorly defined tools, failing to implement human oversight for critical tasks, and not having adequate monitoring to observe and debug agent behavior. Starting with a strong orchestration platform helps avoid these issues."
 ---
 
-The promise of AI lies not just in intelligent models, but in systems that can autonomously plan, adapt, and execute complex goals. Yet, bringing these "agentic" capabilities into production environments introduces new challenges: how do you coordinate multiple AI agents, ensure their actions align with business processes, and maintain governance?
+```yaml
+---
+title: "Agentic Orchestration: Unifying AI Agents and Workflows"
+description: "Agentic orchestration provides the framework for AI agents to collaborate effectively, tackling complex tasks across diverse domains. Learn how a declarative orchestration platform can bring governance and scalability to your AI workflows."
+metaTitle: "Agentic Orchestration: Unifying AI Agents & Workflows"
+metaDescription: "Learn what agentic orchestration is, how it differs from choreography, and how a declarative platform coordinates AI agents into governed, auditable systems."
+tag: "ai"
+date: 2026-07-01
+slug: "agentic-orchestration"
+faq:
+  - question: "What is agentic orchestration?"
+    answer: "Agentic orchestration is a structured approach to managing specialized AI agents so they collaborate and complete tasks autonomously. It coordinates agents, governs their actions, and moves data between them to achieve complex organizational goals reliably."
+  - question: "What is an agentic orchestration platform?"
+    answer: "An agentic orchestration platform is a control plane that lets AI agents, automation, machine learning, and people work together. It provides the capabilities to design, run, monitor, and optimize long-running processes end-to-end, with audit trails and access controls for AI initiatives."
+  - question: "What is the difference between an agent and an orchestrator?"
+    answer: "An agent is an autonomous unit that reasons, calls tools, and acts toward a goal. An orchestrator is the layer above it that decides which agents run, in what order, with what data, and under what governance. The agent does the work; the orchestrator coordinates and supervises it."
+  - question: "What is the difference between agentic workflows and orchestration?"
+    answer: "In agentic systems, workflows are the processes where agents execute tasks. Orchestration defines explicit checkpoints and rules, letting agents do preparatory and analytical work autonomously while keeping human judgment where it is required. This lets people focus on outcomes rather than supervising every step."
+  - question: "What is the difference between orchestration and choreography in agentic AI?"
+    answer: "Orchestration provides a central authority for control, ensuring compliance, governance, and predictable execution across AI agents. Choreography emphasizes decentralized, self-organizing interactions that favor adaptability. A blend of both can create resilient agentic ecosystems tailored to an organization's need for control and autonomy."
+  - question: "How to build agentic orchestration?"
+    answer: "Building agentic orchestration involves assessment and planning, selecting specialized AI agents, implementing an orchestration framework, assigning agents to tasks, coordinating workflow execution, and managing data sharing and context. Continuous optimization and learning are essential for long-term success."
+  - question: "What exactly is orchestration?"
+    answer: "Orchestration is the coordinated execution of multiple IT automation tasks or processes across various systems, applications, and services. Its purpose is to ensure that complex sequences—deployments, configuration management, and data pipelines—run in the correct order, with proper error handling and dependency management."
+---
+```
+The rise of AI agents promises a new level of automation, but their real power lies not in isolated capabilities, but in their ability to collaborate and execute complex, multi-step workflows. Without a central coordinating intelligence, these agents quickly become chaotic, creating new silos and operational blind spots.
 
-This is where agentic orchestration becomes essential. It's the framework for designing, implementing, and overseeing adaptive AI workflows. This guide will explore what agentic orchestration is, how it enables intelligent automation, and the core components required to manage these dynamic systems effectively, setting the stage for more autonomous and efficient enterprise operations.
+Agentic orchestration provides this missing framework. It's the discipline of designing, managing, and monitoring teams of AI agents, making sure they work together across diverse systems—from data pipelines and cloud infrastructure to business logic and human approvals. This article explores how agentic orchestration unifies these disparate elements into a single, auditable control plane, so enterprises can build reliable, scalable AI-powered systems.
 
-## Decoding Agentic Orchestration: Definitions and Core Concepts
+## What is agentic orchestration?
 
-Before deploying autonomous systems, it's critical to understand the framework that governs them. Agentic orchestration is not just about running AI models; it's about managing a new kind of digital workforce.
+Agentic orchestration represents a significant evolution in automation, moving from simple, task-based scripts to goal-oriented systems. It's the structured practice of managing and coordinating multiple specialized [AI agents](/resources/ai/ai-agent) to achieve outcomes that no single agent could accomplish alone.
 
-### What is Agentic Orchestration?
+At its core, agentic orchestration is about creating a system where AI agents can collaborate, share context, and execute tasks in a governed, observable manner. This is not just about running a sequence of model calls; it's about building a framework that handles errors, incorporates human feedback, and interacts with external tools and APIs.
 
-Agentic orchestration is the coordination of multiple AI agents, people, and systems within a single, governed business process. Unlike traditional workflow automation, which follows a predefined, static path, agentic orchestration manages dynamic workflows where autonomous agents can make decisions, adapt to new information, and choose their own course of action to achieve a specific goal.
+This approach is a cornerstone of [AI-native orchestration platforms](/resources/ai/ai-native-orchestration-platform), which are designed from the ground up to manage the complexities of AI-driven processes. These platforms provide the control plane needed to move agentic systems from experimental prototypes to production-grade applications, so every action is auditable, repeatable, and aligned with business objectives.
 
-The key is that the orchestration layer doesn't prescribe every single step. Instead, it sets the goals, provides the tools, and enforces the rules, allowing the agents to determine the best path to a solution. This approach combines the adaptability of AI with the reliability and auditability required for enterprise applications.
+### Agentic AI vs. orchestrated AI: why the distinction matters
 
-### How Does Agentic Orchestration Work in Practice?
+It helps to separate two ideas that often get blurred. *Agentic AI* describes the capability of an individual model or agent to reason, plan, and act with some autonomy—deciding which tool to call or which step to take next. *Orchestrated AI* describes how those autonomous units are arranged, sequenced, and governed at the system level.
 
-In a practical sense, agentic orchestration distributes work among a team of specialized AI agents, Robotic Process Automation (RPA) bots, and human experts. The system operates as a feedback loop:
+A single agentic model left to run on its own can be unpredictable: it may loop, hallucinate a tool call, or take an action with no record of why. Orchestration is what turns that raw autonomy into a dependable system. It sets the boundaries inside which an agent is free to reason, decides when control passes from one agent to the next, and captures every decision for review. In short, agentic AI gives you intelligence; orchestrated AI gives you a system you can trust in production.
 
-1.  **Goal Definition:** A high-level objective is defined within the orchestrator (e.g., "Resolve a customer support ticket" or "Analyze a security threat").
-2.  **Agent Selection:** The orchestrator assigns the initial task to the most appropriate agent, such as a "Triage Agent" that categorizes incoming requests.
-3.  **Autonomous Execution:** The agent uses its available tools (APIs, databases, search functions) to perform its task. It might escalate to another specialized agent (e.g., a "Technical Support Agent") or request human approval for a critical action.
-4.  **Coordinated Collaboration:** The orchestrator manages the handoff between agents, ensuring context and data are passed along seamlessly.
-5.  **State Management:** The system tracks the progress of the overall goal, maintaining a shared understanding of the state across all participants.
-6.  **Completion & Audit:** Once the goal is met, the orchestrator finalizes the process and records a complete audit trail of every decision and action taken.
+## What is the difference between an agent and an orchestrator?
 
-### What is an Orchestrator in Agentic AI?
+This distinction sits at the heart of every agentic system. An **agent** is an autonomous unit: it receives a goal, reasons about how to reach it, calls tools or APIs, and produces a result. It might search the web, query a database, or write a file. Its strength is local intelligence and adaptability.
 
-An orchestrator in agentic AI is the central nervous system of the multi-agent system. It's not a micromanager but a conductor. Its primary responsibilities include:
+An **orchestrator** operates one level up. It does not do the task itself; it decides *which* agents run, *in what order*, with *what data*, and under *what rules*. It triggers work, passes context between agents, manages dependencies and parallel execution, handles failures, and logs every step. If an agent is a specialist doing a job, the orchestrator is the manager assigning the work, checking the output, and keeping the audit trail.
 
-*   **Process Modeling:** Defining the end-to-end business process and the rules of engagement.
-*   **Task Distribution:** Assigning tasks to the right agents based on their capabilities.
-*   **State and Context Management:** Providing agents with the necessary information and memory to perform their tasks.
-*   **Communication Hub:** Facilitating communication and data exchange between agents.
-*   **Governance and Compliance:** Enforcing security policies, managing access to tools, and creating auditable logs.
-*   **Error Handling and Escalation:** Managing exceptions and routing tasks to humans when agents fail or require oversight.
+The practical consequence: you can swap, add, or upgrade individual agents without redesigning the whole process, because coordination and governance live in the orchestration layer rather than being hard-coded into each agent.
 
-The orchestrator transforms a collection of independent agents into a cohesive, goal-oriented system capable of handling complex, real-world business challenges. You can explore how [agentic AI](/resources/ai/agentic-ai) underpins these systems, and how Kestra enables [AI automation](/ai-automation) across your entire enterprise stack.
+## Why agentic orchestration is critical for production AI
 
-## Agentic AI vs. Orchestrated AI: Understanding the Distinctions
+While individual AI agents can perform impressive feats, deploying them at scale in an enterprise introduces real challenges. Ad-hoc scripts and unmanaged agent interactions lead to fragility, lack of visibility, and compliance risk. Agentic orchestration addresses these issues directly.
 
-The terms "agentic" and "orchestrated" are often used in discussions about AI, but they represent fundamentally different paradigms. Understanding this difference is key to building effective and scalable AI systems.
+### The challenges of unmanaged AI agents
 
-### What is the Difference Between Orchestrated AI and Agentic AI?
+Without a formal orchestration layer, teams face several problems:
+*   **Lack of visibility:** It's hard to track what agents are doing, why they failed, or how they reached a decision.
+*   **Poor reliability:** Hand-written Python scripts rarely handle production workloads well, lacking built-in retries, error handling, and state management.
+*   **Security and governance gaps:** Unmanaged agents can touch sensitive data and systems without proper audit trails or access controls.
+*   **Siloed operations:** Each agent becomes a separate, isolated system, making it hard to build cohesive, end-to-end business processes.
 
-**Orchestrated AI** focuses on the control and sequencing of largely predictable tasks. Think of a standard data pipeline: extract data from source A, transform it with script B, and load it into destination C. The orchestrator's job is to ensure these steps happen in the correct order, manage dependencies, and handle failures. The logic is predefined and the path is fixed.
+### How orchestration addresses these challenges
 
-**Agentic AI** introduces intelligence and autonomy into the workflow's actors. The agents themselves can plan, reason, and adapt. The orchestration layer's role shifts from dictating steps to coordinating intelligent actions. It manages goals and rules, while the agents figure out *how* to achieve those goals. Agentic AI is suited for dynamic, unpredictable tasks where the solution path isn't known in advance.
+A central orchestration platform answers each of these problems with structure and governance. It acts as the "brain" of the agentic system, coordinating the [multi-agent collaboration](/resources/ai/multi-agent-collaboration-evolving-orchestration) that sophisticated tasks demand. This control plane is responsible for:
+*   Triggering workflows based on events or schedules.
+*   Passing data and context between agents.
+*   Managing dependencies and parallel execution.
+*   Handling errors and executing compensation logic.
+*   Logging every action for audit and compliance.
 
-### What is the Difference Between an Agent and an Orchestrator?
+Visibility comes from a single execution log; reliability comes from built-in retries and state management; governance comes from access controls and immutable audit trails; and silos disappear because one platform spans the whole process. By managing the entire [AI pipeline](/resources/ai/ai-pipeline)—from data ingestion to model interaction and final action—orchestration makes agentic systems not just powerful, but dependable and trustworthy.
 
-An **agent** is an autonomous entity that can perceive its environment, make decisions, and take actions to achieve goals. In the context of AI, an [AI agent](/resources/ai/ai-agent) typically combines a large language model (LLM) for reasoning, a set of tools to interact with the world, and memory to maintain context.
+## Agentic workflows vs. agentic orchestration: understanding the relationship
 
-An **orchestrator** is the framework that manages one or more agents. It provides the environment in which agents operate, defining the overarching business process, providing access to tools, handling communication between agents, and ensuring the entire system remains governed and observable. An agent is a player; the orchestrator is the coach that defines the game plan. For more on this, see our introduction to [autonomous orchestration with AI agents](/blogs/introducing-ai-agents).
+The terms "workflow" and "orchestration" are often used interchangeably, but in agentic AI they have distinct meanings. Understanding the difference is key to designing effective systems.
 
-### Is ChatGPT an Agentic AI?
+### Defining agentic workflows: the sequence of tasks
 
-No, ChatGPT by itself is not an agentic AI system. It is a powerful Large Language Model (LLM), which is a core *component* of an AI agent. An agentic AI system requires more than just an LLM:
+An agentic workflow is the specific sequence of steps that one or more agents execute to complete a task. Think of it as the recipe: it defines what needs to be done and in what order. A workflow might involve one agent searching the web for information, another summarizing the findings, and a third drafting an email based on the summary. The workflow is the "how-to" guide for the process.
 
-*   **Tools:** The ability to interact with external systems (e.g., search the web, run code, query a database).
-*   **Memory:** A mechanism to retain information across multiple interactions.
-*   **Planning:** The capacity to break down a complex goal into a sequence of steps.
-*   **Orchestration:** A control layer to manage the agent's lifecycle and its interaction with other systems.
+### Orchestration: the conductor of agentic workflows
 
-Without these additional components, an LLM like ChatGPT can respond to prompts but cannot autonomously execute multi-step tasks in a production environment. The future of AI workflows depends on robust [agentic orchestration](/blogs/kestra-2-0-engineering) to bridge this gap.
+Orchestration is the active management and coordination of these workflows. If the workflow is the recipe, the orchestrator is the head chef who keeps all the cooks (agents) working together, supplied with the right ingredients (data), and delivering their part on time. The orchestrator initiates the workflow, monitors its progress, handles exceptions, and ensures the final goal is met. Kestra's [AI Agents](/docs/ai-tools/ai-agents), for instance, operate within an orchestration framework that governs their execution and interaction with other systems.
 
-## Essential Components of an Agentic Orchestration System
+## Orchestration vs. choreography in agentic AI: choosing the right model
 
-A robust agentic orchestration system is built on several key components that work together to enable reliable and scalable autonomous workflows.
+When designing multi-agent systems, two interaction patterns emerge: orchestration and choreography. The choice depends on the level of control, governance, and flexibility you need.
 
-### Defining Roles of AI Agents in Orchestration
+### Centralized control with orchestration
 
-Effective systems use a team of specialized agents rather than a single, general-purpose one. Each agent has a defined role and a specific set of tools, improving efficiency and reducing the risk of errors. Common roles include:
+In an orchestrated model, a central controller directs the interactions between agents. It tells each agent what to do and when. This pattern suits processes that need strong governance, strict sequencing, and clear audit trails. The orchestrator is the single source of truth for the state of the workflow, which makes it easier to debug and manage.
 
-*   **Planner Agent:** Breaks down a high-level goal into a sequence of executable tasks.
-*   **Researcher Agent:** Gathers information from external sources like the web or internal knowledge bases.
-*   **Executor Agent:** Performs specific actions, such as calling an API or running a script.
-*   **Validator Agent:** Checks the work of other agents for accuracy and quality.
-*   **User-Facing Agent:** Communicates with humans to gather input or present results.
+### Decentralized coordination with choreography
 
-### Mechanisms for Seamless Agent Collaboration
+In a choreographed model, there is no central controller. Agents are independent and react to events emitted by other agents. Each agent knows its role and subscribes to the events relevant to its function. This pattern promotes loose coupling and adaptability, since agents can be added or removed without reconfiguring a central process. It is a form of [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) that thrives on autonomy and emergent behavior.
 
-For agents to work as a team, the orchestration platform must provide mechanisms for collaboration:
+### Blending approaches for resilient agentic ecosystems
 
-*   **Shared Memory:** A common context window or database where agents can read and write information, allowing them to build on each other's work.
-*   **Message Queues:** A system for agents to pass tasks and data to one another asynchronously.
-*   **Tool Registry:** A centralized repository of available tools (APIs, functions, scripts) that agents can discover and use, with permissions managed by the orchestrator.
-*   **State Machine:** The orchestrator maintains the overall state of the workflow, tracking which tasks are complete and what needs to happen next.
+In practice, the most resilient agentic systems blend both patterns. Orchestration manages the high-level business process and enforces critical checkpoints, while choreography enables flexible, dynamic interactions between agents within a specific stage of the workflow. This hybrid approach gives you both the governance enterprise systems require and the adaptability that complex, unpredictable tasks demand.
 
-### The Importance of Governing Agentic Business Processes
+## Key capabilities of an agentic orchestration platform
 
-In an enterprise context, governance is non-negotiable. Autonomous agents cannot operate in a black box. Key governance components include:
+A capable agentic orchestration platform must provide more than a way to run scripts. It needs a specific set of capabilities to manage AI-driven workflows securely and at scale.
 
-*   **Audit Trails:** Every decision, tool usage, and action taken by an agent must be logged for traceability and compliance.
-*   **Human-in-the-Loop:** Critical steps, especially those with real-world consequences (e.g., spending money, deleting data), must have a built-in approval step for a human expert.
-*   **Access Control (RBAC):** Agents should only have access to the specific tools and data they need for their role, minimizing security risks.
-*   **Observability:** Dashboards and alerts are needed to monitor agent performance, resource consumption, and error rates in real-time.
+### Declarative definition for transparent control
 
-You can learn more about how to build and manage these systems in Kestra's documentation on [AI Agents](/docs/ai-tools/ai-agents).
+Workflows should be defined as code, preferably in a declarative format like YAML. This makes the logic transparent, version-controllable, and easy to review. Instead of burying logic in imperative scripts, a declarative approach states the desired outcome clearly and leaves the "how" to the platform. This is fundamental to managing complex systems like [MCP Orchestration](/resources/ai/mcp-orchestration).
 
-## The Transformative Benefits of Implementing Agentic Orchestration
+### Multi-provider AI agent integration
 
-Adopting agentic orchestration moves enterprises beyond simple automation to intelligent, adaptive operations. The benefits impact efficiency, scalability, and the ability to tackle previously intractable problems.
+An effective platform must be model-agnostic, letting teams integrate with various LLM providers (OpenAI, Anthropic, Google, Mistral, and others) and specialized AI services. This is typically achieved through a rich plugin ecosystem, so workflows can use the best tool for each task without being locked into a single vendor.
 
-### Driving Efficiency and Intelligence in Complex Goals
+### Human-in-the-loop and auditable execution
 
-Agentic systems excel at handling complex, multi-step goals that would be too brittle to automate with traditional, rule-based workflows. By planning and adapting, agents can navigate ambiguity and find solutions to novel problems, reducing the need for manual intervention and accelerating resolution times.
+Not all decisions can or should be fully automated. The platform must support human-in-the-loop patterns, where workflows pause to await manual approval before proceeding. Every step, automated or manual, must be recorded in an immutable audit trail for compliance and traceability. As detailed in the [Kestra 1.0 release](/blogs/release-1-0), these features turn powerful AI capabilities into governed, enterprise-ready processes.
 
-### Enhancing Automation Through Coordinated Management
+## Building and implementing agentic orchestration with Kestra
 
-Agentic orchestration allows for the automation of entire end-to-end processes, not just isolated tasks. By coordinating a team of specialized agents, RPA bots, and human experts, organizations can build resilient workflows that handle exceptions intelligently and operate 24/7.
+Kestra provides a declarative, language-agnostic platform for building and managing agentic orchestration. Its YAML-based workflow definitions and extensive plugin library make it possible to coordinate AI agents, data processes, and infrastructure tasks from a single control plane.
 
-### Optimizing Long-Running Business Processes
+### Defining agentic tasks in YAML
 
-Many critical business processes, like insurance claims processing or supply chain management, are long-running and involve numerous handoffs. Agentic orchestration provides a framework to manage these processes with full visibility, ensuring that tasks are never dropped and that the process adapts to changing conditions over days or weeks.
+With Kestra, an AI agent's task is just another step in a workflow, defined declaratively. This lets you embed AI capabilities directly into your existing data and operational processes.
 
-## Practical Applications of Agentic Orchestration
+Here is a simple example of a workflow that uses an AI agent to analyze customer feedback and create a Jira ticket if the sentiment is negative:
 
-The theory of agentic orchestration comes to life in its real-world applications across various industries. These systems are already solving complex problems at scale.
+```yaml
+id: customer-feedback-analysis
+namespace: company.support
 
-### Industry Examples and Real-World Use Cases
+tasks:
+  - id: analyze-sentiment
+    type: io.kestra.plugin.ai.openai.ChatCompletion
+    prompt: "Analyze the sentiment of the following text and classify it as POSITIVE, NEGATIVE, or NEUTRAL. Text: {{ trigger.body.feedback }}"
+  
+  - id: check-sentiment
+    type: io.kestra.plugin.core.flow.If
+    condition: "{{ outputs['analyze-sentiment'].choices[0].message.content == 'NEGATIVE' }}"
+    then:
+      - id: create-jira-ticket
+        type: io.kestra.plugin.notifications.jira.JiraCreate
+        url: "https://your-jira-instance.com"
+        projectKey: "SUPPORT"
+        issueType: "Bug"
+        summary: "Negative Customer Feedback Received"
+        description: "Feedback: {{ trigger.body.feedback }}"
+```
 
-Enterprises are deploying agentic workflows for mission-critical operations. For instance, as detailed in our [Series A announcement](/blogs/kestra-series-a), leading companies use Kestra for:
+### Coordinating multi-agent interactions
 
-*   **Cybersecurity Analytics (JPMorgan Chase):** Agents analyze billions of data points to detect threats, then trigger automated remediation workflows, escalating to human analysts only when necessary.
-*   **Infrastructure Provisioning (BHP):** An agentic system replaced a legacy platform to automate global infrastructure provisioning, reducing a process that took months down to a few days.
-*   **AI/ML Pipelines (Apple):** Hundreds of engineers orchestrate large-scale, adaptive pipelines for services like the App Store and Apple Music, where agents manage data preparation, model training, and deployment.
+Complex processes often need multiple agents. Kestra's [flow](/docs/workflow-components/flow) control capabilities—parallel tasks, conditional branching, and subflows—let you design sophisticated interactions. You can build workflows where one agent gathers data, another analyzes it, and a third takes action, with Kestra managing the state and data flow between them.
 
-### Designing and Implementing Agentic Workflows
+### Ensuring governance and auditability
 
-Implementing an [agentic workflow](/resources/ai/agentic-workflows) involves a shift from writing code to defining goals and providing tools. The process typically includes:
+Every workflow execution in Kestra is fully logged and auditable. You can see exactly which agent ran, what data it used, and what actions it took. By defining workflows as code in Git, you gain version control, peer review, and automated testing for your agentic processes, bringing the same rigor to AI that you apply to application development and infrastructure. This approach to building [autonomous workflow orchestration](/blogs/introducing-ai-agents) keeps your AI systems both powerful and responsible.
 
-1.  **Define the Objective:** Clearly state the business outcome the agentic system should achieve.
-2.  **Identify the Agents:** Break down the objective into roles and responsibilities for a multi-agent team.
-3.  **Provision the Tools:** Develop or connect the necessary APIs, scripts, and data sources for the agents.
-4.  **Model the Process:** Use a declarative language like YAML to define the orchestration logic, including agent interactions, human approval points, and error handling.
-5.  **Test and Iterate:** Start in a sandboxed environment, monitor agent behavior, and refine the tools and instructions based on performance.
+## Real-world impact and future trends
 
-Explore our library of [Blueprints](/blueprints) for runnable examples of orchestration workflows that can be adapted for agentic use cases.
+Agentic orchestration is already delivering value across industries by automating complex decision-making that was previously manual.
 
-### Monitoring and Optimizing Agent Performance
+### Use cases in cybersecurity, logistics, and IT operations
 
-Once deployed, agentic systems require continuous monitoring. Key metrics to track include:
+*   **Cybersecurity:** As validated by JPMorgan Chase, agentic workflows can analyze threat intelligence from thousands of sources, identify credible threats, and initiate automated remediation, all while logging every step for compliance.
+*   **Logistics:** Orchestration platforms can optimize supply chains by coordinating agents that monitor weather patterns, shipping delays, and inventory levels, enabling proactive adjustments. This is a core part of modern [logistics data orchestration](/resources/data/logistics-data-orchestration).
+*   **IT operations:** An [IT automation platform](/resources/infrastructure/it-automation-platform) can use agents to detect system anomalies, diagnose root causes across services, and run automated recovery procedures, reducing downtime and manual effort.
+*   **API and ML workflows:** Gravitee combines orchestration with API management, using AI agents to automatically generate API documentation and optimize complex machine learning workflows.
 
-*   **Goal Success Rate:** How often does the system achieve its objective without human intervention?
-*   **Task Execution Time:** How long does each step in the process take?
-*   **Tool Usage Frequency:** Which tools are most effective, and which are causing errors?
-*   **Cost per Execution:** Track token consumption and compute resources to manage operational costs.
+### The evolution towards Kestra 2.0 and beyond
 
-This data provides the feedback loop needed to optimize agent instructions, improve tools, and enhance the overall efficiency of the system.
+The future of agentic orchestration lies in greater autonomy and intelligence. The engineering behind [Kestra 2.0](/blogs/kestra-2-0-engineering) focuses on a new distributed execution engine and real-time observability, providing the foundation for more advanced agentic capabilities. This includes agents that can dynamically plan their own tasks, learn from past executions, and collaborate in more sophisticated ways, all within a governed and observable framework.
 
-## Agentic Engineering and the Future of Software Development
+## Why Kestra is the unified control plane for agentic AI
 
-The rise of agentic AI represents a paradigm shift in how software is built and maintained. It moves development from writing imperative code to designing goal-oriented, autonomous systems.
+Kestra is well positioned to serve as the control plane for agentic AI because it was designed from the start to be a universal orchestrator. It unifies data, AI, infrastructure, and business workflows on a single, declarative platform.
 
-### Impact on Multi-Agent Coordination Models
+For agentic systems, Kestra provides:
+*   **A declarative foundation:** YAML-based workflows make agent logic transparent and manageable.
+*   **Language-agnostic execution:** Agents can be written in any language and run as scripts, containers, or API calls.
+*   **A unified architecture:** Coordinate an AI agent that analyzes data with a Terraform task that provisions infrastructure and a dbt task that updates a data model, all in one workflow.
+*   **Built-in governance:** With audit logs, RBAC, and human-in-the-loop approvals, Kestra keeps AI-driven actions secure and compliant.
 
-Agentic engineering focuses on creating systems where multiple intelligent agents collaborate. This requires new architectural patterns for communication, shared memory, and conflict resolution explored in [multi-agent system](/resources/ai/multi-agent-system) design. Developers are now designing not just the logic of an application, but the "rules of society" for their digital workforce.
+By providing this dependable foundation, Kestra helps you [stop writing glue code around your AI pipelines](/ai-automation) and start building scalable, production-grade agentic systems.
 
-### AI Agents as Digital Team Members
+## Further resources on AI orchestration
 
-The most profound shift is viewing AI agents as digital team members. They are assigned tasks, given tools, and are expected to report on their progress. This changes the role of the developer to that of a manager or architect, focusing on high-level strategy and system design rather than low-level implementation details. This trend is a key part of our outlook on [2025 Data Engineering & AI Trends](/blogs/2025-data-engineering-and-ai-trends).
-
-### Shared Memory and Defined Roles in Agentic Systems
-
-For agents to function as a team, they need a shared understanding of the world. A critical part of agentic engineering is designing robust shared memory systems that provide context without overwhelming the agents. Similarly, clearly defining the roles and capabilities of each agent is essential to prevent conflicting actions and ensure efficient collaboration.
-
-## Addressing Critical Challenges in Agentic Orchestration
-
-While powerful, agentic systems introduce unique challenges that must be addressed for safe and effective deployment in production.
-
-### Ensuring Seamless Collaboration Between Agents
-
-Getting multiple agents to work together effectively is non-trivial. The orchestrator must manage potential conflicts, ensure clear communication protocols, and provide a shared state that is always consistent. Without a strong orchestration layer, multi-agent systems can quickly descend into chaos.
-
-### Managing Specialized Agents Effectively
-
-While specialization is a strength, it also creates dependencies. The orchestrator must be able to route tasks to the correct agent and manage the handoffs between them. If one agent in a chain fails, the system needs robust error handling to recover or escalate appropriately.
-
-### The Orchestration Problem: Technical vs. Discipline
-
-The core challenge of agentic orchestration is twofold. Technically, the platform must be scalable, resilient, and observable. As a discipline, it requires a new way of thinking about automation—focusing on governance, risk management, and human oversight. Simply connecting an LLM to an API is not enough; building a production-ready agentic system requires a platform designed for control and auditability. See how [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) complements agentic patterns by reacting to real-time signals across your infrastructure.
-
-## How Kestra Powers Enterprise Agentic Orchestration
-
-Kestra is an open-source platform designed to address the challenges of production-grade agentic orchestration with a focus on declarative principles, governance, and flexibility.
-
-*   **Declarative YAML:** Workflows, agents, tools, and orchestration logic are defined in simple, version-controllable YAML files. This makes agentic processes easy to review, audit, and manage with GitOps practices.
-*   **Polyglot Execution:** Agents in Kestra can use tools written in any language—Python, Bash, SQL, Java, and more. This language-agnostic approach allows you to use the best tool for the job without being locked into a single ecosystem.
-*   **Built-in Memory and Tool Support:** Kestra provides native constructs for managing agent memory and securely providing tools, forming the backbone of any [agentic system](/docs/ai-tools/ai-agents).
-*   **AI Copilot:** An integrated AI assistant helps you generate and debug orchestration YAML from natural language, accelerating development.
-*   **Production-Ready Governance:** With features announced in [Kestra 1.0](/1-0), you get audit logs, human-in-the-loop approvals, and role-based access control to safely deploy agents in enterprise environments.
-
-Kestra provides a single platform to control all your data, infrastructure, and AI workflows, making it the ideal foundation for building and scaling your [AI automation](/ai-automation) initiatives.
+To keep exploring how orchestration is shaping the future of artificial intelligence, browse our full collection of [AI Orchestration Resources](/resources/ai). You'll find in-depth guides on RAG pipelines, LLMOps, multi-agent systems, and more.

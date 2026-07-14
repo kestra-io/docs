@@ -37,7 +37,7 @@ export const collections = {
     }),
     blogs: defineCollection({
         loader: glob({
-            pattern: "./**/*.md{,x}",
+            pattern: ["./**/*.md{,x}", "!./CLAUDE.md"],
             base: "./src/contents/blogs",
             generateId: (opts) => generateId(opts).toLowerCase(),
         }),
@@ -135,6 +135,7 @@ export const collections = {
                 featuredImage: image(),
                 logo: image().optional(),
                 logoDark: image().optional(),
+                logoIcon: image().optional(),
                 rank: z.number(),
                 tasks: z.array(z.string()),
                 kpi1: z.string(),
@@ -145,6 +146,7 @@ export const collections = {
                 quotePerson: z.string(),
                 quotePersonTitle: z.string(),
                 industry: z.string(),
+                industry2: z.string().optional(),
                 region: z.string(),
                 headquarter: z.string(),
                 solution: z.string(),
@@ -154,6 +156,7 @@ export const collections = {
                 intro: z.string().optional(),
                 deployment: z.string().optional(),
                 useCase: z.string().optional(),
+                useCaseShort: z.string().optional(),
                 companySize: z.string().optional(),
                 cta: z.string().optional(),
             }),

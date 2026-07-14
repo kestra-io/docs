@@ -1,9 +1,7 @@
-title: "Do Agent Skills Replace MCP?"
-description: "Learn the difference between MCP (Model Context Protocol) and agent
-  skills, why people confuse them, and how they actually work together in a real-world
-  environment."
-category: "Deep Dive Tutorials"
+title: "Orchestrating AI Workflows in Production"
+description: "Harsh Mer, AI Data Engineer, ran into the limits of visual workflow builders building a multi-step AI pipeline and moved it to Kestra, where declarative YAML, proper error handling, and full observability made the difference. Join Harsh and Will Russell (Developer Advocate, Kestra) to learn how to identify what separates a working AI prototype from a workflow you can confidently deploy, structure multi-step AI pipelines with retries, error handling, and parallel execution, and debug AI workflows in production using execution logs and task-level visibility."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=yVUb71BsG7Y"
-publicationDate: "2026-05-26T00:00:00.000"
-contentType: "Deep Dive Tutorials"
+url: "https://www.youtube.com/watch?v=449gDL0-og0"
+publicationDate: "2026-07-30T00:00:00.000"
+contentType: "Webinar"

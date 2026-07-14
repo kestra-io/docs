@@ -166,7 +166,7 @@ useCases:
 quotes:
   - quote: "We needed orchestration built for flexibility and scale, without forcing us to rewrite our existing pipelines. Kestra fit naturally into our stack and enabled our teams to move quickly without disruption."
     author: "Director of Engineering, Acxiom"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 blueprints:
   title: "Blueprints for Git-driven Kestra orchestration."
