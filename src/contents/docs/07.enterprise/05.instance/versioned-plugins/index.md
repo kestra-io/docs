@@ -10,7 +10,7 @@ version: "0.22.0"
 
 Install multiple versions of any plugin and run them simultaneously across all your flows — assigned at the task, flow, namespace, or instance level.
 
-## Versioned Plugins – build, ship, and iterate with confidence
+## Use cases
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -32,8 +32,6 @@ Versioned plugins support several properties that can be modified in your Kestra
 - `autoReloadInterval`: How often to rescan (duration, e.g., `60s`).
 - `defaultVersion`: The version to use when none is specified in a flow. Accepted values: `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or an explicit version (e.g., `0.20.0`).
 
-An example configuration looks as follows:
-
 ```yaml
 kestra:
   plugins:
@@ -49,13 +47,11 @@ kestra:
 
 ### Allow-list URLs
 
-In order to properly use Versioned Plugins, the following 3 URLs need to be allowed through your configuration:
+The following URLs must be reachable from your Kestra instance:
 
 - https://repo.maven.apache.org/maven2/
 - https://registry.kestra.io/maven/
 - https://api.kestra.io/
-
-A default configuration looks like:
 
 ```yaml
 kestra:
@@ -104,7 +100,7 @@ Below is a video demonstration walking through each step from installation to ap
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Here are the steps again, listed one by one. Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Instance > Versioned Plugins** section. You can click **+ Install** and open up the full library of available plugins.
+Both official and custom plugins can be installed from the UI. Navigate to the **Instance > Versioned Plugins** section. You can click **+ Install** and open up the full library of available plugins.
 
 ![versioned-plugins-1](./versioned-plugins-1.png)
 
@@ -191,7 +187,7 @@ The `--locally` flag specifies whether the plugin should be installed locally or
 
 ## `version` property in a Flow
 
-In Flow tasks or triggers, you can specify the version of the plugin to use with the `version` property. For example, if the instance has both 0.22.0 and 0.21.0 versions installed of the Shell script plugin, the version to use can be specified in the flow as follows:
+Specify the plugin version on any task or trigger using the `version` property. The following flow pins the Shell Script plugin to `0.21.0` while a newer version is also installed on the instance:
 
 ```yaml
 id: shell_script_example
@@ -230,3 +226,4 @@ When there are multiple versions of a plugin available, Kestra resolves the vers
 :::alert{type="info"}
 The version is resolved both at flow creation time and execution time to ensure the correct plugin version is used during both stages. This means that a Task/Trigger can only be deserialized after ensuring that all default versions are properly resolved.
 :::
+

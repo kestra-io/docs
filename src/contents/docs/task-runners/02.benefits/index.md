@@ -8,12 +8,12 @@ editions: ["OSS", "EE"]
 description: Explore the benefits of using Task Runners in Kestra for isolated execution, resource control, and deployment flexibility.
 ---
 
-Discover how Task Runners simplify resource allocation, environment management, and deployment across environments.
+Task Runners let you control resource allocation, environment configuration, and deployment targets without changing your task code.
 
 ## Docker in development, Kubernetes in production
 
 Many Kestra users develop their scripts locally using **Docker containers** and deploy the same code in production as **Kubernetes pods**.
-Thanks to the `taskRunner` property, switching between environments is seamless.
+The `taskRunner` property lets you switch execution environments without changing your scripts.
 
 Below is an example showing how you can combine `pluginDefaults` with the `taskRunner` property to use Docker during development and Kubernetes in production — without changing your code.
 
@@ -56,7 +56,7 @@ pluginDefaults:
 
 :::alert{type="info"}
 Notice that the `containerImage` property is not part of the `taskRunner` configuration — it’s defined at the task level instead.
-This makes configurations more flexible, as container images typically change more often than the runner setup.
+Container images typically change more often than the runner setup, so keeping them separate makes both easier to maintain.
 For instance, a dbt plugin might require a different image from a Python script, while both can share the same runner configuration.
 :::
 
