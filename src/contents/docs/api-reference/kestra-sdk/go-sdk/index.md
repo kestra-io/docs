@@ -361,7 +361,7 @@ func restartTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ## Dashboards
 
-The following examples use `NewClient`, which provides a higher-level client for APIs not available in the auto-generated client.
+The following examples use `NewClient`, which provides a higher-level client for APIs not available in the generated client.
 
 ```go
 func newKestraClient() *openapiclient.KestraClient {

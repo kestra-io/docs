@@ -490,9 +490,8 @@ List, read, and delete files stored in a namespace.
 ```java
 public class FilesExamples {
     public static void listFiles() {
-        String tenant = "main";
         var files = KestraClients.INSTANCE.files()
-            .listNamespaceDirectoryFiles("my_namespace", tenant, "/");
+            .listNamespaceDirectoryFiles("my_namespace", "main", "/");
         files.forEach(f -> System.out.println(f.getFileName()));
     }
 }
