@@ -1008,7 +1008,7 @@ Bundled backends produce no output. Only backends that ship as a separate plugin
 
 | Category | Bundled (no plugin needed) | Requires a plugin |
 |---|---|---|
-| Storage (`kestra.storage.type`) | `local` | `s3`, `gcs`, `azure`, `minio`, `seaweedfs`, `cloudflare` |
+| Storage (`kestra.storage.type`) | `local` | `s3`, `gcs`, `azure`, `minio`, `seaweedfs`, `cloudflare`, `obs` |
 | Secret (`kestra.secret.type`) | `jdbc`, `elasticsearch` | `vault`, `aws-secret-manager`, `azure-key-vault`, `google-secret-manager`, `cyberark`, `doppler`, `1password`, `beyondtrust`, `delinea` |
 | Queue (`kestra.queue.type`) | `memory`, `h2`, `postgres`, `mysql`, `kafka` | — |
 | Repository (`kestra.repository.type`) | `memory`, `h2`, `postgres`, `mysql` | `elasticsearch`, `opensearch` |
@@ -1029,7 +1029,7 @@ No core plugins required by the provided configuration (all configured backends 
 If a config key contains an unrecognized type, the command fails and lists supported values:
 
 ```plaintext
-Error: unknown kestra.storage.type "unknownbackend" — no known core plugin mapping (supported: azure, cloudflare, gcs, local, minio, s3, seaweedfs)
+Error: unknown kestra.storage.type "unknownbackend" — no known core plugin mapping (supported: azure, cloudflare, gcs, local, minio, obs, s3, seaweedfs)
 ```
 
 #### Multiple config files

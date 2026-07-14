@@ -154,3 +154,5 @@
   to: "/docs/concepts/blueprints"
 - regexp: "^/docs/ui/logs(/.*)?$"
   to: "/docs/ui/executions"
+- regexp: "^/docs/how-to-guides/cloudflare-r2(/.*)?$"
+  to: "/docs/configuration/runtime-and-storage#cloudflare-r2"
