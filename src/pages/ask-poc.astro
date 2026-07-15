@@ -1,0 +1,289 @@
+---
+// PoC-only: a bare-bones page to eyeball the agentic Ask-AI endpoint
+// (/api/ask-v2) in the browser. Not linked from anywhere; open /ask-poc.
+// Delete before merging anything non-PoC.
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noindex" />
+        <title>Ask Kestra AI — PoC (agentic)</title>
+        <style>
+            :root {
+                color-scheme: dark;
+                --bg: #15171c;
+                --panel: #1d2027;
+                --code: #0f1115;
+                --border: #2c3038;
+                --text: #e6e8eb;
+                --muted: #9aa0a8;
+                --accent: #8405ff;
+            }
+            * { box-sizing: border-box; }
+            body {
+                margin: 0;
+                font-family: system-ui, -apple-system, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+            header {
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--border);
+                font-size: 14px;
+                color: var(--muted);
+            }
+            header b { color: var(--text); }
+            #log {
+                flex: 1;
+                overflow-y: auto;
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+            .msg { max-width: 820px; width: 100%; margin: 0 auto; }
+            .role {
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: var(--muted);
+                margin-bottom: 4px;
+            }
+            .bubble {
+                background: var(--panel);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 4px 16px;
+                line-height: 1.55;
+                word-wrap: break-word;
+            }
+            .user .bubble { background: #23262e; white-space: pre-wrap; padding: 12px 16px; }
+            .bubble a { color: #b78cff; }
+            .bubble h1, .bubble h2, .bubble h3, .bubble h4 {
+                line-height: 1.3;
+                margin: 1em 0 0.4em;
+            }
+            .bubble h1 { font-size: 1.4rem; }
+            .bubble h2 { font-size: 1.2rem; }
+            .bubble h3 { font-size: 1.05rem; }
+            .bubble ul, .bubble ol { padding-left: 1.4em; }
+            .bubble li { margin: 0.2em 0; }
+            .bubble table {
+                border-collapse: collapse;
+                width: 100%;
+                margin: 0.6em 0;
+                font-size: 0.92em;
+            }
+            .bubble th, .bubble td {
+                border: 1px solid var(--border);
+                padding: 6px 10px;
+                text-align: left;
+            }
+            .bubble th { background: #23262e; }
+            .bubble :not(pre) > code {
+                background: #23262e;
+                padding: 1px 5px;
+                border-radius: 4px;
+                font-family: ui-monospace, "JetBrains Mono", monospace;
+                font-size: 0.88em;
+            }
+            .codewrap { position: relative; margin: 0.7em 0; }
+            .codewrap pre {
+                background: var(--code);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 12px 14px;
+                overflow-x: auto;
+                margin: 0;
+            }
+            .codewrap pre code {
+                font-family: ui-monospace, "JetBrains Mono", monospace;
+                font-size: 0.85rem;
+            }
+            .copy-btn {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                background: #2c3038;
+                color: var(--text);
+                border: 1px solid #3a3f49;
+                border-radius: 6px;
+                padding: 3px 10px;
+                font-size: 12px;
+                cursor: pointer;
+                opacity: 0.85;
+            }
+            .copy-btn:hover { opacity: 1; }
+            form {
+                display: flex;
+                gap: 8px;
+                padding: 12px 16px;
+                border-top: 1px solid var(--border);
+                max-width: 852px;
+                width: 100%;
+                margin: 0 auto;
+            }
+            textarea {
+                flex: 1;
+                resize: none;
+                background: var(--panel);
+                color: var(--text);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 10px 12px;
+                font: inherit;
+                min-height: 44px;
+                max-height: 160px;
+            }
+            button[type="submit"] {
+                background: var(--accent);
+                color: #fff;
+                border: 0;
+                border-radius: 8px;
+                padding: 0 18px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
+        </style>
+    </head>
+    <body>
+        <header>
+            <b>Ask Kestra AI — PoC</b> · agentic loop over <code>/api/ask-v2</code> ·
+            model <code>gemini-2.5-flash</code> · tools = Kestra MCP (docs + plugins + blueprints)
+        </header>
+        <div id="log"></div>
+        <form id="form">
+            <textarea
+                id="input"
+                placeholder="Ask about Kestra… e.g. how many types of task runners are there?"
+                autofocus></textarea>
+            <button id="send" type="submit">Send</button>
+        </form>
+
+        <script>
+            import { marked } from "marked"
+
+            marked.setOptions({ gfm: true, breaks: false })
+
+            const log = document.getElementById("log")!
+            const form = document.getElementById("form") as HTMLFormElement
+            const input = document.getElementById("input") as HTMLTextAreaElement
+            const send = document.getElementById("send") as HTMLButtonElement
+            const history: { role: "user" | "assistant"; content: string }[] = []
+
+            function renderMarkdown(el: HTMLElement, text: string) {
+                el.innerHTML = marked.parse(text) as string
+            }
+
+            // Wrap each <pre> in a positioned container and add a Copy button.
+            function addCopyButtons(bubble: HTMLElement) {
+                bubble.querySelectorAll("pre").forEach((pre) => {
+                    if (pre.parentElement?.classList.contains("codewrap")) return
+                    const wrap = document.createElement("div")
+                    wrap.className = "codewrap"
+                    pre.replaceWith(wrap)
+                    wrap.appendChild(pre)
+                    const btn = document.createElement("button")
+                    btn.type = "button"
+                    btn.className = "copy-btn"
+                    btn.textContent = "Copy"
+                    btn.addEventListener("click", async () => {
+                        try {
+                            await navigator.clipboard.writeText(pre.innerText)
+                            btn.textContent = "Copied!"
+                            setTimeout(() => (btn.textContent = "Copy"), 1500)
+                        } catch {
+                            btn.textContent = "Failed"
+                        }
+                    })
+                    wrap.appendChild(btn)
+                })
+            }
+
+            function addBubble(role: "user" | "assistant", text: string): HTMLElement {
+                const wrap = document.createElement("div")
+                wrap.className = "msg " + role
+                wrap.innerHTML = `<div class="role">${role}</div><div class="bubble"></div>`
+                const bubble = wrap.querySelector(".bubble") as HTMLElement
+                if (role === "user") bubble.textContent = text
+                else renderMarkdown(bubble, text)
+                log.appendChild(wrap)
+                log.scrollTop = log.scrollHeight
+                return bubble
+            }
+
+            async function ask(question: string) {
+                history.push({ role: "user", content: question })
+                addBubble("user", question)
+                const bubble = addBubble("assistant", "…")
+                let answer = ""
+
+                try {
+                    const res = await fetch("/api/ask-v2", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ messages: history }),
+                    })
+                    if (!res.ok || !res.body) {
+                        bubble.textContent = `Error: HTTP ${res.status}`
+                        return
+                    }
+                    const reader = res.body.getReader()
+                    const decoder = new TextDecoder()
+                    let buf = ""
+                    while (true) {
+                        const { value, done } = await reader.read()
+                        if (done) break
+                        buf += decoder.decode(value, { stream: true })
+                        const frames = buf.split("\n\n")
+                        buf = frames.pop() ?? ""
+                        for (const frame of frames) {
+                            const dataLine = frame.split("\n").find((l) => l.startsWith("data:"))
+                            if (!dataLine) continue
+                            try {
+                                const payload = JSON.parse(dataLine.slice(5).trim())
+                                if (payload.response) {
+                                    answer += payload.response
+                                    renderMarkdown(bubble, answer)
+                                    log.scrollTop = log.scrollHeight
+                                }
+                            } catch {}
+                        }
+                    }
+                    renderMarkdown(bubble, answer)
+                    addCopyButtons(bubble) // finalize code blocks once streaming ends
+                    history.push({ role: "assistant", content: answer })
+                } catch (e) {
+                    bubble.textContent = "Error: " + (e instanceof Error ? e.message : String(e))
+                }
+            }
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault()
+                const q = input.value.trim()
+                if (!q) return
+                input.value = ""
+                send.disabled = true
+                try {
+                    await ask(q)
+                } finally {
+                    send.disabled = false
+                    input.focus()
+                }
+            })
+            input.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    form.requestSubmit()
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -204,6 +204,13 @@ export default defineConfig({
                 access: "secret",
                 optional: true,
             }),
+            // PoC: agentic Ask-AI endpoint (src/pages/api/ask-v2.ts). Optional so
+            // builds without it keep working; the endpoint 503s if unset.
+            GEMINI_API_KEY: envField.string({
+                context: "server",
+                access: "secret",
+                optional: true,
+            }),
             DISABLE_USAL: envField.boolean({
                 context: "server",
                 access: "public",
