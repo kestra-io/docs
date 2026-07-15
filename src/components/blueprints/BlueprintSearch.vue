@@ -85,7 +85,7 @@
             url.searchParams.delete("q")
         }
 
-        url.searchParams.set("page", "1")
+        url.searchParams.delete("page")
 
         const target = `${url.pathname}${url.search}`
         const current = `${window.location.pathname}${window.location.search}`
@@ -120,20 +120,24 @@
         display: flex;
         align-items: center;
         width: 100%;
-        padding: 0.25rem 0.35rem 0.25rem 1rem;
+        padding: 0.75rem 0.75rem 0.75rem 1.25rem;
         background: var(--ks-background-input);
         border: 1px solid var(--ks-border-secondary);
         border-radius: $border-radius-lg;
+        transition: border-color 0.2s ease;
+
+        &:focus-within {
+            border-color: var(--ks-border-active);
+        }
 
         @include media-breakpoint-up(lg) {
-            max-width: 612px;
+            max-width: 640px;
         }
 
         .magnify-icon {
             color: var(--ks-content-tertiary);
-            font-size: $font-size-lg;
+            font-size: 1.375rem;
             flex-shrink: 0;
-            margin-top: -0.25rem;
         }
 
         input {
@@ -143,7 +147,7 @@
             border: none;
             outline: none;
             color: var(--ks-content-primary);
-            font-size: $font-size-md;
+            font-size: $font-size-lg;
             padding: 0 0.5rem;
             min-width: 0;
 

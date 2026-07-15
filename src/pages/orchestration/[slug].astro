@@ -125,6 +125,16 @@ const blueprintItems = await Promise.all(
     }),
 )
 
+let allBlueprintsCount = 0
+try {
+    const search = await $fetchApiCached<{ total: number }>(
+        `/blueprints/versions/latest?q=${encodeURIComponent(tool.name)}&size=1`,
+    )
+    allBlueprintsCount = search?.total ?? 0
+} catch (e) {
+    console.warn(`Could not fetch blueprint count for ${tool.name}`, e)
+}
+
 let pluginIcon = ""
 try {
     pluginIcon = await fetchPluginIcon(tool.pluginClass)
@@ -220,6 +230,8 @@ const comparisonTableData = comparison.rows.map((row) => {
         nutshell={nutshell}
         blueprints={blueprintItems}
         toolColor={tool.color}
+        toolName={tool.name}
+        allBlueprintsCount={allBlueprintsCount}
     />
 
     <CardGrid

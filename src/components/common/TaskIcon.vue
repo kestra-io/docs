@@ -1,19 +1,51 @@
 <template>
     <div class="icon-wrapper" :data-tooltip="generateTagName()">
-        <div class="icon" :style="styles" />
+        <img
+            :src="src"
+            :alt="generateTagName() + ' icon'"
+            width="32"
+            height="32"
+            loading="lazy"
+            decoding="async"
+            :style="hidden ? 'visibility: hidden' : undefined"
+            @error="hidden = true"
+        />
     </div>
 </template>
 
 <script lang="ts" setup>
-    import { computed } from "vue"
+    import { computed, onMounted, onUnmounted, ref, watch } from "vue"
 
     const props = defineProps({
         cls: { type: String, default: "" }
     })
 
-    const styles = computed(() => ({
-        background: `url("/icons/${props.cls}.svg")`
-    }))
+    // Mirror TaskIcon.astro's theme swap: monochrome plugin icons ship as
+    // -white/-black variants, and the plain file is dark-on-transparent,
+    // which is unreadable on dark cards. Track the html "dark" class locally
+    // since the Astro page-level swapper only sees images present at load.
+    const isDark = ref(false)
+    const hidden = ref(false)
+    let observer: MutationObserver | undefined
+
+    onMounted(() => {
+        const update = () => {
+            isDark.value = document.documentElement.classList.contains("dark")
+        }
+        update()
+        observer = new MutationObserver(update)
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    })
+
+    onUnmounted(() => observer?.disconnect())
+
+    const src = computed(
+        () => `/icons/${props.cls}${isDark.value ? "-white" : "-black"}.svg`
+    )
+
+    watch(src, () => {
+        hidden.value = false
+    })
 
     const generateTagName = () => props.cls.split(".").pop()
 </script>
@@ -28,14 +60,11 @@
         position: relative;
         aspect-ratio: 1 / 1;
 
-        .icon {
+        img {
             width: 100%;
             height: 100%;
-            display: block;
+            object-fit: contain;
             aspect-ratio: 1 / 1;
-            background-size: contain !important;
-            background-repeat: no-repeat !important;
-            background-position: center center !important;
         }
 
         &[data-tooltip]:hover::after {

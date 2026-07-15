@@ -1,0 +1,217 @@
+---
+export const prerender = false
+
+import { Icon } from "astro-icon/components"
+import { $fetchApiCached } from "~/utils/fetch"
+import Layout from "~/components/layout.astro"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
+import BlueprintSearch from "~/components/blueprints/BlueprintSearch.vue"
+import { PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
+
+const { slug } = Astro.params
+const pattern = PATTERN_TAGS.find((p) => p.slug === slug)
+
+if (!pattern) {
+    return Astro.redirect("/blueprints")
+}
+
+const PAGE_SIZE = 24
+const q = Astro.url.searchParams.get("q") ?? undefined
+
+const tags = await $fetchApiCached<BlueprintTag[]>(
+    `/blueprints/versions/latest/tags`,
+)
+const tag = tags.find((t) => t.name === pattern.name)
+
+const { results: blueprints = [], total = 0 } = tag
+    ? ((await $fetchApiCached<{ results: Blueprint[]; total: number }>(
+          `/blueprints/versions/latest?size=${PAGE_SIZE}&page=1&tags=${tag.id}` +
+              (q ? `&q=${encodeURIComponent(q)}` : ""),
+      )) ?? { results: [], total: 0 })
+    : { results: [], total: 0 }
+
+const title = `${pattern.name} blueprints`
+const description = pattern.description
+---
+
+<Layout {title} {description}>
+    <section class="bp-hero">
+        <div class="container-xxl">
+            <div class="hero-card">
+                <p class="eyebrow">
+                    <a href="/blueprints">Blueprints</a> / Pattern
+                </p>
+                <h1>{total}+ {pattern.name} blueprints</h1>
+                <p>{pattern.description}</p>
+
+                <div class="bp-hero-search">
+                    <BlueprintSearch {q} client:idle />
+                </div>
+
+                <div class="sibling-pills">
+                    {
+                        PATTERN_TAGS.map((p) => (
+                            <a
+                                href={
+                                    p.slug === slug
+                                        ? "/blueprints"
+                                        : `/blueprints/patterns/${p.slug}`
+                                }
+                                title={
+                                    p.slug === slug
+                                        ? `Remove the ${p.name} filter`
+                                        : undefined
+                                }
+                                class:list={[
+                                    "sibling-pill",
+                                    { active: p.slug === slug },
+                                ]}
+                            >
+                                <Icon name={p.icon} class="pill-icon" />
+                                {p.name}
+                            </a>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bp-row">
+        <div class="container-xxl">
+            {
+                blueprints.length > 0 ? (
+                    <LoadMoreBlueprints
+                        tagId={tag?.id}
+                        {q}
+                        tags={tags}
+                        total={total}
+                        initialShown={blueprints.length}
+                        pageSize={PAGE_SIZE}
+                        client:idle
+                    >
+                        <div class="row g-3" slot="initial">
+                            {blueprints.map((blueprint) => (
+                                <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                    <BlueprintCard
+                                        {blueprint}
+                                        {tags}
+                                        href={`/blueprints/${blueprint.id}`}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </LoadMoreBlueprints>
+                ) : (
+                    <div class="col-12 text-center py-5">
+                        <p>
+                            {q
+                                ? `No ${pattern.name} blueprints found for "${q}".`
+                                : "No blueprints tagged with this pattern yet."}
+                        </p>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+</Layout>
+
+<style lang="scss">
+    .bp-hero {
+        padding: $rem-2 $rem-1 $rem-1;
+
+        .hero-card {
+            padding: 4rem 2.625rem;
+            background: url("~/components/blueprints/assets/bar-bg.webp")
+                center / cover no-repeat;
+            border-radius: $border-radius-lg;
+            color: $white;
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .eyebrow {
+            margin-bottom: 0.75rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+
+            a {
+                color: rgba(255, 255, 255, 0.7);
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            color: $white;
+        }
+
+        p {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            margin-bottom: 0;
+        }
+
+        .bp-hero-search {
+            margin-top: 1.5rem;
+            max-width: 640px;
+        }
+
+        .sibling-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sibling-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            .pill-icon {
+                font-size: 1rem;
+                width: 1rem;
+                height: 1rem;
+            }
+
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.6);
+                color: $white;
+            }
+
+            &.active {
+                border-color: var(--ks-border-active);
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+            }
+        }
+    }
+
+    .bp-row {
+        padding: $rem-1 0 $rem-3;
+
+        .container-xxl {
+            padding-inline: $rem-1;
+        }
+    }
+
+    .text-center p {
+        color: var(--ks-content-tertiary);
+    }
+</style>

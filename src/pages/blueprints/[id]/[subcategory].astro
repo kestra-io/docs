@@ -1,0 +1,151 @@
+---
+export const prerender = false
+
+import { $fetchApiCached } from "~/utils/fetch"
+import Layout from "~/components/layout.astro"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import { categoryTileMetaForSlug } from "~/utils/blueprints/categoryMeta"
+import {
+    subCategoriesFor,
+    blueprintInSubCategory,
+} from "~/utils/blueprints/subCategories"
+
+const { id, subcategory } = Astro.params
+
+const category = id ? categoryTileMetaForSlug(id) : undefined
+const subCategory = category
+    ? subCategoriesFor(category.name).find((sc) => sc.slug === subcategory)
+    : undefined
+
+if (!category || category.name === "Getting Started" || !subCategory) {
+    return Astro.redirect("/blueprints")
+}
+
+const SAMPLE_SIZE = 200
+
+const tags = await $fetchApiCached<BlueprintTag[]>(
+    `/blueprints/versions/latest/tags`,
+)
+const tag = tags.find((t) => t.name === category.name)
+const subCategoryTag = tags.find((t) => t.name === subCategory.name)
+
+// Sub-category names are real tags in the blueprint YAML. Once the live
+// catalog has reindexed them, filter server-side; until then, fall back to
+// sampling the parent category and matching locally.
+let blueprints: Blueprint[] = []
+if (subCategoryTag) {
+    const data = await $fetchApiCached<{ results: Blueprint[] }>(
+        `/blueprints/versions/latest?size=${SAMPLE_SIZE}&page=1&tags=${subCategoryTag.id}`,
+    )
+    blueprints = data?.results ?? []
+} else if (tag) {
+    const sample = await $fetchApiCached<{ results: Blueprint[] }>(
+        `/blueprints/versions/latest?size=${SAMPLE_SIZE}&page=1&tags=${tag.id}`,
+    )
+    blueprints = (sample?.results ?? []).filter((b) =>
+        blueprintInSubCategory(subCategory, b),
+    )
+}
+
+const title = `${subCategory.name} blueprints`
+const description = `${subCategory.name} blueprints within ${category.name}.`
+---
+
+<Layout {title} {description}>
+    <section class="bp-hero">
+        <div class="container-xxl">
+            <div class="hero-card">
+                <p class="eyebrow">
+                    <a href="/blueprints">Blueprints</a> /{" "}
+                    <a href={`/blueprints/${id}`}>{category.name}</a> / Pattern
+                </p>
+                <h1>
+                    {blueprints.length}+ {subCategory.name} blueprints
+                </h1>
+                <p>
+                    {subCategory.name} patterns within {category.name}.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bp-row">
+        <div class="container-xxl">
+            {
+                blueprints.length > 0 ? (
+                    <div class="row g-3">
+                        {blueprints.map((blueprint) => (
+                            <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                <BlueprintCard
+                                    {blueprint}
+                                    {tags}
+                                    href={`/blueprints/${blueprint.id}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div class="col-12 text-center py-5">
+                        <p>No blueprints matched this pattern yet.</p>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+</Layout>
+
+<style lang="scss">
+    .bp-hero {
+        padding: $rem-2 $rem-1 $rem-1;
+
+        .hero-card {
+            padding: 4rem 2.625rem;
+            background: url("~/components/blueprints/assets/bar-bg.webp")
+                center / cover no-repeat;
+            border-radius: $border-radius-lg;
+            color: $white;
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .eyebrow {
+            margin-bottom: 0.75rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+
+            a {
+                color: rgba(255, 255, 255, 0.7);
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            color: $white;
+        }
+
+        p {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            margin-bottom: 0;
+        }
+    }
+
+    .bp-row {
+        padding: $rem-1 0 $rem-3;
+
+        .container-xxl {
+            padding-inline: $rem-1;
+        }
+    }
+
+    .text-center p {
+        color: var(--ks-content-tertiary);
+    }
+</style>

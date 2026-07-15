@@ -1,36 +1,222 @@
 ---
 export const prerender = false
 
+import { Icon } from "astro-icon/components"
 import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import { blueprintFaqItems } from "~/utils/blueprints/faq"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintLists from "~/components/blueprints/BlueprintLists.vue"
-import BlueprintSearch from "~/components/blueprints/BlueprintSearch.vue"
+import TokenSearch from "~/components/blueprints/TokenSearch.vue"
+import { visibleTags } from "~/utils/blueprints/visibleTags"
+import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
+import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
+import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
+import { buildToolIndex, blueprintUsesTool } from "~/utils/blueprints/toolIndex"
+
+// Hand-curated, not algorithmic: the six onboarding blueprints Kestra points
+// new users to, and the highest-traffic blueprints over the last 90 days
+// (kestra-prd.dwh_marts.fct__web_pageviews__daily), minus upload-to-s3 (bot-skewed
+// views:visitors ratio) and anything already covered by Getting Started.
+const GETTING_STARTED_IDS = [
+    "hello-world",
+    "data-engineering-pipeline",
+    "business-automation",
+    "business-processes",
+    "infrastructure-automation",
+    "microservices-and-apis",
+]
+const POPULAR_IDS = [
+    "advanced-scheduling",
+    "ai-learning-roadmap-n8n",
+    "api-python-sql",
+    "ai-document-data-extraction",
+    "ansible-local-message",
+    "audit-logs-csv-export",
+    "ai-notion-summary-perplexity",
+    "ai-summarize-weekly-git-commits",
+]
+// Hand-picked showcase row, curated separately from the traffic-driven
+// Popular row. Empty until specific blueprint IDs are added here.
+const FEATURED_IDS: string[] = []
+
+async function fetchBlueprintsByIds(ids: string[]): Promise<Blueprint[]> {
+    const results = await Promise.all(
+        ids.map((blueprintId) =>
+            $fetchApiCached<Blueprint>(
+                `/blueprints/${blueprintId}/versions/latest`,
+            ).catch(() => null),
+        ),
+    )
+    return results.filter((b): b is Blueprint => b !== null)
+}
+
+// The API has no createdAt sort param and no tool-name facet, so pull the
+// whole catalog once and derive "Recently Added", the search bar's tool
+// index, and tool-chip filtering from that single dataset.
+async function fetchFullCatalog(): Promise<Blueprint[]> {
+    try {
+        const PAGE = 200
+        const first = await $fetchApiCached<{
+            results: Blueprint[]
+            total: number
+        }>(`/blueprints/versions/latest?size=${PAGE}&page=1&sort=A-Z`)
+        const results = first?.results ?? []
+        const total = first?.total ?? results.length
+        const pages = Math.min(Math.ceil(total / PAGE), 5)
+        if (pages > 1) {
+            const rest = await Promise.all(
+                Array.from({ length: pages - 1 }, (_, i) =>
+                    $fetchApiCached<{ results: Blueprint[] }>(
+                        `/blueprints/versions/latest?size=${PAGE}&page=${i + 2}&sort=A-Z`,
+                    ).catch(() => null),
+                ),
+            )
+            for (const r of rest) results.push(...(r?.results ?? []))
+        }
+        return results
+    } catch (e) {
+        return []
+    }
+}
 
 const page = Astro.url.searchParams.get("page") ?? 1
 const size = Astro.url.searchParams.get("size") ?? 24
 const q = Astro.url.searchParams.get("q") ?? undefined
 const sort = Astro.url.searchParams.get("sort") ?? "A-Z"
 const tagsSelected = Astro.url.searchParams.get("tags") ?? undefined
+const toolsSelected = Astro.url.searchParams.get("tools") ?? undefined
+const toolNames = toolsSelected
+    ? toolsSelected
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean)
+    : []
 
 const tags = await $fetchApiCached<BlueprintTag[]>(
     `/blueprints/versions/latest/tags`,
 )
+const { categoryTags, patternTags } = splitTagsByAxis(visibleTags(tags))
+
+async function fetchTagCount(tagId?: string): Promise<number> {
+    if (!tagId) return 0
+    return $fetchApiCached<{ total: number }>(
+        `/blueprints/versions/latest?tags=${tagId}&size=1`,
+    )
+        .then((r) => r?.total ?? 0)
+        .catch(() => 0)
+}
+
+const [
+    gettingStartedBlueprints,
+    popularBlueprints,
+    featuredBlueprints,
+    fullCatalog,
+    headlineCount,
+    categoryCounts,
+    patternCounts,
+] = await Promise.all([
+    fetchBlueprintsByIds(GETTING_STARTED_IDS),
+    fetchBlueprintsByIds(POPULAR_IDS),
+    fetchBlueprintsByIds(FEATURED_IDS),
+    fetchFullCatalog(),
+    fetchTotalBlueprintsCount(),
+    Promise.all(categoryTags.map((tag) => fetchTagCount(tag.id))),
+    Promise.all(patternTags.map((tag) => fetchTagCount(tag.id))),
+])
+
+const recentlyAddedBlueprints = fullCatalog
+    .slice()
+    .sort(
+        (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
+    .slice(0, 8)
+
+const toolIndex = buildToolIndex(fullCatalog)
+
+const hasActiveFilters = Boolean(q || tagsSelected || toolNames.length)
 
 const tagsForFilter = tagsSelected
     ? tags.find((tag) => tag.name.toLowerCase() === tagsSelected.toLowerCase())
           ?.id
     : undefined
 
-const { results: blueprintsData = [], total = 0 } = (await $fetchApiCached<{
-    results: Blueprint[]
+// Tool chips filter by actual plugin usage (includedTasks), which the API
+// has no facet for, so with tool chips active the whole result set is
+// filtered and paginated locally from the full catalog. Without tool chips,
+// the API handles tags/q/pagination server-side as before.
+let blueprintsData: Blueprint[] = []
+let total = 0
+
+// Tool filter with no category chip: results are grouped into one section
+// per category (up to 6 shown each, with a see-all link that adds the
+// category chip). With a category chip the flat filtered list renders.
+const groupedByCategory = toolNames.length > 0 && !tagsSelected
+let toolGroups: {
+    name: string
+    slug?: string
+    icon: string
     total: number
-}>(
-    `/blueprints/versions/latest?size=${size}&page=${page}` +
-        (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
-        (q ? `&q=${encodeURIComponent(q)}` : ""),
-)) ?? { results: [], total: 0 }
+    blueprints: Blueprint[]
+}[] = []
+
+if (toolNames.length > 0) {
+    const selectedTools = toolNames
+        .map((name) => toolIndex.find((t) => t.name === name))
+        .filter((t): t is (typeof toolIndex)[number] => t !== undefined)
+
+    const qLower = q?.toLowerCase()
+    const filtered = fullCatalog.filter((b) => {
+        if (tagsForFilter && !b.tags?.includes(tagsForFilter)) return false
+        if (!selectedTools.every((t) => blueprintUsesTool(b, t.pluginClass))) {
+            return false
+        }
+        if (qLower) {
+            const haystack =
+                `${b.title} ${b.shortDescription ?? ""} ${b.description ?? ""}`.toLowerCase()
+            if (!haystack.includes(qLower)) return false
+        }
+        return true
+    })
+
+    total = filtered.length
+    blueprintsData = filtered.slice(
+        (Number(page) - 1) * Number(size),
+        Number(page) * Number(size),
+    )
+
+    if (groupedByCategory) {
+        toolGroups = categoryTags
+            .map((ct) => {
+                const meta = categoryTileMetaFor(ct.name)
+                const inCategory = filtered.filter((b) =>
+                    b.tags?.includes(ct.id ?? ""),
+                )
+                return {
+                    name: ct.name,
+                    slug: meta?.slug,
+                    icon: meta?.icon ?? "mdi:tag-outline",
+                    total: inCategory.length,
+                    blueprints: inCategory.slice(0, 6),
+                }
+            })
+            .filter((g) => g.total > 0)
+    }
+} else if (hasActiveFilters) {
+    const data = (await $fetchApiCached<{
+        results: Blueprint[]
+        total: number
+    }>(
+        `/blueprints/versions/latest?size=${size}&page=${page}` +
+            (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
+            (q ? `&q=${encodeURIComponent(q)}` : ""),
+    )) ?? { results: [], total: 0 }
+    blueprintsData = data.results ?? []
+    total = data.total ?? 0
+}
 
 const blueprints = blueprintsData.sort((a, b) => {
     if (sort === "A-Z") {
@@ -41,79 +227,347 @@ const blueprints = blueprintsData.sort((a, b) => {
     return 0
 })
 
-const ITEMS = [
-    {
-        question: "What is a Kestra blueprint?",
-        answer: "A blueprint is a pre-built, ready-to-use workflow template that helps you get started quickly. Each blueprint demonstrates a real-world use case with fully configured tasks, triggers, and integrations — so you can import it and adapt it to your needs.",
-    },
-    {
-        question: "How do I use a blueprint?",
-        answer: "Browse or search for a blueprint that matches your use case. Click on it to view the full workflow definition, then copy it into your Kestra instance. You can use it as-is or customize the tasks, inputs, and triggers to fit your requirements.",
-    },
-    {
-        question: "Can I modify a blueprint after importing it?",
-        answer: "Yes. Blueprints are standard Kestra workflows written in YAML. Once imported, you have full control to add, remove, or reconfigure tasks, change scheduling, update credentials, or extend the flow with additional logic.",
-    },
-    {
-        question: "What categories of blueprints are available?",
-        answer: "Blueprints are organized into categories such as Getting Started, Core, Infrastructure, Data, AI, Business, and Cloud. Each category groups common patterns and integrations to help you find the right starting point.",
-    },
-    {
-        question: "Are blueprints maintained and updated?",
-        answer: "Yes. Blueprints are regularly updated to reflect new plugins, best practices, and platform features. The Kestra team and community continuously contribute new blueprints to cover emerging use cases.",
-    },
-    {
-        question: "Can I contribute my own blueprint?",
-        answer: "Yes. If you've built a workflow that solves a common problem, you can contribute it as a blueprint. Community contributions help expand the library and make it easier for others to get started with similar use cases.",
-    },
-]
+const categoryNames = categoryTags.map((t) => t.name).sort()
+const categoryList =
+    categoryNames.length > 1
+        ? `${categoryNames.slice(0, -1).join(", ")}, and ${categoryNames[categoryNames.length - 1]}`
+        : (categoryNames[0] ?? "")
+
+const ITEMS = blueprintFaqItems(categoryList)
 
 const title = "Blueprints"
 const description = "Get started with our library of workflows ready to use"
 ---
 
 <Layout {title} {description}>
-    <BlueprintLists
-        {q}
-        {tags}
-        {total}
-        {blueprints}
-        sortBy={sort}
-        currentPage={Number(page)}
-        itemsPerPage={Number(size)}
-        currentUrl={Astro.request.url}
-        {tagsSelected}
-        client:idle
-    >
-        <BlueprintSearch {q} slot="search" client:idle />
-        <div class="row g-3">
-            {
-                blueprints.length > 0 ? (
-                    blueprints.map((blueprint) => (
-                        <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
-                            <BlueprintCard
-                                {blueprint}
-                                {tags}
-                                href={`/blueprints/${blueprint.id}`}
-                            />
-                        </div>
-                    ))
-                ) : (
-                    <div class="col-12 text-center py-5">
-                        <h4>
-                            No blueprints found for
-                            <span class="highlight">{q}</span>
-                        </h4>
-                        <p>
-                            Try searching for a different term or choose a
-                            different category
-                        </p>
+    <section class="bp-hero">
+        <div class="container-xxl">
+            <div class="hero-card">
+                <h1>{headlineCount}+ Blueprints, ready to build.</h1>
+                <p>
+                    The first step is always the hardest. Search or browse to
+                    kick-start your next flow.
+                </p>
+                <div class="bp-hero-search">
+                    <TokenSearch
+                        {q}
+                        {tagsSelected}
+                        tools={toolsSelected}
+                        categories={categoryTags}
+                        {toolIndex}
+                        client:idle
+                    />
+                    <div class="quick-filters">
+                        {
+                            categoryTags.map((tag) => {
+                                const meta = categoryTileMetaFor(tag.name)
+                                return (
+                                    <a
+                                        href={`/blueprints/${meta?.slug}`}
+                                        class="quick-filter"
+                                    >
+                                        <Icon
+                                            name={
+                                                meta?.icon ?? "mdi:tag-outline"
+                                            }
+                                            class="quick-filter-icon"
+                                        />
+                                        {tag.name}
+                                    </a>
+                                )
+                            })
+                        }
                     </div>
-                )
-            }
+                </div>
+            </div>
         </div>
-    </BlueprintLists>
-    <Faq items={ITEMS} client:visible />
+    </section>
+
+    {
+        !hasActiveFilters && gettingStartedBlueprints.length > 0 && (
+            <section class="bp-row">
+                <div class="container-xxl">
+                    <h2>Getting Started</h2>
+                    <p>New to Kestra? Start with these six core patterns.</p>
+                    <div class="row g-3">
+                        {gettingStartedBlueprints
+                            .slice(0, 6)
+                            .map((blueprint) => (
+                                <div class="col-md-6 col-xl-4">
+                                    <BlueprintCard
+                                        {blueprint}
+                                        {tags}
+                                        href={`/blueprints/${blueprint.id}`}
+                                    />
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        !hasActiveFilters && popularBlueprints.length > 0 && (
+            <section class="bp-row">
+                <div class="container-xxl">
+                    <h2>Popular</h2>
+                    <p>The most-viewed blueprints over the last 90 days.</p>
+                    <div class="row g-3">
+                        {popularBlueprints.slice(0, 6).map((blueprint) => (
+                            <div class="col-md-6 col-xl-4">
+                                <BlueprintCard
+                                    {blueprint}
+                                    {tags}
+                                    href={`/blueprints/${blueprint.id}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        !hasActiveFilters && featuredBlueprints.length > 0 && (
+            <section class="bp-row">
+                <div class="container-xxl">
+                    <h2>Featured</h2>
+                    <p>Hand-picked blueprints worth a closer look.</p>
+                    <div class="row g-3">
+                        {featuredBlueprints.slice(0, 6).map((blueprint) => (
+                            <div class="col-md-6 col-xl-4">
+                                <BlueprintCard
+                                    {blueprint}
+                                    {tags}
+                                    href={`/blueprints/${blueprint.id}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        !hasActiveFilters && recentlyAddedBlueprints.length > 0 && (
+            <section class="bp-row">
+                <div class="container-xxl">
+                    <h2>Recently Added</h2>
+                    <p>The newest blueprints in the catalog.</p>
+                    <div class="row g-3">
+                        {recentlyAddedBlueprints
+                            .slice(0, 6)
+                            .map((blueprint) => (
+                                <div class="col-md-6 col-xl-4">
+                                    <BlueprintCard
+                                        {blueprint}
+                                        {tags}
+                                        href={`/blueprints/${blueprint.id}`}
+                                    />
+                                </div>
+                            ))}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        !hasActiveFilters && (
+            <section class="bp-row bp-categories">
+                <div class="container-xxl">
+                    <h2>Browse by category</h2>
+                    <p>
+                        Find blueprints by domain: what part of your stack they
+                        touch.
+                    </p>
+                    <div class="category-tiles">
+                        {categoryTags.map((tag, i) => {
+                            const meta = categoryTileMetaFor(tag.name)
+                            return (
+                                <a
+                                    href={`/blueprints/${meta?.slug}`}
+                                    class="category-tile"
+                                >
+                                    <Icon
+                                        name={meta?.icon ?? "mdi:tag-outline"}
+                                        class="tile-icon"
+                                    />
+                                    <span class="tile-name">{tag.name}</span>
+                                    {meta && (
+                                        <p class="tile-blurb">{meta.blurb}</p>
+                                    )}
+                                    <span class="tile-count">
+                                        {categoryCounts[i]}+ blueprints
+                                    </span>
+                                </a>
+                            )
+                        })}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        !hasActiveFilters && patternTags.length > 0 && (
+            <section class="bp-row bp-categories bp-patterns">
+                <div class="container-xxl">
+                    <h2>Browse by pattern</h2>
+                    <p>
+                        Find blueprints by what they do, across every category.
+                    </p>
+                    <div class="category-tiles">
+                        {patternTags.map((tag, i) => {
+                            const pattern = PATTERN_TAGS.find(
+                                (p) => p.name === tag.name,
+                            )
+                            return (
+                                pattern && (
+                                    <a
+                                        href={`/blueprints/patterns/${pattern.slug}`}
+                                        class="category-tile"
+                                    >
+                                        <Icon
+                                            name={pattern.icon}
+                                            class="tile-icon"
+                                        />
+                                        <span class="tile-name">
+                                            {tag.name}
+                                        </span>
+                                        <p class="tile-blurb">
+                                            {pattern.description}
+                                        </p>
+                                        <span class="tile-count">
+                                            {patternCounts[i]}+ blueprints
+                                        </span>
+                                    </a>
+                                )
+                            )
+                        })}
+                    </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        groupedByCategory && (
+            <section class="bp-row tool-results">
+                <div class="container-xxl">
+                    <p class="fw-bold results-count">
+                        {total} blueprints using {toolNames.join(" + ")}
+                    </p>
+                    {toolGroups.length > 0 ? (
+                        toolGroups.map((group) => (
+                            <div class="tool-group">
+                                <div class="tool-group-head">
+                                    <h2>
+                                        <Icon
+                                            name={group.icon}
+                                            class="group-icon"
+                                        />
+                                        {group.name}
+                                    </h2>
+                                    {group.total > group.blueprints.length && (
+                                        <a
+                                            href={`/blueprints?tools=${encodeURIComponent(toolNames.join(","))}&tags=${encodeURIComponent(group.name)}`}
+                                            class="see-more"
+                                        >
+                                            See all {group.total} in{" "}
+                                            {group.name}
+                                            <Icon
+                                                name="mdi:chevron-right"
+                                                class="see-more-icon"
+                                            />
+                                        </a>
+                                    )}
+                                </div>
+                                <div class="row g-3">
+                                    {group.blueprints.map((blueprint) => (
+                                        <div class="col-md-6 col-xl-4">
+                                            <BlueprintCard
+                                                {blueprint}
+                                                {tags}
+                                                href={`/blueprints/${blueprint.id}`}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div class="col-12 text-center py-5">
+                            <h4>No blueprints found for this search.</h4>
+                            <p>
+                                Try a different term, or remove a filter chip
+                                from the search bar.
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </section>
+        )
+    }
+
+    {
+        hasActiveFilters && !groupedByCategory && (
+            <BlueprintLists
+                {q}
+                {tags}
+                {total}
+                {blueprints}
+                sortBy={sort}
+                currentPage={Number(page)}
+                itemsPerPage={Number(size)}
+                currentUrl={Astro.request.url}
+                {tagsSelected}
+                client:idle
+            >
+                <div class="row g-3">
+                    {blueprints.length > 0 ? (
+                        blueprints.map((blueprint) => (
+                            <div class="col-md-6 col-xl-4">
+                                <BlueprintCard
+                                    {blueprint}
+                                    {tags}
+                                    href={`/blueprints/${blueprint.id}`}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <div class="col-12 text-center py-5">
+                            <h4>No blueprints found for this search.</h4>
+                            <p>
+                                Try a different term, or remove a filter chip
+                                from the search bar.
+                            </p>
+                        </div>
+                    )}
+                </div>
+            </BlueprintLists>
+        )
+    }
+    {
+        !hasActiveFilters && (
+            <SeeHow
+                cta={{
+                    text: "Get Started",
+                    href: "/get-started",
+                }}
+            >
+                <Fragment slot="title">
+                    Ready to orchestrate your stack?
+                </Fragment>
+                Copy a blueprint, adapt it to your stack, and ship your first
+                flow in minutes.
+            </SeeHow>
+        )
+    }
+    {!hasActiveFilters && <Faq items={ITEMS} client:visible />}
 </Layout>
 
 <style lang="scss">
@@ -124,6 +578,204 @@ const description = "Get started with our library of workflows ready to use"
     .text-center {
         p {
             color: var(--ks-content-tertiary);
+        }
+    }
+
+    .tool-results {
+        .results-count {
+            color: var(--ks-content-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-group {
+            margin-bottom: 2.5rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .tool-group-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+
+            h2 {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin: 0;
+                font-size: $font-size-xl;
+                color: var(--ks-content-primary);
+
+                .group-icon {
+                    width: 1.375rem;
+                    height: 1.375rem;
+                    color: var(--ks-content-link);
+                }
+            }
+        }
+
+        .see-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.125rem;
+            flex-shrink: 0;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: var(--ks-content-link);
+            text-decoration: none;
+            white-space: nowrap;
+
+            .see-more-icon {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+
+            &:hover {
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+        }
+    }
+
+    .bp-hero {
+        padding: $rem-2 $rem-1 $rem-1;
+
+        .hero-card {
+            padding: 4rem 2.625rem;
+            background: url("~/components/blueprints/assets/bar-bg.webp")
+                center / cover no-repeat;
+            border-radius: $border-radius-lg;
+            color: $white;
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            color: $white;
+        }
+
+        p {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            margin-bottom: 0;
+        }
+
+        .bp-hero-search {
+            margin-top: 1.5rem;
+            max-width: 640px;
+
+            .quick-filters {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+
+            .quick-filter {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.375rem;
+                padding: 0.375rem 1rem;
+                border-radius: 2rem;
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                color: rgba(255, 255, 255, 0.85);
+                font-size: $font-size-sm;
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.2s ease;
+
+                .quick-filter-icon {
+                    font-size: 1rem;
+                    width: 1rem;
+                    height: 1rem;
+                }
+
+                &:hover {
+                    border-color: rgba(255, 255, 255, 0.6);
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    .bp-row {
+        padding: $rem-1 0 $rem-2;
+
+        .container-xxl {
+            padding-inline: $rem-1;
+        }
+
+        h2 {
+            margin-bottom: 0.25rem;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            color: var(--ks-content-secondary);
+            margin-bottom: 1rem;
+        }
+    }
+
+    .bp-categories {
+        .category-tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .category-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            border-radius: $border-radius-lg;
+            border: 1px solid var(--ks-border-secondary);
+            background: var(--ks-background-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            .tile-icon {
+                font-size: 1.75rem;
+                width: 1.75rem;
+                height: 1.75rem;
+                color: var(--ks-content-link);
+            }
+
+            .tile-name {
+                font-weight: 700;
+                font-size: $font-size-md;
+                color: var(--ks-content-primary);
+            }
+
+            .tile-blurb {
+                margin: 0;
+                font-size: $font-size-sm;
+                line-height: 1.4;
+                color: var(--ks-content-secondary);
+            }
+
+            .tile-count {
+                margin-top: auto;
+                padding-top: 0.5rem;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                color: var(--ks-content-tertiary);
+            }
+
+            &:hover {
+                border-color: var(--ks-border-active);
+                box-shadow: 2px 6px 20px 0 var(--ks-shadows-light);
+                transform: translateY(-2px);
+            }
         }
     }
 </style>

@@ -1,93 +1,543 @@
 ---
 export const prerender = false
+import { Icon } from "astro-icon/components"
+import { getCollection } from "astro:content"
 import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Header from "~/components/blueprints/Header.astro"
 import Detail from "~/components/blueprints/Detail.vue"
 import Related from "~/components/blueprints/Related.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
+import TokenSearch from "~/components/blueprints/TokenSearch.vue"
+import Faq from "~/components/common/Faq.vue"
 import { randomSortFunction } from "~/utils/random"
+import { findOrchestrationLinks } from "~/utils/orchestrationLink"
+import { isUseCaseTag, splitTagsByAxis } from "~/utils/blueprints/useCaseTags"
+import { visibleTags } from "~/utils/blueprints/visibleTags"
+import { buildToolIndex } from "~/utils/blueprints/toolIndex"
+import { blueprintFaqItems } from "~/utils/blueprints/faq"
+import {
+    CATEGORY_TILE_META,
+    categoryTileMetaForSlug,
+} from "~/utils/blueprints/categoryMeta"
+import {
+    subCategoriesFor,
+    blueprintInSubCategory,
+} from "~/utils/blueprints/subCategories"
 
 const { id } = Astro.params
 
-let pageData: Blueprint
+// /blueprints/<id> serves two different things at the same path depth: a
+// blueprint detail page, or (when <id> matches a known vertical slug) a
+// category listing page. Astro can't have two dynamic routes at the same
+// shape, so this one route disambiguates up front.
+const category = id ? categoryTileMetaForSlug(id) : undefined
+const isCategoryPage =
+    category !== undefined && category.name !== "Getting Started"
 
-try {
-    pageData = await $fetchApiCached<Blueprint>(`/blueprints/${id}/versions/latest`)
-} catch (e) {
-    return Astro.redirect("/404")
-}
+let title = ""
+let description: string | undefined
 
-const graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
-const tags = await $fetchApiCached<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+// Category-page data
+let categoryTotal = 0
+let categoryBlueprints: Blueprint[] = []
+let categoryTags: BlueprintTag[] = []
+let categoryTagId: string | undefined
+let categoryQ: string | undefined
+let siblingCategories: typeof CATEGORY_TILE_META = []
+let subCategoryRows: { name: string; slug: string; blueprints: Blueprint[] }[] =
+    []
+let categoryChipTags: BlueprintTag[] = []
+let categoryToolIndex: ReturnType<typeof buildToolIndex> = []
+const PAGE_SIZE = 24
+const SUBCATEGORY_SAMPLE_SIZE = 200
 
+// Blueprint detail-page data
+let pageData: Blueprint | undefined
+let graph: unknown
+let detailTags: BlueprintTag[] = []
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
+let orchestrationLinks: ReturnType<typeof findOrchestrationLinks> = []
 
-if (pageData.tags && pageData.tags.length > 0) {
-    const selectedTagIds = pageData.tags.slice(0, 2)
+if (isCategoryPage && category) {
+    categoryQ = Astro.url.searchParams.get("q") ?? undefined
 
-    for (const tagId of selectedTagIds) {
-        const tag = tags.find((t) => t.id === tagId)
-        if (!tag) continue
+    categoryTags = await $fetchApiCached<BlueprintTag[]>(
+        `/blueprints/versions/latest/tags`,
+    )
+    const tag = categoryTags.find((t) => t.name === category.name)
+    categoryTagId = tag?.id
 
-        const data = await $fetchApiCached<{ results: Blueprint[] }>(
-            `/blueprints/versions/latest?tags=${tagId}&size=10`,
+    const { results = [], total = 0 } = tag
+        ? ((await $fetchApiCached<{ results: Blueprint[]; total: number }>(
+              `/blueprints/versions/latest?size=${PAGE_SIZE}&page=1&tags=${tag.id}` +
+                  (categoryQ ? `&q=${encodeURIComponent(categoryQ)}` : ""),
+          )) ?? { results: [], total: 0 })
+        : { results: [], total: 0 }
+
+    categoryBlueprints = results
+    categoryTotal = total
+    siblingCategories = CATEGORY_TILE_META.filter(
+        (c) => c.name !== "Getting Started",
+    )
+
+    // Category-suggestion chips + a tool index scoped to this category's
+    // blueprints, so the search bar suggests the same icon-rich options as
+    // the main page (chip changes navigate back to /blueprints filtering).
+    categoryChipTags = splitTagsByAxis(visibleTags(categoryTags)).categoryTags
+
+    // Themed sub-category rows (n8n's "AI Chatbot / AI RAG / AI Summarization"
+    // pattern), grouped by the sub-category tags carried in the blueprint
+    // YAML (with an id-pattern fallback until the catalog reindexes). Skipped
+    // while actively searching within the category, since a flat result list
+    // reads more honestly than a partially-matching set of themed rows.
+    if (tag) {
+        const sample = await $fetchApiCached<{ results: Blueprint[] }>(
+            `/blueprints/versions/latest?size=${SUBCATEGORY_SAMPLE_SIZE}&page=1&tags=${tag.id}`,
         )
+        categoryToolIndex = buildToolIndex(sample?.results ?? [])
 
-        if (data && data.results.length > 0) {
-            const rowBlueprints = data.results
-                .filter((b) => b.id !== pageData.id)
-                .sort(randomSortFunction)
-                .slice(0, 6)
+        if (!categoryQ) {
+            const tagIdByName = new Map(
+                categoryTags.map((t) => [t.name, t.id] as const),
+            )
+            const subCats = subCategoriesFor(category.name)
+            subCategoryRows = subCats
+                .map((sc) => ({
+                    name: sc.name,
+                    slug: sc.slug,
+                    blueprints: (sample?.results ?? [])
+                        .filter((b) =>
+                            blueprintInSubCategory(
+                                sc,
+                                b,
+                                tagIdByName.get(sc.name),
+                            ),
+                        )
+                        .slice(0, 6),
+                }))
+                .filter((row) => row.blueprints.length > 0)
+        }
+    }
 
-            if (rowBlueprints.length > 0) {
-                relatedRows.push({
-                    id: tagId,
-                    title: `More <span class="highlight">${tag.name}</span> Blueprints`,
-                    blueprints: rowBlueprints,
-                })
+    title = `${category.name} blueprints`
+    description = category.blurb
+} else {
+    try {
+        pageData = await $fetchApiCached<Blueprint>(
+            `/blueprints/${id}/versions/latest`,
+        )
+    } catch (e) {
+        return Astro.redirect("/404")
+    }
+
+    graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
+    detailTags = await $fetchApiCached<BlueprintTag[]>(
+        `/blueprints/versions/latest/tags`,
+    )
+
+    if (pageData.tags && pageData.tags.length > 0) {
+        const pageTags = pageData.tags
+            .map((tagId) => detailTags.find((t) => t.id === tagId))
+            .filter(
+                (t): t is BlueprintTag & { id: string } => t?.id !== undefined,
+            )
+
+        // Prefer the use-case pattern (a tighter, "what it does" match) over
+        // the broader vertical category when picking which relations to show.
+        const orderedTags = [
+            ...pageTags.filter((t) => isUseCaseTag(t.name)),
+            ...pageTags.filter((t) => !isUseCaseTag(t.name)),
+        ].slice(0, 2)
+
+        for (const tag of orderedTags) {
+            const data = await $fetchApiCached<{ results: Blueprint[] }>(
+                `/blueprints/versions/latest?tags=${tag.id}&size=10`,
+            )
+
+            if (data && data.results.length > 0) {
+                const rowBlueprints = data.results
+                    .filter((b) => b.id !== pageData!.id)
+                    .sort(randomSortFunction)
+                    .slice(0, 6)
+
+                if (rowBlueprints.length > 0) {
+                    relatedRows.push({
+                        id: tag.id,
+                        title: `More <span class="highlight">${tag.name}</span> Blueprints`,
+                        blueprints: rowBlueprints,
+                    })
+                }
             }
         }
     }
-}
 
-const title = pageData.metaTitle || pageData.title
-const description = pageData.metaDescription
+    const orchestrationEntries = await getCollection("orchestration")
+    orchestrationLinks = findOrchestrationLinks(
+        pageData.includedTasks,
+        orchestrationEntries,
+    )
+
+    title = pageData.metaTitle || pageData.title
+    description = pageData.metaDescription
+}
 ---
 
-<Layout title={title} description={description}>
-    <Header page={pageData} slug={id} tags={tags} />
-    <Detail
-        client:only
-        page={pageData}
-        description={pageData.description}
-        flow={pageData.flow}
-        graph={graph}
-    />
+<Layout {title} {description}>
     {
-        relatedRows.map((row) => (
-            <Related
-                id={row.id}
-                title={row.title}
-                relatedBlueprints={row.blueprints}
-                tags={tags}
-            />
-        ))
+        isCategoryPage && category ? (
+            <>
+                <section class="bp-hero">
+                    <div class="container-xxl">
+                        <div class="hero-card">
+                            <p class="eyebrow">
+                                <a href="/blueprints">Blueprints</a> / Category
+                            </p>
+                            <h1>
+                                {categoryTotal}+ {category.name} blueprints
+                            </h1>
+                            <p>{category.blurb}</p>
+
+                            <div class="bp-hero-search">
+                                <TokenSearch
+                                    q={categoryQ}
+                                    tagsSelected={category.name}
+                                    categories={categoryChipTags}
+                                    toolIndex={categoryToolIndex}
+                                    client:idle
+                                />
+                            </div>
+
+                            <div class="sibling-pills">
+                                {siblingCategories.map((c) => (
+                                    <a
+                                        href={
+                                            c.slug === id
+                                                ? "/blueprints"
+                                                : `/blueprints/${c.slug}`
+                                        }
+                                        title={
+                                            c.slug === id
+                                                ? `Remove the ${c.name} filter`
+                                                : undefined
+                                        }
+                                        class:list={[
+                                            "sibling-pill",
+                                            { active: c.slug === id },
+                                        ]}
+                                    >
+                                        <Icon name={c.icon} class="pill-icon" />
+                                        {c.name}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {subCategoryRows.length > 0 && (
+                    <section class="bp-row bp-subcategories">
+                        <div class="container-xxl">
+                            <h2>Browse {category.name} by pattern</h2>
+                            <p>
+                                Common patterns within {category.name}, each
+                                with a closer look and a link to see all of
+                                them.
+                            </p>
+                            {subCategoryRows.map((row) => (
+                                <div class="subcategory-row">
+                                    <div class="subcategory-row-head">
+                                        <h3>{row.name}</h3>
+                                        <a
+                                            href={`/blueprints/${id}/${row.slug}`}
+                                            class="see-more"
+                                        >
+                                            See more {row.name}
+                                            <Icon
+                                                name="mdi:chevron-right"
+                                                class="see-more-icon"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="row g-3">
+                                        {row.blueprints.map((blueprint) => (
+                                            <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                                <BlueprintCard
+                                                    {blueprint}
+                                                    tags={categoryTags}
+                                                    href={`/blueprints/${blueprint.id}`}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {(categoryQ || subCategoryRows.length === 0) && (
+                    <section class="bp-row">
+                        <div class="container-xxl">
+                            {categoryBlueprints.length > 0 ? (
+                                <LoadMoreBlueprints
+                                    tagId={categoryTagId}
+                                    q={categoryQ}
+                                    tags={categoryTags}
+                                    total={categoryTotal}
+                                    initialShown={categoryBlueprints.length}
+                                    pageSize={PAGE_SIZE}
+                                    client:idle
+                                >
+                                    <div class="row g-3" slot="initial">
+                                        {categoryBlueprints.map((blueprint) => (
+                                            <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                                <BlueprintCard
+                                                    {blueprint}
+                                                    tags={categoryTags}
+                                                    href={`/blueprints/${blueprint.id}`}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </LoadMoreBlueprints>
+                            ) : (
+                                <div class="col-12 text-center py-5">
+                                    <p>
+                                        {categoryQ
+                                            ? `No ${category.name} blueprints found for "${categoryQ}".`
+                                            : "No blueprints tagged with this category yet."}
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+                )}
+
+                <SeeHow
+                    cta={{
+                        text: "Get Started",
+                        href: "/get-started",
+                    }}
+                >
+                    <Fragment slot="title">
+                        Ready to orchestrate your stack?
+                    </Fragment>
+                    Copy a {category.name.toLowerCase()} blueprint, adapt it to
+                    your stack, and ship your first flow in minutes.
+                </SeeHow>
+
+                <Faq items={blueprintFaqItems()} client:visible />
+            </>
+        ) : (
+            pageData && (
+                <>
+                    <Header page={pageData} slug={id} tags={detailTags} />
+                    <Detail
+                        client:only
+                        page={pageData}
+                        description={pageData.description}
+                        flow={pageData.flow}
+                        graph={graph}
+                        orchestrationLinks={orchestrationLinks}
+                    />
+                    {relatedRows.map((row) => (
+                        <Related
+                            id={row.id}
+                            title={row.title}
+                            relatedBlueprints={row.blueprints}
+                            tags={detailTags}
+                        />
+                    ))}
+                    <SeeHow
+                        cta={{
+                            text: "Get Started",
+                            href: "/get-started",
+                        }}
+                    >
+                        <Fragment slot="title">New to Kestra?</Fragment>
+                        Use blueprints to kickstart your first workflows.
+                    </SeeHow>
+                </>
+            )
+        )
     }
-    <SeeHow
-        cta={{
-            text: "Get Started",
-            href: "/get-started",
-        }}
-    >
-        <Fragment slot="title">New to Kestra?</Fragment>
-        Use blueprints to kickstart your first workflows.
-    </SeeHow>
 </Layout>
 
 <style lang="scss">
     :global(.content p) {
         white-space: nowrap;
         margin-bottom: 2rem;
+    }
+
+    :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+
+    .bp-hero {
+        padding: $rem-2 $rem-1 $rem-1;
+
+        .hero-card {
+            padding: 4rem 2.625rem;
+            background: url("~/components/blueprints/assets/bar-bg.webp")
+                center / cover no-repeat;
+            border-radius: $border-radius-lg;
+            color: $white;
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .eyebrow {
+            margin-bottom: 0.75rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+
+            a {
+                color: rgba(255, 255, 255, 0.7);
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            color: $white;
+        }
+
+        p {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            margin-bottom: 0;
+        }
+
+        .bp-hero-search {
+            margin-top: 1.5rem;
+            max-width: 640px;
+        }
+
+        .sibling-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sibling-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            .pill-icon {
+                font-size: 1rem;
+                width: 1rem;
+                height: 1rem;
+            }
+
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.6);
+                color: $white;
+            }
+
+            &.active {
+                border-color: var(--ks-border-active);
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+            }
+        }
+    }
+
+    .bp-row {
+        padding: $rem-1 0 $rem-3;
+
+        .container-xxl {
+            padding-inline: $rem-1;
+        }
+    }
+
+    .bp-subcategories {
+        padding-top: 0;
+
+        > .container-xxl {
+            padding-inline: $rem-1;
+        }
+
+        h2 {
+            margin-bottom: 0.25rem;
+            color: var(--ks-content-primary);
+        }
+
+        > .container-xxl > p {
+            color: var(--ks-content-secondary);
+            margin-bottom: 2rem;
+        }
+    }
+
+    .subcategory-row {
+        margin-bottom: 3.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--ks-border-secondary);
+
+        &:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .subcategory-row-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        h3 {
+            margin: 0;
+            font-size: $font-size-lg;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .see-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.125rem;
+        flex-shrink: 0;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-link);
+        text-decoration: none;
+        white-space: nowrap;
+
+        .see-more-icon {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .text-center p {
+        color: var(--ks-content-tertiary);
     }
 </style>
