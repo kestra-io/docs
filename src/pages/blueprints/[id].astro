@@ -1,7 +1,6 @@
 ---
 export const prerender = false
 import { Icon } from "astro-icon/components"
-import { getCollection } from "astro:content"
 import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Header from "~/components/blueprints/Header.astro"
@@ -174,7 +173,33 @@ if (isCategoryPage && category) {
         }
     }
 
-    const orchestrationEntries = await getCollection("orchestration")
+    // Raw glob instead of getCollection: this page is SSR (prerender=false),
+    // and a runtime astro:content import would bundle every collection into
+    // the worker. Only tool.name/pluginClass per orchestration page is needed.
+    const orchFiles = import.meta.glob<string>(
+        "../../contents/orchestration/*.yaml",
+        { query: "?raw", import: "default", eager: true },
+    )
+    const orchestrationEntries = Object.entries(orchFiles).flatMap(
+        ([path, raw]) => {
+            const slug = path
+                .split("/")
+                .pop()!
+                .replace(/\.yaml$/, "")
+            const match = raw.match(
+                /^tool:\s*\n\s+name:\s*"([^"]+)"\s*\n\s+pluginClass:\s*"([^"]+)"/m,
+            )
+            if (!match) return []
+            return [
+                {
+                    id: slug,
+                    data: {
+                        tool: { name: match[1], pluginClass: match[2] },
+                    },
+                },
+            ]
+        },
+    )
     orchestrationLinks = findOrchestrationLinks(
         pageData.includedTasks,
         orchestrationEntries,
