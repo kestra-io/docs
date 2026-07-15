@@ -265,10 +265,11 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
 
         const isRootView = pluginType === undefined
+        const isRootPluginPage = isRootView && subGroup === undefined
 
         return [
             ...baseTocLinks,
-            ...(isRootView && rootPlugin?.longDescription
+            ...(isRootPluginPage && rootPlugin?.longDescription
                 ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
             ...(isRootView && currentPluginVideos?.length > 0
