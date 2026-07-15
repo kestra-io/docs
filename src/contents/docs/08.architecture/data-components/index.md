@@ -48,18 +48,21 @@ The table below outlines key data components, where they are stored, and their p
   - [AWS S3](https://aws.amazon.com/s3/)
   - [Google Cloud Storage](https://cloud.google.com/storage)
   - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+  - [Cloudflare R2](https://www.cloudflare.com/products/r2/)
+  - [Huawei OBS](https://www.huaweicloud.com/en-us/product/obs.html)
   - Any S3-compatible service (Ceph, SeaweedFS, Garage, MinIO)
 
 ### Configuring internal storage
 
-Example `docker-compose.yaml` configuration for AWS S3:
+Example configuration for AWS S3:
 
 ```yaml
 kestra:
   storage:
     type: s3
-    bucket: "kestra-internal-storage"
-    region: "us-east-1"
+    s3:
+      bucket: "kestra-internal-storage"
+      region: "us-east-1"
 ```
 
 For full details, see [internal storage configuration](../../configuration/02.runtime-and-storage/index.md#internal-storage).

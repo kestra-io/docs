@@ -7,7 +7,7 @@ import AshisutoLogo from "~/assets/landing/partners/ashisuto-logo.svg?raw"
 import PartnerBanner from "~/components/partners/PartnerBanner.astro"
 import Capability from "~/components/partners/Capability.astro"
 
-import seeHowImg from "~/assets/landing/partners/ashisuto-cta.webp"
+import seeHowImg from "~/assets/landing/partners/ashisuto-cta.svg"
 import assessment from "~/assets/landing/partners/ashisuto-assessment.webp"
 import implementation from "~/assets/landing/partners/ashisuto-implementation.webp"
 import support from "~/assets/landing/partners/ashisuto-support.webp"
@@ -114,3 +114,9 @@ const AshisutoQuotes = [
         to bridge your business needs with Kestra's engineering expertise.
     </SeeHow>
 </Layout>
+
+<style is:global>
+    html.dark {
+        --ashisuto-brand: #ffffff;
+    }
+</style>

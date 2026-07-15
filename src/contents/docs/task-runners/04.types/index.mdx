@@ -10,9 +10,19 @@ description: Explore the different types of Task Runners available in Kestra, in
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 
-This section lists all task runners available in Kestra.
+Choose a task runner to control where and how Kestra executes your script tasks.
 
-Each `taskRunner` is identified by its `type`. The [Process](./01.process-task-runner/index.md) and [Docker](./02.docker-task-runner/index.md) task runners are fully open-source and located within the [Kestra repository](https://github.com/kestra-io/kestra). By default, Kestra runs all script tasks using the Docker task runner.
+| Task runner | Edition | Description |
+|---|---|---|
+| [Process](./01.process-task-runner/index.md) | OSS | Runs tasks as local processes on the Kestra worker |
+| [Docker](./02.docker-task-runner/index.md) | OSS | Runs tasks in Docker containers (default) |
+| [Kubernetes](./03.kubernetes-task-runner/index.md) | EE | Runs tasks as Kubernetes pods |
+| [AWS Batch](./04.aws-batch-task-runner/index.md) | EE | Runs tasks on AWS Batch (ECS Fargate, EC2, or EKS) |
+| [Azure Batch](./05.azure-batch-task-runner/index.md) | EE | Runs tasks on Azure Batch containers |
+| [Google Batch](./06.google-batch-task-runner/index.md) | EE | Runs tasks on Google Cloud Batch VMs |
+| [Google Cloud Run](./07.google-cloudrun-task-runner/index.md) | EE | Runs tasks as serverless Google Cloud Run jobs |
+
+[Process](./01.process-task-runner/index.md) and [Docker](./02.docker-task-runner/index.md) are open-source and built into Kestra. Cloud-based runners require an [Enterprise Edition](../../07.enterprise/index.mdx) license.
 
 <div class="video-container">
     <iframe
@@ -23,7 +33,5 @@ Each `taskRunner` is identified by its `type`. The [Process](./01.process-task-r
         allowfullscreen
     ></iframe>
 </div>
-
-All other plugins such as the [AWS Batch](./04.aws-batch-task-runner/index.md), [Google Batch](./06.google-batch-task-runner/index.md), [Google Cloud Run](./07.google-cloudrun-task-runner/index.md), [Google Compute Engine](./08.google-computeengine-task-runner/index.md), [Azure Batch](./05.azure-batch-task-runner/index.md), [Kubernetes](./03.kubernetes-task-runner/index.md), and more planned for the future, are managed by Kestra and require an [Enterprise Edition](../../07.enterprise/index.mdx) license. If you want to try them out, please [reach out](/demo).
 
 <ChildCard />

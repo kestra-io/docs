@@ -161,7 +161,7 @@
 - regexp: "^/docs/how-to-guides/ceph(/.*)?$"
   to: "/docs/configuration/runtime-and-storage"
 - regexp: "^/docs/how-to-guides/cloudflare-r2(/.*)?$"
-  to: "/docs/configuration/runtime-and-storage"
+  to: "/docs/configuration/runtime-and-storage#cloudflare-r2"
 - regexp: "^/docs/how-to-guides/inputs-api(/.*)?$"
   to: "/docs/workflow-components/inputs"
 - regexp: "^/docs/how-to-guides/inputs-enum(/.*)?$"

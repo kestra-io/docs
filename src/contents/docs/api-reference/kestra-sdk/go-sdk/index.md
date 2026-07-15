@@ -420,6 +420,258 @@ func restartTrigger(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ---
 
+## Dashboards
+
+The following examples use `NewClient`, which provides a higher-level client for APIs not available in the generated client.
+
+```go
+func newKestraClient() *openapiclient.KestraClient {
+    return openapiclient.NewClient(
+        getenv("KESTRA_URL", "http://localhost:8080"),
+        openapiclient.WithBasicAuth(
+            getenv("KESTRA_USER", "root@root.com"),
+            getenv("KESTRA_PASS", "Root!1234"),
+        ),
+    )
+}
+```
+
+### Create a dashboard
+
+```go
+func createDashboard(ctx context.Context) {
+    tenant := "main"
+    body := `id: my_dashboard
+title: My Dashboard
+`
+    kestraClient := newKestraClient()
+    dashboard, err := kestraClient.Dashboards().CreateDashboard(ctx, tenant, body)
+    if err != nil {
+        fmt.Printf("Error creating dashboard: %v\n", err)
+        return
+    }
+    fmt.Println("Dashboard created:", dashboard.GetId())
+}
+```
+
+### Search dashboards
+
+```go
+func searchDashboards(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    result, err := kestraClient.Dashboards().SearchDashboards(ctx, tenant, nil, nil, nil, nil)
+    if err != nil {
+        fmt.Printf("Error searching dashboards: %v\n", err)
+        return
+    }
+    for _, d := range result.GetResults() {
+        fmt.Println("Dashboard:", d.GetId())
+    }
+}
+```
+
+### Delete a dashboard
+
+```go
+func deleteDashboard(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    err := kestraClient.Dashboards().DeleteDashboard(ctx, "my_dashboard_id", tenant)
+    if err != nil {
+        fmt.Printf("Error deleting dashboard: %v\n", err)
+        return
+    }
+    fmt.Println("Dashboard deleted")
+}
+```
+
+---
+
+## Namespace files
+
+List, read, and delete files stored in a namespace.
+
+### List files
+
+```go
+func listFiles(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    path := "/"
+    files, err := kestraClient.Files().ListNamespaceDirectoryFiles(ctx, "my_namespace", tenant, &path)
+    if err != nil {
+        fmt.Printf("Error listing files: %v\n", err)
+        return
+    }
+    for _, f := range files {
+        fmt.Println("File:", f.GetFileName())
+    }
+}
+```
+
+### Read file content
+
+```go
+func readFile(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    content, err := kestraClient.Files().FileContent(ctx, "my_namespace", tenant, "/scripts/main.py", nil)
+    if err != nil {
+        fmt.Printf("Error reading file: %v\n", err)
+        return
+    }
+    defer content.Close()
+    fmt.Println("Downloaded to:", content.Name())
+}
+```
+
+### Delete a file
+
+```go
+func deleteFile(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    err := kestraClient.Files().DeleteFileDirectory(ctx, "my_namespace", tenant, "/scripts/main.py")
+    if err != nil {
+        fmt.Printf("Error deleting file: %v\n", err)
+        return
+    }
+    fmt.Println("File deleted")
+}
+```
+
+---
+
+## Test suites
+
+:::alert{type="warning"}
+Test suites require Kestra Enterprise Edition.
+:::
+
+Create, run, and fetch results for unit test suites.
+
+### Create a test suite
+
+```go
+func createTestSuite(ctx context.Context) {
+    tenant := "main"
+    body := `id: my_tests
+namespace: my_namespace
+flows:
+  - flowId: my_flow
+`
+    kestraClient := newKestraClient()
+    suite, err := kestraClient.TestSuites().CreateTestSuite(ctx, tenant, body)
+    if err != nil {
+        fmt.Printf("Error creating test suite: %v\n", err)
+        return
+    }
+    fmt.Println("Test suite created:", suite.GetId())
+}
+```
+
+### Run a test suite
+
+```go
+func runTestSuite(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    result, err := kestraClient.TestSuites().RunTestSuite(ctx, "my_namespace", "my_tests", tenant, nil)
+    if err != nil {
+        fmt.Printf("Error running test suite: %v\n", err)
+        return
+    }
+    fmt.Println("State:", result.GetState())
+}
+```
+
+### Get test results
+
+```go
+func getTestResult(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    result, err := kestraClient.TestSuites().TestResult(ctx, "run-id", tenant)
+    if err != nil {
+        fmt.Printf("Error fetching test result: %v\n", err)
+        return
+    }
+    fmt.Println("State:", result.GetState())
+}
+```
+
+---
+
+## Apps
+
+:::alert{type="warning"}
+Apps require Kestra Enterprise Edition.
+:::
+
+Create, enable, disable, and delete apps.
+
+### Create an app
+
+```go
+func createApp(ctx context.Context) {
+    tenant := "main"
+    body := `id: my_app
+title: My App
+`
+    kestraClient := newKestraClient()
+    app, err := kestraClient.Apps().CreateApp(ctx, tenant, body)
+    if err != nil {
+        fmt.Printf("Error creating app: %v\n", err)
+        return
+    }
+    fmt.Println("App created:", app.GetUid())
+}
+```
+
+### Enable or disable an app
+
+```go
+func enableApp(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    _, err := kestraClient.Apps().EnableApp(ctx, "app-uid", tenant)
+    if err != nil {
+        fmt.Printf("Error enabling app: %v\n", err)
+        return
+    }
+    fmt.Println("App enabled")
+}
+
+func disableApp(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    _, err := kestraClient.Apps().DisableApp(ctx, "app-uid", tenant)
+    if err != nil {
+        fmt.Printf("Error disabling app: %v\n", err)
+        return
+    }
+    fmt.Println("App disabled")
+}
+```
+
+### Delete an app
+
+```go
+func deleteApp(ctx context.Context) {
+    tenant := "main"
+    kestraClient := newKestraClient()
+    err := kestraClient.Apps().DeleteApp(ctx, "app-uid", tenant)
+    if err != nil {
+        fmt.Printf("Error deleting app: %v\n", err)
+        return
+    }
+    fmt.Println("App deleted")
+}
+```
+
+---
+
 ## Best practices
 
 - **Reuse your client:** construct one `APIClient` at startup and share it via dependency injection or a package-level variable.
