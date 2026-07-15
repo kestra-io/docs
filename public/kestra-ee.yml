@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.27
+  version: 1.3.28
 tags:
 - name: Flows
   description: Flows api
@@ -2000,62 +2000,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiUser"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/support/debug-info:
-    get:
-      tags:
-      - Misc
-      summary: Retrieve debug information for a support ticket
-      description: Returns aggregated debug information about the current Kestra instance.
-        Available to all authenticated users.
-      operationId: supportDebugInfo
-      responses:
-        "200":
-          description: supportDebugInfo 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SupportDebugInfo"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/support/forward:
-    post:
-      tags:
-      - Misc
-      summary: Forward support ticket to configured registry proxy
-      operationId: forwardSupportTicket
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                payload:
-                  type: string
-                filesPublisher:
-                  type: array
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              payload:
-                contentType: application/octet-stream
-                explode: false
-              filesPublisher:
-                contentType: application/octet-stream
-                explode: false
-        required: true
-      responses:
-        "200":
-          description: forwardSupportTicket 200 response
-          content:
-            application/json:
-              schema:
-                type: object
       security:
       - bearerAuth: []
       - basicAuth: []
@@ -15364,6 +15308,75 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/{tenant}/support/debug-info:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve debug information for a support ticket
+      description: Returns aggregated debug information about the current Kestra instance.
+        Requires the SUPPORT permission.
+      operationId: supportDebugInfo
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: supportDebugInfo 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportDebugInfo"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/support/forward:
+    post:
+      tags:
+      - Misc
+      summary: Forward support ticket to configured registry proxy
+      description: Requires the SUPPORT permission.
+      operationId: forwardSupportTicket
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: string
+                filesPublisher:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                    format: binary
+            encoding:
+              payload:
+                contentType: application/octet-stream
+                explode: false
+              filesPublisher:
+                contentType: application/octet-stream
+                explode: false
+        required: true
+      responses:
+        "200":
+          description: forwardSupportTicket 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/{tenant}/tenant-access:
     get:
       tags:
@@ -20141,6 +20154,8 @@ components:
               type: array
             AI_COPILOT:
               type: array
+            SUPPORT:
+              type: array
             UNKNOWN:
               type: array
         name:
@@ -20211,6 +20226,8 @@ components:
             CREDENTIAL:
               type: array
             AI_COPILOT:
+              type: array
+            SUPPORT:
               type: array
             UNKNOWN:
               type: array
@@ -21314,6 +21331,8 @@ components:
             $ref: "#/components/schemas/LeftSidebarConfiguration"
           rightSidebar:
             $ref: "#/components/schemas/RightSidebarConfiguration"
+          supportEnabled:
+            type: boolean
           inMaintenance:
             type: boolean
           passwordRegexp:
@@ -22045,6 +22064,7 @@ components:
       - GROUP_MEMBERSHIP
       - CREDENTIAL
       - AI_COPILOT
+      - SUPPORT
       - UNKNOWN
     Plugin:
       type: object
@@ -22567,6 +22587,8 @@ components:
             CREDENTIAL:
               type: array
             AI_COPILOT:
+              type: array
+            SUPPORT:
               type: array
             UNKNOWN:
               type: array
