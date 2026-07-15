@@ -11,6 +11,7 @@ import { default as Avatars } from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Mesh from "~/components/layout/Mesh.vue"
 import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+import { blogPlaceholderUrl } from "~/utils/blogPlaceholderUrl"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
@@ -39,9 +40,9 @@ const description =
     "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
 const { image, date, author, authors } = page
 
-const staticImage = image
-    ? await getImage({ src: image, format: "webp" })
-    : null
+const socialImage = image
+    ? (await getImage({ src: image, format: "webp" })).src
+    : blogPlaceholderUrl(post.id)
 
 const allAuthors = authors ?? (author ? [author] : [])
 
@@ -62,7 +63,7 @@ const jsonLinkedData = {
         "@id": Astro.url.href,
     },
     headline: title,
-    image: [staticImage ? `${Astro.url.origin}${staticImage.src}` : null],
+    image: [`${Astro.url.origin}${socialImage}`],
     datePublished: date,
     ...(allAuthors.length > 0
         ? {
@@ -81,7 +82,7 @@ const jsonLinkedData = {
 }
 ---
 
-<Layout title={title} description={description} image={staticImage?.src}>
+<Layout title={title} description={description} image={socialImage}>
     <section>
         <Fragment slot="head">
             <meta property="og:type" content="article" />
