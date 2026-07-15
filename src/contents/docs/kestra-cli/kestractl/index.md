@@ -369,13 +369,23 @@ kestractl namespaces search --query my.namespace
 # Autocomplete namespace names (useful for scripting)
 kestractl namespaces autocomplete --query my.
 
-# Get namespace details
+# Get namespace details (includes variables in output)
 kestractl namespaces get my.namespace
 
 # Create / update / delete a namespace
 kestractl namespaces create my.namespace
 kestractl namespaces update my.namespace --description "Production namespace"
 kestractl namespaces delete my.namespace
+
+# Set namespace variables inline (repeatable; takes precedence over --variables-file on key conflicts)
+kestractl namespaces create my.namespace --variable env=prod --variable region=eu-west-1
+kestractl namespaces update my.namespace --variable env=prod --variable region=eu-west-1
+
+# Set namespace variables from a YAML or JSON file
+kestractl namespaces update my.namespace --variables-file vars.yaml
+
+# Combine both — inline flags override file entries on conflict
+kestractl namespaces update my.namespace --variables-file vars.yaml --variable env=prod
 
 # View inherited secrets and variables
 kestractl namespaces inherited-secrets   my.namespace
@@ -388,6 +398,10 @@ kestractl namespaces plugin-defaults my.namespace
 kestractl namespaces export-plugin-defaults my.namespace --output-file defaults.yaml
 kestractl namespaces import-plugin-defaults my.namespace --file defaults.yaml
 ```
+
+:::alert{type="warning"}
+`--variable` and `--variables-file` replace the namespace's full variable set on each `create` or `update` call. To preserve existing variables, include them in the file or repeat them as `--variable` flags.
+:::
 
 ## Key-value pairs
 
@@ -994,7 +1008,7 @@ Bundled backends produce no output. Only backends that ship as a separate plugin
 
 | Category | Bundled (no plugin needed) | Requires a plugin |
 |---|---|---|
-| Storage (`kestra.storage.type`) | `local` | `s3`, `gcs`, `azure`, `minio`, `seaweedfs`, `cloudflare` |
+| Storage (`kestra.storage.type`) | `local` | `s3`, `gcs`, `azure`, `minio`, `seaweedfs`, `cloudflare`, `obs` |
 | Secret (`kestra.secret.type`) | `jdbc`, `elasticsearch` | `vault`, `aws-secret-manager`, `azure-key-vault`, `google-secret-manager`, `cyberark`, `doppler`, `1password`, `beyondtrust`, `delinea` |
 | Queue (`kestra.queue.type`) | `memory`, `h2`, `postgres`, `mysql`, `kafka` | — |
 | Repository (`kestra.repository.type`) | `memory`, `h2`, `postgres`, `mysql` | `elasticsearch`, `opensearch` |
@@ -1015,7 +1029,7 @@ No core plugins required by the provided configuration (all configured backends 
 If a config key contains an unrecognized type, the command fails and lists supported values:
 
 ```plaintext
-Error: unknown kestra.storage.type "unknownbackend" — no known core plugin mapping (supported: azure, cloudflare, gcs, local, minio, s3, seaweedfs)
+Error: unknown kestra.storage.type "unknownbackend" — no known core plugin mapping (supported: azure, cloudflare, gcs, local, minio, obs, s3, seaweedfs)
 ```
 
 #### Multiple config files
