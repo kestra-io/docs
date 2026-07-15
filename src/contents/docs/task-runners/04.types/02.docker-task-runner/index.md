@@ -36,6 +36,8 @@ tasks:
 
 Once you specify the `taskRunner` type, you get autocompletion and validation for the runner-specific properties. In the example above, the task allocates one CPU to the container.
 
+The container does not start in the Kestra working directory. Use `{{ workingDir }}` or `WORKING_DIR` to reference input and output files — do not rely on relative paths.
+
 ![docker_runner](../../02.benefits/docker_runner.png)
 
 ## Docker task runner properties

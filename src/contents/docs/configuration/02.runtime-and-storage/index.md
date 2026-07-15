@@ -204,46 +204,13 @@ If you are not troubleshooting queue throughput or database pressure, you can us
 
 ## Internal storage
 
-Choose the storage backend based on durability and how workers exchange files. Local storage is easy to start with, but object storage is the safer default once you care about resilience or multiple instances.
+`kestra.storage.type` controls where Kestra stores internal files such as task outputs, namespace files, and execution artifacts. Choose the backend based on durability and whether all Kestra components can reach the same storage.
 
-`kestra.storage.type` controls where Kestra stores internal files.
-
-Common options include:
-
-- `local` for local testing
-- `s3`
-- `gcs`
-- `azure`
-- `minio`
-- other object-storage-compatible backends
-
-The default local storage is fine for local testing but not for every production topology. The important distinction is whether every Kestra component can see the same files.
-
-Representative examples:
-
-```yaml
-kestra:
-  storage:
-    type: local
-    local:
-      base-path: /app/storage
-```
-
-```yaml
-kestra:
-  storage:
-    type: gcs
-```
-
-### Local storage deployment guidance
-
-Local storage works well for standalone deployments with a persistent volume. In distributed deployments, it only works safely when all components share the same filesystem through a `ReadWriteMany` volume or an equivalent shared storage layer.
-
-If that shared filesystem does not exist, move to object storage instead of trying to share host paths between services.
+**Supported backends:** [Local](#local) · [AWS S3](#aws-s3) · [Google Cloud Storage](#google-cloud-storage) · [Azure Blob Storage](#azure-blob-storage) · [MinIO / S3-compatible](#minio--s3-compatible) · [SeaweedFS](#seaweedfs) · [Cloudflare R2](#cloudflare-r2) · [Huawei OBS](#huawei-obs)
 
 ### Storage isolation
 
-Like secret isolation, storage isolation lets you prevent specific services from resolving internal-storage files:
+Storage isolation restricts which Kestra services are permitted to access internal storage files directly:
 
 ```yaml
 kestra:
@@ -255,110 +222,321 @@ kestra:
         - EXECUTOR
 ```
 
-This is useful when you want orchestration components to reference files, but do not want every service process to fetch file contents directly.
+| Property | Description |
+|---|---|
+| `isolation.enabled` | Enable service isolation (default `false`). |
+| `isolation.denied-services` | List of Kestra service names that must not access storage (e.g. `EXECUTOR`, `INDEXER`, `SCHEDULER`). |
 
-### S3
+---
 
-Use S3 when Kestra runs in AWS or when another object store exposes a compatible API.
+### Local
+
+```yaml
+kestra:
+  storage:
+    type: local
+    local:
+      base-path: /app/storage
+```
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `base-path` | string | **Yes** | — | Filesystem path where Kestra stores internal files. |
+
+Local storage works for standalone deployments with a persistent volume. In distributed deployments, it only works safely when all components share the same filesystem through a `ReadWriteMany` volume or equivalent shared storage. If that is not the case, use object storage instead.
+
+---
+
+### AWS S3
+
+#### Minimum configuration
 
 ```yaml
 kestra:
   storage:
     type: s3
     s3:
-      endpoint: "<your-s3-endpoint>"
-      access-key: "<your-aws-access-key-id>"
-      secret-key: "<your-aws-secret-access-key>"
-      region: "<your-aws-region>"
-      bucket: "<your-s3-bucket-name>"
-      force-path-style: false
+      bucket: my-kestra-bucket
+      region: us-east-1
 ```
+
+With explicit credentials:
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      bucket: my-kestra-bucket
+      region: us-east-1
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+```
+
+#### Configuration reference
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `bucket` | string | **Yes** | — | S3 bucket for internal storage. |
+| `access-key` | string | No | — | AWS access key ID. Falls back to `DefaultCredentialsProvider` if not set. |
+| `secret-key` | string | No | — | AWS secret access key. |
+| `region` | string | No | — | AWS region (e.g. `us-east-1`). |
+| `endpoint` | string | No | — | Custom endpoint URL for S3-compatible services or VPC PrivateLink. |
+| `force-path-style` | boolean | No | `false` | Force path-style addressing instead of virtual-hosted style. |
+| `path` | string | No | — | Object key prefix within the bucket (e.g. `kestra/`). |
+| `sts-role-arn` | string | No | — | IAM role ARN to assume via STS before accessing the bucket. |
+| `sts-role-external-id` | string | No | — | External ID for STS AssumeRole. |
+| `sts-role-session-name` | string | No | — | Session name for the assumed role. |
+| `sts-role-session-duration` | duration | No | `PT15M` | Duration of the assumed-role session. |
+| `sts-endpoint-override` | string | No | — | Override the STS endpoint URL. |
+| `s3-files-compatible` | boolean | No | `false` | Enable S3 bucket versioning when the bucket is first initialized. Set to `true` when the same bucket is shared with the `S3FilesStorage` backend (`type: s3-files`), which mounts S3 Files as a local NFS filesystem and requires versioning to be enabled. |
+
+#### Credential resolution order
+
+1. `access-key` / `secret-key` in config.
+2. `sts-role-arn` — role assumption chained on top of any resolved identity.
+3. `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` environment variables.
+4. AWS CLI profile (`~/.aws/credentials`).
+5. EKS Pod Identity or IRSA (IAM Roles for Service Accounts).
+6. EC2/ECS instance metadata profile.
 
 :::alert{type="warning"}
-If you inject S3 credentials through Helm `extraEnvVars` or another environment-variable source, use double underscores on multi-word property names. `KESTRA_STORAGE_S3_ACCESS_KEY` can be parsed as `kestra.storage.s3.access.key` (nested), which the storage plugin rejects with a Jackson `UnrecognizedPropertyException` at startup. Use one of the working forms instead:
-
-```yaml
-# Helm values.yaml
-extraEnvVars:
-  - name: KESTRA_STORAGE_S3_ACCESS__KEY
-    valueFrom:
-      secretKeyRef:
-        name: my-s3-secret
-        key: access_key
-  - name: KESTRA_STORAGE_S3_SECRET__KEY
-    valueFrom:
-      secretKeyRef:
-        name: my-s3-secret
-        key: secret_key
-```
-
-Or keep the keys in YAML and interpolate from simpler env vars:
-
-```yaml
-kestra:
-  storage:
-    type: s3
-    s3:
-      access-key: "${S3_ACCESS_KEY}"
-      secret-key: "${S3_SECRET_KEY}"
-      region: "<your-aws-region>"
-      bucket: "<your-s3-bucket-name>"
-```
-
-See [Environment variable conversion](../01.configuration-basics/index.md#environment-variable-conversion) for the full naming rule.
+If you inject S3 credentials through Helm `extraEnvVars`, use double underscores on multi-word property names. `KESTRA_STORAGE_S3_ACCESS_KEY` is parsed as `kestra.storage.s3.access.key` (nested) and rejected at startup. Use `KESTRA_STORAGE_S3_ACCESS__KEY` instead. See [Environment variable conversion](../01.configuration-basics/index.md#environment-variable-conversion).
 :::
 
-If Kestra runs on EC2 or EKS with IAM roles, omit static credentials and keep only the region and bucket:
+#### Permissions
+
+Grant the IAM identity Kestra uses (user, role, or instance profile) the following permissions on the bucket:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket", "s3:GetBucketLocation"],
+      "Resource": "arn:aws:s3:::YOUR_BUCKET"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::YOUR_BUCKET/*"
+    }
+  ]
+}
+```
+
+If `s3-files-compatible: true` is set, also include `s3:PutBucketVersioning` in the bucket-level statement. If `sts-role-arn` is set, the calling identity additionally needs `sts:AssumeRole` on that role ARN.
+
+---
+
+### Google Cloud Storage
+
+#### Minimum configuration
 
 ```yaml
 kestra:
   storage:
-    type: s3
-    s3:
-      region: "<your-aws-region>"
-      bucket: "<your-s3-bucket-name>"
+    type: gcs
+    gcs:
+      bucket: my-kestra-bucket
+      project-id: my-gcp-project
 ```
 
-For cross-account access, use STS assume-role settings:
+With an explicit service account key:
 
 ```yaml
 kestra:
   storage:
-    type: s3
-    s3:
-      region: "<your-aws-region>"
-      bucket: "<your-s3-bucket-name>"
-      sts-role-arn: "<role-arn>"
-      sts-role-external-id: "<optional>"
-      sts-role-session-name: "<optional>"
-      sts-role-session-duration: "<optional>"
-      sts-endpoint-override: "<optional>"
+    type: gcs
+    gcs:
+      bucket: my-kestra-bucket
+      project-id: my-gcp-project
+      service-account: |
+        { "type": "service_account", ... }
 ```
 
-### S3-compatible storage (MinIO, Ceph, SeaweedFS, Garage)
+#### Configuration reference
 
-Use `type: minio` for any S3-compatible object storage endpoint — including self-hosted options like MinIO, Ceph, SeaweedFS, and Garage:
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `bucket` | string | **Yes** | — | GCS bucket for internal storage. |
+| `project-id` | string | No | — | GCP project ID. |
+| `service-account` | string | No | — | Service account JSON key. Falls back to `GOOGLE_APPLICATION_CREDENTIALS` or ambient credentials (GKE Workload Identity, GCE metadata) if omitted. |
+| `path` | string | No | — | Object prefix within the bucket (e.g. `kestra/`). |
+
+#### Credential resolution order
+
+1. `service-account` JSON key in config.
+2. `GOOGLE_APPLICATION_CREDENTIALS` environment variable pointing to a key file.
+3. Google default application credentials (Workload Identity on GKE, GCE metadata server, gcloud CLI).
+
+:::alert{type="warning"}
+`KESTRA_STORAGE_GCS_PROJECT_ID` is parsed as `kestra.storage.gcs.project.id` (nested) and rejected at startup. Use `KESTRA_STORAGE_GCS_PROJECT__ID` with double underscores, or keep the value in YAML. See [Environment variable conversion](../01.configuration-basics/index.md#environment-variable-conversion).
+:::
+
+#### Permissions
+
+Assign the `roles/storage.objectAdmin` predefined role on the bucket (not the project) to the service account or workload identity principal. Fine-grained equivalent:
+
+| Permission | Purpose |
+|---|---|
+| `storage.objects.create` | Upload files to internal storage |
+| `storage.objects.delete` | Remove files from internal storage |
+| `storage.objects.get` | Download files from internal storage |
+| `storage.objects.list` | List objects in the bucket |
+| `storage.buckets.get` | Read bucket metadata |
+
+---
+
+### Azure Blob Storage
+
+:::alert{type="info"}
+Disable hierarchical namespace on the target container. That Azure feature is not supported by the storage backend.
+:::
+
+#### Minimum configuration
+
+```yaml
+kestra:
+  storage:
+    type: azure
+    azure:
+      endpoint: https://myaccount.blob.core.windows.net
+      container: kestra-storage
+```
+
+#### Configuration reference
+
+**Connection**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `endpoint` | string | **Yes** | — | Azure Blob service endpoint (e.g. `https://<account>.blob.core.windows.net`). |
+| `container` | string | **Yes** | — | Container name used for internal storage. |
+
+**Connection string auth**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `connection-string` | string | No | — | Full Azure Storage connection string. Highest-priority auth — if set, all other auth properties are ignored. |
+
+**Shared key auth**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `shared-key-account-name` | string | No | — | Storage account name. Used together with `shared-key-account-access-key`. |
+| `shared-key-account-access-key` | string | No | — | Storage account access key. |
+
+**SAS token auth**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `sas-token` | string | No | — | Shared Access Signature token. |
+
+**Managed identity auth**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `managed-identity-client-id` | string | No | — | Client ID of a user-assigned managed identity. Omit for system-assigned. |
+| `managed-identity-resource-id` | string | No | — | Resource ID of a user-assigned managed identity. Alternative to `managed-identity-client-id`. |
+
+**Workload identity auth**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `workload-identity-client-id` | string | No | — | Client ID for Azure Workload Identity (AKS federated credentials). |
+
+**All auth modes**
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `additionally-allowed-tenants` | string[] | No | — | Additional tenant IDs the credential may acquire tokens for. Use `"*"` to allow any tenant. |
+
+#### Credential resolution order
+
+1. `connection-string` — if set, all other auth properties are skipped.
+2. `shared-key-account-name` + `shared-key-account-access-key`.
+3. `sas-token`.
+4. `DefaultAzureCredential` chain — environment variables (`AZURE_CLIENT_ID`, `AZURE_CLIENT_SECRET`, `AZURE_TENANT_ID`), then managed identity (honoring `managed-identity-client-id` / `managed-identity-resource-id`), then workload identity (honoring `workload-identity-client-id`), then Azure CLI.
+
+#### Permissions
+
+Assign the **Storage Blob Data Contributor** built-in role to the identity (service principal, managed identity, or workload identity principal) on the container or storage account. This role covers all data-plane read, write, and delete operations on blobs.
+
+Connection string and shared key auth carry full data-plane access inherently and do not require a role assignment.
+
+---
+
+### MinIO / S3-compatible
+
+Use `type: minio` for MinIO and any S3-compatible object storage — including Ceph, SeaweedFS S3 API, Garage, and Outscale OOS.
+
+#### Minimum configuration
 
 ```yaml
 kestra:
   storage:
     type: minio
     minio:
-      endpoint: my.domain.com
+      endpoint: my.minio.domain.com
       port: 9000
-      secure: false
-      access-key: ${AWS_ACCESS_KEY_ID}
-      secret-key: ${AWS_SECRET_ACCESS_KEY}
-      region: "default"
-      bucket: my-bucket
-      part-size: 5MB
+      bucket: kestra-storage
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
 ```
 
-If MinIO uses `MINIO_DOMAIN`, enable `kestra.storage.minio.vhost: true` and keep `endpoint` set to the base domain rather than `bucket.domain`.
+#### Configuration reference
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `endpoint` | string | No | — | MinIO or S3-compatible server hostname or URL. |
+| `port` | integer | No | `0` | Server port. Default `0` uses the standard port for the chosen scheme. |
+| `secure` | boolean | No | `false` | Use TLS for the connection. |
+| `access-key` | string | No | — | Access key ID. |
+| `secret-key` | string | No | — | Secret access key. |
+| `region` | string | No | — | Region to include in request signing. |
+| `bucket` | string | No | — | Bucket name. |
+| `part-size` | size | No | `5MB` | Multipart upload part size. Minimum 5 MiB. |
+| `vhost` | boolean | No | `false` | Enable virtual-hosted style bucket URLs. Set to `true` when MinIO uses `MINIO_DOMAIN`. |
+| `ca-pem` | string | No | — | CA certificate PEM for custom TLS trust. |
+| `client-pem` | string | No | — | Client certificate PEM for mutual TLS. |
+| `http-connect-timeout` | duration | No | — | HTTP connection timeout. |
+| `http-read-timeout` | duration | No | — | HTTP read timeout. |
+| `http-write-timeout` | duration | No | — | HTTP write timeout. |
+| `http-connection-keep-alive` | duration | No | — | HTTP keep-alive duration. |
+| `proxy-configuration` | object | No | — | HTTP proxy settings (host, port, type, username, password). |
+| `ssl-options` | object | No | — | Advanced SSL/TLS options (protocols, cipher suites, trust manager). |
+
+If MinIO uses `MINIO_DOMAIN`, set `vhost: true` and point `endpoint` at the base domain rather than `bucket.domain`.
+
+#### Permissions
+
+Create a MinIO policy that grants the access key read/write access to the bucket, then attach it via `mc admin policy attach`:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket", "s3:GetBucketLocation"],
+      "Resource": "arn:aws:s3:::YOUR_BUCKET"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::YOUR_BUCKET/*"
+    }
+  ]
+}
+```
+
+For Ceph RGW, SeaweedFS, or other S3-compatible backends, apply the equivalent bucket ACL or user policy through that system's admin interface.
+
+---
 
 ### SeaweedFS
-
-SeaweedFS fits teams that want a lightweight distributed object storage layer in self-managed environments:
 
 ```yaml
 kestra:
@@ -367,111 +545,87 @@ kestra:
     seaweedfs:
       filer-host: localhost
       filer-port: 18888
-      prefix: ""
-      replication: "000"
 ```
 
-### Outscale Object Storage
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `filer-host` | string | No | — | Hostname or IP of the SeaweedFS filer server. |
+| `filer-port` | integer | No | `18888` | gRPC port of the SeaweedFS filer server. |
+| `prefix` | string | No | `""` | Root prefix path for all storage operations. |
+| `replication` | string | No | `"000"` | Replication factor (`000` = no replication, `001` = 1 copy). |
 
-Outscale uses the S3-compatible backend type (`type: minio`). The main thing that changes is the endpoint and the requirement to keep TLS enabled:
+SeaweedFS has no built-in authentication. Control access at the network level by restricting which hosts can reach the filer gRPC port.
 
-```yaml
-kestra:
-  storage:
-    type: minio
-    minio:
-      endpoint: https://oos.eu-west-2.outscale.com
-      bucket: your-bucket-name
-      accessKey: YOUR_ACCESS_KEY
-      secretKey: YOUR_SECRET_KEY
-      port: 443
-      secure: true
-```
-
-### Azure Blob Storage
-
-Choose one Azure authentication method and keep the others unset:
-
-```yaml
-kestra:
-  storage:
-    type: azure
-    azure:
-      endpoint: "https://unittestkt.blob.core.windows.net"
-      container: storage
-      connection-string: "<connection-string>"
-      shared-key-account-name: "<name>"
-      shared-key-account-access-key: "<access-key>"
-      sas-token: "<sas-token>"
-```
-
-:::alert{type="info"}
-Disable hierarchical namespace on the target container. That Azure feature is not supported by the storage backend.
-:::
-
-### Google Cloud Storage
-
-Use GCS when the deployment already runs in GCP or when workload identity is easier to manage than static keys:
-
-```yaml
-kestra:
-  storage:
-    type: gcs
-    gcs:
-      bucket: "<bucket>"
-      project-id: "<project-id>"
-      service-account: "<JSON or use default credentials>"
-```
-
-If `service-account` is omitted, Kestra falls back to default GCP credentials, which is usually the right choice on GKE or GCE.
-
-:::alert{type="warning"}
-`KESTRA_STORAGE_GCS_PROJECT_ID` can be parsed as `kestra.storage.gcs.project.id` (nested) and rejected by the GCS storage plugin's Jackson mapper with `UnrecognizedPropertyException`. Use double underscores on the multi-word segment, or keep the configuration in YAML:
-
-```yaml
-# Helm values.yaml
-extraEnvVars:
-  - name: KESTRA_STORAGE_GCS_PROJECT__ID
-    value: "my-gcp-project"
-  - name: KESTRA_STORAGE_GCS_SERVICE__ACCOUNT
-    valueFrom:
-      secretKeyRef:
-        name: my-gcs-secret
-        key: service_account_json
-```
-
-```yaml
-kestra:
-  storage:
-    type: gcs
-    gcs:
-      bucket: "<bucket>"
-      project-id: "${GCS_PROJECT_ID}"
-      service-account: "${GCS_SERVICE_ACCOUNT}"
-```
-
-See [Environment variable conversion](../01.configuration-basics/index.md#environment-variable-conversion) for the full naming rule.
-:::
+---
 
 ### Cloudflare R2
-
-Use R2 as an S3-compatible object storage backend:
 
 ```yaml
 kestra:
   storage:
     type: cloudflare
     cloudflare:
-      bucket: "<your-r2-bucket-name>"
-      accountId: "<your-cloudflare-account-id>"
-      accessKeyId: "{{ secret('CLOUDFLARE_R2_ACCESS_KEY') }}"
-      secretAccessKey: "{{ secret('CLOUDFLARE_R2_SECRET_KEY') }}"
+      account-id: YOUR_CLOUDFLARE_ACCOUNT_ID
+      bucket: kestra-storage
+      access-key-id: YOUR_R2_ACCESS_KEY_ID
+      secret-access-key: YOUR_R2_SECRET_ACCESS_KEY
 ```
 
-Optional settings:
-- `path`: Prefix applied to all stored objects  
-- `jurisdiction`: Restricts the bucket to a specific region (e.g. EU) and updates the endpoint accordingly  
-- `endpointOverride`: Custom endpoint, typically used for testing with S3-compatible services  
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `account-id` | string | **Yes** | — | Cloudflare account ID, used to build the R2 endpoint. |
+| `bucket` | string | **Yes** | — | R2 bucket name. |
+| `access-key-id` | string | No | — | R2 API token access key ID. |
+| `secret-access-key` | string | No | — | R2 API token secret access key. |
+| `path` | string | No | — | Object key prefix within the bucket. |
+| `endpoint-override` | string | No | — | Override the R2 endpoint URL (used for testing with S3-compatible services). |
+
+#### Permissions
+
+Create an R2 API token with **Object Read & Write** permissions. Scope the token to the specific bucket rather than all buckets. R2 does not use IAM-style policies — permissions are set directly on the API token in the Cloudflare dashboard under **R2 → Manage R2 API Tokens**.
+
+---
+
+### Huawei OBS
+
+Kestra supports Huawei Cloud Object Storage Service (OBS) as an internal storage backend.
+
+#### Minimum configuration
+
+```yaml
+kestra:
+  storage:
+    type: obs
+    obs:
+      access-key: YOUR_OBS_ACCESS_KEY
+      secret-key: YOUR_OBS_SECRET_KEY
+      bucket: kestra-storage
+      region: cn-north-4
+```
+
+#### Configuration reference
+
+| Property | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `access-key` | string | **Yes** | — | OBS access key (AK). |
+| `secret-key` | string | **Yes** | — | OBS secret key (SK). |
+| `bucket` | string | **Yes** | — | OBS bucket for internal storage. |
+| `region` | string | No | — | Huawei Cloud region (e.g. `cn-north-4`). Resolves to `https://obs.<region>.myhuaweicloud.com`. Ignored when `endpoint` is set. |
+| `endpoint` | string | No | — | Explicit OBS or S3-compatible endpoint URL. Takes precedence over `region`. |
+| `security-token` | string | No | — | Security token for temporary AK/SK credentials. |
+| `path` | string | No | — | Object key prefix within the bucket. |
+| `path-style-access` | boolean | No | `false` | Use path-style bucket addressing. Required for MinIO and most S3-compatible endpoints. |
+
+#### Permissions
+
+Attach a bucket policy or Huawei IAM policy granting the AK/SK identity the following actions on the bucket and its objects:
+
+| Action | Scope |
+|---|---|
+| `obs:bucket:ListAllMyBuckets`, `obs:bucket:ListBucket`, `obs:bucket:GetBucketLocation` | Bucket |
+| `obs:object:GetObject`, `obs:object:PutObject`, `obs:object:DeleteObject` | Objects (`/*`) |
+
+Alternatively, assign the predefined **OBSFullAccess** Huawei IAM policy scoped to the bucket if a custom bucket policy is not required.
 
 ## Server, environment, and JVM settings
 

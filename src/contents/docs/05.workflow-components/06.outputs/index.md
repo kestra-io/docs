@@ -23,7 +23,7 @@ You can retrieve outputs from other tasks within all [dynamic properties](../01.
 
 Fetching Secrets from an external Secrets Manager via a task imposes a significant security risk. All data fetched via outputs is **stored in clear text in multiple places** (including the backend database, internal storage, logs, API requests).
 
-For secure handling of secrets, **exclusively** use [Secrets](../../06.concepts/04.secret/index.md). [Kestra EE](../../07.enterprise/02.governance/secrets/index.md) and [Kestra Cloud](/cloud) offer reliable secrets management including native integrations with various [Secrets Managers](../../07.enterprise/02.governance/secrets-manager/index.md).
+For secure handling of secrets, **exclusively** use [Secrets](../../06.concepts/04.secret/index.md). [Kestra EE](../../07.enterprise/02.governance/secrets-manager/index.md) and [Kestra Cloud](/cloud) offer reliable secrets management including native integrations with various [secrets managers](../../07.enterprise/02.governance/secrets-manager/index.md).
 :::
 
 ## Using outputs

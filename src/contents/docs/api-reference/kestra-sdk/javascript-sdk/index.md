@@ -267,6 +267,198 @@ async function unlockTrigger() {
 
 ---
 
+## Dashboards
+
+Create, search, and delete dashboards.
+
+### Create a dashboard
+
+```javascript
+import * as Dashboards from "@kestra-io/kestra-sdk/dashboards";
+
+async function createDashboard() {
+  const body = `id: my_dashboard
+title: My Dashboard
+`;
+  const dashboard = await Dashboards.createDashboard({ body });
+  console.log("Dashboard created:", dashboard.id);
+}
+```
+
+### Search dashboards
+
+```javascript
+import * as Dashboards from "@kestra-io/kestra-sdk/dashboards";
+
+async function searchDashboards() {
+  const result = await Dashboards.searchDashboards({});
+  result.results?.forEach(d => console.log(d.id));
+}
+```
+
+### Delete a dashboard
+
+```javascript
+import * as Dashboards from "@kestra-io/kestra-sdk/dashboards";
+
+async function deleteDashboard() {
+  await Dashboards.deleteDashboard({ id: "my_dashboard_id" });
+  console.log("Dashboard deleted");
+}
+```
+
+---
+
+## Namespace files
+
+List, read, and delete files stored in a namespace.
+
+### List files
+
+```javascript
+import * as Files from "@kestra-io/kestra-sdk/files";
+
+async function listFiles() {
+  const files = await Files.listNamespaceDirectoryFiles({
+    namespace: "my_namespace",
+    path: "/",
+  });
+  files?.forEach(f => console.log(f.fileName));
+}
+```
+
+### Read file content
+
+```javascript
+import * as Files from "@kestra-io/kestra-sdk/files";
+
+async function readFile() {
+  const content = await Files.fileContent({
+    namespace: "my_namespace",
+    path: "/scripts/main.py",
+  });
+  console.log("Content received:", content?.size, "bytes");
+}
+```
+
+### Delete a file
+
+```javascript
+import * as Files from "@kestra-io/kestra-sdk/files";
+
+async function deleteFile() {
+  await Files.deleteFileDirectory({
+    namespace: "my_namespace",
+    path: "/scripts/main.py",
+  });
+  console.log("File deleted");
+}
+```
+
+---
+
+## Test suites
+
+:::alert{type="warning"}
+Test suites require Kestra Enterprise Edition.
+:::
+
+Create, run, and fetch results for unit test suites.
+
+### Create a test suite
+
+```javascript
+import * as TestSuites from "@kestra-io/kestra-sdk/test-suites";
+
+async function createTestSuite() {
+  const body = `id: my_tests
+namespace: my_namespace
+flows:
+  - flowId: my_flow
+`;
+  const suite = await TestSuites.createTestSuite({ body });
+  console.log("Test suite created:", suite.id);
+}
+```
+
+### Run a test suite
+
+```javascript
+import * as TestSuites from "@kestra-io/kestra-sdk/test-suites";
+
+async function runTestSuite() {
+  const result = await TestSuites.runTestSuite({
+    namespace: "my_namespace",
+    id: "my_tests",
+  });
+  console.log("State:", result.state);
+}
+```
+
+### Get test results
+
+```javascript
+import * as TestSuites from "@kestra-io/kestra-sdk/test-suites";
+
+async function getTestResult() {
+  const result = await TestSuites.testResult({ id: "run-id" });
+  console.log("State:", result.state);
+}
+```
+
+---
+
+## Apps
+
+:::alert{type="warning"}
+Apps require Kestra Enterprise Edition.
+:::
+
+Create, enable, disable, and delete apps.
+
+### Create an app
+
+```javascript
+import * as Apps from "@kestra-io/kestra-sdk/apps";
+
+async function createApp() {
+  const body = `id: my_app
+title: My App
+`;
+  const app = await Apps.createApp({ body });
+  console.log("App created:", app.uid);
+}
+```
+
+### Enable or disable an app
+
+```javascript
+import * as Apps from "@kestra-io/kestra-sdk/apps";
+
+async function enableApp() {
+  await Apps.enableApp({ uid: "app-uid" });
+  console.log("App enabled");
+}
+
+async function disableApp() {
+  await Apps.disableApp({ uid: "app-uid" });
+  console.log("App disabled");
+}
+```
+
+### Delete an app
+
+```javascript
+import * as Apps from "@kestra-io/kestra-sdk/apps";
+
+async function deleteApp() {
+  await Apps.deleteApp({ uid: "app-uid" });
+  console.log("App deleted");
+}
+```
+
+---
+
 ## Best practices
 
 - **Configure once:** call `configureClient` and `setSelectedTenant` once at startup and reuse them globally.
