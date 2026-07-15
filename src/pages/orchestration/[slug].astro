@@ -24,6 +24,7 @@ import { optimizeSvgIcon } from "~/utils/svgo"
 import { $fetchApiCached } from "~/utils/fetch"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
+import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
 import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
 import DataportLogo from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/logo.svg?raw"
 import CleverConnectLogo from "~/contents/customer-stories/cleverconnect-enhances-hr-integration-platform-with-kestra/logo.svg?raw"
@@ -52,6 +53,7 @@ function getVersusLogo(filename: string): string {
 
 const LOGO_MAP: Record<string, string> = {
     gorgias: optimizeSvgIcon(GorgiasLogo, "gorgias-orch-logo"),
+    gravitee: optimizeSvgIcon(GraviteeLogo, "gravitee-orch-logo"),
     "leroy-merlin": optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-orch-logo"),
     dataport: optimizeSvgIcon(DataportLogo, "dataport-orch-logo"),
     cleverconnect: optimizeSvgIcon(
