@@ -430,6 +430,8 @@
             )
         } finally {
             isLoading.value = false
+            await nextTick()
+            textareaRef.value?.focus()
         }
     }
 </script>
