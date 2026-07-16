@@ -55,6 +55,13 @@
                         </div>
                     </div>
                     <div class="bubble">
+                        <Copy
+                            v-if="
+                                message.role === 'assistant' && message.content
+                            "
+                            class="copy-response"
+                            :code="message.content"
+                        />
                         <template v-if="message.role === 'assistant'">
                             <div
                                 v-if="message.markdown"
@@ -63,6 +70,7 @@
                                 <MDCParserAndRenderer
                                     class="bd-markdown"
                                     :content="message.markdown"
+                                    copyable
                                 />
                             </div>
 
@@ -162,6 +170,7 @@
     import TrashCan from "vue-material-design-icons/TrashCan.vue"
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
+    import Copy from "~/components/common/Copy.vue"
     import {
         extractSourcesFromMarkdown,
         isInternalLink,
@@ -430,6 +439,8 @@
             )
         } finally {
             isLoading.value = false
+            await nextTick()
+            textareaRef.value?.focus()
         }
     }
 </script>
@@ -634,18 +645,48 @@
                     margin-top: 0.5rem;
                 }
 
+                .copy-response {
+                    position: absolute;
+                    top: 0.75rem;
+                    right: 0.75rem;
+                }
+
+                &:has(.copy-response) {
+                    padding-top: 3rem;
+                }
+
                 :deep(pre) {
+                    position: relative;
                     border: $block-border;
                     padding: 1rem;
                     border-radius: 0.5rem;
                     margin: 1rem 0;
-                }
 
-                :deep(.language),
-                :deep(.copy) {
-                    position: absolute;
-                    top: 1.75rem;
-                    right: 1rem;
+                    .code-copy {
+                        position: absolute;
+                        top: 0.5rem;
+                        right: 0.5rem;
+                        display: inline-flex;
+                        padding: 0.25rem;
+                        border: 0;
+                        border-radius: 4px;
+                        background: var(--ks-background-body);
+                        color: var(--ks-content-tertiary);
+                        cursor: pointer;
+
+                        &:hover {
+                            color: var(--ks-content-primary);
+                        }
+
+                        .icon-check,
+                        &.copied .icon-copy {
+                            display: none;
+                        }
+
+                        &.copied .icon-check {
+                            display: block;
+                        }
+                    }
                 }
 
                 :deep(.code-block) {
