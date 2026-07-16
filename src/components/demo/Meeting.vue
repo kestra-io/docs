@@ -89,13 +89,16 @@
                             value: localStorage.getItem("KUID") || "",
                         },
                         // Google Ads click id (gclid/gbraid/wbraid) for offline
-                        // conversion import. Sent only when present so HubSpot
-                        // can attribute the booked demo back to the paid click.
+                        // conversion import. Written to the standard HubSpot
+                        // property `hs_google_click_id`, which HubSpot's Google
+                        // Ads offline-conversion sync reads natively, so the
+                        // booked demo can be attributed back to the paid click.
+                        // Sent only when a click id is present.
                         ...(clickId
                             ? [
                                   {
                                       objectTypeId: "0-1",
-                                      name: "gclid",
+                                      name: "hs_google_click_id",
                                       value: clickId.value,
                                   },
                               ]
