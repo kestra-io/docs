@@ -55,5 +55,9 @@ export const getStoredClickId = (): StoredClickId | null => {
 }
 
 // Runs on the initial load and after every client-side (ClientRouter)
-// navigation, so a gclid on any entry URL is captured.
-document.addEventListener("astro:page-load", capture)
+// navigation, so a gclid on any entry URL is captured. Guarded because this
+// module is also imported by Meeting.vue, which is rendered server-side during
+// the build (SSR/prerender) where `document` is undefined.
+if (typeof document !== "undefined") {
+    document.addEventListener("astro:page-load", capture)
+}
