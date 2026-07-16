@@ -15,6 +15,7 @@ interface Props {
     eyebrow: string
     title: string
     blurb: string
+    banner: string
     q?: string
     tagsSelected?: string
     toolIndex: ToolIndexEntry[]
@@ -26,6 +27,7 @@ const {
     eyebrow,
     title,
     blurb,
+    banner,
     q,
     tagsSelected,
     toolIndex,
@@ -36,7 +38,7 @@ const {
 
 <section class="bp-hero">
     <div class="container-xxl">
-        <div class="hero-card">
+        <div class="hero-card" style={`background-image: url("${banner}")`}>
             <p class="eyebrow">
                 <a href="/blueprints">Blueprints</a> / {eyebrow}
             </p>
@@ -82,8 +84,9 @@ const {
 
         .hero-card {
             padding: 4rem 2.625rem;
-            background: url("~/components/blueprints/assets/bar-bg.webp")
-                center / cover no-repeat;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
             border-radius: $border-radius-lg;
             color: $white;
 
@@ -125,9 +128,15 @@ const {
 
         .sibling-pills {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 0.5rem;
             margin-top: 1.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
         }
 
         .sibling-pill {
@@ -140,6 +149,8 @@ const {
             color: rgba(255, 255, 255, 0.85);
             font-size: $font-size-sm;
             font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
             text-decoration: none;
             transition: all 0.2s ease;
 

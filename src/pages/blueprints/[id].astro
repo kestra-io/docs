@@ -21,6 +21,7 @@ import {
 } from "~/utils/blueprints/toolIndex"
 import { blueprintFaqItems } from "~/utils/blueprints/faq"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
+import { bannerForCategory } from "~/utils/blueprints/banners"
 import {
     CATEGORY_TILE_META,
     categoryTileMetaForSlug,
@@ -206,6 +207,7 @@ if (isCategoryPage && category) {
                     eyebrow="Category"
                     title={`Browse ${category.name} Blueprints by pattern`}
                     blurb={category.blurb}
+                    banner={bannerForCategory(id)}
                     q={categoryQ}
                     tagsSelected={category.name}
                     {toolIndex}

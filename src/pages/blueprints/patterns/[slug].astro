@@ -6,6 +6,7 @@ import Layout from "~/components/layout.astro"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
 import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
+import { MAIN_BANNER } from "~/utils/blueprints/banners"
 import { PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import {
     buildToolIndex,
@@ -56,6 +57,7 @@ const description = pattern.description
         eyebrow="Pattern"
         title={`${pattern.name} blueprints`}
         blurb={pattern.description}
+        banner={MAIN_BANNER}
         {q}
         tagsSelected={pattern.name}
         {toolIndex}

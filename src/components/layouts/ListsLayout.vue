@@ -214,7 +214,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 4rem 2.625rem;
-                background: url("~/components/blueprints/assets/bar-bg.webp")
+                background: url("~/components/blueprints/assets/bar-bg.png")
                     center / cover no-repeat;
                 border-radius: $border-radius-lg;
                 color: $white;

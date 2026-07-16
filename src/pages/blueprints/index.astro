@@ -659,7 +659,7 @@ const description = "Get started with our library of workflows ready to use"
 
         .hero-card {
             padding: 4rem 2.625rem;
-            background: url("~/components/blueprints/assets/bar-bg.webp")
+            background: url("~/components/blueprints/assets/bar-bg.png")
                 center / cover no-repeat;
             border-radius: $border-radius-lg;
             color: $white;
@@ -686,9 +686,15 @@ const description = "Get started with our library of workflows ready to use"
 
             .quick-filters {
                 display: flex;
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
                 gap: 0.5rem;
                 margin-top: 1rem;
+                overflow-x: auto;
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
             }
 
             .quick-filter {
@@ -701,6 +707,8 @@ const description = "Get started with our library of workflows ready to use"
                 color: rgba(255, 255, 255, 0.85);
                 font-size: $font-size-sm;
                 font-weight: 600;
+                white-space: nowrap;
+                flex-shrink: 0;
                 text-decoration: none;
                 transition: all 0.2s ease;
 
