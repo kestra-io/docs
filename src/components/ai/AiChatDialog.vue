@@ -110,6 +110,17 @@
                             </div>
                         </div>
 
+                        <div
+                            v-if="
+                                message.role === 'assistant' &&
+                                message.content &&
+                                !(isLoading && index === messages.length - 1)
+                            "
+                            class="response-actions"
+                        >
+                            <Copy :code="message.content" />
+                        </div>
+
                         <span class="timestamp">{{
                             formatTimestamp(message.timestamp)
                         }}</span>
@@ -162,6 +173,7 @@
     import TrashCan from "vue-material-design-icons/TrashCan.vue"
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
+    import Copy from "~/components/common/Copy.vue"
     import {
         extractSourcesFromMarkdown,
         isInternalLink,
@@ -628,6 +640,22 @@
                     }
                 }
 
+                .response-actions {
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: 0.5rem;
+
+                    :deep(.btn) {
+                        border: none;
+                        background: none;
+                        color: var(--ks-content-tertiary);
+
+                        &:hover {
+                            color: var(--ks-content-primary);
+                        }
+                    }
+                }
+
                 .timestamp {
                     font-size: 0.7rem;
                     color: var(--ks-content-tertiary);
@@ -644,7 +672,7 @@
                 }
 
                 :deep(.language),
-                :deep(.copy) {
+                :deep(.copy-slot) {
                     position: absolute;
                     top: 1.75rem;
                     right: 1rem;

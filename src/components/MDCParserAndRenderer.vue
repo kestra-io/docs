@@ -1,11 +1,17 @@
 <template>
-    <div
-        v-if="htmlContent"
-        :key="content"
-        class="mdc-renderer"
-        v-html="htmlContent"
-        @click="handleCopyClick"
-    />
+    <template v-if="htmlContent">
+        <div
+            ref="containerRef"
+            :key="content"
+            class="mdc-renderer"
+            v-html="htmlContent"
+        />
+        <template v-for="(code, index) in codeBlocks" :key="index">
+            <Teleport v-if="copySlots[index]" :to="copySlots[index]">
+                <Copy :code="code" />
+            </Teleport>
+        </template>
+    </template>
     <div v-else-if="parseError" class="parse-error">
         <strong>MDC parse error:</strong> {{ parseError }}
     </div>
@@ -13,28 +19,31 @@
 </template>
 
 <script lang="ts" setup>
-    import { onMounted, ref, watch } from "vue"
+    import { nextTick, onMounted, ref, watch } from "vue"
     import { getMarked } from "~/markdown/marked-shiki"
+    import Copy from "~/components/common/Copy.vue"
 
     const props = defineProps<{
         content: string
     }>()
 
     const htmlContent = ref<string>("")
+    const containerRef = ref<HTMLElement | null>(null)
+    const codeBlocks = ref<string[]>([])
+    const copySlots = ref<HTMLElement[]>([])
 
-    const COPY_ICON =
-        "<svg viewBox=\"0 0 24 24\" class=\"icon-copy\"><path fill=\"currentColor\" d=\"M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z\" /></svg>"
-    const CHECK_ICON =
-        "<svg viewBox=\"0 0 24 24\" class=\"icon-check\"><path fill=\"currentColor\" d=\"M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z\" /></svg>"
-
-    /** Wraps each fenced code block with a `.code-block` shell holding a language label and copy button. */
+    /** Wraps each fenced code block with a `.code-block` shell holding a language label and a copy-slot to teleport a `Copy` component into. */
     function wrapCodeBlocks(html: string): string {
         const container = document.createElement("div")
         container.innerHTML = html
 
+        const blocks: string[] = []
+
         container.querySelectorAll("pre").forEach((pre) => {
             const code = pre.querySelector("code")
             const lang = code?.className.match(/language-(\S+)/)?.[1]
+            const index = blocks.length
+            blocks.push(code?.textContent ?? "")
 
             const wrapper = document.createElement("div")
             wrapper.className = "code-block"
@@ -46,32 +55,17 @@
                 wrapper.appendChild(label)
             }
 
-            const button = document.createElement("button")
-            button.type = "button"
-            button.className = "copy"
-            button.title = "Copy to clipboard"
-            button.innerHTML = COPY_ICON + CHECK_ICON
-            wrapper.appendChild(button)
+            const slot = document.createElement("div")
+            slot.className = "copy-slot"
+            slot.setAttribute("data-copy-slot", String(index))
+            wrapper.appendChild(slot)
 
             pre.replaceWith(wrapper)
             wrapper.appendChild(pre)
         })
 
+        codeBlocks.value = blocks
         return container.innerHTML
-    }
-
-    async function handleCopyClick(event: MouseEvent) {
-        const button = (event.target as HTMLElement).closest(
-            "button.copy",
-        ) as HTMLButtonElement | null
-        if (!button) return
-
-        const code = button.parentElement?.querySelector("pre code")
-        if (!code?.textContent) return
-
-        await navigator.clipboard.writeText(code.textContent)
-        button.classList.add("copied")
-        setTimeout(() => button.classList.remove("copied"), 2000)
     }
 
     async function parseContent() {
@@ -79,6 +73,14 @@
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
         htmlContent.value = wrapCodeBlocks(await getMarked().parse(props.content))
+        await nextTick()
+        copySlots.value = containerRef.value
+            ? Array.from(
+                  containerRef.value.querySelectorAll<HTMLElement>(
+                      "[data-copy-slot]",
+                  ),
+              )
+            : []
     }
 
     onMounted(async () => {
@@ -117,37 +119,22 @@
             font-size: 0.75rem;
             color: var(--ks-content-tertiary);
         }
-        & :deep(button.copy) {
+        & :deep(.copy-slot) {
             position: absolute;
             top: 1rem;
             right: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0.4rem;
+        }
+        & :deep(.copy .btn) {
             border: none;
             background: none;
-            border-radius: 4px;
-            cursor: pointer;
             color: var(--ks-content-tertiary);
             &:hover {
                 color: var(--ks-content-primary);
-            }
-            svg {
-                width: 1.125rem;
-                height: 1.125rem;
-            }
-            .icon-check {
-                display: none;
+                border-color: transparent;
             }
             &.copied {
                 color: var(--ks-content-link);
-                .icon-copy {
-                    display: none;
-                }
-                .icon-check {
-                    display: block;
-                }
+                border-color: transparent;
             }
         }
         & :deep(pre) {
