@@ -1,6 +1,6 @@
 ---
-title: "External Secrets Manager in Kestra: AWS, Azure, GCP"
-h1: "Integrate External Secret Managers: Vault, AWS, Azure, GCP"
+title: "External Secrets Manager in Kestra"
+h1: "Integrate External Secret Managers: Vault, AWS, Azure, GCP, and more"
 description: Secure sensitive data in Kestra with External Secrets Managers. Integrate with AWS, Azure, Google Cloud, Vault, and more for robust secret management.
 sidebarTitle: Secrets Manager
 icon: /src/contents/docs/icons/admin.svg
@@ -78,6 +78,10 @@ Required tags that must be set externally in read-only mode:
 ## Configure a secrets manager
 
 Set the backend globally in your Kestra configuration file using `kestra.secret.type`, or scope it to a specific [tenant](../tenants/index.md) or [namespace](../../../05.workflow-components/02.namespace/index.md) via the **Dedicated secrets manager** setting in the UI. Each backend uses its own sub-key matching the type name.
+
+:::alert{type="warning"}
+**Property naming differs between global config and the UI.** In your `kestra.yml` configuration file, use kebab-case (e.g., `safe-name`, `auth-method`). When configuring a dedicated secrets manager for a namespace or tenant via the UI, use camelCase (e.g., `safeName`, `authMethod`).
+:::
 
 **Supported backends:** [AWS Secrets Manager](#aws-secrets-manager) · [AWS SSM Parameter Store](#aws-ssm-parameter-store) · [Azure Key Vault](#azure-key-vault) · [Google Secret Manager](#google-secret-manager) · [HashiCorp Vault](#hashicorp-vault) · [CyberArk](#cyberark) · [Doppler](#doppler) · [1Password](#1password) · [BeyondTrust](#beyondtrust) · [Delinea Secret Server](#delinea-secret-server) · [Bitwarden](#bitwarden) · [JDBC](#jdbc-postgresql-h2-mysql) · [Elasticsearch](#elasticsearch)
 
@@ -593,15 +597,26 @@ For a full end-to-end walkthrough with screenshots, see [Use HashiCorp Vault as 
 
 ## CyberArk
 
-Kestra integrates with CyberArk Privilege Cloud as a secrets backend via the CyberArk API.
+Kestra integrates with CyberArk Privilege Cloud as a secrets backend using one of two authentication methods:
+
+- **PVWA** (default) — username and password logon via the CyberArk REST API. Supports read and write.
+- **CCP** — Central Credential Provider (AIM web service), authenticated by IP allowlisting and an Application ID. Read-only. No credentials stored in Kestra configuration.
 
 ### Permissions
+
+#### PVWA
 
 **Managed mode** — the account needs: `GetAccounts`, `AddAccounts`, `UpdateAccountContent`, `UpdateAccountProperties`, `DeleteAccounts`, `RetrieveAccounts` on the target Safe.
 
 **Read-only mode** — only `GetAccounts` and `RetrieveAccounts` are needed.
 
+#### CCP
+
+CCP uses IP-based authentication — the Kestra server's IP must be registered in the CyberArk Application ID's allowed machines list. No CyberArk user account or password is required.
+
 ### Minimum configuration
+
+#### PVWA
 
 ```yaml
 kestra:
@@ -615,17 +630,39 @@ kestra:
       safe-name: YOUR_SAFE_NAME
 ```
 
+#### CCP
+
+```yaml
+kestra:
+  secret:
+    type: cyberark
+    read-only: true
+    cyberark:
+      auth-method: CCP
+      address: https://your-cyberark-host
+      application-id: YOUR_APP_ID
+      safe-name: YOUR_SAFE_NAME
+```
+
 ### Configuration reference
 
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `address` | string | **Yes** | — | CyberArk API base URL. |
-| `username` | string | **Yes** | — | Username for CyberArk authentication. |
-| `password` | string | **Yes** | — | Password for CyberArk authentication. |
-| `platform-id` | string | **Yes** | — | CyberArk platform ID used when creating secrets. |
+| `auth-method` | enum | No | `PVWA` | Authentication method: `PVWA` or `CCP`. |
+| `username` | string | PVWA only | — | Username for PVWA authentication. |
+| `password` | string | PVWA only | — | Password for PVWA authentication. |
+| `application-id` | string | CCP only | — | Application ID registered in CyberArk for CCP authentication. |
 | `safe-name` | string | **Yes** | — | Name of the CyberArk Safe where secrets are stored. |
+| `platform-id` | string | PVWA managed | — | CyberArk platform ID used when creating secrets. Not required in read-only mode or for CCP. |
+| `web-service-id` | string | No | `AIMWebService` | CCP web service name. Only used when `auth-method` is `CCP`. |
+| `client-certificate` | string | No | — | PEM-encoded client certificate for mutual TLS. Applies to both auth methods. |
+| `client-certificate-key` | string | No | — | PEM-encoded PKCS#8 private key for the client certificate. Required if `client-certificate` is set. |
+| `reason` | string | No | — | Reason recorded in the CyberArk audit log on CCP credential retrieval. |
+| `query-format` | enum | No | `Exact` | CCP object query matching: `Exact` or `Regexp`. Only used when `auth-method` is `CCP`. |
+| `object-property` | string | No | — | Account property to return as the secret value. Defaults to the password field. Only used when `auth-method` is `CCP`. |
 | `use-proxy` | boolean | No | — | Route API calls through the configured system proxy. |
-| `validate-certs` | boolean | No | — | Validate TLS certificates on the CyberArk endpoint. |
+| `validate-certs` | boolean | No | `true` | Validate TLS certificates on the CyberArk endpoint. |
 | `secret-path-prefix` | string | No | `""` | Path prefix within the Safe. |
 | `tags` | map | No | — | Default tags added to every new or updated secret. |
 | `filter-on-tags` | map | No | — | Filter visible secrets by matching tags. |
@@ -633,7 +670,9 @@ kestra:
 
 ### Read-only mode
 
-In read-only mode, the CyberArk account needs only read (`GetAccounts`, `RetrieveAccounts`) permissions on the target Safe. All required properties (`platform-id`, `safe-name`) must still be provided — the `platform-id` is validated by the config but not used when Kestra does not create secrets.
+Set `read-only: true` to prevent Kestra from creating or modifying secrets.
+
+**PVWA read-only** — `platform-id` is not required in this mode.
 
 ```yaml
 kestra:
@@ -644,9 +683,10 @@ kestra:
       address: https://your-cyberark-host
       username: YOUR_USERNAME
       password: YOUR_PASSWORD
-      platform-id: YOUR_PLATFORM_ID
       safe-name: YOUR_SAFE_NAME
 ```
+
+**CCP** is always read-only and does not support write operations.
 
 ---
 
