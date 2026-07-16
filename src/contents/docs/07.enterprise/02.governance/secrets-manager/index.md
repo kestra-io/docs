@@ -79,6 +79,10 @@ Required tags that must be set externally in read-only mode:
 
 Set the backend globally in your Kestra configuration file using `kestra.secret.type`, or scope it to a specific [tenant](../tenants/index.md) or [namespace](../../../05.workflow-components/02.namespace/index.md) via the **Dedicated secrets manager** setting in the UI. Each backend uses its own sub-key matching the type name.
 
+:::alert{type="warning"}
+**Property naming differs between global config and the UI.** In your `kestra.yml` configuration file, use kebab-case (e.g., `safe-name`, `auth-method`). When configuring a dedicated secrets manager for a namespace or tenant via the UI, use camelCase (e.g., `safeName`, `authMethod`).
+:::
+
 **Supported backends:** [AWS Secrets Manager](#aws-secrets-manager) · [AWS SSM Parameter Store](#aws-ssm-parameter-store) · [Azure Key Vault](#azure-key-vault) · [Google Secret Manager](#google-secret-manager) · [HashiCorp Vault](#hashicorp-vault) · [CyberArk](#cyberark) · [Doppler](#doppler) · [1Password](#1password) · [BeyondTrust](#beyondtrust) · [Delinea Secret Server](#delinea-secret-server) · [Bitwarden](#bitwarden) · [JDBC](#jdbc-postgresql-h2-mysql) · [Elasticsearch](#elasticsearch)
 
 ---
