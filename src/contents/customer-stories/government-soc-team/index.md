@@ -6,6 +6,7 @@ metaTitle: Government SOC Team Replaced Palo Alto XSOAR with Kestra
 metaDescription: How a European government IT provider replaced Palo Alto XSOAR with Kestra — building 100+ SOC alert workflows fully self-hosted, with no cloud dependencies, serving multiple German federal states.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.elasticsearch.Search
   - io.kestra.plugin.core.http.Request
@@ -14,11 +15,9 @@ tasks:
 kpi1: |
   100+
   SOC workflows in production
-  going live May 2026
 kpi2: |
   6
-  German federal states served
-  public sector IT and security ops
+  federal states served
 kpi3: |
   1
   SOAR platform replaced
@@ -30,7 +29,8 @@ kpi4: |
 quote: The support that came with Kestra Enterprise Edition was great. Any questions we had were solved really quickly.
 quotePerson: System Architect
 quotePersonTitle: SOC Development Team, Government IT Provider
-industry: Government & Public Sector
+industry: Government
+industry2: Public Sector
 headquarter: Germany
 region: Europe
 companySize: "5,000+"
@@ -39,7 +39,8 @@ tagline: European government IT provider managing SOC operations across multiple
 companyName: Government IT Provider
 intro: A European government IT services provider managing security operations across multiple German federal states needed to replace Palo Alto XSOAR after the vendor shifted new capabilities primarily to its cloud offering. With citizen data that cannot touch a commercial cloud by law, the SOC team evaluated five alternatives — purpose-built SOARs included — and selected Kestra. They built 100+ security workflows on top of it, covering the full alert lifecycle with no cloud dependencies.
 deployment: Self-hosted · Docker Compose · On-prem
-useCase: Security Automation
+useCase: Replacing Palo Alto XSOAR with 100+ fully self-hosted SOC alert workflows serving 6 German federal states with zero cloud dependencies
+useCaseShort: Security Automation
 cta: What would change if your security operations ran on a platform built to stay on-prem — actively developed, open source at its core, and fully under your control?
 ---
 

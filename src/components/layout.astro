@@ -2,7 +2,6 @@
 import { ClientRouter } from "astro:transitions"
 import LoadingIndicator from "astro-loading-indicator/component"
 import { Font } from "astro:assets"
-import "@kestra-io/ui-libs/style.css"
 import "~/assets/styles/vendor.scss"
 import "~/assets/styles/app.scss"
 import "~/assets/styles/theme.scss"
@@ -227,8 +226,8 @@ const organizationSchema = {
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
-        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
-        {websiteSchema && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        {websiteSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
 
         <slot name="head" />
 
@@ -278,7 +277,7 @@ const organizationSchema = {
             <ThemeSwitcher slot="theme-switcher" />
         </LayoutFooter>
         <LayoutFixed client:load transition:persist />
-        <script define:vars={{ slug }}>
+        <script is:inline define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>
     </body>

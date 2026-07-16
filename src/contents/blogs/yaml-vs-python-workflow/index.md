@@ -3,7 +3,7 @@ title: "YAML vs Python Workflows: Which Is Better for Orchestration?"
 description: "Python excels at execution logic. YAML excels at defining workflows. Here's a practical breakdown of when to reach for each, and how modern orchestrators let you use both."
 metaTitle: "YAML vs Python Workflows: Orchestration Comparison"
 metaDescription: "Compare YAML vs Python workflows for orchestration. Understand their strengths, weaknesses, and when to choose each for defining and executing modern, scalable workflows."
-date: 2026-06-15T13:00:00
+date: 2026-06-11T13:00:00
 category: Tutorials
 tag: "orchestration"
 author:
@@ -187,6 +187,6 @@ Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) extends this further: describe 
 
 - **Read the architectural case.** [YAML-First Orchestration](/blogs/yaml-for-workflow-orchestration) makes the argument for why separating the coordination layer from the execution layer is the right call, with examples from infrastructure and analytics tooling that already went declarative.
 - **Browse more workflows.** Kestra's [260+ Blueprints](/blueprints) are production-ready YAML workflow templates covering data pipelines, infrastructure automation, and business processes.
-- **Try Python orchestration.** The [Python orchestration docs](docs/how-to-guides/python) show how Python scripts run as Kestra tasks, with full access to libraries and dependencies.
+- **Try Python orchestration.** The Python orchestration docs show how Python scripts run as Kestra tasks, with full access to libraries and dependencies.
 - **Try it live.** [Install Kestra](/docs/quickstart) (one Docker command), open the editor, and paste any example from this post. The visual editor shows the DAG topology updating as you type.
 - **Why Kestra.** For a broader look at the design decisions behind YAML-first orchestration, [Why Kestra](/docs/why-kestra) covers the architectural reasoning.

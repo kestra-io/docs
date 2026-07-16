@@ -24,6 +24,7 @@ import { optimizeSvgIcon } from "~/utils/svgo"
 import { $fetchApiCached } from "~/utils/fetch"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
+import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
 import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
 import DataportLogo from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/logo.svg?raw"
 import CleverConnectLogo from "~/contents/customer-stories/cleverconnect-enhances-hr-integration-platform-with-kestra/logo.svg?raw"
@@ -36,7 +37,7 @@ import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
 import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
 import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
 import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
-import BhpLogo from "~/components/orchestrate/assets/bhp.svg?raw"
+import Fortune500Logo from "~/components/enterprise/assets/fortune500.svg?raw"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -52,19 +53,29 @@ function getVersusLogo(filename: string): string {
 
 const LOGO_MAP: Record<string, string> = {
     gorgias: optimizeSvgIcon(GorgiasLogo, "gorgias-orch-logo"),
+    gravitee: optimizeSvgIcon(GraviteeLogo, "gravitee-orch-logo"),
     "leroy-merlin": optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-orch-logo"),
     dataport: optimizeSvgIcon(DataportLogo, "dataport-orch-logo"),
-    cleverconnect: optimizeSvgIcon(CleverConnectLogo, "cleverconnect-orch-logo"),
+    cleverconnect: optimizeSvgIcon(
+        CleverConnectLogo,
+        "cleverconnect-orch-logo",
+    ),
     riverside: optimizeSvgIcon(RiversideLogo, "riverside-orch-logo"),
     slack: optimizeSvgIcon(SlackLogo, "slack-orch-logo"),
-    "foundation-data": optimizeSvgIcon(FoundationDataLogo, "foundation-data-orch-logo"),
+    "foundation-data": optimizeSvgIcon(
+        FoundationDataLogo,
+        "foundation-data-orch-logo",
+    ),
     reddit: optimizeSvgIcon(RedditLogo, "reddit-orch-logo"),
-    "credit-agricole": optimizeSvgIcon(CreditAgricoleLogo, "credit-agricole-orch-logo"),
+    "credit-agricole": optimizeSvgIcon(
+        CreditAgricoleLogo,
+        "credit-agricole-orch-logo",
+    ),
     sopht: optimizeSvgIcon(SophtLogo, "sopht-orch-logo"),
     bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
     censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
     "west-bend": optimizeSvgIcon(WestBendLogo, "west-bend-orch-logo"),
-    bhp: optimizeSvgIcon(BhpLogo, "bhp-orch-logo"),
+    fortune500: optimizeSvgIcon(Fortune500Logo, "fortune500-orch-logo"),
 }
 
 export async function getStaticPaths() {
@@ -178,7 +189,9 @@ const quoteItems = quotes.map((q) => ({
     smallLogoSvg: q.logoFile ? LOGO_MAP[q.logoFile] : undefined,
 }))
 
-const competitorKeys = comparison.competitors.map((_: any, i: number) => `comp${i}`)
+const competitorKeys = comparison.competitors.map(
+    (_: any, i: number) => `comp${i}`,
+)
 const comparisonTableData = comparison.rows.map((row) => {
     const obj: Record<string, string> = {
         feature: row.feature,
@@ -211,7 +224,11 @@ const comparisonTableData = comparison.rows.map((row) => {
         toolColor={tool.color}
     />
 
-    <CardGrid title={pillars.title} subtitle={pillars.subtitle} items={pillars.items} />
+    <CardGrid
+        title={pillars.title}
+        subtitle={pillars.subtitle}
+        items={pillars.items}
+    />
 
     <section class="orch-usecases">
         <div class="orch-usecases__head">
@@ -290,7 +307,11 @@ const comparisonTableData = comparison.rows.map((row) => {
                                 class="btn btn-secondary post-compare__cta"
                             >
                                 {postCompareCta.cta.label}
-                                <Icon name="mdi:chevron-right" width={16} height={16} />
+                                <Icon
+                                    name="mdi:chevron-right"
+                                    width={16}
+                                    height={16}
+                                />
                             </a>
                         </div>
                     </Fragment>
@@ -315,13 +336,11 @@ const comparisonTableData = comparison.rows.map((row) => {
                                 <span class="docs-card__eyebrow">
                                     Documentation
                                 </span>
-                                <h3>
-                                    Wire {tool.name} into your workflows
-                                </h3>
+                                <h3>Wire {tool.name} into your workflows</h3>
                                 <p>
                                     Every {tool.name} task, trigger, and
-                                    configuration option, with copy-ready
-                                    YAML examples.
+                                    configuration option, with copy-ready YAML
+                                    examples.
                                 </p>
                                 <Link href={pluginDocsUrl}>
                                     Explore the {tool.name} plugin docs
@@ -568,8 +587,7 @@ const comparisonTableData = comparison.rows.map((row) => {
                     120% 80% at 100% 0%,
                     color-mix(
                         in srgb,
-                        var(--tool-color, var(--ks-content-color-highlight))
-                            18%,
+                        var(--tool-color, var(--ks-content-color-highlight)) 18%,
                         transparent
                     ),
                     transparent 60%
@@ -609,5 +627,4 @@ const comparisonTableData = comparison.rows.map((row) => {
             }
         }
     }
-
 </style>

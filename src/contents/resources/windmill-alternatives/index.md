@@ -115,7 +115,7 @@ Argo Workflows is an open-source, Kubernetes-native workflow engine designed to 
 
 **Honest Limitation:** Argo Workflows is tightly coupled to Kubernetes, making it inflexible for hybrid or on-premise environments that are not managed by a K8s cluster. Its plugin ecosystem is container-centric, requiring users to containerize all tasks.
 
-**Best for:** Platform engineers and ML Ops teams operating entirely on Kubernetes, seeking a native workflow engine for batch jobs, ML training pipelines, and CI/CD-adjacent workloads within their K8s clusters. See how it compares in our [Argo Workflows vs. Kestra breakdown](https://kestra.io/vs/argo-workflows).
+**Best for:** Platform engineers and ML Ops teams operating entirely on Kubernetes, seeking a native workflow engine for batch jobs, ML training pipelines, and CI/CD-adjacent workloads within their K8s clusters.
 
 ## Comparison table
 
