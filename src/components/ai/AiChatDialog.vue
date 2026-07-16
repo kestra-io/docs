@@ -55,6 +55,13 @@
                         </div>
                     </div>
                     <div class="bubble">
+                        <Copy
+                            v-if="
+                                message.role === 'assistant' && message.content
+                            "
+                            class="copy-response"
+                            :code="message.content"
+                        />
                         <template v-if="message.role === 'assistant'">
                             <div
                                 v-if="message.markdown"
@@ -63,6 +70,7 @@
                                 <MDCParserAndRenderer
                                     class="bd-markdown"
                                     :content="message.markdown"
+                                    copyable
                                 />
                             </div>
 
@@ -108,17 +116,6 @@
                                     </div>
                                 </a>
                             </div>
-                        </div>
-
-                        <div
-                            v-if="
-                                message.role === 'assistant' &&
-                                message.content &&
-                                !(isLoading && index === messages.length - 1)
-                            "
-                            class="response-actions"
-                        >
-                            <Copy :code="message.content" />
                         </div>
 
                         <span class="timestamp">{{
@@ -640,22 +637,6 @@
                     }
                 }
 
-                .response-actions {
-                    display: flex;
-                    justify-content: flex-end;
-                    margin-top: 0.5rem;
-
-                    :deep(.btn) {
-                        border: none;
-                        background: none;
-                        color: var(--ks-content-tertiary);
-
-                        &:hover {
-                            color: var(--ks-content-primary);
-                        }
-                    }
-                }
-
                 .timestamp {
                     font-size: 0.7rem;
                     color: var(--ks-content-tertiary);
@@ -664,18 +645,44 @@
                     margin-top: 0.5rem;
                 }
 
+                .copy-response {
+                    position: absolute;
+                    top: 0.75rem;
+                    right: 0.75rem;
+                }
+
                 :deep(pre) {
+                    position: relative;
                     border: $block-border;
                     padding: 1rem;
                     border-radius: 0.5rem;
                     margin: 1rem 0;
-                }
 
-                :deep(.language),
-                :deep(.copy-slot) {
-                    position: absolute;
-                    top: 1.75rem;
-                    right: 1rem;
+                    .code-copy {
+                        position: absolute;
+                        top: 0.5rem;
+                        right: 0.5rem;
+                        display: inline-flex;
+                        padding: 0.25rem;
+                        border: 0;
+                        border-radius: 4px;
+                        background: var(--ks-background-body);
+                        color: var(--ks-content-tertiary);
+                        cursor: pointer;
+
+                        &:hover {
+                            color: var(--ks-content-primary);
+                        }
+
+                        .icon-check,
+                        &.copied .icon-copy {
+                            display: none;
+                        }
+
+                        &.copied .icon-check {
+                            display: block;
+                        }
+                    }
                 }
 
                 :deep(.code-block) {

@@ -1,17 +1,11 @@
 <template>
-    <template v-if="htmlContent">
-        <div
-            ref="containerRef"
-            :key="content"
-            class="mdc-renderer"
-            v-html="htmlContent"
-        />
-        <template v-for="(code, index) in codeBlocks" :key="index">
-            <Teleport v-if="copySlots[index]" :to="copySlots[index]">
-                <Copy :code="code" />
-            </Teleport>
-        </template>
-    </template>
+    <div
+        v-if="htmlContent"
+        :key="content"
+        class="mdc-renderer"
+        v-html="htmlContent"
+        @click="handleCopyClick"
+    />
     <div v-else-if="parseError" class="parse-error">
         <strong>MDC parse error:</strong> {{ parseError }}
     </div>
@@ -19,68 +13,23 @@
 </template>
 
 <script lang="ts" setup>
-    import { nextTick, onMounted, ref, watch } from "vue"
+    import { onMounted, ref, watch } from "vue"
     import { getMarked } from "~/markdown/marked-shiki"
-    import Copy from "~/components/common/Copy.vue"
+    import { handleCopyClick, injectCopyButtons } from "~/utils/code-copy"
 
     const props = defineProps<{
         content: string
+        copyable?: boolean
     }>()
 
     const htmlContent = ref<string>("")
-    const containerRef = ref<HTMLElement | null>(null)
-    const codeBlocks = ref<string[]>([])
-    const copySlots = ref<HTMLElement[]>([])
-
-    /** Wraps each fenced code block with a `.code-block` shell holding a language label and a copy-slot to teleport a `Copy` component into. */
-    function wrapCodeBlocks(html: string): string {
-        const container = document.createElement("div")
-        container.innerHTML = html
-
-        const blocks: string[] = []
-
-        container.querySelectorAll("pre").forEach((pre) => {
-            const code = pre.querySelector("code")
-            const lang = code?.className.match(/language-(\S+)/)?.[1]
-            const index = blocks.length
-            blocks.push(code?.textContent ?? "")
-
-            const wrapper = document.createElement("div")
-            wrapper.className = "code-block"
-
-            if (lang && lang !== "text") {
-                const label = document.createElement("div")
-                label.className = "language"
-                label.textContent = lang
-                wrapper.appendChild(label)
-            }
-
-            const slot = document.createElement("div")
-            slot.className = "copy-slot"
-            slot.setAttribute("data-copy-slot", String(index))
-            wrapper.appendChild(slot)
-
-            pre.replaceWith(wrapper)
-            wrapper.appendChild(pre)
-        })
-
-        codeBlocks.value = blocks
-        return container.innerHTML
-    }
 
     async function parseContent() {
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        htmlContent.value = wrapCodeBlocks(await getMarked().parse(props.content))
-        await nextTick()
-        copySlots.value = containerRef.value
-            ? Array.from(
-                  containerRef.value.querySelectorAll<HTMLElement>(
-                      "[data-copy-slot]",
-                  ),
-              )
-            : []
+        const html = await getMarked().parse(props.content)
+        htmlContent.value = props.copyable ? injectCopyButtons(html) : html
     }
 
     onMounted(async () => {
@@ -107,36 +56,6 @@
 
 
     .mdc-renderer {
-        & :deep(.code-block) {
-            position: relative;
-            padding: 1.25rem;
-            border-radius: var(--bs-border-radius-lg);
-        }
-        & :deep(.language) {
-            position: absolute;
-            top: 1.25rem;
-            right: 1.25rem;
-            font-size: 0.75rem;
-            color: var(--ks-content-tertiary);
-        }
-        & :deep(.copy-slot) {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-        }
-        & :deep(.copy .btn) {
-            border: none;
-            background: none;
-            color: var(--ks-content-tertiary);
-            &:hover {
-                color: var(--ks-content-primary);
-                border-color: transparent;
-            }
-            &.copied {
-                color: var(--ks-content-link);
-                border-color: transparent;
-            }
-        }
         & :deep(pre) {
             padding: 1rem;
             padding-bottom: 0;
