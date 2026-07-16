@@ -20,10 +20,6 @@
         cls: { type: String, default: "" }
     })
 
-    // Mirror TaskIcon.astro's theme swap: monochrome plugin icons ship as
-    // -white/-black variants, and the plain file is dark-on-transparent,
-    // which is unreadable on dark cards. Track the html "dark" class locally
-    // since the Astro page-level swapper only sees images present at load.
     const isDark = ref(false)
     const hidden = ref(false)
     let observer: MutationObserver | undefined

@@ -14,12 +14,18 @@ import { visibleTags } from "~/utils/blueprints/visibleTags"
 import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
 import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
-import { buildToolIndex, blueprintUsesTool } from "~/utils/blueprints/toolIndex"
+import { fetchFullCatalog } from "~/utils/blueprints/catalog"
+import {
+    SUB_CATEGORIES,
+    blueprintInSubCategory,
+    type SubCategory,
+} from "~/utils/blueprints/subCategories"
+import {
+    buildToolIndex,
+    buildCoreToolIndex,
+    blueprintUsesTool,
+} from "~/utils/blueprints/toolIndex"
 
-// Hand-curated, not algorithmic: the six onboarding blueprints Kestra points
-// new users to, and the highest-traffic blueprints over the last 90 days
-// (kestra-prd.dwh_marts.fct__web_pageviews__daily), minus upload-to-s3 (bot-skewed
-// views:visitors ratio) and anything already covered by Getting Started.
 const GETTING_STARTED_IDS = [
     "hello-world",
     "data-engineering-pipeline",
@@ -29,17 +35,15 @@ const GETTING_STARTED_IDS = [
     "microservices-and-apis",
 ]
 const POPULAR_IDS = [
-    "advanced-scheduling",
-    "ai-learning-roadmap-n8n",
-    "api-python-sql",
-    "ai-document-data-extraction",
-    "ansible-local-message",
-    "audit-logs-csv-export",
-    "ai-notion-summary-perplexity",
-    "ai-summarize-weekly-git-commits",
+    "ai-model-router",
+    "ai-github-pr-review",
+    "kubernetes-vault-rotation-restart",
+    "terraform-approval-plan-apply",
+    "kafka-realtime-record-processing",
+    "dbt-git-docker-duckdb",
+    "snowflake-incremental-merge-upsert",
+    "ai-slack-chatbot-with-memory",
 ]
-// Hand-picked showcase row, curated separately from the traffic-driven
-// Popular row. Empty until specific blueprint IDs are added here.
 const FEATURED_IDS: string[] = []
 
 async function fetchBlueprintsByIds(ids: string[]): Promise<Blueprint[]> {
@@ -51,35 +55,6 @@ async function fetchBlueprintsByIds(ids: string[]): Promise<Blueprint[]> {
         ),
     )
     return results.filter((b): b is Blueprint => b !== null)
-}
-
-// The API has no createdAt sort param and no tool-name facet, so pull the
-// whole catalog once and derive "Recently Added", the search bar's tool
-// index, and tool-chip filtering from that single dataset.
-async function fetchFullCatalog(): Promise<Blueprint[]> {
-    try {
-        const PAGE = 200
-        const first = await $fetchApiCached<{
-            results: Blueprint[]
-            total: number
-        }>(`/blueprints/versions/latest?size=${PAGE}&page=1&sort=A-Z`)
-        const results = first?.results ?? []
-        const total = first?.total ?? results.length
-        const pages = Math.min(Math.ceil(total / PAGE), 5)
-        if (pages > 1) {
-            const rest = await Promise.all(
-                Array.from({ length: pages - 1 }, (_, i) =>
-                    $fetchApiCached<{ results: Blueprint[] }>(
-                        `/blueprints/versions/latest?size=${PAGE}&page=${i + 2}&sort=A-Z`,
-                    ).catch(() => null),
-                ),
-            )
-            for (const r of rest) results.push(...(r?.results ?? []))
-        }
-        return results
-    } catch (e) {
-        return []
-    }
 }
 
 const page = Astro.url.searchParams.get("page") ?? 1
@@ -129,6 +104,7 @@ const [
 
 const recentlyAddedBlueprints = fullCatalog
     .slice()
+    .filter((b) => !/n8n|zapier/i.test(`${b.id} ${b.title}`))
     .sort(
         (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -136,25 +112,40 @@ const recentlyAddedBlueprints = fullCatalog
     .slice(0, 8)
 
 const toolIndex = buildToolIndex(fullCatalog)
+const coreToolIndex = buildCoreToolIndex(fullCatalog)
 
 const hasActiveFilters = Boolean(q || tagsSelected || toolNames.length)
 
-const tagsForFilter = tagsSelected
-    ? tags.find((tag) => tag.name.toLowerCase() === tagsSelected.toLowerCase())
-          ?.id
-    : undefined
+const tagNames = tagsSelected
+    ? tagsSelected
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean)
+    : []
+const tagIdsForFilter = tagNames
+    .map(
+        (name) =>
+            tags.find((tag) => tag.name.toLowerCase() === name.toLowerCase())
+                ?.id,
+    )
+    .filter((tagId): tagId is string => Boolean(tagId))
+const ALL_SUB_CATEGORIES = Object.values(SUB_CATEGORIES).flat()
+const fallbackSubCategories = tagNames
+    .filter(
+        (name) =>
+            !tags.some((tag) => tag.name.toLowerCase() === name.toLowerCase()),
+    )
+    .map((name) =>
+        ALL_SUB_CATEGORIES.find(
+            (sc) => sc.name.toLowerCase() === name.toLowerCase(),
+        ),
+    )
+    .filter((sc): sc is SubCategory => Boolean(sc))
 
-// Tool chips filter by actual plugin usage (includedTasks), which the API
-// has no facet for, so with tool chips active the whole result set is
-// filtered and paginated locally from the full catalog. Without tool chips,
-// the API handles tags/q/pagination server-side as before.
 let blueprintsData: Blueprint[] = []
 let total = 0
 
-// Tool filter with no category chip: results are grouped into one section
-// per category (up to 6 shown each, with a see-all link that adds the
-// category chip). With a category chip the flat filtered list renders.
-const groupedByCategory = toolNames.length > 0 && !tagsSelected
+const groupedByCategory = toolNames.length > 0 && tagNames.length === 0
 let toolGroups: {
     name: string
     slug?: string
@@ -163,14 +154,27 @@ let toolGroups: {
     blueprints: Blueprint[]
 }[] = []
 
-if (toolNames.length > 0) {
+if (
+    toolNames.length > 0 ||
+    tagIdsForFilter.length > 1 ||
+    fallbackSubCategories.length > 0
+) {
     const selectedTools = toolNames
-        .map((name) => toolIndex.find((t) => t.name === name))
+        .map((name) =>
+            [...toolIndex, ...coreToolIndex].find((t) => t.name === name),
+        )
         .filter((t): t is (typeof toolIndex)[number] => t !== undefined)
 
     const qLower = q?.toLowerCase()
     const filtered = fullCatalog.filter((b) => {
-        if (tagsForFilter && !b.tags?.includes(tagsForFilter)) return false
+        if (!tagIdsForFilter.every((tagId) => b.tags?.includes(tagId))) {
+            return false
+        }
+        if (
+            !fallbackSubCategories.every((sc) => blueprintInSubCategory(sc, b))
+        ) {
+            return false
+        }
         if (!selectedTools.every((t) => blueprintUsesTool(b, t.pluginClass))) {
             return false
         }
@@ -211,7 +215,7 @@ if (toolNames.length > 0) {
         total: number
     }>(
         `/blueprints/versions/latest?size=${size}&page=${page}` +
-            (tagsForFilter ? `&tags=${tagsForFilter}` : "") +
+            (tagIdsForFilter.length ? `&tags=${tagIdsForFilter[0]}` : "") +
             (q ? `&q=${encodeURIComponent(q)}` : ""),
     )) ?? { results: [], total: 0 }
     blueprintsData = data.results ?? []
@@ -253,8 +257,8 @@ const description = "Get started with our library of workflows ready to use"
                         {q}
                         {tagsSelected}
                         tools={toolsSelected}
-                        categories={categoryTags}
                         {toolIndex}
+                        {coreToolIndex}
                         client:idle
                     />
                     <div class="quick-filters">
@@ -312,7 +316,10 @@ const description = "Get started with our library of workflows ready to use"
             <section class="bp-row">
                 <div class="container-xxl">
                     <h2>Popular</h2>
-                    <p>The most-viewed blueprints over the last 90 days.</p>
+                    <p>
+                        Community favorites: AI agents, Kubernetes, Terraform,
+                        Kafka, dbt, and Snowflake at work.
+                    </p>
                     <div class="row g-3">
                         {popularBlueprints.slice(0, 6).map((blueprint) => (
                             <div class="col-md-6 col-xl-4">
@@ -506,6 +513,9 @@ const description = "Get started with our library of workflows ready to use"
                                 Try a different term, or remove a filter chip
                                 from the search bar.
                             </p>
+                            <a href="/blueprints" class="btn btn-primary">
+                                Clear all filters
+                            </a>
                         </div>
                     )}
                 </div>
@@ -545,6 +555,9 @@ const description = "Get started with our library of workflows ready to use"
                                 Try a different term, or remove a filter chip
                                 from the search bar.
                             </p>
+                            <a href="/blueprints" class="btn btn-primary">
+                                Clear all filters
+                            </a>
                         </div>
                     )}
                 </div>

@@ -4,13 +4,17 @@
             <Magnify class="magnify-icon" />
 
             <div class="chips">
-                <span v-if="categoryChip" class="chip chip-category">
-                    {{ categoryChip.name }}
+                <span
+                    v-for="tag in tagChips"
+                    :key="`tag-${tag}`"
+                    class="chip chip-category"
+                >
+                    {{ tag }}
                     <button
                         type="button"
                         class="chip-remove"
-                        aria-label="Remove category filter"
-                        @click="removeCategoryChip"
+                        :aria-label="`Remove ${tag} filter`"
+                        @click="removeTagChip(tag)"
                     >
                         <Close />
                     </button>
@@ -30,15 +34,26 @@
                         <Close />
                     </button>
                 </span>
+                <span v-if="qChip" class="chip chip-q">
+                    “{{ qChip }}”
+                    <button
+                        type="button"
+                        class="chip-remove"
+                        :aria-label="`Remove the ${qChip} keyword`"
+                        @click="removeQChip"
+                    >
+                        <Close />
+                    </button>
+                </span>
             </div>
 
             <input
                 ref="searchInput"
                 type="text"
                 :placeholder="
-                    categoryChip || toolChips.length
-                        ? 'Add more apps, roles, usecases...'
-                        : 'Search apps, categories, usecases...'
+                    tagChips.length || toolChips.length || qChip
+                        ? ''
+                        : 'Search apps, core plugins, usecases...'
                 "
                 v-model="inputText"
                 @focus="isFocused = true"
@@ -77,18 +92,18 @@
         </div>
 
         <div v-if="isFocused && suggestions.length > 0" class="suggestions">
-            <div class="suggestions-group" v-if="matchingCategories.length">
-                <span class="suggestions-label">Categories</span>
+            <div class="suggestions-group" v-if="matchingCorePlugins.length">
+                <span class="suggestions-label">Core plugins</span>
                 <button
-                    v-for="(cat, idx) in matchingCategories"
-                    :key="`cat-${cat.name}`"
+                    v-for="(tool, idx) in matchingCorePlugins"
+                    :key="`core-${tool.name}`"
                     type="button"
                     class="suggestion-item"
                     :class="{ highlighted: highlightIndex === idx }"
-                    @mousedown.prevent="selectCategory(cat)"
+                    @mousedown.prevent="selectTool(tool)"
                 >
-                    <TagIcon :tag="cat.name" />
-                    {{ cat.name }}
+                    <TaskIcon :cls="tool.pluginClass" />
+                    {{ tool.name }}
                 </button>
             </div>
             <div class="suggestions-group" v-if="matchingTools.length">
@@ -100,7 +115,8 @@
                     class="suggestion-item"
                     :class="{
                         highlighted:
-                            highlightIndex === matchingCategories.length + idx,
+                            highlightIndex ===
+                            matchingCorePlugins.length + idx,
                     }"
                     @mousedown.prevent="selectTool(tool)"
                 >
@@ -118,12 +134,8 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
-    import TagIcon from "~/components/blueprints/TagIcon.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
 
-    interface CategoryOption {
-        name: string
-    }
     interface ToolOption {
         name: string
         pluginClass: string
@@ -133,23 +145,22 @@
         q?: string
         tagsSelected?: string
         tools?: string
-        categories: CategoryOption[]
         toolIndex: ToolOption[]
+        coreToolIndex?: ToolOption[]
     }>()
 
-    const inputText = ref(props.q ?? "")
+    const inputText = ref("")
     const isFocused = ref(false)
     const highlightIndex = ref(-1)
     const searchInput = ref<HTMLInputElement | null>(null)
 
-    const categoryChip = computed<CategoryOption | undefined>(() =>
+    const tagChips = computed<string[]>(() =>
         props.tagsSelected
-            ? props.categories.find(
-                  (c) =>
-                      c.name.toLowerCase() ===
-                      props.tagsSelected!.toLowerCase(),
-              )
-            : undefined,
+            ? props.tagsSelected
+                  .split(",")
+                  .map((t) => t.trim())
+                  .filter(Boolean)
+            : [],
     )
 
     const toolChips = computed<string[]>(() =>
@@ -161,17 +172,19 @@
             : [],
     )
 
+    const qChip = computed<string>(() => props.q?.trim() ?? "")
 
-    const matchingCategories = computed<CategoryOption[]>(() => {
+    const matchingCorePlugins = computed<ToolOption[]>(() => {
         const q = inputText.value.trim().toLowerCase()
-        if (!q) return []
-        return props.categories
+        if (!q || !props.coreToolIndex) return []
+        const showAll = "core plugins".startsWith(q)
+        return props.coreToolIndex
             .filter(
-                (c) =>
-                    c.name.toLowerCase().includes(q) &&
-                    c.name !== categoryChip.value?.name,
+                (t) =>
+                    (showAll || t.name.toLowerCase().includes(q)) &&
+                    !toolChips.value.includes(t.name),
             )
-            .slice(0, 4)
+            .slice(0, showAll ? props.coreToolIndex.length : 6)
     })
 
     const matchingTools = computed<ToolOption[]>(() => {
@@ -187,7 +200,7 @@
     })
 
     const suggestions = computed(() => [
-        ...matchingCategories.value,
+        ...matchingCorePlugins.value,
         ...matchingTools.value,
     ])
 
@@ -206,23 +219,48 @@
 
     function onEnter() {
         if (highlightIndex.value >= 0) {
-            const cats = matchingCategories.value.length
-            if (highlightIndex.value < cats) {
-                selectCategory(matchingCategories.value[highlightIndex.value])
+            const core = matchingCorePlugins.value.length
+            if (highlightIndex.value < core) {
+                selectTool(matchingCorePlugins.value[highlightIndex.value])
             } else {
-                selectTool(matchingTools.value[highlightIndex.value - cats])
+                selectTool(matchingTools.value[highlightIndex.value - core])
             }
             return
         }
-        executeChange({ q: inputText.value })
+
+        const typed = inputText.value.trim()
+        if (!typed) return
+        const typedLower = typed.toLowerCase()
+
+        if (
+            [...tagChips.value, ...toolChips.value].some(
+                (c) => c.toLowerCase() === typedLower,
+            )
+        ) {
+            inputText.value = ""
+            return
+        }
+
+        const tool = [
+            ...props.toolIndex,
+            ...(props.coreToolIndex ?? []),
+        ].find((t) => t.name.toLowerCase() === typedLower)
+        if (tool) {
+            selectTool(tool)
+            return
+        }
+
+        executeChange({ q: typed })
     }
 
     function onBackspace() {
         if (inputText.value.length > 0) return
-        if (toolChips.value.length > 0) {
+        if (qChip.value) {
+            removeQChip()
+        } else if (toolChips.value.length > 0) {
             removeToolChip(toolChips.value[toolChips.value.length - 1])
-        } else if (categoryChip.value) {
-            removeCategoryChip()
+        } else if (tagChips.value.length > 0) {
+            removeTagChip(tagChips.value[tagChips.value.length - 1])
         }
     }
 
@@ -232,28 +270,37 @@
         }, 150)
     }
 
-    // Adding a chip consumes the typed text: the query becomes the chip, so
-    // the free-text q is dropped from both the bar and the URL.
-    async function selectCategory(cat: CategoryOption) {
-        inputText.value = ""
-        await nextTick()
-        searchInput.value?.focus()
-        executeChange({ tagsSelected: cat.name, q: "" })
-    }
-
     async function selectTool(tool: ToolOption) {
         inputText.value = ""
         await nextTick()
         searchInput.value?.focus()
-        executeChange({ tools: [...toolChips.value, tool.name], q: "" })
+        const absorbsQ =
+            qChip.value.toLowerCase() === tool.name.toLowerCase()
+        executeChange({
+            tools: [...toolChips.value, tool.name],
+            ...(absorbsQ ? { q: "" } : {}),
+        })
     }
 
-    function removeCategoryChip() {
-        executeChange({ tagsSelected: "" })
+    function removeTagChip(name: string) {
+        inputText.value = ""
+        executeChange({
+            tagsSelected: tagChips.value.filter((t) => t !== name).join(","),
+            q: "",
+        })
     }
 
     function removeToolChip(name: string) {
-        executeChange({ tools: toolChips.value.filter((t) => t !== name) })
+        inputText.value = ""
+        executeChange({
+            tools: toolChips.value.filter((t) => t !== name),
+            q: "",
+        })
+    }
+
+    function removeQChip() {
+        inputText.value = ""
+        executeChange({ q: "" })
     }
 
     function executeChange(
@@ -266,37 +313,24 @@
         if (typeof window === "undefined") return
 
         const url = new URL(window.location.href)
-        const nextQ = change.q !== undefined ? change.q : inputText.value
+        const nextQ = change.q !== undefined ? change.q : qChip.value
         const nextTags =
             change.tagsSelected !== undefined
                 ? change.tagsSelected
-                : (categoryChip.value?.name ?? "")
+                : tagChips.value.join(",")
         const nextTools =
             change.tools !== undefined ? change.tools : toolChips.value
 
-        // Chip changes always resolve on the main catalog page, which owns
-        // tags/tools filtering (this bar also lives on /blueprints/<category>
-        // pages, whose URLs don't take those params). Plain typing stays on
-        // the current page so searching within a category keeps its scope.
-        const isChipChange =
-            change.tagsSelected !== undefined || change.tools !== undefined
-        if (isChipChange) {
-            url.pathname = "/blueprints"
-        }
+        url.pathname = "/blueprints"
 
         if (nextQ) url.searchParams.set("q", nextQ)
         else url.searchParams.delete("q")
 
-        // tags/tools params only exist on the main catalog page; a category
-        // page encodes its category in the path instead.
-        if (url.pathname === "/blueprints") {
-            if (nextTags) url.searchParams.set("tags", nextTags)
-            else url.searchParams.delete("tags")
+        if (nextTags) url.searchParams.set("tags", nextTags)
+        else url.searchParams.delete("tags")
 
-            if (nextTools.length)
-                url.searchParams.set("tools", nextTools.join(","))
-            else url.searchParams.delete("tools")
-        }
+        if (nextTools.length) url.searchParams.set("tools", nextTools.join(","))
+        else url.searchParams.delete("tools")
 
         url.searchParams.delete("page")
 

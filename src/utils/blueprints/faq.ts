@@ -1,5 +1,3 @@
-// Shared FAQ entries for the blueprints catalog pages (main index and the
-// per-category pages), so the copy lives in one place.
 export interface FaqItem {
     question: string
     answer: string

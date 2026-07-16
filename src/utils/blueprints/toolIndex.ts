@@ -1,8 +1,3 @@
-// Derives a searchable "tool" index (distinct plugins referenced across the
-// catalog) from a sample of blueprints' includedTasks, for the search bar's
-// tool chips. Reuses the same plugin-group grouping as the orchestration
-// cross-link logic, so "Slack" groups every io.kestra.plugin.slack.* task
-// under one entry instead of one per task class.
 import { pluginGroup } from "~/utils/orchestrationLink"
 
 export interface ToolIndexEntry {
@@ -11,10 +6,9 @@ export interface ToolIndexEntry {
     count: number
 }
 
-// Core Kestra mechanics aren't "tools" a visitor would search for by brand
-// name, so they're excluded from the index entirely.
-const EXCLUDED_GROUPS = new Set([
-    "io.kestra.plugin.core",
+const CORE_PREFIX = "io.kestra.plugin.core."
+
+const ALWAYS_EXCLUDED = new Set([
     "io.kestra.plugin.scripts",
     "io.kestra.plugin.serdes",
 ])
@@ -73,16 +67,15 @@ function toolDisplayName(group: string): string {
 export function buildToolIndex(
     blueprints: { includedTasks?: string[] }[],
 ): ToolIndexEntry[] {
-    const byGroup = new Map<
-        string,
-        { name: string; pluginClass: string; count: number }
-    >()
+    const byGroup = new Map<string, ToolIndexEntry>()
 
     for (const bp of blueprints) {
         const groupsSeenInThisBlueprint = new Set<string>()
         for (const cls of bp.includedTasks ?? []) {
             const group = pluginGroup(cls)
-            if (EXCLUDED_GROUPS.has(group)) continue
+            if (ALWAYS_EXCLUDED.has(group) || group.startsWith(CORE_PREFIX)) {
+                continue
+            }
             if (groupsSeenInThisBlueprint.has(group)) continue
             groupsSeenInThisBlueprint.add(group)
 
@@ -102,8 +95,65 @@ export function buildToolIndex(
     return Array.from(byGroup.values()).sort((a, b) => b.count - a.count)
 }
 
-// True when the blueprint actually uses the tool's plugin (any task class
-// under the same plugin group), as opposed to merely mentioning it in text.
+const CORE_TOOL_GROUPS: { name: string; pluginClass: string }[] = [
+    { name: "Flow Control", pluginClass: "io.kestra.plugin.core.flow.ForEach" },
+    { name: "Triggers", pluginClass: "io.kestra.plugin.core.trigger.Schedule" },
+    {
+        name: "Trigger Conditions",
+        pluginClass: "io.kestra.plugin.core.condition.Expression",
+    },
+    { name: "HTTP", pluginClass: "io.kestra.plugin.core.http.Request" },
+    { name: "Logging", pluginClass: "io.kestra.plugin.core.log.Log" },
+    { name: "KV Store", pluginClass: "io.kestra.plugin.core.kv.Get" },
+    {
+        name: "Execution Control",
+        pluginClass: "io.kestra.plugin.core.execution.Fail",
+    },
+    {
+        name: "Internal Storage",
+        pluginClass: "io.kestra.plugin.core.storage.Write",
+    },
+    {
+        name: "Namespace Files",
+        pluginClass: "io.kestra.plugin.core.namespace.UploadFiles",
+    },
+    {
+        name: "Outputs",
+        pluginClass: "io.kestra.plugin.core.output.OutputValues",
+    },
+    { name: "Metrics", pluginClass: "io.kestra.plugin.core.metric.Publish" },
+    { name: "Debugging", pluginClass: "io.kestra.plugin.core.debug.Return" },
+    {
+        name: "Templating",
+        pluginClass: "io.kestra.plugin.core.templating.TemplatedTask",
+    },
+    {
+        name: "Process Runner",
+        pluginClass: "io.kestra.plugin.core.runner.Process",
+    },
+]
+
+export function buildCoreToolIndex(
+    blueprints: { includedTasks?: string[] }[],
+): ToolIndexEntry[] {
+    const countByGroup = new Map<string, number>()
+    for (const bp of blueprints) {
+        const groupsSeenInThisBlueprint = new Set<string>()
+        for (const cls of bp.includedTasks ?? []) {
+            const group = pluginGroup(cls)
+            if (!group.startsWith(CORE_PREFIX)) continue
+            if (groupsSeenInThisBlueprint.has(group)) continue
+            groupsSeenInThisBlueprint.add(group)
+            countByGroup.set(group, (countByGroup.get(group) ?? 0) + 1)
+        }
+    }
+
+    return CORE_TOOL_GROUPS.map((g) => ({
+        ...g,
+        count: countByGroup.get(pluginGroup(g.pluginClass)) ?? 0,
+    })).sort((a, b) => b.count - a.count)
+}
+
 export function blueprintUsesTool(
     blueprint: { includedTasks?: string[] },
     toolPluginClass: string,

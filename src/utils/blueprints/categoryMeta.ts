@@ -1,6 +1,3 @@
-// Icon + one-line blurb per vertical category, for the large "Browse by
-// category" tiles and the /blueprints/<slug> category listing pages. Matched by
-// name against the live tag list, same pattern as PATTERN_TAGS in useCaseTags.ts.
 export interface CategoryTileMeta {
     name: string
     slug: string

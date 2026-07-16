@@ -1,7 +1,3 @@
-// Use-case tags added alongside the original vertical tags (AI, Business, Cloud,
-// Core, Data, Infrastructure, Getting Started) so a blueprint can be browsed by
-// what it does, not just what domain it's in. Matched by name since the tag API
-// returns a flat list with no axis field.
 export interface PatternTag {
     name: string
     slug: string

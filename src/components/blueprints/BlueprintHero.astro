@@ -1,0 +1,164 @@
+---
+import { Icon } from "astro-icon/components"
+import TokenSearch from "~/components/blueprints/TokenSearch.vue"
+import type { ToolIndexEntry } from "~/utils/blueprints/toolIndex"
+
+export interface SiblingPill {
+    label: string
+    href: string
+    icon: string
+    active: boolean
+    removeLabel?: string
+}
+
+interface Props {
+    eyebrow: string
+    title: string
+    blurb: string
+    q?: string
+    tagsSelected?: string
+    toolIndex: ToolIndexEntry[]
+    coreToolIndex?: ToolIndexEntry[]
+    siblings?: SiblingPill[]
+}
+
+const {
+    eyebrow,
+    title,
+    blurb,
+    q,
+    tagsSelected,
+    toolIndex,
+    coreToolIndex,
+    siblings = [],
+} = Astro.props
+---
+
+<section class="bp-hero">
+    <div class="container-xxl">
+        <div class="hero-card">
+            <p class="eyebrow">
+                <a href="/blueprints">Blueprints</a> / {eyebrow}
+            </p>
+            <h1>{title}</h1>
+            <p>{blurb}</p>
+
+            <div class="bp-hero-search">
+                <TokenSearch
+                    {q}
+                    {tagsSelected}
+                    {toolIndex}
+                    {coreToolIndex}
+                    client:idle
+                />
+            </div>
+
+            {
+                siblings.length > 0 && (
+                    <div class="sibling-pills">
+                        {siblings.map((s) => (
+                            <a
+                                href={s.href}
+                                title={s.removeLabel}
+                                class:list={[
+                                    "sibling-pill",
+                                    { active: s.active },
+                                ]}
+                            >
+                                <Icon name={s.icon} class="pill-icon" />
+                                {s.label}
+                            </a>
+                        ))}
+                    </div>
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .bp-hero {
+        padding: $rem-2 $rem-1 $rem-1;
+
+        .hero-card {
+            padding: 4rem 2.625rem;
+            background: url("~/components/blueprints/assets/bar-bg.webp")
+                center / cover no-repeat;
+            border-radius: $border-radius-lg;
+            color: $white;
+
+            @include media-breakpoint-down(lg) {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .eyebrow {
+            margin-bottom: 0.75rem;
+            font-size: $font-size-sm;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+
+            a {
+                color: rgba(255, 255, 255, 0.7);
+
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+
+        h1 {
+            margin-bottom: 0.5rem;
+            color: $white;
+        }
+
+        p {
+            color: var(--ks-content-tertiary);
+            font-size: $font-size-lg;
+            margin-bottom: 0;
+        }
+
+        .bp-hero-search {
+            margin-top: 2.5rem;
+            max-width: 640px;
+        }
+
+        .sibling-pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sibling-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: $font-size-sm;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            .pill-icon {
+                font-size: 1rem;
+                width: 1rem;
+                height: 1rem;
+            }
+
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.6);
+                color: $white;
+            }
+
+            &.active {
+                border-color: var(--ks-border-active);
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
+            }
+        }
+    }
+</style>

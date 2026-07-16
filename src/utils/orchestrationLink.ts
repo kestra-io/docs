@@ -1,11 +1,3 @@
-// Maps a blueprint's included task plugin classes back to the matching
-// /orchestration/<tool> page, if one exists. Each orchestration entry's
-// tool.pluginClass is truncated to its plugin "group" (everything but the
-// final class name), except for umbrella vendors (gcp, jdbc, ee, microsoft,
-// dbt, github) where the next segment names the actual product and must be
-// kept so sibling tools under the same vendor don't collide
-// (e.g. io.kestra.plugin.gcp.bigquery vs io.kestra.plugin.gcp.gcs,
-// io.kestra.plugin.dbt.cli vs io.kestra.plugin.dbt.cloud).
 const UMBRELLA_PREFIXES = [
     "io.kestra.plugin.gcp.",
     "io.kestra.plugin.jdbc.",
@@ -13,6 +5,7 @@ const UMBRELLA_PREFIXES = [
     "io.kestra.plugin.microsoft.",
     "io.kestra.plugin.dbt.",
     "io.kestra.plugin.github.",
+    "io.kestra.plugin.core.",
 ]
 
 export function pluginGroup(pluginClass: string): string {
