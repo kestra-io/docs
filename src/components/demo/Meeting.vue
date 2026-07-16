@@ -4,6 +4,7 @@
     import { useGtm } from "@gtm-support/vue-gtm"
     import identify from "~/utils/identify"
     import { getHubspotTracking } from "~/utils/hubspot.js"
+    import { getStoredClickId } from "~/scripts/gclid"
     import {
         getMeetingUrl,
         getGeoMeetingUrl,
@@ -57,6 +58,7 @@
                 const ln = form["last-name"].value
                 const em = form["email"].value
                 const emp = form["employees"].value
+                const clickId = getStoredClickId()
 
                 hsq.push([
                     "identify",
@@ -86,6 +88,18 @@
                             name: "kuid",
                             value: localStorage.getItem("KUID") || "",
                         },
+                        // Google Ads click id (gclid/gbraid/wbraid) for offline
+                        // conversion import. Sent only when present so HubSpot
+                        // can attribute the booked demo back to the paid click.
+                        ...(clickId
+                            ? [
+                                  {
+                                      objectTypeId: "0-1",
+                                      name: "gclid",
+                                      value: clickId.value,
+                                  },
+                              ]
+                            : []),
                     ],
                     context: {
                         hutk: getHubspotTracking() || undefined,
