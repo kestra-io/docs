@@ -6,7 +6,7 @@
 
 ## Tools & Capability Discovery
 
-- [MCP Server Config](https://kestra.io/.well-known/mcp): Use this to connect an agent to Kestra's orchestration tools.
+- [MCP Server Config](https://kestra.io/.well-known/mcp.json): Use this to connect an agent to Kestra's orchestration tools.
 
 ## Core model
 
@@ -55,7 +55,7 @@ Use this section when you need to write or debug a `{{ ... }}` expression — to
 - [Execution context variables](https://kestra.io/docs/expressions/context.md): Everything available at runtime: `inputs`, `outputs`, `vars`, `trigger`, `execution`, `flow`, `taskrun`, `envs`, `globals`, `namespace` (EE only)
 - [Pebble syntax](https://kestra.io/docs/expressions/syntax.md): Conditionals, loops, operators, tags, tests, and multiline JSON bodies
 - [Filter reference](https://kestra.io/docs/expressions/filters.md): `date`, `json`, `first`, `last`, `keys`, `values`, `chunk`, and all other Pebble filters with examples
-- [Function reference](https://kestra.io/docs/expressions/functions.md): `render()`, `printContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
+- [Function reference](https://kestra.io/docs/expressions/functions.md): `render()`, `fetchContext()`, `secret()`, `kv()`, `currentEachOutput()`, and all built-in functions
 
 ## Finding and using plugins
 
@@ -284,8 +284,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
 - [Log Shipper in Kestra Enterprise: Centralize Logs](https://kestra.io/docs/enterprise/governance/logshipper.md)
 - [Namespace Management in Kestra Enterprise: Isolation](https://kestra.io/docs/enterprise/governance/namespace-management.md)
-- [Read-Only Secret Manager in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/read-only-secrets.md)
-- [Secrets in Kestra Enterprise: Manage Sensitive Data](https://kestra.io/docs/enterprise/governance/secrets.md)
 - [External Secrets Manager in Kestra: AWS, Azure, GCP](https://kestra.io/docs/enterprise/governance/secrets-manager.md)
 - [Multi-Tenancy in Kestra: Configure Tenants](https://kestra.io/docs/enterprise/governance/tenants.md)
 - [Unit Tests in Kestra Enterprise: Validate Flows](https://kestra.io/docs/enterprise/governance/unit-tests.md)
@@ -326,11 +324,11 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure Alerts in Kestra](https://kestra.io/docs/how-to-guides/alerting.md)
 - [Audit Machines and Tool Versions with Ansible in Kestra](https://kestra.io/docs/how-to-guides/ansible.md)
 - [Detect Ansible Config Drift with Kestra](https://kestra.io/docs/how-to-guides/ansible-config-drift.md)
+- [Control Ansible Playbook Outputs to Protect Sensitive Data](https://kestra.io/docs/how-to-guides/ansible-explicit-outputs.md)
 - [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
 - [Deploy Kestra with ArgoCD](https://kestra.io/docs/how-to-guides/argocd.md)
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
 - [Ceph Storage for Kestra via MinIO S3 Gateway](https://kestra.io/docs/how-to-guides/ceph.md)
-- [Use Cloudflare R2 with MinIO Gateway for Kestra](https://kestra.io/docs/how-to-guides/cloudflare-r2.md)
 - [Add Conditional Branching in Kestra](https://kestra.io/docs/how-to-guides/conditional-branching.md)
 - [Build a Custom Plugin for Kestra](https://kestra.io/docs/how-to-guides/custom-plugin.md)
 - [Use Dataform in Kestra](https://kestra.io/docs/how-to-guides/dataform.md)
@@ -345,6 +343,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure a Google Service Account in Kestra](https://kestra.io/docs/how-to-guides/google-credentials.md)
 - [Connect Google Sheets to Kestra](https://kestra.io/docs/how-to-guides/google-sheets.md)
 - [Make HTTP Requests Inside Your Flows](https://kestra.io/docs/how-to-guides/http-request.md)
+- [Automate IAM Management with Tasks](https://kestra.io/docs/how-to-guides/iam-automation.md)
 - [Prevent Duplicate Executions with Correlation IDs](https://kestra.io/docs/how-to-guides/idempotency.md)
 - [Pass Inputs via an API Call](https://kestra.io/docs/how-to-guides/inputs-api.md)
 - [Validate Inputs with the Enum Data Type](https://kestra.io/docs/how-to-guides/inputs-enum.md)
@@ -365,6 +364,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Connect a Neon Database to Kestra](https://kestra.io/docs/how-to-guides/neon.md)
 - [Integrate Notion Webhooks with Kestra](https://kestra.io/docs/how-to-guides/notion-webhook.md)
 - [Handle Null and Undefined Values in Kestra](https://kestra.io/docs/how-to-guides/null-values.md)
+- [Deploy to OpenShift with Kestra](https://kestra.io/docs/how-to-guides/openshift.md)
 - [Parallel vs. Sequential Tasks in Kestra](https://kestra.io/docs/how-to-guides/parallel-vs-sequential.md)
 - [Pause and Resume Flows in Kestra](https://kestra.io/docs/how-to-guides/pause-resume.md)
 - [Run Perl Inside Your Flows](https://kestra.io/docs/how-to-guides/perl.md)
@@ -398,6 +398,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Terraform for Flow Modularity in Kestra](https://kestra.io/docs/how-to-guides/terraform-templating.md)
 - [Kestra with Pulumi's Terraform Provider](https://kestra.io/docs/how-to-guides/using-pulumis-terraform-provider.md)
 - [Access Values Between Flows](https://kestra.io/docs/how-to-guides/values-between-flows.md)
+- [Use HashiCorp Vault as a Read-Only Secrets Backend in Kestra](https://kestra.io/docs/how-to-guides/vault-read-only-secrets.md)
 - [Set Up Webhooks to Trigger Flows](https://kestra.io/docs/how-to-guides/webhooks.md)
 - [Install Kestra: Docker, Kubernetes, VM, and JAR](https://kestra.io/docs/installation.md)
 - [Deploy Kestra on AWS EC2 – RDS and S3 Backend](https://kestra.io/docs/installation/aws-ec2.md)

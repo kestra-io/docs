@@ -24,7 +24,7 @@ The leading alternatives to Argo Workflows in 2026 include Kestra, Flyte, Prefec
 
 ## Understanding Argo Workflows and its Core Purpose
 
-Argo Workflows is an open-source, container-native workflow engine designed specifically to orchestrate parallel jobs on Kubernetes. Workflows are defined as Kubernetes Custom Resources (CRs), allowing them to be managed with standard Kubernetes tools like `kubectl`. It excels at tasks requiring container-level parallelism and dependency management, making it a strong choice for CI/CD pipelines, batch processing, and machine learning model training. Its core strength is its tight integration with the Kubernetes ecosystem, using YAML to define complex Directed Acyclic Graphs (DAGs) of containerized tasks. For a direct comparison, see our [Kestra vs. Argo Workflows](https://kestra.io/vs/argo-workflows) page.
+Argo Workflows is an open-source, container-native workflow engine designed specifically to orchestrate parallel jobs on Kubernetes. Workflows are defined as Kubernetes Custom Resources (CRs), allowing them to be managed with standard Kubernetes tools like `kubectl`. It excels at tasks requiring container-level parallelism and dependency management, making it a strong choice for CI/CD pipelines, batch processing, and machine learning model training. Its core strength is its tight integration with the Kubernetes ecosystem, using YAML to define complex Directed Acyclic Graphs (DAGs) of containerized tasks.
 
 ## Why Look for an Alternative to Argo Workflows?
 

@@ -2,8 +2,8 @@
 import { $fetchApi } from "~/utils/fetch"
 import BlueprintsCarousel from "../common/BlueprintsCarousel.astro"
 import Link from "~/components/common/Link.astro"
-import { NO_RANDOM_ORDER } from "astro:env/client"
 import { randomSortFunction } from "~/utils/random"
+import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 
 const { results } = await $fetchApi<{ results: Blueprint[] }>(
     "/blueprints/versions/latest?page=1&size=50",
@@ -12,6 +12,8 @@ const { results } = await $fetchApi<{ results: Blueprint[] }>(
 const blueprints = results
     .sort(randomSortFunction)
     .slice(0, 20)
+
+const totalBlueprints = await fetchTotalBlueprintsCount()
 ---
 
 <section aria-labelledby="blueprints">
@@ -19,7 +21,7 @@ const blueprints = results
         <div class="content">
             <div class="title-block">
                 <h2 id="blueprints">
-                    <span>250+ Blueprints,</span> Ready to Build.
+                    <span>{totalBlueprints}+ Blueprints,</span> Ready to Build.
                 </h2>
                 <p>
                     Jump-start your workflows with a growing library of workflow

@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Task Runner – Run Tasks as K8s Pods
 h1: Run Kestra Tasks as Kubernetes Pods
-description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Configure pod templates, namespaces, and resource limits for scalable container-based execution.
+description: Run tasks as Kubernetes pods. Configure pod templates, namespaces, and resource limits for container-based execution.
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -9,6 +9,10 @@ editions: ["EE", "Cloud"]
 ---
 
 Run tasks as Kubernetes pods.
+
+:::tip
+This page covers running Kestra **tasks** as Kubernetes pods. To deploy applications **to** a Kubernetes or OpenShift cluster from a flow, see the [Deploy to OpenShift how-to guide](../../../15.how-to-guides/openshift/index.md).
+:::
 
 ## Overview
 

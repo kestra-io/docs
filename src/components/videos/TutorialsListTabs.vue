@@ -8,7 +8,7 @@
             role="presentation"
         >
             <a class="ks-nav-link" :class="{ active: currentCategory === category }" type="button"
-                :href="`/tutorial-videos/${slug}`">
+                :href="`/videos/${slug}`">
                 {{ category }}
             </a>
         </li>

@@ -81,7 +81,7 @@ const jsonLinkedData = {
 }
 ---
 
-<Layout title={title} description={description} image={staticImage?.src}>
+<Layout title={title} description={description} image={staticImage?.src} canonical={page.canonical}>
     <section>
         <Fragment slot="head">
             <meta property="og:type" content="article" />
@@ -90,11 +90,13 @@ const jsonLinkedData = {
                 content={new Date(date).toISOString()}
             />
             <script
+                is:inline
                 type="application/ld+json"
                 set:html={JSON.stringify(jsonLinkedData)}
             />
             {page.schema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(page.schema)}
                 />

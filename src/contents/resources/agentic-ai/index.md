@@ -4,7 +4,7 @@ description: "Understand agentic AI, how it operates autonomously, and its disti
 metaTitle: "What is Agentic AI? Explained Simply | Kestra"
 metaDescription: "Learn what agentic AI is, how it works autonomously to achieve goals, and its key differences from traditional and generative AI. Explore real-world use cases."
 tag: ai
-date: 2024-05-16
+date: 2026-07-01
 faq:
   - question: "What exactly is agentic AI?"
     answer: "Agentic AI refers to artificial intelligence systems capable of autonomous decision-making and action to achieve a predefined goal with limited human supervision. Unlike reactive AI, agentic systems can perceive environments, plan steps, execute actions, and learn from outcomes to adapt their behavior over time."
@@ -20,138 +20,199 @@ faq:
     answer: "Kestra provides a declarative orchestration layer for agentic AI, allowing users to define agent behavior, tool calls, and decision logic in YAML. Its event-driven nature and extensive plugin ecosystem enable agents to interact with diverse systems, while the platform's observability features ensure transparency and control over autonomous executions."
 ---
 
-The promise of AI has long been about intelligent systems that can act autonomously. While Large Language Models (LLMs) have captivated the world with their ability to generate human-like text, a new paradigm is emerging: Agentic AI. This advanced form of artificial intelligence moves beyond mere generation, empowering systems to perceive, plan, act, and learn independently to achieve complex goals.
+The promise of AI has moved from generating content to taking autonomous action. Agentic AI is a meaningful shift: systems that understand goals, make decisions, and carry out complex tasks with little human intervention. These agents navigate dynamic environments, learn from interactions, and reach objectives that once required intricate, explicit programming.
 
-This article will demystify Agentic AI, explaining its core principles, distinguishing it from other AI categories, and exploring its practical applications. We'll examine the benefits and challenges of these self-governing systems and see how platforms like Kestra provide the essential orchestration layer for building reliable and auditable agentic workflows.
+Deploying and governing truly autonomous AI agents in production raises its own challenges. This article defines agentic AI, explains its core architectural components, compares it to other AI paradigms, and walks through real-world examples. It closes with how Kestra acts as the orchestration control plane for building, deploying, and overseeing reliable agentic workflows.
 
-## Defining Agentic AI: Autonomy and Goal-Oriented Systems
+## What is Agentic AI? Autonomous Intelligence Explained
 
-At its core, agentic AI refers to systems designed to achieve specific goals with limited human supervision. The term "agentic" comes from the concept of an "agent"—an autonomous entity that perceives its environment and acts upon it to reach a desired outcome.
+Agentic AI marks a shift from passive, responsive systems to proactive, goal-driven actors. Instead of only processing inputs and producing outputs, an agentic system plans and executes a sequence of actions to reach a specific objective, adapting its strategy based on feedback from its environment.
 
-Unlike traditional, reactive AI systems that simply respond to direct inputs, an agentic system operates on a continuous perception-action loop:
-1.  **Perceive:** It gathers information about its current state and environment.
-2.  **Reason:** It analyzes this information in the context of its primary goal.
-3.  **Plan:** It formulates a sequence of actions to move closer to its goal.
-4.  **Act:** It executes these actions by interacting with its environment, often using a set of available tools.
-5.  **Observe:** It assesses the result of its actions and updates its understanding, repeating the loop until the goal is achieved.
+### What makes an AI system "agentic"?
 
-This goal-driven behavior is the key differentiator. A traditional machine learning model might predict customer churn, but an agentic AI system would take that prediction and autonomously execute a series of steps to retain the customer, such as sending a personalized offer or scheduling a follow-up call. This shift from prediction to action is what defines the agentic paradigm. Building these autonomous systems is a core focus of modern [AI agents in Kestra](https://kestra.io/docs/ai-tools/ai-agents), where workflows can be designed to think, remember, and use tools to solve complex problems.
+Several characteristics distinguish an agentic AI system. At its core, an agent runs a perception-action loop: it perceives its environment, makes a decision, and takes an action. What makes it "agentic" is the addition of autonomy, memory, and learning.
 
-## Key Characteristics and Components of Agentic AI
+- **Autonomy:** the system operates independently, without constant human supervision, to reach its goals.
+- **Goal-orientation:** it is driven by a high-level objective and breaks it down into smaller, executable tasks.
+- **Memory:** it keeps internal state, remembering past actions and observations to inform future decisions. This covers both short-term context and long-term knowledge.
+- **Learning:** the agent improves its performance over time by learning from the outcomes of its actions.
 
-Agentic AI is not a single technology but an architecture that combines several components to enable autonomous operation. Understanding these building blocks is essential to grasping how these systems function.
+These traits let an agent act as a persistent, autonomous entity rather than a one-shot tool. For a deeper dive into the specifics, explore the definition of [AI agents](/resources/ai/ai-agent).
 
-### Understanding AI Agents: Perception, Planning, and Execution
+### Beyond traditional AI: key differentiators
 
-An [AI agent](/resources/ai/ai-agent) is composed of several key elements working in concert:
-*   **The "Brain" (LLM):** At the heart of most modern AI agents is a Large Language Model (LLM) like GPT-5 or Claude. The LLM provides the reasoning and planning capabilities, allowing the agent to understand complex instructions, break down goals into smaller steps, and decide which actions to take.
-*   **Memory:** Agents require memory to maintain context and learn from past interactions. This can be short-term (remembering the steps in the current task) or long-term (storing knowledge from previous tasks to improve future performance).
-*   **Tools:** An agent's ability to act depends on its tools. These can be anything from external APIs (for web searches or sending emails) and code execution environments (for running Python scripts) to internal databases and software systems. The agent's brain decides which tool to use, with what inputs, to accomplish each step of its plan.
+Traditional AI and machine-learning models are typically trained for a single, well-defined task, such as classifying an image or translating text. They follow static, pre-programmed logic. When the environment changes, the model often fails until it is retrained or reprogrammed.
 
-The process is iterative. The agent formulates a plan, executes the first step with a tool, observes the outcome, and then re-evaluates its plan based on the new information. This loop continues until the overarching goal is met.
+Agentic AI is built for dynamic environments. An agent does not just run a task; it forms a plan to reach a goal. If an action fails or the environment changes, it reasons about the new state and devises an alternative plan. That ability to strategize, self-correct, and call external tools makes it far more flexible than its predecessors.
 
-### Orchestration and Continuous Learning in Agentic Systems
+## The Architecture of Autonomous Agents: Core Components
 
-A single agent can perform simple tasks, but achieving complex business goals often requires multiple agents or a sequence of sophisticated tool calls. This is where [agentic orchestration](/resources/ai/agentic-orchestration) becomes critical. An orchestration platform acts as the control plane, defining the rules of engagement, managing the flow of information, and ensuring that the agent's actions are auditable and reliable.
+An agentic AI system is not a single monolithic model but a composite architecture where several components work together. Understanding this structure is key to building and managing effective agents.
 
-This control plane is also vital for continuous learning. By logging every decision, action, and outcome, the system can analyze its performance. If an agent fails to achieve a goal, the orchestration layer can trigger a fallback process, alert a human operator, or feed the failure data back into a training loop to prevent similar mistakes in the future. This structured approach, facilitated by tools like Kestra's [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot) and its vast library of [plugins](https://kestra.io/plugins), transforms a simple agent into a robust, enterprise-ready system.
+### Understanding the AI agent's internal loop
 
-## Use Cases and Practical Applications of Agentic AI
+The heart of an agent is its reasoning loop, often powered by a Large Language Model (LLM). This loop usually follows a Plan-Act-Reflect cycle:
 
-The potential applications for agentic AI span nearly every industry, moving from theoretical concepts to practical, value-driving implementations.
+1.  **Plan:** the agent assesses its current state, its goal, and the available tools. The LLM generates a step-by-step plan toward the goal.
+2.  **Act:** the agent executes the first step. This usually means calling an external tool, such as an API, a database query, or a code interpreter.
+3.  **Reflect:** the agent observes the outcome, updates its internal state and memory, and judges whether the action moved it closer to its goal. That feedback refines the next iteration of the plan.
 
-### Agentic AI in Enterprise Solutions and Data Interaction
+This continuous cycle lets the agent handle complex, multi-step tasks and recover from errors.
 
-In the enterprise, agentic AI is being deployed to automate complex, multi-step processes that previously required significant human expertise and intervention.
-*   **Cybersecurity Analytics:** Leading financial institutions like JPMorgan Chase use agentic workflows to analyze billions of security events, identify threats, and trigger automated remediation actions, reducing response times from hours to seconds.
-*   **Infrastructure Provisioning:** Global companies like BHP have replaced legacy automation tools with agentic systems to manage infrastructure. This has allowed them to provision complex cloud and on-prem resources in days instead of months, all governed by declarative, auditable workflows.
-*   **AI/ML Pipelines:** Tech giants like Apple leverage agentic orchestration to manage large-scale AI pipelines. These systems handle data preparation, model training, versioning, and deployment, ensuring reproducibility and reliability across hundreds of engineers.
+### Orchestration and collaboration in multi-agent systems
 
-### Real-World Examples: Automation and Problem-Solving
+For harder problems, a single agent may not be enough. [Multi-agent collaboration](/resources/ai/multi-agent-collaboration-evolving-orchestration) deploys several specialized agents that work together. A "researcher" agent might gather information, a "writer" agent could draft a report, and a "critic" agent would review it for accuracy.
 
-Beyond these large-scale examples, agentic AI excels at solving specific, targeted problems. Imagine a workflow designed to monitor customer support tickets. When a high-priority ticket arrives, an AI agent could:
-1.  **Analyze the ticket text** to understand the user's issue.
-2.  **Query internal documentation** to find a potential solution.
-3.  **Check the user's account status** in a CRM system.
-4.  **Draft a personalized response** with the solution.
-5.  If the issue is a bug, **create a new ticket** in the engineering team's Jira project.
+This approach needs a higher-level orchestration layer to manage communication, coordinate tasks, and resolve conflicts between agents. Good orchestration keeps the collective system working toward the overarching goal.
 
-Each of these steps involves a different tool and a decision based on the outcome of the previous step. This is the power of agentic AI: it can autonomously coordinate multiple systems to achieve a resolution, removing the need to write complex and brittle glue code. This is the core principle behind dedicated platforms for [AI automation](https://kestra.io/ai-automation).
+### Tools, memory, and data interaction for AI agents
 
-## Agentic AI vs. Generative AI: Understanding the Distinctions
+An agent's ability to act comes from its tools. These are functions or APIs that let it interact with the outside world: searching the web, running code, querying a database, or sending an email. The agent's LLM brain decides which tool to use, and with what parameters, based on its plan.
 
-A common point of confusion is the relationship between agentic AI and generative AI models like ChatGPT. While they are related, they serve fundamentally different purposes.
+Memory matters just as much. Short-term memory is usually the context window of the LLM, holding the recent conversation and observations. Long-term memory, often backed by a vector database, lets the agent store and retrieve large amounts of information from past interactions, giving it a persistent knowledge base. [AI agents in Kestra](/docs/ai-tools/ai-agents) are designed around these principles, pairing a strong reasoning engine with a flexible toolset.
 
-### Is ChatGPT an Agentic AI?
+## Agentic AI in Context: Comparing Paradigms
 
-No, ChatGPT is not an agentic AI. It is a generative AI model. It is incredibly proficient at understanding prompts and generating coherent, contextually relevant text. However, it operates in a reactive mode—it responds to inputs but cannot act on its own.
+The term "agentic AI" is often used alongside "generative AI" and "LLMs." The concepts are related but not interchangeable, and clarifying the distinctions shows where agentic systems add value.
 
-An LLM is a critical component *within* an agentic system, acting as its reasoning engine. But the LLM alone lacks the other necessary components of an agent, such as the ability to interact with external tools, maintain long-term memory, or autonomously pursue a goal without continuous human prompting.
+### Agentic AI vs. Generative AI: what's the difference?
 
-### Key Differences in Functionality and Autonomy
+Generative AI excels at creating new content. Models like GPT-5 or Claude Opus 4 are trained to generate text, images, or code that mirrors patterns in their training data. They are strong content producers.
 
-The primary distinction lies in their core function:
-*   **Generative AI creates.** Its purpose is to produce new content based on patterns in its training data.
-*   **Agentic AI acts.** Its purpose is to achieve a goal by performing tasks in an environment.
+Agentic AI is about taking action. It uses a generative model as its reasoning engine but surrounds it with an architecture for planning, tool use, and execution. In short:
 
-Think of it this way: Generative AI is a highly skilled specialist, like a copywriter or a programmer. Agentic AI is the project manager that hires that specialist, along with others, to complete a project. It uses the generative model to draft an email, a code execution tool to run a script, and an API tool to update a database, orchestrating all these specialists to achieve its objective. This is particularly evident in advanced use cases like [RAG (Retrieval-Augmented Generation) pipelines](/resources/ai/rag-pipeline), where an agent might decide when and what information to retrieve to improve the quality of a generated response. It also underpins [agentic workflows](/resources/ai/agentic-workflows) — end-to-end automated processes in which one or more AI agents coordinate tool calls, branching logic, and human-in-the-loop checkpoints to reach a goal.
+*   **Generative AI creates.** It answers the "what."
+*   **Agentic AI does.** It works out the "how" and executes it.
 
-## Benefits and Challenges of Implementing Agentic AI
+An agent might use a generative model to write an email (content creation) as one step in a broader plan to schedule a meeting (goal achievement).
 
-While agentic AI offers transformative potential, its implementation comes with both significant advantages and notable challenges.
+### Large Language Models (LLMs) as the agent's brain
 
-### Advantages: Efficiency, Scalability, and Reduced Human Oversight
+An LLM is the cognitive core of a modern AI agent. Its ability to understand natural language, reason about problems, and generate structured plans makes it the ideal brain. The agent architecture provides the body: the tools, memory, and execution loop that turn the LLM's output into actions in the real world. A complex sequence of these actions can be seen as a dynamic form of [prompt chaining](/resources/ai/prompt-chaining-llm-guide), where the agent itself decides the next prompt based on prior results.
 
-The primary benefit of agentic AI is the ability to automate complex, end-to-end workflows. This leads to:
-*   **Increased Efficiency:** Agents can execute tasks 24/7 at machine speed, drastically reducing the time required for processes like data analysis, incident response, or customer onboarding.
-*   **Enhanced Scalability:** Once an agentic workflow is defined, it can be scaled to handle thousands or millions of events without a linear increase in human effort.
-*   **Reduced Human Oversight:** By automating routine decision-making, agentic systems free up skilled professionals to focus on strategic, high-value work that requires human creativity and intuition.
+### Is ChatGPT an agentic AI?
 
-### Disadvantages: Speed, Reliability, and the "30% Rule in AI"
+By itself, ChatGPT is a generative AI, not an agentic one. It responds to prompts and generates text within a conversation. It lacks the key parts of a true agent: on its own it cannot autonomously call external tools (beyond built-in features like ChatGPT Search) or run multi-step plans without continuous human input.
 
-Despite its power, agentic AI is not a silver bullet. Organizations must be aware of its limitations:
-*   **Reliability and Hallucinations:** Because agents often rely on probabilistic LLMs for reasoning, they can sometimes make mistakes, misinterpret instructions, or "hallucinate" incorrect information. This makes robust error handling and validation essential.
-*   **Debugging Complexity:** An autonomous system that makes its own decisions can be difficult to debug. When something goes wrong, tracing the agent's reasoning process requires strong observability and logging.
-*   **The "30% Rule":** This informal rule highlights the last-mile problem in AI. While an agent might successfully handle 70% of cases autonomously, the remaining 30% often consist of complex edge cases that require more sophisticated logic or human intervention. Building systems that can gracefully handle these exceptions is a major engineering challenge, requiring robust strategies for [workflow error handling](https://kestra.io/docs/workflow-components/errors).
+To make an LLM like ChatGPT agentic, you embed it in a system that gives it goals, tools, and the autonomy to use them. The LLM supplies the intelligence; the agentic framework supplies the agency.
 
-## Kestra: The Orchestration Control Plane for Agentic AI
+## Real-World Applications: Agentic AI in Action
 
-To harness the power of agentic AI while mitigating its risks, a robust orchestration platform is essential. Kestra provides the ideal control plane for defining, managing, and monitoring agentic workflows.
+Agentic AI is moving from research into practice across industries. Its ability to automate complex, dynamic tasks opens real opportunities for efficiency and innovation.
 
-With Kestra, you can define the entire logic of an AI agent—its goals, tools, and decision-making processes—as a declarative YAML [flow](https://kestra.io/docs/concepts/flow). This approach brings the principles of Infrastructure as Code to AI, making agentic workflows versionable, auditable, and repeatable.
+### Examples of agentic AI across industries
+
+-   **IT operations:** an agent can monitor system performance, diagnose issues, and automatically run remediation scripts or provision infrastructure in response to alerts, cutting downtime and manual toil.
+-   **Sales and marketing:** autonomous agents can manage sales funnels by sending personalized follow-ups, scheduling meetings around calendar availability, and updating CRM records, freeing teams to focus on relationships. Some platforms are already emerging as [SimplyAsk alternatives](/resources/ai/simplyask-alternatives) by offering agentic capabilities for customer interaction.
+-   **Data management:** an agent can be tasked with maintaining data quality. It can identify anomalies, find the root cause by querying log files, apply a corrective transformation, and notify the data owner.
+-   **Software development:** AI agents can write code, run tests, debug errors, and even open pull requests, speeding up the development cycle. Gravitee, an API management leader, combines orchestration and AI to automatically generate API documentation, a task that previously consumed significant developer time.
+
+### Improving productivity and automation with autonomous agents
+
+The biggest impact of agentic AI is handling "long-tail" tasks: complex, multi-step processes too dynamic for traditional automation but too tedious for people. By delegating these workflows to autonomous agents, teams reach a new level of automation, shifting skilled employees from routine execution to design, oversight, and exception handling.
+
+## Navigating the Challenges of Agentic AI Development
+
+The potential of agentic AI is large, but its development and deployment carry real challenges. Addressing them early is what makes systems safe, reliable, and effective.
+
+### Ethical considerations and governance for autonomous systems
+
+Granting autonomy to AI systems raises hard questions about accountability, bias, and transparency. Who is responsible when an autonomous agent makes a mistake? How do you keep agents from repeating or amplifying biases in their training data?
+
+Effective governance needs detailed logging, audit trails, and clear visibility into the agent's decision-making. It also means setting firm boundaries on an agent's actions, especially in high-stakes environments. [LLM evaluation](/resources/ai/llm-evaluation) reaches beyond model accuracy to cover the safety and reliability of the whole agentic system.
+
+### Overcoming complexity in agent orchestration
+
+As agentic systems grow to include multiple agents and dozens of tools, coordinating their activity gets hard fast. Managing dependencies, handling errors, and keeping agents working together takes a capable orchestration framework. Without a central control plane, multi-agent systems turn chaotic and unpredictable.
+
+### The "30% Rule": human guidance for AI agents
+
+The "30% rule" is an emerging idea: even with advanced automation, people should expect to spend about 30% of their time guiding, reviewing, and refining the work of AI agents. This human-in-the-loop model is what keeps agents aligned with strategic goals, allows course correction, and guards against autonomous errors. Real productivity gains come from partnership, not full replacement.
+
+## Kestra: The Orchestration Control Plane for Agentic Workflows
+
+Building and running production-grade agentic AI takes more than a clever prompt. It needs an auditable, scalable platform for orchestration. Kestra provides the control plane that turns promising agent prototypes into reliable, enterprise-ready workflows.
+
+With an [AI-native orchestration platform](/resources/ai/ai-native-orchestration-platform), you can define, execute, and monitor agentic workflows with the same rigor as any other critical business process. Kestra's approach rests on a few principles:
+
+-   **Declarative workflows:** agentic workflows are defined in plain, declarative YAML. That makes them easy to version, review, and audit. Every action an agent can take is defined explicitly as code, which keeps the system transparent and controllable.
+-   **Polyglot tooling:** agents need a varied toolset. Kestra's language-agnostic architecture lets agents run Python scripts, shell commands, SQL queries, and Docker containers inside a single, unified workflow.
+-   **Unified orchestration:** modern enterprises run on a complex stack of data, infrastructure, and business applications. Kestra orchestrates agents alongside those systems for end-to-end automation. An agent can be triggered by a data-pipeline event, use a Terraform blueprint to provision infrastructure, then notify a team on Slack. This is the core of [MCP orchestration](/resources/ai/mcp-orchestration).
+-   **Human-in-the-loop:** Kestra has built-in human-in-the-loop approvals. You can design workflows where an agent proposes an action (a database update, a customer email) that pauses and waits for a person to review and approve it before execution.
+-   **AI-assisted development:** Kestra Copilot helps you build agentic workflows faster by generating YAML from natural-language descriptions, speeding development while keeping the governance benefits of a declarative approach.
+
+### An agentic incident-response flow in Kestra
+
+Here is a concrete example. The flow below triages an infrastructure incident with an AI agent, pauses for human approval before any change, and only then lets the agent run the remediation flow it selected. Every step is declarative YAML, so it is versioned, auditable, and easy to reason about.
 
 ```yaml
-id: ai-incident-responder
-namespace: company.team.secops
+id: agentic_incident_response
+namespace: company.ops
+
+inputs:
+  - id: alert
+    type: STRING
+    defaults: "Disk usage >= 95% on node worker-3; ingestion lagging for billing-prod."
 
 tasks:
-  - id: analyze_alert
-    type: io.kestra.plugin.ai.completion.ChatCompletion
-    provider: OPENAI
-    prompt: "Analyze this security alert and determine its severity: {{ trigger.body }}"
-  
-  - id: decide_next_step
-    type: io.kestra.plugin.core.flow.Switch
-    value: "{{ outputs.analyze_alert.choices[0].message.content }}"
-    cases:
-      - if: "{{ value.contains('CRITICAL') }}"
-        tasks:
-          - id: page_on_call_engineer
-            type: io.kestra.plugin.notifications.pagerduty.PagerDutyAlert
-            # ... configuration ...
-      - if: "{{ value.contains('LOW') }}"
-        tasks:
-          - id: create_jira_ticket
-            type: io.kestra.plugin.jira.issues.Create
-            # ... configuration ...
+  - id: triage_agent
+    type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.OpenAI
+      apiKey: "{{ secret('OPENAI_API_KEY') }}"
+      modelName: gpt-5-mini
+    systemMessage: |
+      You are an incident triage agent.
+      Diagnose the alert, propose a single safe remediation, and pick the
+      flow that mitigates it. Be concise and never invent flow names.
+    prompt: |
+      Incident:
+      {{ inputs.alert }}
+
+      Available flows in the "company.ops" namespace:
+      - free-disk-space (inputs: node)
+      - restart-ingestion (inputs: pipeline)
+      - notify-oncall (inputs: team, severity, message)
+
+      Choose the best flow and explain the remediation in two sentences.
+    tools:
+      - type: io.kestra.plugin.ai.tool.KestraFlow
+        namespace: company.ops
+        flowId: free-disk-space
+        description: Reclaim disk space on a saturated node
+      - type: io.kestra.plugin.ai.tool.KestraFlow
+        namespace: company.ops
+        flowId: restart-ingestion
+        description: Restart a stalled ingestion pipeline
+
+  - id: human_approval
+    type: io.kestra.plugin.core.flow.Pause
+    description: |
+      Proposed remediation:
+      {{ outputs.triage_agent.textOutput }}
+
+  - id: notify_resolution
+    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    payload: |
+      {
+        "text": "Incident handled. Agent summary: {{ outputs.triage_agent.textOutput }}"
+      }
+
+triggers:
+  - id: on_alert
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('ALERT_WEBHOOK_KEY') }}"
 ```
 
-Kestra's event-driven architecture, powered by a wide range of [triggers](https://kestra.io/docs/workflow-components/triggers), allows agents to react to real-time events from systems like Kafka, S3, or webhooks. Its extensive plugin library provides the tools agents need to interact with virtually any database, API, or platform. By combining a declarative interface with polyglot execution and built-in observability, Kestra provides the guardrails necessary to deploy [AI agents and copilots](https://kestra.io/blogs/release-1-0) confidently in production.
+The agent reasons over the alert and selects a remediation flow, but the `Pause` task holds execution until an on-call engineer approves it. That keeps a human in the loop on every state-changing action while the agent does the diagnostic work.
 
-## The Future of Agentic AI and Its Impact
+With the release of [Kestra 1.0](/1-0), these capabilities are production-ready. Apple's 200-engineer ML team replaced Airflow with Kestra to orchestrate large-scale data pipelines, and JPMorgan Chase runs cybersecurity-analytics orchestration on Kestra, processing billions of rows weekly across Trino, dbt, and AWS. You can learn more about our approach to [declarative orchestration with AI agents](/blogs/release-1-0) and how we apply [context engineering in practice](/blogs/context-engineering-plugins-squad).
 
-Agentic AI represents a significant step towards more capable and autonomous artificial intelligence. As the underlying models become more powerful and their reasoning abilities improve, agents will be able to tackle increasingly complex and ambiguous tasks. We will see them integrated more deeply into core business operations, not just as peripheral automation tools but as active participants in decision-making processes.
+## The Future of Agentic AI: Towards a New Era of Automation
 
-However, the future is not one of complete replacement but of collaboration. The most effective systems will incorporate human-in-the-loop (HITL) workflows, where agents handle the bulk of the work but defer to human experts for final approval or for handling novel situations. As agentic systems scale, [multi-agent collaboration](/resources/ai/multi-agent-collaboration-evolving-orchestration) is emerging as the dominant pattern — specialized sub-agents that each handle one domain, coordinated by an orchestrator that tracks state and routes decisions. The journey towards truly autonomous systems is just beginning, and the platforms that provide the best tools for orchestration, governance, and human-computer interaction will be the ones that lead the way.
+Agentic AI is not a passing trend; it is the next logical step in automation. As models grow more capable and agent architectures more sophisticated, expect them to take on increasingly complex roles across business and technology.
 
-For more resources on building and managing advanced AI systems, explore our collection of [AI orchestration resources](https://kestra.io/resources/ai).
+The key trends in [data engineering and AI](/blogs/2025-data-engineering-and-ai-trends) point toward more autonomous, multi-agent systems that self-improve and collaborate on problems that are currently out of reach. These systems will not run in a vacuum. Their success depends on integrating safely and reliably with the existing web of enterprise systems.
+
+That is why orchestration is not an accessory to agentic AI but a prerequisite for success at scale. A dependable control plane provides the guardrails, visibility, and connectivity needed to harness autonomous agents without giving up control or safety. As you explore agentic AI, a solid orchestration strategy is the key to moving from experimentation to production impact. To go further, explore our full suite of [AI orchestration resources](/resources/ai).
