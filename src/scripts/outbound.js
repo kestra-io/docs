@@ -12,8 +12,14 @@ document.addEventListener(
         if (!link) return
 
         const url = link.href
-        if (!url.includes("github.com")) return
         if (!/^https?:\/\//.test(url)) return
+
+        try {
+            const parsed = new URL(url)
+            if (parsed.hostname !== "github.com") return
+        } catch {
+            return
+        }
 
         posthog.capture("outbound_click", {
             url: url,
