@@ -651,6 +651,10 @@
                     right: 0.75rem;
                 }
 
+                &:has(.copy-response) {
+                    padding-top: 3rem;
+                }
+
                 :deep(pre) {
                     position: relative;
                     border: $block-border;
