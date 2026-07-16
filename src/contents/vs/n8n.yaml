@@ -153,7 +153,7 @@ featureGrid:
       kestra: Distributed, queue-based, horizontally scalable by default
       competitor: Node.js, horizontally scalable via queue mode (Redis + workers)
     - feature: Languages supported
-      kestra: "Agnostic (Python, R, Bash, Node.js, Go, SQL & more)"
+      kestra: "Agnostic (Python, R, Bash, Node.js, Go, Java, SQL & more)"
       competitor: JavaScript, Python (code nodes)
     - feature: Task isolation
       kestra: "Container per task"
@@ -202,7 +202,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/customers/apple"
 
 platformStrengths:
   title: Built for Pipelines That Go to Production

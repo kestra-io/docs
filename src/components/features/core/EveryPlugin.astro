@@ -4,7 +4,6 @@ import { Icon } from "astro-icon/components"
 import { $fetchApiCached } from "~/utils/fetch"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
-import { NO_RANDOM_ORDER } from "astro:env/client"
 import { randomSortFunction } from "~/utils/random"
 
 let plugins: {
@@ -82,7 +81,7 @@ const carouselPlugins = [...plugins, ...plugins]
                     plugins.length > 0 && (
                         <div class="carousel">
                             <div class="track">
-                                {carouselPlugins.map((plugin, idx) => (
+                                {carouselPlugins.map((plugin) => (
                                     <a
                                         href={plugin.link}
                                         class="plugin-logo"

@@ -1386,7 +1386,6 @@
         ids: string[],
         inOut: boolean,
         delay = 0,
-        duration = 0.5,
     ) {
         ids.forEach((id, i) => {
             const el = document.getElementById(id)
@@ -1425,8 +1424,6 @@
     ]
 
     // Refresh icon path
-    const REFRESH_PATH =
-        "M12 4C9.33 4 7 5.34 5.56 7.36L3 4.81V11H9.19L6.41 8.22C7.5 6.86 9.15 6 11 6C14.31 6 17 8.69 17 12H19C19 7.58 15.42 4 12 4ZM12 18C8.69 18 6 15.31 6 12H4C4 16.42 7.58 20 12 20C14.67 20 17 18.66 18.44 16.64L21 19.19V13H14.81L17.59 15.78C16.5 17.14 14.85 18 13 18H12Z"
     const CHECK_PATH = "M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
 
     let labelGroups: {
@@ -1436,7 +1433,6 @@
         text: SVGTextElement
         timer: SVGTextElement
     }[] = []
-    let spinAngles = [0, 0, 0]
     let timerIntervals: (ReturnType<typeof setInterval> | null)[] = [
         null,
         null,
@@ -1630,7 +1626,7 @@
         labelGroups[i]?.g.setAttribute("opacity", "0")
     })
 
-    function setLabelRunning(i: number, color: string) {
+    function setLabelRunning(i: number) {
         const l = labelGroups[i]
         if (!l) return
         l.g.setAttribute("opacity", "1")
@@ -1929,7 +1925,7 @@
 
             setBlockGlow(block as HTMLElement, true, color)
             fadeLogos(allLogos[phase], true)
-            setLabelRunning(phase, color)
+            setLabelRunning(phase)
 
             // At 78% → switch to done; delay corner lines until checkmark is fully visible (300ms delay + 400ms transition)
             setTimeout(() => {

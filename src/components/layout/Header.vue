@@ -6,7 +6,8 @@
         aria-label="Menu"
         :class="{
             open: isOpen,
-            scrolled: isScrolled || props.scrolled,
+            // Keep the background state tied to the actual window scroll only.
+            scrolled: isScrolled,
         }"
     >
         <div class="container-xl">
@@ -69,8 +70,7 @@
                     <span
                         class="slack-icon"
                         :class="{
-                            'slack-icon--dark':
-                                isScrolled || props.scrolled || isOpen,
+                            'slack-icon--dark': isScrolled || isOpen,
                         }"
                         v-html="SlackIcon"
                     />
@@ -701,7 +701,7 @@
 
 <script setup lang="ts">
     import { ref, onMounted, watch, nextTick } from "vue"
-    import { useThrottleFn } from "@vueuse/core"
+    import { useEventListener } from "@vueuse/core"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
@@ -767,19 +767,19 @@
 
         document.fonts?.ready.then(() => measureAllMenuHeights())
 
-        isMobile.value = window.innerWidth <= 1199
-        window.addEventListener("resize", () => {
+        const syncMobileState = () => {
             isMobile.value = window.innerWidth <= 1199
-        })
+        }
 
-        isScrolled.value = window.scrollY > 0
-        const handleScroll = useThrottleFn(() => {
+        const syncScrollState = () => {
             isScrolled.value = window.scrollY > 0
-            if (navbar.value) {
-                navbar.value.classList.toggle("scrolled", isScrolled.value)
-            }
-        }, 100)
-        window.addEventListener("scroll", handleScroll, { passive: true })
+        }
+
+        syncMobileState()
+        syncScrollState()
+
+        useEventListener(window, "resize", syncMobileState)
+        useEventListener(window, "scroll", syncScrollState, { passive: true })
 
         document.documentElement.style.setProperty(
             "--top-bar-height",

@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.22
+  version: 1.3.28
 tags:
 - name: Flows
   description: Flows api
@@ -2003,62 +2003,6 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
-  /api/v1/support/debug-info:
-    get:
-      tags:
-      - Misc
-      summary: Retrieve debug information for a support ticket
-      description: Returns aggregated debug information about the current Kestra instance.
-        Available to all authenticated users.
-      operationId: supportDebugInfo
-      responses:
-        "200":
-          description: supportDebugInfo 200 response
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SupportDebugInfo"
-      security:
-      - bearerAuth: []
-      - basicAuth: []
-  /api/v1/support/forward:
-    post:
-      tags:
-      - Misc
-      summary: Forward support ticket to configured registry proxy
-      operationId: forwardSupportTicket
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                payload:
-                  type: string
-                filesPublisher:
-                  type: array
-                  nullable: true
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              payload:
-                contentType: application/octet-stream
-                explode: false
-              filesPublisher:
-                contentType: application/octet-stream
-                explode: false
-        required: true
-      responses:
-        "200":
-          description: forwardSupportTicket 200 response
-          content:
-            application/json:
-              schema:
-                type: object
-      security:
-      - bearerAuth: []
-      - basicAuth: []
   /api/v1/tenants:
     post:
       tags:
@@ -2195,7 +2139,7 @@ paths:
       tags:
       - Tenants
       summary: Get the apps catalog config for the specified tenant.
-      description: Superadmin-only.
+      description: Accessible to users with access to the tenant.
       operationId: getAppsCatalogConfig
       parameters:
       - name: id
@@ -2608,8 +2552,9 @@ paths:
     delete:
       tags:
       - Users
-      summary: Update user password
-      description: Superadmin-only. Updates whether a user is a superadmin.
+      summary: Delete user auth method
+      description: Superadmin-only. Deletes a specific authentication method from
+        a user.
       operationId: deleteUserAuthMethod
       parameters:
       - name: id
@@ -2667,7 +2612,7 @@ paths:
       tags:
       - Users
       summary: Update user password
-      description: Superadmin-only. Updates whether a user is a superadmin.
+      description: Superadmin-only. Updates the password of a user.
       operationId: patchUserPassword
       parameters:
       - name: id
@@ -3216,6 +3161,44 @@ paths:
       responses:
         "200":
           description: previewApp 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppResponse"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/apps/preview/dispatch/{dispatch}:
+    post:
+      tags:
+      - Apps
+      summary: Dispatch for the given app source (preview).
+      operationId: previewDispatchApp
+      parameters:
+      - name: dispatch
+        in: path
+        description: The ID to dispatch
+        required: true
+        schema:
+          type: string
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The app source (part '__kestra_app_source__') and the dispatch
+          data
+        content:
+          multipart/form-data:
+            schema:
+              type: array
+              items:
+                type: string
+                format: binary
+      responses:
+        "200":
+          description: previewDispatchApp 200 response
           content:
             application/json:
               schema:
@@ -15325,6 +15308,75 @@ paths:
       security:
       - bearerAuth: []
       - basicAuth: []
+  /api/v1/{tenant}/support/debug-info:
+    get:
+      tags:
+      - Misc
+      summary: Retrieve debug information for a support ticket
+      description: Returns aggregated debug information about the current Kestra instance.
+        Requires the SUPPORT permission.
+      operationId: supportDebugInfo
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: supportDebugInfo 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupportDebugInfo"
+      security:
+      - bearerAuth: []
+      - basicAuth: []
+  /api/v1/{tenant}/support/forward:
+    post:
+      tags:
+      - Misc
+      summary: Forward support ticket to configured registry proxy
+      description: Requires the SUPPORT permission.
+      operationId: forwardSupportTicket
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                payload:
+                  type: string
+                filesPublisher:
+                  type: array
+                  nullable: true
+                  items:
+                    type: string
+                    format: binary
+            encoding:
+              payload:
+                contentType: application/octet-stream
+                explode: false
+              filesPublisher:
+                contentType: application/octet-stream
+                explode: false
+        required: true
+      responses:
+        "200":
+          description: forwardSupportTicket 200 response
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - bearerAuth: []
+      - basicAuth: []
   /api/v1/{tenant}/tenant-access:
     get:
       tags:
@@ -17131,6 +17183,9 @@ components:
               - A MAJOR.MINOR version (e.g., `1.1`).
               - A MAJOR.MINOR.PATCH version, optionally with any qualifier
                 (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
+        pluginDefaultsRef:
+          title: Reference (`ref`) of the `pluginDefaults` to apply to this trigger.
+          type: string
         description:
           type: string
         conditions:
@@ -19174,10 +19229,14 @@ components:
           items:
             $ref: "#/components/schemas/ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError"
     ExecutionController.ApiValidateExecutionInputsResponse.ApiInputError:
+      required:
+      - message
       type: object
       properties:
         message:
           type: string
+        renderError:
+          type: boolean
     ExecutionController.EvalResult:
       type: object
       properties:
@@ -19920,6 +19979,7 @@ components:
       type: object
       properties:
         name:
+          minLength: 1
           type: string
         description:
           type: string
@@ -19966,6 +20026,7 @@ components:
       type: object
       properties:
         name:
+          minLength: 1
           type: string
           description: of the group.
         description:
@@ -20093,9 +20154,12 @@ components:
               type: array
             AI_COPILOT:
               type: array
+            SUPPORT:
+              type: array
             UNKNOWN:
               type: array
         name:
+          minLength: 1
           type: string
         description:
           type: string
@@ -20162,6 +20226,8 @@ components:
             CREDENTIAL:
               type: array
             AI_COPILOT:
+              type: array
+            SUPPORT:
               type: array
             UNKNOWN:
               type: array
@@ -21008,6 +21074,9 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/ExecutionKind"
+        progress:
+          type: string
+          nullable: true
     Map_Object.Object_:
       type: object
       properties:
@@ -21262,6 +21331,8 @@ components:
             $ref: "#/components/schemas/LeftSidebarConfiguration"
           rightSidebar:
             $ref: "#/components/schemas/RightSidebarConfiguration"
+          supportEnabled:
+            type: boolean
           inMaintenance:
             type: boolean
           passwordRegexp:
@@ -21424,6 +21495,8 @@ components:
           type: string
         forced:
           type: boolean
+        ref:
+          type: string
         values:
           type: object
           additionalProperties: false
@@ -21991,6 +22064,7 @@ components:
       - GROUP_MEMBERSHIP
       - CREDENTIAL
       - AI_COPILOT
+      - SUPPORT
       - UNKNOWN
     Plugin:
       type: object
@@ -22145,6 +22219,10 @@ components:
           type: string
         forced:
           type: boolean
+        ref:
+          title: Optional reference id used to apply this default only to plugins
+            that opt in via `pluginDefaultsRef`.
+          type: string
         values:
           type: object
           additionalProperties: false
@@ -22509,6 +22587,8 @@ components:
             CREDENTIAL:
               type: array
             AI_COPILOT:
+              type: array
+            SUPPORT:
               type: array
             UNKNOWN:
               type: array
@@ -23187,6 +23267,9 @@ components:
               - A MAJOR.MINOR version (e.g., `1.1`).
               - A MAJOR.MINOR.PATCH version, optionally with any qualifier
                 (e.g., `1.1.2`, `1.1.0-SNAPSHOT`).
+        pluginDefaultsRef:
+          title: Reference (`ref`) of the `pluginDefaults` to apply to this task.
+          type: string
         description:
           type: string
         retry:
@@ -23724,6 +23807,7 @@ components:
       - MULTISELECT
       - YAML
       - EMAIL
+      - FORM
     UnitTest:
       required:
       - assertions
@@ -23814,7 +23898,9 @@ components:
       - apiKeyCount
       - basicAuthCount
       - count
+      - ldapAuthCount
       - oidcCount
+      - passwordlessCount
       type: object
       properties:
         count:
@@ -23827,6 +23913,12 @@ components:
           type: integer
           format: int64
         basicAuthCount:
+          type: integer
+          format: int64
+        ldapAuthCount:
+          type: integer
+          format: int64
+        passwordlessCount:
           type: integer
           format: int64
     UsernamePasswordCredentials:

@@ -89,7 +89,7 @@ The biggest change: we made explicit that Kestra now serves **two major vertical
 
 **IT Infrastructure & Process Automation** — the world we grew into. Automating everything from VMware environments to cloud-native deployments, coordinating Ansible playbooks with ITSM tickets, managing self-service infrastructure requests with human approvals built in.
 
-This wasn't a pivot. It was the natural consequence of building a platform that's truly language-agnostic and truly declarative. When your tool doesn't force a specific persona or a specific domain, people use it for things you didn't originally imagine. Infrastructure teams at Deutsche Telekom. Platform engineers at BHP and Credit Agricole. Data teams at Apple and Bloomberg. They all found Kestra and said: this is what we've been looking for.
+This wasn't a pivot. It was the natural consequence of building a platform that's truly language-agnostic and truly declarative. When your tool doesn't force a specific persona or a specific domain, people use it for things you didn't originally imagine. Infrastructure teams at Deutsche Telekom. Platform engineers at Fortune 500 mining companies and Credit Agricole. Data teams at Apple and Bloomberg. They all found Kestra and said: this is what we've been looking for.
 
 ### AI That Helps You Build, Not That Replaces You
 

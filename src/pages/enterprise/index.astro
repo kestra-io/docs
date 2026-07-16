@@ -1,6 +1,8 @@
 ---
 import Layout from "~/components/layout.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
+import Faq from "~/components/common/Faq.vue"
 
 import Hero from "~/components/enterprise/Hero.vue"
 import SeeHow from "~/components/common/SeeHow.astro"
@@ -37,6 +39,33 @@ const STATS = [
         label: "Deployment Speed",
     },
 ]
+
+const items = [
+    {
+        question: "What does the Enterprise Edition add over open-source Kestra?",
+        answer: "Everything in the open-source edition, plus enterprise governance and security: RBAC, SSO/SCIM, audit logs, multi-tenancy, secrets management, worker isolation, and high availability. <a href='/pricing'>Compare editions →</a>",
+    },
+    {
+        question: "Can Kestra Enterprise be self-hosted?",
+        answer: "Yes. Enterprise Edition runs fully self-hosted in your own infrastructure — including air-gapped environments — or as a managed deployment. You keep your data in your environment.",
+    },
+    {
+        question: "What security and compliance features are included?",
+        answer: "Role-based access control (RBAC), single sign-on (SSO) and SCIM provisioning, granular audit logs, encrypted secrets, namespace-level isolation, and tenant separation for regulated and mission-critical workloads.",
+    },
+    {
+        question: "How does Enterprise scale for large teams?",
+        answer: "Horizontal scalability across workers, multi-tenancy to isolate teams and environments, and high availability for production-critical orchestration. Teams replace vRO, Rundeck, Cron, and Jenkins with a single platform.",
+    },
+    {
+        question: "What support comes with the Enterprise Edition?",
+        answer: "Dedicated support with SLAs, onboarding, and training from the Kestra team. <a href='/demo'>Talk to our team →</a>",
+    },
+    {
+        question: "How is the Enterprise Edition priced?",
+        answer: "Enterprise is an annual subscription tailored to your team size and deployment. <a href='/demo'>Contact sales for a quote →</a>",
+    },
+]
 ---
 
 <Layout {title} {description} headerTheme="lightText">
@@ -48,6 +77,7 @@ const STATS = [
             url="https://kestra.io/enterprise"
             isVariantOf="https://kestra.io/#software"
         />
+        <SchemaFAQ items={items} />
     </Fragment>
     <Hero client:load />
     <div class="enterprise">
@@ -58,6 +88,7 @@ const STATS = [
     <StatsHeader stats={STATS} />
     <PluginsBlock />
     <CustomerQuotes />
+    <Faq {items} client:load />
     <SeeHow
         cta={{
             text: "Let's Talk",
