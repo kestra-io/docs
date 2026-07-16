@@ -336,6 +336,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
 - [Add Conditional Branching in Kestra](https://kestra.io/docs/how-to-guides/conditional-branching.md)
 - [Build a Custom Plugin for Kestra](https://kestra.io/docs/how-to-guides/custom-plugin.md)
+- [Build a KPI Success Ratio Chart in Kestra Dashboards](https://kestra.io/docs/how-to-guides/dashboard-kpi-chart.md)
 - [Use Dataform in Kestra](https://kestra.io/docs/how-to-guides/dataform.md)
 - [Manage dbt Projects with Kestra's Code Editor](https://kestra.io/docs/how-to-guides/dbt.md)
 - [Use Debezium Tasks and Triggers in Kestra](https://kestra.io/docs/how-to-guides/debezium.md)
