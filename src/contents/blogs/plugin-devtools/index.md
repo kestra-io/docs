@@ -3,7 +3,7 @@ title: "Plugin Devtools: shell scripts our squad and our agents both run"
 description: "Inside Plugin Devtools, the internal repository of shell scripts the Plugins & Ecosystem Squad uses to move faster across 200+ plugin repos, and that our AI agents call straight through the Bash tool instead of re-deriving the same commands and burning tokens."
 date: 2026-07-16T09:00:00
 category: Engineering
-image: ./main.jpg
+image: ./main.png
 author:
   name: François Delbrayelle
   linkedin: https://www.linkedin.com/in/fdelbrayelle/
