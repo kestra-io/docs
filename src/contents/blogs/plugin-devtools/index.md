@@ -10,6 +10,7 @@ author:
   twitter: "@fdelbrayelle"
   image: fdelbrayelle
   role: Lead Software Engineer
+image: ./main.png
 ---
 
 The Plugins & Ecosystem Squad maintains more than 200 plugin, storage, and secret repositories. A single day can mean spinning up a local Kestra stack, building a shadow JAR, checking which repos have unpushed work, merging a wave of Dependabot PRs, and cutting a few releases. None of it is hard. All of it is repetitive, and every repetition is a chance to forget a flag, point Vite at the wrong port, or release a version that was already tagged.
