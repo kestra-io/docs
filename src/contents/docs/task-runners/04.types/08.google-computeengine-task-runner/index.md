@@ -17,7 +17,7 @@ This mechanism requires:
 - **Guest attributes enabled** — the runner sets `enable-guest-attributes` automatically on every instance it touches.
 - **An image with `bash`, `curl`, and `python3`** — the default Debian and Ubuntu Compute Engine images satisfy this. Custom images must include all three.
 
-Unlike the [Google Batch](../06.google-batch-task-runner/index.md) and [Google Cloud Run](../07.google-cloudrun-task-runner/index.md) runners, the Compute Engine runner executes commands from the working directory — use `{{ workingDir }}` or the `WORKING_DIR` environment variable when you need the explicit path.
+Unlike the [Google Batch](../07.google-batch-task-runner/index.md) and [Google Cloud Run](../08.google-cloudrun-task-runner/index.md) runners, the Compute Engine runner executes commands from the working directory — use `{{ workingDir }}` or the `WORKING_DIR` environment variable when you need the explicit path.
 
 :::alert{type="warning"}
 If your project enforces the `compute.disableGuestAttributesAccess` organization policy, the runner fails fast with an actionable error on the first poll. Guest attributes cannot be selectively enabled for a single instance when this org policy is active.

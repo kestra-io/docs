@@ -7,7 +7,7 @@ description: Develop custom Condition plugins for Kestra to control flow executi
 ---
 
 
-Here is how you can develop a new [Condition](../../05.workflow-components/07.triggers/index.mdx#conditions).
+Here is how you can develop a new [Condition](../../05.workflow-components/07.triggers/index.mdx).
 
 ## Build a condition plugin for Kestra
 

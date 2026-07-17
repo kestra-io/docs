@@ -777,4 +777,4 @@ tasks:
 
 Use the `io.kestra.plugin.ee.dashboard.data.Assets` data source to build charts over your asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range — they always reflect the current state of your inventory.
 
-See [Assets (EE only)](../../09.ui/00.dashboard/index.md#assets-ee-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.
+See [Assets (EE only)](../../../09.ui/00.dashboard/index.md#assets-ee-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.

@@ -296,7 +296,7 @@ Reserved percentages are live-configurable via the API. Changes propagate to all
 
 Run two Worker Groups subscribed to the same queues simultaneously. Reduce the old group's reservation to 0% to drain it of new work, bring up the new group, verify it is healthy, then delete the old group. At no point does the queue go unserved.
 
-For guidance on when to use Worker Groups versus Task Runners for compute-intensive scripting workloads, see [Task Runners vs Worker Groups](../../../../task-runners/03.task-runners-vs-worker-groups/index.md).
+For guidance on when to use Worker Groups versus Task Runners for compute-intensive scripting workloads, see [Task Runners vs Worker Groups](../../../task-runners/03.task-runners-vs-worker-groups/index.md).
 
 ## Monitoring
 

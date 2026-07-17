@@ -375,7 +375,7 @@ Multiple `Expression` conditions combine into a single `when` expression using `
 | `Expression` on webhook body/headers | `{{ trigger.body.field == 'value' }}` or `{{ trigger.headers['X-Key'] == 'value' }}` |
 | Multiple `Expression` conditions | Combined with `and` / `or` in a single `when` |
 
-For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/index.mdx#date-and-calendar-helpers) reference.
+For the full list of Pebble calendar helper functions (`isWeekend`, `isPublicHoliday`, `isDayWeekInMonth`, `isLastWorkingDay`, `hourOfDay`, etc.), see the [date and calendar helpers](../../../expressions/04.functions/06.dates/index.mdx) reference.
 
 ## `conditions` and `preconditions` → `dependsOn` on Flow triggers
 

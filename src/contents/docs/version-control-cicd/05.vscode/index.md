@@ -38,7 +38,7 @@ On Kestra Cloud, your tenant ID is the path segment immediately after `app.kestr
 On a secured instance, the extension prompts for credentials on the first request. It accepts three credential types:
 
 - **Basic auth** — your Kestra username and password.
-- **API token** — an [Enterprise Edition API token](../../../07.enterprise/03.auth/api-tokens/index.md) sent as a Bearer token. Recommended for non-interactive environments.
+- **API token** — an [Enterprise Edition API token](../../07.enterprise/03.auth/api-tokens/index.md) sent as a Bearer token. Recommended for non-interactive environments.
 - **JWT session token** — a legacy token obtained from a browser session.
 
 Use the **Kestra: Sign in** command to set or change credentials, and **Kestra: Sign out** to clear them.
