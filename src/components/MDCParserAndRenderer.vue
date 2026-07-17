@@ -4,6 +4,7 @@
         :key="content"
         class="mdc-renderer"
         v-html="htmlContent"
+        @click="handleCopyClick"
     />
     <div v-else-if="parseError" class="parse-error">
         <strong>MDC parse error:</strong> {{ parseError }}
@@ -14,9 +15,11 @@
 <script lang="ts" setup>
     import { onMounted, ref, watch } from "vue"
     import { getMarked } from "~/markdown/marked-shiki"
+    import { handleCopyClick, injectCopyButtons } from "~/utils/code-copy"
 
     const props = defineProps<{
         content: string
+        copyable?: boolean
     }>()
 
     const htmlContent = ref<string>("")
@@ -25,7 +28,8 @@
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        htmlContent.value = await getMarked().parse(props.content)
+        const html = await getMarked().parse(props.content)
+        htmlContent.value = props.copyable ? injectCopyButtons(html) : html
     }
 
     onMounted(async () => {
