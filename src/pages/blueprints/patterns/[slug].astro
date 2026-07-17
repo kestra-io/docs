@@ -9,7 +9,7 @@ import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
 import { MAIN_BANNER } from "~/utils/blueprints/banners"
 import { PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import {
-    buildToolIndex,
+    fetchToolIndex,
     fetchCoreToolIndex,
 } from "~/utils/blueprints/toolIndex"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
@@ -37,7 +37,7 @@ const { results: blueprints = [], total = 0 } = tag
     : { results: [], total: 0 }
 
 const fullCatalog = await fetchFullCatalog()
-const toolIndex = buildToolIndex(fullCatalog)
+const toolIndex = await fetchToolIndex(fullCatalog)
 const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 
 const heroSiblings = PATTERN_TAGS.map((p) => ({

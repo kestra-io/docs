@@ -5,95 +5,83 @@ export interface ToolIndexEntry {
     name: string
     pluginClass: string
     count: number
+    keywords?: string[]
 }
 
 const CORE_PREFIX = "io.kestra.plugin.core."
 
-const ALWAYS_EXCLUDED = new Set([
-    "io.kestra.plugin.scripts",
-    "io.kestra.plugin.serdes",
-])
-
-const NAME_OVERRIDES: Record<string, string> = {
-    aws: "AWS",
-    gcp: "GCP",
-    gcs: "GCS",
-    sql: "SQL",
-    ai: "AI",
-    kv: "KV Store",
-    http: "HTTP",
-    ssh: "SSH",
-    ftp: "FTP",
-    sftp: "SFTP",
-    jdbc: "JDBC",
-    api: "API",
-    dbt: "dbt",
-    llm: "LLM",
-    rag: "RAG",
-    ldap: "LDAP",
-    opa: "OPA",
-    dns: "DNS",
-    servicenow: "ServiceNow",
-    hubspot: "HubSpot",
-    pagerduty: "PagerDuty",
-    opsgenie: "Opsgenie",
-    linkedin: "LinkedIn",
-    tiktok: "TikTok",
-    github: "GitHub",
-    gitlab: "GitLab",
-    dynamodb: "DynamoDB",
-    mongodb: "MongoDB",
-    mariadb: "MariaDB",
-    clickhouse: "ClickHouse",
-    couchbase: "Couchbase",
-    elasticsearch: "Elasticsearch",
-    influxdb: "InfluxDB",
-    openai: "OpenAI",
-    huggingface: "Hugging Face",
-    dataproc: "Dataproc",
-    bigquery: "BigQuery",
-    vertexai: "Vertex AI",
-    "vertex-ai": "Vertex AI",
+interface PluginListDef {
+    name: string
+    title?: string
+    group?: string
+    tasks?: PluginTaskDef[]
+    triggers?: PluginTaskDef[]
+    taskRunners?: PluginTaskDef[]
 }
 
-function toolDisplayName(group: string): string {
-    const last = group.split(".").pop() ?? group
-    const override = NAME_OVERRIDES[last.toLowerCase()]
-    if (override) return override
-    return last
-        .replace(/[-_]/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase())
-}
-
-export function buildToolIndex(
-    blueprints: { includedTasks?: string[] }[],
-): ToolIndexEntry[] {
-    const byGroup = new Map<string, ToolIndexEntry>()
-
-    for (const bp of blueprints) {
-        const groupsSeenInThisBlueprint = new Set<string>()
-        for (const cls of bp.includedTasks ?? []) {
-            const group = pluginGroup(cls)
-            if (ALWAYS_EXCLUDED.has(group) || group.startsWith(CORE_PREFIX)) {
-                continue
-            }
-            if (groupsSeenInThisBlueprint.has(group)) continue
-            groupsSeenInThisBlueprint.add(group)
-
-            const existing = byGroup.get(group)
-            if (existing) {
-                existing.count += 1
-            } else {
-                byGroup.set(group, {
-                    name: toolDisplayName(group),
-                    pluginClass: cls,
-                    count: 1,
-                })
-            }
+function keywordTokens(cls: string, group: string): string[] {
+    const tokens = new Set<string>()
+    const rest = cls.startsWith(`${group}.`)
+        ? cls.slice(group.length + 1)
+        : (cls.split(".").pop() ?? "")
+    for (const segment of rest.split(".")) {
+        tokens.add(segment.toLowerCase())
+        for (const word of segment.split(/(?=[A-Z])/)) {
+            if (word.length > 2) tokens.add(word.toLowerCase())
         }
     }
+    return [...tokens]
+}
 
-    return Array.from(byGroup.values()).sort((a, b) => b.count - a.count)
+export async function fetchToolIndex(
+    blueprints: { includedTasks?: string[] }[],
+): Promise<ToolIndexEntry[]> {
+    let plugins: PluginListDef[] = []
+    try {
+        plugins = await $fetchApiCached<PluginListDef[]>("/plugins")
+    } catch {
+        return []
+    }
+
+    const entries: ToolIndexEntry[] = []
+    for (const plugin of plugins) {
+        const group = plugin.group
+        if (!group || plugin.name === "core") continue
+
+        const defs = [
+            ...(plugin.tasks ?? []),
+            ...(plugin.triggers ?? []),
+            ...(plugin.taskRunners ?? []),
+        ]
+        const keywords = new Set<string>()
+        for (const t of defs) {
+            for (const token of keywordTokens(t.cls, group)) {
+                keywords.add(token)
+            }
+        }
+
+        let count = 0
+        for (const bp of blueprints) {
+            if (
+                (bp.includedTasks ?? []).some((t) =>
+                    t.startsWith(`${group}.`),
+                )
+            ) {
+                count += 1
+            }
+        }
+
+        entries.push({
+            name: plugin.title ?? plugin.name,
+            pluginClass: group,
+            count,
+            keywords: [...keywords],
+        })
+    }
+
+    return entries.sort(
+        (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+    )
 }
 
 interface PluginTaskDef {
@@ -101,15 +89,12 @@ interface PluginTaskDef {
     deprecated?: boolean
 }
 
-interface PluginDef {
-    name: string
+interface PluginSubgroupDef {
+    title: string
+    subGroup?: string
     tasks?: PluginTaskDef[]
     triggers?: PluginTaskDef[]
-}
-
-const SUBPACKAGE_LABELS: Record<string, string> = {
-    kv: "KV",
-    http: "HTTP",
+    taskRunners?: PluginTaskDef[]
 }
 
 const PREFIXED_SIMPLE_NAMES = new Set([
@@ -121,25 +106,14 @@ const PREFIXED_SIMPLE_NAMES = new Set([
     "GetKeys",
 ])
 
-function coreTaskDisplayName(cls: string): string {
-    const segments = cls.split(".")
-    const simple = segments[segments.length - 1]
-    const subpackage = segments[segments.length - 2]
-    if (!PREFIXED_SIMPLE_NAMES.has(simple)) return simple
-    const label =
-        SUBPACKAGE_LABELS[subpackage] ??
-        subpackage.charAt(0).toUpperCase() + subpackage.slice(1)
-    return `${label} ${simple}`
-}
-
 export async function fetchCoreToolIndex(
     blueprints: { includedTasks?: string[] }[],
 ): Promise<ToolIndexEntry[]> {
-    let defs: PluginTaskDef[] = []
+    let subgroups: PluginSubgroupDef[] = []
     try {
-        const plugins = await $fetchApiCached<PluginDef[]>("/plugins")
-        const core = plugins.find((plugin) => plugin.name === "core")
-        defs = [...(core?.tasks ?? []), ...(core?.triggers ?? [])]
+        subgroups = await $fetchApiCached<PluginSubgroupDef[]>(
+            "/plugins/subgroups",
+        )
     } catch {
         return []
     }
@@ -152,14 +126,33 @@ export async function fetchCoreToolIndex(
         }
     }
 
-    return defs
-        .filter((t) => !t.deprecated && t.cls.startsWith(CORE_PREFIX))
-        .map((t) => ({
-            name: coreTaskDisplayName(t.cls),
-            pluginClass: t.cls,
-            count: countByClass.get(t.cls) ?? 0,
-        }))
-        .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+    const entries: ToolIndexEntry[] = []
+    const seen = new Set<string>()
+    for (const sg of subgroups) {
+        if (!sg.subGroup?.startsWith(CORE_PREFIX)) continue
+        const defs = [
+            ...(sg.tasks ?? []),
+            ...(sg.triggers ?? []),
+            ...(sg.taskRunners ?? []),
+        ]
+        for (const t of defs) {
+            if (t.deprecated || !t.cls.startsWith(CORE_PREFIX)) continue
+            if (seen.has(t.cls)) continue
+            seen.add(t.cls)
+            const simple = t.cls.split(".").pop() ?? t.cls
+            entries.push({
+                name: PREFIXED_SIMPLE_NAMES.has(simple)
+                    ? `${sg.title} ${simple}`
+                    : simple,
+                pluginClass: t.cls,
+                count: countByClass.get(t.cls) ?? 0,
+            })
+        }
+    }
+
+    return entries.sort(
+        (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+    )
 }
 
 export function blueprintUsesTool(
@@ -169,7 +162,9 @@ export function blueprintUsesTool(
     if (toolPluginClass.startsWith(CORE_PREFIX)) {
         return (blueprint.includedTasks ?? []).includes(toolPluginClass)
     }
-    const group = pluginGroup(toolPluginClass)
+    const lastSegment = toolPluginClass.split(".").pop() ?? ""
+    const isGroup = /^[a-z]/.test(lastSegment)
+    const group = isGroup ? toolPluginClass : pluginGroup(toolPluginClass)
     return (blueprint.includedTasks ?? []).some(
         (t) => t === group || t.startsWith(`${group}.`),
     )

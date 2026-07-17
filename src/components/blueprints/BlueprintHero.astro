@@ -90,6 +90,13 @@ const {
             border-radius: $border-radius-lg;
             color: $white;
 
+            @include media-breakpoint-up(lg) {
+                min-height: 460px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
             @include media-breakpoint-down(lg) {
                 padding: 2rem 1.5rem;
             }

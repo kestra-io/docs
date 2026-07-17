@@ -16,7 +16,7 @@ import { randomSortFunction } from "~/utils/random"
 import { findOrchestrationLinks } from "~/utils/orchestrationLink"
 import { isUseCaseTag } from "~/utils/blueprints/useCaseTags"
 import {
-    buildToolIndex,
+    fetchToolIndex,
     fetchCoreToolIndex,
 } from "~/utils/blueprints/toolIndex"
 import { blueprintFaqItems } from "~/utils/blueprints/faq"
@@ -57,7 +57,7 @@ let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
 let orchestrationLinks: ReturnType<typeof findOrchestrationLinks> = []
 
 const fullCatalog = await fetchFullCatalog()
-const toolIndex = buildToolIndex(fullCatalog)
+const toolIndex = await fetchToolIndex(fullCatalog)
 const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 
 if (isCategoryPage && category) {
@@ -84,8 +84,14 @@ if (isCategoryPage && category) {
         label: c.name,
         icon: c.icon,
         active: c.slug === id,
-        href: c.slug === id ? "/blueprints" : `/blueprints/${c.slug}`,
-        removeLabel: c.slug === id ? `Remove the ${c.name} filter` : undefined,
+        href:
+            c.slug === id
+                ? "/blueprints"
+                : `/blueprints?tags=${encodeURIComponent(`${category.name},${c.name}`)}`,
+        removeLabel:
+            c.slug === id
+                ? `Remove the ${c.name} filter`
+                : `Combine ${category.name} and ${c.name}`,
     }))
 
     if (tag) {

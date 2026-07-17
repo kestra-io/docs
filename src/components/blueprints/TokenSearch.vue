@@ -92,17 +92,17 @@
         </div>
 
         <div v-if="isFocused && suggestions.length > 0" class="suggestions">
-            <div class="suggestions-group" v-if="matchingCollections.length">
-                <span class="suggestions-label">Collections</span>
+            <div class="suggestions-group" v-if="matchingCategories.length">
+                <span class="suggestions-label">Categories</span>
                 <button
-                    v-for="(name, idx) in matchingCollections"
-                    :key="`coll-${name}`"
+                    v-for="(name, idx) in matchingCategories"
+                    :key="`cat-${name}`"
                     type="button"
                     class="suggestion-item"
                     :class="{ highlighted: highlightIndex === idx }"
-                    @mousedown.prevent="selectCollection(name)"
+                    @mousedown.prevent="selectTagChip(name)"
                 >
-                    <ShieldCheckOutline class="collection-icon" />
+                    <TagIcon :tag="name" />
                     {{ name }}
                 </button>
             </div>
@@ -116,7 +116,7 @@
                     :class="{
                         highlighted:
                             highlightIndex ===
-                            matchingCollections.length + idx,
+                            matchingCategories.length + idx,
                     }"
                     @mousedown.prevent="selectTool(tool)"
                 >
@@ -134,7 +134,7 @@
                     :class="{
                         highlighted:
                             highlightIndex ===
-                            matchingCollections.length +
+                            matchingCategories.length +
                                 matchingCorePlugins.length +
                                 idx,
                     }"
@@ -153,20 +153,22 @@
     import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
-    import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
+    import TagIcon from "~/components/blueprints/TagIcon.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+    import { CATEGORY_TILE_META } from "~/utils/blueprints/categoryMeta"
 
-    const COLLECTIONS = [
-        {
-            name: "Solutions Engineering",
-            keywords: ["solutions", "engineering", "kestra se", "curated"],
-        },
-    ]
+    const CATEGORY_SLUG_BY_NAME: Record<string, string> = Object.fromEntries(
+        CATEGORY_TILE_META.filter((c) => c.name !== "Getting Started").map(
+            (c) => [c.name, c.slug],
+        ),
+    )
+    const CATEGORY_NAMES = Object.keys(CATEGORY_SLUG_BY_NAME)
 
     interface ToolOption {
         name: string
         pluginClass: string
+        keywords?: string[]
     }
 
     const props = defineProps<{
@@ -202,15 +204,14 @@
 
     const qChip = computed<string>(() => props.q?.trim() ?? "")
 
-    const matchingCollections = computed<string[]>(() => {
+    const matchingCategories = computed<string[]>(() => {
         const q = inputText.value.trim().toLowerCase()
         if (!q) return []
-        return COLLECTIONS.filter(
-            (c) =>
-                !tagChips.value.includes(c.name) &&
-                (c.name.toLowerCase().includes(q) ||
-                    c.keywords.some((k) => k.startsWith(q))),
-        ).map((c) => c.name)
+        return CATEGORY_NAMES.filter(
+            (name) =>
+                name.toLowerCase().includes(q) &&
+                !tagChips.value.includes(name),
+        )
     })
 
     const matchingCorePlugins = computed<ToolOption[]>(() => {
@@ -232,19 +233,20 @@
         return props.toolIndex
             .filter(
                 (t) =>
-                    t.name.toLowerCase().includes(q) &&
+                    (t.name.toLowerCase().includes(q) ||
+                        t.keywords?.some((k) => k.startsWith(q))) &&
                     !toolChips.value.includes(t.name),
             )
             .slice(0, 6)
     })
 
     const suggestions = computed(() => [
-        ...matchingCollections.value,
+        ...matchingCategories.value,
         ...matchingCorePlugins.value,
         ...matchingTools.value,
     ])
 
-    async function selectCollection(name: string) {
+    async function selectTagChip(name: string) {
         inputText.value = ""
         await nextTick()
         searchInput.value?.focus()
@@ -268,16 +270,15 @@
 
     function onEnter() {
         if (highlightIndex.value >= 0) {
-            const coll = matchingCollections.value.length
+            const cats = matchingCategories.value.length
             const core = matchingCorePlugins.value.length
-            if (highlightIndex.value < coll) {
-                selectCollection(matchingCollections.value[highlightIndex.value])
-            } else if (highlightIndex.value < coll + core) {
-                selectTool(matchingCorePlugins.value[highlightIndex.value - coll])
+            const i = highlightIndex.value
+            if (i < cats) {
+                selectTagChip(matchingCategories.value[i])
+            } else if (i < cats + core) {
+                selectTool(matchingCorePlugins.value[i - cats])
             } else {
-                selectTool(
-                    matchingTools.value[highlightIndex.value - coll - core],
-                )
+                selectTool(matchingTools.value[i - cats - core])
             }
             return
         }
@@ -292,6 +293,14 @@
             )
         ) {
             inputText.value = ""
+            return
+        }
+
+        const cat = CATEGORY_NAMES.find(
+            (name) => name.toLowerCase() === typedLower,
+        )
+        if (cat) {
+            selectTagChip(cat)
             return
         }
 
@@ -374,6 +383,19 @@
                 : tagChips.value.join(",")
         const nextTools =
             change.tools !== undefined ? change.tools : toolChips.value
+
+        const nextTagList = nextTags
+            .split(",")
+            .map((t) => t.trim())
+            .filter(Boolean)
+        const soloSlug =
+            !nextQ && nextTools.length === 0 && nextTagList.length === 1
+                ? CATEGORY_SLUG_BY_NAME[nextTagList[0]]
+                : undefined
+        if (soloSlug) {
+            navigate(`/blueprints/${soloSlug}`)
+            return
+        }
 
         url.pathname = "/blueprints"
 
@@ -559,12 +581,6 @@
         :deep(.icon-wrapper) {
             width: 1.25rem;
             height: 1.25rem;
-        }
-
-        .collection-icon {
-            display: inline-flex;
-            font-size: 1.125rem;
-            color: var(--ks-content-link);
         }
 
         &:hover,

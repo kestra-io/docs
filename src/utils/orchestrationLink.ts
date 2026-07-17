@@ -6,6 +6,8 @@ const UMBRELLA_PREFIXES = [
     "io.kestra.plugin.dbt.",
     "io.kestra.plugin.github.",
     "io.kestra.plugin.core.",
+    "io.kestra.plugin.serdes.",
+    "io.kestra.plugin.scripts.",
 ]
 
 export function pluginGroup(pluginClass: string): string {

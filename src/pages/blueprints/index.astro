@@ -10,7 +10,7 @@ import { blueprintFaqItems } from "~/utils/blueprints/faq"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintLists from "~/components/blueprints/BlueprintLists.vue"
 import TokenSearch from "~/components/blueprints/TokenSearch.vue"
-import { visibleTags, SOLUTIONS_TAG } from "~/utils/blueprints/visibleTags"
+import { visibleTags } from "~/utils/blueprints/visibleTags"
 import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
 import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
@@ -21,7 +21,7 @@ import {
     type SubCategory,
 } from "~/utils/blueprints/subCategories"
 import {
-    buildToolIndex,
+    fetchToolIndex,
     fetchCoreToolIndex,
     blueprintUsesTool,
 } from "~/utils/blueprints/toolIndex"
@@ -111,13 +111,8 @@ const recentlyAddedBlueprints = fullCatalog
     )
     .slice(0, 8)
 
-const toolIndex = buildToolIndex(fullCatalog)
+const toolIndex = await fetchToolIndex(fullCatalog)
 const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
-
-const solutionsTagId = tags.find((t) => t.name === SOLUTIONS_TAG)?.id
-const solutionsBlueprints = solutionsTagId
-    ? fullCatalog.filter((b) => b.tags?.includes(solutionsTagId))
-    : []
 
 const hasActiveFilters = Boolean(q || tagsSelected || toolNames.length)
 
@@ -271,10 +266,37 @@ const description = "Get started with our library of workflows ready to use"
                     {
                         categoryTags.map((tag) => {
                             const meta = categoryTileMetaFor(tag.name)
+                            const active = tagNames.includes(tag.name)
+                            const nextTags = active
+                                ? tagNames.filter((n) => n !== tag.name)
+                                : [...tagNames, tag.name]
+                            const soloSlug =
+                                nextTags.length === 1 && !toolsSelected && !q
+                                    ? categoryTileMetaFor(nextTags[0])?.slug
+                                    : undefined
+                            const params = new URLSearchParams()
+                            if (nextTags.length) {
+                                params.set("tags", nextTags.join(","))
+                            }
+                            if (toolsSelected) {
+                                params.set("tools", toolsSelected)
+                            }
+                            if (q) params.set("q", q)
+                            const qs = params.toString()
+                            const href = soloSlug
+                                ? `/blueprints/${soloSlug}`
+                                : qs
+                                  ? `/blueprints?${qs}`
+                                  : "/blueprints"
                             return (
                                 <a
-                                    href={`/blueprints/${meta?.slug}`}
-                                    class="quick-filter"
+                                    href={href}
+                                    title={
+                                        active
+                                            ? `Remove the ${tag.name} filter`
+                                            : undefined
+                                    }
+                                    class:list={["quick-filter", { active }]}
                                 >
                                     <Icon
                                         name={meta?.icon ?? "mdi:tag-outline"}
@@ -309,44 +331,6 @@ const description = "Get started with our library of workflows ready to use"
                                 </div>
                             ))}
                     </div>
-                </div>
-            </section>
-        )
-    }
-
-    {
-        !hasActiveFilters && solutionsBlueprints.length > 0 && (
-            <section class="bp-row">
-                <div class="container-xxl">
-                    <h2>From Kestra Solutions Engineers</h2>
-                    <p>
-                        Production patterns curated by the Kestra Solutions
-                        Engineering team.
-                    </p>
-                    <div class="row g-3">
-                        {solutionsBlueprints.slice(0, 6).map((blueprint) => (
-                            <div class="col-md-6 col-xl-4">
-                                <BlueprintCard
-                                    {blueprint}
-                                    {tags}
-                                    href={`/blueprints/${blueprint.id}`}
-                                />
-                            </div>
-                        ))}
-                    </div>
-                    {solutionsBlueprints.length > 6 && (
-                        <a
-                            href={`/blueprints?tags=${encodeURIComponent(SOLUTIONS_TAG)}`}
-                            class="see-more"
-                        >
-                            See all {solutionsBlueprints.length} Solutions
-                            Engineering blueprints
-                            <Icon
-                                name="mdi:chevron-right"
-                                class="see-more-icon"
-                            />
-                        </a>
-                    )}
                 </div>
             </section>
         )
@@ -705,6 +689,13 @@ const description = "Get started with our library of workflows ready to use"
             border-radius: $border-radius-lg;
             color: $white;
 
+            @include media-breakpoint-up(lg) {
+                min-height: 460px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
             @include media-breakpoint-down(lg) {
                 padding: 2rem 1.5rem;
             }
@@ -763,6 +754,12 @@ const description = "Get started with our library of workflows ready to use"
             &:hover {
                 border-color: rgba(255, 255, 255, 0.6);
                 color: $white;
+            }
+
+            &.active {
+                border-color: var(--ks-border-active);
+                background: var(--ks-background-tag-category);
+                color: var(--ks-content-tag-category);
             }
         }
     }

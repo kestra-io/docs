@@ -20,7 +20,13 @@ export async function fetchFullCatalog(): Promise<Blueprint[]> {
             )
             for (const r of rest) results.push(...(r?.results ?? []))
         }
-        return results
+        const seen = new Set<string>()
+        return results.filter((b) => {
+            const key = String(b.id)
+            if (seen.has(key)) return false
+            seen.add(key)
+            return true
+        })
     } catch {
         return []
     }
