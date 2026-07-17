@@ -351,9 +351,12 @@ if (isCategoryPage && category) {
 </Layout>
 
 <style lang="scss">
-    :global(.content p) {
-        white-space: nowrap;
+    :global(.layout-wrapper .content p) {
         margin-bottom: 2rem;
+
+        @include media-breakpoint-up(lg) {
+            white-space: nowrap;
+        }
     }
 
     :global(section.faq) {
@@ -386,9 +389,10 @@ if (isCategoryPage && category) {
 
     .subcategory-row-head {
         display: flex;
+        flex-wrap: wrap;
         align-items: baseline;
         justify-content: space-between;
-        gap: 1rem;
+        gap: 0.5rem 1rem;
         margin-bottom: 1rem;
 
         h3 {
