@@ -101,6 +101,8 @@ Each plugin sub-group can define an icon representing plugins contained in the s
 
 For example, for the GCP BigQuery sub-group, the `src/main/resources/icons/io.kestra.plugin.gcp.bigquery.svg` file is used.
 
+Individual tasks within sub-group don't need own icon — they use sub-group's icon.
+
 ## Document each plugin
 
 Plugin documentation will generate a [JSON Schema](https://json-schema.org/) that will be used to validate flows. It also generates documentation for both the UI and the website (see the `kestra plugins doc` command).

@@ -45,7 +45,7 @@ A standard RBAC model operates on three fundamental rules that govern how access
 
 [Workflow orchestration](/resources/data/data-orchestration) is the automated coordination and management of a series of interconnected tasks and processes across multiple systems and services. It ensures that complex, multi-step operations execute in the correct sequence, handling dependencies, managing data flow, and recovering from errors.
 
-Modern [orchestration platforms](/blogs/what-is-an-orchestrator) have evolved beyond simple job scheduling. They now serve as the central control plane for a wide range of automated activities, including data pipelines, infrastructure provisioning, and AI model training. By providing a unified framework for defining, executing, and monitoring these workflows, orchestration tools enable teams to build reliable, scalable, and observable automation.
+Modern [orchestration platforms](/blogs/2024-09-18-what-is-an-orchestrator) have evolved beyond simple job scheduling. They now serve as the central control plane for a wide range of automated activities, including data pipelines, infrastructure provisioning, and AI model training. By providing a unified framework for defining, executing, and monitoring these workflows, orchestration tools enable teams to build reliable, scalable, and observable automation.
 
 ### Workflow orchestration vs. process orchestration
 
