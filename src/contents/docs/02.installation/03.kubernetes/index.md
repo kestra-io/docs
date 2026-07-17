@@ -14,17 +14,15 @@ Install Kestra in a Kubernetes cluster using a Helm chart.
 
 ## Prerequisites
 
-- **kubectl** — to interact with your cluster
-- **Helm** — to install and manage charts
+- **[kubectl](https://kubernetes.io/docs/tasks/tools/)** — to interact with your cluster
+- **[Helm](https://helm.sh/docs/intro/install/)** — to install and manage charts
 
-Refer to the respective documentation if these tools are not yet installed.
+## Helm charts
 
-## Helm chart repository
+Kestra maintains two Helm charts:
 
-Kestra maintains three Helm charts:
-
-1. **`kestra`** — production-ready chart. No dependencies included. Best suited for production deployments with customizable database and storage.
-2. **`kestra-starter`** — includes PostgreSQL and Versity (S3-like storage) for evaluation only. Great for getting started quickly and experimenting with Kestra.
+1. **`kestra`** — production-ready chart with no bundled dependencies. Requires an external database and object storage.
+2. **`kestra-starter`** — bundles PostgreSQL and Versity (S3-compatible storage) for evaluation only. Not suitable for production.
 
 Chart sources:
 - Repository: [helm.kestra.io](https://helm.kestra.io/)
@@ -44,14 +42,9 @@ To understand available configuration options and compare versions:
 
 ### Starter chart dependencies
 
-The `kestra-starter` chart installs:
+The `kestra-starter` chart installs Versity (object storage) and PostgreSQL (database). These bundled dependencies are not suitable for production.
 
-- Versity (object storage)
-- PostgreSQL (database)
-
-These are not suitable for production.
-
-### Enterprise Edition
+### Enterprise edition
 
 To deploy the Enterprise Edition, authenticate before pulling images:
 
@@ -116,14 +109,13 @@ my-kestra-postgresql-0                       Running
 my-kestra-versity-0                          Running
 ```
 
-The pod you want to port-forward is the **Kestra standalone pod**, usually named:
+The Kestra standalone pod is usually named:
 
 ```perl
 my-kestra-kestra-starter-xxxxx
 ```
-If your release is `my-kestra`, the label selector will reliably find it.
 
-Export the pod name:
+Export the pod name using the label selector for release `my-kestra`:
 
 ```bash
 export POD_NAME=$(kubectl get pods \
@@ -131,7 +123,7 @@ export POD_NAME=$(kubectl get pods \
   -o jsonpath="{.items[0].metadata.name}")
 ```
 
-Check it with:
+Verify:
 
 ```bash
 echo $POD_NAME
@@ -145,9 +137,62 @@ kubectl port-forward $POD_NAME 8080:8080
 
 Open **http://localhost:8080** in your browser and create your user.
 
+## Ingress
+
+To expose Kestra outside the cluster, enable the built-in Ingress resource. Both charts support the same ingress properties — the only difference is where they are placed in `values.yaml`.
+
+### kestra chart
+
+```yaml
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  hosts:
+    - host: kestra.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - kestra.example.com
+      secretName: kestra-tls
+```
+
+### kestra-starter chart
+
+The `kestra-starter` chart passes all values under `kestra:` through to the main kestra chart, so nest the ingress block accordingly:
+
+```yaml
+kestra:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    hosts:
+      - host: kestra.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - kestra.example.com
+        secretName: kestra-tls
+```
+
+Apply with:
+
+```bash
+helm upgrade my-kestra kestra/kestra-starter -f values.yaml
+```
+
+Omit the `tls` block if TLS is terminated upstream (e.g., at a load balancer). The `className` and `annotations` values depend on your ingress controller — replace `nginx` with the appropriate class for your cluster. For TLS certificate management, see [SSL configuration](../../10.administrator-guide/ssl-configuration/index.md).
+
 ## Scaling Kestra on Kubernetes
 
-For production deployments, run each Kestra component in its own pod for improved scalability and resource isolation.
+For production deployments, run each Kestra component in its own pod.
 
 Example `values.yaml`:
 
