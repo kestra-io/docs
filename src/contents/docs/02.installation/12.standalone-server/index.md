@@ -8,6 +8,8 @@ description: Run Kestra directly from a standalone executable JAR file, suitable
 
 Install Kestra on a standalone server with a simple executable file.
 
+::snippet{name="cloud/cloud-not-available"}
+
 ## Run Kestra from the Standalone JAR
 
 To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+.

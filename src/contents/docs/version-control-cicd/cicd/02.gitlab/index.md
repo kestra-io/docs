@@ -13,14 +13,7 @@ Use GitLab CI to automate the validation and deployment of your Kestra flows.
 [GitLab CI](https://docs.gitlab.com/ee/ci/) lets you define pipelines in a `.gitlab-ci.yml` file to automate tests, builds, and deployments.
 With Kestra, you can validate and deploy flows directly from your pipeline using the Kestra CLI.
 
-:::alert{type="info"}
-For flows managed through CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
-
-```yaml
-labels:
-  system.readOnly: true
-```
-:::
+::snippet{name="cicd/readonly-label"}
 
 :::alert{type="info"}
 Your GitLab runner must be able to reach your Kestra instance.

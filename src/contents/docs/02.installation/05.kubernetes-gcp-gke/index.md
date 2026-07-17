@@ -56,9 +56,7 @@ kubectl get svc
 
 Add the Kestra Helm chart repository and install Kestra:
 
-```shell
-helm repo add kestra https://helm.kestra.io/
-helm install my-kestra kestra/kestra
+```bash file=src/contents/docs/_snippets/install/helm-install-kestra.sh
 ```
 
 ## Workload Identity setup
@@ -243,4 +241,4 @@ The example above demonstrates how to configure secrets, queue and repository ty
 
 ## Next steps
 
-Reach out via [Slack](/slack) if you encounter any issues or have any questions regarding deploying Kestra to production.
+::snippet{name="install/deployment-support"}

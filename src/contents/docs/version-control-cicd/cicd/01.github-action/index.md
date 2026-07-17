@@ -18,14 +18,7 @@ Kestra provides three official [GitHub Actions](https://github.com/features/acti
 
 To use these Actions, your Kestra instance must be reachable by the GitHub Actions runner—either publicly or via a self-hosted runner. If you need to validate flows offline — without connecting to a running Kestra instance — use the legacy marketplace action instead: [kestra-validate-action](https://github.com/marketplace/actions/kestra-validate-action).
 
-:::alert{type="info"}
-For flows managed through CI/CD, add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
-
-```yaml
-labels:
-  system.readOnly: true
-```
-:::
+::snippet{name="cicd/readonly-label"}
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4MqtD9VtGVs?si=eMqBQFumZG9P4OHb" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>

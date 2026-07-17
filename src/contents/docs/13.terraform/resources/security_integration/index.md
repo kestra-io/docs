@@ -10,9 +10,7 @@ description: The kestra_security_integration resource allows you to manage secur
 
 Manages a Kestra Security Integration. When imported, URI and secret token are not provided.
 
-::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-::
+::snippet{name="terraform-resource-ee"}
 
 
 

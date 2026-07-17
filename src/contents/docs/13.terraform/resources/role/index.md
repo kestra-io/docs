@@ -10,9 +10,7 @@ description: The kestra_role resource allows you to manage roles in Kestra using
 
 Manages a Kestra Role.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

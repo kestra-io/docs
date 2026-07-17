@@ -10,9 +10,7 @@ description: The kestra_user_api_token resource allows you to manage user API to
 
 Manages a Kestra User Api Token.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example Usage
 

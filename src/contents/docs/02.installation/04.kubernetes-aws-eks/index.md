@@ -37,9 +37,7 @@ Create a private S3 bucket (i.e., with public access blocked). Keep a record of 
 ## Install Kestra on AWS EKS
 Add the Kestra Helm chart repository and install Kestra:
 
-```shell
-helm repo add kestra https://helm.kestra.io/
-helm install my-kestra kestra/kestra
+```bash file=src/contents/docs/_snippets/install/helm-install-kestra.sh
 ```
 
 In the deployment configuration, integrate RDS and S3 as the database and storage backends, respectively. Set the database connection under `datasources` and S3 details under `storage` in your Helm values.
@@ -98,4 +96,4 @@ Once the ALB is configured and deployed, access the Kestra UI using the ALB endp
 
 ## Next steps
 
-Reach out via [Slack](/slack) if you encounter any issues or have questions about deploying Kestra to production.
+::snippet{name="install/deployment-support"}

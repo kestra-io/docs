@@ -10,9 +10,7 @@ description: The kestra_binding data source allows you to read bindings in Kestr
 
 Use this data source to access information about an existing Kestra binding
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

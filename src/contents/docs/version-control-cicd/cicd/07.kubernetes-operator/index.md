@@ -15,14 +15,7 @@ The Kestra Kubernetes Operator is no longer maintained. It will not receive furt
 
 ## Manage Kestra with the Kubernetes Operator
 
-:::alert{type="info"}
-When you deploy flows through GitOps or CI/CD (including the operator), add the [`system.readOnly`](../../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
-
-```yaml
-labels:
-  system.readOnly: true
-```
-:::
+::snippet{name="cicd/readonly-label"}
 
 This feature requires the [Enterprise Edition](../../../07.enterprise/index.mdx).
 

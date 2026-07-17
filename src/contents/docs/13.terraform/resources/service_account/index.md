@@ -10,9 +10,7 @@ description: The kestra_service_account resource allows you to manage service ac
 
 Manages a Kestra Service Account.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

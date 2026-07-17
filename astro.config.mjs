@@ -17,6 +17,8 @@ import expressiveCode from "astro-expressive-code"
 
 import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
+import remarkSnippet from "./src/markdown/remark/remark-snippet/index.ts"
+import { codeImport } from "./src/markdown/remark/remark-code-import/index.ts"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
@@ -68,6 +70,11 @@ export default defineConfig({
     markdown: {
         processor: unified({
             remarkPlugins: [
+                // expand shared ::snippet{} includes first so every later
+                // plugin processes snippet content exactly like page content
+                remarkSnippet,
+                // resolve ```lang file=... code imports (may come from snippets)
+                codeImport,
                 remarkGfm,
                 remarkMermaid,
                 remarkClassname,

@@ -10,6 +10,8 @@ description: Offload tasks to Azure Batch to run large-scale parallel and high-p
 
 Run tasks as containers on Azure Batch VMs.
 
+::snippet{name="cloud/cloud-setup-differs"}
+
 ## Offload tasks to Azure Batch
 
 This task runner deploys a container for the task in a specified Azure Batch pool.

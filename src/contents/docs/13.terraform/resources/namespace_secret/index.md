@@ -10,9 +10,7 @@ description: The kestra_namespace_secret resource allows you to manage namespace
 
 Manages a Kestra Namespace Secret.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

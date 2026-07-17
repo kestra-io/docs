@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import expandReusableMarkdown from "~/utils/expandReusableMarkdown"
 
 export const GET: APIRoute = async () => {
     const docs = await getCollection("docs")
@@ -22,7 +23,7 @@ Total pages: ${sorted.length}
         const url = `https://kestra.io/docs${path}`
         const title = doc.data.title
         const description = doc.data.description ? `\n> ${doc.data.description}\n` : ""
-        return `# ${title}\n\nURL: ${url}\n${description}\n${doc.body ?? ""}\n\n---\n`
+        return `# ${title}\n\nURL: ${url}\n${description}\n${expandReusableMarkdown(doc.body ?? "")}\n\n---\n`
     })
 
     return new Response(header + sections.join("\n"), {

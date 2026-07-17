@@ -53,9 +53,7 @@ To check your installation, run `docker version` and `docker compose version`. Y
 
 Download the official Docker-Compose file:
 
-```bash
-curl -o docker-compose.yml \
-https://raw.githubusercontent.com/kestra-io/kestra/develop/docker-compose.yml
+```bash file=src/contents/docs/_snippets/install/download-docker-compose.sh
 ```
 
 Use an editor such as Vim to modify the `docker-compose.yml` and set basic authentication to `true` and configure your basic authentication credentials to secure your Kestra instance. Make sure to add a valid email address too.
@@ -171,6 +169,4 @@ For more information on S3 storage configuration, check out the [Runtime and Sto
 
 This setup provides the easiest starting point for running Kestra in production on a single machine. For a deployment to a distributed cluster, check the [Kubernetes deployment guide](../03.kubernetes/index.md).
 
-Reach out via [Slack](/slack) if you encounter any issues, or if you have any questions regarding deploying Kestra to production.
-
-Make sure to also check the [CI/CD guide](../../version-control-cicd/cicd/index.md) to automate your workflow deployments based on changes in Git.
+::snippet{name="install/deployment-support"}

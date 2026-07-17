@@ -10,9 +10,7 @@ description: The kestra_service_account data source allows you to read service a
 
 Use this data source to access information about an existing Kestra Service Account.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 

@@ -14,27 +14,12 @@ Sync users and groups from Okta to Kestra using SCIM.
 ## Prerequisites
 
 - **Okta Account**: An account with administrative privileges is required to configure SCIM provisioning.
-- **Enable multi-tenancy in Kestra**: Tenants must be enabled in Kestra to support SCIM provisioning. You can enable tenants by setting the `kestra.ee.tenants.enabled` configuration property to `true`:
 
-```yaml
-kestra:
-  ee:
-    tenants:
-      enabled: true
-```
-
-:::alert{type="info"}
-Tenants are enabled by default. Please refer to the [Migration Guide](../../../../11.migration-guide/v0.23.0/tenant-migration-ee/index.md) to assist with upgrading.
-:::
+::snippet{name="enterprise/scim-prerequisites"}
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
-2. Click on the `Create` button in the top right corner of the page.
-3. Fill in the following fields:
-   - **Name**: Enter a name for the provisioning integration.
-   - **Description**: Provide a brief description of the integration.
-   - **Provisioning Type**: Currently, only SCIM 2.0 is supported — leave the default selection and click `Save`.
+::snippet{name="enterprise/scim-setup-steps"}
 
 ![scim1](./scim1_okta.png)
 
@@ -52,7 +37,7 @@ The Secret Token is a long string (approx. 200 characters) used to authenticate 
 
 ### Enable or Disable SCIM Integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
+::snippet{name="enterprise/scim-disable-note"}
 
 ![scim3](./scim3.png)
 
@@ -63,20 +48,11 @@ At first, you can disable the integration to configure your Okta SCIM integratio
 
 ### IAM Role and Service Account
 
-When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
+::snippet{name="enterprise/scim-iam-role"}
 
-1. Role `SCIMProvisioner` with the following permissions:
-   - `GROUPS`: `CREATE`, `READ` `UPDATE`, `DELETE`
-   - `USERS`: `CREATE`, `READ`, `UPDATE`
-   - `BINDINGS`: `CREATE`, `READ`, `UPDATE`, `DELETE`
-  ![scim4](./scim4.png)
+![scim4](./scim4.png)
 
-2. Service Account with an API Token which was previously displayed as the Secret Token for the integration:
-  ![scim5](./scim5.png)
-
-:::alert{type="info"}
-Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
-:::
+![scim5](./scim5.png)
 
 ---
 

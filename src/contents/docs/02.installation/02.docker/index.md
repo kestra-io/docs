@@ -16,14 +16,7 @@ Start Kestra using a single Docker container.
 
 Once you have Docker running, you can start Kestra in a single command (*if you're running on Windows, make sure to use [WSL](https://docs.docker.com/desktop/wsl/)*):
 
-```bash
-docker run --pull=always --rm -it -p 8080:8080 --user=root \
-  --name kestra \
-  -v kestra_data:/app/storage \
-  -v kestra_db:/app/data \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /tmp:/tmp \
-  kestra/kestra:latest server local
+```bash file=src/contents/docs/_snippets/install/docker-run.sh
 ```
 
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
@@ -32,16 +25,7 @@ Open http://localhost:8080 in your browser to launch the UI and start building y
 The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
 :::
 
-:::alert{type="info"}
-**Enterprise Edition images** — log in to the private registry with your license credentials before pulling images:
-
-```bash
-docker login registry.kestra.io --username $LICENSEID --password $FINGERPRINT
-```
-
-Use `registry.kestra.io/docker/kestra-ee:latest` for the newest image, or pin a specific version such as `registry.kestra.io/docker/kestra-ee:v1.0`. Review the [Enterprise documentation](../../07.enterprise/index.mdx) and [configuration requirements](../../07.enterprise/05.instance/index.mdx) for additional setup guidance.
-Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
-:::
+::snippet{name="install/ee-docker-login"}
 
 ## Configuration
 

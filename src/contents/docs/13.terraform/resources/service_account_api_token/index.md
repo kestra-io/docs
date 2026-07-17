@@ -10,9 +10,7 @@ description: The kestra_service_account_api_token resource allows you to manage 
 
 Manages a Kestra Service Account Api Token.
 
-::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-::
+::snippet{name="terraform-resource-ee"}
 
 
 

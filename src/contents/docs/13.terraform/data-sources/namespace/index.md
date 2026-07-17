@@ -10,9 +10,7 @@ description: The kestra_namespace data source allows you to read namespaces in K
 
 Use this data source to access information about an existing Kestra Namespace.
 
-:::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-:::
+::snippet{name="terraform-resource-ee"}
 
 ## Example usage
 
