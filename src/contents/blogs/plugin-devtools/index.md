@@ -53,7 +53,6 @@ kestra-core-run restart         # kill everything and restart
 Once it is up (or on `kestra-core-run status`), it prints an actionable summary right away:
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Kestra OSS [v0.24.0-12-ga1b2c3d4e5 · feat/my-feature a1b2c3d4e5]
   UI   → http://oss.kestra.repo.localhost:1355/ui/
   Dev  → http://localhost:5176/
@@ -62,7 +61,6 @@ Once it is up (or on `kestra-core-run status`), it prints an actionable summary 
   Auth → admin@example.com / dev-password
   Logs → /tmp/kestra-backend.log  /tmp/kestra-frontend.log
   Boot → 47s
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 Docker instances can run side by side on separate ports, so two versions can be compared at once. When a Gradle build fails, the script prints the actual compiler `error:` lines inline instead of leaving the log to grep through by hand. Small thing, saves a minute every time.
@@ -175,6 +173,7 @@ kestra-plugin-release
 ❌ By hand this means opening each plugin repo's releases tab and eyeballing anything newer than the Kestra release date. ✅ With the script:
 
 ```bash
+# ✅ With the script:
 kestra-plugins-release-list 1.1        # everything since Kestra 1.1.0
 kestra-plugins-release-list 1.1 1.2    # a range
 kestra-plugins-release-list --notes    # with changelog highlights
