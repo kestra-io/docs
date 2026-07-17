@@ -17,6 +17,8 @@ The AI Copilot can generate and iteratively edit declarative flow code with AI-a
   <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=swdS3p_HFpDgT-6q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
+> The gemini-2.5-flash model is no longer available to new users, according to Google AI Studio. Instead use `model-name: "gemini-3.1-flash-lite"`.
+
 The AI Copilot is designed to help build and modify flows directly from natural language prompts. Describe what you are trying to build, and Copilot will generate the YAML flow code for you to accept or adjust. Once your initial flow is created, you can iteratively refine it with Copilot’s help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. Everything stays as code and in Kestra's usual declarative syntax.
 
 Copilot is available anywhere you build in Kestra — Flows, Apps, Unit tests, and Dashboards — so you can keep iterating with the same AI assistant across the product surface.
@@ -44,7 +46,7 @@ kestra:
         display-name: Gemini - Private
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.1-flash-lite
           api-key: YOUR_GEMINI_API_KEY
       - id: gpt
         display-name: Open AI
@@ -258,7 +260,7 @@ kestra:
         display-name: Google Gemini
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.1-flash-lite
           api-key: YOUR_GEMINI_API_KEY
 ```
 
@@ -272,7 +274,7 @@ kestra:
         display-name: Google Vertex AI
         type: googlevertexai
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.1-flash-lite
           project: GOOGLE_PROJECT_ID
           location: GOOGLE_CLOUD_REGION
           endpoint: VERTEX-AI-ENDPOINT
