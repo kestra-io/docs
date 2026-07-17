@@ -4,9 +4,9 @@ description: "Kestra 2.0 makes flows callable by AI agents via MCP, redesigns Wo
 date: 2026-09-01T10:00:00
 category: News & Product Updates
 authors:
-  - name: "TODO"
-    image: TODO
-    linkedin: TODO
+  - name: "AJ Emerich"
+    image: aemerich
+    linkedin: https://www.linkedin.com/in/alex-emerich/
 image: ./main.jpg
 ---
 
@@ -23,6 +23,7 @@ This post covers what shipped. The [engineering post from April](/blogs/kestra-2
 | MCP Tool Trigger + MCP Server | Expose flows as tools callable by AI agents | EE, Cloud |
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
 | RBAC action-based permissions | Resource + action model replaces CRUD | EE |
+| Policies | Namespace-scoped governance rules replace `pluginDefaults` | EE |
 | Loop task | Replaces ForEach and ForEachItem with isolated sub-executions | All |
 | Trigger `when` expression | Pebble replaces Java-class conditions on all trigger types | All |
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
@@ -133,6 +134,39 @@ New resources in 2.0 include `TRIGGER` (previously part of `FLOW`), `SYSTEM_SETT
 Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings are migrated automatically on upgrade.
 
 See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide for the RBAC action model](/docs/migration-guide/v2.0.0/rbac-action-model).
+
+## Policies
+
+<!-- TODO: fill in this section when Policies ships. The below is a stub based on confirmed facts from kestra-ee#8146. Verify all YAML field names and FQNs before publishing. Two open questions: (1) is `description:` required in each policy? (2) does individual policy YAML include `namespace:` or does scope come from URL only? -->
+
+Policies is the EE replacement for `pluginDefaults`. Where `pluginDefaults` applied configuration uniformly by task type, Policies gives platform teams explicit, auditable control over what flows and plugins are allowed to do across namespaces.
+
+A Policy is a named set of rules attached to a namespace. Five rule types ship in 2.0: `Add` and `Delete` mutate plugin configuration before execution; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint.
+
+<!-- TODO: add a concrete example (e.g. Restrict to cap containerImage pull policies, or Require a label on all flows in a namespace). Use confirmed DSL: `io.kestra.plugin.ee.rules.*` FQN prefix, `values:` on Add rules, `property:` (singular) on Restrict, `properties:` (array) on Delete/Require. enforcement: active|evaluate|disabled|reference, action: block|warn. -->
+
+```yaml
+# TODO: replace with a real example once feature is testable
+id: enforce-image-registry
+namespace: company
+description: Restrict container images to the internal registry
+
+rules:
+  - type: io.kestra.plugin.ee.rules.Restrict
+    on: plugin
+    where:
+      - property: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.scripts
+    property: containerImage
+    regex: "^registry.internal/.*"
+    action: block
+    errorMessage: "Container images must be pulled from registry.internal."
+```
+
+`override: true` on a mutate rule takes precedence over what the flow author set, equivalent to the old `forced: true` on `pluginDefaults`. The `enforcement` mode lets teams roll out policies gradually: `evaluate` logs violations without blocking, `active` enforces them.
+
+`pluginDefaults` at the flow level is removed in 2.0. See the [Policies reference](/docs/enterprise/governance/policies) and the [plugin defaults migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed).
 
 ## Loop Task
 
