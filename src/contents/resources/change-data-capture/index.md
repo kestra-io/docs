@@ -28,7 +28,7 @@ There are three ways to detect changes in a database, and they are not equal:
 
 | Method | How it detects changes | Load on source | Captures deletes? | Latency |
 | :-- | :-- | :-- | :-- | :-- |
-| **Log-based** (the standard) | Reads the database's transaction log (the [WAL](/resources/data/postgres-wal) in Postgres) | Minimal — no queries against tables | ✅ Yes | Seconds |
+| **Log-based** (the standard) | Reads the database's transaction log (the WAL in Postgres) | Minimal — no queries against tables | ✅ Yes | Seconds |
 | **Query-based** | Polls tables on a timestamp/version column | A full scan per poll | ❌ No (a deleted row simply disappears) | Poll interval |
 | **Trigger-based** | Database triggers write changes to an audit table | Adds write overhead to every transaction | ✅ Yes | Seconds |
 
@@ -39,7 +39,7 @@ Log-based CDC won this comparison years ago, and **[Debezium](https://debezium.i
 Capturing changes is the easy half. A production CDC pipeline also needs to:
 
 - **transform** raw change events (handle deletes, deduplicate, enrich);
-- **load** them into a destination with correct upsert semantics ([MERGE](/resources/data/snowflake-merge), not blind inserts);
+- **load** them into a destination with correct upsert semantics (MERGE, not blind inserts);
 - **recover** from failures without losing or double-processing events;
 - **alert** someone when the pipeline breaks — not when the business notices.
 
@@ -127,7 +127,7 @@ A few things worth noticing — because they are exactly the parts a raw Debeziu
 
 - **State is managed for you.** The trigger stores Debezium offsets in Kestra's KV Store, so a restart resumes from the last committed position instead of re-snapshotting the table.
 - **Deletes are first-class.** `deleted: ADD_FIELD` (the default) flags removed rows, and the MERGE handles them — the failure mode of query-based CDC simply doesn't exist here.
-- **Failure has a path.** The `errors` block alerts Slack on any failed execution; add [retries with exponential backoff](/resources/data/exponential-backoff) per task if the destination is flaky.
+- **Failure has a path.** The `errors` block alerts Slack on any failed execution; add retries with exponential backoff per task if the destination is flaky.
 
 ### Batch or real-time? Two triggers, one decision
 
@@ -138,7 +138,7 @@ Rule of thumb: warehouse sync and analytics want the batch trigger (fewer, large
 ## Where CDC pays off
 
 - **Warehouse synchronization** — replace nightly full loads with minute-level freshness (this page's flow; see also [blueprint #194](https://kestra.io/blueprints/194-use-debezium-to-trigger-a-flow-whenever-new-entries-hit-a-postgres-database-then-send-notification-to-slack-and-process-data-in-python): Debezium → Slack notification → Python processing).
-- **Event-driven architectures** — turn database changes into triggers for downstream [workflows](/resources/data/event-driven-orchestration) without touching application code.
+- **Event-driven architectures** — turn database changes into triggers for downstream [workflows](/resources/infrastructure/event-driven-orchestration) without touching application code.
 - **Audit trails & compliance** — an immutable stream of every change, with metadata, for free.
 - **Cache and search-index invalidation** — update Redis or Elasticsearch the moment a row changes, via the same pattern with a different final task.
 
@@ -146,6 +146,6 @@ Kestra ships Debezium plugins for **PostgreSQL, MySQL, SQL Server, MongoDB, Orac
 
 ---
 
-**Related concepts:** [Postgres logical replication](/resources/data/postgres-logical-replication) · [Postgres WAL](/resources/data/postgres-wal) · [Snowflake streams](/resources/data/snowflake-streams) · [ETL vs ELT](/resources/data/etl-vs-elt) · [Dead letter queue](/resources/data/dead-letter-queue) · [Data orchestration](/resources/data/data-orchestration)
+**Related concepts:** Postgres logical replication · Postgres WAL · Snowflake streams · [ETL vs ELT](/resources/data/etl-vs-elt) · [Dead letter queue](/resources/infrastructure/dead-letter-queue) · [Data orchestration](/resources/data/data-orchestration)
 
 **▶ Run this flow in minutes** — [try Kestra Cloud](https://kestra.io/cloud) or `docker run kestra/kestra` and paste the YAML above.
