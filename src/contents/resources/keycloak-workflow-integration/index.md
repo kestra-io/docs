@@ -232,7 +232,7 @@ Here’s a high-level guide to connecting Kestra to Keycloak:
     *   Create a workflow similar to the one shown previously, using an HTTP task to request an access token from Keycloak's token endpoint using the client credentials.
     *   Use the obtained token in subsequent tasks to make authorized calls to the Keycloak Admin API.
 
-For those new to Kestra, our [quickstart guide](/docs/quickstart) is the best place to begin. You can also use [shell script tasks](/docs/scripts/shell) to interact with Keycloak via its `kcadm.sh` command-line tool. For event-driven use cases, Kestra's [webhook trigger](/docs/workflow-components/triggers/webhook-trigger) can receive events directly from a custom Keycloak event listener.
+For those new to Kestra, our [quickstart guide](/docs/quickstart) is the best place to begin. You can also use [shell script tasks](/docs/how-to-guides/shell) to interact with Keycloak via its `kcadm.sh` command-line tool. For event-driven use cases, Kestra's [webhook trigger](/docs/workflow-components/triggers/webhook-trigger) can receive events directly from a custom Keycloak event listener.
 
 ## The Kestra Advantage: Unlocking Advanced Keycloak Automation
 
