@@ -18,6 +18,18 @@ This guide covers what you need to change when upgrading from **Kestra 1.3** to 
 If you are upgrading directly from 1.0, the [LTS migration guide (1.0 → 1.3)](../v1.3.0/lts-migration) consolidates all required steps in one pass.
 :::
 
+## Before you start: run database migrations
+
+**Enterprise Edition users must run database migrations manually before starting Kestra 2.0.** By default, Kestra EE refuses to start if pending migrations exist. Stop your 1.3 instance, then run the following using the 2.0 binary:
+
+```bash
+kestra migrate run
+```
+
+Open-source users do not need to do this manually. Migrations run automatically on startup.
+
+See [Database Migrations](./database-migrations) for the full upgrade sequence, Docker Compose and Kubernetes examples, a description of key migration scripts, and configuration options.
+
 ## What changed in 2.0.0
 
 Kestra 2.0.0 removes several task properties and trigger condition types that were deprecated throughout the 1.x series but continued to work as aliases. If you completed the 1.3 migration, the changes in this guide are all that remain before upgrading.
