@@ -3,6 +3,9 @@
         <h6 class="title">
             {{ capitalizedTitle }}
         </h6>
+        <p v-if="blueprint.shortDescription" class="description">
+            {{ blueprint.shortDescription }}
+        </p>
         <div class="task-icons">
             <div class="icon" v-for="n in visibleTasks" :key="n">
                 <TaskIcon :cls="n" />
@@ -18,6 +21,7 @@
                         :key="idx"
                         class="category-tag"
                     >
+                        <TagIcon :tag="tag" />
                         {{ tag }}
                     </span>
                 </div>
@@ -29,8 +33,10 @@
 <script setup lang="ts">
     import { computed } from "vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
+    import TagIcon from "~/components/blueprints/TagIcon.vue"
     import type { BlueprintPreview } from "~/utils/plugins/types"
     import { capitalize } from "~/utils/plugins/pluginUtils"
+    import { visibleTags } from "~/utils/blueprints/visibleTags"
 
     const props = withDefaults(
         defineProps<{
@@ -55,7 +61,7 @@
 
     const tagsList = computed(() => {
         if (props.tags?.length) {
-            return props.tags
+            return visibleTags(props.tags)
                 .filter((t: any) => props.blueprint.tags?.includes(t.id))
                 .map((t: any) => t.name)
         }
@@ -64,37 +70,17 @@
 </script>
 
 <style scoped lang="scss">
+    @use "/src/components/blueprints/_blueprintCard.scss" as blueprintCard;
+
     .blueprint {
-        height: 188px;
-        border-radius: 12px;
-        border: 1px solid var(--ks-border-secondary);
-        padding: $rem-1 $rem-1 2px;
-        background: var(--ks-background-primary);
-        display: flex;
-        flex-direction: column;
-        box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+        @include blueprintCard.blueprint-card-base;
+
         transition: transform 0.4s ease-out, border-color 0.4s ease-out;
 
-        &:hover {
-            border-color: var(--ks-border-active);
-            transform: scale(1.01);
-        }
-
         .task-icons {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            margin-bottom: 1rem;
-
             .icon {
-                border-radius: 4px;
-                border: $block-border;
-                width: 34px;
-                height: 34px;
                 display: grid;
                 place-items: center;
-                flex-shrink: 0;
-                background: $white;
 
                 :deep(.icon-wrapper) {
                     width: 24px;
@@ -111,56 +97,8 @@
         }
 
         .title {
-            color: var(--ks-content-primary);
             font-size: $font-size-md;
             font-weight: 700;
-            margin: 0 0 1rem;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            line-clamp: 2;
-            overflow: hidden;
-            line-height: normal;
-        }
-
-        hr {
-            border: $block-border;
-            margin: 0;
-        }
-
-        .footer {
-            margin-top: auto;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .bottom-row {
-            display: flex;
-            align-items: center;
-            gap: $rem-1;
-            color: var(--ks-background-secondary);
-            height: 45px;
-        }
-
-        .tag-list {
-            display: flex;
-            gap: 0.25rem;
-            align-items: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .category-tag {
-            background: var(--ks-background-tag-category);
-            color: var(--ks-content-tag-category);
-            padding: 0.125rem 0.5rem;
-            border-radius: 40px;
-            font-size: $font-size-xs;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
     }
 </style>
