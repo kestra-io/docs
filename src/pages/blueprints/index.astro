@@ -635,9 +635,10 @@ const description = "Get started with our library of workflows ready to use"
 
         .tool-group-head {
             display: flex;
+            flex-wrap: wrap;
             align-items: baseline;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 0.5rem 1rem;
             margin-bottom: 1rem;
 
             h2 {
@@ -698,6 +699,7 @@ const description = "Get started with our library of workflows ready to use"
 
             @include media-breakpoint-down(lg) {
                 padding: 2rem 1.5rem;
+                background-position: left center;
             }
         }
 
@@ -707,7 +709,7 @@ const description = "Get started with our library of workflows ready to use"
         }
 
         p {
-            color: var(--ks-content-tertiary);
+            color: rgba(255, 255, 255, 0.75);
             font-size: $font-size-lg;
             margin-bottom: 0;
         }
@@ -719,14 +721,18 @@ const description = "Get started with our library of workflows ready to use"
 
         .quick-filters {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             gap: 0.5rem;
             margin-top: 1rem;
-            overflow-x: auto;
-            scrollbar-width: none;
 
-            &::-webkit-scrollbar {
-                display: none;
+            @include media-breakpoint-up(lg) {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
             }
         }
 

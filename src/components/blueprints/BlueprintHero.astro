@@ -99,6 +99,7 @@ const {
 
             @include media-breakpoint-down(lg) {
                 padding: 2rem 1.5rem;
+                background-position: left center;
             }
         }
 
@@ -123,7 +124,7 @@ const {
         }
 
         p {
-            color: var(--ks-content-tertiary);
+            color: rgba(255, 255, 255, 0.75);
             font-size: $font-size-lg;
             margin-bottom: 0;
         }
@@ -135,14 +136,18 @@ const {
 
         .sibling-pills {
             display: flex;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
             gap: 0.5rem;
             margin-top: 1.5rem;
-            overflow-x: auto;
-            scrollbar-width: none;
 
-            &::-webkit-scrollbar {
-                display: none;
+            @include media-breakpoint-up(lg) {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
             }
         }
 

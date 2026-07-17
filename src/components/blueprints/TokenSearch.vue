@@ -61,6 +61,7 @@
                 @keydown.down.prevent="moveHighlight(1)"
                 @keydown.up.prevent="moveHighlight(-1)"
                 @keydown.enter.prevent="onEnter"
+                @keydown.tab="onTab"
                 @keydown.backspace="onBackspace"
             />
 
@@ -125,7 +126,7 @@
                 </button>
             </div>
             <div class="suggestions-group" v-if="matchingTools.length">
-                <span class="suggestions-label">Apps</span>
+                <span class="suggestions-label">Plugins</span>
                 <button
                     v-for="(tool, idx) in matchingTools"
                     :key="`tool-${tool.name}`"
@@ -268,18 +269,27 @@
         highlightIndex.value = next
     }
 
+    function selectByIndex(i: number) {
+        const cats = matchingCategories.value.length
+        const core = matchingCorePlugins.value.length
+        if (i < cats) {
+            selectTagChip(matchingCategories.value[i])
+        } else if (i < cats + core) {
+            selectTool(matchingCorePlugins.value[i - cats])
+        } else {
+            selectTool(matchingTools.value[i - cats - core])
+        }
+    }
+
+    function onTab(e: KeyboardEvent) {
+        if (!isFocused.value || suggestions.value.length === 0) return
+        e.preventDefault()
+        selectByIndex(highlightIndex.value >= 0 ? highlightIndex.value : 0)
+    }
+
     function onEnter() {
         if (highlightIndex.value >= 0) {
-            const cats = matchingCategories.value.length
-            const core = matchingCorePlugins.value.length
-            const i = highlightIndex.value
-            if (i < cats) {
-                selectTagChip(matchingCategories.value[i])
-            } else if (i < cats + core) {
-                selectTool(matchingCorePlugins.value[i - cats])
-            } else {
-                selectTool(matchingTools.value[i - cats - core])
-            }
+            selectByIndex(highlightIndex.value)
             return
         }
 
@@ -486,6 +496,10 @@
         input {
             flex: 1;
             min-width: 120px;
+
+            @include media-breakpoint-down(md) {
+                min-width: 60px;
+            }
             height: 100%;
             background: transparent;
             border: none;
@@ -518,6 +532,7 @@
 
             @include media-breakpoint-down(md) {
                 gap: 0.25rem;
+                margin-left: auto;
 
                 .btn {
                     padding: 0.25rem 0.5rem;
@@ -528,6 +543,10 @@
             .or-text {
                 font-size: $font-size-sm;
                 color: var(--ks-content-tertiary);
+
+                @include media-breakpoint-down(md) {
+                    display: none;
+                }
             }
         }
     }
