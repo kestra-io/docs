@@ -170,7 +170,7 @@ kestra-plugin-release
 
 `kestra-plugins-release-list` audits which plugins shipped a release since, or between, chosen Kestra core versions, marks brand-new plugins, and can pull the feat/fix lines from each release body.
 
-❌ By hand this means opening each plugin repo's releases tab and eyeballing anything newer than the Kestra release date. ✅ With the script:
+❌ By hand this means opening each plugin repo's releases tab and eyeballing anything newer than the Kestra release date.
 
 ```bash
 # ✅ With the script:
