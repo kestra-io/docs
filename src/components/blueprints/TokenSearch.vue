@@ -92,6 +92,20 @@
         </div>
 
         <div v-if="isFocused && suggestions.length > 0" class="suggestions">
+            <div class="suggestions-group" v-if="matchingCollections.length">
+                <span class="suggestions-label">Collections</span>
+                <button
+                    v-for="(name, idx) in matchingCollections"
+                    :key="`coll-${name}`"
+                    type="button"
+                    class="suggestion-item"
+                    :class="{ highlighted: highlightIndex === idx }"
+                    @mousedown.prevent="selectCollection(name)"
+                >
+                    <ShieldCheckOutline class="collection-icon" />
+                    {{ name }}
+                </button>
+            </div>
             <div class="suggestions-group" v-if="matchingCorePlugins.length">
                 <span class="suggestions-label">Core plugins</span>
                 <button
@@ -99,7 +113,11 @@
                     :key="`core-${tool.name}`"
                     type="button"
                     class="suggestion-item"
-                    :class="{ highlighted: highlightIndex === idx }"
+                    :class="{
+                        highlighted:
+                            highlightIndex ===
+                            matchingCollections.length + idx,
+                    }"
                     @mousedown.prevent="selectTool(tool)"
                 >
                     <TaskIcon :cls="tool.pluginClass" />
@@ -116,7 +134,9 @@
                     :class="{
                         highlighted:
                             highlightIndex ===
-                            matchingCorePlugins.length + idx,
+                            matchingCollections.length +
+                                matchingCorePlugins.length +
+                                idx,
                     }"
                     @mousedown.prevent="selectTool(tool)"
                 >
@@ -133,8 +153,16 @@
     import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
+    import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
     import KSAIImg from "../docs/assets/ks-ai.svg"
+
+    const COLLECTIONS = [
+        {
+            name: "Solutions Engineering",
+            keywords: ["solutions", "engineering", "kestra se", "curated"],
+        },
+    ]
 
     interface ToolOption {
         name: string
@@ -174,6 +202,17 @@
 
     const qChip = computed<string>(() => props.q?.trim() ?? "")
 
+    const matchingCollections = computed<string[]>(() => {
+        const q = inputText.value.trim().toLowerCase()
+        if (!q) return []
+        return COLLECTIONS.filter(
+            (c) =>
+                !tagChips.value.includes(c.name) &&
+                (c.name.toLowerCase().includes(q) ||
+                    c.keywords.some((k) => k.startsWith(q))),
+        ).map((c) => c.name)
+    })
+
     const matchingCorePlugins = computed<ToolOption[]>(() => {
         const q = inputText.value.trim().toLowerCase()
         if (!q || !props.coreToolIndex) return []
@@ -200,9 +239,19 @@
     })
 
     const suggestions = computed(() => [
+        ...matchingCollections.value,
         ...matchingCorePlugins.value,
         ...matchingTools.value,
     ])
+
+    async function selectCollection(name: string) {
+        inputText.value = ""
+        await nextTick()
+        searchInput.value?.focus()
+        executeChange({
+            tagsSelected: [...tagChips.value, name].join(","),
+        })
+    }
 
     watch(inputText, () => {
         highlightIndex.value = -1
@@ -219,11 +268,16 @@
 
     function onEnter() {
         if (highlightIndex.value >= 0) {
+            const coll = matchingCollections.value.length
             const core = matchingCorePlugins.value.length
-            if (highlightIndex.value < core) {
-                selectTool(matchingCorePlugins.value[highlightIndex.value])
+            if (highlightIndex.value < coll) {
+                selectCollection(matchingCollections.value[highlightIndex.value])
+            } else if (highlightIndex.value < coll + core) {
+                selectTool(matchingCorePlugins.value[highlightIndex.value - coll])
             } else {
-                selectTool(matchingTools.value[highlightIndex.value - core])
+                selectTool(
+                    matchingTools.value[highlightIndex.value - coll - core],
+                )
             }
             return
         }
@@ -466,6 +520,8 @@
         flex-direction: column;
         gap: 0.75rem;
         padding: 0.75rem;
+        max-height: 26rem;
+        overflow-y: auto;
         background: var(--ks-background-primary);
         border: 1px solid var(--ks-border-secondary);
         border-radius: $border-radius-lg;
@@ -503,6 +559,12 @@
         :deep(.icon-wrapper) {
             width: 1.25rem;
             height: 1.25rem;
+        }
+
+        .collection-icon {
+            display: inline-flex;
+            font-size: 1.125rem;
+            color: var(--ks-content-link);
         }
 
         &:hover,

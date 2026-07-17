@@ -17,7 +17,7 @@ import { findOrchestrationLinks } from "~/utils/orchestrationLink"
 import { isUseCaseTag } from "~/utils/blueprints/useCaseTags"
 import {
     buildToolIndex,
-    buildCoreToolIndex,
+    fetchCoreToolIndex,
 } from "~/utils/blueprints/toolIndex"
 import { blueprintFaqItems } from "~/utils/blueprints/faq"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
@@ -58,7 +58,7 @@ let orchestrationLinks: ReturnType<typeof findOrchestrationLinks> = []
 
 const fullCatalog = await fetchFullCatalog()
 const toolIndex = buildToolIndex(fullCatalog)
-const coreToolIndex = buildCoreToolIndex(fullCatalog)
+const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 
 if (isCategoryPage && category) {
     categoryQ = Astro.url.searchParams.get("q") ?? undefined

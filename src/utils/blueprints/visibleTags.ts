@@ -1,8 +1,11 @@
 import { SUB_CATEGORY_TAG_NAMES } from "~/utils/blueprints/subCategories"
 
+export const SOLUTIONS_TAG = "Solutions Engineering"
+
 const HIDDEN_TAGS = new Set([
     "System",
     "Getting Started",
+    SOLUTIONS_TAG,
     ...SUB_CATEGORY_TAG_NAMES,
 ])
 

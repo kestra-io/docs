@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 import TaskIcon from "~/components/common/TaskIcon.astro"
 import { capitalize } from "~/utils/plugins/pluginUtils"
-import { visibleTags } from "~/utils/blueprints/visibleTags"
+import { visibleTags, SOLUTIONS_TAG } from "~/utils/blueprints/visibleTags"
 import { tagIconFor } from "~/utils/blueprints/tagIcon"
 
 const { blueprint, tags = [], href } = Astro.props
@@ -14,6 +14,11 @@ const extraCount = Math.max(0, allTasks.length - MAX_ICONS)
 
 const capitalizedTitle = capitalize(blueprint?.title ?? "")
 
+const solutionsTagId = tags?.find((t: any) => t.name === SOLUTIONS_TAG)?.id
+const isSolutions = Boolean(
+    solutionsTagId && blueprint.tags?.includes(solutionsTagId),
+)
+
 const tagsList = tags?.length
     ? visibleTags(tags)
           .filter((t: any) => blueprint.tags?.includes(t.id))
@@ -21,7 +26,21 @@ const tagsList = tags?.length
     : (blueprint.tags ?? [])
 ---
 
-<a href={href} class="blueprint">
+<a
+    href={href}
+    class:list={["blueprint", { "has-solutions-badge": isSolutions }]}
+>
+    {
+        isSolutions && (
+            <span
+                class="solutions-badge"
+                title="Built by the Kestra Solutions Engineering team"
+            >
+                <Icon name="mdi:shield-check-outline" class="badge-icon" />
+                Kestra SE
+            </span>
+        )
+    }
     <h6 class="title">
         {capitalizedTitle}
     </h6>
@@ -64,6 +83,32 @@ const tagsList = tags?.length
 
     .blueprint {
         @include blueprintCard.blueprint-card-base;
+
+        position: relative;
+
+        .solutions-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 2rem;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            background: var(--ks-background-tag-category);
+            color: var(--ks-content-tag-category);
+
+            .badge-icon {
+                width: 0.875rem;
+                height: 0.875rem;
+            }
+        }
+
+        &.has-solutions-badge .title {
+            padding-right: 6rem;
+        }
 
         transition: all 0.4s ease-out;
         scroll-snap-align: start;

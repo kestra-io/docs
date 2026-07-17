@@ -10,7 +10,7 @@ import { MAIN_BANNER } from "~/utils/blueprints/banners"
 import { PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import {
     buildToolIndex,
-    buildCoreToolIndex,
+    fetchCoreToolIndex,
 } from "~/utils/blueprints/toolIndex"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
 
@@ -38,7 +38,7 @@ const { results: blueprints = [], total = 0 } = tag
 
 const fullCatalog = await fetchFullCatalog()
 const toolIndex = buildToolIndex(fullCatalog)
-const coreToolIndex = buildCoreToolIndex(fullCatalog)
+const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 
 const heroSiblings = PATTERN_TAGS.map((p) => ({
     label: p.name,

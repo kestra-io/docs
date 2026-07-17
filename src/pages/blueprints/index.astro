@@ -10,7 +10,7 @@ import { blueprintFaqItems } from "~/utils/blueprints/faq"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import BlueprintLists from "~/components/blueprints/BlueprintLists.vue"
 import TokenSearch from "~/components/blueprints/TokenSearch.vue"
-import { visibleTags } from "~/utils/blueprints/visibleTags"
+import { visibleTags, SOLUTIONS_TAG } from "~/utils/blueprints/visibleTags"
 import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
 import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
@@ -22,7 +22,7 @@ import {
 } from "~/utils/blueprints/subCategories"
 import {
     buildToolIndex,
-    buildCoreToolIndex,
+    fetchCoreToolIndex,
     blueprintUsesTool,
 } from "~/utils/blueprints/toolIndex"
 
@@ -112,7 +112,12 @@ const recentlyAddedBlueprints = fullCatalog
     .slice(0, 8)
 
 const toolIndex = buildToolIndex(fullCatalog)
-const coreToolIndex = buildCoreToolIndex(fullCatalog)
+const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
+
+const solutionsTagId = tags.find((t) => t.name === SOLUTIONS_TAG)?.id
+const solutionsBlueprints = solutionsTagId
+    ? fullCatalog.filter((b) => b.tags?.includes(solutionsTagId))
+    : []
 
 const hasActiveFilters = Boolean(q || tagsSelected || toolNames.length)
 
@@ -261,27 +266,25 @@ const description = "Get started with our library of workflows ready to use"
                         {coreToolIndex}
                         client:idle
                     />
-                    <div class="quick-filters">
-                        {
-                            categoryTags.map((tag) => {
-                                const meta = categoryTileMetaFor(tag.name)
-                                return (
-                                    <a
-                                        href={`/blueprints/${meta?.slug}`}
-                                        class="quick-filter"
-                                    >
-                                        <Icon
-                                            name={
-                                                meta?.icon ?? "mdi:tag-outline"
-                                            }
-                                            class="quick-filter-icon"
-                                        />
-                                        {tag.name}
-                                    </a>
-                                )
-                            })
-                        }
-                    </div>
+                </div>
+                <div class="quick-filters">
+                    {
+                        categoryTags.map((tag) => {
+                            const meta = categoryTileMetaFor(tag.name)
+                            return (
+                                <a
+                                    href={`/blueprints/${meta?.slug}`}
+                                    class="quick-filter"
+                                >
+                                    <Icon
+                                        name={meta?.icon ?? "mdi:tag-outline"}
+                                        class="quick-filter-icon"
+                                    />
+                                    {tag.name}
+                                </a>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </div>
@@ -306,6 +309,44 @@ const description = "Get started with our library of workflows ready to use"
                                 </div>
                             ))}
                     </div>
+                </div>
+            </section>
+        )
+    }
+
+    {
+        !hasActiveFilters && solutionsBlueprints.length > 0 && (
+            <section class="bp-row">
+                <div class="container-xxl">
+                    <h2>From Kestra Solutions Engineers</h2>
+                    <p>
+                        Production patterns curated by the Kestra Solutions
+                        Engineering team.
+                    </p>
+                    <div class="row g-3">
+                        {solutionsBlueprints.slice(0, 6).map((blueprint) => (
+                            <div class="col-md-6 col-xl-4">
+                                <BlueprintCard
+                                    {blueprint}
+                                    {tags}
+                                    href={`/blueprints/${blueprint.id}`}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                    {solutionsBlueprints.length > 6 && (
+                        <a
+                            href={`/blueprints?tags=${encodeURIComponent(SOLUTIONS_TAG)}`}
+                            class="see-more"
+                        >
+                            See all {solutionsBlueprints.length} Solutions
+                            Engineering blueprints
+                            <Icon
+                                name="mdi:chevron-right"
+                                class="see-more-icon"
+                            />
+                        </a>
+                    )}
                 </div>
             </section>
         )
@@ -630,27 +671,27 @@ const description = "Get started with our library of workflows ready to use"
                 }
             }
         }
+    }
 
-        .see-more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.125rem;
-            flex-shrink: 0;
-            font-size: $font-size-sm;
-            font-weight: 600;
-            color: var(--ks-content-link);
-            text-decoration: none;
-            white-space: nowrap;
+    .see-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.125rem;
+        flex-shrink: 0;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-link);
+        text-decoration: none;
+        white-space: nowrap;
 
-            .see-more-icon {
-                width: 1.125rem;
-                height: 1.125rem;
-            }
+        .see-more-icon {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
 
-            &:hover {
-                text-decoration: underline;
-                text-underline-offset: 3px;
-            }
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
         }
     }
 
@@ -683,45 +724,45 @@ const description = "Get started with our library of workflows ready to use"
         .bp-hero-search {
             margin-top: 1.5rem;
             max-width: 640px;
+        }
 
-            .quick-filters {
-                display: flex;
-                flex-wrap: nowrap;
-                gap: 0.5rem;
-                margin-top: 1rem;
-                overflow-x: auto;
-                scrollbar-width: none;
+        .quick-filters {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            overflow-x: auto;
+            scrollbar-width: none;
 
-                &::-webkit-scrollbar {
-                    display: none;
-                }
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        .quick-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 1rem;
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: $font-size-sm;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+
+            .quick-filter-icon {
+                font-size: 1rem;
+                width: 1rem;
+                height: 1rem;
             }
 
-            .quick-filter {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.375rem;
-                padding: 0.375rem 1rem;
-                border-radius: 2rem;
-                border: 1px solid rgba(255, 255, 255, 0.25);
-                color: rgba(255, 255, 255, 0.85);
-                font-size: $font-size-sm;
-                font-weight: 600;
-                white-space: nowrap;
-                flex-shrink: 0;
-                text-decoration: none;
-                transition: all 0.2s ease;
-
-                .quick-filter-icon {
-                    font-size: 1rem;
-                    width: 1rem;
-                    height: 1rem;
-                }
-
-                &:hover {
-                    border-color: rgba(255, 255, 255, 0.6);
-                    color: $white;
-                }
+            &:hover {
+                border-color: rgba(255, 255, 255, 0.6);
+                color: $white;
             }
         }
     }
