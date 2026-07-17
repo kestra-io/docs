@@ -25,9 +25,10 @@ There are a number of task runner types. The [Docker](../../../task-runners/04.t
 Enterprise Edition Task Runners:
 - [Kubernetes](../../../task-runners/04.types/03.kubernetes-task-runner/index.md)
 - [AWS Batch](../../../task-runners/04.types/04.aws-batch-task-runner/index.md)
-- [Azure Batch](../../../task-runners/04.types/05.azure-batch-task-runner/index.md)
-- [Google Batch](../../../task-runners/04.types/06.google-batch-task-runner/index.md)
-- [Google Cloud Run](../../../task-runners/04.types/07.google-cloudrun-task-runner/index.md)
+- [AWS EC2](../../../task-runners/04.types/05.aws-ec2-task-runner/index.md)
+- [Azure Batch](../../../task-runners/04.types/06.azure-batch-task-runner/index.md)
+- [Google Batch](../../../task-runners/04.types/07.google-batch-task-runner/index.md)
+- [Google Cloud Run](../../../task-runners/04.types/08.google-cloudrun-task-runner/index.md)
 
 ## Task runners vs Worker Groups
 
