@@ -3,17 +3,9 @@
         :model-value="tagsSelected ?? ''"
         :categories="normalizedTags"
         id-prefix="tag"
+        :show-sidebar="false"
         @update:model-value="handleTagChange"
     >
-        <template #top-bar>
-            <h1>Blueprints</h1>
-            <p>
-                The first step is always the hardest. Explore blueprints
-                to kick-start your next flow
-            </p>
-            <slot name="search" />
-        </template>
-
         <div class="d-flex align-items-center justify-content-between">
             <p class="fw-bold mb-0">{{ total }} Blueprints</p>
 
@@ -35,6 +27,7 @@
             :total-items="total"
             @update="changePage"
             :current-url="currentUrl"
+            compact
         />
     </ListsLayout>
 </template>
@@ -45,6 +38,7 @@
     import CustomSelect from "~/components/common/CustomSelect.vue"
     import PaginationContainer from "~/components/common/PaginationContainer.vue"
     import ListsLayout from "~/components/layouts/ListsLayout.vue"
+    import { visibleTags } from "~/utils/blueprints/visibleTags"
 
     const props = defineProps<{
         tags: BlueprintTag[]
@@ -59,7 +53,7 @@
     }>()
 
     const normalizedTags = computed(() =>
-        props.tags.map((t) => ({ id: t.name, label: t.name })),
+        visibleTags(props.tags).map((t) => ({ id: t.name, label: t.name })),
     )
 
     const sortBy = ref(props.sortBy ?? "A-Z")
@@ -106,9 +100,13 @@
         const currentUrl = new URL(window.location.href)
         const tagsToStore = detail.tags
 
+        // Params at their defaults stay OUT of the URL, so a clean visit
+        // never turns into /blueprints?page=1&size=24&sort=A-Z.
         const isSame =
-            currentUrl.searchParams.get("page") === detail.page.toString() &&
-            currentUrl.searchParams.get("size") === detail.size.toString() &&
+            (currentUrl.searchParams.get("page") ?? "1") ===
+                detail.page.toString() &&
+            (currentUrl.searchParams.get("size") ?? "24") ===
+                detail.size.toString() &&
             (currentUrl.searchParams.get("tags") ?? "") ===
                 (tagsToStore ?? "") &&
             (currentUrl.searchParams.get("q") ?? "") === (detail.q ?? "") &&
@@ -121,26 +119,23 @@
 
         const newUrl = new URL(window.location.href)
 
-        newUrl.searchParams.set("page", detail.page.toString())
-        newUrl.searchParams.set("size", detail.size.toString())
-
-        if (tagsToStore) {
-            newUrl.searchParams.set("tags", tagsToStore)
-        } else {
-            newUrl.searchParams.delete("tags")
+        const setOrDelete = (key: string, value: string, isDefault: boolean) => {
+            if (isDefault) {
+                newUrl.searchParams.delete(key)
+            } else {
+                newUrl.searchParams.set(key, value)
+            }
         }
 
-        if (detail.q) {
-            newUrl.searchParams.set("q", detail.q)
-        } else {
-            newUrl.searchParams.delete("q")
-        }
-
-        if (detail.sort) {
-            newUrl.searchParams.set("sort", detail.sort)
-        } else {
-            newUrl.searchParams.delete("sort")
-        }
+        setOrDelete("page", detail.page.toString(), detail.page === 1)
+        setOrDelete("size", detail.size.toString(), detail.size === 24)
+        setOrDelete("tags", tagsToStore ?? "", !tagsToStore)
+        setOrDelete("q", detail.q ?? "", !detail.q)
+        setOrDelete(
+            "sort",
+            detail.sort ?? "A-Z",
+            !detail.sort || detail.sort === "A-Z",
+        )
 
         navigate(newUrl.pathname + newUrl.search)
     }
