@@ -4,15 +4,24 @@ import TaskIcon from "~/components/common/TaskIcon.astro"
 import { capitalize } from "~/utils/plugins/pluginUtils"
 import { visibleTags } from "~/utils/blueprints/visibleTags"
 import { tagIconFor } from "~/utils/blueprints/tagIcon"
+import {
+    blueprintHasSubtag,
+    CUSTOMER_SUCCESS_SUBTAG,
+    CUSTOMER_SUCCESS_LABEL,
+} from "~/utils/blueprints/subtags"
 
 const { blueprint, tags = [], href } = Astro.props
 
 const MAX_ICONS = 6
-const allTasks = blueprint.includedTasks ?? []
+const allTasks = (blueprint.includedTasks ?? []).filter(
+    (cls: string) => !cls.startsWith("io.kestra.plugin.ee.assets."),
+)
 const visibleTasks = allTasks.slice(0, MAX_ICONS)
 const extraCount = Math.max(0, allTasks.length - MAX_ICONS)
 
 const capitalizedTitle = capitalize(blueprint?.title ?? "")
+
+const isCustomerSuccess = blueprintHasSubtag(blueprint, CUSTOMER_SUCCESS_SUBTAG)
 
 const tagsList = tags?.length
     ? visibleTags(tags)
@@ -22,6 +31,14 @@ const tagsList = tags?.length
 ---
 
 <a href={href} class="blueprint">
+    {
+        isCustomerSuccess && (
+            <span class="cs-badge" title={CUSTOMER_SUCCESS_LABEL}>
+                <Icon name="mdi:star" class="cs-badge-icon" />
+                {CUSTOMER_SUCCESS_LABEL}
+            </span>
+        )
+    }
     <h6 class="title">
         {capitalizedTitle}
     </h6>
@@ -64,6 +81,28 @@ const tagsList = tags?.length
 
     .blueprint {
         @include blueprintCard.blueprint-card-base;
+
+        .cs-badge {
+            display: inline-flex;
+            align-self: flex-start;
+            align-items: center;
+            gap: 0.375rem;
+            margin-bottom: 0.625rem;
+            padding: 0.25rem 0.625rem;
+            border-radius: 2rem;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            white-space: nowrap;
+            background: var(--ks-background-tag-category);
+            color: var(--ks-content-tag-category);
+
+            .cs-badge-icon {
+                width: 0.875rem;
+                height: 0.875rem;
+                flex-shrink: 0;
+                color: #f5c518;
+            }
+        }
 
         transition: all 0.4s ease-out;
         scroll-snap-align: start;

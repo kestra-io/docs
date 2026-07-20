@@ -15,11 +15,7 @@ import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
 import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
-import {
-    SUB_CATEGORIES,
-    blueprintInSubCategory,
-    type SubCategory,
-} from "~/utils/blueprints/subCategories"
+import { blueprintHasSubtag } from "~/utils/blueprints/subtags"
 import {
     fetchToolIndex,
     fetchCoreToolIndex,
@@ -129,18 +125,14 @@ const tagIdsForFilter = tagNames
                 ?.id,
     )
     .filter((tagId): tagId is string => Boolean(tagId))
-const ALL_SUB_CATEGORIES = Object.values(SUB_CATEGORIES).flat()
-const fallbackSubCategories = tagNames
+const subtagFilters = tagNames
     .filter(
         (name) =>
-            !tags.some((tag) => tag.name.toLowerCase() === name.toLowerCase()),
+            !tags.some(
+                (tag) => tag.name.toLowerCase() === name.toLowerCase(),
+            ),
     )
-    .map((name) =>
-        ALL_SUB_CATEGORIES.find(
-            (sc) => sc.name.toLowerCase() === name.toLowerCase(),
-        ),
-    )
-    .filter((sc): sc is SubCategory => Boolean(sc))
+    .map((name) => (b: Blueprint) => blueprintHasSubtag(b, name))
 
 let blueprintsData: Blueprint[] = []
 let total = 0
@@ -157,7 +149,7 @@ let toolGroups: {
 if (
     toolNames.length > 0 ||
     tagIdsForFilter.length > 1 ||
-    fallbackSubCategories.length > 0
+    subtagFilters.length > 0
 ) {
     const selectedTools = toolNames
         .map((name) =>
@@ -170,9 +162,7 @@ if (
         if (!tagIdsForFilter.every((tagId) => b.tags?.includes(tagId))) {
             return false
         }
-        if (
-            !fallbackSubCategories.every((sc) => blueprintInSubCategory(sc, b))
-        ) {
+        if (!subtagFilters.every((matches) => matches(b))) {
             return false
         }
         if (!selectedTools.every((t) => blueprintUsesTool(b, t.pluginClass))) {
@@ -267,9 +257,15 @@ const description = "Get started with our library of workflows ready to use"
                         categoryTags.map((tag) => {
                             const meta = categoryTileMetaFor(tag.name)
                             const active = tagNames.includes(tag.name)
+                            const categoryNameSet = new Set(
+                                categoryTags.map((t) => t.name),
+                            )
+                            const otherTags = tagNames.filter(
+                                (n) => !categoryNameSet.has(n),
+                            )
                             const nextTags = active
-                                ? tagNames.filter((n) => n !== tag.name)
-                                : [...tagNames, tag.name]
+                                ? otherTags
+                                : [...otherTags, tag.name]
                             const soloSlug =
                                 nextTags.length === 1 && !toolsSelected && !q
                                     ? categoryTileMetaFor(nextTags[0])?.slug

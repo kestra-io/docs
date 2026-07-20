@@ -53,7 +53,7 @@
                 :placeholder="
                     tagChips.length || toolChips.length || qChip
                         ? ''
-                        : 'Search apps, core plugins, usecases...'
+                        : 'Search blueprints by keyword, plugin, or category...'
                 "
                 v-model="inputText"
                 @focus="isFocused = true"
@@ -71,25 +71,6 @@
                 @click="inputText = ''"
             />
 
-            <div class="ai-wrapper">
-                <span class="or-text">or</span>
-                <div class="ai-button-inside">
-                    <button
-                        class="btn btn-sm btn-primary"
-                        title="Ask Kestra AI"
-                        data-bs-toggle="modal"
-                        data-bs-target="#search-ai-modal"
-                    >
-                        <img
-                            :src="KSAIImg.src"
-                            alt="Kestra AI"
-                            width="30"
-                            height="30"
-                        />
-                        <span>Ask AI</span>
-                    </button>
-                </div>
-            </div>
         </div>
 
         <div v-if="isFocused && suggestions.length > 0" class="suggestions">
@@ -156,7 +137,6 @@
     import Close from "vue-material-design-icons/Close.vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
     import TagIcon from "~/components/blueprints/TagIcon.vue"
-    import KSAIImg from "../docs/assets/ks-ai.svg"
     import { CATEGORY_TILE_META } from "~/utils/blueprints/categoryMeta"
 
     const CATEGORY_SLUG_BY_NAME: Record<string, string> = Object.fromEntries(
@@ -251,9 +231,7 @@
         inputText.value = ""
         await nextTick()
         searchInput.value?.focus()
-        executeChange({
-            tagsSelected: [...tagChips.value, name].join(","),
-        })
+        executeChange({ tagsSelected: name })
     }
 
     watch(inputText, () => {
@@ -284,7 +262,7 @@
     function onTab(e: KeyboardEvent) {
         if (!isFocused.value || suggestions.value.length === 0) return
         e.preventDefault()
-        selectByIndex(highlightIndex.value >= 0 ? highlightIndex.value : 0)
+        moveHighlight(e.shiftKey ? -1 : 1)
     }
 
     function onEnter() {
@@ -524,31 +502,6 @@
             }
         }
 
-        .ai-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            flex-shrink: 0;
-
-            @include media-breakpoint-down(md) {
-                gap: 0.25rem;
-                margin-left: auto;
-
-                .btn {
-                    padding: 0.25rem 0.5rem;
-                    font-size: 0.75rem;
-                }
-            }
-
-            .or-text {
-                font-size: $font-size-sm;
-                color: var(--ks-content-tertiary);
-
-                @include media-breakpoint-down(md) {
-                    display: none;
-                }
-            }
-        }
     }
 
     .suggestions {

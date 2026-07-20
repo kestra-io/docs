@@ -27,9 +27,11 @@ import {
     categoryTileMetaForSlug,
 } from "~/utils/blueprints/categoryMeta"
 import {
-    subCategoriesFor,
-    blueprintInSubCategory,
-} from "~/utils/blueprints/subCategories"
+    blueprintSubtags,
+    slugifySubtag,
+    subtagLabel,
+    CUSTOMER_SUCCESS_SUBTAG,
+} from "~/utils/blueprints/subtags"
 
 const { id } = Astro.params
 
@@ -84,14 +86,9 @@ if (isCategoryPage && category) {
         label: c.name,
         icon: c.icon,
         active: c.slug === id,
-        href:
-            c.slug === id
-                ? "/blueprints"
-                : `/blueprints?tags=${encodeURIComponent(`${category.name},${c.name}`)}`,
+        href: c.slug === id ? "/blueprints" : `/blueprints/${c.slug}`,
         removeLabel:
-            c.slug === id
-                ? `Remove the ${c.name} filter`
-                : `Combine ${category.name} and ${c.name}`,
+            c.slug === id ? `Remove the ${c.name} filter` : undefined,
     }))
 
     if (tag) {
@@ -100,24 +97,27 @@ if (isCategoryPage && category) {
         )
 
         if (!categoryQ) {
-            const tagIdByName = new Map(
-                categoryTags.map((t) => [t.name, t.id] as const),
-            )
-            const subCats = subCategoriesFor(category.name)
-            subCategoryRows = subCats
-                .map((sc) => ({
-                    name: sc.name,
-                    blueprints: (sample?.results ?? [])
-                        .filter((b) =>
-                            blueprintInSubCategory(
-                                sc,
-                                b,
-                                tagIdByName.get(sc.name),
-                            ),
-                        )
-                        .slice(0, 6),
+            const sampleBlueprints = sample?.results ?? []
+            const csSlug = slugifySubtag(CUSTOMER_SUCCESS_SUBTAG)
+            const bySubtag = new Map<string, Blueprint[]>()
+            for (const b of sampleBlueprints) {
+                for (const st of blueprintSubtags(b)) {
+                    const slug = slugifySubtag(st)
+                    if (slug === csSlug) continue
+                    const list = bySubtag.get(slug) ?? []
+                    list.push(b)
+                    bySubtag.set(slug, list)
+                }
+            }
+
+            subCategoryRows = [...bySubtag.entries()]
+                .filter(([, bps]) => bps.length >= 2)
+                .sort((a, b) => b[1].length - a[1].length)
+                .slice(0, 8)
+                .map(([slug, bps]) => ({
+                    name: subtagLabel(slug),
+                    blueprints: bps.slice(0, 6),
                 }))
-                .filter((row) => row.blueprints.length > 0)
         }
     }
 

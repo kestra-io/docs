@@ -7,7 +7,8 @@
 @use "/src/assets/styles/variable" as *;
 
 @mixin blueprint-card-base {
-    height: 236px;
+    min-height: 236px;
+    height: 100%;
     border-radius: 12px;
     border: 1px solid var(--ks-border-secondary);
     padding: $rem-1 $rem-1 2px;
