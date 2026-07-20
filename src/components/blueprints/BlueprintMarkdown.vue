@@ -23,6 +23,17 @@
                         </a>
                     </div>
                 </div>
+                <div v-if="orchestrationLinks?.length" class="item">
+                    <h6>Orchestrate with Kestra</h6>
+                    <a
+                        v-for="link in orchestrationLinks"
+                        :key="link.slug"
+                        :href="'/orchestration/' + link.slug"
+                        class="link"
+                    >
+                        Orchestrate {{ link.name }} with Kestra
+                    </a>
+                </div>
                 <Share
                     :title="page.title"
                     :url="pageUrl"
@@ -55,6 +66,7 @@
     defineProps<{
         page: { title: string; includedTasks?: string[] }
         description: string
+        orchestrationLinks?: { slug: string; name: string }[]
     }>()
 
     const getLastWord = (value: string) =>
@@ -69,8 +81,6 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .markdown {
         padding: 0 $rem-1;
         background-color: var(--ks-background-primary);

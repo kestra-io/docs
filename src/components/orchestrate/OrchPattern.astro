@@ -1,0 +1,538 @@
+---
+import { Icon } from "astro-icon/components"
+import Snippets from "~/components/common/Snippets.vue"
+import Topology from "~/components/blueprints/Topology.client.vue"
+
+interface BlueprintItem {
+    name: string
+    title: string
+    description: string
+    code?: string
+    plugins?: string[]
+    href?: string
+    blueprintId?: string
+    blueprintPlaceholder?: boolean
+    render?: { source: string; graph: unknown } | null
+}
+
+interface Props {
+    heading?: string
+    nutshell?: string
+    blueprints: BlueprintItem[]
+    toolColor?: string
+    toolName?: string
+    allBlueprintsCount?: number
+}
+
+const {
+    heading,
+    nutshell,
+    blueprints,
+    toolColor,
+    toolName,
+    allBlueprintsCount = 0,
+} = Astro.props as Props
+const sectionStyle = toolColor ? `--tool-color: ${toolColor};` : undefined
+
+const tabs = blueprints
+const hasTabs = tabs.length > 0
+const hasMore = toolName && allBlueprintsCount > tabs.length
+---
+
+<section class="orch-pattern" style={sectionStyle}>
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="container" data-orch-tabs>
+        <div class="pattern-head">
+            {heading && <h2 class="pattern-title">{heading}</h2>}
+            {nutshell && <p class="nutshell" set:html={nutshell} />}
+
+            {
+                hasTabs && (
+                    <div class="orch-pills" role="tablist">
+                        {tabs.map((bp, idx) => (
+                            <button
+                                type="button"
+                                class:list={[
+                                    "orch-pill",
+                                    { active: idx === 0 },
+                                ]}
+                                role="tab"
+                                data-tab-target={idx}
+                                aria-selected={idx === 0}
+                            >
+                                {bp.name}
+                            </button>
+                        ))}
+                    </div>
+                )
+            }
+        </div>
+
+        {
+            hasTabs && (
+                <div class="wrapper">
+                    {tabs.map((bp, idx) => {
+                        return (
+                            <div
+                                class:list={[
+                                    "orch-tabs__panel",
+                                    { active: idx === 0 },
+                                ]}
+                                role="tabpanel"
+                                data-tab-content={idx}
+                            >
+                                <div
+                                    class:list={[
+                                        "panel-row",
+                                        {
+                                            "panel-row--code-only":
+                                                !bp.render?.graph,
+                                        },
+                                    ]}
+                                >
+                                    <div class="panel-code">
+                                        <div class="code-head">
+                                            <span class="code-caption">
+                                                {bp.title}
+                                            </span>
+                                            {(bp.blueprintId || bp.href) && (
+                                                <a
+                                                    class="code-link"
+                                                    href={
+                                                        bp.blueprintId
+                                                            ? `/blueprints/${bp.blueprintId}`
+                                                            : bp.href
+                                                    }
+                                                >
+                                                    Open blueprint
+                                                    <Icon
+                                                        name="mdi:chevron-right"
+                                                        width={14}
+                                                        height={14}
+                                                    />
+                                                </a>
+                                            )}
+                                        </div>
+                                        {bp.render?.source || bp.code ? (
+                                            <Snippets
+                                                client:idle
+                                                code={
+                                                    bp.render?.source ??
+                                                    bp.code ??
+                                                    ""
+                                                }
+                                                lang="yaml"
+                                            />
+                                        ) : (
+                                            <div class="code-pending">
+                                                <p class="code-pending__lead">
+                                                    {bp.description}
+                                                </p>
+                                                <p class="code-pending__note">
+                                                    The full YAML and topology
+                                                    will appear here once the{" "}
+                                                    <code>
+                                                        {bp.blueprintId}
+                                                    </code>{" "}
+                                                    blueprint is published in
+                                                    the catalog.
+                                                </p>
+                                                {bp.blueprintId && (
+                                                    <a
+                                                        class="code-link"
+                                                        href={`/blueprints/${bp.blueprintId}`}
+                                                    >
+                                                        View on the blueprints
+                                                        catalog
+                                                        <Icon
+                                                            name="mdi:chevron-right"
+                                                            width={14}
+                                                            height={14}
+                                                        />
+                                                    </a>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {bp.render?.graph && (
+                                        <div class="panel-topology">
+                                            <div class="topo-live">
+                                                <Topology
+                                                    client:only="vue"
+                                                    flowGraph={bp.render.graph}
+                                                    source={bp.render.source}
+                                                    id={
+                                                        bp.blueprintId ||
+                                                        `orch-${idx}`
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            )
+        }
+
+        {
+            hasMore && (
+                <a
+                    class="browse-all"
+                    href={`/blueprints?q=${encodeURIComponent(toolName)}`}
+                >
+                    Browse all {allBlueprintsCount} {toolName} blueprints
+                    <Icon name="mdi:chevron-right" width={16} height={16} />
+                </a>
+            )
+        }
+    </div>
+</section>
+
+<script>
+    function wireOrchTabs() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-orch-tabs]",
+        )) {
+            if (root.dataset.wired === "true") continue
+            root.dataset.wired = "true"
+            root.addEventListener("click", (e) => {
+                const btn = (e.target as Element).closest(
+                    ".orch-pill",
+                ) as HTMLElement | null
+                if (!btn) return
+                const target = btn.dataset.tabTarget
+                if (target == null) return
+                for (const el of root.querySelectorAll(
+                    ".orch-pill, .orch-tabs__panel",
+                )) {
+                    el.classList.remove("active")
+                    if (el.matches(".orch-pill")) {
+                        el.setAttribute("aria-selected", "false")
+                    }
+                }
+                btn.classList.add("active")
+                btn.setAttribute("aria-selected", "true")
+                root.querySelector(
+                    `.orch-tabs__panel[data-tab-content="${target}"]`,
+                )?.classList.add("active")
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireOrchTabs)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireOrchTabs)
+    } else {
+        wireOrchTabs()
+    }
+</script>
+
+<style lang="scss">
+    .orch-pattern {
+        position: relative;
+        overflow: hidden;
+        background: var(--ks-background-body);
+        padding: 2.5rem 1rem 3rem;
+
+        @include media-breakpoint-up(md) {
+            padding: 3.5rem 1.5rem 4rem;
+        }
+    }
+
+    .grid-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(
+                to right,
+                var(--ks-border-primary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--ks-border-primary) 1px,
+                transparent 1px
+            );
+        background-size: 68px 68px;
+        background-position: center top;
+        mask-image: radial-gradient(
+            ellipse 75% 50% at 50% 6%,
+            #000 0%,
+            rgba(0, 0, 0, 0.35) 42%,
+            transparent 72%
+        );
+        -webkit-mask-image: radial-gradient(
+            ellipse 75% 50% at 50% 6%,
+            #000 0%,
+            rgba(0, 0, 0, 0.35) 42%,
+            transparent 72%
+        );
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(
+                    ellipse 42% 36% at 36% 4%,
+                    color-mix(
+                        in srgb,
+                        var(--ks-content-color-highlight) 9%,
+                        transparent
+                    ),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    ellipse 38% 32% at 70% 0%,
+                    color-mix(
+                        in srgb,
+                        var(--ks-content-color-highlight) 6%,
+                        transparent
+                    ),
+                    transparent 70%
+                );
+        }
+    }
+
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    .pattern-head {
+        max-width: 820px;
+        margin: 0 auto 2.25rem;
+        padding: 0.5rem 1rem 0;
+        text-align: center;
+    }
+
+    .pattern-title {
+        margin: 0 0 0.875rem;
+        font-size: 2.125rem;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--ks-content-primary);
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.625rem;
+        }
+    }
+
+    .nutshell {
+        max-width: 720px;
+        margin: 0 auto;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--ks-content-secondary);
+
+        :global(a) {
+            color: var(--ks-content-color-highlight);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+            text-decoration-color: color-mix(
+                in srgb,
+                var(--ks-content-color-highlight) 40%,
+                transparent
+            );
+            transition: text-decoration-color 0.18s ease;
+
+            &:hover {
+                text-decoration-color: var(--ks-content-color-highlight);
+            }
+        }
+    }
+
+    .orch-pills {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.25rem;
+        margin-top: 1.5rem;
+    }
+
+    .orch-pill {
+        padding: 0.625rem 1.125rem;
+        border: 0;
+        border-radius: 0.625rem;
+        background: transparent;
+        color: var(--ks-content-tertiary);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+            color 0.18s ease,
+            background 0.18s ease,
+            box-shadow 0.18s ease;
+
+        &:hover {
+            color: var(--ks-content-secondary);
+        }
+
+        &.active {
+            color: var(--ks-content-primary);
+            background: var(--ks-background-primary);
+            box-shadow:
+                0 1px 3px rgba(94, 110, 212, 0.12),
+                0 6px 16px rgba(94, 110, 212, 0.1);
+        }
+    }
+
+    .wrapper {
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 0.875rem;
+        background: var(--ks-background-primary);
+        box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+        overflow: hidden;
+    }
+
+    .browse-all {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        margin: 1.5rem auto 0;
+        width: fit-content;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--ks-content-color-highlight);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+
+    .orch-tabs__panel {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+
+    .panel-row {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        min-height: 30rem;
+
+        &.panel-row--code-only {
+            min-height: 0;
+        }
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+            min-height: 0;
+        }
+    }
+
+    .panel-code {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        background: var(--ks-background-primary);
+
+        @include media-breakpoint-down(md) {
+            padding: 1.25rem 1rem;
+        }
+    }
+
+    .panel-topology {
+        flex: 0 0 40%;
+        border-left: 1px solid var(--ks-border-secondary);
+        background: var(--ks-background-body);
+
+        @include media-breakpoint-down(lg) {
+            flex: 1 1 auto;
+            border-left: none;
+            border-top: 1px solid var(--ks-border-secondary);
+        }
+    }
+
+    .topo-live {
+        position: sticky;
+        top: 5rem;
+        height: 30rem;
+        overflow: clip;
+
+        :global(astro-island) {
+            display: block;
+            height: 100%;
+        }
+    }
+
+    .code-head {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        flex-wrap: wrap;
+    }
+
+    .code-caption {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--ks-content-primary);
+        flex: 1;
+        min-width: 0;
+        line-height: 1.35;
+    }
+
+    .code-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.125rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--ks-content-color-highlight);
+        text-decoration: none;
+        white-space: nowrap;
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+    }
+
+    .code-pending {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.5rem 0;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.5;
+    }
+
+    .code-pending__lead {
+        margin: 0;
+        color: var(--ks-content-primary);
+    }
+
+    .code-pending__note {
+        margin: 0;
+
+        :global(code) {
+            font-family:
+                "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+            font-size: 0.875em;
+            padding: 0.1rem 0.35rem;
+            border-radius: 0.25rem;
+            background: var(--ks-background-secondary);
+            border: 1px solid var(--ks-border-secondary);
+        }
+    }
+</style>

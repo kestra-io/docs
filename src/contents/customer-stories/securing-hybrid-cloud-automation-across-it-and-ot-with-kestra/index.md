@@ -15,15 +15,15 @@ tasks:
   - io.kestra.plugin.scripts.python.Commands
   - io.kestra.plugin.servicenow.Get
 kpi1: |
-  ##### 4+1
-  Isolated automation platforms (4 OT assets + 1 IT)
+  ##### 4 <abbr title="Operational Technology">OT</abbr> + 1 <abbr title="Information Technology">IT</abbr>
+  isolated automation platforms
 kpi2: |+
   ##### 30× faster
-  Time to deliver
+  time to deliver
 
 kpi3: |+
   ##### –90%
-  In licensing cost VS Aria Automation
+  in licensing cost VS Aria Automation
 
 quote: We eliminated the high cost and risk of VMware vRA.  What used to take 6
   months now takes 6 days with Kestra!
@@ -31,8 +31,13 @@ quotePerson: Principal Hosting
 quotePersonTitle: ""
 industry: Heavy Industry
 headquarter: Australia
+region: Australia
+companySize: "5,000+"
 solution: Global leader in heavy industry across the globe
+tagline: Global Fortune 500 heavy industry manufacturer
 companyName: Fortune 500 Company
+useCase: Replacing VMware Aria Automation to deliver isolated per-OT-asset orchestration 30x faster at 90% lower licensing cost for a Fortune 500 industrial manufacturer
+useCaseShort: Infrastructure Orchestration
 cta: "What would change if your hybrid cloud automation ran securely across every OT domain—isolated by design, auditable by default?"
 ---
 

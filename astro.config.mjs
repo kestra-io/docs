@@ -1,13 +1,21 @@
 // @ts-check
-import { defineConfig, envField, fontProviders } from "astro/config"
+import {
+    defineConfig,
+    envField,
+    fontProviders,
+    svgoOptimizer,
+} from "astro/config"
+import { unified } from "@astrojs/markdown-remark"
 
 import * as path from "path"
 import cloudflare from "@astrojs/cloudflare"
+import node from "@astrojs/node"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
 import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
+import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
@@ -23,19 +31,27 @@ const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
 )
 
+// The Cloudflare adapter runs `astro dev` inside workerd, which breaks image
+// serving: the astro:assets endpoint (CJS picomatch) and /@fs assets both fail
+// (withastro/astro#15437). So use Node for local dev (Vite serves images via
+// sharp) and Cloudflare only for the build.
+const isDev = process.argv.includes("dev")
+
 // https://astro.build/config
 export default defineConfig({
     site: "https://kestra.io",
-    adapter: cloudflare({
-        sessionKVBindingName: "docs-session",
-        prerenderEnvironment: "node",
-        // only use cloudflare images in production
-        imageService:
-            process.env.NO_IMAGE_OPTIM === "true"
-                ? "passthrough"
-                : "cloudflare",
-    }),
-    trailingSlash: "ignore",
+    adapter: isDev
+        ? node({ mode: "standalone" })
+        : cloudflare({
+              sessionKVBindingName: "docs-session",
+              prerenderEnvironment: "node",
+              // only use cloudflare images in production
+              imageService:
+                  process.env.NO_IMAGE_OPTIM === "true"
+                      ? "passthrough"
+                      : "cloudflare",
+          }),
+    trailingSlash: "never",
     integrations: [
         vue({
             template: {
@@ -50,73 +66,76 @@ export default defineConfig({
         icon(),
     ],
     markdown: {
-        remarkPlugins: [
-            remarkMermaid,
-            remarkClassname,
-            remarkDirective,
-            remarkCustomElements,
-            // when internal docs links we point to real files
-            // while in the docs generated we want to point to urls with generated ids
-            // @ts-expect-error bad types in astro
-            [
-                customRemarkLinkRewrite,
-                {
-                    /**
-                     *
-                     * @param {string} url
-                     * @param {{basename?: string, dirname?: string}} file
-                     * @returns
-                     */
-                    replacer(url, file) {
-                        if (url.startsWith(".")) {
-                            // Extract hash fragment before processing relative URLs
-                            let hash = ""
-                            if (url.includes("#")) {
-                                const hashIndex = url.indexOf("#")
-                                hash = url.slice(hashIndex)
-                                url = url.slice(0, hashIndex)
-                            }
-
-                            // if the file basename starts with index.
-                            if (
-                                file.basename &&
-                                file.basename.startsWith("index.")
-                            ) {
-                                // if the url start with ./
-                                if (url.startsWith("./") && file.dirname) {
-                                    // we preprend to the path the last part of the dirname
-                                    url = path.join(
-                                        path.basename(file.dirname),
-                                        url.slice(2),
-                                    )
+        processor: unified({
+            remarkPlugins: [
+                remarkGfm,
+                remarkMermaid,
+                remarkClassname,
+                remarkDirective,
+                remarkCustomElements,
+                // when internal docs links we point to real files
+                // while in the docs generated we want to point to urls with generated ids
+                // @ts-expect-error bad types in astro
+                [
+                    customRemarkLinkRewrite,
+                    {
+                        /**
+                         *
+                         * @param {string} url
+                         * @param {{basename?: string, dirname?: string}} file
+                         * @returns
+                         */
+                        replacer(url, file) {
+                            if (url.startsWith(".")) {
+                                // Extract hash fragment before processing relative URLs
+                                let hash = ""
+                                if (url.includes("#")) {
+                                    const hashIndex = url.indexOf("#")
+                                    hash = url.slice(hashIndex)
+                                    url = url.slice(0, hashIndex)
                                 }
 
-                                // if the url starts with ../
-                                if (url.startsWith("../")) {
-                                    // we replace ../ by ./
-                                    url = "./" + url.slice(3)
-                                }
-                            }
+                                // if the file basename starts with index.
+                                if (
+                                    file.basename &&
+                                    file.basename.startsWith("index.")
+                                ) {
+                                    // if the url start with ./
+                                    if (url.startsWith("./") && file.dirname) {
+                                        // we preprend to the path the last part of the dirname
+                                        url = path.join(
+                                            path.basename(file.dirname),
+                                            url.slice(2),
+                                        )
+                                    }
 
-                            return generateId({ entry: url }) + hash
-                        }
-                        return url
+                                    // if the url starts with ../
+                                    if (url.startsWith("../")) {
+                                        // we replace ../ by ./
+                                        url = "./" + url.slice(3)
+                                    }
+                                }
+
+                                return generateId({ entry: url }) + hash
+                            }
+                            return url
+                        },
                     },
-                },
+                ],
             ],
-        ],
-        rehypePlugins: [
-            rehypeHeadingIds,
-            rehypeAutolinkHeadings,
-            rehypeImgPlugin,
-            [
-                rehypeExternalLinks,
-                {
-                    target: "_blank",
-                    rel: ["noopener", "noreferrer"],
-                },
+            rehypePlugins: [
+                rehypeHeadingIds,
+                rehypeAutolinkHeadings,
+                rehypeImgPlugin,
+                [
+                    rehypeExternalLinks,
+                    {
+                        target: "_blank",
+                        rel: ["noopener", "noreferrer"],
+                    },
+                ],
             ],
-        ],
+        }),
     },
     image: {
         layout: "constrained",
@@ -136,7 +155,7 @@ export default defineConfig({
         },
     ],
     experimental: {
-        svgo: {
+        svgOptimizer: svgoOptimizer({
             plugins: [
                 {
                     name: "preset-default",
@@ -148,7 +167,7 @@ export default defineConfig({
                 },
                 "removeDimensions",
             ],
-        },
+        }),
     },
     env: {
         schema: {
@@ -213,11 +232,8 @@ export default defineConfig({
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
         "/trust":
             "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
-        "/sitemap_index.xml": "/sitemap/index.xml",
         "/docs/migration-guide/v0.24.0/retries-maxAttempts":
             "/docs/migration-guide/v0.24.0/retries-maxattempts",
-        "/preview-access": "/get-started",
-        "/cloud-early-access": "/cloud",
     },
     vite: {
         plugins: [
@@ -272,14 +288,9 @@ export default defineConfig({
         ],
         resolve: {
             alias: {
-                "#mdc-imports": path.resolve(
-                    __dirname,
-                    "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
-                ),
-                "#mdc-configs": path.resolve(
-                    __dirname,
-                    "node_modules/@kestra-io/ui-libs/stub-mdc-imports.js",
-                ),
+                // Mirror the tsconfig `~/*` paths so the alias also resolves
+                // inside CSS `url(~/assets/...)`, which tsconfig paths don't cover.
+                "~": path.resolve(__dirname, "src"),
             },
         },
         css: {

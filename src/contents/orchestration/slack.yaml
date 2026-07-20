@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Make Slack the meeting point for your stack with a workflow engine that listens to slash commands, Block Kit clicks, or any upstream completion (<a href='/orchestration/dbt-core'>dbt</a>, <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, <a href='/orchestration/aws'>AWS</a>), handles notification routing, Canvas reports, and approval gates, and chains Slack with the rest of your tools. Cut per-tool integration code: the same chats.Post fires from any of 1400+ plugins."
+
 pillars:
   title: "Around every workflow, every system, every channel."
   subtitle: "Slack is where teams already work. Kestra makes every other tool reach them there: notifications from dbt, reports from Snowflake, approval gates for Terraform, incident channels spun from any failure, message archives exported to BigQuery. Slack stops being a per-tool integration target and becomes the meeting point for the whole stack."
@@ -178,189 +180,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, install your Slack app with the right OAuth scopes, set the bot token in Kestra secrets, ship it."
   items:
     - name: "Reusable notify subflow called by any upstream"
+      blueprintId: "slack-notify-subflow"
       title: "A single Subflow that takes channel + status + execution context, posts to Slack"
       description: "Two flows. The notify subflow takes channel, status, summary, and execution_url as inputs and posts a Block Kit message with reactions.Add for the status emoji. Any parent flow (dbt, Terraform, Argo CD, AWS Lambda) calls it on success or failure."
       href: "/blueprints?tags=Business"
-      plugins:
-        - "io.kestra.plugin.core.flow.Subflow"
-        - "io.kestra.plugin.slack.app.chats.Post"
-        - "io.kestra.plugin.slack.app.reactions.Add"
-      code: |
-        id: slack-notify-shared
-        namespace: company.shared
-
-        inputs:
-          - id: channel
-            type: STRING
-          - id: status
-            type: SELECT
-            values: [SUCCESS, FAILURE]
-            defaults: SUCCESS
-          - id: summary
-            type: STRING
-          - id: execution_url
-            type: STRING
-
-        tasks:
-          - id: post_message
-            type: io.kestra.plugin.slack.app.chats.Post
-            token: "{{ secret('SLACK_BOT_TOKEN') }}"
-            channel: "{{ inputs.channel }}"
-            payload: |
-              {
-                "text": "{{ inputs.status == 'SUCCESS' ? ':white_check_mark:' : ':fire:' }} {{ inputs.summary }}",
-                "blocks": [
-                  {"type": "section", "text": {"type": "mrkdwn", "text": "*{{ inputs.summary }}*"}},
-                  {"type": "actions", "elements": [
-                    {"type": "button", "text": {"type": "plain_text", "text": "View execution"}, "url": "{{ inputs.execution_url }}"}
-                  ]}
-                ]
-              }
-
-          - id: react
-            type: io.kestra.plugin.slack.app.reactions.Add
-            token: "{{ secret('SLACK_BOT_TOKEN') }}"
-            channel: "{{ inputs.channel }}"
-            timestamp: "{{ outputs.post_message.ts }}"
-            name: "{{ inputs.status == 'SUCCESS' ? 'white_check_mark' : 'fire' }}"
     - name: "Daily Snowflake digest as an editable Canvas"
+      blueprintId: "slack-snowflake-canvas"
       title: "Query metrics at 8am, format markdown, post a Canvas to leadership"
       description: "Runs a Snowflake query against the daily metrics view, formats the rows into markdown sections via a Python script, posts the result as an editable Canvas to a leadership channel, and pings the team with a thread reply."
       href: "/blueprints?tags=Business"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.jdbc.snowflake.Query"
-        - "io.kestra.plugin.scripts.python.Script"
-        - "io.kestra.plugin.slack.app.canvases.Create"
-      code: |
-        id: daily-metrics-to-canvas
-        namespace: company.leadership
-
-        triggers:
-          - id: every_morning
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 8 * * 1-5"
-
-        tasks:
-          - id: query_metrics
-            type: io.kestra.plugin.jdbc.snowflake.Query
-            url: "{{ secret('SNOWFLAKE_URL') }}"
-            username: "{{ secret('SNOWFLAKE_USERNAME') }}"
-            password: "{{ secret('SNOWFLAKE_PASSWORD') }}"
-            sql: |
-              SELECT metric_name, metric_value, day_over_day_pct
-              FROM analytics.daily_kpis
-              WHERE dt = current_date - interval '1 day'
-              ORDER BY display_order
-
-          - id: format_markdown
-            type: io.kestra.plugin.scripts.python.Script
-            inputFiles:
-              metrics.json: "{{ outputs.query_metrics.rows | json }}"
-            outputFiles:
-              - report.md
-            script: |
-              import json
-              with open("metrics.json") as f:
-                  rows = json.load(f)
-              lines = ["# Daily metrics", ""]
-              for r in rows:
-                  arrow = "📈" if r["day_over_day_pct"] >= 0 else "📉"
-                  lines.append(f"## {r['metric_name']}")
-                  lines.append(f"{r['metric_value']} ({arrow} {r['day_over_day_pct']}%)")
-                  lines.append("")
-              with open("report.md", "w") as f:
-                  f.write("\n".join(lines))
-
-          - id: post_canvas
-            type: io.kestra.plugin.slack.app.canvases.Create
-            token: "{{ secret('SLACK_BOT_TOKEN') }}"
-            channelId: "{{ secret('LEADERSHIP_CHANNEL_ID') }}"
-            title: "Daily metrics: {{ now() | date('yyyy-MM-dd') }}"
-            documentContent:
-              type: markdown
-              markdown: "{{ read(outputs.format_markdown.outputFiles['report.md']) }}"
-
-          - id: thread_ping
-            type: io.kestra.plugin.slack.app.chats.Post
-            token: "{{ secret('SLACK_BOT_TOKEN') }}"
-            channel: "{{ secret('LEADERSHIP_CHANNEL_ID') }}"
-            messageText: ":bar_chart: Today's metrics Canvas is posted. <{{ outputs.post_canvas.canvasUrl }}|Open Canvas>"
     - name: "Channel history export to BigQuery"
+      blueprintId: "slack-history-to-bigquery"
       title: "Weekly pull #support history, transform, load to BigQuery, trigger dbt"
       description: "A weekly flow pulls the support channel's history, transforms it into a BigQuery-friendly schema in Python, loads it as a weekly partition, then triggers the support_metrics dbt models to refresh."
       href: "/blueprints?tags=Business"
-      plugins:
-        - "io.kestra.plugin.slack.app.conversations.History"
-        - "io.kestra.plugin.scripts.python.Script"
-        - "io.kestra.plugin.gcp.bigquery.Load"
-        - "io.kestra.plugin.dbt.cli.DbtCLI"
-      code: |
-        id: slack-history-to-bigquery
-        namespace: company.analytics
-
-        triggers:
-          - id: weekly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 6 * * 1"
-
-        inputs:
-          - id: channel_id
-            type: STRING
-            defaults: "C01234567"
-          - id: lookback_days
-            type: INT
-            defaults: 7
-
-        tasks:
-          - id: pull_history
-            type: io.kestra.plugin.slack.app.conversations.History
-            token: "{{ secret('SLACK_BOT_TOKEN') }}"
-            channel: "{{ inputs.channel_id }}"
-            oldest: "{{ now() | dateAdd(-1 * inputs.lookback_days, 'DAYS') | timestamp }}"
-            latest: "{{ now() | timestamp }}"
-
-          - id: transform
-            type: io.kestra.plugin.scripts.python.Script
-            inputFiles:
-              messages.ion: "{{ outputs.pull_history.uri }}"
-            outputFiles:
-              - messages.jsonl
-            beforeCommands:
-              - pip install --quiet ion-py
-            script: |
-              import json
-              import amazon.ion.simpleion as ion
-              with open("messages.ion", "rb") as f:
-                  records = ion.load(f, single_value=False)
-              with open("messages.jsonl", "w") as f:
-                  for r in records:
-                      f.write(json.dumps({
-                          "ts": r.get("ts"),
-                          "user": r.get("user"),
-                          "text": r.get("text"),
-                          "thread_ts": r.get("thread_ts"),
-                          "reply_count": r.get("reply_count", 0),
-                      }) + "\n")
-
-          - id: load_bq
-            type: io.kestra.plugin.gcp.bigquery.Load
-            from: "{{ outputs.transform.outputFiles['messages.jsonl'] }}"
-            destinationTable: "analytics.slack_support_history${{ now() | date('yyyyMMdd') }}"
-            format: NEWLINE_DELIMITED_JSON
-            autodetect: true
-
-          - id: refresh_dbt
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt build --select support_metrics
-
-          - id: notify
-            type: io.kestra.plugin.slack.app.chats.Post
-            token: "{{ secret('SLACK_BOT_TOKEN') }}"
-            channel: "{{ inputs.channel_id }}"
-            messageText: ":bar_chart: Weekly support analytics refreshed. {{ outputs.pull_history.size }} messages loaded to BigQuery."
-
 comparison:
   title: "Kestra vs Slack-integration alternatives"
   subtitle: "Kestra wraps the Slack API with first-class tasks for chats, channels, canvases, files, reactions, users, history, plus the Events API trigger. The competitors below are how teams typically connect Slack to the rest of their stack today."
@@ -451,7 +284,7 @@ resources:
     - kind: "docs"
       title: "Slack as the integration point across your stack"
       description: "How to install a Kestra Slack app, configure scopes, notify from any upstream tool, schedule reports as Canvases, gate approvals, and export channel history."
-      href: "/docs/use-cases/business"
+      href: "/docs/use-cases"
     - kind: "resource"
       title: "Chain Slack approvals with Terraform and Argo CD"
       description: "The common pattern: Block Kit buttons gate a Terraform apply or an Argo CD sync. The reviewer identity is recorded in the execution history."

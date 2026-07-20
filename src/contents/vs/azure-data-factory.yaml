@@ -35,7 +35,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, AI workloads, and business processes"
       - "Multi-cloud and on-premises: AWS, Azure, GCP, or hybrid"
       - "YAML-first: Git-native, CI/CD-ready, reviewable by any engineer"
-      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Open source with 26k+ GitHub stars and 1400+ plugins"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Azure-Native Data Integration
@@ -204,7 +204,7 @@ testimonials:
         name: "Active users"
       - value: "+5,000"
         name: "Workflows created"
-    storyLink: "/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/customers/leroy-merlin-france"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work
@@ -244,7 +244,7 @@ commonQuestions:
   - question: How does Kestra handle version control compared to ADF?
     answer: "Kestra workflows are YAML files that live in your Git repository from day one, go through pull requests, and deploy through CI/CD. ADF pipelines are authored in the Azure portal. Getting them into version control requires connecting to Azure DevOps or GitHub, then exporting JSON definitions. Even with that integration, the JSON is verbose and hard to review. Kestra's YAML is designed to be read and modified by any engineer on the team."
   - question: How do the pricing models compare?
-    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1200+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. ADF charges per activity run, per data integration unit (DIU) hour for data flows, and per pipeline execution. At high execution volumes those per-activity costs compound quickly, and teams running thousands of pipelines daily often find Kestra's self-hosted model significantly cheaper."
+    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1400+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. ADF charges per activity run, per data integration unit (DIU) hour for data flows, and per pipeline execution. At high execution volumes those per-activity costs compound quickly, and teams running thousands of pipelines daily often find Kestra's self-hosted model significantly cheaper."
   - question: Can Kestra and ADF run side by side during a migration?
     answer: "Yes. A common approach is routing new workflows through Kestra while existing ADF pipelines continue running. Kestra can trigger on the same events that feed ADF today (Azure Blob Storage writes, Service Bus messages, schedules) and operate in parallel. Start with net-new orchestration in Kestra, migrate existing pipelines incrementally, and decommission ADF once the transition is complete."
   - question: Does Kestra support SSIS packages like ADF?

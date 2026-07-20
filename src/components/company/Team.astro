@@ -49,6 +49,11 @@ const teamMembers = [
         image: TeamImages["fcailles-round.png"],
     },
     {
+        name: "Connor Alkin",
+        title: "Senior Business Development Representative",
+        image: TeamImages["calkin-round.png"],
+    },
+    {
         name: "Florian Hussonnois",
         title: "Lead Software Engineer",
         image: TeamImages["fhussonois-round.png"],
@@ -64,6 +69,11 @@ const teamMembers = [
         image: TeamImages["fdelbrayelle-round.png"],
     },
     {
+        name: "Gabriel Martinez",
+        title: "Head of Marketing",
+        image: TeamImages["gmartinez-round.png"],
+    },
+    {
         name: "Martin-Pierre Roset",
         title: "Lead Growth & Marketing",
         image: TeamImages["mproset-round.png"],
@@ -77,6 +87,11 @@ const teamMembers = [
         name: "Nenad Malić",
         title: "Product Marketing Lead",
         image: TeamImages["nmalic-round.png"],
+    },
+    {
+        name: "Robert Walters",
+        title: "Technical Product Marketing Manager",
+        image: TeamImages["rwalters-round.png"],
     },
     {
         name: "Virgile Fanucci",
@@ -98,15 +113,40 @@ const teamMembers = [
         title: "Lead Finance & Admin",
         image: TeamImages["alin-round.png"],
     },
+        {
+        name: "Thibault Delenin",
+        title: "R&D Finance & Strategy Lead",
+        image: TeamImages["tdelenin-round.png"],
+    },
     {
         name: "Benoît Pimpaud",
         title: "Product Owner",
         image: TeamImages["bpimpaud-round.png"],
     },
+            {
+        name: "Asís Ybarra",
+        title: "Product Manager",
+        image: TeamImages["aybarra-round.png"],
+    },
+        {
+        name: "Alex Emerich",
+        title: "Technical Writer",
+        image: TeamImages["aemerich-round.png"],
+    },
     {
         name: "Will Russell",
-        title: "Developer Advocate",
+        title: "Lead Developer Advocate",
         image: TeamImages["wrussell-round.png"],
+    },
+        {
+        name: "Rok Grabnar",
+        title: "Data Analyst",
+        image: TeamImages["rgrabnar-round.png"],
+    },
+    {
+        name: "Pradumna Saraf",
+        title: "QA Engineer",
+        image: TeamImages["psaraf-round.png"],
     },
     {
         name: "Yann Coornaert",
@@ -159,6 +199,11 @@ const teamMembers = [
         image: TeamImages["pbhaskar-round.png"],
     },    
     {
+        name: "Florian Carre",
+        title: "UX Engineer",
+        image: TeamImages["fcarre-round.png"],
+    },  
+    {
         name: "Rémi Barthe",
         title: "Software Engineer",
         image: TeamImages["rbarthe-round.png"],
@@ -172,21 +217,6 @@ const teamMembers = [
         name: "Gilles Perreymond",
         title: "Platform Engineer",
         image: TeamImages["gperreymond-round.png"],
-    },
-    {
-        name: "Alex Emerich",
-        title: "Technical Writer",
-        image: TeamImages["aemerich-round.png"],
-    },
-    {
-        name: "Rok Grabnar",
-        title: "Data Analyst",
-        image: TeamImages["rgrabnar-round.png"],
-    },
-    {
-        name: "Pradumna Saraf",
-        title: "QA Engineer",
-        image: TeamImages["psaraf-round.png"],
     },
     {
         name: "Wish to see <br />your photo here?",
@@ -210,7 +240,7 @@ const teamMembers = [
         </div>
         <div class="team-grid" data-usal="fade-u delay-200">
             {
-                teamMembers.map((member, index) => (
+                teamMembers.map((member) => (
                     <div class="team-card" data-usal="zoomin">
                         <Image
                             src={member.image}

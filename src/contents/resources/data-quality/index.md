@@ -1,15 +1,15 @@
 ---
 title: "What is Data Quality? Definition, Importance & Strategies"
 description: "Explore what data quality truly means, its critical importance for business decisions, and practical strategies for improvement and maintenance."
-metaTitle: "What is Data Quality? Definition, Importance & Strategies"
-metaDescription: "Understand data quality dimensions like accuracy, completeness, and consistency. Learn why it's vital for analytics, AI, and operations, and how to implement effective data quality management."
+metaTitle: "What is Data Quality? Dimensions & Strategies | Kestra"
+metaDescription: "Data quality—accuracy, completeness, consistency, timeliness—powers AI and analytics. Learn key pitfalls and how to automate quality checks at scale."
 tag: data
 date: 2026-04-30
 faq:
-  - question: "What are the 5 elements of data quality?"
-    answer: "Data quality is often assessed across five key dimensions: accuracy (correctness of data), completeness (presence of all required information), consistency (uniformity across systems), uniqueness (no duplicates), and timeliness (data is up-to-date). These elements collectively ensure data is fit for purpose."
-  - question: "What are the 5 qualities of data?"
-    answer: "The five qualities of data, also known as dimensions, typically include validity (conforms to defined format/rules), accuracy (correctness), completeness (no missing values), consistency (uniformity), and timeliness (up-to-date). Some frameworks may slightly vary these terms or add others like relevance or integrity."
+  - question: "What are the six dimensions of data quality?"
+    answer: "The six most widely cited data quality dimensions are accuracy, completeness, consistency, timeliness, uniqueness, and validity. Accuracy checks that data correctly represents reality; completeness ensures no required values are missing; consistency means data matches across systems; timeliness confirms data is sufficiently up-to-date; uniqueness prevents duplicate records; and validity verifies that data conforms to defined formats and business rules."
+  - question: "How do you measure data quality?"
+    answer: "Data quality is measured through KPIs tied to each dimension: a completeness score (percentage of records with no missing values in critical fields), an accuracy rate (percentage matching a verified source of truth), a uniqueness percentage (percentage of non-duplicate records), and a timeliness lag (the delay between a real-world event and its representation in the dataset). Continuous monitoring with automated alerts is the most reliable approach."
   - question: "What are the 7 C's of data quality?"
     answer: "The 'Seven C's of Data Curation' describe a process: Collect, Characterize, Clean, Contextualize, Categorize, Curate, and Control. This framework focuses on the lifecycle of data management to ensure quality and usability from acquisition to ongoing maintenance."
   - question: "What are the 3 C's of data quality?"
@@ -94,7 +94,7 @@ Despite its importance, maintaining high data quality is a persistent challenge.
 - **Manual Data Entry:** Human error is a leading cause of inaccuracies. Typos, inconsistent abbreviations, and missing fields are common in manually entered data.
 - **Lack of Standardization:** Without clear, enforced standards for data entry and storage, variations will proliferate (e.g., "USA," "U.S.A.," "United States").
 - **Data Decay:** Information naturally becomes outdated over time. Customers move, change their names, or switch email addresses. Without regular maintenance, data quality degrades.
-- **Complex Integration Processes:** During ETL/ELT processes, data transformations or schema mismatches can introduce errors or data loss.
+- **Complex Integration Processes:** During ETL/ELT processes, data transformations or schema mismatches can introduce errors or data loss. Robust [data pipeline](/resources/data/data-pipeline) design is critical to preventing these quality regressions at ingestion time.
 
 ### Identifying and Preventing Common Issues
 
@@ -143,7 +143,7 @@ You cannot improve what you cannot measure. Establishing clear Key Performance I
 - **Uniqueness Percentage:** Percentage of records that are not duplicates.
 - **Timeliness Lag:** The delay between a real-world event and its representation in the data.
 
-These metrics should be monitored continuously, with automated alerts triggered when quality drops below a defined threshold. Kestra's [powerful features](https://kestra.io/features) enable this continuous monitoring by scheduling regular validation jobs and integrating with alerting systems.
+These metrics should be monitored continuously, with automated alerts triggered when quality drops below a defined threshold. Kestra's [powerful features](https://kestra.io/features) enable this continuous monitoring by scheduling regular validation jobs and integrating with alerting systems. For a broader view of how monitoring fits into the data stack, see our guide on [data observability](/resources/data/data-observability).
 
 ## Frameworks for Data Quality Assessment
 
@@ -170,7 +170,7 @@ The rewards for investing in data quality are substantial, impacting everything 
 
 ### Enhanced Customer Satisfaction and Trust
 
-When customer data is accurate and consistent, businesses can provide better, more personalized experiences. This builds trust and loyalty. Companies like [Displayce have optimized their operations](https://kestra.io/use-cases/stories/displayce-optimized-workflow-orchestration-and-enhanced-data-management) by centralizing data flows, which is a prerequisite for ensuring quality.
+When customer data is accurate and consistent, businesses can provide better, more personalized experiences. This builds trust and loyalty. Companies like [Displayce have optimized their operations](https://kestra.io/customers/displayce) by centralizing data flows, which is a prerequisite for ensuring quality.
 
 ### Operational Efficiency and Cost Savings
 
@@ -178,11 +178,11 @@ Clean data reduces the time employees spend hunting for information and correcti
 
 ### Competitive Advantage Through Reliable Data
 
-Organizations that trust their data can move faster and make smarter decisions. They can identify market trends, optimize pricing, and innovate with confidence. For companies like [Leroy Merlin France, implementing a Data Mesh](https://kestra.io/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent) with strong orchestration was key to scaling their data production and ensuring its quality and reliability.
+Organizations that trust their data can move faster and make smarter decisions. They can identify market trends, optimize pricing, and innovate with confidence. For companies like [Leroy Merlin France, implementing a Data Mesh](https://kestra.io/customers/leroy-merlin-france) with strong orchestration was key to scaling their data production and ensuring its quality and reliability.
 
 ## How Kestra Orchestrates Data Quality
 
-Kestra is not a data quality tool that profiles or cleanses data directly. Instead, it serves as the universal orchestration control plane that automates, integrates, and enforces data quality processes across your entire stack.
+Kestra is not a data quality tool that profiles or cleanses data directly. Instead, it serves as the universal [data orchestration](/resources/data/data-orchestration) control plane that automates, integrates, and enforces data quality processes across your entire stack.
 
 Kestra allows you to embed data quality checks as native steps within any workflow. Whether you're ingesting data, running transformations, or training an ML model, you can add tasks that validate the data at each critical stage.
 

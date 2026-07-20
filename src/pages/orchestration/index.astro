@@ -11,21 +11,39 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 const totalPlugins = await fetchTotalPluginsCount()
 
 const CATEGORY_MAP: Record<string, string> = {
+    airbyte: "Data",
     ansible: "Infrastructure",
+    apify: "Data",
     argocd: "Infrastructure",
     aws: "Cloud",
+    azure: "Cloud",
+    bigquery: "Data",
     cloudflare: "Cloud",
+    dataproc: "Data",
     docker: "Infrastructure",
+    duckdb: "Data",
+    gcs: "Cloud",
     git: "Infrastructure",
     "github-actions": "Infrastructure",
+    gitlab: "Infrastructure",
+    hightouch: "Data",
+    jenkins: "Infrastructure",
+    kafka: "Data",
     kubernetes: "Infrastructure",
+    "microsoft-fabric": "Data",
     netbox: "Infrastructure",
     nutanix: "Infrastructure",
     opa: "Infrastructure",
+    postgres: "Data",
     proxmox: "Infrastructure",
+    pubsub: "Data",
+    redis: "Data",
     servicenow: "Business",
     slack: "Business",
+    snowflake: "Data",
+    "sql-server": "Data",
     terraform: "Infrastructure",
+    "vertex-ai": "AI",
     vmware: "Infrastructure",
     "dbt-cloud": "Data",
     "dbt-core": "Data",
@@ -110,7 +128,7 @@ const faqItems = [
     description="One orchestrator across infrastructure and data: Terraform, Ansible, VMware, Nutanix, Proxmox, Docker, Argo CD, dbt Cloud, and dbt Core. Event-driven, declarative, self-hosted."
 >
     <section class="header-container">
-        <div class="header container">
+        <div class="orch-hero container">
             <div class="hero-logos">
                 <div class="hero-picto ks" set:html={kestraIcon} />
                 <div class="hero-plus" aria-hidden="true">
@@ -125,8 +143,7 @@ const faqItems = [
                             d="M11 3v16M3 11h16"
                             stroke="#8465FF"
                             stroke-width="2.5"
-                            stroke-linecap="round"
-                        ></path>
+                            stroke-linecap="round"></path>
                     </svg>
                 </div>
                 <div class="hero-carousel" id="hero-carousel">
@@ -163,8 +180,9 @@ const faqItems = [
                 </span> with Kestra
             </h1>
             <p>
-                One orchestrator across your infrastructure and data stack. Event-driven
-                triggers, approval gates, per-step retries, cross-tool chains.
+                One orchestrator across your infrastructure and data stack.
+                Event-driven triggers, approval gates, per-step retries,
+                cross-tool chains.
             </p>
             <div class="search-wrapper">
                 <input
@@ -292,8 +310,7 @@ const faqItems = [
                 var name = (card.getAttribute("data-name") || "").toLowerCase()
                 var category = card.getAttribute("data-category") || ""
                 var matchesSearch = !q || name.indexOf(q) !== -1
-                var matchesCat =
-                    !activeCategory || category === activeCategory
+                var matchesCat = !activeCategory || category === activeCategory
                 card.style.display = matchesSearch && matchesCat ? "" : "none"
             }
         }
@@ -307,7 +324,10 @@ const faqItems = [
             var total = icons.length
             if (total === 0) return
 
-            if (!icons[current] || !icons[current].classList.contains("active")) {
+            if (
+                !icons[current] ||
+                !icons[current].classList.contains("active")
+            ) {
                 for (var i = 0; i < icons.length; i++) {
                     if (icons[i].classList.contains("active")) {
                         current = i
@@ -340,7 +360,24 @@ const faqItems = [
             }
         }
 
+        function shuffleGrid() {
+            var grid = document.getElementById("orch-grid")
+            if (!grid || grid.dataset.shuffled === "true") return
+            var cards = Array.prototype.slice.call(
+                grid.querySelectorAll(".card"),
+            )
+            for (var i = cards.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1))
+                var tmp = cards[i]
+                cards[i] = cards[j]
+                cards[j] = tmp
+            }
+            for (var k = 0; k < cards.length; k++) grid.appendChild(cards[k])
+            grid.dataset.shuffled = "true"
+        }
+
         function init() {
+            shuffleGrid()
             var toggle = document.getElementById("orch-toggle")
             var search = document.getElementById("orch-search")
             if (toggle) {
@@ -375,7 +412,7 @@ const faqItems = [
             1400px auto;
         padding-inline: 1rem;
 
-        .header {
+        .orch-hero {
             max-width: 1180px;
             margin: 0 auto;
             padding-top: 4rem;
@@ -397,6 +434,7 @@ const faqItems = [
                     border-radius: 12px;
                     padding: 8px;
                     background: #f7f7f7;
+                    color: #18181b;
 
                     :global(svg) {
                         max-width: 100%;
@@ -443,6 +481,7 @@ const faqItems = [
                         display: flex;
                         align-items: center;
                         justify-content: center;
+                        color: #18181b;
                         opacity: 0;
                         transform: translateY(6px);
                         transition:
@@ -472,6 +511,7 @@ const faqItems = [
                 margin-bottom: 0.5rem;
 
                 .rotator {
+                    position: relative;
                     display: inline-grid;
                     grid-template-areas: "stack";
                     vertical-align: baseline;
@@ -482,6 +522,12 @@ const faqItems = [
                         transition: opacity 0.6s ease;
                         white-space: nowrap;
                         pointer-events: none;
+
+                        &:not(.active) {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                        }
 
                         &.active {
                             opacity: 1;
@@ -624,6 +670,7 @@ const faqItems = [
         border-radius: 8px;
         padding: 8px;
         background: $white;
+        color: #18181b;
         flex-shrink: 0;
 
         :global(svg) {

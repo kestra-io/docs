@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Connect dbt Cloud to your data stack with a workflow engine that listens to Fivetran completions or any upstream event, handles TriggerRun with approval gates between staging and prod, and chains dbt Cloud with Fivetran, Hightouch, and Snowflake in one audited flow. Drop the cron buffer that builds on stale data; a transient retry never re-runs the upstream sync."
+
 pillars:
   title: "Above the dbt Cloud job runner."
   subtitle: "dbt Cloud solves transformation scheduling inside the dbt layer. Kestra solves what surrounds it: when jobs trigger, what runs after them, and where the audit trail lives."
@@ -175,165 +177,20 @@ blueprints:
   lead: "Production-ready workflows. Copy the YAML, wire it to your stack."
   items:
     - name: "Ingestion to activation"
+      blueprintId: "fivetran-dbt-cloud"
       title: "Ingestion to activation pipeline"
       description: "Fivetran syncs raw data on a schedule. When it completes, Kestra triggers the dbt Cloud job and waits for success. On completion, it fires the Hightouch sync. Any failure stops the pipeline at the failing step and posts a Slack alert with a link to the execution."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.fivetran.connectors.Sync"
-        - "io.kestra.plugin.dbt.cloud.TriggerRun"
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: dbt-cloud-full-pipeline
-        namespace: company.data.dbt
-
-        triggers:
-          - id: daily
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 4 * * *"
-
-        tasks:
-          - id: fivetran_sync
-            type: io.kestra.plugin.fivetran.connectors.Sync
-            connectorId: "{{ secret('FIVETRAN_CONNECTOR_ID') }}"
-            apiKey: "{{ secret('FIVETRAN_API_KEY') }}"
-            apiSecret: "{{ secret('FIVETRAN_API_SECRET') }}"
-
-          - id: trigger_dbt_cloud
-            type: io.kestra.plugin.dbt.cloud.TriggerRun
-            accountId: "{{ secret('DBT_CLOUD_ACCOUNT_ID') }}"
-            token: "{{ secret('DBT_CLOUD_API_TOKEN') }}"
-            jobId: "{{ secret('DBT_CLOUD_JOB_ID') }}"
-            wait: true
-
-          - id: hightouch_sync
-            type: io.kestra.plugin.scripts.shell.Commands
-            commands:
-              - >-
-                curl -X POST
-                "https://api.hightouch.io/api/v1/syncs/{{ secret('HIGHTOUCH_SYNC_ID') }}/trigger"
-                -H "Authorization: Bearer {{ secret('HIGHTOUCH_TOKEN') }}"
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":chart_with_upwards_trend: Pipeline complete: ingested, transformed, activated."
-              }
-
-        errors:
-          - id: alert_on_failure
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":warning: Pipeline failed in *{{ flow.namespace }}*. <{{ execution.url }}|View execution>"
-              }
     - name: "Approval gate before production"
+      blueprintId: "dbt-cloud-approval-gate"
       title: "Approval gate before production job"
       description: "Triggers the staging dbt Cloud job and pauses the flow on the result. A named reviewer reads the output in the Kestra UI and resumes the flow. Only then does the production job run. The reviewer's identity and timestamp are stored automatically in the execution history."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.dbt.cloud.TriggerRun"
-        - "io.kestra.plugin.core.flow.Pause"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: dbt-cloud-with-approval
-        namespace: company.data.dbt
-
-        inputs:
-          - id: staging_job_id
-            type: STRING
-            displayName: Staging job ID
-          - id: production_job_id
-            type: STRING
-            displayName: Production job ID
-
-        tasks:
-          - id: run_staging
-            type: io.kestra.plugin.dbt.cloud.TriggerRun
-            accountId: "{{ secret('DBT_CLOUD_ACCOUNT_ID') }}"
-            token: "{{ secret('DBT_CLOUD_API_TOKEN') }}"
-            jobId: "{{ inputs.staging_job_id }}"
-            wait: true
-
-          - id: await_approval
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Staging job complete. Review before promoting to production.
-              Job ID: {{ inputs.staging_job_id }}
-
-          - id: run_production
-            type: io.kestra.plugin.dbt.cloud.TriggerRun
-            accountId: "{{ secret('DBT_CLOUD_ACCOUNT_ID') }}"
-            token: "{{ secret('DBT_CLOUD_API_TOKEN') }}"
-            jobId: "{{ inputs.production_job_id }}"
-            wait: true
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":white_check_mark: dbt Cloud production job complete. <{{ execution.url }}|View execution>"
-              }
     - name: "Chained dbt Cloud jobs"
+      blueprintId: "dbt-cloud-chained-jobs"
       title: "Chained dbt Cloud jobs with dependency ordering"
       description: "Runs three dbt Cloud jobs in order: ingestion models, mart models, activation models. Each step waits for the previous to confirm success before starting. If any job fails, Kestra stops the chain and posts a Slack alert with the run ID of the failing job and a link to the execution."
       href: "/blueprints"
-      plugins:
-        - "io.kestra.plugin.dbt.cloud.TriggerRun"
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: dbt-cloud-chained-jobs
-        namespace: company.data.dbt
-
-        triggers:
-          - id: nightly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 3 * * *"
-
-        tasks:
-          - id: ingestion_models
-            type: io.kestra.plugin.dbt.cloud.TriggerRun
-            accountId: "{{ secret('DBT_CLOUD_ACCOUNT_ID') }}"
-            token: "{{ secret('DBT_CLOUD_API_TOKEN') }}"
-            jobId: "{{ secret('DBT_CLOUD_INGESTION_JOB_ID') }}"
-            wait: true
-
-          - id: mart_models
-            type: io.kestra.plugin.dbt.cloud.TriggerRun
-            accountId: "{{ secret('DBT_CLOUD_ACCOUNT_ID') }}"
-            token: "{{ secret('DBT_CLOUD_API_TOKEN') }}"
-            jobId: "{{ secret('DBT_CLOUD_MART_JOB_ID') }}"
-            wait: true
-
-          - id: activation_models
-            type: io.kestra.plugin.dbt.cloud.TriggerRun
-            accountId: "{{ secret('DBT_CLOUD_ACCOUNT_ID') }}"
-            token: "{{ secret('DBT_CLOUD_API_TOKEN') }}"
-            jobId: "{{ secret('DBT_CLOUD_ACTIVATION_JOB_ID') }}"
-            wait: true
-
-          - id: notify_complete
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":white_check_mark: All dbt Cloud jobs complete. <{{ execution.url }}|View execution>"
-              }
-
-        errors:
-          - id: alert_on_failure
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":warning: dbt Cloud pipeline failed. <{{ execution.url }}|View execution>"
-              }
-
 comparison:
   title: "Kestra vs dbt Cloud orchestration alternatives"
   subtitle: "How Kestra compares to the tools dbt Cloud teams are already using or evaluating."
@@ -382,7 +239,7 @@ comparison:
         - "No"
         - "No"
     - feature: "Chain dbt Cloud with Fivetran, Hightouch, Spark"
-      kestra: "✓ 1300+ plugins"
+      kestra: "✓ 1400+ plugins"
       values:
         - "Possible, Python code required"
         - "Possible, fragile"

@@ -35,6 +35,7 @@ export default {
         "https://www.gstatic.com/recaptcha/",
         "https://jobs.ashbyhq.com/",
         "https://*.claydar.com",
+        "https://*.vector.co",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -72,6 +73,7 @@ export default {
         "https://*.hsforms.net",
         "http://*.hsforms.net",
         "https://jobs.ashbyhq.com/",
+        "https://*.vector.co",
     ],
     "connect-src": [
         "'self'",
@@ -95,10 +97,16 @@ export default {
         "https://*.s3.amazonaws.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
+        // Google Ads conversion pings + Enhanced Conversions. The wildcard
+        // above only matches *.g.doubleclick.net, so ad.doubleclick.net (the
+        // conversion collect endpoint) was blocked and conversions failed.
+        "https://*.doubleclick.net",
+        "https://www.googleadservices.com",
         "https://*.ipify.org",
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",
         "https://*.claydar.com",
+        "https://*.vector.co",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],

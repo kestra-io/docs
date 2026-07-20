@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Connect Kubernetes to your platform with a workflow engine that runs Pods as flow steps, applies manifests on non-Git events, restarts Deployments after Secret rotation, and chains kubectl with <a href='/orchestration/argocd'>Argo CD</a>, Vault, and GitHub in one audited flow. Drop the duplicate GPU hardware bill; span every tenant cluster from one flow via per-task kubeConfig."
+
 pillars:
   title: "Direct cluster API, not GitOps reconciliation."
   subtitle: "Argo CD reconciles what should be deployed from Git. This plugin acts on the cluster directly: spawns Pods as flow steps, patches Secrets, rolls Deployments, reads live state into flow inputs. Two complementary patterns, two different sources of truth, both first-class in Kestra."
@@ -177,172 +179,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set the kubeconfig in Kestra secrets, point at your cluster, ship it."
   items:
     - name: "Run a GPU Pod and collect its artifact"
+      blueprintId: "kubernetes-gpu-pod-artifact"
       title: "PodCreate with GPU request, stream logs, save the model artifact"
       description: "Spawns a Pod with a GPU resource request on a node selector for the GPU pool. The main container runs a training script; a sidecar collects the resulting model file and writes it to Kestra internal storage. Slack confirms with the artifact URI and runtime metrics."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.kubernetes.core.PodCreate"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: k8s-gpu-training
-        namespace: company.ml
-
-        inputs:
-          - id: namespace
-            type: STRING
-            defaults: "ml-jobs"
-          - id: dataset_uri
-            type: STRING
-            description: "S3 URI of the training dataset."
-
-        tasks:
-          - id: train
-            type: io.kestra.plugin.kubernetes.core.PodCreate
-            namespace: "{{ inputs.namespace }}"
-            spec:
-              containers:
-                - name: trainer
-                  image: company/ml-trainer:latest
-                  args:
-                    - "--dataset"
-                    - "{{ inputs.dataset_uri }}"
-                  resources:
-                    limits:
-                      nvidia.com/gpu: "1"
-                      memory: "32Gi"
-              nodeSelector:
-                node-pool: "gpu"
-              restartPolicy: Never
-            outputFiles:
-              - "/output/model.bin"
-              - "/output/metrics.json"
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":chart_with_upwards_trend: Training done. Artifact at {{ outputs.train.outputFiles['/output/model.bin'] }}. <{{ execution.url }}|View>"
-              }
     - name: "Vault rotation, patch and restart Deployments"
+      blueprintId: "kubernetes-vault-rotation-restart"
       title: "Rotate a Vault secret, restart every Deployment that reads it"
       description: "Calls the Vault rotation endpoint, then iterates the list of Deployments that consume the secret. Per Deployment: kubectl.Patch annotates with a rollout timestamp, kubectl.Restart triggers the rolling restart, kubectl.Get waits for Available replicas to match desired."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.http.Request"
-        - "io.kestra.plugin.kubernetes.kubectl.Patch"
-        - "io.kestra.plugin.kubernetes.kubectl.Restart"
-        - "io.kestra.plugin.kubernetes.kubectl.Get"
-      code: |
-        id: vault-rotate-and-restart
-        namespace: company.platform
-
-        triggers:
-          - id: weekly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 4 * * 0"
-
-        inputs:
-          - id: deployments
-            type: ARRAY
-            itemType: STRING
-            defaults:
-              - "api-gateway"
-              - "billing-worker"
-              - "auth-service"
-          - id: namespace
-            type: STRING
-            defaults: "production"
-
-        tasks:
-          - id: rotate_in_vault
-            type: io.kestra.plugin.core.http.Request
-            uri: "{{ secret('VAULT_ADDR') }}/v1/database/rotate-role/app-db"
-            method: POST
-            headers:
-              X-Vault-Token: "{{ secret('VAULT_TOKEN') }}"
-
-          - id: per_deployment
-            type: io.kestra.plugin.core.flow.ForEach
-            values: "{{ inputs.deployments }}"
-            tasks:
-              - id: annotate
-                type: io.kestra.plugin.kubernetes.kubectl.Patch
-                namespace: "{{ inputs.namespace }}"
-                kind: Deployment
-                resourceName: "{{ taskrun.value }}"
-                patchType: STRATEGIC_MERGE
-                patch:
-                  spec:
-                    template:
-                      metadata:
-                        annotations:
-                          kestra.io/rotated-at: "{{ now() }}"
-
-              - id: restart
-                type: io.kestra.plugin.kubernetes.kubectl.Restart
-                namespace: "{{ inputs.namespace }}"
-                kind: Deployment
-                resourceNames:
-                  - "{{ taskrun.value }}"
-
-              - id: wait_ready
-                type: io.kestra.plugin.kubernetes.kubectl.Get
-                namespace: "{{ inputs.namespace }}"
-                kind: Deployment
-                resourceName: "{{ taskrun.value }}"
-                waitUntilReady: PT5M
     - name: "Multi-cluster apply across tenant clusters"
+      blueprintId: "kubernetes-multicluster-apply"
       title: "ForEach tenant: apply the same manifest, wait for Ready, report per tenant"
       description: "Fetches the tenant list from an inventory API, iterates with parallel ForEach, applies the release manifest to each tenant cluster using the matching kubeconfig from Kestra secrets, waits for Ready, and posts per-tenant status to Slack. Failures route to an errors branch that rolls back that tenant only."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.flow.ForEach"
-        - "io.kestra.plugin.kubernetes.kubectl.Apply"
-        - "io.kestra.plugin.kubernetes.kubectl.Get"
-      code: |
-        id: multi-tenant-k8s-release
-        namespace: company.platform
-
-        inputs:
-          - id: manifest
-            type: STRING
-            description: "Manifest YAML to apply across tenant clusters."
-
-        tasks:
-          - id: fetch_tenants
-            type: io.kestra.plugin.core.http.Request
-            uri: "https://inventory.example.com/tenants?status=active"
-            method: GET
-
-          - id: per_tenant
-            type: io.kestra.plugin.core.flow.ForEach
-            values: "{{ outputs.fetch_tenants.body }}"
-            concurrencyLimit: 10
-            tasks:
-              - id: apply
-                type: io.kestra.plugin.kubernetes.kubectl.Apply
-                kubeConfig: "{{ secret('KUBECONFIG_' ~ json(taskrun.value).slug | upper) }}"
-                namespace: "{{ json(taskrun.value).namespace }}"
-                manifest: "{{ inputs.manifest }}"
-                waitUntilReady: PT3M
-
-              - id: wait_healthy
-                type: io.kestra.plugin.kubernetes.kubectl.Get
-                kubeConfig: "{{ secret('KUBECONFIG_' ~ json(taskrun.value).slug | upper) }}"
-                namespace: "{{ json(taskrun.value).namespace }}"
-                kind: Deployment
-                waitUntilReady: PT5M
-
-              - id: notify_tenant
-                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-                url: "{{ secret('SLACK_WEBHOOK') }}"
-                payload: |
-                  {
-                    "text": ":white_check_mark: Release applied to {{ json(taskrun.value).name }}. <{{ execution.url }}|View>"
-                  }
-
 comparison:
   title: "Kestra vs Kubernetes orchestration alternatives"
   subtitle: "Kestra wraps the Kubernetes API with first-class tasks for Pod execution, server-side apply, rolling restarts, patching, and multi-cluster ops. The competitors below are how teams typically drive cluster changes today, with different goals than this plugin."
@@ -403,7 +253,7 @@ comparison:
         - "Self-hosted"
         - "Self-hosted"
     - feature: "Beyond Kubernetes: orchestrate the rest of the stack"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Cluster state only"
         - "Whatever you script"

@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Connect Cloudflare to your stack with a workflow engine that listens to <a href='/orchestration/terraform'>Terraform</a> outputs, <a href='/orchestration/argocd'>Argo CD</a> Healthy events, or PagerDuty alerts, handles DNS upsert, cache purge, and WAF auto-expire, and chains them in one audited flow. Drop the post-apply dashboard click; never serve prod from a stale cache."
+
 pillars:
   title: "Around every zone, every record, every cache miss."
   subtitle: "Cloudflare runs the edge. Kestra wires it into the rest of your stack: DNS updated from Terraform output, cache purged when the deploy succeeds, WAF rules opened by an alert and closed by a schedule. The Cloudflare dashboard, the API tokens, and the edge runtime stay where they are."
@@ -168,159 +170,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your Cloudflare API token, point at your zone, ship it."
   items:
     - name: "DNS upsert when Terraform writes a new IP"
+      blueprintId: "cloudflare-dns-from-terraform"
       title: "Sync a Cloudflare A record with terraform output, then purge cache"
       description: "terraform apply produces a new IP output. The flow upserts the matching A record in Cloudflare, purges the cache for that hostname, and posts a Slack message with the record ID and the new content."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.terraform.cli.TerraformCLI"
-        - "io.kestra.plugin.cloudflare.dns.records.Upsert"
-        - "io.kestra.plugin.cloudflare.cache.Purge"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: cloudflare-dns-from-terraform
-        namespace: company.platform
-
-        inputs:
-          - id: zone_id
-            type: STRING
-          - id: hostname
-            type: STRING
-            defaults: "app.example.com"
-
-        tasks:
-          - id: terraform_apply
-            type: io.kestra.plugin.terraform.cli.TerraformCLI
-            inputFiles:
-              main.tf: "{{ read('main.tf') }}"
-            commands:
-              - terraform init
-              - terraform apply -auto-approve -json
-
-          - id: upsert_dns
-            type: io.kestra.plugin.cloudflare.dns.records.Upsert
-            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
-            zoneId: "{{ inputs.zone_id }}"
-            recordType: "A"
-            name: "{{ inputs.hostname }}"
-            content: "{{ outputs.terraform_apply.stdOutLineCount > 0 ? outputs.terraform_apply.vars.ip : '' }}"
-            ttl: 1
-            proxied: true
-
-          - id: purge_cache
-            type: io.kestra.plugin.cloudflare.cache.Purge
-            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
-            zoneId: "{{ inputs.zone_id }}"
-            hosts:
-              - "{{ inputs.hostname }}"
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":globe_with_meridians: {{ inputs.hostname }} now points at {{ outputs.upsert_dns.content }}. Record ID: {{ outputs.upsert_dns.recordId }}. <{{ execution.url }}|View execution>"
-              }
     - name: "Cache purge after Argo CD reports Healthy"
+      blueprintId: "cloudflare-cache-purge-on-deploy"
       title: "Listen for the deploy webhook, purge cache, verify with a probe"
       description: "A Webhook trigger receives the Argo CD workflow_run completion. The flow calls cache.Purge by hostname, then runs an HTTP HEAD with cache-control: no-cache to verify the origin response. Slack confirms with the deploy URL."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Webhook"
-        - "io.kestra.plugin.cloudflare.cache.Purge"
-        - "io.kestra.plugin.core.http.Request"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: cache-purge-on-deploy
-        namespace: company.platform
-
-        inputs:
-          - id: zone_id
-            type: STRING
-          - id: hostname
-            type: STRING
-            defaults: "app.example.com"
-
-        triggers:
-          - id: deploy_healthy
-            type: io.kestra.plugin.core.trigger.Webhook
-            key: cf-cache-purge
-
-        tasks:
-          - id: purge
-            type: io.kestra.plugin.cloudflare.cache.Purge
-            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
-            zoneId: "{{ inputs.zone_id }}"
-            hosts:
-              - "{{ inputs.hostname }}"
-
-          - id: verify_fresh
-            type: io.kestra.plugin.core.http.Request
-            uri: "https://{{ inputs.hostname }}/healthz"
-            method: HEAD
-            headers:
-              Cache-Control: "no-cache"
-            options:
-              connectTimeout: PT10S
-              readTimeout: PT10S
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":fire: Cache purged for {{ inputs.hostname }}. Origin response: {{ outputs.verify_fresh.code }}. <{{ execution.url }}|View>"
-              }
     - name: "Multi-zone DNS reconciliation from a Git manifest"
+      blueprintId: "cloudflare-multizone-dns-from-git"
       title: "Iterate every zone on the account, apply declared records in one batch each"
       description: "Weekly schedule. Clone the manifest repo. List every zone on the account. Per zone, parse the manifest, build the declared record set, and apply with dns.records.Batch. A drift summary posts to Slack showing records changed per zone."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.git.Clone"
-        - "io.kestra.plugin.cloudflare.zones.List"
-        - "io.kestra.plugin.core.flow.ForEach"
-        - "io.kestra.plugin.cloudflare.dns.records.Batch"
-      code: |
-        id: cloudflare-multi-zone-reconcile
-        namespace: company.platform
-
-        triggers:
-          - id: weekly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 6 * * 1"
-
-        tasks:
-          - id: clone_manifest
-            type: io.kestra.plugin.git.Clone
-            url: https://github.com/company/cloudflare-dns
-            branch: main
-            username: "{{ secret('GIT_USERNAME') }}"
-            password: "{{ secret('GIT_TOKEN') }}"
-
-          - id: list_zones
-            type: io.kestra.plugin.cloudflare.zones.List
-            apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
-
-          - id: per_zone
-            type: io.kestra.plugin.core.flow.ForEach
-            values: "{{ outputs.list_zones.zones }}"
-            tasks:
-              - id: apply_records
-                type: io.kestra.plugin.cloudflare.dns.records.Batch
-                apiToken: "{{ secret('CLOUDFLARE_API_TOKEN') }}"
-                zoneId: "{{ json(taskrun.value).id }}"
-                posts: "{{ read('records/' ~ json(taskrun.value).name ~ '/create.json') }}"
-                patches: "{{ read('records/' ~ json(taskrun.value).name ~ '/update.json') }}"
-                deletes: "{{ read('records/' ~ json(taskrun.value).name ~ '/delete.json') }}"
-
-          - id: summary
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":arrows_counterclockwise: Reconciled {{ outputs.list_zones.zones | length }} Cloudflare zones from main. <{{ execution.url }}|View execution>"
-              }
-
 comparison:
   title: "Kestra vs Cloudflare automation alternatives"
   subtitle: "Kestra wraps the Cloudflare API with first-class tasks for DNS records, cache purge, WAF rules, Workers KV, Worker scripts, and zone metadata. The competitors below are how teams typically drive Cloudflare changes today."

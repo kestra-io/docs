@@ -1,0 +1,15 @@
+<svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo preto -->
+  <rect width="360" height="360" fill="#050505"/>
+  <!-- Símbolo JLCP centralizado com padding (translate 41,35; scale ~1.0) -->
+  <!-- Original viewBox era 277x291; aplicamos translate para centralizar com 41px de padding lateral -->
+  <g fill="#c3f53c" transform="translate(41, 35)">
+    <rect x="0" y="11.886" width="160.453" height="54.821"/>
+    <rect x="221.365" y="11.886" width="55.328" height="55.328"/>
+    <rect x="0" y="119.470" width="55.328" height="55.328"/>
+    <rect x="221.308" y="119.470" width="55.328" height="55.328"/>
+    <rect x="0" y="223.980" width="55.328" height="55.328"/>
+    <rect x="103.998" y="224.485" width="172.487" height="54.822"/>
+    <path d="M176.371 145.597L137.248 184.720L98.125 145.597L137.248 106.474L176.371 145.597Z"/>
+  </g>
+</svg>

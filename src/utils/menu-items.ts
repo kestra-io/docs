@@ -24,6 +24,7 @@ import KestraIcon from "~/components/icons/KestraIcon.vue"
 import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
 import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
+import HubOutline from "vue-material-design-icons/HubOutline.vue"
 import School from "vue-material-design-icons/School.vue"
 
 interface MenuItem {
@@ -147,6 +148,11 @@ export const menuItems: MenuItems = {
                 link: "/docs"
             },
             {
+                icon: HubOutline,
+                title: "Integrations",
+                link: "/orchestration"
+            },
+            {
                 icon: ShapePlusOutline,
                 title: "Blueprints",
                 link: "/blueprints"
@@ -159,7 +165,7 @@ export const menuItems: MenuItems = {
             {
                 icon: FormatQuoteCloseOutline,
                 title: "Customer Stories",
-                link: "/use-cases/stories"
+                link: "/customers"
             },
             {
                 icon: School,

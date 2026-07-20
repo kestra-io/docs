@@ -17,20 +17,25 @@ tasks:
   - io.kestra.core.tasks.scripts.Python
 kpi1: |-
   ##### Easy
-  Kafka Integration
+  Kafka integration
 kpi2: |-
   ##### Terabytes
   uploaded to S3
 kpi3: |-
   ##### FULL
-  CI/CD from dev to Prod
+  CI/CD from dev to prod
 quote: The flows are pretty epic, I'm quite proud of what I've created.
 quotePerson: Michele Memoli
 quotePersonTitle: ""
 industry: SaaS
 headquarter: London, United Kingdom
+region: Europe
+companySize: "1–50"
 solution: Modelisation tool for architects
-companyName: ""
+tagline: Collaborative architectural modeling and design tool
+companyName: HTCH
+useCase: Orchestrating Kafka events, S3 uploads, and 3D file transformations for a collaborative architectural design web platform
+useCaseShort: Business Automation
 cta: "What would change if your SaaS platform's backend workflows were fully orchestrated—deployments, data flows, and integrations running automatically?"
 ---
 

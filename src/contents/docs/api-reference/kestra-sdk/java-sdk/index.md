@@ -210,7 +210,7 @@ public class ExecutionsExamples {
 
 ## Follow an execution
 
-Fetch the latest SSE event for an execution. Use this to check the final state after triggering an execution.
+`followExecution` returns a reactive `Flux<Execution>` that streams state updates as the execution progresses. Each emission is an `Execution` object — skip entries where `getState()` is `null` (keepalive frames emitted by the server before the first real update).
 
 ```java
 public class ExecutionsExamples {
@@ -218,15 +218,12 @@ public class ExecutionsExamples {
         String executionId = "your-execution-id";
         String tenant = "main";
 
-        var event = KestraClients.INSTANCE.executions()
-            .followExecution(executionId, tenant);
-
-        if (event != null) {
-            System.out.printf("Event: %s%n", event.getId());
-            if (event.getData() != null) {
-                System.out.printf("Status: %s%n", event.getData().getState());
-            }
-        }
+        KestraClients.INSTANCE.executions()
+            .followExecution(executionId, tenant)
+            .filter(execution -> execution.getState() != null) // skip keepalive frames
+            .doOnNext(execution -> System.out.printf("[%s] %s%n",
+                execution.getId(), execution.getState().getCurrent()))
+            .blockLast(); // blocks until the execution stream ends
     }
 }
 ```
@@ -432,6 +429,207 @@ public class TriggersExamples {
         KestraClients.INSTANCE.triggers()
             .restartTrigger("my_namespace", "my_flow", "my_schedule", tenant);
         System.out.println("Trigger restarted");
+    }
+}
+```
+
+---
+
+## Dashboards
+
+Create, search, and delete dashboards.
+
+### Create a dashboard
+
+```java
+public class DashboardsExamples {
+    public static void createDashboard() {
+        String tenant = "main";
+        String body = """
+            id: my_dashboard
+            title: My Dashboard
+            """;
+        var dashboard = KestraClients.INSTANCE.dashboards().createDashboard(tenant, body);
+        System.out.println("Dashboard created: " + dashboard.getId());
+    }
+}
+```
+
+### Search dashboards
+
+```java
+public class DashboardsExamples {
+    public static void searchDashboards() {
+        String tenant = "main";
+        var result = KestraClients.INSTANCE.dashboards().searchDashboards(tenant, null, null, null, null);
+        result.getResults().forEach(d -> System.out.println(d.getId()));
+    }
+}
+```
+
+### Delete a dashboard
+
+```java
+public class DashboardsExamples {
+    public static void deleteDashboard() {
+        String tenant = "main";
+        KestraClients.INSTANCE.dashboards().deleteDashboard("my_dashboard_id", tenant);
+        System.out.println("Dashboard deleted");
+    }
+}
+```
+
+---
+
+## Namespace files
+
+List, read, and delete files stored in a namespace.
+
+### List files
+
+```java
+public class FilesExamples {
+    public static void listFiles() {
+        var files = KestraClients.INSTANCE.files()
+            .listNamespaceDirectoryFiles("my_namespace", "main", "/");
+        files.forEach(f -> System.out.println(f.getFileName()));
+    }
+}
+```
+
+### Read file content
+
+```java
+import java.io.File;
+
+public class FilesExamples {
+    public static void readFile() {
+        String tenant = "main";
+        File content = KestraClients.INSTANCE.files()
+            .fileContent("my_namespace", "/scripts/main.py", tenant, null);
+        System.out.println("Downloaded to: " + content.getAbsolutePath());
+    }
+}
+```
+
+### Delete a file
+
+```java
+public class FilesExamples {
+    public static void deleteFile() {
+        String tenant = "main";
+        KestraClients.INSTANCE.files()
+            .deleteFileDirectory("my_namespace", "/scripts/main.py", tenant);
+        System.out.println("File deleted");
+    }
+}
+```
+
+---
+
+## Test suites
+
+:::alert{type="warning"}
+Test suites require Kestra Enterprise Edition.
+:::
+
+Create, run, and fetch results for unit test suites.
+
+### Create a test suite
+
+```java
+public class TestSuitesExamples {
+    public static void createTestSuite() {
+        String tenant = "main";
+        String body = """
+            id: my_tests
+            namespace: my_namespace
+            flows:
+              - flowId: my_flow
+            """;
+        var suite = KestraClients.INSTANCE.testSuites().createTestSuite(tenant, body);
+        System.out.println("Test suite created: " + suite.getId());
+    }
+}
+```
+
+### Run a test suite
+
+```java
+public class TestSuitesExamples {
+    public static void runTestSuite() {
+        String tenant = "main";
+        var result = KestraClients.INSTANCE.testSuites()
+            .runTestSuite("my_namespace", "my_tests", tenant, null);
+        System.out.println("State: " + result.getState());
+    }
+}
+```
+
+### Get test results
+
+```java
+public class TestSuitesExamples {
+    public static void getTestResult() {
+        String tenant = "main";
+        var result = KestraClients.INSTANCE.testSuites().testResult("run-id", tenant);
+        System.out.println("State: " + result.getState());
+    }
+}
+```
+
+---
+
+## Apps
+
+:::alert{type="warning"}
+Apps require Kestra Enterprise Edition.
+:::
+
+Create, enable, disable, and delete apps.
+
+### Create an app
+
+```java
+public class AppsExamples {
+    public static void createApp() {
+        String tenant = "main";
+        String body = """
+            id: my_app
+            title: My App
+            """;
+        var app = KestraClients.INSTANCE.apps().createApp(tenant, body);
+        System.out.println("App created: " + app.getUid());
+    }
+}
+```
+
+### Enable or disable an app
+
+```java
+public class AppsExamples {
+    public static void enableApp() {
+        String tenant = "main";
+        KestraClients.INSTANCE.apps().enableApp("app-uid", tenant);
+        System.out.println("App enabled");
+    }
+
+    public static void disableApp() {
+        String tenant = "main";
+        KestraClients.INSTANCE.apps().disableApp("app-uid", tenant);
+        System.out.println("App disabled");
+    }
+}
+```
+
+### Delete an app
+
+```java
+public class AppsExamples {
+    public static void deleteApp() {
+        String tenant = "main";
+        KestraClients.INSTANCE.apps().deleteApp("app-uid", tenant);
+        System.out.println("App deleted");
     }
 }
 ```

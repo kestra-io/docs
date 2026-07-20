@@ -9,18 +9,25 @@ import SeeHow from "~/components/common/SeeHow.astro"
 import Link from "~/components/common/Link.astro"
 import BlogList from "~/components/common/BlogList.astro"
 import ResourceList from "~/components/common/ResourceList.astro"
-import BlueprintTabs from "~/components/common/BlueprintTabs.astro"
 import CardGrid from "~/components/card/CardGrid.astro"
 import SplitBadgeCard from "~/components/card/SplitBadgeCard.astro"
 import FeatureGrid from "~/components/versus/FeatureGrid.astro"
 
+import { Icon } from "astro-icon/components"
+
 import Hero from "~/components/orchestrate/Hero.astro"
+import OrchPattern from "~/components/orchestrate/OrchPattern.astro"
 import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
 
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { $fetchApiCached } from "~/utils/fetch"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
+import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
+import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+import DataportLogo from "~/contents/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra/logo.svg?raw"
+import CleverConnectLogo from "~/contents/customer-stories/cleverconnect-enhances-hr-integration-platform-with-kestra/logo.svg?raw"
 import RiversideLogo from "~/components/orchestrate/assets/riverside.svg?raw"
 import SlackLogo from "~/components/orchestrate/assets/slack.svg?raw"
 import FoundationDataLogo from "~/components/orchestrate/assets/foundation-data.svg?raw"
@@ -30,7 +37,7 @@ import SophtLogo from "~/components/orchestrate/assets/sopht.svg?raw"
 import BsiLogo from "~/components/orchestrate/assets/bsi.svg?raw"
 import CenshareLogo from "~/components/orchestrate/assets/censhare.svg?raw"
 import WestBendLogo from "~/components/orchestrate/assets/west-bend.svg?raw"
-import BhpLogo from "~/components/orchestrate/assets/bhp.svg?raw"
+import Fortune500Logo from "~/components/enterprise/assets/fortune500.svg?raw"
 
 const versusLogoModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -46,16 +53,29 @@ function getVersusLogo(filename: string): string {
 
 const LOGO_MAP: Record<string, string> = {
     gorgias: optimizeSvgIcon(GorgiasLogo, "gorgias-orch-logo"),
+    gravitee: optimizeSvgIcon(GraviteeLogo, "gravitee-orch-logo"),
+    "leroy-merlin": optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-orch-logo"),
+    dataport: optimizeSvgIcon(DataportLogo, "dataport-orch-logo"),
+    cleverconnect: optimizeSvgIcon(
+        CleverConnectLogo,
+        "cleverconnect-orch-logo",
+    ),
     riverside: optimizeSvgIcon(RiversideLogo, "riverside-orch-logo"),
     slack: optimizeSvgIcon(SlackLogo, "slack-orch-logo"),
-    "foundation-data": optimizeSvgIcon(FoundationDataLogo, "foundation-data-orch-logo"),
+    "foundation-data": optimizeSvgIcon(
+        FoundationDataLogo,
+        "foundation-data-orch-logo",
+    ),
     reddit: optimizeSvgIcon(RedditLogo, "reddit-orch-logo"),
-    "credit-agricole": optimizeSvgIcon(CreditAgricoleLogo, "credit-agricole-orch-logo"),
+    "credit-agricole": optimizeSvgIcon(
+        CreditAgricoleLogo,
+        "credit-agricole-orch-logo",
+    ),
     sopht: optimizeSvgIcon(SophtLogo, "sopht-orch-logo"),
     bsi: optimizeSvgIcon(BsiLogo, "bsi-orch-logo"),
     censhare: optimizeSvgIcon(CenshareLogo, "censhare-orch-logo"),
     "west-bend": optimizeSvgIcon(WestBendLogo, "west-bend-orch-logo"),
-    bhp: optimizeSvgIcon(BhpLogo, "bhp-orch-logo"),
+    fortune500: optimizeSvgIcon(Fortune500Logo, "fortune500-orch-logo"),
 }
 
 export async function getStaticPaths() {
@@ -72,15 +92,50 @@ const {
     description,
     tool,
     hero,
+    nutshell,
     pillars,
     useCases,
     quotes,
     blueprints,
     comparison,
+    postCompareCta,
     faq,
     seeHow,
     resources,
 } = entry.data
+
+const blueprintItems = await Promise.all(
+    blueprints.items.map(async (item) => {
+        if (!item.blueprintId) return item
+        try {
+            const [bp, graph] = await Promise.all([
+                $fetchApiCached<{ flow: string }>(
+                    `/blueprints/${item.blueprintId}/versions/latest`,
+                ),
+                $fetchApiCached(
+                    `/blueprints/${item.blueprintId}/versions/latest/graph`,
+                ),
+            ])
+            return { ...item, render: { source: bp.flow, graph } }
+        } catch (e) {
+            console.warn(
+                `Could not fetch blueprint "${item.blueprintId}" for ${entry.id}`,
+                e,
+            )
+            return item
+        }
+    }),
+)
+
+let allBlueprintsCount = 0
+try {
+    const search = await $fetchApiCached<{ total: number }>(
+        `/blueprints/versions/latest?q=${encodeURIComponent(tool.name)}&size=1`,
+    )
+    allBlueprintsCount = search?.total ?? 0
+} catch (e) {
+    console.warn(`Could not fetch blueprint count for ${tool.name}`, e)
+}
 
 let pluginIcon = ""
 try {
@@ -144,7 +199,9 @@ const quoteItems = quotes.map((q) => ({
     smallLogoSvg: q.logoFile ? LOGO_MAP[q.logoFile] : undefined,
 }))
 
-const competitorKeys = comparison.competitors.map((_: any, i: number) => `comp${i}`)
+const competitorKeys = comparison.competitors.map(
+    (_: any, i: number) => `comp${i}`,
+)
 const comparisonTableData = comparison.rows.map((row) => {
     const obj: Record<string, string> = {
         feature: row.feature,
@@ -170,7 +227,20 @@ const comparisonTableData = comparison.rows.map((row) => {
         toolColor={tool.color}
     />
 
-    <CardGrid title={pillars.title} subtitle={pillars.subtitle} items={pillars.items} />
+    <OrchPattern
+        heading={blueprints.title}
+        nutshell={nutshell}
+        blueprints={blueprintItems}
+        toolColor={tool.color}
+        toolName={tool.name}
+        allBlueprintsCount={allBlueprintsCount}
+    />
+
+    <CardGrid
+        title={pillars.title}
+        subtitle={pillars.subtitle}
+        items={pillars.items}
+    />
 
     <section class="orch-usecases">
         <div class="orch-usecases__head">
@@ -196,12 +266,6 @@ const comparisonTableData = comparison.rows.map((row) => {
     </section>
 
     <Quotes quotes={quoteItems} client:load />
-
-    <BlueprintTabs
-        title={blueprints.title}
-        lead={blueprints.lead}
-        items={blueprints.items}
-    />
 
     <div class="orch-compare">
         <FeatureGrid
@@ -231,6 +295,40 @@ const comparisonTableData = comparison.rows.map((row) => {
                     ))
                 }
             </Fragment>
+            {
+                postCompareCta && (
+                    <Fragment slot="cta">
+                        <div class="post-compare">
+                            <div class="post-compare__text">
+                                {postCompareCta.eyebrow && (
+                                    <span class="post-compare__eyebrow">
+                                        {postCompareCta.eyebrow}
+                                    </span>
+                                )}
+                                <span class="post-compare__title">
+                                    {postCompareCta.title}
+                                </span>
+                                {postCompareCta.description && (
+                                    <p class="post-compare__lead">
+                                        {postCompareCta.description}
+                                    </p>
+                                )}
+                            </div>
+                            <a
+                                href={postCompareCta.cta.href}
+                                class="btn btn-secondary post-compare__cta"
+                            >
+                                {postCompareCta.cta.label}
+                                <Icon
+                                    name="mdi:chevron-right"
+                                    width={16}
+                                    height={16}
+                                />
+                            </a>
+                        </div>
+                    </Fragment>
+                )
+            }
         </FeatureGrid>
     </div>
 
@@ -250,13 +348,11 @@ const comparisonTableData = comparison.rows.map((row) => {
                                 <span class="docs-card__eyebrow">
                                     Documentation
                                 </span>
-                                <h3>
-                                    Wire {tool.name} into your workflows
-                                </h3>
+                                <h3>Wire {tool.name} into your workflows</h3>
                                 <p>
                                     Every {tool.name} task, trigger, and
-                                    configuration option, with copy-ready
-                                    YAML examples.
+                                    configuration option, with copy-ready YAML
+                                    examples.
                                 </p>
                                 <Link href={pluginDocsUrl}>
                                     Explore the {tool.name} plugin docs
@@ -348,7 +444,22 @@ const comparisonTableData = comparison.rows.map((row) => {
         :global(th),
         :global(td) {
             width: auto !important;
-            padding: 1rem 1.25rem !important;
+            padding: 0.75rem 1rem !important;
+            height: auto !important;
+            font-size: $font-size-sm !important;
+            line-height: 1.45 !important;
+            vertical-align: top !important;
+        }
+
+        :global(th) {
+            padding-top: 1rem !important;
+            padding-bottom: 0.875rem !important;
+        }
+
+        :global(td:first-child),
+        :global(th:first-child) {
+            min-width: 11rem;
+            max-width: 14rem;
         }
 
         :global(.th-competitor) {
@@ -383,6 +494,65 @@ const comparisonTableData = comparison.rows.map((row) => {
 
         :global(.check-icon) {
             color: #22c55e !important;
+        }
+
+        :global(.post-compare) {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-top: 1.75rem;
+            padding: 1.125rem 1.5rem;
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.625rem;
+            box-shadow: 2px 3px 12px 0 var(--ks-shadows-light);
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1rem 1.125rem;
+                gap: 0.875rem;
+            }
+        }
+
+        :global(.post-compare__text) {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            min-width: 0;
+            flex: 1;
+        }
+
+        :global(.post-compare__eyebrow) {
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--ks-content-color-highlight);
+        }
+
+        :global(.post-compare__title) {
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.35;
+            color: var(--ks-content-primary);
+        }
+
+        :global(.post-compare__lead) {
+            margin: 0;
+            font-size: 0.8125rem;
+            line-height: 1.5;
+            color: var(--ks-content-secondary);
+        }
+
+        :global(.post-compare__cta) {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
     }
 
@@ -429,8 +599,7 @@ const comparisonTableData = comparison.rows.map((row) => {
                     120% 80% at 100% 0%,
                     color-mix(
                         in srgb,
-                        var(--tool-color, var(--ks-content-color-highlight))
-                            18%,
+                        var(--tool-color, var(--ks-content-color-highlight)) 18%,
                         transparent
                     ),
                     transparent 60%
@@ -470,5 +639,4 @@ const comparisonTableData = comparison.rows.map((row) => {
             }
         }
     }
-
 </style>

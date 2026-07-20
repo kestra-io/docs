@@ -216,13 +216,13 @@ testimonials:
         name: Active users
       - value: "+5000"
         name: Workflows created
-    storyLink: /use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent
+    storyLink: /customers/leroy-merlin-france
 
 platformStrengths:
   title: Kestra Orchestrates Across Any Stack
   features:
     - title: Multi-cloud and stack-agnostic by design
-      description: "Kestra's 1,200+ plugins cover every major cloud provider, data warehouse, message queue, and database (AWS, GCP, Azure, Snowflake, Databricks, BigQuery, Kafka, and more). A pipeline that reads from S3, transforms in Databricks, and writes to Azure SQL lives in the same YAML as one that does the reverse. Adding a new tool to the stack means adding a plugin, not rearchitecting the platform."
+      description: "Kestra's 1,400+ plugins cover every major cloud provider, data warehouse, message queue, and database (AWS, GCP, Azure, Snowflake, Databricks, BigQuery, Kafka, and more). A pipeline that reads from S3, transforms in Databricks, and writes to Azure SQL lives in the same YAML as one that does the reverse. Adding a new tool to the stack means adding a plugin, not rearchitecting the platform."
     - title: Workflows in Git, deployed through CI/CD
       description: "Every Kestra flow is a YAML file reviewed in a pull request, versioned in Git, and deployed through the same CI/CD pipeline as your application code. Every change is tracked, every deployment is auditable, and rolling back a broken pipeline is a git revert. Automation gets the same engineering discipline as the rest of your infrastructure."
     - title: Self-hosted on any infrastructure

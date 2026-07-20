@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Let the ServiceNow ticket fire the flow: a workflow engine that listens to Business Rule webhooks on approval, runs the matching runbook scoped by CMDB relationships, updates the ticket through every step, and chains ServiceNow with <a href='/orchestration/terraform'>Terraform</a>, <a href='/orchestration/argocd'>Argo CD</a>, and <a href='/orchestration/kubernetes'>Kubernetes</a>. Standard changes close themselves; incidents auto-open with CMDB-driven severity."
+
 pillars:
   title: "Around every change, every incident, every CI."
   subtitle: "ServiceNow holds the audit and the human process. Kestra holds the execution. The plugin closes the loop: tickets fire flows, flows update tickets, CMDB scopes the work, audit lives on both sides cross-referenced. The copy-paste between the runbook doc and the change record disappears."
@@ -183,200 +185,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, set your ServiceNow instance URL and credentials, point at your tables, ship it."
   items:
     - name: "Standard change request fires a runbook"
+      blueprintId: "servicenow-change-request-runbook"
       title: "Ticket approved, flow runs, ticket updated, ticket closed"
       description: "Listens for ServiceNow Business Rule webhooks on change_request approval. Dispatches the matching subflow based on the template field. Updates the ticket through the work via servicenow.Update calls and closes with the execution URL."
       href: "/blueprints?tags=Business"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Webhook"
-        - "io.kestra.plugin.servicenow.Update"
-        - "io.kestra.plugin.core.flow.Subflow"
-      code: |
-        id: servicenow-standard-change
-        namespace: company.itsm
-
-        triggers:
-          - id: change_approved
-            type: io.kestra.plugin.core.trigger.Webhook
-            key: snow-standard-change
-
-        tasks:
-          - id: mark_in_progress
-            type: io.kestra.plugin.servicenow.Update
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: change_request
-            sysId: "{{ trigger.body.sys_id }}"
-            data:
-              state: "-1"
-              work_notes: "Kestra execution {{ execution.id }} started."
-
-          - id: dispatch_runbook
-            type: io.kestra.plugin.core.flow.Subflow
-            namespace: company.runbooks
-            flowId: "{{ trigger.body.u_template }}"
-            inputs:
-              change_number: "{{ trigger.body.number }}"
-              environment: "{{ trigger.body.u_environment }}"
-              assignee_email: "{{ trigger.body.assigned_to.email }}"
-
-          - id: close_ticket
-            type: io.kestra.plugin.servicenow.Update
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: change_request
-            sysId: "{{ trigger.body.sys_id }}"
-            data:
-              state: "3"
-              close_code: "successful"
-              close_notes: "Completed by Kestra execution {{ execution.url }}"
-
-        errors:
-          - id: mark_failed
-            type: io.kestra.plugin.servicenow.Update
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: change_request
-            sysId: "{{ trigger.body.sys_id }}"
-            data:
-              state: "4"
-              close_code: "unsuccessful"
-              close_notes: "Failed in execution {{ execution.url }}. Check Kestra for details."
     - name: "Flow failure opens an incident with CMDB-driven severity"
+      blueprintId: "servicenow-incident-on-failure"
       title: "Production flow errors branch creates a ServiceNow incident"
       description: "On a production flow failure, looks up the affected application's owner and tier from cmdb_ci_appl, calculates severity from the tier, and opens an incident with the full context routed to the right assignment group."
       href: "/blueprints?tags=Business"
-      plugins:
-        - "io.kestra.plugin.servicenow.Get"
-        - "io.kestra.plugin.servicenow.Post"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: failure-to-servicenow-incident
-        namespace: company.platform
-
-        inputs:
-          - id: application_sys_id
-            type: STRING
-
-        tasks:
-          - id: main_pipeline
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt build --target prod
-
-        errors:
-          - id: lookup_application
-            type: io.kestra.plugin.servicenow.Get
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: cmdb_ci_appl
-            sysparmQuery: "sys_id={{ inputs.application_sys_id }}"
-
-          - id: open_incident
-            type: io.kestra.plugin.servicenow.Post
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: incident
-            data:
-              short_description: "Production flow {{ flow.id }} failed on {{ task.id }}"
-              description: |
-                Scheduled flow {{ flow.id }} in namespace {{ flow.namespace }} failed.
-
-                Failing task: {{ task.id }}
-                Execution: {{ execution.url }}
-                Started: {{ execution.startDate }}
-
-                Affected application: {{ outputs.lookup_application.result[0].name }}
-              cmdb_ci: "{{ inputs.application_sys_id }}"
-              impact: "{{ outputs.lookup_application.result[0].business_criticality }}"
-              urgency: "1"
-              assignment_group: "{{ outputs.lookup_application.result[0].support_group }}"
-              caller_id: "kestra-automation"
-
-          - id: page_slack
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":rotating_light: Incident {{ outputs.open_incident.result.number }} opened for {{ outputs.lookup_application.result[0].name }} flow failure. <{{ execution.url }}|Execution>"
-              }
     - name: "CMDB-driven patch wave"
+      blueprintId: "servicenow-cmdb-patch-wave"
       title: "Change request approved, CMDB lookup, per-CI patch, ticket closed"
       description: "Listens for patch-category change requests, pulls every CI related to the application from cmdb_ci_appl_relationship, runs the per-host patching subflow per CI, updates the ticket with per-CI status, closes with a summary."
       href: "/blueprints?tags=Business"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Webhook"
-        - "io.kestra.plugin.servicenow.Get"
-        - "io.kestra.plugin.core.flow.ForEach"
-        - "io.kestra.plugin.servicenow.Update"
-      code: |
-        id: cmdb-patch-wave
-        namespace: company.itsm
-
-        triggers:
-          - id: patch_change_approved
-            type: io.kestra.plugin.core.trigger.Webhook
-            key: snow-patch-wave
-
-        tasks:
-          - id: list_affected_cis
-            type: io.kestra.plugin.servicenow.Get
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: cmdb_ci_appl_relationship
-            sysparmQuery: "parent={{ trigger.body.cmdb_ci }}^type=Runs on::Runs"
-
-          - id: mark_in_progress
-            type: io.kestra.plugin.servicenow.Update
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: change_request
-            sysId: "{{ trigger.body.sys_id }}"
-            data:
-              state: "-1"
-              work_notes: "Starting patch wave across {{ outputs.list_affected_cis.result | length }} CIs. Kestra execution {{ execution.url }}"
-
-          - id: per_ci_patch
-            type: io.kestra.plugin.core.flow.ForEach
-            values: "{{ outputs.list_affected_cis.result }}"
-            concurrencyLimit: 3
-            tasks:
-              - id: patch_host
-                type: io.kestra.plugin.core.flow.Subflow
-                namespace: company.runbooks
-                flowId: patch_host_safe
-                inputs:
-                  host_sys_id: "{{ json(taskrun.value).child.value }}"
-                  change_number: "{{ trigger.body.number }}"
-
-              - id: record_per_ci
-                type: io.kestra.plugin.servicenow.Update
-                domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-                username: "{{ secret('SERVICENOW_USERNAME') }}"
-                password: "{{ secret('SERVICENOW_PASSWORD') }}"
-                table: change_request
-                sysId: "{{ trigger.body.sys_id }}"
-                data:
-                  work_notes: "Patched CI {{ json(taskrun.value).child.display_value }}. Status: {{ outputs.patch_host.exitCode == 0 ? 'OK' : 'ROLLED_BACK' }}."
-
-          - id: close_with_summary
-            type: io.kestra.plugin.servicenow.Update
-            domain: "{{ secret('SERVICENOW_DOMAIN') }}"
-            username: "{{ secret('SERVICENOW_USERNAME') }}"
-            password: "{{ secret('SERVICENOW_PASSWORD') }}"
-            table: change_request
-            sysId: "{{ trigger.body.sys_id }}"
-            data:
-              state: "3"
-              close_code: "successful"
-              close_notes: "Patch wave complete. {{ outputs.list_affected_cis.result | length }} CIs processed. Execution: {{ execution.url }}"
-
 comparison:
   title: "Kestra vs ServiceNow automation alternatives"
   subtitle: "Kestra wraps the ServiceNow Table API with first-class tasks for record Get, Post, Update, Delete. The competitors below are how teams typically wire ServiceNow tickets to operational flows today."
@@ -445,7 +267,7 @@ comparison:
 
 faq:
   - question: "Does Kestra replace ServiceNow Flow Designer or Orchestration?"
-    answer: "No. Flow Designer is excellent for in-platform automations (form to record, approval to update, integration to MID server). ServiceNow Orchestration is a paid add-on for content packs. Kestra is a general-purpose orchestrator that uses ServiceNow tickets as triggers and uses the ServiceNow Table API to read CMDB context and write back results. Use Flow Designer for SN-native flows. Use Kestra when the work spans outside SN and needs to chain with Terraform, dbt, Argo CD, Kubernetes, or any of 1300+ plugins."
+    answer: "No. Flow Designer is excellent for in-platform automations (form to record, approval to update, integration to MID server). ServiceNow Orchestration is a paid add-on for content packs. Kestra is a general-purpose orchestrator that uses ServiceNow tickets as triggers and uses the ServiceNow Table API to read CMDB context and write back results. Use Flow Designer for SN-native flows. Use Kestra when the work spans outside SN and needs to chain with Terraform, dbt, Argo CD, Kubernetes, or any of 1400+ plugins."
   - question: "How does Kestra authenticate to ServiceNow?"
     answer: "Two options. Basic Auth: username and password (or a dedicated integration user with role itil or admin), passed as Kestra secrets. OAuth password grant: client ID, client secret, plus a username and password. Tokens go through Kestra's secrets backend and are decrypted per task. For high-security deployments, use a dedicated integration user with the minimum table-level ACLs (e.g. read on cmdb_ci_appl, write on change_request, write on incident)."
   - question: "Should I use webhooks or polling for ticket triggers?"
@@ -467,7 +289,7 @@ resources:
     - kind: "docs"
       title: "Ticket-driven orchestration with ServiceNow"
       description: "How to configure Business Rules, wire webhooks to Kestra triggers, and write runbooks that update tickets through the work."
-      href: "/docs/use-cases/business"
+      href: "/docs/use-cases"
     - kind: "resource"
       title: "Chain ServiceNow with Terraform"
       description: "The common pattern: a change request approval fires a Terraform apply, the ticket gets the plan output, the ticket closes with the apply result."

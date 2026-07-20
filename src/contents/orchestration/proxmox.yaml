@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Run Proxmox like vCenter without the Broadcom tax: a workflow engine that listens to cron or VM state changes, handles VMware-to-Proxmox migration via the ESXi Import Wizard, snapshot-gated patching, and vzdump restore drills, and chains Proxmox with <a href='/orchestration/ansible'>Ansible</a>, <a href='/orchestration/terraform'>Terraform</a>, and <a href='/orchestration/netbox'>NetBox</a>. Drop the vRA subscription; prove backups restore monthly."
+
 pillars:
   title: "Around every VM, every container, every node."
   subtitle: "What Kestra wraps around your Proxmox cluster: when actions fire, what gets snapshotted first, who drains a node before maintenance, and where the audit lives. The Proxmox API, the ESXi Import Wizard, and vzdump backups stay where they are."
@@ -179,7 +181,7 @@ useCases:
 quotes:
   - quote: "Kestra allowed us to move from fragmented automation to a unified control plane, secure, scalable, and manageable by all our teams."
     author: "Julien Legrand, PO Data · Crédit Agricole"
-    storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    storyLink: "/customers/credit-agricole"
     logoFile: "credit-agricole"
 
 blueprints:
@@ -187,233 +189,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your Proxmox node, ship it."
   items:
     - name: "Safe patching with rollback"
+      blueprintId: "proxmox-safe-patching"
       title: "Pre-patch snapshot, OS update, rollback on health-check failure"
       description: "Captures a pre-patch snapshot on a Proxmox VM or LXC, runs the OS update over SSH, probes the service. The <code>errors</code> branch rolls back the snapshot and notifies Slack on failure."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.proxmox.snapshot.Create"
-        - "io.kestra.plugin.scripts.shell.Commands"
-        - "io.kestra.plugin.core.http.Request"
-        - "io.kestra.plugin.proxmox.snapshot.Rollback"
-        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
-      code: |
-        id: proxmox-safe-patching
-        namespace: company.infra
-
-        inputs:
-          - id: node
-            type: STRING
-            defaults: "pve-01"
-          - id: vm_name
-            type: STRING
-            description: "VM or container name, or integer VMID."
-            defaults: "100"
-          - id: resource_type
-            type: SELECT
-            values: [vm, container]
-            defaults: vm
-          - id: vm_address
-            type: STRING
-
-        variables:
-          snapshot_name: "pre_patch_{{ execution.id }}"
-
-        tasks:
-          - id: pre_patch_snapshot
-            type: io.kestra.plugin.proxmox.snapshot.Create
-            node: "{{ inputs.node }}"
-            vmName: "{{ inputs.vm_name }}"
-            resourceType: "{{ inputs.resource_type }}"
-            snapName: "{{ vars.snapshot_name }}"
-
-          - id: apply_patches
-            type: io.kestra.plugin.scripts.shell.Commands
-            commands:
-              - ssh -o StrictHostKeyChecking=no ops@{{ inputs.vm_address }} "sudo apt-get update && sudo apt-get -y upgrade && sudo reboot"
-            allowFailure: true
-
-          - id: health_check
-            type: io.kestra.plugin.core.http.Request
-            uri: "http://{{ inputs.vm_address }}/health"
-            method: GET
-            options:
-              connectTimeout: PT30S
-              readTimeout: PT30S
-            retry:
-              type: constant
-              interval: PT30S
-              maxAttempt: 10
-
-          - id: notify_success
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":white_check_mark: Patched {{ inputs.vm_name }} on {{ inputs.node }}, health probe OK."
-
-        errors:
-          - id: rollback
-            type: io.kestra.plugin.proxmox.snapshot.Rollback
-            node: "{{ inputs.node }}"
-            vmName: "{{ inputs.vm_name }}"
-            resourceType: "{{ inputs.resource_type }}"
-            snapName: "{{ vars.snapshot_name }}"
-
-          - id: notify_oncall
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":alert: Patch failed on {{ inputs.vm_name }}, rolled back to {{ vars.snapshot_name }}. <{{ execution.url }}|View execution>"
-
-        pluginDefaults:
-          - type: io.kestra.plugin.proxmox
-            values:
-              host: "{{ secret('PROXMOX_HOST') }}"
-              tokenId: "{{ secret('PROXMOX_TOKEN_ID') }}"
-              tokenSecret: "{{ secret('PROXMOX_TOKEN_SECRET') }}"
     - name: "Node drain via live migration"
+      blueprintId: "proxmox-node-drain"
       title: "Drain a Proxmox node for maintenance: live-migrate all guests off, gate, return"
       description: "Lists all VMs and containers on a target node, dispatches each to another node via live migration, polls each UPID to completion, then pauses for the maintenance window before optionally returning guests."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.proxmox.cluster.ListResources"
-        - "io.kestra.plugin.core.flow.ForEach"
-        - "io.kestra.plugin.proxmox.vm.Migrate"
-        - "io.kestra.plugin.proxmox.task.WaitForTask"
-        - "io.kestra.plugin.core.flow.Pause"
-      code: |
-        id: proxmox-node-drain
-        namespace: company.infra
-
-        inputs:
-          - id: source_node
-            type: STRING
-            defaults: "pve-01"
-          - id: target_node
-            type: STRING
-            defaults: "pve-02"
-
-        tasks:
-          - id: list_guests
-            type: io.kestra.plugin.proxmox.cluster.ListResources
-            node: "{{ inputs.source_node }}"
-            typeFilter: vm
-
-          - id: migrate_each
-            type: io.kestra.plugin.core.flow.ForEach
-            values: "{{ outputs.list_guests.body | jq('.[] | select(.node == \"' ~ inputs.source_node ~ '\")') }}"
-            tasks:
-              - id: migrate
-                type: io.kestra.plugin.proxmox.vm.Migrate
-                node: "{{ inputs.source_node }}"
-                vmName: "{{ json(taskrun.value).vmid }}"
-                targetNode: "{{ inputs.target_node }}"
-
-          - id: maintenance_window
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Node {{ inputs.source_node }} drained. Perform maintenance and resume when ready.
-
-          - id: notify
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":rocket: Maintenance complete on {{ inputs.source_node }}."
-
-        pluginDefaults:
-          - type: io.kestra.plugin.proxmox
-            values:
-              host: "{{ secret('PROXMOX_HOST') }}"
-              tokenId: "{{ secret('PROXMOX_TOKEN_ID') }}"
-              tokenSecret: "{{ secret('PROXMOX_TOKEN_SECRET') }}"
     - name: "vzdump backup restore drill"
+      blueprintId: "proxmox-backup-restore-drill"
       title: "Monthly backup restore drill on a throwaway VMID"
       description: "Lists recent vzdump backups, restores the latest one to a temporary VMID, starts the VM, probes the service, deletes the temp VM. Catches storage corruption and broken backups before the real disaster."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.proxmox.backup.List"
-        - "io.kestra.plugin.proxmox.backup.Restore"
-        - "io.kestra.plugin.proxmox.vm.Start"
-        - "io.kestra.plugin.core.http.Request"
-        - "io.kestra.plugin.proxmox.vm.Delete"
-      code: |
-        id: proxmox-backup-restore-drill
-        namespace: company.infra
-
-        triggers:
-          - id: monthly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 4 1 * *"
-
-        inputs:
-          - id: node
-            type: STRING
-            defaults: "pve-01"
-          - id: backup_storage
-            type: STRING
-            description: "Storage where backups live (where backup.List looks)."
-            defaults: "local"
-          - id: target_storage
-            type: STRING
-            description: "Storage where the restored disks land."
-            defaults: "local-lvm"
-          - id: drill_vmid
-            type: INT
-            description: "Temporary VMID for the restore drill (must not conflict with production VMIDs)."
-            defaults: 9999
-
-        tasks:
-          - id: list_backups
-            type: io.kestra.plugin.proxmox.backup.List
-            node: "{{ inputs.node }}"
-            storage: "{{ inputs.backup_storage }}"
-
-          - id: restore
-            type: io.kestra.plugin.proxmox.backup.Restore
-            node: "{{ inputs.node }}"
-            vmId: "{{ inputs.drill_vmid }}"
-            archive: "{{ outputs.list_backups.body | jq('sort_by(.ctime) | last | .volid') | first }}"
-            storage: "{{ inputs.target_storage }}"
-            resourceType: vm
-
-          - id: start_drill
-            type: io.kestra.plugin.proxmox.vm.Start
-            node: "{{ inputs.node }}"
-            vmName: "{{ inputs.drill_vmid }}"
-
-          - id: probe
-            type: io.kestra.plugin.core.http.Request
-            uri: "http://drill-{{ inputs.drill_vmid }}.lab.local/health"
-            method: GET
-            retry:
-              type: constant
-              interval: PT15S
-              maxAttempt: 12
-
-          - id: cleanup
-            type: io.kestra.plugin.proxmox.vm.Delete
-            node: "{{ inputs.node }}"
-            vmName: "{{ inputs.drill_vmid }}"
-
-          - id: notify
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":white_check_mark: Backup restore drill passed for VMID {{ inputs.drill_vmid }} on {{ inputs.node }}."
-
-        errors:
-          - id: cleanup_on_failure
-            type: io.kestra.plugin.proxmox.vm.Delete
-            node: "{{ inputs.node }}"
-            vmName: "{{ inputs.drill_vmid }}"
-
-          - id: notify_failure
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            messageText: ":alert: Backup restore drill FAILED on {{ inputs.node }}. <{{ execution.url }}|View execution>"
-
-        pluginDefaults:
-          - type: io.kestra.plugin.proxmox
-            values:
-              host: "{{ secret('PROXMOX_HOST') }}"
-              tokenId: "{{ secret('PROXMOX_TOKEN_ID') }}"
-              tokenSecret: "{{ secret('PROXMOX_TOKEN_SECRET') }}"
-
 comparison:
   title: "Kestra vs Proxmox orchestration alternatives"
   subtitle: "Kestra wraps the Proxmox REST API with native scheduling, snapshot rollback, live migration, vzdump drills, and cross-tool chaining. The competitors below are the platforms infrastructure teams actually use to automate Proxmox today."
@@ -480,11 +269,19 @@ comparison:
         - "Self-hosted (HCP for hosted)"
         - "Self-hosted"
     - feature: "Orchestrate beyond Proxmox"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Broad Ansible collections, Ansible-centric"
         - "Terraform providers, provisioning-centric"
         - "Limited"
+
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs VMware Cloud Foundation"
+  description: "Side-by-side breakdown across hypervisor day-2 ops, self-service catalogs, snapshot rollback, and cross-stack orchestration as teams plan VMware exits."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/vmware-cloud-foundation"
 
 faq:
   - question: "Does Kestra replace Proxmox VE?"

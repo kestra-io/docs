@@ -8,6 +8,7 @@ heroImage: ./hero.jpeg
 featuredImage: ./hero.jpeg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.scripts.python.Commands
   - io.kestra.plugin.aws.s3.Upload
@@ -15,23 +16,26 @@ tasks:
   - io.kestra.plugin.core.flow.Parallel
 kpi1: |-
   ##### 200
-  ML Engineers on Kestra
+  ML engineers on Kestra
 kpi2: |-
   ##### Language-Agnostic
-  Declarative YAML Pipelines
+  declarative YAML pipelines
 kpi3: |-
   ##### Massive Scale
-  ETL Across App Store, Apple Music & More
+  ETL across App Store, Apple Music & more
 quote: I want to highlight their robustness, which is crucial at our scale. Few
   companies operate at this level, especially in AI/ML.
 quotePerson: Senior Engineering Manager
 quotePersonTitle: Apple ML Team
-industry: Technology
+industry: Technology Services
 headquarter: Cupertino, USA
-solution: Apple is a global technology leader whose services, including the App
-  Store, Apple Music, and device ecosystems, generate some of the world's
-  largest data volumes, processed daily by a 200-engineer ML team.
+region: Americas
+companySize: "5,000+"
+solution: Apple is a global technology leader whose services, including the App Store, Apple Music, and device ecosystems, generate some of the world's largest data volumes, processed daily by a 200-engineer ML team.
+tagline: Global technology company behind iPhone, Mac, and the world's largest app marketplace
 companyName: Apple
+useCase: Replacing Airflow for 200 ML engineers running massive ETL workloads across the App Store, Apple Music, and device data
+useCaseShort: Data Orchestration
 cta: "What would change if your ML data pipelines processed at massive scale, orchestrating complex ETL workloads between your data warehouse and ML platform with declarative simplicity?"
 ---
 

@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace Jenkinsfile glue with a workflow engine that builds, Trivy-scans, Cosign-signs, and promotes the same sha256 digest from staging to prod, and chains Docker with <a href='/orchestration/kubernetes'>Kubernetes</a>, <a href='/orchestration/argocd'>Argo CD</a>, and short-lived ECR/GAR/ACR tokens in one audited flow. Never rebuild between envs; drop long-lived registry passwords from CI vars."
+
 pillars:
   title: "Around every docker build, every digest, every stack."
   subtitle: "What Kestra wraps around your Docker pipelines: how images get signed, how a single sha256 digest travels from staging to prod, how Compose stacks come up for tests and tear down on every exit path, and where the audit lives."
@@ -172,7 +174,7 @@ useCases:
 quotes:
   - quote: "Kestra's declarative model and Terraform integration gave us exactly what we needed to build customer-specific pipelines, automate deployment, and monitor everything reliably."
     author: "Lirav Duvshani, CEO @DataFlooder · Sopht"
-    storyLink: "/use-cases/stories/sopht-scales-its-green-itops-platform-with-kestra"
+    storyLink: "/customers/sopht"
     logoFile: "sopht"
 
 blueprints:
@@ -180,205 +182,20 @@ blueprints:
   lead: "One blueprint per use case above. Copy the YAML, point it at your registry, ship it."
   items:
     - name: "Build, scan, sign, push"
+      blueprintId: "docker-build-scan-sign-push"
       title: "Supply-chain: Build, Trivy scan, Cosign sign, push the signed digest"
       description: "Builds the image, runs Trivy, signs the digest with Cosign keyless via Sigstore OIDC (or a stored key), then pushes the image and the <code>.sig</code> reference. The exact digest is logged for the downstream deploy step to verify."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.docker.Build"
-        - "io.kestra.plugin.trivy.cli.TrivyCLI"
-        - "io.kestra.plugin.scripts.shell.Commands"
-        - "io.kestra.plugin.docker.Push"
-        - "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
-      code: |
-        id: docker-build-scan-sign-push
-        namespace: company.platform
-
-        inputs:
-          - id: image_name
-            type: STRING
-            defaults: "data-infrastructure"
-          - id: version
-            type: STRING
-            defaults: "1.0.0"
-
-        tasks:
-          - id: build
-            type: io.kestra.plugin.docker.Build
-            dockerfile: |
-              FROM python:3.12-slim
-              RUN pip install --no-cache-dir requests polars
-            tags:
-              - "{{ secret('REGISTRY') }}/{{ inputs.image_name }}:{{ inputs.version }}"
-
-          - id: trivy_scan
-            type: io.kestra.plugin.trivy.cli.TrivyCLI
-            commands:
-              - trivy image --severity HIGH,CRITICAL --exit-code 1 --no-progress --format json --output trivy-report.json {{ secret('REGISTRY') }}/{{ inputs.image_name }}:{{ inputs.version }}
-            outputFiles:
-              - trivy-report.json
-
-          - id: cosign_sign
-            type: io.kestra.plugin.scripts.shell.Commands
-            env:
-              COSIGN_EXPERIMENTAL: "1"
-              COSIGN_PASSWORD: "{{ secret('COSIGN_PASSWORD') }}"
-            commands:
-              - echo "Signing digest {{ outputs.build.imageId }}"
-              - cosign sign --yes {{ secret('REGISTRY') }}/{{ inputs.image_name }}@{{ outputs.build.imageId }}
-
-          - id: push
-            type: io.kestra.plugin.docker.Push
-            credentials:
-              registry: "{{ secret('REGISTRY') }}"
-              username: "{{ secret('REGISTRY_USERNAME') }}"
-              password: "{{ secret('REGISTRY_PASSWORD') }}"
-            tags:
-              - "{{ secret('REGISTRY') }}/{{ inputs.image_name }}:{{ inputs.version }}"
-
-          - id: notify
-            type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":lock: Signed and pushed {{ inputs.image_name }}:{{ inputs.version }} (digest: {{ outputs.build.imageId }})"
-              }
     - name: "Digest-pinned promotion"
+      blueprintId: "docker-digest-promotion"
       title: "Promote the same sha256 digest from staging to prod"
       description: "Builds once, pushes to staging, runs smoke tests against the staging digest, pauses for a named reviewer, then retags the exact same digest for prod and pushes. The artifact that was tested is the artifact that ships."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.docker.Build"
-        - "io.kestra.plugin.docker.Push"
-        - "io.kestra.plugin.core.flow.Pause"
-        - "io.kestra.plugin.docker.Tag"
-      code: |
-        id: docker-digest-promotion
-        namespace: company.platform
-
-        inputs:
-          - id: image_name
-            type: STRING
-            defaults: "data-infrastructure"
-          - id: version
-            type: STRING
-            defaults: "1.0.0"
-
-        tasks:
-          - id: build
-            type: io.kestra.plugin.docker.Build
-            dockerfile: |
-              FROM python:3.12-slim
-              RUN pip install --no-cache-dir requests
-            tags:
-              - "staging.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
-
-          - id: push_staging
-            type: io.kestra.plugin.docker.Push
-            credentials:
-              registry: "staging.registry.local"
-              username: "{{ secret('STAGING_REGISTRY_USER') }}"
-              password: "{{ secret('STAGING_REGISTRY_PASSWORD') }}"
-            tags:
-              - "staging.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
-
-          - id: smoke_test
-            type: io.kestra.plugin.scripts.shell.Commands
-            commands:
-              - docker pull staging.registry.local/{{ inputs.image_name }}@{{ outputs.build.imageId }}
-              - docker run --rm staging.registry.local/{{ inputs.image_name }}@{{ outputs.build.imageId }} python -c "print('ok')"
-
-          - id: await_approval
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Smoke test passed for digest {{ outputs.build.imageId }}.
-              Resume to promote the same digest to prod.
-
-          - id: retag_for_prod
-            type: io.kestra.plugin.docker.Tag
-            sourceImage: "staging.registry.local/{{ inputs.image_name }}@{{ outputs.build.imageId }}"
-            tags:
-              - "prod.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
-
-          - id: push_prod
-            type: io.kestra.plugin.docker.Push
-            credentials:
-              registry: "prod.registry.local"
-              username: "{{ secret('PROD_REGISTRY_USER') }}"
-              password: "{{ secret('PROD_REGISTRY_PASSWORD') }}"
-            tags:
-              - "prod.registry.local/{{ inputs.image_name }}:{{ inputs.version }}"
     - name: "Compose ephemeral test environment"
+      blueprintId: "docker-compose-ephemeral-test"
       title: "Bring up a Compose stack for integration tests, tear down on every exit"
       description: "<code>docker.Compose</code> starts the app + Postgres + Redis stack from an inline Compose file. Tests run against the live stack. The <code>errors</code> branch always runs <code>compose down -v</code> so volumes and containers never leak, even on test failure or timeout."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.docker.Compose"
-        - "io.kestra.plugin.core.http.Request"
-        - "io.kestra.plugin.scripts.shell.Commands"
-      code: |
-        id: docker-compose-integration-tests
-        namespace: company.ci
-
-        triggers:
-          - id: pr_webhook
-            type: io.kestra.plugin.core.trigger.Webhook
-            key: pr_integration
-
-        tasks:
-          - id: compose_up
-            type: io.kestra.plugin.docker.Compose
-            inputFiles:
-              docker-compose.yml: |
-                services:
-                  app:
-                    image: company/app:{{ trigger.body.sha }}
-                    ports:
-                      - "8080:8080"
-                    depends_on:
-                      db:
-                        condition: service_healthy
-                  db:
-                    image: postgres:16-alpine
-                    environment:
-                      POSTGRES_PASSWORD: testpw
-                    healthcheck:
-                      test: ["CMD-SHELL", "pg_isready -U postgres"]
-                      interval: 5s
-                      retries: 10
-                  redis:
-                    image: redis:7-alpine
-            commands:
-              - docker compose -p pr-{{ trigger.body.pr_number }} up -d --wait
-
-          - id: wait_app_ready
-            type: io.kestra.plugin.core.http.Request
-            uri: "http://localhost:8080/health"
-            method: GET
-            retry:
-              type: constant
-              interval: PT5S
-              maxAttempt: 12
-
-          - id: run_tests
-            type: io.kestra.plugin.scripts.shell.Commands
-            commands:
-              - docker compose -p pr-{{ trigger.body.pr_number }} exec -T app pytest tests/integration
-
-          - id: compose_down_success
-            type: io.kestra.plugin.docker.Compose
-            inputFiles:
-              docker-compose.yml: "{{ outputs.compose_up.outputFiles['docker-compose.yml'] }}"
-            commands:
-              - docker compose -p pr-{{ trigger.body.pr_number }} down -v
-
-        errors:
-          - id: compose_down_failure
-            type: io.kestra.plugin.docker.Compose
-            inputFiles:
-              docker-compose.yml: "{{ outputs.compose_up.outputFiles['docker-compose.yml'] }}"
-            commands:
-              - docker compose -p pr-{{ trigger.body.pr_number }} down -v
-
 comparison:
   title: "Kestra vs Docker pipeline alternatives"
   subtitle: "Kestra wraps Docker CLI runs with native scheduling, supply-chain steps, digest pinning, and Compose stack lifecycle. The competitors below are the CI tools where teams orchestrate Docker today."
@@ -439,7 +256,7 @@ comparison:
         - "Run history in Actions UI"
         - "Pipeline history"
     - feature: "Orchestrate beyond CI (data, infra, business workflows)"
-      kestra: "✓ 1300+ plugins"
+      kestra: "✓ 1400+ plugins"
       values:
         - "Build-focused"
         - "Build-focused"

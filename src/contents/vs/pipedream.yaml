@@ -180,7 +180,7 @@ testimonials:
         name: Active workflows
       - value: "25+"
         name: Engineers using Kestra
-    storyLink: "/use-cases/stories/erp-transformation-smarter-faster-fully-automated"
+    storyLink: "/customers/fila"
 
 platformStrengths:
   title: Kestra Is Built for Production at Every Layer
@@ -219,7 +219,7 @@ commonQuestions:
   - question: Can Kestra handle webhook-driven automation like Pipedream?
     answer: "Yes. Kestra has native webhook triggers that start workflows on HTTP events, plus event-driven triggers for Kafka, S3, database changes, and API polling. You can build the same webhook-to-action automations Pipedream is known for, with the added ability to chain those events into complex multi-step pipelines involving data transformation, infrastructure changes, or cross-team notifications."
   - question: How does Kestra handle the 2,700+ app integrations Pipedream offers?
-    answer: "Kestra's 1,200+ plugins cover the most common integration targets: AWS, GCP, Azure, Slack, databases, data warehouses, dbt, Airbyte, and more. For apps not covered by a plugin, the HTTP plugin handles REST API calls to any endpoint, and Script tasks run arbitrary code in any language. Pipedream's pre-built actions reduce setup time for simple integrations. Kestra's approach gives you more control for workflows that go beyond API glue."
+    answer: "Kestra's 1,400+ plugins cover the most common integration targets: AWS, GCP, Azure, Slack, databases, data warehouses, dbt, Airbyte, and more. For apps not covered by a plugin, the HTTP plugin handles REST API calls to any endpoint, and Script tasks run arbitrary code in any language. Pipedream's pre-built actions reduce setup time for simple integrations. Kestra's approach gives you more control for workflows that go beyond API glue."
   - question: What are the risks of Pipedream being acquired by Workday?
     answer: "Pipedream was acquired by Workday in 2024. Platform acquisitions often bring pricing changes or product deprecations that don't fit the acquirer's roadmap. If you are building critical automation on Pipedream, start evaluating migration before that decision is made for you. Kestra's Apache 2.0 license means you can fork it, host it, and keep running it regardless of who owns Pipedream next year."
   - question: Does Kestra require more setup than Pipedream?

@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Replace EventBridge rule sprawl and Step Functions JSON with a workflow engine that listens to S3, SQS, or schedules, handles cross-account ops via stsRole, and chains S3, Lambda, Glue, Athena, and DynamoDB in one audited flow. Collapse rule + glue Lambda + Step Functions into one execution ID; cut idle compute with backlog-aware EMR Serverless."
+
 pillars:
   title: "One execution across S3, Lambda, EMR, Glue, and DynamoDB."
   subtitle: "AWS gives you the services. Kestra wires them together without EventBridge rule sprawl, without Step Functions JSON, and without Lambda functions whose only purpose is to call the next Lambda. The IAM model, the data, and the compute all stay in your account."
@@ -178,234 +180,27 @@ useCases:
 quotes:
   - quote: "Kestra was the only tool that combined true multi-tenant isolation, metadata-driven orchestration, and easy integration with our existing AWS and Databricks environments. It provided the foundation we needed to scale confidently."
     author: "Director of Engineering, Acxiom"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 blueprints:
   title: "Blueprints for AWS orchestration."
   lead: "One blueprint per use case above. Copy the YAML, set your AWS credentials in Kestra secrets, point at your resources, ship it."
   items:
     - name: "S3 file landed, fan out by prefix"
+      blueprintId: "aws-s3-fanout"
       title: "Route incoming S3 objects to dbt or Lambda based on prefix"
       description: "s3.Trigger polls the bucket. An If task routes /raw/orders/ to dbt build and /raw/clicks/ to a Lambda. Both paths publish to SNS on completion and notify Slack."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.aws.s3.Trigger"
-        - "io.kestra.plugin.core.flow.If"
-        - "io.kestra.plugin.aws.lambda.Invoke"
-        - "io.kestra.plugin.aws.sns.Publish"
-      code: |
-        id: aws-s3-fanout
-        namespace: company.data
-
-        inputs:
-          - id: bucket
-            type: STRING
-            defaults: "company-raw"
-          - id: orders_lambda
-            type: STRING
-            defaults: "process-orders"
-          - id: clicks_lambda
-            type: STRING
-            defaults: "cleanse-clicks"
-
-        triggers:
-          - id: new_files
-            type: io.kestra.plugin.aws.s3.Trigger
-            interval: PT30S
-            bucket: "{{ inputs.bucket }}"
-            prefix: "raw/"
-            action: MOVE
-            moveTo:
-              bucket: "{{ inputs.bucket }}"
-              key: "processed/{{ trigger.objects[0].key }}"
-
-        tasks:
-          - id: route
-            type: io.kestra.plugin.core.flow.If
-            condition: "{{ trigger.objects[0].key startsWith 'raw/orders/' }}"
-            then:
-              - id: orders_lambda
-                type: io.kestra.plugin.aws.lambda.Invoke
-                functionArn: "{{ inputs.orders_lambda }}"
-                functionPayload:
-                  s3_key: "{{ trigger.objects[0].key }}"
-            else:
-              - id: clicks_lambda
-                type: io.kestra.plugin.aws.lambda.Invoke
-                functionArn: "{{ inputs.clicks_lambda }}"
-                functionPayload:
-                  s3_key: "{{ trigger.objects[0].key }}"
-
-          - id: publish_done
-            type: io.kestra.plugin.aws.sns.Publish
-            topicArn: "{{ secret('SNS_TOPIC_ARN') }}"
-            from:
-              data: "File processed: {{ trigger.objects[0].key }}"
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":file_folder: Processed {{ trigger.objects[0].key }}. <{{ execution.url }}|View>"
-              }
     - name: "EMR Serverless backlog autoscale"
+      blueprintId: "aws-emr-serverless-spark"
       title: "Watch SQS depth on a schedule, spin Spark only when needed"
       description: "Every 5 minutes, the flow reads SQS queue depth via CloudWatch. If above threshold, it starts an EMR Serverless Spark job and polls until SUCCEEDED. Below threshold, the flow exits. No idle compute on quiet weekends."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.aws.cloudwatch.Query"
-        - "io.kestra.plugin.core.flow.If"
-        - "io.kestra.plugin.aws.emr.StartServerlessJobRun"
-        - "io.kestra.plugin.aws.emr.GetJobRun"
-      code: |
-        id: emr-backlog-autoscale
-        namespace: company.data
-
-        inputs:
-          - id: queue_name
-            type: STRING
-            defaults: "ingest-queue"
-          - id: application_id
-            type: STRING
-            description: "Existing EMR Serverless application ID."
-          - id: threshold
-            type: INT
-            defaults: 500
-
-        triggers:
-          - id: every_5_min
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "*/5 * * * *"
-
-        tasks:
-          - id: queue_depth
-            type: io.kestra.plugin.aws.cloudwatch.Query
-            namespace: AWS/SQS
-            metricName: ApproximateNumberOfMessagesVisible
-            dimensions:
-              QueueName: "{{ inputs.queue_name }}"
-            window: PT5M
-            statistic: Maximum
-
-          - id: should_run
-            type: io.kestra.plugin.core.flow.If
-            condition: "{{ outputs.queue_depth.datapoints | last | get('Maximum') > inputs.threshold }}"
-            then:
-              - id: start_job
-                type: io.kestra.plugin.aws.emr.StartServerlessJobRun
-                applicationId: "{{ inputs.application_id }}"
-                executionRoleArn: "{{ secret('EMR_SERVERLESS_ROLE_ARN') }}"
-                sparkSubmit:
-                  entryPoint: "s3://company-jobs/drain-queue.py"
-                  entryPointArguments:
-                    - "--queue"
-                    - "{{ inputs.queue_name }}"
-
-              - id: poll
-                type: io.kestra.plugin.aws.emr.GetJobRun
-                applicationId: "{{ inputs.application_id }}"
-                jobRunId: "{{ outputs.start_job.jobRunId }}"
-                retry:
-                  type: constant
-                  interval: PT30S
-                  maxAttempt: 60
-
-              - id: notify
-                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-                url: "{{ secret('SLACK_WEBHOOK') }}"
-                payload: |
-                  {
-                    "text": ":chart_with_upwards_trend: Drained backlog, job {{ outputs.start_job.jobRunId }} done."
-                  }
     - name: "Glue ETL, Athena validation, DynamoDB write"
+      blueprintId: "aws-glue-athena-dynamodb"
       title: "Daily pipeline across three AWS services in one execution"
       description: "Starts a Glue job, polls until SUCCEEDED, runs an Athena validation query, gates a DynamoDB write on the row count. Failed validation pages on-call instead of writing bad data."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.aws.glue.StartJobRun"
-        - "io.kestra.plugin.aws.glue.GetJobRun"
-        - "io.kestra.plugin.aws.athena.Query"
-        - "io.kestra.plugin.aws.dynamodb.PutItem"
-      code: |
-        id: aws-glue-athena-dynamodb
-        namespace: company.data
-
-        triggers:
-          - id: nightly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 2 * * *"
-
-        inputs:
-          - id: glue_job
-            type: STRING
-            defaults: "daily-curated"
-          - id: athena_db
-            type: STRING
-            defaults: "analytics"
-          - id: athena_workgroup
-            type: STRING
-            defaults: "primary"
-          - id: dynamodb_table
-            type: STRING
-            defaults: "daily-metrics"
-          - id: min_rows
-            type: INT
-            defaults: 10000
-          - id: max_rows
-            type: INT
-            defaults: 5000000
-
-        tasks:
-          - id: run_glue
-            type: io.kestra.plugin.aws.glue.StartJobRun
-            jobName: "{{ inputs.glue_job }}"
-
-          - id: poll_glue
-            type: io.kestra.plugin.aws.glue.GetJobRun
-            jobName: "{{ inputs.glue_job }}"
-            runId: "{{ outputs.run_glue.runId }}"
-            retry:
-              type: constant
-              interval: PT1M
-              maxAttempt: 60
-
-          - id: validate
-            type: io.kestra.plugin.aws.athena.Query
-            database: "{{ inputs.athena_db }}"
-            workgroup: "{{ inputs.athena_workgroup }}"
-            outputLocation: "s3://company-athena-results/"
-            query: "SELECT COUNT(*) AS row_count FROM curated_daily WHERE dt = current_date - interval '1' day"
-
-          - id: gate
-            type: io.kestra.plugin.core.flow.If
-            condition: "{{ (outputs.validate.rows[0].row_count | int) >= inputs.min_rows and (outputs.validate.rows[0].row_count | int) <= inputs.max_rows }}"
-            then:
-              - id: write_metrics
-                type: io.kestra.plugin.aws.dynamodb.PutItem
-                tableName: "{{ inputs.dynamodb_table }}"
-                item:
-                  dt: "{{ now() | date('yyyy-MM-dd') }}"
-                  row_count: "{{ outputs.validate.rows[0].row_count }}"
-                  glue_run: "{{ outputs.run_glue.runId }}"
-
-              - id: notify_ok
-                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-                url: "{{ secret('SLACK_WEBHOOK') }}"
-                payload: |
-                  {
-                    "text": ":bar_chart: Daily pipeline complete. Rows: {{ outputs.validate.rows[0].row_count }}. <{{ execution.url }}|View>"
-                  }
-            else:
-              - id: page_oncall
-                type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-                url: "{{ secret('PAGER_WEBHOOK') }}"
-                payload: |
-                  {
-                    "text": ":alert: Daily row count {{ outputs.validate.rows[0].row_count }} outside expected window [{{ inputs.min_rows }}, {{ inputs.max_rows }}]. <{{ execution.url }}|Investigate>"
-                  }
-
 comparison:
   title: "Kestra vs AWS orchestration alternatives"
   subtitle: "Kestra wraps the AWS API with first-class tasks across 46 services. The competitors below are the AWS-native ways teams glue services together today, each with strengths and trade-offs."
@@ -472,9 +267,17 @@ comparison:
         - "EventBridge rules are AWS-only"
         - "Custom code, portable but unsupported"
 
+postCompareCta:
+  eyebrow: "Deeper comparison"
+  title: "Kestra vs AWS Step Functions"
+  description: "Side-by-side breakdown across event sources, cross-account ops, EMR Serverless dispatch, multi-service chaining, and portability beyond AWS."
+  cta:
+    label: "See the full comparison"
+    href: "/vs/aws-step-functions"
+
 faq:
   - question: "Does Kestra replace Step Functions?"
-    answer: "Step Functions is great for AWS-native state machines that live entirely inside AWS, especially with deep integration into Lambda and Map states for parallel processing. Kestra is a general-purpose orchestrator that calls the AWS API as one of 1300+ plugins. Use Step Functions when every step is AWS and you want the ASL state machine. Use Kestra when the flow spans AWS plus non-AWS tools (dbt, Snowflake, Slack, GitHub, ServiceNow), needs approval gates from your team UI, and benefits from portable YAML over AWS-only ASL."
+    answer: "Step Functions is great for AWS-native state machines that live entirely inside AWS, especially with deep integration into Lambda and Map states for parallel processing. Kestra is a general-purpose orchestrator that calls the AWS API as one of 1400+ plugins. Use Step Functions when every step is AWS and you want the ASL state machine. Use Kestra when the flow spans AWS plus non-AWS tools (dbt, Snowflake, Slack, GitHub, ServiceNow), needs approval gates from your team UI, and benefits from portable YAML over AWS-only ASL."
   - question: "How does Kestra authenticate to AWS?"
     answer: "Standard AWS auth chain. Static credentials (accessKeyId, secretAccessKey) for local dev. Instance role for Kestra workers running on EC2 or ECS. IRSA (IAM Roles for Service Accounts) when Kestra runs on EKS. For cross-account ops, every task accepts stsRoleArn, stsRoleSessionName, and stsRoleExternalId to assume a role per task. Secrets go through Kestra's secrets backend; nothing AWS-credential-shaped lives in flow YAML."
   - question: "How does the S3 trigger handle high-throughput buckets?"

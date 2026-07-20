@@ -1,13 +1,16 @@
 <script lang="ts" setup>
     import { onMounted, ref, useTemplateRef } from "vue"
     import posthog from "posthog-js"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import identify from "~/utils/identify"
     import { getHubspotTracking } from "~/utils/hubspot.js"
-    import { getMeetingUrl } from "~/composables/useMeeting.js"
+    import { getStoredClickId } from "~/scripts/gclid"
+    import {
+        getMeetingUrl,
+        getGeoMeetingUrl,
+        tierFromEmployees,
+    } from "~/composables/useMeeting.js"
     import { $fetch } from "~/utils/fetch"
 
-    const gtm = useGtm()
     const valid = ref(false)
     const message = ref("")
     const meetingUrl = ref<string>()
@@ -22,6 +25,9 @@
 
     const hubSpotUrl =
         "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2"
+
+    const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
+    const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
     const onSubmit = async (e: Event) => {
         e.preventDefault()
@@ -49,6 +55,8 @@
                 const fn = form["first-name"].value
                 const ln = form["last-name"].value
                 const em = form["email"].value
+                const emp = form["employees"].value
+                const clickId = getStoredClickId()
 
                 hsq.push([
                     "identify",
@@ -69,10 +77,30 @@
                         { objectTypeId: "0-1", name: "firstname", value: fn },
                         { objectTypeId: "0-1", name: "lastname", value: ln },
                         {
+                            objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                            name: COMPANY_SIZE_PROPERTY,
+                            value: emp,
+                        },
+                        {
                             objectTypeId: "0-1",
                             name: "kuid",
                             value: localStorage.getItem("KUID") || "",
                         },
+                        // Google Ads click id (gclid/gbraid/wbraid) for offline
+                        // conversion import. Written to the standard HubSpot
+                        // property `hs_google_click_id`, which HubSpot's Google
+                        // Ads offline-conversion sync reads natively, so the
+                        // booked demo can be attributed back to the paid click.
+                        // Sent only when a click id is present.
+                        ...(clickId
+                            ? [
+                                  {
+                                      objectTypeId: "0-1",
+                                      name: "hs_google_click_id",
+                                      value: clickId.value,
+                                  },
+                              ]
+                            : []),
                     ],
                     context: {
                         hutk: getHubspotTracking() || undefined,
@@ -87,7 +115,12 @@
                     "trackCustomBehavioralEvent",
                     { name: "bookdemo_form" },
                 ])
-                gtm?.trackEvent({
+                // Push directly to the dataLayer: the vue-gtm plugin is
+                // initialized with `enabled: false` (GTM is loaded manually
+                // after cookie consent in cookieconsent.ts), so
+                // gtm.trackEvent() is a no-op and never reaches the dataLayer.
+                window.dataLayer = window.dataLayer || []
+                window.dataLayer.push({
                     event: "bookdemo_form",
                     noninteraction: false,
                 })
@@ -107,11 +140,14 @@
                         hsq.push(["refreshPageHandlers"])
                         hsq.push(["trackPageView"])
 
-                        meetingUrl.value = withContactParams(getMeetingUrl(), {
-                            firstname: fn,
-                            lastname: ln,
-                            email: em,
-                        })
+                        meetingUrl.value = withContactParams(
+                            getMeetingUrl(tierFromEmployees(emp)),
+                            {
+                                firstname: fn,
+                                lastname: ln,
+                                email: em,
+                            },
+                        )
                     })
                     .catch((error) => {
                         valid.value = false
@@ -169,7 +205,7 @@
 
     onMounted(() => {
         if (getHubspotTracking() === null) {
-            const base = getMeetingUrl()
+            const base = getGeoMeetingUrl()
             const current = new URLSearchParams(window.location.search)
             meetingUrl.value = withContactParams(base, {
                 firstname: current.get("firstname"),
@@ -225,7 +261,7 @@
                         autocomplete="given-name"
                         type="text"
                         class="form-control"
-                        placeholder="First name"
+                        placeholder="First name *"
                         required
                     />
                 </div>
@@ -240,7 +276,7 @@
                         autocomplete="family-name"
                         type="text"
                         class="form-control"
-                        placeholder="Last name"
+                        placeholder="Last name *"
                         required
                     />
                 </div>
@@ -254,9 +290,30 @@
                         name="email"
                         type="email"
                         class="form-control"
-                        placeholder="Company email"
+                        placeholder="Company email *"
                         required
                     />
+                </div>
+
+                <div class="col-12">
+                    <label for="demo-employees" class="form-label mb-0">
+                        Number of employees
+                    </label>
+                    <select
+                        id="demo-employees"
+                        name="employees"
+                        class="form-control"
+                        required
+                    >
+                        <option value="" disabled selected>
+                            Number of employees *
+                        </option>
+                        <option value="below 100">below 100</option>
+                        <option value="between 100 and 999">
+                            between 100 and 999
+                        </option>
+                        <option value="1000+">1000+</option>
+                    </select>
                 </div>
 
                 <div class="col-12 mt-3">
@@ -435,6 +492,9 @@
                 }
                 .form-label {
                     opacity: 0;
+                }
+                select.form-control:invalid {
+                    color: var(--bs-secondary-color);
                 }
             }
             @include media-breakpoint-down(md) {

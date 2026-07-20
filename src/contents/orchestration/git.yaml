@@ -16,6 +16,8 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
+nutshell: "Make Git the source of truth for every flow with an orchestration engine that listens to schedules or PR webhooks, handles bidirectional namespace sync with dryRun diffs and protected namespaces, and chains Clone with <a href='/orchestration/terraform'>Terraform</a>, dbt, and <a href='/orchestration/ansible'>Ansible</a> pulled fresh at runtime. Cut the gap from Git merge to deploy down to the next 5-minute reconcile."
+
 pillars:
   title: "Around every flow, every namespace, every tenant."
   subtitle: "Kestra runs orchestration. Git holds the source of truth for what runs. The plugin lets you choose which side wins, push and pull by artifact type, sync an entire tenant, dryRun every change first, and clone external repos at runtime so the working directory is always fresh."
@@ -164,167 +166,27 @@ useCases:
 quotes:
   - quote: "We needed orchestration built for flexibility and scale, without forcing us to rewrite our existing pipelines. Kestra fit naturally into our stack and enabled our teams to move quickly without disruption."
     author: "Director of Engineering, Acxiom"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 blueprints:
   title: "Blueprints for Git-driven Kestra orchestration."
   lead: "One blueprint per use case above. Copy the YAML, set your Git provider credentials, point at your repo, ship it."
   items:
     - name: "Git as source of truth, reconcile every five minutes"
+      blueprintId: "git-sync-flows-source-of-truth"
       title: "Sync flows from main into Kestra on a 5-minute schedule"
       description: "A system-namespace flow runs NamespaceSync with sourceOfTruth: GIT every five minutes. Flows added or removed in main appear or disappear in Kestra. protectedNamespaces guards system namespaces from deletion. The diff is posted to Slack."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.git.NamespaceSync"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: git-as-source-of-truth
-        namespace: system
-
-        inputs:
-          - id: target_namespace
-            type: STRING
-            defaults: "company.platform"
-          - id: branch
-            type: STRING
-            defaults: "main"
-
-        triggers:
-          - id: every_5_min
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "*/5 * * * *"
-
-        tasks:
-          - id: sync_from_git
-            type: io.kestra.plugin.git.NamespaceSync
-            namespace: "{{ inputs.target_namespace }}"
-            sourceOfTruth: GIT
-            whenMissingInSource: DELETE
-            protectedNamespaces:
-              - system
-              - prod-finance
-            url: https://github.com/company/kestra-platform
-            username: "{{ secret('GIT_USERNAME') }}"
-            password: "{{ secret('GIT_TOKEN') }}"
-            branch: "{{ inputs.branch }}"
-            gitDirectory: kestra
-
-          - id: notify_changes
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":arrows_counterclockwise: Synced {{ inputs.target_namespace }} from {{ inputs.branch }}. Commit: {{ outputs.sync_from_git.commitId | default('no change') }}"
-              }
     - name: "Continuous export with dryRun review"
+      blueprintId: "git-push-flows-dryrun-review"
       title: "Export Kestra to Git every hour, dryRun first, apply after review"
       description: "Hourly PushFlows in dryRun mode computes the diff. The diff goes to Slack for review. A Pause task waits for human approval. On resume, the same task re-runs with dryRun: false and commits. Every Kestra change ends up in Git with attributable authorship."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.core.trigger.Schedule"
-        - "io.kestra.plugin.git.PushFlows"
-        - "io.kestra.plugin.core.flow.Pause"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: continuous-export-to-git
-        namespace: system
-
-        inputs:
-          - id: source_namespace
-            type: STRING
-            defaults: "company.platform"
-
-        triggers:
-          - id: hourly
-            type: io.kestra.plugin.core.trigger.Schedule
-            cron: "0 * * * *"
-
-        tasks:
-          - id: dry_run_diff
-            type: io.kestra.plugin.git.PushFlows
-            sourceNamespace: "{{ inputs.source_namespace }}"
-            includeChildNamespaces: true
-            gitDirectory: "_flows"
-            url: https://github.com/company/kestra-platform
-            username: "{{ secret('GIT_USERNAME') }}"
-            password: "{{ secret('GIT_TOKEN') }}"
-            branch: main
-            dryRun: true
-
-          - id: post_diff
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":memo: Diff ready for {{ inputs.source_namespace }}. Review and resume: <{{ execution.url }}|here>"
-              }
-
-          - id: wait_for_review
-            type: io.kestra.plugin.core.flow.Pause
-            description: |
-              Diff posted to Slack. Inspect, then resume to apply.
-
-          - id: apply
-            type: io.kestra.plugin.git.PushFlows
-            sourceNamespace: "{{ inputs.source_namespace }}"
-            includeChildNamespaces: true
-            gitDirectory: "_flows"
-            url: https://github.com/company/kestra-platform
-            username: "{{ secret('GIT_USERNAME') }}"
-            password: "{{ secret('GIT_TOKEN') }}"
-            branch: main
-            commitMessage: "auto-export {{ inputs.source_namespace }} at {{ now() }}"
-            dryRun: false
-
-          - id: confirm
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":white_check_mark: Pushed {{ inputs.source_namespace }} to main. Commit: {{ outputs.apply.commitURL }}"
-              }
     - name: "Clone external repo at runtime, run dbt against it"
+      blueprintId: "dbt-git-docker-duckdb"
       title: "Pin a dbt project ref per execution, no container rebuild"
       description: "Clone the data-platform repo at the branch passed as input, run dbt build against the fresh checkout, post the results to Slack with the revision. The same flow runs feature branches in CI and main in prod without separate flow definitions or image rebuilds."
       href: "/blueprints?tags=Infrastructure"
-      plugins:
-        - "io.kestra.plugin.git.Clone"
-        - "io.kestra.plugin.dbt.cli.DbtCLI"
-        - "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
-      code: |
-        id: clone-and-dbt
-        namespace: company.analytics
-
-        inputs:
-          - id: dbt_branch
-            type: STRING
-            defaults: "main"
-            description: "Branch, tag, or commit to check out from the dbt project repo."
-
-        tasks:
-          - id: clone_dbt_project
-            type: io.kestra.plugin.git.Clone
-            url: https://github.com/company/data-platform
-            branch: "{{ inputs.dbt_branch }}"
-            username: "{{ secret('GIT_USERNAME') }}"
-            password: "{{ secret('GIT_TOKEN') }}"
-            cloneSubmodules: true
-
-          - id: dbt_build
-            type: io.kestra.plugin.dbt.cli.DbtCLI
-            commands:
-              - dbt deps
-              - dbt build --target prod
-
-          - id: notify
-            type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-            url: "{{ secret('SLACK_WEBHOOK') }}"
-            payload: |
-              {
-                "text": ":bar_chart: dbt build complete on revision {{ inputs.dbt_branch }}. <{{ execution.url }}|Execution>"
-              }
-
 comparison:
   title: "Kestra vs Git-for-Kestra alternatives"
   subtitle: "Kestra's Git plugin gives you bidirectional namespace sync, granular push by artifact type, tenant-wide promotion, dryRun diffs, and protected namespaces as first-class flow tasks. The competitors below are how teams sometimes try to wire Kestra to Git without the plugin."

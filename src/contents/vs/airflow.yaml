@@ -185,7 +185,7 @@ testimonials:
         name: "Faster workflow creation"
       - value: "0"
         name: "Pipeline failures"
-    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/customers/apple"
 
 platformStrengths:
   title: Kestra Is Built for How Data Teams Actually Work
@@ -225,11 +225,11 @@ commonQuestions:
   - question: "What happens to my existing Python scripts and operators if I move to Kestra?"
     answer: "They stay unchanged. Kestra orchestrates your existing code without modification. Python scripts run in Script tasks inside isolated containers. There's no refactoring into decorators or operator subclasses. Custom operator logic that calls APIs or runs transformations becomes a Script or HTTP task, with the same code you already have."
   - question: "Is Kestra open source, like Airflow?"
-    answer: "Yes. Kestra is Apache 2.0 licensed and fully open source. The community edition includes unlimited workflows, all trigger types (including event-driven), 1200+ plugins, and the visual workflow editor. Enterprise features (RBAC, SSO, multi-tenancy, audit logs) are available in Kestra Enterprise."
+    answer: "Yes. Kestra is Apache 2.0 licensed and fully open source. The community edition includes unlimited workflows, all trigger types (including event-driven), 1400+ plugins, and the visual workflow editor. Enterprise features (RBAC, SSO, multi-tenancy, audit logs) are available in Kestra Enterprise."
   - question: I'm running Airflow on MWAA or Cloud Composer. How does that affect my options?
     answer: "Managed Airflow services mean you're on AWS or Google's upgrade timeline, not your own. Airflow 3 support on MWAA and Cloud Composer typically lags the open-source release by months. Kestra runs anywhere—Docker, Kubernetes, any cloud—and covers the same AWS, GCP, and Azure integrations you're already using."
   - question: Does Kestra support the same data pipeline use cases as Airflow?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same integrations as Airflow's provider ecosystem: AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and more—defined in declarative YAML instead of Python operator classes."
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1400+ plugins, it covers the same integrations as Airflow's provider ecosystem: AWS, GCP, Azure, Snowflake, BigQuery, Databricks, Kafka, and more—defined in declarative YAML instead of Python operator classes."
   - question: How does Kestra handle workflow versioning?
     answer: "Kestra stores a revision history for every workflow. Each save creates a new revision you can diff, roll back, or audit. Revisions integrate with Git-based CI/CD through the Kestra Terraform provider and GitHub Actions. Airflow requires external tooling to approximate the same."
   - question: How do Airflow 3 Assets compare to Kestra's asset model?

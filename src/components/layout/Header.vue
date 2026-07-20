@@ -6,7 +6,8 @@
         aria-label="Menu"
         :class="{
             open: isOpen,
-            scrolled: isScrolled || props.scrolled,
+            // Keep the background state tied to the actual window scroll only.
+            scrolled: isScrolled,
         }"
     >
         <div class="container-xl">
@@ -69,8 +70,7 @@
                     <span
                         class="slack-icon"
                         :class="{
-                            'slack-icon--dark':
-                                isScrolled || props.scrolled || isOpen,
+                            'slack-icon--dark': isScrolled || isOpen,
                         }"
                         v-html="SlackIcon"
                     />
@@ -426,6 +426,7 @@
                         height: headerMenuSize.height,
                         pointerEvents: headerMenuPointerEvents,
                     }"
+                    ref="headerMenu"
                     class="header-menu"
                     @mouseover="mouseOverMenu"
                     @mouseleave="mouseLeaveMenu"
@@ -700,13 +701,13 @@
 
 <script setup lang="ts">
     import { ref, onMounted, watch, nextTick } from "vue"
-    import { useThrottleFn } from "@vueuse/core"
+    import { useEventListener } from "@vueuse/core"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
-    import { menuSize } from "~/utils/menu-sizes"
+    import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
     import LogoBlack from "~/assets/logo-black.svg?raw"
     import LogoWhite from "~/assets/logo-white.svg?raw"
@@ -728,6 +729,8 @@
         height: "0px",
     })
     const headerMenuPointerEvents = ref<"none" | "auto">("none")
+    const headerMenu = ref<HTMLElement | null>(null)
+    const menuHeights = ref<Record<string, string>>({})
     const navbar = ref<HTMLElement | null>(null)
     const isMobile = ref(false)
     const isScrolled = ref(false)
@@ -759,21 +762,24 @@
     onMounted(() => {
         nextTick(() => {
             getCollapseInstance()
+            measureAllMenuHeights()
         })
 
-        isMobile.value = window.innerWidth <= 1199
-        window.addEventListener("resize", () => {
+        document.fonts?.ready.then(() => measureAllMenuHeights())
+
+        const syncMobileState = () => {
             isMobile.value = window.innerWidth <= 1199
-        })
+        }
 
-        isScrolled.value = window.scrollY > 0
-        const handleScroll = useThrottleFn(() => {
+        const syncScrollState = () => {
             isScrolled.value = window.scrollY > 0
-            if (navbar.value) {
-                navbar.value.classList.toggle("scrolled", isScrolled.value)
-            }
-        }, 100)
-        window.addEventListener("scroll", handleScroll, { passive: true })
+        }
+
+        syncMobileState()
+        syncScrollState()
+
+        useEventListener(window, "resize", syncMobileState)
+        useEventListener(window, "scroll", syncScrollState, { passive: true })
 
         document.documentElement.style.setProperty(
             "--top-bar-height",
@@ -807,6 +813,51 @@
         }, 100)
     }
 
+    function measureMenuHeight(id: string, width: string): string | null {
+        const menu = headerMenu.value
+        const card = menu?.querySelector<HTMLElement>(".header-menu-card")
+        const section = document.getElementById(id)
+        if (!menu || !card || !section) return null
+
+        const fill = [
+            section.querySelector<HTMLElement>(".header-menu-content"),
+            ...section.querySelectorAll<HTMLElement>(".h-100"),
+        ].filter((el): el is HTMLElement => el !== null)
+
+        const touched = [menu, card, section, ...fill]
+        const saved = touched.map((el) => el.style.cssText)
+
+        menu.style.transition = "none"
+        menu.style.width = width
+        menu.style.height = card.style.height = "auto"
+        section.style.position = "static"
+        section.style.height = "auto"
+        fill.forEach((el) => (el.style.height = "auto"))
+
+        const height = `${menu.offsetHeight}px`
+
+        touched.forEach((el, i) => (el.style.cssText = saved[i]))
+        void menu.offsetHeight
+
+        return height
+    }
+
+    function measureAllMenuHeights() {
+        if (window.innerWidth <= 1199) return
+        for (const id in menuWidths) {
+            const height = measureMenuHeight(id, menuWidths[id])
+            if (height) menuHeights.value[id] = height
+        }
+    }
+
+    function menuHeight(id: string): string {
+        if (!menuHeights.value[id]) {
+            const measured = measureMenuHeight(id, menuWidths[id])
+            if (measured) menuHeights.value[id] = measured
+        }
+        return menuHeights.value[id] ?? "0px"
+    }
+
     function mouseOver(id: string, event: MouseEvent) {
         if (window.innerWidth <= 1199) return
 
@@ -831,9 +882,12 @@
         showMenuId.value = id
         mouseoverMenu.value = false
         headerMenuPointerEvents.value = "auto"
-        headerMenuSize.value = menuSize(id)
+        headerMenuSize.value = {
+            width: menuWidths[id],
+            height: menuHeight(id),
+        }
 
-        const { left, width } = (
+        const { left } = (
             event.currentTarget as HTMLElement
         ).getBoundingClientRect()
         const menuWidth = parseInt(headerMenuSize.value.width)
@@ -1651,7 +1705,7 @@
                             position: absolute;
                             top: 0;
                             bottom: 0;
-                            padding: $rem-1;
+                            padding: 20px $rem-1;
 
                             &.opacity-100 {
                                 transition: opacity 700ms ease;
