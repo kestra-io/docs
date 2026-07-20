@@ -52,7 +52,7 @@ That will take you to this screen, where you can copy the DSN.
 
 **N.B. A DSN is all anyone needs to send traffic to your account, and you are responsible for the cost of the traffic, so guard this as carefully as you would any API Key or password.**
 
-**For more on working with secrets in Kestra, see our [Managing Secrets](../../docs/07.enterprise/02.governance/secrets/index.md) guide.**
+**For more on working with secrets in Kestra, see our [Managing Secrets](../../docs/07.enterprise/02.governance/secrets-manager/index.md) guide.**
 
 ![sentry client](./sentry_dsn_client_keys.png)
 

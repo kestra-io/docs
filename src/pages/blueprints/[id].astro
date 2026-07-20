@@ -1,93 +1,429 @@
 ---
 export const prerender = false
+import { Icon } from "astro-icon/components"
 import { $fetchApiCached } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Header from "~/components/blueprints/Header.astro"
+import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
+import type { SiblingPill } from "~/components/blueprints/BlueprintHero.astro"
 import Detail from "~/components/blueprints/Detail.vue"
 import Related from "~/components/blueprints/Related.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
+import Faq from "~/components/common/Faq.vue"
 import { randomSortFunction } from "~/utils/random"
+import { findOrchestrationLinks } from "~/utils/orchestrationLink"
+import { isUseCaseTag } from "~/utils/blueprints/useCaseTags"
+import {
+    fetchToolIndex,
+    fetchCoreToolIndex,
+} from "~/utils/blueprints/toolIndex"
+import { blueprintFaqItems } from "~/utils/blueprints/faq"
+import { fetchFullCatalog } from "~/utils/blueprints/catalog"
+import { bannerForCategory } from "~/utils/blueprints/banners"
+import {
+    CATEGORY_TILE_META,
+    categoryTileMetaForSlug,
+} from "~/utils/blueprints/categoryMeta"
+import {
+    blueprintSubtags,
+    slugifySubtag,
+    subtagLabel,
+    CUSTOMER_SUCCESS_SUBTAG,
+} from "~/utils/blueprints/subtags"
 
 const { id } = Astro.params
 
-let pageData: Blueprint
+const category = id ? categoryTileMetaForSlug(id) : undefined
+const isCategoryPage =
+    category !== undefined && category.name !== "Getting Started"
 
-try {
-    pageData = await $fetchApiCached<Blueprint>(`/blueprints/${id}/versions/latest`)
-} catch (e) {
-    return Astro.redirect("/404")
-}
+let title = ""
+let description: string | undefined
 
-const graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
-const tags = await $fetchApiCached<BlueprintTag[]>(`/blueprints/versions/latest/tags`)
+let categoryTotal = 0
+let categoryBlueprints: Blueprint[] = []
+let categoryTags: BlueprintTag[] = []
+let categoryTagId: string | undefined
+let categoryQ: string | undefined
+let heroSiblings: SiblingPill[] = []
+let subCategoryRows: { name: string; blueprints: Blueprint[] }[] = []
+const PAGE_SIZE = 24
+const SUBCATEGORY_SAMPLE_SIZE = 200
 
+let pageData: Blueprint | undefined
+let graph: unknown
+let detailTags: BlueprintTag[] = []
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
+let orchestrationLinks: ReturnType<typeof findOrchestrationLinks> = []
 
-if (pageData.tags && pageData.tags.length > 0) {
-    const selectedTagIds = pageData.tags.slice(0, 2)
+const fullCatalog = await fetchFullCatalog()
+const toolIndex = await fetchToolIndex(fullCatalog)
+const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 
-    for (const tagId of selectedTagIds) {
-        const tag = tags.find((t) => t.id === tagId)
-        if (!tag) continue
+if (isCategoryPage && category) {
+    categoryQ = Astro.url.searchParams.get("q") ?? undefined
 
-        const data = await $fetchApiCached<{ results: Blueprint[] }>(
-            `/blueprints/versions/latest?tags=${tagId}&size=10`,
+    categoryTags = await $fetchApiCached<BlueprintTag[]>(
+        `/blueprints/versions/latest/tags`,
+    )
+    const tag = categoryTags.find((t) => t.name === category.name)
+    categoryTagId = tag?.id
+
+    const { results = [], total = 0 } = tag
+        ? ((await $fetchApiCached<{ results: Blueprint[]; total: number }>(
+              `/blueprints/versions/latest?size=${PAGE_SIZE}&page=1&tags=${tag.id}` +
+                  (categoryQ ? `&q=${encodeURIComponent(categoryQ)}` : ""),
+          )) ?? { results: [], total: 0 })
+        : { results: [], total: 0 }
+
+    categoryBlueprints = results
+    categoryTotal = total
+    heroSiblings = CATEGORY_TILE_META.filter(
+        (c) => c.name !== "Getting Started",
+    ).map((c) => ({
+        label: c.name,
+        icon: c.icon,
+        active: c.slug === id,
+        href: c.slug === id ? "/blueprints" : `/blueprints/${c.slug}`,
+        removeLabel:
+            c.slug === id ? `Remove the ${c.name} filter` : undefined,
+    }))
+
+    if (tag) {
+        const sample = await $fetchApiCached<{ results: Blueprint[] }>(
+            `/blueprints/versions/latest?size=${SUBCATEGORY_SAMPLE_SIZE}&page=1&tags=${tag.id}`,
         )
 
-        if (data && data.results.length > 0) {
-            const rowBlueprints = data.results
-                .filter((b) => b.id !== pageData.id)
-                .sort(randomSortFunction)
-                .slice(0, 6)
+        if (!categoryQ) {
+            const sampleBlueprints = sample?.results ?? []
+            const csSlug = slugifySubtag(CUSTOMER_SUCCESS_SUBTAG)
+            const bySubtag = new Map<string, Blueprint[]>()
+            for (const b of sampleBlueprints) {
+                for (const st of blueprintSubtags(b)) {
+                    const slug = slugifySubtag(st)
+                    if (slug === csSlug) continue
+                    const list = bySubtag.get(slug) ?? []
+                    list.push(b)
+                    bySubtag.set(slug, list)
+                }
+            }
 
-            if (rowBlueprints.length > 0) {
-                relatedRows.push({
-                    id: tagId,
-                    title: `More <span class="highlight">${tag.name}</span> Blueprints`,
-                    blueprints: rowBlueprints,
-                })
+            subCategoryRows = [...bySubtag.entries()]
+                .filter(([, bps]) => bps.length >= 2)
+                .sort((a, b) => b[1].length - a[1].length)
+                .slice(0, 8)
+                .map(([slug, bps]) => ({
+                    name: subtagLabel(slug),
+                    blueprints: bps.slice(0, 6),
+                }))
+        }
+    }
+
+    title = `${category.name} blueprints`
+    description = category.blurb
+} else {
+    try {
+        pageData = await $fetchApiCached<Blueprint>(
+            `/blueprints/${id}/versions/latest`,
+        )
+    } catch (e) {
+        return Astro.redirect("/404")
+    }
+
+    graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
+    detailTags = await $fetchApiCached<BlueprintTag[]>(
+        `/blueprints/versions/latest/tags`,
+    )
+
+    if (pageData.tags && pageData.tags.length > 0) {
+        const pageTags = pageData.tags
+            .map((tagId) => detailTags.find((t) => t.id === tagId))
+            .filter(
+                (t): t is BlueprintTag & { id: string } => t?.id !== undefined,
+            )
+
+        const orderedTags = [
+            ...pageTags.filter((t) => isUseCaseTag(t.name)),
+            ...pageTags.filter((t) => !isUseCaseTag(t.name)),
+        ].slice(0, 2)
+
+        for (const tag of orderedTags) {
+            const data = await $fetchApiCached<{ results: Blueprint[] }>(
+                `/blueprints/versions/latest?tags=${tag.id}&size=10`,
+            )
+
+            if (data && data.results.length > 0) {
+                const rowBlueprints = data.results
+                    .filter((b) => b.id !== pageData!.id)
+                    .sort(randomSortFunction)
+                    .slice(0, 6)
+
+                if (rowBlueprints.length > 0) {
+                    relatedRows.push({
+                        id: tag.id,
+                        title: `More <span class="highlight">${tag.name}</span> Blueprints`,
+                        blueprints: rowBlueprints,
+                    })
+                }
             }
         }
     }
-}
 
-const title = pageData.metaTitle || pageData.title
-const description = pageData.metaDescription
+    const orchFiles = import.meta.glob<string>(
+        "../../contents/orchestration/*.yaml",
+        { query: "?raw", import: "default", eager: true },
+    )
+    const orchestrationEntries = Object.entries(orchFiles).flatMap(
+        ([path, raw]) => {
+            const slug = path
+                .split("/")
+                .pop()!
+                .replace(/\.yaml$/, "")
+            const match = raw.match(
+                /^tool:\s*\n\s+name:\s*"([^"]+)"\s*\n\s+pluginClass:\s*"([^"]+)"/m,
+            )
+            if (!match) return []
+            return [
+                {
+                    id: slug,
+                    data: {
+                        tool: { name: match[1], pluginClass: match[2] },
+                    },
+                },
+            ]
+        },
+    )
+    orchestrationLinks = findOrchestrationLinks(
+        pageData.includedTasks,
+        orchestrationEntries,
+    )
+
+    title = pageData.metaTitle || pageData.title
+    description = pageData.metaDescription
+}
 ---
 
-<Layout title={title} description={description}>
-    <Header page={pageData} slug={id} tags={tags} />
-    <Detail
-        client:only
-        page={pageData}
-        description={pageData.description}
-        flow={pageData.flow}
-        graph={graph}
-    />
+<Layout {title} {description}>
     {
-        relatedRows.map((row) => (
-            <Related
-                id={row.id}
-                title={row.title}
-                relatedBlueprints={row.blueprints}
-                tags={tags}
-            />
-        ))
+        isCategoryPage && category ? (
+            <>
+                <BlueprintHero
+                    eyebrow="Category"
+                    title={`Browse ${category.name} Blueprints by pattern`}
+                    blurb={category.blurb}
+                    banner={bannerForCategory(id)}
+                    q={categoryQ}
+                    tagsSelected={category.name}
+                    {toolIndex}
+                    {coreToolIndex}
+                    siblings={heroSiblings}
+                />
+
+                {subCategoryRows.length > 0 && (
+                    <section class="bp-row bp-subcategories">
+                        <div class="container-xxl">
+                            {subCategoryRows.map((row) => (
+                                <div class="subcategory-row">
+                                    <div class="subcategory-row-head">
+                                        <h3>{row.name}</h3>
+                                        <a
+                                            href={`/blueprints?tags=${encodeURIComponent(`${category.name},${row.name}`)}`}
+                                            class="see-more"
+                                        >
+                                            See more {row.name}
+                                            <Icon
+                                                name="mdi:chevron-right"
+                                                class="see-more-icon"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div class="row g-3">
+                                        {row.blueprints.map((blueprint) => (
+                                            <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                                <BlueprintCard
+                                                    {blueprint}
+                                                    tags={categoryTags}
+                                                    href={`/blueprints/${blueprint.id}`}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {(categoryQ || subCategoryRows.length === 0) && (
+                    <section class="bp-row">
+                        <div class="container-xxl">
+                            {categoryBlueprints.length > 0 ? (
+                                <LoadMoreBlueprints
+                                    tagId={categoryTagId}
+                                    q={categoryQ}
+                                    tags={categoryTags}
+                                    total={categoryTotal}
+                                    initialShown={categoryBlueprints.length}
+                                    pageSize={PAGE_SIZE}
+                                    client:idle
+                                >
+                                    <div class="row g-3" slot="initial">
+                                        {categoryBlueprints.map((blueprint) => (
+                                            <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                                <BlueprintCard
+                                                    {blueprint}
+                                                    tags={categoryTags}
+                                                    href={`/blueprints/${blueprint.id}`}
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </LoadMoreBlueprints>
+                            ) : (
+                                <div class="col-12 text-center py-5">
+                                    <p>
+                                        {categoryQ
+                                            ? `No ${category.name} blueprints found for "${categoryQ}".`
+                                            : "No blueprints tagged with this category yet."}
+                                    </p>
+                                    <a
+                                        href="/blueprints"
+                                        class="btn btn-primary"
+                                    >
+                                        Clear all filters
+                                    </a>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+                )}
+
+                <SeeHow
+                    cta={{
+                        text: "Get Started",
+                        href: "/get-started",
+                    }}
+                >
+                    <Fragment slot="title">
+                        Ready to orchestrate your stack?
+                    </Fragment>
+                    Copy a {category.name.toLowerCase()} blueprint, adapt it to
+                    your stack, and ship your first flow in minutes.
+                </SeeHow>
+
+                <Faq items={blueprintFaqItems()} client:visible />
+            </>
+        ) : (
+            pageData && (
+                <>
+                    <Header page={pageData} slug={id} tags={detailTags} />
+                    <Detail
+                        client:only
+                        page={pageData}
+                        description={pageData.description}
+                        flow={pageData.flow}
+                        graph={graph}
+                        orchestrationLinks={orchestrationLinks}
+                    />
+                    {relatedRows.map((row) => (
+                        <Related
+                            id={row.id}
+                            title={row.title}
+                            relatedBlueprints={row.blueprints}
+                            tags={detailTags}
+                        />
+                    ))}
+                    <SeeHow
+                        cta={{
+                            text: "Get Started",
+                            href: "/get-started",
+                        }}
+                    >
+                        <Fragment slot="title">New to Kestra?</Fragment>
+                        Use blueprints to kickstart your first workflows.
+                    </SeeHow>
+                </>
+            )
+        )
     }
-    <SeeHow
-        cta={{
-            text: "Get Started",
-            href: "/get-started",
-        }}
-    >
-        <Fragment slot="title">New to Kestra?</Fragment>
-        Use blueprints to kickstart your first workflows.
-    </SeeHow>
 </Layout>
 
 <style lang="scss">
-    :global(.content p) {
-        white-space: nowrap;
+    :global(.layout-wrapper .content p) {
         margin-bottom: 2rem;
+
+        @include media-breakpoint-up(lg) {
+            white-space: nowrap;
+        }
+    }
+
+    :global(section.faq) {
+        background: var(--ks-background-secondary);
+    }
+
+    .bp-row {
+        padding: $rem-1 0 $rem-3;
+
+        .container-xxl {
+            padding-inline: $rem-1;
+        }
+    }
+
+    .bp-subcategories {
+        padding-top: 2.5rem;
+
+        > .container-xxl {
+            padding-inline: $rem-1;
+        }
+    }
+
+    .subcategory-row {
+        margin-bottom: 3.5rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .subcategory-row-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem 1rem;
+        margin-bottom: 1rem;
+
+        h3 {
+            margin: 0;
+            font-size: $font-size-lg;
+            color: var(--ks-content-primary);
+        }
+    }
+
+    .see-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.125rem;
+        flex-shrink: 0;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        color: var(--ks-content-link);
+        text-decoration: none;
+        white-space: nowrap;
+
+        .see-more-icon {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .text-center p {
+        color: var(--ks-content-tertiary);
     }
 </style>

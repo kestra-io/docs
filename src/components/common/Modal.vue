@@ -69,7 +69,8 @@
 
 
     .custom-modal {
-        border: none;
+        border: none !important;
+        outline: none !important;
         border-radius: $border-radius-lg;
         padding: 0;
         overflow: visible;

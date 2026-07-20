@@ -7,9 +7,9 @@
             <div class="side-panel">
                 <div class="item">
                     <h6>Tasks</h6>
-                    <div v-if="page.includedTasks?.length" class="tasks">
+                    <div v-if="visibleTaskIcons.length" class="tasks">
                         <a
-                            v-for="icon in page.includedTasks"
+                            v-for="icon in visibleTaskIcons"
                             :key="icon"
                             :href="'/plugins/' + icon"
                             class="task"
@@ -22,6 +22,17 @@
                             </span>
                         </a>
                     </div>
+                </div>
+                <div v-if="orchestrationLinks?.length" class="item">
+                    <h6>Orchestrate with Kestra</h6>
+                    <a
+                        v-for="link in orchestrationLinks"
+                        :key="link.slug"
+                        :href="'/orchestration/' + link.slug"
+                        class="link"
+                    >
+                        Orchestrate {{ link.name }} with Kestra
+                    </a>
                 </div>
                 <Share
                     :title="page.title"
@@ -52,10 +63,17 @@
     import Share from "~/components/common/Share.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
 
-    defineProps<{
+    const props = defineProps<{
         page: { title: string; includedTasks?: string[] }
         description: string
+        orchestrationLinks?: { slug: string; name: string }[]
     }>()
+
+    const visibleTaskIcons = computed(() =>
+        (props.page.includedTasks ?? []).filter(
+            (cls) => !cls.startsWith("io.kestra.plugin.ee.assets."),
+        ),
+    )
 
     const getLastWord = (value: string) =>
         value

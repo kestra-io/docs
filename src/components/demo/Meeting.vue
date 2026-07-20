@@ -1,9 +1,9 @@
 <script lang="ts" setup>
     import { onMounted, ref, useTemplateRef } from "vue"
     import posthog from "posthog-js"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import identify from "~/utils/identify"
     import { getHubspotTracking } from "~/utils/hubspot.js"
+    import { getStoredClickId } from "~/scripts/gclid"
     import {
         getMeetingUrl,
         getGeoMeetingUrl,
@@ -11,7 +11,6 @@
     } from "~/composables/useMeeting.js"
     import { $fetch } from "~/utils/fetch"
 
-    const gtm = useGtm()
     const valid = ref(false)
     const message = ref("")
     const meetingUrl = ref<string>()
@@ -57,6 +56,7 @@
                 const ln = form["last-name"].value
                 const em = form["email"].value
                 const emp = form["employees"].value
+                const clickId = getStoredClickId()
 
                 hsq.push([
                     "identify",
@@ -86,6 +86,21 @@
                             name: "kuid",
                             value: localStorage.getItem("KUID") || "",
                         },
+                        // Google Ads click id (gclid/gbraid/wbraid) for offline
+                        // conversion import. Written to the standard HubSpot
+                        // property `hs_google_click_id`, which HubSpot's Google
+                        // Ads offline-conversion sync reads natively, so the
+                        // booked demo can be attributed back to the paid click.
+                        // Sent only when a click id is present.
+                        ...(clickId
+                            ? [
+                                  {
+                                      objectTypeId: "0-1",
+                                      name: "hs_google_click_id",
+                                      value: clickId.value,
+                                  },
+                              ]
+                            : []),
                     ],
                     context: {
                         hutk: getHubspotTracking() || undefined,
@@ -100,7 +115,12 @@
                     "trackCustomBehavioralEvent",
                     { name: "bookdemo_form" },
                 ])
-                gtm?.trackEvent({
+                // Push directly to the dataLayer: the vue-gtm plugin is
+                // initialized with `enabled: false` (GTM is loaded manually
+                // after cookie consent in cookieconsent.ts), so
+                // gtm.trackEvent() is a no-op and never reaches the dataLayer.
+                window.dataLayer = window.dataLayer || []
+                window.dataLayer.push({
                     event: "bookdemo_form",
                     noninteraction: false,
                 })
