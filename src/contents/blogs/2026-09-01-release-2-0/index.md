@@ -137,25 +137,32 @@ See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide fo
 
 ## Policies
 
-<!-- TODO: fill in this section when Policies ships. The below is a stub based on confirmed facts from kestra-ee#8146. Verify all YAML field names and FQNs before publishing. Two open questions: (1) is `description:` required in each policy? (2) does individual policy YAML include `namespace:` or does scope come from URL only? -->
+Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies solves this at the platform layer.
 
-Policies is the EE replacement for `pluginDefaults`. Where `pluginDefaults` applied configuration uniformly by task type, Policies gives platform teams explicit, auditable control over what flows and plugins are allowed to do across namespaces.
+Policies is the EE replacement for `pluginDefaults`. It gives platform administrators governance rules that inject configuration, validate compliance, and block non-conforming flows — across namespaces, tenants, and flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
 
-A Policy is a named set of rules attached to a namespace. Five rule types ship in 2.0: `Add` and `Delete` mutate plugin configuration before execution; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint.
+A Policy is a named set of rules scoped to a namespace or a tenant. Rules from a parent namespace cascade to all child namespaces automatically, so a company-wide constraint placed at the root namespace reaches every team without per-namespace configuration.
 
-<!-- TODO: add a concrete example (e.g. Restrict to cap containerImage pull policies, or Require a label on all flows in a namespace). Use confirmed DSL: `io.kestra.plugin.ee.rules.*` FQN prefix, `values:` on Add rules, `property:` (singular) on Restrict, `properties:` (array) on Delete/Require. enforcement: active|evaluate|disabled|reference, action: block|warn. -->
+Five rule types ship in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: flow`) or any plugin instance in it — tasks, triggers, task runners (`on: plugin`) — narrowed by a `where` clause that matches on the plugin type.
+
+A practical example: require that every flow carries a team label, and restrict all script tasks to an approved container registry.
 
 ```yaml
-# TODO: replace with a real example once feature is testable
-id: enforce-image-registry
-namespace: company
-description: Restrict container images to the internal registry
+id: prod-standards
+description: "Label requirements and registry policy for production flows."
+enforcement: active
 
 rules:
+  - type: io.kestra.plugin.ee.rules.Require
+    on: flow
+    properties:
+      - labels.team
+    errorMessage: "Every flow must declare labels.team."
+
   - type: io.kestra.plugin.ee.rules.Restrict
     on: plugin
     where:
-      - property: type
+      - field: type
         operator: STARTS_WITH
         value: io.kestra.plugin.scripts
     property: containerImage
@@ -164,9 +171,13 @@ rules:
     errorMessage: "Container images must be pulled from registry.internal."
 ```
 
-`override: true` on a mutate rule takes precedence over what the flow author set, equivalent to the old `forced: true` on `pluginDefaults`. The `enforcement` mode lets teams roll out policies gradually: `evaluate` logs violations without blocking, `active` enforces them.
+`Add` rules inject values at resolution time. With `override: false` (the default), the author's explicit value wins and the policy fills in only what's absent. With `override: true`, the policy value always wins. Either way, every injection is annotated in the flow editor's merged preview — forced values are never invisible to authors.
 
-`pluginDefaults` at the flow level is removed in 2.0. See the [Policies reference](/docs/enterprise/governance/policies) and the [plugin defaults migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed).
+Before enabling enforcement, set `enforcement: evaluate`. The policy checks every flow in scope and surfaces violations in the Governance UI, but nothing is blocked and no values are injected. When the violation report looks right, flip to `active`.
+
+Policies also support opt-in bundles with `enforcement: reference`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles — an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one, selected per task in the same flow.
+
+`pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. See the [Policies reference](/docs/enterprise/governance/policies) for the full rule DSL.
 
 ## Loop Task
 
