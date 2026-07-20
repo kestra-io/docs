@@ -24,13 +24,20 @@ const tags = allTags
                 {
                     page.includedTasks?.length > 0 && (
                         <div class="tasks">
-                            {page.includedTasks.map((icon: string) => (
-                                <div class="task">
-                                    <div class="box">
-                                        <TaskIcon cls={icon} />
+                            {page.includedTasks
+                                .filter(
+                                    (cls: string) =>
+                                        !cls.startsWith(
+                                            "io.kestra.plugin.ee.assets.",
+                                        ),
+                                )
+                                .map((icon: string) => (
+                                    <div class="task">
+                                        <div class="box">
+                                            <TaskIcon cls={icon} />
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
                         </div>
                     )
                 }
