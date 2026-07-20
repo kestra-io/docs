@@ -17,55 +17,101 @@ Flows that contain a `pluginDefaults` block fail to parse after upgrading to 2.0
 
 In Kestra 1.x, plugin defaults could be defined at three levels:
 
-| Level | 1.x location |
-|-------|-------------|
-| Flow | `pluginDefaults:` block inside the flow YAML |
-| Namespace (EE) | **Plugin Defaults** tab in the Kestra UI |
-| Global | `kestra.plugins.defaults` in the server configuration file |
+| Before (1.x) | After (2.x) |
+|---|---|
+| Flow-level `pluginDefaults:` block | Values inlined onto tasks (OSS), or a `reference` Policy attached via `policyRefs:` (EE) |
+| Namespace-level Plugin Defaults (EE) | Namespace-scoped Policy (UI / API) — existing namespace-level defaults are migrated automatically |
+| Tenant-level plugin defaults (EE) | Tenant-scoped Policy (UI / API) |
+| `kestra.plugins.defaults` in server config | Static policy under `kestra.policies` in server config |
+| `forced: false` (fill only when unset) | `Add` rule with `override: false` (the default) |
+| `forced: true` (policy value always wins) | `Add` rule with `override: true` |
 
-All three are removed in 2.0.0. In **Enterprise Edition**, they are replaced by [Policies](../../../07.enterprise/02.governance/policies/index.md) — a governance layer that covers injection, enforcement, and validation in one place. Policies also extend `pluginDefaults` with the ability to target **flow-level properties** (`retry`, `concurrency`, `labels`) in addition to plugin properties. In **OSS**, there is no direct replacement; move default values inline onto each task or use flow-level variables.
+All are removed in 2.0.0. In **Enterprise Edition**, they are replaced by [Policies](../../../07.enterprise/02.governance/policies/index.md) — a governance layer that covers injection, enforcement, and validation in one place. Policies also extend `pluginDefaults` with the ability to target **flow-level properties** (`retry`, `concurrency`, `labels`) in addition to plugin properties. In **OSS**, there is no direct replacement; move default values inline onto each task or use flow-level variables.
+
+Precedence is preserved. Policies apply along a scope chain `STATIC → INSTANCE → TENANT → NAMESPACE`:
+
+- **Non-overriding** (`override: false`) values fill properties the flow author left unset; the innermost scope wins — the same "task > flow > namespace > global" precedence as 1.x non-forced defaults.
+- **Overriding** (`override: true`) values replace the author's value; the outermost scope wins — the same "global beats namespace" precedence as 1.x forced defaults.
+
+## Before you migrate — build your inventory
+
+Collect every place plugin defaults are defined **before** upgrading. The 1.x UI for namespace and tenant defaults does not exist in 2.x.
+
+1. **Server configuration**: every entry under `kestra.plugins.defaults` in your `application.yml` or Helm values.
+2. **Tenant and namespace defaults** (EE): export them from each tenant's and namespace's **Plugin Defaults** settings page, or via the 1.x API.
+3. **Flow-level blocks**: search your flow sources for `pluginDefaults:`:
+
+```bash
+grep -rl "pluginDefaults:" flows/
+```
 
 ## Migration — Enterprise Edition
 
-Each `pluginDefaults` entry maps to a `mutate.Add` rule inside a Policy.
+Each `pluginDefaults` entry maps to an `Add` rule inside a Policy.
 
-### Flow-level pluginDefaults
+### Step 1 — global server config → static policy
 
-Lift the entries to a namespace-scoped Policy, or convert them to a [reference Policy](../../../07.enterprise/02.governance/policies/index.md#reference-policies) that flows opt into with `policyRefs:`.
+Entries from `kestra.plugins.defaults` map to a static policy declared under `kestra.policies` in server configuration — not a tenant-scoped or namespace-scoped Policy. Static policies are cross-tenant, form the outermost scope, and are read-only through the API.
 
-**Before (1.x flow):**
-
-```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python.Script
-    values:
-      containerImage: python:slim
-      taskRunner:
-        type: io.kestra.plugin.scripts.runner.docker.Docker
-```
-
-**After (2.0 namespace-scoped Policy):**
+**Before (`application.yml`):**
 
 ```yaml
-id: python-defaults
-description: "Default container image and runner for Python script tasks."
-enforcement: active
-rules:
-  - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
-    where:
-      - field: type
-        operator: STARTS_WITH
-        value: io.kestra.plugin.scripts.python
-    values:
-      containerImage: python:slim
-      taskRunner:
-        type: io.kestra.plugin.scripts.runner.docker.Docker
+kestra:
+  plugins:
+    defaults:
+      - type: io.kestra.plugin.scripts.shell.Commands
+        values:
+          containerImage: ubuntu:24.04
+      - type: io.kestra.plugin.aws
+        forced: true
+        values:
+          region: eu-west-1
 ```
 
-### Namespace-level Plugin Defaults
+**After (`application.yml`):**
 
-Recreate each entry as a `mutate.Add` rule in a namespace-scoped Policy.
+```yaml
+kestra:
+  policies:
+    - id: instance-plugin-defaults
+      description: "Migrated from kestra.plugins.defaults."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: plugin
+          where:
+            - field: type
+              operator: EQUAL_TO
+              value: io.kestra.plugin.scripts.shell.Commands
+          values:
+            containerImage: ubuntu:24.04
+        - type: io.kestra.plugin.ee.rules.Add
+          on: plugin
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.aws
+          values:
+            region: eu-west-1
+```
+
+- `id` is required (lowercase alphanumeric and hyphens).
+- Do not set `scope`, `tenantId`, or `namespace` — static policies are always installation-wide.
+- A malformed static policy prevents server startup. Validate in staging first.
+
+### Step 2 — namespace-level Plugin Defaults → namespace Policy
+
+Recreate each entry as an `Add` rule in a namespace-scoped Policy, via the **Policies** UI or the API:
+
+```
+POST /api/v1/{tenant}/namespaces/{namespace}/policies
+```
+
+Namespace policies apply to the namespace and all its child namespaces, matching 1.x namespace-default inheritance.
+
+:::alert{type="info"}
+Existing namespace-level Plugin Defaults are migrated to Policies automatically during the 2.0 upgrade. Review the migrated Policies and adjust if needed.
+:::
 
 **Before (1.x namespace Plugin Default):**
 
@@ -96,13 +142,70 @@ rules:
       region: "us-east-1"
 ```
 
-### Global plugin defaults
+Scope, tenant, and namespace come from the URL — not from the policy body.
 
-Entries from `kestra.plugins.defaults` in the server configuration map to tenant-scoped Policies — Policies attached to the tenant root rather than a specific namespace.
+### Step 3 — flow-level pluginDefaults
+
+Flow-level `pluginDefaults` never supported `forced` in 1.x (it was stripped with a warning). Two migration options:
+
+**Option A — inline the values (recommended for one or two flows).** Copy each default's `values` onto the matching tasks and delete the `pluginDefaults:` block.
+
+**Option B — reference Policy (recommended when many flows share the same block).** Create a Policy with `enforcement: reference` at the namespace or tenant scope. Each flow opts in with `policyRefs:`.
+
+**Before (1.x flow):**
+
+```yaml
+id: daily-report
+namespace: company.team
+
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.python.Script
+    values:
+      containerImage: ghcr.io/kestra-io/pydata:latest
+
+tasks:
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    script: ...
+```
+
+**After — the shared reference Policy (created once, on `company.team`):**
+
+```yaml
+id: pydata-defaults
+description: "Python data science container image default."
+enforcement: reference
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: plugin
+    where:
+      - field: type
+        operator: EQUAL_TO
+        value: io.kestra.plugin.scripts.python.Script
+    values:
+      containerImage: ghcr.io/kestra-io/pydata:latest
+```
+
+**After — the flow:**
+
+```yaml
+id: daily-report
+namespace: company.team
+
+policyRefs:
+  - pydata-defaults
+
+tasks:
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    script: ...
+```
+
+A `reference` Policy applies only to flows that list it in `policyRefs`. `active` Policies apply automatically to every flow in scope.
 
 ### Forced defaults
 
-`forced: true` on a `pluginDefaults` entry becomes `override: true` on the corresponding `mutate.Add` rule.
+`forced: true` on a `pluginDefaults` entry becomes `override: true` on the corresponding `Add` rule.
 
 **Before:**
 
@@ -142,19 +245,42 @@ Your options are:
 - **Flow variables** — define a variable at the flow level and reference it in each task with `{{ vars.myVariable }}`.
 - **Upgrade to Enterprise Edition** — use Policies for centralized, enforced defaults across namespaces.
 
-## Migration steps
+## Behavioral differences
 
-1. Search all flows for `pluginDefaults` blocks:
+A few behaviors differ from 1.x `pluginDefaults`:
 
-```bash
-grep -rl "pluginDefaults:" flows/
+- **Lists are replaced, not merged.** Map-valued properties deep-merge as before, but if a Policy injects a list (for example, a list of environment variables), it replaces the author's list entirely when `override: true`. Check any default whose `values` contain lists.
+- **Plugin aliases are not resolved.** 1.x resolved deprecated plugin aliases through the plugin registry. Policy conditions match the `type` string literally. If your flows use an alias, cover both the alias and the canonical name — or migrate all flows to the canonical name first.
+- **`evaluate` mode does not inject values.** Only `active` and attached `reference` Policies mutate flows. Do not leave a migrated Policy in `evaluate` in production — tasks run without their former defaults.
+- **`Add` + `Delete` conflicts are rejected at save time.** 1.x had no `Delete` concept, so this only matters if you also adopt new validation rules. If one Policy injects a property and another removes it, saving any affected flow fails with an error citing both policies.
+
+## Verify the migration
+
+**Preview the effective policy chain for a flow:**
+
+```
+POST /api/v1/{tenant}/flows/policies/preview
 ```
 
-2. Remove the `pluginDefaults` block from each flow.
-3. Move default values inline onto affected tasks (OSS), or create a namespace-scoped Policy (EE).
-4. For namespace-level Plugin Defaults, recreate them as namespace-scoped Policies in the UI or via the API.
-5. For global `kestra.plugins.defaults` entries, create tenant-scoped Policies.
-6. Verify flows parse correctly by running `kestra flow validate` before deploying.
+Send the flow source; the response shows the mutated source with per-property attribution of which Policy injected what.
+
+**Dry-run a single policy against existing flows:**
+
+```
+GET /api/v1/{tenant}/policies/{id}/evaluate
+GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
+```
+
+**Smoke test**: run one execution per critical flow and inspect the task configuration used (container image, region, task runner) in the execution view.
+
+## Migration checklist
+
+1. Inventory all plugin defaults before upgrading — server config, namespace/tenant UI, and flow YAML files.
+2. Remove `kestra.plugins.defaults` from server config and add equivalent static policies under `kestra.policies`.
+3. For each namespace that had Plugin Defaults, review the auto-migrated Policies and adjust if needed.
+4. For each flow with a `pluginDefaults:` block, either inline the values onto tasks or create a reference Policy and add `policyRefs:` to the flow.
+5. Verify flows parse correctly: `kestra flow validate /path/to/flow.yml`
+6. Grant teams that managed namespace defaults the `POLICY` permission (`VIEW`, `CREATE`, `UPDATE`, `DELETE`) — it is separate from namespace edit rights.
 
 :::alert{type="info"}
 See [Policies](../../../07.enterprise/02.governance/policies/index.md) for the full Policy DSL reference, enforcement modes, inheritance behavior, and examples.

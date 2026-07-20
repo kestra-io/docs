@@ -42,14 +42,14 @@ rules:
     errorMessage: "concurrency.limit cannot exceed 10 in prod."
 ```
 
-A Policy has no `type` field — each rule's FQN (`mutate.*` / `validate.*`) determines what it does. A single policy can mix mutate and validate rules, which lets a coherent intent (such as "all prod flows: inject a default concurrency, then block values above 10") live in one place.
+A Policy has no `type` field — each rule has a `type` from one of the five rule FQNs that determines what it does. A single policy can mix mutate and validate rules, which lets a coherent intent (such as "all prod flows: inject a default concurrency, then block values above 10") live in one place.
 
 ## Enforcement modes
 
 | Mode | Behavior |
 |------|----------|
 | `active` | Rules are enforced on save and before execution. Block violations reject the operation. Default. |
-| `evaluate` | Rules are checked and violations are reported in the Governance UI, but nothing is blocked. Use this for staged rollout — watch the report, then flip to `active`. |
+| `evaluate` | Violations are reported in the Governance UI, but nothing is blocked and **no values are injected**. Use this to audit compliance before enabling enforcement. |
 | `disabled` | The Policy is inactive. Rules are not checked. |
 | `reference` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. |
 
@@ -197,7 +197,7 @@ Validation always runs against the **post-injection** resolved flow. An `Add` ru
 
 Each rule declares `on: flow` to target the flow's own properties, or `on: plugin` to target every plugin instance in the flow — tasks including nested ones, triggers, and task runners.
 
-There is no flow-level `where:` filter. To target flows, use scope placement: author the policy at the namespace that owns the subtree, and inheritance carries it down. A tenant-scoped policy applies to every flow in the tenant.
+There is no flow-level `where:` filter. To target flows, use scope placement: place the Policy at the namespace that owns the subtree, and inheritance carries it down. A tenant-scoped policy applies to every flow in the tenant.
 
 ### `where` clause
 
@@ -229,7 +229,7 @@ where:
 
 ## Override behavior
 
-For `mutate.Add` rules:
+For `Add` rules:
 
 - `override: false` (default) — if the author sets a value, it is used. The policy injects only when the property is absent.
 - `override: true` — the policy value always wins. The replacement is annotated in the merged preview so the author can see it.
@@ -305,17 +305,11 @@ tasks:
 
 Reference policies are exempt from monotonic inheritance — they are convenience bundles, not governance rules.
 
-## Policy inheritance
-
-Policies from a parent namespace automatically apply to all child namespaces. Children can add stricter validate rules but cannot relax rules inherited from a parent — a child cannot lower a `max`, widen an `enum`, or downgrade a rule from `block` to `warn`.
-
-For `override: true` mutate rules, the outermost scope wins. A tenant-level policy with `override: true` cannot be overridden by a namespace-level policy.
-
 ## Visibility
 
 When you open a flow in the Kestra UI editor, a Policies panel shows:
 
-- **Merged preview** — every injected value, every `override: true` replacement, and every `Delete` removal, each annotated with its source policy. Forced values are never invisible.
+- **Merged preview** — every injected value, every `override: true` replacement, and every `Delete` removal, each annotated with its source policy. Every forced override is visible to the author.
 - **Violation reports** — which rules are violated, with per-flow drill-down and a Fix path.
 
 When saving a flow violates an `active` Policy with `action: block`, Kestra rejects the save with a message that cites the Policy ID, scope, rule, and the admin-authored `errorMessage`. The flow is never auto-disabled; it must be corrected before it can be saved.
@@ -330,6 +324,66 @@ When saving a flow violates an `active` Policy with `action: block`, Kestra reje
    Task `train-model` does not set `timeout`.
 ```
 
+## Policy scope and inheritance
+
+Policies apply along a scope chain, from outermost to innermost:
+
+| Scope | Where defined | Who can edit |
+|---|---|---|
+| `STATIC` | `kestra.policies` in server configuration | Infrastructure / platform team |
+| `INSTANCE` | Tenant root (no specific namespace) | Superadmin |
+| `TENANT` | Tenant-level via API or UI | Tenant admin |
+| `NAMESPACE` | Namespace-level via API or UI | Namespace admin with `POLICY` permission |
+
+Policies from parent namespaces automatically apply to all child namespaces. Children can add stricter validate rules but cannot relax rules inherited from a parent.
+
+For `override: false` `Add` rules, the innermost scope wins — a namespace policy fills a property that a tenant policy left unset. For `override: true` `Add` rules, the outermost scope wins — a static or tenant policy with `override: true` cannot be overridden by a namespace policy.
+
+## Static policies
+
+Static policies are declared in server configuration under `kestra.policies`. They form the outermost scope, are cross-tenant, and are read-only through the API. Use them for installation-wide governance that no namespace or tenant can override.
+
+```yaml
+kestra:
+  policies:
+    - id: instance-defaults
+      description: "Global task runner and cost controls."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: plugin
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.aws
+          values:
+            region: eu-west-1
+        - type: io.kestra.plugin.ee.rules.Restrict
+          on: flow
+          property: concurrency.limit
+          max: 20
+          errorMessage: "concurrency.limit cannot exceed 20."
+```
+
+- `id` is required (lowercase alphanumeric and hyphens, RFC 1123 label format).
+- Do not set `scope`, `tenantId`, or `namespace` — static policies are always installation-wide.
+- A malformed static policy prevents server startup (fail-closed). Validate in a staging environment before deploying.
+
+Static policies are the replacement for the removed `kestra.plugins.defaults` server configuration key. See the [pluginDefaults Removed migration guide](../../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md) for the full conversion.
+
 ## Creating and managing policies
 
-Create and manage Policies from the Kestra UI under **Namespaces → [your namespace] → Policies**, or via the API. Policies can also be exported as YAML and imported into other namespaces or environments.
+Create and manage Policies from the Kestra UI under **Namespaces → [your namespace] → Policies**, or via the API:
+
+```
+POST /api/v1/{tenant}/policies                            # tenant-scoped
+POST /api/v1/{tenant}/namespaces/{namespace}/policies     # namespace-scoped
+```
+
+Policies can also be exported as YAML and imported into other namespaces or environments.
+
+## RBAC
+
+Managing Policies requires the `POLICY` permission on the target resource. This permission is separate from namespace edit rights — a user who can edit flows in a namespace does not automatically have permission to manage its Policies.
+
+Permissions: `VIEW`, `CREATE`, `UPDATE`, `DELETE`.
