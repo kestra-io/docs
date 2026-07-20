@@ -46,9 +46,9 @@ const installFakeDom = () => {
             listeners[type] = listeners[type] || []
             listeners[type].push(cb)
         },
-        dispatchEvent: (event: Event) => {
-            ;(listeners[event.type] || []).forEach((cb) => cb(event))
-        },
+        // Unlike real DOM dispatchEvent, this awaits listeners so tests can
+        // deterministically wait for the async banner-init dynamic import.
+        dispatchEvent: (event: Event) => Promise.all((listeners[event.type] || []).map((cb) => cb(event))),
         documentElement: { classList: { add: vi.fn() } },
         createElement: (tag: string) => {
             if (tag !== "script") throw new Error(`unexpected createElement(${tag})`)
@@ -94,7 +94,9 @@ const setRegionCookie = (value: "eu" | "row") => {
     document.cookie = `${CONSENT_REGION_COOKIE}=${value}`
 }
 
-const firePageLoad = () => document.dispatchEvent(new Event("astro:page-load"))
+// Cast past the DOM lib's `boolean` return type — the fake actually returns
+// a Promise (see dispatchEvent above).
+const firePageLoad = () => document.dispatchEvent(new Event("astro:page-load")) as unknown as Promise<void>
 
 beforeEach(() => {
     installFakeDom()
@@ -117,7 +119,7 @@ describe("cookieconsent — Europe", () => {
     beforeEach(async () => {
         setTimezone("Europe/Paris")
         await loadModule()
-        firePageLoad()
+        await firePageLoad()
     })
 
     it("sets all four consent signals to denied before any interaction, with wait_for_update", () => {
@@ -173,10 +175,10 @@ describe("cookieconsent — Europe", () => {
         expect(allSignalsAre(upd?.[2], "denied")).toBe(true)
     })
 
-    it("only loads GTM once across repeated astro:page-load events (soft navigation)", () => {
+    it("only loads GTM once across repeated astro:page-load events (soft navigation)", async () => {
         const before = gtmScriptTags().length
-        firePageLoad()
-        firePageLoad()
+        await firePageLoad()
+        await firePageLoad()
         expect(gtmScriptTags()).toHaveLength(before)
         expect(before).toBe(1)
     })
@@ -186,7 +188,7 @@ describe("cookieconsent — non-Europe", () => {
     beforeEach(async () => {
         setTimezone("America/New_York")
         await loadModule()
-        firePageLoad()
+        await firePageLoad()
     })
 
     it("defaults all four signals to granted, without wait_for_update", () => {
@@ -211,7 +213,7 @@ describe("cookieconsent — region cookie takes precedence over Intl timezone", 
         setTimezone("America/New_York")
         setRegionCookie("eu")
         await loadModule()
-        firePageLoad()
+        await firePageLoad()
 
         const def = consentEntries().find((e) => e[1] === "default")
         expect(allSignalsAre(def?.[2], "denied")).toBe(true)
@@ -222,7 +224,7 @@ describe("cookieconsent — region cookie takes precedence over Intl timezone", 
         setTimezone("Europe/Paris")
         setRegionCookie("row")
         await loadModule()
-        firePageLoad()
+        await firePageLoad()
 
         const def = consentEntries().find((e) => e[1] === "default")
         expect(allSignalsAre(def?.[2], "granted")).toBe(true)

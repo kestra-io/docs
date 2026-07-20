@@ -1,15 +1,11 @@
-import { run as runCookieConsent } from "vanilla-cookieconsent"
 import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
 import { CONSENT_REGION_COOKIE } from "~/middlewares/consentRegion"
 
-// Prefer the region cookie set by the Worker (src/middlewares/consentRegion.ts)
-// from Cloudflare's edge-resolved geo data — authoritative and not spoofable
-// by the client's OS/browser timezone. Falls back to the Intl timezone check
-// when the cookie is absent, which is always the case in local `astro dev`
-// (the Node adapter never runs the Cloudflare Worker).
+// Cookie set by the Worker from Cloudflare's edge geo data; falls back to
+// Intl timezone (always the case in local `astro dev`).
 const readRegionCookie = (): "eu" | "row" | null => {
     const prefix = `${CONSENT_REGION_COOKIE}=`
     if (!document.cookie) return null
@@ -29,27 +25,25 @@ const isEurope =
         ? regionCookie === "eu"
         : Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 
-// The site uses Astro's <ClientRouter /> in production, so navigating between
-// pages is a client-side transition, not a full reload. These guards make sure
-// the one-time bootstrap (consent modal, GTM/PostHog init) runs only once,
-// while the page-view event is pushed on *every* navigation so GTM triggers
-// (and conversion tags) fire on soft navigations too — not just the first load.
+// Kicked off at module top-level (as early as this script itself runs) so
+// the fetch is already in flight by the time astro:page-load needs it.
+const bannerModule = isEurope ? import("./cookieBanner") : null
+
+// Astro's <ClientRouter /> makes navigation a soft transition, so these
+// guards keep one-time bootstrap idempotent across page loads.
 let analyticsEnabled = false
 let marketingEnabled = false
 let consentInitialized = false
 let gtmLoaded = false
 
-// Thin wrapper so gtag() calls read like Google's canonical snippet, while
-// lazily initializing dataLayer and keeping typed arguments.
-const gtag = (..._args: unknown[]) => {
+// Thin wrapper so gtag() calls read like Google's canonical snippet.
+export const gtag = (..._args: unknown[]) => {
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push(_args)
 }
 
-// Consent Mode v2: GTM must be loaded for everyone — with all signals denied
-// by default in Europe — so Google can receive anonymous, cookieless pings
-// and run conversion modeling for users who decline. The `consent default`
-// push has to reach the dataLayer *before* the gtm.js script tag is added.
+// GTM must load for everyone, signals denied by default in Europe, so
+// Google gets cookieless pings for conversion modeling pre-consent.
 const initConsentModeAndGtm = () => {
     if (gtmLoaded) {
         return
@@ -77,21 +71,7 @@ const initConsentModeAndGtm = () => {
     document.head.appendChild(s)
 }
 
-// analytics category drives analytics_storage; marketing drives the three
-// advertising signals. Called on every consent decision, including a revoke
-// from the Settings modal, so signals can transition back to denied.
-const updateConsentSignals = (categories: string[]) => {
-    const analytics = categories.includes("analytics") ? "granted" : "denied"
-    const ads = categories.includes("marketing") ? "granted" : "denied"
-    gtag("consent", "update", {
-        analytics_storage: analytics,
-        ad_storage: ads,
-        ad_user_data: ads,
-        ad_personalization: ads,
-    })
-}
-
-const pushPageView = () => {
+export const pushPageView = () => {
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
         event: "content-view",
@@ -100,7 +80,7 @@ const pushPageView = () => {
     })
 }
 
-const enabledAnalytics = async () => {
+export const enabledAnalytics = async () => {
     // Push a page-view on every navigation (including client-side transitions).
     if (analyticsEnabled) {
         pushPageView()
@@ -154,7 +134,7 @@ const enabledAnalytics = async () => {
     }
 }
 
-const enabledMarketing = () => {
+export const enabledMarketing = () => {
     if (marketingEnabled) {
         return
     }
@@ -168,10 +148,9 @@ const enabledMarketing = () => {
     })
 }
 
-// astro:page-load fires on the initial load *and* after every client-side
-// navigation, so GTM/PostHog bootstrap on whichever page the visitor lands on
-// first, and every subsequent page reports a page-view.
-document.addEventListener("astro:page-load", () => {
+// Fires on initial load and every client-side navigation, so bootstrap runs
+// once and every page after that just reports a page-view.
+document.addEventListener("astro:page-load", async () => {
     initConsentModeAndGtm()
 
     if (!isEurope) {
@@ -186,8 +165,8 @@ document.addEventListener("astro:page-load", () => {
         if (analyticsEnabled) {
             enabledAnalytics()
         } else {
-            // No analytics consent: GTM is still loaded, so this page-view
-            // only produces anonymous, cookieless pings (conversion modeling).
+            // No analytics consent: GTM stays loaded, so this only produces
+            // a cookieless ping (conversion modeling).
             pushPageView()
         }
 
@@ -195,102 +174,9 @@ document.addEventListener("astro:page-load", () => {
     }
 
     consentInitialized = true
-    document.documentElement.classList.add("cc--darkmode")
 
-    runCookieConsent({
-        mode: isEurope ? "opt-in" : "opt-out",
-        manageScriptTags: true,
-        disablePageInteraction: true,
-        guiOptions: {
-            consentModal: {
-                layout: "box inline",
-                flipButtons: true,
-            },
-        },
-        autoClearCookies: false,
-        onConsent: ({ cookie }) => {
-            let consentCategories = cookie.categories
-            updateConsentSignals(consentCategories)
-
-            if (consentCategories.includes("analytics")) {
-                enabledAnalytics()
-            } else {
-                // Declined analytics: still report the page-view so Google
-                // receives a cookieless ping for conversion modeling.
-                pushPageView()
-            }
-
-            if (consentCategories.includes("marketing")) {
-                enabledMarketing()
-            }
-        },
-        // Fires when the user changes preferences via the Settings modal —
-        // in particular a revoke, which must flip signals back to denied.
-        onChange: ({ cookie }) => {
-            let consentCategories = cookie.categories
-            updateConsentSignals(consentCategories)
-
-            if (consentCategories.includes("analytics")) {
-                enabledAnalytics()
-            }
-
-            if (consentCategories.includes("marketing")) {
-                enabledMarketing()
-            }
-        },
-        categories: {
-            analytics: {
-                enabled: true,
-                readOnly: false,
-            },
-            marketing: {
-                enabled: true,
-                readOnly: false,
-            },
-        },
-        language: {
-            default: "en",
-            translations: {
-                en: {
-                    consentModal: {
-                        title: "We use cookies",
-                        description:
-                            'Hi, this website uses analytics & marketing cookies to understand how you interact with it to continuously improve your user experience. <a aria-label="Cookie policy" class="cc-link" href="/cookie-policy">Read our cookie policy</a>',
-                        acceptAllBtn: "Accept",
-                        showPreferencesBtn: "Settings",
-                    },
-                    preferencesModal: {
-                        title: "Cookie preferences",
-                        savePreferencesBtn: "Save settings",
-                        acceptAllBtn: "Accept all",
-                        acceptNecessaryBtn: "Reject all",
-                        sections: [
-                            {
-                                title: "Cookie usage",
-                                description:
-                                    "I use cookies to enhance your online experience. You can choose for each category to opt-in/out whenever you want.",
-                            },
-                            {
-                                title: "Analytics cookies",
-                                description:
-                                    "These cookies collect information about how you use the website, which pages you visited and which links you clicked on. All of the data is anonymized and cannot be used to identify you.",
-                                linkedCategory: "analytics",
-                            },
-                            {
-                                title: "Marketing cookies",
-                                description:
-                                    "These cookies tracks your activities on our site to allow commercials to eventually reach out.",
-                                linkedCategory: "marketing",
-                            },
-                            {
-                                title: "More information",
-                                description:
-                                    'For any queries in relation to our policy on cookies and your choices, please <a class="cc-link" href="mailto:hello@kestra.io">contact us</a>.',
-                            },
-                        ],
-                    },
-                },
-            },
-        },
-    })
+    // EU-only banner code, split into its own chunk so non-EU visitors
+    // never fetch it. Reuses the promise kicked off above.
+    const { initBanner } = await bannerModule!
+    initBanner()
 })
