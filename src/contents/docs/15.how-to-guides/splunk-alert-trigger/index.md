@@ -9,9 +9,11 @@ editions: ["EE"]
 description: Install the Kestra Add-on for Splunk and configure the Trigger Kestra Flow alert action to start Kestra flows from Splunk saved-search alerts using a Bearer API token.
 ---
 
-The Kestra Add-on for Splunk (`TA-kestra`) adds a **Trigger Kestra Flow** alert action to Splunk. When a saved search fires, the add-on calls the Kestra Executions API with a Bearer token, forwarding alert metadata and search results as flow inputs. No webhook URL, no embedded secret in the alert config.
+The Kestra Add-on for Splunk adds a **Trigger Kestra Flow** alert action that starts Kestra flows when a saved search fires.
 
-This guide covers the Kestra-side setup: creating an API token, designing a receiving flow, and wiring up the alert action fields. For the Splunk-side build and installation steps, see the [TA-kestra README](https://github.com/kestra-io/splunk-addon).
+When an alert fires, the add-on calls the Kestra Executions API with a Bearer token, forwarding alert metadata and search results as flow inputs. No webhook URL required — the token is stored encrypted in Splunk's credential store.
+
+This guide covers the Kestra-side setup: creating an API token, designing a receiving flow, and wiring up the alert action fields. For Splunk-side installation, see the [TA-kestra README](https://github.com/kestra-io/splunk-addon).
 
 ## Prerequisites
 
