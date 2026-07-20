@@ -15,6 +15,60 @@ const isEurope =
 let analyticsEnabled = false
 let marketingEnabled = false
 let consentInitialized = false
+let gtmLoaded = false
+
+// Google's canonical snippet pushes the `arguments` object (not an array) —
+// gtag.js/GTM rely on that exact shape, so this must stay a `function`.
+function gtag(..._args: unknown[]) {
+    window.dataLayer = window.dataLayer || []
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer.push(arguments)
+}
+
+// Consent Mode v2: GTM must be loaded for everyone — with all signals denied
+// by default in Europe — so Google can receive anonymous, cookieless pings
+// and run conversion modeling for users who decline. The `consent default`
+// push has to reach the dataLayer *before* the gtm.js script tag is added.
+const initConsentModeAndGtm = () => {
+    if (gtmLoaded) {
+        return
+    }
+    gtmLoaded = true
+
+    gtag("consent", "default", {
+        ad_storage: isEurope ? "denied" : "granted",
+        ad_user_data: isEurope ? "denied" : "granted",
+        ad_personalization: isEurope ? "denied" : "granted",
+        analytics_storage: isEurope ? "denied" : "granted",
+        // Give the consent banner time to restore a returning visitor's
+        // choice before tags fire. Europe-only so non-EU tags aren't delayed.
+        ...(isEurope ? { wait_for_update: 500 } : {}),
+    })
+
+    window.dataLayer.push({
+        "gtm.start": new Date().getTime(),
+        event: "gtm.js",
+    })
+
+    const s = document.createElement("script")
+    s.async = true
+    s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
+    document.head.appendChild(s)
+}
+
+// analytics category drives analytics_storage; marketing drives the three
+// advertising signals. Called on every consent decision, including a revoke
+// from the Settings modal, so signals can transition back to denied.
+const updateConsentSignals = (categories: string[]) => {
+    const analytics = categories.includes("analytics") ? "granted" : "denied"
+    const ads = categories.includes("marketing") ? "granted" : "denied"
+    gtag("consent", "update", {
+        analytics_storage: analytics,
+        ad_storage: ads,
+        ad_user_data: ads,
+        ad_personalization: ads,
+    })
+}
 
 const pushPageView = () => {
     window.dataLayer = window.dataLayer || []
@@ -32,17 +86,6 @@ const enabledAnalytics = async () => {
         return
     }
     analyticsEnabled = true
-
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({
-        "gtm.start": new Date().getTime(),
-        event: "gtm.js",
-    })
-
-    const s = document.createElement("script")
-    s.async = true
-    s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
-    document.head.appendChild(s)
 
     const response = await $fetchApi<{
         posthog: { token: string }
@@ -108,6 +151,8 @@ const enabledMarketing = () => {
 // navigation, so GTM/PostHog bootstrap on whichever page the visitor lands on
 // first, and every subsequent page reports a page-view.
 document.addEventListener("astro:page-load", () => {
+    initConsentModeAndGtm()
+
     if (!isEurope) {
         enabledAnalytics()
         enabledMarketing()
@@ -119,6 +164,10 @@ document.addEventListener("astro:page-load", () => {
     if (consentInitialized) {
         if (analyticsEnabled) {
             enabledAnalytics()
+        } else {
+            // No analytics consent: GTM is still loaded, so this page-view
+            // only produces anonymous, cookieless pings (conversion modeling).
+            pushPageView()
         }
 
         return
@@ -140,6 +189,26 @@ document.addEventListener("astro:page-load", () => {
         autoClearCookies: false,
         onConsent: ({ cookie }) => {
             let consentCategories = cookie.categories
+            updateConsentSignals(consentCategories)
+
+            if (consentCategories.includes("analytics")) {
+                enabledAnalytics()
+            } else {
+                // Declined analytics: still report the page-view so Google
+                // receives a cookieless ping for conversion modeling.
+                pushPageView()
+            }
+
+            if (consentCategories.includes("marketing")) {
+                enabledMarketing()
+            }
+        },
+        // Fires when the user changes preferences via the Settings modal —
+        // in particular a revoke, which must flip signals back to denied.
+        onChange: ({ cookie }) => {
+            let consentCategories = cookie.categories
+            updateConsentSignals(consentCategories)
+
             if (consentCategories.includes("analytics")) {
                 enabledAnalytics()
             }
