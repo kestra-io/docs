@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { CONSENT_REGION_COOKIE } from "~/middlewares/consentRegion"
 
 // vanilla-cookieconsent's run() is mocked to capture the config so tests can
 // invoke onConsent/onChange directly, as if the user interacted with the UI.
@@ -20,7 +21,7 @@ vi.mock("posthog-js", () => ({
 
 vi.mock("~/utils/identify", () => ({ default: vi.fn() }))
 
-const fetchApi = vi.fn(async () => ({ posthog: { token: "tok" }, id: "kuid-1" }))
+const fetchApi = vi.fn(async (..._args: unknown[]) => ({ posthog: { token: "tok" }, id: "kuid-1" }))
 vi.mock("~/utils/fetch", () => ({ $fetchApi: (...args: unknown[]) => fetchApi(...args) }))
 
 vi.mock("astro:env/client", () => ({ GTM_ID: "GTM-TEST" }))
@@ -40,6 +41,7 @@ const installFakeDom = () => {
     headChildren = []
 
     const fakeDocument = {
+        cookie: "",
         addEventListener: (type: string, cb: (e: Event) => void) => {
             listeners[type] = listeners[type] || []
             listeners[type].push(cb)
@@ -88,6 +90,10 @@ const loadModule = async () => {
     await import("./cookieconsent")
 }
 
+const setRegionCookie = (value: "eu" | "row") => {
+    document.cookie = `${CONSENT_REGION_COOKIE}=${value}`
+}
+
 const firePageLoad = () => document.dispatchEvent(new Event("astro:page-load"))
 
 beforeEach(() => {
@@ -104,6 +110,9 @@ afterEach(() => {
     vi.unstubAllGlobals()
 })
 
+// No region cookie is set in these two describe blocks, so they also cover
+// the Intl-timezone fallback path (the only path available in local `astro
+// dev`, since the Node adapter never runs the Worker that sets the cookie).
 describe("cookieconsent — Europe", () => {
     beforeEach(async () => {
         setTimezone("Europe/Paris")
@@ -194,5 +203,29 @@ describe("cookieconsent — non-Europe", () => {
     it("fires analytics and marketing immediately", () => {
         expect(posthogInit).toHaveBeenCalled()
         expect(window.dataLayer.some((e: any) => e?.event === "enable_marketing")).toBe(true)
+    })
+})
+
+describe("cookieconsent — region cookie takes precedence over Intl timezone", () => {
+    it("treats the visitor as Europe when the cookie says eu, even with a non-EU timezone", async () => {
+        setTimezone("America/New_York")
+        setRegionCookie("eu")
+        await loadModule()
+        firePageLoad()
+
+        const def = consentEntries().find((e) => e[1] === "default")
+        expect(allSignalsAre(def?.[2], "denied")).toBe(true)
+        expect(runCookieConsent).toHaveBeenCalled()
+    })
+
+    it("treats the visitor as non-Europe when the cookie says row, even with a European timezone", async () => {
+        setTimezone("Europe/Paris")
+        setRegionCookie("row")
+        await loadModule()
+        firePageLoad()
+
+        const def = consentEntries().find((e) => e[1] === "default")
+        expect(allSignalsAre(def?.[2], "granted")).toBe(true)
+        expect(runCookieConsent).not.toHaveBeenCalled()
     })
 })

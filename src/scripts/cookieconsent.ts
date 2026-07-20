@@ -3,9 +3,31 @@ import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
+import { CONSENT_REGION_COOKIE } from "~/middlewares/consentRegion"
 
+// Prefer the region cookie set by the Worker (src/middlewares/consentRegion.ts)
+// from Cloudflare's edge-resolved geo data — authoritative and not spoofable
+// by the client's OS/browser timezone. Falls back to the Intl timezone check
+// when the cookie is absent, which is always the case in local `astro dev`
+// (the Node adapter never runs the Cloudflare Worker).
+const readRegionCookie = (): "eu" | "row" | null => {
+    const prefix = `${CONSENT_REGION_COOKIE}=`
+    if (!document.cookie) return null
+    for (const part of document.cookie.split(";")) {
+        const entry = part.trim()
+        if (entry.substring(0, prefix.length) === prefix) {
+            const value = entry.substring(prefix.length)
+            return value === "eu" || value === "row" ? value : null
+        }
+    }
+    return null
+}
+
+const regionCookie = readRegionCookie()
 const isEurope =
-    Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
+    regionCookie !== null
+        ? regionCookie === "eu"
+        : Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 
 // The site uses Astro's <ClientRouter /> in production, so navigating between
 // pages is a client-side transition, not a full reload. These guards make sure
