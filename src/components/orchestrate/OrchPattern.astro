@@ -20,13 +20,23 @@ interface Props {
     nutshell?: string
     blueprints: BlueprintItem[]
     toolColor?: string
+    toolName?: string
+    allBlueprintsCount?: number
 }
 
-const { heading, nutshell, blueprints, toolColor } = Astro.props as Props
+const {
+    heading,
+    nutshell,
+    blueprints,
+    toolColor,
+    toolName,
+    allBlueprintsCount = 0,
+} = Astro.props as Props
 const sectionStyle = toolColor ? `--tool-color: ${toolColor};` : undefined
 
 const tabs = blueprints
 const hasTabs = tabs.length > 0
+const hasMore = toolName && allBlueprintsCount > tabs.length
 ---
 
 <section class="orch-pattern" style={sectionStyle}>
@@ -36,79 +46,149 @@ const hasTabs = tabs.length > 0
             {heading && <h2 class="pattern-title">{heading}</h2>}
             {nutshell && <p class="nutshell" set:html={nutshell} />}
 
-            {hasTabs && (
-                <div class="orch-pills" role="tablist">
-                    {tabs.map((bp, idx) => (
-                        <button
-                            type="button"
-                            class:list={["orch-pill", { active: idx === 0 }]}
-                            role="tab"
-                            data-tab-target={idx}
-                            aria-selected={idx === 0}
-                        >
-                            {bp.name}
-                        </button>
-                    ))}
-                </div>
-            )}
+            {
+                hasTabs && (
+                    <div class="orch-pills" role="tablist">
+                        {tabs.map((bp, idx) => (
+                            <button
+                                type="button"
+                                class:list={[
+                                    "orch-pill",
+                                    { active: idx === 0 },
+                                ]}
+                                role="tab"
+                                data-tab-target={idx}
+                                aria-selected={idx === 0}
+                            >
+                                {bp.name}
+                            </button>
+                        ))}
+                    </div>
+                )
+            }
         </div>
 
-        {hasTabs && (
-            <div class="wrapper">
-                {tabs.map((bp, idx) => {
-                    return (
-                        <div
-                            class:list={["orch-tabs__panel", { active: idx === 0 }]}
-                            role="tabpanel"
-                            data-tab-content={idx}
-                        >
-                            <div class:list={["panel-row", { "panel-row--code-only": !bp.render?.graph }]}>
-                                <div class="panel-code">
-                                    <div class="code-head">
-                                        <span class="code-caption">{bp.title}</span>
-                                        {(bp.blueprintId || bp.href) && (
-                                            <a class="code-link" href={bp.blueprintId ? `/blueprints/${bp.blueprintId}` : bp.href}>
-                                                Open blueprint
-                                                <Icon name="mdi:chevron-right" width={14} height={14} />
-                                            </a>
-                                        )}
-                                    </div>
-                                    {bp.render?.source || bp.code ? (
-                                        <Snippets client:idle code={bp.render?.source ?? bp.code ?? ''} lang="yaml" />
-                                    ) : (
-                                        <div class="code-pending">
-                                            <p class="code-pending__lead">{bp.description}</p>
-                                            <p class="code-pending__note">
-                                                The full YAML and topology will appear here once the <code>{bp.blueprintId}</code> blueprint is published in the catalog.
-                                            </p>
-                                            {bp.blueprintId && (
-                                                <a class="code-link" href={`/blueprints/${bp.blueprintId}`}>
-                                                    View on the blueprints catalog
-                                                    <Icon name="mdi:chevron-right" width={14} height={14} />
+        {
+            hasTabs && (
+                <div class="wrapper">
+                    {tabs.map((bp, idx) => {
+                        return (
+                            <div
+                                class:list={[
+                                    "orch-tabs__panel",
+                                    { active: idx === 0 },
+                                ]}
+                                role="tabpanel"
+                                data-tab-content={idx}
+                            >
+                                <div
+                                    class:list={[
+                                        "panel-row",
+                                        {
+                                            "panel-row--code-only":
+                                                !bp.render?.graph,
+                                        },
+                                    ]}
+                                >
+                                    <div class="panel-code">
+                                        <div class="code-head">
+                                            <span class="code-caption">
+                                                {bp.title}
+                                            </span>
+                                            {(bp.blueprintId || bp.href) && (
+                                                <a
+                                                    class="code-link"
+                                                    href={
+                                                        bp.blueprintId
+                                                            ? `/blueprints/${bp.blueprintId}`
+                                                            : bp.href
+                                                    }
+                                                >
+                                                    Open blueprint
+                                                    <Icon
+                                                        name="mdi:chevron-right"
+                                                        width={14}
+                                                        height={14}
+                                                    />
                                                 </a>
                                             )}
                                         </div>
+                                        {bp.render?.source || bp.code ? (
+                                            <Snippets
+                                                client:idle
+                                                code={
+                                                    bp.render?.source ??
+                                                    bp.code ??
+                                                    ""
+                                                }
+                                                lang="yaml"
+                                            />
+                                        ) : (
+                                            <div class="code-pending">
+                                                <p class="code-pending__lead">
+                                                    {bp.description}
+                                                </p>
+                                                <p class="code-pending__note">
+                                                    The full YAML and topology
+                                                    will appear here once the{" "}
+                                                    <code>
+                                                        {bp.blueprintId}
+                                                    </code>{" "}
+                                                    blueprint is published in
+                                                    the catalog.
+                                                </p>
+                                                {bp.blueprintId && (
+                                                    <a
+                                                        class="code-link"
+                                                        href={`/blueprints/${bp.blueprintId}`}
+                                                    >
+                                                        View on the blueprints
+                                                        catalog
+                                                        <Icon
+                                                            name="mdi:chevron-right"
+                                                            width={14}
+                                                            height={14}
+                                                        />
+                                                    </a>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {bp.render?.graph && (
+                                        <div class="panel-topology">
+                                            <div class="topo-live">
+                                                <Topology
+                                                    client:only="vue"
+                                                    flowGraph={bp.render.graph}
+                                                    source={bp.render.source}
+                                                    id={
+                                                        bp.blueprintId ||
+                                                        `orch-${idx}`
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
-
-                                {bp.render?.graph && (
-                                    <div class="panel-topology">
-                                        <div class="topo-live">
-                                            <Topology
-                                                client:only="vue"
-                                                flowGraph={bp.render.graph}
-                                                source={bp.render.source}
-                                                id={bp.blueprintId || `orch-${idx}`}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
                             </div>
-                        </div>
-                    )
-                })}
-            </div>
-        )}
+                        )
+                    })}
+                </div>
+            )
+        }
+
+        {
+            hasMore && (
+                <a
+                    class="browse-all"
+                    href={`/blueprints?q=${encodeURIComponent(toolName)}`}
+                >
+                    Browse all {allBlueprintsCount} {toolName} blueprints
+                    <Icon name="mdi:chevron-right" width={16} height={16} />
+                </a>
+            )
+        }
     </div>
 </section>
 
@@ -169,20 +249,54 @@ const hasTabs = tabs.length > 0
         z-index: 0;
         pointer-events: none;
         background-image:
-            linear-gradient(to right, var(--ks-border-primary) 1px, transparent 1px),
-            linear-gradient(to bottom, var(--ks-border-primary) 1px, transparent 1px);
+            linear-gradient(
+                to right,
+                var(--ks-border-primary) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                var(--ks-border-primary) 1px,
+                transparent 1px
+            );
         background-size: 68px 68px;
         background-position: center top;
-        mask-image: radial-gradient(ellipse 75% 50% at 50% 6%, #000 0%, rgba(0, 0, 0, 0.35) 42%, transparent 72%);
-        -webkit-mask-image: radial-gradient(ellipse 75% 50% at 50% 6%, #000 0%, rgba(0, 0, 0, 0.35) 42%, transparent 72%);
+        mask-image: radial-gradient(
+            ellipse 75% 50% at 50% 6%,
+            #000 0%,
+            rgba(0, 0, 0, 0.35) 42%,
+            transparent 72%
+        );
+        -webkit-mask-image: radial-gradient(
+            ellipse 75% 50% at 50% 6%,
+            #000 0%,
+            rgba(0, 0, 0, 0.35) 42%,
+            transparent 72%
+        );
 
         &::after {
             content: "";
             position: absolute;
             inset: 0;
             background:
-                radial-gradient(ellipse 42% 36% at 36% 4%, color-mix(in srgb, var(--ks-content-color-highlight) 9%, transparent), transparent 70%),
-                radial-gradient(ellipse 38% 32% at 70% 0%, color-mix(in srgb, var(--ks-content-color-highlight) 6%, transparent), transparent 70%);
+                radial-gradient(
+                    ellipse 42% 36% at 36% 4%,
+                    color-mix(
+                        in srgb,
+                        var(--ks-content-color-highlight) 9%,
+                        transparent
+                    ),
+                    transparent 70%
+                ),
+                radial-gradient(
+                    ellipse 38% 32% at 70% 0%,
+                    color-mix(
+                        in srgb,
+                        var(--ks-content-color-highlight) 6%,
+                        transparent
+                    ),
+                    transparent 70%
+                );
         }
     }
 
@@ -279,6 +393,24 @@ const hasTabs = tabs.length > 0
         background: var(--ks-background-primary);
         box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
         overflow: hidden;
+    }
+
+    .browse-all {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        margin: 1.5rem auto 0;
+        width: fit-content;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--ks-content-color-highlight);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
     }
 
     .orch-tabs__panel {
@@ -394,7 +526,8 @@ const hasTabs = tabs.length > 0
         margin: 0;
 
         :global(code) {
-            font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+            font-family:
+                "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
             font-size: 0.875em;
             padding: 0.1rem 0.35rem;
             border-radius: 0.25rem;

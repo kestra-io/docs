@@ -44,7 +44,7 @@ schema:
 **Ecosystem vs. Plugins:** *Ecosystem* relates to all the tools we build to manage and operate Kestra itself, while *Plugins* are how Kestra connects to the rest of the world. This post is about releasing the **ecosystem** tools.
 :::
 
-We ship more than one thing. Alongside Kestra itself, we maintain a set of [client SDKs](../../docs/api-reference/kestra-sdk/index.md) in several languages, a command-line tool ([kestractl](../../docs/kestra-cli/kestractl/index.md)), and an infrastructure-as-code provider (our [Terraform provider](../../docs/13.terraform/index.mdx)). Over time, each of these had grown its own way of cutting a release.
+We ship more than one thing. Alongside Kestra itself, we maintain a set of [client SDKs](../../docs/api-reference/kestra-sdk/index.mdx) in several languages, a command-line tool ([kestractl](../../docs/kestra-cli/kestractl/index.md)), and an infrastructure-as-code provider (our [Terraform provider](../../docs/13.terraform/index.mdx)). Over time, each of these had grown its own way of cutting a release.
 
 Those differences added up to real friction. So we spent a morning making our releases boring, and the change is visible to anyone using these tools: whatever version you install was deliberately tagged and shipped.
 
@@ -94,7 +94,7 @@ The interesting part of this work wasn't a clever new tool: it was *removing* cl
 
 Automation is great when it removes toil. But automation that quietly makes decisions for you, like *what version to release and when*, can cost more in confusion than it saves in keystrokes. Sometimes the best release process is the one that does exactly what you told it to, and nothing more.
 
-Whether you're exploring Kestra for the first time or already running it in production, the ecosystem tools around it ([kestractl](../../docs/kestra-cli/kestractl/index.md), [client SDKs](../../docs/api-reference/kestra-sdk/index.md), and the [Terraform provider](../../docs/13.terraform/index.mdx)) all follow the same release convention now: push a tag, the tag is the version. Whatever version you install, it was deliberately shipped.
+Whether you're exploring Kestra for the first time or already running it in production, the ecosystem tools around it ([kestractl](../../docs/kestra-cli/kestractl/index.md), [client SDKs](../../docs/api-reference/kestra-sdk/index.mdx), and the [Terraform provider](../../docs/13.terraform/index.mdx)) all follow the same release convention now: push a tag, the tag is the version. Whatever version you install, it was deliberately shipped.
 
 ## Frequently asked questions
 

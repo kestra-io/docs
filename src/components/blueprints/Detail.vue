@@ -27,6 +27,7 @@
     <BlueprintMarkdown
         :page="page"
         :description="description"
+        :orchestration-links="orchestrationLinks"
     />
 </template>
 
@@ -44,6 +45,7 @@
         description: string
         flow: string
         graph?: any
+        orchestrationLinks?: { slug: string; name: string }[]
     }>()
 </script>
 
