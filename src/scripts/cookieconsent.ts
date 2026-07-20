@@ -17,12 +17,11 @@ let marketingEnabled = false
 let consentInitialized = false
 let gtmLoaded = false
 
-// Google's canonical snippet pushes the `arguments` object (not an array) —
-// gtag.js/GTM rely on that exact shape, so this must stay a `function`.
-function gtag(..._args: unknown[]) {
+// Thin wrapper so gtag() calls read like Google's canonical snippet, while
+// lazily initializing dataLayer and keeping typed arguments.
+const gtag = (..._args: unknown[]) => {
     window.dataLayer = window.dataLayer || []
-    // eslint-disable-next-line prefer-rest-params
-    window.dataLayer.push(arguments)
+    window.dataLayer.push(_args)
 }
 
 // Consent Mode v2: GTM must be loaded for everyone — with all signals denied
