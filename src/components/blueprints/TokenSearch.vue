@@ -122,7 +122,11 @@
                     }"
                     @mousedown.prevent="selectTool(tool)"
                 >
-                    <TaskIcon :cls="tool.pluginClass" />
+                    <ShieldCheckOutline
+                        v-if="tool.pluginClass === 'io.kestra.plugin.ee'"
+                        class="ee-suggestion-icon"
+                    />
+                    <TaskIcon v-else :cls="tool.pluginClass" />
                     {{ tool.name }}
                 </button>
             </div>
@@ -137,6 +141,7 @@
     import Close from "vue-material-design-icons/Close.vue"
     import TaskIcon from "~/components/common/TaskIcon.vue"
     import TagIcon from "~/components/blueprints/TagIcon.vue"
+    import ShieldCheckOutline from "vue-material-design-icons/ShieldCheckOutline.vue"
     import { CATEGORY_TILE_META } from "~/utils/blueprints/categoryMeta"
 
     const CATEGORY_SLUG_BY_NAME: Record<string, string> = Object.fromEntries(
@@ -553,6 +558,13 @@
         :deep(.icon-wrapper) {
             width: 1.25rem;
             height: 1.25rem;
+        }
+
+        .ee-suggestion-icon {
+            display: inline-flex;
+            font-size: 1.125rem;
+            color: var(--ks-content-link);
+            flex-shrink: 0;
         }
 
         &:hover,

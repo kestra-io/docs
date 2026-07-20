@@ -15,7 +15,10 @@ import { splitTagsByAxis, PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import { categoryTileMetaFor } from "~/utils/blueprints/categoryMeta"
 import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
 import { fetchFullCatalog } from "~/utils/blueprints/catalog"
-import { blueprintHasSubtag } from "~/utils/blueprints/subtags"
+import {
+    blueprintHasSubtag,
+    CUSTOMER_SUCCESS_SUBTAG,
+} from "~/utils/blueprints/subtags"
 import {
     fetchToolIndex,
     fetchCoreToolIndex,
@@ -32,13 +35,13 @@ const GETTING_STARTED_IDS = [
 ]
 const POPULAR_IDS = [
     "ai-model-router",
-    "ai-github-pr-review",
-    "kubernetes-vault-rotation-restart",
+    "gcp-create-vm-approval-gate",
     "terraform-approval-plan-apply",
+    "asset-provision-servers",
     "kafka-realtime-record-processing",
-    "dbt-git-docker-duckdb",
-    "snowflake-incremental-merge-upsert",
-    "ai-slack-chatbot-with-memory",
+    "servicenow-incident-triage-scan",
+    "ai-github-pr-review",
+    "bulk-approve-paused-executions",
 ]
 const FEATURED_IDS: string[] = []
 
@@ -98,14 +101,40 @@ const [
     Promise.all(patternTags.map((tag) => fetchTagCount(tag.id))),
 ])
 
-const recentlyAddedBlueprints = fullCatalog
+const recentPool = fullCatalog
     .slice()
     .filter((b) => !/n8n|zapier/i.test(`${b.id} ${b.title}`))
     .sort(
         (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
-    .slice(0, 8)
+
+const isCS = (b: Blueprint) => blueprintHasSubtag(b, CUSTOMER_SUCCESS_SUBTAG)
+const isEE = (b: Blueprint) =>
+    (b.includedTasks ?? []).some((t) => t.startsWith("io.kestra.plugin.ee."))
+
+const recentlyAddedBlueprints: Blueprint[] = []
+const pools = [
+    recentPool.filter((b) => !isCS(b) && !isEE(b)),
+    recentPool.filter((b) => isCS(b) && !isEE(b)),
+    recentPool.filter((b) => isEE(b)),
+]
+const cursors = [0, 0, 0]
+while (recentlyAddedBlueprints.length < 8) {
+    let advanced = false
+    for (let i = 0; i < pools.length; i++) {
+        const next = pools[i][cursors[i]]
+        if (next) {
+            cursors[i] += 1
+            if (!recentlyAddedBlueprints.includes(next)) {
+                recentlyAddedBlueprints.push(next)
+                advanced = true
+            }
+        }
+        if (recentlyAddedBlueprints.length >= 8) break
+    }
+    if (!advanced) break
+}
 
 const toolIndex = await fetchToolIndex(fullCatalog)
 const coreToolIndex = await fetchCoreToolIndex(fullCatalog)

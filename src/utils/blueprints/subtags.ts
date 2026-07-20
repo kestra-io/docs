@@ -1,5 +1,5 @@
 export const CUSTOMER_SUCCESS_SUBTAG = "Customer Success"
-export const CUSTOMER_SUCCESS_LABEL = "Built by our Customer Success"
+export const CUSTOMER_SUCCESS_LABEL = "Built by our Customer Success Team"
 
 const CANONICAL_SUBTAGS = [
     "AWS Services",

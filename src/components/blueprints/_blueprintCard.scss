@@ -109,4 +109,19 @@
             flex-shrink: 0;
         }
     }
+
+    .ee-tag {
+        display: inline-flex;
+        align-items: center;
+        margin-left: auto;
+        flex-shrink: 0;
+        background: transparent;
+        border: 1px solid var(--ks-border-active);
+        color: var(--ks-content-link);
+        padding: 0.125rem 0.5rem;
+        border-radius: 40px;
+        font-size: $font-size-xs;
+        font-weight: 500;
+        white-space: nowrap;
+    }
 }
