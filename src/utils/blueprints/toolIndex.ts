@@ -79,6 +79,17 @@ export async function fetchToolIndex(
         })
     }
 
+    entries.push({
+        name: "Enterprise Edition",
+        pluginClass: "io.kestra.plugin.ee",
+        count: blueprints.filter((bp) =>
+            (bp.includedTasks ?? []).some((t) =>
+                t.startsWith("io.kestra.plugin.ee."),
+            ),
+        ).length,
+        keywords: ["enterprise", "edition", "ee", "enterprise edition plugins"],
+    })
+
     return entries.sort(
         (a, b) => b.count - a.count || a.name.localeCompare(b.name),
     )
