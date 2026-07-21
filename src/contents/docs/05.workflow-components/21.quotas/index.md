@@ -39,7 +39,7 @@ Windows are **fixed and UTC-aligned**, not rolling. `PT1H` covers the current UT
 - **`FAIL`** — the execution is immediately marked as `FAILED` before any tasks run.
 
 :::alert{type="info"}
-`QUEUE` behavior is not yet supported for quotas. To hold executions until capacity is available rather than dropping them, use [`concurrency`](../14.concurrency/index.md) with `behavior: QUEUE`.
+`QUEUE` behavior is not supported for quotas. To hold executions until capacity is available rather than dropping them, use [`concurrency`](../14.concurrency/index.md) with `behavior: QUEUE`.
 :::
 
 ## Quota levels
@@ -126,5 +126,5 @@ Rows for expired windows are automatically hidden. Use the **Refresh** button to
 
 - **Flow level** — cap how often a specific flow can be triggered by external events or webhooks to prevent runaway execution chains, or enforce a cost policy on flows that call expensive external APIs.
 - **Namespace level** — apply a shared execution budget across all flows in a team or environment namespace, without configuring each flow individually.
-- **Tenant level** — enforce an organisation-wide ceiling on execution creation, for example to stay within an infrastructure or cost constraint that applies across all namespaces.
+- **Tenant level** — enforce an organization-wide ceiling on execution creation, for example to stay within an infrastructure or cost constraint that applies across all namespaces.
 - Complement concurrency limits: quotas cap the creation rate; concurrency caps simultaneous parallelism.

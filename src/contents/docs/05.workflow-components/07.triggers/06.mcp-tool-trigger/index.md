@@ -65,7 +65,7 @@ When deployed, an MCP client connected to the `default` server will discover a t
 | `annotations.destructive` | No | `true` | Hint that this tool may perform destructive updates. Only meaningful when `readOnly` is `false`. |
 | `annotations.openWorld` | No | `true` | Hint that this tool may interact with entities outside its closed domain. |
 | `annotations.idempotent` | No | `false` | Hint that calling the tool repeatedly with the same arguments has no additional effect. Only meaningful when `readOnly` is `false`. |
-| `annotations.returnDirect` | No | `false` | When `true`, the AI agent forwards the raw tool output to the user without further interpretation or summarisation. |
+| `annotations.returnDirect` | No | `false` | When `true`, the AI agent forwards the raw tool output to the user without further interpretation or summarization. |
 
 Annotations are informational hints for MCP clients. They do not affect execution behavior.
 
