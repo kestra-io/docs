@@ -7,6 +7,7 @@ import Header from "~/components/blueprints/Header.astro"
 import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
 import type { SiblingPill } from "~/components/blueprints/BlueprintHero.astro"
 import Detail from "~/components/blueprints/Detail.vue"
+import BlueprintMarkdown from "~/components/blueprints/BlueprintMarkdown.vue"
 import Related from "~/components/blueprints/Related.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
@@ -322,9 +323,17 @@ if (isCategoryPage && category) {
                     <Detail
                         client:only
                         page={pageData}
-                        description={pageData.description}
                         flow={pageData.flow}
                         graph={graph}
+                    />
+                    {/* Rendered outside the client:only Detail island so the
+                        description markdown is server-rendered (it was
+                        previously invisible to crawlers and popped in late,
+                        shifting the whole page). */}
+                    <BlueprintMarkdown
+                        client:idle
+                        page={pageData}
+                        description={pageData.description}
                         orchestrationLinks={orchestrationLinks}
                     />
                     {relatedRows.map((row) => (

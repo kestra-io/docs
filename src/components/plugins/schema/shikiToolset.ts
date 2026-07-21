@@ -7,6 +7,8 @@ import githubDarkDefault from "shiki/themes/github-dark-default.mjs"
 import yaml from "shiki/langs/yaml.mjs"
 import python from "shiki/langs/python.mjs"
 import javascript from "shiki/langs/javascript.mjs"
+import bash from "shiki/langs/bash.mjs"
+import json from "shiki/langs/json.mjs"
 
 let highlighterCoreCache: HighlighterCore | null = null
 
@@ -16,7 +18,7 @@ export const getHighlighterCore = async () => {
     }
     const highlighterCore = await shikiCreateHighlighterCore({
         themes: [githubDark, githubLight, githubDarkDefault, githubLightDefault],
-        langs: [yaml, python, javascript],
+        langs: [yaml, python, javascript, bash, json],
         engine: createJavaScriptRegexEngine(),
     })
     highlighterCoreCache = highlighterCore

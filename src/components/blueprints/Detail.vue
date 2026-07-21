@@ -23,29 +23,23 @@
             </div>
         </div>
     </section>
-
-    <BlueprintMarkdown
-        :page="page"
-        :description="description"
-        :orchestration-links="orchestrationLinks"
-    />
 </template>
 
 <script setup lang="ts">
+    // The blueprint description markdown used to be rendered here, but this
+    // island is client:only (the vue-flow topology can't SSR), which kept the
+    // whole doc out of the server HTML. It now renders as its own
+    // server-rendered island in pages/blueprints/[id].astro.
     import Snippets from "~/components/common/Snippets.vue"
-    import BlueprintMarkdown from "~/components/blueprints/BlueprintMarkdown.vue"
     import Topology from "~/components/blueprints/Topology.client.vue"
 
     defineProps<{
         page: {
             id: string | number;
             title: string;
-            includedTasks?: string[]
         }
-        description: string
         flow: string
         graph?: any
-        orchestrationLinks?: { slug: string; name: string }[]
     }>()
 </script>
 
