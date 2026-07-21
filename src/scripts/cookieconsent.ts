@@ -39,16 +39,10 @@ const enabledAnalytics = async () => {
         event: "gtm.js",
     })
 
-    // Load GTM through Partytown so gtm.js and every gtag config it pulls in
-    // run inside a web worker instead of the main thread. Partytown only
-    // scans for `text/partytown` scripts at startup, so scripts appended
-    // later (like this consent-gated one) must be announced with `ptupdate`.
     const s = document.createElement("script")
     s.async = true
-    s.type = "text/partytown"
     s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
     document.head.appendChild(s)
-    window.dispatchEvent(new CustomEvent("ptupdate"))
 
     const response = await $fetchApi<{
         posthog: { token: string }
