@@ -260,9 +260,21 @@ const ITEMS = blueprintFaqItems(categoryList)
 
 const title = "Blueprints"
 const description = "Get started with our library of workflows ready to use"
+
+// Faceted navigation (?tags=, ?tools=, ?page=, ?sort=, ?q= …) generates a
+// near-infinite URL space that wastes crawl budget and risks index bloat.
+// Only the clean /blueprints listing and the /blueprints/<slug> pages carry
+// value, so any query-string variant canonicalises to /blueprints and is
+// marked noindex,follow (links are still followed to the real pages).
+const hasQueryParams = Astro.url.search.length > 0
 ---
 
-<Layout {title} {description}>
+<Layout
+    {title}
+    {description}
+    canonical={hasQueryParams ? "/blueprints" : undefined}
+    noindex={hasQueryParams}
+>
     <section class="bp-hero">
         <div class="container-xxl">
             <div class="hero-card">
@@ -313,9 +325,14 @@ const description = "Get started with our library of workflows ready to use"
                                 : qs
                                   ? `/blueprints?${qs}`
                                   : "/blueprints"
+                            // Faceted (?tags=…,…) combinations are a crawler
+                            // trap — keep them out of the crawl graph. Clean
+                            // slug/landing hrefs stay followable.
+                            const nofollow = href.includes("?")
                             return (
                                 <a
                                     href={href}
+                                    rel={nofollow ? "nofollow" : undefined}
                                     title={
                                         active
                                             ? `Remove the ${tag.name} filter`
@@ -532,6 +549,7 @@ const description = "Get started with our library of workflows ready to use"
                                     {group.total > group.blueprints.length && (
                                         <a
                                             href={`/blueprints?tools=${encodeURIComponent(toolNames.join(","))}&tags=${encodeURIComponent(group.name)}`}
+                                            rel="nofollow"
                                             class="see-more"
                                         >
                                             See all {group.total} in{" "}

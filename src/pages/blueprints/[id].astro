@@ -230,6 +230,7 @@ if (isCategoryPage && category) {
                                         <h3>{row.name}</h3>
                                         <a
                                             href={`/blueprints?tags=${encodeURIComponent(`${category.name},${row.name}`)}`}
+                                            rel="nofollow"
                                             class="see-more"
                                         >
                                             See more {row.name}
