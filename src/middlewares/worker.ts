@@ -88,6 +88,80 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 
 const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 
+// TTL (seconds) for edge-cached SSR HTML. Kept in sync with the 1h upstream
+// API cache in src/utils/fetch.ts so a page's HTML and its data expire
+// together. Once s-maxage lapses the next request is a cache miss and re-renders.
+// `stale-while-revalidate` is advisory for browsers and any downstream shared
+// cache (the Workers Cache API does not revalidate in the background itself).
+const EDGE_CACHE_TTL = 60 * 60
+const EDGE_CACHE_SWR = 60 * 60 * 24
+
+// The plugin & blueprint templates declare `prerender = false`, so every hit
+// re-runs a full Astro render inside the Worker (high TTFB — see issue #5158).
+// Their HTML is public and request-independent (any content that varies —
+// `?version=` on plugins, `?q=` on pattern pages — is part of the URL and
+// therefore part of the cache key), so it is safe to serve from Cloudflare's
+// edge cache. Other `prerender = false` routes (/api/*, /t/*, careers apply,
+// cloud-early-access, hubspot-submit, …) are intentionally excluded.
+function isEdgeCacheablePage(url: URL): boolean {
+    const path = url.pathname
+    return (
+        path === "/plugins" ||
+        path.startsWith("/plugins/") ||
+        path === "/blueprints" ||
+        path.startsWith("/blueprints/")
+    )
+}
+
+// Analytics/campaign query params never change the rendered HTML. Stripping
+// them (and sorting the rest) from the cache key keeps campaign traffic from
+// fragmenting the cache into per-visitor misses.
+const TRACKING_PARAMS = new Set([
+    "utm_source",
+    "utm_medium",
+    "utm_campaign",
+    "utm_term",
+    "utm_content",
+    "utm_id",
+    "gclid",
+    "gbraid",
+    "wbraid",
+    "fbclid",
+    "msclkid",
+    "mc_cid",
+    "mc_eid",
+    "ref",
+    "ref_src",
+    "yclid",
+    "twclid",
+    "igshid",
+    "_hsenc",
+    "_hsmi",
+])
+
+// `caches.default` is a Cloudflare Workers runtime extension that is absent
+// from the ambient DOM `CacheStorage` type, so we narrow it explicitly (the
+// runtime values here are DOM `Request`/`Response`).
+interface EdgeCache {
+    match(request: Request): Promise<Response | undefined>
+    put(request: Request, response: Response): Promise<void>
+}
+
+function edgeCache(): EdgeCache {
+    return (caches as unknown as { default: EdgeCache }).default
+}
+
+function edgeCacheKey(url: URL): Request {
+    const keyUrl = new URL(url.toString())
+    for (const param of [...keyUrl.searchParams.keys()]) {
+        if (TRACKING_PARAMS.has(param.toLowerCase())) {
+            keyUrl.searchParams.delete(param)
+        }
+    }
+    keyUrl.searchParams.sort()
+    return new Request(keyUrl.toString(), { method: "GET" })
+}
+
 export default {
     async fetch(
         request: Parameters<typeof handle>[0],
@@ -125,6 +199,24 @@ export default {
             return handle(request, env, ctx)
         }
 
+        // Edge-cache the rendered HTML of the SSR plugin & blueprint pages.
+        // Because `run_worker_first: true` routes every request through this
+        // Worker, Cloudflare's CDN never caches the generated HTML on its own;
+        // we do it explicitly via the Cache API so each page is rendered at
+        // most once per TTL (and the CSP is rebuilt at most once per TTL too).
+        const canEdgeCache =
+            request.method === "GET" &&
+            url.host === "kestra.io" &&
+            isEdgeCacheablePage(url)
+        const cacheKey = canEdgeCache ? edgeCacheKey(url) : undefined
+
+        if (cacheKey) {
+            const hit = await edgeCache().match(cacheKey)
+            if (hit) {
+                return hit
+            }
+        }
+
         let response: Response | undefined = undefined
         function next() {
             if (response) {
@@ -136,6 +228,24 @@ export default {
         for (const middleware of middlewares) {
             response = await middleware(new URL(request.url), next, request)
         }
-        return await next()
+
+        const finalResponse = await next()
+
+        if (cacheKey && finalResponse.status === 200) {
+            const cachedResponse = new Response(
+                finalResponse.body,
+                finalResponse,
+            )
+            cachedResponse.headers.set(
+                "Cache-Control",
+                `public, s-maxage=${EDGE_CACHE_TTL}, stale-while-revalidate=${EDGE_CACHE_SWR}`,
+            )
+            ctx.waitUntil(
+                edgeCache().put(cacheKey, cachedResponse.clone()),
+            )
+            return cachedResponse
+        }
+
+        return finalResponse
     },
 }
