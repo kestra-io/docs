@@ -14,7 +14,7 @@ Manages a Kestra User.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_user" "example" {
@@ -38,7 +38,7 @@ resource "kestra_user" "example" {
 
 - `description` (String) The user description.
 - `first_name` (String) The user first name.
-- `groups` (List of String) The user groups id.
+- `groups` (List of String) The list of group ids the user belongs to. This list is sent to the API as a full replacement: any group membership not declared here will be removed on apply, including memberships managed outside Terraform or by other Terraform configurations. To manage individual memberships without overwriting others, use the `kestra_user_group_membership` resource instead, or set `lifecycle { ignore_changes = [groups] }` on this resource.
 - `last_name` (String) The user last name.
 - `namespace` (String) The linked namespace.
 
@@ -50,6 +50,8 @@ resource "kestra_user" "example" {
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_user.example {{user_id}}

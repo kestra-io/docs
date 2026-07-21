@@ -10,7 +10,7 @@ description: The kestra_namespace_file resource allows you to manage namespace f
 
 Manages a Kestra Namespace File.
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_namespace_file" "example" {
@@ -51,6 +51,8 @@ If the file already exists, it will be overridden with the given content.
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_namespace_file.example {{namespace}}/{{filename}}
