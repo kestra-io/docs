@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-    import { onMounted, ref, useTemplateRef } from "vue"
+    import { ref, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
-    import { getHubspotTracking } from "~/utils/hubspot.js"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot.js"
     import { getStoredClickId } from "~/scripts/gclid"
     import {
+        ensureMeetingsScriptLoaded,
         getMeetingUrl,
-        getGeoMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting.js"
     import { $fetch } from "~/utils/fetch"
@@ -23,8 +23,7 @@
         }
     }>()
 
-    const hubSpotUrl =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2"
+    const hubSpotFormId = "d8175470-14ee-454d-afc4-ce8065dee9f2"
 
     const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
     const COMPANY_SIZE_PROPERTY = "number_of_employees"
@@ -33,144 +32,128 @@
         e.preventDefault()
         e.stopPropagation()
 
-        const script = document.createElement("script")
-        script.src =
-            "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
-        script.defer = true
-        document.body.appendChild(script)
+        const form = formRef.value
+        const hsq = (window._hsq = window._hsq || [])
 
-        script.addEventListener(
-            "load",
-            async () => {
-                const form = formRef.value
-                const hsq = (window._hsq = window._hsq || [])
+        if (!form?.checkValidity()) {
+            valid.value = false
+            message.value = "Please check the form fields and try again."
+            return
+        }
 
-                if (!form?.checkValidity()) {
-                    valid.value = false
-                    message.value =
-                        "Please check the form fields and try again."
-                    return
-                }
+        const fn = form["first-name"].value
+        const ln = form["last-name"].value
+        const em = form["email"].value
+        const emp = form["employees"].value
+        const clickId = getStoredClickId()
 
-                const fn = form["first-name"].value
-                const ln = form["last-name"].value
-                const em = form["email"].value
-                const emp = form["employees"].value
-                const clickId = getStoredClickId()
-
-                hsq.push([
-                    "identify",
-                    {
-                        email: em,
-                        firstname: fn,
-                        lastname: ln,
-                        kuid: localStorage.getItem("KUID") || "",
-                    },
-                ])
-
-                const ip = await $fetch<{ ip: string }>(
-                    "https://api.ipify.org?format=json",
-                )
-                const formData = {
-                    fields: [
-                        { objectTypeId: "0-1", name: "email", value: em },
-                        { objectTypeId: "0-1", name: "firstname", value: fn },
-                        { objectTypeId: "0-1", name: "lastname", value: ln },
-                        {
-                            objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
-                            name: COMPANY_SIZE_PROPERTY,
-                            value: emp,
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "kuid",
-                            value: localStorage.getItem("KUID") || "",
-                        },
-                        // Google Ads click id (gclid/gbraid/wbraid) for offline
-                        // conversion import. Written to the standard HubSpot
-                        // property `hs_google_click_id`, which HubSpot's Google
-                        // Ads offline-conversion sync reads natively, so the
-                        // booked demo can be attributed back to the paid click.
-                        // Sent only when a click id is present.
-                        ...(clickId
-                            ? [
-                                  {
-                                      objectTypeId: "0-1",
-                                      name: "hs_google_click_id",
-                                      value: clickId.value,
-                                  },
-                              ]
-                            : []),
-                    ],
-                    context: {
-                        hutk: getHubspotTracking() || undefined,
-                        ipAddress: ip.ip,
-                        pageUri: props.routePath,
-                        pageName: document.title,
-                    },
-                }
-
-                posthog.capture("bookdemo_form")
-                hsq.push([
-                    "trackCustomBehavioralEvent",
-                    { name: "bookdemo_form" },
-                ])
-                // Push directly to the dataLayer: the vue-gtm plugin is
-                // initialized with `enabled: false` (GTM is loaded manually
-                // after cookie consent in cookieconsent.ts), so
-                // gtm.trackEvent() is a no-op and never reaches the dataLayer.
-                window.dataLayer = window.dataLayer || []
-                window.dataLayer.push({
-                    event: "bookdemo_form",
-                    noninteraction: false,
-                })
-                // Guarded in case identify() isn't globally defined
-                // eslint-disable-next-line no-undef
-                if (typeof identify === "function") identify(em)
-
-                $fetch<{ inlineMessage?: string }>(hubSpotUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
-                })
-                    .then(async () => {
-                        valid.value = true
-                        hsq.push(["refreshPageHandlers"])
-                        hsq.push(["trackPageView"])
-
-                        meetingUrl.value = withContactParams(
-                            getMeetingUrl(tierFromEmployees(emp)),
-                            {
-                                firstname: fn,
-                                lastname: ln,
-                                email: em,
-                            },
-                        )
-                    })
-                    .catch((error) => {
-                        valid.value = false
-                        console.error(
-                            "Error submitting form data to HubSpot",
-                            error,
-                        )
-                        if (
-                            error?.response?.data?.errors?.some?.(
-                                (e: any) => e.errorType === "BLOCKED_EMAIL",
-                            )
-                        ) {
-                            message.value =
-                                "Please use a professional email address"
-                        } else {
-                            message.value =
-                                error?.response?.data?.message ||
-                                "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
-                        }
-                    })
+        hsq.push([
+            "identify",
+            {
+                email: em,
+                firstname: fn,
+                lastname: ln,
+                kuid: localStorage.getItem("KUID") || "",
             },
-            { once: true },
+        ])
+
+        const ip = await $fetch<{ ip: string }>(
+            "https://api.ipify.org?format=json",
         )
+        const formData = {
+            fields: [
+                { objectTypeId: "0-1", name: "email", value: em },
+                { objectTypeId: "0-1", name: "firstname", value: fn },
+                { objectTypeId: "0-1", name: "lastname", value: ln },
+                {
+                    objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                    name: COMPANY_SIZE_PROPERTY,
+                    value: emp,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "kuid",
+                    value: localStorage.getItem("KUID") || "",
+                },
+                // Google Ads click id (gclid/gbraid/wbraid) for offline
+                // conversion import. Written to the standard HubSpot
+                // property `hs_google_click_id`, which HubSpot's Google
+                // Ads offline-conversion sync reads natively, so the
+                // booked demo can be attributed back to the paid click.
+                // Sent only when a click id is present.
+                ...(clickId
+                    ? [
+                          {
+                              objectTypeId: "0-1",
+                              name: "hs_google_click_id",
+                              value: clickId.value,
+                          },
+                      ]
+                    : []),
+            ],
+            context: {
+                hutk: getHubspotTracking() || undefined,
+                ipAddress: ip.ip,
+                pageUri: props.routePath,
+                pageName: document.title,
+            },
+        }
+
+        try {
+            await submitHubspotForm<{ inlineMessage?: string }>(
+                hubSpotFormId,
+                formData,
+            )
+        } catch (error: any) {
+            valid.value = false
+            console.error("Error submitting form data to HubSpot", error)
+            if (
+                error?.response?.data?.errors?.some?.(
+                    (err: any) => err.errorType === "BLOCKED_EMAIL",
+                )
+            ) {
+                message.value = "Please use a professional email address"
+            } else {
+                message.value =
+                    error?.response?.data?.message ||
+                    "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
+            }
+            return
+        }
+
+        valid.value = true
+        meetingUrl.value = withContactParams(
+            getMeetingUrl(tierFromEmployees(emp)),
+            {
+                firstname: fn,
+                lastname: ln,
+                email: em,
+            },
+        )
+
+        try {
+            posthog.capture("bookdemo_form")
+            hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }])
+            // Push directly to the dataLayer: the vue-gtm plugin is
+            // initialized with `enabled: false` (GTM is loaded manually
+            // after cookie consent in cookieconsent.ts), so
+            // gtm.trackEvent() is a no-op and never reaches the dataLayer.
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
+                event: "bookdemo_form",
+                noninteraction: false,
+            })
+            // Guarded in case identify() isn't globally defined
+            // eslint-disable-next-line no-undef
+            if (typeof identify === "function") identify(em)
+        } catch (analyticsError) {
+            console.error("Demo form analytics error", analyticsError)
+        }
+
+        void ensureMeetingsScriptLoaded().then(() => {
+            hsq.push(["refreshPageHandlers"])
+            hsq.push(["trackPageView"])
+        })
     }
 
     function withContactParams(
@@ -203,18 +186,6 @@
         }
     }
 
-    onMounted(() => {
-        if (getHubspotTracking() === null) {
-            const base = getGeoMeetingUrl()
-            const current = new URLSearchParams(window.location.search)
-            meetingUrl.value = withContactParams(base, {
-                firstname: current.get("firstname"),
-                lastname: current.get("lastname"),
-                email: current.get("email"),
-            })
-            valid.value = true
-        }
-    })
 </script>
 
 <template>

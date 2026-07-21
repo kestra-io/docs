@@ -101,7 +101,7 @@
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
-    import { getHubspotTracking } from "~/utils/hubspot"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
 
     const gtm = useGtm()
@@ -111,8 +111,7 @@
     const submitted = ref(false)
     const submitting = ref(false)
 
-    const HUBSPOT_URL =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/e1706097-e681-441a-8306-7e715e9daa9a"
+    const HUBSPOT_FORM_ID = "e1706097-e681-441a-8306-7e715e9daa9a"
 
     const guideUrl = "/airflow-2-eol-whitepaper.pdf"
 
@@ -165,13 +164,7 @@
                 },
             }
 
-            await $fetch(HUBSPOT_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            })
+            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
 
             posthog.capture("airflow_2_eol_whitepaper_download")
             hsq.push([

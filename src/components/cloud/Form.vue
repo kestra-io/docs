@@ -97,16 +97,16 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, useTemplateRef, onMounted } from "vue"
+    import { ref, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
-    import { getHubspotTracking } from "~/utils/hubspot"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
-    import { ensureMeetingsScriptLoaded } from "~/composables/useMeeting"
-
-    const CLOUD_MEETING_URL =
-        "https://meetings-eu1.hubspot.com/connor-alkin?embed=true"
+    import {
+        CONNOR_MEETING_LINK,
+        ensureMeetingsScriptLoaded,
+    } from "~/composables/useMeeting"
 
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("cloud-form")
@@ -116,15 +116,7 @@
     const meetingUrl = ref("")
     const submitting = ref(false)
 
-    const HUBSPOT_URL =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d9c2b4db-0b35-409d-a69e-8e4186867b03"
-
-    onMounted(() => {
-        if (getHubspotTracking() === null) {
-            meetingUrl.value = CLOUD_MEETING_URL
-            valid.value = true
-        }
-    })
+    const HUBSPOT_FORM_ID = "d9c2b4db-0b35-409d-a69e-8e4186867b03"
 
     const onSubmit = async () => {
         const form = formRef.value
@@ -171,24 +163,24 @@
                 },
             }
 
-            await $fetch(HUBSPOT_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            })
-
-            posthog.capture("cloud_form")
-            hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
-            gtm?.trackEvent({ event: "cloud_form", noninteraction: false })
-            identify(email)
+            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
 
             valid.value = true
-            await ensureMeetingsScriptLoaded()
-            hsq.push(["refreshPageHandlers"])
-            hsq.push(["trackPageView"])
-            meetingUrl.value = CLOUD_MEETING_URL
+            meetingUrl.value = CONNOR_MEETING_LINK
+
+            try {
+                posthog.capture("cloud_form")
+                hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
+                gtm?.trackEvent({ event: "cloud_form", noninteraction: false })
+                identify(email)
+            } catch (analyticsError) {
+                console.error("Cloud form analytics error", analyticsError)
+            }
+
+            void ensureMeetingsScriptLoaded().then(() => {
+                hsq.push(["refreshPageHandlers"])
+                hsq.push(["trackPageView"])
+            })
         } catch (error: any) {
             const isBlocked = error?.response?.data?.errors?.some(
                 (e: any) => e.errorType === "BLOCKED_EMAIL",

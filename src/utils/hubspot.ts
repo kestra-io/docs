@@ -1,6 +1,23 @@
 import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { useGtm } from "@gtm-support/vue-gtm"
+import { $fetch } from "~/utils/fetch"
+
+const HUBSPOT_SUBMIT_ENDPOINT = "/api/hubspot-submit"
+
+export function submitHubspotForm<T = any>(
+    formId: string,
+    payload: {
+        fields: unknown[]
+        context?: Record<string, unknown>
+    },
+): Promise<T> {
+    return $fetch<T>(HUBSPOT_SUBMIT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ formId, ...payload }),
+    })
+}
 
 declare global {
     interface Window {
