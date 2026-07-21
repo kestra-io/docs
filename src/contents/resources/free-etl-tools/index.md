@@ -175,4 +175,4 @@ Ultimately, the goal is to choose a tool that not only solves today's ETL challe
 
 Choosing the right free ETL tool is about finding the right balance between power, flexibility, and operational cost. While many tools excel at specific tasks, a modern data strategy requires a unified platform that can grow with you. Kestra provides a declarative, language-agnostic, and event-driven foundation to orchestrate not just your ETL pipelines, but your entire ecosystem of data, AI, and infrastructure workflows.
 
-Explore [Kestra's open-source capabilities](https://github.com/kestra-io/kestra) to see how declarative orchestration can simplify your data pipelines, or start a [free Enterprise trial](/enterprise/free-trial) to experience the full power of a unified control plane.
+Explore [Kestra's open-source capabilities](https://github.com/kestra-io/kestra) to see how declarative orchestration can simplify your data pipelines, or [book a demo](/demo) to experience the full power of a unified control plane.

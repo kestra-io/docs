@@ -85,5 +85,5 @@ Installation paths vary by role:
 ## Building or requesting plugins
 
 If you can’t find the integration you need, you can build or request it:
-- Build: follow the [Plugin Developer Guide](../../plugin-developer-guide/index.md) to scaffold, test, and publish.
+- Build: follow the [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) to scaffold, test, and publish.
 - Request: ask in the [Kestra Slack community](https://kestra.io/slack) or open an issue in the [Kestra repository](https://github.com/kestra-io/kestra/issues).

@@ -93,4 +93,4 @@ Worker groups come in when the deployment needs to span locations: a second clou
 
 The component model stays the same at any scale. What changes is how many of each component you run, where you run the workers, and which backend you've wired in underneath.
 
-The core components, webserver, scheduler, executor, worker, are the same whether you're running one worker or fifty across regions. [Get started in minutes](../../docs/02.installation/index.md) with the open source edition on Docker to try the architecture yourself. If you're scoping worker groups across regions, business units, or regulated infrastructure, [book a demo](/demo) and we can work through the design together.
+The core components, webserver, scheduler, executor, worker, are the same whether you're running one worker or fifty across regions. [Get started in minutes](../../docs/02.installation/index.mdx) with the open source edition on Docker to try the architecture yourself. If you're scoping worker groups across regions, business units, or regulated infrastructure, [book a demo](/demo) and we can work through the design together.
