@@ -232,18 +232,35 @@ export default {
         const finalResponse = await next()
 
         if (cacheKey && finalResponse.status === 200) {
-            const cachedResponse = new Response(
-                finalResponse.body,
-                finalResponse,
-            )
-            cachedResponse.headers.set(
+            const response = new Response(finalResponse.body, finalResponse)
+            response.headers.set(
                 "Cache-Control",
                 `public, s-maxage=${EDGE_CACHE_TTL}, stale-while-revalidate=${EDGE_CACHE_SWR}`,
             )
+
+            // Cloudflare's Cache API rejects `put()` on any response carrying a
+            // `Set-Cookie` header. Because the write runs inside
+            // `ctx.waitUntil`, that rejection would be swallowed — silently
+            // disabling the cache and re-rendering on every request. These
+            // routes are public and request-independent (no server-set cookies
+            // today), but strip `Set-Cookie` from the stored copy so a future
+            // cookie can never quietly break caching, and guard the write so a
+            // failed `put()` degrades to "not cached" instead of an unhandled
+            // rejection. The response returned to this (cache-miss) visitor is
+            // left untouched.
+            const toStore = response.clone()
+            toStore.headers.delete("Set-Cookie")
             ctx.waitUntil(
-                edgeCache().put(cacheKey, cachedResponse.clone()),
+                edgeCache()
+                    .put(cacheKey, toStore)
+                    .catch((error) => {
+                        console.error(
+                            `Edge cache put failed for ${cacheKey.url}: ${error}`,
+                        )
+                    }),
             )
-            return cachedResponse
+
+            return response
         }
 
         return finalResponse
