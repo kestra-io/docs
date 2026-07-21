@@ -53,26 +53,10 @@
 </style>
 
 <style scoped lang="scss">
-
+    @use "/src/assets/styles/mdc-renderer" as mdc;
 
     .mdc-renderer {
-        & :deep(pre) {
-            padding: 1rem;
-            padding-bottom: 0;
-            margin-bottom: 0;
-            & code{
-                border: none;
-                background: transparent;
-                padding: 0;
-                .line {
-                    min-height: 1rem;
-                    white-space: pre-wrap;
-                }
-            }
-        }
-        :deep(h3) {
-            padding: 0;
-        }
+        @include mdc.mdc-renderer;
     }
 
     @keyframes pulse {
