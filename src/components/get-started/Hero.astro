@@ -20,6 +20,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
   <span class="t-flag">-v</span> <span class="t-val">kestra_db:/app/data</span> <span class="t-bs">\\</span>
   <span class="t-flag">-v</span> <span class="t-val">/var/run/docker.sock:/var/run/docker.sock</span> <span class="t-bs">\\</span>
   <span class="t-flag">-v</span> <span class="t-val">/tmp:/tmp</span> <span class="t-bs">\\</span>
+  <span class="t-flag">-e</span> <span class="t-val">KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true</span> <span class="t-bs">\\</span>
   <span class="t-val">kestra/kestra:latest-no-plugins</span> <span class="t-sub">server standalone</span>`
 ---
 
@@ -55,7 +56,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                 <div class="command-label">
                     <img src="/icon-simple.svg" alt="Kestra" width="20" height="20" style="width:20px;height:20px;flex-shrink:0" />
                     <span class="command-hint">Run this. That's it.</span>
-                    <button class="copy-btn" title="Copy command" onclick={`navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always --rm -it -p 8080:8080 --user=root \\\n  --name kestra \\\n  -v kestra_data:/app/storage \\\n  -v kestra_db:/app/data \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -v /tmp:/tmp \\\n  kestra/kestra:latest-no-plugins server standalone`)})`}>
+                    <button class="copy-btn" title="Copy command" onclick={`navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always --rm -it -p 8080:8080 --user=root \\\n  --name kestra \\\n  -v kestra_data:/app/storage \\\n  -v kestra_db:/app/data \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -v /tmp:/tmp \\\n  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \\\n  kestra/kestra:latest-no-plugins server standalone`)})`}>
                         <Icon name="mdi:content-copy" />
                     </button>
                 </div>
