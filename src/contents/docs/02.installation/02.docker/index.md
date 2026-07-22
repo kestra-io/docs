@@ -23,10 +23,15 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
-  kestra/kestra:latest server local
+  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
+  kestra/kestra:latest-no-plugins server standalone
 ```
 
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
+
+:::alert{type="info"}
+The `kestra/kestra:latest-no-plugins` image ships without any plugins to keep the download small. With `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`, Kestra installs any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
+:::
 
 :::alert{type="info"}
 The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
@@ -152,7 +157,7 @@ Two image variants are available:
 
 Both variants are based on the [`eclipse-temurin:21-jre`](https://hub.docker.com/_/eclipse-temurin) Docker image.
 
-The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-no-plugins` images do not contain any plugins. Use the `kestra/kestra:*` version to access all available plugins.
+The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-no-plugins` images do not bundle any plugins, which keeps them much smaller to download. When running the standalone server with plugin auto-install enabled (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`), Kestra downloads and installs any missing plugin automatically the first time a flow uses it — so the `-no-plugins` image stays fully usable.
 
 ## Docker image tags
 
@@ -164,7 +169,7 @@ The following tags are available for each Docker image (append `-no-plugins` to 
 - `v<X.X.X>`: Immutable tag for an exact version (e.g., `v1.0.1`). Never changes; **best for locked-down production.**
 - `develop`: Nightly/continuous build from the `develop` branch. Unstable and not recommended for production, only for testing.
 
-The **default Kestra image** `kestra/kestra:latest` already includes **all plugins**. To use a lightweight version of Kestra without plugins, add the suffix `*-no-plugins`.
+The **default Kestra image** `kestra/kestra:latest` already includes **all plugins**. To use a lightweight version of Kestra without bundled plugins, add the suffix `-no-plugins`. These images ship without plugins on purpose — they are a fraction of the size of the full image, and combined with plugin auto-install (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` on a standalone server), missing plugins are fetched on demand when a flow needs them.
 
 ### Recommended images for production
 
