@@ -26,6 +26,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings"
 import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
+import cssImageWebp from "./src/vite/css-image-webp.mjs"
 
 const __dirname = path.dirname(
     new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
@@ -64,6 +65,10 @@ export default defineConfig({
         expressiveCode(),
         mdx(),
         icon(),
+        // Convert CSS `background: url(...)` PNG/JPEG assets to WebP after the
+        // build (Astro's image optimizer can't reach CSS backgrounds). Authors
+        // keep the raster as source of truth; the wire gets WebP.
+        cssImageWebp(),
     ],
     markdown: {
         processor: unified({
