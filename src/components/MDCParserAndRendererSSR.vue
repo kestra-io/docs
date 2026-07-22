@@ -52,13 +52,3 @@
         @include mdc.mdc-renderer;
     }
 </style>
-
-<!-- Shiki dual-theme: token colors apply inline (light); switch to the dark
-     theme via the per-token `--shiki-dark` CSS variable when `.dark` is set on
-     <html>. Not scoped so it reaches the v-html output; namespaced under
-     .mdc-renderer to avoid leaks. -->
-<style lang="scss">
-    html.dark .mdc-renderer pre code span {
-        color: var(--shiki-dark) !important;
-    }
-</style>
