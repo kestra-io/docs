@@ -44,6 +44,10 @@ If you re-run the command and Docker reports `You have to remove (or rename) tha
 - uses the lightweight `no-plugins` image and installs plugins automatically on demand
 :::
 
+:::alert{type="info"}
+The `kestra/kestra:latest-no-plugins` image ships without any plugins to keep the download small. The `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable makes Kestra install any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
+:::
+
 The container is ready when the logs show `Main server is running at http://...:8080`.
 
 ## Step 2: Open the Kestra UI
