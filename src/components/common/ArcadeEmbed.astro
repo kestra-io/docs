@@ -1,0 +1,187 @@
+---
+/**
+ * Lightweight facade for Arcade interactive demos.
+ *
+ * The Arcade embed pulls a full Next.js app (~3 MB of JS + several long tasks)
+ * as soon as its iframe is in the document. `loading="lazy"` doesn't help much:
+ * the demo usually sits high enough that the near-viewport threshold loads it
+ * almost immediately on mobile. This facade renders only a placeholder button
+ * and injects the real iframe on the first interaction, so nothing from
+ * arcade.software is fetched until the visitor actually opts in.
+ *
+ * Drop it in wherever an Arcade `<iframe>` lived — its root fills the parent
+ * wrapper (absolute inset:0), matching the existing aspect-ratio containers.
+ */
+interface Props {
+    src: string
+    title: string
+    /** Extra class(es) forwarded to the facade root. */
+    class?: string
+    /** Append `autoplay=true` when the iframe is injected (default true). */
+    autoplay?: boolean
+}
+
+const { src, title, class: className, autoplay = true } = Astro.props
+---
+
+<button
+    type="button"
+    class:list={["arcade-facade", className]}
+    data-arcade-src={src}
+    data-arcade-title={title}
+    data-arcade-autoplay={autoplay ? "true" : "false"}
+    aria-label={`Load interactive demo: ${title}`}
+>
+    <span class="arcade-facade__inner">
+        <span class="arcade-facade__play" aria-hidden="true">
+            <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path d="M8 5v14l11-7L8 5z" fill="currentColor"></path>
+            </svg>
+        </span>
+        <span class="arcade-facade__label">Play interactive demo</span>
+        <span class="arcade-facade__hint">Loads on click</span>
+    </span>
+</button>
+
+<style lang="scss">
+    .arcade-facade {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+        border: none;
+        cursor: pointer;
+        color: #fff;
+        background:
+            radial-gradient(
+                120% 120% at 50% 0%,
+                rgba(113, 139, 254, 0.25) 0%,
+                rgba(14, 14, 16, 0.9) 60%
+            ),
+            #0e0e10;
+        color-scheme: light;
+        transition: background 0.2s ease;
+
+        &:hover,
+        &:focus-visible {
+            background:
+                radial-gradient(
+                    120% 120% at 50% 0%,
+                    rgba(113, 139, 254, 0.4) 0%,
+                    rgba(14, 14, 16, 0.88) 60%
+                ),
+                #0e0e10;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #718bfe;
+            outline-offset: -4px;
+        }
+    }
+
+    .arcade-facade__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        pointer-events: none;
+    }
+
+    .arcade-facade__play {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(4px);
+        transition:
+            transform 0.2s ease,
+            background 0.2s ease;
+
+        svg {
+            margin-left: 3px; // optically centre the triangle
+        }
+    }
+
+    .arcade-facade:hover .arcade-facade__play,
+    .arcade-facade:focus-visible .arcade-facade__play {
+        transform: scale(1.08);
+        background: rgba(255, 255, 255, 0.18);
+    }
+
+    .arcade-facade__label {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .arcade-facade__hint {
+        font-size: 0.8125rem;
+        opacity: 0.7;
+    }
+</style>
+
+<script>
+    // Progressive enhancement: swap each facade for the real Arcade iframe on
+    // first interaction. Runs once per page; scoped to this component's markup.
+    function initArcadeFacades() {
+        const facades =
+            document.querySelectorAll<HTMLButtonElement>(".arcade-facade")
+
+        facades.forEach((facade) => {
+            facade.addEventListener(
+                "click",
+                () => {
+                    const src = facade.dataset.arcadeSrc
+                    const title = facade.dataset.arcadeTitle ?? ""
+                    if (!src) return
+
+                    let finalSrc = src
+                    if (
+                        facade.dataset.arcadeAutoplay === "true" &&
+                        !/[?&]autoplay=/.test(finalSrc)
+                    ) {
+                        finalSrc +=
+                            (finalSrc.includes("?") ? "&" : "?") +
+                            "autoplay=true"
+                    }
+
+                    const iframe = document.createElement("iframe")
+                    iframe.src = finalSrc
+                    iframe.title = title
+                    iframe.loading = "eager" // user explicitly asked for it now
+                    iframe.allow = "clipboard-write"
+                    iframe.allowFullscreen = true
+                    iframe.style.cssText =
+                        "position:absolute;inset:0;top:0;left:0;width:100%;height:100%;border:0;color-scheme:light;"
+
+                    // Carry over any extra classes so wrapper CSS still matches.
+                    const extra = Array.from(facade.classList).filter(
+                        (c) => c !== "arcade-facade",
+                    )
+                    if (extra.length) iframe.classList.add(...extra)
+
+                    facade.replaceWith(iframe)
+                },
+                { once: true },
+            )
+        })
+    }
+
+    initArcadeFacades()
+    // Re-run after Astro view transitions / client navigation.
+    document.addEventListener("astro:page-load", initArcadeFacades)
+</script>
