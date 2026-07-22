@@ -20,8 +20,6 @@ faq:
 author: "Kestra"
 ---
 
-<!-- REVIEWER INPUT NEEDED — Martin (global): please confirm every Kestra-side claim in the mapping table and the three YAML examples. Dagster-side snippets should also be sanity-checked against a recent Dagster version. All open points are marked with individual comments below. -->
-
 Migrating an orchestration platform can feel daunting, especially when moving between tools with different core philosophies. This guide is for data engineers and platform leads actively evaluating or executing a transition from Dagster to Kestra. It provides a pragmatic, step-by-step roadmap to make the shift as smooth as possible.
 
 Let's acknowledge the fundamental paradigm difference upfront: Dagster is Python-native and asset-centric, while Kestra is declarative (YAML) and workflow-centric. Understanding that distinction — including what it means you'll do differently, not just what maps one-to-one — is the key to a successful migration. Below you'll find an honest concept mapping, side-by-side code examples, and a phased migration playbook.
@@ -34,11 +32,11 @@ In Dagster, you declare what *should exist*: software-defined assets bundle a de
 
 ### From Python-as-orchestration-language to Python-as-task
 
-Your business logic stays in Python. What changes is where orchestration lives: instead of expressing dependencies, schedules, and configuration in Python code, you express them in [declarative YAML](/features/declarative-data-orchestration). Python (or any other language) runs inside script tasks and [task runners](/docs/architecture).
+Your business logic stays in Python. What changes is where orchestration lives: instead of expressing dependencies, schedules, and configuration in Python code, you express them in [declarative YAML](/features/declarative-data-orchestration). Python (or any other language) runs inside script tasks and [task runners](/docs/task-runners).
 
 ### What you gain
 
-- **Language-agnostic orchestration.** Not everything is Python anymore: Bash, Node.js, Go, R, Julia, SQL, and containerized workloads are first-class citizens, backed by a plugin ecosystem of over 1,700 integrations.
+- **Language-agnostic orchestration.** Not everything is Python anymore: Bash, Node.js, Go, R, Julia, SQL, and containerized workloads are first-class citizens, backed by a plugin ecosystem of 1,800+ plugins.
 - **One declarative model for orchestration, triggers, and deployment.** Flow definitions, scheduling, event triggers, and environment configuration all live in the same YAML, versioned in Git.
 - **UI-based development.** Flows can be authored, tested, and monitored from the built-in editor — no local development environment required to get started.
 - **API-first platform with Terraform support.** Everything you can do in the UI is available through the API and infrastructure-as-code.
@@ -47,13 +45,11 @@ Your business logic stays in Python. What changes is where orchestration lives: 
 
 Being honest about the trade-offs matters more in a migration guide than anywhere else. None of the following are hidden costs — they are the flip side of moving from asset-centric Python orchestration to declarative, workflow-centric orchestration — but you should walk in with clear expectations.
 
-<!-- REVIEWER INPUT NEEDED — Martin: confirm each of the seven items below. Items 3, 4, and 5 have specific open questions. -->
-
 - **Per-asset materialization history.** Dagster gives you a persistent view of every materialization of a logical asset across runs. In Kestra, execution history and outputs are browsable per flow, not per logical asset across flows. If the asset catalog is your team's primary observability surface, plan for a different mental model: flow executions, task outputs, and attached metadata.
 - **Asset sensors.** There is no standalone asset-materialization event to subscribe to. The closest substitute is a [Flow trigger](/docs/workflow-components/triggers) keyed to the producing flow — this covers the common "run B when A's output updates" case, but couples the trigger to the workflow rather than to the data artifact.
-- **Asset freshness policies.** <!-- REVIEWER INPUT NEEDED — Martin: is there an equivalent (SLA-style monitoring, expression-based checks), or do we state plainly that this is not a Kestra concept and observability is handled at the execution level? -->
-- **Non-time-based partitions.** Time-based partitions (daily, hourly) map cleanly to [Schedule backfills](/docs/concepts/backfill). Static or dynamic partitions (per-category, per-customer, per-region) have no first-class equivalent; `ForEachItem` covers fan-out at execution time but doesn't persist a per-partition materialization state. <!-- REVIEWER INPUT NEEDED — Martin: confirm limits of this framing. -->
-- **A single injected resource object.** Dagster resources are instantiated once and injected wherever they're needed. In Kestra, each task configures its own connection properties, references the [KV Store](/docs/concepts/kv-store) for shared state, or pulls secrets. Configuration is distributed, mitigated by [`pluginDefaults`](/docs/workflow-components/plugin-defaults) at the namespace level. <!-- REVIEWER INPUT NEEDED — Martin: confirm pluginDefaults framing. -->
+- **Asset freshness policies.** Dagster's freshness policies (a currently-GA, actively developed feature) flag when an asset's data is staler than expected. Kestra's closest equivalent is a flow-level [SLA](/docs/workflow-components/sla): a `MAX_DURATION` SLA alerts or cancels a run that's taking too long, and an `EXECUTION_ASSERTION` SLA evaluates an expression during execution. Both watch execution behavior, not data staleness on a logical asset, so treat this as a concept you rebuild rather than one you port over.
+- **Non-time-based partitions.** Time-based partitions (daily, hourly) map cleanly to [Schedule backfills](/docs/concepts/backfill). Static or dynamic partitions (per-category, per-customer, per-region) have no first-class equivalent; `ForEachItem` covers fan-out at execution time but doesn't persist a per-partition materialization state.
+- **A single injected resource object.** Dagster resources are defined once and injected wherever they're needed. In Kestra, each task configures its own connection properties, references the [KV Store](/docs/concepts/kv-store) for shared state, or pulls secrets. Configuration is distributed, mitigated by [`pluginDefaults`](/docs/workflow-components/plugin-defaults) at the namespace level.
 - **Code-location-level Python isolation.** Dagster code locations can pin isolated Python and package versions per location. Kestra's isolation lives one layer lower, at the task-runner/container level: each task can run in its own image.
 - **Branch deployments as a built-in feature.** Dagster+ branch deployments are a product feature; in Kestra the equivalent is a convention — namespace-per-environment plus [flow revisions](/docs/concepts/revision), wired through your CI.
 
@@ -64,13 +60,13 @@ Teams for whom per-asset lineage is the core requirement should weigh that trade
 | Dagster | Kestra equivalent | Notes |
 |---|---|---|
 | `@asset` / software-defined assets | Flow + task `outputs` (+ metadata) | Paradigm shift — a Dagster asset bundles definition, materialization, and metadata in one decorator; in Kestra that splits across the flow (the process definition) and task outputs (what was produced). Kestra has no persistent per-asset materialization history across flows; execution history is browsable per flow. |
-| `@op` / `@job` | Task / Flow | Direct conceptual match. |
+| `@op` / `@job` | Task / Flow | Direct conceptual match, though Dagster's own docs now recommend starting with assets over ops/jobs directly — teams on this path are already closer to the newer Dagster paradigm than the asset-centric one this guide focuses on. |
 | `@schedule` | `Schedule` trigger (cron) | Direct match. |
-| `@sensor` | Polling triggers (file, queue, HTTP…) + `Flow` trigger | Run-status and file-arrival sensors map to polling and Flow triggers. Asset sensors have no direct equivalent — the closest substitute is a Flow trigger keyed to the producing flow. <!-- REVIEWER INPUT NEEDED — Martin: confirm trigger coverage for the common sensor use cases (S3 arrival, run-status, asset sensors). --> |
+| `@sensor` | Polling triggers (file, queue, HTTP…) + `Flow` trigger | Run-status and file-arrival sensors map to polling and Flow triggers. Asset sensors (`@asset_sensor`) and Dagster's newer Declarative Automation system have no direct equivalent — the closest substitute is a Flow trigger keyed to the producing flow. |
 | Partitions + backfills | Backfill executions on Schedule triggers; `ForEachItem` for fan-out | Clean mapping for time-based partitions — backfill replays missed schedule windows directly. Static/dynamic partitions: see "What you lose" above. |
-| `resources` / `io_manager` | Plugin task properties, internal storage, KV Store, secrets | Not one-to-one — resources dissolve into plugin configuration plus platform primitives. No single resource object instantiated once and injected everywhere. |
+| `resources` / `io_manager` | Plugin task properties, internal storage, KV Store, secrets | Not one-to-one — resources dissolve into plugin configuration plus platform primitives. No single resource object defined once and injected everywhere. |
 | `Definitions` / code locations | [Namespaces](/docs/workflow-components/namespace) + flow files (Git sync) | One nuance: code locations pin isolated Python/package versions per location; Kestra's isolation sits at the task-runner/container level. |
-| `dagster-dbt` | Kestra [dbt plugin](/plugins/plugin-dbt) | `DbtCLI` supports arbitrary dbt commands including selective runs via `--select`/`--exclude`, and can handle `manifest.json` for state comparison. <!-- REVIEWER INPUT NEEDED — Martin: the Notion outline said io.kestra.plugin.dbt.cli.Commands, but current docs use io.kestra.plugin.dbt.cli.DbtCLI — confirm the correct task type and the manifest/state-comparison claim. --> |
+| `dagster-dbt` | Kestra [dbt plugin](/plugins/plugin-dbt) | `DbtCLI` supports arbitrary dbt commands including selective runs via `--select`/`--exclude`, and can handle `manifest.json` for state comparison via `loadManifest`/`storeManifest`. |
 | Dagster+ branch deployments | Namespace-per-environment convention + flow revisions, deployed via CI | Not a feature match but a genuine difference in how environments are structured. |
 | Run retries / alerting | `retries` on tasks, `errors` branch, notification plugins | Direct match. |
 | Config / run config | Flow `inputs` + `variables` + plugin defaults | Direct match. |
@@ -78,8 +74,6 @@ Teams for whom per-asset lineage is the core requirement should weigh that trade
 ## Code side-by-side
 
 The point of these examples is simple: your Python business logic survives the migration largely unchanged. What changes is the orchestration wrapper around it.
-
-<!-- REVIEWER INPUT NEEDED — Martin: validate that all three Kestra YAML examples run against the current version, and sanity-check the Dagster snippets against a recent Dagster release. -->
 
 ### Example 1 — A simple scheduled pipeline
 
@@ -160,6 +154,7 @@ triggers:
     interval: PT1M
     action: MOVE
     moveTo:
+      bucket: incoming-data
       key: archive/raw/
 ```
 
@@ -195,8 +190,14 @@ tasks:
       enabled: true
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
+    loadManifest:
+      key: manifest.json
+      namespace: "{{ flow.namespace }}"
     commands:
       - dbt build --select state:modified+
+    storeManifest:
+      key: manifest.json
+      namespace: "{{ flow.namespace }}"
 ```
 
 ## The phased migration playbook
