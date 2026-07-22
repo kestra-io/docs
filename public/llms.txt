@@ -66,7 +66,7 @@ Use this section to find the right `type` for a task, understand its properties,
 - [Plugin marketplace](https://kestra.io/plugins): Search all available task, trigger, condition, and storage plugins with full property documentation — the definitive reference for any plugin type
 - [Core plugins](https://kestra.io/plugins/core): Built-in tasks — `Log`, `Return`, `OutputValues`, `ForEach`, `ForEachItem`, `Http.Request`, `Http.Download`, `Subflow`, and more
 - [Script tasks](https://kestra.io/docs/scripts.md): Run Python, Shell, Node.js, R, Julia, Ruby, Perl, and PowerShell inline or from files inside a flow
-- [Task runners](https://kestra.io/docs/task-runners.md): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS ECS Fargate, Azure Batch, Google Batch, or Google Cloud Run — instead of the local worker
+- [Task runners](https://kestra.io/docs/task-runners.md): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS EC2, Azure Batch, Azure VM, Google Batch, or Google Cloud Run — instead of the local worker
 
 ## Data, state, and storage
 
@@ -356,6 +356,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Run JavaScript Inside Your Flows](https://kestra.io/docs/how-to-guides/javascript.md)
 - [Connect Web Apps to Kestra via Webhooks](https://kestra.io/docs/how-to-guides/js-webhook.md)
 - [Work with JSON in Kestra](https://kestra.io/docs/how-to-guides/json.md)
+- [Run Julia Inside Your Flows](https://kestra.io/docs/how-to-guides/julia.md)
 - [Set Up Secrets from a Helm Chart](https://kestra.io/docs/how-to-guides/kubernetes-secrets.md)
 - [Synchronize Local Flows in Kestra](https://kestra.io/docs/how-to-guides/local-flow-sync.md)
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
@@ -560,6 +561,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [AWS Batch Task Runner – Run Tasks on ECS Fargate, EC2, or EKS](https://kestra.io/docs/task-runners/types/aws-batch-task-runner.md)
 - [AWS EC2 Task Runner – Run Tasks Natively on EC2 Instances](https://kestra.io/docs/task-runners/types/aws-ec2-task-runner.md)
 - [Azure Batch Task Runner: Run Tasks on Azure Containers](https://kestra.io/docs/task-runners/types/azure-batch-task-runner.md)
+- [Azure Virtual Machine Task Runner – Run Tasks Natively on Azure VMs](https://kestra.io/docs/task-runners/types/azure-virtualmachine-task-runner.md)
 - [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
 - [Google Batch Task Runner: Run Tasks on Cloud VMs](https://kestra.io/docs/task-runners/types/google-batch-task-runner.md)
 - [Google Cloud Run Task Runner: Serverless Task Execution](https://kestra.io/docs/task-runners/types/google-cloudrun-task-runner.md)
