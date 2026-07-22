@@ -1,0 +1,203 @@
+---
+import { Icon } from "astro-icon/components"
+
+const CARDS = [
+    {
+        icon: "mdi:cloud-check-outline",
+        title: "Fully managed & operated",
+        desc: "Upgrades, scaling, backups and uptime handled by our team.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "SSO & audit logs",
+        desc: "Enterprise auth and a full audit trail from day one.",
+    },
+    {
+        icon: "mdi:face-agent",
+        title: "Human support that ships",
+        desc: "A direct line to the team and a real say in the roadmap.",
+        badge: true,
+    },
+    {
+        icon: "mdi:key-outline",
+        title: "Secret manager",
+        desc: "Encrypted secrets, scoped by namespace, managed for you.",
+    },
+    {
+        icon: "mdi:account-cog-outline",
+        title: "Unlimited users & custom roles",
+        desc: "Fine-grained RBAC: invite your whole team, scope every permission.",
+    },
+    {
+        icon: "mdi:layers-outline",
+        title: "Apps for your whole team",
+        desc: "Let non-technical teammates run flows themselves through a custom UI.",
+        badge: true,
+    },
+    {
+        icon: "mdi:auto-fix",
+        title: "AI Copilot",
+        desc: "Generate flows from plain English, on a fully managed Kestra.",
+        badge: true,
+    },
+    {
+        icon: "mdi:lightning-bolt-outline",
+        title: "Event-driven triggers",
+        desc: "Webhooks and schedules start executions for you, no poller and no extra server.",
+    },
+    {
+        icon: "mdi:server-outline",
+        title: "Remote / BYO task runners",
+        desc: "Run tasks on your own AWS, GCP or Azure. Your data stays on your infra.",
+    },
+]
+---
+
+<section class="platform" aria-labelledby="platform-title">
+    <div class="container">
+        <div class="heading" data-usal="fade-u">
+            <h2 id="platform-title">The Kestra platform, run for you.</h2>
+            <p>
+                Run your declarative flows, event-driven triggers,
+                language-agnostic tasks and <a
+                    href="/plugins"
+                    target="_blank"
+                    rel="noopener noreferrer">1,700+ plugins</a
+                > and let us handle the provisioning, scaling, upgrades and security.
+            </p>
+        </div>
+
+        <div class="cards">
+            {
+                CARDS.map((card, index) => (
+                    <div
+                        class="card"
+                        data-usal={`fade-u delay-${(index % 3) * 50}`}
+                    >
+                        {card.badge && (
+                            <span class="badge-info">
+                                <Icon name="mdi:check-bold" class="check" />
+                                Early-adopter only
+                            </span>
+                        )}
+                        <div class="icon-title">
+                            <Icon name={card.icon} class="icon" />
+                            <h5>{card.title}</h5>
+                        </div>
+                        <p>{card.desc}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .platform {
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+        padding: 4rem 1rem 5.625rem;
+        color: var(--ks-content-primary);
+
+        .container {
+            max-width: 1140px;
+            margin-inline: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        .heading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            text-align: center;
+
+            h2 {
+                margin: 0;
+            }
+
+            p {
+                margin: 0;
+                max-width: 743px;
+                font-size: $font-size-lg;
+                color: var(--ks-content-primary);
+
+                a {
+                    color: var(--ks-content-color-highlight);
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+
+            @include media-breakpoint-down(lg) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            padding: 2rem;
+            color: var(--ks-content-primary);
+            background: var(--ks-background-primary);
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: $border-radius-lg;
+            box-shadow: 2px 3px 8px var(--ks-shadows-light);
+
+            .icon-title {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .icon {
+                    font-size: 1.5rem;
+                    color: var(--ks-icon-color);
+                }
+
+                h5 {
+                    margin: 0;
+                    font-size: $font-size-md;
+                }
+            }
+
+            p {
+                margin: 0;
+                font-size: $font-size-sm;
+                color: var(--ks-content-secondary);
+            }
+
+            .badge-info {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.25rem;
+                padding: 2px 8px;
+                border-radius: 40px;
+                font-size: $font-size-xs;
+                font-weight: 600;
+                background: var(--ks-background-alert-info);
+                color: var(--ks-content-alert-info);
+                white-space: nowrap;
+
+                .check {
+                    font-size: 0.75rem;
+                }
+            }
+        }
+    }
+</style>

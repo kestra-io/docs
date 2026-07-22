@@ -2,7 +2,14 @@
 import Layout from "~/components/layout.astro"
 import Quotes from "~/components/common/Quotes.vue"
 import Header from "~/components/cloud/Header.astro"
-import foundationLogo from "~/components/cloud/assets/foundation-direct-logo.svg?raw"
+import Platform from "~/components/cloud/Platform.astro"
+import RunningOrNew from "~/components/cloud/RunningOrNew.astro"
+import CtaEnd from "~/components/cloud/CtaEnd.astro"
+import { optimizeSvgIcon } from "~/utils/svgo"
+
+import AppleLogo from "~/assets/teams/apple.svg?raw"
+import JPMorganLogo from "~/contents/customer-stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows/logo.svg?raw"
+import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
 
 const title = "Kestra Cloud Early Adopter Program"
 const description =
@@ -10,9 +17,19 @@ const description =
 
 const quotes = [
     {
-        quote: "Kestra Cloud has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
-        author: "Michael Heidner - SVP of Analytics and Business Intelligence",
-        smallLogoSvg: foundationLogo,
+        quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        author: "Senior Engineering Manager (ML Team)",
+        smallLogoSvg: optimizeSvgIcon(AppleLogo, "apple-quote-logo"),
+    },
+    {
+        quote: "For the first time, our analysts weren't waiting for engineering to catch up. They could define the workflows themselves. That changed everything.",
+        author: "Cybersecurity Product Owner, JPMorgan Chase",
+        smallLogoSvg: optimizeSvgIcon(JPMorganLogo, "jpm-quote-logo"),
+    },
+    {
+        quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+        author: "Julien Henrion, Head of Data Engineering at Leroy Merlin",
+        smallLogoSvg: optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-quote-logo"),
     },
 ]
 ---
@@ -20,4 +37,7 @@ const quotes = [
 <Layout {title} {description}>
     <Header />
     <Quotes {quotes} client:load />
+    <Platform />
+    <RunningOrNew />
+    <CtaEnd />
 </Layout>

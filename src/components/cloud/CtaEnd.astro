@@ -1,0 +1,95 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+
+import ctaImg from "~/components/cloud/assets/cta-end.png"
+---
+
+<section class="cta-end">
+    <div class="frame" data-usal="fade-u">
+        <div class="inner">
+            <div class="visual">
+                <Image src={ctaImg} alt="Kestra Cloud" />
+            </div>
+            <div class="content">
+                <h3>Ready to let us run Kestra for you?</h3>
+                <a href="#get-access" class="btn btn-primary">
+                    Request early access
+                    <Icon name="mdi:arrow-right" class="arrow" />
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .cta-end {
+        background: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding: 4.375rem 1rem;
+        color: var(--ks-content-primary);
+
+        .frame {
+            max-width: 1160px;
+            margin-inline: auto;
+            padding: 6px;
+            border: 1px solid var(--ks-border-primary);
+            border-radius: 13px;
+        }
+
+        .inner {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            overflow: hidden;
+            border-radius: 9px;
+            background: var(--ks-background-secondary);
+            padding-right: 4rem;
+
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                gap: 2rem;
+                padding: 0 2rem 2.5rem;
+            }
+        }
+
+        .visual {
+            flex-shrink: 0;
+
+            img {
+                display: block;
+                width: 600px;
+                max-width: 100%;
+                height: auto;
+                object-fit: cover;
+            }
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2rem;
+
+            @include media-breakpoint-down(md) {
+                align-items: center;
+                text-align: center;
+            }
+
+            h3 {
+                margin: 0;
+                font-size: $font-size-2xl;
+            }
+
+            .btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+
+                .arrow {
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+</style>
