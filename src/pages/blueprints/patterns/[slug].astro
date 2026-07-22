@@ -6,7 +6,7 @@ import Layout from "~/components/layout.astro"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
 import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
 import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
-import { MAIN_BANNER } from "~/utils/blueprints/banners"
+import { bannerForCategory } from "~/utils/blueprints/banners"
 import { PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
 import {
     fetchToolIndex,
@@ -50,6 +50,8 @@ const heroSiblings = PATTERN_TAGS.map((p) => ({
 
 const title = `${pattern.name} blueprints`
 const description = pattern.description
+
+const banner = await bannerForCategory()
 ---
 
 <Layout {title} {description}>
@@ -57,7 +59,7 @@ const description = pattern.description
         eyebrow="Pattern"
         title={`${pattern.name} blueprints`}
         blurb={pattern.description}
-        banner={MAIN_BANNER}
+        banner={banner}
         {q}
         tagsSelected={pattern.name}
         {toolIndex}
