@@ -150,11 +150,11 @@ The service account used by Kestra needs the following roles:
 
 If you don't already have one, create a new project in the Google Cloud Console.
 
-![project](../../04.types/09.google-cloudrun-task-runner/project.png)
+![project](../../04.types/10.google-cloudrun-task-runner/project.png)
 
 Once created, ensure your new project is selected in the top navigation bar.
 
-![project_selection](../../04.types/09.google-cloudrun-task-runner/project-selection.png)
+![project_selection](../../04.types/10.google-cloudrun-task-runner/project-selection.png)
 
 #### Enable the Batch API
 
@@ -197,7 +197,7 @@ Grant this service account access to the **Compute Engine default service accoun
 
 Search for "Bucket" in the Cloud Console and create a new GCS bucket. You can keep the default configuration for now.
 
-![bucket](../../04.types/09.google-cloudrun-task-runner/bucket.png)
+![bucket](../../04.types/10.google-cloudrun-task-runner/bucket.png)
 
 ### Create a flow
 
