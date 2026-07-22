@@ -42,9 +42,11 @@ const {
                         <h3 class="mb-3" data-usal="fade-r">
                             <slot name="title" />
                         </h3>
-                        <p data-usal="fade-l">
-                            <slot />
-                        </p>
+                        {Astro.slots.has("default") && (
+                            <p data-usal="fade-l">
+                                <slot />
+                            </p>
+                        )}
                         <div class="d-flex flex-wrap gap-3 mt-4 flex-column flex-md-row align-items-start align-items-md-center">
                             {cta && (
                                 <Link

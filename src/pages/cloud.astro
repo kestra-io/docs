@@ -1,19 +1,78 @@
 ---
 import Layout from "~/components/layout.astro"
 import Quotes from "~/components/common/Quotes.vue"
+import CardGrid from "~/components/card/CardGrid.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
 import Header from "~/components/cloud/Header.astro"
-import Platform from "~/components/cloud/Platform.astro"
 import RunningOrNew from "~/components/cloud/RunningOrNew.astro"
-import CtaEnd from "~/components/cloud/CtaEnd.astro"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
 import AppleLogo from "~/assets/teams/apple.svg?raw"
 import JPMorganLogo from "~/contents/customer-stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows/logo.svg?raw"
 import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+import ctaImg from "~/components/cloud/assets/cta-end.png"
 
 const title = "Kestra Cloud Early Adopter Program"
 const description =
     "Be among the first to experience Kestra Cloud with exclusive access before general availability"
+
+const platformSubtitle =
+    'Run your declarative flows, event-driven triggers, language-agnostic tasks and <a href="/plugins">1,700+ plugins</a> and let us handle the provisioning, scaling, upgrades and security.'
+
+const platformCards = [
+    {
+        icon: "mdi:cloud-check-outline",
+        title: "Fully managed & operated",
+        description: "Upgrades, scaling, backups and uptime handled by our team.",
+    },
+    {
+        icon: "mdi:shield-check-outline",
+        title: "SSO & audit logs",
+        description: "Enterprise auth and a full audit trail from day one.",
+    },
+    {
+        icon: "mdi:face-agent",
+        title: "Human support that ships",
+        description: "A direct line to the team and a real say in the roadmap.",
+        badge: "Early-adopter only",
+    },
+    {
+        icon: "mdi:key-outline",
+        title: "Secret manager",
+        description: "Encrypted secrets, scoped by namespace, managed for you.",
+    },
+    {
+        icon: "mdi:account-cog-outline",
+        title: "Unlimited users & custom roles",
+        description:
+            "Fine-grained RBAC: invite your whole team, scope every permission.",
+    },
+    {
+        icon: "mdi:layers-outline",
+        title: "Apps for your whole team",
+        description:
+            "Let non-technical teammates run flows themselves through a custom UI.",
+        badge: "Early-adopter only",
+    },
+    {
+        icon: "mdi:auto-fix",
+        title: "AI Copilot",
+        description: "Generate flows from plain English, on a fully managed Kestra.",
+        badge: "Early-adopter only",
+    },
+    {
+        icon: "mdi:lightning-bolt-outline",
+        title: "Event-driven triggers",
+        description:
+            "Webhooks and schedules start executions for you, no poller and no extra server.",
+    },
+    {
+        icon: "mdi:server-outline",
+        title: "Remote / BYO task runners",
+        description:
+            "Run tasks on your own AWS, GCP or Azure. Your data stays on your infra.",
+    },
+]
 
 const quotes = [
     {
@@ -37,7 +96,16 @@ const quotes = [
 <Layout {title} {description}>
     <Header />
     <Quotes {quotes} client:load />
-    <Platform />
+    <CardGrid
+        title="The Kestra platform, run for you."
+        subtitle={platformSubtitle}
+        items={platformCards}
+    />
     <RunningOrNew />
-    <CtaEnd />
+    <SeeHow
+        imgSrc={ctaImg}
+        cta={{ text: "Request early access", href: "#get-access" }}
+    >
+        <Fragment slot="title">Ready to let us run Kestra for you?</Fragment>
+    </SeeHow>
 </Layout>
