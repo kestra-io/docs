@@ -10,6 +10,8 @@ description: Offload tasks to Azure Batch to run large-scale parallel and high-p
 
 Run tasks as containers on Azure Batch VMs.
 
+For non-containerized workloads that must run directly on the VM OS, use the [Azure Virtual Machine task runner](../07.azure-virtualmachine-task-runner/index.md) instead.
+
 ## Offload tasks to Azure Batch
 
 This task runner deploys a container for the task in a specified Azure Batch pool.
