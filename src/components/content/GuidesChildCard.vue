@@ -42,29 +42,33 @@
             </div>
         </div>
     </div>
-    <div class="card-grid mb-2">
-        <a class="card" :href="item.path" v-for="item in navigation" :key="item.path">
-            <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
-                {{ item.stage }}
-            </span>
-            <div>
-                <img
-                    class="card-icon"
-                    :src="item.icon"
-                    :alt="item.title"
-                    width="50px"
-                    height="50px"
-                />
-                <h4 class="card-title">{{ item.title }}</h4>
-            </div>
-            <MDCParserAndRenderer :content="item.description" class="bd-content" />
-            <div class="topics">
-                <span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{
-                    topic
-                }}</span>
-            </div>
-        </a>
-    </div>
+    <!-- Suspense so the async SSR markdown renderer can resolve during server
+         rendering instead of leaving skeletons in the HTML. -->
+    <Suspense>
+        <div class="card-grid mb-2">
+            <a class="card" :href="item.path" v-for="item in navigation" :key="item.path">
+                <span class="card-stage" :style="`background-color: ${stages[item.stage]}`">
+                    {{ item.stage }}
+                </span>
+                <div>
+                    <img
+                        class="card-icon"
+                        :src="item.icon"
+                        :alt="item.title"
+                        width="50px"
+                        height="50px"
+                    />
+                    <h4 class="card-title">{{ item.title }}</h4>
+                </div>
+                <MDCParserAndRendererSSR :content="item.description" class="bd-content" />
+                <div class="topics">
+                    <span v-for="(topic, index) in item.topics" :key="index" class="topic-item">{{
+                        topic
+                    }}</span>
+                </div>
+            </a>
+        </div>
+    </Suspense>
 </template>
 
 <script setup>
@@ -72,7 +76,7 @@
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
     import MultiSelect from "~/components/select/MultiSelect.vue"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import MDCParserAndRendererSSR from "~/components/MDCParserAndRendererSSR.vue"
 
     const props = defineProps({
         pageUrl: {
