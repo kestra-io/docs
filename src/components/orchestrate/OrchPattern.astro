@@ -1,7 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import Snippets from "~/components/common/Snippets.vue"
-import Topology from "~/components/blueprints/Topology.client.vue"
+import LazyTopology from "~/components/blueprints/LazyTopology.vue"
 
 interface BlueprintItem {
     name: string
@@ -158,7 +158,7 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                     {bp.render?.graph && (
                                         <div class="panel-topology">
                                             <div class="topo-live">
-                                                <Topology
+                                                <LazyTopology
                                                     client:only="vue"
                                                     flowGraph={bp.render.graph}
                                                     source={bp.render.source}
