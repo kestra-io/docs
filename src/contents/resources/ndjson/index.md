@@ -42,7 +42,7 @@ Consider a standard JSON file representing a list of users:
 To read this, a parser must load the entire file, find the opening and closing brackets, and then process the objects within the array.
 
 Now, here is the same data in NDJSON format:
-```ndjson
+```json
 {"id": 1, "name": "Alice"}
 {"id": 2, "name": "Bob"}
 {"id": 3, "name": "Charlie"}
