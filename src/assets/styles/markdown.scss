@@ -228,6 +228,52 @@
                 height: 100%;
             }
         }
+
+        // Click-to-play facade: the real YouTube iframe (~460 KiB player) is
+        // only injected on click (see the docs layout script), so it never
+        // loads on initial page render.
+        .yt-facade {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            background: radial-gradient(
+                120% 120% at 50% 30%,
+                #2a2a35 0%,
+                #0e0e10 70%
+            );
+
+            &__play {
+                position: relative;
+                width: 68px;
+                height: 48px;
+                border-radius: 12px;
+                background: rgba(0, 0, 0, 0.55);
+                transition: background 0.2s ease;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-40%, -50%);
+                    border-style: solid;
+                    border-width: 11px 0 11px 19px;
+                    border-color: transparent transparent transparent #fff;
+                }
+            }
+
+            &:hover .yt-facade__play,
+            &:focus-visible .yt-facade__play {
+                background: #f00;
+            }
+        }
     }
 
     video,
