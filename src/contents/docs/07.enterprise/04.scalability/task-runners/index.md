@@ -27,8 +27,9 @@ Enterprise Edition Task Runners:
 - [AWS Batch](../../../task-runners/04.types/04.aws-batch-task-runner/index.md)
 - [AWS EC2](../../../task-runners/04.types/05.aws-ec2-task-runner/index.md)
 - [Azure Batch](../../../task-runners/04.types/06.azure-batch-task-runner/index.md)
-- [Google Batch](../../../task-runners/04.types/07.google-batch-task-runner/index.md)
-- [Google Cloud Run](../../../task-runners/04.types/08.google-cloudrun-task-runner/index.md)
+- [Azure Virtual Machine](../../../task-runners/04.types/07.azure-virtualmachine-task-runner/index.md)
+- [Google Batch](../../../task-runners/04.types/08.google-batch-task-runner/index.md)
+- [Google Cloud Run](../../../task-runners/04.types/09.google-cloudrun-task-runner/index.md)
 
 ## Task runners vs Worker Groups
 
