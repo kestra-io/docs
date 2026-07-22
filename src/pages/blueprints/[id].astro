@@ -8,6 +8,7 @@ import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
 import type { SiblingPill } from "~/components/blueprints/BlueprintHero.astro"
 import Detail from "~/components/blueprints/Detail.vue"
 import BlueprintMarkdown from "~/components/blueprints/BlueprintMarkdown.vue"
+import BlueprintSnippet from "~/components/blueprints/BlueprintSnippet.vue"
 import Related from "~/components/blueprints/Related.astro"
 import SeeHow from "~/components/common/SeeHow.astro"
 import BlueprintCard from "~/components/layout/BlueprintCard.astro"
@@ -320,12 +321,29 @@ if (isCategoryPage && category) {
             pageData && (
                 <>
                     <Header page={pageData} slug={id} tags={detailTags} />
-                    <Detail
-                        client:only
-                        page={pageData}
-                        flow={pageData.flow}
-                        graph={graph}
-                    />
+                    {/* The two-column layout is static so the flow snippet can
+                        be a server-rendered island; only the vue-flow topology
+                        (which cannot SSR) stays client:only. */}
+                    <section class="blueprint-detail">
+                        <div class="container-xxl">
+                            <div class="wrapper">
+                                <div class="snippets">
+                                    <BlueprintSnippet
+                                        client:idle
+                                        flow={pageData.flow}
+                                    />
+                                </div>
+                                <div class="topology">
+                                    <Detail
+                                        client:only
+                                        page={pageData}
+                                        flow={pageData.flow}
+                                        graph={graph}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                     {/* Rendered outside the client:only Detail island so the
                         description markdown is server-rendered (it was
                         previously invisible to crawlers and popped in late,
@@ -360,6 +378,87 @@ if (isCategoryPage && category) {
 </Layout>
 
 <style lang="scss">
+    // Layout of the detail columns (moved here from Detail.vue so the flow
+    // snippet island can be server-rendered next to the client-only
+    // topology). Rules that target markup inside the islands use :global().
+    $compact-panel-height: 660px;
+
+    .blueprint-detail {
+        padding: 0 $rem-1;
+        background-color: var(--ks-background-primary);
+
+        .wrapper {
+            display: flex;
+            gap: $rem-1;
+            padding-bottom: $rem-4;
+
+            @include media-breakpoint-down(xl) {
+                flex-direction: column;
+            }
+
+            .snippets {
+                flex: 1 1 0;
+                min-width: 0;
+                min-height: $compact-panel-height;
+
+                @include media-breakpoint-down(xl) {
+                    flex: 1 1 auto;
+                    max-width: none;
+                }
+
+                :global(.code-card) {
+                    height: $compact-panel-height;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                :global(.code-card.is-expandable:not(.is-expanded) .code-inner) {
+                    max-height: none !important;
+                    overflow: hidden;
+                    mask-image: linear-gradient(
+                        to bottom,
+                        var(--ks-background-primary) 70%,
+                        transparent 100%
+                    ) !important;
+                }
+
+                :global(.code-card.is-expanded) {
+                    height: auto;
+                }
+
+                :global(.code-card.is-expanded .code-inner) {
+                    max-height: none !important;
+                    overflow: visible;
+                    mask-image: none !important;
+                }
+
+                :global(.code-card .code-inner) {
+                    flex: 1;
+                }
+            }
+
+            :global(.mdc-renderer pre) {
+                padding-bottom: 1rem;
+            }
+
+            .topology {
+                flex: 0 0 580px;
+                max-width: 580px;
+                min-width: 0;
+                min-height: $compact-panel-height;
+                display: flex;
+                flex-direction: column;
+
+                @include media-breakpoint-down(xl) {
+                    max-width: none;
+                    height: 500px;
+                    min-height: auto;
+                    flex: 1 1 auto;
+                }
+            }
+        }
+    }
+
     :global(.layout-wrapper .content p) {
         margin-bottom: 2rem;
 
