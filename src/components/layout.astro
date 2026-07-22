@@ -48,8 +48,12 @@ currentUrl.pathname = currentUrl.pathname.endsWith("/")
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
 
-const title = props.title
-    ? props.title + " | Kestra"
+// Strip any existing " | Kestra" suffix before re-appending, so the template
+// is the single owner of the suffix. Guards against double " | Kestra | Kestra"
+// when metaTitle front-matter already includes it.
+const baseTitle = props.title?.replace(/\s*\|\s*Kestra\s*$/i, "").trim()
+const title = baseTitle
+    ? `${baseTitle} | Kestra`
     : "Kestra, Open Source Declarative Orchestration Platform"
 const description =
     props.description ??
