@@ -47,8 +47,8 @@
                     <h6 class="mb-0">Create a Blueprint</h6>
                     <a
                         href="/docs/plugin-developer-guide"
-                        external
                         target="_blank"
+                        rel="noopener noreferrer"
                         class="link"
                     >
                         Go to the developer platform
