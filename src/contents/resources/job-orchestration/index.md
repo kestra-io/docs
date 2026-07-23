@@ -4,7 +4,7 @@ description: "Job orchestration goes beyond simple scheduling, coordinating comp
 metaTitle: "Job Orchestration: Definition & Tools"
 metaDescription: "Understand job orchestration, its benefits over traditional scheduling, and how a declarative platform unifies automated processes across data, IT, and AI."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-21
 slug: "job-orchestration"
 faq:
   - question: "What is job orchestration?"
