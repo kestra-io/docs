@@ -1,6 +1,6 @@
 import { defineCFMiddleware } from "./worker.types"
 
-export const CONSENT_REGION_COOKIE = "kestra_region"
+export const CONSENT_REGION_ATTR = "data-kestra-region"
 
 // Mirrors the client-side Intl "Europe" check, computed from Cloudflare's
 // edge geo data instead — authoritative, not spoofable by the client.
@@ -17,18 +17,21 @@ const resolveRegion = (request: Request): "eu" | "row" => {
     return timezone.indexOf("Europe") === 0 ? "eu" : "row"
 }
 
-// Per-visitor value — this response must never be cached, or one
-// visitor's region cookie could leak to another.
-export const setConsentRegionCookie = defineCFMiddleware(async (_url, next, request) => {
-    const nextResponse = await next()
-    const response = new Response(nextResponse.body, nextResponse)
+// Bakes the region into <html> instead of Set-Cookie, so the response stays
+// edge-cacheable — visitors sharing a PoP just share its cached region.
+export const injectConsentRegion = defineCFMiddleware(async (_url, next, request) => {
+    const response = await next()
 
-    // .append(), not .set() — Set-Cookie is multi-valued and .set() would
-    // clobber any other middleware's cookie.
-    response.headers.append(
-        "Set-Cookie",
-        `${CONSENT_REGION_COOKIE}=${resolveRegion(request)}; Path=/; Max-Age=86400; SameSite=Lax`,
-    )
+    if (!response.headers.get("content-type")?.startsWith("text/html")) {
+        return response
+    }
 
-    return response
+    const region = resolveRegion(request)
+    return new HTMLRewriter()
+        .on("html", {
+            element(el) {
+                el.setAttribute(CONSENT_REGION_ATTR, region)
+            },
+        })
+        .transform(response)
 })

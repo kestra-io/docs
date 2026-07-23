@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { CONSENT_REGION_COOKIE } from "~/middlewares/consentRegion"
+import { CONSENT_REGION_ATTR } from "~/middlewares/consentRegion"
 
 // vanilla-cookieconsent's run() is mocked to capture the config so tests can
 // invoke onConsent/onChange directly, as if the user interacted with the UI.
@@ -28,20 +28,19 @@ vi.mock("astro:env/client", () => ({ GTM_ID: "GTM-TEST" }))
 
 const SIGNALS = ["ad_storage", "ad_user_data", "ad_personalization", "analytics_storage"] as const
 
-// The module only touches a small DOM surface (document.addEventListener,
-// documentElement.classList, createElement("script"), head.appendChild), so
-// a hand-rolled fake avoids pulling in a jsdom/happy-dom dependency just for
-// this one test file.
+// The module only touches a small DOM surface, so a hand-rolled fake avoids
+// pulling in a jsdom/happy-dom dependency just for this one test file.
 type FakeScript = { async: boolean; src: string }
 let listeners: Record<string, ((e: Event) => void)[]>
 let headChildren: FakeScript[]
+let htmlAttrs: Record<string, string>
 
 const installFakeDom = () => {
     listeners = {}
     headChildren = []
+    htmlAttrs = {}
 
     const fakeDocument = {
-        cookie: "",
         addEventListener: (type: string, cb: (e: Event) => void) => {
             listeners[type] = listeners[type] || []
             listeners[type].push(cb)
@@ -49,7 +48,13 @@ const installFakeDom = () => {
         // Unlike real DOM dispatchEvent, this awaits listeners so tests can
         // deterministically wait for the async banner-init dynamic import.
         dispatchEvent: (event: Event) => Promise.all((listeners[event.type] || []).map((cb) => cb(event))),
-        documentElement: { classList: { add: vi.fn() } },
+        documentElement: {
+            classList: { add: vi.fn() },
+            getAttribute: (name: string) => htmlAttrs[name] ?? null,
+            setAttribute: (name: string, value: string) => {
+                htmlAttrs[name] = value
+            },
+        },
         createElement: (tag: string) => {
             if (tag !== "script") throw new Error(`unexpected createElement(${tag})`)
             const script: FakeScript = { async: false, src: "" }
@@ -90,8 +95,8 @@ const loadModule = async () => {
     await import("./cookieconsent")
 }
 
-const setRegionCookie = (value: "eu" | "row") => {
-    document.cookie = `${CONSENT_REGION_COOKIE}=${value}`
+const setRegionAttr = (value: "eu" | "row") => {
+    document.documentElement.setAttribute(CONSENT_REGION_ATTR, value)
 }
 
 // Cast past the DOM lib's `boolean` return type — the fake actually returns
@@ -112,9 +117,8 @@ afterEach(() => {
     vi.unstubAllGlobals()
 })
 
-// No region cookie is set in these two describe blocks, so they also cover
-// the Intl-timezone fallback path (the only path available in local `astro
-// dev`, since the Node adapter never runs the Worker that sets the cookie).
+// No region attribute is set in these two describe blocks, so they also
+// cover the Intl-timezone fallback path (the only one available in dev).
 describe("cookieconsent — Europe", () => {
     beforeEach(async () => {
         setTimezone("Europe/Paris")
@@ -208,10 +212,10 @@ describe("cookieconsent — non-Europe", () => {
     })
 })
 
-describe("cookieconsent — region cookie takes precedence over Intl timezone", () => {
-    it("treats the visitor as Europe when the cookie says eu, even with a non-EU timezone", async () => {
+describe("cookieconsent — region attribute takes precedence over Intl timezone", () => {
+    it("treats the visitor as Europe when the attribute says eu, even with a non-EU timezone", async () => {
         setTimezone("America/New_York")
-        setRegionCookie("eu")
+        setRegionAttr("eu")
         await loadModule()
         await firePageLoad()
 
@@ -220,9 +224,9 @@ describe("cookieconsent — region cookie takes precedence over Intl timezone", 
         expect(runCookieConsent).toHaveBeenCalled()
     })
 
-    it("treats the visitor as non-Europe when the cookie says row, even with a European timezone", async () => {
+    it("treats the visitor as non-Europe when the attribute says row, even with a European timezone", async () => {
         setTimezone("Europe/Paris")
-        setRegionCookie("row")
+        setRegionAttr("row")
         await loadModule()
         await firePageLoad()
 

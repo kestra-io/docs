@@ -2,7 +2,7 @@ import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
-import { setConsentRegionCookie } from "./consentRegion";
+import { injectConsentRegion } from "./consentRegion";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -87,7 +87,7 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 })
 
 
-const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex, setConsentRegionCookie]
+const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex, injectConsentRegion]
 
 export default {
     async fetch(

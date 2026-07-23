@@ -2,27 +2,15 @@ import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
 import { GTM_ID } from "astro:env/client"
-import { CONSENT_REGION_COOKIE } from "~/middlewares/consentRegion"
+import { CONSENT_REGION_ATTR } from "~/middlewares/consentRegion"
 
-// Cookie set by the Worker from Cloudflare's edge geo data; falls back to
-// Intl timezone (always the case in local `astro dev`).
-const readRegionCookie = (): "eu" | "row" | null => {
-    const prefix = `${CONSENT_REGION_COOKIE}=`
-    if (!document.cookie) return null
-    for (const part of document.cookie.split(";")) {
-        const entry = part.trim()
-        if (entry.substring(0, prefix.length) === prefix) {
-            const value = entry.substring(prefix.length)
-            return value === "eu" || value === "row" ? value : null
-        }
-    }
-    return null
-}
-
-const regionCookie = readRegionCookie()
+// Set by the Worker on <html> from Cloudflare's edge geo data (not a
+// cookie, so responses stay edge-cacheable); falls back to Intl timezone
+// (always the case in local `astro dev`).
+const regionAttr = document.documentElement.getAttribute(CONSENT_REGION_ATTR)
 const isEurope =
-    regionCookie !== null
-        ? regionCookie === "eu"
+    regionAttr === "eu" || regionAttr === "row"
+        ? regionAttr === "eu"
         : Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 
 // Kicked off at module top-level (as early as this script itself runs) so
