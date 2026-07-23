@@ -10,6 +10,7 @@ import { optimizeSvgIcon } from "~/utils/svgo"
 import USCCALogo from "~/assets/quotes-companies/USCCA.svg?raw"
 import ExtracadabraLogo from "~/assets/quotes-companies/Extracadabra.svg?raw"
 import Yol1Logo from "~/assets/quotes-companies/Yol1.svg?raw"
+import FoundationLogo from "~/components/cloud/assets/foundation-direct-logo.svg?raw"
 import ctaImg from "~/components/cloud/assets/cta-end.png"
 
 const title = "Kestra Cloud Early Adopter Program"
@@ -17,7 +18,7 @@ const description =
     "Be among the first to experience Kestra Cloud with exclusive access before general availability"
 
 const platformSubtitle =
-    'Run your declarative flows, event-driven triggers, language-agnostic tasks and <a href="/plugins">1,700+ plugins</a> and let us handle the provisioning, scaling, upgrades and security.'
+    'Run your declarative flows, event-driven triggers, language-agnostic tasks with <a href="/plugins">1,700+ plugins</a> and let us handle the provisioning, scaling, upgrades and security.'
 
 const platformCards = [
     {
@@ -79,12 +80,12 @@ const platformCards = [
 const quotes = [
     {
         quote: "We didn't have centralized orchestration. That's where Kestra plays the most important role: all the fragmented production pipelines orchestrated through it.",
-        author: "Shilpa Pauly",
+        author: "Shilpa Pauly — Data Engineer, USCCA",
         smallLogoSvg: optimizeSvgIcon(USCCALogo, "uscca-quote-logo"),
     },
     {
         quote: "Everyone in the company can create a flow very easily. That's why everyone at Extracadabra said yes to Kestra Cloud.",
-        author: "Louis Raverdy",
+        author: "Louis Raverdy — Lead Data Engineer, Extracadabra",
         smallLogoSvg: optimizeSvgIcon(
             ExtracadabraLogo,
             "extracadabra-quote-logo",
@@ -92,8 +93,13 @@ const quotes = [
     },
     {
         quote: "The aha moment is more than the tool; it's the people. Kestra took care of us as we matter to them. We've really become Kestra fans.",
-        author: "Felipe E. Vildoso Castillo",
+        author: "Felipe E. Vildoso Castillo — Head of Data & Analytics, Yol1",
         smallLogoSvg: optimizeSvgIcon(Yol1Logo, "yol1-quote-logo"),
+    },
+    {
+        quote: "Kestra Cloud has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
+        author: "Michael Heidner — SVP of Analytics and Business Intelligence, Foundation Data",
+        smallLogoSvg: optimizeSvgIcon(FoundationLogo, "foundation-quote-logo"),
     },
 ]
 ---
