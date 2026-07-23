@@ -32,8 +32,12 @@ To prevent the execution of malicious code, you can implement several strategies
 
 ## Credential initialization
 
+On Enterprise Edition, configure a robust authentication mechanism such as [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These mechanisms integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials.
+
+If you use Basic Authentication on OSS or EE:
+
 :::alert{type="warning"}
-On a fresh OSS installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
+On a fresh installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
 
 **Configure `username` and `password` in the application configuration file before starting Kestra in production.** This skips the Setup page entirely and ensures the instance is never in an unprotected state.
 

@@ -8,7 +8,7 @@ description: Troubleshoot common issues with Basic Authentication in Kestra, inc
 
 Troubleshoot issues with Basic Authentication.
 
-Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup Page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
+Every open-source instance of Kestra requires Basic Authentication (`username` and `password`). You can configure credentials via the Setup page in the UI (http://localhost:8080/ui/main/setup) or manually in the configuration file under `basic-auth` (recommended for production):
 
 ```yaml
 kestra:
@@ -18,7 +18,7 @@ kestra:
       password: Admin1234
 ```
 
-Since Basic Authentication is now required, the `enabled` flag is ignored and should no longer be used. Credentials must be configured to access the Kestra UI or API. For new users, simply follow the Setup Page that will show up when you start Kestra UI.
+Since Basic Authentication is now required, the `enabled` flag is ignored and should no longer be used. Credentials must be configured to access the Kestra UI or API. For new users, follow the Setup page that appears when you start the Kestra UI.
 
 For production deployments, set a valid email address and a strong password in the configuration file.
 
@@ -61,7 +61,7 @@ If no `basic-auth` configuration is defined:
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
 :::alert{type="warning"}
-In this scenario the Setup page is publicly reachable until credentials are submitted. For production deployments, configure `username` and `password` in the application configuration file **before** starting Kestra to skip the Setup page and ensure the instance is never unprotected.
+In this scenario, the Setup page is publicly reachable until credentials are submitted. For production deployments, configure `username` and `password` in the application configuration file **before** starting Kestra to skip the Setup page and ensure the instance is never unprotected.
 :::
 
 :::alert{type="info"}
