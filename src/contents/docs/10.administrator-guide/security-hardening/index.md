@@ -30,6 +30,24 @@ To prevent the execution of malicious code, you can implement several strategies
 - **CI/CD validation** — implement a custom [Flow Validation step in your CI/CD pipeline](../../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
 - **Java Security (EE-only)** — Enterprise Edition users can define security policies to restrict access to untrusted files, plugins, or network resources.
 
+## Credential initialization
+
+:::alert{type="warning"}
+On a fresh OSS or EE installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
+
+**Configure `username` and `password` in the application configuration file before starting Kestra in production.** This skips the Setup page entirely and ensures the instance is never in an unprotected state.
+
+```yaml
+kestra:
+  server:
+    basic-auth:
+      username: admin@kestra.io
+      password: "{{ your-strong-password }}"
+```
+
+This does not affect Kestra Cloud, which does not use Basic Authentication.
+:::
+
 ## Documentation and audit
 
 - **User guidance** — update onboarding materials and runbooks to highlight metadata-blocking best practices when deploying a new Kestra environment.

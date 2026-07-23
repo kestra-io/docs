@@ -60,6 +60,10 @@ In this case, the following occurs:
 If no `basic-auth` configuration is defined:
 - The Setup page will appear the first time starting Kestra, and you will need to create valid credentials. The authentication credentials are stored in your Kestra database in the **Settings** table under the key `kestra.server.basic-auth`. This is how you log in for all future sessions.
 
+:::alert{type="warning"}
+In this scenario the Setup page is publicly reachable until credentials are submitted. For production deployments, configure `username` and `password` in the application configuration file **before** starting Kestra to skip the Setup page and ensure the instance is never unprotected.
+:::
+
 :::alert{type="info"}
 If you forget your credentials, update the `username` and `password` in the configuration file. The configuration file always takes precedence over values set from the Setup page.
 :::
