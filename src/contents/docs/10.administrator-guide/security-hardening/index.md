@@ -33,7 +33,7 @@ To prevent the execution of malicious code, you can implement several strategies
 ## Credential initialization
 
 :::alert{type="warning"}
-On a fresh OSS or EE installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
+On a fresh OSS installation with no `basic-auth` credentials configured, the Setup page at `/ui/main/setup` is publicly reachable. Any user who reaches it first can set credentials and lock out the intended administrator.
 
 **Configure `username` and `password` in the application configuration file before starting Kestra in production.** This skips the Setup page entirely and ensures the instance is never in an unprotected state.
 
@@ -44,8 +44,6 @@ kestra:
       username: admin@kestra.io
       password: "{{ your-strong-password }}"
 ```
-
-This does not affect Kestra Cloud, which does not use Basic Authentication.
 :::
 
 ## Documentation and audit
