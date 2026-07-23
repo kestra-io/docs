@@ -4,7 +4,7 @@ description: "ML orchestration automates, manages, and monitors the entire lifec
 metaTitle: "ML Orchestration: Automate Machine Learning Pipelines"
 metaDescription: "Automate and manage your machine learning workflows with ML orchestration. Explore best practices, tools, and how Kestra simplifies scaling your ML models."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-14
 slug: "ml-orchestration"
 faq:
   - question: "What is ML orchestration?"

@@ -4,7 +4,7 @@ description: "Understand AWS Lambda timeout settings, limits, and best practices
 metaTitle: "AWS Lambda Timeout: Limits & How to Work Around Them"
 metaDescription: "Optimize AWS Lambda timeout settings and limits. Configure, troubleshoot, and orchestrate Lambda functions with Kestra for resilient serverless apps."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-21
 slug: "aws-lambda-timeout"
 faq:
   - question: "What is the timeout for AWS Lambda?"
