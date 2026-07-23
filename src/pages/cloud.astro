@@ -7,9 +7,9 @@ import Header from "~/components/cloud/Header.astro"
 import RunningOrNew from "~/components/cloud/RunningOrNew.astro"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
-import AppleLogo from "~/assets/teams/apple.svg?raw"
-import JPMorganLogo from "~/contents/customer-stories/orchestrating-cybersecurity-for-100-users-and-billions-of-rows/logo.svg?raw"
-import LeroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+import USCCALogo from "~/assets/quotes-companies/USCCA.svg?raw"
+import ExtracadabraLogo from "~/assets/quotes-companies/Extracadabra.svg?raw"
+import Yol1Logo from "~/assets/quotes-companies/Yol1.svg?raw"
 import ctaImg from "~/components/cloud/assets/cta-end.png"
 
 const title = "Kestra Cloud Early Adopter Program"
@@ -23,7 +23,8 @@ const platformCards = [
     {
         icon: "mdi:cloud-check-outline",
         title: "Fully managed & operated",
-        description: "Upgrades, scaling, backups and uptime handled by our team.",
+        description:
+            "Upgrades, scaling, backups and uptime handled by our team.",
     },
     {
         icon: "mdi:shield-check-outline",
@@ -57,7 +58,8 @@ const platformCards = [
     {
         icon: "mdi:auto-fix",
         title: "AI Copilot",
-        description: "Generate flows from plain English, on a fully managed Kestra.",
+        description:
+            "Generate flows from plain English, on a fully managed Kestra.",
         badge: "Early-adopter only",
     },
     {
@@ -76,19 +78,22 @@ const platformCards = [
 
 const quotes = [
     {
-        quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
-        author: "Senior Engineering Manager (ML Team)",
-        smallLogoSvg: optimizeSvgIcon(AppleLogo, "apple-quote-logo"),
+        quote: "We didn't have centralized orchestration. That's where Kestra plays the most important role: all the fragmented production pipelines orchestrated through it.",
+        author: "Shilpa Pauly",
+        smallLogoSvg: optimizeSvgIcon(USCCALogo, "uscca-quote-logo"),
     },
     {
-        quote: "For the first time, our analysts weren't waiting for engineering to catch up. They could define the workflows themselves. That changed everything.",
-        author: "Cybersecurity Product Owner, JPMorgan Chase",
-        smallLogoSvg: optimizeSvgIcon(JPMorganLogo, "jpm-quote-logo"),
+        quote: "Everyone in the company can create a flow very easily. That's why everyone at Extracadabra said yes to Kestra Cloud.",
+        author: "Louis Raverdy",
+        smallLogoSvg: optimizeSvgIcon(
+            ExtracadabraLogo,
+            "extracadabra-quote-logo",
+        ),
     },
     {
-        quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
-        author: "Julien Henrion, Head of Data Engineering at Leroy Merlin",
-        smallLogoSvg: optimizeSvgIcon(LeroyMerlinLogo, "leroy-merlin-quote-logo"),
+        quote: "The aha moment is more than the tool; it's the people. Kestra took care of us as we matter to them. We've really become Kestra fans.",
+        author: "Felipe E. Vildoso Castillo",
+        smallLogoSvg: optimizeSvgIcon(Yol1Logo, "yol1-quote-logo"),
     },
 ]
 ---
