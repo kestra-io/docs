@@ -11,7 +11,12 @@ Launch Kestra locally, create a simple flow, and run your first execution in a f
 ## Watch the quickstart video
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/bQNmXge5vSY?si=ueqzWRVVtuGiAwjU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <button class="yt-facade" type="button" data-yt-id="bQNmXge5vSY" data-yt-title="Kestra quickstart video" aria-label="Play the Kestra quickstart video">
+    <span class="yt-facade__play" aria-hidden="true"></span>
+  </button>
+  <noscript>
+    <iframe src="https://www.youtube.com/embed/bQNmXge5vSY?si=ueqzWRVVtuGiAwjU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </noscript>
 </div>
 
 ## Prerequisites

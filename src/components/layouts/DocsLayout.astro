@@ -99,6 +99,37 @@ const techArticleSchema = {
     </div>
 </Layout>
 
+<script>
+    // Click-to-play for YouTube facades in docs content: swap the placeholder
+    // button for the real iframe only when the visitor asks for the video, so
+    // the ~460 KiB YouTube player never loads on initial page render.
+    function initYouTubeFacades() {
+        document
+            .querySelectorAll<HTMLButtonElement>(".yt-facade")
+            .forEach((facade) => {
+                facade.addEventListener(
+                    "click",
+                    () => {
+                        const id = facade.dataset.ytId
+                        if (!id) return
+                        const iframe = document.createElement("iframe")
+                        iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1`
+                        iframe.title = facade.dataset.ytTitle ?? "YouTube video"
+                        iframe.allow =
+                            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        iframe.referrerPolicy = "strict-origin-when-cross-origin"
+                        iframe.allowFullscreen = true
+                        facade.replaceWith(iframe)
+                    },
+                    { once: true },
+                )
+            })
+    }
+
+    initYouTubeFacades()
+    document.addEventListener("astro:page-load", initYouTubeFacades)
+</script>
+
 <style lang="scss">
     .container-fluid {
         background-color: var(--ks-background-body);

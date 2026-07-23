@@ -39,6 +39,8 @@ const category = id ? categoryTileMetaForSlug(id) : undefined
 const isCategoryPage =
     category !== undefined && category.name !== "Getting Started"
 
+const categoryBanner = await bannerForCategory(id)
+
 let title = ""
 let description: string | undefined
 
@@ -213,7 +215,7 @@ if (isCategoryPage && category) {
                     eyebrow="Category"
                     title={`Browse ${category.name} Blueprints by pattern`}
                     blurb={category.blurb}
-                    banner={bannerForCategory(id)}
+                    banner={categoryBanner}
                     q={categoryQ}
                     tagsSelected={category.name}
                     {toolIndex}

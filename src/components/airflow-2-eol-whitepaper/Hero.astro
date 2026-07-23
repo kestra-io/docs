@@ -1,8 +1,13 @@
 ---
-import { Image } from "astro:assets"
+import { Image, getImage } from "astro:assets"
 import DownloadForm from "./DownloadForm.vue"
 import bookMockup from "./assets/book-mockup.png"
-import heroBg from "./assets/hero-bg.jpg"
+import heroBgSrc from "./assets/hero-bg.jpg"
+
+// A bare `.src` import isn't optimized — Astro only fingerprints and copies it.
+// Route the CSS background through getImage() so the browser gets a WebP while
+// the JPEG stays the source of truth.
+const heroBg = await getImage({ src: heroBgSrc, format: "webp" })
 ---
 
 <section class="hero">
