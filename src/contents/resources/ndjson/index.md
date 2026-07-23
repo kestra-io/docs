@@ -4,7 +4,7 @@ description: "NDJSON is a powerful format for handling large, streaming JSON dat
 metaTitle: "NDJSON: Newline Delimited JSON Explained"
 metaDescription: "NDJSON is the newline-delimited JSON format for streaming and large datasets. Explore its benefits, how it compares to JSON, and how Kestra processes it."
 tag: data
-date: 2026-07-07
+date: 2026-07-10
 slug: "ndjson"
 faq:
   - question: "What is NDJSON format?"
