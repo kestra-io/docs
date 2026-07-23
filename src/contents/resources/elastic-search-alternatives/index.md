@@ -4,7 +4,7 @@ description: "Explore the best Elasticsearch alternatives for your data search a
 metaTitle: "Elasticsearch Alternatives: Top Search & Analytics Tools"
 metaDescription: "Explore top Elasticsearch alternatives for data, analytics, and AI: open-source, cloud, and specialized search engines, plus how Kestra orchestrates them."
 tag: "data"
-date: 2026-07-07
+date: 2026-07-17
 slug: "elastic-search-alternatives"
 faq:
   - question: "Why do companies look for Elasticsearch alternatives?"
