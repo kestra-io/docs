@@ -48,13 +48,28 @@ currentUrl.pathname = currentUrl.pathname.endsWith("/")
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
 const slug = Astro.routePattern
 
-const title = props.title
-    ? props.title + " | Kestra"
+// Strip any existing " | Kestra" suffix before re-appending, so the template
+// is the single owner of the suffix. Guards against double " | Kestra | Kestra"
+// when metaTitle front-matter already includes it.
+const baseTitle = props.title?.replace(/\s*\|\s*Kestra\s*$/i, "").trim()
+const title = baseTitle
+    ? `${baseTitle} | Kestra`
     : "Kestra, Open Source Declarative Orchestration Platform"
 const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
+// Derive og:image:type from the actual served file. The site default is a
+// .png, so the previous hard-coded "image/svg+xml" was always a mismatch.
+const imageType = /\.png($|\?)/i.test(image)
+    ? "image/png"
+    : /\.webp($|\?)/i.test(image)
+      ? "image/webp"
+      : /\.jpe?g($|\?)/i.test(image)
+        ? "image/jpeg"
+        : /\.svg($|\?)/i.test(image)
+          ? "image/svg+xml"
+          : "image/png"
 
 const query = new URLSearchParams(
     currentUrl.searchParams
@@ -199,13 +214,7 @@ const organizationSchema = {
 
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        {
-            !props.image ? (
-                <meta property="og:image:type" content="image/svg+xml" />
-            ) : (
-                ""
-            )
-        }
+        <meta property="og:image:type" content={imageType} />
         <meta property="og:image:alt" content={title} />
         <meta property="og:url" content={canonicalUrl.toString()} />
         <meta property="og:image" content={image} />
