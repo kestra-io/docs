@@ -4,7 +4,7 @@ description: "Human-in-the-Loop (HITL) orchestration integrates human intelligen
 metaTitle: "Human-in-the-Loop (HITL) Orchestration Explained"
 metaDescription: "Learn how Human-in-the-Loop (HITL) orchestration adds human approval gates to AI agents and automated workflows for accuracy, compliance, and edge cases."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-23
 slug: "human-in-the-loop-orchestration"
 faq:
   - question: "What is the concept of Human-in-the-Loop (HITL)?"
