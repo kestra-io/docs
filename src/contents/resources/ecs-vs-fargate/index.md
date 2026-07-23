@@ -4,7 +4,7 @@ description: "Understand the core differences between AWS ECS and Fargate to sel
 metaTitle: "ECS vs Fargate: Which to Use for Your Workloads"
 metaDescription: "Compare AWS ECS and Fargate to choose the optimal container orchestration for your applications. Learn about their features, costs, and use cases."
 tag: infrastructure
-date: 2026-07-07
+date: 2026-07-21
 slug: ecs-vs-fargate
 faq:
   - question: Can you use ECS without Fargate?
