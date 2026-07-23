@@ -12,9 +12,3 @@ const htmlContent = await getMarked().parse(content)
 ---
 
 <div class:list={["mdc-renderer", className]} set:html={htmlContent} {...rest} />
-
-<style is:global lang="scss">
-    html.dark .mdc-renderer pre code span {
-        color: var(--shiki-dark) !important;
-    }
-</style>

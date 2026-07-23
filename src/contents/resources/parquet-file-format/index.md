@@ -4,7 +4,7 @@ description: "Explore the Parquet file format, an open-source columnar storage s
 metaTitle: "Parquet File Format: Data Storage for Analytics"
 metaDescription: "Parquet is an open-source columnar storage format for big-data analytics. Learn its benefits, how it compares to CSV, and its role in modern data pipelines."
 tag: "data"
-date: 2026-07-07
+date: 2026-07-10
 slug: "parquet-file-format"
 faq:
   - question: "Is Parquet better than CSV?"

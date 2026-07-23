@@ -4,7 +4,7 @@ description: "A cloud scheduler automates tasks based on a predefined schedule, 
 metaTitle: "Cloud Scheduler: Definition, Use Cases & Kestra"
 metaDescription: "What a cloud scheduler is, its benefits for automation, and how Kestra orchestrates time-based jobs across any cloud with declarative workflows."
 tag: infrastructure
-date: 2026-07-07
+date: 2026-07-14
 slug: "google-cloud-scheduler"
 faq:
   - question: "What is a Cloud Scheduler?"
