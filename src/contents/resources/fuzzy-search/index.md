@@ -4,7 +4,7 @@ description: "Understand fuzzy search, a technique for finding approximate match
 metaTitle: "Fuzzy Search: Flexible Data Querying and Orchestration"
 metaDescription: "Fuzzy search enhances data retrieval through flexible querying. Approximate string matching improves user experience and system orchestration."
 tag: data
-date: 2026-07-07
+date: 2026-07-17
 slug: fuzzy-search
 faq:
   - question: "What is the core principle behind fuzzy search?"
