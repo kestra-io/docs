@@ -1,12 +1,9 @@
 ---
 title: "Quadis Drives Innovation: Transforming Car Retail Operations with Kestra"
 rank: 3
-description: This is the story of how Quadis optimized their operations using
-  Kestra for efficient financial reporting and improved customer communication.
+description: This is the story of how Quadis consolidated financial reporting and customer communication onto Kestra, replacing a legacy in-house and Pentaho ETL stack.
 metaTitle: "Quadis Drives Innovation: Transforming Car Retail Operations with Kestra"
-metaDescription: This is the story of how Quadis optimized their operations
-  using Kestra for efficient financial reporting and improved customer
-  communication.
+metaDescription: How Spain's largest car retailer consolidated financial reporting and customer communication onto Kestra, replacing a legacy in-house and Pentaho ETL stack.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
@@ -16,88 +13,136 @@ tasks:
   - io.kestra.plugin.azure.cli.AzCLI
   - io.kestra.plugin.docker.Build
   - io.kestra.plugin.scripts.python.Commands
-kpi1: |+
-  ##### ZERO
+kpi1: |
+  ZERO
   downtime
-
-
-kpi2: |-
-  ##### 50%
-  cost reduction  of processing
-kpi3: |-
-  ##### +250
+kpi2: |
+  50%
+  cost reduction in processing
+kpi3: |
+  +250
   datasets orchestrated
-quote: We're convinced to have chosen the right tool. The support and
-  communication are great, it's easy to adapt to any tool and for any people to
-  understand
+quote: We're convinced to have chosen the right tool. The support and communication are great, it's easy to adapt to any tool and for any people to understand
 quotePerson: Rubén Boniz Martinez
-quotePersonTitle: ""
+quotePersonTitle: Software Architect
 industry: Automotive
 headquarter: Madrid, Spain
 region: Europe
 companySize: "501–5,000"
-solution: Spain’s largest car retailer, providing a diverse range of vehicles from prestigious manufacturers.
+solution: Spain's largest car retailer, providing a diverse range of vehicles from prestigious manufacturers.
 tagline: Spain's largest car retailer
 companyName: Quadis
-useCase: Automating daily financial reports and customer communications for Spain's largest car retailer after replacing Pentaho ETL tools
+intro: Quadis, Spain's largest car retailer, relies on orchestration to keep everything from financial reporting to car delivery alerts running across its dealership network. When its in-house system paired with Pentaho ETL tools couldn't keep pace with the company's growth, causing disruptions that rippled across every department, Quadis consolidated its financial-reporting and customer-communication workflows onto Kestra.
+deployment: Self-hosted · Docker · AWS EC2
+useCase: Automating daily financial reports and customer communications for Spain's largest car retailer after consolidating off Pentaho ETL tools
 useCaseShort: Business Automation
-cta: "What would change if your automotive retail operations were fully automated—from inventory to customer experience, orchestrated end-to-end?"
+cta: "What would change if your automotive retail operations were fully automated, from inventory to customer experience, orchestrated end-to-end?"
 ---
 
-## About Quadis
+## The problem
 
-Quadis, the largest car retailer in Spain, has built a reputation for excellence through an extensive network of dealerships and a diverse range of vehicles from prestigious manufacturers. Founded with a vision of customer satisfaction and market agility, Quadis has continually adapted to evolving market trends, securing their position as a leader in the automotive sales industry. Their commitment to excellence and innovation has earned them a spot among the top 50 European dealership groups as ranked by the International Car Distribution Program (ICDP).
+As Quadis expanded its dealership network, the complexity of its operations grew with it. Financial reporting, car delivery alerts, and customer communication all ran through orchestration, and the legacy stack behind it was struggling to keep pace.
 
-As Quadis expanded, the complexity of managing its extensive operations grew. They relied on orchestration to streamline everything from financial reporting to car delivery alerts. However, their legacy systems, which included an in-house solution coupled with Pentaho ETL tools, were struggling to keep up. The need for a more scalable, reliable, and efficient solution became apparent.
+<div class="problem-list">
+<div class="problem-item">
+<span class="problem-number">01</span>
+<div class="problem-title">Downtime on the legacy system disrupted every department</div>
+<div class="problem-desc">When Quadis's in-house orchestration system went down, the disruption spread from sales to customer service, since every department depended on it running smoothly. The setup, an in-house solution paired with Pentaho ETL tools, had no infrastructure monitoring to catch problems before they spread.</div>
+</div>
+<div class="problem-item">
+<span class="problem-number">02</span>
+<div class="problem-title">A GUI that made scaling and debugging painful</div>
+<div class="problem-desc">Pentaho's graphical interface wasn't built for the scale Quadis needed. Testing pipelines was complex, and the legacy stack offered no lineage or observability that could span multiple teams.</div>
+</div>
+<div class="problem-item">
+<span class="problem-number">03</span>
+<div class="problem-title">Growing complexity outpaced what the legacy stack could handle</div>
+<div class="problem-desc">As Quadis's dealership network grew, so did its reliance on orchestration, from financial reporting to car delivery alerts. The in-house and Pentaho combination increasingly struggled to keep up, and the engineering team needed a platform that could scale with the business instead of against it.</div>
+</div>
+</div>
 
-## The Journey to Kestra
+<div class="problem-close">
+<div class="problem-close-prefix">// The requirement</div>
+Quadis needed to <strong class="problem-close-key">consolidate its financial-reporting and customer-communication workflows onto one scalable, observable orchestration platform</strong>, without asking non-technical teams to relearn how they worked.
+</div>
 
-When Quadis’ main system encountered downtime, it caused critical disruptions across the company. Every department, from sales to customer service, depended on seamless operations. The engineering team at Quadis recognized the urgency to enhance their orchestration's monitoring and provisioning. After evaluating various options, they decided to migrate to Kestra for its robust, scalable capabilities.
+## What Kestra fixed
 
-Kestra’s platform promised to streamline their complex operations, and it delivered.
+<div class="fix-list">
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Automated financial reporting straight from the ERP</div>
+<div class="fix-desc">Kestra pulls transaction data directly from Quadis's ERP using API calls and FTP tasks, then generates financial reports automatically every day at 9:00 AM. Comprehensive logging and execution tracking let the finance team troubleshoot issues quickly instead of chasing them by hand.</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Real-time customer notifications through Salesforce</div>
+<div class="fix-desc">When a customer's parts order is prepared and shipped, Kestra triggers an automatic Salesforce notification, closing a communication gap that used to leave customers waiting. <em class="inline-quote">"The platform is fluid on the web, and it's easy for non-technical people to understand."</em></div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Everything as code, without giving up the UI</div>
+<div class="fix-desc">Kestra let Quadis apply standard software practices, code versioning and decoupling orchestration from business logic, while keeping day-to-day operations accessible through the UI for less technical users.</div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">A Git-based workflow wired into Azure DevOps</div>
+<div class="fix-desc">Developers push flows from Kestra straight to Git, and Azure DevOps CI/CD pipelines handle deployment from there. <em class="inline-quote">"It's easy to adapt to any tool thanks to the plugins."</em></div>
+</div>
+</div>
+<div class="fix-item">
+<div class="fix-check">✓</div>
+<div>
+<div class="fix-title">Docker containers for custom transformation logic</div>
+<div class="fix-desc">Kestra's Docker integration isolates resources and dependencies for Quadis's data processes, supporting multiple languages, including C# and Python, for data transformation tasks.</div>
+</div>
+</div>
+</div>
 
-## Modernizing Financial Reporting
+## Outcomes
 
-Financial reports are the backbone of Quadis’ operational health. Leveraging Kestra, Quadis automated the generation of these reports, pulling transaction data directly from the main ERP. This process uses API calls, FTP tasks, and various Kestra plugins, ensuring easy maintenance and future updates. Every day at 9:00 AM, the financial team receives these reports automatically, keeping them informed and enabling swift troubleshooting, thanks to Kestra’s comprehensive logging and execution tracking.
+<div class="results-list">
+<div class="result-item">
+<div class="result-metric">Zero downtime</div>
+<div class="result-desc">Kestra's scalable, reliable architecture removed the single point of failure that used to disrupt every department when the legacy system went down.</div>
+</div>
+<div class="result-item">
+<div class="result-metric">50% cost reduction</div>
+<div class="result-desc">Automating financial-report processing cut the cost of running it in half compared to the legacy in-house and Pentaho ETL setup.</div>
+</div>
+<div class="result-item">
+<div class="result-metric">+250 datasets orchestrated</div>
+<div class="result-desc">Kestra now orchestrates more than 250 datasets across financial reporting and customer communication, up from a legacy stack that struggled to keep pace with Quadis's growth.</div>
+</div>
+<div class="result-item">
+<div class="result-metric">5+ developers onboarded in under 3 months</div>
+<div class="result-desc">Quadis onboarded more than five developers onto Kestra in under three months, running separate development and production instances on AWS.</div>
+</div>
+</div>
 
-## Elevating Customer Experience
+## Kestra at Quadis
 
-To ensure timely communication about customer orders, Quadis integrated Kestra with their CRM. When a customer parts order is prepared and shipped, Kestra triggers an automatic notification via Salesforce. This seamless integration ensures customers are informed, enhancing their experience and preventing communication gaps.
+Quadis runs Kestra self-hosted on AWS, deployed in Docker containers on EC2 instances backed by an Amazon RDS database. Development and production run as separate instances, and as usage has grown, Quadis has added a dedicated non-production environment to test upgrades independently of day-to-day development, without touching the production flows the rest of the business depends on.
 
->"The platform is fluid on the web, and it's easy for non-technical people to understand."
+Custom transformation logic runs in Docker containers, giving Quadis's engineers the flexibility to write tasks in C# and Python alongside Kestra's built-in plugins. Flows are version-controlled in Git and deployed through Azure DevOps CI/CD pipelines, so changes move from a developer's branch to production the same way any other code change would.
 
-## Overcoming Legacy System Challenges
+The financial-reporting flows call Quadis's ERP over API and FTP tasks, while a Salesforce integration handles customer-facing notifications when parts orders ship. As Quadis expands past Spain and prepares to onboard more than 30 additional users, including non-technical staff, it's building on this foundation to support a new data lake architecture for broader analytics.
 
-Before adopting Kestra, Quadis relied on an in-house solution coupled with Pentaho ETL tools. This setup had several limitations:
-
-- Low Availability: The stack lacked infrastructure monitoring and support.
-- GUI Limitations: The graphical user interface was inadequate for scaling and debugging, and testing pipelines was complex.
-- Lack of Lineage and Observability: The legacy solution didn’t support comprehensive management across teams.
-
-## The Kestra Transformation
-
-Quadis chose Kestra to address these issues. Kestra provided a scalable, reliable solution that allowed Quadis to apply best software practices, such as code versioning and uncoupling orchestration from business logic. This transition to an "everything as code" approach, while maintaining UI operations, was a key factor in their successful migration.
-
-## Streamlined Development and Deployment
-
-Quadis adopted a classic Git workflow for managing custom scripts, integrating seamlessly with Kestra. This workflow allowed developers to push flows from Kestra to Git, facilitating easy adjustments and deployment through CI/CD pipelines with Azure DevOps.
-
->"It's easy to adapt to any tool thanks to the plugins."
-
-## Docker Integration for Custom Logic Made Easy
-
-To handle various data processes, Quadis uses Docker containers to isolate resources and dependencies. Kestra’s integration with Docker simplifies this workflow, supporting multiple programming languages like C# and Python for data transformation tasks.
-
-## Rapid Onboarding and Scaling Success
-
-In less than three months, Quadis onboarded over five developers into Kestra, deploying two instances (development and production) on AWS infrastructure. This rapid setup allowed them to quickly build and manage workflows, utilizing tasks for accessing files, querying databases, and transforming data.
-
-## Future Directions and Scaling Ambitions
-
-Quadis is set to expand its use of Kestra, with plans to onboard over 30 users in the coming months, including less technical personnel. The Kestra user interface and role-based access control will enable these users to execute flows confidently. As part of a broader modernization effort, Quadis will also leverage Kestra to support a new data lake architecture, enhancing data analytics and operational efficiency.
-
-## Conclusion: The Road Ahead with Kestra
-
-Kestra has become an indispensable tool for Quadis, enhancing their operational efficiency and scalability. By automating critical processes and providing robust orchestration capabilities, Kestra has enabled Quadis to maintain its market leadership and prepare for future growth. As Quadis looks to expand beyond Spain, Kestra will continue to play a vital role in their operations, supporting best practices in software and architecture.
-
->"Everything coming has been expected. The support is good, communication is great (fast), the platform is fluid on the web, and it's easy for non-technical people to understand. It's easy to adapt to any tool thanks to the plugins."
+<div class="stack-row">
+<span class="stack-pill">Docker</span>
+<span class="stack-pill">AWS EC2</span>
+<span class="stack-pill">Amazon RDS</span>
+<span class="stack-pill">Azure DevOps</span>
+<span class="stack-pill">Git</span>
+<span class="stack-pill">Salesforce</span>
+<span class="stack-pill">Azure CLI</span>
+<span class="stack-pill">Python</span>
+<span class="stack-pill">C#</span>
+</div>
