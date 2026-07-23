@@ -4,7 +4,7 @@ description: "Explore the essentials of automated file transfer (AFT) and how it
 metaTitle: "File Transfer Automation: Orchestrate SFTP/FTP Workflows"
 metaDescription: "Automate file transfers for secure, efficient, and auditable data exchange. Discover how Kestra orchestrates AFT within your data and infrastructure workflows."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-21
 slug: "file-transfer-automation"
 faq:
   - question: "What is file transfer automation?"
