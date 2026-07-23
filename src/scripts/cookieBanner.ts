@@ -1,10 +1,14 @@
 import { run as runCookieConsent } from "vanilla-cookieconsent"
-import { gtag, enabledAnalytics, enabledMarketing, pushPageView } from "./cookieconsent"
+import { gtag, enabledAnalytics, enabledMarketing, pushPageView, gpcSignaled } from "./cookieconsent"
+
+// GPC is a ceiling the banner can't relax — accepting "marketing" here
+// never grants ad signals (or fires enable_marketing) once GPC opted out.
+const marketingGranted = (categories: string[]) => !gpcSignaled && categories.includes("marketing")
 
 // Only called for EU visitors (see cookieconsent.ts), so mode is always opt-in.
 const updateConsentSignals = (categories: string[]) => {
     const analytics = categories.includes("analytics") ? "granted" : "denied"
-    const ads = categories.includes("marketing") ? "granted" : "denied"
+    const ads = marketingGranted(categories) ? "granted" : "denied"
     gtag("consent", "update", {
         analytics_storage: analytics,
         ad_storage: ads,
@@ -39,7 +43,7 @@ export const initBanner = () => {
                 pushPageView()
             }
 
-            if (consentCategories.includes("marketing")) {
+            if (marketingGranted(consentCategories)) {
                 enabledMarketing()
             }
         },
@@ -53,7 +57,7 @@ export const initBanner = () => {
                 enabledAnalytics()
             }
 
-            if (consentCategories.includes("marketing")) {
+            if (marketingGranted(consentCategories)) {
                 enabledMarketing()
             }
         },

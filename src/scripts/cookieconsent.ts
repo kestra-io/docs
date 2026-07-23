@@ -13,6 +13,14 @@ const isEurope =
         ? regionAttr === "eu"
         : Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
 
+// Global Privacy Control: an automatic no-UI opt-out signal (CPRA and
+// similar US state laws) — honored immediately, without showing a banner.
+export const gpcSignaled = navigator.globalPrivacyControl === true
+
+// GPC opts out of ad/marketing signals specifically (CPRA's "sale/sharing"
+// scope); Europe additionally denies analytics and shows the opt-in banner.
+const adsDenied = isEurope || gpcSignaled
+
 // Kicked off at module top-level (as early as this script itself runs) so
 // the fetch is already in flight by the time astro:page-load needs it.
 const bannerModule = isEurope ? import("./cookieBanner") : null
@@ -39,9 +47,9 @@ const initConsentModeAndGtm = () => {
     gtmLoaded = true
 
     gtag("consent", "default", {
-        ad_storage: isEurope ? "denied" : "granted",
-        ad_user_data: isEurope ? "denied" : "granted",
-        ad_personalization: isEurope ? "denied" : "granted",
+        ad_storage: adsDenied ? "denied" : "granted",
+        ad_user_data: adsDenied ? "denied" : "granted",
+        ad_personalization: adsDenied ? "denied" : "granted",
         analytics_storage: isEurope ? "denied" : "granted",
         // Give the consent banner time to restore a returning visitor's
         // choice before tags fire. Europe-only so non-EU tags aren't delayed.
@@ -143,7 +151,9 @@ document.addEventListener("astro:page-load", async () => {
 
     if (!isEurope) {
         enabledAnalytics()
-        enabledMarketing()
+        if (!gpcSignaled) {
+            enabledMarketing()
+        }
 
         return
     }

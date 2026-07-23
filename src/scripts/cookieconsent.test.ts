@@ -68,6 +68,7 @@ const installFakeDom = () => {
     vi.stubGlobal("document", fakeDocument)
     vi.stubGlobal("window", globalThis)
     vi.stubGlobal("localStorage", { setItem: vi.fn() })
+    vi.stubGlobal("navigator", { globalPrivacyControl: undefined })
     globalThis.location = { pathname: "/", search: "" } as Location
 }
 
@@ -97,6 +98,10 @@ const loadModule = async () => {
 
 const setRegionAttr = (value: "eu" | "row") => {
     document.documentElement.setAttribute(CONSENT_REGION_ATTR, value)
+}
+
+const setGpc = (value: boolean) => {
+    vi.stubGlobal("navigator", { globalPrivacyControl: value })
 }
 
 // Cast past the DOM lib's `boolean` return type — the fake actually returns
@@ -233,5 +238,73 @@ describe("cookieconsent — region attribute takes precedence over Intl timezone
         const def = consentEntries().find((e) => e[1] === "default")
         expect(allSignalsAre(def?.[2], "granted")).toBe(true)
         expect(runCookieConsent).not.toHaveBeenCalled()
+    })
+})
+
+describe("cookieconsent — Global Privacy Control (non-Europe)", () => {
+    it("denies ad signals but keeps analytics_storage granted, with no banner", async () => {
+        setTimezone("America/New_York")
+        setGpc(true)
+        await loadModule()
+        await firePageLoad()
+
+        const def = consentEntries().find((e) => e[1] === "default")
+        expect(def?.[2].ad_storage).toBe("denied")
+        expect(def?.[2].ad_user_data).toBe("denied")
+        expect(def?.[2].ad_personalization).toBe("denied")
+        expect(def?.[2].analytics_storage).toBe("granted")
+        expect(def?.[2].wait_for_update).toBeUndefined()
+        expect(runCookieConsent).not.toHaveBeenCalled()
+    })
+
+    it("still runs analytics but never pushes enable_marketing", async () => {
+        setTimezone("America/New_York")
+        setGpc(true)
+        await loadModule()
+        await firePageLoad()
+
+        expect(posthogInit).toHaveBeenCalled()
+        expect(window.dataLayer.some((e: any) => e?.event === "enable_marketing")).toBe(false)
+    })
+
+    it("doesn't change behavior when unsignaled (default)", async () => {
+        setTimezone("America/New_York")
+        setGpc(false)
+        await loadModule()
+        await firePageLoad()
+
+        expect(window.dataLayer.some((e: any) => e?.event === "enable_marketing")).toBe(true)
+    })
+})
+
+describe("cookieconsent — Global Privacy Control (Europe)", () => {
+    it("doesn't change the already-fully-denied EU defaults or skip the banner", async () => {
+        setTimezone("Europe/Paris")
+        setGpc(true)
+        await loadModule()
+        await firePageLoad()
+
+        const def = consentEntries().find((e) => e[1] === "default")
+        expect(allSignalsAre(def?.[2], "denied")).toBe(true)
+        expect(runCookieConsent).toHaveBeenCalled()
+    })
+
+    it("keeps ad signals denied and never fires enable_marketing, even if the user accepts marketing", async () => {
+        setTimezone("Europe/Paris")
+        setGpc(true)
+        await loadModule()
+        await firePageLoad()
+
+        const { onConsent } = runCookieConsent.mock.calls[0][0]
+        await onConsent({ cookie: { categories: ["analytics", "marketing"] } })
+
+        const upd = consentEntries()
+            .filter((e) => e[1] === "update")
+            .pop()
+        expect(upd?.[2].ad_storage).toBe("denied")
+        expect(upd?.[2].ad_user_data).toBe("denied")
+        expect(upd?.[2].ad_personalization).toBe("denied")
+        expect(upd?.[2].analytics_storage).toBe("granted")
+        expect(window.dataLayer.some((e: any) => e?.event === "enable_marketing")).toBe(false)
     })
 })
