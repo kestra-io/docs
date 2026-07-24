@@ -135,7 +135,7 @@
 </template>
 
 <script setup lang="ts">
-    import { ref, computed, watch, nextTick } from "vue"
+    import { ref, computed, watch, nextTick, onMounted } from "vue"
     import { navigate } from "astro:transitions/client"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
@@ -189,6 +189,10 @@
     )
 
     const qChip = computed<string>(() => props.q?.trim() ?? "")
+
+    onMounted(() => {
+        searchInput.value?.focus()
+    })
 
     const matchingCategories = computed<string[]>(() => {
         const q = inputText.value.trim().toLowerCase()

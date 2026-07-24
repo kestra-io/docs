@@ -1,6 +1,6 @@
 ---
 import { Icon } from "astro-icon/components"
-import Snippets from "~/components/common/Snippets.vue"
+import Snippets from "~/components/common/SnippetsIsland.astro"
 import Topology from "~/components/blueprints/Topology.client.vue"
 
 interface BlueprintItem {
@@ -115,7 +115,6 @@ const hasMore = toolName && allBlueprintsCount > tabs.length
                                         </div>
                                         {bp.render?.source || bp.code ? (
                                             <Snippets
-                                                client:idle
                                                 code={
                                                     bp.render?.source ??
                                                     bp.code ??

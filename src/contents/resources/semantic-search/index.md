@@ -4,7 +4,7 @@ description: "Explore semantic search, how it moves beyond keyword matching to u
 metaTitle: "What is Semantic Search? Principles & Orchestration"
 metaDescription: "Understand semantic search: its core principles, how it differs from keyword search, and how Kestra orchestrates advanced AI applications using it."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-17
 slug: "semantic-search"
 faq:
   - question: "What is the core difference between semantic search and keyword search?"

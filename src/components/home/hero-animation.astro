@@ -1240,6 +1240,31 @@
 </div>
 
 <script>
+    // The whole animation column is display:none below the md breakpoint
+    // (see Hero.astro), but every rAF loop, interval and DOM mutation below
+    // would still run and burn mobile main-thread time (TBT/INP) animating
+    // an invisible element. Boot only once the desktop layout is in use.
+    const desktopQuery = window.matchMedia("(min-width: 768px)")
+    if (!desktopQuery.matches) {
+        await new Promise<void>((resolve) => {
+            desktopQuery.addEventListener("change", function onDesktop(e) {
+                if (e.matches) {
+                    desktopQuery.removeEventListener("change", onDesktop)
+                    resolve()
+                }
+            })
+        })
+    }
+
+    // Skip per-frame work while the hero is scrolled out of view.
+    let heroOnScreen = true
+    const stackEl = document.querySelector(".stack-inner")
+    if (stackEl) {
+        new IntersectionObserver(([entry]) => {
+            heroOnScreen = entry.isIntersecting
+        }).observe(stackEl)
+    }
+
     const blocks = document.querySelectorAll(".block")
     const blockInfra = blocks[0]
     const blockData = blocks[1]
@@ -1356,7 +1381,7 @@
         let borderFrame = 0
         function animBorder() {
             borderAnims[idx] = requestAnimationFrame(animBorder)
-            if (borderFrame++ % 2 !== 0) return // ~30fps — gradient rotation is slow, 60fps is wasteful
+            if (!heroOnScreen || borderFrame++ % 2 !== 0) return // ~30fps — gradient rotation is slow, 60fps is wasteful
             angle += 2.4 // compensate for halved frame rate
             const rad = (angle * Math.PI) / 180
             grad!.setAttribute("x1", String(cx + Math.cos(rad) * r))
@@ -1765,7 +1790,7 @@
     let mainFrame = 0
     function mainLoop() {
         // getBoundingClientRect forces layout — only do it every 6th frame (~10fps), enough for slow float
-        if (mainFrame++ % 6 === 0) updateBadgePosition()
+        if (heroOnScreen && mainFrame++ % 6 === 0) updateBadgePosition()
         requestAnimationFrame(mainLoop)
     }
     mainLoop()
@@ -2024,7 +2049,8 @@
         let frame = 0
         function particleLoop() {
             // Run at ~30fps instead of 60fps — imperceptible for slow-rising particles
-            if (frame++ % 2 === 0) particleTicks.forEach((tick) => tick())
+            if (heroOnScreen && frame++ % 2 === 0)
+                particleTicks.forEach((tick) => tick())
             requestAnimationFrame(particleLoop)
         }
         particleLoop()

@@ -4,7 +4,7 @@ description: "Learn to build production-ready AI agents using Kestra's declarati
 metaTitle: "Build AI Agents: Step-by-Step with Kestra Orchestration"
 metaDescription: "Build AI agents with declarative orchestration, LLM integration, tool definition, and governance. Master robust AI workflows from concept to production."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-10
 slug: "how-to-build-an-ai-agent"
 faq:
   - question: "Is it free to build an AI agent?"

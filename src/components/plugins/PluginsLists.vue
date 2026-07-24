@@ -12,6 +12,7 @@
                 <input
                     v-model="searchQuery"
                     type="text"
+                    autofocus
                     :placeholder="`Search across ${props.totalPluginCount} plugins`"
                 />
                 <Close

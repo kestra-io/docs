@@ -215,6 +215,8 @@ export const collections = {
                 metaDescription: z.string().optional(),
                 tag: z.enum(["infrastructure", "data", "ai", "whitepapers"]),
                 date: z.coerce.date().optional(),
+                lastUpdated: z.coerce.date().optional(),
+                author: z.string().optional(),
                 image: image().optional(),
                 href: z.string().optional(),
                 faq: z
