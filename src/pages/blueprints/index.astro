@@ -313,9 +313,14 @@ const description = "Get started with our library of workflows ready to use"
                                 : qs
                                   ? `/blueprints?${qs}`
                                   : "/blueprints"
+                            // Faceted (?tags=…,…) combinations are a crawler
+                            // trap — keep them out of the crawl graph. Clean
+                            // slug/landing hrefs stay followable.
+                            const nofollow = href.includes("?")
                             return (
                                 <a
                                     href={href}
+                                    rel={nofollow ? "nofollow" : undefined}
                                     title={
                                         active
                                             ? `Remove the ${tag.name} filter`
@@ -532,6 +537,7 @@ const description = "Get started with our library of workflows ready to use"
                                     {group.total > group.blueprints.length && (
                                         <a
                                             href={`/blueprints?tools=${encodeURIComponent(toolNames.join(","))}&tags=${encodeURIComponent(group.name)}`}
+                                            rel="nofollow"
                                             class="see-more"
                                         >
                                             See all {group.total} in{" "}
