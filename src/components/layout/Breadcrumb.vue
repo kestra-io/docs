@@ -10,10 +10,11 @@
                     v-if="item.href"
                     :href="item.href"
                     class="link"
+                    :title="item.label"
                 >
                     {{ item.label }}
                 </a>
-                <span v-else aria-current="page">{{ item.label }}</span>
+                <span v-else aria-current="page" :title="item.label">{{ item.label }}</span>
             </li>
         </ol>
     </nav>
@@ -96,11 +97,20 @@
                     color: var(--ks-content-secondary) !important;
                 }
             }
-            &.active,
-            &.active a {
+            &.active {
                 font-size: $font-size-sm;
                 font-weight: 700;
                 color: var(--ks-content-primary) !important;
+                a,
+                span {
+                    display: inline-block;
+                    max-width: min(50vw, 25rem);
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    vertical-align: bottom;
+                    color: var(--ks-content-primary) !important;
+                }
             }
         }
         .link {
