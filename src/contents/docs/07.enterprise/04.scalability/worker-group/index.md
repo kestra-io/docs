@@ -87,9 +87,9 @@ Manage subscriptions through the UI or the subscriptions API:
 
 ## Capacity reservation
 
-Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. Each worker independently allocates `floor(threads × reservedPercent / 100)` slots to a subscription. Remaining slots form a shared pool available to all of that worker's subscriptions.
+Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. Each worker independently allocates `floor(maxCapacity × reservedPercent / 100)` slots to a subscription, where `maxCapacity` is the worker's advertised maximum in-flight capacity. Remaining slots form a shared pool available to all of that worker's subscriptions.
 
-**Example**: a worker with 16 threads subscribing to two queues at 50% and 25% reserves 8 slots for queue A and 4 slots for queue B, with 4 slots in the shared pool.
+**Example**: a worker with a max capacity of 16 subscribing to two queues at 50% and 25% reserves 8 slots for queue A and 4 slots for queue B, with 4 slots in the shared pool.
 
 ### Interaction modes
 
@@ -308,7 +308,7 @@ The following metrics are published by each running controller and tagged with `
 | `kestra.controller.capacity.subscription.used` | gauge | Reserved slots currently in use |
 | `kestra.controller.capacity.shared.allocated` | gauge | Shared (unreserved) slots allocated |
 | `kestra.controller.capacity.shared.used` | gauge | Shared slots currently in use |
-| `kestra.controller.workergroup.job.inflight` | gauge | Total in-flight jobs being processed by workers in the group |
+| `kestra.controller.worker.group.job.inflight` | gauge | Total in-flight jobs being processed by workers in the group |
 
 The live capacity snapshot is also available via the API:
 
