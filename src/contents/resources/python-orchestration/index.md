@@ -4,7 +4,7 @@ description: "Explore Python orchestration, its role in automating complex workf
 metaTitle: "Python Orchestration: Building & Scaling Workflows"
 metaDescription: "Learn about Python orchestration, its benefits for data and AI workflows, and how Kestra's declarative approach simplifies managing and scaling Python tasks."
 tag: "data"
-date: 2026-07-07
+date: 2026-07-14
 slug: "python-orchestration"
 faq:
   - question: "What is Python orchestration?"
