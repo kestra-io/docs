@@ -33,6 +33,7 @@ dist
 
 ## Cloudflare
 .wrangler
+worker-configuration.d.ts
 
 ## Astro
 .astro

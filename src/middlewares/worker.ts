@@ -2,6 +2,7 @@ import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
+import { injectConsentRegion } from "./consentRegion";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -86,7 +87,7 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 })
 
 
-const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
+const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex, injectConsentRegion]
 
 // TTL (seconds) for edge-cached SSR HTML. Kept in sync with the 1h upstream
 // API cache in src/utils/fetch.ts so a page's HTML and its data expire
