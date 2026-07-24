@@ -260,21 +260,9 @@ const ITEMS = blueprintFaqItems(categoryList)
 
 const title = "Blueprints"
 const description = "Get started with our library of workflows ready to use"
-
-// Faceted navigation (?tags=, ?tools=, ?page=, ?sort=, ?q= …) generates a
-// near-infinite URL space that wastes crawl budget and risks index bloat.
-// Only the clean /blueprints listing and the /blueprints/<slug> pages carry
-// value, so any query-string variant canonicalises to /blueprints and is
-// marked noindex,follow (links are still followed to the real pages).
-const hasQueryParams = Astro.url.search.length > 0
 ---
 
-<Layout
-    {title}
-    {description}
-    canonical={hasQueryParams ? "/blueprints" : undefined}
-    noindex={hasQueryParams}
->
+<Layout {title} {description}>
     <section class="bp-hero">
         <div class="container-xxl">
             <div class="hero-card">
