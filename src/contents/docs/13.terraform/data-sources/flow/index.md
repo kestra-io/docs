@@ -10,7 +10,7 @@ description: The kestra_flow data source allows you to read flows in Kestra usin
 
 Use this data source to access information about an existing Kestra Flow
 
-## Example usage
+## Example Usage
 
 ```hcl
 data "kestra_flow" "example" {

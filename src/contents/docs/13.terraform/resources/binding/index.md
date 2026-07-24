@@ -14,7 +14,7 @@ Manages a Kestra Binding.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_binding" "example" {
@@ -46,6 +46,8 @@ resource "kestra_binding" "example" {
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_binding.example {{binding_id}}

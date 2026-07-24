@@ -10,7 +10,7 @@ description: The kestra_namespace_file data source allows you to read namespace 
 
 Use this data source to access information about an existing Namespace File
 
-## Example usage
+## Example Usage
 
 ```hcl
 data "kestra_namespace_file" "example" {

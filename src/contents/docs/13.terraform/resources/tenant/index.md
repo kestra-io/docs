@@ -14,7 +14,7 @@ Manages a Kestra Tenant.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_tenant" "example" {
@@ -49,7 +49,7 @@ resource "kestra_tenant" "example" {
 - `id` (String) The ID of this resource.
 
 <a id="nestedblock--secret_isolation"></a>
-### Nested schema for `secret_isolation`
+### Nested Schema for `secret_isolation`
 
 Optional:
 
@@ -58,7 +58,7 @@ Optional:
 
 
 <a id="nestedblock--storage_isolation"></a>
-### Nested schema for `storage_isolation`
+### Nested Schema for `storage_isolation`
 
 Optional:
 
@@ -67,7 +67,7 @@ Optional:
 
 
 <a id="nestedblock--worker_group"></a>
-### Nested schema for `worker_group`
+### Nested Schema for `worker_group`
 
 Required:
 
@@ -77,6 +77,8 @@ Required:
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_tenant.example {{tenant_id}}
