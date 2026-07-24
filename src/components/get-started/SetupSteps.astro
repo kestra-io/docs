@@ -12,7 +12,8 @@ const dockerCommandUnix = `docker run --pull=always --rm -it -p 8080:8080 --user
   -v kestra_db:/app/data \\
   -v /var/run/docker.sock:/var/run/docker.sock \\
   -v /tmp:/tmp \\
-  kestra/kestra:latest server local`
+  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \\
+  kestra/kestra:latest-no-plugins server standalone`
 
 const dockerCommandWindows = `docker run --pull=always --rm -it -p 8080:8080 --user=root ^
   --name kestra ^
@@ -20,7 +21,8 @@ const dockerCommandWindows = `docker run --pull=always --rm -it -p 8080:8080 --u
   -v kestra_db:/app/data ^
   -v /var/run/docker.sock:/var/run/docker.sock ^
   -v /tmp:/tmp ^
-  kestra/kestra:latest server local`
+  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true ^
+  kestra/kestra:latest-no-plugins server standalone`
 ---
 
 <section class="setup-steps">
