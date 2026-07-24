@@ -4,7 +4,15 @@ export default function imgPlugin() {
     return (tree: any) => {
         visit(tree, "element", (node) => {
             if (node.tagName === "img") {
-                node.properties.className = ["zoom"]
+                const existing = node.properties.className
+                node.properties.className = [
+                    "zoom",
+                    ...(Array.isArray(existing)
+                        ? existing
+                        : existing
+                          ? [existing]
+                          : []),
+                ]
             }
         })
     }

@@ -18,6 +18,7 @@ import expressiveCode from "astro-expressive-code"
 import remarkGfm from "remark-gfm"
 import remarkDirective from "remark-directive"
 import customRemarkLinkRewrite from "./src/markdown/remark/link-rewrite.ts"
+import remarkThemeImage from "./src/markdown/remark/theme-image.ts"
 import remarkCustomElements from "./src/markdown/remark/remark-custom-elements/index.mjs"
 import remarkClassname from "./src/markdown/remark/remark-classname/index.mjs"
 import remarkMermaid from "./src/markdown/remark/remark-mermaid/index.mjs"
@@ -69,6 +70,7 @@ export default defineConfig({
         processor: unified({
             remarkPlugins: [
                 remarkGfm,
+                remarkThemeImage,
                 remarkMermaid,
                 remarkClassname,
                 remarkDirective,
