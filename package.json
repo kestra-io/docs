@@ -77,7 +77,7 @@
     "shiki": "^4.2.0",
     "slugify": "^1.6.9",
     "strip-indent": "^4.1.1",
-    "svgo": "^4.0.1",
+    "svgo": "^4.0.2",
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",
