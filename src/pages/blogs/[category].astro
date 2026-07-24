@@ -18,6 +18,10 @@ export const getStaticPaths = (() => {
 
 const { category } = Astro.params
 
+const PLACEHOLDER_IMAGE = `data:image/svg+xml;base64,${Buffer.from(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450"><rect width="800" height="450" fill="#1c1c2e"/><line x1="0" y1="0" x2="800" y2="450" stroke="#2e2e4e" stroke-width="2"/><line x1="800" y1="0" x2="0" y2="450" stroke="#2e2e4e" stroke-width="2"/></svg>',
+).toString("base64")}`
+
 const blogs = await getCollection("blogs")
 
 const sortedBlogs = await Promise.all(
@@ -29,16 +33,20 @@ const sortedBlogs = await Promise.all(
             )
         })
         .map(async (blog) => {
-            const image = await getImage({
-                src: blog.data.image ?? "",
-                format: "webp",
-                width: 800,
-            })
+            const imageSrc = blog.data.image
+                ? (
+                      await getImage({
+                          src: blog.data.image,
+                          format: "webp",
+                          width: 800,
+                      })
+                  ).src
+                : PLACEHOLDER_IMAGE
             return {
                 ...blog,
                 data: {
                     ...blog.data,
-                    image: image.src,
+                    image: imageSrc,
                 },
             }
         }),
