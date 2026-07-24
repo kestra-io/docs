@@ -271,7 +271,7 @@ Here is where the collapsed text goes.
 
 :::
 ```
-Here is a full example using a flow and subflow with a ForEach task:
+Here is a full example using a flow and subflow with a Loop task:
 
 :::collapse{title="Full Flow Example"}
 
@@ -282,49 +282,44 @@ id: subflow
 namespace: company.team
 
 inputs:
-  - id: items
+  - id: item
     type: STRING
 
 tasks:
-  - id: for_each_item
+  - id: process
     type: io.kestra.plugin.scripts.shell.Commands
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
     commands:
-      - cat "{{ inputs.items }}"
+      - echo "Processing {{ inputs.item }}"
 
-  - id: read
+  - id: log
     type: io.kestra.plugin.core.log.Log
-    message: "{{ read(inputs.items) }}"
+    message: "Processed: {{ inputs.item }}"
 ```
 
-Below is a Flow that uses the `ForEachItem` task to iterate over a list of items and run the `subflow` for a batch of 10 items at a time:
+Below is a flow that uses the `Loop` task to iterate over a list of items and run the `subflow` for each one:
 
 ```yaml
 id: each_parent
 namespace: company.team
 
 tasks:
-  - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
-    sql: |
-      INSTALL httpfs;
-      LOAD httpfs;
-      SELECT *
-      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
-    store: true
-
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
-    batch:
-      rows: 10
-    namespace: company.team
-    flowId: subflow
-    wait: true
-    transmitFailed: true
-    inputs:
-      items: "{{ taskrun.items }}"
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - orders_jan.csv
+      - orders_feb.csv
+      - orders_mar.csv
+    tasks:
+      - id: process_file
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: company.team
+        flowId: subflow
+        wait: true
+        transmitFailed: true
+        inputs:
+          item: "{{ item.value }}"
 ```
 :::
 

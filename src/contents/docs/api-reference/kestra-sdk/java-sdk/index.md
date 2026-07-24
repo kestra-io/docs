@@ -63,6 +63,26 @@ Construct the client once (singleton or DI) and reuse it. Use either `.basicAuth
 
 ---
 
+## Configure timeouts
+
+By default, both connect and read timeouts are infinite. Configure them on the builder before calling long-running endpoints such as `runTestSuite`:
+
+```java
+import io.kestra.sdk.KestraClient;
+import java.time.Duration;
+
+KestraClient client = KestraClient.builder()
+    .url("https://kestra.example.com")
+    .tokenAuth(System.getenv("KESTRA_TOKEN"))
+    .connectTimeout(Duration.ofSeconds(10))  // time to establish the connection
+    .readTimeout(Duration.ofMinutes(30))     // time to wait for a response
+    .build();
+```
+
+Pass `Duration.ZERO` or omit the call to keep the default (infinite). Both methods accept any `java.time.Duration`.
+
+---
+
 ## Create a flow
 
 Send the flow definition as a YAML string. This matches what you would define in the UI.
@@ -324,27 +344,26 @@ public class LogsExamples {
 
 ### Stream logs live
 
-```java
-import io.kestra.sdk.model.Level;
+`followLogsFromExecution` returns a reactive `Flux<FollowLogEvent>`. Each `FollowLogEvent` carries the same fields as `LogEntry` (plus `tenantId`). The server sends an initial keepalive frame with all fields `null` — filter it out before processing.
 
+```java
 public class LogsExamples {
     public static void followLogs() {
         String executionId = "your-execution-id";
         String tenant = "main";
 
-        var event = KestraClients.INSTANCE.logs()
-            .followLogsFromExecution(executionId, tenant, null);
-
-        if (event != null && event.getData() != null) {
-            System.out.printf("[%s] %s%n",
-                event.getData().getLevel(), event.getData().getMessage());
-        }
+        KestraClients.INSTANCE.logs()
+            .followLogsFromExecution(executionId, tenant, null) // null = no filters
+            .filter(event -> event.getExecutionId() != null)    // skip keepalive frames
+            .doOnNext(event -> System.out.printf("[%s] %s%n",
+                event.getLevel(), event.getMessage()))
+            .blockLast(); // blocks until the stream ends
     }
 }
 ```
 
 :::alert{type="info"}
-Use `listLogsFromExecution` after an execution finishes. Use `followLogsFromExecution` to fetch the latest log event from a running execution.
+Use `listLogsFromExecution` after an execution finishes. Use `followLogsFromExecution` to stream logs in real time from a running execution.
 :::
 
 ---

@@ -114,7 +114,7 @@ You can use the following execution expressions in your flow.
 
 ## Execute a flow from the UI
 
-You can trigger a flow manually from the Kestra UI by clicking the **Execute** button on the flow page. This is useful when you want to test a flow or run it on demand.
+Click **Execute** on the flow page to trigger a run manually for testing or on-demand use.
 
 ![execute_button](./execute_button.png)
 
@@ -327,7 +327,7 @@ You will see output similar to the following:
 }
 ```
 
-You can click directly on that last URL to follow the execution progress from the UI, or you can return that URL from your application to the user who initiated the flow.
+Click that URL to follow execution progress, or return it from your application to the user who initiated the flow.
 
 Keep in mind that you need to configure the URL of your Kestra instance within your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
 
@@ -447,35 +447,96 @@ with open('example.txt', 'rb') as fh:
 
 Keep in mind that `files` is a tuple with the following structure: `('input_id', file_object, 'content_type')`.
 
-## Execute with ForEachItem
+## Execute with Loop
 
-The `ForEachItem` task allows you to iterate over a list of items and run a subflow for each item, or for each batch containing multiple items. Use this to process large lists in parallel, e.g., millions of records from a database table or an API payload.
+The `Loop` task iterates over a set of values and runs child tasks for each item. Each iteration runs as an isolated sub-execution — its own state, outputs, and error handling — with `item.value` holding the current value.
 
-The `ForEachItem` task is a **Flowable** task, which means that it can be used to define the flow logic and control the execution of the flow.
+The `Loop` task is a **Flowable** task, which means it can be used to define flow logic and control execution.
 
-Syntax:
+### Basic usage
 
 ```yaml
-id: each_example
+id: loop_example
 namespace: company.team
 tasks:
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ inputs.file }}" # could be also an output variable {{ outputs.extract.uri }}
-    inputs:
-      file: "{{ taskrun.items }}" # batch items passed to the subflow
-    batch:
-      rows: 4
-      bytes: "1024"
-      partitions: 2
-    namespace: company.team
-    flowId: subflow
-    revision: 1 # optional (default: latest)
-    wait: true # wait for the subflow execution
-    transmitFailed: true # fail the task run if the subflow execution fails
-    labels: # optional labels to pass to the subflow to be executed
-      key: value
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values:
+      - alpha
+      - bravo
+      - charlie
+    tasks:
+      - id: log_item
+        type: io.kestra.plugin.core.log.Log
+        message: "Processing {{ item.value }} (index {{ item.index }})"
 ```
+
+After the loop completes, the loop task always exposes `iterationCount`, `runningIterations`, and `terminatedIterations`. To access per-iteration results from a subsequent task, declare an `outputs:` block on the Loop task — without it, per-iteration outputs are not accessible:
+
+```yaml
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: [a, b, c]
+    tasks:
+      - id: step
+        type: io.kestra.plugin.core.debug.Return
+        format: "processed_{{ item.value }}"
+    outputs:
+      - id: result
+        type: STRING
+        value: "{{ outputs.step.value }}"
+```
+
+Then access the collected outputs from any subsequent sibling task:
+
+```twig
+{{ outputs.loop.outputs[0].outputs.result }}        {# first iteration's declared output #}
+{{ outputs.loop.outputs[0].item.value }}             {# first iteration's input value #}
+{{ loopOutputs(outputs.loop.outputs, 'result') }}   {# all iterations as a list #}
+```
+
+### Iterating over storage URIs
+
+`values` accepts a list, a JSON array string, a map, or an ION file URI from internal storage. When passing a URI, set `fetchType` to control how Kestra reads the file:
+
+| `fetchType` | Behavior |
+|---|---|
+| `AUTO` (default) | Kestra decides based on the value type |
+| `FETCH` | Loads the full dataset into memory; use for moderate-sized result sets |
+| `STORE` | Streams rows from the storage URI one at a time; use for large datasets |
+
+```yaml
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.extract.uri }}"
+    fetchType: STORE
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.log.Log
+        message: "{{ item.value }}"
+```
+
+When iterating over a storage URI, each `item.value` is a string representation of the row. To access individual fields, use `fromJson(item.value).field_name`.
+
+### Error handling and failure propagation
+
+`transmitFailed` (default `true`) controls what happens when an iteration fails:
+- `true`: the loop stops after the failing iteration completes; subsequent iterations do not run.
+- `false`: the loop continues through all iterations regardless of individual failures.
+
+An `errors:` block within the loop runs inside the failing sub-execution regardless of `transmitFailed`. A `finally:` block always runs after all iterations complete.
+
+### Concurrency
+
+Use `concurrencyLimit` to cap how many iterations run in parallel (`0` = unlimited):
+
+```yaml
+    concurrencyLimit: 4
+```
+
+### Advanced: Loop with Subflow
+
+Use Loop with `Subflow` to fan out isolated executions — each subflow gets its own retry policy, logs, and failure state:
 
 :::collapse{title="Full Example"}
 
@@ -486,23 +547,16 @@ id: subflow
 namespace: company.team
 
 inputs:
-  - id: items
-    type: FILE
+  - id: item
+    type: STRING
 
 tasks:
-  - id: for_each_item
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    commands:
-      - cat "{{ inputs.items }}"
-
-  - id: read
+  - id: log
     type: io.kestra.plugin.core.log.Log
-    message: "{{ read(inputs.items) }}"
+    message: "{{ inputs.item }}"
 ```
 
-Below is a flow that uses the `ForEachItem` task to iterate over a list of items and run the `subflow` for a batch of 10 items at a time:
+Parent flow:
 
 ```yaml
 id: each_parent
@@ -518,16 +572,19 @@ tasks:
       FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
     store: true
 
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.uri }}"
-    batch:
-      rows: 10
-    namespace: company.team
-    flowId: subflow
-    wait: true
-    transmitFailed: true
-    inputs:
-      items: "{{ taskrun.items }}"
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.extract.uri }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: company.team
+        flowId: subflow
+        wait: true
+        transmitFailed: true
+        inputs:
+          item: "{{ item.value }}"
 ```
 :::
+
+For the full Loop property reference, see the [flowable tasks page](../01.tasks/00.flowable-tasks/index.md#loop).

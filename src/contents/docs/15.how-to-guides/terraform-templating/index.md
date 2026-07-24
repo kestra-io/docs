@@ -262,7 +262,7 @@ tasks:
   type: io.kestra.plugin.jdbc.postgresql.Query
   url: jdbc:postgresql://MY_HOST/MY_DATABASE
   username: MY_USER
-  password: "{{ secrets.get('my-postgres-password') }}"
+  password: "{{ secret('my-postgres-password') }}"
   sql: "{{ inputs.sqlQuery }}"
   fetchType: FETCH
 
@@ -294,7 +294,7 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
 
 ```yaml
   - id: query_last_job
-    type: io.kestra.core.tasks.flows.Subflow
+    type: io.kestra.plugin.core.flow.Subflow
     namespace: company.team
     flowId: query_my_postgres_database
     inputs:
@@ -303,9 +303,8 @@ Executing the subflow will prompt you to enter the SQL query you want to execute
     transmitFailed: true
 
   - id: use_result
-    type: io.kestra.core.tasks.debugs.Return
-    # Use the query result from the subflow
-    format: "{{ outputs.query_last_job.outputs.query_result }}"
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ outputs.query_last_job.outputs.query_result }}"
 ```
 
 1. Connection details are stored in the subflow, and only the SQL query is exposed to the user.

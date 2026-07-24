@@ -38,7 +38,7 @@ Enterprise Edition provides [audit logs](../07.enterprise/02.governance/06.audit
 
 ## Scalability and Reliability
 
-The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition can use Kafka and Elasticsearch for distributed event processing, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
+The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition can use Kafka (paired with Elasticsearch for the search and read model), Redis, AMQP, or GCP Pub/Sub as the queue backend, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
 
 [Worker Groups](../07.enterprise/04.scalability/worker-group/index.md) let you assign tasks to specialized infrastructure. For example, GPU-heavy machine learning workflows can target a worker group with NVIDIA GPUs, while ETL jobs run on cost-optimized spot instances. [Task Runners](../07.enterprise/04.scalability/task-runners/index.md) offload compute-intensive scripts on-demand to Kubernetes or cloud batch services such as Azure Batch, Google Cloud Run or AWS ECS Fargate to prevent resource contention and making it easy to scale in a cost-effective way.
 

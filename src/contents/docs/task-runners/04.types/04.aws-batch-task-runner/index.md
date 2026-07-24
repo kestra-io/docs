@@ -21,7 +21,7 @@ To launch tasks on AWS Batch, you need to understand three key concepts:
 To get started quickly, use [this blueprint](/blueprints/aws-batch-terraform-git) to provision all required resources for running containers on ECS Fargate.
 :::
 
-## How does the AWS Batch task runner work?
+## How the AWS Batch task runner works
 
 To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner creates sidecar containers that handle S3 file transfers alongside the main container. The approach differs by compute environment type.
 
@@ -29,6 +29,8 @@ To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner cr
 1. A _before_-container that uploads input files to S3.
 2. The _main_ container that fetches input files into the `{{ workingDir }}` directory and runs the task.
 3. An _after_-container that fetches output files using `outputFiles` to make them available from the Kestra UI for download and preview.
+
+The before- and after-containers use the `amazon/aws-cli` image. If your environment restricts which images can be pulled (ECR pull-through cache, VPC egress policy, or image allowlist), ensure this image is accessible.
 
 **EKS:** Uses [EKS job definitions](https://docs.aws.amazon.com/batch/latest/userguide/jobs-eks.html) with a Kubernetes pod. Sidecar containers run as pod containers using the same S3-based file transfer pattern. The main container command is wrapped in `/bin/sh -c`, so the container image must include `/bin/sh`.
 
@@ -269,7 +271,7 @@ tasks:
 
 
 :::alert{type="info"}
-For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-ee-aws/aws-batch-task-runner/io.kestra.plugin.ee.aws.runner.batch) or view them in the built-in Code Editor in the Kestra UI.
+For a full list of available properties, see the [AWS plugin documentation](/plugins/plugin-ee-aws/aws-batch-task-runner/io.kestra.plugin.ee.aws.runner.batch) or view them in the built-in Code Editor.
 :::
 
 ## How to run tasks on AWS Batch with EKS
@@ -708,6 +710,34 @@ taskRunner:
 | `stsEndpointOverride` | Override the STS endpoint URL (optional, useful in GovCloud or custom environments). |
 | `stsRoleSessionDuration` | Duration of the assumed-role session (optional; defaults to the AWS minimum). |
 
+## Execution details
+
+When you open an execution in the topology view, the topology node for an AWS Batch task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+
+**Topology node:**
+
+| Field | Description |
+|---|---|
+| Compute env | Compute environment name (tail of the ARN) |
+| Compute type | The resolved compute type (Fargate, EC2, or EKS) |
+| Status | Current or final job status (post-execution only) |
+| Duration | Elapsed or total execution time (post-execution only) |
+
+**Show Details modal:**
+
+*Configuration:*
+- Compute environment and compute type
+- Job queue (tail of the ARN, or "auto-created" when not specified)
+- Region and AWS account ID
+- Configured CPU and memory
+- S3 bucket used for file staging
+
+*Post-execution:*
+- Job ID — reference for looking up the job in the AWS Console or CLI
+- Status and reason — SUCCEEDED or FAILED; `statusReason` shown when the job fails
+- Duration — derived from the job's `startedAt` and `stoppedAt` timestamps
+- Compute type — with the configured CPU and memory values
+- CloudWatch log group — reference path for finding full logs outside Kestra
 ## Running from Kestra Cloud
 
 Kestra Cloud's control plane runs outside your AWS account. It has no EC2 instance profile, EKS IRSA, or other ambient AWS identity. The following differences apply compared to a self-hosted Kestra instance running inside your own AWS environment.

@@ -258,9 +258,11 @@ These settings are lighter-weight than the Micronaut server settings above. Use 
 
 The webserver-related configuration also includes:
 
+- disabling the UI to run the webserver API-only
 - Google Analytics ID
 - additional HTML tags
 - mail server settings
+- security response headers
 
 Examples:
 
@@ -279,6 +281,91 @@ kestra:
 
 Mail server settings are useful when you need platform emails for invitations and notifications.
 
+### Security response headers
+
+Kestra adds browser security response headers to every HTTP response, including error responses (401, 403) and static file responses.
+
+Three headers are enabled by default:
+
+| Header | Default value |
+|---|---|
+| `X-Frame-Options` | `SAMEORIGIN` |
+| `X-Content-Type-Options` | `nosniff` |
+| `Referrer-Policy` | `strict-origin-when-cross-origin` |
+
+Two additional headers are disabled by default:
+
+| Header | When emitted |
+|---|---|
+| `Content-Security-Policy` | When `content-security-policy` is set to a non-blank value |
+| `Strict-Transport-Security` | When `strict-transport-security` is set and the request arrives at Kestra over HTTPS directly |
+
+Each header is added only if not already present in the response.
+
+Configuration reference:
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `kestra.webserver.security-headers.enabled` | boolean | `true` | Master toggle. When `false`, the filter is not created and no headers are added. |
+| `kestra.webserver.security-headers.frame-options` | string | `SAMEORIGIN` | Value for `X-Frame-Options`. Set to `""` to disable this header only. |
+| `kestra.webserver.security-headers.content-type-options` | string | `nosniff` | Value for `X-Content-Type-Options`. Set to `""` to disable this header only. |
+| `kestra.webserver.security-headers.referrer-policy` | string | `strict-origin-when-cross-origin` | Value for `Referrer-Policy`. Set to `""` to disable this header only. |
+| `kestra.webserver.security-headers.content-security-policy` | string | (absent) | Value for `Content-Security-Policy`. Not set unless configured. |
+| `kestra.webserver.security-headers.content-security-policy-report-only` | boolean | `false` | When `true`, the CSP value is sent under `Content-Security-Policy-Report-Only` instead of `Content-Security-Policy`. Use this to test a policy before enforcing it. |
+| `kestra.webserver.security-headers.strict-transport-security` | string | (absent) | Value for `Strict-Transport-Security`. Not set unless configured, and only emitted when Kestra is serving the request over HTTPS directly (see note below). |
+
+Enable CSP in report-only mode — report-only sends the policy without blocking any resources, so you can test that your CSP does not break any Kestra UI functionality before switching to enforcement:
+
+```yaml
+kestra:
+  webserver:
+    security-headers:
+      content-security-policy: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' wss:; frame-ancestors 'none'"
+      content-security-policy-report-only: true
+```
+
+Remove `content-security-policy-report-only` or set it to `false` to switch from reporting to enforcement.
+
+Disable an individual header by setting its value to an empty string:
+
+```yaml
+kestra:
+  webserver:
+    security-headers:
+      frame-options: ""
+```
+
+Disable all security headers:
+
+```yaml
+kestra:
+  webserver:
+    security-headers:
+      enabled: false
+```
+
+:::alert{type="warning"}
+**HSTS and reverse proxies**: `Strict-Transport-Security` is only emitted when Kestra itself receives the request over HTTPS (i.e., TLS is terminated on the Kestra server). In the common deployment pattern where a reverse proxy (nginx, Traefik, AWS ALB, Cloudflare) terminates TLS and forwards plain HTTP to Kestra, the request arrives at Kestra as plain HTTP and HSTS is never sent — even if `strict-transport-security` is configured. In this case, configure HSTS at the reverse proxy instead.
+:::
+
+### Disabling the UI (API-only mode)
+
+The bundled web UI is enabled by default. Set `kestra.webserver.ui.enabled` to `false` to run the webserver as an API-only service — useful when Kestra is driven entirely through the REST API or fronted by your own application, and you don't want the UI exposed.
+
+```yaml
+kestra:
+  webserver:
+    ui:
+      enabled: false
+```
+
+When the UI is disabled:
+
+- requests to `/ui/**` return `404`, and `/` no longer redirects to the UI;
+- the REST API (`/api/v1/**`) and health endpoints keep working as usual.
+
+The setting can also be provided through the `KESTRA_WEBSERVER_UI_ENABLED` environment variable.
+
 ## Typical use cases
 
 Use this section when you need to:
@@ -288,3 +375,4 @@ Use this section when you need to:
 - adjust access log format for GCP or ECS
 - configure Prometheus-style metrics ingestion
 - change management endpoint behavior
+- configure security response headers (CSP, HSTS, framing)

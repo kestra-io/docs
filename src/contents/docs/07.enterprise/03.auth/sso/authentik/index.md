@@ -62,7 +62,7 @@ You may need to adjust the above `issuer` URL if you named your application some
 
 ### Configure a Default Role for your SSO users in Kestra Settings
 
-To ensure that your SSO users have initial permissions within the Kestra UI, set up a default role for them. Achieve this by adding the following configuration under the `kestra.security` section:
+To ensure that your SSO users have initial permissions within the Kestra UI, set up a default role. Add the following to the `kestra.security` section of your configuration:
 
 ```yaml
 kestra:
@@ -71,17 +71,53 @@ kestra:
       name: default_admin_role
       description: "Default Admin Role"
       permissions:
-        NAMESPACE: ["CREATE", "READ", "UPDATE", "DELETE"]
-        ROLE: ["CREATE", "READ", "UPDATE", "DELETE"]
-        GROUP: ["CREATE", "READ", "UPDATE", "DELETE"]
-        EXECUTION: ["CREATE", "READ", "UPDATE", "DELETE"]
-        AUDITLOG: ["CREATE", "READ", "UPDATE", "DELETE"]
-        USER: ["CREATE", "READ", "UPDATE", "DELETE"]
-        BINDING: ["CREATE", "READ", "UPDATE", "DELETE"]
-        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
-        SECRET: ["CREATE", "READ", "UPDATE", "DELETE"]
-        BLUEPRINT: ["CREATE", "READ", "UPDATE", "DELETE"]
-        KVSTORE: ["CREATE", "READ", "UPDATE", "DELETE"]
+        FLOW:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - EXECUTE
+          - DISABLE
+          - ENABLE
+          - VALIDATE
+          - EXPORT
+          - IMPORT
+        EXECUTION:
+          - VIEW
+          - LIST
+          - UPDATE
+          - DELETE
+          - RESTART
+          - KILL
+          - REPLAY
+          - PAUSE
+          - RESUME
+          - CHANGE_LABELS
+          - ACCESS_LOGS
+          - ACCESS_OUTPUTS
+          - ACCESS_FILES
+          - EXPORT
+          - UNQUEUE
+          - FORCE_RUN
+          - FOLLOW
+        NAMESPACE:
+          - VIEW
+          - LIST
+          - CREATE
+          - UPDATE
+          - DELETE
+          - MANAGE_FILES
+          - EXPORT_PLUGIN_DEFAULTS
+          - IMPORT_PLUGIN_DEFAULTS
+        SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
+        KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        ROLE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
+        GROUP: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_MEMBERS"]
+        USER: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_GROUP_MEMBERSHIP"]
+        BINDING: ["VIEW", "LIST", "CREATE", "DELETE"]
+        AUDITLOG: ["VIEW", "LIST", "EXPORT"]
   ee:
     tenants:
       enabled: true
@@ -89,5 +125,5 @@ kestra:
 ```
 
 :::alert{type="info"}
-⚠️ Make sure that your `defaultRole` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `defaultRole` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
+Place `defaultRole` under `kestra.security`, not under `micronaut.security`. The example above grants broad access — adjust the action lists to match the permissions your users actually need in production.
 :::

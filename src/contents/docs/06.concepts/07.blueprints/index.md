@@ -18,7 +18,7 @@ Blueprints are a curated, organized, and searchable catalog of ready-to-use exam
 
 Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
 
-All Blueprints are validated and documented. You can easily customize and integrate them into your new or existing flows with a single click on the "Use" button.
+All Blueprints are validated and documented. You can easily customize and integrate them into your new or existing flows with a single click of **Use**.
 
 To see more, check out the [Blueprints library](/blueprints).
 

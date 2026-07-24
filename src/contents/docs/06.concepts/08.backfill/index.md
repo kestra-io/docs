@@ -41,7 +41,7 @@ Ensure the backfill’s start and end dates encompass every missed schedule, so 
 **All missed schedules are automatically recovered by default** if the Kestra server is down. The missed schedules will be executed as soon as Kestra is back up because of the `recoverMissedSchedules: ALL` property default. If you have configured this differently in your global Kestra configuration or specifically on a trigger, a Backfill achieves the same behavior. Read more about `recoverMissedSchedules` in the [dedicated documentation](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md#recover-missed-schedules).
 :::
 
-To backfill the missed executions, go to the **Triggers** tab on the Flow's detail page and click on the **Backfill executions** button.
+To backfill the missed executions, use **Backfill executions** on the **Triggers** tab of the flow's detail page.
 
 ![Backfill a Trigger](./backfill1.png)
 
@@ -135,10 +135,6 @@ curl -X PUT http://localhost:8080/api/v1/main/triggers \
 ```
 
 To use a Service Account, go to **Administration -> IAM -> Service Accounts**. From the Service Accounts tab, create a Service Account, generate an API Token, copy the token, and give the Service Account the appropriate access to backfill a flow. Use this API token in your `cURL` instead of a user's token.
-
-The interactive demo below walks through the steps one-by-one.
-
-<div style="position: relative; padding-bottom: calc(58.86243386243386% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/o5EBopJ72zF4AD6SVkIu?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Overview | Kestra EE - dev" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ### Using Python requests
 

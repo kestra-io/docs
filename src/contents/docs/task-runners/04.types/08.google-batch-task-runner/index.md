@@ -115,7 +115,7 @@ tasks:
 ```
 
 :::alert{type="info"}
-For a full list of available properties, see the [Google Batch plugin documentation](/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.batch) or explore the configuration in the built-in Code Editor in the Kestra UI.
+For a full list of available properties, see the [Google Batch plugin documentation](/plugins/plugin-ee-gcp/google-cloud-task-runner/io.kestra.plugin.ee.gcp.runner.batch) or explore the configuration in the built-in Code Editor.
 :::
 
 ---
@@ -150,11 +150,11 @@ The service account used by Kestra needs the following roles:
 
 If you don't already have one, create a new project in the Google Cloud Console.
 
-![project](../../04.types/09.google-cloudrun-task-runner/project.png)
+![project](../../04.types/10.google-cloudrun-task-runner/project.png)
 
 Once created, ensure your new project is selected in the top navigation bar.
 
-![project_selection](../../04.types/09.google-cloudrun-task-runner/project-selection.png)
+![project_selection](../../04.types/10.google-cloudrun-task-runner/project-selection.png)
 
 #### Enable the Batch API
 
@@ -197,7 +197,7 @@ Grant this service account access to the **Compute Engine default service accoun
 
 Search for "Bucket" in the Cloud Console and create a new GCS bucket. You can keep the default configuration for now.
 
-![bucket](../../04.types/09.google-cloudrun-task-runner/bucket.png)
+![bucket](../../04.types/10.google-cloudrun-task-runner/bucket.png)
 
 ### Create a flow
 
@@ -272,3 +272,32 @@ You can also confirm job creation directly in the Google Cloud Console:
 After the task completes, the runner automatically shuts down. You can review output artifacts in Kestra's **Outputs** tab:
 
 ![outputs](./outputs.png)
+
+## Execution details
+
+When you open an execution in the topology view, the topology node for a Google Batch task shows a compact status row. For full job and configuration details, click **Show Details** to open the job modal.
+
+**Topology node:**
+
+| Field | Description |
+|---|---|
+| Runner | Task runner type |
+| Region | GCP region where the job runs |
+| Project | GCP project ID |
+| Job name | GCP Batch job resource name |
+| Duration | Elapsed or total execution time |
+
+**Show Details modal:**
+
+*Configuration:*
+- Project ID and region
+- Service account
+- Staging GCS bucket
+- Whether the job deletes on completion (`delete` flag)
+- Whether an existing job will be resumed on Worker restart (`resume` flag)
+- Configured timeout
+
+*Post-execution:*
+- Job name — GCP resource identifier for the Batch job
+- Resumed or new — whether the job reused an existing run or was freshly created
+- Deletion triggered — whether the job was deleted after completion

@@ -29,7 +29,8 @@ Enterprise Edition Task Runners:
 - [Azure Batch](../../../task-runners/04.types/06.azure-batch-task-runner/index.md)
 - [Azure Virtual Machine](../../../task-runners/04.types/07.azure-virtualmachine-task-runner/index.md)
 - [Google Batch](../../../task-runners/04.types/08.google-batch-task-runner/index.md)
-- [Google Cloud Run](../../../task-runners/04.types/09.google-cloudrun-task-runner/index.md)
+- [Google Compute Engine](../../../task-runners/04.types/09.google-computeengine-task-runner/index.md)
+- [Google Cloud Run](../../../task-runners/04.types/10.google-cloudrun-task-runner/index.md)
 
 ## Task runners vs Worker Groups
 

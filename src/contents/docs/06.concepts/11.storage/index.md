@@ -374,28 +374,27 @@ tasks:
 ```
 :::
 
-:::collapse{title="Example with the ForEachItem task reading file's content as a string"}
-When using the `ForEachItem` task, you can use the `read()` function to read the content of a file as a string. This is especially useful when you want to pass the content of a file as a raw string as an input to a subflow.
-
+:::collapse{title="Example with the Loop task passing row data to a subflow"}
+When using the `Loop` task with a storage URI, each iteration receives one row from the file as `item.value`. You can pass that value directly as an input to a subflow.
 
 Below is a simple subflow example that uses a string input:
 
 ```yaml
-id: subflow_raw_string_input
+id: subflow_row_input
 namespace: company.team
 
 inputs:
-  - id: string_input
+  - id: row
     type: STRING
-    defaults: hey there
+    defaults: "{}"
 
 tasks:
-  - id: for_each_item
+  - id: log
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ inputs.string_input }}"
+    format: "{{ inputs.row }}"
 ```
 
-Because the `ForEachItem` task splits the `items` file into batches of smaller files (one file per row by default), you can use the `read()` function to read the content of that file for a given batch as a string value and pass it as an input to that subflow shown above.
+The parent flow queries a dataset, stores the result as a URI, then loops over each row and passes it to the subflow:
 
 ```yaml
 id: parent_flow
@@ -411,13 +410,17 @@ tasks:
       FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
     store: true
 
-  - id: each_raw
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ outputs.extract.outputs[0].uri }}"
-    namespace: company.team
-    flowId: subflow_raw_string_input
-    inputs:
-      string_input: "{{ read(taskrun.items) }}"
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.extract.outputs[0].uri }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: company.team
+        flowId: subflow_row_input
+        wait: true
+        inputs:
+          row: "{{ item.value | toJson }}"
 ```
 :::
 

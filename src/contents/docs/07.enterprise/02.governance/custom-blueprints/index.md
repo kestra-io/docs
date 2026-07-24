@@ -225,3 +225,91 @@ pluginDefaults:
       password: '{{ secret("ORACLE_USERNAME") }}'
 ```
 :::
+
+## Version control for Custom Blueprints
+
+Custom Blueprints can be version-controlled with Git using two dedicated tasks from the `plugin-ee-git` plugin:
+
+- [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.PushBlueprints) commits and pushes blueprints from Kestra to a Git repository.
+- [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.SyncBlueprints) syncs blueprints from a Git repository into Kestra, treating Git as the single source of truth.
+
+These tasks mirror the [PushFlows and SyncFlows patterns](../../../version-control-cicd/04.git/index.md) used for flows, applied to Custom Blueprints.
+
+### Push blueprints to Git
+
+Use `PushBlueprints` to export your blueprints from Kestra into a Git repository. This is useful for creating backups, reviewing changes via pull requests, or promoting blueprints across environments.
+
+Each blueprint is written as a YAML file to the target `gitDirectory` (default: `_blueprints`). Use the `blueprints` property with glob patterns to push only a subset of blueprints.
+
+```yaml
+id: push_blueprints
+namespace: system
+
+tasks:
+  - id: commit_and_push
+    type: io.kestra.plugin.ee.git.PushBlueprints
+    url: https://github.com/your-org/blueprints-repo
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    branch: main
+    commitMessage: "push blueprints from {{ flow.namespace ~ '.' ~ flow.id }}"
+
+triggers:
+  - id: schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+```
+
+The task outputs a `commitId`, a `commitURL`, and a `blueprints` URI pointing to a diff report that lists the number of lines added, deleted, and changed per file.
+
+### Sync blueprints from Git
+
+Use `SyncBlueprints` to pull blueprints from Git into Kestra. This is the recommended pattern when Git is your single source of truth — for example, when platform teams manage approved blueprint libraries centrally and deploy them across multiple Kestra instances.
+
+By default, `SyncBlueprints` only adds and updates blueprints. Set `delete: true` to also remove any blueprints present in Kestra but absent in Git.
+
+```yaml
+id: sync_blueprints_from_git
+namespace: system
+
+tasks:
+  - id: git
+    type: io.kestra.plugin.ee.git.SyncBlueprints
+    url: https://github.com/your-org/blueprints-repo
+    branch: main
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    delete: true
+    dryRun: true
+
+triggers:
+  - id: every_full_hour
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+```
+
+Set `dryRun: true` to preview what would change without applying it. The `blueprints` output URI contains a row-per-blueprint report showing each blueprint's `syncState`: `ADDED`, `UPDATED`, `UNCHANGED`, or `DELETED`.
+
+Use caution with `delete: true` — it removes all blueprints not present in Git, not just those that differ.
+
+### Blueprint YAML file format
+
+Both tasks read and write blueprints as YAML files. Each file represents one blueprint:
+
+```yaml
+id: my-blueprint-id
+title: My Blueprint Title
+description: Optional description of what this blueprint does
+tags:
+  - tag1
+  - tag2
+flow: |
+  id: my-flow
+  namespace: company.team
+  tasks:
+    - id: hello
+      type: io.kestra.plugin.core.log.Log
+      message: Hello World
+```
+
+The `id` field controls how blueprints are matched on sync: if a blueprint with that ID already exists in Kestra, it is updated; if not, it is created with that ID. If `id` is omitted, a new blueprint is created with an auto-generated ID.

@@ -40,7 +40,7 @@ The table below summarizes the differences between task runners and worker group
 | **Cost Efficiency**   | Suitable for infrequent tasks         | Suitable for frequent or long-running tasks |
 
 :::alert{type="info"}
-Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+Worker Groups are available in Kestra Enterprise Edition only.
 :::
 
 ## Use cases
@@ -59,13 +59,13 @@ Here are common use cases in which **Task Runners** can be beneficial:
 
 ### Worker Groups usage
 
-First, start the worker with the `--worker-group myWorkerGroupKey` flag. It's important for the new worker to have a configuration similar to that of your principal Kestra server and to have access to the same backend database and internal storage. The configuration file will be passed via the `--config` flag, as shown in the example below.
+Start the worker with the `--worker-group` flag, along with a registration token configured in the worker's auth settings. The worker must have access to the same backend database and internal storage as the rest of the Kestra cluster. Pass the configuration file via `--config`:
 
 ```shell
 kestra server worker --worker-group=myWorkerGroupKey --config=/path/to/kestra-config.yaml
 ```
 
-To assign a task to the desired worker group, add a `workerGroup.key` property. This will ensure that the task or polling trigger is executed on a worker in the specified worker group.
+To route a task to a Worker Group, add `workerSelector.tags` to the task definition with tags matching the target Worker Queue. Any Worker Group subscribed to that queue may execute the task.
 
 ```yaml
 id: myflow
@@ -78,11 +78,11 @@ tasks:
       enabled: true
     commands:
       - python ml_on_gpu.py
-    workerGroup:
-      key: myWorkerGroupKey
+    workerSelector:
+      tags: [myWorkerGroupKey]
 ```
 
-A default worker group can also be configured at the namespace level so that all tasks and polling triggers in that namespace are executed on workers in that worker group by default.
+A default worker selector can also be configured at the namespace level so that all tasks and polling triggers in that namespace route to the appropriate Worker Group by default.
 
 ![default_worker_group](./default_worker_group.png)
 

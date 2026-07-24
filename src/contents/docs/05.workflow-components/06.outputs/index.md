@@ -200,110 +200,105 @@ outputs:
 
 Note how the Ternary Operator `{{ condition ? value_if_true : value_if_false }}` is used in the output expression `{{ tasks.main.state != 'SKIPPED' ? outputs.main.value : outputs.fallback.value }}` to return the output of the `main` task if it is not skipped, otherwise, it returns the output of the `fallback` task.
 
-## Dynamic variables (Each tasks)
+## Loop outputs and iteration context
 
-### Current taskrun value
+### Current iteration value
 
-In dynamic flows (for example, with an **Each** loop), variables are passed to tasks dynamically. You can access the current taskrun value with `{{ taskrun.value }}` like this:
+Inside a [Loop](../01.tasks/00.flowable-tasks/index.md#loop) task, each iteration runs as an isolated sub-execution. Use `{{ item.value }}` to access the current value and `{{ item.index }}` for the zero-based position.
 
 ```yaml
-id: taskrun_value_example
+id: loop_value_example
 namespace: company.team
 
 tasks:
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: ["alpha", "beta", "gamma"]
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.value }} > {{ taskrun.startDate }}"
+        format: "{{ task.id }} > {{ item.value }} > {{ item.index }}"
 ```
 
-The **Outputs** tab contains the output for each of the inner task.
-
-![taskrun_value_example](./taskrun_value_example.png)
+The **Outputs** tab shows the output for each iteration of the inner task.
 
 ### Loop over a list of JSON objects
 
-Within the loop, the `value` is always a JSON string, so the `{{ taskrun.value }}` is the current element as JSON string. To access properties, you need to wrap it in the `fromJson()` function to have a JSON object allowing to access each property easily.
+When `values` contains objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to access properties — `item.value.field` does not work.
 
 ```yaml
-id: loop_sequentially_over_list
+id: loop_json_objects
 namespace: company.team
 
 tasks:
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - {"key": "my-key", "value": "my-value"}
       - {"key": "my-complex", "value": {"sub": 1, "bool": true}}
     tasks:
       - id: inner
         type: io.kestra.plugin.core.debug.Return
-        format: "{{ fromJson(taskrun.value).key }} > {{ fromJson(taskrun.value).value }}"
+        format: "{{ fromJson(item.value).key }} > {{ fromJson(item.value).value }}"
 ```
 
+### Access outputs from loop iterations
 
-### Specific outputs for dynamic tasks
-
-Dynamic tasks are tasks that run other tasks a certain number of times. A dynamic task runs multiple iterations of a set of sub-tasks.
-
-For example, **ForEach** produces other tasks dynamically depending on its `values` property.
-
-It is possible to reach each iteration output of dynamic tasks by using the following syntax:
+By default, task outputs produced inside a loop are not visible to tasks that run after it. Declare an `outputs:` block on the Loop task to surface values explicitly.
 
 ```yaml
-id: output_sample
+id: loop_outputs
 namespace: company.team
 
 tasks:
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: ["s1", "s2", "s3"]
+    fetchType: AUTO
+    outputs:
+      - id: result
+        type: STRING
+        value: "{{ outputs.sub.value }}"
     tasks:
       - id: sub
         type: io.kestra.plugin.core.debug.Return
-        format: "{{ task.id }} > {{ taskrun.value }} > {{ taskrun.startDate }}"
+        format: "{{ task.id }} > {{ item.value }}"
 
   - id: use
     type: io.kestra.plugin.core.debug.Return
-    format: "Previous task produced output: {{ outputs.sub.s1.value }}"
+    format: "First result: {{ outputs.loop.outputs[0].outputs.result }}"
 ```
 
-The `outputs.sub.s1.value` variable reaches the `value` of the `sub` task of the `s1` iteration.
+After the loop, `outputs.<loop_id>.outputs` is a list of per-iteration results — each entry has an `item` object (with `value`, `iteration`, and `key`) and an `outputs` map of the declared output values.
 
-### Previous task lookup
+- Access one iteration by index: `outputs.<loop_id>.outputs[n].outputs.<output_id>`
+- Extract one field across all iterations as a list: `{{ loopOutputs(outputs.<loop_id>.outputs, '<output_id>') }}`
 
-It is also possible to locate a specific dynamic task by its `value`:
+### Sibling task outputs inside a loop
+
+Inside a Loop iteration, sibling task outputs are accessed with the plain `outputs.task_id.attribute` notation — each iteration runs in its own isolated sub-execution, so there is no ambiguity about which iteration's output you are reading.
 
 ```yaml
-id: dynamic_looping
+id: loop_with_sibling_tasks
 namespace: company.team
 
 tasks:
-  - id: each
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: ["alpha", "beta", "gamma"]
     tasks:
-      - id: inner
-        type: io.kestra.plugin.core.debug.Return
-        format: "{{ taskrun.value }}"
+      - id: first
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "First value: {{ item.value }}"
 
-  - id: end
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ task.id }} > {{ outputs.inner['alpha'].value }}"
+      - id: second
+        type: io.kestra.plugin.core.output.OutputValues
+        values:
+          data: "{{ outputs.first.values.data }}"
 ```
 
-It uses the format `outputs.TASKID[VALUE].ATTRIBUTE`. The special bracket `[]` in  `[VALUE]` is called the subscript notation; it enables using special chars like space or '-' in task identifiers or output attributes.
-
-### Lookup in sibling tasks
-
-Sometimes it is useful to access outputs from other tasks in the same task tree, known as sibling tasks.
-
-If the task tree is static, for example when using the [Sequential](/plugins/core/flow/io.kestra.plugin.core.flow.sequential) task, you can use the `{{ outputs.task_id.value }}` notation where `task_id` is the identifier of the sibling task, as you would outside of the task tree.
-
-For example:
+For static task trees using [Sequential](/plugins/core/flow/io.kestra.plugin.core.flow.sequential), the same `{{ outputs.task_id.value }}` notation applies outside of a loop.
 
 ```yaml
 id: sibling_tasks
@@ -328,41 +323,11 @@ tasks:
     message: "{{ outputs.second.values.data }}"
 ```
 
-If the task tree is dynamic, for example when using the [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task, you need to use `{{ outputs.task_id[taskrun.value] }}` to access the current tree task. `taskrun.value` is a special variable that holds the current value of the ForEach task.
-
-For example:
-
-```yaml
-id: loop_with_sibling_tasks
-namespace: company.team
-
-tasks:
-  - id: foreach
-    type: io.kestra.plugin.core.flow.ForEach
-    values: ["alpha", "beta", "gamma"]
-    tasks:
-      - id: first
-        type: io.kestra.plugin.core.output.OutputValues
-        values:
-          data: "First value: {{ taskrun.value }}"
-
-      - id: second
-        type: io.kestra.plugin.core.output.OutputValues
-        values:
-          data: "{{ outputs.first[taskrun.value].values.data }}"
-
-  - id: log_output_from_foreach
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ outputs.second['alpha'].values.data }}"
-```
-
-You can also use the `currentEachOutput` function to access the current tree task. See [Function Reference](../../expressions/04.functions/index.mdx) for more details.
-
 :::alert{type="warning"}
-Accessing sibling task outputs is impossible on [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as it runs tasks in parallel.
+Accessing sibling task outputs is impossible in [Parallel](/plugins/core/flow/io.kestra.plugin.core.flow.parallel) as tasks run simultaneously.
 :::
 
-For more examples and guidance on accessing sibling outputs inside `ForEach`, including how to read them both inside and outside the loop, see [Best Practices for ForEach and ForEachItem](../../14.best-practices/11.foreach-and-foreachitem/index.md#example-use-sibling-outputs-correctly-inside-foreach).
+For more output patterns including map-reduce and large-file processing, see [Loop best practices](../../14.best-practices/11.loop/index.md).
 
 ## Outputs preview
 
@@ -378,11 +343,11 @@ tasks:
     uri: https://huggingface.co/datasets/kestra/datasets/raw/main/ion/employees.ion
 ```
 
-On flow execution, the file is downloaded into the Kestra internal storage. When you go to the Outputs tab for this execution, the `uri` attribute of the `download` task contains the file location on Kestra's internal storage and has a Download and a Preview button.
+On flow execution, the file is downloaded into the Kestra internal storage. In the **Outputs** tab for this execution, the `uri` attribute of the `download` task contains the file location in Kestra's internal storage, with **Download** and **Preview** buttons.
 
 ![preview_button](./preview_button.png)
 
-On clicking the Preview button, you can preview the contents of the file in a tabular format, making it extremely easy to check the contents of the file without downloading it.
+**Preview** displays the file contents in a tabular format without downloading.
 
 ![preview](./preview.png)
 

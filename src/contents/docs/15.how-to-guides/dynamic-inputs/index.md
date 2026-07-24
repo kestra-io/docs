@@ -205,3 +205,25 @@ inputs:
 - `subflow()` is only valid in the `expression:` property of a `SELECT` or `MULTISELECT` input. It throws if used in a task or trigger property.
 - The subflow must complete within the timeout (default `PT1M`, max `PT5M`). Keep data-fetching subflows fast.
 - Recursion is capped at depth 3.
+
+## Label/value pairs for decoupled dropdowns
+
+When your API returns structured data, use a `{label, value}` jq projection so the dropdown shows a human-readable label while `{{ inputs.x }}` resolves to the underlying technical identifier:
+
+```yaml
+id: dynamic_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    expression: "{{ http(uri = 'https://api.example.com/accounts') | jq('.accounts[] | {label: .name, value: .id}') }}"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
+
+The dropdown displays account names; `{{ inputs.aws_account }}` resolves to the account ID. The same pattern works with static `values` lists — see [Label/value pairs in SELECT and MULTISELECT inputs](../../05.workflow-components/05.inputs/index.md#labelvalue-pairs-in-select-and-multiselect-inputs).

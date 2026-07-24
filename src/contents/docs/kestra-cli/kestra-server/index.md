@@ -88,12 +88,10 @@ Commands:
   plugins    handle plugins
   server     handle servers
   flow       handle flows
-  template   handle templates
   sys        handle systems maintenance
   configs    handle configs
   namespace  handle namespaces
   auths      handle auths
-  sys-ee     handle kestra ee systems maintenance
   tenants    handle tenants
   migrate    handle migrations
   backups    (EE) handle metadata backups and restore
@@ -216,9 +214,50 @@ kestra flow delete my-namespace my-flow-id
 
 ## Migration commands
 
+### `kestra migrate plan`
+
+Lists all pending database migrations without applying them. Read-only: acquires no lock, writes nothing.
+
+**Options**: `--sql` (print the raw SQL for each SQL-based migration)
+
+```bash
+kestra migrate plan
+kestra migrate plan --sql
+```
+
+---
+
+### `kestra migrate run`
+
+Applies all pending migrations in lexicographic order. Acquires a distributed lock so only one process migrates at a time. Makes a single non-blocking lock attempt; if the lock is already held, exits immediately with code `1`.
+
+```bash
+kestra migrate run
+```
+
+:::alert{type="info"}
+Enterprise Edition users must run this command manually before starting Kestra 2.0 for the first time. By default (`kestra.migration.auto=false`), Kestra EE refuses to start if any pending migrations exist. Open-source Kestra runs migrations automatically on startup.
+:::
+
+---
+
+### `kestra migrate unlock`
+
+Force-releases the migration lock. Use only when `kestra migrate run` exited abnormally and left the lock held.
+
+```bash
+kestra migrate unlock
+```
+
+:::alert{type="warning"}
+On **PostgreSQL, MySQL, and H2**, the lock is session-scoped. `kestra migrate unlock` always exits `0` but does nothing on these backends. The lock releases when the holding process terminates. Kill the hung process instead. On **Elasticsearch**, the command works as expected.
+:::
+
+---
+
 ### `kestra migrate default-tenant`
 
-Migrate all resources without tenant to a new tenant (multi-tenant setups).
+Migrate all resources without a tenant to a new tenant (multi-tenant setups).
 
 **Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
 
@@ -609,7 +648,7 @@ kestra auths users sync-access
 Create a metadata backup.
 
 **Inputs**: `type` (`FULL` | `TENANT`)
-**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`
+**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`, `--resources`
 
 ```bash
 kestra backups create FULL --no-encryption
@@ -620,61 +659,10 @@ kestra backups create FULL --no-encryption
 Restore a metadata backup.
 
 **Input**: `uri` (Kestra internal storage URI)
-**Options**: `--encryption-key`, `--to-tenant`
+**Options**: `--encryption-key`, `--to-tenant`, `--resources`
 
 ```bash
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
-```
-
----
-
-## Systems (EE)
-
-### kestra sys-ee restore-flow-listeners
-
-Restores the state-store for FlowListeners. Useful after restoring a flow queue.
-
-**Inputs**
-
-- `--timeout` (option): Timeout in seconds before quitting (default: 60).
-
-**Example Usage**
-
-```bash
-kestra-ee sys-ee restore-flow-listeners --timeout 120
-```
-
----
-
-### kestra sys-ee restore-queue
-
-Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
-
-**Inputs**
-
-- `--no-recreate` (option): Don't drop and recreate the Kafka topic.
-- `--no-flows` (option): Don't send flows.
-- `--no-templates` (option): Don't send templates.
-
-**Example Usage**
-
-```bash
-kestra-ee sys-ee restore-queue --no-flows
-```
-
----
-
-### kestra sys-ee reset-concurrency-limit
-
-Resets the concurrency limit stored on the Kafka runner.
-
-**Inputs**
-None
-
-**Example Usage**
-
-```bash
-kestra-ee sys-ee reset-concurrency-limit
 ```
 
 ## Tenants (EE)

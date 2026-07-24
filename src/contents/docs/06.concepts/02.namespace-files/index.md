@@ -30,12 +30,12 @@ namespace: company.team
 
 tasks:
   - id: for_each_row
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ trigger.rows }}"
     tasks:
       - id: return
         type: io.kestra.plugin.core.debug.Return
-        format: "{{ json(taskrun.value) }}"
+        format: "{{ fromJson(item.value) }}"
 
 triggers:
   - id: query_trigger
@@ -89,7 +89,7 @@ tasks:
       - python scripts/hello.py
 ```
 
-The **Execute** button allows you to run your flow directly from the Code Editor. Click on the **Execute** button to run your flow. You then see the Execution running, and once you navigate to the **Logs** tab, you should see a friendly message ``Hello from the Editor!`` in the logs.
+The **Execute** button allows you to run your flow directly from the Code Editor. Click **Execute** to run the flow. The **Logs** tab shows a friendly message ``Hello from the Editor!``.
 
 ### Namespace Files Revision History
 

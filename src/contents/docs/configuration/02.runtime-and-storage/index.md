@@ -24,6 +24,19 @@ Queues and repositories must stay compatible:
 - JDBC queue with H2, MySQL, or PostgreSQL repository
 - Kafka queue with Elasticsearch repository in Enterprise Edition
 
+## Allocated CPU cores
+
+Kestra sizes several internal thread pools based on the number of CPU cores available to the process. By default, it uses the number of CPU cores reported by the runtime environment.
+
+If you want Kestra to size those pools using a different value, set `kestra.allocated-cpu-cores`:
+
+```yaml
+kestra:
+  allocated-cpu-cores: 2
+```
+
+This is useful when you want to limit how aggressively Kestra allocates worker, scheduler, and queue-related threads without changing container limits or host-level CPU settings.
+
 ## Database and datasources
 
 Start here if you are choosing the persistence layer for a new Kestra instance or moving from a local setup to a durable environment. In most teams, this is the first configuration page they revisit after initial installation.
@@ -206,7 +219,23 @@ If you are not troubleshooting queue throughput or database pressure, you can us
 
 `kestra.storage.type` controls where Kestra stores internal files such as task outputs, namespace files, and execution artifacts. Choose the backend based on durability and whether all Kestra components can reach the same storage.
 
-**Supported backends:** [Local](#local) · [AWS S3](#aws-s3) · [Google Cloud Storage](#google-cloud-storage) · [Azure Blob Storage](#azure-blob-storage) · [MinIO / S3-compatible](#minio--s3-compatible) · [SeaweedFS](#seaweedfs) · [Cloudflare R2](#cloudflare-r2) · [Huawei OBS](#huawei-obs)
+Common options include:
+
+- `local` for local testing
+- `s3`
+- `s3files`
+- `gcs`
+- `azure`
+- `minio`
+- other object-storage-compatible backends
+
+The default local storage is fine for local testing but not for every production topology. The important distinction is whether every Kestra component can see the same files.
+
+### Local storage deployment guidance
+
+Local storage works well for standalone deployments with a persistent volume. In distributed deployments, it only works safely when all components share the same filesystem through a `ReadWriteMany` volume or an equivalent shared storage layer.
+
+If that shared filesystem does not exist, move to object storage instead of trying to share host paths between services.
 
 ### Storage isolation
 
@@ -389,6 +418,28 @@ Assign the `roles/storage.objectAdmin` predefined role on the bucket (not the pr
 
 ---
 
+### S3 Files
+
+Use `s3files` when Kestra runs on a host where an [S3 Files](https://aws.amazon.com/blogs/aws/launching-s3-files-making-s3-buckets-accessible-as-file-systems/) NFS filesystem is already mounted locally. This backend reads and writes directly through the local filesystem — no S3 SDK or AWS credentials are required.
+
+Mount the NFS filesystem on every host that runs a Kestra component before configuring this backend. All components must share the same mount path.
+
+```yaml
+kestra:
+  storage:
+    type: s3files
+    s3files:
+      mount-path: "/mnt/s3files"
+```
+
+`mount-path` must point to a directory that exists and is readable and writable by the Kestra process. Kestra will not create the directory on startup.
+
+Object metadata is stored in `.meta` sidecar files alongside each object on the filesystem. Custom S3 object metadata is not exposed through this backend.
+
+If you prefer to keep the S3 SDK path (for example, because not every host has the NFS mount), use the standard `s3` backend with `s3-files-compatible: true` instead.
+
+---
+
 ### Azure Blob Storage
 
 :::alert{type="info"}
@@ -481,9 +532,15 @@ kestra:
     minio:
       endpoint: my.minio.domain.com
       port: 9000
-      bucket: kestra-storage
-      access-key: YOUR_ACCESS_KEY
-      secret-key: YOUR_SECRET_KEY
+      secure: false
+      access-key: ${AWS_ACCESS_KEY_ID}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
+      region: "default"
+      bucket: my-bucket
+      part-size: 5MB
+      # httpConnectTimeout: PT10S  # optional; omit to use OkHttp default (10 s)
+      # httpReadTimeout: PT10S     # optional; omit to use OkHttp default (10 s)
+      # httpWriteTimeout: PT10S    # optional; omit to use OkHttp default (10 s)
 ```
 
 #### Configuration reference
@@ -535,6 +592,8 @@ Create a MinIO policy that grants the access key read/write access to the bucket
 For Ceph RGW, SeaweedFS, or other S3-compatible backends, apply the equivalent bucket ACL or user policy through that system's admin interface.
 
 ---
+
+If large bucket operations such as `deleteByPrefix()` produce `SocketException: Socket closed` errors on heavily loaded or large buckets, increase `httpReadTimeout` or set it to `PT0S` to disable the timeout entirely.
 
 ### SeaweedFS
 
@@ -709,6 +768,8 @@ kestra:
 
 Use `html-head` sparingly for environment banners, extra CSS, or internal scripts that must load with the app shell.
 
+### Local file access
+
 To allow universal file access from host-mounted paths, both mount the directory and add it to the allowlist:
 
 ```yaml
@@ -720,6 +781,22 @@ kestra:
 ```
 
 Without the allowlist, file-access URIs pointing at local host paths will be rejected even if the path is mounted into the container.
+
+The `io.kestra.plugin.fs.local.Upload` and `io.kestra.plugin.fs.local.Uploads` tasks enforce their own `allowed-paths` check, independent of `kestra.local-files.allowed-paths`. Configure permitted directories under `plugins.configurations`:
+
+```yaml
+kestra:
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.fs.local.Uploads
+        values:
+          allowed-paths:
+            - /data/uploads
+      - type: io.kestra.plugin.fs.local.Upload
+        values:
+          allowed-paths:
+            - /data/uploads
+```
 
 ## When to use this page
 

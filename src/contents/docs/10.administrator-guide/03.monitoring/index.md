@@ -50,22 +50,17 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.analytics
-        prefix: true
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.analytics') }}"
 ```
 
 Adding this single flow will ensure that you receive a Slack alert on any flow failure in the `company.analytics` namespace. Here is an example alert notification:
 
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
-:::alert{type="warning"}
-To send this alert on failure across multiple namespaces, add an `OrCondition` to the `conditions` list. See the example below:
+:::alert{type="info"}
+To alert on failures across multiple namespaces or specific flows, use `mode: ANY` with multiple `dependsOn` entries. The trigger fires when any entry is satisfied:
 ```yaml
 id: alert
 namespace: company.system
@@ -80,53 +75,17 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.Or
-        conditions:
-          - type: io.kestra.plugin.core.condition.ExecutionNamespace
-            namespace: company.product
-            prefix: true
-          - type: io.kestra.plugin.core.condition.ExecutionFlow
-            flowId: cleanup
-            namespace: company.system
+    mode: ANY
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.product') }}"
+      - flowId: cleanup
+        namespace: company.system
+        states: [FAILED, WARNING]
 ```
 :::
 
-The example above works correctly. However, if you list the conditions without using `OrCondition`, no alerts will be sent because Kestra will try to match all conditions simultaneously. Since there’s no overlap between them, the conditions cancel each other out. See the example below:
-
-```yaml
-id: bad_example
-namespace: company.monitoring
-description: This example will not work
-
-tasks:
-  - id: send
-    type: io.kestra.plugin.slack.notifications.SlackExecution
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-    channel: "#general"
-    executionId: "{{trigger.executionId}}"
-
-triggers:
-  - id: listen
-    type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.product
-        prefix: true
-      - type: io.kestra.plugin.core.condition.ExecutionFlow
-        flowId: cleanup
-        namespace: company.system
-```
-
-Here, there's no overlap between the two conditions. The first condition will only match executions in the `company.product` namespace, while the second condition will only match executions from the `cleanup` flow in the `company.system` namespace. To match executions from the `cleanup` flow in the `company.system` namespace **or** any execution in the `product` namespace, use `OrCondition`.
+The example above fires when either any `company.product` flow fails or the specific `cleanup` flow in `company.system` fails. `mode: ANY` means the trigger fires as soon as one entry is satisfied — you do not need to combine everything into a single expression.
 
 ## Monitoring
 

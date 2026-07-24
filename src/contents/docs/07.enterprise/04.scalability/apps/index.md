@@ -96,7 +96,7 @@ If you want inspiration beyond the examples on this page, browse the Apps-focuse
   <iframe src="https://www.youtube.com/embed/P0MN9Lrmkvc?si=Ynq2iB2kP0-xmT_r" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-To create a new app, go to the **Apps** page in the main UI and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
+To create a new app, go to **Apps** and click **+ Create**. Add your app configuration as YAML and click **Save**. Like flows, apps have multiple editor views — you can configure the app while viewing documentation, previewing the layout, or searching the blueprint repository.
 
 You can set `disabled: true` in the YAML to create an app in an inactive state. A disabled app does not appear in the catalog and cannot be opened via its URL until you enable it. This is useful for staging an app before you are ready to release it.
 
@@ -200,7 +200,7 @@ The App Catalog is where users can find available apps. You can filter apps by n
 
 ![apps_catalog](./apps_catalog.png)
 
-Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with at least `APP`-Read and `APPEXECUTION`-Read permissions in that tenant can reach this URL (adding all `APPEXECUTION` permissions is recommended).
+Kestra provides a direct access URL to the Apps Catalog in the format `http://your_host/ui/your_tenant/apps/catalog`. Any Kestra user with at least `APP: VIEW` permission in that tenant can reach this URL.
 
 The catalog page requires authentication, so it is never publicly accessible. Users see only the apps they are permitted to see based on their RBAC permissions. You can limit visibility to specific groups by setting the `groups` property in the `access` block:
 
@@ -240,7 +240,7 @@ Here, you can give your catalog a display title, set a primary banner display co
 Currently, the uploaded banner display image must be an `.svg` file.
 :::
 
-Once saved, navigate to the Apps Catalog, and see your branding:
+Once saved, open the **Apps Catalog** to see your branding:
 
 ![Apps Catalog Branding](./customized-catalog.png)
 
@@ -310,7 +310,7 @@ tags:
   - Analytics
 ```
 
-Once added, navigate to the Apps Catalog, and a new thumbnail will display on the connected app to help designate its use case:
+Once added, open the **Apps Catalog** — a new thumbnail displays on the connected app:
 
 ![App with thumbnail](./app-with-icon.png)
 
@@ -322,7 +322,7 @@ Each app has a unique URL that you can share with others. When someone opens the
 
 The URL format is: `https://yourHost/ui/tenantId/apps/appUid`, for example `http://localhost:8080/ui/release/apps/5CS8qsm7YTif4PWuAUWHQ5`.
 
-You can copy the URL from the Apps Catalog page in the Kestra UI.
+Copy the URL from the **Apps Catalog**.
 
 :::alert{type="info"}
 App URL generation relies on the `kestra.url` server configuration property. If this property is not set, generated links may be broken or missing. Set it to the externally reachable base URL of your Kestra instance, for example `kestra.url: https://kestra.example.com`.
@@ -348,7 +348,7 @@ For `PUBLIC` apps, execution IDs exposed through file download or log links are 
 
 ### Private access for using apps
 
-When an app is set to `PRIVATE`, only authenticated users with the `APPEXECUTION` permission on the app’s namespace can open or submit it. You can further narrow access to specific IAM groups using the `groups` field:
+When an app is set to `PRIVATE`, only authenticated users with `APP: EXECUTE` permission on the app’s namespace can open or submit it. You can further narrow access to specific IAM groups using the `groups` field:
 
 ```yaml
 access:
@@ -358,15 +358,15 @@ access:
     - Finance
 ```
 
-Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APPEXECUTION` permission on the namespace. If `groups` is omitted, any authenticated user with `APPEXECUTION` permission on the namespace can use the app.
+Group membership is checked at runtime on every request. Users who belong to at least one listed group are granted access; users outside those groups are denied even if they have `APP: EXECUTE` permission on the namespace. If `groups` is omitted, any authenticated user with `APP: EXECUTE` permission on the namespace can use the app.
 
-The `APPEXECUTION` permission is also namespace-scoped. A user with `APPEXECUTION` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
+`APP: EXECUTE` is namespace-scoped. A user with `APP: EXECUTE` on `company.team` cannot dispatch an app in `company.other`, even if both apps appear in the same catalog view.
 
 This makes the `PRIVATE` + `groups` combination useful when you want to allow a specific group of business stakeholders or external partners to use an app without giving them access to the broader Kestra UI.
 
 ### Private access for building apps
 
-The `APP` permission controls who can create, read, update, or delete apps within a tenant. Like `APPEXECUTION`, it can be scoped to specific namespaces. Unlike `APPEXECUTION`, which governs the ability to submit requests through an app, `APP` governs the ability to build and manage apps.
+The `APP` resource controls who can create, view, update, or delete apps within a tenant. It can be scoped to specific namespaces. `APP: EXECUTE`, `APP: ACCESS_FILES`, and `APP: ACCESS_LOGS` govern the ability to submit requests through an app and access its artifacts; the remaining `APP` actions govern the ability to build and manage apps.
 
 ---
 
@@ -386,7 +386,7 @@ By combining different blocks, you can create a custom UI that guides users thro
 
 | Block type               | Available on                                                             | Properties                                                                                  | Example                                                                                                                                                                                                                               |
 |--------------------------|--------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content`                                                                                 | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
+| `Markdown`               | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, FALLBACK       | - `content` (Pebble template)                                                               | `- type: io.kestra.plugin.ee.apps.core.blocks.Markdown`<br> &nbsp;&nbsp;&nbsp;&nbsp;`content: "## Please validate the request. Inspect the logs and outputs below. Then, approve or reject the request."`                             |
 | `RedirectTo`             | OPEN, CREATED, RUNNING, PAUSE, RESUME, SUCCESS, FAILURE, ERROR, FALLBACK | - `url`: redirect URL <br> - `delay`: delay in seconds                                      | `- type: io.kestra.plugin.ee.apps.core.blocks.RedirectTo`<br> &nbsp;&nbsp;&nbsp;&nbsp;`url: "https://kestra.io/docs"`<br> &nbsp;&nbsp;&nbsp;&nbsp;`delay: "PT60S"`                                                                         |
 | `CreateExecutionForm`    | OPEN                                                                     | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm`                                                                                                                                                               |
 | `ResumeExecutionForm`    | PAUSE                                                                    | None                                                                                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.ResumeExecutionForm`                                                                                                                                                               |
@@ -402,6 +402,60 @@ By combining different blocks, you can create a custom UI that guides users thro
 | `TaskOutputs`            | RUNNING, PAUSE, RESUME, SUCCESS                                         | - `outputs`: list of outputs with `displayName`, `value`, and `type`                        | `- type: io.kestra.plugin.ee.apps.execution.blocks.TaskOutputs`<br> &nbsp;&nbsp;&nbsp;&nbsp;`outputs:`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`- displayName: My Task Output`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`value: "{{ outputs.test.value }}"`<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`type: FILE` |
 
 Everything is customizable, from the text and style of buttons to the messages displayed before and after submissions.
+
+### Dynamic content in the OPEN state
+
+The `Markdown` block's `content` property is a Pebble template. When the layout includes a `CreateExecutionForm`, `{{ inputs.<id> }}` is available in the render context and updates as the user interacts with the form. Display blocks can show context-sensitive content — such as a description that changes when a user changes a dropdown value.
+
+The flow below exposes a `product` input:
+
+```yaml
+id: software_request
+namespace: company.team
+
+inputs:
+  - id: product
+    type: SELECT
+    values:
+      - Adobe
+      - Figma
+      - Slack
+    defaults: Adobe
+
+tasks:
+  - id: process
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing request for {{ inputs.product }}"
+```
+
+The app renders the current selection in a Markdown block that updates as the user changes the dropdown:
+
+```yaml
+id: software_request_form
+type: io.kestra.plugin.ee.apps.Execution
+displayName: Software Request Form
+namespace: company.team
+flowId: software_request
+access:
+  type: PRIVATE
+
+layout:
+  - on: OPEN
+    blocks:
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionForm
+      - type: io.kestra.plugin.ee.apps.core.blocks.Markdown
+        content: "You are requesting access to: **{{ inputs.product }}**"
+      - type: io.kestra.plugin.ee.apps.execution.blocks.CreateExecutionButton
+        text: Submit
+
+  - on: SUCCESS
+    blocks:
+      - type: io.kestra.plugin.ee.apps.core.blocks.Alert
+        style: SUCCESS
+        content: Your request has been submitted.
+```
+
+Before the user interacts with the form, `{{ inputs.* }}` resolves to each input's default value. In other states (RUNNING, SUCCESS, FAILURE), `{{ inputs.* }}` references the execution's submitted values.
 
 :::alert{type="info"}
 When the flow uses [`FORM` inputs](../../../05.workflow-components/05.inputs/index.md#form-inputs), `CreateExecutionForm` renders a multi-step Next/Back wizard — one step per FORM group, a step for ungrouped inputs, then a recap. No additional App configuration is required; the wizard is driven entirely by the flow's input definition.

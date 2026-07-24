@@ -157,25 +157,26 @@ Here is the list of supported data types:
 - `STRING`: Any string. Values are passed without parsing; for additional validation, use a regex `validator`.
 - `INT`: Must be a valid integer value (i.e., without any decimals).
 - `FLOAT`: Must be a valid float value (i.e., with decimals).
-- `SELECT`: Must be a valid string value from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
+- `SELECT`: Must be a valid string value from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Each entry in `values` can be a plain string (label and value are the same) or a `{label, value}` object (the UI shows `label`; `{{ inputs.x }}` resolves to `value`). Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
 
 :::alert{type="info"}
 **Note:** Due to [YAML allowing Scalar content](https://yaml.org/spec/1.1/current.html#id864510) to be presented in several formats, the boolean “true” might also be written as “yes” and “false” as “no”. To avoid errors using Yes/No in the `SELECT` input type, wrap them in quotation marks to preserve string format: "Yes", "No".
 :::
 
-- `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
+- `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Like `SELECT`, each entry in `values` can be a plain string or a `{label, value}` object. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
 - `BOOLEAN`: Must be `true` or `false` passed as strings.
 - `DATETIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time with the timezone expressed in UTC format; pass input of type DATETIME in a string format following the pattern `2042-04-02T04:20:42.000Z`.
 - `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
 - `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
 - `DURATION`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
 - `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="<input-id>"; filename="<file-name>"` (where `<input-id>` is the input name and `<file-name>` is the original filename of the file being uploaded), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
-- `JSON`: Must be a valid JSON string and will be converted to a typed form.
+- `JSON`: Must be a valid JSON string and will be converted to a typed form. Accepts an optional `jsonSchema` property (JSON Schema Draft 2020-12) to validate the structure of the input value at execution time.
 - `YAML`: Must be a valid YAML string.
 - `URI`: Must be a valid URI and will be kept as a string.
 - `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/05.security-and-secrets/index.md) in your [Kestra configuration](../../configuration/index.mdx) before using it.
 - `ARRAY`: Must be a valid JSON array or a YAML list. The `itemType` property is required to ensure validation of the type of the array items.
 - `FORM`: Groups related inputs under a shared `displayName` and `description`. When a flow contains at least one FORM input, the Execute modal renders a multi-step wizard — one step per FORM group plus any ungrouped inputs, then a recap. Children are referenced as `{{ inputs.<form_id>.<child_id> }}`. FORM inputs cannot be nested and do not support `defaults` or `prefill`.
+- `REUSABLE_INPUTS` (Enterprise Edition): References a named input group defined at the namespace level. Children are inlined under the reference id and accessed as `{{ inputs.<refId>.<childId> }}`. See [Reusable Inputs](../22.reusable-inputs/index.md) for details.
 
 All `FILE` inputs are automatically uploaded to Kestra's [internal storage](../../08.architecture/data-components/index.md#internal-storage) and accessible to all tasks. After the upload, the input variable will contain a fully qualified URL of the form `kestra:///.../.../` that will be automatically managed by Kestra and can be used as-is within any task.
 
@@ -198,13 +199,43 @@ Below is the list of available properties for all inputs regardless of their typ
 
 Kestra validates the `type` of each input. In addition to the type validation, some input types can be configured with validation rules that are enforced at execution time.
 
-- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html).
+- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html). Validator patterns are subject to a 10-second timeout; executions that exceed it are rejected with an error. The timeout is configurable via [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout).
+- `SECRET`: Supports the same `validator` regex property as `STRING`, with the same 10-second timeout applied before the value is encrypted. This ensures the secret is never stored if the pattern is unsafe.
 - `INT`: `min` and `max` define the allowed range.
 - `FLOAT`: `min` and `max` define the allowed range.
 - `DURATION`: `min` and `max` define the allowed range.
 - `DATE`: `after` and `before` properties help you ensure that the input value is within the allowed date range.
 - `TIME`: `after` and `before` properties help you ensure that the input value is within the allowed time range.
 - `DATETIME`: `after` and `before` properties help you ensure that the input value is within the allowed date and time range.
+- `JSON`: A `jsonSchema` property accepts a JSON Schema Draft 2020-12 string. If provided, the input value is validated against the schema at execution time. If the value does not conform, the execution is rejected before it starts.
+
+### Example: use JSON schema validation
+
+```yaml
+id: json_schema_validation
+namespace: company.team
+
+inputs:
+  - id: payload
+    type: JSON
+    jsonSchema: |
+      {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Hello, {{ inputs.payload.name }}!"
+```
+
+If you pass `{"name": 42}`, the execution will be rejected with a constraint violation before any task runs. If you pass `{"name": "Alice"}`, the flow proceeds normally.
 
 ### Example: use input validators in your flows
 
@@ -868,6 +899,54 @@ tasks:
 :::
 
 You can also [add these key-value pairs](../../06.concepts/05.kv-store/index.md) via the API or the UI.
+
+## Label/value pairs in SELECT and MULTISELECT inputs
+
+Each item in the `values` list can be a plain string or an object with `label` and `value` fields. When you use the object form, the UI dropdown shows `label` while `{{ inputs.x }}` resolves to `value`. Plain strings remain valid — a plain string is treated as an option where the label equals the value, and you can mix both forms in the same list.
+
+This is useful when the UI should show a human-readable label while the flow uses a technical identifier such as an account ID.
+
+```yaml
+id: aws_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    values:
+      - label: "Production (Main)"
+        value: "123456789012"
+      - label: "Staging (Sandbox)"
+        value: "987654321098"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
+
+:::alert{type="info"}
+`{{ inputs.x }}`, `defaults`, `autoSelectFirst`, and validation all operate on the `value` field, not the `label`. If you set a `defaults` for a `{label, value}` option, use the `value` string. If `autoSelectFirst` is enabled, the first item's `value` is used as the default.
+:::
+
+The object form also works with `expression`-based dropdowns. When an expression returns a list of `{label, value}` objects — for example via a jq projection — the UI shows the labels while the flow receives the values:
+
+```yaml
+id: dynamic_account_selector
+namespace: company.team
+
+inputs:
+  - id: aws_account
+    type: SELECT
+    displayName: AWS Account
+    expression: "{{ http(uri = 'https://api.example.com/accounts') | jq('.accounts[] | {label: .name, value: .id}') }}"
+
+tasks:
+  - id: log_account
+    type: io.kestra.plugin.core.log.Log
+    message: "Selected account ID: {{ inputs.aws_account }}"
+```
 
 ## Custom values in SELECT and MULTISELECT inputs
 

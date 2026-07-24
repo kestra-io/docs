@@ -62,11 +62,9 @@ In the **Namespaces** tab, you can see all the namespaces associated with the di
   <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=cEgJHKc6qbIu6kMN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-You can open the details about any namespace by clicking on the name or details button to the right of that namespace.
-
 ![namespace_tab](./namespace_tab.png)
 
-When you select the details button for any namespace, the namespace overview page opens which details the executions of flows in that namespace.
+Each namespace's overview page shows execution summaries and dashboards.
 
 ![namespace_overview](./namespace_overview.png)
 
@@ -76,7 +74,7 @@ On the top of this page, you have different tabs:
 
 2. **Executions:** View and manage all the executions details.
 
-3. **Flows:** View all flows in the namespace with execution details and statistics. Select the details button to navigate to a specific flow's page.
+3. **Flows:** View all flows in the namespace with execution details and statistics.
 
 4. **Dependencies:** View flow dependencies through subflows or flow triggers.
 

@@ -8,21 +8,29 @@ description: Learn how to perform full or metadata-only backups and restores of 
 
 Back up and restore your Kestra instance.
 
-Kestra provides a backup feature for **metadata**. In addition, you can back up and restore the underlying database and internal storage if a metadata-only backup is not sufficient.
+Kestra provides a built-in metadata backup feature in Enterprise Edition. For full disaster recovery, you can also back up the underlying database and internal storage directly using backend tools.
+
+Backup and restore are CLI-only operations — there is no REST API, no UI, and no built-in scheduler. Wire the CLI commands into your own cron, CI/CD, or disaster-recovery tooling.
 
 :::alert{type="info"}
 The commands in the next section assume Kestra runs locally on the host. If you run Kestra in Docker, see the [container example](#example-backup-and-restore-inside-docker) below.
 :::
 
-## Metadata-only Backup & Restore (Enterprise Edition)
+## Metadata backup and restore (Enterprise Edition)
 
-Since 0.19, [Kestra Enterprise Edition](../../oss-vs-paid/index.md) provides **metadata** backup and restore. You can back up metadata from one Kestra instance and restore it into another — even across different Kestra versions or repository/queue backends.
+[Kestra Enterprise Edition](../../oss-vs-paid/index.md) provides metadata backup and restore. You can back up metadata from one Kestra instance and restore it into another — even across different Kestra versions or repository/queue backends.
 
-Perform metadata backup and restore while Kestra is paused to ensure consistency. As a best practice, enable [Maintenance Mode](../../07.enterprise/05.instance/maintenance-mode/index.md) (available since 0.21) before starting.
+Perform metadata backup and restore while Kestra is paused to ensure consistency. As a best practice, enable [Maintenance Mode](../../07.enterprise/05.instance/maintenance-mode/index.md) before starting.
 
-A metadata backup includes all data **not** related to executions: blueprints, flows, namespaces, roles, secrets (for JDBC and Elasticsearch secrets-manager backends), security integrations, settings, templates, tenants, triggers, users, and access bindings. To include execution-related data, use the `--include-data` flag.
+### What is included
 
-Namespace discovery during backup relies on each resource's metadata repository. Ensure the required [metadata migrations](/docs/migration-guide/v1.3.0/lts-migration) have been run so that namespaces containing only KV items, namespace files, or secrets — but no flows — are correctly included.
+A metadata backup exports all resource types except execution history. By default, it includes:
+
+apps, banners, bindings, blueprints, credentials, dashboards, flows, groups, invitations, kill switches, KV entries, namespace files, namespaces, roles, secrets (when using a compatible secret backend), security integrations, settings, tenants, tenant accesses, test suites, triggers, users, and worker groups.
+
+Execution data (executions, logs, metrics, audit logs, test runs) is excluded by default due to size. Use `--include-data` to include it.
+
+Each backup run writes a new timestamped archive and never overwrites existing files. Archives are not pruned automatically — removing old archives is your responsibility.
 
 ### Metadata backup
 
@@ -32,30 +40,24 @@ To back up instance metadata, run:
 kestra backups create FULL
 ```
 
-`FULL` backs up the entire instance. To back up a single tenant (when multi-tenancy is enabled), use `TENANT`. In `TENANT` mode, only the selected tenant’s data is included (global users/tenants are excluded).
+`FULL` backs up the entire instance including all tenants and instance-level resources (users, settings, worker groups, kill switches). To back up a single tenant, use `TENANT` — only that tenant's data is included; instance-level resources are excluded.
 
-To back up only specific resources, use the `--resources` flag. For example, to back up the [KV Store](../../06.concepts/05.kv-store/index.md):
+To back up only specific resource types, use `--resources`:
 
 ```bash
-kestra backups create --resources KV_STORE
+kestra backups create FULL --resources FLOW,KV_STORE,SECRET
 ```
 
-Other resources include: `FLOW`, `NAMESPACE_FILE`, `TRIGGER`, `LOG`, `SECRET`, and more.
+Available resource names include: `APP`, `BANNER`, `BINDING`, `BLUEPRINT`, `CREDENTIAL`, `DASHBOARD`, `EXECUTION`, `FLOW`, `GROUP`, `INVITATION`, `KILL_SWITCH`, `KV_STORE`, `LOG`, `METRIC`, `NAMESPACE`, `NAMESPACE_FILE`, `ROLE`, `SECRET`, `SECURITY_INTEGRATION`, `SETTING`, `TENANT`, `TENANT_ACCESS`, `TEST_SUITE`, `TRIGGER`, `USER`, `WORKER_GROUP`.
 
-By default, backups are encrypted with the embedded Kestra encryption key. You can change this behavior with:
+**Backup options:**
 
-- `--tenant` (for `TENANT` backups): the tenant name to back up. Defaults to the “default” tenant.
-- `--encryption-key`: a custom encryption key to use instead of the embedded key.
-- `--no-encryption`: disable encryption (not recommended; metadata may contain sensitive information).
+- `--tenant`: (for `TENANT` backups) the tenant to back up. Defaults to the `default` tenant.
+- `--encryption-key`: a custom encryption key. If omitted, the instance encryption key (`kestra.encryption.secret-key`) is used. If neither is configured, the command fails.
+- `--no-encryption`: disable encryption. Use only for non-sensitive content such as seeding a demo instance.
+- `--include-data`: include execution data (executions, logs, metrics, audit logs, test runs). Excluded by default due to size.
 
-:::badge{version=">=0.22" editions="EE"}
-:::
-
-- `--include-data`: include execution data (executions, logs, metrics, audit logs). By default, execution data is excluded due to potential size.
-- `--internal-log`: set the level for internal logs to include in the backup.
-- `-l, --log-level`: set the backup log level (`TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`). Default: `INFO`.
-
-When you start the backup process from the command line, you will see the following logs which include a backup summary and the URI to the Kestra internal storage file where the backup will be stored.
+When the backup completes, the CLI logs a summary and the internal storage URI of the archive:
 
 ```plaintext
 2024-09-17 16:33:12,706 INFO  create       io.kestra.ee.backup.BackupService Backup summary: [BINDING: 3, BLUEPRINT: 1, FLOW: 13, GROUP: 1, NAMESPACE: 1, ROLE: 6, SECRET: 1, SECURITY_INTEGRATION: 0, SETTING: 1, TENANT: 1, TENANT_ACCESS: 2, TRIGGER: 2, USER: 1]
@@ -63,20 +65,27 @@ When you start the backup process from the command line, you will see the follow
 Backup created: kestra:///backups/full/backup-20240917163312.kestra
 ```
 
+Full archives are stored under `kestra:///backups/full/`; tenant archives under `kestra:///backups/tenants/<tenant>/`.
+
 ### Metadata restore
 
-To restore an instance from a metadata backup, run the following command using the internal-storage URI returned by the backup:
+To restore from a metadata backup, run the command using the URI returned by the backup:
 
 ```bash
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
 ```
 
-You can use the following command line parameters:
+Restore is idempotent at the record level — every record is upserted, so a partially completed restore can be safely re-run.
 
-- `--encryption-key`: use it to specify a custom encryption key instead of the Kestra embedded one.
-- `--to-tenant`: restore the backup into a different tenant.
+The restore command checks the archive's Kestra version against the running instance and logs a warning when they differ. This does not block the restore, but review the warning before proceeding in production.
 
-Starting the restore process from the command line will display the following logs which include backup information and a restore summary.
+**Restore options:**
+
+- `--encryption-key`: decryption key. Falls back to the instance key if omitted; fails if neither is available.
+- `--to-tenant`: restore a tenant backup into a different tenant. Rewrites every record's tenant ID to the target tenant. Not supported for full archives — the restore command fails if `--to-tenant` is used with a full archive.
+- `--resources`: restore only specific resource types (same names as `create`).
+
+The CLI logs a summary when complete:
 
 ```plaintext
 2024-09-17 16:41:06,065 INFO  restore      io.kestra.ee.backup.BackupService Restoring kestra:///backups/full/backup-20240917163312.kestra
@@ -88,7 +97,7 @@ Backup restored from URI: kestra:///backups/full/backup-20240917163312.kestra
 
 ### Example: Backup and restore inside Docker
 
-If Kestra runs in Docker, use `docker exec` and `docker cp` to move the backup file in and out of the container:
+If Kestra runs in Docker, use `docker exec` and `docker cp` to move the archive in and out of the container:
 
 ```bash
 ## Create a full backup (with execution data) from inside the container
@@ -106,62 +115,72 @@ docker exec your_container bash -c "./kestra backups restore kestra:///backups/f
 
 ## Full backup and restore with backend tools
 
-### Backup & Restore with the JDBC Backend
+### Backup and restore with the JDBC backend
 
-With the JDBC backend, Kestra can be backed up and restored using the database's native backup tools.
+Use the database's native backup tools to back up and restore Kestra when running the JDBC backend.
 
-#### Backup & Restore for PostgreSQL
+#### PostgreSQL
 
-First, stop Kestra to ensure the database is in a stable state. Although `pg_dump` allows you to back up a running PostgreSQL database, it's always better to perform backups offline when possible.
-
-Next, run the following command:
+Stop Kestra first to ensure the database is in a stable state.
 
 ```bash
 pg_dump -h localhost -p 5432 -U <username> -d <database> -F tar -f kestra.tar
 ```
 
-To restore the backup to a new database, use `pg_restore`:
+To restore:
 
 ```bash
 pg_restore -h localhost -p 5432 -U <username> -d <database> kestra.tar
 ```
 
-Finally, restart Kestra.
+Restart Kestra after the restore completes.
 
-#### Backup & Restore for MySQL
+#### MySQL
 
-First, stop Kestra to ensure the database is in a stable state. Although MySQL's `mysqldump` allows you to back up a running MySQL database, it's always better to perform backups offline when possible.
-
-Next, run the following command to back up the database:
+Stop Kestra first.
 
 ```bash
 mysqldump -h localhost -P 3306 -u <username> -p'<password>' <database> > kestra.sql
 ```
 
-To restore the backup to a new database, use the following command:
+To restore:
 
 ```bash
 mysql -h localhost -P 3306 -u <username> -p'<password>' <database> < kestra.sql
 ```
 
-The `< kestra.sql` part tells MySQL to read and execute the SQL statements contained in the `kestra.sql` backup file as input.
+Restart Kestra after the restore completes.
 
-Finally, restart Kestra.
+#### SQL Server
 
-### Backup & Restore with the Elasticsearch and Kafka Backend
+Stop Kestra first, then create a backup using SQL Server Management Studio or `sqlcmd`:
 
-With the Elasticsearch and Kafka backend, Kestra can be backed up and restored using Elasticsearch snapshots. Kafka will be reinitialized with the information from Elasticsearch.
+```sql
+BACKUP DATABASE [kestra] TO DISK = '/var/opt/mssql/backup/kestra.bak' WITH INIT;
+```
 
-This guide assumes you have already configured a snapshot repository in Elasticsearch named `my_snapshot_repository`. Elasticsearch provides several [backup options](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html). Use basic snapshot and restore operations via the Elasticsearch API.
+To restore:
 
-First, create an Elasticsearch snapshot named `kestra`:
+```sql
+RESTORE DATABASE [kestra] FROM DISK = '/var/opt/mssql/backup/kestra.bak' WITH REPLACE;
+```
+
+Restart Kestra after the restore completes.
+
+### Backup and restore with the Elasticsearch and Kafka backend
+
+With the Elasticsearch or OpenSearch backend, back up and restore using Elasticsearch snapshots. Kafka is reinitialized from Elasticsearch after the restore.
+
+This guide assumes you have configured a snapshot repository named `my_snapshot_repository`. See the [Elasticsearch snapshot documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) for setup options.
+
+Create a snapshot:
 
 ```bash
 ## Kibana Dev Tools (Console) or curl (adjust host/auth as needed)
 PUT _snapshot/my_snapshot_repository/kestra?wait_for_completion=true
 ```
 
-Next, delete all Kestra indices (prefixed with `kestra_` by default) and recreate them using the snapshot:
+Delete all Kestra indices and restore from the snapshot:
 
 ```bash
 POST _snapshot/my_snapshot_repository/kestra/_restore
@@ -170,20 +189,20 @@ POST _snapshot/my_snapshot_repository/kestra/_restore
 }
 ```
 
-If you need to start from a fresh Kafka cluster, reindex Kafka from Elasticsearch with:
+If starting from a fresh Kafka cluster, reinitialize Kafka from Elasticsearch:
 
 ```bash
 kestra sys-ee restore-queue
 ```
 
-Since some execution information is stored only in Kafka, not all pending executions may be restarted.
+Some in-flight execution state is stored only in Kafka — pending executions may not be fully recovered.
 
-Finally, restart Kestra.
+Restart Kestra after the restore completes.
 
-### Backup & Restore of Internal Storage
+### Backup and restore of internal storage
 
-Kestra’s internal storage can be either a local filesystem or object storage.
+Kestra's internal storage can be a local filesystem or object storage.
 
-- **Local filesystem**: back up/restore the storage directory with your standard filesystem tools.
-- **Managed object storage**: enable cross-region replication (often sufficient for DR) or use the provider’s backup tooling.
+- **Local filesystem**: back up and restore the storage directory with your standard filesystem tools.
+- **Managed object storage**: enable cross-region replication (often sufficient for DR) or use the provider's backup tooling.
 - **Self-hosted object storage (e.g., MinIO)**: use a tool like [Restic](https://blog.min.io/back-up-restic-minio/) and/or configure replication.

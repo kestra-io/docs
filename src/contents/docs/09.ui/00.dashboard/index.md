@@ -8,9 +8,7 @@ icon: /src/contents/docs/icons/ui.svg
 
 Get insights into your workflows with Dashboards.
 
-The first time you access the main **Dashboard**, you'll see the **Welcome Page** and you can click **Create my first flow** to launch a Guided Tour.
-
-Once you have executed a flow, you will see your flow executions in the dashboard.
+The first time you access the **Dashboard**, a welcome screen helps you get started. Once you have executed a flow, your execution data appears here.
 
 ## Dashboard page
 
@@ -20,7 +18,7 @@ The Dashboard page displays both the **default dashboard** and any **custom dash
 
 Dashboards display the following data:
 - Executions over time
-- Execution Status for Today, Yesterday as well as Last 30 days
+- Execution Status for Today, Yesterday, as well as Last 30 days
 - Executions per namespace
 - Execution errors per namespace
 - List of failed Executions
@@ -45,51 +43,7 @@ The No Code editor lets you design dashboards directly in the UI using structure
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No Code Dashboard | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-#### Quick start
-
-Navigate to the **Dashboards** tab, click **Default Dashboard**, and select **+ Create Dashboard**.
-
-![Create Dashboard](./create-dashboard.png)
-
-In the Dashboard YAML editor, select the **No Code** tab. It appears alongside the YAML editor so you can view both as you work.
-
-![No Code Dashboard Editor](./no-code-dashboards.png)
-
-#### Example: build a KPI success ratio chart
-
-Give your dashboard an ID, title, description, and time window. Changes in No Code forms immediately reflect in the YAML editor.
-
-![Time Window](./time-window.png)
-
-Click **+ Add** in the **charts** block to create your first chart. Choose **KPI Chart** as the chart type. Each type has its own options — see the [Chart Plugin documentation](/plugins/core/chart) for the full list. Open the **Documentation** tab at any time to view chart-specific guidance without leaving the editor.
-
-![Documentation Multi-Panel](./documentation-view.png)
-
-Give the chart an ID and set the data type to **Executions**. Set `field` to `ID` and `agg` to `COUNT` to capture all executions. Optionally add a display name.
-
-![KPI Chart](./kpi-chart.png)
-
-Click **+ Add** under the numerator section to add a filter. Choose `IN` for `type`, add `SUCCESS` as a value, and set `field` to `STATE`. This scopes the numerator to successful executions only.
-
-![Add Numerator](./add-numerator.png)
-
-Return to the `charts` No Code tab and open **Optional Properties**. Set `displayName`, change `numberType` to `PERCENTAGE`, and set `width` to `3`.
-
-![Chart Options](./chart-options.png)
-
-Open the **Preview** tab to review the chart. Click **Save** when satisfied. To create a failure ratio chart, copy the generated YAML, paste it into the YAML editor, and replace `SUCCESS` with `FAILED`.
-
-![Chart Preview](./chart-preview.png)
-
-#### Best practices
-
-**Organize by purpose.** Group related charts into dashboards with a clear goal — for example, separate dashboards for system health, execution performance, and user activity.
-
-**Use consistent naming.** A pattern like `team_metric_type` (e.g., `dataops_executions_latency`) makes dashboards easier to find, version, and export.
-
-**Use YAML for reuse.** When charts share the same structure with small differences in filters or fields, copy-paste the YAML and modify — faster than rebuilding forms.
-
-**Preview before saving.** Catch mismatched fields and aggregation errors early before they make it into a published dashboard.
+For a step-by-step walkthrough of building your first KPI chart using the No Code editor, see [Build a KPI success ratio chart](../../15.how-to-guides/dashboard-kpi-chart/index.md).
 
 ### Chart types
 
@@ -351,12 +305,12 @@ charts:
 ```
 
 :::alert{type="info"}
-The `content` shorthand (used in earlier examples) sets plain text content directly. The `source` property gives you access to the `FlowDescription` type to pull dynamic content from a flow's description field.
+To use `FlowDescription`, set `source.type` to `FlowDescription` and provide the `namespace` and `flowId`. For inline Markdown, set `source.type` to `Text` and write your content under `source.content`.
 :::
 
 ## Create a new custom dashboard as code
 
-Clicking on the `+ Create new dashboard` button opens a code editor where you can define the dashboard layout and data sources as code.
+The **+ Create new dashboard** button opens a code editor where you can define the dashboard layout and data sources as code.
 
 The top-level dashboard properties are:
 
@@ -493,7 +447,7 @@ To see all available properties to configure a custom dashboard as code, see exa
 
 ## Exporting data
 
-Table data can be exported as a CSV file by hovering over the top-right corner and clicking the download icon. This enables dashboard users to build custom queries in Dashboards and to export data with one click without having to worry about pagination.
+Export table data as CSV using the download icon in the top-right corner of a table chart — no pagination required.
 
 ![Dashboard Table Export](./dashboard-table-export.png)
 
@@ -516,6 +470,7 @@ Dashboards can query data from these source `types`:
 | `io.kestra.plugin.core.dashboard.data.Metrics` | Metrics emitted by your plugins |
 | `io.kestra.plugin.core.dashboard.data.MetricsKPI` | Metrics data for KPI charts (supports `numerator`) |
 | `io.kestra.plugin.core.dashboard.data.Triggers` | Trigger state and scheduling data |
+| `io.kestra.plugin.ee.dashboard.data.Assets` | Asset inventory data (EE only). Not filtered by the dashboard time range — charts always reflect the current inventory. |
 
 ### Available fields by data source
 
@@ -586,6 +541,20 @@ After defining the data source, specify the columns to display in the chart. Eac
 | `NEXT_EXECUTION_DATE` | Scheduled next execution date |
 | `WORKER_ID` | Worker handling the trigger |
 
+#### Assets (EE only)
+
+| Field | Description |
+| --- | --- |
+| `ID` | Asset identifier |
+| `TYPE` | Asset type (e.g., `io.kestra.plugin.ee.assets.VM`) |
+| `NAMESPACE` | Asset namespace |
+| `DISPLAY_NAME` | Asset display name |
+| `METADATA` | Asset metadata map. Use `metadataKey` in the column definition to group or filter by a specific metadata key. |
+| `CREATED` | Asset creation timestamp |
+| `UPDATED` | Asset last updated timestamp |
+
+Asset charts are not filtered by the dashboard time range — they always reflect the current inventory. `Assets` is compatible with `Bar`, `Pie`, and `Table` chart types. Use `NAMESPACE` in a `where` clause to scope results to a specific namespace.
+
 ### Column properties
 
 Each entry in `data.columns` supports the following properties:
@@ -619,5 +588,6 @@ Available filter types:
 - `NOT_EQUAL_TO`
 - `NOT_IN`
 - `OR`
+- `PREFIX`
 - `REGEX`
 - `STARTS_WITH`

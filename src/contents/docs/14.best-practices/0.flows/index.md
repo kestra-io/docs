@@ -33,7 +33,7 @@ Depending on the internal queue and repository implementation, there may be a ha
 
 While a flow can contain many tasks, it’s not recommended to include a large number of tasks within a single execution.
 
-A flow can contain either manually defined tasks or dynamically generated ones. While [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) and [ForEachItem](/plugins/core/flow/io.kestra.plugin.core.flow.foreachitem) are powerful for looping over results, they can create hundreds of TaskRuns if used on large datasets. For example, a nested loop of 20 × 20 tasks results in **400 TaskRuns**.
+A flow can contain either manually defined tasks or dynamically generated ones. While the [Loop task](/plugins/core/flow/io.kestra.plugin.core.flow.loop) runs each iteration as an isolated sub-execution, a deeply nested loop can still generate a large number of sub-executions. For example, a nested loop of 20 × 20 tasks results in **400 sub-executions**.
 
 :::alert{type="warning"}
 Flows with **over 100 tasks** tend to experience performance degradation and longer execution times.
@@ -48,7 +48,7 @@ While powerful, this feature **should not be used to transfer large amounts of d
 
 For example, the [Query](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.query) task in BigQuery has a `fetch` property that retrieves query results as an output attribute. If the query returns a large dataset, the result will be stored in the execution context — meaning it will be serialized and deserialized on each task state change, severely impacting performance.
 
-This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) or [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task.
+This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) or [Loop](/plugins/core/flow/io.kestra.plugin.core.flow.loop) task.
 
 :::alert{type="info"}
 For large data volumes, use the `stores` property instead. Stored outputs are written to Kestra’s internal storage, and only the file URL is referenced in the execution context.
@@ -74,38 +74,16 @@ This helps prevent stalled executions and ensures resource efficiency.
 
 ## Flow trigger on state change
 
-Kestra can automatically start a flow as soon as another flow completes. This makes it easy to create dependencies between flows, even when they are owned by different teams. For example, a flow can trigger based on the `state` of another flow’s execution. There are multiple ways to configure this behavior, but one approach is recommended as a best practice.
-
-Take the following two triggers polling one specific flow: one using `preconditions.flows.states` to define the required `states` and the other using the `states` property.
-
-**Option 1**
+Kestra can automatically start a flow as soon as another flow completes. This makes it easy to create dependencies between flows, even when they are owned by different teams. Use `dependsOn` to declare the upstream flow and the required states:
 
 ```yaml
 triggers:
   - id: release
     type: io.kestra.plugin.core.trigger.Flow
-    preconditions:
-      id: flows
-      flows:
-        - namespace: company.release
-          flowId: parent
-          states:
-            - SUCCESS
+    dependsOn:
+      - namespace: company.release
+        flowId: parent
+        states: [SUCCESS]
 ```
 
-or **Option 2**
-
-```yaml
-triggers:
-  - id: release
-    type: io.kestra.plugin.core.trigger.Flow
-    states:
-      - SUCCESS
-    preconditions:
-      id: flows
-      flows:
-        - namespace: company.release
-          flowId: parent
-```
-
-While both configurations will work, **Option 1** is the recommended approach. It is more performant and declarative compared to **Option 2**, especially when working with flow triggers dependent on state.
+`states` defaults to `[SUCCESS, WARNING]`. Declare it explicitly when you need a different set.

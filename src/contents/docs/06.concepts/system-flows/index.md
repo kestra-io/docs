@@ -30,7 +30,7 @@ kestra:
     namespace: system
 ```
 
-To access System Flows, navigate to the **Namespaces** section in the UI. The `system` namespace is pinned at the top for quick access.
+System Flows live in the `system` namespace, pinned at the top of **Namespaces**.
 
 ![system_namespace](./system-namespace.png)
 

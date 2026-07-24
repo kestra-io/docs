@@ -93,6 +93,17 @@ kestra:
 Plugin defaults are evaluated by the Executor and propagated to other components, so every server should use the same `kestra.plugins.defaults`.
 :::
 
+`kestra.plugins.defaults` is the canonical global configuration key. The older `kestra.tasks.defaults` key is still recognized for compatibility, but it is deprecated and should be replaced.
+
+Precedence works as follows:
+
+- global plugin defaults provide the base values
+- flow-level `pluginDefaults` override global defaults
+- task properties override non-forced defaults
+- `forced: true` prevents the task from overriding that property
+
+Use non-forced defaults for convenience and consistency, and use forced defaults when the platform must enforce a value such as a specific task runner.
+
 Enable or preconfigure plugin features globally:
 
 ```yaml
@@ -164,6 +175,7 @@ This part of the configuration also includes:
 
 - retries
 - temporary task storage
+- HTTP task URL filtering
 - tutorial flows
 - system flows
 - local flow synchronization
@@ -217,6 +229,28 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
+
+### HTTP task URL filtering
+
+Use `kestra.tasks.http` to restrict which URLs HTTP plugin tasks can call. Configure an allow-list, a deny-list, or both:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      allowed-list:
+        - https://api.example.com
+      denied-list:
+        - http://169.254.169.254
+        - http://localhost
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+
+For security guidance and matching behavior, see [HTTP task URL filtering](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering).
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 

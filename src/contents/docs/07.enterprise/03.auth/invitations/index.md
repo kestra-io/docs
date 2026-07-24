@@ -24,8 +24,8 @@ By default, if the [email server is configured in Kestra EE](../../../configurat
 ## How to Invite Users
 
 1. Navigate to the **IAM** page in the **Tenant** section
-2. Click on the **Users** tab
-3. Click on the **+ Add** button
+2. Open the **Users** tab
+3. Click **+ Add**
 4. Fill in the user's email address, and select the desired group or attach the role directly — optionally restricting the permission to one or more namespaces
 5. Click the **Add** button — this will send an email to the user with an invitation link, or display the link you can share with the user manually.
 
@@ -39,7 +39,9 @@ You can check the box to **Create user directly (skip invitation)** if one is no
 
 ## Accepting invitations
 
-When a user receives an invitation, they can click on the link in the email to accept it. The user will be redirected to the Kestra login page, where they set up their account (i.e., create a password), or log in using SSO if it's enabled.
+When a user receives an invitation, they can click the link in the email to accept it. The user will be redirected to the Kestra login page, where they set up their account (i.e., create a password), or log in using SSO if it's enabled.
+
+If password-based login is enabled, the password they choose must satisfy the instance password policy configured under `kestra.security.basic-auth`. See [Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) for the available password policy settings.
 
 ## Invite expiration time
 
