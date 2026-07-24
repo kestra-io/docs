@@ -87,7 +87,7 @@
     "wrangler": "^4.103.0"
   },
   "devDependencies": {
-    "@astrojs/node": "^11.0.0",
+    "@astrojs/node": "^11.0.2",
     "@playwright/test": "^1.61.0",
     "vitest": "^4.1.8"
   },
