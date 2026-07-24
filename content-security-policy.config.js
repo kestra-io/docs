@@ -45,6 +45,8 @@ export default {
         "'self'",
         "data:",
         "blob:",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
         "https://*.google.fr",
         "https://*.google.com",
         "https://*.linkedin.com",
