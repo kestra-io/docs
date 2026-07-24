@@ -175,6 +175,7 @@ This part of the configuration also includes:
 
 - retries
 - temporary task storage
+- HTTP task URL filtering
 - tutorial flows
 - system flows
 - local flow synchronization
@@ -228,6 +229,28 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
+
+### HTTP task URL filtering
+
+Use `kestra.tasks.http` to restrict which URLs HTTP plugin tasks can call. Configure an allow-list, a deny-list, or both:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      allowed-list:
+        - https://api.example.com
+      denied-list:
+        - http://169.254.169.254
+        - http://localhost
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+
+For security guidance and matching behavior, see [HTTP task URL filtering](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering).
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 

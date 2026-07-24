@@ -31,6 +31,48 @@ In distributed deployments, Worker Controllers communicate with Workers over gRP
 
 See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference.
 
+## HTTP task URL filtering
+
+HTTP plugin tasks (`Request`, `Download`, `SseRequest`, and `Trigger`) make server-side HTTP calls to URIs controlled by flow authors. Without restrictions, a flow author can reach cloud metadata endpoints (such as `169.254.169.254` on AWS, GCP, and Azure), internal management APIs, or private services not reachable from the internet.
+
+Configure an allow-list, a deny-list, or both under `kestra.tasks.http`:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      allowed-list:
+        - https://api.example.com
+        - https://data.partner.io
+      denied-list:
+        - http://169.254.169.254
+        - http://localhost
+        - http://127.0.0.1
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+
+Both lists are empty by default — no filtering is applied unless you configure them.
+
+When both lists are set, the allowed-list is checked first. A URI that matches an allowed-list entry but also matches a denied-list entry is still blocked.
+
+**Matching is prefix-based**, not glob or CIDR. Each entry is a literal string prefix, so:
+- `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`
+- `http://10.` blocks `http://10.0.0.1/admin` but not `https://10.0.0.1/admin` because the scheme differs
+
+When a URI is blocked, the task fails with an error that identifies the matching config key:
+
+```
+The URI http://169.254.169.254/... is in the configured denied list (kestra.tasks.http.denied-list).
+```
+
+:::alert{type="info"}
+This filter applies to HTTP plugin tasks only. The `http()` Pebble expression function makes independent server-side HTTP calls and is not covered by this configuration.
+:::
+
 ## Plugin and code validation
 
 To prevent the execution of malicious code, you can implement several strategies:
