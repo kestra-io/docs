@@ -142,6 +142,9 @@ const { src, title, class: className, autoplay = true } = Astro.props
             document.querySelectorAll<HTMLButtonElement>(".arcade-facade")
 
         facades.forEach((facade) => {
+            if (facade.dataset.arcadeInit) return
+            facade.dataset.arcadeInit = "1"
+
             facade.addEventListener(
                 "click",
                 () => {
