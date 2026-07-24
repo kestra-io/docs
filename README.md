@@ -69,6 +69,56 @@ To resolve this issue, you will need to switch to the OpenSSL legacy provider by
 
 If you are using an Apple Silicon Mac, please ensure that you are using Node.js version 20 or higher.
 
+## Analytics: GTM runs in a web worker (Partytown)
+
+Google Tag Manager and every `gtag`/tag script it loads run inside a
+[Partytown](https://partytown.qwik.dev/) web worker instead of the main
+thread (PageSpeed attributed ~640 ms of main-thread work and ~618 KiB of
+transfer to the GTM stack). The wiring:
+
+- `astro.config.mjs` registers the `@astrojs/partytown` integration with
+  `forward: ["dataLayer.push"]`.
+- `src/scripts/cookieconsent.ts` injects `gtm.js` after cookie consent with
+  `type="text/partytown"` and dispatches the `ptupdate` event so Partytown
+  picks up the late-added script.
+- Site code must only talk to GTM through `window.dataLayer.push(...)`
+  (already the case — `vue-gtm` runs with `enabled: false`). Forwarded
+  pushes are queued even before the worker is ready, so ordering is safe.
+
+### Limitations to be aware of
+
+- **GTM Preview / Tag Assistant does not work** while GTM runs in the
+  worker. Verify tags with GA4 DebugView, the network panel, or by
+  temporarily loading GTM on the main thread (see rollback below).
+- **Tags execute inside the worker.** Any script a tag injects is fetched
+  with `fetch()` and must be CORS-readable; vendors that don't send
+  `Access-Control-Allow-Origin` fail silently. Google (GA4, Ads) serves
+  everything with CORS and is the officially supported case.
+- **DOM-heavy tags are risky in the worker** (widgets, heatmaps,
+  scroll/visibility triggers): every DOM access is proxied synchronously to
+  the main thread — slower, and occasionally incompatible.
+  `loadScriptsOnMainThread` in `astro.config.mjs` is the escape hatch; the
+  HubSpot loader (chat widget, banners) is already pinned there.
+- **`document.write`-based tags are not supported.**
+- **Main-thread code cannot read GTM state** (`window.google_tag_manager`,
+  `gtag(...)` return values). Only forwarded globals reach the worker.
+- **New tag domains need CSP entries in `connect-src`**
+  (`content-security-policy.config.js`): inside the worker, script
+  downloads and beacons go through `fetch()`, which `connect-src` governs
+  (on the main thread they were covered by `script-src`/`img-src`).
+- kestra.io is not cross-origin isolated, so Partytown uses its service
+  worker fallback (`/~partytown/partytown-sw.js`). Synchronous XHR
+  deprecation warnings in the console are expected and harmless.
+
+**When adding a tag to the GTM container**, check it against the list above
+(vendor script CORS-enabled? no `document.write`? not DOM-heavy?). If in
+doubt, add its script URL pattern to `loadScriptsOnMainThread` and its
+domains to the CSP, then verify on a preview deploy.
+
+**Rollback / debugging:** remove `type="text/partytown"` (and the
+`ptupdate` dispatch) in `src/scripts/cookieconsent.ts` to load GTM on the
+main thread again; the Partytown integration can stay enabled while unused.
+
 ## License
 Apache 2.0 © [Kestra Technologies](https://kestra.io)
 
