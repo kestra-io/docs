@@ -384,6 +384,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
 - [Install Only Selected Plugins in Kestra OSS](https://kestra.io/docs/how-to-guides/selected-plugin-installation.md)
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
+- [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
 - [Migrate from Shipyard to Kestra](https://kestra.io/docs/how-to-guides/shipyard-migration.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
