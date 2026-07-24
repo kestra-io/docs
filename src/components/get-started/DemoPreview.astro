@@ -1,4 +1,5 @@
 ---
+import ArcadeEmbed from "~/components/common/ArcadeEmbed.astro"
 ---
 
 <section class="demo-preview" id="demo-preview">
@@ -10,13 +11,10 @@
             Watch the full product tour — create a workflow, run it, and explore the UI in under 2 minutes.
         </p>
         <div class="arcade-wrapper" data-usal="fade-up">
-            <iframe
+            <ArcadeEmbed
                 src="https://demo.arcade.software/Vzkk6nAJSdkaXvGDSdBC?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
                 title="Welcome to Kestra"
-                loading="lazy"
-                allow="clipboard-write"
-                allowfullscreen
-            ></iframe>
+            />
         </div>
     </div>
 </section>
