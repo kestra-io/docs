@@ -102,6 +102,10 @@ Capacity reservations are live-configurable: updating a subscription's reserved 
 
 ## Worker authentication
 
+:::alert{type="info"}
+Worker authentication must be enabled server-side before registration tokens have any effect. A worker configured with a token but connecting to an instance where auth is disabled will join the default group instead.
+:::
+
 Workers join a group by presenting a registration token generated for that group. The token is stored as a hash and shown only once at creation — copy it immediately.
 
 On first connect, the worker exchanges the registration token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically before it expires. Revoking or deleting a token immediately invalidates credentials for any workers that registered with it; those workers fail closed once their current access token expires.
@@ -145,15 +149,13 @@ kestra:
 
 ### Starting a worker for a group
 
-Start the worker with the `--worker-group` flag and the auth configuration above:
+Start the worker normally — the registration token configured in `kestra.worker.auth.registration-token` identifies which group the worker joins at connection time. No extra CLI flags are needed.
 
 ```bash
-kestra server worker --worker-group gpu
+kestra server worker
 ```
 
-:::alert{type="info"}
-Running workers as separate server components requires a distributed deployment. See [running Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
-:::
+Workers also need a controller endpoint configured under `kestra.worker.controllers` so they know where to connect. For Helm deployments, see the [Helm gRPC and Worker-Controller migration guide](../../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md). For bare-metal or Docker deployments, see [running Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
 
 ## Using workerSelector in tasks
 
@@ -250,8 +252,6 @@ pluginDefaults:
         tags: [gpu]
         fallback: WAIT
 ```
-
-A default `workerSelector` can also be configured at the namespace or tenant level to apply across all tasks that do not declare their own selector.
 
 ## Use cases
 

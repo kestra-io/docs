@@ -393,7 +393,7 @@ kestra server webserver --no-tutorials
 
 Start a worker.
 
-**Options**: `-t, --thread` (max threads), `-g, --worker-group` (EE only)
+**Options**: `-t, --thread` (max threads)
 
 ```bash
 kestra server worker --thread 16

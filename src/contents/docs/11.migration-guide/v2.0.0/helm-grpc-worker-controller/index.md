@@ -40,9 +40,22 @@ For each group you previously defined in `workerGroups`:
 1. Start Kestra 2.0.0 and open **Instance → Worker Groups**.
 2. Create a Worker Group with the same id you used in the old `workerGroups` key (e.g. `wg-1`).
 3. Generate a registration token for that group. Copy it immediately — it is shown only once.
-4. In your `values.yaml`, configure the worker deployment to present that token and join the correct group:
+4. Enable worker authentication server-side and configure the worker deployment with the registration token:
 
 ```yaml
+# On the webserver or standalone pod — enables token auth
+configurations:
+  application:
+    kestra:
+      ee:
+        worker:
+          auth:
+            enabled: true
+            jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"
+```
+
+```yaml
+# On the worker deployment — presents the token to join wg-1
 configurations:
   application:
     kestra:
@@ -53,11 +66,11 @@ configurations:
 deployments:
   worker:
     enabled: true
-    extraArgs:
-      - --worker-group=wg-1
 ```
 
-If you previously had multiple worker groups running in parallel (e.g. `wg-1` and `wg-2`), you need a separate worker deployment per group. Consult the [Helm chart `values.yaml`](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for the current syntax for multiple named worker deployments, or deploy each group as a separate Helm release with its own `values.yaml`.
+The registration token is what assigns the worker to a group — no `extraArgs` are needed. The `--worker-group` CLI flag was removed in 2.0. Without `kestra.ee.worker.auth.enabled: true`, tokens are ignored and all workers join the default group.
+
+If you previously had multiple worker groups running in parallel (e.g. `wg-1` and `wg-2`), you need a separate worker deployment per group, each configured with its own `registration-token`. Consult the [Helm chart `values.yaml`](https://github.com/kestra-io/kestra/blob/develop/charts/kestra/values.yaml) for the current syntax for multiple named worker deployments, or deploy each group as a separate Helm release with its own `values.yaml`.
 
 ## Deployment patterns
 
