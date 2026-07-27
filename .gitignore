@@ -46,3 +46,4 @@ blob-report/
 ## mkcert
 localhost.pem
 localhost-key.pem
+.claude/settings.local.json
