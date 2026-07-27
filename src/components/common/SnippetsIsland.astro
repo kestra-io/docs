@@ -1,0 +1,24 @@
+---
+import Snippets from "./Snippets.vue"
+import { getMarked } from "~/markdown/marked-shiki"
+
+// Server-parsing wrapper around the interactive Snippets island (copy button
+// + expander). The island used to parse its markdown client-side, so the
+// server HTML contained only a skeleton until hydration. Parsing here and
+// passing the result through the `html` prop puts the highlighted code in
+// the initial HTML; hydration then only wires up the interactivity.
+// For purely static snippets (no copy button) prefer Snippets.astro.
+interface Props {
+    code?: string
+    lang?: string
+    expandThreshold?: number
+}
+
+const { code = "", lang = "bash", expandThreshold } = Astro.props
+
+const html = code
+    ? await getMarked().parse(`\`\`\`${lang}\n${code}\n\`\`\``)
+    : ""
+---
+
+<Snippets client:idle {code} {lang} {expandThreshold} {html} />

@@ -51,6 +51,8 @@ Scalable alternatives are available as plugins:
 - [Storage MinIO](https://github.com/kestra-io/storage-minio) — for [AWS S3](https://aws.amazon.com/s3/) and any S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
 - [Storage GCS](https://github.com/kestra-io/storage-gcs) — for [Google Cloud Storage](https://cloud.google.com/storage).
 - [Storage Azure](https://github.com/kestra-io/storage-azure) — for [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
+- [Storage Cloudflare](https://github.com/kestra-io/storage-cloudflare) — for [Cloudflare R2](https://www.cloudflare.com/products/r2/).
+- [Storage OBS](https://github.com/kestra-io/storage-obs) — for [Huawei Cloud OBS](https://www.huaweicloud.com/en-us/product/obs.html).
 
 For details, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md).
 

@@ -64,7 +64,7 @@ Use this section to find the right `type` for a task, understand its properties,
 - [Plugin marketplace](https://kestra.io/plugins): Search all available task, trigger, condition, and storage plugins with full property documentation — the definitive reference for any plugin type
 - [Core plugins](https://kestra.io/plugins/core): Built-in tasks — `Log`, `Return`, `OutputValues`, `ForEach`, `ForEachItem`, `Http.Request`, `Http.Download`, `Subflow`, and more
 - [Script tasks](https://kestra.io/docs/scripts.md): Run Python, Shell, Node.js, R, Julia, Ruby, Perl, and PowerShell inline or from files inside a flow
-- [Task runners](https://kestra.io/docs/task-runners.md): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS ECS Fargate, Azure Batch, Google Batch, or Google Cloud Run — instead of the local worker
+- [Task runners](https://kestra.io/docs/task-runners.md): Execute script tasks on remote compute — Docker, Kubernetes, AWS Batch, AWS EC2, Azure Batch, Azure VM, Google Batch, or Google Cloud Run — instead of the local worker
 
 ## Data, state, and storage
 
@@ -284,8 +284,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Custom Blueprints in Kestra Enterprise: Templates](https://kestra.io/docs/enterprise/governance/custom-blueprints.md)
 - [Log Shipper in Kestra Enterprise: Centralize Logs](https://kestra.io/docs/enterprise/governance/logshipper.md)
 - [Namespace Management in Kestra Enterprise: Isolation](https://kestra.io/docs/enterprise/governance/namespace-management.md)
-- [Read-Only Secret Manager in Kestra Enterprise](https://kestra.io/docs/enterprise/governance/read-only-secrets.md)
-- [Secrets in Kestra Enterprise: Manage Sensitive Data](https://kestra.io/docs/enterprise/governance/secrets.md)
 - [External Secrets Manager in Kestra: AWS, Azure, GCP](https://kestra.io/docs/enterprise/governance/secrets-manager.md)
 - [Multi-Tenancy in Kestra: Configure Tenants](https://kestra.io/docs/enterprise/governance/tenants.md)
 - [Unit Tests in Kestra Enterprise: Validate Flows](https://kestra.io/docs/enterprise/governance/unit-tests.md)
@@ -330,13 +328,12 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
 - [Deploy Kestra with ArgoCD](https://kestra.io/docs/how-to-guides/argocd.md)
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
-- [Ceph Storage for Kestra via MinIO S3 Gateway](https://kestra.io/docs/how-to-guides/ceph.md)
-- [Use Cloudflare R2 with MinIO Gateway for Kestra](https://kestra.io/docs/how-to-guides/cloudflare-r2.md)
 - [Add Conditional Branching in Kestra](https://kestra.io/docs/how-to-guides/conditional-branching.md)
 - [Build a Custom Plugin for Kestra](https://kestra.io/docs/how-to-guides/custom-plugin.md)
 - [Use Dataform in Kestra](https://kestra.io/docs/how-to-guides/dataform.md)
 - [Manage dbt Projects with Kestra's Code Editor](https://kestra.io/docs/how-to-guides/dbt.md)
 - [Use Debezium Tasks and Triggers in Kestra](https://kestra.io/docs/how-to-guides/debezium.md)
+- [Run C# Inside Your Flows](https://kestra.io/docs/how-to-guides/dotnet.md)
 - [Build Dynamic Flows in Kestra](https://kestra.io/docs/how-to-guides/dynamic-flows.md)
 - [Create a Dynamic Dropdown for Inputs](https://kestra.io/docs/how-to-guides/dynamic-inputs.md)
 - [Build ETL Pipelines in Kestra](https://kestra.io/docs/how-to-guides/etl-pipelines.md)
@@ -354,7 +351,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Connect Web Apps to Kestra via Webhooks](https://kestra.io/docs/how-to-guides/js-webhook.md)
 - [Work with JSON in Kestra](https://kestra.io/docs/how-to-guides/json.md)
 - [Run Julia Inside Your Flows](https://kestra.io/docs/how-to-guides/julia.md)
-- [Configure Keycloak SSO in Kestra](https://kestra.io/docs/how-to-guides/keycloak.md)
 - [Set Up Secrets from a Helm Chart](https://kestra.io/docs/how-to-guides/kubernetes-secrets.md)
 - [Synchronize Local Flows in Kestra](https://kestra.io/docs/how-to-guides/local-flow-sync.md)
 - [Long-Running Tasks on Kubernetes in Kestra](https://kestra.io/docs/how-to-guides/long-running-intensive-tasks.md)
@@ -388,6 +384,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Configure Secrets in Kestra](https://kestra.io/docs/how-to-guides/secrets.md)
 - [Install Only Selected Plugins in Kestra OSS](https://kestra.io/docs/how-to-guides/selected-plugin-installation.md)
 - [Trigger Kestra Flows from ServiceNow](https://kestra.io/docs/how-to-guides/servicenow-trigger.md)
+- [Trigger Kestra Flows from Splunk Alerts](https://kestra.io/docs/how-to-guides/splunk-alert-trigger.md)
 - [Run Shell Scripts Inside Your Flows](https://kestra.io/docs/how-to-guides/shell.md)
 - [Migrate from Shipyard to Kestra](https://kestra.io/docs/how-to-guides/shipyard-migration.md)
 - [Slack Events API with Kestra: Trigger Flows](https://kestra.io/docs/how-to-guides/slack-webhook.md)
@@ -401,6 +398,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Terraform for Flow Modularity in Kestra](https://kestra.io/docs/how-to-guides/terraform-templating.md)
 - [Kestra with Pulumi's Terraform Provider](https://kestra.io/docs/how-to-guides/using-pulumis-terraform-provider.md)
 - [Access Values Between Flows](https://kestra.io/docs/how-to-guides/values-between-flows.md)
+- [Use HashiCorp Vault as a Read-Only Secrets Backend in Kestra](https://kestra.io/docs/how-to-guides/vault-read-only-secrets.md)
 - [Set Up Webhooks to Trigger Flows](https://kestra.io/docs/how-to-guides/webhooks.md)
 - [Install Kestra: Docker, Kubernetes, VM, and JAR](https://kestra.io/docs/installation.md)
 - [Deploy Kestra on AWS EC2 – RDS and S3 Backend](https://kestra.io/docs/installation/aws-ec2.md)
@@ -548,7 +546,9 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Task Runners vs Worker Groups – When to Use Each](https://kestra.io/docs/task-runners/task-runners-vs-worker-groups.md)
 - [Task Runner Types – Choose the Right Execution Backend](https://kestra.io/docs/task-runners/types.md)
 - [AWS Batch Task Runner – Run Tasks on ECS Fargate, EC2, or EKS](https://kestra.io/docs/task-runners/types/aws-batch-task-runner.md)
+- [AWS EC2 Task Runner – Run Tasks Natively on EC2 Instances](https://kestra.io/docs/task-runners/types/aws-ec2-task-runner.md)
 - [Azure Batch Task Runner: Run Tasks on Azure Containers](https://kestra.io/docs/task-runners/types/azure-batch-task-runner.md)
+- [Azure Virtual Machine Task Runner – Run Tasks Natively on Azure VMs](https://kestra.io/docs/task-runners/types/azure-virtualmachine-task-runner.md)
 - [Docker Task Runner – Run Tasks in Containers](https://kestra.io/docs/task-runners/types/docker-task-runner.md)
 - [Google Batch Task Runner: Run Tasks on Cloud VMs](https://kestra.io/docs/task-runners/types/google-batch-task-runner.md)
 - [Google Cloud Run Task Runner: Serverless Task Execution](https://kestra.io/docs/task-runners/types/google-cloudrun-task-runner.md)

@@ -74,6 +74,9 @@ export const collections = {
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
+                // Override the canonical URL, e.g. for content syndicated from
+                // another site. Rendered in <head> by the layout.
+                canonical: z.string().optional(),
             }),
     }),
     legal: defineCollection({
@@ -212,6 +215,8 @@ export const collections = {
                 metaDescription: z.string().optional(),
                 tag: z.enum(["infrastructure", "data", "ai", "whitepapers"]),
                 date: z.coerce.date().optional(),
+                lastUpdated: z.coerce.date().optional(),
+                author: z.string().optional(),
                 image: image().optional(),
                 href: z.string().optional(),
                 faq: z

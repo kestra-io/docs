@@ -9,11 +9,13 @@
             sizeOptions?: number[]
             defaultSize?: number
             showTotal?: boolean
+            compact?: boolean
         }>(),
         {
             sizeOptions: () => [12, 24, 48, 96],
             defaultSize: 24,
             showTotal: true,
+            compact: false,
         },
     )
 
@@ -120,6 +122,7 @@
                 v-if="totalPages > 1"
                 :current-url="currentUrl"
                 :totalPages="totalPages"
+                :compact="compact"
                 v-model:current-page="currentPage"
             />
             <div v-if="showTotal" class="d-flex align-items-baseline">

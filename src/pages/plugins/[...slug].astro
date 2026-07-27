@@ -21,6 +21,7 @@ import { getAliasMapping, redirectAlias } from "~/utils/plugins/aliasMapping"
 import { generateNavigationFromSubgroups } from "~/utils/plugins/generateNavigation"
 import { generateSidebarPluginData } from "~/utils/plugins/generateSidebarPluginData"
 import {
+    fetchElementVersions,
     fetchInitialPluginData,
     fetchPageDefinition,
     fetchSecondaryData,
@@ -28,6 +29,8 @@ import {
 } from "~/utils/plugins/fetchPluginPageData"
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
+
+import pluginGridUrl from "~/components/plugins/assets/plugin-grid.svg?url"
 
 const rawSplitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
@@ -252,6 +255,23 @@ if (
 }
 
 const latestVersion = githubVersions.versions?.[0]
+
+// Scope the dropdown to versions where the current element exists: its fqcn on a class page,
+// its subpackage on a subgroup page. Falls back to the full list when nothing matches.
+const subGroupFqcn = subGroup
+    ? allPlugins.find(
+          (p) => (p.name ?? "").toLowerCase() === (pluginName ?? "").toLowerCase() && matchesSubGroup(p, subGroup),
+      )?.subGroup
+    : undefined
+const scopeElement = pluginType ?? subGroupFqcn
+
+let dropdownVersions = githubVersions
+if (scopeElement && githubVersions.versions?.length) {
+    const scoped = new Set(await fetchElementVersions(scopeElement))
+    const filtered = githubVersions.versions.filter((v: any) => scoped.has(v.version))
+    if (filtered.length) dropdownVersions = { ...githubVersions, versions: filtered }
+}
+
 const imageUrl = `${Astro.site}${ogImage.replace(/^\//, "")}`
 
 const pluginSchema = pluginType
@@ -319,6 +339,17 @@ const pluginSchema = pluginType
 
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
     <Fragment slot="head">
+        {/* This decorative background on .plugin-details is the page's LCP
+            image, but as a CSS background it is only discovered once the
+            render-blocking stylesheet is parsed (~1.6s load delay on mobile).
+            Preloading it from the HTML lets it download in parallel with the
+            CSS so the LCP paint isn't waiting on it. */}
+        <link
+            rel="preload"
+            as="image"
+            href={pluginGridUrl}
+            fetchpriority="high"
+        />
         <script
             is:inline
             type="application/ld+json"
@@ -406,7 +437,7 @@ const pluginSchema = pluginType
         <div slot="aside">
             <RightSideBar
                 links={pageWithToc.body.toc?.links}
-                version={githubVersions}
+                version={dropdownVersions}
                 releasesUrl={githubReleasesUrl}
                 categories={currentPluginCategories}
                 metadata={currentPluginMetadata}

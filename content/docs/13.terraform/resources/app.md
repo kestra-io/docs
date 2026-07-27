@@ -24,6 +24,10 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 
 - `source` (String) The source text.
 
+### Optional
+
+- `tenant_id` (String) The tenant id. Defaults to the provider tenant when omitted.
+
 ### Read-Only
 
 - `id` (String) The ID of this resource.

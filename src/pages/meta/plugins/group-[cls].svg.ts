@@ -6,14 +6,22 @@ export const prerender = false
 
 export async function GET({ request, params }: { request: any; params: { cls: string } }) {
     const cls = params.cls
-    const metadata = await $fetchApiCached<PluginMetadata>(`/plugins/metadata/group/${cls}`)
+    if (!cls || cls === "undefined" || cls === "null") {
+        return new Response("Not found", { status: 404 })
+    }
 
-    const category = "Plugins"
-    const title = metadata.title
-    const description = metadata.description
-    const image = metadata.icon
+    let metadata: PluginMetadata
+    try {
+        metadata = await $fetchApiCached<PluginMetadata>(`/plugins/metadata/group/${cls}`)
+    } catch {
+        return new Response("Not found", { status: 404 })
+    }
 
-    const svgString = generate(request, category as string, title as string, image, description)
+    if (!metadata?.title) {
+        return new Response("Not found", { status: 404 })
+    }
+
+    const svgString = generate(request, "Plugins", metadata.title, metadata.icon, metadata.description)
 
     return new Response(svgString, {
         headers: {

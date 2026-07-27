@@ -1,0 +1,348 @@
+title: "Orchestrate Google Gemini with Kestra: retries, fallback, and structured output around every API-key call"
+description: "Add retries, model-version fallback, concurrency limits, and full execution history around Gemini ChatCompletion, StructuredOutputCompletion, and MultimodalCompletion calls made with a direct API key."
+
+tool:
+  name: "Gemini"
+  pluginClass: "io.kestra.plugin.gemini.ChatCompletion"
+  color: "#1BA1E3"
+
+hero:
+  title: "Give every Gemini call retries, fallback, and an audit trail."
+  description: "The Gemini API answers a single prompt, but production use needs a retry when it returns a 503, a fallback across model versions when the outage is sticky, and one place to see what ran. Kestra wraps every ChatCompletion, StructuredOutputCompletion, and MultimodalCompletion call in that missing layer, using a direct API key rather than a GCP project, then chains the result into whatever runs next."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+  secondaryCta:
+    label: "Get Started"
+    href: "/get-started"
+
+nutshell: "The <code>plugin-gemini</code> package calls Google's models directly with an API key: <code>ChatCompletion</code>, <code>TextCompletion</code>, <code>MultimodalCompletion</code>, <code>StructuredOutputCompletion</code>, and Veo video generation. None of that ships with a scheduler, a retry policy, or a queue. Kestra adds the trigger that starts the call, the retry and fallback chain that survives a provider outage, the concurrency cap that protects your quota, and one audit trail across the Gemini call and whatever it feeds next: a <a href='/orchestration/slack'>Slack</a> alert, a <a href='/orchestration/bigquery'>BigQuery</a> table, or a <a href='/orchestration/git'>Git</a>-versioned prompt. Teams standardized on <a href='/orchestration/vertex-ai'>Vertex AI</a> for GCP-native model serving reach for this plugin instead when a flow just needs a Gemini API key and nothing else from Google Cloud."
+
+pillars:
+  title: "Above the Gemini API, around every call."
+  subtitle: "Gemini answers a prompt with a single API key. Kestra decides what triggers the call, shapes the answer into typed JSON, reads images alongside text, fans out a queue at controlled throughput, and retries and falls back across model versions, all in one audit trail."
+  items:
+    - icon: "mdi:code-json"
+      title: "Typed JSON, not prose, out of every call"
+      description: "<code>io.kestra.plugin.gemini.StructuredOutputCompletion</code> forces the response into <code>application/json</code> shaped by a <code>jsonResponseSchema</code> you define, so a downstream <code>If</code> or database write gets typed fields instead of a string you regex out of a paragraph. Token counts are emitted as metrics on every call, and the same schema keeps every run's output shape identical."
+    - icon: "mdi:key-outline"
+      title: "API-key auth, no GCP project required"
+      description: "<code>plugin-gemini</code> authenticates with a single <code>apiKey</code> secret against the public Gemini API: no service account, project ID, or IAM role to provision. Teams standardized on GCP IAM for model serving should look at <a href='/orchestration/vertex-ai'>Vertex AI</a> instead; this plugin is for the API-key path most Gemini flows start on and many never leave."
+    - icon: "mdi:refresh"
+      title: "Retries and fallback across model versions"
+      description: "A <code>retry</code> policy absorbs a transient 503 in a second; a chain of <code>ChatCompletion</code> tasks gated by <code>runIf</code> falls back to an older model version when the newest preview model stays down. A flow-level <code>concurrency</code> block caps simultaneous calls so a traffic spike never exceeds your own Gemini quota."
+    - icon: "mdi:image-multiple-outline"
+      title: "Multimodal input in a single call"
+      description: "<code>io.kestra.plugin.gemini.MultimodalCompletion</code> sends mixed text and image parts, including file URIs pulled from Kestra storage, in one request and returns text plus any generated images, saved back to storage as URIs. No separate OCR or vision service to wire in."
+    - icon: "mdi:call-split"
+      title: "Fan-out classification at controlled throughput"
+      description: "Wrap <code>StructuredOutputCompletion</code> or <code>TextCompletion</code> in a <code>ForEach</code> with <code>concurrencyLimit</code> set, and a queue of hundreds of items to classify becomes a bounded, resumable batch instead of an unthrottled loop that trips your rate limit halfway through."
+    - icon: "mdi:movie-open-outline"
+      title: "Veo video generation, gated the way marketing actually gates it"
+      description: "<code>io.kestra.plugin.gemini.VideoGeneration</code> creates a 1 to 60 second video with Google's Veo 3 model through the same API key. Pair it with a <code>Pause</code> task before anything publishes externally: unlike a routine classification call, a generated video going out under the brand is one of the few Gemini outputs teams genuinely want a person to look at first."
+
+useCases:
+  title: "How teams use Gemini and Kestra"
+  subtitle: "Patterns AI and platform teams run in production today. Each one shows the flow end to end, with the real plugin classes in play."
+  items:
+    - badge: "Structured output"
+      badgeIcon: "mdi:code-json"
+      title: "Turn a natural-language question into a structured, actionable decision"
+      description: "<code>StructuredOutputCompletion</code> answers in <code>application/json</code> shaped by a schema you define, so a boolean or numeric field drives an <code>If</code> branch directly. No regex against a paragraph, no brittle matching on the model's phrasing, just a notification and a calendar write when the JSON says to act."
+      flow:
+        - node: "Ask Gemini"
+          label: "structured prompt"
+          pluginClass: "io.kestra.plugin.gemini.StructuredOutputCompletion"
+        - node: "Branch"
+          label: "If condition"
+          pluginClass: "io.kestra.plugin.core.flow.If"
+        - node: "Notify"
+          label: "Slack"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+        - node: "Calendar"
+          label: "block time"
+          pluginClass: "io.kestra.plugin.googleworkspace.calendar.InsertEvent"
+      items:
+        - title: "Typed fields every run"
+          description: "The schema guarantees the same fields every time, so <code>If</code> never parses free text for an answer."
+        - title: "Conditional execution"
+          description: "Actions fire only when the JSON verdict says so, not on every scheduled run regardless of outcome."
+        - title: "Runs unattended on a cron"
+          description: "A disabled <code>Schedule</code> trigger runs the check every morning, no person involved."
+          wide: true
+      signal: "Published as the ai-check-weather-gemini blueprint in the Kestra catalog."
+    - badge: "Multimodal"
+      badgeIcon: "mdi:image-multiple-outline"
+      title: "Read images and documents, then reshape the answer into typed fields"
+      description: "<code>MultimodalCompletion</code> reads an uploaded image alongside a text prompt in one call. A second <code>StructuredOutputCompletion</code> pass reshapes that free-text read into a fixed JSON schema, so a folder of receipts, screenshots, or product photos becomes typed records a database can ingest directly."
+      flow:
+        - node: "New file"
+          label: "S3 trigger"
+          pluginClass: "io.kestra.plugin.aws.s3.Trigger"
+        - node: "Describe image"
+          label: "multimodal"
+          pluginClass: "io.kestra.plugin.gemini.MultimodalCompletion"
+        - node: "Reshape to JSON"
+          label: "structured pass"
+          pluginClass: "io.kestra.plugin.gemini.StructuredOutputCompletion"
+        - node: "Notify"
+          label: "Google Chat"
+          pluginClass: "io.kestra.plugin.googleworkspace.chat.GoogleChatIncomingWebhook"
+      items:
+        - title: "No separate OCR service"
+          description: "One multimodal call reads the image directly; no dedicated vision or OCR pipeline to stand up."
+        - title: "Two focused calls"
+          description: "One call reads the image, a second reshapes the answer, so each prompt stays simple and easy to debug."
+        - title: "New files picked up automatically"
+          description: "A storage trigger polls the inbox, so nobody has to manually upload files to a processing tool."
+          wide: true
+      signal: "Published as the gemini-multimodal-receipt-extraction blueprint in the Kestra catalog."
+    - badge: "Resilience"
+      badgeIcon: "mdi:shield-alert-outline"
+      title: "Keep classifying when Gemini's preview tier goes UNAVAILABLE"
+      description: "A retry absorbs a one-off 503. When the outage is sticky, a chain of <code>ChatCompletion</code> tasks gated by <code>runIf</code> falls back to an older stable model, and a flow-level <code>concurrency</code> queue keeps a traffic burst from exhausting the quota. Slack fires only when a fallback actually runs."
+      flow:
+        - node: "Webhook"
+          label: "inbound event"
+          pluginClass: "io.kestra.plugin.core.trigger.Webhook"
+        - node: "Classify"
+          label: "primary model"
+          pluginClass: "io.kestra.plugin.gemini.ChatCompletion"
+        - node: "Fallback"
+          label: "older model version"
+          pluginClass: "io.kestra.plugin.gemini.ChatCompletion"
+        - node: "Alert"
+          label: "Slack, only if used"
+          pluginClass: "io.kestra.plugin.slack.notifications.SlackIncomingWebhook"
+      items:
+        - title: "Retry before fallback"
+          description: "A one-second retry absorbs transient noise before the fallback chain ever fires."
+        - title: "Concurrency caps your quota"
+          description: "A flow-level queue keeps a traffic spike from exceeding your own Gemini rate limit."
+        - title: "One alert per outage"
+          description: "Slack fires only when a fallback model actually ran, not on every retry attempt."
+          wide: true
+      signal: "Published as the gemini-model-fallback-resilience blueprint in the Kestra catalog."
+    - badge: "Multi-model routing"
+      badgeIcon: "mdi:swap-horizontal"
+      title: "Route each prompt to the model that's actually good at it"
+      description: "A cheap classifier tags every prompt as coding, reasoning, search, or general, then a <code>Switch</code> sends it to the right provider: Gemini for reasoning, Claude for code, Perplexity for anything needing live web context. Stop paying frontier prices for simple questions and stop sending hard problems to a model not built for them."
+      flow:
+        - node: "Classify prompt"
+          label: "cheap model"
+          pluginClass: "io.kestra.plugin.openai.ChatCompletion"
+        - node: "Route"
+          label: "Switch"
+          pluginClass: "io.kestra.plugin.core.flow.Switch"
+        - node: "Reasoning branch"
+          label: "Gemini"
+          pluginClass: "io.kestra.plugin.gemini.ChatCompletion"
+        - node: "Coding branch"
+          label: "Anthropic"
+          pluginClass: "io.kestra.plugin.anthropic.ChatCompletion"
+      items:
+        - title: "Cost-aware by design"
+          description: "A cheap classifier gates expensive models, so frontier pricing only applies where it earns its keep."
+        - title: "Vendor-agnostic routing"
+          description: "Swapping or adding a provider is a new Switch case, not a rewrite of the calling code."
+        - title: "Full lineage per request"
+          description: "Every classification decision and every provider's response is visible in one execution."
+          wide: true
+      signal: "Published as the ai-model-router blueprint in the Kestra catalog."
+    - badge: "Batch classification"
+      badgeIcon: "mdi:filter-variant"
+      title: "Moderate a review queue without tripping your own rate limit"
+      description: "<code>ForEach</code> with a <code>concurrencyLimit</code> wraps a <code>StructuredOutputCompletion</code> call, so hundreds of pending reviews get classified for toxicity and spam five at a time instead of all at once. Each verdict writes back to the source system immediately, so a failed run resumes without re-classifying what already succeeded."
+      flow:
+        - node: "Nightly schedule"
+          label: "cron"
+          pluginClass: "io.kestra.plugin.core.trigger.Schedule"
+        - node: "Fetch queue"
+          label: "pending reviews"
+          pluginClass: "io.kestra.plugin.core.http.Request"
+        - node: "Classify"
+          label: "ForEach, cap 5"
+          pluginClass: "io.kestra.plugin.core.flow.ForEach"
+        - node: "Verdict"
+          label: "typed JSON"
+          pluginClass: "io.kestra.plugin.gemini.StructuredOutputCompletion"
+      items:
+        - title: "Bounded, resumable batches"
+          description: "A concurrency cap keeps throughput predictable no matter how large the queue grows."
+        - title: "Typed verdicts"
+          description: "Every review gets an approve, flag, or reject verdict plus a reason, not free text to parse."
+        - title: "One completion ping"
+          description: "A single notification per batch replaces one message per review."
+          wide: true
+      signal: "Published as the gemini-batch-review-moderation blueprint in the Kestra catalog."
+
+quotes:
+  - quote: "When Gemini 3.1 Pro returned a 503 'model is currently experiencing high demand' response in the middle of our issue triage, the flow didn't stop. It tried Gemini 3.0, then Gemini 2.5, set the fields the rest of the flow needed, and logged a single Slack message so we'd know it happened. The model provider had a bad minute. The workflow didn't."
+    author: "Anna Geller, Product Lead at Kestra"
+    sourceUrl: "/blogs/ai-workflows-in-production"
+    sourceLabel: "Kestra Engineering blog"
+    kpis:
+      - name: "Gemini 3.1 Pro outage cadence observed"
+        value: "~1 every 2 days"
+      - name: "Time to add retry, fallback, and alerting"
+        value: "15 minutes"
+
+blueprints:
+  title: "Blueprints for Gemini orchestration."
+  lead: "Production-ready flows. Copy the YAML, drop in your API key, ship it."
+  items:
+    - name: "Structured decision"
+      blueprintId: "ai-check-weather-gemini"
+      title: "Turn a natural-language question into a structured go/no-go decision"
+      description: "<code>StructuredOutputCompletion</code> answers with a JSON schema instead of prose. An <code>If</code> task branches on the boolean field, then posts to <a href='/plugins/plugin-slack'>Slack</a> and blocks time on a Google Calendar when the answer says to act."
+      href: "/blueprints"
+    - name: "Multi-model routing"
+      blueprintId: "ai-model-router"
+      title: "Route each prompt to the best-fit model across four providers"
+      description: "A cheap classifier tags every prompt, then a <code>Switch</code> sends reasoning prompts to Gemini, coding prompts to Claude, and search prompts to Perplexity, falling back to a cost-efficient default for everything else."
+      href: "/blueprints"
+    - name: "Multimodal extraction"
+      blueprintPlaceholder: true
+      title: "Extract structured expense data from receipt images"
+      description: "Watches an S3 inbox for receipt photos, describes each one with <code>MultimodalCompletion</code>, reshapes the answer into typed JSON with a second <code>StructuredOutputCompletion</code> call, and posts the result to Google Chat."
+      href: "/blueprints"
+      plugins:
+        - "io.kestra.plugin.aws.s3.Trigger"
+        - "io.kestra.plugin.gemini.MultimodalCompletion"
+        - "io.kestra.plugin.gemini.StructuredOutputCompletion"
+        - "io.kestra.plugin.googleworkspace.chat.GoogleChatIncomingWebhook"
+      code: |
+        id: gemini-multimodal-receipt-extraction
+        namespace: company.team
+
+        tasks:
+          - id: describe_receipt
+            type: io.kestra.plugin.gemini.MultimodalCompletion
+            apiKey: "{{ secret('GEMINI_API_KEY') }}"
+            model: "gemini-2.5-flash"
+            contents:
+              - content: "List the vendor name, purchase date, currency, and total amount printed on this receipt as plain labeled text."
+              - mimeType: "image/jpeg"
+                content: "{{ trigger.objects | jq('.[0].uri') | first }}"
+
+          - id: structure_fields
+            type: io.kestra.plugin.gemini.StructuredOutputCompletion
+            apiKey: "{{ secret('GEMINI_API_KEY') }}"
+            model: "gemini-2.5-flash-lite"
+            prompt: "Reformat this receipt description into the required fields. Description: {{ outputs.describe_receipt.text }}"
+            jsonResponseSchema: |
+              {
+                "type": "object",
+                "properties": {
+                  "vendor": { "type": "string" },
+                  "purchaseDate": { "type": "string" },
+                  "currency": { "type": "string" },
+                  "total": { "type": "number" }
+                },
+                "required": ["vendor", "purchaseDate", "total"]
+              }
+
+          - id: notify_finance
+            type: io.kestra.plugin.googleworkspace.chat.GoogleChatIncomingWebhook
+            url: "{{ secret('GOOGLE_CHAT_WEBHOOK') }}"
+            payload: |
+              { "text": "Receipt processed: {{ outputs.structure_fields.predictions | first }}" }
+
+        triggers:
+          - id: new_receipt
+            type: io.kestra.plugin.aws.s3.Trigger
+            bucket: "expense-receipts"
+            prefix: "inbox/"
+            interval: "PT5M"
+            action: NONE
+            disabled: true
+
+comparison:
+  title: "Kestra vs the orchestration alternatives Gemini teams evaluate"
+  subtitle: "Gemini's API answers one prompt at a time. The alternatives below are what teams reach for to turn that into a production pipeline with retries, fan-out, and history."
+  competitors:
+    - name: "Python scripts + LangChain"
+    - name: "n8n"
+      logoAsset: "n8n"
+    - name: "Temporal"
+      logoAsset: "temporal"
+  rows:
+    - feature: "Retry and fallback across model versions"
+      kestra: "✓ Native retry policy plus a runIf-gated fallback chain"
+      values:
+        - "Hand-rolled try/except per call"
+        - "No native model fallback, a custom Function node required"
+        - "Durable execution retries the activity automatically"
+    - feature: "Structured JSON output enforcement"
+      kestra: "✓ Native StructuredOutputCompletion with a jsonResponseSchema"
+      values:
+        - "Pydantic or JSON-mode parsing glued on top of the SDK"
+        - "Manual JSON parsing inside a Function node"
+        - "Application code owns schema validation"
+    - feature: "Batch fan-out with concurrency control"
+      kestra: "✓ ForEach with a concurrencyLimit"
+      values:
+        - "asyncio.Semaphore or a queue library"
+        - "Split In Batches node, no native rate limiting"
+        - "Child workflows per item, more setup"
+    - feature: "Multimodal input (image plus text)"
+      kestra: "✓ Native MultimodalCompletion"
+      values:
+        - "google-genai SDK called directly"
+        - "HTTP Request node to the Gemini API"
+        - "An activity wraps the same SDK call"
+    - feature: "Execution history and lineage"
+      kestra: "✓ Full UI history per task, per attempt"
+      values:
+        - "Custom logging, no built-in UI"
+        - "Execution log per node run"
+        - "Built-in workflow history, code-first"
+    - feature: "Team already comfortable with"
+      kestra: "Declarative YAML, versioned in Git"
+      values:
+        - "Python and prompt engineering"
+        - "Low-code, drag-and-drop"
+        - "Go, Java, or Python SDK and durable-execution concepts"
+
+faq:
+  - question: "What's the difference between plugin-gemini and the Vertex AI plugin?"
+    answer: "<code>plugin-gemini</code> calls the public Gemini API directly with an <code>apiKey</code> secret, no GCP project required. The <a href='/orchestration/vertex-ai'>Vertex AI</a> plugin calls the same model family through Google Cloud's IAM, service accounts, and per-project quotas. Pick plugin-gemini when a team just needs an API key; pick Vertex AI when the call must sit inside existing GCP governance and billing."
+  - question: "What does Kestra add to a Gemini API key setup?"
+    answer: "A trigger to start the call (webhook, schedule, or storage event), a <code>retry</code> policy and <code>runIf</code>-gated fallback for when the model returns a 503, a <code>concurrency</code> cap to protect your quota, and a chain into whatever runs next: a <a href='/orchestration/slack'>Slack</a> alert, a <a href='/orchestration/bigquery'>BigQuery</a> write, or a <a href='/orchestration/git'>Git</a>-versioned prompt. One execution history covers the Gemini call and every step around it."
+  - question: "How do I get structured JSON out of Gemini instead of prose?"
+    answer: "Use <code>io.kestra.plugin.gemini.StructuredOutputCompletion</code> with a <code>prompt</code> and a <code>jsonResponseSchema</code>. The response MIME type is fixed to <code>application/json</code>, so the model's answer always matches the schema's shape, and a downstream <code>If</code> or database write can rely on the same fields every run."
+  - question: "How does the model fallback pattern actually work?"
+    answer: "The primary <code>ChatCompletion</code> task carries a <code>retry</code> policy for transient noise. A second task with the same <code>type</code> but an older <code>model</code> is gated by <code>runIf: \"{{ outputs.primary.predictions is not defined }}\"</code>, so it only runs when the first produced nothing. Chain a third for a second fallback, and notify only when a fallback task actually fired."
+  - question: "Can I process images and generate video with the same plugin?"
+    answer: "Yes. <code>io.kestra.plugin.gemini.MultimodalCompletion</code> takes mixed text and image parts in one call and returns text plus any generated images. <code>io.kestra.plugin.gemini.VideoGeneration</code> creates a short video with Google's Veo 3 model through the same API key. Put a <code>Pause</code> task in front of anything that publishes a generated video externally; that is the one place a human review genuinely belongs in this plugin's use cases."
+  - question: "Is Kestra self-hosted or managed?"
+    answer: "Kestra offers multiple deployment options: fully self-hosted on Docker or Kubernetes, a managed cloud version, or air-gapped for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted gives complete control over where your pipeline execution and API keys live."
+
+seeHow:
+  title: "Ready to orchestrate your Gemini calls?"
+  description: "Add retries, model-version fallback, concurrency limits, and full execution history around every Gemini call, from a direct API key to whatever runs next."
+  cta:
+    label: "Book a Demo"
+    href: "/demo"
+
+resources:
+  title: "More on Gemini and Kestra"
+  items:
+    - kind: "blog"
+      title: "Running AI Workflows in Production: What We Learned When Gemini Went Down"
+      description: "A real Kestra flow that classifies GitHub issues with Gemini, and the retry, fallback, concurrency, and alerting patterns that kept it running through a provider outage."
+      href: "/blogs/ai-workflows-in-production"
+      image: "blogs/ai-workflows-in-production/main.png"
+    - kind: "blog"
+      title: "The Kestra Plugin Ecosystem for AI: From LLM Providers to Vector Databases"
+      description: "Where plugin-gemini fits among Kestra's other LLM provider plugins, vector databases, and document ingestion tools."
+      href: "/blogs/kestra-plugins-ai-ecosystem"
+      image: "blogs/kestra-plugins-ai-ecosystem/main.png"
+    - kind: "resource"
+      title: "What is an AI agent?"
+      description: "The building blocks of agentic systems, and where an orchestrator fits around a model call."
+      href: "/resources/ai-agent"
+    - kind: "plugin"
+      title: "Gemini plugin reference"
+      description: "Every Gemini task, property, and parameter, with copy-ready YAML examples."
+      href: "/plugins/plugin-gemini"

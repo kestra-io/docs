@@ -10,6 +10,7 @@ interface Blueprint {
     namespace: string
     name: string
     description: string
+    shortDescription?: string
     metaTitle: string
     metaDescription: string
     flow: string

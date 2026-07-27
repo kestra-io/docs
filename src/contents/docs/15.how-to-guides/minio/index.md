@@ -64,14 +64,15 @@ docker compose -f docker-compose-ci.yml up
 Update your `application-psql.yml` (or other relevant configuration file) under the `kestra:` section:
 
 ```yaml
-storage:
-  type: minio
-  minio:
-    endpoint: localhost
-    port: 9000
-    bucket: your-bucket
-    access-key: YOUR_ACCESS_KEY
-    secret-key: YOUR_SECRET_KEY
+kestra:
+  storage:
+    type: minio
+    minio:
+      endpoint: localhost
+      port: 9000
+      bucket: your-bucket
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
 ```
 
 ## Launch Kestra

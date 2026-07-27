@@ -14,7 +14,7 @@ const { cls, class: className, ...rest } = Astro.props
         height="32"
         loading="lazy"
         decoding="async"
-        onerror="this.style.visibility='hidden'"
+        onerror="const w=this.closest('.icon-wrapper');const p=w&&w.parentElement;((p&&(p.classList.contains('icon')||p.classList.contains('box')))?p:w||this).style.display='none'"
         {...rest}
     />
 </div>

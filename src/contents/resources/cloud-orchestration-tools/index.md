@@ -45,7 +45,7 @@ Understanding the difference between automation and orchestration is fundamental
 - **Cloud Automation** is the process of scripting a single, discrete task. Examples include spinning up a virtual machine, deploying a container, or running a database backup. It answers the question, "How can I make this one action repeatable and hands-free?"
 - **Cloud Orchestration** is the coordination of multiple automated tasks into a unified, end-to-end workflow. It manages the logic, dependencies, error handling, and timing of the entire process. It answers the question, "How can I connect all these automated actions to deliver a business outcome reliably?"
 
-In essence, automation makes individual tasks efficient, while orchestration makes entire processes intelligent and resilient. An [orchestrator is the brain](//blogs/2024-09-18-what-is-an-orchestrator) that directs the automated "muscles" of your cloud environment, moving beyond simple [job scheduling to true workflow management](/resources/infrastructure/infrastructure-orchestration-vs-job-scheduling).
+In essence, automation makes individual tasks efficient, while orchestration makes entire processes intelligent and resilient. An [orchestrator is the brain](/blogs/2024-09-18-what-is-an-orchestrator) that directs the automated "muscles" of your cloud environment, moving beyond simple [job scheduling to true workflow management](/resources/infrastructure/infrastructure-orchestration-vs-job-scheduling).
 
 ## Core Benefits of Effective Cloud Orchestration
 

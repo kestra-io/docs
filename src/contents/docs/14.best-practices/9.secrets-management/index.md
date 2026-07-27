@@ -7,7 +7,7 @@ editions: ["EE", "Cloud"]
 description: Best practices for securely managing and using secrets in Kestra workflows to prevent accidental exposure.
 ---
 
-A quick guide to [secrets](../../07.enterprise/02.governance/secrets/index.md) management best practices in Kestra.
+A quick guide to [secrets](../../07.enterprise/02.governance/secrets-manager/index.md) management best practices in Kestra.
 
 ## Manage secrets securely in Kestra
 

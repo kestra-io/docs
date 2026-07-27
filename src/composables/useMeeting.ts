@@ -39,6 +39,8 @@ export function ensureMeetingsScriptLoaded(): Promise<void> {
         script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
         script.defer = true
         script.addEventListener("load", () => resolve())
+        script.addEventListener("error", () => resolve())
+        setTimeout(resolve, 3000)
         document.body.appendChild(script)
     })
 }

@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Task Runner – Run Tasks as K8s Pods
 h1: Run Kestra Tasks as Kubernetes Pods
-description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Configure pod templates, namespaces, and resource limits for scalable container-based execution.
+description: Run tasks as Kubernetes pods. Configure pod templates, namespaces, and resource limits for container-based execution.
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -423,6 +423,8 @@ taskRunner:
         cpu: "200m"
         memory: "64Mi"
 ```
+
+A custom `fileSidecar.image` must provide, on its `PATH`, a POSIX shell (`sh`), `test`/`[`, and `sleep` — required by the polling script that waits for the file transfer to complete before the container exits. `find` and `wc` are also used, on a best-effort basis, to verify that uploaded files were fully transferred; if they're missing, verification is skipped rather than failing the task.
 
 `fileSidecar.defaultSpec` applies additional container spec fields to the file transfer containers only, and takes precedence over `containerDefaultSpec` for those containers:
 

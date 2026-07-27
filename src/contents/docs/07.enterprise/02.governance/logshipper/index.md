@@ -8,7 +8,7 @@ editions: ["EE", "Cloud"]
 version: "0.21.0"
 ---
 
-Manage and distribute logs across your entire infrastructure.
+Log Shipper exports Kestra execution and audit logs to external observability platforms and SIEMs.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=9BrJXbEZLXbRXQIN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -18,13 +18,13 @@ Manage and distribute logs across your entire infrastructure.
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, Huawei Cloud LTS, and OpenTelemetry.
+Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, Huawei Cloud LTS, OpenTelemetry, Graylog, and Syslog (CEF).
 
 ## Log shipper properties
 
 The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
 
-- `logExporters` - This property is required, and it specifies the platform where the logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
+- `logExporters` - This property is required, and it specifies the platform where the logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
 - `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. With `INFO`, all log levels `INFO` and above (`WARNING` and `ERROR`) are batched. If you only want logs that are warnings or errors, then you can set this property to `WARNING` and so on.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
 - `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../../05.workflow-components/02.namespace/index.md). If not specified, all instance logs are fetched.
@@ -33,7 +33,7 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 
 ## How log shipper works
 
-Let's take a look at a simple example of a Log Shipper task that fetches logs and exports them to AWS CloudWatch, Google Operational Suite, and Azure Monitor at the same time.
+The following flow exports logs to AWS CloudWatch, Google Operational Suite, and Azure Monitor simultaneously.
 
 ```yaml
 id: logShipper
@@ -466,7 +466,7 @@ tasks:
 
 ### Graylog
 
-This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
+This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch and sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
 
 ```yaml
  id: log_shipper
@@ -524,9 +524,68 @@ tasks:
 
 The Huawei Cloud LTS exporter authenticates with Huawei Cloud using either static AK/SK credentials (`accessKeyId` and `secretAccessKey`), a pre-obtained `securityToken`, or inline IAM STS credential exchange via `temporaryCredentials`. The `logGroupId` and `logStreamId` are UUIDs that you can copy from the LTS console (they are not the human-readable group and stream names).
 
+### Syslog (CEF)
+
+This example exports logs to a syslog-compatible SIEM such as ArcSight, QRadar, or Trellix using [Common Event Format (CEF)](https://www.microfocus.com/documentation/arcsight/arcsight-smartconnectors-8.4/cef-implementation-standard/) over TCP. Refer to the [Syslog Plugin Documentation](/plugins/plugin-ee-syslog) for the full property reference.
+
+```yaml
+id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: syslog-log-offset
+    logExporters:
+      - id: syslog
+        type: io.kestra.plugin.ee.syslog.LogExporter
+        host: "{{ secret('SIEM_HOST') }}"
+        port: 601
+        protocol: TCP
+```
+
+For TLS transport — recommended for production — use port 6514 and configure the truststore:
+
+```yaml
+id: log_shipper_tls
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: syslog
+        type: io.kestra.plugin.ee.syslog.LogExporter
+        host: "{{ secret('SIEM_HOST') }}"
+        port: 6514
+        protocol: TLS
+        trustStore: "{{ secret('SIEM_TRUSTSTORE_BASE64') }}"
+        trustStorePassword: "{{ secret('SIEM_TRUSTSTORE_PASSWORD') }}"
+```
+
+:::alert{type="warning"}
+`skipCertVerification: true` disables certificate validation. Use it only in lab environments with self-signed certificates, never in production.
+:::
+
+To ship [Audit Logs](../06.audit-logs/index.md) to your SIEM, use the same exporter with `AuditLogShipper` — replace `logLevelFilter` with `resources`.
+
 ## Audit log shipper
 
-To send [Audit Logs](../06.audit-logs/index.md) to an external system, there is the Audit Log Shipper task type. The Audit Log Shipper task extracts logs from the Kestra backend and loads them to desired destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, and Azure Monitor.
+Use [Audit Log Shipper](../06.audit-logs/index.md) to ship audit logs from the Kestra backend to external destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, Azure Monitor, and Syslog (CEF).
 
 The Audit Log Shipper uses the following properties similar to the execution Log Shipper, except that the `resources` property replaces the `logLevelFilter` property.
 - `logExporters` - This property is required, and it specifies the platform where the audit logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
@@ -535,7 +594,7 @@ The Audit Log Shipper uses the following properties similar to the execution Log
 - `offsetKey` - Specifies the [key](../../../06.concepts/05.kv-store/index.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
 - `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra’s database immediately after successful export, helping optimize storage by removing logs that no longer need to reside in Kestra’s metadata store. By default, this property is set to `false`.
 
-The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.
+The following workflow ships audit logs to multiple destinations simultaneously.
 
 ```yaml
 id: Audit-logShipper

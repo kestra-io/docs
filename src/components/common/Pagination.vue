@@ -1,6 +1,31 @@
 <template>
     <nav aria-label="Page navigation">
-        <ul class="pagination mb-0">
+        <ul v-if="compact" class="pagination pagination-compact mb-0">
+            <li class="page-item" role="button">
+                <a
+                    class="page-link fw-bold arrow-button"
+                    :class="{ disabled: currentPage <= 1 }"
+                    :href="getPageUrl(currentPage - 1)"
+                    @click.prevent="changePage({ direction: 'previous' })"
+                >
+                    <ChevronLeft />
+                </a>
+            </li>
+            <li class="page-item page-indicator">
+                Page {{ currentPage }} of {{ totalPages }}
+            </li>
+            <li class="page-item" role="button">
+                <a
+                    class="page-link fw-bold arrow-button"
+                    :class="{ disabled: currentPage >= totalPages }"
+                    :href="getPageUrl(currentPage + 1)"
+                    @click.prevent="changePage({ direction: 'next' })"
+                >
+                    <ChevronRight />
+                </a>
+            </li>
+        </ul>
+        <ul v-else class="pagination mb-0">
             <li class="page-item" role="button">
                 <a
                     class="page-link fw-bold arrow-button"
@@ -58,10 +83,14 @@
         default: 1,
     })
 
-    const props = defineProps<{
-        totalPages: number
-        currentUrl: string
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            totalPages: number
+            currentUrl: string
+            compact?: boolean
+        }>(),
+        { compact: false },
+    )
 
     function getPageUrl(page?: number) {
         if (page === undefined || page < 1 || page > props.totalPages) {
@@ -168,6 +197,27 @@
                 box-shadow: none;
                 background-color: var(--ks-background-button-primary);
             }
+            &.disabled {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
+
+    .pagination-compact {
+        display: flex;
+        align-items: center;
+
+        li {
+            margin-right: 0;
+        }
+
+        .page-indicator {
+            padding: 0 1rem;
+            font-size: $font-size-sm;
+            font-weight: 700;
+            color: var(--ks-content-primary);
+            white-space: nowrap;
         }
     }
 </style>

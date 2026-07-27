@@ -41,7 +41,7 @@ Data Vault 2.0 builds upon the original methodology by incorporating best practi
 *   **Big Data and NoSQL Integration:** It explicitly addresses the integration of structured, semi-structured, and unstructured data from various sources.
 *   **Methodology:** It incorporates elements of Agile, Scrum, and Six Sigma to ensure consistent and high-quality delivery.
 *   **Governance and Security:** It provides a framework for managing data quality, master data, and security within the warehouse.
-*   **Raw and Business Vaults:** It distinguishes between a Raw Vault (containing unaltered source data) and a Business Vault (containing derived data and applied business rules), providing a clear separation for a more robust [data warehouse ETL](//resources/data/data-warehouse-etl).
+*   **Raw and Business Vaults:** It distinguishes between a Raw Vault (containing unaltered source data) and a Business Vault (containing derived data and applied business rules), providing a clear separation for a more robust [data warehouse ETL](/resources/data/data-warehouse-etl).
 
 ## Deconstructing Data Vault Architecture: Hubs, Links, and Satellites
 
@@ -59,23 +59,23 @@ Hubs are the cornerstones of the Data Vault. Each Hub represents a core business
 Links capture the relationships or transactions between business entities (Hubs). They act as associative tables, establishing many-to-many relationships without containing any descriptive attributes themselves.
 
 *   **Content:** A Link contains its own primary key (often a hash of the connected Hub keys), foreign keys referencing the primary keys of the Hubs it connects, a load date, and the record source.
-*   **Purpose:** Links provide a flexible way to model complex business rules and relationships. New relationships can be added simply by creating new Links, without altering the existing structure. This is crucial for maintaining effective [data lineage](//resources/data/data-lineage).
+*   **Purpose:** Links provide a flexible way to model complex business rules and relationships. New relationships can be added simply by creating new Links, without altering the existing structure. This is crucial for maintaining effective [data lineage](/resources/data/data-lineage).
 
 ### Satellites: The Contextual Data
 
 Satellites store all the descriptive, contextual, and historical attributes of Hubs and Links. A single Hub or Link can have multiple Satellites, each capturing a different set of attributes or attributes that change at different rates.
 
 *   **Content:** A Satellite contains a primary key referencing its parent Hub or Link, a load date, an optional end date, and the descriptive attributes. The load date is part of the primary key, allowing the Satellite to store a complete history of changes for each attribute.
-*   **Purpose:** Satellites isolate descriptive data from the structural core of the vault. This append-only model ensures that no data is ever overwritten, providing a full audit trail of every change. Kestra's [data storage components](//docs/architecture/data-components) can be configured to manage the artifacts produced during these loading processes.
+*   **Purpose:** Satellites isolate descriptive data from the structural core of the vault. This append-only model ensures that no data is ever overwritten, providing a full audit trail of every change. Kestra's [data storage components](/docs/architecture/data-components) can be configured to manage the artifacts produced during these loading processes.
 
 ## Why Data Vault Demands Robust Orchestration
 
-Building and maintaining a Data Vault is not a one-time setup; it's a continuous process of ingesting, integrating, and auditing data. This complexity makes robust [data orchestration](//resources/data/data-orchestration) a non-negotiable requirement.
+Building and maintaining a Data Vault is not a one-time setup; it's a continuous process of ingesting, integrating, and auditing data. This complexity makes robust [data orchestration](/resources/data/data-orchestration) a non-negotiable requirement.
 
 *   **Complex Dependencies:** Loading a Data Vault requires a specific order of operations: Hubs must be loaded before Links, and both must exist before their respective Satellites can be populated. An orchestrator manages these dependencies flawlessly.
 *   **Diverse Data Sources:** Data comes from various systems—APIs, databases, file drops. A powerful orchestration tool can connect to any source and manage different ingestion patterns.
 *   **Historical Tracking and Auditability:** The orchestrator is responsible for generating and attaching critical metadata like load timestamps and record sources to every piece of data entering the vault.
-*   **Incremental Loads:** Efficiently managing incremental updates, especially through [Change Data Capture (CDC)](//resources/data/change-data-capture), requires stateful processing to track what has already been loaded.
+*   **Incremental Loads:** Efficiently managing incremental updates, especially through [Change Data Capture (CDC)](/resources/data/change-data-capture), requires stateful processing to track what has already been loaded.
 *   **Error Handling and Integrity:** If a load fails midway, the orchestrator must handle retries, rollbacks, and send alerts to maintain data integrity.
 
 ## Orchestrate Data Vault Ingestion with Kestra: An Example
@@ -163,12 +163,12 @@ errors:
 This declarative YAML workflow demonstrates several key orchestration principles:
 *   **Hash Key Generation:** The Python script standardizes business keys into consistent hash keys, essential for integration.
 *   **Idempotency:** The workflow is designed to be runnable multiple times without creating duplicate structural data in the Hub.
-*   **Secrets Management:** Database credentials are securely managed using Kestra's [secrets manager integrations](//docs/enterprise/governance/secrets-manager), not hardcoded in the workflow. For more on [security and secrets](//docs/configuration/security-and-secrets), refer to the documentation.
-*   **Modularity:** The flow clearly separates extraction, transformation, and loading steps, making it easy to debug and maintain your [data pipeline](//resources/data/create-data-pipeline).
+*   **Secrets Management:** Database credentials are securely managed using Kestra's [secrets manager integrations](/docs/enterprise/governance/secrets-manager), not hardcoded in the workflow. For more on [security and secrets](/docs/configuration/security-and-secrets), refer to the documentation.
+*   **Modularity:** The flow clearly separates extraction, transformation, and loading steps, making it easy to debug and maintain your [data pipeline](/resources/data/create-data-pipeline).
 
 ### Decision: Batch vs. Real-time Ingestion for Data Vaults
 
-The example above uses a `Schedule` trigger for daily batch processing. However, Data Vault's append-only nature is well-suited for real-time data streams. Kestra can easily adapt to this by swapping the trigger. For instance, a `Webhook` trigger could process customer data as soon as it's created in a source system, or a polling trigger could monitor a message queue. The choice between [batch vs. streaming processing](//resources/data/batch-vs-streaming-processing) depends on business requirements for data freshness, but the underlying loading logic into the Data Vault remains remarkably consistent.
+The example above uses a `Schedule` trigger for daily batch processing. However, Data Vault's append-only nature is well-suited for real-time data streams. Kestra can easily adapt to this by swapping the trigger. For instance, a `Webhook` trigger could process customer data as soon as it's created in a source system, or a polling trigger could monitor a message queue. The choice between [batch vs. streaming processing](/resources/data/batch-vs-streaming-processing) depends on business requirements for data freshness, but the underlying loading logic into the Data Vault remains remarkably consistent.
 
 ## Data Vault vs. Other Modeling Approaches
 
@@ -180,17 +180,17 @@ Dimensional modeling, with its star and snowflake schemas, is optimized for busi
 
 ### Data Vault vs. Third Normal Form (3NF)
 
-A 3NF model, often used in operational databases, minimizes data redundancy and protects data integrity. While Data Vault is also normalized, it is specifically designed for data warehousing. It differs from a traditional 3NF model by its explicit inclusion of historical context (load dates, record sources) and its strict separation of business keys from their descriptive attributes. This makes the Data Vault far more agile when integrating new data sources compared to a rigid 3NF enterprise model. It’s a key distinction when comparing [ETL vs. ELT](//resources/data/etl-vs-elt) approaches.
+A 3NF model, often used in operational databases, minimizes data redundancy and protects data integrity. While Data Vault is also normalized, it is specifically designed for data warehousing. It differs from a traditional 3NF model by its explicit inclusion of historical context (load dates, record sources) and its strict separation of business keys from their descriptive attributes. This makes the Data Vault far more agile when integrating new data sources compared to a rigid 3NF enterprise model. It’s a key distinction when comparing [ETL vs. ELT](/resources/data/etl-vs-elt) approaches.
 
 ## Real-World Scenarios for Data Vault Implementation
 
 Data Vault's unique characteristics make it particularly valuable in several business contexts:
 
 *   **Enterprise Data Warehousing:** For organizations with dozens or hundreds of source systems, Data Vault provides a scalable and manageable integration backbone.
-*   **Regulatory Compliance & Auditability:** Industries like [healthcare](//use-cases/healthcare) and finance require a complete, auditable history of all data. Data Vault's append-only nature provides this out of the box.
-*   **Data Mesh Architectures:** In a decentralized [Data Mesh architecture](//resources/data/data-mesh-architecture), Data Vault can serve as a standardized modeling approach for data products, ensuring consistency across domains.
+*   **Regulatory Compliance & Auditability:** Industries like [healthcare](/use-cases/healthcare) and finance require a complete, auditable history of all data. Data Vault's append-only nature provides this out of the box.
+*   **Data Mesh Architectures:** In a decentralized [Data Mesh architecture](/resources/data/data-mesh-architecture), Data Vault can serve as a standardized modeling approach for data products, ensuring consistency across domains.
 *   **Agile Environments:** When source systems are constantly changing, Data Vault's flexible structure minimizes the need for costly redesigns of the data warehouse.
-*   **Master Data Management (MDM):** Hubs naturally serve as a repository for master data keys, helping to create a single view of core business entities. This is common in [retail](//use-cases/retail) and the [public sector](//use-cases/public-services).
+*   **Master Data Management (MDM):** Hubs naturally serve as a repository for master data keys, helping to create a single view of core business entities. This is common in [retail](/use-cases/retail) and the [public sector](/use-cases/public-services).
 
 ## Related Concepts
 *   [What Is a Data Pipeline?](/resources/data/data-pipeline)

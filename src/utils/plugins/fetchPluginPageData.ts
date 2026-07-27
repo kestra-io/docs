@@ -140,6 +140,17 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
     return { githubVersions, allPlugins, allPluginMetadata, pluginsInformations }
 }
 
+// Versions where an element exists (class fqcn or subpackage prefix). [] on failure so callers keep the full list.
+export async function fetchElementVersions(fqcn: string): Promise<string[]> {
+    try {
+        const res = await $fetchApiCached<{ version: string }[]>(`/plugins/${fqcn}/versions`)
+        return res.map((v) => v.version)
+    } catch (e) {
+        console.error("Element versions fetch failed", e)
+        return []
+    }
+}
+
 // Versioned endpoints return 202 while a version's docs are still generating. We need the raw Response
 // to read that status, and no edge-caching so a transient 202 isn't pinned (which would reload-loop the
 // page while it polls). So fetch directly rather than via the cached helpers.

@@ -32,4 +32,4 @@ For **Namespace Files**, re-upload the files through the Enterprise Edition UI o
 
 ## What's next
 
-Once your flows are imported, you can start using enterprise features such as [RBAC](../../03.auth/rbac/index.md), [Secrets Management](../../02.governance/secrets/index.md), [Worker Groups](../../04.scalability/worker-group/index.md), and more.
+Once your flows are imported, you can start using enterprise features such as [RBAC](../../03.auth/rbac/index.md), [Secrets Management](../../02.governance/secrets-manager/index.md), [Worker Groups](../../04.scalability/worker-group/index.md), and more.

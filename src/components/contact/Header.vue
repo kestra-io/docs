@@ -82,7 +82,7 @@
 
 <script setup lang="ts">
     import { ref, useTemplateRef } from "vue"
-    import { getHubspotTracking } from "~/utils/hubspot"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
@@ -91,8 +91,7 @@
 
     const props = defineProps<{ routePath: string }>()
 
-    const HUBSPOT_URL =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/77f32ae3-0f49-404a-a28d-6dfe92c8bc78"
+    const HUBSPOT_FORM_ID = "77f32ae3-0f49-404a-a28d-6dfe92c8bc78"
 
     const gtm = useGtm()
     const formRef = useTemplateRef("contact-form")
@@ -199,13 +198,7 @@
         identify(data.email)
 
         try {
-            await $fetch(HUBSPOT_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(hubspotData),
-            })
+            await submitHubspotForm(HUBSPOT_FORM_ID, hubspotData)
             valid.value = true
             validMessage.value =
                 "Thanks for reaching out! We will get back to you as soon as possible! \ud83d\udc4d"

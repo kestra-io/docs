@@ -196,7 +196,7 @@ A quick reference, useful whether you're a student deciding what to build next o
 Browse the [AI blueprints](https://kestra.io/blueprints?tags=AI) to find a use case close to yours, set your API key (Gemini, OpenAI, Anthropic Claude, Mistral, Bedrock, Vertex AI, and Ollama are all supported), and run it. Then add a `Pause` before a sensitive step and watch the execution wait for your approval. The blueprints cover a range of patterns from simple single-agent tasks to multi-agent pipelines, so it's worth scanning a few to see what's possible before you start building.
 
 - Docs: [AI Agents in Kestra](../../docs/ai-tools/ai-agents/index.md)
-- Concept: [agentic orchestration](../../resources/agentic-orchestration/index.md)
+- Concept: [agentic orchestration](/resources/ai/agentic-orchestration)
 
 If you're working through the LLM Zoomcamp agents module, this is the bridge from "my agent works" to "my agent runs in production."
 
