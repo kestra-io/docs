@@ -28,7 +28,7 @@ Let's acknowledge the fundamental paradigm difference upfront: Dagster is Python
 
 ### From asset-centric to workflow-centric
 
-In Dagster, you declare what *should exist*: software-defined assets bundle a definition, its materialization logic, and its metadata into a single decorator. In Kestra, you declare the [workflow](/docs/workflow-components/flow) that *produces* it: flows and tasks describe the process, and task outputs capture what was produced, along with its metadata.
+In Dagster, everything revolves around what *should exist*: software-defined assets bundle a definition, its materialization logic, and its metadata into a single Python decorator. In Kestra, you declare the [workflow](/docs/workflow-components/flow) that *produces* it: flows and tasks describe the process, and task outputs capture what was produced, along with its metadata.
 
 ### From Python-as-orchestration-language to Python-as-task
 
@@ -62,7 +62,7 @@ Teams for whom per-asset lineage is the core requirement should weigh that trade
 | `@asset` / software-defined assets | Flow + task `outputs` (+ metadata) | Paradigm shift — a Dagster asset bundles definition, materialization, and metadata in one decorator; in Kestra that splits across the flow (the process definition) and task outputs (what was produced). Kestra has no persistent per-asset materialization history across flows; execution history is browsable per flow. |
 | `@op` / `@job` | Task / Flow | Direct conceptual match, though Dagster's own docs now recommend starting with assets over ops/jobs directly — teams on this path are already closer to the newer Dagster paradigm than the asset-centric one this guide focuses on. |
 | `@schedule` | `Schedule` trigger (cron) | Direct match. |
-| `@sensor` | Polling triggers (file, queue, HTTP…) + `Flow` trigger | Run-status and file-arrival sensors map to polling and Flow triggers. Asset sensors (`@asset_sensor`) and Dagster's newer Declarative Automation system have no direct equivalent — the closest substitute is a Flow trigger keyed to the producing flow. |
+| `@sensor` | Polling triggers (file, queue, HTTP…) + `Flow` trigger | Run-status and file-arrival sensors map to polling and Flow triggers. Asset sensors (`@asset_sensor`) have no direct equivalent — the closest substitute is a Flow trigger keyed to the producing flow. |
 | Partitions + backfills | Backfill executions on Schedule triggers; `ForEachItem` for fan-out | Clean mapping for time-based partitions — backfill replays missed schedule windows directly. Static/dynamic partitions: see "What you lose" above. |
 | `resources` / `io_manager` | Plugin task properties, internal storage, KV Store, secrets | Not one-to-one — resources dissolve into plugin configuration plus platform primitives. No single resource object defined once and injected everywhere. |
 | `Definitions` / code locations | [Namespaces](/docs/workflow-components/namespace) + flow files (Git sync) | One nuance: code locations pin isolated Python/package versions per location; Kestra's isolation sits at the task-runner/container level. |
