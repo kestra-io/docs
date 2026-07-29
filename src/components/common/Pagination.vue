@@ -6,6 +6,7 @@
                     class="page-link fw-bold arrow-button"
                     :class="{ disabled: currentPage <= 1 }"
                     :href="getPageUrl(currentPage - 1)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ direction: 'previous' })"
                 >
                     <ChevronLeft />
@@ -19,6 +20,7 @@
                     class="page-link fw-bold arrow-button"
                     :class="{ disabled: currentPage >= totalPages }"
                     :href="getPageUrl(currentPage + 1)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ direction: 'next' })"
                 >
                     <ChevronRight />
@@ -30,6 +32,7 @@
                 <a
                     class="page-link fw-bold arrow-button"
                     :href="getPageUrl(currentPage - 1)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ direction: 'previous' })"
                 >
                     <ChevronLeft />
@@ -54,6 +57,7 @@
                     v-else
                     class="page-list-item page-link fw-bold"
                     :href="getPageUrl(n)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ pageNo: n })"
                     >{{ n }}</a
                 >
@@ -62,6 +66,7 @@
                 <a
                     class="page-link fw-bold arrow-button"
                     :href="getPageUrl(currentPage + 1)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ direction: 'next' })"
                 >
                     <ChevronRight />
@@ -88,9 +93,17 @@
             totalPages: number
             currentUrl: string
             compact?: boolean
+            /**
+             * Emit rel="nofollow" on the page links. Used on faceted listings
+             * (e.g. blueprints) where paginated + filtered URLs would otherwise
+             * form a crawler trap.
+             */
+            nofollow?: boolean
         }>(),
-        { compact: false },
+        { compact: false, nofollow: false },
     )
+
+    const relAttr = computed(() => (props.nofollow ? "nofollow" : undefined))
 
     function getPageUrl(page?: number) {
         if (page === undefined || page < 1 || page > props.totalPages) {
