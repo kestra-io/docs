@@ -1,11 +1,14 @@
 ---
 import NavToc from "~/components/docs/NavToc.vue"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
+import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import { getEntry, render } from "astro:content"
 const doc = await getEntry("docs", "<index>")
 if (!doc) {
     throw new Error("Index document not found")
 }
+
+const navigation = await buildDocsNavigation()
 
 const { Content, headings } = await render(doc)
 
@@ -19,6 +22,7 @@ const editUrl = doc.filePath
     isHomePage
     title={doc.data?.title}
     description={doc.data?.description}
+    navigation={navigation}
 >
     <h1 slot="title" class="py-0 title">{doc.data?.h1 ?? doc.data?.title}</h1>
 
