@@ -1,5 +1,7 @@
 export const CONNOR_MEETING_LINK =
     "https://meetings-eu1.hubspot.com/connor-alkin/website?embed=true"
+export const CONNOR_CLOUD_MEETING_LINK =
+    "https://meetings-eu1.hubspot.com/connor-alkin/cloud?embed=true"
 export const DAVID_MEETING_LINK =
     "https://hs.kestra.io/meetings/david76/website?uuid=9eee19c1-782a-48c5-a84a-840ed3d0a99b&embed=true"
 export const LUKE_MEETING_LINK =
