@@ -16,6 +16,11 @@
     })
 
     const href = computed(() => {
+        // Resolved by the page when it has the whole plugin list: a subgroup segment only
+        // belongs in the URL when the plugin exposes more than one, otherwise it redirects.
+        if (props.plugin.href) {
+            return props.plugin.href
+        }
         const base = `/plugins/${props.plugin.name}`
         if (props.plugin.subGroup === undefined || !props.plugin.subGroupTitle) {
             return base

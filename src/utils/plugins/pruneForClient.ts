@@ -1,5 +1,6 @@
 import { isEntryAPluginElementPredicate } from "./plugin"
 import type { Plugin, PluginElement } from "./plugin"
+import { canonicalPluginPath, type PluginUrlIndex } from "./canonicalUrl"
 
 export type CardPlugin = {
     name: string
@@ -16,11 +17,14 @@ export type CardPlugin = {
     classes?: string
     lastReleasedAt?: string
     usageCount?: number
+    /** Canonical pathname, set when an url index is supplied. */
+    href?: string
 }
 
 export function prunePluginsForCards(
     plugins: Plugin[],
-    pluginsData: Record<string, any>
+    pluginsData: Record<string, any>,
+    urlIndex?: Pick<PluginUrlIndex, "multiSubGroupPlugins">,
 ): CardPlugin[] {
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
@@ -53,6 +57,7 @@ export function prunePluginsForCards(
             classes,
             lastReleasedAt: info.lastReleasedAt as string | undefined,
             usageCount: info.usageCount as number | undefined,
+            href: urlIndex ? canonicalPluginPath(p, urlIndex) : undefined,
         }
     })
 }
