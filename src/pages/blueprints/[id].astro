@@ -134,7 +134,20 @@ if (isCategoryPage && category) {
         return Astro.redirect("/404")
     }
 
-    graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
+    // The graph endpoint parses the flow, so it answers 422 for a blueprint whose YAML no
+    // longer deserializes against the current plugin schemas. Everything else on the page —
+    // title, description, tasks, the flow source, related blueprints — is independent of it,
+    // so degrade to a page without the topology instead of failing the whole request.
+    try {
+        graph = await $fetchApiCached(
+            `/blueprints/${id}/versions/latest/graph`,
+        )
+    } catch (e) {
+        console.warn(
+            `Blueprint ${id}: graph unavailable, rendering without the topology`,
+            e,
+        )
+    }
     detailTags = await $fetchApiCached<BlueprintTag[]>(
         `/blueprints/versions/latest/tags`,
     )
@@ -334,14 +347,16 @@ if (isCategoryPage && category) {
                                         flow={pageData.flow}
                                     />
                                 </div>
-                                <div class="topology">
-                                    <Detail
-                                        client:only
-                                        page={pageData}
-                                        flow={pageData.flow}
-                                        graph={graph}
-                                    />
-                                </div>
+                                {graph && (
+                                    <div class="topology">
+                                        <Detail
+                                            client:only
+                                            page={pageData}
+                                            flow={pageData.flow}
+                                            graph={graph}
+                                        />
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </section>
