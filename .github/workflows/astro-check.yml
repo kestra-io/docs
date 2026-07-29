@@ -1,10 +1,10 @@
 name: Lint & Astro Check
 
-# Runs `astro check` (TypeScript / Astro diagnostics), oxlint, and the SSR
-# collection-import check on every pull request, reporting findings as inline
-# review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
-# and [imported content]. The job fails if any tool reports anything, keeping
-# the tree clean.
+# Runs `astro check` (TypeScript / Astro diagnostics), oxlint, the SSR
+# collection-import check, and the unit tests on every pull request. Linter
+# findings are reported as inline review comments via reviewdog, prefixed by
+# tool: [astro], [lint], and [imported content]. The job fails if any tool
+# reports anything or any test fails, keeping the tree clean.
 on:
   pull_request:
     branches: [main]
@@ -102,3 +102,10 @@ jobs:
               -fail-level=any < content-imports.jsonl || status=1
 
           exit $status
+
+      # Hard gate (pre-existing scripts, previously run by no workflow). Runs
+      # after the reviewdog report so a test failure can't suppress the inline
+      # lint feedback.
+      - name: Run unit tests
+        if: ${{ !cancelled() }}
+        run: npm run test:unit

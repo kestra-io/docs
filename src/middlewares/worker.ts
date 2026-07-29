@@ -2,6 +2,7 @@ import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
+import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -109,7 +110,12 @@ function isEdgeCacheablePage(url: URL): boolean {
         path === "/plugins" ||
         path.startsWith("/plugins/") ||
         path === "/blueprints" ||
-        path.startsWith("/blueprints/")
+        path.startsWith("/blueprints/") ||
+        // Versioned docs, SSR-rendered from immutable per-release markdown —
+        // the MDC parse + Shiki pass make every miss expensive. Their .md
+        // variants bypass this cache via the extension short-circuit below;
+        // that's fine, they're a cheap fetch + string reshape, no rendering.
+        VERSIONED_DOCS_PATH.test(path)
     )
 }
 

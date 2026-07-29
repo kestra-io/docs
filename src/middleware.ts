@@ -1,6 +1,18 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import YAML from "yaml"
+import { $fetchApiRawCached } from "~/utils/fetch"
+import {
+    apiDocPath,
+    decideVersionedRoute,
+    frontmatterField,
+    isAssetShapedDocPath,
+    missingDocFallbackHref,
+    stripFrontmatter,
+    VERSIONED_DOCS_PATH,
+} from "~/utils/versionedDocs"
+import { getDocVersionsResult } from "~/utils/docVersionsFetch"
+import { getDocChildren } from "~/utils/docChildrenFetch"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
     eager: true,
@@ -158,6 +170,119 @@ const incomingRedirect = defineMiddleware(async (context, next) => {
     return next()
 })
 
+// Serve /docs/{major.minor}/... from api.kestra.io, rendered inline. Latest docs
+// don't match the version regex and fall through to Astro's static handling.
+const versionedDocs = defineMiddleware(async (context, next) => {
+    // Mirrors the latest docs' "append .md to any /docs/* URL" convention
+    // (DocsLayout's llms-directive: "/docs/x" -> "/docs/x.md", the version
+    // itself included, e.g. "/docs/1.2" -> "/docs/1.2.md"), so
+    // MarkdownActionsMenu's "View as Markdown" works unmodified for versioned
+    // pages too. Stripped from the pathname BEFORE matching the version/path
+    // regex, so it doesn't have to account for ".md" landing inside either
+    // capture group.
+    const isMarkdownRequest = context.url.pathname.endsWith(".md")
+    const testPathname = isMarkdownRequest
+        ? context.url.pathname.slice(0, -3)
+        : context.url.pathname
+    const match = VERSIONED_DOCS_PATH.exec(testPathname)
+    if (!match) {
+        return next()
+    }
+
+    const version = match[1]
+    const path = (match[2] ?? "").replace(/^\/+|\/+$/g, "")
+
+    const unavailable = () =>
+        new Response("Documentation temporarily unavailable", {
+            status: 503,
+            headers: {
+                "content-type": "text/plain;charset=utf-8",
+                "cache-control": "no-store",
+                "retry-after": "30",
+            },
+        })
+
+    // Routing policy (unknown version → 404, list outage → 503, newest
+    // version → canonical latest, older → archived copy) lives in the pure,
+    // tested decideVersionedRoute — this middleware only executes it.
+    const { versions: knownVersions, ok: versionsOk } = await getDocVersionsResult()
+    const decision = decideVersionedRoute({
+        version,
+        path,
+        isMarkdownRequest,
+        search: context.url.search,
+        versions: knownVersions,
+        versionsOk,
+    })
+    if (decision.kind === "pass") return next()
+    if (decision.kind === "unavailable") return unavailable()
+    if (decision.kind === "redirect") {
+        return new Response("", {
+            status: 302,
+            headers: { Location: decision.location },
+        })
+    }
+
+    let markdown: string | null = null
+    // Asset-shaped paths deterministically 500 at the origin (see
+    // isAssetShapedDocPath) — skip the fetch and treat them as missing, so
+    // they don't turn the transient-failure 503 below into a permanent one.
+    if (!isAssetShapedDocPath(path)) {
+        try {
+            const docRes = await $fetchApiRawCached(apiDocPath(version, path))
+            markdown = (await docRes.text()) || null
+        } catch (error) {
+            // A 404 just means this page doesn't exist for this version (the
+            // expected case the fallback below handles). Anything else is a
+            // transient origin failure — surface it instead of letting an API
+            // blip masquerade as the missing-page redirect below.
+            const status = (error as { response?: { status?: number } })?.response?.status
+            if (status !== 404) {
+                console.error(`Failed to fetch versioned doc ${version}/${path}:`, error)
+                return unavailable()
+            }
+            markdown = null
+        }
+    }
+
+    if (markdown === null) {
+        // The version's own home page is missing: a real 404 rather than
+        // silently switching the reader to the latest docs.
+        if (!path) {
+            return next()
+        }
+        return new Response("", {
+            status: 302,
+            headers: {
+                Location: missingDocFallbackHref(version, isMarkdownRequest, context.url.search),
+            },
+        })
+    }
+
+    if (isMarkdownRequest) {
+        // Matches [...docsPath].md.ts's format for the latest docs: an
+        // "# {title}" header over the frontmatter-stripped body, not the raw
+        // frontmatter block.
+        const title = frontmatterField(markdown, "title") ?? "Documentation"
+        const body = `# ${title}\n\n${stripFrontmatter(markdown)}`
+        return new Response(body, {
+            headers: {
+                "content-type": "text/markdown;charset=utf-8",
+                "X-Robots-Tag": "noindex",
+            },
+        })
+    }
+
+    // Children feed the nav sidebar; memoized, not fetched per request. The
+    // version list is fetched independently by DocsLayout via getDocVersions().
+    const children = await getDocChildren(version)
+
+    context.locals.versionedDoc = { version, path, markdown, children }
+    const response = await next("/docs-versioned")
+    response.headers.set("X-Robots-Tag", "noindex")
+    return response
+})
+
 const notFoundRedirect = defineMiddleware(async (context, next) => {
     // disable for tracking
     if (context.url.pathname.startsWith("/t/")) {
@@ -212,5 +337,6 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
 export const onRequest = sequence(
     logger,
     incomingRedirect,
+    versionedDocs,
     notFoundRedirect,
 )
