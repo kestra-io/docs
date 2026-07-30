@@ -105,7 +105,7 @@ Critical failure mode: the credential matrix. Count scales as end users multipli
 
 A per-user service account with its own token is a personal Kestra identity in every way that matters, with a different object type on the tin. Bindings still bottom out at the namespace, so the per-workflow requirement is no closer to being met, and automating the full account, token, and binding lifecycle for every user in every tenant is standing up a second IAM system with extra steps.
 
-## Option 3: per-component service accounts on a 1:1 tenant map
+## Option 3: per-component service accounts on a one-to-one tenant map
 
 The pattern we recommend. No end user ever holds a Kestra identity.
 
