@@ -10,5 +10,7 @@
   to: "/blogs"
 - regexp: "/changelog"
   to: "/docs/changelog"
+- regexp: "/contact$"
+  to: "/contact-us"
 - regexp: "/tutorial-videos(.*)"
   to: "/videos$1"

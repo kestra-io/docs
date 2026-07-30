@@ -4,7 +4,7 @@ description: "Explore FastMCP, the Pythonic framework for building Model Context
 metaTitle: "FastMCP: Build LLM Tools with Declarative Workflows"
 metaDescription: "FastMCP simplifies LLM tooling and agent development. This declarative framework streamlines building and deploying Model Context Protocol (MCP) servers."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-15
 slug: "fast-mcp"
 faq:
   - question: "What is FastMCP?"

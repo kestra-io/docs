@@ -53,6 +53,20 @@ rules:
   verbs: ["create", "delete"]
 ```
 
+When `job.enabled: true` (see [Job mode](#job-mode) below), the service account additionally needs:
+
+- `jobs`: get, create, delete, list
+- `jobs/status`: get
+
+```yaml
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "create", "delete", "list"]
+- apiGroups: ["batch"]
+  resources: ["jobs/status"]
+  verbs: ["get"]
+```
+
 Use the `serviceAccountName` property to assign a custom service account to the pod. When omitted, the namespace default service account is used, which must carry the required RBAC permissions above.
 
 ## How to use the Kubernetes task runner
@@ -241,7 +255,7 @@ tasks:
       print("Running from a private registry image")
 ```
 
-## Resource requests
+## Specifying resource requests
 
 Use the `resources` property to set CPU and memory requests and limits on the main task container. Both `cpu` and `memory` accept static values or Pebble expressions, so you can drive them from flow inputs at runtime.
 
@@ -327,7 +341,7 @@ Three properties control how long the runner waits at different stages of pod ex
 | Property | Default | Description |
 |---|---|---|
 | `waitUntilRunning` | `PT10M` | Maximum time to wait for the pod to be scheduled, the image to be pulled, and containers to start. |
-| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. |
+| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. In Job mode, this budget is shared across all pod attempts — size it relative to `job.backoffLimit` so per-attempt eviction-detection overhead does not exhaust it before the task completes. |
 | `waitForLogs` | `PT30S` | Extra time after containers exit to allow the log stream to flush completely. |
 
 Increase `waitUntilRunning` for clusters that pull large images or have slow scheduling. Increase `waitUntilCompletion` for long-running tasks. Decrease `waitForLogs` when you know logs are always flushed quickly and want to reduce idle time at the end of each task.
@@ -365,6 +379,79 @@ taskRunner:
     maxConcurrentRequestsPerHost: 3
     watchReconnectInterval: PT5S
 ```
+
+## Job mode
+
+By default, the runner submits a raw pod. When a pod is evicted — for example, because of node pressure on a spot or preemptible instance — the task fails immediately, even though the task itself did nothing wrong.
+
+Set `job.enabled: true` to wrap the pod in a `batch/v1` Kubernetes Job instead. The Job controller then restarts a failed or evicted pod, up to `job.backoffLimit` times, before failing the task. Log streaming and file transfer automatically reattach to whichever pod attempt is currently running.
+
+```yaml
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      config:
+        masterUrl: https://docker-for-desktop:6443
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+      job:
+        enabled: true
+        backoffLimit: 3
+    commands:
+      - echo "Hello from a Kubernetes Job"
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `job.enabled` | `false` | When true, the pod runs inside a `batch/v1` Job. |
+| `job.backoffLimit` | `6` | Maximum pod restarts before the Job (and task) is marked failed. Must be 0 or greater. |
+| `job.podFailurePolicy` | — | A [Kubernetes PodFailurePolicy](https://kubernetes.io/docs/concepts/workloads/controllers/job/#pod-failure-policy) spec passed directly to the Job. See below. |
+
+:::alert{type="warning"}
+**`waitUntilCompletion` is a shared budget across all pod attempts.** Detecting a force-deleted or evicted pod can take several minutes per attempt. Set `waitUntilCompletion` generously relative to `job.backoffLimit` — for example, if each attempt can take up to 30 minutes and `backoffLimit` is 3, set `waitUntilCompletion` to at least `PT2H`.
+:::
+
+### Distinguishing infrastructure failures from application failures
+
+Without `podFailurePolicy`, the Job controller retries on **any** pod failure, including a task script exiting with a non-zero code. A Python script that raises an exception is retried the same number of times as an evicted pod.
+
+Use `podFailurePolicy` to tell the Job controller which exit codes or pod conditions indicate an infrastructure event (and should be retried) versus an application error (and should fail immediately):
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  job:
+    enabled: true
+    backoffLimit: 6
+    podFailurePolicy:
+      rules:
+        - action: Ignore
+          onPodConditions:
+            - type: DisruptionTarget
+        - action: FailJob
+          onExitCodes:
+            containerName: main
+            operator: NotIn
+            values: [0]
+```
+
+Rules are evaluated top to bottom and stop at the first match. This example puts the `Ignore` rule for pod disruptions (evictions, preemptions) first, so an evicted pod — which also has a non-zero exit code — is retried rather than failing the Job. The `FailJob` rule then catches any remaining non-zero exit codes from the main container (genuine script failures) and fails the Job immediately. `containerName: main` scopes the exit-code rule to the Kestra task container, which is always named `main`.
+
+:::alert{type="info"}
+`job.podFailurePolicy` requires the `JobPodFailurePolicy` feature gate, which is enabled by default since Kubernetes 1.31. On older clusters, the Job is rejected at creation time with a clear error.
+:::
+
+### Resume and delete behavior in Job mode
+
+`resume: true` (the default) reattaches to an existing Job for the current task run rather than creating a new one — the same semantics as pod mode, applied at the Job level.
+
+`delete: true` (the default) deletes the Job after the task completes. Job deletion cascades to its pods automatically. Set `delete: false` to keep the Job and its pods after completion — useful when debugging a failed attempt, since you can then inspect pods with `kubectl exec` or `kubectl logs`.
+
 
 ## Pod and container customization
 

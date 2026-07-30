@@ -29,6 +29,12 @@ const resourceSections: Record<string, Section> = {
         metaDescription:
             "AI orchestration resources covering LLMOps, RAG pipelines, agentic workflows, prompt management, and integrating Kestra with LangChain and MCP servers.",
     },
+    business: {
+        metaTitle:
+            "Business Process Orchestration Resources: Automation & Workflows",
+        metaDescription:
+            "Business process orchestration resources — automate approvals, reporting, and cross-team workflows by connecting your business apps and systems with Kestra.",
+    },
     whitepapers: {
         metaTitle: "Kestra Whitepapers: Orchestration Guides for Engineering Leaders",
         metaDescription:

@@ -20,6 +20,10 @@ export const GET: APIRoute = async () => {
 
     const allUseCases = await getCollection("customerStories")
 
+    // Mirror the canonical slug logic from src/pages/customers/[slug].astro
+    const toSlug = (story: (typeof allUseCases)[number]) =>
+        story.data.companyName ? slugify(story.data.companyName) : story.id
+
     const storyUrls = allUseCases.map((story) => {
         const updatedField = (story.data as any).updated ?? (story.data as any).updatedAt ?? null
         let lastmod = formatLastMod(updatedField)
@@ -28,7 +32,7 @@ export const GET: APIRoute = async () => {
         }
 
         return {
-            loc: `https://kestra.io/use-cases/stories/${story.id}-${slugify(story.data.title ?? "--")}`,
+            loc: `https://kestra.io/customers/${toSlug(story)}`,
             lastmod,
         }
     })

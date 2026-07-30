@@ -4,7 +4,7 @@ description: "Explore exponential backoff, a crucial retry strategy for building
 metaTitle: "What Is Exponential Backoff? Retry Patterns Explained"
 metaDescription: "Exponential backoff is a vital retry mechanism for resilient distributed systems. Learn its benefits over linear backoff and how to implement it effectively."
 tag: infrastructure
-date: 2026-07-07
+date: 2026-07-21
 slug: exponential-backoff
 faq:
   - question: "What is an exponential backoff?"

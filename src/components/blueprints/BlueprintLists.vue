@@ -28,6 +28,7 @@
             @update="changePage"
             :current-url="currentUrl"
             compact
+            nofollow
         />
     </ListsLayout>
 </template>

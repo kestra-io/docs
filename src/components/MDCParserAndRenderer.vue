@@ -53,26 +53,10 @@
 </style>
 
 <style scoped lang="scss">
-
+    @use "/src/assets/styles/mdc-renderer" as mdc;
 
     .mdc-renderer {
-        & :deep(pre) {
-            padding: 1rem;
-            padding-bottom: 0;
-            margin-bottom: 0;
-            & code{
-                border: none;
-                background: transparent;
-                padding: 0;
-                .line {
-                    min-height: 1rem;
-                    white-space: pre-wrap;
-                }
-            }
-        }
-        :deep(h3) {
-            padding: 0;
-        }
+        @include mdc.mdc-renderer;
     }
 
     @keyframes pulse {
@@ -122,16 +106,6 @@
                 transform: translateX(100%);
             }
         }
-    }
-</style>
-
-<!-- Shiki dual-theme: token colors apply inline (light); switch to the dark
-     theme via the per-token `--shiki-dark` CSS variable when `.dark` is set on
-     <html>. Not scoped so it reaches the v-html output; namespaced under
-     .mdc-renderer to avoid leaks. -->
-<style lang="scss">
-    html.dark .mdc-renderer pre code span {
-        color: var(--shiki-dark) !important;
     }
 </style>
 

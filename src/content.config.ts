@@ -213,8 +213,16 @@ export const collections = {
                 description: z.string().optional(),
                 metaTitle: z.string().optional(),
                 metaDescription: z.string().optional(),
-                tag: z.enum(["infrastructure", "data", "ai", "whitepapers"]),
+                tag: z.enum([
+                    "infrastructure",
+                    "data",
+                    "ai",
+                    "business",
+                    "whitepapers",
+                ]),
                 date: z.coerce.date().optional(),
+                lastUpdated: z.coerce.date().optional(),
+                author: z.string().optional(),
                 image: image().optional(),
                 href: z.string().optional(),
                 faq: z

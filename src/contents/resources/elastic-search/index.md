@@ -4,7 +4,7 @@ description: "Elasticsearch is a powerful open-source search and analytics engin
 metaTitle: "Elasticsearch: Real-time Search & Analytics Guide"
 metaDescription: "Understand Elasticsearch's real-time search and analytics capabilities. Learn its architecture, features, and use cases for logs, full-text search, and BI."
 tag: data
-date: 2026-07-07
+date: 2026-07-17
 slug: "elastic-search"
 faq:
   - question: "What is Elasticsearch used for?"

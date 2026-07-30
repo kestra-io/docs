@@ -4,7 +4,7 @@ description: "Explore the leading open source job schedulers, from traditional c
 metaTitle: "Best Open-Source Job Schedulers in 2026 (Ranked)"
 metaDescription: "Compare open source job schedulers: Airflow, DolphinScheduler, Kestra. Find a modern, lightweight, and scalable solution for workflow automation."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-21
 slug: "open-source-job-scheduler"
 faq:
   - question: "What is the primary difference between a job scheduler and a workflow orchestrator?"

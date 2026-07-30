@@ -1,6 +1,13 @@
 <template>
     <div class="meeting-container">
         <div v-if="!valid" class="meeting-form">
+            <div class="form-header">
+                <h3>Get in touch to get access</h3>
+                <p>
+                    Tell us what you're building and the team will get you set
+                    up with access.
+                </p>
+            </div>
             <form
                 class="row"
                 ref="cloud-form"
@@ -52,8 +59,8 @@
 
                 <div class="col-12 mb-2">
                     <label for="use_case_context"
-                        >Tell us more about your Orchestration strategy and how
-                        we can help <span class="required">*</span></label
+                        >What are you planning to orchestrate?
+                        <span class="required">*</span></label
                     >
                     <textarea
                         name="use_case_context"
@@ -104,7 +111,7 @@
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
     import {
-        CONNOR_MEETING_LINK,
+        CONNOR_CLOUD_MEETING_LINK,
         ensureMeetingsScriptLoaded,
     } from "~/composables/useMeeting"
 
@@ -166,7 +173,7 @@
             await submitHubspotForm(HUBSPOT_FORM_ID, payload)
 
             valid.value = true
-            meetingUrl.value = CONNOR_MEETING_LINK
+            meetingUrl.value = CONNOR_CLOUD_MEETING_LINK
 
             try {
                 posthog.capture("cloud_form")
@@ -222,6 +229,23 @@
             border: 1px solid var(--ks-border-secondary);
             position: relative;
             z-index: 1;
+
+            .form-header {
+                margin-bottom: 1.5rem;
+
+                h3 {
+                    font-size: $font-size-xl;
+                    font-weight: 600;
+                    color: var(--ks-content-primary);
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-secondary);
+                    margin: 0;
+                }
+            }
 
             label {
                 display: block;
