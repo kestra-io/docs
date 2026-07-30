@@ -234,6 +234,21 @@ export const collections = {
                     )
                     .optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
+                // Optional end-of-article demo / gated-asset CTA pair.
+                // Set only on pages where we want to measure asset demand.
+                cta: z
+                    .object({
+                        heading: z.string(),
+                        text: z.string(),
+                        // Prefix for the PostHog / GTM / HubSpot event names.
+                        eventPrefix: z.string(),
+                        // HubSpot `form_submission_identifier` value — this is
+                        // what you filter on to count requests.
+                        formLabel: z.string(),
+                        assetLabel: z.string().optional(),
+                        hubspotFormId: z.string().optional(),
+                    })
+                    .optional(),
             }),
     }),
     feeds: defineCollection({
