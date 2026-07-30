@@ -74,7 +74,17 @@ While the visual interface is a significant advantage for accessibility, it can 
 
 **Best for:** Big data teams that prefer a visual, drag-and-drop interface for building and managing distributed data processing workflows.
 
-## 4. Quartz Scheduler: Lightweight Java Job Scheduling
+## 4. JobRunr: Modern, Distributed Background Processing for Java
+
+JobRunr is an open-source scheduler built for the Java ecosystem, designed around a modern developer experience and simple, distributed background job processing. Developers can create background jobs with just a single line of code, and JobRunr handles the persistence, scheduling, and execution across a cluster of servers.
+
+It offers a clean dashboard for monitoring jobs and supports persistent storage backends like SQL databases or NoSQL stores. Alongside fire-and-forget jobs it handles delayed jobs, recurring cron jobs, and carbon-aware scheduling that shifts flexible workloads to windows when the electricity grid is cleaner.
+
+It is a background job library rather than a general-purpose orchestration platform, and it does not aim to coordinate workflows across heterogeneous systems and languages. Within the JVM it does handle multi-step processes, through job chaining, atomic batches, and durable executions that checkpoint each completed step so a retried job resumes where it left off rather than restarting from the top.
+
+**Best for:** Java and Kotlin applications that need a modern, distributed library for scheduling and executing background jobs, from small services through to enterprise deployments such as Decathlon's inventory reconciliation across 1700 stores.
+
+## 5. Quartz Scheduler: Lightweight Java Job Scheduling
 
 Quartz is a widely-used, open-source job scheduler designed specifically for the Java ecosystem. It is not a standalone platform but rather a library that can be embedded directly into Java applications. This makes it an incredibly lightweight and flexible option for scheduling tasks within a single application's context.
 
@@ -84,7 +94,7 @@ Its tight integration with Java makes it less suitable for polyglot environments
 
 **Best for:** Java development teams that need a reliable, lightweight, and embeddable scheduler for in-application tasks.
 
-## 5. Argo Workflows: Kubernetes-Native Container Orchestration
+## 6. Argo Workflows: Kubernetes-Native Container Orchestration
 
 Argo Workflows is an open-source, container-native workflow engine for orchestrating jobs on Kubernetes. Unlike other schedulers that can run on Kubernetes, Argo is fundamentally built on it. Workflows are defined as Kubernetes Custom Resource Definitions (CRDs) in YAML, making them first-class citizens of the Kubernetes ecosystem.
 
@@ -94,16 +104,6 @@ The primary trade-off is its tight coupling to Kubernetes. It is not designed to
 
 **Best for:** Kubernetes-native teams seeking a container-centric workflow orchestrator for CI/CD, batch jobs, and machine learning pipelines.
 
-## 6. JobRunr: Modern, Distributed Background Processing for Java
-
-JobRunr is another open-source scheduler focused on the Java ecosystem, but with a modern twist. It is designed for simple, distributed background job processing. Developers can create background jobs with just a single line of code, and JobRunr handles the persistence, scheduling, and execution across a cluster of servers.
-
-It offers a clean dashboard for monitoring jobs and supports persistent storage backends like SQL databases or NoSQL stores. Alongside fire-and-forget jobs it handles delayed jobs, recurring cron jobs, and carbon-aware scheduling that shifts flexible workloads to windows when the electricity grid is cleaner.
-
-It is a background job library rather than a general-purpose orchestration platform, and it does not aim to coordinate workflows across heterogeneous systems and languages. Within the JVM it does handle multi-step processes, through job chaining, atomic batches, and durable executions that checkpoint each completed step so a retried job resumes where it left off rather than restarting from the top.
-
-**Best for:** Java and Kotlin applications that need a modern, distributed library for scheduling and executing background jobs, from small services through to enterprise deployments such as Decathlon's inventory reconciliation across 1700 stores.
-
 ## Comparison Table: Open Source Job Schedulers at a Glance
 
 | Tool | License | Deployment | Workflow Definition | Primary Use Case | Polyglot Support | Event-Driven | Enterprise Features |
@@ -111,9 +111,9 @@ It is a background job library rather than a general-purpose orchestration platf
 | **Kestra** | Apache 2.0 | Kubernetes, Docker, Bare Metal | Declarative YAML | Unified Orchestration | Yes (Native) | Yes (Core) | Yes (EE) |
 | **Apache Airflow** | Apache 2.0 | Kubernetes, Docker, VMs | Python Code | Data Pipelines | Limited (via Python) | Limited | Yes (Managed) |
 | **Apache DolphinScheduler** | Apache 2.0 | Kubernetes, Docker, Standalone | Visual UI, API | Big Data Workflows | Limited | Yes | Yes |
+| **JobRunr** | LGPL-3.0 | Embedded or Standalone Worker JVMs | Java / Kotlin Code | Java Background Jobs | No | No | Yes (Pro) |
 | **Quartz Scheduler** | Apache 2.0 | Embedded in Java App | Java Code | In-Application Java Jobs | No | Limited | No |
 | **Argo Workflows** | Apache 2.0 | Kubernetes-Only | Declarative YAML (CRDs) | Kubernetes-Native Jobs | Yes (Containers) | Yes | Yes (Managed) |
-| **JobRunr** | LGPL-3.0 | Embedded or Standalone Worker JVMs | Java / Kotlin Code | Java Background Jobs | No | No | Yes (Pro) |
 
 ## Choosing the Right Open Source Job Scheduler for Your Needs
 
@@ -122,7 +122,7 @@ Selecting the right tool depends entirely on your team's context, technical stac
 *   **For data engineering teams,** the choice often comes down to the trade-off between the code-first flexibility of Airflow and the declarative, polyglot model of Kestra. If your world is Python and batch ETL, Airflow is a proven choice. If your pipelines involve multiple languages and need to integrate with infrastructure tasks, a platform like Kestra offers a more unified approach. Explore more [data engineering resources](/resources/data) to guide your decision.
 *   **For infrastructure & DevOps teams,** the key considerations are GitOps alignment and integration with IaC tools. Argo Workflows is a perfect fit for teams living entirely within Kubernetes. Kestra provides a more versatile solution that can orchestrate Terraform and Ansible alongside containerized and non-containerized tasks, bridging the gap between on-prem, cloud, and K8s environments. See our [infrastructure automation resources](/resources/infrastructure) for more.
 *   **For AI/ML platform teams,** reproducibility and the ability to orchestrate heterogeneous workloads (e.g., data prep, GPU training, model serving) are critical. Container-native tools like Argo Workflows are popular, but a platform like Kestra can orchestrate the entire end-to-end ML lifecycle, from data ingestion to model deployment and monitoring. Check out our [AI orchestration resources](/resources/ai) to learn more.
-*   **For teams that need scheduling inside an existing Java application,** embedded schedulers like Quartz or JobRunr are excellent at any company size. They solve in-application scheduling and background job execution without the operational overhead of a separate orchestration platform.
+*   **For teams that need scheduling inside an existing Java application,** embedded schedulers like JobRunr or Quartz are excellent at any company size. They solve in-application scheduling and background job execution without the operational overhead of a separate orchestration platform.
 
 ## Conclusion: Modernizing Your Automation with the Right Orchestrator
 
