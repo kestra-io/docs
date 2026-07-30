@@ -16,6 +16,10 @@ Every Kestra deployment must define:
 - queue type
 - internal storage type
 
+Optionally, in Kestra 2.0 and later, you can also configure a separate log store:
+
+- log data store (defaults to the repository backend if not set)
+
 The common production path is PostgreSQL for queue and repository, plus an object store or durable internal storage backend.
 
 Queues and repositories must stay compatible:
@@ -123,6 +127,22 @@ Use H2 for local development. For production, prefer PostgreSQL, or MySQL if Pos
 :::alert{type="info"}
 For PostgreSQL performance issues, consider `random_page_cost=1.1` and `kestra.queue.postgres.disable-seq-scan=true` if queue polling is choosing poor query plans.
 :::
+
+## Log data store
+
+By default, execution logs are stored in the same database as flows and executions. In Kestra 2.0+, you can route logs to a separate store by setting `kestra.logs.type`. If this key is not set, logs continue to use the repository backend — no migration needed.
+
+```yaml
+kestra:
+  logs:
+    type: postgres          # or h2, mysql, elasticsearch
+    postgres:
+      url: jdbc:postgresql://logs-db:5432/kestra_logs
+      username: kestra
+      password: k3str4
+```
+
+The JDBC log store (H2, Postgres, MySQL) is available in OSS. The Elasticsearch log store is EE-only. For full configuration examples and the capability reference, see the [External Log Data Store](../../10.administrator-guide/log-data-store/index.md) guide.
 
 ## Connection pooling and JDBC queue tuning
 

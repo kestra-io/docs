@@ -12,7 +12,7 @@ Use purge tasks to remove old executions, logs, and key-value pairs, helping red
 To keep storage optimized, use [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
 
 - `PurgeExecutions`: deletes execution records from the database and their associated storage files
-- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently
+- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently. If you have configured an [external log data store](../log-data-store/index.md) that does not support purge, `PurgeLogs` is a no-op for logs — manage retention directly in that backend.
 - `PurgeKV`: deletes expired keys globally for a specific namespace
 - `PurgeStorage`: removes orphaned execution files from internal storage — files that exist on disk but whose execution records are no longer in the database
 

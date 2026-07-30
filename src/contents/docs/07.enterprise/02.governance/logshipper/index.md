@@ -10,6 +10,10 @@ version: "0.21.0"
 
 Log Shipper exports Kestra execution and audit logs to external observability platforms and SIEMs.
 
+:::alert{type="info"}
+**Log Shipper vs External Log Data Store** — these solve different problems. Log Shipper copies logs to third-party observability platforms (Datadog, Splunk, CloudWatch, etc.) for alerting and search. The [External Log Data Store](../../../10.administrator-guide/log-data-store/index.md) routes Kestra's primary log storage to a separate database or Elasticsearch, reducing main database size without any flow or sidecar. Both can be active at the same time.
+:::
+
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=9BrJXbEZLXbRXQIN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
