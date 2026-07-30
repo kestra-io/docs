@@ -18,6 +18,12 @@ faq:
   - question: "Do I need to migrate all my Dagster pipelines at once?"
     answer: "No. A big-bang migration is not recommended. Migrate pipeline by pipeline, validate each one in parallel with its Dagster counterpart, and decommission progressively."
 author: "Kestra"
+cta:
+  heading: "Planning a Dagster migration?"
+  text: "Talk it through with our team, or get the in-depth migration whitepaper — business case, effort estimation, risk register — when it's published."
+  eventPrefix: "dagster_migration"
+  formLabel: "Dagster Migration Whitepaper"
+  assetLabel: "whitepaper"
 ---
 
 Migrating an orchestration platform can feel daunting, especially when moving between tools with different core philosophies. This guide is for data engineers and platform leads actively evaluating or executing a transition from Dagster to Kestra. It provides a pragmatic, step-by-step roadmap to make the shift as smooth as possible.

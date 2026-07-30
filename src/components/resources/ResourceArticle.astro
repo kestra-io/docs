@@ -9,6 +9,7 @@ import ResourceHero from "~/components/resources/ResourceHero.astro"
 import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Faq from "~/components/common/Faq.vue"
+import ResourceCtaPair from "~/components/resources/ResourceCtaPair.vue"
 
 interface Props {
     post: CollectionEntry<"resources">
@@ -122,6 +123,18 @@ const faqSchema =
             </div>
             <div class="bd-content">
                 <Content />
+                {page.cta && (
+                    <ResourceCtaPair
+                        client:load
+                        heading={page.cta.heading}
+                        text={page.cta.text}
+                        eventPrefix={page.cta.eventPrefix}
+                        formLabel={page.cta.formLabel}
+                        assetLabel={page.cta.assetLabel}
+                        hubspotFormId={page.cta.hubspotFormId}
+                        pageUri={`resources/${post.id}`}
+                    />
+                )}
             </div>
             <div class="socials-mobile">
                 <BlogSocials
