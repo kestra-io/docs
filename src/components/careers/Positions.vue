@@ -1,7 +1,6 @@
 <script lang="ts" setup>
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-    import type { AshbyJob } from "~/utils/careers.ts"
-    import { slugify } from "~/utils/slugify"
+    import { jobPath, type AshbyJob } from "~/utils/careers.ts"
     import {
         searchDepartment,
         searchLocation,
@@ -68,9 +67,7 @@
             </h2>
             <ul class="department-positions">
                 <li v-for="doc in positions" :key="doc.id">
-                    <a
-                        :href="`/careers/${doc.jobPostingIds[0]}-${slugify(doc.title)}`"
-                    >
+                    <a :href="jobPath(doc)">
                         <div class="info-block">
                             <span>{{ doc.title }}</span>
                         </div>

@@ -6,12 +6,14 @@ export const GET: APIRoute = async () => {
 
     const urls = list
         .map((item) => item.url)
-        .filter((r) => r !== "" && r.indexOf("[") === -1)
+        .filter((r) => typeof r === "string" && r.indexOf("[") === -1)
         .filter((r) => r !== "/404" && r !== "/500")
         .filter((r) => r !== "/use-cases" && !r.startsWith("/use-cases/"))
         .filter((r) => r !== "/orchestration" && !r.startsWith("/orchestration/"))
         .filter((r) => r !== "/resources" && !r.startsWith("/resources/"))
-        .map((r) => "https://kestra.io" + r)
+        // `trailingSlash: "never"` reduces the home page route to an empty
+        // string, so it needs the slash back to become an absolute URL.
+        .map((r) => "https://kestra.io" + (r === "" ? "/" : r))
 
     return sitemapResponse(urls)
 }
