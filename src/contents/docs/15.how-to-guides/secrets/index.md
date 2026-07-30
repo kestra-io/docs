@@ -5,20 +5,17 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
+editions: ["OSS"]
 description: Learn how to securely configure and use secrets in Kestra to protect sensitive information like passwords and API keys in your flows.
 ---
 
-Learn how to securely configure and use secrets in Kestra.
+Configure sensitive values as base64-encoded environment variables so flows can reference them without exposing plain text in flow definitions or logs.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Secrets are sensitive values that should not be exposed in plain text, such as passwords, API tokens, access keys, or other confidential information.
-For a detailed overview, see the [Secrets](../../06.concepts/04.secret/index.md) documentation.
-
-This guide demonstrates how to add secrets to your Kestra server using an environment file (`.env`).
-If you prefer a simpler, UI-based experience, see the [Enterprise Edition](../../oss-vs-paid/index.md), which allows managing secrets per namespace directly from the web interface — without modifying server configuration files.
+For a detailed overview of how secrets work across editions, see the [Secrets concept page](../../06.concepts/04.secret/index.md). For a UI-based secrets manager with access controls and audit logs, see the [Enterprise Edition](../../oss-vs-paid/index.md).
 
 ---
 
@@ -121,9 +118,4 @@ tasks:
 
 ### How secrets are resolved
 
-When you reference a secret using `{{ secret('POSTGRES_PASSWORD') }}`, Kestra automatically:
-1. Finds the corresponding environment variable (e.g., `SECRET_POSTGRES_PASSWORD`).
-2. Base64-decodes its value.
-3. Injects it securely into the execution context.
-
-This ensures your sensitive data stays encrypted at rest and never appears in logs or flow definitions.
+When you reference a secret using `{{ secret('POSTGRES_PASSWORD') }}`, Kestra finds the corresponding `SECRET_POSTGRES_PASSWORD` environment variable, base64-decodes its value, and injects it into the execution context. The decoded value does not appear in flow definitions or logs, but base64 encoding is not encryption — secure your host environment accordingly.
