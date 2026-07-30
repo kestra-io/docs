@@ -34,6 +34,8 @@ interface Props {
     headerBg?: string
     /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
     canonical?: string
+    /** Override the analytics content-view-name (window.astroClientConfig.slug); kept separate from `canonical`, which some pages use for syndicated-content URLs. */
+    analyticsSlug?: string
     /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
     noindex?: boolean
 }
@@ -46,7 +48,7 @@ currentUrl.pathname = currentUrl.pathname.endsWith("/")
     : currentUrl.pathname
 
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
-const slug = Astro.routePattern
+const slug = props.analyticsSlug ?? Astro.routePattern
 
 // Strip any existing " | Kestra" suffix before re-appending, so the template
 // is the single owner of the suffix. Guards against double " | Kestra | Kestra"
