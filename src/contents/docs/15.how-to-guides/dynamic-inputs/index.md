@@ -205,6 +205,7 @@ inputs:
 - `subflow()` is only valid in the `expression:` property of a `SELECT` or `MULTISELECT` input. It throws if used in a task or trigger property.
 - The subflow must complete within the timeout (default `PT1M`, max `PT5M`). Keep data-fetching subflows fast.
 - Recursion is capped at depth 3.
+- Each subflow referenced in a `SELECT` or `MULTISELECT` expression appears in the parent flow's **Dependencies** graph automatically.
 
 ## Label/value pairs for decoupled dropdowns
 

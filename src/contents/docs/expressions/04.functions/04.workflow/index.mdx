@@ -97,6 +97,7 @@ When a user opens the Execute form, Kestra runs the subflow synchronously, reads
 **Important constraints:**
 
 - Only valid in an input `expression:` context. Using `subflow()` inside a task or trigger property throws an error, because blocking a worker thread while waiting for a child execution can deadlock a worker under load.
+- Flows referenced by `subflow()` in a `SELECT` or `MULTISELECT` input expression appear in the parent flow's **Dependencies** graph, the same way a `Subflow` task reference does.
 - Only available on `WEBSERVER` and `STANDALONE` server types. The function is not registered on other server types.
 - The default timeout is `PT1M`. The hard cap is `PT5M` — passing a larger `timeout` value is rejected at runtime. Both limits are configurable; see [configuration reference](../../../configuration/04.plugins-and-execution/index.md#subflow-function-configuration).
 - Subflow recursion depth is capped at 3. A subflow whose own inputs call `subflow()` counts against this limit.
