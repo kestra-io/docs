@@ -30,6 +30,7 @@ This post covers what shipped. The [engineering post from April](/blogs/kestra-2
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE |
 | AWS EC2 Task Runner | Native EC2 execution via SSM, with Spot support | EE, Cloud |
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | All |
+| External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
 | Reusable Inputs | Shared input groups defined once at namespace level | EE, Cloud |
 
 <!-- TODO: video embed if one exists at release time -->
@@ -355,6 +356,30 @@ The workerGroup property (inherited from all Kestra tasks) means PurgeStorage ca
 
 See the [purge guide](/docs/administrator-guide/purge) for setup and the two-step orphan-file remediation pattern.
 
+## External Log Data Store
+
+Execution logs are the highest-volume data Kestra writes. In most production installations they dwarf flows and executions combined, yet they share the same database. Schema migrations pay a per-row cost across every table including logs. Backup and retention schedules apply uniformly when the operational reality is that logs and executions have different lifecycles.
+
+In 2.0, logs can be routed to a separate store using `kestra.logs.type`. JDBC backends (H2, PostgreSQL, MySQL) are available in OSS. Elasticsearch is EE-only.
+
+```yaml
+kestra:
+  repository:
+    type: postgres
+  logs:
+    type: postgres
+    postgres:
+      url: jdbc:postgresql://logs-db:5432/kestra_logs
+      username: kestra
+      password: k3str4
+```
+
+When `kestra.logs.type` is set, Kestra opens a separate HikariCP connection pool against the log database, runs log-table migrations there, and routes all log reads and writes to it. The main database handles only flows, executions, and state.
+
+If `kestra.logs.type` is not set, logs continue using the repository backend. Existing installations see no change on upgrade. Historical logs written before the switch remain in the main database; a CLI migration command is planned for a future release.
+
+See the [External Log Data Store guide](/docs/administrator-guide/log-data-store) for the Elasticsearch config, the capability reference (aggregation, pagination type, purge), and the plugin developer guide for custom log backends.
+
 ## Additional Improvements
 
 **Reusable Inputs (EE/Cloud).** Define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Supports namespace hierarchy inheritance and revision pinning.
@@ -370,6 +395,14 @@ See the [purge guide](/docs/administrator-guide/purge) for setup and the two-ste
 **Syslog (CEF) log exporter.** The EE Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
 
 **AI Agent observability.** AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
+
+**mTLS on the worker channel.** Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer.
+
+<!-- TODO: Promote (EE) - reviewed flow promotion between environments; fill with details + screenshot when feature ships -->
+
+<!-- TODO: Plugin auto-install (OSS standalone) - automatic plugin installation on demand; fill with config details when confirmed -->
+
+<!-- TODO: Drafts - save flows as drafts before publishing; fill with details + screenshot closer to GA -->
 
 ## Upgrade and Migration
 
