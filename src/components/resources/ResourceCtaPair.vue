@@ -92,12 +92,9 @@
         </form>
 
         <div v-else class="cta-thanks">
-            <h4 class="thanks-title">You're on the list.</h4>
-            <p class="cta-text">
-                We'll email you the {{ assetLabel }} as soon as it's published.
-                In the meantime, if you'd rather talk your migration through
-                with someone, we're happy to.
-            </p>
+            <h4 class="thanks-title">
+                You're on the list — we'll email you the {{ assetLabel }} soon.
+            </h4>
             <a href="/demo" class="btn btn-primary" @click="onDemoClick">
                 Book a demo
             </a>
@@ -251,7 +248,7 @@
     .thanks-title {
         font-size: $font-size-lg;
         font-weight: 600;
-        margin: 0 0 0.75rem;
+        margin: 0 0 1.25rem;
         color: var(--ks-content-primary);
     }
 
