@@ -18,7 +18,7 @@ How secrets are stored and managed depends on your edition. In **Enterprise Edit
 
 Use secrets for static sensitive values such as API keys, passwords, webhook URLs, certificates, and long-lived tokens. Use [Credentials](../../07.enterprise/03.auth/credentials/index.md) when Kestra needs to manage reusable server-to-server authentication for supported integrations — for example, minting or refreshing short-lived access tokens at runtime. Credentials can reference secrets for sensitive inputs such as client secrets and private keys.
 
-For available backends (AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, and Kestra's built-in store), see the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page.
+For available backends (AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, and Kestra's built-in store), see the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page. For best practices, see [Secrets management](../../14.best-practices/9.secrets-management/index.md) and [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
 
 From the **Secrets** tab, you can edit, delete, and copy your secret to your clipboard as a Pebble expression for use in a flow, such as `"{{ secret('API_TOKEN') }}"`.
 
@@ -53,3 +53,4 @@ The secret is resolved using the target namespace's own secret backend, so a flo
 The Open-Source Edition has no dedicated secret store. As a workaround, Kestra reads base64-encoded environment variables prefixed with `SECRET_` and exposes them via the `secret()` function. This keeps sensitive values out of flow YAML, but it is not a secrets manager — there is no encryption at rest, no audit trail, and no access control beyond what your host environment provides.
 
 See [Configure secrets in Kestra (OSS)](../../15.how-to-guides/secrets/index.md) for step-by-step instructions on encoding values and wiring them into your Docker Compose file.
+
