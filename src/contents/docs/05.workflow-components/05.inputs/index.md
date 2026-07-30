@@ -20,7 +20,7 @@ You can inspect input values in the **Overview** tab of the **Execution** page a
 
 ## Declaring inputs
 
-You can declare as many inputs as necessary for any flow. Inputs can be **required** or **optional**.
+You can declare as many inputs as necessary for any flow. Inputs can be **required** or **optional**. Each input is treated as **required** by default - set `required: false` to make an input optional.
 
 If an input is required, you must provide a value at runtime or set a `defaults` value; otherwise, the execution will not be created.
 
@@ -164,7 +164,7 @@ Here is the list of supported data types:
 :::
 
 - `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Like `SELECT`, each entry in `values` can be a plain string or a `{label, value}` object. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
-- `BOOLEAN`: Must be `true` or `false` passed as strings.
+- `BOOL`: Must be `true` or `false` passed as strings.
 - `DATETIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time with the timezone expressed in UTC format; pass input of type DATETIME in a string format following the pattern `2042-04-02T04:20:42.000Z`.
 - `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
 - `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
@@ -186,7 +186,7 @@ Below is the list of available properties for all inputs regardless of their typ
 
 - `id`: The input parameter identifier — this property is important as it's used to reference the input variables in your flow, e.g., `{{ inputs.user }}` references the input parameter named `user`.
 - `type`: The data type of the input parameter, as described in the previous section.
-- `required`: Whether the input is required. If `true` and neither a default nor a runtime value is provided, the execution will not be created.
+- `required`: Whether the input is required. Defaults to `true` - set `required: false` to make an input optional. An input with `defaults` must stay required, since the default is always applied.
 - `defaults`: The default value that is used if no custom input value is provided at runtime; this value must be provided as a string and will be set to the desired data type specified using the `type` property.
 - `prefill`: Starts with an initial value that can be cleared or set to `null` when the input is not required. Like an editable default, it allows workflows to support optional inputs that start with a suggestion but can still be reset to `null` at runtime.
 - `dependsOn`: Makes the input dependent on other inputs that must be provided first.
