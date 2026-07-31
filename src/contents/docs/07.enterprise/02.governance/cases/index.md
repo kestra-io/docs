@@ -10,9 +10,9 @@ version: ">= 2.0.0"
 
 Track and resolve incidents directly in Kestra, next to the executions that caused them.
 
-When an Execution fails, this often means an **incident**. Instead of relying on an extra tool for incident management, Cases can be used to track and resolve incidents directly in Kestra.
+When an execution fails, it is often an incident. Cases lets you track and resolve those incidents directly in Kestra, without a separate tool.
 
-Cases can be created not only for failed executions but also, for example, for executions that need **approvals**, as well as for successful executions that produced unexpected outputs.
+Cases are not limited to failures — you can open one for executions that need approvals, or for successful executions that produced unexpected outputs.
 
 A dedicated `CreateCase` task in the Kestra YAML flow definition allows creating cases automatically:
 
@@ -29,17 +29,17 @@ Cases require the [Kestra plugin](https://kestra.io/plugins/plugin-kestra) to be
 
 ## What a case contains
 
-- **Title and description** - the description supports Markdown
-- **Severity** - `Critical`, `High`, `Medium`, or `Low`; defaults to `Medium`
-- **Status** - `Open`, `Acknowledged`, `Investigating`, `Resolved`, or `Cancelled`; `Resolved` and `Cancelled` are terminal
-- **Namespace** - every case belongs to a namespace, and all permission checks are scoped to it
-- **Assignees and watchers** - both accept users and groups; assignees are responsible for the case, watchers only receive notifications. The same user or group cannot be both at once: assigning them as an assignee removes them from the watchers
-- **Custom fields** - typed fields (Text, Select, Multi-select) defined per case or inherited from a template; cases use custom fields instead of labels
-- **SLAs** - optional acknowledgement and resolution targets
-- **Linked executions and assets** - the executions and [assets](../01.assets/index.md) affected by the incident
-- **Case actions** - flows attached to the case as one-click remediation buttons
-- **Origin** - the flow, task, and execution that created the case (set only when created by the `CreateCase` task); this is the deduplication key
-- **Template reference** - the case template the case was created from, if any
+- Title and description: the description supports Markdown
+- Severity: `Critical`, `High`, `Medium`, or `Low`; defaults to `Medium`
+- Status: `Open`, `Acknowledged`, `Investigating`, `Resolved`, or `Cancelled`; `Resolved` and `Cancelled` are terminal
+- Namespace: every case belongs to a namespace, and all permission checks are scoped to it
+- Assignees and watchers: both accept users and groups; assignees are responsible for the case, watchers only receive notifications. The same user or group cannot be both at once — assigning them as an assignee removes them from the watchers
+- Custom fields: typed fields (Text, Select, Multi-select) defined per case or inherited from a template; cases use custom fields instead of labels
+- SLAs: optional acknowledgement and resolution targets
+- Linked executions and assets: the executions and [assets](../01.assets/index.md) affected by the incident
+- Case actions: flows attached to the case as one-click remediation buttons
+- Origin: the flow, task, and execution that created the case (set only when created by the `CreateCase` task); this is the deduplication key
+- Template reference: the case template the case was created from, if any
 
 ## Case lifecycle
 
@@ -54,12 +54,12 @@ There is no restrictive state machine: any status can be changed to any other, i
 
 Each case can have two optional SLA targets, set directly or inherited from a template:
 
-1. **Acknowledgement** - met the first time the case moves from `Open` to any other status
-2. **Resolution** - met when the case is resolved
+1. Acknowledgement: met the first time the case moves from `Open` to any other status
+2. Resolution: met when the case is resolved
 
 Both clocks start at case creation. Each of the two SLAs can be in one of six states: `Not started`, `Running`, `Overdue`, `Met`, `Missed`, or `Voided` (cancelling a case voids its pending SLAs). States are computed at read time and never persisted. The UI shows a live countdown ("Due in 2h", "Due 30m ago") on the case detail page, board cards, and the list's Resolution SLA column.
 
-Currently, SLA breaches are only visible in the UI. No alert is sent when a target is missed; the `SLA_ACKNOWLEDGEMENT_BREACHED` and `SLA_RESOLUTION_BREACHED` timeline events are reserved for a future background monitor.
+SLA breaches are only visible in the UI. No alert is sent when a target is missed; the `SLA_ACKNOWLEDGEMENT_BREACHED` and `SLA_RESOLUTION_BREACHED` timeline events are reserved for a future background monitor.
 
 ## The CreateCase task
 
@@ -139,8 +139,8 @@ Note that the task cannot reference a case template. Case templates are mainly h
 
 With `linkMatchingExecutions: true`, the server first looks for an active case with the same **origin**: the combination of flow namespace, flow ID, and task ID (within the tenant). The title is not part of the key. A case counts as active when its status is `Open`, `Acknowledged`, or `Investigating`.
 
-- **On a match** - the triggering execution is appended to the existing case's linked executions (visible in the timeline as an `EXECUTION_LINKED` event), no new case is created, and the task returns `created: false`. Fields such as title or severity are not merged, and no new "created" notification is sent.
-- **On no match** - a new case is created with the origin recorded, and the execution is linked to it.
+- On a match: the triggering execution is appended to the existing case's linked executions (visible in the timeline as an `EXECUTION_LINKED` event), no new case is created, and the task returns `created: false`. Fields such as title or severity are not merged, and no new "created" notification is sent.
+- On no match: a new case is created with the origin recorded, and the execution is linked to it.
 
 The same behavior can also be enabled from the UI on an existing case with [auto-attach](#auto-attach).
 
@@ -160,18 +160,18 @@ Enabling auto-attach is gated by RBAC: it requires the `UPDATE` action on the `C
 
 Besides the task, cases can be created in four places:
 
-1. **The Cases page** - the Create button opens a modal with template selection, title, severity, initial status, namespace, assignees and watchers, both SLA targets (presets from 1 hour to 72 hours, or a custom duration), description, custom fields, and executions to link.
-2. **The Executions page (bulk)** - select executions and use "Create case from selection" or "Add to existing case". Both also work with "select all matching filter", so a case can be created from everything matching the current query.
-3. **An execution's Overview tab** - a "Linked cases" panel lists the cases the execution belongs to and offers a Create case button pre-linked to that execution.
-4. **An asset page** - the same panel exists on the asset overview; a case created there is linked to the asset automatically.
+1. Cases page: the Create button opens a modal with template selection, title, severity, initial status, namespace, assignees and watchers, both SLA targets (presets from 1 hour to 72 hours, or a custom duration), description, custom fields, and executions to link.
+2. Executions page (bulk): select executions and use "Create case from selection" or "Add to existing case". Both also work with "select all matching filter", so a case can be created from everything matching the current query.
+3. Execution's Overview tab: a "Linked cases" panel lists the cases the execution belongs to and offers a Create case button pre-linked to that execution.
+4. Asset page: the same panel exists on the asset overview; a case created there is linked to the asset automatically.
 
 ## Cases in the UI
 
 Cases sit in the left menu between Executions and System Flows.
 
-- **Board view (default)** - a kanban board grouped by status, severity, or assignee. Dragging a card between columns updates the case; dropping onto Resolved opens the resolve modal, because a reason is mandatory. Cards show the case ID, severity, title, assignees, and a live SLA countdown.
-- **List view** - columns for Case, Title, Severity, Status, Resolution SLA, and Assignee, with an inline next-step button per row (Acknowledge, Investigating, Resolve) and bulk Acknowledge/Delete.
-- **Toolbar** - full-text search; filters on namespace, status, severity, assignee, and time range; an "Assigned to me" toggle; and one chip per status with live counts.
+- Board view (default): a kanban board grouped by status, severity, or assignee. Dragging a card between columns updates the case; dropping onto Resolved opens the resolve modal, because a reason is mandatory. Cards show the case ID, severity, title, assignees, and a live SLA countdown.
+- List view: columns for Case, Title, Severity, Status, Resolution SLA, and Assignee, with an inline next-step button per row (Acknowledge, Investigating, Resolve) and bulk Acknowledge/Delete.
+- Toolbar: full-text search; filters on namespace, status, severity, assignee, and time range; an "Assigned to me" toggle; and one chip per status with live counts.
 
 The case detail page shows the editable header (title, severity, status, quick transitions, Resolve/Reopen), the Markdown description, custom fields, a resolution card once resolved, SLA countdowns, assignees and watchers (with a Watch/Unwatch toggle and "Assign with note"), case actions, linked executions, linked assets, and the activity timeline.
 
@@ -185,8 +185,8 @@ A case action is a flow attached to the case as a one-click button, intended for
 
 ## Linked executions and assets
 
-- **Executions** can be linked by the task, by auto-attach, manually from the case detail page, or in bulk by ID or by filter query. The linked-executions card shows each execution's live state and keeps a row (marked as no longer existing) even if the execution was purged.
-- **Assets** come in two kinds: explicitly attached ones, and derived ones (assets used by the case's linked executions, shown with an "Auto-detected" tag). Derived assets cannot be unlinked; they disappear when the executions that reference them are unlinked.
+- Executions can be linked by the task, by auto-attach, manually from the case detail page, or in bulk by ID or by filter query. The linked-executions card shows each execution's live state and keeps a row (marked as no longer existing) even if the execution was purged.
+- Assets come in two kinds: explicitly attached ones, and derived ones (assets used by the case's linked executions, shown with an "Auto-detected" tag). Derived assets cannot be unlinked; they disappear when the executions that reference them are unlinked.
 
 ## Case templates
 
@@ -204,11 +204,11 @@ Case events are wired into the in-app notification system (the bell icon). Five 
 
 ## Permissions and audit
 
-- **RBAC** - a new `CASE` permission resource with actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`, optionally scoped to a namespace (_creating a case requires `CREATE` on its namespace, transitions and linking require `UPDATE`, commenting only requires `VIEW`_).
-- **Audit** - create, update, and delete of cases and case templates are recorded in the [audit log](../06.audit-logs/index.md) (resource types `CASE` and `CASE_TEMPLATE`). Timeline events and comments are not separately audited.
-- **Backup** - cases, templates, timeline events, and execution links are included in backup and restore.
+- RBAC: a new `CASE` permission resource with actions `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`, optionally scoped to a namespace (_creating a case requires `CREATE` on its namespace, transitions and linking require `UPDATE`, commenting only requires `VIEW`_).
+- Audit: create, update, and delete of cases and case templates are recorded in the [audit log](../06.audit-logs/index.md) (resource types `CASE` and `CASE_TEMPLATE`). Timeline events and comments are not separately audited.
+- Backup: cases, templates, timeline events, and execution links are included in backup and restore.
 
 ## Current limitations
 
-- **In-app notifications only** - case events show up in the notification bell, but no Slack message or email is sent by cases themselves. External alerting can still be added with standard notification tasks next to `CreateCase`, or as a case action.
-- **Deduplication is not atomic** - concurrent failures of the same task can occasionally create duplicate cases.
+- Notifications are in-app only: case events appear in the notification bell, but no Slack message or email is sent by Cases. External alerting can be added with standard notification tasks alongside `CreateCase`, or as a case action.
+- Deduplication is not atomic: concurrent failures of the same task can occasionally create duplicate cases.
