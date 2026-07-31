@@ -623,9 +623,35 @@ taskRunner:
 | `output` | — | A Pebble expression evaluated against the task's output map to extract the token string. |
 | `cache` | `PT5M` | How long the fetched token is reused before the provider runs the task again. Set to `PT0S` to disable caching. |
 
-## Plugin defaults
+## Centralizing runner configuration with Policies
 
-You can use `pluginDefaults` to avoid repeating configuration across multiple tasks. For example, you can set the `pullPolicy` to `ALWAYS` for all tasks in a namespace:
+In Enterprise Edition, use a [Policy](../../../07.enterprise/02.governance/policies/index.md) to apply the Kubernetes runner to all Python script tasks in a namespace without repeating the configuration in each flow:
+
+```yaml
+id: k8s-runner-defaults
+description: "Kubernetes task runner for all Python script tasks."
+enforcement: active
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: plugin
+    override: true
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.scripts.python
+    values:
+      taskRunner:
+        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+        namespace: default
+        pullPolicy: ALWAYS
+        config:
+          masterUrl: https://docker-for-desktop:6443
+          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
+          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
+```
+
+With this Policy applied to the namespace, individual flows need only declare their tasks:
 
 ```yaml
 id: k8s_taskrunner
@@ -650,20 +676,6 @@ tasks:
           ip_address = socket.gethostbyname(socket.gethostname())
           print("Hello from Kubernetes and Kestra!")
           print(f"Host IP Address: {ip_address}")
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python
-    forced: true
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-        namespace: default
-        pullPolicy: ALWAYS
-        config:
-          masterUrl: https://docker-for-desktop:6443
-          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
-          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
-          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
 ```
 
 ## Guides

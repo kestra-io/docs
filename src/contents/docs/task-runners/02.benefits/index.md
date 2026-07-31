@@ -15,66 +15,77 @@ Task Runners let you control resource allocation, environment configuration, and
 Many Kestra users develop their scripts locally using **Docker containers** and deploy the same code in production as **Kubernetes pods**.
 The `taskRunner` property lets you switch execution environments without changing your scripts.
 
-Below is an example showing how you can combine `pluginDefaults` with the `taskRunner` property to use Docker during development and Kubernetes in production — without changing your code.
+Set the `taskRunner` property directly on each task. Switching environments means updating the `taskRunner` block — the script stays identical.
 
-### 1. Development environment (namespace / tenant / instance)
+### 1. Development task (Docker)
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts
-    values:
-      taskRunner:
-        type: io.kestra.plugin.scripts.runner.docker.Docker
-        pullPolicy: IF_NOT_PRESENT # In dev, only pull the image when needed
-        cpu:
-          cpus: 1
-        memory:
-          memory: 512Mi
+- id: transform
+  type: io.kestra.plugin.scripts.python.Script
+  containerImage: python:slim
+  taskRunner:
+    type: io.kestra.plugin.scripts.runner.docker.Docker
+    pullPolicy: IF_NOT_PRESENT
+    cpu:
+      cpus: 1
+    memory:
+      memory: 512Mi
+  script: |
+    print("running in Docker")
 ```
 
-### 2. Production environment (namespace / tenant / instance)
+### 2. Production task (Kubernetes)
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-        namespace: company.team
-        pullPolicy: ALWAYS # Always pull the latest image in production
-        config:
-          username: "{{ secret('K8S_USERNAME') }}"
-          masterUrl: "{{ secret('K8S_MASTER_URL') }}"
-          caCert: "{{ secret('K8S_CA_CERT') }}"
-          clientCert: "{{ secret('K8S_CLIENT_CERT') }}"
-          clientKey: "{{ secret('K8S_CLIENT_KEY') }}"
-        resources: # Can be overridden by a specific task if needed
-          request:
-            cpu: "500m"    # Request 1/2 CPU (500 milliCPU)
-            memory: "256Mi" # Request 256 MB of memory
+- id: transform
+  type: io.kestra.plugin.scripts.python.Script
+  containerImage: python:slim
+  taskRunner:
+    type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+    namespace: company.team
+    pullPolicy: ALWAYS
+    config:
+      username: "{{ secret(‘K8S_USERNAME’) }}"
+      masterUrl: "{{ secret(‘K8S_MASTER_URL’) }}"
+      caCert: "{{ secret(‘K8S_CA_CERT’) }}"
+      clientCert: "{{ secret(‘K8S_CLIENT_CERT’) }}"
+      clientKey: "{{ secret(‘K8S_CLIENT_KEY’) }}"
+    resources:
+      request:
+        cpu: "500m"
+        memory: "256Mi"
+  script: |
+    print("running in Kubernetes")
 ```
 
 :::alert{type="info"}
-Notice that the `containerImage` property is not part of the `taskRunner` configuration — it’s defined at the task level instead.
-Container images typically change more often than the runner setup, so keeping them separate makes both easier to maintain.
-For instance, a dbt plugin might require a different image from a Python script, while both can share the same runner configuration.
+Notice that `containerImage` is defined at the task level, not inside `taskRunner`. Container images typically change more often than the runner setup, so keeping them separate makes both easier to maintain.
 :::
 
-## Centralized configuration management
+In Enterprise Edition, a namespace-scoped [Policy](../../07.enterprise/02.governance/policies/index.md) can inject the `taskRunner` block into every task automatically — apply the dev policy to development namespaces and the production policy to production namespaces, with no per-task changes required.
 
-The combination of `pluginDefaults` and `taskRunner` enables centralized management of your task runner configuration.
-For example, you can define AWS credentials at the namespace level for the `Batch` task runner plugin:
+## Centralized configuration management (Enterprise Edition)
+
+In Enterprise Edition, use a [Policy](../../07.enterprise/02.governance/policies/index.md) to centralize task runner credentials at the namespace level. For example, inject AWS credentials into every AWS Batch task runner without repeating them in each flow:
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.ee.aws.runner.Batch
+id: aws-batch-credentials
+description: "AWS credentials for the Batch task runner."
+enforcement: active
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: plugin
+    where:
+      - field: type
+        operator: EQUAL_TO
+        value: io.kestra.plugin.ee.aws.runner.Batch
     values:
       accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
       secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
       region: "us-east-1"
 ```
 
-This approach ensures consistency and eliminates repetitive configuration across multiple workflows.
+This ensures consistency and eliminates repetitive configuration across multiple workflows.
 
 ## Documentation and autocompletion
 

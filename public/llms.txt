@@ -46,7 +46,7 @@ Use this section when writing, editing, or understanding the structure of a Kest
 - [Subflows](https://kestra.io/docs/workflow-components/subflows.md): Call another flow as a task, pass inputs, wait for completion, and consume its outputs
 - [Errors](https://kestra.io/docs/workflow-components/errors.md): `errors` block for flow-level error handling tasks; `AllowFailure` for marking individual tasks as non-fatal
 - [Retries](https://kestra.io/docs/workflow-components/retries.md): Retry policies — constant, exponential, random — with `maxAttempt` and `maxDuration`
-- [Plugin Defaults](https://kestra.io/docs/workflow-components/plugin-defaults.md): Set default property values for a plugin type across all tasks in a flow or namespace, avoiding repetition
+- [Policies](https://kestra.io/docs/enterprise/governance/policies.md): Inject, validate, and enforce configuration rules across namespaces and tenants — Enterprise Edition replacement for the removed pluginDefaults feature
 - [Concurrency](https://kestra.io/docs/workflow-components/concurrency.md): Limit simultaneous executions of a flow with `concurrency.limit` and `behavior` (queue or cancel)
 
 ## Expressions and templating
@@ -657,7 +657,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Labels in Kestra – Tag Flows and Executions](https://kestra.io/docs/workflow-components/labels.md)
 - [Namespaces in Kestra – Organize and Secure Workflows](https://kestra.io/docs/workflow-components/namespace.md)
 - [Workflow Outputs in Kestra: Share Data Between Tasks](https://kestra.io/docs/workflow-components/outputs.md)
-- [Plugin Defaults in Kestra – Set Task-Level Defaults](https://kestra.io/docs/workflow-components/plugin-defaults.md)
+- [Policies – Enforce Governance Rules](https://kestra.io/docs/enterprise/governance/policies.md)
 - [Plugins in Kestra: Tasks, Triggers, Integrations](https://kestra.io/docs/workflow-components/plugins.md)
 - [Flow Quotas in Kestra: Rate-Limit Execution Creation](https://kestra.io/docs/workflow-components/quotas.md)
 - [Reusable Inputs in Kestra Enterprise](https://kestra.io/docs/workflow-components/reusable-inputs.md)

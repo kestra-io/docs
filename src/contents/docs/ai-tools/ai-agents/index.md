@@ -66,6 +66,15 @@ inputs:
 tasks:
   - id: multilingual_agent
     type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-2.5-flash
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
+      configuration:
+        logRequests: true
+        logResponses: true
+        responseFormat:
+          type: TEXT
     systemMessage: |
         You are a precise technical assistant.
         Produce a {{ inputs.summary_length }} summary in {{ inputs.language }}.
@@ -80,20 +89,16 @@ tasks:
 
   - id: english_brevity
     type: io.kestra.plugin.ai.agent.AIAgent
+    provider:
+      type: io.kestra.plugin.ai.provider.GoogleGemini
+      modelName: gemini-2.5-flash
+      apiKey: "{{ secret('GEMINI_API_KEY') }}"
+      configuration:
+        logRequests: true
+        logResponses: true
+        responseFormat:
+          type: TEXT
     prompt: Generate exactly 1 sentence English summary of "{{ outputs.multilingual_agent.textOutput }}"
-
-pluginDefaults:
-  - type: io.kestra.plugin.ai.agent.AIAgent
-    values:
-        provider:
-          type: io.kestra.plugin.ai.provider.GoogleGemini
-          modelName: gemini-2.5-flash
-          apiKey: "{{ secret('GEMINI_API_KEY') }}"
-          configuration:
-            logRequests: true
-            logResponses: true
-            responseFormat:
-              type: TEXT
 ```
 
 ### Inputs
@@ -120,9 +125,9 @@ The `english_brevity` task only needs a `prompt` because the `systemMessage` is 
 
 These outputs can then be passed on as notifications or system messages to external tools or subflows within Kestra. Other useful outputs include `tokenUsage` to compare different providers for the same tasks. At runtime, Kestra also emits counter metrics — `ai.agent.tool.calls`, `ai.provider.calls`, and `ai.embedding.store.calls` — tagged by class name, which you can scrape with Prometheus or export via OpenTelemetry to monitor AI task usage. For more examples and details about properties, outputs, and definitions, refer to the AI [Agent plugin documentation](/plugins/plugin-ai/agent).
 
-### Plugin defaults
+### Centralizing provider configuration
 
-Each task using the AI Agent requires the `provider` property. To avoid repetition and simplify the flow building experience, first consider using [Kestra's AI Copilot](../ai-copilot/index.md), next consider using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md) to ensure consistency and remove repetition. Additionally, for your provider API key, secure it either through the [Key-Value Store](../../06.concepts/05.kv-store/index.md) or as a [Secret](../../06.concepts/04.secret/index.md) if using [Kestra Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).
+Each task using the AI Agent requires the `provider` property. To avoid repeating it on every task, use a [Policy](../../07.enterprise/02.governance/policies/index.md) with an `Add` rule to inject the `provider` block into all `AIAgent` tasks across a namespace — this is an Enterprise Edition feature. For your provider API key, store it as a [Secret](../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`.
 
 ## Agent tools
 

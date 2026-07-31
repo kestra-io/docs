@@ -33,15 +33,12 @@ tasks:
       hello.py: nsfile:///scripts/hello.py
   - id: namespace_file_from_other_namespace
     type: io.kestra.plugin.scripts.python.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - python hello.py
     inputFiles:
       hello.py: nsfile://company/scripts/hello.py
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python.Commands
-    values:
-      taskRunner:
-        type: io.kestra.plugin.core.runner.Process
-      commands:
-        - python hello.py
 ```
 
 ### Allowed paths

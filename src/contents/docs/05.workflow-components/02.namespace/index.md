@@ -82,4 +82,4 @@ On the top of this page, you have different tabs:
 
 6. **Files:** To manage, view and modify all the Namespace files.
 
-The other tabs: Edit, Variables, Plugin Defaults, Secrets, and Audit Logs are only available for Kestra EE. More details about them can be found in our [Enterprise Edition documentation](../../07.enterprise/index.mdx).
+The other tabs: Edit, Variables, Policies, Secrets, and Audit Logs are only available for Kestra EE. More details about them can be found in our [Enterprise Edition documentation](../../07.enterprise/index.mdx).

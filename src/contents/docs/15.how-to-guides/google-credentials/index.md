@@ -119,9 +119,27 @@ With this, we can add this to the `serviceAccount` property like so:
   serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
-## Set the Service Account with `PluginDefaults`
+## Centralize the service account with a Policy (Enterprise Edition)
 
-If you're using multiple tasks that will require the service account secret, you can set up a Plugin Default to apply this property to all tasks of this type. For example:
+If you use multiple tasks that require the same service account, create a [Policy](../../07.enterprise/02.governance/policies/index.md) at the namespace level to inject it automatically:
+
+```yaml
+id: gcp-service-account
+description: "Inject GCP service account into all Google Workspace Drive tasks."
+enforcement: active
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: plugin
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.googleworkspace.drive
+    values:
+      serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
+```
+
+With this Policy applied, tasks in the namespace need no `serviceAccount` property:
+
 ```yaml
 tasks:
   - id: upload
@@ -132,11 +150,6 @@ tasks:
     name: "My awesome CSV"
     contentType: "text/csv"
     mimeType: "application/vnd.google-apps.spreadsheet"
-
-pluginDefaults:
-  - type: io.kestra.plugin.googleworkspace.drive.Upload
-    values:
-      serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
 ## Configuring Secrets in the Enterprise Edition

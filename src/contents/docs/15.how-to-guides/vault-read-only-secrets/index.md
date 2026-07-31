@@ -105,17 +105,12 @@ tasks:
 
   - id: copy_in
     type: io.kestra.plugin.jdbc.postgresql.CopyIn
+    url: "jdbc:postgresql://ep-ancient-flower-a2e73um1-pooler.eu-central-1.aws.neon.tech/neondb?user=neondb_owner&password={{ secret('my-app', subkey='NEON_PASSWORD') }}"
     table: "kestra_example_secret"
     from: "{{ outputs.download.uri }}"
     header: true
     columns: [order_id,customer_name,customer_email,product_id,price,quantity,total]
     delimiter: ","
-
-pluginDefaults:
-  - forced: true
-    type: io.kestra.plugin.jdbc.postgresql
-    values:
-      url: jdbc:postgresql://ep-ancient-flower-a2e73um1-pooler.eu-central-1.aws.neon.tech/neondb?user=neondb_owner&password={{ secret('my-app', subkey='NEON_PASSWORD') }}
 ```
 :::
 

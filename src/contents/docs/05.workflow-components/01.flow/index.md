@@ -34,7 +34,7 @@ Optionally, a flow can also have:
 - [variables](../04.variables/index.md)
 - [triggers](../07.triggers/index.mdx)
 - [labels](../08.labels/index.md)
-- [pluginDefaults](../09.plugin-defaults/index.md)
+- ~~pluginDefaults~~ (removed in 2.0 — see [migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md))
 - [errors](../11.errors/index.md)
 - [finally](../19.finally/index.md)
 - [retries](../12.retries/index.md)
@@ -75,15 +75,11 @@ tasks:
     description: "Some tasks **documentation** in *Markdown*"
     format: "A log line content with a contextual date variable {{taskrun.startDate}}"
 
-pluginDefaults:
-  - type: io.kestra.plugin.core.log.Log
-    values:
-      level: ERROR
 ```
 
 ### Plugin defaults
 
-Use `pluginDefaults` to avoid repeating common configurations across multiple tasks of the same type. This is a list of default task properties that will be applied to each task of a certain type inside your flow. Refer to the [Plugin Defaults documentation](../09.plugin-defaults/index.md) for more details.
+The `pluginDefaults` keyword is removed in Kestra 2.0. In Enterprise Edition, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject default values for tasks at the namespace level. In OSS, set values directly on each task. See the [pluginDefaults Removed migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md).
 
 ### Variables
 

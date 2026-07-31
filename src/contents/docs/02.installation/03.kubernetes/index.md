@@ -448,14 +448,23 @@ dind:
   enabled: false
 ```
 
-Use the Kubernetes task runner as the default method for running [script tasks](../../16.scripts/index.mdx):
+Use the Kubernetes task runner as the default method for running [script tasks](../../16.scripts/index.mdx). In Enterprise Edition, apply it across a namespace with a [Policy](../../07.enterprise/02.governance/policies/index.md):
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts
-    forced: true
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-        # ... your Kubernetes runner configuration
+kestra:
+  policies:
+    - id: k8s-task-runner
+      description: "Use Kubernetes runner for all script tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: plugin
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.scripts
+          values:
+            taskRunner:
+              type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+              # ... your Kubernetes runner configuration
 ```

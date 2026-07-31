@@ -1,3 +1,5 @@
+- regexp: "/docs/workflow-components/plugin-defaults(.*)?$"
+  to: "/docs/migration-guide/v2.0.0/plugin-defaults-removed"
 - regexp: "/docs/enterprise/governance/read-only-secrets(/.*)?$"
   to: "/docs/enterprise/governance/secrets-manager"
 - regexp: "/docs/enterprise/governance/secrets/?$"

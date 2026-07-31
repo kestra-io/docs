@@ -53,40 +53,52 @@ inputs:
 tasks:
   - id: checkInventory
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     description: Check inventory for the order items
     uri: https://kestra.io/api/mock
 
   - id: processPayment
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.checkInventory.code == 201 }}"
     description: Process payment for the order
     uri: https://kestra.io/api/mock
 
   - id: orderConfirmation
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.processPayment.code == 201 }}"
     description: Confirm the order and notify the customer
     uri: https://kestra.io/api/mock
 
   - id: arrangeShipping
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.orderConfirmation.code == 201 }}"
     description: Arrange shipping for the order
     uri: https://kestra.io/api/mock
 
   - id: updateDeliveryStatus
     type: io.kestra.plugin.core.http.Request
+    contentType: multipart/form-data
+    method: POST
+    formData:
+      orderId: "{{inputs.orderId}}"
     runIf: "{{ outputs.arrangeShipping.code == 201 }}"
     description: Update the delivery status of the order
     uri: https://kestra.io/api/mock
-
-pluginDefaults:
-  - type: io.kestra.plugin.core.http.Request
-    values:
-      contentType: multipart/form-data
-      method: POST
-      formData:
-        orderId: "{{inputs.orderId}}"
 ```
 
 ## Getting Started with Microservice Orchestration in Kestra

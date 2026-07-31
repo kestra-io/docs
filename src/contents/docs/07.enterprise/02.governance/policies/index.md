@@ -7,7 +7,9 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-Policies are a governance feature in Kestra Enterprise that let platform administrators enforce configuration rules across namespaces and tenants. A Policy is a bundle of rules that can inject property values into flows and tasks, strip properties, restrict allowed values, or block non-compliant flows from saving or running.
+Policies let platform administrators inject, validate, and enforce configuration rules across namespaces and tenants. 
+
+A Policy bundles rules that inject property values, strip properties, restrict allowed values, or block non-compliant flows from saving or running.
 
 ## Why Policies
 
@@ -22,10 +24,11 @@ Policies address this with a model that supports:
 
 ## Policy structure
 
-A Policy has an `id`, a `description`, an `enforcement` mode, and a list of `rules`.
+A Policy has an `id`, an optional `description`, an optional `displayName` shown in the Governance UI, an `enforcement` mode, and a list of `rules`.
 
 ```yaml
 id: prod-cost-controls
+displayName: "Prod Cost Controls"
 description: "Cost guardrails for prod flows."
 enforcement: active
 
@@ -42,7 +45,7 @@ rules:
     errorMessage: "concurrency.limit cannot exceed 10 in prod."
 ```
 
-A Policy has no `type` field — each rule has a `type` from one of the five rule FQNs that determines what it does. A single policy can mix mutate and validate rules, which lets a coherent intent (such as "all prod flows: inject a default concurrency, then block values above 10") live in one place.
+A Policy has no `type` field of its own — each rule has a `type` that selects one of the five rule types. A single policy can mix mutate and validate rules, which lets a coherent intent (such as "all prod flows: inject a default concurrency, then block values above 10") live in one place.
 
 ## Enforcement modes
 
@@ -53,7 +56,45 @@ A Policy has no `type` field — each rule has a `type` from one of the five rul
 | `disabled` | The Policy is inactive. Rules are not checked. |
 | `reference` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. |
 
+## Rule targeting
+
+Every rule has two targeting fields: `on` selects whether the rule applies to the flow itself or to plugin instances within it, and `where` filters which plugin instances match.
+
+### `on` field
+
+Each rule declares `on: flow` to target the flow's own properties, or `on: plugin` to target every plugin instance in the flow — tasks including nested ones, triggers, and task runners.
+
+There is no flow-level `where:` filter. To target flows, use scope placement: place the Policy at the namespace that owns the subtree, and inheritance carries it down. A tenant-scoped policy applies to every flow in the tenant.
+
+### `where` clause
+
+The `where` clause narrows which plugin instances a rule applies to. It is only valid on `on: plugin` rules. Each condition specifies a `field`, an `operator`, and a `value`. Multiple conditions combine with AND.
+
+| Operator | Behavior |
+|----------|----------|
+| `EQUAL_TO` | Exact match |
+| `NOT_EQUAL_TO` | Not an exact match |
+| `STARTS_WITH` | Prefix match |
+| `ENDS_WITH` | Suffix match |
+| `CONTAINS` | Substring match |
+| `IN` | Value is in a list |
+| `NOT_IN` | Value is not in a list |
+| `REGEX` | Full regular expression match |
+| `IS_NULL` | Property is null or absent |
+| `IS_NOT_NULL` | Property is set and non-null |
+
+```yaml
+where:
+  - field: type
+    operator: STARTS_WITH
+    value: io.kestra.plugin.scripts.python
+```
+
+`field` is a property path on the matched target — `type` is the most common, matching on the plugin's class name.
+
 ## Rule types
+
+Rules come in two families: mutate rules change the resolved configuration before execution, and validate rules check it at save time and before execution.
 
 ### Mutate rules
 
@@ -102,6 +143,10 @@ Add rules can target flow-level properties (like `retry`, `concurrency`, or `lab
 
 Injected `values` may contain Pebble expressions such as `{{ secret('…') }}`. These are evaluated at runtime as plugin properties.
 
+:::alert{type="info"}
+When injecting a nested object, keys from the flow and the policy are merged. If both supply a list at the same path, the policy's list replaces the flow's list entirely — lists are not combined.
+:::
+
 **`io.kestra.plugin.ee.rules.Delete`** — remove specific properties from matching flows or plugin instances at resolution time. Delete always wins over an author-supplied value, and is always visible in the merged preview.
 
 ```yaml
@@ -118,7 +163,7 @@ Injected `values` may contain Pebble expressions such as `{{ secret('…') }}`. 
 ```
 
 :::alert{type="warning"}
-If an `Add` and a `Delete` rule both target the same property in the same scope chain, Kestra raises a save-time conflict error and cites both sources. Express delete-then-re-inject as a single `Add` with `override: true` instead.
+If an `Add` and a `Delete` rule both target the same property in the same scope chain, Kestra raises a conflict error at save time. Express delete-then-re-inject as a single `Add` with `override: true` instead.
 :::
 
 ### Validate rules
@@ -126,10 +171,10 @@ If an `Add` and a `Delete` rule both target the same property in the same scope 
 Validate rules check flow or plugin properties at save time and before execution. Each validate rule has an `action` of `block` (default) or `warn`.
 
 :::alert{type="info"}
-Validation always runs against the **post-injection** resolved flow. An `Add` rule can satisfy a `Require` rule, and a `Restrict` rule catches a bad value regardless of whether the author or a Policy supplied it.
+Validation runs after all `Add` and `Delete` rules have been applied. An `Add` rule can satisfy a `Require` rule, and a `Restrict` rule catches a bad value regardless of whether the author or a Policy supplied it.
 :::
 
-**`io.kestra.plugin.ee.rules.Deny`** — reject a plugin type wholesale. Requires `on: plugin`. Matches every instance of the plugin wherever it appears — tasks, errors, nested in flowables, triggers, and task runners.
+**`io.kestra.plugin.ee.rules.Deny`** — reject a plugin type wholesale. Requires `on: plugin`. Matches every instance of the plugin wherever it appears — tasks, error handlers, triggers, and task runners.
 
 ```yaml
 - type: io.kestra.plugin.ee.rules.Deny
@@ -190,42 +235,6 @@ Validation always runs against the **post-injection** resolved flow. An `Add` ru
     - taskRunner
   errorMessage: "Every script task must declare an explicit taskRunner."
 ```
-
-## Rule targeting
-
-### `on` field
-
-Each rule declares `on: flow` to target the flow's own properties, or `on: plugin` to target every plugin instance in the flow — tasks including nested ones, triggers, and task runners.
-
-There is no flow-level `where:` filter. To target flows, use scope placement: place the Policy at the namespace that owns the subtree, and inheritance carries it down. A tenant-scoped policy applies to every flow in the tenant.
-
-### `where` clause
-
-The `where` clause narrows which plugin instances a rule applies to. It is only valid on `on: plugin` rules. Each condition specifies a `field`, an `operator`, and a `value`. Multiple conditions combine with AND.
-
-| Operator | Behavior |
-|----------|----------|
-| `EQUAL_TO` | Exact match |
-| `NOT_EQUAL_TO` | Not an exact match |
-| `STARTS_WITH` | Prefix match |
-| `ENDS_WITH` | Suffix match |
-| `CONTAINS` | Substring match |
-| `IN` | Value is in a list |
-| `NOT_IN` | Value is not in a list |
-| `REGEX` | Full regular expression match |
-| `GREATER_THAN` | Numeric greater-than comparison |
-| `LESS_THAN` | Numeric less-than comparison |
-| `IS_NULL` | Property is null or absent |
-| `IS_NOT_NULL` | Property is set and non-null |
-
-```yaml
-where:
-  - field: type
-    operator: STARTS_WITH
-    value: io.kestra.plugin.scripts.python
-```
-
-`field` is a property path on the matched target — `type` is the most common, matching on the plugin's class name.
 
 ## Override behavior
 
@@ -289,7 +298,7 @@ rules:
 ```
 
 ```yaml
-# The flow attaches the bundle per task
+# Attach the bundle per task — each task opts into the policy it needs
 id: orders-to-warehouse
 namespace: acme.data
 tasks:
@@ -303,7 +312,40 @@ tasks:
       - db-analytics
 ```
 
-Reference policies are exempt from monotonic inheritance — they are convenience bundles, not governance rules.
+`policyRefs` is valid at the flow level, on individual tasks, and on triggers. Flow-level `policyRefs` applies the bundle to all tasks in the flow:
+
+```yaml
+# Flow-level policyRefs — applies the bundle to all tasks
+id: daily-report
+namespace: company.team
+policyRefs:
+  - pydata-defaults
+tasks:
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    script: |
+      print("done")
+```
+
+Triggers also support `policyRefs`:
+
+```yaml
+id: event-pipeline
+namespace: acme.data
+tasks:
+  - id: process
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    sql: SELECT 1
+triggers:
+  - id: on-file
+    type: io.kestra.plugin.aws.s3.Trigger
+    policyRefs:
+      - aws-s3-credentials
+    bucket: my-bucket
+    prefix: "data/"
+```
+
+Reference policies do not propagate through namespace inheritance — flows and tasks must opt in explicitly using `policyRefs:`.
 
 ## Visibility
 
@@ -312,17 +354,7 @@ When you open a flow in the Kestra UI editor, a Policies panel shows:
 - **Merged preview** — every injected value, every `override: true` replacement, and every `Delete` removal, each annotated with its source policy. Every forced override is visible to the author.
 - **Violation reports** — which rules are violated, with per-flow drill-down and a Fix path.
 
-When saving a flow violates an `active` Policy with `action: block`, Kestra rejects the save with a message that cites the Policy ID, scope, rule, and the admin-authored `errorMessage`. The flow is never auto-disabled; it must be corrected before it can be saved.
-
-```
-⛔ Cannot save flow `daily-encrypt` in namespace `company.team`:
-   Policy `no-bigquery` (tenant `acme`), rule 1 (validate.Deny):
-   Task `extract` uses `io.kestra.plugin.gcp.bigquery.Query`.
-   → BigQuery plugins are disabled — contact the data platform team.
-
-⚠️ Policy `prod-cost-controls`, rule 4 (validate.Require, warn):
-   Task `train-model` does not set `timeout`.
-```
+When saving a flow violates an `active` Policy, Kestra rejects the save and shows the policy name, which task violated it, and the admin-authored `errorMessage`. The flow is never auto-disabled; it must be corrected before it can be saved. Warnings from `action: warn` rules are surfaced separately without blocking the save.
 
 ## Policy scope and inheritance
 
@@ -334,6 +366,23 @@ Policies apply along a scope chain, from outermost to innermost:
 | `INSTANCE` | Tenant root (no specific namespace) | Superadmin |
 | `TENANT` | Tenant-level via API or UI | Tenant admin |
 | `NAMESPACE` | Namespace-level via API or UI | Namespace admin with `POLICY` permission |
+
+An optional `target` field lets you narrow a policy's reach within its scope: `INSTANCE` and `STATIC` policies can list specific `tenants`; `TENANT` policies can list specific namespace subtrees under `namespaces`. Absent means the full scope.
+
+```yaml
+# TENANT policy targeting only the `analytics` and `ml` namespace subtrees
+id: data-team-policy
+enforcement: active
+target:
+  namespaces:
+    - analytics
+    - ml
+rules:
+  - type: io.kestra.plugin.ee.rules.Require
+    on: flow
+    properties:
+      - labels.team
+```
 
 Policies from parent namespaces automatically apply to all child namespaces. Children can add stricter validate rules but cannot relax rules inherited from a parent.
 
@@ -373,7 +422,12 @@ Static policies are the replacement for the removed `kestra.plugins.defaults` se
 
 ## Creating and managing policies
 
-Create and manage Policies from the Kestra UI under **Namespaces → [your namespace] → Policies**, or via the API:
+Create and manage Policies from the Kestra UI in two places:
+
+- **Tenant-level**: navigate to the tenant administration menu and open **Policies** to manage tenant-scoped policies.
+- **Namespace-level**: open **Namespaces → [your namespace] → Policies** to manage policies scoped to that namespace.
+
+You can also create and manage Policies via the API:
 
 ```
 POST /api/v1/{tenant}/policies                            # tenant-scoped
@@ -381,6 +435,29 @@ POST /api/v1/{tenant}/namespaces/{namespace}/policies     # namespace-scoped
 ```
 
 Policies can also be exported as YAML and imported into other namespaces or environments.
+
+## Verifying policy behavior
+
+### Preview the effective policy chain
+
+Before saving a flow, preview what policies will inject and which rules will flag violations:
+
+```
+POST /api/v1/{tenant}/flows/policies/preview
+```
+
+Send the flow source YAML in the request body. The response returns the mutated source with per-property attribution — each injected value is annotated with the policy ID and scope that supplied it.
+
+### Dry-run a policy against saved flows
+
+Evaluate a policy against flows already in a namespace without enforcing it:
+
+```
+GET /api/v1/{tenant}/policies/{id}/evaluate
+GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
+```
+
+The response lists every flow that would violate the policy's validate rules, grouped by rule. Use this to audit your compliance baseline before switching a policy from `evaluate` to `active`.
 
 ## RBAC
 

@@ -25,7 +25,7 @@ Copilot is available anywhere you build in Kestra — Flows, Apps, Unit tests, a
 
 You can type prompts or click the microphone button in the Copilot panel to dictate them with speech-to-text directly from the UI.
 
-Copilot grounds its suggestions in your Namespace metadata. It automatically reads Plugin Defaults, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your existing `pluginDefaults`, stored credentials, or variables without extra hints.
+Copilot grounds its suggestions in your Namespace metadata. It automatically reads Policies, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your configured policies, stored credentials, or variables without extra hints.
 
 ## Usage limits
 

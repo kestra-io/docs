@@ -168,7 +168,7 @@ Add `workerSelector` to any task to route it to a matching Worker Queue. The `wo
 | `fallback` | Behavior when no worker is available for the matched queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
 
 :::alert{type="warning"}
-The default `fallback` in 2.0 is `FAIL`. If you upgraded from an earlier version where tasks waited by default, set `fallback: WAIT` on any tasks or in `pluginDefaults` to preserve the old behavior.
+The default `fallback` in 2.0 is `FAIL`. If you upgraded from an earlier version where tasks waited by default, set `fallback: WAIT` directly on each task, or use a [Policy](../../02.governance/policies/index.md) with an `Add` rule to apply it across a namespace.
 :::
 
 ```yaml
@@ -226,9 +226,28 @@ tasks:
 
 When an expression resolves to null or a blank string, that tag is omitted from the selector. If all tags resolve to null, the task routes to the default queue.
 
-### Applying workerSelector with pluginDefaults
+### Applying workerSelector with Policies
 
-Use `pluginDefaults` to apply a worker selector to all tasks of a given plugin type without modifying each task individually:
+Use a [Policy](../../02.governance/policies/index.md) to route all tasks of a given plugin type to a specific worker group without modifying each task individually:
+
+```yaml
+id: gpu-worker-routing
+description: "Route all Python tasks to GPU workers."
+enforcement: active
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: plugin
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.scripts.python
+    values:
+      workerSelector:
+        tags: [gpu]
+        fallback: WAIT
+```
+
+With this Policy applied to the namespace, flows need no per-task configuration:
 
 ```yaml
 id: ml_pipeline
@@ -244,13 +263,6 @@ tasks:
     type: io.kestra.plugin.scripts.python.Commands
     commands:
       - python eval.py
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python
-    values:
-      workerSelector:
-        tags: [gpu]
-        fallback: WAIT
 ```
 
 ## Use cases

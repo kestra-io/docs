@@ -429,6 +429,8 @@ namespace: kestra.company.data
 tasks:
   - id: create_staging_layer_asset
     type: io.kestra.plugin.jdbc.duckdb.Query
+    url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+    fetchType: STORE
     sql: |
       CREATE TABLE IF NOT EXISTS trips AS
       select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
@@ -450,6 +452,8 @@ tasks:
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
+        url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+        fetchType: STORE
         sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;
         assets:
           inputs:
@@ -460,11 +464,6 @@ tasks:
                 namespace: "{{flow.namespace}}"
                 metadata:
                   model_layer: mart
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.duckdb
-    values:
-      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
-      fetchType: STORE
 ```
 
 **What's happening in this pipeline**:
@@ -521,6 +520,10 @@ tasks:
     tasks:
       - id: create_bucket
         type: io.kestra.plugin.aws.cli.AwsCLI
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_REGION') }}"
+        allowFailure: true
         commands:
           - aws s3 mb s3://kestra-{{ item.value | slugify }}-bucket
         assets:
@@ -530,14 +533,6 @@ tasks:
               metadata:
                 provider: s3
                 address: s3://kestra-{{ item.value | slugify }}-bucket
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
-      allowFailure: true
 ```
 
 This flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata.
@@ -555,6 +550,9 @@ tasks:
 
   - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_REGION') }}"
     bucket: kestra-data-bucket
     from: '{{ outputs.download.uri }}'
     key: raw_customer.csv
@@ -566,13 +564,6 @@ tasks:
           type: io.kestra.plugin.ee.assets.File
           metadata:
             owner: data
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
 ```
 
 In this workflow:

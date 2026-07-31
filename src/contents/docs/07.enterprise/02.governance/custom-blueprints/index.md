@@ -144,33 +144,29 @@ tasks:
         tasks:
         - id: << domain | slugify >>-download
           type: io.kestra.plugin.jdbc.postgresql.CopyOut
+          url: jdbc:postgresql://sample_postgres:5432/<<arg.env>>
+          username: '{{ secret("POSTGRES_USERNAME") }}'
+          password: '{{ secret("POSTGRES_PASSWORD") }}'
+          format: CSV
           sql: SELECT * FROM public.<< domain | slugify >>
         - id: << domain | slugify >>-ingest
           <% if arg.target == 'Oracle' %>
           type: io.kestra.plugin.jdbc.oracle.Batch
+          url: jdbc:oracle:thin:@<< arg.env >>:49161:XE
+          username: '{{ secret("ORACLE_USERNAME") }}'
+          password: '{{ secret("ORACLE_USERNAME") }}'
           from: "{{ << domain | slugify >>-download.uri }}"
           table: public.< domain | slugify >>
           <% elseif arg.target == 'Postgres' %>
           type: io.kestra.plugin.jdbc.postgresql.CopyIn
-          from: "{{ outputs.<< domain | slugify >>-download.uri }}"
           url: jdbc:postgres://sample_<< arg.target | lower>>:5432/<<arg.env>>
+          username: '{{ secret("POSTGRES_USERNAME") }}'
+          password: '{{ secret("POSTGRES_PASSWORD") }}'
+          format: CSV
+          from: "{{ outputs.<< domain | slugify >>-download.uri }}"
           table: public.< domain | slugify >>
           <% endif %>
 <% endfor %>
-
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.postgresql
-    values:
-      url: jdbc:postgresql://sample_postgres:5432/<<arg.env>>
-      username: '{{ secret("POSTGRES_USERNAME") }}'
-      password: '{{ secret("POSTGRES_PASSWORD") }}'
-      format: CSV
-
-  - type: io.kestra.plugin.jdbc.oracle.Batch
-    values:
-      url: jdbc:oracle:thin:@<< arg.env >>:49161:XE
-      username: '{{ secret("ORACLE_USERNAME") }}'
-      password: '{{ secret("ORACLE_USERNAME") }}'
 ```
 
 :::
@@ -193,9 +189,16 @@ tasks:
         tasks:
         - id: hr-download
           type: io.kestra.plugin.jdbc.postgresql.CopyOut
+          url: jdbc:postgresql://sample_postgres:5432/dev
+          username: '{{ secret("POSTGRES_USERNAME") }}'
+          password: '{{ secret("POSTGRES_PASSWORD") }}'
+          format: CSV
           sql: SELECT * FROM public.hr
         - id: hr-ingest
           type: io.kestra.plugin.jdbc.oracle.Batch
+          url: jdbc:oracle:thin:@dev:49161:XE
+          username: '{{ secret("ORACLE_USERNAME") }}'
+          password: '{{ secret("ORACLE_USERNAME") }}'
           from: "{{ hr-download.uri }}"
           table: public.< domain | slugify >>
 
@@ -204,25 +207,18 @@ tasks:
         tasks:
         - id: manufacture-download
           type: io.kestra.plugin.jdbc.postgresql.CopyOut
+          url: jdbc:postgresql://sample_postgres:5432/dev
+          username: '{{ secret("POSTGRES_USERNAME") }}'
+          password: '{{ secret("POSTGRES_PASSWORD") }}'
+          format: CSV
           sql: SELECT * FROM public.manufacture
         - id: manufacture-ingest
           type: io.kestra.plugin.jdbc.oracle.Batch
+          url: jdbc:oracle:thin:@dev:49161:XE
+          username: '{{ secret("ORACLE_USERNAME") }}'
+          password: '{{ secret("ORACLE_USERNAME") }}'
           from: "{{ manufacture-download.uri }}"
           table: public.< domain | slugify >>
-
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.postgresql
-    values:
-      url: jdbc:postgresql://sample_postgres:5432/dev
-      username: '{{ secret("POSTGRES_USERNAME") }}'
-      password: '{{ secret("POSTGRES_PASSWORD") }}'
-      format: CSV
-
-  - type: io.kestra.plugin.jdbc.oracle.Batch
-    values:
-      url: jdbc:oracle:thin:@dev:49161:XE
-      username: '{{ secret("ORACLE_USERNAME") }}'
-      password: '{{ secret("ORACLE_USERNAME") }}'
 ```
 :::
 

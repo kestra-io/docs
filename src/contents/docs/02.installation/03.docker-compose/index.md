@@ -289,11 +289,9 @@ services:
             scripts:
               docker:
                 volume-enabled: true
-            defaults: # Example demonstrating global pluginDefaults
-              - type: io.kestra.plugin.airbyte.connections.Sync
-                url: http://host.docker.internal:8000/
-                username: airbyte
-                password: password
+            # Global plugin defaults removed in Kestra 2.0.
+            # Use kestra.policies for installation-wide defaults.
+            # See: https://kestra.io/docs/enterprise/governance/policies
           url: http://localhost:8080/
           variables:
             env-vars-prefix: "" # To avoid requiring KESTRA_ prefix on env vars

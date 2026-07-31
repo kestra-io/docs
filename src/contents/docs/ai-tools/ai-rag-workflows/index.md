@@ -41,6 +41,8 @@ tasks:
         type: io.kestra.plugin.ai.completion.ChatCompletion
         provider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
+          modelName: gemini-2.5-flash
         messages:
           - type: USER
             content: Which features were released in Kestra 0.24?
@@ -49,19 +51,16 @@ tasks:
         type: io.kestra.plugin.ai.rag.ChatCompletion
         chatProvider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
+          modelName: gemini-2.5-flash
         embeddingProvider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
+          apiKey: "{{ secret('GEMINI_API_KEY') }}"
           modelName: gemini-embedding-exp-03-07
         embeddings:
           type: io.kestra.plugin.ai.embeddings.KestraKVStore
         systemMessage: You are a helpful assistant that can answer questions about Kestra.
         prompt: Which features were released in Kestra 0.24?
-
-pluginDefaults:
-  - type: io.kestra.plugin.ai.provider.GoogleGemini
-    values:
-      apiKey: "{{ secret('GEMINI_API_KEY') }}"
-      modelName: gemini-2.5-flash
 ```
 
 ### How it works

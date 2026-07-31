@@ -66,27 +66,32 @@ Make sure to only use the secret in flows defined in the same Namespace (or chil
 
 When building new flows in a Namespace, Namespace secrets are accessible from the **Secrets** tab. Open the tab to view all available Namespace secret key names.
 
-### Plugin defaults
+### Policies
 
-Plugin Defaults can also be defined at the Namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same Namespace.
+[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. On the namespace page, open the **Policies** tab to create and manage Policies.
 
-On the namespace page, open the **Plugin Defaults** tab.
+Policies can reference secrets and variables defined in the same Namespace.
 
-![Define Plugin Defaults](./plugindefaults-namespaces.png)
+For example, a namespace-scoped Policy can inject database credentials into every MySQL task so flows don't need to declare them individually:
 
-From there, you can:
+```yaml
+id: mysql-credentials
+description: "Inject MySQL credentials for all MySQL tasks in this namespace."
+enforcement: active
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: plugin
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.jdbc.mysql
+    values:
+      url: jdbc:mysql://localhost:3306/test
+      username: root
+      password: "{{ secret('MYSQL_PASSWORD') }}"
+```
 
-- add a plugin default with a guided form
-- switch between predefined plugin types and a custom plugin type
-- switch between form mode and YAML mode
-- preview the YAML for an existing plugin default
-- export plugin defaults from the current Namespace
-- import plugin defaults from a YAML file
-- inspect inherited plugin defaults together with the parent Namespace they come from
-
-You can reference secrets and variables defined with the same Namespace in the plugin defaults.
-
-In the example below, you no longer need to add the `password` property for the MySQL query task as it's defined in your Namespace-level `pluginDefaults`:
+With this Policy applied, flows in the Namespace need no credentials on the task:
 
 ```yaml
 id: query-mysql
@@ -95,13 +100,11 @@ namespace: company.team
 tasks:
   - id: query
     type: io.kestra.plugin.jdbc.mysql.Query
-    url: jdbc:mysql://localhost:3306/test
-    username: root
     sql: select * from employees
     fetchOne: true
 ```
 
-Namespace-level plugin defaults are inherited by child Namespaces. This makes it possible to define shared defaults once in a parent Namespace and let child Namespaces reuse them while still adding their own overrides when needed.
+Namespace-level Policies are inherited by child Namespaces. A Policy created in a parent Namespace applies to all flows in the parent and every child Namespace under it. See [Policies](../policies/index.md) for the full DSL reference, enforcement modes, and inheritance behavior.
 
 ### Default service account for SDK plugins
 
