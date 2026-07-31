@@ -6,60 +6,38 @@ sidebarTitle: Secrets
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Store sensitive information securely.
-
-Secrets are a mechanism that allows you to securely store sensitive information, such as passwords and API keys, and retrieve them in your flows.
+Secrets let you store sensitive values (API keys, passwords, certificates) outside your flow definitions and inject them at runtime via the `secret()` function.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-To retrieve secrets in a flow, use the `secret()` function, e.g., `"{{ secret('API_TOKEN') }}"`. You can leverage your existing secrets manager as a secrets backend.
+How secrets are stored and managed depends on your edition. In **Enterprise Edition**, Kestra connects to a dedicated Secrets Manager (namespace-scoped, backed by AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, or Kestra's own store). In **Open-Source**, there is no secret store — `secret()` reads a base64-encoded environment variable instead.
 
-Your flows often need to interact with external systems. To do that, they need to programmatically authenticate using passwords or API keys. Secrets help you securely store such variables and avoid hard-coding sensitive information within your workflow code.
+## Enterprise Edition
 
-You can leverage the `secret()` function to retrieve sensitive variables within your flow code.
+Use secrets for static sensitive values such as API keys, passwords, webhook URLs, certificates, and long-lived tokens. Use [Credentials](../../07.enterprise/03.auth/credentials/index.md) when Kestra needs to manage reusable server-to-server authentication for supported integrations — for example, minting or refreshing short-lived access tokens at runtime. Credentials can reference secrets for sensitive inputs such as client secrets and private keys.
 
-## When should I use Secrets?
-
-Use **Secrets** for static sensitive values such as API keys, passwords, webhook URLs, certificates, and long-lived tokens.
-
-Use [Credentials](../../07.enterprise/03.auth/credentials/index.md) when Kestra needs to manage reusable server-to-server authentication for supported integrations, such as minting or refreshing short-lived access tokens at runtime.
-
-In short:
-
-- use **Secrets** for protected values
-- use **Credentials** for managed authentication objects
-
-Credentials can also reference Secrets for sensitive inputs such as client secrets, private keys, and certificates.
-
-## Secrets in the Enterprise Edition
+For available backends (AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, and Kestra's built-in store), see the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page. For best practices, see [Secrets management](../../14.best-practices/9.secrets-management/index.md) and [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
 
 From the **Secrets** tab, you can edit, delete, and copy your secret to your clipboard as a Pebble expression for use in a flow, such as `"{{ secret('API_TOKEN') }}"`.
 
 ![Secrets EE](./secrets-ee-0.png)
 
-### Adding a new secret
+### Adding a new secret from the UI
 
-If you are using a managed Kestra version, you can add **new Secrets** directly from the UI. In the left navigation menu, go to **Namespaces** and select the namespace to which you want to add a new secret. Next, add a new secret within the Secrets tab.
+Go to **Namespaces** in the left navigation menu and select the namespace where you want to add a secret. Open the **Secrets** tab and add a new secret.
 
 ![Secrets EE](./secrets-ee-1.png)
 
-Here, we add a new secret with a key `MY_SECRET`. You can also include a short description and tags.
+Set a key name such as `MY_SECRET`. You can also include a short description and tags.
 
 ![Secrets EE - new Secret](./secrets-ee-2.png)
 
 
-### Using secrets in your flows
-For a concrete example of using secrets in flows, check out our dedicated [How-To Guide on Secrets](../../15.how-to-guides/secrets/index.md).
+### Reading secrets from another namespace (EE)
 
-### Secret management backends
-
-Kestra [Enterprise Edition](../../07.enterprise/index.mdx) provides additional secret management backends and integrations with secrets managers. See the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page for more details.
-
-### Reading secrets from another namespace
-
-By default, `secret()` reads from the flow's own namespace. Pass a `namespace` argument to read a secret stored in a different namespace:
+By default, `secret()` reads from the flow's own namespace. In Enterprise Edition, you can pass a `namespace` argument to read a secret stored in a different namespace:
 
 ```yaml
 tasks:
@@ -70,99 +48,9 @@ tasks:
 
 The secret is resolved using the target namespace's own secret backend, so a flow can read a value from a namespace backed by a different secrets manager. Cross-namespace reads stay within the same tenant. Access to another namespace's secrets is allowed by default; restrict it by configuring `allowedNamespaces` on the target namespace.
 
-## Secrets in the Open-Source version
+## Environment variables as secrets (OSS)
 
-When using the open-source version, sensitive variables can be managed using base64-encoded environment variables. The section below demonstrates several ways to encode those values and use them in your Kestra instance.
+The Open-Source Edition has no dedicated secret store. As a workaround, Kestra reads base64-encoded environment variables prefixed with `SECRET_` and exposes them via the `secret()` function. This keeps sensitive values out of flow YAML, but it is not a secrets manager — there is no encryption at rest, no audit trail, and no access control beyond what your host environment provides.
 
-### Manual encoding using a CLI command
+See [Configure secrets in Kestra (OSS)](../../15.how-to-guides/secrets/index.md) for step-by-step instructions on encoding values and wiring them into your Docker Compose file.
 
-Imagine that so far, you were setting the following environment variable:
-
-```bash
-export MYPASSWORD=myPrivateCode
-```
-
-Below is how you can encode the sensitive value of that environment variable:
-
-```bash
-echo -n "myPrivateCode" | base64
-```
-
-This outputs the value: `bXlQcml2YXRlQ29kZQ==`
-
-To use that value as a Secret in your Kestra instance, you would need to add a prefix `SECRET_` to the variable key (here: `SECRET_MYPASSWORD`) and set that key to the encoded value:
-
-```bash
-export SECRET_MYPASSWORD=bXlQcml2YXRlQ29kZQ==
-```
-
-If you want to add the environment variable to the `kestra` container section in a [Docker Compose file](https://github.com/kestra-io/kestra/blob/develop/docker-compose.yml#L22), it would look as follows:
-
-```yaml
-  kestra:
-    image: kestra/kestra:latest
-    environment:
-      SECRET_MYPASSWORD: bXlQcml2YXRlQ29kZQ==
-```
-
-This secret can be used in a flow using the `{{ secret('MYPASSWORD') }}` syntax, and it will be base64-decoded during flow execution. Make sure not to include the prefix `SECRET_` when calling the `secret('MYPASSWORD')` function, as this prefix is only there in the environment variable definition to prevent Kestra from treating other system variables as secrets (for better performance and increased security).
-
-Lastly, if you want to reference any non-encoded environment variables in your flow definitions, you can always use the syntax `{{ envs.lowercase_environment_variable_key }}`.
-
-:::alert{type="warning"}
-Kestra has built-in protection to prevent its logs from revealing any encoded secret you have defined.
-:::
-
-### Convert all variables in an `.env` file
-
-The previous section showed the process for one Secret, but if you have tens or hundreds of them, then the `.env` is better suited.
-
-Let's assume that you have an `.env` file with the following content:
-
-```bash
-MYPASSWORD=password
-GITHUB_ACCESS_TOKEN=mypat
-AWS_ACCESS_KEY_ID=myawsaccesskey
-AWS_SECRET_ACCESS_KEY=myawssecretaccesskey
-
-```
-
-Make sure to keep the last line empty, otherwise the bash script below won't encode the last secret `AWS_SECRET_ACCESS_KEY` correctly.
-
-Using the bash script shown below, you can:
-1. Encode all values using base64-encoding
-2. Add a `SECRET_` prefix to all environment variable names
-3. Store the result as `.env_encoded`
-
-```bash
-while IFS='=' read -r key value; do
-    echo "SECRET_$key=$(echo -n "$value" | base64)";
-done < .env > .env_encoded
-```
-
-The `.env_encoded` file should look as follows:
-
-```bash
-SECRET_MYPASSWORD=cGFzc3dvcmQ=
-SECRET_GITHUB_ACCESS_TOKEN=bXlwYXQ=
-SECRET_AWS_ACCESS_KEY_ID=bXlhd3NhY2Nlc3NrZXk=
-SECRET_AWS_SECRET_ACCESS_KEY=bXlhd3NzZWNyZXRhY2Nlc3NrZXk=
-```
-
-Then, in your Docker Compose file, you can replace:
-
-```yaml
-  kestra:
-    image: kestra/kestra:latest
-    env_file:
-      - .env
-```
-
-with the encoded version of the file:
-
-```yaml
-  kestra:
-    image: kestra/kestra:latest
-    env_file:
-      - .env_encoded
-```
