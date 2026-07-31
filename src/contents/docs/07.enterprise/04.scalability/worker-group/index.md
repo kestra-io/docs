@@ -342,7 +342,7 @@ In Kestra 2.0, the task-level routing property changed from targeting a group by
 | No capacity control per queue | Reserved percentage per subscription, STRICT or ELASTIC mode |
 | No worker authentication | Registration token-based authentication with rotating credentials |
 
-Update your flows to replace `workerGroup.key` with `workerSelector.tags`. The group name in the old property corresponds to a tag on a Worker Queue in the new model.
+`workerGroup` is not recognized in 2.0 — flows using it will fail validation and cannot be saved. Update your flows to replace `workerGroup.key` with `workerSelector.tags`. The group name in the old property corresponds to a tag on a Worker Queue in the new model.
 
 :::alert{type="warning"}
 The fallback default changed from `WAIT` to `FAIL`. Tasks that previously waited for an unavailable worker will now fail immediately unless you explicitly set `workerSelector.fallback: WAIT`.
