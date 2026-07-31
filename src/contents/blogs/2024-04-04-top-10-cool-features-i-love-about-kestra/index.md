@@ -102,7 +102,7 @@ Here is an image of adding secret via the UI in EE edition:
 
 This is yet another powerful feature from the developer productivity perspective. Generally, you develop a pipeline related to some technology, and it is extremely likely that you use multiple tasks that correspond to the same technology. For example, in a flow that queries Redshift, it is very likely that you connect to Redshift to create the table in one task and then insert data into it in another task, and then query it for some purpose. In this case, you would just end up duplicating the Redshift connection information in all these tasks. This hampers the developer's productivity and leads to configuration duplication.
 
-In order to avoid this duplication, Kestra provides [plugin defaults](../../docs/05.workflow-components/09.plugin-defaults/index.md). Mention the plugin defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
+In order to avoid this duplication, Kestra provides [plugin defaults](../../docs/migration-guide/v2.0.0/plugin-defaults-removed/index.md). Mention the plugin defaults once in the flow, and it gets referenced in all the tasks of the corresponding type.
 
 You can even set the plugin defaults globally or on a namespace level to ensure that all flows using, e.g., the AWS plugin leverage the same credentials.
 

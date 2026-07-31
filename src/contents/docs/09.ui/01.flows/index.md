@@ -77,7 +77,7 @@ You can close, open, and reposition panels at any time. In the example below, th
 
 ![No Code Trigger Configuration](./no-code-trigger.png)
 
-7. **Add additional flow components** such as [outputs](../../05.workflow-components/06.outputs/index.md), [retry](../../05.workflow-components/12.retries/index.md), [SLA](../../05.workflow-components/18.sla/index.md), [afterExecution](../../05.workflow-components/20.afterexecution/index.md), and [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md). Everything possible in YAML is available in No Code.
+7. **Add additional flow components** such as [outputs](../../05.workflow-components/06.outputs/index.md), [retry](../../05.workflow-components/12.retries/index.md), [SLA](../../05.workflow-components/18.sla/index.md), and [afterExecution](../../05.workflow-components/20.afterexecution/index.md). Everything possible in YAML is available in No Code.
 
 ![Additional Flow Components](./additional-components.png)
 

@@ -202,7 +202,7 @@ blueprints:
     - name: "Parallel connector fan-out"
       blueprintId: "airbyte-sync-parallel"
       title: "Run many Airbyte syncs in parallel"
-      description: "Runs multiple Airbyte connection syncs concurrently with the <code>Parallel</code> task, ingesting several sources on the same schedule without serializing them. Connection config is centralized via <code>pluginDefaults</code>."
+      description: "Runs multiple Airbyte connection syncs concurrently with the <code>Parallel</code> task, ingesting several sources on the same schedule without serializing them. Connection config is centralized via namespace variables or a Kestra Policy (Enterprise Edition)."
       href: "/blueprints"
 
 comparison:

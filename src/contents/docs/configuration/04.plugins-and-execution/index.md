@@ -323,7 +323,7 @@ Increase `max-timeout` only if your data-fetching subflows genuinely need longer
 
 ## Related docs
 
-- Flow-level plugin defaults: [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md)
+- Installation-wide configuration rules: [Policies](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition)
 - Universal file access: [File Access](../../06.concepts/file-access/index.md)
 - Storage backends, JVM, and global variables: [Runtime and Storage](../02.runtime-and-storage/index.md)
 - Execution data isolation and enterprise-only runtime features: [Enterprise and Advanced](../06.enterprise-and-advanced/index.md)
