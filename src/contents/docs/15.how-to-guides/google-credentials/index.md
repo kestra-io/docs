@@ -158,7 +158,7 @@ In Kestra Enterprise Edition, secrets are managed directly from the UI — no ba
 
 Reference it in your tasks with `{{ secret('GCP_SERVICE_ACCOUNT') }}`, exactly as shown in the examples above.
 
-To learn more about secret backends and enterprise secret managers, see the [secrets page](../../06.concepts/04.secret/index.md#secrets-in-the-enterprise-edition).
+To learn more about secret backends and enterprise secret managers, see the [secrets page](../../06.concepts/04.secret/index.md#enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
