@@ -126,10 +126,10 @@ If you use multiple tasks that require the same service account, create a [Polic
 ```yaml
 id: gcp-service-account
 description: "Inject GCP service account into all Google Workspace Drive tasks."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH

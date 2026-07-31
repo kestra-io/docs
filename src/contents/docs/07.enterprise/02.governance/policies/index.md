@@ -30,16 +30,16 @@ A Policy has an `id`, an optional `description`, an optional `displayName` shown
 id: prod-cost-controls
 displayName: "Prod Cost Controls"
 description: "Cost guardrails for prod flows."
-enforcement: active
+enforcement: ACTIVE
 
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: flow
+    on: FLOW
     values:
       concurrency:
         limit: 5
   - type: io.kestra.plugin.ee.rules.Restrict
-    on: flow
+    on: FLOW
     property: concurrency.limit
     max: 10
     errorMessage: "concurrency.limit cannot exceed 10 in prod."
@@ -51,10 +51,10 @@ A Policy has no `type` field of its own — each rule has a `type` that selects 
 
 | Mode | Behavior |
 |------|----------|
-| `active` | Rules are enforced on save and before execution. Block violations reject the operation. Default. |
-| `evaluate` | Violations are reported in the Governance UI, but nothing is blocked and **no values are injected**. Use this to audit compliance before enabling enforcement. |
-| `disabled` | The Policy is inactive. Rules are not checked. |
-| `reference` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. |
+| `ACTIVE` | Rules are enforced on save and before execution. Block violations reject the operation. Default. |
+| `EVALUATE` | Validate rule violations are reported in the Governance UI without blocking. Mutate rules (`Add`, `Delete`) are suppressed — no values are injected or removed, and the Governance UI shows no violations for them. Use this mode to audit validate rule compliance before enabling enforcement; it is not useful for auditing mutate rule coverage. |
+| `DISABLED` | The Policy is inactive. Rules are not checked. |
+| `REFERENCE` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. Use reference policies for opt-in configuration injection (`Add` rules); validate rules are not enforced. |
 
 ## Rule targeting
 
@@ -62,13 +62,13 @@ Every rule has two targeting fields: `on` selects whether the rule applies to th
 
 ### `on` field
 
-Each rule declares `on: flow` to target the flow's own properties, or `on: plugin` to target every plugin instance in the flow — tasks including nested ones, triggers, and task runners.
+Each rule declares `on: FLOW` to target the flow's own properties, or `on: PLUGIN` to target every plugin instance in the flow — tasks including nested ones, triggers, and task runners.
 
 There is no flow-level `where:` filter. To target flows, use scope placement: place the Policy at the namespace that owns the subtree, and inheritance carries it down. A tenant-scoped policy applies to every flow in the tenant.
 
 ### `where` clause
 
-The `where` clause narrows which plugin instances a rule applies to. It is only valid on `on: plugin` rules. Each condition specifies a `field`, an `operator`, and a `value`. Multiple conditions combine with AND.
+The `where` clause narrows which plugin instances a rule applies to. It is only valid on `on: PLUGIN` rules. Each condition specifies a `field`, an `operator`, and a `value`. Multiple conditions combine with AND.
 
 | Operator | Behavior |
 |----------|----------|
@@ -102,12 +102,12 @@ Mutate rules change the resolved configuration before execution. They do not alt
 
 **`io.kestra.plugin.ee.rules.Add`** — inject values into flows or plugin instances. With `override: false` (the default), the author's explicit value wins and the policy injects only when the property is absent. With `override: true`, the policy value always wins.
 
-Add rules can target flow-level properties (like `retry`, `concurrency`, or `labels`) with `on: flow`, or individual plugin instances with `on: plugin`.
+Add rules can target flow-level properties (like `retry`, `concurrency`, or `labels`) with `on: FLOW`, or individual plugin instances with `on: PLUGIN`.
 
 ```yaml
 # Inject flow-level defaults — retry, concurrency, and a team label
 - type: io.kestra.plugin.ee.rules.Add
-  on: flow
+  on: FLOW
   values:
     retry:
       type: constant
@@ -120,7 +120,7 @@ Add rules can target flow-level properties (like `retry`, `concurrency`, or `lab
 
 # Inject credentials into every AWS plugin instance
 - type: io.kestra.plugin.ee.rules.Add
-  on: plugin
+  on: PLUGIN
   where:
     - field: type
       operator: STARTS_WITH
@@ -131,7 +131,7 @@ Add rules can target flow-level properties (like `retry`, `concurrency`, or `lab
 
 # Force a region value — override any author-supplied value
 - type: io.kestra.plugin.ee.rules.Add
-  on: plugin
+  on: PLUGIN
   override: true
   where:
     - field: type
@@ -152,7 +152,7 @@ When injecting a nested object, keys from the flow and the policy are merged. If
 ```yaml
 # Strip hardcoded credentials — a central injection policy supplies them
 - type: io.kestra.plugin.ee.rules.Delete
-  on: plugin
+  on: PLUGIN
   where:
     - field: type
       operator: STARTS_WITH
@@ -174,11 +174,11 @@ Validate rules check flow or plugin properties at save time and before execution
 Validation runs after all `Add` and `Delete` rules have been applied. An `Add` rule can satisfy a `Require` rule, and a `Restrict` rule catches a bad value regardless of whether the author or a Policy supplied it.
 :::
 
-**`io.kestra.plugin.ee.rules.Deny`** — reject a plugin type wholesale. Requires `on: plugin`. Matches every instance of the plugin wherever it appears — tasks, error handlers, triggers, and task runners.
+**`io.kestra.plugin.ee.rules.Deny`** — reject a plugin type wholesale. Requires `on: PLUGIN`. Matches every instance of the plugin wherever it appears — tasks, error handlers, triggers, and task runners.
 
 ```yaml
 - type: io.kestra.plugin.ee.rules.Deny
-  on: plugin
+  on: PLUGIN
   where:
     - field: type
       operator: STARTS_WITH
@@ -191,14 +191,14 @@ Validation runs after all `Add` and `Delete` rules have been applied. An `Add` r
 ```yaml
 # Cap concurrency on flow-level properties
 - type: io.kestra.plugin.ee.rules.Restrict
-  on: flow
+  on: FLOW
   property: concurrency.limit
   max: 10
   errorMessage: "concurrency.limit cannot exceed 10 in prod."
 
 # Allow only approved task runners
 - type: io.kestra.plugin.ee.rules.Restrict
-  on: plugin
+  on: PLUGIN
   property: taskRunner.type
   enum:
     - io.kestra.plugin.scripts.runner.docker.Docker
@@ -207,7 +207,7 @@ Validation runs after all `Add` and `Delete` rules have been applied. An `Add` r
 
 # Enforce a naming convention — warn only
 - type: io.kestra.plugin.ee.rules.Restrict
-  on: flow
+  on: FLOW
   property: id
   regex: "^[a-z][a-z0-9]*(-[a-z0-9]+)*$"
   action: warn
@@ -219,14 +219,14 @@ Validation runs after all `Add` and `Delete` rules have been applied. An `Add` r
 ```yaml
 # Every flow must carry a team label
 - type: io.kestra.plugin.ee.rules.Require
-  on: flow
+  on: FLOW
   properties:
     - labels.team
   errorMessage: "Every flow must declare labels.team."
 
 # Every script task must declare an explicit task runner
 - type: io.kestra.plugin.ee.rules.Require
-  on: plugin
+  on: PLUGIN
   where:
     - field: type
       operator: STARTS_WITH
@@ -259,16 +259,16 @@ Both can live in the same policy.
 
 ## Reference policies
 
-A Policy with `enforcement: reference` is not applied automatically. It applies only to flows or tasks that explicitly list it using `policyRefs:`. This lets teams share opt-in configuration bundles — named runner profiles, database connections, or compliance defaults that flows can adopt voluntarily.
+A Policy with `enforcement: REFERENCE` is not applied automatically. It applies only to flows or tasks that explicitly list it using `policyRefs:`. This lets teams share opt-in configuration bundles — named runner profiles, database connections, or compliance defaults that flows can adopt voluntarily.
 
 ```yaml
 # Policy: db-analytics
 id: db-analytics
 description: "Analytics warehouse connection."
-enforcement: reference
+enforcement: REFERENCE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH
@@ -283,10 +283,10 @@ rules:
 # Policy: db-orders
 id: db-orders
 description: "Orders OLTP connection."
-enforcement: reference
+enforcement: REFERENCE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH
@@ -345,16 +345,23 @@ triggers:
     prefix: "data/"
 ```
 
-Reference policies do not propagate through namespace inheritance — flows and tasks must opt in explicitly using `policyRefs:`.
+Reference policies do not propagate through namespace inheritance — flows and tasks must opt in explicitly using `policyRefs:`. Reference policies are designed for opt-in configuration injection: use `Add` rules to supply credentials, defaults, or runner configuration that teams can adopt voluntarily. Validate rules (`Deny`, `Restrict`, `Require`) are not enforced in `REFERENCE` mode.
 
 ## Visibility
 
-When you open a flow in the Kestra UI editor, a Policies panel shows:
+The Policy overview page (accessible from the tenant **Policies** menu or **Namespaces → [namespace] → Policies**) lists every flow violating the policy's validate rules, with a finding count per flow and a **Fix** button.
 
-- **Merged preview** — every injected value, every `override: true` replacement, and every `Delete` removal, each annotated with its source policy. Every forced override is visible to the author.
-- **Violation reports** — which rules are violated, with per-flow drill-down and a Fix path.
+The Fix dialog shows:
+- The policy and flow names
+- The rule action (`block` or `warn`) and your `errorMessage`
+- The rule type and the property path that triggered the violation
+- A diff preview of the suggested change
 
-When saving a flow violates an `active` Policy, Kestra rejects the save and shows the policy name, which task violated it, and the admin-authored `errorMessage`. The flow is never auto-disabled; it must be corrected before it can be saved. Warnings from `action: warn` rules are surfaced separately without blocking the save.
+`block` and `warn` findings require manual corrections — use **Open flow** to go directly to the flow editor. The **Apply** button applies auto-fixable suggestions where available.
+
+When saving a flow violates an `ACTIVE` Policy, Kestra rejects the save and shows the policy name, which rule was violated, and the admin-authored `errorMessage`. The flow is never auto-disabled; it must be corrected before it can be saved. Warnings from `action: warn` rules are surfaced separately without blocking the save.
+
+When a flow is open in the editor, the Policies panel shows a **Mutation preview** toggle that surfaces injected values from `Add` rules, `override: true` replacements, and `Delete` removals, each annotated with the source policy that supplied them.
 
 ## Policy scope and inheritance
 
@@ -372,14 +379,14 @@ An optional `target` field lets you narrow a policy's reach within its scope: `I
 ```yaml
 # TENANT policy targeting only the `analytics` and `ml` namespace subtrees
 id: data-team-policy
-enforcement: active
+enforcement: ACTIVE
 target:
   namespaces:
     - analytics
     - ml
 rules:
   - type: io.kestra.plugin.ee.rules.Require
-    on: flow
+    on: FLOW
     properties:
       - labels.team
 ```
@@ -399,7 +406,7 @@ kestra:
       description: "Global task runner and cost controls."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
-          on: plugin
+          on: PLUGIN
           override: true
           where:
             - field: type
@@ -408,7 +415,7 @@ kestra:
           values:
             region: eu-west-1
         - type: io.kestra.plugin.ee.rules.Restrict
-          on: flow
+          on: FLOW
           property: concurrency.limit
           max: 20
           errorMessage: "concurrency.limit cannot exceed 20."
@@ -457,7 +464,7 @@ GET /api/v1/{tenant}/policies/{id}/evaluate
 GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate
 ```
 
-The response lists every flow that would violate the policy's validate rules, grouped by rule. Use this to audit your compliance baseline before switching a policy from `evaluate` to `active`.
+The response lists every flow that would violate the policy's validate rules, grouped by rule. Use this to audit your compliance baseline before switching a policy from `EVALUATE` to `ACTIVE`.
 
 ## RBAC
 
