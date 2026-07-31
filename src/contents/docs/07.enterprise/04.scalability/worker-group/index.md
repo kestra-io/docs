@@ -45,7 +45,7 @@ Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and 
 
 ### Creating Worker Queues
 
-Create Worker Queues through the Instance administration UI, the API, or Terraform.
+Navigate to **Instance → Worker Queues** and click **Create**. You can also create Worker Queues via the API or Terraform.
 
 **Tenant scoping**: a Worker Queue can restrict which tenants may route tasks through it. An empty tenant list means unrestricted.
 

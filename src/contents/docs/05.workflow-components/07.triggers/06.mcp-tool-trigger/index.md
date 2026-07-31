@@ -92,7 +92,7 @@ To constrain the structure of a `JSON`-type input, use the `jsonSchema` property
 
 ## Observability
 
-Every execution created via MCP carries two [system labels](../../../06.concepts/system-labels/index.md):
+Every execution created via MCP carries these [system labels](../../../06.concepts/system-labels/index.md):
 
 | Label | Value |
 |---|---|

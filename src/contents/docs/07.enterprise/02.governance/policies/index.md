@@ -56,6 +56,19 @@ A Policy has no `type` field of its own — each rule has a `type` that selects 
 | `DISABLED` | The Policy is inactive. Rules are not checked. |
 | `REFERENCE` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. Use reference policies for opt-in configuration injection (`Add` rules); validate rules are not enforced. |
 
+Start new validate policies in `EVALUATE` mode to see which flows already violate the rule before blocking saves. Once violation counts are acceptable, switch to `ACTIVE`.
+
+```yaml
+id: label-audit
+enforcement: EVALUATE
+rules:
+  - type: io.kestra.plugin.ee.rules.Require
+    on: FLOW
+    properties:
+      - labels.team
+    errorMessage: "Every flow must declare labels.team."
+```
+
 ## Rule targeting
 
 Every rule has two targeting fields: `on` selects whether the rule applies to the flow itself or to plugin instances within it, and `where` filters which plugin instances match.
@@ -84,10 +97,20 @@ The `where` clause narrows which plugin instances a rule applies to. It is only 
 | `IS_NOT_NULL` | Property is set and non-null |
 
 ```yaml
+# Prefix match — all Python script plugins
 where:
   - field: type
     operator: STARTS_WITH
     value: io.kestra.plugin.scripts.python
+
+# Match a specific set of plugin types
+where:
+  - field: type
+    operator: IN
+    value:
+      - io.kestra.plugin.gcp.bigquery.Query
+      - io.kestra.plugin.gcp.bigquery.Load
+      - io.kestra.plugin.gcp.bigquery.ExtractToGcs
 ```
 
 `field` is a property path on the matched target — `type` is the most common, matching on the plugin's class name.
@@ -235,6 +258,37 @@ Validation runs after all `Add` and `Delete` rules have been applied. An `Add` r
     - taskRunner
   errorMessage: "Every script task must declare an explicit taskRunner."
 ```
+
+#### Combining Add and Require
+
+Use `Add` with `Require` when you want tasks that don't declare a property to receive a sensible default, while still blocking tasks that explicitly omit it. Validation runs after all mutate rules, so an `Add` rule can satisfy a `Require` rule.
+
+```yaml
+id: log-level-default
+enforcement: ACTIVE
+rules:
+  # Inject a default log level when the author hasn't set one
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: EQUAL_TO
+        value: io.kestra.plugin.core.log.Log
+    values:
+      level: WARN
+  # Require level to be set — satisfied by the Add rule above for tasks that omit it
+  - type: io.kestra.plugin.ee.rules.Require
+    on: PLUGIN
+    where:
+      - field: type
+        operator: EQUAL_TO
+        value: io.kestra.plugin.core.log.Log
+    properties:
+      - level
+    errorMessage: "Log tasks must declare an explicit level."
+```
+
+Log tasks without a `level` receive `WARN` from the `Add` rule, satisfying the `Require`. Tasks that explicitly set `level` keep their value.
 
 ## Override behavior
 

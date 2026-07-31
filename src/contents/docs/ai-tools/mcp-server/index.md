@@ -80,14 +80,20 @@ If multiple OIDC providers are configured, set `oauthProvider` to the name of th
 
 ## Connecting an AI agent client
 
-Open a server in the UI and click the **Connect** tab:
+Open a server in the UI and click the **Connect** tab. It shows the server URL and ready-to-paste configuration snippets for each supported client:
 
-- The SSE endpoint URL for the server
-- Ready-to-paste configuration snippets for:
-  - **Claude Desktop** — JSON block to add to `claude_desktop_config.json`
-  - **Claude Code** — `claude mcp add` command to run in your terminal
-  - **Cursor** — server URL to paste into Cursor Settings → MCP → Add new MCP server
-  - **Codex** — connection configuration
+- **Claude Desktop** — JSON block to add to `claude_desktop_config.json`. Claude Desktop does not natively support HTTP MCP servers, so the snippet uses `npx mcp-remote` as a bridge over SSE.
+- **Claude Code** — `claude mcp add` command using `--transport http`. Run it in your terminal, then start Claude Code from the same terminal session so the auth header is in scope.
+- **Cursor** — server URL to paste into Cursor Settings → MCP → Add new MCP server
+- **Codex** — connection configuration
+
+For Basic Auth, the snippet references `${KESTRA_BASIC_AUTH}` as a placeholder. Replace it with the actual base64-encoded `username:password` value inline — the variable reference does not expand at connection time:
+
+```bash
+claude mcp add <server-id> <server-url> \
+  --transport http \
+  --header "Authorization: Basic $(echo -n 'username:password' | base64)"
+```
 
 ## Viewing registered tools
 
