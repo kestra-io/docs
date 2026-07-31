@@ -4,28 +4,53 @@ h1: Generate and Refine Flows with Natural Language Prompts
 description: Use Kestra AI Copilot to generate and edit flows with natural language prompts. Get AI-assisted suggestions for tasks, triggers, and configurations.
 sidebarTitle: AI Copilot
 icon: /src/contents/docs/icons/ai.svg
-version: "1.0.0"
+version: ">= 2.0.0"
 ---
 
-Build and modify flows directly from natural language prompts.
+Build and modify flows, ask questions about Kestra, and get AI-driven plans — all from a persistent chat sidebar.
 
-## Create and edit flows with AI Copilot
+The AI Copilot opens as a right-side panel from the **AI** button in the top toolbar. Click **New chat +** to start a conversation, or use **Recents** to return to a previous one. Conversations persist for the browser session. You can type prompts or click the microphone button to dictate with speech-to-text.
 
-The AI Copilot can generate and iteratively edit declarative flow code with AI-assisted suggestions.
+## Modes
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/nNEb5DZB-xo?si=swdS3p_HFpDgT-6q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+The Copilot has three modes, selectable from the dropdown at the bottom left of the chat panel:
 
-> The gemini-2.5-flash model is no longer available to new users, according to Google AI Studio. Instead use `model-name: "gemini-3.1-flash-lite"`.
+| Mode | What it does |
+|---|---|
+| **Ask** | Answers questions about Kestra using docs-grounded responses. Ask about features, configuration, plugin options, or get help diagnosing a failed execution. |
+| **Edit** | Generates and iteratively edits flow YAML. Describe what you want to build; the Copilot drafts the change and asks for confirmation before applying it. |
+| **Plan** | Proposes a step-by-step plan for a complex task. Each step requires individual approval before the Copilot executes it. Rejecting any step cancels the plan. |
 
-The AI Copilot is designed to help build and modify flows directly from natural language prompts. Describe what you are trying to build, and Copilot will generate the YAML flow code for you to accept or adjust. Once your initial flow is created, you can iteratively refine it with Copilot’s help, adding new tasks or adjusting triggers without touching unrelated parts of the flow. Everything stays as code and in Kestra's usual declarative syntax.
+Switch modes at any point in a conversation — the Copilot carries the conversation history across mode switches.
 
-Copilot is available anywhere you build in Kestra — Flows, Apps, Unit tests, and Dashboards — so you can keep iterating with the same AI assistant across the product surface.
+## Context
 
-You can type prompts or click the microphone button in the Copilot panel to dictate them with speech-to-text directly from the UI.
+The Copilot automatically attaches the resource you are viewing as context when you open the panel. Attached resources appear as dismissible pills above the input. You can remove any pill to narrow the Copilot’s focus, and the transcript records each add and remove so you always know what the agent is looking at.
 
-Copilot grounds its suggestions in your Namespace metadata. It automatically reads Policies, Variables, Secrets, and Key-Value pairs configured in the current Namespace, so prompts like "Create a task that integrates with MongoDB" can reuse your configured policies, stored credentials, or variables without extra hints.
+Resources that can be attached as context:
+
+- Flow
+- Namespace
+- Execution
+- Dashboard
+- App
+- Test suite
+- Blueprint
+- Plugin
+
+Copilot also reads Namespace metadata — Policies, Variables, Secrets, and Key-Value pairs — so prompts like "Create a task that integrates with MongoDB" can reuse your configured credentials and variables without extra hints.
+
+## Confirmation
+
+In **Edit** and **Plan** modes, actions that modify resources (creating or updating a flow, restarting an execution) require explicit confirmation before the Copilot executes them. A confirmation prompt appears in the chat with an optional field to steer the next step. Approving executes the action; rejecting resumes the conversation in Edit mode or cancels the current plan in Plan mode.
+
+## Edit mode
+
+<!-- TODO: add updated screenshot or video of Edit mode in the new sidebar UI -->
+
+Edit mode generates and iteratively refines declarative flow YAML. Describe what you want to build; the Copilot searches available plugins, validates the generated YAML, and proposes the change for your approval. Once accepted, you can keep iterating — adding triggers, adjusting tasks, or refactoring a section — without the Copilot touching unrelated parts of the flow.
+
+Edit mode is available anywhere you build in Kestra — Flows, Apps, Unit tests, and Dashboards.
 
 ## Usage limits
 
@@ -77,7 +102,7 @@ When disabled, the Copilot UI will not appear and all AI endpoints will be deact
 
 When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
 
-Replace `api-key` with your provider credentials. Copilot appears in the top right corner of the flow editor. Optionally, you can add the following properties inside each provider `configuration` block (availability varies by provider):
+Replace `api-key` with your provider credentials. Optionally, you can add the following properties inside each provider `configuration` block (availability varies by provider):
 
 - `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
 - `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
@@ -95,25 +120,25 @@ Replace `api-key` with your provider credentials. Copilot appears in the top rig
 Enterprise Edition includes an [RBAC permission](../../07.enterprise/03.auth/rbac/index.md) that lets administrators allow or disallow Copilot usage per role at tenant or namespace scope.
 :::
 
-![AI Copilot](./ai-copilot.png)
+<!-- TODO: replace with updated screenshot of the AI Copilot sidebar -->
 
 :::alert{type="info"}
 The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
 :::
 
-## Build flows with Copilot
+## Build flows with Edit mode
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/kvO69FrLnnXVsMkrLi7T?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flows | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<!-- TODO: replace with updated Arcade demo showing the new sidebar UI -->
 
-In the above demo, we want to create a flow that uses a [Python script](/plugins/plugin-script-python/io.kestra.plugin.scripts.python.script) to fetch New York City weather data. To get started, open the Copilot and write a prompt. For example:
+To get started, open the Copilot sidebar and write a prompt. For example:
 
 ```txt
 Create a flow with a Python script that fetches weather data for New York City
 ```
 
-Once prompted, the Copilot generates YAML directly in the flow editor that can be accepted or refused in the bottom right corner.
+Once prompted, the Copilot drafts the change and presents a confirmation step in the chat panel. Approve to apply it or reject to steer the next attempt.
 
-![Copilot Suggestion](./copilot-suggestion.png)
+<!-- TODO: replace with updated screenshot of confirmation step in chat panel -->
 
 If accepted, the flow is created and can be saved for execution, iterated on manually, or continually iterated upon by the Copilot. For example, you want a trigger added to the flow to run it on a schedule. Reopen the Copilot and prompt it with the desired trigger setup such as:
 
@@ -121,17 +146,26 @@ If accepted, the flow is created and can be saved for execution, iterated on man
 Add a trigger to run the flow every day at 9 AM
 ```
 
-The Copilot again makes a suggestion to add to the flow, but only in the targeted section, in this case a `triggers` block. This is also the case if you want the Copilot only to consider a specific task, input, plugin default, and so on.
+The Copilot again makes a suggestion to add to the flow, but only in the targeted section, in this case a `triggers` block. This is also the case if you want the Copilot only to consider a specific task, input, or output.
 
-![Copilot Trigger Iteration](./copilot-trigger.png)
+<!-- TODO: replace with updated screenshot of trigger iteration in sidebar -->
 
 You can continuously collaborate with Copilot until the flow is exactly as you imagined. If accepted, suggestions are always declaratively written and manageable as code. You can keep track of the revision history using the built-in Revisions tab or with the help of Git Sync.
+
+## Ask mode
+
+Use Ask mode to ask natural-language questions about Kestra without generating any code. Ask mode grounds its answers in the Kestra documentation and can analyze execution failures by reading the execution logs directly.
+
+Example questions:
+- "What is the difference between a Worker Group and a Task Runner?"
+- "How do I configure namespace-level Policies?"
+- "Why did this execution fail?" (with an execution attached as context)
 
 ## Fix with AI
 
 With Copilot configured, there is also the added benefit of consulting Copilot to resolve execution errors from the Logs and Gantt views. For failed tasks, you can open the task and click the three dots to "**Fix with AI**". This option reopens the flow editor with the Copilot automatically prompted with the error context to help resolve any issues with the task.
 
-![Fix with AI](./fix-with-ai-gantt.png)
+<!-- TODO: replace with updated Fix with AI screenshot -->
 
 ## Starter prompts
 
