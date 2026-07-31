@@ -233,10 +233,10 @@ Use a [Policy](../../02.governance/policies/index.md) to route all tasks of a gi
 ```yaml
 id: gpu-worker-routing
 description: "Route all Python tasks to GPU workers."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH

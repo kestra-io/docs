@@ -71,10 +71,10 @@ In Enterprise Edition, use a [Policy](../../07.enterprise/02.governance/policies
 ```yaml
 id: aws-batch-credentials
 description: "AWS credentials for the Batch task runner."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: EQUAL_TO

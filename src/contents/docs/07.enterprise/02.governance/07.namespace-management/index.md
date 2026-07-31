@@ -77,10 +77,10 @@ For example, a namespace-scoped Policy can inject database credentials into ever
 ```yaml
 id: mysql-credentials
 description: "Inject MySQL credentials for all MySQL tasks in this namespace."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH

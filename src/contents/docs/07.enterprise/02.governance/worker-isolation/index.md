@@ -70,7 +70,7 @@ kestra:
       description: "Force Docker isolation for all shell script tasks."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
-          on: plugin
+          on: PLUGIN
           override: true
           where:
             - field: type

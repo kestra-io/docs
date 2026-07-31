@@ -19,7 +19,7 @@ In Kestra 1.x, plugin defaults could be defined at three levels:
 
 | Before (1.x) | After (2.x) |
 |---|---|
-| Flow-level `pluginDefaults:` block | Values inlined onto tasks (OSS), or a `reference` Policy attached via `policyRefs:` (EE) |
+| Flow-level `pluginDefaults:` block | Values inlined onto tasks (OSS), or a `REFERENCE` Policy attached via `policyRefs:` (EE) |
 | Namespace-level Plugin Defaults (EE) | Namespace-scoped Policy (UI / API) — existing namespace-level defaults are migrated automatically |
 | Tenant-level plugin defaults (EE) | Tenant-scoped Policy (UI / API) |
 | `kestra.plugins.defaults` in server config | Static policy under `kestra.policies` in server config |
@@ -77,7 +77,7 @@ kestra:
       description: "Migrated from kestra.plugins.defaults."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
-          on: plugin
+          on: PLUGIN
           where:
             - field: type
               operator: EQUAL_TO
@@ -85,7 +85,7 @@ kestra:
           values:
             containerImage: ubuntu:24.04
         - type: io.kestra.plugin.ee.rules.Add
-          on: plugin
+          on: PLUGIN
           override: true
           where:
             - field: type
@@ -128,10 +128,10 @@ Existing namespace-level Plugin Defaults are migrated to Policies automatically 
 ```yaml
 id: aws-credentials
 description: "Central AWS credentials for all AWS plugin tasks."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH
@@ -150,7 +150,7 @@ Flow-level `pluginDefaults` never supported `forced` in 1.x (it was stripped wit
 
 **Option A — inline the values (recommended for one or two flows).** Copy each default's `values` onto the matching tasks and delete the `pluginDefaults:` block.
 
-**Option B — reference Policy (recommended when many flows share the same block).** Create a Policy with `enforcement: reference` at the namespace or tenant scope. Each flow opts in with `policyRefs:`.
+**Option B — reference Policy (recommended when many flows share the same block).** Create a Policy with `enforcement: REFERENCE` at the namespace or tenant scope. Each flow opts in with `policyRefs:`.
 
 **Before (1.x flow):**
 
@@ -174,10 +174,10 @@ tasks:
 ```yaml
 id: pydata-defaults
 description: "Python data science container image default."
-enforcement: reference
+enforcement: REFERENCE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: EQUAL_TO
@@ -201,7 +201,7 @@ tasks:
     script: ...
 ```
 
-A `reference` Policy applies only to flows that list it in `policyRefs`. `active` Policies apply automatically to every flow in scope.
+A `REFERENCE` Policy applies only to flows that list it in `policyRefs`. `ACTIVE` Policies apply automatically to every flow in scope.
 
 ### Forced defaults
 
@@ -222,10 +222,10 @@ pluginDefaults:
 ```yaml
 id: docker-pull-policy
 description: "Force Docker pull policy to NEVER across all script tasks."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: EQUAL_TO
@@ -251,7 +251,7 @@ A few behaviors differ from 1.x `pluginDefaults`:
 
 - **Lists are replaced, not merged.** Map-valued properties deep-merge as before, but if a Policy injects a list (for example, a list of environment variables), it replaces the author's list entirely when `override: true`. Check any default whose `values` contain lists.
 - **Plugin aliases are not resolved.** 1.x resolved deprecated plugin aliases through the plugin registry. Policy conditions match the `type` string literally. If your flows use an alias, cover both the alias and the canonical name — or migrate all flows to the canonical name first.
-- **`evaluate` mode does not inject values.** Only `active` and attached `reference` Policies mutate flows. Do not leave a migrated Policy in `evaluate` in production — tasks run without their former defaults.
+- **`EVALUATE` mode does not inject values.** Only `ACTIVE` and attached `REFERENCE` Policies mutate flows. Do not leave a migrated Policy in `EVALUATE` in production — tasks run without their former defaults.
 - **`Add` + `Delete` conflicts are rejected at save time.** 1.x had no `Delete` concept, so this only matters if you also adopt new validation rules. If one Policy injects a property and another removes it, saving any affected flow fails with an error citing both policies.
 
 ## Verify the migration

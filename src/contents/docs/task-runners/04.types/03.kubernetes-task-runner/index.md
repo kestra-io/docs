@@ -630,10 +630,10 @@ In Enterprise Edition, use a [Policy](../../../07.enterprise/02.governance/polic
 ```yaml
 id: k8s-runner-defaults
 description: "Kubernetes task runner for all Python script tasks."
-enforcement: active
+enforcement: ACTIVE
 rules:
   - type: io.kestra.plugin.ee.rules.Add
-    on: plugin
+    on: PLUGIN
     override: true
     where:
       - field: type

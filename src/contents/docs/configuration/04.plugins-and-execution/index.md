@@ -77,7 +77,7 @@ kestra:
       description: "Default log level for all Log tasks."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
-          on: plugin
+          on: PLUGIN
           where:
             - field: type
               operator: EQUAL_TO
@@ -95,7 +95,7 @@ kestra:
       description: "Force Docker task runner for all shell script tasks."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
-          on: plugin
+          on: PLUGIN
           override: true
           where:
             - field: type
