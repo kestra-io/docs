@@ -141,7 +141,7 @@ pluginDefaults:
 
 ## Configuring Secrets in the Enterprise Edition
 
-In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, see the [secrets page](../../06.concepts/04.secret/index.md#secrets-in-the-enterprise-edition).
+In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, see the [secrets page](../../06.concepts/04.secret/index.md#enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 
