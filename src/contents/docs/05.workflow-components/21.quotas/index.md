@@ -9,7 +9,7 @@ editions: ["EE", "Cloud"]
 
 Cap the number of executions created within a time window — at the flow, namespace, or tenant level.
 
-Each quota specifies a `duration` (the time window), a `limit` (the maximum number of executions allowed in that window), and a `behavior` (what happens when the limit is exceeded). Quotas can be applied at three levels: on individual flows, on a namespace (applying to all flows in that namespace and any child namespace beneath it), or on a tenant (applying to all flows across the tenant).
+Each quota specifies a `duration` (the time window), a `limit` (the maximum executions allowed in that window), and a `behavior` (what happens when the limit is exceeded).
 
 :::alert{type="info"}
 Quotas limit how many executions are **created** within a time period. This is different from [`concurrency`](../14.concurrency/index.md), which limits how many executions **run simultaneously**.
@@ -21,7 +21,7 @@ Quotas are an Enterprise Edition feature. Adding a `quotas` block to a flow on a
 
 ## Quota properties
 
-Each entry in the `quotas` list requires three properties:
+Each entry in the `quotas` list has three required properties:
 
 | Property | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -66,7 +66,7 @@ Namespace quotas apply to every flow whose namespace matches or is a child of th
 
 ### Tenant level
 
-Define quotas on a tenant to apply limits across all flows in the entire tenant. Navigate to **Administration > Tenants**, edit the tenant, and add quota entries in the **Quotas** section.
+Define quotas on a tenant to apply limits across all flows in the entire tenant. Navigate to **Admin → Tenants**, select the tenant, click **Edit Tenant**, and add quota entries in the **Quotas** section.
 
 ## Evaluation order
 
@@ -76,7 +76,7 @@ When an execution is triggered, quotas are evaluated from the most specific leve
 2. **Namespace-level** quotas are checked next, from the most general ancestor namespace down to the flow's own namespace.
 3. **Tenant-level** quotas are checked last.
 
-If a quota at a lower level is exceeded, the execution is cancelled or failed immediately and no slot is consumed at higher levels. This prevents a flow-level quota breach from also counting against shared namespace or tenant limits.
+If a quota at a more specific level is exceeded, the execution is cancelled or failed immediately and no slot is consumed at higher levels. This prevents a flow-level quota breach from also counting against shared namespace or tenant limits.
 
 ## Flow-level examples
 
@@ -118,13 +118,15 @@ Each `duration` value must be unique within the `quotas` list. Defining two quot
 
 ## Monitoring quota state
 
-The **Administration > Quota Limits** page lists active quota counters across the tenant. Each row shows the namespace, flow ID, quota duration, the start of the current window, and the current execution count. For namespace-level quotas the flow column shows **namespace level quota**; for tenant-level quotas both columns show **tenant level quota**.
+The **Quota Limits** page (left sidebar, under **Tenant**) lists active quota counters across the tenant. Each row shows the namespace, flow ID, quota duration, the start of the current window, and the current execution count. The **Actions** column contains a reset button to manually clear a quota counter before the window expires.
 
-Rows for expired windows are automatically hidden. Use the **Refresh** button to reload the current state. Columns are sortable by namespace and flow ID. This page is visible to super admins only.
+For namespace-level quotas, the flow column shows `<namespace level quota>`; for tenant-level quotas, both columns show `<tenant level quota>`.
+
+Rows for expired windows are automatically hidden. Use the refresh button (top right of the page) to reload the current state. Columns are sortable by namespace and flow ID.
 
 ## When to use quotas
 
 - **Flow level** — cap how often a specific flow can be triggered by external events or webhooks to prevent runaway execution chains, or enforce a cost policy on flows that call expensive external APIs.
 - **Namespace level** — apply a shared execution budget across all flows in a team or environment namespace, without configuring each flow individually.
 - **Tenant level** — enforce an organization-wide ceiling on execution creation, for example to stay within an infrastructure or cost constraint that applies across all namespaces.
-- Complement concurrency limits: quotas cap the creation rate; concurrency caps simultaneous parallelism.
+- **Complement concurrency** — quotas cap the creation rate; concurrency caps simultaneous parallelism.
