@@ -29,6 +29,7 @@ This post covers what shipped. The [engineering post from April](/blogs/kestra-2
 | Trigger `when` expression | Pebble replaces Java-class conditions on all trigger types | All |
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE |
+| Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
 | AWS EC2 Task Runner | Native EC2 execution via SSM, with Spot support | EE, Cloud |
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | All |
 | External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
@@ -328,6 +329,34 @@ This complements Templated Blueprints (also new in 2.0), which let platform team
 
 See the [Custom Blueprints reference](/docs/enterprise/governance/custom-blueprints).
 
+## Cases
+
+Failed executions are incidents, and most teams track them in a separate tool. Cases brings incident management into Kestra so you can create, assign, and resolve incidents next to the executions that caused them.
+
+The `CreateCase` task opens a case from any block in a flow: `errors`, `finally`, `afterExecution`, or a regular task combined with `runIf`. It calls the Kestra API, so it needs an endpoint and credentials — `kestraUrl` defaults to the current instance, and `auth` accepts an API token or username/password. Namespace or tenant-level default credentials work as a fallback so you don't have to repeat auth config on every task.
+
+```yaml
+errors:
+  - id: open_case
+    type: io.kestra.plugin.kestra.ee.cases.CreateCase
+    title: "Orders sync failed: {{ flow.id }}"
+    severity: HIGH
+    linkMatchingExecutions: true
+    sla:
+      acknowledgement: PT1H
+      resolution: PT8H
+```
+
+The `linkMatchingExecutions` property is the most useful option for high-frequency flows. A single external API going down can generate dozens of failed executions per hour. With `linkMatchingExecutions: true`, each subsequent failure attaches to the already-open case rather than creating a new one. The same behavior is available from the UI on any existing case via auto-attach, which generates a Flow trigger behind the scenes and removes it when the case resolves.
+
+Each case tracks severity, status, assignees, watchers, SLA targets (acknowledgement and resolution), linked executions, linked assets, and a full activity timeline with comments and file attachments. Cases can also have case actions: flows attached as one-click remediation buttons on the case detail page.
+
+The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required.
+
+A new `CASE` RBAC resource controls access with actions for `VIEW`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`.
+
+See the [Cases reference](/docs/enterprise/governance/cases).
+
 ## AWS EC2 Task Runner
 
 <!-- TODO: optional screenshot or flow snippet for GPU Spot example -->
@@ -447,6 +476,6 @@ Each has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migrati
 
 ## Get Started
 
-The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/getting-started/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0.
+The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0.
 
 If you run into anything unexpected during the upgrade, open an issue on [GitHub](https://github.com/kestra-io/kestra/issues) or reach out on [Slack](https://kestra.io/slack).
