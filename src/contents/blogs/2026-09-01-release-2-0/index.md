@@ -14,7 +14,7 @@ image: ./main.jpg
 
 Kestra 2.0 ships with intentional breaking changes. Version 2.0 removes constructs that accumulated technical debt across three release cycles (ForEach, Java-class trigger conditions, CRUD-based RBAC permissions) and replaces them with designs that hold up under production load, multi-team governance, and the increasingly common requirement that your orchestration platform be reachable by AI agents.
 
-The headline capability is MCP: Kestra flows can now be exposed as typed tools on an MCP server and invoked directly by Claude, Cursor, Codex, or any MCP-compatible agent. That unlocks a class of AI-driven automation that previously required bespoke integrations. The AI Copilot is rebuilt from the ground up as a persistent agentic loop with three modes, multi-turn memory, and a confirmation gate before any mutations run. Worker Groups got a complete architectural overhaul with tag-based routing, capacity reservation, and JWT-based worker authentication. RBAC moves from generic CRUD on resources to resource-plus-action pairs, so you can grant a CI service account the right to execute flows without being able to delete them.
+The headline capability is MCP: Kestra flows can now be exposed as typed tools on an MCP server and invoked directly by Claude, Cursor, Codex, or any MCP-compatible agent. A class of AI-driven automation that previously required bespoke integrations now works out of the box. The AI Copilot is rebuilt from the ground up as a persistent agentic loop with three modes, multi-turn memory, and a confirmation gate before any mutations run. Worker Groups are redesigned from scratch with tag-based routing, capacity reservation, and JWT-based worker authentication. RBAC moves from generic CRUD on resources to resource-plus-action pairs, so you can grant a CI service account the right to execute flows without being able to delete them.
 
 This post covers what shipped. The [engineering post from April](/blogs/kestra-2-0-engineering) covers why.
 
@@ -40,7 +40,7 @@ This post covers what shipped. The [engineering post from April](/blogs/kestra-2
 
 <!-- TODO: screenshot of MCP server Tool Flows tab or Connect tab config snippet -->
 
-Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs. No custom API wrapper, no polling loop, no manual result parsing.
+Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs. No custom API wrapper or polling loop required.
 
 The `McpToolTrigger` handles registration. Add it to any flow alongside your task list:
 
@@ -73,7 +73,7 @@ A `default` MCP server is provisioned for every tenant on startup. Additional se
 
 Authentication options vary by edition: BASIC is available on all editions, API_TOKEN on EE, and OAuth2 on EE and Cloud. OAuth2 support means browser-based clients like Claude web can authenticate without any local credential setup.
 
-All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so filtering by agent origin in the execution list is straightforward.
+All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
 
 For access control, the `MCP_SERVER` resource in the EE RBAC model governs who can create and manage MCP servers. A user needs `FLOW: EXECUTE` permission on at least one namespace with a registered `McpToolTrigger` to call the matching tool.
 
@@ -85,9 +85,15 @@ See the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger referen
 
 The AI Copilot is rebuilt in 2.0. The old one-shot generation modal is replaced by a persistent right-sidebar chat panel, opened via the **AI** button in the top toolbar. Conversations are multi-turn and held in memory for the browser session. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
 
-A mode selector at the bottom of the panel switches between three behaviors. Edit mode generates and iteratively refines declarative flow YAML. Describe what you want; the Copilot searches available plugins, validates the output, and proposes the change for your approval before applying it. Rejecting a proposal keeps the conversation going so you can redirect rather than start over. Plan mode proposes a numbered sequence of steps for a complex task and executes each step individually after you confirm. Rejecting any step cancels the plan rather than leaving a partial result. Ask mode answers questions about Kestra by grounding responses in the official documentation via an internal Kestra MCP client, and can read execution logs directly to help diagnose a failed run.
+A mode selector at the bottom of the panel switches between three behaviors:
 
-When you open the sidebar while viewing a resource, that resource attaches automatically as a context pill above the input. Pills are independently dismissible. Each add and remove is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration — prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
+| Mode | What it does |
+|---|---|
+| Edit | Generates and iteratively refines declarative flow YAML. The Copilot proposes the change for approval before applying it; rejecting keeps the conversation going so you can redirect rather than start over. |
+| Plan | Proposes a numbered sequence of steps for a complex task and executes each one after you confirm. Rejecting any step cancels the rest. |
+| Ask | Answers questions about Kestra grounded in the official documentation via an internal Kestra MCP client. Can also read execution logs directly to help diagnose a failed run. |
+
+When you open the sidebar while viewing a resource, that resource attaches automatically as a context pill above the input. Pills are independently dismissible. Each add and remove is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
 
 Actions that modify resources require explicit confirmation before the Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
 
@@ -138,7 +144,7 @@ See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for
 
 The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource now exposes only the actions that make sense for it.
 
-A few examples of what this unlocks:
+A few examples of what this makes possible:
 
 | Goal | Old model (minimum viable) | New model |
 |---|---|---|
@@ -157,11 +163,11 @@ See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide fo
 
 Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies solves this at the platform layer.
 
-Policies is the EE replacement for `pluginDefaults`. It gives platform administrators governance rules that inject configuration, validate compliance, and block non-conforming flows — across namespaces, tenants, and flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
+Policies is the EE replacement for `pluginDefaults`. It gives platform administrators governance rules that inject configuration, validate compliance, and block non-conforming flows across namespaces, tenants, and flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
 
 A Policy is a named set of rules scoped to a namespace or a tenant. Rules from a parent namespace cascade to all child namespaces automatically, so a company-wide constraint placed at the root namespace reaches every team without per-namespace configuration.
 
-Five rule types ship in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: FLOW`) or any plugin instance in it — tasks, triggers, task runners (`on: PLUGIN`) — narrowed by a `where` clause that matches on the plugin type.
+Five rule types ship in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: FLOW`) or any plugin instance in it (tasks, triggers, task runners) (`on: PLUGIN`), narrowed by a `where` clause that matches on the plugin type.
 
 A practical example: require that every flow carries a team label, and restrict all script tasks to an approved container registry.
 
@@ -189,11 +195,11 @@ rules:
     errorMessage: "Container images must be pulled from registry.internal."
 ```
 
-`Add` rules inject values at resolution time. With `override: false` (the default), the author's explicit value wins and the policy fills in only what's absent. With `override: true`, the policy value always wins. Either way, every injection is annotated in the flow editor's merged preview — forced values are never invisible to authors.
+`Add` rules inject values at resolution time. With `override: false` (the default), the author's explicit value wins and the policy fills in only what's absent. With `override: true`, the policy value always wins. Either way, every injection is annotated in the flow editor's merged preview, so forced values are never invisible to authors.
 
 Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but nothing is blocked and no values are injected. When the violation report looks right, flip to `ACTIVE`.
 
-Policies also support opt-in bundles with `enforcement: REFERENCE`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles — an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one, selected per task in the same flow.
+Policies also support opt-in bundles with `enforcement: REFERENCE`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles (an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one) selected per task in the same flow.
 
 `pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. See the [Policies reference](/docs/enterprise/governance/policies) for the full rule DSL.
 
@@ -281,10 +287,10 @@ The [trigger conditions migration guide](/docs/migration-guide/v2.0.0/trigger-co
 
 kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. The new command groups cover every entity in the action-based permission model:
 
-- `kestractl users` — create, list, get, update, delete users; set passwords
-- `kestractl groups` — manage groups and memberships (tenant-scoped)
-- `kestractl roles` — create and bind roles; assign permissions via `--permission TYPE:ACTION[,ACTION]` or `--permissions-file`
-- `kestractl service-accounts` — create and manage service accounts (instance-level)
+- `kestractl users`: create, list, get, update, delete users; set passwords
+- `kestractl groups`: manage groups and memberships (tenant-scoped)
+- `kestractl roles`: create and bind roles; assign permissions via `--permission TYPE:ACTION[,ACTION]` or `--permissions-file`
+- `kestractl service-accounts`: create and manage service accounts (instance-level)
 
 The `--output json` flag applies across all commands, so kestractl output can pipe directly into `jq` or other tooling in CI scripts.
 
@@ -328,7 +334,7 @@ See the [Custom Blueprints reference](/docs/enterprise/governance/custom-bluepri
 
 The EC2 task runner is a new EE runner type that executes task commands directly on an EC2 instance via [AWS Systems Manager Run Command](https://docs.aws.amazon.com/systems-manager/latest/userguide/execute-remote-commands.html). No SSH. No container runtime.
 
-Kestra launches the instance from the configured AMI, waits for the SSM Agent to register, uploads any input files to S3, runs the task as a bash script, streams output via CloudWatch Logs to the Kestra execution log in near real-time, downloads output files, and then terminates the instance unconditionally when the run finishes.
+Kestra launches the instance from the configured AMI, waits for the SSM Agent to register, uploads input files to S3, and runs the task as a bash script. Output streams via CloudWatch Logs to the Kestra execution log in near real-time. When the run finishes, Kestra downloads output files and terminates the instance unconditionally.
 
 The primary use cases are workloads that cannot or should not run inside a container: GPU training and inference jobs tied to a custom CUDA AMI, licensed software bound to a specific machine image, and Spot-optimized workloads where you want direct control over the instance type and max bid price.
 
@@ -365,7 +371,7 @@ See the [AWS EC2 Task Runner reference](/docs/task-runners/04.types/05.aws-ec2-t
 
 ## PurgeStorage
 
-The existing `PurgeExecutions` task deletes execution records and their associated files, but it is database-driven: it cannot clean files whose execution records are already gone. This becomes a problem in deployments where worker groups use isolated internal storage, where files accumulate without any corresponding execution record to trigger a cleanup.
+The existing `PurgeExecutions` task deletes execution records and their associated files, but it is database-driven: it cannot clean files whose execution records are already gone. This becomes a problem in deployments where worker groups use isolated internal storage and files accumulate without any corresponding execution record to trigger a cleanup.
 
 `io.kestra.plugin.core.storage.PurgeStorage` takes the storage-driven approach instead. It walks the storage tree directly and deletes files based on last-modified date, regardless of whether a matching execution record exists. The task defaults to `dryRun: true`, so the first run only reports what would be deleted.
 
@@ -399,21 +405,21 @@ See the [External Log Data Store guide](/docs/administrator-guide/log-data-store
 
 ## Additional Improvements
 
-**Reusable Inputs (EE/Cloud).** Define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Supports namespace hierarchy inheritance and revision pinning.
+Reusable Inputs (EE/Cloud): define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Namespace hierarchy inheritance and revision pinning are supported.
 
-**ION binary format.** ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The [migration guide](/docs/migration-guide/v2.0.0/ion-binary-format) covers affected tasks and patterns.
+ION binary format: ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The [migration guide](/docs/migration-guide/v2.0.0/ion-binary-format) covers affected tasks and patterns.
 
-**Input improvements.** SELECT and MULTISELECT inputs now support `{label, value}` objects, so the UI can show a human-readable label while flows receive the underlying technical value. JSON inputs gain a `jsonSchema` property (JSON Schema Draft 2020-12) that validates at execution creation time, rejecting invalid payloads before any task runs.
+Input improvements: SELECT and MULTISELECT inputs now support `{label, value}` objects, so the UI can show a human-readable label while flows receive the underlying technical value. JSON inputs gain a `jsonSchema` property (JSON Schema Draft 2020-12) that validates at execution creation time, rejecting invalid payloads before any task runs.
 
-**Unit test expectedState.** Flow unit tests can now assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. Testing intentional failure paths (validation guards using `io.kestra.plugin.core.execution.Fail`, SLA breaches, etc.) is now first-class.
+Unit test `expectedState`: flow unit tests can now assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. Testing intentional failure paths (validation guards using `io.kestra.plugin.core.execution.Fail`, SLA breaches, and so on) is now first-class.
 
-**TRACEPARENT propagation.** Pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. Closes a distributed tracing gap for teams running scripts inside Docker containers.
+TRACEPARENT propagation: pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. This closes a distributed tracing gap for teams running scripts inside Docker containers.
 
-**Syslog (CEF) log exporter.** The EE Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
+Syslog (CEF) log exporter: the EE Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
 
-**AI Agent observability.** AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
+AI Agent observability: AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
 
-**mTLS on the worker channel.** Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer.
+mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer.
 
 <!-- TODO: Promote (EE) - reviewed flow promotion between environments; fill with details + screenshot when feature ships -->
 
