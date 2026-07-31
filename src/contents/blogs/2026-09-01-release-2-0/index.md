@@ -14,13 +14,14 @@ image: ./main.jpg
 
 Kestra 2.0 ships with intentional breaking changes. Version 2.0 removes constructs that accumulated technical debt across three release cycles (ForEach, Java-class trigger conditions, CRUD-based RBAC permissions) and replaces them with designs that hold up under production load, multi-team governance, and the increasingly common requirement that your orchestration platform be reachable by AI agents.
 
-The headline capability is MCP: Kestra flows can now be exposed as typed tools on an MCP server and invoked directly by Claude, Cursor, Codex, or any MCP-compatible agent. That unlocks a class of AI-driven automation that previously required bespoke integrations. Worker Groups got a complete architectural overhaul with tag-based routing, capacity reservation, and JWT-based worker authentication. RBAC moves from generic CRUD on resources to resource-plus-action pairs, so you can grant a CI service account the right to execute flows without being able to delete them.
+The headline capability is MCP: Kestra flows can now be exposed as typed tools on an MCP server and invoked directly by Claude, Cursor, Codex, or any MCP-compatible agent. That unlocks a class of AI-driven automation that previously required bespoke integrations. The AI Copilot is rebuilt from the ground up as a persistent agentic loop with three modes, multi-turn memory, and a confirmation gate before any mutations run. Worker Groups got a complete architectural overhaul with tag-based routing, capacity reservation, and JWT-based worker authentication. RBAC moves from generic CRUD on resources to resource-plus-action pairs, so you can grant a CI service account the right to execute flows without being able to delete them.
 
 This post covers what shipped. The [engineering post from April](/blogs/kestra-2-0-engineering) covers why.
 
 | Feature | What | Edition |
 |---|---|---|
 | MCP Tool Trigger + MCP Server | Expose flows as tools callable by AI agents | EE, Cloud |
+| AI Copilot agentic loop | Three-mode chat sidebar (Edit, Plan, Ask) with multi-turn memory and confirmation gate | EE, Cloud |
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
 | RBAC action-based permissions | Resource + action model replaces CRUD | EE |
 | Policies | Namespace-scoped governance rules replace `pluginDefaults` | EE |
@@ -78,6 +79,22 @@ For access control, the `MCP_SERVER` resource in the EE RBAC model governs who c
 
 See the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger) for full setup.
 
+## AI Copilot
+
+<!-- TODO: screenshot of AI Copilot sidebar showing Edit mode -->
+
+The AI Copilot is rebuilt in 2.0. The old one-shot generation modal is replaced by a persistent right-sidebar chat panel, opened via the **AI** button in the top toolbar. Conversations are multi-turn and held in memory for the browser session. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
+
+A mode selector at the bottom of the panel switches between three behaviors. Edit mode generates and iteratively refines declarative flow YAML. Describe what you want; the Copilot searches available plugins, validates the output, and proposes the change for your approval before applying it. Rejecting a proposal keeps the conversation going so you can redirect rather than start over. Plan mode proposes a numbered sequence of steps for a complex task and executes each step individually after you confirm. Rejecting any step cancels the plan rather than leaving a partial result. Ask mode answers questions about Kestra by grounding responses in the official documentation via an internal Kestra MCP client, and can read execution logs directly to help diagnose a failed run.
+
+When you open the sidebar while viewing a resource, that resource attaches automatically as a context pill above the input. Pills are independently dismissible. Each add and remove is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration — prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
+
+Actions that modify resources require explicit confirmation before the Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
+
+The `COPILOT` resource in the RBAC model controls who can use the feature. Assign `VIEW` or `DENY` at tenant or namespace scope via the Roles UI.
+
+See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
+
 ## Worker Groups 2.0
 
 Worker Groups in 2.0 is a ground-up redesign. The old model assigned tasks to a group by name with `workerGroup.key`. The new model separates three concerns that the old model conflated: Workers (compute units that authenticate via tokens), Worker Groups (pools of workers), and Worker Queues (routing lanes identified by tags).
@@ -130,7 +147,7 @@ A few examples of what this unlocks:
 | Scheduler triggers backfills | EXECUTION: CREATE | `TRIGGER: BACKFILL` |
 | Analyst follows a live execution | EXECUTION: READ | `EXECUTION: FOLLOW` |
 
-New resources in 2.0 include `TRIGGER` (previously part of `FLOW`), `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, and `COPILOT`. The MCP server resource (`MCP_SERVER`) is also new.
+New resources in 2.0 include `TRIGGER` (previously part of `FLOW`), `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`.
 
 Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings are migrated automatically on upgrade.
 
@@ -144,24 +161,24 @@ Policies is the EE replacement for `pluginDefaults`. It gives platform administr
 
 A Policy is a named set of rules scoped to a namespace or a tenant. Rules from a parent namespace cascade to all child namespaces automatically, so a company-wide constraint placed at the root namespace reaches every team without per-namespace configuration.
 
-Five rule types ship in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: flow`) or any plugin instance in it — tasks, triggers, task runners (`on: plugin`) — narrowed by a `where` clause that matches on the plugin type.
+Five rule types ship in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: FLOW`) or any plugin instance in it — tasks, triggers, task runners (`on: PLUGIN`) — narrowed by a `where` clause that matches on the plugin type.
 
 A practical example: require that every flow carries a team label, and restrict all script tasks to an approved container registry.
 
 ```yaml
 id: prod-standards
 description: "Label requirements and registry policy for production flows."
-enforcement: active
+enforcement: ACTIVE
 
 rules:
   - type: io.kestra.plugin.ee.rules.Require
-    on: flow
+    on: FLOW
     properties:
       - labels.team
     errorMessage: "Every flow must declare labels.team."
 
   - type: io.kestra.plugin.ee.rules.Restrict
-    on: plugin
+    on: PLUGIN
     where:
       - field: type
         operator: STARTS_WITH
@@ -174,9 +191,9 @@ rules:
 
 `Add` rules inject values at resolution time. With `override: false` (the default), the author's explicit value wins and the policy fills in only what's absent. With `override: true`, the policy value always wins. Either way, every injection is annotated in the flow editor's merged preview — forced values are never invisible to authors.
 
-Before enabling enforcement, set `enforcement: evaluate`. The policy checks every flow in scope and surfaces violations in the Governance UI, but nothing is blocked and no values are injected. When the violation report looks right, flip to `active`.
+Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but nothing is blocked and no values are injected. When the violation report looks right, flip to `ACTIVE`.
 
-Policies also support opt-in bundles with `enforcement: reference`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles — an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one, selected per task in the same flow.
+Policies also support opt-in bundles with `enforcement: REFERENCE`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles — an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one, selected per task in the same flow.
 
 `pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. See the [Policies reference](/docs/enterprise/governance/policies) for the full rule DSL.
 
