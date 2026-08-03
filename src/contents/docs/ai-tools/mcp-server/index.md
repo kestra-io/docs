@@ -2,7 +2,7 @@
 title: MCP Server in Kestra – Expose Flows as AI Tools
 h1: Configure Kestra MCP Servers and Connect AI Agents
 description: Configure Kestra MCP servers to expose flows as tools for AI agents. Learn how to create servers, set authentication, and connect Claude Desktop, Claude Code, and Cursor.
-sidebarTitle: MCP Server
+sidebarTitle: Kestra Flow MCP Servers
 icon: /src/contents/docs/icons/ai.svg
 version: "2.0.0"
 editions: ["OSS", "EE"]
