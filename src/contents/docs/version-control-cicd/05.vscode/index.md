@@ -96,6 +96,22 @@ By default, the run output opens in a styled webview panel that shows a status b
 
 To save the current buffer to the instance without starting an execution, run **Kestra: Save flow to Kestra** (the save button in the editor title bar).
 
+### Namespace files
+
+The extension can mount a namespace directly in VS Code and push local files to it. All three commands respect your instance permissions — denied requests report the reason rather than failing silently.
+
+**Kestra: Open namespace** (`kestra.namespace.open`)
+
+Mounts a namespace as a live folder in the VS Code Explorer. You can browse, create, rename, edit, and delete files as if they were local. Each save writes back to the instance immediately — there is no local copy. The namespace picker lists namespaces already known to the instance, but you can also type a new one.
+
+**Kestra: Upload file to namespace** (`kestra.namespace.uploadFile`)
+
+Pushes a file — or a multi-selection of files and folders — to a namespace. Invoke it from the command palette or the Explorer context menu. For a single file, you specify the exact target path. For a multi-selection, you set a base path and the extension uploads all selected items under it, skipping names matched by `kestra.namespaceFiles.exclude`. If the target namespace does not exist, the extension offers to create it.
+
+**Kestra: Sync folder to namespace** (`kestra.namespace.syncFolder`)
+
+Walks a local folder, uploads every file, and overwrites files at the same remote path. This operation is additive: files that exist only on the instance are left in place. Names matched by `kestra.namespaceFiles.exclude` are skipped. Invoke it from the Explorer context menu on a folder, or from the command palette to open a folder picker.
+
 ## Configuration reference
 
 | Setting | Type | Default | Description |
@@ -105,6 +121,7 @@ To save the current buffer to the instance without starting an execution, run **
 | `kestra.run.output` | string | `panel` | Where to display run output: `panel` (styled webview) or `logs` (native output channel). |
 | `kestra.run.logLevel` | string | `INFO` | Minimum log level streamed during a run. Options: `TRACE`, `DEBUG`, `INFO`, `WARN`, `ERROR`. |
 | `kestra.schema.match-path` | string | — | Regex substring restricting which YAML files receive the Kestra schema. When unset, the schema applies to any file detected as a flow. |
+| `kestra.namespaceFiles.exclude` | array | `.git`, `.vscode`, `.idea`, `node_modules`, `.DS_Store`, `.env`, `.env.*`, `.envrc`, `*.pem`, `*.key`, `*.p8`, `*.pfx`, `*.p12`, `*.crt`, `id_rsa*`, `credentials.json`, `.npmrc`, `.netrc`, `.pypirc` | File and folder names skipped when uploading a multi-selection or syncing a folder to a namespace. Matched per name; a leading or trailing `*` is a wildcard (e.g. `*.pem`, `.env.*`). Edit to add your own patterns or to allow a name the defaults exclude. |
 
 ## Troubleshooting
 
