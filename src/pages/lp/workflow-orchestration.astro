@@ -1,0 +1,25 @@
+---
+/**
+ * Google Ads landing page — variant 1 (ad group: workflow orchestration).
+ *
+ * Intentionally thin: all copy lives in the content object, all markup in the
+ * shared template. Variants 2 and 3 are the same nine lines with a different
+ * import.
+ *
+ * noindex/nofollow and sitemap exclusion: see `~/components/lp/LpLayout.astro`
+ * and the `/lp` filter in `src/pages/sitemap/default.xml.ts`.
+ */
+import LpLayout from "~/components/lp/LpLayout.astro"
+import LpTemplate from "~/components/lp/LpTemplate.astro"
+import variant from "~/contents/lp/workflow-orchestration"
+---
+
+<LpLayout
+    title={variant.meta.title}
+    description={variant.meta.description}
+    ogTitle={variant.meta.ogTitle}
+    variant={variant.slug}
+    canonicalPath={`/lp/${variant.slug}`}
+>
+    <LpTemplate variant={variant} />
+</LpLayout>

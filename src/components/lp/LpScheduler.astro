@@ -1,0 +1,178 @@
+---
+/**
+ * Confirmation-page scheduler.
+ *
+ * DECISION (was left open in the brief as "HubSpot Meetings vs Calendly"):
+ * HubSpot Meetings. Reasons — it is already live on `/demo` via
+ * `~/composables/useMeeting.js`, it routes by company size *and* geography
+ * (T1 + America → Luke, otherwise David; everything else → Connor), the
+ * booking lands on the same HubSpot contact the form just created, and
+ * `*.hubspot.com` / `*.kestra.io` are already allowed in `frame-src`
+ * (`content-security-policy.config.js`). Calendly would need a CSP change, a
+ * second source of truth for routing, and its own contact reconciliation.
+ *
+ * To swap it out later, replace `resolveMeetingUrl()` below — nothing else on
+ * the page depends on the provider.
+ *
+ * The lead's email/company-size come from sessionStorage (written by
+ * `LpDemoForm.vue`), never from the URL: no PII in query strings. A visitor who
+ * reaches this page without that payload still gets a working generic calendar.
+ */
+---
+
+<div class="lp-scheduler" data-lp-scheduler>
+    <div class="lp-scheduler__placeholder" data-lp-scheduler-placeholder>
+        <span>SCHEDULER_EMBED</span>
+    </div>
+</div>
+
+<script>
+    import {
+        ensureMeetingsScriptLoaded,
+        getMeetingUrl,
+        tierFromEmployees,
+    } from "~/composables/useMeeting.js"
+
+    type LpLead = {
+        email?: string
+        company?: string
+        employees?: string
+        variant?: string
+    }
+
+    const readLead = (): LpLead => {
+        try {
+            const raw = sessionStorage.getItem("ka_lp_lead")
+            return raw ? (JSON.parse(raw) as LpLead) : {}
+        } catch {
+            return {}
+        }
+    }
+
+    /** Prefill the booking form so the visitor doesn't retype what we have. */
+    const withContactParams = (base: string, lead: LpLead) => {
+        try {
+            const url = new URL(base, window.location.origin)
+            if (lead.email) url.searchParams.set("email", lead.email.trim())
+            return url.toString()
+        } catch {
+            return base
+        }
+    }
+
+    const resolveMeetingUrl = (lead: LpLead) =>
+        withContactParams(
+            getMeetingUrl(
+                lead.employees ? tierFromEmployees(lead.employees) : undefined,
+            ),
+            lead,
+        )
+
+    /**
+     * PostHog is initialised asynchronously by `cookieconsent.ts` (it fetches
+     * the project token first), so a capture fired on DOMContentLoaded would be
+     * dropped. Poll briefly for the loaded flag, then give up — analytics never
+     * blocks the page.
+     */
+    const capturePostHog = async (event: string, properties: object) => {
+        const posthog = (await import("posthog-js")).default
+        for (let attempt = 0; attempt < 20; attempt++) {
+            if ((posthog as unknown as { __loaded?: boolean }).__loaded) {
+                posthog.capture(event, properties)
+                return
+            }
+            await new Promise((resolve) => setTimeout(resolve, 150))
+        }
+    }
+
+    // Both `astro:page-load` and the readyState fallback below can fire; the
+    // iframe and the confirmation event must be created exactly once.
+    let initialized = false
+
+    const initScheduler = () => {
+        if (initialized) return
+
+        const container = document.querySelector<HTMLElement>(
+            "[data-lp-scheduler]",
+        )
+        if (!container) return
+
+        initialized = true
+
+        const lead = readLead()
+
+        // Conversion confirmation. dataLayer is an array, so pushing before GTM
+        // loads is safe — the event is replayed when the container initialises.
+        window.dataLayer = window.dataLayer || []
+        window.dataLayer.push({
+            event: "demo_request_confirmed",
+            noninteraction: true,
+            lp_variant: lead.variant ?? document.body.dataset.lpVariant ?? "",
+        })
+
+        void capturePostHog("demo_request_confirmed", {
+            lp_variant: lead.variant ?? document.body.dataset.lpVariant ?? "",
+        })
+
+        const iframe = document.createElement("iframe")
+        iframe.src = resolveMeetingUrl(lead)
+        iframe.title = "Book a time with a Kestra engineer"
+        iframe.className = "lp-scheduler__frame"
+        iframe.setAttribute(
+            "sandbox",
+            "allow-same-origin allow-scripts allow-popups allow-forms",
+        )
+        iframe.addEventListener("load", () => {
+            container.querySelector("[data-lp-scheduler-placeholder]")?.remove()
+        })
+
+        container.appendChild(iframe)
+
+        void ensureMeetingsScriptLoaded()
+    }
+
+    document.addEventListener("astro:page-load", initScheduler, { once: true })
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initScheduler, {
+            once: true,
+        })
+    } else {
+        initScheduler()
+    }
+</script>
+
+<style lang="scss">
+    .lp-scheduler {
+        position: relative;
+        margin-top: 2rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        overflow: hidden;
+        background-color: var(--ks-background-primary);
+        min-height: 46rem;
+    }
+
+    .lp-scheduler__placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--ks-background-secondary);
+
+        span {
+            font-family: var(--font-family-jetbrains-mono), monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            color: var(--ks-content-secondary);
+        }
+    }
+
+    :global(.lp-scheduler__frame) {
+        position: relative;
+        width: 100%;
+        min-height: 46rem;
+        border: 0;
+        display: block;
+    }
+</style>
