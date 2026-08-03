@@ -1,10 +1,9 @@
 import posthog from "posthog-js"
 import identify from "~/utils/identify.js"
-import { $fetch } from "~/utils/fetch"
+import { submitHubspotForm } from "~/utils/hubspot"
 import { useGtm } from "@gtm-support/vue-gtm"
 
-const hubSpotUrl =
-    "https://api.hsforms.com/submissions/v3/integration/submit/27220195/433b234f-f3c6-431c-898a-ef699e5525fa"
+const hubSpotFormId = "433b234f-f3c6-431c-898a-ef699e5525fa"
 
 export default function ({ newsletter, valid, message }, e) {
     const gtm = useGtm()
@@ -45,13 +44,7 @@ export default function ({ newsletter, valid, message }, e) {
 
         identify(form.email.value)
 
-        $fetch(hubSpotUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(formData),
-        })
+        submitHubspotForm(hubSpotFormId, formData)
             .then((response) => {
                 valid.value = true
                 message.value = response.inlineMessage || ""

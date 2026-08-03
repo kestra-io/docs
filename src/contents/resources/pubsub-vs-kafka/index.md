@@ -4,7 +4,7 @@ description: "Compare Google Cloud Pub/Sub and Apache Kafka for event streaming 
 metaTitle: "Pub/Sub vs. Kafka: Event Streaming Platform Comparison"
 metaDescription: "Pub/Sub vs. Kafka: Compare architectures, operational models, and use cases to choose the right event streaming platform for your data pipelines."
 tag: data
-date: 2026-07-07
+date: 2026-07-15
 slug: "pubsub-vs-kafka"
 faq:
   - question: "What is the core difference between Kafka and Pub/Sub?"

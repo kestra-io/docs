@@ -4,7 +4,7 @@ description: "Explore Delta Lake, an open-source storage layer that brings ACID 
 metaTitle: "Delta Lake: ACID, Lakehouse, Orchestration"
 metaDescription: "Delta Lake provides ACID transactions, schema enforcement, and time travel for lakehouses. Understand its architecture and how Kestra orchestrates it."
 tag: "data"
-date: 2026-07-07
+date: 2026-07-10
 slug: "delta-lake"
 faq:
   - question: "What is Delta Lake and why is it important?"

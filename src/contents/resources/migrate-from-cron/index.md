@@ -4,7 +4,7 @@ description: "Transitioning from cron to a modern orchestrator can seem daunting
 metaTitle: "Migrate from Cron to Kestra: Step-by-Step Guide"
 metaDescription: "Move off cron jobs without losing your schedules. Translate crontab to Kestra, add retries, observability and backfill — step-by-step migration guide."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-15
 slug: "migrate-from-cron"
 faq:
   - question: "How do I migrate my cron jobs to Kestra?"

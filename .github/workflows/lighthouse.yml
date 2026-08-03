@@ -115,10 +115,18 @@ jobs:
           path: lighthouse-results.json
           retention-days: 30
 
+      # Per-page LHR JSONs — view any at https://googlechrome.github.io/lighthouse/viewer/.
+      - name: Upload LHR reports artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: lhr-reports
+          path: lhr-reports/
+          retention-days: 30
+
       - name: Comment on PR
         if: github.event_name == 'pull_request'
         uses: kestra-io/actions/actions/comment-update@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          title: "## 🔦 Lighthouse Benchmark"
+          title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}

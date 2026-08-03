@@ -4,7 +4,7 @@ description: "Dedicated orchestration tools elevate Airbyte's data integration c
 metaTitle: "Airbyte Orchestration: Guide to Automated Data Workflows"
 metaDescription: "Orchestrate Airbyte syncs with Kestra for automated data pipelines. Learn benefits, examples, and best practices to streamline data integration workflows."
 tag: "data"
-date: 2026-07-07
+date: 2026-07-14
 slug: "airbyte-orchestration"
 faq:
   - question: "What is Airbyte orchestration used for?"

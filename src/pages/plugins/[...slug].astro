@@ -30,6 +30,8 @@ import {
 import { matchesSubGroup } from "~/utils/plugins/subgroupMatcher"
 import { parseRequestedVersion, resolveVersionState } from "~/utils/plugins/versionState"
 
+import pluginGridUrl from "~/components/plugins/assets/plugin-grid.svg?url"
+
 const rawSplitRouteSlug = Astro.params.slug?.split("/") ?? []
 let pathname = new URL(Astro.request.url).pathname
 
@@ -337,6 +339,17 @@ const pluginSchema = pluginType
 
 <Layout title={headingTitle} description={headingDescription} image={ogImage}>
     <Fragment slot="head">
+        {/* This decorative background on .plugin-details is the page's LCP
+            image, but as a CSS background it is only discovered once the
+            render-blocking stylesheet is parsed (~1.6s load delay on mobile).
+            Preloading it from the HTML lets it download in parallel with the
+            CSS so the LCP paint isn't waiting on it. */}
+        <link
+            rel="preload"
+            as="image"
+            href={pluginGridUrl}
+            fetchpriority="high"
+        />
         <script
             is:inline
             type="application/ld+json"
