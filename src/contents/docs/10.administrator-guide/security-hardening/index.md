@@ -81,27 +81,6 @@ The `/env` endpoint is enabled by default and can expose configuration propertie
 
 See [Kestra endpoints](../03.monitoring/index.md#kestra-endpoints) for the full list of what is exposed on the management port.
 
-## ZIP bomb protection
-
-Kestra guards against ZIP bomb attacks on the two endpoints that accept user-uploaded ZIP archives: flow import and namespace file upload. The protection is opt-in and disabled by default.
-
-Enable it under `kestra.security.zip-bomb-protection` in your `application.yml`:
-
-```yaml
-kestra:
-  security:
-    zip-bomb-protection:
-      enabled: true
-      max-number-of-entries: <integer>   # maximum number of entries in the archive
-      max-entry-size: <bytes>            # maximum uncompressed size of a single entry
-```
-
-Both `max-number-of-entries` and `max-entry-size` are required when `enabled: true`. Set them based on the largest legitimate ZIP archives your users are expected to upload. When a ZIP exceeds either limit, the request is rejected with an HTTP 422 error.
-
-:::alert{type="info"}
-The protection applies only to user-uploaded ZIPs (flow import and namespace file upload). Internal Kestra archives used for task execution caching are not affected.
-:::
-
 ## Documentation and audit
 
 - User guidance: update onboarding materials and runbooks to highlight metadata-blocking best practices when deploying a new Kestra environment.
