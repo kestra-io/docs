@@ -42,7 +42,7 @@ tasks:
         provider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
           apiKey: "{{ secret('GEMINI_API_KEY') }}"
-          modelName: gemini-2.5-flash
+          modelName: gemini-3.5-flash-lite
         messages:
           - type: USER
             content: Which features were released in Kestra 0.24?
@@ -52,7 +52,7 @@ tasks:
         chatProvider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
           apiKey: "{{ secret('GEMINI_API_KEY') }}"
-          modelName: gemini-2.5-flash
+          modelName: gemini-3.5-flash-lite
         embeddingProvider:
           type: io.kestra.plugin.ai.provider.GoogleGemini
           apiKey: "{{ secret('GEMINI_API_KEY') }}"
@@ -86,7 +86,7 @@ tasks:
     type: io.kestra.plugin.ai.rag.ChatCompletion
     chatProvider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
       apiKey: "{{ secret('GEMINI_API_KEY') }}"
     contentRetrievers:
       - type: io.kestra.plugin.ai.retriever.TavilyWebSearch
