@@ -1,12 +1,7 @@
 <template>
     <div class="resource-hero">
-        <h1>All Orchestration Resources</h1>
-        <p class="subtitle">
-            Discover a comprehensive index of in-depth guides, whitepapers,
-            and playbooks spanning data orchestration, AI workflows, business
-            operations and infrastructure automation — built for engineers and
-            platform teams shipping production workflows at every stage.
-        </p>
+        <h1>{{ heading }}</h1>
+        <p class="subtitle">{{ subtitle }}</p>
         <label class="search">
             <Magnify class="search-icon" />
             <input
@@ -22,6 +17,8 @@
 <script setup lang="ts">
     import { ref, watch, onMounted } from "vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
+
+    defineProps<{ heading: string; subtitle: string }>()
 
     const query = ref("")
 
