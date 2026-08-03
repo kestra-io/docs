@@ -3,9 +3,9 @@
         <h1>All Orchestration Resources</h1>
         <p class="subtitle">
             Discover a comprehensive index of in-depth guides, whitepapers,
-            and playbooks spanning data orchestration, AI workflows, and
-            infrastructure automation — built for engineers and platform
-            teams shipping production workflows at every stage.
+            and playbooks spanning data orchestration, AI workflows, business
+            operations and infrastructure automation — built for engineers and
+            platform teams shipping production workflows at every stage.
         </p>
         <label class="search">
             <Magnify class="search-icon" />

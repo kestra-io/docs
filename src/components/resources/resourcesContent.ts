@@ -7,9 +7,10 @@ type Section = {
 
 const resourceSections: Record<string, Section> = {
     [ALL_RESOURCES]: {
-        metaTitle: "Kestra Resources: Guides for Data, AI & Infrastructure",
+        metaTitle:
+            "Kestra Resources: Guides for Data, AI, Infrastructure & Business Workflows",
         metaDescription:
-            "Browse Kestra's orchestration resources — hands-on guides, listicles, and playbooks for data engineering, AI workflows, and infrastructure automation.",
+            "Browse Kestra's orchestration resources — guides, listicles, and playbooks for data engineering, AI workflows, business operations and infrastructure automation.",
     },
     infrastructure: {
         metaTitle:
