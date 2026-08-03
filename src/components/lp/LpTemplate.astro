@@ -1,0 +1,91 @@
+---
+/**
+ * The one template all three Google Ads landing pages render through.
+ *
+ * A variant page is nine lines of glue: import its content object, pass it here.
+ * Anything that differs between variants lives in `~/contents/lp/<slug>.ts`;
+ * anything shared lives in `~/contents/lp/shared.ts`. Nothing page-specific
+ * belongs in this file — that is what keeps the three pages comparable when the
+ * campaign data comes back.
+ *
+ * Section order is fixed and deliberate: what it is → what it costs you today →
+ * what we do about it → how it works → is it enterprise-safe → proof → convert.
+ */
+import type { LpVariant } from "~/contents/lp/types"
+import { LP_SHARED } from "~/contents/lp/shared"
+import LpHero from "./LpHero.astro"
+import LpTrust from "./LpTrust.astro"
+import LpProblem from "./LpProblem.astro"
+import LpBenefits from "./LpBenefits.astro"
+import LpHowItWorks from "./LpHowItWorks.astro"
+import LpEnterprise from "./LpEnterprise.astro"
+import LpProof from "./LpProof.astro"
+import LpFinalCta from "./LpFinalCta.astro"
+import LpFaq from "./LpFaq.astro"
+import LpFooter from "./LpFooter.astro"
+import LpStickyCta from "./LpStickyCta.astro"
+
+interface Props {
+    variant: LpVariant
+}
+
+const { variant } = Astro.props
+
+const proof = { ...LP_SHARED.proof, ...(variant.proof ?? {}) }
+const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
+---
+
+<main>
+    <!-- 1 -->
+    <LpHero
+        h1={variant.hero.h1}
+        sub={variant.hero.sub}
+        cta={LP_SHARED.hero.cta}
+        microcopy={LP_SHARED.hero.microcopy}
+        imagePlaceholderLabel={LP_SHARED.hero.imagePlaceholderLabel}
+    />
+
+    <!-- 2 -->
+    <LpTrust line={LP_SHARED.trust.line} logos={variant.logos} />
+
+    <!-- 3 -->
+    <LpProblem header={variant.problem.header} pains={variant.problem.pains} />
+
+    <!-- 4 -->
+    <LpBenefits
+        header={variant.benefits.header}
+        cards={variant.benefits.cards}
+    />
+
+    <!-- 5 -->
+    <LpHowItWorks
+        header={LP_SHARED.howItWorks.header}
+        body={LP_SHARED.howItWorks.body}
+        yaml={variant.yaml}
+    />
+
+    <!-- 6 -->
+    <LpEnterprise
+        header={LP_SHARED.enterprise.header}
+        intro={LP_SHARED.enterprise.intro}
+        items={LP_SHARED.enterprise.items}
+    />
+
+    <!-- 6b — opt-in, off unless the variant enables it -->
+    {showFaq && <LpFaq items={variant.faq!.items} />}
+
+    <!-- 7 -->
+    <LpProof header={LP_SHARED.proof.header} proof={proof} />
+
+    <!-- 8 -->
+    <LpFinalCta
+        header={LP_SHARED.finalCta.header}
+        sub={LP_SHARED.finalCta.sub}
+        variant={variant.slug}
+    />
+</main>
+
+<!-- 9 -->
+<LpFooter stickyOffset />
+
+<LpStickyCta />

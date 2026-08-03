@@ -1,0 +1,74 @@
+---
+/**
+ * Section 4 — Benefits. The loud section: filled background, three equal-height
+ * cards, each a bold lead phrase plus supporting text.
+ */
+import type { LpBenefitCard } from "~/contents/lp/types"
+
+interface Props {
+    header: string
+    cards: readonly LpBenefitCard[]
+}
+
+const { header, cards } = Astro.props
+---
+
+<section class="lp-section lp-section--muted lp-benefits">
+    <div class="lp-container">
+        <h2 class="lp-h2 lp-benefits__header">{header}</h2>
+
+        <ul class="lp-benefits__grid">
+            {
+                cards.map((card) => (
+                    <li class="lp-benefits__card">
+                        <p class="lp-benefits__lead">{card.lead}</p>
+                        <p class="lp-benefits__body">{card.body}</p>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-benefits__header {
+        max-width: 40rem;
+    }
+
+    .lp-benefits__grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+            /* Equal heights: stretch is the grid default, spelled out because
+               the cards' content lengths differ per variant. */
+            align-items: stretch;
+        }
+    }
+
+    .lp-benefits__card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+        height: 100%;
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+    }
+
+    .lp-benefits__lead {
+        font-size: 1.0625rem;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .lp-benefits__body {
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+</style>

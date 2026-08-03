@@ -1,0 +1,87 @@
+---
+/**
+ * Optional objection-handling accordion (not part of the 9-section spec — it
+ * renders only when a variant sets `faq.enabled = true`).
+ *
+ * Built on native `<details>`: no JavaScript, keyboard-accessible for free, and
+ * open-by-default for the first item so the section reads as content rather
+ * than a wall of closed rows. No FAQPage schema — the page is noindex, so
+ * structured data here would be pointless.
+ */
+import type { LpFaqItem } from "~/contents/lp/types"
+
+interface Props {
+    items: readonly LpFaqItem[]
+}
+
+const { items } = Astro.props
+---
+
+<section class="lp-section lp-faq">
+    <div class="lp-container">
+        <h2 class="lp-h2">Questions we get on every call</h2>
+
+        <div class="lp-faq__list">
+            {
+                items.map((item, index) => (
+                    <details class="lp-faq__item" open={index === 0}>
+                        <summary class="lp-faq__question">
+                            {item.question}
+                        </summary>
+                        <p class="lp-faq__answer">{item.answer}</p>
+                    </details>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-faq__list {
+        margin-top: 1.75rem;
+        max-width: 48rem;
+        border-top: 1px solid var(--ks-border-primary);
+    }
+
+    .lp-faq__item {
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .lp-faq__question {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 3.25rem;
+        padding-block: 0.875rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.4;
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &::after {
+            content: "+";
+            flex: 0 0 auto;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--ks-content-tertiary);
+        }
+    }
+
+    .lp-faq__item[open] .lp-faq__question::after {
+        content: "–";
+    }
+
+    .lp-faq__answer {
+        padding-bottom: 1.125rem;
+        max-width: 42rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+</style>

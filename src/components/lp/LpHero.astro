@@ -1,0 +1,128 @@
+---
+/**
+ * Section 1 — Hero. No eyebrow, one H1, one sub, one CTA.
+ *
+ * Mobile-first fold budget at 375×667: brand mark (~56px) + H1 (32px type,
+ * 3 lines) + sub + CTA button (52px) + microcopy all sit above the fold; the
+ * product visual comes *after* the CTA in the DOM, so it can never push the
+ * button below it. On ≥lg the visual moves to the right column.
+ */
+import { LP_FORM_ANCHOR } from "~/contents/lp/shared"
+
+interface Props {
+    h1: string
+    sub: string
+    cta: string
+    microcopy: string
+    imagePlaceholderLabel: string
+}
+
+const { h1, sub, cta, microcopy, imagePlaceholderLabel } = Astro.props
+---
+
+<section class="lp-hero">
+    <div class="lp-container lp-hero__grid">
+        <div class="lp-hero__copy">
+            <h1 class="lp-hero__title">{h1}</h1>
+            <p class="lp-hero__sub">{sub}</p>
+
+            <div class="lp-hero__cta">
+                <a
+                    class="lp-btn lp-btn--primary"
+                    href={`#${LP_FORM_ANCHOR}`}
+                    data-lp-cta="hero"
+                >
+                    {cta}
+                </a>
+                <p class="lp-hero__microcopy">{microcopy}</p>
+            </div>
+        </div>
+
+        {
+            /*
+          Product visual. Placeholder until the topology screenshot is cleared —
+          it holds the exact 16/10 box the image will occupy, so swapping it in
+          costs no layout shift (CLS) and no re-layout of the copy column.
+          Replace with:
+            <Image src={heroImage} alt="…" loading="eager" fetchpriority="high"
+                   widths={[560, 760, 1120]} class="lp-hero__image" />
+          and add the matching <link rel="preload"> in LpLayout.astro.
+        */
+        }
+        <div class="lp-hero__visual">
+            <div class="lp-hero__placeholder" aria-hidden="true">
+                <span>{imagePlaceholderLabel}</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-hero {
+        padding-block: 1.5rem 2.5rem;
+
+        @include media-breakpoint-up(lg) {
+            padding-block: 3rem 4rem;
+        }
+    }
+
+    .lp-hero__grid {
+        display: grid;
+        gap: 2.5rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            align-items: center;
+            gap: 3.5rem;
+        }
+    }
+
+    .lp-hero__title {
+        font-size: clamp(2rem, 4.6vw, 3.25rem);
+        line-height: 1.08;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+    }
+
+    .lp-hero__sub {
+        margin-top: 1.125rem;
+        max-width: 34rem;
+        color: var(--ks-content-secondary);
+        font-size: 1.0625rem;
+
+        @include media-breakpoint-up(md) {
+            font-size: 1.1875rem;
+        }
+    }
+
+    .lp-hero__cta {
+        margin-top: 1.75rem;
+    }
+
+    .lp-hero__microcopy {
+        margin-top: 0.75rem;
+        max-width: 26rem;
+        /* Secondary, not tertiary: this line is part of the offer, and it has
+           to clear WCAG AA on white (see the note in lp.scss). */
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+    }
+
+    .lp-hero__placeholder {
+        aspect-ratio: 16 / 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-secondary);
+
+        span {
+            font-family: var(--font-family-jetbrains-mono), monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.06em;
+            color: var(--ks-content-secondary);
+        }
+    }
+</style>

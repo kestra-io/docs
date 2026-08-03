@@ -1,0 +1,76 @@
+---
+/**
+ * Section 2 — Trust line.
+ *
+ * One centred muted sentence. The logo bar below it is feature-flagged off
+ * until Gabe clears logos for US paid use. It is rendered *after* the line and
+ * has a fixed row height, so enabling it changes nothing above it and adds a
+ * predictable amount of space rather than a variable, image-dependent one.
+ */
+import type { LpLogo } from "~/contents/lp/types"
+
+interface Props {
+    line: string
+    logos?: { enabled: boolean; items: LpLogo[] }
+}
+
+const { line, logos } = Astro.props
+const showLogos = Boolean(logos?.enabled && logos.items.length)
+---
+
+<section class="lp-trust">
+    <div class="lp-container">
+        <p class="lp-trust__line">{line}</p>
+
+        {
+            showLogos && (
+                <ul class="lp-trust__logos">
+                    {logos!.items.map((logo) => (
+                        <li class="lp-trust__logo">
+                            <span role="img" aria-label={logo.name}>
+                                <Fragment set:html={logo.svg} />
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+            )
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-trust {
+        padding-block: 0.5rem 1.5rem;
+
+        @include media-breakpoint-up(md) {
+            padding-block: 0.5rem 2rem;
+        }
+    }
+
+    .lp-trust__line {
+        margin-inline: auto;
+        max-width: 44rem;
+        text-align: center;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+    }
+
+    .lp-trust__logos {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem 2.5rem;
+        margin-top: 1.5rem;
+        /* Fixed row height keeps the section's height independent of the
+           individual logo aspect ratios. */
+        min-height: 2.5rem;
+    }
+
+    .lp-trust__logo :global(svg) {
+        height: 1.5rem;
+        width: auto;
+        opacity: 0.6;
+        filter: grayscale(1);
+    }
+</style>

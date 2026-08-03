@@ -1,0 +1,62 @@
+---
+/**
+ * Section 8 — Final CTA + embedded form. The form is a Vue island
+ * (`client:load`) because it is the conversion point: it must be interactive as
+ * early as possible, and it is the only JavaScript this page needs.
+ *
+ * `id` is the anchor every CTA on the page points at (hero button, mobile
+ * sticky bar), and the element the sticky bar watches to hide itself.
+ */
+import LpDemoForm from "./LpDemoForm.vue"
+import { LP_FORM_ANCHOR } from "~/contents/lp/shared"
+
+interface Props {
+    header: string
+    sub: string
+    variant: string
+}
+
+const { header, sub, variant } = Astro.props
+---
+
+<section id={LP_FORM_ANCHOR} class="lp-section lp-section--muted lp-final">
+    <div class="lp-container lp-final__grid">
+        <div class="lp-final__copy">
+            <h2 class="lp-h2">{header}</h2>
+            <p class="lp-lead lp-final__sub">{sub}</p>
+        </div>
+
+        <div class="lp-final__form">
+            <LpDemoForm variant={variant} client:load />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-final__grid {
+        display: grid;
+        gap: 2rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+            align-items: center;
+            gap: 4rem;
+        }
+    }
+
+    .lp-final__sub {
+        margin-top: 1rem;
+        max-width: 32rem;
+    }
+
+    .lp-final__form {
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+
+        @include media-breakpoint-up(md) {
+            padding: 2rem;
+        }
+    }
+</style>
