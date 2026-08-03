@@ -80,9 +80,9 @@ JobRunr is an open-source scheduler built for the Java ecosystem, designed aroun
 
 It offers a clean dashboard for monitoring jobs and supports persistent storage backends like SQL databases or NoSQL stores. Alongside fire-and-forget jobs it handles delayed jobs, recurring cron jobs, and carbon-aware scheduling that shifts flexible workloads to windows when the electricity grid is cleaner.
 
-It is a background job library rather than a general-purpose orchestration platform, and it does not aim to coordinate workflows across heterogeneous systems and languages. Within the JVM it does handle multi-step processes, through job chaining, atomic batches, and durable executions that checkpoint each completed step so a retried job resumes where it left off rather than restarting from the top.
+It is a background job library rather than a general-purpose orchestration platform, and it does not aim to coordinate workflows across heterogeneous systems and languages. Within the JVM it does handle multi-step processes: the open-source core provides durable executions, which checkpoint each completed step so a retried job resumes where it left off rather than restarting from the top, while job chaining and atomic batches are part of the paid Pro edition.
 
-**Best for:** Java and Kotlin applications that need a modern, distributed library for scheduling and executing background jobs, from small services through to enterprise deployments such as Decathlon's inventory reconciliation across 1700 stores.
+**Best for:** Java and Kotlin applications that need a modern, distributed library for scheduling and executing background jobs, from small services through to enterprise-scale deployments.
 
 ## 5. Quartz Scheduler: Lightweight Java Job Scheduling
 
