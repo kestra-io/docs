@@ -101,7 +101,7 @@ kestra:
 
 ## Management endpoint access
 
-Kestra exposes internal endpoints on a separate management port (default `8081`). These include health checks, runtime log level changes (`/loggers`), metrics (`/metrics`), and an environment inspection endpoint (`/env`) that can expose configuration values. This port is unauthenticated by default.
+Kestra exposes internal endpoints on a separate management port (default `8081`). These include health checks, metrics (`/metrics`), and runtime log level inspection (`/loggers`). This port is unauthenticated by default.
 
 The primary protection is network isolation: do not expose port `8081` outside the internal network. Firewall or security-group rules should restrict access to the management port to trusted internal hosts only (monitoring agents, load balancer health checkers, operations tooling).
 
@@ -117,18 +117,6 @@ endpoints:
 ```
 
 When `basic-auth` credentials are present, Kestra's management endpoint filter requires Basic Auth on every request to that port.
-
-You can also disable individual endpoints you do not need:
-
-```yaml
-endpoints:
-  env:
-    enabled: false   # disables /env, which can expose config values
-```
-
-:::alert{type="warning"}
-The `/env` endpoint is enabled by default and can expose configuration properties including secrets passed as environment variables. Disable it or restrict the management port at the network layer before deploying to production.
-:::
 
 See [Kestra endpoints](../03.monitoring/index.md#kestra-endpoints) for the full list of what is exposed on the management port.
 
