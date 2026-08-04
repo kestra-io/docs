@@ -31,6 +31,7 @@ Core primitives for building flows have been updated and extended.
 - **Reusable Inputs (EE)** — define typed input schemas at namespace scope and reference them across flows. [Docs](../../05.workflow-components/05.inputs/index.md)
 - **Quotas** — cap executions per time window at flow, namespace, or tenant scope. [Docs](../../05.workflow-components/21.quotas/index.md)
 - **`subflow()` Pebble function** — invoke a subflow and retrieve its outputs inline in an expression. [Docs](../../expressions/04.functions/04.workflow/index.mdx)
+- **Draft flows** — save flows as drafts to stage changes without affecting running executions; triggers and manual runs continue using the last published revision until you publish. [Docs](../../06.concepts/03.revision/index.md#draft-revisions)
 - **Execution labels from triggers** — triggers can attach labels to the executions they create. [Docs](../../05.workflow-components/07.triggers/index.mdx)
 - **Input enhancements** — SELECT/MULTISELECT support `{label, value}` pairs; JSON inputs accept `jsonSchema` for pre-execution validation. [Docs](../../05.workflow-components/05.inputs/index.md)
 - **Date helper functions** — new Pebble functions for schedule logic: `isWeekend()`, `isPublicHoliday()`, `isDayWeekInMonth()`, `isLastWorkingDay()`. [Docs](../../expressions/04.functions/06.dates/index.mdx)

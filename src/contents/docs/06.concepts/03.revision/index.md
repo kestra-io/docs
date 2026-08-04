@@ -17,3 +17,15 @@ Flows are versioned by default. Whenever you make any changes to your flows, a n
 The **Revisions** tab of a flow lists all its revisions. Compare two revisions side-by-side or line-by-line, and roll back to a previous revision if needed.
 
 ![revisions](./revisions.png)
+
+## Draft revisions
+
+When you click **Save as draft** in the flow editor, Kestra saves your changes as a draft revision rather than publishing them immediately.
+
+:::alert{type="warning"}
+Executions do not run against a draft revision. If the latest revision of a flow is a draft, any execution — whether triggered manually, by a schedule, or by an event — will run against the last published revision instead. A warning banner in the run panel makes this explicit.
+:::
+
+To make your latest changes active, click **Execute** on the flow — the run panel displays a draft warning banner with a **Publish** button that promotes the draft to a published revision.
+
+Use **Save as draft** when you want to stage changes without affecting running executions — for example, while iterating on a flow that is already in production.

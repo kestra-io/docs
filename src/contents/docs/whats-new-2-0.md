@@ -59,6 +59,10 @@ Trigger `conditions` blocks are now written as `when`. The [trigger redesign mig
 
 The new [`subflow()`](./expressions/04.functions/04.workflow/index.mdx) Pebble function lets you invoke a subflow and retrieve its outputs inline within an expression, without a dedicated subflow task.
 
+### Draft flows
+
+The flow editor now supports [saving flows as drafts](./06.concepts/03.revision/index.md#draft-revisions). Use **Save as draft** to stage changes without affecting running executions — any trigger or manual run continues to use the last published revision until you explicitly publish. This lets you iterate on a flow that is already in production without disrupting live executions. When you're ready, click **Publish** in the run panel's draft warning banner to make the draft active.
+
 ### Execution labels from triggers
 
 [Triggers](./05.workflow-components/07.triggers/index.mdx) can now attach labels directly to the executions they create, making it easier to filter and group executions in dashboards.

@@ -152,6 +152,8 @@ Every change to a flow creates a new revision. Kestra automatically manages revi
 
 You can access old revisions inside the **Revisions** tab of the **Flows** page.
 
+Use **Save as draft** to stage changes without affecting running executions. Draft revisions are not executed — any trigger or manual run will fall back to the last published revision until you publish the draft. See [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions) for details.
+
 ## Triggers
 
 [Triggers](../07.triggers) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, message in a broker, etc.).
