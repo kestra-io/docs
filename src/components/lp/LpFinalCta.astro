@@ -7,16 +7,19 @@
  * `id` is the anchor every CTA on the page points at (hero button, mobile
  * sticky bar), and the element the sticky bar watches to hide itself.
  */
+import { Icon } from "astro-icon/components"
 import LpDemoForm from "./LpDemoForm.vue"
 import { LP_FORM_ANCHOR } from "~/contents/lp/shared"
 
 interface Props {
     header: string
     sub: string
+    /** What the visitor gets on the call — fills the column beside the form. */
+    agenda: readonly string[]
     variant: string
 }
 
-const { header, sub, variant } = Astro.props
+const { header, sub, agenda, variant } = Astro.props
 ---
 
 <section id={LP_FORM_ANCHOR} class="lp-section lp-section--muted lp-final">
@@ -24,6 +27,21 @@ const { header, sub, variant } = Astro.props
         <div class="lp-final__copy">
             <h2 class="lp-h2">{header}</h2>
             <p class="lp-lead lp-final__sub">{sub}</p>
+
+            <ul class="lp-final__agenda">
+                {
+                    agenda.map((item) => (
+                        <li>
+                            <Icon
+                                name="mdi:check"
+                                class="lp-final__check"
+                                aria-hidden="true"
+                            />
+                            <span>{item}</span>
+                        </li>
+                    ))
+                }
+            </ul>
         </div>
 
         <div class="lp-final__form">
@@ -47,6 +65,29 @@ const { header, sub, variant } = Astro.props
     .lp-final__sub {
         margin-top: 1rem;
         max-width: 32rem;
+    }
+
+    .lp-final__agenda {
+        display: grid;
+        gap: 0.75rem;
+        margin-top: 1.75rem;
+        max-width: 30rem;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+    }
+
+    .lp-final__check {
+        flex: 0 0 auto;
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-top: 0.15rem;
+        color: var(--ks-content-color-highlight);
     }
 
     .lp-final__form {

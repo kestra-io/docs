@@ -145,11 +145,11 @@ triggers:
      * call corpus (self-hosted ×57 orgs, SSO/RBAC ×55, Kubernetes ×4,
      * lock-in ×4, one-platform ×4 — `voc-lp-enrichment.md` §5.1).
      *
-     * OFF by default: the 9-section spec in Brief 1/3 does not include it.
-     * Flip `enabled: true` to render it between Enterprise-grade and Proof.
+     * ON: the page needs the words, and these are the five things every call
+     * opens with. Set `enabled: false` to drop the section entirely.
      */
     faq: {
-        enabled: false,
+        enabled: true,
         items: [
             {
                 question:
@@ -173,6 +173,22 @@ triggers:
                 question:
                     "Can one platform run data, infra, and business workflows — or do we end up with two orchestrators?",
                 answer: "One engine covers all three, as in the flow above.",
+            },
+            /**
+             * Pricing opacity is the single most frequent friction in the call
+             * corpus (×70 orgs: "there's no pricing online", "just give me a
+             * ballpark"), and the VoC pack recommends addressing the *model*
+             * rather than staying silent. No figure appears here, so the page
+             * still carries no pricing — but the question stops being the reason
+             * someone bounces, and it pre-qualifies the ones who book.
+             *
+             * Only claims that are already true on /pricing: the open-source
+             * edition is free and self-hosted, and the Enterprise edition is
+             * quoted. Do not add a model description we cannot source.
+             */
+            {
+                question: "Why isn't there pricing on this page?",
+                answer: "The open-source edition is free and self-hosted, with no commercial conversation attached. For the Enterprise edition we'll walk you through the model on the call, against the deployment you actually need rather than a generic tier.",
             },
         ],
     },

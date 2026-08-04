@@ -1,0 +1,75 @@
+---
+/**
+ * Mid-page conversion prompt, placed after the proof section.
+ *
+ * Still exactly one CTA on the page: same label, same anchor, same form. The
+ * brief asks for the CTA "above the fold and repeated", and the benchmark LP in
+ * this category repeats it after every block — a visitor convinced by the
+ * customer evidence should not have to scroll past four more sections to act.
+ */
+import { LP_FORM_ANCHOR, LP_CTA_LABEL } from "~/contents/lp/shared"
+
+interface Props {
+    header: string
+    body: string
+}
+
+const { header, body } = Astro.props
+---
+
+<section class="lp-ctaband">
+    <div class="lp-container lp-ctaband__inner">
+        <div>
+            <p class="lp-ctaband__header">{header}</p>
+            <p class="lp-ctaband__body">{body}</p>
+        </div>
+        <a
+            class="lp-btn lp-btn--primary lp-ctaband__btn"
+            href={`#${LP_FORM_ANCHOR}`}
+            data-lp-cta="band"
+        >
+            {LP_CTA_LABEL}
+        </a>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-ctaband {
+        padding-block: 0 var(--lp-section-y);
+    }
+
+    .lp-ctaband__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-secondary);
+
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 1.75rem 2rem;
+        }
+    }
+
+    .lp-ctaband__header {
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .lp-ctaband__body {
+        margin-top: 0.375rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+    }
+
+    .lp-ctaband__btn {
+        flex: 0 0 auto;
+    }
+</style>

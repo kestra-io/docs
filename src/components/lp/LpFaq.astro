@@ -11,15 +11,16 @@
 import type { LpFaqItem } from "~/contents/lp/types"
 
 interface Props {
+    header: string
     items: readonly LpFaqItem[]
 }
 
-const { items } = Astro.props
+const { header, items } = Astro.props
 ---
 
 <section class="lp-section lp-faq">
     <div class="lp-container">
-        <h2 class="lp-h2">Questions we get on every call</h2>
+        <h2 class="lp-h2">{header}</h2>
 
         <div class="lp-faq__list">
             {

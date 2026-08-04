@@ -26,29 +26,48 @@ export interface LpBenefitCard {
     body: string
 }
 
-export interface LpProofCase {
-    /** Metric headline, e.g. "$3M saved over 5 years". */
-    metric: string
-    /** Two-line summary under the metric. */
-    summary: string
-    quote: string
-    /** Anonymized attribution — never a client name until Gabe clears it. */
-    attribution: string
-}
-
-export interface LpProofStat {
+export interface LpKpi {
+    /** Published figure, e.g. "< 3 Months". */
     value: string
     label: string
 }
 
-export interface LpProof {
+export interface LpProofCase {
+    /** Key into the logo map in `LpProof.astro`. */
+    logo: string
+    /** Company or, where the story is published anonymously, its description. */
+    company: string
+    /** One line of context: what domain this proves. */
+    context: string
+    kpis: [LpKpi, LpKpi, LpKpi]
+    quote: string
+    attribution: string
     /**
-     * Which state renders. `case` = quote card (default), `stats` = 3-stat row.
-     * Both states are built; this flag picks one without a code change.
+     * Where this exact wording is already published on kestra.io. Every figure
+     * and quote on the LP must trace to a live page — that is what makes it a
+     * defensible claim rather than a number we invented. Not rendered.
      */
-    state: "case" | "stats"
-    case: LpProofCase
-    stats: LpProofStat[]
+    source: string
+}
+
+export interface LpProof {
+    header: string
+    intro: string
+    cases: LpProofCase[]
+}
+
+export interface LpUseCase {
+    icon: string
+    title: string
+    /** Readonly: the shared content object is declared `as const`. */
+    items: readonly string[]
+}
+
+export interface LpAdoptionStep {
+    /** Short time marker, e.g. "Week one". */
+    when: string
+    title: string
+    body: string
 }
 
 export interface LpFaqItem {
@@ -102,7 +121,7 @@ export interface LpVariant {
     }
     /** YAML sample rendered in section 5. Syntax-highlighted, never an image. */
     yaml: string
-    /** Per-variant override of the shared proof placeholders. */
+    /** Per-variant override of the shared proof block. */
     proof?: Partial<LpProof>
     /**
      * Objection-handling accordion. NOT part of the 9-section spec, so it is

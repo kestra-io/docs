@@ -8,8 +8,16 @@
  * belongs in this file — that is what keeps the three pages comparable when the
  * campaign data comes back.
  *
- * Section order is fixed and deliberate: what it is → what it costs you today →
- * what we do about it → how it works → is it enterprise-safe → proof → convert.
+ * Order: what it is → what it costs you today → what we do about it → how it
+ * works → what people run on it → who already runs it → is it enterprise-safe →
+ * how you get there → what you'll still ask → convert.
+ *
+ * Two departures from the nine sections in Brief 1/3, both to fix a page that
+ * was too thin to hold a Quality Score:
+ * - Proof now comes *before* Enterprise-grade, which is the order the master
+ *   brief asks for ("what it replaces/solves → proof → enterprise-grade → CTA").
+ * - Three sections were added: what people orchestrate, the adoption path, and
+ *   the FAQ (built earlier, off by default, now on). Plus one repeated CTA band.
  */
 import type { LpVariant } from "~/contents/lp/types"
 import { LP_SHARED } from "~/contents/lp/shared"
@@ -18,10 +26,13 @@ import LpTrust from "./LpTrust.astro"
 import LpProblem from "./LpProblem.astro"
 import LpBenefits from "./LpBenefits.astro"
 import LpHowItWorks from "./LpHowItWorks.astro"
-import LpEnterprise from "./LpEnterprise.astro"
+import LpUseCases from "./LpUseCases.astro"
 import LpProof from "./LpProof.astro"
-import LpFinalCta from "./LpFinalCta.astro"
+import LpCtaBand from "./LpCtaBand.astro"
+import LpEnterprise from "./LpEnterprise.astro"
+import LpAdoption from "./LpAdoption.astro"
 import LpFaq from "./LpFaq.astro"
+import LpFinalCta from "./LpFinalCta.astro"
 import LpFooter from "./LpFooter.astro"
 import LpStickyCta from "./LpStickyCta.astro"
 
@@ -68,27 +79,49 @@ const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
     />
 
     <!-- 6 -->
+    <LpUseCases
+        header={LP_SHARED.useCases.header}
+        intro={LP_SHARED.useCases.intro}
+        columns={LP_SHARED.useCases.columns}
+    />
+
+    <!-- 7 -->
+    <LpProof proof={proof} />
+
+    <!-- 7b — the same CTA, where the evidence just landed -->
+    <LpCtaBand header={LP_SHARED.midCta.header} body={LP_SHARED.midCta.body} />
+
+    <!-- 8 -->
     <LpEnterprise
         header={LP_SHARED.enterprise.header}
         intro={LP_SHARED.enterprise.intro}
         items={LP_SHARED.enterprise.items}
     />
 
-    <!-- 6b — opt-in, off unless the variant enables it -->
-    {showFaq && <LpFaq items={variant.faq!.items} />}
+    <!-- 9 -->
+    <LpAdoption
+        header={LP_SHARED.adoption.header}
+        intro={LP_SHARED.adoption.intro}
+        steps={LP_SHARED.adoption.steps}
+    />
 
-    <!-- 7 -->
-    <LpProof header={LP_SHARED.proof.header} proof={proof} />
+    <!-- 10 — opt-in per variant -->
+    {
+        showFaq && (
+            <LpFaq header={LP_SHARED.faq.header} items={variant.faq!.items} />
+        )
+    }
 
-    <!-- 8 -->
+    <!-- 11 -->
     <LpFinalCta
         header={LP_SHARED.finalCta.header}
         sub={LP_SHARED.finalCta.sub}
+        agenda={LP_SHARED.finalCta.agenda}
         variant={variant.slug}
     />
 </main>
 
-<!-- 9 -->
+<!-- 12 -->
 <LpFooter stickyOffset />
 
 <LpStickyCta />
