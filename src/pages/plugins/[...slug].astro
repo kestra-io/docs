@@ -164,8 +164,11 @@ if (!versionState.version) {
         )
         if (mappedUrl && mappedUrl !== pathname)
             return Astro.redirect(mappedUrl, 301)
-    } catch {
-        // ignore
+    } catch (e) {
+        // Fall through to the render path, which handles a genuinely unknown element. Logged
+        // because this catch silently hid a broken canonicalisation for every plugin: redirectAlias
+        // compared a lowercase page list against a real-cased FQCN, so it always threw here.
+        console.warn(`redirectAlias failed for ${pathname}:`, (e as Error)?.message ?? e)
     }
 }
 
