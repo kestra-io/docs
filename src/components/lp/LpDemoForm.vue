@@ -285,21 +285,28 @@
         }
 
         // ------------------------------------- 5. hand off to /thanks -------
-        // The confirmation page needs the email (to prefill the scheduler) and
-        // the mapped size (to route to the right calendar), and it must not
-        // read them from the URL — no PII in query strings.
+        // Only what the confirmation page actually needs: the mapped size, to
+        // route to the right calendar, and the variant, to label its analytics
+        // event. Neither is personal data.
+        //
+        // The email is deliberately NOT stored. It would let the scheduler
+        // prefill one field, at the cost of parking an address in clear text in
+        // web storage (CodeQL `js/clear-text-storage-of-sensitive-data`) for a
+        // convenience the visitor can cover by typing it once. Don't add it
+        // back without deciding that trade explicitly. Passing it through the
+        // URL instead is worse still — query strings leak into referrers, logs
+        // and analytics.
         try {
             sessionStorage.setItem(
                 "ka_lp_lead",
                 JSON.stringify({
-                    email: emailValue,
-                    company: companyValue,
                     employees: teamSizeOption?.employees ?? "below 100",
                     variant: props.variant,
                 }),
             )
         } catch {
-            /* sessionStorage unavailable — the scheduler just won't prefill */
+            /* sessionStorage unavailable — /thanks falls back to the
+               generic calendar, which still books a meeting */
         }
 
         window.location.assign(`/lp/${props.variant}/thanks`)

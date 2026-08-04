@@ -14,9 +14,11 @@
  * To swap it out later, replace `resolveMeetingUrl()` below — nothing else on
  * the page depends on the provider.
  *
- * The lead's email/company-size come from sessionStorage (written by
- * `LpDemoForm.vue`), never from the URL: no PII in query strings. A visitor who
- * reaches this page without that payload still gets a working generic calendar.
+ * Calendar routing reads the mapped company size from sessionStorage (written
+ * by `LpDemoForm.vue`), never from the URL. No personal data is passed to this
+ * page at all — the visitor types their email once into the booking form, and
+ * HubSpot reconciles it with the contact the form already created. A visitor who
+ * arrives with no payload still gets a working generic calendar.
  */
 ---
 
@@ -34,8 +36,7 @@
     } from "~/composables/useMeeting.js"
 
     type LpLead = {
-        email?: string
-        company?: string
+        /** Mapped `number_of_employees` value — drives the calendar tier. */
         employees?: string
         variant?: string
     }
@@ -49,23 +50,9 @@
         }
     }
 
-    /** Prefill the booking form so the visitor doesn't retype what we have. */
-    const withContactParams = (base: string, lead: LpLead) => {
-        try {
-            const url = new URL(base, window.location.origin)
-            if (lead.email) url.searchParams.set("email", lead.email.trim())
-            return url.toString()
-        } catch {
-            return base
-        }
-    }
-
     const resolveMeetingUrl = (lead: LpLead) =>
-        withContactParams(
-            getMeetingUrl(
-                lead.employees ? tierFromEmployees(lead.employees) : undefined,
-            ),
-            lead,
+        getMeetingUrl(
+            lead.employees ? tierFromEmployees(lead.employees) : undefined,
         )
 
     /**
