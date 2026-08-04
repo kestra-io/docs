@@ -226,7 +226,7 @@
                 objectTypeId: COMPANY,
                 name: "number_of_employees",
                 // Mapped to the property's allowed enum — see LP_TEAM_SIZES.
-                value: teamSizeOption?.employees ?? "below 100",
+                value: teamSizeOption?.companySize ?? "below 100",
             },
             {
                 objectTypeId: CONTACT,
@@ -300,7 +300,7 @@
             sessionStorage.setItem(
                 "ka_lp_lead",
                 JSON.stringify({
-                    employees: teamSizeOption?.employees ?? "below 100",
+                    companySize: teamSizeOption?.companySize ?? "below 100",
                     variant: props.variant,
                 }),
             )

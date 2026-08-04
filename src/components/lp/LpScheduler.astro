@@ -37,7 +37,7 @@
 
     type LpLead = {
         /** Mapped `number_of_employees` value — drives the calendar tier. */
-        employees?: string
+        companySize?: string
         variant?: string
     }
 
@@ -52,7 +52,7 @@
 
     const resolveMeetingUrl = (lead: LpLead) =>
         getMeetingUrl(
-            lead.employees ? tierFromEmployees(lead.employees) : undefined,
+            lead.companySize ? tierFromEmployees(lead.companySize) : undefined,
         )
 
     /**

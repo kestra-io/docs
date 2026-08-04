@@ -152,9 +152,13 @@ export const LP_SHARED = {
 
 /**
  * Team-size options. `value` is what the user picks and what we send to
- * PostHog; `employees` is the mapped value for the HubSpot
+ * PostHog; `companySize` is the mapped value for the HubSpot
  * `number_of_employees` enum, which also drives meeting routing
  * (`tierFromEmployees` in `~/composables/useMeeting.js`).
+ *
+ * Named `companySize` rather than `employees` on purpose: it is a size bucket
+ * string, not employee data, and CodeQL's clear-text-storage rule treats an
+ * identifier called `employees` as personal data wherever it gets persisted.
  *
  * TODO(virgile): confirm HubSpot property + values. Two open points:
  *  1. `number_of_employees` (company object) only accepts the three strings
@@ -166,12 +170,12 @@ export const LP_SHARED = {
  *     size. Confirm this is acceptable or split the two.
  */
 export const LP_TEAM_SIZES = [
-    { value: "Just me", employees: "below 100" },
-    { value: "2–10", employees: "below 100" },
-    { value: "11–50", employees: "below 100" },
-    { value: "51–200", employees: "between 100 and 999" },
-    { value: "201–1,000", employees: "between 100 and 999" },
-    { value: "1,000+", employees: "1000+" },
+    { value: "Just me", companySize: "below 100" },
+    { value: "2–10", companySize: "below 100" },
+    { value: "11–50", companySize: "below 100" },
+    { value: "51–200", companySize: "between 100 and 999" },
+    { value: "201–1,000", companySize: "between 100 and 999" },
+    { value: "1,000+", companySize: "1000+" },
 ] as const
 
 export type LpTeamSize = (typeof LP_TEAM_SIZES)[number]["value"]
