@@ -203,3 +203,5 @@ This setup provides a simple starting point for running Kestra in production on 
 Reach out via [Slack](/slack) if you encounter any issues or if you have any questions regarding deploying Kestra to production.
 
 Make sure to also check the [CI/CD guide](../../version-control-cicd/cicd/index.md) to automate your workflow deployments based on changes in Git.
+
+To manage DigitalOcean resources (Droplets, Kubernetes clusters, managed databases, load balancers, volumes, domains, and firewalls) directly from Kestra flows, see the [DigitalOcean plugin](/plugins/plugin-digitalocean).
