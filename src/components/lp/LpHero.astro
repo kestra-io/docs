@@ -7,6 +7,7 @@
  * product visual comes *after* the CTA in the DOM, so it can never push the
  * button below it. On ≥lg the visual moves to the right column.
  */
+import { Image } from "astro:assets"
 import { LP_FORM_ANCHOR } from "~/contents/lp/shared"
 
 interface Props {
@@ -15,9 +16,21 @@ interface Props {
     cta: string
     microcopy: string
     imagePlaceholderLabel: string
+    image?: ImageMetadata
+    imageAlt?: string
+    imageFit?: "cover" | "contain"
 }
 
-const { h1, sub, cta, microcopy, imagePlaceholderLabel } = Astro.props
+const {
+    h1,
+    sub,
+    cta,
+    microcopy,
+    imagePlaceholderLabel,
+    image,
+    imageAlt,
+    imageFit = "cover",
+} = Astro.props
 ---
 
 <section class="lp-hero">
@@ -40,19 +53,36 @@ const { h1, sub, cta, microcopy, imagePlaceholderLabel } = Astro.props
 
         {
             /*
-          Product visual. Placeholder until the topology screenshot is cleared —
-          it holds the exact 16/10 box the image will occupy, so swapping it in
-          costs no layout shift (CLS) and no re-layout of the copy column.
-          Replace with:
-            <Image src={heroImage} alt="…" loading="eager" fetchpriority="high"
-                   widths={[560, 760, 1120]} class="lp-hero__image" />
-          and add the matching <link rel="preload"> in LpLayout.astro.
+          Product visual. The frame is 16/10 whether it holds the real
+          screenshot or the placeholder, so adding the asset costs no layout
+          shift. A topology screenshot is taller than the frame is wide, so it
+          is anchored to the top and cropped at the bottom: the flow reads as
+          continuing past the frame, which is what the product looks like in a
+          wide viewport anyway.
         */
         }
         <div class="lp-hero__visual">
-            <div class="lp-hero__placeholder" aria-hidden="true">
-                <span>{imagePlaceholderLabel}</span>
-            </div>
+            {
+                image ? (
+                    <Image
+                        class:list={[
+                            "lp-hero__image",
+                            `lp-hero__image--${imageFit}`,
+                        ]}
+                        src={image}
+                        alt={imageAlt ?? ""}
+                        widths={[560, 760, 1120]}
+                        sizes="(min-width: 992px) 45vw, 100vw"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="sync"
+                    />
+                ) : (
+                    <div class="lp-hero__placeholder" aria-hidden="true">
+                        <span>{imagePlaceholderLabel}</span>
+                    </div>
+                )
+            }
         </div>
     </div>
 </section>
@@ -107,6 +137,26 @@ const { h1, sub, cta, microcopy, imagePlaceholderLabel } = Astro.props
            to clear WCAG AA on white (see the note in lp.scss). */
         color: var(--ks-content-secondary);
         font-size: 0.9375rem;
+    }
+
+    .lp-hero__image {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+    }
+
+    /* Tall topology capture: anchored to the top, cropped at the bottom. */
+    .lp-hero__image--cover {
+        object-fit: cover;
+        object-position: top center;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-secondary);
+    }
+
+    /* Full-UI capture: never cropped, and no frame of ours on top of its own. */
+    .lp-hero__image--contain {
+        object-fit: contain;
+        object-position: center;
     }
 
     .lp-hero__placeholder {

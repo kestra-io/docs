@@ -1,4 +1,5 @@
 import type { LpVariant } from "./types"
+import interimHeroUi from "~/assets/landing/infrastructure/infra-ui.png"
 
 /**
  * Variant 1 — broadest intent, the cross-domain "entire stack" wedge.
@@ -39,6 +40,25 @@ const workflowOrchestration: LpVariant = {
     hero: {
         h1: "The Workflow Orchestration Platform for Your Entire Stack",
         sub: "One control plane to run, see, and govern every workflow across data, infrastructure, apps, and business processes. Any language, on your own infrastructure.",
+        /**
+         * INTERIM VISUAL — the existing /infra landing-page screenshot, reused
+         * so the page has a real product visual instead of an empty frame. It
+         * happens to show the two things the copy claims: declarative YAML in a
+         * full UI, and a topology with a parallel group.
+         *
+         * TODO(virgile): swap for the dedicated topology screenshot. Put the
+         * file in `src/components/lp/assets/` and change these two lines —
+         * nothing else. The frame is 16/10 and crops from the top, so a tall
+         * topology capture reads as a flow continuing past the frame; the box is
+         * already the exact size the image will occupy, so the swap shifts
+         * nothing.
+         */
+        image: interimHeroUi,
+        imageAlt:
+            "The Kestra UI: a declarative YAML flow in the editor next to its topology, with two tasks running in parallel inside a group.",
+        // This capture has its own window chrome and a left nav, so it must not
+        // be cropped. Drop this line when swapping in a bare topology capture.
+        imageFit: "contain",
     },
     problem: {
         header: "Orchestration today: five tools, zero visibility",
@@ -97,6 +117,28 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 2 * * *"`,
+
+    /**
+     * Customer logo bar under the trust line — same seven companies, same
+     * order, same asset files as the kestra.io homepage bar, so nothing appears
+     * here that is not already public on the site.
+     *
+     * Note for the record: "already on the homepage" is not automatically the
+     * same permission as "usable in paid advertising" — some logo agreements
+     * separate the two. Worth one confirmation from Gabe before spend starts.
+     */
+    logos: {
+        enabled: true,
+        companies: [
+            "xiaomi",
+            "bloomberg",
+            "amdocs",
+            "fila",
+            "apple",
+            "jpmorgan",
+            "t-system",
+        ],
+    },
 
     /**
      * Objection-handling accordion, seeded from the top-5 objections in the

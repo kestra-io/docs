@@ -1,21 +1,56 @@
 ---
 /**
- * Section 2 — Trust line.
+ * Section 2 — Trust line + customer logo bar.
  *
- * One centred muted sentence. The logo bar below it is feature-flagged off
- * until Gabe clears logos for US paid use. It is rendered *after* the line and
- * has a fixed row height, so enabling it changes nothing above it and adds a
- * predictable amount of space rather than a variable, image-dependent one.
+ * The logos are the same assets and the same order as the kestra.io homepage
+ * bar (`components/home/LogoBar.astro`), read from the same directory rather
+ * than copied: a logo the design team updates updates here too, and the LP can
+ * only ever show a company that is already public on the site.
+ *
+ * Difference from the homepage: that bar sits on a dark hero and inverts the
+ * logos to white. This page is light, so they are flattened to a single dark
+ * tone instead — the row reads as one texture rather than seven competing
+ * brand colours.
+ *
+ * The bar renders *below* the trust line and reserves its own fixed row
+ * height, so enabling or disabling it never moves the hero above it.
  */
-import type { LpLogo } from "~/contents/lp/types"
+import { Image } from "astro:assets"
+import type { LpLogoBar } from "~/contents/lp/types"
 
 interface Props {
     line: string
-    logos?: { enabled: boolean; items: LpLogo[] }
+    logos?: LpLogoBar
 }
 
 const { line, logos } = Astro.props
-const showLogos = Boolean(logos?.enabled && logos.items.length)
+
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/components/home/assets/companies/*.svg",
+    { eager: true },
+)
+
+/** File stem → the name a screen reader should announce. */
+const LOGO_NAMES: Record<string, string> = {
+    xiaomi: "Xiaomi",
+    bloomberg: "Bloomberg",
+    amdocs: "Amdocs",
+    fila: "FILA",
+    apple: "Apple",
+    jpmorgan: "JP Morgan",
+    "t-system": "T-Systems",
+    brainlab: "Brainlab",
+    toyota: "Toyota",
+}
+
+const entries = (logos?.enabled ? logos.companies : [])
+    .map((company) => ({
+        company,
+        name: LOGO_NAMES[company] ?? company,
+        asset: logoFiles[`/src/components/home/assets/companies/${company}.svg`]
+            ?.default,
+    }))
+    .filter((entry) => Boolean(entry.asset))
 ---
 
 <section class="lp-trust">
@@ -23,13 +58,16 @@ const showLogos = Boolean(logos?.enabled && logos.items.length)
         <p class="lp-trust__line">{line}</p>
 
         {
-            showLogos && (
-                <ul class="lp-trust__logos">
-                    {logos!.items.map((logo) => (
+            entries.length > 0 && (
+                <ul class="lp-trust__logos" role="list">
+                    {entries.map((entry) => (
                         <li class="lp-trust__logo">
-                            <span role="img" aria-label={logo.name}>
-                                <Fragment set:html={logo.svg} />
-                            </span>
+                            <Image
+                                src={entry.asset}
+                                alt={entry.name}
+                                loading="lazy"
+                                decoding="async"
+                            />
                         </li>
                     ))}
                 </ul>
@@ -60,17 +98,35 @@ const showLogos = Boolean(logos?.enabled && logos.items.length)
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 1.5rem 2.5rem;
+        gap: 1.5rem 2rem;
         margin-top: 1.5rem;
-        /* Fixed row height keeps the section's height independent of the
-           individual logo aspect ratios. */
-        min-height: 2.5rem;
+
+        @include media-breakpoint-up(lg) {
+            gap: 2rem 3rem;
+            margin-top: 1.75rem;
+        }
     }
 
-    .lp-trust__logo :global(svg) {
+    .lp-trust__logo {
+        /* Fixed row height so the section's height never depends on the
+           individual logo aspect ratios. */
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 1.5rem;
-        width: auto;
-        opacity: 0.6;
-        filter: grayscale(1);
+
+        @include media-breakpoint-up(lg) {
+            height: 1.75rem;
+        }
+
+        :global(img) {
+            width: auto;
+            height: 100%;
+            max-width: 7.5rem;
+            object-fit: contain;
+            /* Flatten every logo to one dark tone. */
+            filter: brightness(0);
+            opacity: 0.55;
+        }
     }
 </style>

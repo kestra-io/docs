@@ -22,15 +22,16 @@ export const LP_SHARED = {
         cta: LP_CTA_LABEL,
         microcopy: "30 minutes with an engineer — on your stack, not a sales deck.",
         /**
-         * Product visual. `image` is intentionally null: the topology UI asset
-         * is pending (see TODO below). While null, a labelled placeholder box
-         * with the same 16/10 aspect ratio renders, so dropping the asset in
-         * causes zero layout shift.
+         * Label of the placeholder box shown until a variant sets
+         * `hero.image`. Set the image in the variant file (one line) and this
+         * disappears — same 16/10 box, no layout shift.
          *
-         * TODO(virgile): when the asset lands, set `image` to the imported
-         * asset in each variant file (or here, if shared) — `LpHero.astro`
-         * already renders it with `loading="eager"`, `fetchpriority="high"`
-         * and a `<link rel="preload">` emitted from `LpLayout.astro`.
+         * On preloading: the hero image is rendered eagerly with
+         * `fetchpriority="high"` inside prerendered HTML, so the browser's
+         * preload scanner finds it in the first bytes of the document. A
+         * `<link rel="preload">` on top of that would have to mirror the exact
+         * transformed srcset Astro emits, and downloads the image twice when it
+         * doesn't — which is why there isn't one.
          */
         imagePlaceholderLabel: "TOPOLOGY_UI_SCREENSHOT",
     },

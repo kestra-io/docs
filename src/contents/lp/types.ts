@@ -56,11 +56,15 @@ export interface LpFaqItem {
     answer: string
 }
 
-export interface LpLogo {
-    /** Raw SVG string (`import x from "...svg?raw"`). */
-    svg: string
-    /** Accessible name of the company. */
-    name: string
+export interface LpLogoBar {
+    enabled: boolean
+    /**
+     * File stems of SVGs in `src/components/home/assets/companies/` — the same
+     * assets the kestra.io homepage logo bar uses, so a design update to a logo
+     * lands on both at once and the LP can only ever show a logo that is
+     * already public on the site.
+     */
+    companies: string[]
 }
 
 export interface LpVariant {
@@ -69,6 +73,24 @@ export interface LpVariant {
     hero: {
         h1: string
         sub: string
+        /**
+         * Product visual, imported from `src/components/lp/assets/`. Rendered
+         * eagerly at high fetch priority — it is the LCP candidate on desktop.
+         * When absent, `LpHero` draws the labelled placeholder box at the same
+         * 16/10 ratio, so adding the asset shifts nothing.
+         */
+        image?: ImageMetadata
+        /** Required whenever `image` is set: what the screenshot shows. */
+        imageAlt?: string
+        /**
+         * How the image fills the 16/10 frame.
+         * - `cover` (default) crops from the top: right for a tall topology
+         *   capture, which then reads as a flow continuing past the frame.
+         * - `contain` shows the whole image, for a full-UI capture whose own
+         *   chrome must not be cut. The frame drops its border in this mode,
+         *   since such screenshots carry their own.
+         */
+        imageFit?: "cover" | "contain"
     }
     problem: {
         header: string
@@ -91,12 +113,8 @@ export interface LpVariant {
         items: LpFaqItem[]
     }
     /**
-     * Optional logo bar under the trust line. OFF until Gabe clears logos for
-     * US paid use. The trust line reserves no space for it, so turning it on
-     * or off never reflows the sections above.
+     * Logo bar under the trust line. Renders below the line, so turning it on
+     * or off never moves anything above it.
      */
-    logos?: {
-        enabled: boolean
-        items: LpLogo[]
-    }
+    logos?: LpLogoBar
 }
