@@ -11,7 +11,7 @@ Kestra 2.0 is a major release. This page orients Early Access Program participan
 
 For a full list of breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx).
 
-## AI
+## AI (In Development)
 
 ### AI Copilot
 
@@ -61,7 +61,7 @@ The new [`subflow()`](./expressions/04.functions/04.workflow/index.mdx) Pebble f
 
 ### Execution labels from triggers
 
-Triggers can now attach labels directly to the executions they create, making it easier to filter and group executions in dashboards.
+[Triggers](./05.workflow-components/07.triggers/index.mdx) can now attach labels directly to the executions they create, making it easier to filter and group executions in dashboards.
 
 ### Input enhancements
 
@@ -109,7 +109,7 @@ The [VS Code extension](./version-control-cicd/05.vscode/index.md) now supports 
 
 ### Plugin file renderers
 
-Plugins can now register custom file renderers, allowing task output files to be previewed inline in the Kestra UI with format-specific rendering.
+[Plugin file renderers](./plugin-developer-guide/09.file-renderer/index.md) allow plugins to register custom renderers so task output files are previewed inline in the Kestra UI with format-specific rendering.
 
 ### Dynamic Apps content blocks
 
