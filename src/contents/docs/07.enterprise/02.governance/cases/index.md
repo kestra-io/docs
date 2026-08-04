@@ -59,7 +59,7 @@ Each case can have two optional SLA targets, set directly or inherited from a te
 
 Both clocks start at case creation. Each of the two SLAs can be in one of six states: `Not started`, `Running`, `Overdue`, `Met`, `Missed`, or `Voided` (cancelling a case voids its pending SLAs). States are computed at read time and never persisted. The UI shows a live countdown ("Due in 2h", "Due 30m ago") on the case detail page, board cards, and the list's Resolution SLA column.
 
-SLA breaches are only visible in the UI. No alert is sent when a target is missed; the `SLA_ACKNOWLEDGEMENT_BREACHED` and `SLA_RESOLUTION_BREACHED` timeline events are reserved for a future background monitor.
+When a target is missed, a background check records an `SLA_ACKNOWLEDGEMENT_BREACHED` or `SLA_RESOLUTION_BREACHED` event in the case's timeline and sends an in-app notification to the case's assignees and watchers. The check runs every 5 minutes by default and can be tuned or disabled through the `kestra.cases.sla-breach-check` configuration; each of the two SLAs is notified at most once per case.
 
 ## The CreateCase task
 
@@ -150,7 +150,7 @@ One caveat: the deduplication check is not atomic. The server first checks for a
 
 Auto-attach allows you to avoid getting a new case and a new notification for every single failed execution. A case is created for the first failure, and all following executions matching the same flow and state are automatically attached to that same case until the case is resolved or cancelled.
 
-Deduplication with `linkMatchingExecutions` achieves the same from the flow YAML; auto-attach is its UI counterpart, configured on an existing case. It can be enabled when attaching an execution to a case, from the case detail page or in the Create Case modal, using the checkbox "Also keep attaching future executions matching this flow and state".
+Deduplication with `linkMatchingExecutions` achieves the same from the flow YAML; auto-attach is its UI counterpart, configured on an existing case. It can be enabled with the "Auto-link matching executions" toggle when attaching executions to a case, from the case detail page or in the Create Case modal. A banner then lists exactly what will be matched, for example "New executions matching company.team/orders_sync (FAILED) will automatically attach to this case." Several executions can be selected at once, even across different flows: the selection is grouped into one rule per flow, and the states of that flow's selected executions are combined.
 
 Under the hood, enabling it generates a flow named `attach_executions_<caseId>` in the system namespace, with one Flow trigger per (namespace, flow, states) rule and a single `CreateCase` task that passes the `caseId`. Multiple rules accumulate on the same generated flow. The flow is deleted when the case reaches a terminal status or is deleted, and recreated on reopen. These generated flows are visible on the [System Flows](../../../06.concepts/system-flows/index.md) page.
 
@@ -177,7 +177,7 @@ The case detail page shows the editable header (title, severity, status, quick t
 
 ## Comments and activity timeline
 
-Every change to a case is recorded as a timeline event: creation, field updates, status and severity changes, assignments (with optional note), execution and asset links, action runs, and auto-attach changes. Comments support **Markdown** and up to 5 file attachments of 10 MB each (drag-and-drop and clipboard paste work).
+Every change to a case is recorded as a timeline event: creation, field updates, status and severity changes, assignments (with optional note), execution and asset links, action runs, auto-attach changes, and SLA breaches. Comments support **Markdown** and up to 5 file attachments of 10 MB each (drag-and-drop and clipboard paste work).
 
 ## Case actions
 
@@ -200,7 +200,7 @@ Template defaults apply when creating cases via the UI or the API; they cannot b
 
 ## Notifications
 
-Case events are wired into the in-app notification system (the bell icon). Five events send notifications: case created, assigned, status changed, severity changed, and commented. Recipients are the case's assignees and watchers, with groups expanded to their members; assignment notifications go only to the users whose assignment actually changed, with the assignment note included. Each notification contains a link to the case.
+Case events are wired into the in-app notification system (the bell icon). Seven events send notifications: case created, assigned, status changed, severity changed, commented, acknowledgement SLA breached, and resolution SLA breached. Recipients are the case's assignees and watchers, with groups expanded to their members; assignment notifications go only to the users whose assignment actually changed, with the assignment note included. Each notification contains a link to the case.
 
 ## Permissions and audit
 
