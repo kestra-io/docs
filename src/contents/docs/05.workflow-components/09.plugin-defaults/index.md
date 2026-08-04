@@ -79,6 +79,23 @@ If you move required attributes into `pluginDefaults`, the UI code editor may sh
 
 Setting `forced: true` in `pluginDefaults` ensures that default values override any properties defined directly in the task. By default, the value of the `forced` attribute is `false`.
 
+## Precedence of plugin defaults
+
+Kestra applies non-forced plugin defaults from lowest to highest priority:
+
+1. Global plugin defaults (`kestra.plugins.defaults`)
+2. Namespace-level plugin defaults
+3. Flow-level `pluginDefaults`
+4. Properties defined directly on the task
+
+For forced defaults the direction reverses — the most privileged level wins:
+
+1. Global forced defaults (`kestra.plugins.defaults` with `forced: true`) ← highest priority
+2. Namespace-level forced defaults
+3. Flow-level forced defaults
+
+This means a global forced default cannot be overridden by a namespace-level forced default. Use global forced defaults for platform-wide policies that must apply unconditionally.
+
 ## Plugin defaults in a global configuration
 
 Plugin defaults can also be defined globally in your Kestra configuration, applying the same values across all flows. This is useful when you want to apply the same defaults across multiple flows. Let's say that you want to centrally manage the default values for the `io.kestra.plugin.aws` plugin to reuse the same credentials and region across all your flows. You can add the following to your Kestra configuration:

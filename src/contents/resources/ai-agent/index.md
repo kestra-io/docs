@@ -1,8 +1,8 @@
 ---
 title: "What Are AI Agents? Definition & Examples"
 description: "Explore AI agents: their definition, various types, and how they autonomously perform tasks. Learn about AI agent applications and Kestra's role in orchestrating them."
-metaTitle: "What Are AI Agents? Definition & Examples"
-metaDescription: "Understand AI agents, their types, and autonomous capabilities. Learn about real-world applications and how Kestra orchestrates AI agents for scalable, auditable workflows."
+metaTitle: "What Are AI Agents? Definition & Examples | Kestra"
+metaDescription: "Learn what AI agents are, the five main types, and how they work. See examples and how Kestra orchestrates AI agents in auditable, production-grade workflows."
 tag: ai
 date: 2026-05-06
 faq:
@@ -10,8 +10,8 @@ faq:
     answer: "AI agents can process multimodal information like text, voice, video, audio, and code simultaneously. They can converse, reason, learn, and make decisions autonomously. Over time, they learn and facilitate complex transactions and business processes. Agents can also coordinate with other agents to perform more complex, multi-step workflows."
   - question: "Is ChatGPT an AI agent?"
     answer: "ChatGPT itself is a Large Language Model (LLM), which is a core component of an AI agent but not an agent on its own. It becomes an agent when integrated into a system that provides it with memory, tools to interact with an environment, and a goal-oriented execution loop."
-  - question: "What is the 30% rule in AI?"
-    answer: "The '30% rule' is not a widely recognized or standardized principle in AI. It may refer to various informal heuristics, such as the idea that AI can automate 30% of tasks in most jobs, or a specific metric within a niche research area. However, it is not a foundational concept like Moore's Law or the Turing Test."
+  - question: "What is the difference between an AI agent and a traditional automation script?"
+    answer: "A traditional automation script follows a fixed sequence of instructions and cannot adapt to unexpected conditions. An AI agent, by contrast, perceives its environment, reasons about its current state and goal, and selects the best action dynamically. This gives agents the ability to handle novel situations, recover from failures, and pursue goals across long-running, multi-step workflows."
   - question: "What are the main types of AI agents?"
     answer: "There are five main types of AI agents: simple reflex agents, model-based reflex agents, goal-based agents, utility-based agents, and learning agents. Each type has distinct strengths and applications, ranging from basic automated systems to highly adaptable AI models."
   - question: "How does Kestra support AI agents?"
@@ -26,7 +26,7 @@ The rise of Large Language Models (LLMs) has transformed what's possible with au
 
 An AI agent is a software program that can perceive its environment, process that information, and take autonomous actions to achieve specific goals. Unlike a simple script that follows a rigid set of instructions, an agent operates within a perception-action cycle: it senses changes, makes decisions based on its programming and past experiences, and then acts upon its environment.
 
-This ability to operate autonomously is what sets AI agents apart. They are designed to be proactive and persistent, capable of running complex, long-duration tasks without direct human intervention. This could involve anything from monitoring a system for anomalies to executing a multi-step financial transaction or provisioning cloud infrastructure. The core idea is to delegate not just the "how" but also the "what" and "when" of a task to a system that can reason and react. For a deeper dive into how Kestra implements this, explore our documentation on [AI Agents in Kestra](/docs/ai-tools/ai-agents).
+This ability to operate autonomously is what sets AI agents apart. They are designed to be proactive and persistent, capable of running complex, long-duration tasks without direct human intervention. This could involve anything from monitoring a system for anomalies to executing a multi-step financial transaction or provisioning cloud infrastructure. The core idea is to delegate not just the "how" but also the "what" and "when" of a task to a system that can reason and react. For a deeper dive into how Kestra implements this, explore our documentation on [AI Agents in Kestra](/docs/ai-tools/ai-agents). Broader patterns around autonomous, goal-driven automation are covered in our guide to [agentic AI](/resources/ai/agentic-ai).
 
 ## Key characteristics of AI agents
 
@@ -111,7 +111,7 @@ A Large Language Model (LLM) like ChatGPT is a powerful component, but it is not
 
 So, while ChatGPT can perform tasks when prompted, it doesn't autonomously pursue goals or interact with external tools without being explicitly directed in each turn.
 
-### The 30% rule in AI: Fact or Fable?
+### What is the 30% rule in AI?
 
 You may have heard of a "30% rule" in AI, but it's not a formal, widely accepted principle. The term can pop up in different contexts with different meanings. Sometimes it's used as a heuristic suggesting that AI can automate roughly 30% of tasks in most professions. In other cases, it might refer to a specific performance metric in a research paper. Unlike foundational concepts like the Turing Test, the "30% rule" is not a standard term. It's more of an informal observation or a context-specific rule of thumb rather than a universal law of AI.
 
@@ -171,10 +171,10 @@ The field of agentic AI is evolving rapidly, with trends pointing towards more c
 
 ### Emerging trends and multi-agent systems
 
-The next frontier is multi-agent systems, where teams of specialized agents collaborate to solve problems that are too complex for a single agent. Imagine an "analyst" agent that gathers data, a "coder" agent that writes a script to process it, and a "communicator" agent that summarizes the results and sends a report. Orchestrating these interactions is a key challenge that platforms like Kestra are designed to solve.
+The next frontier is multi-agent systems, where teams of specialized agents collaborate to solve problems that are too complex for a single agent. Imagine an "analyst" agent that gathers data, a "coder" agent that writes a script to process it, and a "communicator" agent that summarizes the results and sends a report. Orchestrating these interactions is a key challenge that platforms like Kestra are designed to solve. See our guides to [multi-agent systems](/resources/ai/multi-agent-system) and [agentic workflows](/resources/ai/agentic-workflows) for a deeper look at these patterns.
 
 ### Impact on industries and daily life
 
 The impact of AI agents will be transformative. They promise to create self-healing infrastructure, fully automated supply chains, and highly personalized digital experiences. As they become more capable, they will handle an increasing amount of the complex coordination and decision-making currently performed by humans. This shift will require new ways of thinking about automation, governance, and the partnership between humans and AI.
 
-To explore how to build the next generation of [AI automation](/ai-automation), browse our full catalog of [AI resources](/resources/ai).
+To explore how to build the next generation of [AI automation](/ai-automation), browse our full catalog of [AI resources](/resources/ai). Related guides include [RAG architecture](/resources/ai/rag-architecture), [agentic orchestration](/resources/ai/agentic-orchestration), and [LLM evaluation](/resources/ai/llm-evaluation).

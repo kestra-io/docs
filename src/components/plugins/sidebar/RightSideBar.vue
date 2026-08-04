@@ -6,6 +6,10 @@
                 :releases-url="releasesUrl"
                 :categories="categories"
                 :metadata="metadata"
+                :plugin-name="pluginName"
+                :plugin-type="pluginType"
+                :current-tail="currentTail"
+                :current-version="currentVersion"
             />
         </div>
 
@@ -67,7 +71,7 @@
     import ChevronUp from "vue-material-design-icons/ChevronUp.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
 
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
     import type { TocLink } from "~/utils/plugins/types"
 
     const MIN_DEPTH = 2
@@ -89,6 +93,10 @@
         metadata = [],
         title = "",
         url = "",
+        pluginName = undefined,
+        pluginType = undefined,
+        currentTail = undefined,
+        currentVersion = undefined,
     } = defineProps<{
         links?: TocLink[]
         version?: { versions?: ReleaseInfo[] } | null
@@ -97,6 +105,10 @@
         metadata?: PluginMetadata[]
         title?: string
         url?: string
+        pluginName?: string
+        pluginType?: string
+        currentTail?: string
+        currentVersion?: string
     }>()
 
     const { y: scrollY } = useWindowScroll()

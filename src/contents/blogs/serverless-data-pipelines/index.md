@@ -40,7 +40,7 @@ Here's a more detailed breakdown of the workflow:
 You can see the entire workflow in action in the video below:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/Wqz7CZudqNo?si=QgO2bizPu2a-vBoB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/Wqz7CZudqNo?si=QgO2bizPu2a-vBoB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Modular Data Transformations with dbt

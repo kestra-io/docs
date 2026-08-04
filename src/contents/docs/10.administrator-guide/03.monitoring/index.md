@@ -11,8 +11,8 @@ This page provides best practices for setting up alerting and monitoring in your
 Failure alerts are essential. When a production workflow fails, you should be notified immediately. To implement failure alerting, you can use Kestra’s built-in notification tasks, such as:
 
 - [Slack](/plugins/plugin-slack)
-- [Microsoft Teams](/plugins/plugin-teams)
-- [Email](/plugins/plugin-mail)
+- [Microsoft Teams](/plugins/plugin-microsoft365)
+- [Email](/plugins/plugin-email)
 
 
 Technically, you can add custom failure alerts to each flow separately using the `errors` tasks:
@@ -2006,6 +2006,10 @@ Since Kestra is based on [Micronaut](https://micronaut.io), the [default Microna
 * `/env` [Environment Endpoint](https://docs.micronaut.io/snapshot/guide/index.html#environmentEndpoint) to debug configuration files.
 
 You can disable some endpoints following the above Micronaut configuration.
+
+:::alert{type="warning"}
+The management port is unauthenticated by default. Do not expose port `8081` outside your internal network. See [Management endpoint access](../security-hardening/index.md#management-endpoint-access) for hardening guidance.
+:::
 
 ## Debugging techniques
 

@@ -61,7 +61,7 @@ export function generateNavigationFromSubgroups(pluginsSubGroups: Plugin[]): Nav
                             children: buildElementNav(p, url),
                         }
                     })
-                : buildElementNav(subGroups[0] ?? wrappers[0], rootUrl)
+                : buildElementNav(root, rootUrl)
 
             return {
                 title: toNavTitle(root.title),

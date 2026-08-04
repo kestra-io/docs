@@ -1,14 +1,8 @@
 <template>
     <div>
-        <strong class="title-contribute my-2 text-white">Contribute</strong>
+        <strong class="title-contribute my-2 text-white">Get Involved</strong>
         <nav class="social mt-1">
             <ul>
-                <li v-if="editLink !== false && editLink">
-                    <a :href="editLink" target="_blank">
-                        <Github />
-                        Edit This Page
-                    </a>
-                </li>
                 <li v-for="link in socialLinks" :key="link.href">
                     <a :href="link.href" target="_blank">
                         <component :is="link.icon" class="icon" />
@@ -21,7 +15,6 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed } from "vue"
     import Slack from "vue-material-design-icons/Slack.vue"
     import Youtube from "vue-material-design-icons/Youtube.vue"
     import Github from "vue-material-design-icons/Github.vue"
@@ -29,26 +22,12 @@
     import Twitter from "~/components/icons/TwitterXIcon.vue"
     import BlueSky from "~/components/icons/BlueSkyIcon.vue"
 
-    const props = defineProps({
-        editLink: {
-            type: Boolean,
-            default: "",
-        },
-        editUrl: {
-            type: String,
-            default: "",
-        },
-        stem: {
-            type: String,
-            default: undefined,
-        },
-        extension: {
-            type: String,
-            default: undefined,
-        },
-    })
-
     const socialLinks = [
+        {
+            href: "https://github.com/kestra-io/kestra",
+            icon: Github,
+            text: "GitHub",
+        },
         {
             href: "https://kestra.io/slack",
             icon: Slack,
@@ -60,9 +39,9 @@
             text: "YouTube",
         },
         {
-            href: "https://github.com/kestra-io/kestra",
-            icon: Github,
-            text: "GitHub",
+            href: "https://www.linkedin.com/company/kestra",
+            icon: Linkedin,
+            text: "LinkedIn",
         },
         {
             href: "https://twitter.com/kestra_io",
@@ -74,22 +53,7 @@
             icon: BlueSky,
             text: "Bluesky",
         },
-        {
-            href: "https://www.linkedin.com/company/kestra",
-            icon: Linkedin,
-            text: "LinkedIn",
-        },
     ]
-
-    const editLink = computed(() => {
-        if (props.editUrl) {
-            return props.editUrl
-        }
-        if (!props.stem || !props.extension) {
-            return false
-        }
-        return `https://github.com/kestra-io/docs/edit/main/content/${props.stem}.${props.extension}`
-    })
 </script>
 
 <style lang="scss" scoped>

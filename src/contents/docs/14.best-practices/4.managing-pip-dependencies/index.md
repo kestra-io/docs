@@ -87,9 +87,9 @@ tasks:
 
 ## Using cache files
 
-In a `WorkingDirectory` task, you can create a virtual environment using the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md), install all required `pip` dependencies, and cache the `venv` folder. This ensures the dependencies are reused in subsequent executions, eliminating the need for repeated installations. For more details, see the [caching](../../06.concepts/12.caching/index.md) page.
+In a `WorkingDirectory` task, you can install all required `pip` dependencies into a local `deps` folder using the [Process Task Runner](../../task-runners/04.types/01.process-task-runner/index.md), and cache that folder. This ensures the dependencies are reused in subsequent executions, eliminating the need for repeated installations. For more details, see the [caching](../../06.concepts/12.caching/index.md) page.
 
-The example below demonstrates how to cache the `venv` folder:
+The example below demonstrates how to cache the `deps` folder:
 
 ```yaml
 id: python_cached_dependencies
@@ -104,15 +104,15 @@ tasks:
         taskRunner:
           type: io.kestra.plugin.core.runner.Process
         beforeCommands:
-          - python -m venv venv
-          - . venv/bin/activate
-          - pip install pandas
+          - pip install --target=./deps pandas
+        env:
+          PYTHONPATH: "./deps"
         script: |
           import pandas as pd
           print(pd.__version__)
     cache:
       patterns:
-        - venv/**
+        - deps/**
       ttl: PT24H
 ```
 

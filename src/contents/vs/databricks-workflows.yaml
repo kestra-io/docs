@@ -34,7 +34,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, AI workloads, and business processes"
       - "Multi-cloud and on-premises: AWS, Azure, GCP, or hybrid"
       - "YAML-first: Git-native, CI/CD-ready, reviewable by any engineer"
-      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Open source with 26k+ GitHub stars and 1400+ plugins"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Databricks-Native Job Coordination
@@ -204,7 +204,7 @@ testimonials:
         name: Customers on multi-tenant platform
       - value: "0"
         name: Pipeline rewrites required
-    storyLink: "/use-cases/stories"
+    storyLink: "/customers"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work
@@ -244,7 +244,7 @@ commonQuestions:
   - question: How does Kestra handle version control compared to Databricks Workflows?
     answer: "Kestra workflows are YAML files that live in your Git repository from day one. They go through pull requests and deploy through CI/CD. Databricks Workflows are built in the UI or defined as JSON via the REST API. Getting them into version control requires Databricks Repos or manually exporting and committing JSON definitions. Even with that integration, the JSON embeds cluster configuration inline, making it verbose and hard to review in a diff."
   - question: How do the pricing models compare?
-    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1200+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Databricks Workflows charges Databricks Units (DBUs) for job compute, on top of your underlying cloud compute costs. Teams running high-frequency schedules across many jobs often find those DBU costs significant, particularly when many tasks don't require Spark and could run on cheaper infrastructure."
+    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1400+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Databricks Workflows charges Databricks Units (DBUs) for job compute, on top of your underlying cloud compute costs. Teams running high-frequency schedules across many jobs often find those DBU costs significant, particularly when many tasks don't require Spark and could run on cheaper infrastructure."
   - question: Can Kestra and Databricks Workflows run side by side?
     answer: "Yes. Route new workflows through Kestra while existing Databricks jobs continue running. Kestra can trigger those jobs, react to their completion, and chain additional steps outside the lakehouse. Start with net-new orchestration in Kestra, migrate jobs incrementally, and keep Databricks Workflows for the notebook and DLT pipelines that are already stable."
   - question: Can Kestra handle the same data pipeline use cases as Databricks Workflows?

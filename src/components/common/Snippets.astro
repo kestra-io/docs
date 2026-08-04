@@ -4,12 +4,23 @@ import { Icon } from "astro-icon/components"
 interface Props {
     code: string
     lang?: any
+    expandThreshold?: number
+    /**
+     * Disable Expressive Code's built-in collapse so the full code renders and
+     * the card's own height + fade mask handle the preview .
+     */
+    noCollapse?: boolean
 }
 
-const { code, lang = "bash" } = Astro.props as Props
+const {
+    code,
+    lang = "bash",
+    expandThreshold = 12,
+    noCollapse = false,
+} = Astro.props as Props
 
 const lineCount = code.trim().split("\n").length
-const isExpandable = lineCount > 12
+const isExpandable = lineCount > expandThreshold
 ---
 
 {
@@ -17,7 +28,12 @@ const isExpandable = lineCount > 12
         <div class:list={["code-card", { "is-expandable": isExpandable }]}>
             <div class="code-inner">
                 <div class="code-container">
-                    <Code code={code} lang={lang} frame="none" />
+                    <Code
+                        code={code}
+                        lang={lang}
+                        frame="none"
+                        meta={noCollapse ? "nocollapse" : ""}
+                    />
                 </div>
             </div>
 

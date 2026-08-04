@@ -52,7 +52,7 @@
                 </div>
             </div>
         </template>
-        <template v-if="description !== undefined && plugin?.longDescription">
+        <template v-if="showLongDescription && description !== undefined && plugin?.longDescription">
             <div id="how-to-use-this-plugin" class="description">
                 <div ref="contentWrap" class="markdown-container" :class="{expanded: isExpanded}">
                     <div ref="contentInner" class="markdown-inner">
@@ -92,7 +92,8 @@
         activeId?: string | undefined
         subgroupBlueprintCounts?: Record<string, number>,
         metadataMap?: Record<string, PluginMetadata>,
-        schemas?: Record<string, { title?: string }>
+        schemas?: Record<string, { title?: string }>,
+        showLongDescription?: boolean
     }>();
 
     const getSubgroupMetadata = (subGroupWrapper: Plugin) => {

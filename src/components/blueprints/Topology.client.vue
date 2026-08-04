@@ -40,6 +40,30 @@
         }, 80)
     }
 
+    const addControlTooltips = () => {
+        const root = rootRef.value
+        if (!root) {
+            return
+        }
+
+        const apply = (el: Element | null, label: string) => {
+            if (el && !el.getAttribute("title")) {
+                el.setAttribute("title", label)
+                el.setAttribute("aria-label", label)
+            }
+        }
+
+        apply(root.querySelector(".vue-flow__controls-zoomin"), "Zoom in")
+        apply(root.querySelector(".vue-flow__controls-zoomout"), "Zoom out")
+
+        // Remaining buttons follow the zoom buttons in DOM order.
+        const others = root.querySelectorAll(
+            ".vue-flow__controls-button:not(.vue-flow__controls-zoomin):not(.vue-flow__controls-zoomout)",
+        )
+        const labels = ["Show more details", "Fit", "Download"]
+        others.forEach((el, index) => apply(el, labels[index]))
+    }
+
     onMounted(() => {
         if (!rootRef.value) {
             return
@@ -49,6 +73,8 @@
             fitTopologyView()
         })
         resizeObserver.observe(rootRef.value)
+
+        nextTick(() => addControlTooltips())
     })
 
     onBeforeUnmount(() => {
@@ -75,7 +101,7 @@
     }
 
     :deep(.node-wrapper) {
-        border: $block-border !important;
+        border: 1px solid var(--ks-border-secondary) !important;
         box-shadow: var(--ks-shadows-light);
         .task-title {
             color: var(--ks-content-primary) !important;
@@ -88,17 +114,35 @@
     }
 
     :deep(.vue-flow__controls) {
-        border: $container-border !important;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        padding: 4px;
+        background-color: var(--ks-background-body);
+        border: $block-border !important;
+        border-radius: var(--ks-border-radius);
+        box-shadow: var(--ks-shadows-light);
     }
 
     :deep(.vue-flow__controls-button) {
-        background-color: var(--ks-background-tertiary);
-        border-bottom: $container-border !important;
+        padding: 4px;
+        border: none !important;
+        border-radius: var(--ks-border-radius-sm);
+        background: transparent;
         color: var(--ks-content-primary) !important;
+    }
+
+    :deep(.vue-flow__controls-button:hover),
+    :deep(.vue-flow__controls-button.active) {
+        background-color: var(--ks-background-tertiary);
     }
 
     :deep(.vue-flow__controls-button svg) {
         fill: var(--ks-content-primary) !important;
+    }
+
+    :deep(.vue-flow__controls-button) {
+        font-size: 12px;
     }
 
     :deep(.dot) {

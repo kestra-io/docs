@@ -287,7 +287,7 @@ const { class: className, ...rest } = Astro.props
 </div>
 
 <!-- 3. SCRIPT — self-contained IIFE, no globals leaked -->
-<script>
+<script is:inline>
     ;(function () {
         const widget = document.querySelector(".kestra-widget")
         const gctx = widget?.querySelector(".glow")?.getContext("2d")

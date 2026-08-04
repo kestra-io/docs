@@ -1,8 +1,8 @@
 title: "Kestra vs. Google Workflows: Full Orchestration vs. GCP Service Coordination"
-description: "Compare Kestra vs Google Workflows: multi-cloud workflow orchestration with 1200+ plugins vs Google Cloud's serverless HTTP-based service orchestration. See features, setup time, and use cases."
+description: "Compare Kestra vs Google Workflows: multi-cloud workflow orchestration with 1400+ plugins vs Google Cloud's serverless HTTP-based service orchestration. See features, setup time, and use cases."
 competitorName: Google Workflows
 category: Data Orchestration
-shortDescription: "GCP serverless HTTP service coordination vs. multi-cloud orchestration with 1200+ plugins."
+shortDescription: "GCP serverless HTTP service coordination vs. multi-cloud orchestration with 1400+ plugins."
 seeHowTitle: "Orchestrate Beyond GCP Service Coordination"
 seeHowBody: "See how Kestra runs code directly, connects to {totalPlugins}+ plugins, and works across every cloud — without Cloud Functions."
 
@@ -18,7 +18,7 @@ philosophy:
   mainTitle: Two Tools, Two Definitions of "Workflow"
   kestra:
     title: "Universal Orchestration: Code, Data, and Events"
-    description: "Open-source platform that runs code directly in isolated containers, orchestrates data pipelines, and reacts to events from any source. Define workflows in declarative YAML, bring scripts in any language, and connect to 1200+ plugins across every major cloud and data tool."
+    description: "Open-source platform that runs code directly in isolated containers, orchestrates data pipelines, and reacts to events from any source. Define workflows in declarative YAML, bring scripts in any language, and connect to 1400+ plugins across every major cloud and data tool."
     subCardText: '"How do I orchestrate my data pipelines and infrastructure without locking into a single cloud?"'
   competitor:
     title: GCP Service Coordination via HTTP
@@ -34,7 +34,7 @@ businessValue:
     list:
       - Run Python, SQL, Bash, and R directly without wrapping in Cloud Functions
       - Orchestrate across AWS, Azure, GCP, and on-premises in one platform
-      - 1200+ plugins covering databases, data warehouses, messaging, and more
+      - 1400+ plugins covering databases, data warehouses, messaging, and more
       - Developer self-service with namespace isolation and RBAC
       - Event-driven triggers from APIs, message queues, file arrivals, and webhooks
   competitor:
@@ -171,7 +171,7 @@ featureGrid:
       kestra: Declarative YAML (Git-native)
       competitor: Proprietary Workflows DSL (YAML/JSON)
     - feature: Plugin ecosystem
-      kestra: "1200+ plugins (databases, warehouses, messaging & more)"
+      kestra: "1400+ plugins (databases, warehouses, messaging & more)"
       competitor: GCP APIs and HTTP endpoints only
     - feature: Cloud support
       kestra: "Multi-cloud (AWS, Azure, GCP, on-premises)"
@@ -202,14 +202,14 @@ testimonials:
         name: "Active users"
       - value: "+5,000"
         name: "Workflows created"
-    storyLink: "/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/customers/leroy-merlin-france"
 
 platformStrengths:
   title: Kestra Is Built for What Engineering Teams Actually Orchestrate
   features:
     - title: Code runs here, not somewhere else
       description: "Kestra executes Python, SQL, Bash, and R directly in isolated containers. No Cloud Functions to deploy, no Cloud Run services to maintain. Write logic inline in your YAML or reference external scripts; Kestra handles the execution environment."
-    - title: 1200+ plugins, not just HTTP
+    - title: 1400+ plugins, not just HTTP
       description: "Connect to BigQuery, Snowflake, dbt, Airbyte, Kafka, S3, PostgreSQL, and 1200+ other tools with purpose-built plugins. Each plugin handles authentication, error handling, and output parsing. An HTTP call can reach any API, but a plugin understands the API."
     - title: Not tied to one cloud
       description: "Run workflows across AWS, Azure, GCP, and on-premises in a single platform. Deploy Kestra on GCP if that is your primary cloud, and still orchestrate workloads in your data center or another provider. Google Workflows cannot leave GCP."

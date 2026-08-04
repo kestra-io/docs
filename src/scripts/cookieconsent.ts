@@ -1,4 +1,4 @@
-import * as CookieConsent from "vanilla-cookieconsent"
+import { run as runCookieConsent } from "vanilla-cookieconsent"
 import posthog from "posthog-js"
 import identify from "~/utils/identify"
 import { $fetchApi } from "~/utils/fetch"
@@ -6,79 +6,108 @@ import { GTM_ID } from "astro:env/client"
 
 const isEurope =
     Intl.DateTimeFormat().resolvedOptions().timeZone.indexOf("Europe") === 0
-const cookieConsent = CookieConsent
 
-window.addEventListener("DOMContentLoaded", () => {
-    const enabledAnalytics = async () => {
-        window.dataLayer = window.dataLayer || []
-        window.dataLayer.push({
-            "gtm.start": new Date().getTime(),
-            event: "gtm.js",
-        })
+// The site uses Astro's <ClientRouter /> in production, so navigating between
+// pages is a client-side transition, not a full reload. These guards make sure
+// the one-time bootstrap (consent modal, GTM/PostHog init) runs only once,
+// while the page-view event is pushed on *every* navigation so GTM triggers
+// (and conversion tags) fire on soft navigations too — not just the first load.
+let analyticsEnabled = false
+let marketingEnabled = false
+let consentInitialized = false
 
-        const s = document.createElement("script")
-        s.async = true
-        s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
-        document.head.appendChild(s)
+const pushPageView = () => {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+        event: "content-view",
+        "content-name": window.location.pathname + window.location.search,
+        "content-view-name": window.astroClientConfig?.slug,
+    })
+}
 
-        const response = await $fetchApi<{
-            posthog: { token: string }
-            id: string
-        }>("/config", {
-            credentials: "include",
-        })
+const enabledAnalytics = async () => {
+    // Push a page-view on every navigation (including client-side transitions).
+    if (analyticsEnabled) {
+        pushPageView()
+        return
+    }
+    analyticsEnabled = true
 
-        posthog.init(response.posthog.token, {
-            api_host: window.location.origin + "/t/",
-            ui_host: "https://eu.posthog.com",
-            capture_pageview: false,
-            capture_pageleave: true,
-            autocapture: false,
-            disable_session_recording: false,
-        })
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+        "gtm.start": new Date().getTime(),
+        event: "gtm.js",
+    })
 
-        posthog.register_for_session({
-            from: "SITE",
-        })
+    const s = document.createElement("script")
+    s.async = true
+    s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`
+    document.head.appendChild(s)
 
-        if (!posthog.get_property("__alias")) {
-            posthog.alias(response.id)
-        }
+    const response = await $fetchApi<{
+        posthog: { token: string }
+        id: string
+    }>("/config", {
+        credentials: "include",
+    })
 
-        posthog.capture("$pageview")
+    posthog.init(response.posthog.token, {
+        api_host: window.location.origin + "/t/",
+        ui_host: "https://eu.posthog.com",
+        capture_pageview: false,
+        capture_pageleave: true,
+        autocapture: false,
+        disable_session_recording: false,
+    })
 
-        window.dataLayer.push({
-            event: "identify",
-            category: "sys",
-            noninteraction: true,
-            kuid: response.id,
-        })
+    posthog.register_for_session({
+        from: "SITE",
+    })
 
-        window.dataLayer.push({
-            event: "content-view",
-            "content-name": window.location.pathname + window.location.search,
-            "content-view-name": window.astroClientConfig.slug,
-        })
-
-        localStorage.setItem("KUID", response.id)
-
-        if (window?.location?.search) {
-            const urlParams = new URLSearchParams(window.location.search)
-            const ke = urlParams.get("ke")
-            if (ke) {
-                identify(ke)
-            }
-        }
+    if (!posthog.get_property("__alias")) {
+        posthog.alias(response.id)
     }
 
-    const enabledMarketing = () => {
-        window.dataLayer.push({
-            event: "enable_marketing",
-            category: "sys",
-            noninteraction: true,
-        })
-    }
+    posthog.capture("$pageview")
 
+    window.dataLayer.push({
+        event: "identify",
+        category: "sys",
+        noninteraction: true,
+        kuid: response.id,
+    })
+
+    pushPageView()
+
+    localStorage.setItem("KUID", response.id)
+
+    if (window?.location?.search) {
+        const urlParams = new URLSearchParams(window.location.search)
+        const ke = urlParams.get("ke")
+        if (ke) {
+            identify(ke)
+        }
+    }
+}
+
+const enabledMarketing = () => {
+    if (marketingEnabled) {
+        return
+    }
+    marketingEnabled = true
+
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+        event: "enable_marketing",
+        category: "sys",
+        noninteraction: true,
+    })
+}
+
+// astro:page-load fires on the initial load *and* after every client-side
+// navigation, so GTM/PostHog bootstrap on whichever page the visitor lands on
+// first, and every subsequent page reports a page-view.
+document.addEventListener("astro:page-load", () => {
     if (!isEurope) {
         enabledAnalytics()
         enabledMarketing()
@@ -86,9 +115,19 @@ window.addEventListener("DOMContentLoaded", () => {
         return
     }
 
+    // Consent already handled on an earlier page — just report the page-view.
+    if (consentInitialized) {
+        if (analyticsEnabled) {
+            enabledAnalytics()
+        }
+
+        return
+    }
+
+    consentInitialized = true
     document.documentElement.classList.add("cc--darkmode")
 
-    cookieConsent.run({
+    runCookieConsent({
         mode: isEurope ? "opt-in" : "opt-out",
         manageScriptTags: true,
         disablePageInteraction: true,

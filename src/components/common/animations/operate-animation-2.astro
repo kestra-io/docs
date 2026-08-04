@@ -486,13 +486,6 @@
             }, ms)
             tids.push(t)
         }
-        function clearAll() {
-            for (var i = 0; i < tids.length; i++) {
-                clearTimeout(tids[i])
-            }
-            tids = []
-        }
-
         function resetLang(i) {
             if (i < 0) return
             var card = root.querySelector("#oa2-card-" + LANGS[i].id)

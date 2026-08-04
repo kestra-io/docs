@@ -1,24 +1,46 @@
 ---
-const logos = import.meta.glob("/src/components/enterprise/assets/logos/*.svg", { eager: true });
+import fortune500Logo from "~/components/enterprise/assets/fortune500.svg"
+
+const logos = import.meta.glob(
+    "/src/components/enterprise/assets/logos/*.svg",
+    { eager: true },
+)
 
 const logoList = [
-    "LM", "BHP", "ACXIOM", "ITZ",
-    "T-SYSTEM", "COE", "BATTELLE", "DATAPORT"
-].map(name => ({
-    src: (logos[`/src/components/enterprise/assets/logos/${name}.svg`] as any).default.src,
-    alt: name
-}));
+    "LM",
+    "ACXIOM",
+    "ITZ",
+    "T-SYSTEM",
+    "COE",
+    "BATTELLE",
+    "DATAPORT",
+]
+    .map((name) => ({
+        src: (
+            logos[`/src/components/enterprise/assets/logos/${name}.svg`] as any
+        ).default.src,
+        alt: name,
+    }))
+    .concat({ src: fortune500Logo.src, alt: "Fortune 500" })
 
-const doubled = [...logoList, ...logoList];
+const doubled = [...logoList, ...logoList]
 ---
 
 <div class="logos-wrap">
     <div class="logos">
-        {doubled.map((logo, index) => (
-            <div class:list={["logo-item", { "d-sm-none": index >= logoList.length }]}>
-                <img src={logo.src} alt={logo.alt} />
-            </div>
-        ))}
+        {
+            doubled.map((logo, index) => (
+                <div
+                    class:list={[
+                        "logo-item",
+                        { "d-sm-none": index >= logoList.length },
+                        { invert: logo.alt === "Fortune 500" },
+                    ]}
+                >
+                    <img src={logo.src} alt={logo.alt} />
+                </div>
+            ))
+        }
     </div>
 </div>
 
@@ -34,6 +56,10 @@ const doubled = [...logoList, ...logoList];
             justify-content: center;
             align-items: center;
             gap: 1rem;
+
+            .logo-item.invert img {
+                filter: invert(1);
+            }
 
             @include media-breakpoint-down(md) {
                 gap: 2rem;
@@ -73,4 +99,3 @@ const doubled = [...logoList, ...logoList];
         }
     }
 </style>
-

@@ -95,12 +95,11 @@ Secret plugins must be downloaded from the Kestra registry using the same creden
 | GCP | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-gcp/0.24.0/secret-gcp-0.24.0.jar |
 | Azure | https://registry.kestra.io/maven/io/kestra/ee/secret/secret-azure/0.24.0/secret-azure-0.24.0.jar |
 
-## MinIO Internal Storage
+## S3-compatible internal storage
 
-To enable MinIO storage, install the storage plugin:
+To use S3-compatible object storage (AWS S3, MinIO, Ceph, SeaweedFS, Garage), install the storage plugin:
 
 ```shell
-## Install MinIO internal storage plugin
 kestra plugins install io.kestra.storage:storage-minio:LATEST
 ```
 

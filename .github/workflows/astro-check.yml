@@ -1,0 +1,104 @@
+name: Lint & Astro Check
+
+# Runs `astro check` (TypeScript / Astro diagnostics), oxlint, and the SSR
+# collection-import check on every pull request, reporting findings as inline
+# review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
+# and [imported content]. The job fails if any tool reports anything, keeping
+# the tree clean.
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lint-and-check:
+    name: Lint & Astro Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set up reviewdog
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: latest
+
+      # Capture each tool's output to a file; never fail here (reviewdog decides
+      # pass/fail via -fail-level). astro check output has its ANSI colours
+      # stripped so the errorformat can match.
+      - name: Run astro check
+        run: |
+          set +e
+          npx astro check 2>&1 | sed -E 's/\x1b\[[0-9;]*m//g' | tee astro-check.log
+          exit 0
+
+      # Run oxlint in report mode (checkstyle). Note: the `lint` npm script uses
+      # `oxlint --fix`, which would auto-fix in the ephemeral CI checkout and
+      # under-report; here we want to surface every finding instead, so we run
+      # oxlint directly with the same config but no --fix.
+      - name: Run lint
+        run: |
+          set +e
+          npx oxlint -f checkstyle > lint.xml
+          exit 0
+
+      # Flags non-type "astro:content" imports reachable from non-prerendered
+      # (SSR) pages, which bundle all collection data into the runtime build.
+      # The script emits reviewdog rdjsonl (with the [imported content] prefix
+      # baked into each message) on stdout.
+      - name: Check usage of collection in SSR pages
+        run: |
+          set +e
+          node scripts/check-astro-content-imports.mjs --format=rdjsonl > content-imports.jsonl
+          exit 0
+
+      # Three reviewdog passes (different formats) — run all so every comment
+      # posts, then fail the job if any found something. The [astro]/[lint]
+      # prefixes are injected into the message text so they always appear in the
+      # comment ([imported content] is already baked in by the script).
+      - name: Report via reviewdog
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          status=0
+
+          # astro check prints every non-error diagnostic with the literal word
+          # "warning" (the warning/hint split only shows in its summary), so the
+          # errorformat only needs error + warning patterns.
+          sed -E 's/ - (error|warning) / - \1 [astro] /' astro-check.log \
+            | reviewdog \
+                -efm="%f:%l:%c - %trror %m" \
+                -efm="%f:%l:%c - %tarning %m" \
+                -name="astro check" \
+                -reporter=github-pr-review \
+                -filter-mode=nofilter \
+                -fail-level=any || status=1
+
+          sed -E 's/ message="/ message="[lint] /g' lint.xml \
+            | reviewdog \
+                -f=checkstyle \
+                -name="oxlint" \
+                -reporter=github-pr-review \
+                -filter-mode=nofilter \
+                -fail-level=any || status=1
+
+          # rdjsonl already carries the [imported content] prefix per message.
+          reviewdog \
+              -f=rdjsonl \
+              -name="content-imports" \
+              -reporter=github-pr-review \
+              -filter-mode=nofilter \
+              -fail-level=any < content-imports.jsonl || status=1
+
+          exit $status

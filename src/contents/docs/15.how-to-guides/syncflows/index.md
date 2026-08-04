@@ -29,11 +29,11 @@ Before you start using the `SyncFlows` task, ensure the following prerequisites 
 
 ## Using the `dryRun` property
 
-Here is a system flow that will sync the `git` namespace with flows from the repository in the `flows` directory.
+Here is a sync flow that will sync the `git` namespace with flows from the repository in the `flows` directory.
 
 ```yaml
 id: sync_flows_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_flows
@@ -59,7 +59,7 @@ Set the `dryRun` property to `false` and sync the repository with Kestra:
 
 ```yaml
 id: sync_flows_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_flows
@@ -82,7 +82,7 @@ You can also sync all flows in child namespaces. In the repository, there is a s
 
 ```yaml
 id: sync_flows_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_flows
@@ -110,7 +110,7 @@ A common use case for this task is to set up a routine schedule to keep Kestra i
 
 ```yaml
 id: sync_flows_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_flows
@@ -134,7 +134,7 @@ You can also automate the syncing process by adding a [Webhook trigger](../../05
 
 ```yaml
 id: sync_flows_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_flows

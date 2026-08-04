@@ -1,11 +1,10 @@
-name: Index doc on tag
+name: Index doc
 
 on:
   push:
     branches:
       - main
-    tags:
-      - v*
+      - 'releases/*'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,10 +24,10 @@ jobs:
           if [[  $REF == 'heads/main' ]]; then
             echo "version=v$(curl -s https://api.kestra.io/v1/versions/latest | jq -r '.version')" >> $GITHUB_OUTPUT
             echo "snapshot_version=v$(curl -s https://api.kestra.io/v1/versions/latest?snapshot=true | jq -r '.version')" >> $GITHUB_OUTPUT
-          elif [[  $REF == 'tags/v'* ]]; then
-            echo "version=${REF#tags/}" >> $GITHUB_OUTPUT
+          elif [[  $REF == 'heads/releases/v'* ]]; then
+            echo "version=${REF#heads/releases/}" >> $GITHUB_OUTPUT
           fi
-      - name: Doc indexing webhook for tag
+      - name: Doc indexing webhook
         id: trigger-index
         run: |
           version=${{steps.extract-version.outputs.version}}

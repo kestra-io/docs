@@ -123,8 +123,8 @@ Now if there is an error, say our API endpoint is unreachable, we'll get a Slack
 To get notified on a workflow failure, you can leverage Kestra's built-in notification tasks, including:
 
 - [Slack](/plugins/plugin-slack)
-- [Microsoft Teams](/plugins/plugin-teams)
-- [Email](/plugins/plugin-mail)
+- [Microsoft Teams](/plugins/plugin-microsoft365)
+- [Email](/plugins/plugin-email)
 
 For centralized namespace-level alerting, add a dedicated monitoring workflow with one of the notification tasks above and a Flow trigger. Below is an example workflow that automatically sends a Slack alert as soon as any flow in the namespace `company.team` fails or finishes with warnings.
 

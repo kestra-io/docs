@@ -24,6 +24,8 @@ There are multiple ways to combine Kestra with Git:
 - [Clone](https://kestra.io/plugins/plugin-git/io.kestra.plugin.git.clone) clones a repository directly into a flow so scripts are available at runtime.
 - [TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) synchronizes all namespaces in a tenant, including flows, files, apps, tests, and dashboards.
 - [NamespaceSync](/plugins/plugin-git/io.kestra.plugin.git.namespacesync) keeps a single namespace in sync with a Git repo.
+- [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) (Enterprise Edition) commits and pushes custom blueprints from Kestra to Git.
+- [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) (Enterprise Edition) syncs custom blueprints from Git into Kestra.
 - A custom [CI/CD](../cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
 
 The image below shows how to choose the right pattern based on your needs:
@@ -34,21 +36,21 @@ The following sections cover each pattern and when to use it.
 
 ## Git SyncFlows and SyncNamespaceFiles
 
-The [Git SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) pattern implements GitOps with Git as the single source of truth. Store flows in Git, and run a _system flow_ that automatically syncs changes into Kestra. The [Git SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) pattern mirrors this for namespace files.
+The [Git SyncFlows](/plugins/plugin-git/io.kestra.plugin.git.syncflows) pattern implements GitOps with Git as the single source of truth. Store flows in Git, and run a sync flow that automatically applies changes into Kestra. The [Git SyncNamespaceFiles](/plugins/plugin-git/io.kestra.plugin.git.syncnamespacefiles) pattern mirrors this for namespace files.
 
 Here's how it works:
 - Store flows and namespace files in Git.
-- Schedule a _system flow_ that syncs changes from Git to Kestra.
+- Schedule a sync flow that automatically applies changes from Git to Kestra.
 - Modify files in Git whenever you need to change a flow or namespace file.
-- The system flow syncs those changes, overwriting any conflicting UI edits with the Git version.
+- The sync flow applies those changes, overwriting any conflicting UI edits with the Git version.
 
 This pattern suits teams that treat Git as the single source of truth and prefer not to edit flows or namespace files in the UI. No CI/CD pipeline is required, so it's ideal if you already follow GitOps practices or come from a Kubernetes background.
 
-Here is an example system flow that you can use to declaratively sync changes from Git to Kestra:
+Here is an example sync flow to declaratively apply changes from Git to Kestra:
 
 ```yaml
 id: sync_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: git
@@ -73,7 +75,7 @@ You can also sync namespace files with the example below:
 
 ```yaml
 id: sync_from_git
-namespace: system
+namespace: company.ops
 
 
 tasks:
@@ -91,7 +93,7 @@ You can also trigger this flow with a [GitHub webhook](../../05.workflow-compone
 
 ```yaml
 id: sync_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: git
@@ -134,7 +136,7 @@ Example flow for pushing from Kestra to Git:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -158,7 +160,7 @@ Example flow for pushing namespace files:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -185,7 +187,7 @@ Use this pattern to push to a feature branch and open a pull request for review.
 
 The [Git Clone](/plugins/plugin-git/io.kestra.plugin.git.clone) pattern clones a repository at runtime so you can orchestrate code managed elsewhere, for example:
 - dbt projects via the [dbt CLI task](/plugins/plugin-dbt/dbt-cli/io.kestra.plugin.dbt.cli.dbtcli)
-- Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/cli/io.kestra.plugin.terraform.cli.terraformcli), [OpenTofu CLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli), [Terragrunt CLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli), or [Ansible CLI](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli)
+- Infrastructure deployments via [Terraform CLI](/plugins/plugin-terraform/io.kestra.plugin.terraform.cli.terraformcli), [OpenTofu CLI](/plugins/plugin-opentofu/io.kestra.plugin.opentofu.cli.opentofucli), [Terragrunt CLI](/plugins/plugin-terragrunt/io.kestra.plugin.terragrunt.cli.terragruntcli), or [Ansible CLI](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli)
 - Docker builds via the [Docker Build task](/plugins/plugin-docker/io.kestra.plugin.docker.build)
 
 ## Git TenantSync and NamespaceSync
@@ -195,10 +197,13 @@ Both [Git TenantSync](/plugins/plugin-git/io.kestra.plugin.git.tenantsync) and [
 - **`TenantSync`** – synchronizes **all namespaces** in a tenant, including flows, files, apps, tests, dashboards, and custom blueprints.
   - Requires `kestraUrl` and `auth` so the task can call Kestra's API with tenant-wide RBAC.
   - Useful when you need to back up the entire tenant to Git and promote environments through pull requests.
+  - When `sourceOfTruth: GIT`, namespaces discovered in Git that have content are created automatically.
 
-- **`NamespaceSync`** – synchronizes objects within a **single namespace** with your Git repository.
+- **`NamespaceSync`** – synchronizes flows and namespace files within a **single namespace** with your Git repository. In Enterprise Edition, also syncs apps and unit tests.
   - Requires the `namespace` property but not `kestraUrl` or `auth`; it relies on namespace-level RBAC and can be run by any user with sufficient permissions.
   - Ideal for teams that sync one namespace per repository, allowing owners to manage their own syncs.
+  - The flow running this task does not need to live in the namespace being synced — a flow in `company.ops` can sync `company.team`.
+  - **Namespace creation**: When `sourceOfTruth: GIT`, the target namespace is created automatically if it does not exist — in both OSS and Enterprise Edition. When `sourceOfTruth: KESTRA`, the namespace must already exist.
 
 Both plugins support:
 - `sourceOfTruth` (`GIT` or `KESTRA`) to define the update strategy.
@@ -212,7 +217,7 @@ Example usage of the `TenantSync` task:
 
 ```yaml
 id: tenant_git_sync
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: tenant
@@ -233,7 +238,7 @@ Example usage of the `NamespaceSync` task:
 
 ```yaml
 id: namespace_git_sync
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: namespace
@@ -260,7 +265,13 @@ Both `TenantSync` and `NamespaceSync` expect a specific folder structure inside 
 | Dashboards | `_global/dashboards/<dashboardId>.yaml` |
 | Custom blueprints | `_global/blueprints/<blueprintId>.yaml` |
 
-If you set `gitDirectory: monorepo`, the full path for a flow in the `company.team` namespace becomes `monorepo/company.team/flows/my-flow.yaml`.
+| `gitDirectory` | Namespace | Expected Git path |
+| --- | --- | --- |
+| (not set) | `company` | `company/flows/my-flow.yaml` |
+| `monorepo` | `company.ops` | `monorepo/company.ops/flows/flow.yaml` |
+| `projectA` | `company.team` | `projectA/company.team/flows/flow.yaml` |
+
+A dotted namespace such as `company.team` maps to a folder **literally named `company.team`** in Git — not to a nested `company/team` path.
 
 #### How resource identity works
 
@@ -294,3 +305,73 @@ tasks:
     onInvalidSyntax: WARN
     # ... other properties
 ```
+
+## Git PushBlueprints and SyncBlueprints
+
+These tasks are available in the Enterprise Edition only.
+
+[PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) and [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) bring Git version control to custom blueprints, following the same push/sync pattern as flows and namespace files. Because blueprints are tenant-scoped rather than namespace-scoped, both tasks operate across all blueprints in the tenant regardless of the flow's own namespace.
+
+**`PushBlueprints`** commits all custom blueprints from Kestra to a Git repository. Blueprints are stored under `_blueprints/` by default, with one YAML file per blueprint:
+
+```yaml
+id: push_blueprints
+namespace: company.ops
+tasks:
+  - id: commit_and_push
+    type: io.kestra.plugin.ee.git.PushBlueprints
+    url: https://github.com/kestra-io/scripts
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    branch: main
+    commitMessage: "push blueprints from {{ flow.namespace ~ '.' ~ flow.id }}"
+```
+
+**`SyncBlueprints`** treats Git as the source of truth and applies blueprint changes from Git into Kestra. Set `delete: true` to remove blueprints present in Kestra but absent in Git — this is destructive, so use `dryRun: true` first to preview changes:
+
+```yaml
+id: sync_blueprints_from_git
+namespace: company.ops
+tasks:
+  - id: git
+    type: io.kestra.plugin.ee.git.SyncBlueprints
+    delete: true
+    url: https://github.com/kestra-io/blueprints
+    branch: main
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    dryRun: true
+triggers:
+  - id: every_full_hour
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+```
+
+## Git SyncApps and SyncUnitTests
+
+These tasks are available in the Enterprise Edition only.
+
+[SyncApps](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncapps) and [SyncUnitTests](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncunittests) treat Git as the source of truth for apps and unit tests, following the same sync pattern as flows and namespace files.
+
+Both tasks accept an optional `namespace` property. When set, only apps or unit tests in that namespace and its child namespaces are synced, and with `delete: true` only those resources are eligible for deletion. When left empty, the task operates across all apps or unit tests in the tenant, which is the default. Set `namespace` to keep one-repo-per-namespace setups safe to run with `delete: true` without touching resources owned by other namespaces.
+
+```yaml
+id: sync_apps_from_git
+namespace: company.ops
+tasks:
+  - id: git
+    type: io.kestra.plugin.ee.git.SyncApps
+    namespace: company.team
+    delete: true
+    url: https://github.com/my-org/company-team
+    branch: main
+    username: git_username
+    password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
+    dryRun: true
+triggers:
+  - id: every_full_hour
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 * * * *"
+```
+
+Dashboards are not attached to a namespace, so [SyncDashboards](/plugins/plugin-git/io.kestra.plugin.git.syncdashboards) has no namespace scoping and operates across all dashboards in the tenant.

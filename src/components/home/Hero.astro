@@ -8,19 +8,10 @@ import SelfHostedIcon from "./assets/hero/self-hosted.svg"
 import CloudIcon from "./assets/hero/cloud.svg"
 import HeroAnimation from "./hero-animation.astro"
 import AnimatedWord from "./AnimatedWord.vue"
-import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 import LogoBar from "./LogoBar.astro"
-import LogoCarousel from "~/components/common/LogoCarousel.astro"
-import JPMorganIcon from "./assets/companies/jpmorgan.svg"
-import TSystemIcon from "./assets/companies/t-system.svg"
-import XiaomiIcon from "./assets/companies/xiaomi.svg"
-import BloombergIcon from "./assets/companies/bloomberg.svg"
-import FilaIcon from "./assets/companies/fila.svg"
-import AppleIcon from "./assets/companies/apple.svg"
-import AmdocsIcon from "./assets/companies/amdocs.svg"
 ---
 
 <section aria-labelledby="hero">
@@ -109,9 +100,14 @@ import AmdocsIcon from "./assets/companies/amdocs.svg"
         left: 0;
         width: 100%;
         height: 100%;
-        background: url("./assets/hero/bg-mobile.png") no-repeat center center;
-        background-size: cover;
         z-index: 0;
+        /* scoped to the mobile breakpoint so desktop browsers never download
+         * this image (it is the mobile LCP element, preloaded in index.astro) */
+        @include media-breakpoint-down(md) {
+            background: url("./assets/hero/bg-mobile.webp") no-repeat center
+                center;
+            background-size: cover;
+        }
         @include media-breakpoint-up(md) {
             display: none;
         }

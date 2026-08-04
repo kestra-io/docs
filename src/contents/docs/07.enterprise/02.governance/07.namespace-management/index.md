@@ -11,7 +11,7 @@ docId: namespace.management
 How to manage secrets, variables, and plugin defaults at the Namespace level.
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/As4y2oliD_8?si=d-2AsAuqlwaBFuEX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/As4y2oliD_8?si=d-2AsAuqlwaBFuEX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Namespace management – secure configuration

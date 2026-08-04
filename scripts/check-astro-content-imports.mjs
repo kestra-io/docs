@@ -6,7 +6,11 @@
  *
  * Only `import type { ... } from "astro:content"` is allowed.
  *
- * Usage: node scripts/check-astro-content-imports.mjs
+ * Usage: node scripts/check-astro-content-imports.mjs [--format=rdjsonl]
+ *
+ * With `--format=rdjsonl`, machine-readable reviewdog diagnostics are written
+ * to stdout (one JSON object per line) and human-readable progress goes to
+ * stderr — pipe it into `reviewdog -f=rdjsonl` to post PR comments.
  */
 
 import fs from "fs"
@@ -17,6 +21,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, "..")
 const srcDir = path.join(rootDir, "src")
 const pagesDir = path.join(srcDir, "pages")
+
+/** Output format: "human" (default) or "rdjsonl" (reviewdog). */
+const format = process.argv.includes("--format=rdjsonl") ? "rdjsonl" : "human"
+
+/**
+ * Convert a 0-based character offset in `raw` to a 1-based line/column.
+ * @param {string} raw
+ * @param {number} offset
+ */
+function offsetToLineCol(raw, offset) {
+    let line = 1
+    let column = 1
+    for (let i = 0; i < offset && i < raw.length; i++) {
+        if (raw[i] === "\n") {
+            line++
+            column = 1
+        } else {
+            column++
+        }
+    }
+    return { line, column }
+}
 
 /**
  * All ~/something paths resolve under src/
@@ -153,7 +179,17 @@ function isTypeOnlyImport(statement) {
 /** Files already fully explored (avoid re-checking shared dependencies). */
 const visited = new Set()
 
-let hasWarnings = false
+/**
+ * @typedef {Object} Violation
+ * @property {string} filePath  Absolute path to the offending file.
+ * @property {number} line      1-based line of the import statement.
+ * @property {number} column    1-based column of the import statement.
+ * @property {string[]} chain   Import chain (pages → … → offending file).
+ * @property {string} statement Full import statement text.
+ */
+
+/** @type {Violation[]} */
+const violations = []
 
 /**
  * Recursively check a file and all its local dependencies.
@@ -177,15 +213,19 @@ function checkFile(filePath, chain) {
     for (const { specifier, statement } of imports) {
         if (specifier === "astro:content") {
             if (!isTypeOnlyImport(statement)) {
-                const fullChain = [...chain, filePath]
-                    .map((f) => path.relative(rootDir, f))
-                    .join("\n      → ")
-                console.warn(
-                    `WARNING: non-type import from "astro:content" detected`,
-                )
-                console.warn(`  via: ${fullChain}`)
-                console.warn(`  import: ${statement.trim()}\n`)
-                hasWarnings = true
+                // Locate the statement in the raw file for line/column info.
+                const offset = raw.indexOf(statement)
+                const { line, column } =
+                    offset >= 0
+                        ? offsetToLineCol(raw, offset)
+                        : { line: 1, column: 1 }
+                violations.push({
+                    filePath,
+                    line,
+                    column,
+                    chain: [...chain, filePath],
+                    statement,
+                })
             }
             // Either way, don't try to resolve "astro:content" as a file
             continue
@@ -234,7 +274,11 @@ function isNotPrerendered(filePath) {
 
 const pages = collectPages(pagesDir).filter(isNotPrerendered)
 
-console.log(
+// In rdjsonl mode, progress/summary must go to stderr so stdout stays valid
+// reviewdog input.
+const info = format === "rdjsonl" ? console.error : console.log
+
+info(
     `Scanning ${pages.length} non-prerendered page(s) in src/pages and their dependencies…\n`,
 )
 
@@ -242,14 +286,50 @@ for (const page of pages) {
     checkFile(page, [])
 }
 
-if (hasWarnings) {
-    console.error(
-        `\nFAIL: non-type import(s) from "astro:content" found in non-prerendered pages.\n` +
-            `      Replace them with "import type { … }" or move them to prerendered pages.`,
-    )
+if (format === "rdjsonl") {
+    for (const v of violations) {
+        const relPath = path.relative(rootDir, v.filePath)
+        const chainStr = v.chain.map((f) => path.relative(rootDir, f)).join(" → ")
+        const message =
+            `[imported content] Non-type import from "astro:content" in a non-prerendered ` +
+            `(SSR) page or one of its dependencies — this bundles all collection data into ` +
+            `the runtime build. Use \`import type { … }\` instead, or move it to a ` +
+            `prerendered page.\n\nReachable via: ${chainStr}\nImport: ${v.statement.trim()}`
+        process.stdout.write(
+            JSON.stringify({
+                message,
+                location: {
+                    path: relPath,
+                    range: {
+                        start: { line: v.line, column: v.column },
+                    },
+                },
+                severity: "WARNING",
+            }) + "\n",
+        )
+    }
+}
+
+if (violations.length > 0) {
+    if (format !== "rdjsonl") {
+        for (const v of violations) {
+            const fullChain = v.chain
+                .map((f) => path.relative(rootDir, f))
+                .join("\n      → ")
+            console.warn(
+                `WARNING: non-type import from "astro:content" detected`,
+            )
+            console.warn(`  via: ${fullChain}`)
+            console.warn(`  import: ${v.statement.trim()}\n`)
+        }
+        console.error(
+            `\nFAIL: non-type import(s) from "astro:content" found in non-prerendered pages.\n` +
+                `      Replace them with "import type { … }" or move them to prerendered pages.`,
+        )
+    }
     process.exit(1)
 } else {
-    console.log(
+    info(
         `OK: no non-type imports from "astro:content" found in src/pages or their dependencies.`,
     )
 }

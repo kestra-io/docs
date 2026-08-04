@@ -46,7 +46,7 @@ businessValue:
       - "High licensing costs tied to VMs and users; migration risk with Broadcom acquisition"
     shadowColor: "#00B135"
     bulletColor: "#10B981"
-  footerText: "Organizations like BHP and Capgemini replaced VMware Aria Automation (vRA/vRO) citing poor developer experience, ambiguous logs, and high licensing costs as the main drivers. Kestra provides the same vSphere-native VM lifecycle management—with Terraform, Ansible, and multi-cloud support added—in a Git-native platform that works in air-gapped, hybrid, and multi-cloud environments."
+  footerText: "Fortune 500 enterprises and Capgemini replaced VMware Aria Automation (vRA/vRO) citing poor developer experience, ambiguous logs, and high licensing costs as the main drivers. Kestra provides the same vSphere-native VM lifecycle management—with Terraform, Ansible, and multi-cloud support added—in a Git-native platform that works in air-gapped, hybrid, and multi-cloud environments."
 
 setupSpeed:
   title: "Time to First Infrastructure Automation Workflow"
@@ -193,7 +193,7 @@ featureGrid:
 
 testimonials:
   - quote: "We replaced VMware Aria Automation because debugging vRO workflows was a nightmare—ambiguous errors, JavaScript everywhere, and no way to version-control our provisioning logic. Kestra gave us declarative YAML workflows in Git, clear logs, and multi-cloud support we couldn't get from vRA."
-    author: "Platform Engineering Lead @ BHP"
+    author: "Platform Engineering Lead @ Fortune 500 Mining Company"
     kpis:
       - value: "60%"
         name: "Reduction in provisioning time"
@@ -201,7 +201,7 @@ testimonials:
         name: "Platform instead of vRA + vRO + separate tools"
       - value: "100%"
         name: "Audit coverage across all environments"
-    storyLink: "/use-cases/stories/securing-hybrid-cloud-automation-across-it-and-ot-with-kestra"
+    storyLink: "/customers/fortune-500-company"
 
 platformStrengths:
   title: "Kestra Is Built for the Full Infrastructure Lifecycle"
@@ -209,7 +209,7 @@ platformStrengths:
     - title: "Replace vRA/vRO With Better DX"
       description: "Kestra handles catalog-driven VM provisioning with dynamic Apps, approval gates, and vSphere integration—everything vRA does, plus Terraform, Ansible, and multi-cloud support. One tool, one contract, one set of logs. No JavaScript, no proprietary APIs."
     - title: "Git-Native from Day One"
-      description: "Every workflow is YAML you can commit, review in a pull request, and deploy through CI/CD. BHP's team manages all their infrastructure provisioning logic as code—versioned, testable, and auditable. No hidden state in a portal, no manual change tracking."
+      description: "Every workflow is YAML you can commit, review in a pull request, and deploy through CI/CD. Fortune 500 platform teams manage all their infrastructure provisioning logic as code—versioned, testable, and auditable. No hidden state in a portal, no manual change tracking."
     - title: "Works Anywhere: Cloud, On-Prem, Air-Gapped"
       description: "Deploy Kestra on Kubernetes, Docker, or bare metal. Run remote workers close to vSphere targets for hybrid environments. Air-gap deployments supported for regulated industries—no external connectivity required. ITZBund and the Austrian Ministry of Defense run Kestra fully disconnected."
 
@@ -235,13 +235,13 @@ decisionGuide:
 
 commonQuestions:
   - question: "How does Kestra compare to VMware Aria Automation (vRA/vRO)?"
-    answer: "VMware Aria Automation focuses on catalog-driven VM and service provisioning tightly coupled to vSphere infrastructure. Workflows in vRO are JavaScript-based with proprietary APIs, difficult to version, and prone to ambiguous error messages. Kestra replaces vRA/vRO with declarative YAML workflows that work across VMware, AWS, Azure, GCP, and Kubernetes—with proper Git integration, clear logs, and self-service Apps that don't require a proprietary portal. Organizations like BHP and Capgemini have replaced vRA/vRO with Kestra specifically for better developer experience, cleaner logs, and Git-native governance."
+    answer: "VMware Aria Automation focuses on catalog-driven VM and service provisioning tightly coupled to vSphere infrastructure. Workflows in vRO are JavaScript-based with proprietary APIs, difficult to version, and prone to ambiguous error messages. Kestra replaces vRA/vRO with declarative YAML workflows that work across VMware, AWS, Azure, GCP, and Kubernetes—with proper Git integration, clear logs, and self-service Apps that don't require a proprietary portal. Fortune 500 enterprises and Capgemini have replaced vRA/vRO with Kestra specifically for better developer experience, cleaner logs, and Git-native governance."
   - question: "Does Kestra support VMware vSphere integrations?"
     answer: "Yes. Kestra has native vSphere plugin support for VM lifecycle management—provisioning, snapshotting, resizing, and decommissioning. Combined with Terraform, Ansible, and PowerShell tasks in the same workflow, Kestra can replicate and extend everything vRA/vRO does for vSphere environments. You keep deep vSphere integration while gaining multi-cloud flexibility and a modern developer experience."
   - question: "How does Kestra handle self-service provisioning forms?"
     answer: "Kestra Apps provide dynamic, data-backed forms for self-service provisioning. Forms can be populated from APIs, CMDBs, or vCenter data—giving users dropdowns with live infrastructure data (available datastores, network segments, resource pools) rather than static values. Approval gates are inline YAML tasks that pause the workflow for human review before resources are created. This replaces the vRA service catalog with a single, flexible mechanism that works across any cloud."
   - question: "What happens to existing vRO workflows when migrating to Kestra?"
-    answer: "Kestra's AI Copilot can help translate vRO JavaScript workflows into YAML. For complex vRO workflows, Kestra's professional services team has a proven migration playbook—typically converting vRO workflows to Kestra YAML while preserving business logic. Many organizations (including BHP) have migrated their entire vRA/vRO catalog to Kestra in phased migrations, running both systems in parallel during the transition period."
+    answer: "Kestra's AI Copilot can help translate vRO JavaScript workflows into YAML. For complex vRO workflows, Kestra's professional services team has a proven migration playbook—typically converting vRO workflows to Kestra YAML while preserving business logic. Many organizations (including Fortune 500 enterprises) have migrated their entire vRA/vRO catalog to Kestra in phased migrations, running both systems in parallel during the transition period."
   - question: "How does Kestra address the Broadcom/VMware pricing concern?"
     answer: "Since Broadcom's acquisition of VMware, many organizations have seen significant licensing cost increases. Kestra's pricing is based on compute infrastructure (instances and workers), not per-VM or per-user counts—which typically results in substantial savings as vSphere environments grow. Kestra also has no vendor lock-in: workflows are YAML files in Git that can run on any infrastructure."
   - question: "Is Kestra suitable for air-gapped and regulated environments?"

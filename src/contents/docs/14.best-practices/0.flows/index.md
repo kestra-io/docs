@@ -46,7 +46,7 @@ To avoid this, consider breaking the workflow into subflows using the [Subflow t
 Some tasks allow you to fetch outputs from previous tasks and reuse them in subsequent ones.
 While powerful, this feature **should not be used to transfer large amounts of data**.
 
-For example, the [Query](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.query) task in BigQuery has a `fetch` property that retrieves query results as an output attribute. If the query returns a large dataset, the result will be stored in the execution context — meaning it will be serialized and deserialized on each task state change, severely impacting performance.
+For example, the [Query](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.query) task in BigQuery has a `fetch` property that retrieves query results as an output attribute. If the query returns a large dataset, the result will be stored in the execution context — meaning it will be serialized and deserialized on each task state change, severely impacting performance.
 
 This feature is best suited for small datasets, such as querying a few rows to feed into a [Switch](/plugins/core/flow/io.kestra.plugin.core.flow.switch) or [ForEach](/plugins/core/flow/io.kestra.plugin.core.flow.foreach) task.
 

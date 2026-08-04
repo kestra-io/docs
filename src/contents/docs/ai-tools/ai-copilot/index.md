@@ -44,7 +44,7 @@ kestra:
         display-name: Gemini - Private
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.1-flash-lite
           api-key: YOUR_GEMINI_API_KEY
       - id: gpt
         display-name: Open AI
@@ -258,7 +258,7 @@ kestra:
         display-name: Google Gemini
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.1-flash-lite
           api-key: YOUR_GEMINI_API_KEY
 ```
 
@@ -272,7 +272,7 @@ kestra:
         display-name: Google Vertex AI
         type: googlevertexai
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.1-flash-lite
           project: GOOGLE_PROJECT_ID
           location: GOOGLE_CLOUD_REGION
           endpoint: VERTEX-AI-ENDPOINT

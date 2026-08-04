@@ -9,12 +9,8 @@ description: Explore official Kestra SDKs for Java, Python, and Node.js to inter
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 
-Interact with Kestra's API via language SDKs.
+Interact with Kestra's API via language SDKs. There are [official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, JavaScript, and Python.
 
-## Interact with Kestra using language SDKs
-
-There are [official Kestra SDKs](https://github.com/kestra-io/client-sdk) for Java, JavaScript, and Python. These SDKs provide a convenient way to interact with Kestra's API and build custom applications on top of it.
-
-SDK-based plugins now support an `DEFAULT`/`AUTO` authentication mode that pulls a default service account globally or from the current [Namespace](../../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins) (or [Tenant](../../07.enterprise/02.governance/tenants/index.md#default-service-account-for-sdk-plugins)). Configure those defaults in the UI, or set a global fallback under `tasks.sdk.authentication` in your [Configuration Basics](../../configuration/01.configuration-basics/index.md).
+SDK-based plugins support a `DEFAULT`/`AUTO` authentication mode that pulls a default service account globally or from the current [Namespace](../../07.enterprise/02.governance/07.namespace-management/index.md#default-service-account-for-sdk-plugins) (or [Tenant](../../07.enterprise/02.governance/tenants/index.md#default-service-account-for-sdk-plugins)). Configure those defaults in the UI, or set a global fallback under `tasks.sdk.authentication` in your [Configuration Basics](../../configuration/01.configuration-basics/index.md).
 
 <ChildCard />

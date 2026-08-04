@@ -1,8 +1,8 @@
 ---
 title: "Prompt Chaining: Guide to LLM Complex Tasks"
 description: "Break down complex LLM tasks into manageable steps with prompt chaining. This guide explains how to implement the technique for improved accuracy and traceability."
-metaTitle: "Prompt Chaining Guide for LLM Complex Tasks"
-metaDescription: "Master prompt chaining to break down complex LLM tasks into manageable steps. Enhance AI accuracy, traceability, and build robust generative AI workflows."
+metaTitle: "Prompt Chaining for LLMs: A Complete Guide | Kestra"
+metaDescription: "Master prompt chaining to break complex LLM tasks into manageable steps. Learn techniques, best practices, and how to orchestrate AI workflows with Kestra."
 tag: ai
 date: 2026-05-13
 faq:
@@ -15,7 +15,7 @@ faq:
   - question: "What are the benefits of implementing prompt chaining?"
     answer: "Implementing prompt chaining offers several benefits, including the ability to tackle highly complex tasks, improved accuracy and reduced hallucination, enhanced traceability of the LLM's reasoning process, and greater flexibility for iterative refinement and human-in-the-loop interventions."
   - question: "Can prompt chaining be used with any Large Language Model?"
-    answer: "Yes, the principles of prompt chaining are model-agnostic and can be applied to any Large Language Model, including commercial APIs like OpenAI's GPT series, Anthropic's Claude, Google's Gemini, or open-source models like Mistral and Ollama. The effectiveness may vary based on the model's capabilities."
+    answer: "Yes, the principles of prompt chaining are model-agnostic and can be applied to any Large Language Model, including commercial APIs like OpenAI's GPT series, Anthropic's Claude, Google's Gemini, or open-source models like Mistral and Meta's Llama (runnable locally via tools like Ollama). The effectiveness may vary based on the model's capabilities."
   - question: "How does Kestra support prompt chaining workflows?"
     answer: "Kestra provides a declarative orchestration platform where each step of a prompt chain can be defined as a task in a YAML workflow. This allows for seamless passing of outputs as inputs, integration with various LLM providers via dedicated plugins, and advanced features like error handling, retries, and human-in-the-loop approvals for robust AI workflows."
   - question: "What is the difference between structured and unstructured prompt chains?"
@@ -45,7 +45,7 @@ Prompt chaining matters because it directly addresses these challenges:
 *   **Enhances Control and Predictability:** By breaking down the process, you gain granular control over the workflow. You can validate, transform, or inject data between steps, ensuring the process stays on track.
 *   **Mitigates Context Window Limitations:** Instead of feeding a massive context to the LLM all at once, you can pass refined summaries or extracted data between prompts, making more efficient use of the available context.
 
-This structured approach is fundamental to moving beyond simple Q&A bots and toward robust, automated systems. It's a foundational concept for platforms offering [AI automation](https://kestra.io/ai-automation) and is a key reason [why Kestra](https://kestra.io/docs/why-kestra) is designed to handle sequential, stateful workflows.
+This structured approach is fundamental to moving beyond simple Q&A bots and toward robust, automated systems. It's a foundational concept for any [AI pipeline](/resources/ai/ai-pipeline) and is a key reason [why Kestra](https://kestra.io/docs/why-kestra) is designed to handle sequential, stateful workflows.
 
 ## How does prompt chaining work?
 
@@ -157,7 +157,7 @@ From content creation to data processing, prompt chains automate multi-step proc
 4.  If the sentiment is positive, use a third prompt to draft a social media post about it.
 5.  Post the draft to a Slack channel for approval.
 
-This pattern is especially powerful when combined with techniques like Retrieval-Augmented Generation (RAG), where one step retrieves relevant documents and the next uses them to generate an informed response. Kestra provides native support for building these complex [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows).
+This pattern is especially powerful when combined with techniques like Retrieval-Augmented Generation (RAG), where one step retrieves relevant documents and the next uses them to generate an informed response. Learn more about how to structure a [RAG pipeline](/resources/ai/rag-pipeline) or dive into the broader [RAG architecture](/resources/ai/rag-architecture) patterns. Kestra provides native support for building these complex [RAG workflows](https://kestra.io/docs/ai-tools/ai-rag-workflows).
 
 ### Human-in-the-loop prompt chaining
 
@@ -219,7 +219,7 @@ In a production environment, observability is key. You need to monitor the perfo
 *   **Error Tracking:** Alerts and notifications when a step in the chain fails.
 *   **Performance Metrics:** Dashboards to track execution times, success rates, and token usage.
 
-Kestra provides a rich UI for inspecting [executions](https://kestra.io/docs/ui/executions) and offers integrations for comprehensive [monitoring](https://kestra.io/docs/administrator-guide/monitoring).
+Kestra provides a rich UI for inspecting [executions](https://kestra.io/docs/ui/executions) and offers integrations for comprehensive [monitoring](https://kestra.io/docs/administrator-guide/monitoring). Systematic evaluation of your chained outputs is covered in depth in the [LLM evaluation](/resources/ai/llm-evaluation) guide.
 
 ## Prompt chaining vs. other prompt engineering techniques
 
@@ -245,7 +245,7 @@ For complex tasks, a chain can be more token-efficient than a single large promp
 
 Prompt chaining is not an isolated technique; it's a foundational pattern that integrates with other advanced AI strategies. It's the mechanism you use to implement:
 *   **Retrieval-Augmented Generation (RAG):** A two-step chain of "retrieve documents" then "synthesize an answer."
-*   **Agentic AI:** An [AI agent](https://kestra.io/docs/ai-tools/ai-agents) is essentially executing a dynamic prompt chain, where it decides the next prompt (or "tool use") based on the output of the previous one.
+*   **Agentic AI:** An [AI agent](https://kestra.io/docs/ai-tools/ai-agents) is essentially executing a dynamic prompt chain, where it decides the next prompt (or "tool use") based on the output of the previous one. For a deeper look at how these systems behave at scale, see [agentic orchestration](/resources/ai/agentic-orchestration) and [multi-agent systems](/resources/ai/multi-agent-system).
 
 ## Future trends in prompt chaining and AI
 

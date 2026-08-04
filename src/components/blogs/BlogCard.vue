@@ -2,7 +2,7 @@
     <div class="cards">
         <a :href="blog.path" :target="target">
             <div class="img-container">
-                <img :src="blog.image" :alt="blog.title" />
+                <img :src="blog.image" :alt="blog.title" width="1600" height="900" />
             </div>
             <div class="content">
                 <small class="meta">

@@ -15,6 +15,8 @@ A list of terms useful for understanding Kestra and declarative orchestration.
     - [Approval Apps](#approval-apps) - Apps that enable forms for approving or rejecting paused workflows.
     <span id="form-apps"></span>
     - [Form Apps](#form-apps) - Apps that allow you to create forms that can trigger workflows with input parameters.
+<span id="assets-lineage"></span>
+- [Assets & Lineage](#assets-lineage) - [Assets](../07.enterprise/02.governance/01.assets/index.md) keep a live inventory of the resources your workflows interact with, such as database tables, files, or datasets. Lineage tracks how those assets connect to each other across workflow runs — which execution created or modified each one — and can be shipped to providers like OpenLineage.
 
 ## B
 
@@ -31,6 +33,10 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 - [Connector sprawl](#connector-sprawl) - the uncontrolled proliferation of integrations, or connectors, in an organization. [Connector sprawl](https://kestra.io/docs/tutorial/outputs#pass-outputs-between-tasks) can create security, operational, and maintenance issues. Kestra's architecture around outputs and internal storage works to prevent these risks. 
 <span id="context"></span>
 - [Context](#context) - typically referred to as "execution context" or a collection of variables and metadata that allows for dynamic rendering of flow properties during a workflow's execution.
+<span id="control-plane"></span>
+- [Control plane](#control-plane) - the centralized layer that orchestrates and manages workflows: the [server components](../08.architecture/02.server-components/index.md) responsible for scheduling, coordinating, and exposing the API and UI (Scheduler, Executor, Webserver). It governs *what* runs and *when*, while [Workers](#workers) execute the actual tasks and handle your data.
+<span id="cron"></span>
+- [Cron](#cron) - a standard syntax for expressing recurring schedules as a string of time fields (e.g. `0 9 * * *` for every day at 9am). Kestra uses cron expressions in the [Schedule trigger](../05.workflow-components/07.triggers/01.schedule-trigger/index.md) to run flows at precise times.
 
 ## D
 
@@ -65,6 +71,8 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 
 <span id="inputs"></span>
 - [Inputs](#inputs) - dynamic values passed to the flow at runtime. Flow inputs are stored in the execution context and accessed with `{{ inputs.parameter_name }}`.Learn more about [inputs](../05.workflow-components/05.inputs/index.md).
+<span id="instance"></span>
+- [Instance](#instance) - a single deployment of Kestra, whether self-hosted or running on Kestra Cloud. On Enterprise Edition, the [Instance](../07.enterprise/05.instance/index.mdx) menu provides a centralized view of the deployment's health, upgrades, maintenance mode, and global settings.
 
 ## K
 
@@ -102,6 +110,8 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 
 ## S
 
+<span id="scim"></span>
+- [SCIM](#scim) - System for Cross-domain Identity Management, an open standard for automating the provisioning of users and groups. Kestra uses [SCIM directory sync](../07.enterprise/03.auth/scim/index.mdx) to synchronize users and groups from identity providers like Okta, Azure AD, and Keycloak.
 <span id="secrets"></span>
 - [Secrets](#secrets) - sensitive information stored securely. [Secrets](../06.concepts/04.secret/index.md) can be retrieved and used within Kestra flows using the `secret()` function (e.g., `{{ secret('API_TOKEN') }}`).
 <span id="subflow"></span>
@@ -127,3 +137,8 @@ A list of terms useful for understanding Kestra and declarative orchestration.
 - [Worker group](#worker-group) - offload computer-intensive tasks to dedicated workers, but at a broader scope than task runners. Available in [Enterprise Edition](../07.enterprise/04.scalability/worker-group/index.md).
 <span id="workers"></span>
 - [Workers](#workers) - a Kestra server component responsible for executing all runnable tasks and polling triggers.
+
+## Y
+
+<span id="yaml"></span>
+- [YAML](#yaml) - a human-readable data serialization language used to define Kestra flows. Its declarative, indentation-based syntax describes the tasks, triggers, and properties of a workflow without requiring code. Learn more at [yaml.org](https://yaml.org).

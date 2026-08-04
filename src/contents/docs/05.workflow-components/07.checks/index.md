@@ -19,7 +19,7 @@ Checks are useful to enforce business rules on inputs (e.g., allowed values, dat
 
 Each item in `checks` supports the following properties:
 
-- `condition` *(required)*: Pebble expression that must evaluate to a boolean. For example, you can design checks against Inputs, Key-Value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components.
+- `condition` *(required)*: Pebble expression that must evaluate to a boolean `true`. For example, you can design checks against inputs, key-value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components.
 - `message` *(required)*: Text displayed when the condition is false.
 - `style` *(optional, default `INFO`)*: Visual style for the message. One of `ERROR`, `SUCCESS`, `WARNING`, `INFO`.
 - `behavior` *(optional, default `BLOCK_EXECUTION`)*: How the flow should react when the condition is false. One of:
@@ -36,6 +36,13 @@ When clicking **Execute**, with an `ERROR` message display set in the flow code,
 ### Multiple checks
 
 If several checks fail, the most restrictive behavior wins in this priority order: `BLOCK_EXECUTION` → `FAIL_EXECUTION` → `CREATE_EXECUTION`. This lets you mix hard stops with softer warnings in the same flow.
+
+### Evaluation behavior
+
+Keep these rules in mind when writing `condition` expressions:
+
+- **The condition must evaluate to a boolean `true`.** Only a real boolean passes — not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
+- **An unevaluatable condition always blocks.** If the condition cannot be evaluated (for example, an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, regardless of the `behavior` and `style` you declared. Fix the expression and reference only variables that exist at validation time to restore your declared behavior.
 
 ## Examples
 

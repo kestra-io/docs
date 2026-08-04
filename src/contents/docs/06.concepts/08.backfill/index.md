@@ -47,8 +47,8 @@ To backfill the missed executions, go to the **Triggers** tab on the Flow's deta
 
 You can then select the start and end date for the backfill. Additionally, you can set custom labels for the backfill executions to help you identify them in the future.
 
-<div>
-  <iframe width="700" height="400" src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/iVTrBdYGbew?si=3GFA0TOZPhOIKc-Q" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 You can pause and resume the backfill process at any time:

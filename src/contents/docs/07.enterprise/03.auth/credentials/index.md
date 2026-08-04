@@ -19,7 +19,7 @@ Many APIs are moving away from long-lived static API keys toward **short-lived t
 
 For simple static values (API keys, usernames/passwords), use [Secrets](../../../06.concepts/04.secret/index.md) directly.
 
-Sensitive material used by a credential (client secrets, private keys, certificates) is referenced via [Secrets](../../../06.concepts/04.secret/index.md) so it can be stored in external or read-only secret managers (e.g., [Secrets Manager](../../02.governance/secrets-manager/index.md) or [Read-only Secrets](../../02.governance/read-only-secrets/index.md)) and never appears in plain text in the credential config.
+Sensitive material used by a credential (client secrets, private keys, certificates) is referenced via [Secrets](../../../06.concepts/04.secret/index.md) so it can be stored in external or read-only secret managers (e.g., [Secrets Manager](../../02.governance/secrets-manager/index.md) or [Read-only Secrets](../../02.governance/secrets-manager/index.md)) and never appears in plain text in the credential config.
 
 ---
 
@@ -67,7 +67,7 @@ Credentials cover common server-to-server authentication patterns, including:
 - OAuth2 `private_key_jwt` (client authentication)
 - GitHub App
 
-Credentials can reference sensitive inputs via existing [Secrets](../../../06.concepts/04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../02.governance/read-only-secrets/index.md).
+Credentials can reference sensitive inputs via existing [Secrets](../../../06.concepts/04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../02.governance/secrets-manager/index.md).
 
 ---
 

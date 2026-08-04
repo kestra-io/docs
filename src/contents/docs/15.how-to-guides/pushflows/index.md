@@ -54,11 +54,11 @@ tasks:
     message: welcome to {{ inputs.greeting }}
 ```
 
-Here is a system flow that will push the `hello_world` flow to a Git repository:
+Here is a flow that will push the `hello_world` flow to a Git repository:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -86,7 +86,7 @@ Set the `dryRun` property to `false` and push the `hello_world` flow to Git:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -136,11 +136,11 @@ tasks:
 
 ![git6_all_flows.png](./git6_all_flows.png)
 
-Adjust the system flow to push all flows from the `dev` namespace to the `develop` branch:
+Adjust the flow to push all flows from the `dev` namespace to the `develop` branch:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -160,7 +160,7 @@ Setting `dryRun` to `true` shows what files will be added, modified, or deleted 
 
 ![git7.png](./git7.png)
 
-Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
+Now if you change the `dryRun` property to `false` and run the flow again, you should see all three flows being pushed to the `flows` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
 ![git8.png](./git8.png)
 
@@ -207,7 +207,7 @@ To include all child namespaces in our Git commit, we only need to add the `incl
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -223,7 +223,7 @@ tasks:
     includeChildNamespaces: true
 ```
 
-When you run this final system flow, you should see the following output:
+When you run this flow, you should see the following output:
 
 ![git9.png](./git9.png)
 

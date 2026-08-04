@@ -20,7 +20,7 @@ This release also makes Kestra easier to use for Command Line enthusiasts. We've
 
 The [Databricks](/plugins/plugin-databricks) and [AWS Athena](/plugins/plugin-aws#athena) integrations help orchestrate and manage **data lake(house)s**, and the script plugin now also supports **[Julia](/plugins/plugin-script-julia)**.
 
-This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins/plugin-singer) and [Microsoft SQL Server](/plugins/plugin-singer), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
+This release adds a [Hightouch plugin](/plugins/plugin-hightouch), a [Telegram](/plugins/plugin-telegram) notification task, Singer Taps for [Oracle](/plugins) and [Microsoft SQL Server](/plugins), and [GCP tasks](/plugins/plugin-gcp/#vertex-ai) to declaratively interact with Google's PaLM 2 Large Language Models.
 
 Lastly, we've introduced several performance, documentation, and usability enhancements.
 
@@ -389,8 +389,8 @@ Databricks is a unified data analytics platform that provides a collaborative wo
 
 - [Run a SQL query on Databricks, output the result to a CSV file and read that CSV file in a Python script with Pandas](/blueprints/databricks-sql) - this flow demonstrates how you can fetch data from Databricks using SQL and use that data in any downstream process e.g. in a custom Python script
 - [Run a task on an on-demand Databricks cluster](/blueprints/on-demand-cluster-job) - this flow will create a Databricks cluster, create a job, wait for its completion and in the end, it will delete the on-demand cluster even if the job doesn't complete successfully (to avoid paying for idle compute)
-- [Create a Spark job on a Databricks cluster and wait for its completion](/plugins/plugin-databricks/cluster/io.kestra.plugin.databricks.cluster.createcluster) - this flow will start a job on an existing Databricks cluster and wait for its completion up to 5 hours; it uses the `CreateJob` API
-- [Execute a Spark/Python script on an existing Databricks cluster and wait for its completion](/plugins/plugin-databricks/job/io.kestra.plugin.databricks.job.submitrun) - this blueprint is similar to the previous one; however, it uses the `SubmitRun` API
+- [Create a Spark job on a Databricks cluster and wait for its completion](/plugins/plugin-databricks/databricks-cluster/io.kestra.plugin.databricks.cluster.createcluster) - this flow will start a job on an existing Databricks cluster and wait for its completion up to 5 hours; it uses the `CreateJob` API
+- [Execute a Spark/Python script on an existing Databricks cluster and wait for its completion](/plugins/plugin-databricks/databricks-job/io.kestra.plugin.databricks.job.submitrun) - this blueprint is similar to the previous one; however, it uses the `SubmitRun` API
 - [Download a Parquet file from Databricks and use it in a Python script](/blueprints/download-parquet-from-databricks) - this flow demonstrates how you can download a Parquet file from Databricks and use it in a Python script
 - [Upload a Parquet file to Databricks](/blueprints) - similar to the previous example, but in reverse order.
 
@@ -400,8 +400,8 @@ Databricks is a unified data analytics platform that provides a collaborative wo
 ## AI and ML
 
 We've added two new tasks to integrate Kestra with [Vertex AI APIs](/plugins/plugin-gcp/#vertex-ai) using Google's PaLM 2 Large Language Models.
-1. The [PaLM TextCompletion API](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
-2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
+1. The [PaLM TextCompletion API](/plugins/plugin-gcp/google-cloud-vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) uses Google Bard for generative AI use cases. It takes a prompt and returns a response.
+2. The [PaLM ChatCompletion API](/plugins/plugin-gcp/google-cloud-vertex-ai/io.kestra.plugin.gcp.vertexai.chatcompletion) follows the same approach but is more flexible as it allows providing additional context and a list of messages.
 
 To see both of these tasks in action, check [the blog post by Loïc Mathieu](../2023-08-24-using-google-bard-ai-with-kestra/index.md).
 
@@ -426,15 +426,15 @@ tasks:
 ### New Singer Taps: Oracle and Microsoft SQL Server
 
 We've extended the existing Singer plugin to support the following new taps:
-- [Microsoft SQL Server](/plugins/plugin-singer)
-- [Oracle](/plugins/plugin-singer).
+- [Microsoft SQL Server](/plugins)
+- [Oracle](/plugins).
 
 
 ### MotherDuck integration
 
 The DuckDB plugin [now supports MotherDuck](https://github.com/kestra-io/plugin-jdbc/pull/144). All DuckDB blueprints now also work with [MotherDuck](https://motherduck.com/) as long as you provide the MotherDuck service token and database name in your JDBC URL.
 
-We recommend storing the MotherDuck service token as a Kestra [Secret](../../docs/07.enterprise/02.governance/secrets/index.md). Below is an example pointing the Query task to the MotherDuck database named `my_db` and referencing the token stored as `MOTHERDUCK_TOKEN` secret:
+We recommend storing the MotherDuck service token as a Kestra [Secret](../../docs/07.enterprise/02.governance/secrets-manager/index.md). Below is an example pointing the Query task to the MotherDuck database named `my_db` and referencing the token stored as `MOTHERDUCK_TOKEN` secret:
 
 ```yaml
   - id: query

@@ -69,7 +69,7 @@ tasks:
     from: "{{ outputs.http_download.uri }}"
 ```
 
-You can see the list of generated metrics generated in the [BigQuery Load task documentation](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.load#metrics).
+You can see the list of generated metrics generated in the [BigQuery Load task documentation](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.load#metrics).
 
 After executing the flow, view the BigQuery Load task metrics in the **Metrics** tab.
 
@@ -108,7 +108,7 @@ You can use the following execution expressions in your flow.
 | Parameter | Description |
 | - | - |
 | `{{ execution.id }}`          | The execution ID, a generated unique ID for each execution                                                                       |
-| `{{ execution.startDate }}`   | The start date of the current execution, can be formatted with `{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
+| `{{ execution.startDate }}`   | The start date of the current execution, can be formatted with `{{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
 | `{{ execution.originalId }}`  | The original execution ID, this ID never changes, even in case of a replay and keeps the first execution ID.                      |
 
 

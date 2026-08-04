@@ -19,6 +19,10 @@
                 :release-versions="releaseVersions"
                 :releases-url="releasesUrl"
                 :kestra-core="kestraCore"
+                :plugin-name="pluginName"
+                :plugin-type="pluginType"
+                :current-tail="currentTail"
+                :current-version="currentVersion"
             />
 
             <div class="managed">
@@ -77,7 +81,7 @@
     import Github from "vue-material-design-icons/Github.vue"
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
     import Versions from "./Versions.vue"
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
     import kestraIcon from "../assets/kestra.svg"
     import conapiIcon from "../assets/conapi.svg"
 
@@ -87,12 +91,20 @@
             releasesUrl?: string | null
             categories?: string[]
             metadata?: PluginMetadata[]
+            pluginName?: string
+            pluginType?: string
+            currentTail?: string
+            currentVersion?: string
         }>(),
         {
             version: null,
             releasesUrl: null,
             categories: () => [],
             metadata: () => [],
+            pluginName: undefined,
+            pluginType: undefined,
+            currentTail: undefined,
+            currentVersion: undefined,
         },
     )
 

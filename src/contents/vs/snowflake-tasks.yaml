@@ -34,7 +34,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, AI workloads, and business processes"
       - "Multi-cloud and on-premises: AWS, Azure, GCP, or hybrid"
       - "YAML-first: Git-native, CI/CD-ready, reviewable by any engineer"
-      - "Open source with 26k+ GitHub stars and 1200+ plugins"
+      - "Open source with 26k+ GitHub stars and 1400+ plugins"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Snowflake SQL Task Scheduling
@@ -218,7 +218,7 @@ testimonials:
         name: Active users
       - value: "+5,000"
         name: Workflows created
-    storyLink: "/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/customers/leroy-merlin-france"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work
@@ -258,7 +258,7 @@ commonQuestions:
   - question: How does Kestra handle version control compared to Snowflake Tasks?
     answer: "Kestra workflows are YAML files in your Git repository from day one. They go through pull requests and deploy through CI/CD. Snowflake Tasks are DDL objects that live inside the warehouse. Getting them into version control requires manually exporting CREATE TASK statements and storing them as SQL files separately, with no standard format and no native CI/CD integration. The result is that task definitions often drift from what's actually running inside Snowflake."
   - question: How do the pricing models compare?
-    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1200+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Snowflake Tasks consume Snowflake credits each time a task runs against a virtual warehouse. For high-frequency schedules or complex task trees with many child tasks, credit consumption adds up quickly and compounds with your existing Snowflake spend."
+    answer: "Kestra's open-source edition is free: run it on your own infrastructure with 1400+ plugins and no per-execution fees. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Snowflake Tasks consume Snowflake credits each time a task runs against a virtual warehouse. For high-frequency schedules or complex task trees with many child tasks, credit consumption adds up quickly and compounds with your existing Snowflake spend."
   - question: Can Kestra and Snowflake Tasks run side by side?
     answer: "Yes. Leave existing Snowflake Tasks in place and route new cross-system workflows through Kestra. Kestra can react to the same schedules and stream events that feed Snowflake Tasks today and operate alongside them. Start with net-new orchestration in Kestra, migrate incrementally, and keep Snowflake Tasks for the SQL-only task trees that are already stable."
   - question: What about dbt with Snowflake?

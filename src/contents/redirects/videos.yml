@@ -1,0 +1,2 @@
+- regexp: "/videos/(.*)"
+  to: "/videos/all"

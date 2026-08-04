@@ -25,12 +25,14 @@ const related: ResourceListItem[] = items
                 <div class="grid">
                     {related.map((resource) => (
                         <ResourceCard
-                            resource={{
-                                ...resource,
-                                date: resource.date
-                                    ? resource.date.toISOString()
-                                    : undefined,
-                            }}
+                            resource={
+                                {
+                                    ...resource,
+                                    date: resource.date
+                                        ? resource.date.toISOString()
+                                        : undefined,
+                                } as any
+                            }
                         />
                     ))}
                 </div>

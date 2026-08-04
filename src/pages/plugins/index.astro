@@ -89,6 +89,7 @@ const ITEMS = [
 <Layout {title} {description}>
     <Fragment slot="head">
         <script
+            is:inline
             type="application/ld+json"
             set:html={JSON.stringify(pluginsIndexSchema)}
         />

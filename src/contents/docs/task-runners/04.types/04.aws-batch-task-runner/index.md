@@ -5,7 +5,7 @@ sidebarTitle: AWS Batch Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
-description: Execute Kestra tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS for scalable and serverless compute.
+description: Execute tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS for scalable and serverless compute.
 ---
 
 Run tasks as AWS Batch jobs on ECS Fargate, EC2, or EKS compute environments.
@@ -32,7 +32,7 @@ To support `inputFiles`, `namespaceFiles`, and `outputFiles`, the task runner cr
 
 **EKS:** Uses [EKS job definitions](https://docs.aws.amazon.com/batch/latest/userguide/jobs-eks.html) with a Kubernetes pod. Sidecar containers run as pod containers using the same S3-based file transfer pattern. The main container command is wrapped in `/bin/sh -c`, so the container image must include `/bin/sh`.
 
-Since the working directory of the container isn’t known in advance, you must define the working and output directories explicitly. For example, use `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
+The container does not start in the Kestra working directory. Use `{{ workingDir }}` or `WORKING_DIR` to reference input and output files — for example, `cat {{ workingDir }}/myFile.txt` instead of `cat myFile.txt`.
 
 ### Exit codes
 
@@ -50,6 +50,10 @@ The task runner maps AWS Batch job statuses to exit codes as follows:
 | Unknown | `-1` |
 
 ## Minimum permissions required
+
+:::alert{type="warning"}
+**Running on Kestra Cloud?** The Cloud control plane runs outside your AWS account and has no EC2 instance profile or EKS IRSA to supply a base AWS identity. Static `accessKeyId` / `secretKeyId` credentials are required. See [Running from Kestra Cloud](#running-from-kestra-cloud) for the full details before configuring authentication.
+:::
 
 To submit and monitor AWS Batch jobs, the IAM principal used by Kestra needs permission to create, tag, inspect, and clean up Batch job definitions and jobs. It also needs permission to pass the ECS roles used by the job and to read the AWS Batch log group.
 
@@ -103,6 +107,10 @@ The following policy is the minimum set required by the task runner:
 
 :::alert{type="info"}
 The `batch:CreateJobQueue`, `batch:UpdateJobQueue`, `batch:DeleteJobQueue`, and `batch:DescribeJobQueues` permissions are only required when `jobQueueArn` is not configured — the task runner will create and clean up a job queue automatically in that case. If you always provide a `jobQueueArn`, you can omit those four permissions.
+:::
+
+:::alert{type="info"}
+`logs:StartLiveTail` is only required when `streamLogs` is left at its default of `true`. If you set `streamLogs: false`, you can omit this permission — see [Log streaming](#log-streaming) below.
 :::
 
 Replace `<executionRoleArn>`, `<serviceRoleArn>`, `<taskRoleArn>`, and `<accountId>` with the values from your AWS account. If you use a different region, update the CloudWatch Logs ARN accordingly.
@@ -294,17 +302,90 @@ tasks:
 ```
 
 :::alert{type="warning"}
-CloudWatch log streaming for EKS requires the EKS cluster to have CloudWatch logging configured, for example via [Fluent Bit](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Container-Insights-setup-logs-FluentBit.html) or the CloudWatch agent. Without cluster-level logging, task logs will not appear in Kestra.
+EKS log streaming requires the `amazon-cloudwatch-observability` addon to be installed on your cluster. Without it, task logs will not appear in Kestra. See step 4 below.
 :::
 
-To set up an EKS cluster for use with AWS Batch, follow the [AWS getting started with AWS Batch on Amazon EKS](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html) guide.
+### Setting up an EKS cluster for AWS Batch
+
+The steps below walk through creating an EKS cluster and configuring it for AWS Batch. Replace `<cluster>`, `<region>`, and `<account-id>` with your values throughout.
+
+#### 1. Create the cluster
+
+If you do not already have an EKS cluster, create one using `eksctl`. This also configures `kubectl`:
+
+```bash
+eksctl create cluster --name <cluster> --region <region>
+```
+
+#### 2. Create the namespace and apply RBAC
+
+AWS Batch runs jobs in a dedicated Kubernetes namespace and requires specific RBAC permissions:
+
+```bash
+kubectl create namespace aws-batch
+```
+
+Download the RBAC manifests from the [AWS getting started guide](https://docs.aws.amazon.com/batch/latest/userguide/getting-started-eks.html), save them to `aws-batch-rbac.yaml`, then apply:
+
+```bash
+kubectl apply -f aws-batch-rbac.yaml
+```
+
+#### 3. Add the IAM identity mapping
+
+AWS Batch uses a service-linked role to manage pods. Because access entries do not work for service-linked roles, use `eksctl create iamidentitymapping` to register it:
+
+```bash
+eksctl create iamidentitymapping --cluster <cluster> --region <region> \
+  --arn arn:aws:iam::<account-id>:role/AWSServiceRoleForBatch --username aws-batch
+```
+
+#### 4. Install the CloudWatch addon
+
+To stream pod logs to CloudWatch, install the `amazon-cloudwatch-observability` addon. The node IAM role must have the `CloudWatchAgentServerPolicy` policy attached:
+
+```bash
+aws eks create-addon \
+  --cluster-name <cluster> \
+  --addon-name amazon-cloudwatch-observability \
+  --region <region>
+```
+
+#### 5. Create the compute environment
+
+Create an EKS-backed Batch compute environment. Use an instance type supported by AWS Batch such as `m5` — `t3` is rejected. Do not set a service role; Batch uses its service-linked role automatically:
+
+```bash
+aws batch create-compute-environment \
+  --region <region> \
+  --compute-environment-name kestra-eks \
+  --type MANAGED \
+  --state ENABLED \
+  --eks-configuration eksClusterArn=<cluster-arn>,kubernetesNamespace=aws-batch \
+  --compute-resources type=EC2,allocationStrategy=BEST_FIT_PROGRESSIVE,minvCpus=0,maxvCpus=16,instanceTypes=m5.large,subnets=<subnets>,securityGroupIds=<sg>,instanceRole=<node-instance-profile>
+```
+
+The `instanceRole` value is the ARN of the EC2 instance profile attached to your EKS node group (not a bare IAM role ARN).
+
+#### 6. Create the job queue
+
+```bash
+aws batch create-job-queue \
+  --region <region> \
+  --job-queue-name kestra-eks-q \
+  --state ENABLED \
+  --priority 1 \
+  --compute-environment-order order=1,computeEnvironment=kestra-eks
+```
+
+Once both resources are created, copy the compute environment ARN and job queue ARN into your flow's `computeEnvironmentArn` and `jobQueueArn` properties.
 
 ## Full step-by-step guide: setting up AWS Batch from scratch
 
 To use the AWS Batch task runner, you must configure resources in your AWS account. You can set up the environment in two ways:
 
-1. Using Terraform to provision all necessary resources using a simple `terraform apply` command.
-2. Creating the resources step by step from the AWS Management Console.
+1. Use Terraform to provision all required resources with a single `terraform apply` command.
+2. Create the resources step by step from the AWS Management Console.
 
 
 <div class="video-container">
@@ -324,7 +405,7 @@ You will need:
 
 Follow the instructions in the [aws-batch README](https://github.com/kestra-io/deployment-templates/blob/main/aws/terraform/aws-batch/README.md) in the [terraform-deployments-templates](https://github.com/kestra-io/deployment-templates/tree/main) repository to provision resources using Terraform. You can also use [this blueprint](/blueprints/aws-batch-terraform-git), which creates all required resources in a single Kestra workflow execution.
 
-Here is a list of resources that will be created:
+The Terraform configuration creates the following resources:
 - **AWS Security Group:** a security group for AWS Batch jobs with egress to the internet (required to be able to download public Docker images in your script tasks).
 - **AWS IAM Roles and Policies:** IAM roles and policies for AWS Batch and ECS Task Execution, including permissions for S3 access (S3 is used to store input and output files for container access).
 - **AWS Batch Compute Environment:** a managed ECS Fargate compute environment named `kestraFargateEnvironment`.
@@ -370,9 +451,9 @@ Make sure to copy the ARN of the role. You will need it later.
 
 #### Create the `ecsTaskRole` IAM role
 
-On top of the Execution Role, we will also need a Task Role that includes S3 access permissions to store files.
+In addition to the execution role, you need a task role with S3 access permissions.
 
-First, we'll need to create a policy the role can use for accessing S3.
+First, create a policy for S3 access.
 
 1. Open the [IAM console](https://console.aws.amazon.com/iam).
 2. In the navigation menu, choose **Policies**.
@@ -422,11 +503,11 @@ Now create a new role with the same trust policy as above. Attach the new policy
       ]
     }
     ```
-5. Click on **Next**
-6. Search for the new policy and check the box on the left. Once you've done this, select **Next**.
+5. Select **Next**.
+6. Search for the new policy and check the box on the left, then select **Next**.
    ![role_permission](./role_permission.png)
-7. Then, for **Role Name**, enter `ecsTaskRole`
-6. Finally, click on **Create role**.
+7. For **Role Name**, enter `ecsTaskRole`.
+8. Select **Create role**.
 
 #### AWS Batch setup
 
@@ -446,33 +527,33 @@ You should see the following text recommending the use of Fargate:
 
 > "We recommend using Fargate in most scenarios. Fargate launches and scales the compute to closely match the resource requirements that you specify for the container. With Fargate, you don't need to over-provision or pay for additional servers. You also don't need to worry about the specifics of infrastructure-related parameters such as instance type. When the compute environment needs to be scaled up, jobs that run on Fargate resources can get started more quickly. Typically, it takes a few minutes to spin up a new Amazon EC2 instance. However, jobs that run on Fargate can be provisioned in about 30 seconds. The exact time required depends on several factors, including container image size and number of jobs. [Learn more](https://docs.aws.amazon.com/batch/latest/userguide/fargate.html)."
 
-We will follow that advice and use Fargate for this tutorial.
+Select Fargate for this walkthrough.
 
-#### Step 1: Select Orchestration type
+#### Step 1: Select orchestration type
 
 Select **Fargate** and click on **Next**.
 
 #### Step 2: Create a compute environment
 
-Add a name for your compute environment — here, we chose `kestra`. You can keep the default settings for everything. Select the VPC and subnets you want to use — you can use the default VPC and subnets and the default VPC security group. Then, click on Next.
+Add a name for your compute environment — for example, `kestra`. Keep the default settings. Select the VPC and subnets you want to use — the default VPC, subnets, and security group all work. Then select **Next**.
 
 ![batch5](./batch5.png)
 
 #### Step 3: Create a job queue
 
-Now we can create a job queue. Here, we also name it `kestra`. You can keep the default settings. Then, click on Next:
+Name the job queue — for example, `kestra`. Keep the default settings. Then select **Next**:
 
 ![batch6](./batch6.png)
 
 #### Step 4: Create a job definition
 
-Finally, create a job definition. Here, we name it also `kestra`. Under Execution role, select the role we created earlier (`ecsTaskExecutionRole`). Besides that, you can keep default settings for everything else (we adjusted the image to ``ghcr.io/kestra-io/pydata:latest`` but that's totally optional). Then, click on **Next**:
+Create a job definition named `kestra`. Under **Execution role**, select the role you created earlier (`ecsTaskExecutionRole`). Keep default settings for everything else (you can optionally set the image to `ghcr.io/kestra-io/pydata:latest`). Then select **Next**:
 
 ![batch7](./batch7.png)
 
 #### Step 5: Create a job
 
-Finally, create a job named `kestra`. Click **Next** to review settings:
+Create a job named `kestra`. Select **Next** to review settings:
 
 ![batch8](./batch8.png)
 
@@ -494,19 +575,19 @@ Copy the ARN of the compute environment and job queue. You will need to add thes
 
 ![batch12](./batch12.png)
 
-### Create an S3 Bucket
+### Create an S3 bucket
 
 Create an S3 bucket to store input and output files. To do this, open **S3** → **Create bucket**.
 
 ![s3_create](./s3_create.png)
 
-Next you'll need to add a name and leave everything else as a default value.
+Add a name and leave everything else at its default.
 
 ![s3_bucket_name](./s3_bucket_name.png)
 
 Scroll to the bottom and select **Create bucket**.
 
-Now that we have a bucket, we'll need to add the name into Kestra.
+Add the bucket name to your Kestra flow.
 
 ### Run your Kestra task on AWS ECS Fargate
 
@@ -583,6 +664,14 @@ The task runner exposes several optional properties for tuning behavior and auth
 | `resume` | `true` | When `true`, if the Kestra worker is restarted while a job is running, it will reconnect to the existing job rather than submitting a new one. Requires a `jobQueueArn` to be configured. |
 | `delete` | `true` | When `true`, the job definition, any auto-created job queue, and the S3 working-directory prefix are deleted after the job completes. Set to `false` to retain resources for debugging — note that a task retry may then reconnect to the previous (failed) job. |
 
+### Log streaming
+
+| Property | Default | Description |
+|---|---|---|
+| `streamLogs` | `true` | When `true`, the task runner streams container logs in real time using CloudWatch Logs Live Tail. Set to `false` to disable streaming and instead fetch logs only once the job completes. |
+
+Set `streamLogs: false` for cost-sensitive workloads, since Live Tail is billed separately from standard CloudWatch Logs ingestion. It's also recommended when authenticating with role-chained or short-lived STS credentials (see [STS role assumption](#sts-role-assumption)) — Live Tail keeps a stream open for the entire job duration, and credentials that expire before the job finishes will cause the stream to fail.
+
 ### EKS: service account and IRSA
 
 For EKS compute environments, use `serviceAccountName` to attach a Kubernetes service account to the pod. Annotate the service account with an IAM role ARN to enable [IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) — this is the recommended way to grant pods access to AWS services such as S3.
@@ -607,6 +696,10 @@ taskRunner:
   computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
 ```
 
+:::alert{type="warning"}
+**This example is keyless only when Kestra runs inside AWS.** On a self-hosted instance on EC2 or EKS, the AWS SDK uses the instance profile or IRSA to make the `sts:AssumeRole` call without static keys. On **Kestra Cloud**, no such ambient identity exists — you must supply `accessKeyId` and `secretKeyId` alongside `stsRoleArn`. See [Running from Kestra Cloud](#running-from-kestra-cloud).
+:::
+
 | Property | Description |
 |---|---|
 | `stsRoleArn` | ARN of the IAM role to assume. |
@@ -614,3 +707,43 @@ taskRunner:
 | `stsRoleSessionName` | Session name tag attached to the assumed-role session (optional). |
 | `stsEndpointOverride` | Override the STS endpoint URL (optional, useful in GovCloud or custom environments). |
 | `stsRoleSessionDuration` | Duration of the assumed-role session (optional; defaults to the AWS minimum). |
+
+## Running from Kestra Cloud
+
+Kestra Cloud's control plane runs outside your AWS account. It has no EC2 instance profile, EKS IRSA, or other ambient AWS identity. The following differences apply compared to a self-hosted Kestra instance running inside your own AWS environment.
+
+### Authentication on Cloud
+
+**Static credentials are required.** Supply `accessKeyId` and `secretKeyId` in the task runner configuration, stored as [secrets](../../../06.concepts/04.secret/index.md):
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  region: eu-central-1
+  accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+  secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+  computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
+  jobQueueArn: "arn:aws:batch:eu-central-1:123456789012:job-queue/kestraJobQueue"
+  executionRoleArn: "arn:aws:iam::123456789012:role/kestraEcsTaskExecutionRole"
+  taskRoleArn: "arn:aws:iam::123456789012:role/ecsTaskRole"
+```
+
+**STS role assumption requires base credentials.** On a self-hosted instance running on EC2 or EKS, the AWS SDK uses the instance profile or IRSA to call `sts:AssumeRole` without static keys. On Kestra Cloud, you must supply base `accessKeyId` and `secretKeyId` alongside `stsRoleArn` — the STS call cannot proceed without them:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.aws.runner.Batch
+  region: eu-central-1
+  accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+  secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+  stsRoleArn: "arn:aws:iam::123456789012:role/kestra-batch-role"
+  stsRoleExternalId: "{{ secret('STS_EXTERNAL_ID') }}"
+  stsRoleSessionName: kestra-session
+  computeEnvironmentArn: "arn:aws:batch:eu-central-1:123456789012:compute-environment/kestraFargateEnvironment"
+```
+
+**OIDC / Web Identity Federation is not currently supported.** Kestra Cloud does not act as an OIDC identity provider, so `AssumeRoleWithWebIdentity` (the approach used by GitHub Actions and similar systems) is not available. There is no fully keyless path from Kestra Cloud to your AWS account today. If your security policy requires no long-lived static credentials, contact [Kestra support](https://kestra.io/slack) to discuss alternatives or to ask about roadmap plans for a keyless Cloud-to-AWS path.
+
+### Network access
+
+Kestra Cloud makes HTTPS calls to the AWS Batch and S3 APIs from a fixed set of egress IPs. If your AWS environment uses VPC endpoint policies, S3 bucket policies, or SCPs that restrict API access by source IP, you need to allowlist the Kestra Cloud egress ranges. Contact [Kestra support](https://kestra.io/slack) to obtain the current egress IP list for your region.

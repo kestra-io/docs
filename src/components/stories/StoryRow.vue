@@ -35,7 +35,7 @@
 
     const props = defineProps<{ story: Story }>()
 
-    const storyUrl = computed(() => `/use-cases/stories/${props.story.id}`)
+    const storyUrl = computed(() => `/customers/${props.story.slug}`)
     const kpis = computed(() => [props.story.kpi1, props.story.kpi2, props.story.kpi3].filter(Boolean) as string[])
 
     function navigate() {

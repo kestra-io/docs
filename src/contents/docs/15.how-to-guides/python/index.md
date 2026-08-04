@@ -397,7 +397,7 @@ triggers:
 
 ### Run when a file is available in a data lake or storage bucket
 
-You can use a [Polling Trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), such as the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
+You can use a [Polling Trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), such as the [S3 Trigger](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
 
 ```yaml
 id: s3_trigger
@@ -440,8 +440,8 @@ triggers:
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.eval)
-- [FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform)
+- [Eval](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

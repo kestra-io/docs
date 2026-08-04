@@ -34,7 +34,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows in one platform"
       - "Event-driven triggers for webhooks, S3, Kafka, database changes, and API events"
       - "Any language: Python, SQL, R, Bash, Go, Node.js, and more"
-      - "Open source with 1200+ plugins, transparent pricing, and a thriving community of contributors"
+      - "Open source with 1400+ plugins, transparent pricing, and a thriving community of contributors"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Infrastructure State Enforcement
@@ -215,7 +215,7 @@ featureGrid:
       kestra: "✓ Kestra Apps"
       competitor: "Console UI for node management, not workflow triggers"
     - feature: Plugin ecosystem
-      kestra: "1200+ plugins (cloud, databases, APIs, AI)"
+      kestra: "1400+ plugins (cloud, databases, APIs, AI)"
       competitor: "Puppet Forge modules (infrastructure-focused)"
     - feature: Drift detection
       kestra: "Not a primary use case"
@@ -234,7 +234,7 @@ testimonials:
         name: "Plugins available out of the box"
       - value: "5x"
         name: "Faster workflow delivery"
-    storyLink: "/use-cases/stories/building-a-government-grade-orchestration-control-plane-with-kestra"
+    storyLink: "/customers/dataport"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work
@@ -281,7 +281,7 @@ commonQuestions:
   - question: Can Kestra trigger Puppet runs as part of a workflow?
     answer: "Yes. Kestra can invoke Puppet via the Puppet Orchestrator API or by running shell commands that trigger puppet agent runs on specific nodes. This lets you use Kestra as the orchestration layer that coordinates when and why Puppet runs happen, while Puppet handles the actual configuration enforcement on each node."
   - question: How does pricing compare between Kestra and Puppet Enterprise?
-    answer: "Kestra's open-source edition is free with 1200+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Puppet offers open source Puppet (free) and Puppet Enterprise (commercial, per-node licensing). Puppet Enterprise pricing scales with the number of managed nodes."
+    answer: "Kestra's open-source edition is free with 1400+ plugins and unlimited workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud. Puppet offers open source Puppet (free) and Puppet Enterprise (commercial, per-node licensing). Puppet Enterprise pricing scales with the number of managed nodes."
   - question: Puppet has Puppet Forge. What is Kestra's equivalent?
     answer: "Puppet Forge is a module repository with thousands of infrastructure-focused modules for managing packages, services, and configurations. Kestra has 1200+ open-source plugins covering cloud providers (AWS, Azure, GCP), databases (Snowflake, BigQuery, Postgres), message queues (Kafka, RabbitMQ), CI/CD tools, AI services, and more. The ecosystems serve different purposes: Forge modules describe infrastructure state, while Kestra plugins enable workflow tasks."
   - question: We are considering replacing Puppet with Ansible. Should we look at Kestra instead?

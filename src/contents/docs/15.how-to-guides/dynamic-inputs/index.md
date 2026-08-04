@@ -131,3 +131,77 @@ tasks:
 :::alert{type="info"}
 When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
 :::
+
+## Populate a dropdown from a subflow
+
+When `kv()` and `http()` are not enough — for example, when you need to run a script task, call a CLI command (`aws ec2 describe-instances`, `gcloud projects list`), or execute complex multi-step logic — use the `subflow()` Pebble function.
+
+`subflow()` runs a subflow synchronously at form render time and exposes its flow-level outputs as the dropdown values. The main flow does not start until the subflow finishes and the form is submitted.
+
+**Step 1 — Create the data-fetching subflow.** This flow queries your infrastructure and returns a list as a flow-level output:
+
+```yaml
+id: fetch_aws_regions
+namespace: company.ops
+
+tasks:
+  - id: get_regions
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
+    commands:
+      - |
+        regions=$(aws ec2 describe-regions --query 'Regions[].RegionName' --output json)
+        echo "::$(printf '{"outputs":{"regions":%s}}' "$regions")::"
+
+outputs:
+  - id: regions
+    type: JSON
+    value: "{{ outputs.get_regions.vars.regions }}"
+```
+
+The `::{"outputs":{"key":"value"}}::` line is Kestra's [script output format](../../16.scripts/06.outputs-metrics/index.md) — it's how `shell.Commands` tasks publish named values that downstream expressions can reference via `outputs.<task_id>.vars.<key>`.
+
+**Step 2 — Reference it from a SELECT input in your main flow:**
+
+```yaml
+id: deploy_to_region
+namespace: company.ops
+
+inputs:
+  - id: region
+    type: SELECT
+    displayName: AWS Region
+    expression: "{{ subflow(namespace='company.ops', id='fetch_aws_regions').outputs.regions }}"
+
+tasks:
+  - id: deploy
+    type: io.kestra.plugin.core.log.Log
+    message: "Deploying to {{ inputs.region }}"
+```
+
+When a user opens the Execute form, Kestra runs `fetch_aws_regions` synchronously and populates the dropdown from its output.
+
+### Chaining dropdowns with `dependsOn`
+
+You can chain dropdowns so the second list depends on the first selection:
+
+```yaml
+inputs:
+  - id: environment
+    type: SELECT
+    expression: "{{ subflow(namespace='company.ops', id='fetch_environments').outputs.envs }}"
+
+  - id: cluster
+    type: SELECT
+    dependsOn:
+      inputs:
+        - environment
+    expression: "{{ subflow(namespace='company.ops', id='fetch_clusters', inputs={'env': inputs.environment}).outputs.clusters }}"
+```
+
+**Constraints to be aware of:**
+
+- `subflow()` is only valid in the `expression:` property of a `SELECT` or `MULTISELECT` input. It throws if used in a task or trigger property.
+- The subflow must complete within the timeout (default `PT1M`, max `PT5M`). Keep data-fetching subflows fast.
+- Recursion is capped at depth 3.

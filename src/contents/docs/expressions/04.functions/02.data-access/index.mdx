@@ -10,12 +10,22 @@ These functions bridge expressions to external or stored data. Use them when the
 
 ## `secret()`
 
-Use `secret()` for sensitive values that should not appear in the flow definition:
+Use `secret()` for sensitive values that should not appear in the flow definition. The namespace defaults to the flow's namespace; pass a `namespace` to read a secret stored in another namespace, and a `subkey` to extract a single field from a JSON secret:
 
 ```twig
 {{ secret('API_KEY') }}
 {{ secret('GITHUB_ACCESS_TOKEN') }}
+{{ secret('SHARED_SECRET', namespace='other.namespace') }}
+{{ secret('DB_CREDENTIALS', subkey='password') }}
 ```
+
+Arguments:
+
+- `key` — the secret key
+- `namespace` — defaults to the flow's namespace; the secret is resolved using that namespace's secret backend, with values inherited from parent namespaces
+- `subkey` — optional field to extract when the secret holds a JSON object
+
+Cross-namespace reads stay within the same tenant. In the Enterprise Edition, a flow may read another namespace's secrets by default; restrict this by configuring `allowedNamespaces` on the target namespace.
 
 ## `credential()`
 

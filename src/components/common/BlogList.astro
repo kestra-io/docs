@@ -17,10 +17,6 @@ interface Props {
 }
 
 const { posts, title, headingId } = Astro.props
-
-const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-})
 ---
 
 <div>
@@ -42,9 +38,6 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
                             <div class="card-details">
                                 <span class="card-category">
                                     {post.category}
-                                </span>
-                                <span class="card-date">
-                                    {dateTimeFormat.format(new Date(post.date))}
                                 </span>
                             </div>
                             <p class="card-title">{post.title}</p>
@@ -105,11 +98,6 @@ const dateTimeFormat = new Intl.DateTimeFormat("en-US", {
 
                     .card-category {
                         color: var(--ks-content-link);
-                        margin-right: 1rem;
-                    }
-
-                    .card-date {
-                        color: var(--ks-content-tertiary);
                     }
                 }
 

@@ -1,7 +1,7 @@
 <template>
     <section class="lists">
         <div class="container-xxl">
-            <aside class="sidebar">
+            <aside class="sidebar" v-if="showSidebar">
                 <h6 class="sidebar-title">Categories</h6>
                 <div class="list">
                     <label class="item" :for="`${idPrefix}-all`">
@@ -35,7 +35,7 @@
             </aside>
 
             <div class="content">
-                <div class="top-bar">
+                <div class="top-bar" v-if="$slots['top-bar']">
                     <slot name="top-bar" />
                 </div>
                 <slot />
@@ -55,8 +55,9 @@
             categories: CategoryItem[]
             modelValue: string
             idPrefix?: string
+            showSidebar?: boolean
         }>(),
-        { idPrefix: "cat" },
+        { idPrefix: "cat", showSidebar: true },
     )
 
     defineEmits<{
@@ -213,7 +214,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 4rem 2.625rem;
-                background: url("~/components/blueprints/assets/bar-bg.webp")
+                background: url("~/components/blueprints/assets/bar-bg.png")
                     center / cover no-repeat;
                 border-radius: $border-radius-lg;
                 color: $white;
@@ -223,7 +224,8 @@
                     order: -1;
                 }
 
-                :deep(h1) {
+                :deep(h1),
+                :deep(h2) {
                     margin-bottom: 0.5rem;
                 }
 

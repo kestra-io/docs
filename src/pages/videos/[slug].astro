@@ -1,0 +1,85 @@
+---
+import type { GetStaticPaths } from "astro"
+import Layout from "~/components/layout.astro"
+import TutorialsGrid from "~/components/videos/TutorialsGrid.vue"
+import { getCollection } from "astro:content"
+import Tabs from "~/components/common/Tabs.vue"
+import Mesh from "~/components/layout/Mesh.vue"
+import Subscribe from "~/components/layout/Subscribe.vue"
+import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
+import { categories } from "~/components/videos/categories"
+
+export const getStaticPaths = (() => {
+    return Array.from(categories.keys()).map((key) => ({
+        params: { slug: key },
+    }))
+}) satisfies GetStaticPaths
+
+const { slug } = Astro.params
+
+const currentCategory = slug ? (categories.get(slug) ?? "") : ""
+
+const categoryFilterMap: Record<string, string> = { "Webinars": "Webinar" }
+const currentCategoryFilter = slug === "all" ? "" : (categoryFilterMap[currentCategory] ?? currentCategory)
+
+const allVideos = await getCollection("tutorialVideos")
+
+const sortedVideos = allVideos.sort(
+    (a, b) =>
+        b.data.publicationDate.getTime() - a.data.publicationDate.getTime(),
+)
+
+const filteredVideos = currentCategoryFilter
+    ? sortedVideos.filter((v) => v.data.category === currentCategoryFilter)
+    : sortedVideos
+
+const tutorialVideo = {
+    results: filteredVideos.map((video) => ({
+        ...video.data,
+        publicationDate: video.data.publicationDate.toString(),
+    })),
+    total: filteredVideos.length,
+}
+
+const title = currentCategory ? `Videos: ${currentCategory} | Kestra` : `Videos | Kestra`
+const description = `Watch the latest videos from Kestra`
+---
+
+<Layout title={title} description={description}>
+    <Mesh>
+        <div>
+            <h1>Videos</h1>
+            <p>Watch the latest videos from Kestra</p>
+        </div>
+        <Subscribe client:visible class="margin" />
+    </Mesh>
+    <section>
+        <Tabs
+            categories={categories}
+            modelValue={slug || "all"}
+            rootHref="/videos"
+        />
+        <div class="container">
+            <TutorialsGrid
+                {tutorialVideo}
+                {currentCategory}
+                {categories}
+                client:visible
+            />
+        </div>
+    </section>
+    <SubscribeToNewsletter client:visible />
+</Layout>
+
+<style lang="scss">
+    .margin {
+        margin-top: 44px;
+        padding: 0;
+    }
+    section {
+        padding: 4rem 1rem;
+        .container {
+            padding: 0;
+        }
+    }
+</style>

@@ -35,7 +35,7 @@ businessValue:
       - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly, no SDK)"
       - "Event-driven at core: file arrivals, Kafka, webhooks, schedules"
       - "Self-service for non-engineers via Kestra Apps"
-      - "1200+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+      - "1400+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
   competitor:
     title: Durable Workflow Execution for Engineers
     list:
@@ -168,7 +168,7 @@ featureGrid:
       kestra: "Data pipelines, infrastructure automation, business workflows"
       competitor: "Long-running stateful workflows and distributed application logic"
     - feature: Data pipeline tooling
-      kestra: "✓ Native support (dbt, Airbyte, Spark, Snowflake, 1200+ plugins)"
+      kestra: "✓ Native support (dbt, Airbyte, Spark, Snowflake, 1400+ plugins)"
       competitor: "No native data pipeline plugins"
     - feature: Event-driven triggers
       kestra: "✓ Native (schedules, file arrivals, Kafka, webhooks)"
@@ -199,7 +199,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/customers/apple"
 
 platformStrengths:
   title: Kestra Is Built for the Workflows That Run Your Business
@@ -239,7 +239,7 @@ commonQuestions:
   - question: How does Kestra handle failures and retries?
     answer: "Kestra supports per-task retry policies with configurable attempt counts, backoff strategies, and retry conditions, all declared in YAML. Failed tasks can be restarted from the point of failure without re-running upstream tasks. For multi-step workflows, Kestra tracks execution state across restarts. Temporal's durability model goes further: it persists the full workflow history and replays it deterministically, which is stronger for workflows with complex branching state."
   - question: Does Kestra have data pipeline integrations that Temporal lacks?
-    answer: "Yes. Kestra ships with 1200+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. These are YAML task types, not code you write. Temporal has no native data pipeline plugins; integrating with data tools requires writing and maintaining custom Activities in your SDK language."
+    answer: "Yes. Kestra ships with 1400+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. These are YAML task types, not code you write. Temporal has no native data pipeline plugins; integrating with data tools requires writing and maintaining custom Activities in your SDK language."
   - question: Can Kestra and Temporal coexist in the same stack?
     answer: "Yes, and it's a reasonable pattern. Teams use Kestra to orchestrate data pipelines, infrastructure jobs, and business processes in YAML, while Temporal handles the application-layer workflows that need durable stateful execution. Kestra can trigger Temporal workflows via HTTP or SDK calls from a Script task, so the two platforms compose cleanly."
   - question: How does Kestra handle scheduling compared to Temporal?

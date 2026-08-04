@@ -20,7 +20,7 @@ You can inspect input values in the **Overview** tab of the **Execution** page a
 
 ## Declaring inputs
 
-You can declare as many inputs as necessary for any flow. Inputs can be **required** or **optional**.
+You can declare as many inputs as necessary for any flow. Inputs can be **required** or **optional**. Each input is treated as **required** by default - set `required: false` to make an input optional.
 
 If an input is required, you must provide a value at runtime or set a `defaults` value; otherwise, the execution will not be created.
 
@@ -164,7 +164,7 @@ Here is the list of supported data types:
 :::
 
 - `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
-- `BOOLEAN`: Must be `true` or `false` passed as strings.
+- `BOOL`: Must be `true` or `false` passed as strings.
 - `DATETIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time with the timezone expressed in UTC format; pass input of type DATETIME in a string format following the pattern `2042-04-02T04:20:42.000Z`.
 - `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
 - `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
@@ -175,6 +175,7 @@ Here is the list of supported data types:
 - `URI`: Must be a valid URI and will be kept as a string.
 - `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/05.security-and-secrets/index.md) in your [Kestra configuration](../../configuration/index.mdx) before using it.
 - `ARRAY`: Must be a valid JSON array or a YAML list. The `itemType` property is required to ensure validation of the type of the array items.
+- `FORM`: Groups related inputs under a shared `displayName` and `description`. When a flow contains at least one FORM input, the Execute modal renders a multi-step wizard — one step per FORM group plus any ungrouped inputs, then a recap. Children are referenced as `{{ inputs.<form_id>.<child_id> }}`. FORM inputs cannot be nested and do not support `defaults` or `prefill`.
 
 All `FILE` inputs are automatically uploaded to Kestra's [internal storage](../../08.architecture/data-components/index.md#internal-storage) and accessible to all tasks. After the upload, the input variable will contain a fully qualified URL of the form `kestra:///.../.../` that will be automatically managed by Kestra and can be used as-is within any task.
 
@@ -184,7 +185,7 @@ Below is the list of available properties for all inputs regardless of their typ
 
 - `id`: The input parameter identifier — this property is important as it's used to reference the input variables in your flow, e.g., `{{ inputs.user }}` references the input parameter named `user`.
 - `type`: The data type of the input parameter, as described in the previous section.
-- `required`: Whether the input is required. If `true` and neither a default nor a runtime value is provided, the execution will not be created.
+- `required`: Whether the input is required. Defaults to `true` - set `required: false` to make an input optional. An input with `defaults` must stay required, since the default is always applied.
 - `defaults`: The default value that is used if no custom input value is provided at runtime; this value must be provided as a string and will be set to the desired data type specified using the `type` property.
 - `prefill`: Starts with an initial value that can be cleared or set to `null` when the input is not required. Like an editable default, it allows workflows to support optional inputs that start with a suggestion but can still be reset to `null` at runtime.
 - `dependsOn`: Makes the input dependent on other inputs that must be provided first.
@@ -305,6 +306,114 @@ tasks:
 ```
 
 You can access the first input value using `{{ inputs.nested.string }}`. This provides type validation for nested inputs without resorting to raw JSON (JSON inputs are passed as strings).
+
+## FORM inputs
+
+Use a `FORM` input to group related inputs under a shared label and description. When a flow has at least one FORM input, the Execute modal renders a multi-step wizard: one step per FORM group, a step for any ungrouped inputs, then a recap. Apps using `CreateExecutionForm` render the same wizard automatically.
+
+```yaml
+id: provision_environment
+namespace: company.team
+
+inputs:
+  - id: requester
+    type: STRING
+    required: true
+    description: Name or team submitting this request.
+
+  - id: environment
+    type: FORM
+    displayName: Environment setup
+    description: Where the environment runs and what size it needs.
+    inputs:
+      - id: region
+        type: SELECT
+        required: true
+        defaults: eu-central-1
+        values:
+          - eu-central-1
+          - eu-west-1
+          - us-east-1
+
+      - id: instance_type
+        type: SELECT
+        required: true
+        defaults: t3.medium
+        values:
+          - t3.medium
+          - t3.large
+          - t3.xlarge
+
+  - id: notifications
+    type: FORM
+    displayName: Notifications
+    description: Where to send status updates.
+    inputs:
+      - id: slack_channel
+        type: STRING
+        defaults: "#platform-ops"
+
+      - id: notify_on_failure
+        type: BOOL
+        defaults: true
+
+tasks:
+  - id: log_request
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      Requested by: {{ inputs.requester }}
+      Region: {{ inputs.environment.region }}
+      Instance: {{ inputs.environment.instance_type }}
+      Slack: {{ inputs.notifications.slack_channel }}
+```
+
+Children are accessed via `{{ inputs.<form_id>.<child_id> }}`. In the example above, `region` inside the `environment` FORM is `{{ inputs.environment.region }}`.
+
+### dependsOn across FORM children
+
+To make one FORM child depend on another, use the full dotted path in `dependsOn`:
+
+```yaml
+inputs:
+  - id: cloud
+    type: FORM
+    displayName: Cloud configuration
+    inputs:
+      - id: provider
+        type: SELECT
+        values: [AWS, GCP, Azure]
+
+      - id: region
+        type: SELECT
+        dependsOn:
+          inputs:
+            - cloud.provider
+          condition: "{{ inputs.cloud.provider == 'AWS' }}"
+        values:
+          - us-east-1
+          - eu-west-1
+```
+
+### Constraints
+
+:::alert{type="warning"}
+- A FORM cannot contain another FORM — grouping is limited to one level.
+- A FORM cannot have `defaults` or `prefill` — those properties belong on the individual child inputs.
+:::
+
+### API submission
+
+When triggering a flow with FORM inputs via the API, use flat dotted field names in the multipart form data. Kestra maps them to the nested execution context automatically.
+
+```bash
+curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provision_environment" \
+  -H "Content-Type: multipart/form-data" \
+  -F "requester=platform-team" \
+  -F "environment.region=eu-central-1" \
+  -F "environment.instance_type=t3.large" \
+  -F "notifications.slack_channel=#ops" \
+  -F "notifications.notify_on_failure=true"
+```
 
 ## Array inputs
 
@@ -623,6 +732,19 @@ tasks:
 :::alert{type="info"}
 When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
 :::
+
+### Dynamic inputs from a subflow
+
+For cases that require complex logic — running a script, calling a CLI command, or executing multi-step tasks — use the `subflow()` Pebble function in the `expression:` property. `subflow()` runs a flow synchronously at form render time and populates the dropdown from its outputs:
+
+```yaml
+inputs:
+  - id: region
+    type: SELECT
+    expression: "{{ subflow(namespace='company.ops', id='fetch_regions').outputs.region_list }}"
+```
+
+See [Populate a dropdown from a subflow](../../15.how-to-guides/dynamic-inputs/index.md#populate-a-dropdown-from-a-subflow) for a full example and constraints.
 
 ## Conditional inputs for interactive workflows
 

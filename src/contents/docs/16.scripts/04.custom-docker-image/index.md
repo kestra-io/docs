@@ -191,4 +191,4 @@ tasks:
 
 The `pullPolicy: NEVER` property ensures that Kestra uses the local image instead of trying to pull it from DockerHub.
 
-If you want to run languages other than Python using a custom Docker image, here is an example with [Go](../00.languages/index.md#run-any-language-using-a-custom-docker-image).
+If you want to run languages other than Python using a custom Docker image, here is an example with [Go](../00.languages/index.md#use-a-custom-docker-image-for-extra-dependencies).

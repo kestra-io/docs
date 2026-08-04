@@ -1,8 +1,8 @@
 ---
 title: "RAG Pipeline Orchestration — A Practical Guide to Production-Grade Retrieval-Augmented Generation"
 description: "RAG pipeline orchestration coordinates retrievers, re-rankers, LLMs, and post-processors from query to response. Components, production concerns, and tools."
-metaTitle: "RAG Pipeline Orchestration: A Practical Guide"
-metaDescription: "RAG pipeline orchestration coordinates retrievers, re-rankers, LLMs, and post-processors from query to response. Learn the components, production concerns, and tools."
+metaTitle: "RAG Pipeline Orchestration: Production Guide | Kestra"
+metaDescription: "Learn how RAG pipeline orchestration coordinates retrievers, re-rankers, LLMs, and post-processors from query to response. Covers components, RAGOps, and tools."
 tag: ai
 date: 2026-04-21
 faq:
@@ -11,7 +11,7 @@ faq:
   - question: "What is a RAG pipeline?"
     answer: "A RAG pipeline is an end-to-end system that retrieves relevant context from a knowledge base and uses it to augment an LLM's response. Retrieval-Augmented Generation pipelines combine a retrieval component (typically vector search) with a generation component (an LLM) to deliver accurate, contextually grounded responses using data outside the model's training set."
   - question: "What is a RAG data pipeline?"
-    answer: "A RAG data pipeline handles the offline ingestion side of RAG — transforming unstructured source data (documents, databases, web pages) into a vector search index. It chunks documents, generates embeddings, and loads them into a vector database so the query-time retrieval pipeline can return relevant context to the LLM."
+    answer: "A RAG data pipeline handles the offline ingestion side of RAG — transforming unstructured source data (documents, databases, web pages) into a vector search index. It chunks documents, generates embeddings, and loads them into a vector database so the query-time retrieval pipeline can return relevant context to the LLM. Orchestrating this pipeline reliably — with scheduling, error handling, and freshness monitoring — is what separates a prototype from a production RAG system."
   - question: "What are the 4 levels of RAG?"
     answer: "The four stages of a RAG pipeline are: (1) Indexing — preparing and embedding source documents into a vector store; (2) Retrieval — finding relevant documents for a given query; (3) Augmentation — injecting retrieved context into the prompt; (4) Generation — the LLM producing the final response grounded in retrieved context."
   - question: "What are the 7 types of RAG?"
@@ -22,7 +22,7 @@ faq:
 
 Most Retrieval-Augmented Generation pipelines start the same way. An engineer writes a prototype in a Jupyter notebook using LangChain or LlamaIndex: load some documents, embed them, store them in a vector database, write a retrieval function, wire it to an LLM. The demo works. It's impressive. It gets shown to leadership, and leadership asks the obvious next question: can we put this in production?
 
-The gap between "the demo works" and "it serves production traffic" is RAG pipeline orchestration. Not the retrieval logic, not the prompt engineering, not the model choice — those are typically solved at the prototype stage. The hard part is what comes after: coordinating document ingestion at scale, keeping the vector index fresh as source data changes, managing latency budgets across retrieval and generation, handling LLM timeouts with fallback models, monitoring retrieval quality over time, and doing all of this with the same reliability expectations as any other production system.
+The gap between "the demo works" and "it serves production traffic" is RAG pipeline orchestration. Not the retrieval logic, not the prompt engineering, not the model choice — those are typically solved at the prototype stage. (For a deeper look at how components connect structurally, see the companion [RAG architecture guide](/resources/ai/rag-architecture).) The hard part is what comes after: coordinating document ingestion at scale, keeping the vector index fresh as source data changes, managing latency budgets across retrieval and generation, handling LLM timeouts with fallback models, monitoring retrieval quality over time, and doing all of this with the same reliability expectations as any other production system.
 
 This guide covers what RAG pipeline orchestration is, the key components of an orchestration layer, how to build production-grade workflows with practical examples, the emerging discipline of RAGOps, and how orchestration fits alongside frameworks like LangChain and managed services like Azure AI Search.
 
@@ -80,7 +80,7 @@ Orchestration concerns vary by type. Naïve RAG needs basic workflow scaffolding
 Five components define what a production RAG orchestration layer must handle:
 
 - **Data preparation and chunking.** Scheduled or event-driven ingestion of source documents. Chunking strategy choices (fixed-size, semantic, recursive). Quality tests on chunks (length distribution, overlap, deduplication). Source freshness monitoring.
-- **Vector indexing and retrieval.** Embedding generation (batched for efficiency), upsert to the vector database, index freshness tracking, retrieval quality monitoring (are relevant documents being returned?).
+- **Vector indexing and retrieval.** Embedding generation (batched for efficiency), upsert to the [vector database](/resources/ai/vector-database), index freshness tracking, retrieval quality monitoring (are relevant documents being returned?).
 - **Prompt augmentation and context building.** Token budget management, context-window packing, deduplication of similar retrieved chunks, metadata injection (timestamps, source attribution). This is where "how much context" is decided dynamically.
 - **LLM generation.** Model routing (fast cheap model for simple queries, better model for complex ones), retry-on-timeout, fallback model chains, structured output validation.
 - **Post-processing and evaluation.** Groundedness checks (is the answer supported by retrieved context?), output validation against schemas, toxicity filters, citation generation.
@@ -177,7 +177,7 @@ These concerns sit in the orchestration layer because they require workflow coor
 
 ## Multi-Agent RAG — Beyond Linear Pipelines
 
-Linear RAG (one query, one retrieval, one generation) handles straightforward Q&A well. For complex tasks — research assistants, customer support with policy lookups, code assistants with codebase awareness — a single retrieval pass often isn't enough. Multi-agent systems have emerged as the pattern: multiple agents coordinate, each with specialized retrieval and reasoning roles.
+Linear RAG (one query, one retrieval, one generation) handles straightforward Q&A well. For complex tasks — research assistants, customer support with policy lookups, code assistants with codebase awareness — a single retrieval pass often isn't enough. Multi-agent systems have emerged as the pattern: multiple agents coordinate, each with specialized retrieval and reasoning roles. See the [agentic workflows guide](/resources/ai/agentic-workflows) for how these patterns are structured in practice.
 
 The challenge, as practitioners have noted, is that multi-agent systems compound RAG's existing latency and reliability problems. Running retrieval, re-ranking, and generation sequentially across multiple agents creates latency bottlenecks and error accumulation. Structured orchestration — explicit state management, parallelization where possible, fast fallbacks when an agent fails — becomes the load-bearing component.
 
@@ -189,7 +189,7 @@ The RAG tool landscape in 2026 has three distinct layers, and most teams need on
 - **Vector databases** (Pinecone, Weaviate, Qdrant, pgvector, Milvus). Storage and retrieval at scale. Choice depends on deployment model, scale, and integration requirements.
 - **Orchestrators** (Kestra, Airflow, Prefect, Dagster). Production workflow execution — triggering, retrying, observing, alerting across the full RAG system.
 
-The framework and orchestrator choices are separate. A LangChain-based RAG pipeline still benefits from Kestra orchestration for data ingestion, indexing workflows, and RAGOps monitoring. Managed services (Azure AI Search with Watsonx, Databricks' RAG features) combine some layers but constrain deployment flexibility.
+The framework and orchestrator choices are separate. A LangChain-based RAG pipeline still benefits from Kestra orchestration for data ingestion, indexing workflows, and RAGOps monitoring. Managed services (Azure AI Search with Microsoft Foundry, Databricks' RAG features) combine some layers but constrain deployment flexibility.
 
 ## Getting Started
 

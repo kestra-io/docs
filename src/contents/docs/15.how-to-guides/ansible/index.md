@@ -361,7 +361,7 @@ ok: [localhost] => {
 
 ### Run it from Kestra
 
-Embed the playbook in your flow's YAML inline, and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli):
+Embed the playbook in your flow's YAML inline, and collect the report with a single [Ansible CLI task](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli):
 
 ```yaml
 id: system_report
@@ -382,7 +382,7 @@ tasks:
       - ansible-playbook -i inventory.ini playbook.yml
 ```
 
-Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files/index.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/cli/io.kestra.plugin.ansible.cli.ansiblecli).
+Or, keep the playbook as a [Namespace File](../../06.concepts/02.namespace-files/index.md) and reference it directly with the same [Ansible CLI task](/plugins/plugin-ansible/io.kestra.plugin.ansible.cli.ansiblecli).
 
 ![Namespace Files](./flow-namespace-files.png)
 
@@ -410,7 +410,7 @@ After the run, the `outputFiles` property allows you to preview or download `sys
 
 ### Upload the report to S3
 
-Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../../06.concepts/04.secret/index.md):
+Extend the Namespace File flow with an [S3 Upload task](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.upload) and store credentials in [secrets](../../06.concepts/04.secret/index.md):
 
 ```yaml
 id: system_report_to_s3
@@ -474,3 +474,5 @@ A trigger allows you to build a historical log of machine health in S3 and Slack
 ### Wrap up
 
 Ansible handles host-level automation — collecting facts, checking software package versions, remediating with the right package manager, and so much more. Kestra now orchestrates the run, stores secrets, uploads the JSON report to S3, and notifies Slack (or your preferred channel) so teams see when upgrades occur. Together they scale this cross-platform playbook from one laptop to a fleet, with repeatable runs and downstream integrations ready to consume the results.
+
+If your playbooks handle credentials or other sensitive data, see [Control Ansible Playbook Outputs to Protect Sensitive Data](../ansible-explicit-outputs/index.md) for how to use `outputsMode: EXPLICIT` to control exactly which values appear in Kestra task outputs.

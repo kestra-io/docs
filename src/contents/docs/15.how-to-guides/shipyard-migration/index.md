@@ -36,7 +36,7 @@ Every fleet in Shipyard generates a YAML configuration. You can retrieve it from
 
 ![shiypard_yaml_configuration](./shipyard_yaml_configuration.png)
 
-For every vessel in the fleet, try to find a matching [Kestra Plugin](/plugins). For example, the equivalent of **Amazon S3 - Delete Files** vessel in Shipyard will be [io.kestra.plugin.aws.s3.Delete](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.delete) and [io.kestra.plugin.aws.s3.DeleteList](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.deletelist).
+For every vessel in the fleet, try to find a matching [Kestra Plugin](/plugins). For example, the equivalent of **Amazon S3 - Delete Files** vessel in Shipyard will be [io.kestra.plugin.aws.s3.Delete](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.delete) and [io.kestra.plugin.aws.s3.DeleteList](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.deletelist).
 
 In the same fashion as you would configure a vessel, you can configure a task in Kestra. Use the built-it task documentation in the Kestra UI to help you configure all task properties (the **Source and documentation** view). Find plugins directly within the built-in UI editor using the auto-complete feature. Each task documentation comes with an example and a detailed description of each task property.
 

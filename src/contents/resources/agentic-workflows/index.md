@@ -1,8 +1,8 @@
 ---
 title: "What are Agentic Workflows?"
 description: "Explore agentic workflows, AI-driven processes where autonomous AI agents make decisions, automate tasks, and coordinate with minimal human oversight. Learn how Kestra enables their implementation."
-metaTitle: "Agentic Workflows: Definition, Examples & How They Work"
-metaDescription: "Explore agentic workflows: AI-driven processes where autonomous agents make decisions, automate tasks, and coordinate. Learn more about agentic AI!"
+metaTitle: "Agentic Workflows: Definition & Examples | Kestra"
+metaDescription: "Learn what agentic workflows are, how autonomous AI agents make decisions and coordinate tasks, and how to build and govern them at scale with Kestra."
 tag: ai
 date: 2026-04-29
 faq:
@@ -11,11 +11,13 @@ faq:
   - question: "Is ChatGPT an agentic AI?"
     answer: "No. ChatGPT is a generative AI model that produces content in response to prompts, but it doesn't autonomously plan, take actions, or interact with external systems. An agentic AI uses an LLM like GPT-4 as its reasoning engine, but adds planning, memory, and tool-use capabilities to pursue goals with minimal human input. In short: ChatGPT writes the email, an agentic AI decides to send it, finds the recipient, and schedules the follow-up."
   - question: "What is the difference between agentic and non-agentic workflows?"
-    answer: "Agentic workflows involve AI systems acting more like digital coworkers, planning and evolving as they work, while non-agentic workflows are rule-based, rigid, and require human direction for each step."
+    answer: "Non-agentic workflows are deterministic and rule-based, following a fixed sequence programmed by a human and failing if unexpected inputs occur. Agentic workflows are dynamic and goal-driven: you give the AI agent an objective and it reasons about how to achieve it, selects tools, adapts to obstacles, and completes the task with minimal human direction."
   - question: "What are the 4 stages of agentic AI?"
-    answer: "Agentic AI operates in a continuous loop of four stages: Perceive (gather data from APIs, files, or user input), Reason (analyze the situation and plan the next action), Act (execute the action via a tool or API call), and Learn (observe the outcome and refine the strategy). This loop repeats until the goal is achieved."
+    answer: "Agentic AI operates in a continuous loop of four stages: Perceive (gather data from APIs, files, or user input), Reason (analyze the situation and plan the next action using techniques like Chain-of-Thought), Act (execute the action via a tool or API call), and Learn (observe the outcome and refine the strategy). This loop repeats until the goal is achieved."
   - question: "What are the four types of workflows?"
-    answer: "Sequential Workflows (The Linear Path) are the most basic. State Machine Workflows are event-driven. Rules-Driven Workflows act as dynamic routers. Parallel Workflows enable fan-out/fan-in processing."
+    answer: "Sequential workflows execute tasks one after another in a linear path — the simplest type. State machine workflows are event-driven and move between states based on external triggers. Rules-driven workflows use a rules engine to dynamically route execution based on business logic. Parallel workflows run multiple branches simultaneously (fan-out) and then join results (fan-in). Agentic workflows extend the rules-driven and state machine models by using an LLM to determine transitions rather than predefined conditions."
+  - question: "How do you add guardrails to an agentic AI workflow?"
+    answer: "Effective guardrails combine strict access control (limiting which tools and data the agent can reach), auditability (immutable logs of every decision and action), human-in-the-loop approval steps for high-impact operations, and sandboxed testing environments before production deployment. Platforms like Kestra add version-controlled flow definitions and built-in audit logs so every agent action is traceable."
 ---
 
 The rise of AI has shifted the paradigm of automation, moving beyond simple task execution to intelligent, autonomous decision-making. Traditional workflows, while effective for predefined sequences, struggle with dynamic, unpredictable environments. This limitation has paved the way for agentic workflows, a new frontier where AI agents perceive, reason, and act with minimal human intervention.
@@ -28,7 +30,7 @@ This article dives deep into agentic workflows, defining their core concepts, di
 
 Agentic workflows are advanced, AI-driven processes where autonomous software agents execute complex tasks, make decisions, and coordinate actions with minimal human oversight. Unlike traditional automation that follows a rigid, predefined path, agentic workflows empower AI agents to reason, plan, and use tools to achieve a specific goal. These agents can interact with their environment, process information, and adapt their strategy based on real-time data.
 
-The core of an agentic workflow is the AI agent itself, which is designed to be proactive and goal-oriented. It breaks down high-level objectives into smaller, manageable steps, selects the appropriate tools for each step, and executes them in a logical sequence. This enables a level of automation that can handle ambiguity and complexity far beyond the scope of conventional scripts or rule-based systems. For a deeper look into building these systems, explore our [AI automation resources](/ai-automation). You can also browse our collection of [AI orchestration resources](/resources/ai) for more insights.
+The core of an agentic workflow is the AI agent itself, which is designed to be proactive and goal-oriented. It breaks down high-level objectives into smaller, manageable steps, selects the appropriate tools for each step, and executes them in a logical sequence. This enables a level of automation that can handle ambiguity and complexity far beyond the scope of conventional scripts or rule-based systems. For a deeper look into the autonomous agents that power these systems, see our guide to [AI agents](/resources/ai/ai-agent). You can also explore how [agentic orchestration](/resources/ai/agentic-orchestration) ties agents into production workflows.
 
 ### Agentic vs. Non-Agentic Workflows: Key Differences
 
@@ -66,9 +68,11 @@ An agentic AI integrates a model like ChatGPT as its "brain" but adds critical c
 Effective agentic systems are built from several key components working in concert:
 
 *   **Planning:** The agent's ability to decompose a high-level goal into a sequence of executable steps. This might involve techniques like Chain of Thought (CoT) or Tree of Thoughts.
-*   **Memory:** Agents need memory to maintain context. This includes short-term memory for the current task (like a scratchpad) and long-term memory for retaining information across tasks, often stored in a vector database or a simple [key-value store](/docs/concepts/kv-store).
+*   **Memory:** Agents need memory to maintain context. This includes short-term memory for the current task (like a scratchpad) and long-term memory for retaining information across tasks, often stored in a [vector database](/resources/ai/vector-database) or a simple [key-value store](/docs/concepts/kv-store).
 *   **Tools:** These are the functions or APIs that allow the agent to interact with the world. A tool could be a web search API, a database query function, or the ability to execute code in various [programming languages](/docs/scripts/languages). The agent must be able to select the right tool for a given sub-task.
 *   **Reflection:** The ability for an agent to critique its own work and learn from its mistakes. After generating a plan or taking an action, a reflection step can help identify flaws and improve future performance.
+
+When multiple agents collaborate on a single goal, the coordination patterns become even more important — see our deep-dive on [multi-agent systems](/resources/ai/multi-agent-system) for how these architectures scale.
 
 ## Practical Applications and Use Cases of Agentic Workflows
 
@@ -82,13 +86,13 @@ For [software engineers](/use-cases/software-engineers), agentic workflows are b
 
 ### Automating Repository Tasks with GitHub Agentic Workflows
 
-GitHub is a prime example of a platform embracing agentic workflows. Their "GitHub Agentic Workflows" initiative allows developers to automate repository management using natural language. For instance, you could create a workflow that instructs an agent to "triage new issues by adding the 'bug' label if the description contains the word 'error', and assign it to the on-call engineer." The agent can interact with the GitHub API to [create issues](/plugins/plugin-github/issues/io.kestra.plugin.github.issues.create), add labels, and manage projects. This offloads repetitive administrative tasks, allowing developers to focus on coding after they [clone a repository](/plugins/plugin-git/io.kestra.plugin.git.clone).
+GitHub is a prime example of a platform embracing agentic workflows. Their "GitHub Agentic Workflows" initiative allows developers to automate repository management using natural language. For instance, you could create a workflow that instructs an agent to "triage new issues by adding the 'bug' label if the description contains the word 'error', and assign it to the on-call engineer." The agent can interact with the GitHub API to [create issues](/plugins/plugin-github/github-issues/io.kestra.plugin.github.issues.create), add labels, and manage projects. This offloads repetitive administrative tasks, allowing developers to focus on coding after they [clone a repository](/plugins/plugin-git/io.kestra.plugin.git.clone).
 
 ## Kestra's Approach to Agentic Workflows
 
 ### Declarative Orchestration for AI Agents
 
-Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/concepts/flow).
+Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/workflow-components/flow).
 
 This declarative model serves as a critical set of guardrails. It ensures that even as the AI agent makes autonomous decisions, its actions are confined within a version-controlled, observable, and secure environment. This answers a key question in enterprise AI: how to grant autonomy without sacrificing control. For more on [why Kestra](/docs/why-kestra) is built this way, see our documentation.
 
@@ -96,7 +100,7 @@ This declarative model serves as a critical set of guardrails. It ensures that e
 
 Kestra's platform includes native support for building and running AI agents. It provides a framework where agents can be equipped with tools, memory, and a reasoning engine.
 
-*   **Tools:** Any of Kestra's 1,200+ [plugins](/plugins) can be exposed to an AI agent as a tool. This gives the agent the ability to interact with virtually any system, from databases and cloud services to messaging platforms and business applications.
+*   **Tools:** Any of Kestra's 1,400+ [plugins](/plugins) can be exposed to an AI agent as a tool. This gives the agent the ability to interact with virtually any system, from databases and cloud services to messaging platforms and business applications.
 *   **Memory:** Agents can use Kestra's built-in KV Store to maintain state and persist information across executions, enabling long-term memory and learning.
 *   **Human-in-the-Loop:** For critical operations, Kestra allows you to insert a pause for human approval before an agent takes a sensitive action. This ensures that a human expert can verify the agent's plan, providing a crucial safety layer.
 
@@ -126,7 +130,7 @@ The greatest challenge of agentic AI is managing its autonomy. Ungoverned agents
 While agentic workflows represent a new paradigm, they often build upon or interact with traditional workflow patterns. Understanding these foundational types helps place agentic systems in context:
 
 1.  **Sequential Workflows:** The simplest type, where tasks are executed one after another in a linear path.
-2.  **State Machine Workflows:** These are event-driven and move between different "states" based on external events or the completion of tasks. They are well-suited for processes with long-running steps or those that require waiting for external input.
+2.  **State Machine Workflows:** These are event-driven and move between different "states" based on external events or the completion of tasks. They are well-suited for processes with long-running steps or those that require waiting for external input. See [event-driven orchestration](/resources/infrastructure/event-driven-orchestration) for a deeper look at this pattern.
 3.  **Rules-Driven Workflows:** These workflows use a rules engine to dynamically determine the next step based on business logic or data. The path is not fixed but changes based on conditions.
 4.  **Parallel Workflows:** These workflows execute multiple tasks simultaneously (fan-out) and often wait for all parallel branches to complete before proceeding (fan-in).
 

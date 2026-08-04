@@ -10,11 +10,22 @@ import ChildCard from "~/components/docs/ChildCard.astro"
 
 Install Kestra using the method that fits your environment.
 
+## Which installation method should I choose?
+
+Not sure where to start?
+
+- **New to Kestra or evaluating it?** Start with [Docker](./02.docker/index.md) — it runs Kestra locally on a laptop with a single command.
+- **Want persistent local storage with a PostgreSQL database?** Use [Docker Compose](./03.docker-compose/index.md).
+- **Running in production?** Choose [Kubernetes](./03.kubernetes/index.md) (or a managed equivalent on [AWS EKS](./04.kubernetes-aws-eks/index.md), [GCP GKE](./05.kubernetes-gcp-gke/index.md), or [Azure AKS](./06.kubernetes-azure-aks/index.md)) for a scalable, distributed deployment.
+- **Prefer a single VM or on-prem server?** Deploy on [AWS EC2](./08.aws-ec2/index.md), [GCP VM](./09.gcp-vm/index.md), [Azure VM](./10.azure-vm/index.md), or a [DigitalOcean Droplet](./11.digitalocean-droplet/index.md).
+
+:::alert{type="info"}
+**Minimum system requirements:** Kestra requires at least **2 vCPUs and 4 GiB of memory** to run correctly. Local Docker installs run comfortably on a typical laptop; size production deployments above this baseline based on your workload.
+:::
+
 You can deploy Kestra from a laptop or on-prem server to a distributed cluster in a public cloud. Some plugins such as the [Script plugin](../16.scripts/index.mdx) require Docker-in-Docker (DinD), which is not supported in some environments like AWS Fargate. For production, use Kubernetes or a virtual machine.
 
-If looking for a fully-managed orchestration platform without the overhead of infrastructure maintenance, Kestra Cloud is currently in early access; [sign up here](/cloud).
-
-The easiest way to install Kestra locally is to use [Docker](./02.docker/index.md).
+If looking for a fully-managed orchestration platform without the overhead of infrastructure maintenance, Kestra Cloud is in early access; [sign up here](/cloud).
 
 ## Choose how to install Kestra for your environment
 

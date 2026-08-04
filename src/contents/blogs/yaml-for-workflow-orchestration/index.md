@@ -212,5 +212,5 @@ The best way to pressure-test this argument is to read a few real workflows. If 
   - *Beyond ETL:* [dbt pipeline on Postgres from Git](/blueprints/dbt-postgres) (YAML handles scheduling and Git sync; SQL handles transformation), [governed analytics assets with DuckDB](/blueprints/data-pipeline-assets) (raw → staging → mart layers with built-in lineage tracking), [real-time MySQL monitoring with Debezium](/blueprints/debezium-mysql-realtime-trigger) (event-driven trigger rather than a cron schedule)
 - **Use agent-skills.** Point your AI coding assistant at the [kestra-flow skill](https://github.com/kestra-io/agent-skills) and describe what you want to build.
 - **Explore the plugin library.** Every Kestra [plugin](/plugins) follows the same YAML structure: a `type` field, an `id`, and configuration properties. Once you know the syntax, every plugin works the same way.
-
 - **Try it live.** [Install Kestra](../../docs/01.quickstart/index.md) (one Docker command), open the editor, and paste any example from this post. The visual editor shows the DAG topology updating as you type.
+- **Compare the options.** If you're evaluating YAML vs Python for your team's workflow tooling, the [practical comparison guide](/blogs/yaml-vs-python-workflow) covers use cases, trade-offs, and when to reach for each.

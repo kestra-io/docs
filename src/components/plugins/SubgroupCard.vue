@@ -3,7 +3,7 @@
         <div class="plugin" :class="{'is-active': isActive}">
             <div class="top-row">
                 <div class="icon-content">
-                    <img v-if="iconSrc" :src="iconSrc" :alt="`${text} icon`">
+                    <img v-if="iconSrc" :src="iconSrc" :alt="`${text} icon`" width="45" height="45">
                 </div>
                 <div class="text-content">
                     <h6>{{ text }}</h6>

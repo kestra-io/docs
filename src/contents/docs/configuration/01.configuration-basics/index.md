@@ -116,6 +116,27 @@ KESTRA_STORAGE_TYPE=s3
 KESTRA_URL=https://kestra.example.com
 ```
 
+:::alert{type="warning"}
+For storage backend properties such as `kestra.storage.s3.access-key` and `kestra.storage.gcs.project-id`, prefer either the YAML form or the double-underscore env-var form. A single underscore between the last two segments can be read as a path separator by Micronaut and produce a nested object that the storage plugin's Jackson mapper rejects with `UnrecognizedPropertyException`. The two forms below are equivalent and both avoid that issue:
+
+```bash
+# double underscore preserves the literal kebab/snake separator
+KESTRA_STORAGE_S3_ACCESS__KEY=<aws-access-key-id>
+KESTRA_STORAGE_S3_SECRET__KEY=<aws-secret-access-key>
+```
+
+```yaml
+# or keep credentials in YAML and reference an env var
+kestra:
+  storage:
+    s3:
+      access-key: "${S3_ACCESS_KEY}"
+      secret-key: "${S3_SECRET_KEY}"
+```
+
+The same applies to `kestra.storage.gcs.project-id`, `kestra.storage.gcs.service-account`, and other multi-word storage properties.
+:::
+
 ## SDK default authentication
 
 SDK-based plugins can use default authentication if configured. Kestra resolves credentials in this order:

@@ -1,0 +1,7 @@
+title: "Orchestrating AI Workflows in Production"
+description: "Harsh Mer, AI Data Engineer, ran into the limits of visual workflow builders building a multi-step AI pipeline and moved it to Kestra, where declarative YAML, proper error handling, and full observability made the difference. Join Harsh and Will Russell (Developer Advocate, Kestra) to learn how to identify what separates a working AI prototype from a workflow you can confidently deploy, structure multi-step AI pipelines with retries, error handling, and parallel execution, and debug AI workflows in production using execution logs and task-level visibility."
+category: "Webinar"
+author: "Kestra"
+url: "https://www.youtube.com/watch?v=449gDL0-og0"
+publicationDate: "2026-07-30T00:00:00.000"
+contentType: "Webinar"

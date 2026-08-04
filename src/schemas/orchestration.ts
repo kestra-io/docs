@@ -24,6 +24,23 @@ const pillarsSchema = z.object({
     items: z.array(pillarSchema),
 })
 
+const flowNodeSchema = z.object({
+    label: z.string(),
+    sublabel: z.string().optional(),
+    pluginClass: z.string().optional(),
+    icon: z.string().optional(),
+})
+
+const flowDiagramSchema = z.object({
+    source: flowNodeSchema,
+    workflow: z.object({
+        label: z.string(),
+        sublabel: z.string().optional(),
+    }),
+    tools: z.array(flowNodeSchema).min(2).max(5),
+    outcome: flowNodeSchema,
+})
+
 const useCaseStepSchema = z.object({
     node: z.string(),
     label: z.string().optional(),
@@ -74,9 +91,12 @@ const blueprintSchema = z.object({
     name: z.string(),
     title: z.string(),
     description: z.string(),
-    code: z.string(),
-    plugins: z.array(z.string()),
+    code: z.string().optional(),
+    plugins: z.array(z.string()).optional(),
     href: z.string().optional(),
+    flowDiagram: flowDiagramSchema.optional(),
+    blueprintId: z.string().optional(),
+    blueprintPlaceholder: z.boolean().optional(),
 })
 
 const blueprintsSchema = z.object({
@@ -104,6 +124,13 @@ const comparisonSchema = z.object({
     rows: z.array(comparisonRowSchema),
 })
 
+const postCompareCtaSchema = z.object({
+    eyebrow: z.string().optional(),
+    title: z.string(),
+    description: z.string(),
+    cta: ctaSchema,
+})
+
 const faqItemSchema = z.object({
     question: z.string(),
     answer: z.string(),
@@ -115,6 +142,28 @@ const seeHowSchema = z.object({
     cta: ctaSchema.optional(),
 })
 
+const resourceItemSchema = z.object({
+    kind: z.enum([
+        "how-to",
+        "blueprint",
+        "story",
+        "blog",
+        "plugin",
+        "docs",
+        "resource",
+    ]),
+    title: z.string(),
+    description: z.string(),
+    href: z.string(),
+    image: z.string().optional(),
+})
+
+const resourcesSchema = z.object({
+    title: z.string(),
+    lead: z.string().optional(),
+    items: z.array(resourceItemSchema),
+})
+
 export const orchestrationSchema = z.object({
     title: z.string(),
     description: z.string(),
@@ -124,13 +173,16 @@ export const orchestrationSchema = z.object({
         color: z.string().optional(),
     }),
     hero: heroSchema,
+    nutshell: z.string().optional(),
     pillars: pillarsSchema,
     useCases: useCasesSchema,
     quotes: z.array(quoteSchema),
     blueprints: blueprintsSchema,
     comparison: comparisonSchema,
+    postCompareCta: postCompareCtaSchema.optional(),
     faq: z.array(faqItemSchema),
     seeHow: seeHowSchema,
+    resources: resourcesSchema.optional(),
 })
 
 export type OrchestrationData = z.infer<typeof orchestrationSchema>
