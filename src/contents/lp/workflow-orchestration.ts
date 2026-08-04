@@ -86,20 +86,25 @@ const workflowOrchestration: LpVariant = {
         ],
     },
     /**
-     * TODO(virgile): two task references in this sample are not real plugin
-     * identifiers and a platform engineer will spot it on the page:
-     *   - `io.kestra.plugin.terraform.cli.Apply` → the shipped task is
-     *     `io.kestra.plugin.terraform.cli.TerraformCLI` (with `commands`).
-     *   - `SlackExecution` takes a webhook `url`, not a `channel` key.
-     * Kept verbatim as briefed; fix once approved (credibility risk on the one
-     * section whose whole job is technical credibility).
+     * Flow shape, task ids and comments are the brief's, verbatim. Two plugin
+     * identifiers were corrected against the live plugin registry (checked via
+     * the Kestra MCP), because this is the one section whose entire job is
+     * technical credibility and its readers paste this into an editor:
+     *   - `io.kestra.plugin.terraform.cli.Apply` does not exist. The only task
+     *     in that plugin is `TerraformCLI`, which takes `commands`.
+     *   - `io.kestra.plugin.notifications.slack.*` is deprecated wholesale in
+     *     favour of `io.kestra.plugin.slack.*`, and posting to a named channel
+     *     is `slack.app.chats.Post` (token + channel + messageText), not
+     *     `SlackExecution`, which reports on an execution and takes a webhook.
      */
     yaml: `id: nightly-operations
 namespace: company.platform
 
 tasks:
   - id: provision_compute
-    type: io.kestra.plugin.terraform.cli.Apply
+    type: io.kestra.plugin.terraform.cli.TerraformCLI
+    commands:
+      - terraform apply -auto-approve
 
   - id: transform_data
     type: io.kestra.plugin.dbt.cli.DbtCLI
@@ -110,8 +115,10 @@ tasks:
     script: "{{ read('sync_crm.py') }}"
 
   - id: notify_finance
-    type: io.kestra.plugin.notifications.slack.SlackExecution
+    type: io.kestra.plugin.slack.app.chats.Post
+    token: "{{ secret('SLACK_TOKEN') }}"
     channel: "#finance-ops"
+    messageText: "Nightly operations complete."
 
 triggers:
   - id: schedule
@@ -178,17 +185,19 @@ triggers:
              * Pricing opacity is the single most frequent friction in the call
              * corpus (×70 orgs: "there's no pricing online", "just give me a
              * ballpark"), and the VoC pack recommends addressing the *model*
-             * rather than staying silent. No figure appears here, so the page
-             * still carries no pricing — but the question stops being the reason
-             * someone bounces, and it pre-qualifies the ones who book.
+             * rather than staying silent. Phrased the way prospects ask it —
+             * an earlier draft asked "why isn't there pricing on this page?",
+             * which pointed at the absence instead of answering. No figure
+             * appears, so the page still carries no pricing, but the question
+             * stops being a reason to bounce and it pre-qualifies whoever books.
              *
              * Only claims that are already true on /pricing: the open-source
              * edition is free and self-hosted, and the Enterprise edition is
              * quoted. Do not add a model description we cannot source.
              */
             {
-                question: "Why isn't there pricing on this page?",
-                answer: "The open-source edition is free and self-hosted, with no commercial conversation attached. For the Enterprise edition we'll walk you through the model on the call, against the deployment you actually need rather than a generic tier.",
+                question: "How is Kestra priced?",
+                answer: "The open-source edition is free and self-hosted, with no commercial conversation attached. The Enterprise edition is quoted against the deployment you actually need rather than a generic tier — we'll walk you through the model on the call.",
             },
         ],
     },

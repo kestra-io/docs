@@ -10,12 +10,96 @@
  * - no outbound links except the two footer legal links + one GitHub link.
  */
 
-import type { LpProof } from "./types"
+import type { LpProof, LpProofCase } from "./types"
 
 export const LP_CTA_LABEL = "Book a demo"
 
 /** Anchor target of every CTA on the page (hero button + mobile sticky bar). */
 export const LP_FORM_ANCHOR = "demo"
+
+/**
+ * Cleared customer proof. Every quote, figure and attribution here is already
+ * published on kestra.io — see each `source`. That is what makes the numbers
+ * defensible rather than invented: the copy brief allows no figure other than
+ * "1,800+ plugins" *without a defensible source*, and a live page carrying the
+ * same claim is exactly that. Nothing here waits on clearance, and nothing here
+ * was written by us.
+ *
+ * Do not add a case whose wording is not already public. A stronger story from
+ * `voc-lp-enrichment.md` §5.3 needs Gabe's sign-off first.
+ *
+ * Deliberately absent: a Fortune 500 hosting team (VMware vRA retired, 6 months
+ * of work down to 6 days, −90% licensing) is the strongest infrastructure story
+ * on the homepage, but it names a competitor product, which the VoC guardrail
+ * keeps out of paid copy. Add it only on Virgile's call.
+ */
+export const LP_PROOF_CASES = {
+    jpmorgan: {
+        logo: "jpmorgan",
+        company: "JPMorgan Chase",
+        context: "Data at scale, built by the analysts themselves",
+        kpis: [
+            { value: "Billions", label: "of records processed securely" },
+            { value: "< 3 months", label: "from zero to full production" },
+            { value: "100+", label: "users building their own workflows" },
+        ],
+        quote: "We processed billions of rows and thousands of weekly API pulls in under 3 months. For the first time, our analysts aren't waiting for engineering — they're building the workflows themselves.",
+        attribution: "VP of Cybersecurity, JPMorgan Chase",
+        source: "kestra.io homepage — components/home/Testimonial.astro",
+    },
+    pharmacy: {
+        logo: "pharmacy",
+        company: "European pharmacy retailer",
+        context: "Mission-critical operations off a 30-year-old platform",
+        kpis: [
+            { value: "400+", label: "pharmacies rely on the workflows" },
+            { value: "50+", label: "critical workflows modernized" },
+            { value: "30+ years", label: "old platform, replaced in months" },
+        ],
+        quote: "Stability was the turning point. With Kestra, our most critical flows finally run the way they should.",
+        attribution: "Infrastructure Lead",
+        source: "kestra.io homepage — components/home/Testimonial.astro",
+    },
+    fila: {
+        logo: "fila",
+        company: "FILA",
+        context: "One platform carrying the whole company's automation",
+        kpis: [
+            { value: "2.5M", label: "executions every month" },
+            { value: "2,000+", label: "workflows in production" },
+            { value: "25+", label: "engineers working in Kestra" },
+        ],
+        quote: "Kestra has changed how we handle data orchestration. Instead of spending days fixing issues, we now have full visibility and control. As we scale, having a system that grows with us is invaluable.",
+        attribution: "John Kim, IT Lead, FILA",
+        source: "kestra.io homepage — components/home/Testimonial.astro",
+    },
+    leroymerlin: {
+        logo: "leroymerlin",
+        company: "Leroy Merlin",
+        context: "A data platform the whole company builds on",
+        kpis: [
+            { value: "+900%", label: "in data production" },
+            { value: "250+", label: "active users" },
+            { value: "5,000+", label: "workflows created" },
+        ],
+        quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture.",
+        attribution: "Julien Henrion, Head of Data Engineering",
+        source: "kestra.io homepage — components/home/Testimonial.astro",
+    },
+    apple: {
+        logo: "apple",
+        company: "Apple (ML team)",
+        context: "Large-scale ML pipelines, no orchestration code to maintain",
+        kpis: [
+            { value: "200", label: "engineers onboarded" },
+            { value: "2×", label: "faster workflow creation" },
+            { value: "0", label: "pipeline failures" },
+        ],
+        quote: "Kestra delivers end-to-end automation with the robustness we need at our scale. Few companies operate at this level, especially in AI/ML.",
+        attribution: "Senior Engineering Manager, ML team @ Apple",
+        source: "kestra.io homepage and /demo — components/home/Testimonial.astro",
+    },
+} as const satisfies Record<string, LpProofCase>
 
 export const LP_SHARED = {
     hero: {
@@ -67,67 +151,14 @@ export const LP_SHARED = {
         ],
     },
 
-    /**
-     * Every quote, figure and attribution below is already published on
-     * kestra.io — see the `source` on each case. That is deliberate: the copy
-     * brief allows no number other than "1,800+ plugins" *without a defensible
-     * source*, and a live page carrying the same claim is exactly that. Nothing
-     * here waits on clearance, and nothing here was written by us.
-     *
-     * Do not add a case whose wording is not already public. If a stronger story
-     * exists in `voc-lp-enrichment.md` §5.3, it needs Gabe's sign-off first.
-     *
-     * Also available and already public, if a fourth or a swap is wanted:
-     * Apple ML team (200 engineers onboarded, 2× faster, 0 pipeline failures)
-     * and Leroy Merlin (+900% data production, +250 users, +5,000 workflows) —
-     * both in `components/home/Testimonial.astro`. A Fortune 500 hosting team
-     * (VMware vRA retired, 6 months of work down to 6 days, −90% licensing) is
-     * the strongest infrastructure story but names a competitor product, which
-     * the VoC guardrail keeps out of paid copy — Virgile's call.
-     */
     proof: {
         header: "Proof, in production",
         intro: "Three deployments, three different kinds of work, one platform underneath.",
+        // Variants override `cases` to lean their own way — see LP_PROOF_CASES.
         cases: [
-            {
-                logo: "jpmorgan",
-                company: "JPMorgan Chase",
-                context: "Data at scale, built by the analysts themselves",
-                kpis: [
-                    { value: "Billions", label: "of records processed securely" },
-                    { value: "< 3 months", label: "from zero to full production" },
-                    { value: "100+", label: "users building their own workflows" },
-                ],
-                quote: "We processed billions of rows and thousands of weekly API pulls in under 3 months. For the first time, our analysts aren't waiting for engineering — they're building the workflows themselves.",
-                attribution: "VP of Cybersecurity, JPMorgan Chase",
-                source: "kestra.io homepage — components/home/Testimonial.astro",
-            },
-            {
-                logo: "pharmacy",
-                company: "European pharmacy retailer",
-                context: "Mission-critical operations off a 30-year-old platform",
-                kpis: [
-                    { value: "400+", label: "pharmacies rely on the workflows" },
-                    { value: "50+", label: "critical workflows modernized" },
-                    { value: "30+ years", label: "old platform, replaced in months" },
-                ],
-                quote: "Stability was the turning point. With Kestra, our most critical flows finally run the way they should.",
-                attribution: "Infrastructure Lead",
-                source: "kestra.io homepage — components/home/Testimonial.astro",
-            },
-            {
-                logo: "fila",
-                company: "FILA",
-                context: "One platform carrying the whole company's automation",
-                kpis: [
-                    { value: "2.5M", label: "executions every month" },
-                    { value: "2,000+", label: "workflows in production" },
-                    { value: "25+", label: "engineers working in Kestra" },
-                ],
-                quote: "Kestra has changed how we handle data orchestration. Instead of spending days fixing issues, we now have full visibility and control. As we scale, having a system that grows with us is invaluable.",
-                attribution: "John Kim, IT Lead, FILA",
-                source: "kestra.io homepage — components/home/Testimonial.astro",
-            },
+            LP_PROOF_CASES.jpmorgan,
+            LP_PROOF_CASES.pharmacy,
+            LP_PROOF_CASES.fila,
         ],
     } satisfies LpProof,
 

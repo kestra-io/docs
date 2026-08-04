@@ -58,13 +58,11 @@ const capture = () => {
     for (const param of UTM_PARAMS) set(param, params.get(param))
     for (const param of CLICK_ID_PARAMS) set(param, params.get(param))
 
-    // The page slug, so a lead can be attributed to the variant it came from
-    // even after the redirect to the confirmation page.
-    const variant = document.body?.dataset?.lpVariant
-    if (variant && stored.lp_variant !== variant) {
-        stored.lp_variant = variant
-        changed = true
-    }
+    // The variant the ad click *landed* on — first touch, like everything else
+    // here. A visitor who lands on one variant and submits on another should
+    // still be attributed to the page the campaign paid for; the form's own
+    // events carry the submitting page separately.
+    set("lp_variant", document.body?.dataset?.lpVariant)
 
     // Landing page + first referrer, useful when the ad URL is mistagged.
     set("lp_landing_path", window.location.pathname)

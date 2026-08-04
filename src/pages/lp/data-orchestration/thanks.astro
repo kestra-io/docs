@@ -1,0 +1,66 @@
+---
+/**
+ * Confirmation page for variant 2. Copy is shared across variants
+ * (`LP_SHARED.thanks`); only the route and the variant label differ.
+ */
+import LpLayout from "~/components/lp/LpLayout.astro"
+import LpScheduler from "~/components/lp/LpScheduler.astro"
+import LpFooter from "~/components/lp/LpFooter.astro"
+import { LP_SHARED } from "~/contents/lp/shared"
+import variant from "~/contents/lp/data-orchestration"
+
+const { thanks } = LP_SHARED
+---
+
+<LpLayout
+    title={thanks.meta.title}
+    description={thanks.meta.description}
+    variant={variant.slug}
+    canonicalPath={`/lp/${variant.slug}/thanks`}
+>
+    <main>
+        <section class="lp-section lp-thanks">
+            <div class="lp-container">
+                <h1 class="lp-thanks__title">{thanks.h1}</h1>
+                <p class="lp-lead lp-thanks__sub">{thanks.sub}</p>
+
+                <LpScheduler />
+
+                <p class="lp-fineprint lp-thanks__fallback">
+                    {thanks.fallback}
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <LpFooter />
+</LpLayout>
+
+<style lang="scss">
+    .lp-thanks {
+        padding-block: 2rem 3rem;
+
+        @include media-breakpoint-up(md) {
+            padding-block: 3rem 4rem;
+        }
+    }
+
+    .lp-thanks__title {
+        max-width: 40rem;
+        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        line-height: 1.12;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+    }
+
+    .lp-thanks__sub {
+        margin-top: 1rem;
+        max-width: 34rem;
+    }
+
+    .lp-thanks__fallback {
+        margin-top: 1.25rem;
+        max-width: 34rem;
+    }
+</style>

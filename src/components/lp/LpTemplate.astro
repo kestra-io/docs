@@ -43,6 +43,7 @@ interface Props {
 const { variant } = Astro.props
 
 const proof = { ...LP_SHARED.proof, ...(variant.proof ?? {}) }
+const finalCta = { ...LP_SHARED.finalCta, ...(variant.finalCta ?? {}) }
 const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
 ---
 
@@ -114,9 +115,9 @@ const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
 
     <!-- 11 -->
     <LpFinalCta
-        header={LP_SHARED.finalCta.header}
-        sub={LP_SHARED.finalCta.sub}
-        agenda={LP_SHARED.finalCta.agenda}
+        header={finalCta.header}
+        sub={finalCta.sub}
+        agenda={finalCta.agenda}
         variant={variant.slug}
     />
 </main>

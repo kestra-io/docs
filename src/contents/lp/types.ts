@@ -39,7 +39,7 @@ export interface LpProofCase {
     company: string
     /** One line of context: what domain this proves. */
     context: string
-    kpis: [LpKpi, LpKpi, LpKpi]
+    kpis: readonly [LpKpi, LpKpi, LpKpi]
     quote: string
     attribution: string
     /**
@@ -53,7 +53,7 @@ export interface LpProofCase {
 export interface LpProof {
     header: string
     intro: string
-    cases: LpProofCase[]
+    cases: readonly LpProofCase[]
 }
 
 export interface LpUseCase {
@@ -121,8 +121,20 @@ export interface LpVariant {
     }
     /** YAML sample rendered in section 5. Syntax-highlighted, never an image. */
     yaml: string
-    /** Per-variant override of the shared proof block. */
+    /**
+     * Per-variant override of the shared proof block. Usually just `cases`,
+     * picked from `LP_PROOF_CASES` so the evidence leans the way the page does.
+     */
     proof?: Partial<LpProof>
+    /**
+     * Per-variant override of the final CTA copy. The brief gives each variant a
+     * different closing line ("on your pipelines", "your migration"), so this is
+     * the one shared block variants are expected to reach into.
+     */
+    finalCta?: {
+        header?: string
+        sub?: string
+    }
     /**
      * Objection-handling accordion. NOT part of the 9-section spec, so it is
      * OFF by default; flip `enabled` to render it between Enterprise and Proof.
