@@ -418,6 +418,7 @@ dind:
             - SETGID
       args:
         - '--log-level=fatal'
+        - '--group=1000'
 ```
 
 ### Troubleshooting DinD
