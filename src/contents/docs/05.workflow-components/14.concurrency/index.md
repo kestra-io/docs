@@ -7,36 +7,33 @@ icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.13.0"
 ---
 
-Control how many executions of a flow can run at the same time.
-
-The flow-level `concurrency` property lets you limit how many executions of a flow can run concurrently by setting the `limit` key.
-
-Think of concurrency as a global execution limit for that specific flow. The concurrency limit and behavior is then applied to all executions of that flow, regardless of whether those executions have been started automatically via a trigger, webhook, an API call, or manually created from the UI.
+Concurrency limits control how many executions of a flow can run at the same time. When the limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
 
 :::alert{type="info"}
-Concurrency limits executions of a flow, not the number of tasks a worker runs. Task processing is still governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions fighting for the same lock) can increase database load and slow scheduling.
+Concurrency limits executions of a flow, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
 :::
-
-Use concurrency when you need to protect downstream systems (rate limits, database load, external APIs) or enforce “only one execution at a time” semantics. Do **not** rely on concurrency to throttle Kestra worker usage; adjust worker threads, task runners, or queue sizing for that.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/lDGOqqMyQEo?si=01KzCswO3dHdhYdt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-For example, if you set the concurrency `limit` to 2, only two executions of that flow will be allowed to run at the same time. If you try to trigger a third execution, it will be queued until one of the two running executions is completed.
+## When to use concurrency
 
-### When to use concurrency
+Use concurrency when you need to:
 
 - Protect a shared target system (databases, SaaS APIs, warehouses) from overload.
 - Enforce sequential processing for stateful workloads (one ETL load at a time).
 - Keep a small, fixed number of parallel executions within an external rate limit.
 
-### When **not** to use concurrency
+Do **not** use concurrency to:
 
-- Throttling worker CPU/RAM usage — tune worker thread pools or task runners instead.
-- Replacing task-level limits — use task runner settings (e.g., container resources) and retry/backoff for per-task control.
-- Broad platform protection — use platform sizing and queue configuration rather than flow-level concurrency locks.
-- Capping how many executions are **created** over time — use [Quotas](../21.quotas/index.md) (Enterprise Edition) for time-window rate limits instead.
+- Throttle worker CPU or memory usage — tune worker thread pools or task runners instead.
+- Replace task-level limits — use task runner settings and retry backoff for per-task control.
+- Cap how many executions are **created** over time — use [Quotas](../21.quotas/index.md) (Enterprise Edition) for time-window rate limits.
+
+## Configuring concurrency
+
+Set `concurrency.limit` on a flow to cap its parallel executions:
 
 ```yaml
 id: concurrency_example
@@ -48,38 +45,29 @@ concurrency:
 tasks:
   - id: wait
     type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
       - sleep 10
-
 ```
 
-In the UI, the third execution is queued while the first two finish successfully.
-
-![concurrency](./concurrency.png)
+With `limit: 2`, a third execution waits until one of the two running executions completes.
 
 ## `behavior` property
 
-You can customize the behavior when the concurrency limit is reached by choosing to queue, cancel, or fail the new execution. To do that, set the `behavior` Enum-type property to one of the following values:
+By default, executions that exceed the limit are queued. Set `behavior` to control what happens instead:
 
-- `QUEUE`
-- `CANCEL`
-- `FAIL`
-
-For example, with `concurrency.limit` set to 2 and `CANCEL` or `FAIL` behavior, the third execution is immediately marked as `CANCELLED` or `FAILED` without running any tasks.
-
-Below is a full flow example that uses the `concurrency` property to limit the number of concurrent executions to 2. The `bash` task sleeps for 10 seconds, so you can trigger multiple executions of that flow and see how the `concurrency` property behaves.
-
-:::alert{type="warning"}
-Each execution that waits for a concurrency slot holds a database lock. Large backlogs (many queued executions) can increase lock contention and slow down scheduling. If you expect spikes, combine conservative limits with backoff at the source (e.g., trigger rates) and keep an eye on the Concurrency tab in the UI.
-:::
+- `QUEUE` — hold the execution until a slot opens (default).
+- `CANCEL` — immediately mark the execution as `CANCELLED`.
+- `FAIL` — immediately mark the execution as `FAILED`.
 
 ```yaml
 id: concurrency_limited_flow
 namespace: company.team
 
 concurrency:
-  behavior: FAIL # QUEUE, CANCEL or FAIL
-  limit: 2 # can be any integer >= 1
+  behavior: FAIL # QUEUE, CANCEL, or FAIL
+  limit: 2
 
 tasks:
   - id: wait
@@ -90,50 +78,33 @@ tasks:
       - sleep 10
 ```
 
-The third execution fails because the first two are still running.
-
-![concurrency_fail](./concurrency_fail.png)
+:::alert{type="warning"}
+Each execution waiting for a concurrency slot holds a database lock. Large backlogs of queued executions can increase lock contention and slow scheduling. If you expect spikes, combine conservative limits with backoff at the source (e.g., trigger rates).
+:::
 
 :::alert{type="warning"}
-When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. This means the `behavior` property will not come into effect and instead no new executions will be started.
+When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case — no new executions start while the trigger is locked.
 
 Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
 :::
 
-## Tracking concurrency slots
+## Monitoring concurrency
 
-The `Concurrency` tab on the `Flow` page lets you track and troubleshoot concurrency issues. It shows a progress bar with the number of active slots compared to the total slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
+### Per-flow Concurrency tab
 
-![concurrency_page_1](./concurrency_page_1.png)
+The **Concurrency** tab on a Flow page shows current slot usage, the configured behavior, and a list of running and queued executions for that flow.
 
-To see the concurrency behavior in action, you can configure a flow with a concurrency limit as follows:
+![Flow Concurrency tab showing 2 of 2 active slots filled with one execution queued](./concurrency-queue-tab.png)
 
-```yaml
-id: concurrent
-namespace: company.team
+### Concurrency Limits page
 
-concurrency:
-  behavior: QUEUE
-  limit: 5
+The **Concurrency Limits** page under **Tenant** in the sidebar lists every flow that has a concurrency limit configured, along with its live running count. Use it for a tenant-wide view of concurrency usage across all flows.
 
-tasks:
-  - id: long_running_task
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-```
+![Concurrency Limits page listing two flows with their namespaces and running counts](./concurrency-limits-page.png)
 
-Next, trigger multiple Executions of that flow and watch the `Concurrency` tab showing the active slots and queued Executions.
+## Concurrent trigger executions
 
-![concurrency_page_2](./concurrency_page_2.png)
-
-## Concurrent executions for Triggers
-
-Any [Trigger](../../05.workflow-components/07.triggers/index.mdx) type supports concurrent executions, allowing multiple instances of the same workflow to run simultaneously. This enables more flexible and scalable workflow patterns.
-
-For example, consider a workflow that takes 60 seconds to complete but is triggered every second. By default, with `allowConcurrent: false`, only one execution can run at a time. If a trigger fires while a previous execution is still running, the new execution will be skipped:
+Any [Trigger](../07.triggers/index.mdx) type supports concurrent executions through the `allowConcurrent` property. By default, `allowConcurrent: false` — if a trigger fires while a previous execution is still running, the new execution is skipped.
 
 ```yaml
 id: sleep_concurrent
@@ -150,22 +121,26 @@ triggers:
     allowConcurrent: false
 ```
 
-In this example, even though the [Schedule trigger](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) fires every second, only one execution will run at a time. Setting `allowConcurrent: true` would allow multiple executions to run simultaneously.
+Set `allowConcurrent: true` to allow multiple executions to run simultaneously from the same trigger.
 
-## How to troubleshoot Concurrency issues
-
-Imagine that you encounter a situation where the concurrency limit is reached, and some executions are stuck in the `QUEUED` state. Here are some steps to troubleshoot and resolve the issue.
+## Troubleshooting concurrency issues
 
 ### Check the Concurrency tab
 
-The `Concurrency` tab on the `Flow` UI page described above allows you to see which executions are `RUNNING` and which are `QUEUED` (i.e., waiting or stuck). This page can help you troubleshoot which Executions are taking concurrency slots and which are waiting to be processed.
+Open the **Concurrency** tab on the Flow page to see which executions are running, queued, or failed. This shows which executions hold slots and which are waiting.
 
-In the future, this page will also let you run stuck executions while ignoring concurrency limits.
+![Flow Concurrency tab for a FAIL-behavior flow showing 0 of 2 active slots with two failed executions](./concurrency-fail-tab.png)
 
-### Edit the Concurrency property
+### Edit the concurrency limit
 
-You can edit the `concurrency` property within the flow (or remove that property entirely to get rid of any limits) and `Save` the flow code. The modified concurrency limit and behavior will be immediately taken into account for all Executions in progress because the Executor checks this for the latest flow revision rather than for the revision of the Execution.
+You can change or remove the `concurrency` property in the flow editor and save. The executor always reads the latest flow revision, so the updated limit takes effect immediately for all in-progress executions.
+
+### Reset a stuck running counter
+
+If executions were deleted while running, their concurrency slots can remain occupied indefinitely. Use the **Concurrency Limits** page to correct this: click the edit icon next to the affected flow and adjust the running counter directly.
+
+![Concurrency Limits counter reset dialog with a warning that changing the counter may allow executions to exceed the limit](./concurrency-limits-reset.png)
 
 :::alert{type="warning"}
-Do **not** delete executions, as this makes the issue worse — deleted executions still occupy concurrency slots indefinitely. You can select stuck Executions and hit the `Kill` button to cancel them and free up the concurrency slots, but do not delete them.
+Do **not** delete executions to free stuck slots — deleted executions still hold concurrency slots. Instead, select stuck executions and click **Kill** to cancel them and release their slots. Use the counter reset only when slots remain stuck after killing all relevant executions.
 :::
