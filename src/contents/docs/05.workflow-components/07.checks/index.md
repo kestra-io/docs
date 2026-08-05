@@ -9,21 +9,16 @@ version: ">= 1.2.0"
 
 Checks are pre-execution validations that block or fail an execution before any tasks run.
 
-`checks` are flow-level assertions evaluated when validating inputs and before creating a new execution. Each check defines a boolean `when` expression and a `message` shown when the expression evaluates to false. You can choose how Kestra reacts (block, fail, or still create the execution) and how the message is styled in the UI.
-
-Checks are useful to enforce business rules on inputs (e.g., allowed values, date windows, required flags) or to nudge users with warnings before they launch a run.
+`checks` are flow-level assertions evaluated when validating inputs and before creating a new execution. Each check defines a boolean `when` expression and a `message` shown when the expression evaluates to false.
 
 ## Properties
 
-Each item in `checks` supports the following properties:
-
-- `when` *(required)*: Pebble expression that must evaluate to a boolean. Checks can reference inputs, key-value pairs, and other components accessible via [expressions](../../expressions/index.mdx).
-- `message` *(required)*: Text displayed when the condition is false.
-- `style` *(optional, default `INFO`)*: Visual style for the message. One of `ERROR`, `SUCCESS`, `WARNING`, `INFO`.
-- `behavior` *(optional, default `BLOCK_EXECUTION`)*: How the flow should react when the condition is false. One of:
-  - `BLOCK_EXECUTION`: Do not create the execution.
-  - `FAIL_EXECUTION`: Create the execution immediately in a failed state.
-  - `CREATE_EXECUTION`: Create the execution even when the check fails.
+| Property | Required | Default | Description |
+|---|---|---|---|
+| `when` | Yes | — | Pebble expression that must evaluate to a boolean. Can reference inputs, KV pairs, and other [expression](../../expressions/index.mdx) variables. |
+| `message` | Yes | — | Text displayed in the Execute modal when the condition is false. |
+| `style` | No | `INFO` | Visual style for the message: `ERROR`, `SUCCESS`, `WARNING`, or `INFO`. |
+| `behavior` | No | `BLOCK_EXECUTION` | How the flow reacts when the condition is false: `BLOCK_EXECUTION` (do not create), `FAIL_EXECUTION` (create in failed state), or `CREATE_EXECUTION` (create anyway). |
 
 When you click **Execute**, the modal displays the `message` as soon as an input fails a check:
 
@@ -35,7 +30,7 @@ If several checks fail, the most restrictive behavior wins in this priority orde
 
 ### Evaluation behavior
 
-Keep these rules in mind when writing `condition` expressions:
+Keep these rules in mind when writing `when` expressions:
 
 - **The condition must evaluate to a boolean `true`.** Only a real boolean passes — not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
 - **An unevaluatable condition always blocks.** If the condition cannot be evaluated (for example, an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, regardless of the `behavior` and `style` you declared. Fix the expression and reference only variables that exist at validation time to restore your declared behavior.
