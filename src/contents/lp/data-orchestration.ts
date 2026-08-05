@@ -1,6 +1,5 @@
 import type { LpVariant } from "./types"
 import { LP_PROOF_CASES } from "./shared"
-import interimHeroUi from "~/assets/landing/infrastructure/infra-ui.png"
 
 /**
  * Variant 2 — data-led, but deliberately pulling upward to infrastructure and
@@ -31,27 +30,17 @@ const dataOrchestration: LpVariant = {
         h1: "The Data Orchestration Platform Built for Scale",
         // ⚠️ DRAFT SUB — no locked sub existed for this variant; pending sign-off.
         sub: "Orchestrate ingestion, transformation, and the ML and AI steps around them — one engine, any language, from first pipeline to millions of runs.",
-        image: interimHeroUi,
-        imageAlt:
-            "The Kestra UI: a declarative YAML flow in the editor next to its topology, with two tasks running in parallel inside a group.",
-        imageFit: "contain",
     },
-    problem: {
-        // ⚠️ DRAFT HEADER — not in the source docs.
-        header: "The pipeline runs. Nobody can say what it did.",
-        pains: [
-            "Pipelines held together by cron and glue scripts — no lineage, no idea what actually ran until a dashboard shows the wrong number.",
-            "No link between ingest and transform — you run dbt and hope the data landed.",
-            "The framework tax — your orchestrator forces everything into its way of working, and runs differently on your machine than it does in production.",
-        ],
-    },
+    /**
+     * Outcomes — pains folded into the gains, per the PR #5276 review rule
+     * (state what they get; the pain stays implicit). ⚠️ DRAFT header.
+     */
     benefits: {
-        // ⚠️ DRAFT HEADER — not in the source docs.
         header: "Your whole data stack, and the steps either side of it.",
         cards: [
             {
                 lead: "Orchestrate your data stack end-to-end.",
-                body: "dbt, warehouses, ELT, streaming. Know ingestion finished before the transform runs — and restart a failed run from the point it broke, not from the top.",
+                body: "dbt, warehouses, ELT, streaming. Ingestion finishes before the transform runs, and a failed run restarts from the point it broke — with the run history to prove what happened.",
             },
             {
                 lead: "Language-agnostic pipelines, not Python-only.",
@@ -63,46 +52,6 @@ const dataOrchestration: LpVariant = {
             },
         ],
     },
-    /**
-     * The ingest → transform → quality-gate → ML → notify chain, which is the
-     * most common real first workflow in the call corpus (≥6 orgs). Verbatim from
-     * the brief except the Slack task: `io.kestra.plugin.notifications.slack.*`
-     * is deprecated in favour of `io.kestra.plugin.slack.notifications.*`
-     * (checked against the live plugin registry). Every other identifier here
-     * was verified as current.
-     */
-    yaml: `id: daily_revenue_pipeline
-namespace: company.data
-
-tasks:
-  - id: ingest                     # EL — ingestion
-    type: io.kestra.plugin.airbyte.cloud.jobs.Sync
-    connectionId: "{{ vars.orders_conn }}"
-
-  - id: transform                  # T — dbt (runs only after ingest succeeds)
-    type: io.kestra.plugin.dbt.cli.DbtCLI
-    commands:
-      - dbt build --select revenue
-
-  - id: quality_check              # data-quality gate
-    type: io.kestra.plugin.scripts.python.Script
-    script: |
-      assert_row_count("mart.revenue", min_rows=1000)
-
-  - id: score_churn                # ML / AI — same engine, not a separate tool
-    type: io.kestra.plugin.scripts.python.Script
-    script: |
-      run_model("churn_v3")
-
-  - id: alert
-    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-    url: "{{ secret('SLACK_HOOK') }}"
-
-triggers:
-  - id: nightly
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 3 * * *"`,
-
     /** Data-leaning evidence: two data platforms at scale, plus ML at Apple. */
     proof: {
         intro: "Three data platforms at very different scales, all on one engine.",
@@ -137,7 +86,7 @@ triggers:
             {
                 question:
                     "Can it coordinate more than data — ML training, LLM and agent tasks, infra steps — in the same pipeline?",
-                answer: "Yes. The same engine schedules them alongside your dbt runs, as in the flow above.",
+                answer: "Yes. The same engine schedules them alongside your dbt runs.",
             },
             {
                 question:

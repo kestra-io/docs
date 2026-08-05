@@ -25,8 +25,10 @@ import { LP_FORM_ANCHOR, LP_CTA_LABEL } from "~/contents/lp/shared"
 <script>
     const initStickyCta = () => {
         const bar = document.querySelector<HTMLElement>("[data-lp-sticky]")
+        // The hero contains the first form; the bar appears once it has
+        // scrolled away and hides again while the bottom form (#demo) shows.
         const heroCta = document.querySelector<HTMLElement>(
-            '[data-lp-cta="hero"]',
+            "[data-lp-hero-form]",
         )
         const form = document.getElementById("demo")
 

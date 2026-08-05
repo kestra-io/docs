@@ -10,7 +10,7 @@
  * - no outbound links except the two footer legal links + one GitHub link.
  */
 
-import type { LpProof, LpProofCase } from "./types"
+import type { LpProof, LpProofCase, LpRoiStat } from "./types"
 
 export const LP_CTA_LABEL = "Book a demo"
 
@@ -103,30 +103,13 @@ export const LP_PROOF_CASES = {
 
 export const LP_SHARED = {
     hero: {
-        cta: LP_CTA_LABEL,
-        microcopy: "30 minutes with an engineer — on your stack, not a sales deck.",
-        /**
-         * Label of the placeholder box shown until a variant sets
-         * `hero.image`. Set the image in the variant file (one line) and this
-         * disappears — same 16/10 box, no layout shift.
-         *
-         * On preloading: the hero image is rendered eagerly with
-         * `fetchpriority="high"` inside prerendered HTML, so the browser's
-         * preload scanner finds it in the first bytes of the document. A
-         * `<link rel="preload">` on top of that would have to mirror the exact
-         * transformed srcset Astro emits, and downloads the image twice when it
-         * doesn't — which is why there isn't one.
-         */
-        imagePlaceholderLabel: "TOPOLOGY_UI_SCREENSHOT",
+        cta: "Book a demo",
+        microcopy:
+            "30 minutes with an engineer — on your stack, not a sales deck.",
     },
 
     trust: {
         line: "Run in production by enterprises across finance, public sector, and manufacturing.",
-    },
-
-    howItWorks: {
-        header: "Declarative where it counts. Code where you want it.",
-        body: "Every workflow is simple, declarative YAML — versioned in Git, editable from a full UI, executing your code in any language.",
     },
 
     enterprise: {
@@ -171,12 +154,11 @@ export const LP_SHARED = {
      * its H1.
      */
     useCases: {
-        // "five tools" already carries the problem header; repeating it here
-        // weakened both. This header states the answer instead.
-        header: "One orchestrator, four kinds of work",
+        header: "What you get: one orchestrator, four kinds of work",
         // Carries the ad-group phrase a second time (after the H1) as an actual
-        // argument rather than as keyword filler.
-        intro: "Workflow orchestration is usually sold as a data problem. In practice most teams arrive with a first workflow that spans more than one of these columns — which is exactly where a single-domain tool stops being enough.",
+        // argument. No category claims — just what most first workflows look
+        // like in practice.
+        intro: "Most teams arrive with a first workflow that already spans more than one of these columns. With 1,800+ plugins for your databases, clouds, and internal systems, workflow orchestration stops being a per-team tooling decision.",
         columns: [
             {
                 icon: "mdi:database-cog-outline",
@@ -222,37 +204,81 @@ export const LP_SHARED = {
     },
 
     /**
-     * Migration effort is the second-biggest objection in the corpus (×24 orgs),
-     * and "do we need Kubernetes" the fourth (×4). This section answers both
-     * before the FAQ has to. Wording traces to how customers described their own
-     * rollouts — one workflow first, then team by team, then decommission.
+     * Migration effort is the second-biggest objection in the corpus (×24 orgs).
+     * Kept deliberately non-technical (PR #5276 review: the earlier version
+     * talked Docker/VM/Kubernetes — that conversation belongs in the FAQ):
+     * three steps, each an outcome, no infrastructure vocabulary.
      */
     adoption: {
-        header: "Adoption doesn't have to be a migration project",
+        header: "The Kestra journey",
         intro: "Nobody who moved quickly rewrote anything on day one.",
         steps: [
             {
                 when: "Week one",
                 title: "One workflow, running",
-                body: "Run Kestra with Docker on a VM — Kubernetes optional — and port one flow you already have. Your scripts run as they are, in whatever language they were written in.",
+                body: "Start with one workflow you already have. Your scripts run as they are, in whatever language they were written in.",
             },
             {
                 when: "Then",
                 title: "Team by team",
-                body: "Move the workflows that hurt most first and leave the rest where they are. The old scheduler and Kestra run side by side for as long as you need them to.",
+                body: "Move the workflows that hurt most first. Whatever you run today keeps running alongside Kestra for as long as you need it to.",
             },
             {
                 when: "Eventually",
                 title: "Retire what it replaced",
-                body: "When the last flow has moved, the legacy scheduler goes with it — along with its licence, its server, and the person who was the only one who understood it.",
+                body: "When the last workflow has moved, the old tools go with it — along with their licenses, their servers, and their maintenance.",
             },
         ],
     },
 
-    /** Repeated conversion prompt mid-page. Same label and anchor as the hero. */
+    /** Closing CTA after the FAQ — anchors back up to the form (#demo). */
     midCta: {
         header: "See this on your own stack",
         body: "Bring a workflow you're stuck on and we'll build it live on the call.",
+    },
+
+
+    /**
+     * ROI. Content mirrors the "Kestra ROI — Typical Impact After Standardizing
+     * Orchestration" slide of the enterprise sales deck (provided by Virgile,
+     * 2026-08-05, in the PR #5276 review). ⚠️ These ranges are not published
+     * anywhere public yet — this page is their first public appearance, so they
+     * need Gabe's sign-off before spend starts. The "typical impact" framing is
+     * load-bearing: ranges, not promises.
+     */
+    roi: {
+        header: "The ROI of standardizing orchestration",
+        intro: "Typical impact once the schedulers, cron jobs, and point tools run on one platform.",
+        stats: [
+            {
+                direction: "up",
+                value: "20–40%",
+                label: "Engineering productivity",
+                why: "Reuse — blueprints, plugins — plus guided authoring reduces rework and review cycles.",
+            },
+            {
+                direction: "down",
+                value: "30–60%",
+                label: "Ops effort",
+                why: "Targeted replay, built-in observability, and deterministic runs reduce incidents and time-to-recovery.",
+            },
+            {
+                direction: "down",
+                value: "10–30%",
+                label: "Infra waste",
+                why: "Partial replays and targeted reruns cut reprocessing compute, storage, and network.",
+            },
+            {
+                direction: "down",
+                value: "15–35%",
+                label: "Tool spend",
+                why: "Consolidating one to three overlapping tools reduces license and run costs.",
+            },
+        ] satisfies readonly LpRoiStat[],
+        quote: {
+            text: "Kestra allowed us to move from fragmented automation to a unified control plane — secure, scalable, and manageable by all our teams.",
+            attribution: "Leroy Merlin",
+        },
     },
 
     finalCta: {

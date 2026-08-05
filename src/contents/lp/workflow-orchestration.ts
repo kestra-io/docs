@@ -1,12 +1,11 @@
 import type { LpVariant } from "./types"
-import interimHeroUi from "~/assets/landing/infrastructure/infra-ui.png"
 
 /**
  * Variant 1 — broadest intent, the cross-domain "entire stack" wedge.
  * Ad group: workflow orchestration (exact-match H1 for Quality Score).
  *
  * ⚠️ COPY CONFLICT — read before editing.
- * The hero sub, problem block and benefit cards below are the ones in
+ * The hero sub below is the one in
  * `claude-code-briefs.md` "Brief 1/3 §6" (marked "use verbatim, no rewording").
  * `lp-copy-final-v1.md` carries a *different* hero sub, marked 🔒 LOCKED, plus a
  * different problem/benefit set. Both cannot be verbatim. The Brief 1/3 object
@@ -19,15 +18,8 @@ import interimHeroUi from "~/assets/landing/infrastructure/infra-ui.png"
  *   "Orchestrate data pipelines, scripts, and business-critical processes from
  *    one control plane — in any language, on any infrastructure."
  *
- * Alternative problem block (lp-copy-final-v1.md §3, VoC-sourced):
- *   header: "Orchestration today: five tools, zero visibility"
- *   - "Automation sprawl — Jenkins here, cron there, scripts on a network
- *      drive. No one can see the whole picture, and when the person who knows
- *      how it all fits together goes on vacation, everything stalls."
- *   - "No framework tax — your orchestrator shouldn't force everything into
- *      Python, or make you an expert in its framework just to ship."
- *   - "No visibility or governance — anyone can hand-edit a workflow and break
- *      production, with no audit trail of who changed what."
+ * (The former standalone problem section was removed in the PR #5276 review —
+ * pains are folded into the outcome cards below.)
  */
 const workflowOrchestration: LpVariant = {
     slug: "workflow-orchestration",
@@ -40,91 +32,32 @@ const workflowOrchestration: LpVariant = {
     hero: {
         h1: "The Workflow Orchestration Platform for Your Entire Stack",
         sub: "One control plane to run, see, and govern every workflow across data, infrastructure, apps, and business processes. Any language, on your own infrastructure.",
-        /**
-         * INTERIM VISUAL — the existing /infra landing-page screenshot, reused
-         * so the page has a real product visual instead of an empty frame. It
-         * happens to show the two things the copy claims: declarative YAML in a
-         * full UI, and a topology with a parallel group.
-         *
-         * TODO(virgile): swap for the dedicated topology screenshot. Put the
-         * file in `src/components/lp/assets/` and change these two lines —
-         * nothing else. The frame is 16/10 and crops from the top, so a tall
-         * topology capture reads as a flow continuing past the frame; the box is
-         * already the exact size the image will occupy, so the swap shifts
-         * nothing.
-         */
-        image: interimHeroUi,
-        imageAlt:
-            "The Kestra UI: a declarative YAML flow in the editor next to its topology, with two tasks running in parallel inside a group.",
-        // This capture has its own window chrome and a left nav, so it must not
-        // be cropped. Drop this line when swapping in a bare topology capture.
-        imageFit: "contain",
     },
-    problem: {
-        header: "Orchestration today: five tools, zero visibility",
-        pains: [
-            "Every team runs its own scheduler — one for data, one for infra, one for everything else.",
-            "Business-critical jobs still hide in cron tabs and legacy scripts nobody owns.",
-            "Single-language orchestrators lock out every engineer who doesn't write Python.",
-        ],
-    },
+    /**
+     * Outcomes — one section carrying what were "problem" and "benefits".
+     * The three leads are the PR #5276 review's reformulations, verbatim: same
+     * information as the old pain bullets, stated as what the visitor gains.
+     * Removed with that review: "No competitor spans all of them natively"
+     * (unverifiable comparative claim on a paid page) and the Python-only pain
+     * (factually wrong — plenty of orchestrators aren't Python).
+     */
     benefits: {
         header: "One platform. Every workflow. Your infrastructure.",
         cards: [
             {
-                lead: "Everything as code, and from the UI.",
-                body: "Declarative YAML versioned in Git, editable from a full UI, in any language with 1,800+ plugins. Every team can build, so one platform actually replaces many.",
+                lead: "One control plane for data, infra, and business processes.",
+                body: "Replace five schedulers with one governed platform, running on top of the tools you already have — on-prem, air-gapped, or in any cloud.",
             },
             {
-                lead: "One control plane, every domain.",
-                body: "Coordinate data pipelines, infrastructure jobs, and business processes in one governed flow, on top of the tools you already run. No competitor spans all of them natively.",
+                lead: "Every job visible, owned, and audited.",
+                body: "Including the ones that used to live in cron tabs and legacy scripts. Declarative workflows versioned in Git, editable from a full UI, with RBAC and audit logs built in.",
             },
             {
-                lead: "Self-managed and governed at scale.",
-                body: "Run on-prem, air-gapped, or in any cloud, with RBAC, audit logs, and multi-tenancy. Built for millions of executions with high availability.",
+                lead: "Any language — every engineer on the team builds.",
+                body: "Python, Java, Shell, Node, and 1,800+ plugins for your databases, clouds, and SaaS tools. No rewrites to adopt, so one platform actually replaces many.",
             },
         ],
     },
-    /**
-     * Flow shape, task ids and comments are the brief's, verbatim. Two plugin
-     * identifiers were corrected against the live plugin registry (checked via
-     * the Kestra MCP), because this is the one section whose entire job is
-     * technical credibility and its readers paste this into an editor:
-     *   - `io.kestra.plugin.terraform.cli.Apply` does not exist. The only task
-     *     in that plugin is `TerraformCLI`, which takes `commands`.
-     *   - `io.kestra.plugin.notifications.slack.*` is deprecated wholesale in
-     *     favour of `io.kestra.plugin.slack.*`, and posting to a named channel
-     *     is `slack.app.chats.Post` (token + channel + messageText), not
-     *     `SlackExecution`, which reports on an execution and takes a webhook.
-     */
-    yaml: `id: nightly-operations
-namespace: company.platform
-
-tasks:
-  - id: provision_compute
-    type: io.kestra.plugin.terraform.cli.TerraformCLI
-    commands:
-      - terraform apply -auto-approve
-
-  - id: transform_data
-    type: io.kestra.plugin.dbt.cli.DbtCLI
-    commands: ["dbt build"]
-
-  - id: sync_crm
-    type: io.kestra.plugin.scripts.python.Script
-    script: "{{ read('sync_crm.py') }}"
-
-  - id: notify_finance
-    type: io.kestra.plugin.slack.app.chats.Post
-    token: "{{ secret('SLACK_TOKEN') }}"
-    channel: "#finance-ops"
-    messageText: "Nightly operations complete."
-
-triggers:
-  - id: schedule
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 2 * * *"`,
-
     /**
      * Customer logo bar under the trust line — same seven companies, same
      * order, same asset files as the kestra.io homepage bar, so nothing appears
@@ -179,7 +112,7 @@ triggers:
             {
                 question:
                     "Can one platform run data, infra, and business workflows — or do we end up with two orchestrators?",
-                answer: "One engine covers all three, as in the flow above.",
+                answer: "One engine covers all three — that is the whole point of a single control plane.",
             },
             /**
              * Pricing opacity is the single most frequent friction in the call

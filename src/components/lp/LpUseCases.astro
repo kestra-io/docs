@@ -21,7 +21,7 @@ interface Props {
 const { header, intro, columns } = Astro.props
 ---
 
-<section class="lp-section lp-section--muted lp-usecases">
+<section class="lp-section lp-usecases">
     <div class="lp-container">
         <h2 class="lp-h2">{header}</h2>
         <p class="lp-lead lp-usecases__intro">{intro}</p>
@@ -76,7 +76,7 @@ const { header, intro, columns } = Astro.props
         padding: 1.5rem;
         border: 1px solid var(--ks-border-primary);
         border-radius: var(--lp-radius);
-        background-color: var(--ks-background-primary);
+        background-color: var(--ks-background-secondary);
     }
 
     .lp-usecases__head {

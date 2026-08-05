@@ -30,7 +30,15 @@
     const props = defineProps<{
         /** Variant slug — also the `lp_variant` property on every event. */
         variant: string
+        /**
+         * Instance prefix for DOM ids. The form renders twice on the page
+         * (hero and final CTA); without this the ids collide and label/focus
+         * targeting breaks.
+         */
+        idPrefix?: string
     }>()
+
+    const fid = (name: string) => `lp-${props.idPrefix ?? "form"}-${name}`
 
     const copy = LP_SHARED.form
 
@@ -113,9 +121,9 @@
 
     const focusFirstError = () => {
         const order: Array<[string, string]> = [
-            ["email", "lp-email"],
-            ["company", "lp-company"],
-            ["teamSize", "lp-team-size"],
+            ["email", fid("email")],
+            ["company", fid("company")],
+            ["teamSize", fid("team-size")],
         ]
         for (const [key, id] of order) {
             if (errors.value[key as keyof typeof errors.value]) {
@@ -320,11 +328,11 @@
         </p>
 
         <div class="lp-field">
-            <label class="lp-label" for="lp-email">{{
+            <label class="lp-label" :for="fid('email')">{{
                 copy.email.label
             }}</label>
             <input
-                id="lp-email"
+                :id="fid('email')"
                 v-model="email"
                 class="lp-input"
                 type="email"
@@ -333,13 +341,15 @@
                 autocomplete="email"
                 :placeholder="copy.email.placeholder"
                 :aria-invalid="Boolean(errors.email)"
-                :aria-describedby="errors.email ? 'lp-email-error' : undefined"
+                :aria-describedby="
+                    errors.email ? fid('email-error') : undefined
+                "
                 required
                 @blur="validateEmail"
             />
             <p
                 v-if="errors.email"
-                id="lp-email-error"
+                :id="fid('email-error')"
                 class="lp-error"
                 role="alert"
             >
@@ -348,11 +358,11 @@
         </div>
 
         <div class="lp-field">
-            <label class="lp-label" for="lp-company">
+            <label class="lp-label" :for="fid('company')">
                 {{ copy.company.label }}
             </label>
             <input
-                id="lp-company"
+                :id="fid('company')"
                 v-model="company"
                 class="lp-input"
                 type="text"
@@ -361,14 +371,14 @@
                 :placeholder="copy.company.placeholder"
                 :aria-invalid="Boolean(errors.company)"
                 :aria-describedby="
-                    errors.company ? 'lp-company-error' : undefined
+                    errors.company ? fid('company-error') : undefined
                 "
                 required
                 @blur="validateCompany"
             />
             <p
                 v-if="errors.company"
-                id="lp-company-error"
+                :id="fid('company-error')"
                 class="lp-error"
                 role="alert"
             >
@@ -377,17 +387,17 @@
         </div>
 
         <div class="lp-field">
-            <label class="lp-label" for="lp-team-size">
+            <label class="lp-label" :for="fid('team-size')">
                 {{ copy.teamSize.label }}
             </label>
             <select
-                id="lp-team-size"
+                :id="fid('team-size')"
                 v-model="teamSize"
                 class="lp-select"
                 name="team_size"
                 :aria-invalid="Boolean(errors.teamSize)"
                 :aria-describedby="
-                    errors.teamSize ? 'lp-team-size-error' : undefined
+                    errors.teamSize ? fid('team-size-error') : undefined
                 "
                 required
                 @change="validateTeamSize"
@@ -406,7 +416,7 @@
             </select>
             <p
                 v-if="errors.teamSize"
-                id="lp-team-size-error"
+                :id="fid('team-size-error')"
                 class="lp-error"
                 role="alert"
             >

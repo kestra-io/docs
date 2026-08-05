@@ -1,6 +1,5 @@
 import type { LpVariant } from "./types"
 import { LP_PROOF_CASES } from "./shared"
-import interimHeroUi from "~/assets/landing/infrastructure/infra-ui.png"
 
 /**
  * Variant 3 — consolidation: tool sprawl, cron and legacy-scheduler replacement,
@@ -31,27 +30,17 @@ const orchestrationTools: LpVariant = {
         h1: "One Orchestration Tool for Data, Scripts, and Infrastructure",
         // ⚠️ DRAFT SUB — no locked sub existed for this variant; pending sign-off.
         sub: "Consolidate the schedulers, cron jobs, and point tools your teams cobbled together — into one orchestrator you can actually see.",
-        image: interimHeroUi,
-        imageAlt:
-            "The Kestra UI: a declarative YAML flow in the editor next to its topology, with two tasks running in parallel inside a group.",
-        imageFit: "contain",
     },
-    problem: {
-        // ⚠️ DRAFT HEADER — not in the source docs.
-        header: "Every team solved scheduling on its own. Nobody owns the result.",
-        pains: [
-            "One team on Airflow, another on cron, finance on bash scripts — and no one owns the whole thing.",
-            "Every tool you add is another license, another install, another thing to maintain.",
-            "Legacy schedulers held together with duct tape — silent failures you find out about too late.",
-        ],
-    },
+    /**
+     * Outcomes — pains folded into the gains, per the PR #5276 review rule.
+     * ⚠️ DRAFT header.
+     */
     benefits: {
-        // ⚠️ DRAFT HEADER — not in the source docs.
         header: "One place to run it all, and to see it all.",
         cards: [
             {
                 lead: "Consolidate schedulers, cron, and point tools.",
-                body: "Retire the cron jobs, the console apps on random servers, and the per-team scheduler — into one place you can actually see and govern.",
+                body: "Retire the cron jobs, the console apps on random servers, and the per-team scheduler — one platform to license, install, and look at.",
             },
             {
                 lead: "Any language, 1,800+ integrations.",
@@ -59,44 +48,10 @@ const orchestrationTools: LpVariant = {
             },
             {
                 lead: "From first workflow to millions of executions.",
-                body: "Move workflows over one at a time — keep what works while you retire what doesn't. Retries, alerting, and history that cron never gave you.",
+                body: "Move workflows over one at a time — keep what works while you retire what doesn't. Retries, alerting, and a history of every run, so nothing fails silently.",
             },
         ],
     },
-    /**
-     * The cron-replacement sample: a scheduled shell task with the retries and
-     * error alerting cron never had. Verbatim from the brief except two
-     * corrections against the live plugin registry and the repo's own migration
-     * guide:
-     *   - `maxAttempt` was renamed `maxAttempts` in v0.24.0 (the old name is
-     *     still aliased, but the docs tell you to update flows).
-     *   - `io.kestra.plugin.notifications.slack.*` is deprecated in favour of
-     *     `io.kestra.plugin.slack.notifications.*`.
-     */
-    yaml: `id: rotate_certificates
-namespace: company.ops
-# Replaces a crontab entry — with the retries and alerting cron never had.
-
-tasks:
-  - id: renew
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - ./renew-and-deploy-certs.sh
-    retry:
-      type: constant
-      interval: PT5M
-      maxAttempts: 3
-
-errors:
-  - id: page_oncall              # cron can't do this
-    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-    url: "{{ secret('SLACK_HOOK') }}"
-
-triggers:
-  - id: nightly
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 2 * * *"`,
-
     /**
      * Consolidation-leaning evidence: a 30-year-old platform retired, one
      * platform carrying a whole company, and a fast path to production.

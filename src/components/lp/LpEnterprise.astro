@@ -13,12 +13,26 @@ interface Props {
     header: string
     intro: string
     items: readonly { label: string; icon: string }[]
+    /**
+     * Renders as a tail of the section above it (reduced padding, smaller
+     * heading) instead of a standalone section — used to attach the checklist
+     * to "What you get" so the two read as one block.
+     */
+    compact?: boolean
 }
 
-const { header, intro, items } = Astro.props
+const { header, intro, items, compact = false } = Astro.props
 ---
 
-<section class="lp-section lp-section--muted lp-enterprise">
+<section
+    class:list={[
+        "lp-section",
+        "lp-enterprise",
+        // Standalone: muted band. Compact: inherits the (white) background of
+        // the section it visually belongs to.
+        { "lp-section--muted": !compact, "lp-enterprise--compact": compact },
+    ]}
+>
     <div class="lp-container">
         <h2 class="lp-h2">{header}</h2>
         <p class="lp-lead lp-enterprise__intro">{intro}</p>
@@ -41,6 +55,15 @@ const { header, intro, items } = Astro.props
 </section>
 
 <style lang="scss">
+    .lp-enterprise--compact {
+        /* Tail of the section above: no visual gap between the two. */
+        padding-top: 0;
+
+        :global(h2) {
+            font-size: 1.25rem;
+        }
+    }
+
     .lp-enterprise__intro {
         margin-top: 0.875rem;
         max-width: 40rem;
@@ -66,7 +89,7 @@ const { header, intro, items } = Astro.props
         padding: 0.75rem 0.875rem;
         border: 1px solid var(--ks-border-primary);
         border-radius: 0.5rem;
-        background-color: var(--ks-background-primary);
+        background-color: var(--ks-background-secondary);
         font-size: 0.875rem;
         font-weight: 500;
         line-height: 1.3;

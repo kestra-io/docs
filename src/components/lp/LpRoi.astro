@@ -1,0 +1,181 @@
+---
+/**
+ * Section — ROI. Four ranges with the mechanism behind each one, then one
+ * customer sentence that says the same thing in a buyer's words.
+ *
+ * Content mirrors the "Kestra ROI — Typical Impact After Standardizing
+ * Orchestration" slide of the enterprise sales deck (provided by Virgile,
+ * 2026-08-05). The ranges are framed as typical impact, never as a promise —
+ * that framing is load-bearing, keep it.
+ */
+import { Icon } from "astro-icon/components"
+import type { LpRoiStat } from "~/contents/lp/types"
+import leroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+
+interface Props {
+    header: string
+    intro: string
+    stats: readonly LpRoiStat[]
+    quote: { text: string; attribution: string }
+}
+
+const { header, intro, stats, quote } = Astro.props
+---
+
+<section class="lp-section lp-roi">
+    <div class="lp-container">
+        <h2 class="lp-h2">{header}</h2>
+        <p class="lp-lead lp-roi__intro">{intro}</p>
+
+        <ul class="lp-roi__grid">
+            {
+                stats.map((stat) => (
+                    <li class="lp-roi__card">
+                        <p class="lp-roi__label">{stat.label}</p>
+                        <p class="lp-roi__value">
+                            <Icon
+                                name={
+                                    stat.direction === "up"
+                                        ? "mdi:arrow-up"
+                                        : "mdi:arrow-down"
+                                }
+                                class:list={[
+                                    "lp-roi__arrow",
+                                    `lp-roi__arrow--${stat.direction}`,
+                                ]}
+                                aria-hidden="true"
+                            />
+                            <span class="lp-visually-hidden">
+                                {stat.direction === "up" ? "up" : "down"}
+                            </span>
+                            {stat.value}
+                        </p>
+                        <p class="lp-roi__why">{stat.why}</p>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <figure class="lp-roi__quote">
+            <blockquote>{quote.text}</blockquote>
+            <figcaption class="lp-roi__attribution">
+                <span>{quote.attribution}</span>
+                <span class="lp-roi__logo" role="img" aria-label="Leroy Merlin">
+                    <Fragment set:html={leroyMerlinLogo} />
+                </span>
+            </figcaption>
+        </figure>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-roi {
+        background-color: var(--ks-background-secondary);
+    }
+
+    .lp-roi__intro {
+        margin-top: 0.875rem;
+        max-width: 42rem;
+    }
+
+    .lp-roi__grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    .lp-roi__card {
+        height: 100%;
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+    }
+
+    .lp-roi__label {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .lp-roi__value {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-top: 0.5rem;
+        font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--ks-content-color-highlight);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .lp-roi__arrow {
+        flex: 0 0 auto;
+        width: 1.375rem;
+        height: 1.375rem;
+    }
+
+    .lp-roi__arrow--up {
+        color: var(--ks-content-alert-success);
+    }
+
+    .lp-roi__arrow--down {
+        color: var(--ks-content-color-highlight);
+    }
+
+    .lp-roi__why {
+        margin-top: 0.75rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    .lp-roi__quote {
+        margin-top: 1.5rem;
+        padding: 1.5rem 1.75rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+
+        blockquote {
+            font-size: 1.0625rem;
+            line-height: 1.55;
+
+            &::before {
+                content: "“";
+            }
+
+            &::after {
+                content: "”";
+            }
+        }
+    }
+
+    .lp-roi__attribution {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 0.875rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.875rem;
+    }
+
+    .lp-roi__logo :global(svg) {
+        height: 1.75rem;
+        width: auto;
+        filter: brightness(0);
+        opacity: 0.7;
+    }
+</style>

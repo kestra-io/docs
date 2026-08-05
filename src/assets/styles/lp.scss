@@ -272,34 +272,6 @@ a {
     }
 }
 
-/* ------------------------------------------------------------ code block --- */
-
-/**
- * The YAML sample must scroll horizontally and never wrap (a wrapped
- * indentation-sensitive sample reads as broken YAML). This overrides the global
- * `wrap: true` default in `ec.config.mjs`.
- */
-.lp-code {
-    .expressive-code {
-        margin: 0;
-    }
-
-    pre {
-        margin: 0;
-        border-radius: var(--lp-radius);
-        max-height: none;
-        overflow-x: auto;
-    }
-
-    pre > code {
-        white-space: pre;
-    }
-
-    .ec-line .code {
-        white-space: pre !important;
-    }
-}
-
 /* --------------------------------------------------------- screen reader --- */
 
 .lp-visually-hidden {

@@ -70,6 +70,16 @@ export interface LpAdoptionStep {
     body: string
 }
 
+export interface LpRoiStat {
+    /** Whether the number moves up (gain) or down (reduction). */
+    direction: "up" | "down"
+    /** Range as shown, e.g. "20–40%". */
+    value: string
+    label: string
+    /** The mechanism behind the range — why it moves. */
+    why: string
+}
+
 export interface LpFaqItem {
     question: string
     answer: string
@@ -89,38 +99,24 @@ export interface LpLogoBar {
 export interface LpVariant {
     slug: LpVariantSlug
     meta: LpMeta
+    /**
+     * H1 + sub only. No product visual and no CTA button: the demo form itself
+     * renders in the hero (see `LpHero.astro`).
+     */
     hero: {
         h1: string
         sub: string
-        /**
-         * Product visual, imported from `src/components/lp/assets/`. Rendered
-         * eagerly at high fetch priority — it is the LCP candidate on desktop.
-         * When absent, `LpHero` draws the labelled placeholder box at the same
-         * 16/10 ratio, so adding the asset shifts nothing.
-         */
-        image?: ImageMetadata
-        /** Required whenever `image` is set: what the screenshot shows. */
-        imageAlt?: string
-        /**
-         * How the image fills the 16/10 frame.
-         * - `cover` (default) crops from the top: right for a tall topology
-         *   capture, which then reads as a flow continuing past the frame.
-         * - `contain` shows the whole image, for a full-UI capture whose own
-         *   chrome must not be cut. The frame drops its border in this mode,
-         *   since such screenshots carry their own.
-         */
-        imageFit?: "cover" | "contain"
     }
-    problem: {
-        header: string
-        pains: [string, string, string]
-    }
+    /**
+     * The outcome cards — one section carrying what used to be "problem" and
+     * "benefits". The rule (PR #5276 review): the visitor who clicked the ad
+     * already knows their pain; every bullet states what they gain, and the
+     * pain stays implicit inside it. No re-explaining, no comparative claims.
+     */
     benefits: {
         header: string
         cards: [LpBenefitCard, LpBenefitCard, LpBenefitCard]
     }
-    /** YAML sample rendered in section 5. Syntax-highlighted, never an image. */
-    yaml: string
     /**
      * Per-variant override of the shared proof block. Usually just `cases`,
      * picked from `LP_PROOF_CASES` so the evidence leans the way the page does.
@@ -136,8 +132,7 @@ export interface LpVariant {
         sub?: string
     }
     /**
-     * Objection-handling accordion. NOT part of the 9-section spec, so it is
-     * OFF by default; flip `enabled` to render it between Enterprise and Proof.
+     * Objection-handling accordion, last section before the closing CTA anchor.
      */
     faq?: {
         enabled: boolean
