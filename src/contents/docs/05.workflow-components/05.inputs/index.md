@@ -6,210 +6,130 @@ icon: /src/contents/docs/icons/flow.svg
 sidebarTitle: Inputs
 ---
 
-Inputs are dynamic values passed to the flow at runtime.
+Inputs are typed, validated parameters passed to a flow at execution time.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/peQvnhaspyQ?si=gcZxTX5KF2dC7ZLO" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-A flow can be parameterized with inputs, allowing multiple executions of the same flow with different values. Flow inputs are stored in the execution context and accessed with `{{ inputs.parameter_name }}`.
-
-You can use inputs to make your tasks more dynamic. For instance, you can use an input to dynamically define the path of a file that needs to be processed within a flow.
-
-You can inspect input values in the **Overview** tab of the **Execution** page and set a custom `displayName` for each input to make the interface more readable.
+Flow inputs are stored in the execution context and accessed with `{{ inputs.parameter_name }}`. All inputs are validated when the execution is created — invalid or missing required inputs prevent the execution from being created and it will not appear in the executions list.
 
 ## Declaring inputs
 
-You can declare as many inputs as necessary for any flow. Inputs can be **required** or **optional**. Each input is treated as **required** by default - set `required: false` to make an input optional.
-
-If an input is required, you must provide a value at runtime or set a `defaults` value; otherwise, the execution will not be created.
-
-All inputs are validated when the execution is created; invalid inputs prevent the execution from being created.
-
-:::alert{type="warning"}
-If an execution is **not created** due to invalid or missing inputs, it will not appear in the executions list.
-:::
-
-Below is an example flow using several inputs:
+Inputs are declared under the `inputs` key. Each input requires an `id` and a `type`. Inputs are required by default; set `required: false` to make one optional.
 
 ```yaml
-id: inputs
+id: inputs_demo
 namespace: company.team
 
 inputs:
-  - id: string
+  - id: username
     type: STRING
-    defaults: "Hello World!"
-    displayName: "A string input"
+    defaults: "alice"
+    description: The user to greet.
 
-  - id: optional
+  - id: threshold
+    type: INT
+    min: 1
+    max: 100
+
+  - id: environment
+    type: SELECT
+    values:
+      - dev
+      - staging
+      - prod
+    defaults: dev
+
+  - id: config_file
+    type: FILE
+    allowedFileExtensions: [".json", ".yaml"]
+
+  - id: optional_note
     type: STRING
     required: false
-    displayName: "An optional string"
 
-  - id: int
-    type: INT
-    defaults: 100
-    displayName: "An integer input"
-
-
-  - id: list_of_int
-    type: ARRAY
-    itemType: INT
-    defaults: [1, 2, 3]
-    displayName: "A list of integers"
-
-  - id: bool
-    type: BOOL
-    defaults: true
-    displayName: "A boolean input displayed as a toggle."
-
-  - id: float
-    type: FLOAT
-    defaults: 100.12
-    displayName: "A float input"
-
-  - id: dropdown
-    type: SELECT
-    displayName: "A dropdown input"
-    defaults: VALUE_1
-    values:
-      - VALUE_1
-      - VALUE_2
-      - VALUE_3
-
-  - id: dropdown_multi
-    type: MULTISELECT
-    values:
-      - VALUE_1
-      - VALUE_2
-      - VALUE_3
-    required: true
-
-  - id: instant
-    type: DATETIME
-    defaults: "2013-08-09T14:19:00Z"
-    displayName: "A datetime input"
-
-  - id: date
-    type: DATE
-    defaults: "2013-10-25"
-    displayName: "A date input"
-
-  - id: time
-    type: TIME
-    displayName: "A time input"
-    defaults: "14:19:00"
-
-  - id: duration
-    type: DURATION
-    defaults: "PT5M6S"
-    displayName: "A duration input"
-
-  - id: file
-    type: FILE
-    displayName: "Upload a file"
-    defaults: nsfile:///hello.txt
-    allowedFileExtensions: [".md", ".txt"]
-
-  - id: json
-    type: JSON
-    displayName: "A JSON input"
-    defaults: |
-      [{"name": "kestra", "rating": "best in class"}]
-
-  - id: uri
-    type: URI
-    defaults: "https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv"
-    displayName: "A URI input"
-
-  - id: secret
-    type: SECRET
-    displayName: "A secret input"
-
-  - id: yaml
-    type: YAML
-    defaults:
-      - user: john
-        email: john@example.com
-      - user: will
-        email: will@example.com
-    displayName: YAML
-
-  - id: nested.string
-    type: STRING
-    defaults: "Hello World!"
-    displayName: "A nested string input"
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Hello {{ inputs.username }} — deploying to {{ inputs.environment }}"
 ```
-
-:::alert{type="info"}
-The `FILE` type supports defaults via the universal file protocol. Use `nsfile:///` for namespace files or `file:///` for local files.
-
-Note: `file:///` works only for explicitly allowed paths. Bind‑mount the host directory into the Kestra container and include that path under `kestra.local-files.allowed-paths` in your configuration (e.g., `/scripts`). Otherwise, access to the path will be denied for security reasons.
-:::
 
 ## Input types
 
-Inputs in Kestra are strongly typed and validated before starting the flow execution.
+Inputs are strongly typed and validated before execution starts.
 
-Here is the list of supported data types:
-
-- `STRING`: Any string. Values are passed without parsing; for additional validation, use a regex `validator`.
-- `INT`: Must be a valid integer value (i.e., without any decimals).
-- `FLOAT`: Must be a valid float value (i.e., with decimals).
-- `SELECT`: Must be a valid string value from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Each entry in `values` can be a plain string (label and value are the same) or a `{label, value}` object (the UI shows `label`; `{{ inputs.x }}` resolves to `value`). Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
+| Type | Accepts | Constraints & extra properties |
+|---|---|---|
+| `STRING` | Any string | `validator` (regex) |
+| `INT` | Integer | `min`, `max` |
+| `FLOAT` | Float | `min`, `max` |
+| `BOOL` | `true` or `false` | — |
+| `DATETIME` | [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) datetime in UTC — e.g. `2042-04-02T04:20:42.000Z` | `after`, `before` |
+| `DATE` | ISO 8601 date without timezone — e.g. `2042-12-03` | `after`, `before` |
+| `TIME` | ISO 8601 time without timezone — e.g. `10:15:30` | `after`, `before` |
+| `DURATION` | ISO 8601 duration — e.g. `PT5M6S` | `min`, `max` |
+| `SELECT` | One value from a predefined list | `values`, `expression`, `allowCustomValue`, `autoSelectFirst` |
+| `MULTISELECT` | One or more values from a predefined list | Same as `SELECT` |
+| `FILE` | Uploaded file, `nsfile:///` (namespace file), or `file:///` (local allowed path) | `allowedFileExtensions`; stored in [internal storage](../../08.architecture/data-components/index.md#internal-storage) |
+| `JSON` | Valid JSON string | `jsonSchema` (JSON Schema Draft 2020-12) |
+| `YAML` | Valid YAML string | — |
+| `URI` | Valid URI, kept as a string | — |
+| `SECRET` | Encrypted string, decrypted at runtime and masked in UI and logs | `validator` (regex); requires [encryption key](../../configuration/05.security-and-secrets/index.md) |
+| `ARRAY` | JSON array or YAML list | `itemType` (required) |
+| `FORM` | Groups child inputs as a multi-step wizard in the Execute modal | Cannot nest; no `defaults`/`prefill` on the FORM itself |
+| `REUSABLE_INPUTS` | References a namespace-level named input group (Enterprise Edition) | See [Reusable Inputs](../22.reusable-inputs/index.md) |
 
 :::alert{type="info"}
-**Note:** Due to [YAML allowing Scalar content](https://yaml.org/spec/1.1/current.html#id864510) to be presented in several formats, the boolean “true” might also be written as “yes” and “false” as “no”. To avoid errors using Yes/No in the `SELECT` input type, wrap them in quotation marks to preserve string format: "Yes", "No".
+Due to [YAML's scalar formats](https://yaml.org/spec/1.1/current.html#id864510), `yes`/`no` may be parsed as booleans. Wrap them in quotes when using them as `SELECT` values: `"Yes"`, `"No"`.
 :::
 
-- `MULTISELECT`: Must be one or more valid string values from a predefined list of values. You can either pass those values directly using the `values` property or use the `expression` property to fetch the values dynamically from a KV store. Like `SELECT`, each entry in `values` can be a plain string or a `{label, value}` object. Additionally, if `allowCustomValue` is set to true, the user can provide a custom value that is not in the predefined list.
-- `BOOL`: Must be `true` or `false` passed as strings.
-- `DATETIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date and time with the timezone expressed in UTC format; pass input of type DATETIME in a string format following the pattern `2042-04-02T04:20:42.000Z`.
-- `DATE`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) date without the timezone from a text string such as `2042-12-03`.
-- `TIME`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) time without the timezone from a text string such as `10:15:30`.
-- `DURATION`: Must be a valid full [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) duration from a text string such as `PT5M6S`.
-- `FILE`: Either a file uploaded at execution time as `Content-Type: multipart/form-data` with `Content-Disposition: form-data; name="<input-id>"; filename="<file-name>"` (where `<input-id>` is the input name and `<file-name>` is the original filename of the file being uploaded), or a default file referenced via the universal file protocol using `nsfile:///path/to/file` (namespace file) or `file:///path/to/file` (local file from an allowed path). `FILE` type inputs also have the `allowedFileExtensions` property to control which types of files can be uploaded.
-- `JSON`: Must be a valid JSON string and will be converted to a typed form. Accepts an optional `jsonSchema` property (JSON Schema Draft 2020-12) to validate the structure of the input value at execution time.
-- `YAML`: Must be a valid YAML string.
-- `URI`: Must be a valid URI and will be kept as a string.
-- `SECRET`: Encrypted string stored in the database. It is decrypted at runtime and can be used in all tasks. The value of a `SECRET` input is masked in the UI and in the execution context. Note that you need to set the [encryption key](../../configuration/05.security-and-secrets/index.md) in your [Kestra configuration](../../configuration/index.mdx) before using it.
-- `ARRAY`: Must be a valid JSON array or a YAML list. The `itemType` property is required to ensure validation of the type of the array items.
-- `FORM`: Groups related inputs under a shared `displayName` and `description`. When a flow contains at least one FORM input, the Execute modal renders a multi-step wizard — one step per FORM group plus any ungrouped inputs, then a recap. Children are referenced as `{{ inputs.<form_id>.<child_id> }}`. FORM inputs cannot be nested and do not support `defaults` or `prefill`.
-- `REUSABLE_INPUTS` (Enterprise Edition): References a named input group defined at the namespace level. Children are inlined under the reference id and accessed as `{{ inputs.<refId>.<childId> }}`. See [Reusable Inputs](../22.reusable-inputs/index.md) for details.
-
-All `FILE` inputs are automatically uploaded to Kestra's [internal storage](../../08.architecture/data-components/index.md#internal-storage) and accessible to all tasks. After the upload, the input variable will contain a fully qualified URL of the form `kestra:///.../.../` that will be automatically managed by Kestra and can be used as-is within any task.
+:::alert{type="info"}
+`FILE` defaults use the universal file protocol: `nsfile:///` for namespace files, `file:///` for local files from an explicitly allowed path. Configure allowed paths under `kestra.local-files.allowed-paths` in your Kestra configuration.
+:::
 
 ## Input properties
 
-Below is the list of available properties for all inputs regardless of their types:
-
-- `id`: The input parameter identifier — this property is important as it's used to reference the input variables in your flow, e.g., `{{ inputs.user }}` references the input parameter named `user`.
-- `type`: The data type of the input parameter, as described in the previous section.
-- `required`: Whether the input is required. Defaults to `true` - set `required: false` to make an input optional. An input with `defaults` must stay required, since the default is always applied.
-- `defaults`: The default value that is used if no custom input value is provided at runtime; this value must be provided as a string and will be set to the desired data type specified using the `type` property.
-- `prefill`: Starts with an initial value that can be cleared or set to `null` when the input is not required. Like an editable default, it allows workflows to support optional inputs that start with a suggestion but can still be reset to `null` at runtime.
-- `dependsOn`: Makes the input dependent on other inputs that must be provided first.
-- `displayName`: Label shown in the UI instead of the `id`.
-- `description`: Markdown description for the input.
-- `expression`: Use a pebble expression as a value -- e.g., `expression: "{{ kv('SELECT_VALUES') }}"`.
-- `autoSelectFirst`: A boolean property to auto-select the first list value in the dropdown as a default value (only usable for `SELECT` and `MULTISELECT` input types). This way, you don't need to explicitly set any `defaults` for that property.
+| Property | Description |
+|---|---|
+| `id` | Identifier used to reference the input — e.g. `{{ inputs.user }}`. |
+| `type` | Data type, as listed above. |
+| `required` | Whether the input is required. Defaults to `true`. |
+| `defaults` | Default value applied when no value is provided at runtime. |
+| `prefill` | Initial value shown in the UI that can be cleared to `null`. Unlike `defaults`, a cleared prefill resolves to `null`. |
+| `displayName` | Label shown in the UI instead of the `id`. |
+| `description` | Markdown description displayed in the UI. |
+| `validator` | Regex pattern for `STRING` and `SECRET` types. |
+| `expression` | Pebble expression used to populate `SELECT` and `MULTISELECT` values dynamically — e.g. `{{ kv('MY_LIST') }}`. |
+| `dependsOn` | Makes this input conditional on other inputs being provided or matching a `condition`. |
+| `autoSelectFirst` | Auto-selects the first value in `SELECT`/`MULTISELECT` lists as the default. |
 
 ## Input validation
 
-Kestra validates the `type` of each input. In addition to the type validation, some input types can be configured with validation rules that are enforced at execution time.
+### Type constraints
 
-- `STRING`: A `validator` property allows the addition of a validation [regex](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html). Validator patterns are subject to a 10-second timeout; executions that exceed it are rejected with an error. The timeout is configurable via [`kestra.regex.timeout`](../../configuration/05.security-and-secrets/index.md#regex-timeout).
-- `SECRET`: Supports the same `validator` regex property as `STRING`, with the same 10-second timeout applied before the value is encrypted. This ensures the secret is never stored if the pattern is unsafe.
-- `INT`: `min` and `max` define the allowed range.
-- `FLOAT`: `min` and `max` define the allowed range.
-- `DURATION`: `min` and `max` define the allowed range.
-- `DATE`: `after` and `before` properties help you ensure that the input value is within the allowed date range.
-- `TIME`: `after` and `before` properties help you ensure that the input value is within the allowed time range.
-- `DATETIME`: `after` and `before` properties help you ensure that the input value is within the allowed date and time range.
-- `JSON`: A `jsonSchema` property accepts a JSON Schema Draft 2020-12 string. If provided, the input value is validated against the schema at execution time. If the value does not conform, the execution is rejected before it starts.
+`INT`, `FLOAT`, and `DURATION` accept `min` and `max`. `DATE`, `TIME`, and `DATETIME` accept `after` and `before`. `STRING` and `SECRET` accept a `validator` regex.
 
-### Example: use JSON schema validation
+```yaml
+inputs:
+  - id: age
+    type: INT
+    min: 18
+    max: 64
+
+  - id: username
+    type: STRING
+    validator: ^[a-z0-9_]{3,20}$
+
+  - id: start_date
+    type: DATE
+    after: "2024-01-01"
+    before: "2025-01-01"
+```
+
+### JSON Schema validation
+
+Use the `jsonSchema` property to validate a `JSON` input against a schema at execution time. An invalid payload rejects the execution before any task runs:
 
 ```yaml
 id: json_schema_validation
@@ -235,112 +155,29 @@ tasks:
     message: "Hello, {{ inputs.payload.name }}!"
 ```
 
-If you pass `{"name": 42}`, the execution will be rejected with a constraint violation before any task runs. If you pass `{"name": "Alice"}`, the flow proceeds normally.
-
-### Example: use input validators in your flows
-
-To ensure that your input value is within a certain `integer` value range, you can use the `min` and `max` properties. Similarly, to ensure that your string input matches a regex pattern, you can provide a custom regex `validator`. The following flow demonstrates how this can be accomplished:
-
-```yaml
-id: regex_input
-namespace: company.team
-
-inputs:
-  - id: age
-    type: INT
-    prefill: 42
-    required: false
-    min: 18
-    max: 64
-
-  - id: user
-    type: STRING
-    prefill: student
-    required: false
-    validator: ^student(\d+)?$
-
-  - id: float
-    type: FLOAT
-    defaults: 3.2
-    min: 0.2
-    max: 5.3
-
-  - id: duration
-    type: DURATION
-    min: "PT5M6S"
-    max: "PT12H58M46S"
-
-  - id: date
-    type: DATE
-    defaults: "2024-04-12"
-    after: "2024-04-10"
-    before: "2024-04-15"
-
-  - id: time
-    type: TIME
-    after: "11:01:01"
-    before: "11:04:01"
-
-  - id: datetime
-    type: DATETIME
-    defaults: "2024-04-13T14:17:00Z"
-    after: "2024-04-10T14:19:00Z"
-    before: "2024-04-15T14:19:00Z"
-
-tasks:
-  - id: validator
-    type: io.kestra.plugin.core.log.Log
-    message: User {{ inputs.user }}, age {{ inputs.age }}
-```
-
-The `age`, `float`, and `duration` input must be within a valid range between `min` and `max` values. Specifically for the `age` input, we specify that this input is by default set to 42, but it can be overwritten at runtime to a value between 18 and 64. If you attempt to execute the flow with the `age` input set to 17 or 65, the validation will fail and the execution won't start.
-
-Similarly, the Regex expression `^student(\d+)?$` is used to validate that the input argument `user` of type STRING follows the following pattern:
-- `^student`: This part of the regex asserts that the string must begin with the lowercase string value `student`.
-- `\d`: This part of the regex matches any digit (0-9).
-- `+`: This part of the regex asserts that there is one or more of the preceding token (i.e., one or more digits are allowed after the value `student`).
-- `()?`: The parentheses group the digits together, and the question mark makes the entire group optional — this means that the digits after the word `student` are optional.
-- `$`: This part of the regex asserts the end of the string. This ensures that the string doesn't contain any additional characters after the optional digits.
-
-With this pattern:
-- "student" is a match.
-- "student123" is a match.
-- "studentabc" is not a match because "abc" isn't a sequence of digits.
-- "student123abc" is not a match because no characters are allowed after `student` and the optional digits.
-
-Lastly, the `date`, `time`, and `datetime` inputs must be within a valid range between `after` and `before`. In the `date` example, the date provided must be between 10th April 2024 and 15th April 2024. Anything outside of this range will fail and the execution won't start.
-
-Try running this flow with various inputs or adjust the regex pattern to see how the input validation works.
-
 ## Nested inputs
 
-Using a `.` in an input `id` creates a nested input.
-
-Here's an example that includes 2 nested inputs:
+Use `.` in an input `id` to create a nested structure, accessible with the same dot notation in expressions:
 
 ```yaml
-id: nested_inputs
-namespace: company.team
-
 inputs:
-  - id: nested.string
+  - id: db.host
     type: STRING
-    required: false
+    defaults: localhost
 
-  - id: nested.int
+  - id: db.port
     type: INT
+    defaults: 5432
 
 tasks:
-  - id: log_inputs
+  - id: log
     type: io.kestra.plugin.core.log.Log
-    message: "{{ inputs.nested.string }} and {{ inputs.nested.int }}"
+    message: "Connecting to {{ inputs.db.host }}:{{ inputs.db.port }}"
 ```
-
-You can access the first input value using `{{ inputs.nested.string }}`. This provides type validation for nested inputs without resorting to raw JSON (JSON inputs are passed as strings).
 
 ## FORM inputs
 
-Use a `FORM` input to group related inputs under a shared label and description. When a flow has at least one FORM input, the Execute modal renders a multi-step wizard: one step per FORM group, a step for any ungrouped inputs, then a recap. Apps using `CreateExecutionForm` render the same wizard automatically.
+`FORM` groups related inputs under a shared label and renders a multi-step wizard in the Execute modal:
 
 ```yaml
 id: provision_environment
@@ -350,7 +187,6 @@ inputs:
   - id: requester
     type: STRING
     required: true
-    description: Name or team submitting this request.
 
   - id: environment
     type: FORM
@@ -359,7 +195,6 @@ inputs:
     inputs:
       - id: region
         type: SELECT
-        required: true
         defaults: eu-central-1
         values:
           - eu-central-1
@@ -368,608 +203,143 @@ inputs:
 
       - id: instance_type
         type: SELECT
-        required: true
         defaults: t3.medium
         values:
           - t3.medium
           - t3.large
           - t3.xlarge
 
-  - id: notifications
-    type: FORM
-    displayName: Notifications
-    description: Where to send status updates.
-    inputs:
-      - id: slack_channel
-        type: STRING
-        defaults: "#platform-ops"
-
-      - id: notify_on_failure
-        type: BOOL
-        defaults: true
-
 tasks:
-  - id: log_request
+  - id: log
     type: io.kestra.plugin.core.log.Log
     message: |
-      Requested by: {{ inputs.requester }}
+      Requester: {{ inputs.requester }}
       Region: {{ inputs.environment.region }}
       Instance: {{ inputs.environment.instance_type }}
-      Slack: {{ inputs.notifications.slack_channel }}
 ```
-
-Children are accessed via `{{ inputs.<form_id>.<child_id> }}`. In the example above, `region` inside the `environment` FORM is `{{ inputs.environment.region }}`.
-
-### dependsOn across FORM children
-
-To make one FORM child depend on another, use the full dotted path in `dependsOn`:
-
-```yaml
-inputs:
-  - id: cloud
-    type: FORM
-    displayName: Cloud configuration
-    inputs:
-      - id: provider
-        type: SELECT
-        values: [AWS, GCP, Azure]
-
-      - id: region
-        type: SELECT
-        dependsOn:
-          inputs:
-            - cloud.provider
-          condition: "{{ inputs.cloud.provider == 'AWS' }}"
-        values:
-          - us-east-1
-          - eu-west-1
-```
-
-### Constraints
 
 :::alert{type="warning"}
-- A FORM cannot contain another FORM — grouping is limited to one level.
-- A FORM cannot have `defaults` or `prefill` — those properties belong on the individual child inputs.
+A FORM cannot contain another FORM. `defaults` and `prefill` belong on individual child inputs, not on the FORM itself.
 :::
 
-### API submission
-
-When triggering a flow with FORM inputs via the API, use flat dotted field names in the multipart form data. Kestra maps them to the nested execution context automatically.
+When triggering a flow with FORM inputs via the API, use flat dotted field names:
 
 ```bash
 curl -X POST "http://localhost:8080/api/v1/main/executions/company.team/provision_environment" \
   -H "Content-Type: multipart/form-data" \
   -F "requester=platform-team" \
   -F "environment.region=eu-central-1" \
-  -F "environment.instance_type=t3.large" \
-  -F "notifications.slack_channel=#ops" \
-  -F "notifications.notify_on_failure=true"
+  -F "environment.instance_type=t3.large"
 ```
 
 ## Array inputs
 
-Array inputs are used to pass a list of values to a flow. The `itemType` property is required to ensure validation of the type of the array items.
-
-This is useful when you want the user triggering the workflow to provide multiple values of a specific type, for example, a list of integers, strings, booleans, datetimes, etc. You can provide the default values as a JSON array or as a YAML list — both are supported.
+`ARRAY` accepts a JSON array or YAML list. The `itemType` property is required:
 
 ```yaml
-id: array_demo
-namespace: company.team
-
 inputs:
-  - id: my_numbers_json_list
+  - id: ids
     type: ARRAY
     itemType: INT
     defaults: [1, 2, 3]
-
-  - id: my_numbers_yaml_list
-    type: ARRAY
-    itemType: INT
-    defaults:
-      - 1
-      - 2
-      - 3
-
-tasks:
-  - id: print_status
-    type: io.kestra.plugin.core.log.Log
-    message: received inputs {{ inputs }}
 ```
 
-Below is how the array inputs are rendered in the UI when you create an execution:
+## Using inputs in a flow
 
-![array_inputs](./array-inputs.png)
-
-## Use an input value in a flow
-
-Inputs are available via `{{ inputs.name }}` or `{{ inputs['name'] }}`. If an input `id` contains characters like `-`, use the bracket form: `{{ inputs['name-example'] }}`.
-
-For example, if you declare the following inputs:
+Reference inputs with `{{ inputs.name }}` in any dynamic property. Use bracket notation for IDs containing hyphens or other special characters:
 
 ```yaml
 inputs:
-  - id: mystring
+  - id: message
     type: STRING
-    required: true
 
-  - id: my-file
-    type: FILE
-```
-
-You can use the value of the input `mystring` inside dynamic task properties with `{{ inputs.mystring }}` but `my-file` would have to use `{{ inputs['my-file'] }}` because of the hyphen (`-`).
-
-We can see a full example below where `inputFiles` property is set to `{{ inputs['my-file'] }}`:
-
-```yaml
-id: input_files
-namespace: company.team
-
-description: This flow shows how to pass files between inputs and tasks in Shell scripts.
-
-inputs:
   - id: my-file
     type: FILE
 
 tasks:
-  - id: rename
+  - id: use_inputs
     type: io.kestra.plugin.scripts.shell.Commands
     commands:
-      - mv file.tmp output.tmp
+      - echo "{{ inputs.message }}"
     inputFiles:
-      file.tmp: "{{ inputs['my-file'] }}"
-    outputFiles:
-      - "*.tmp"
+      upload.tmp: "{{ inputs['my-file'] }}"
 ```
 
-## Set input values at flow execution
+## Setting inputs at execution time
 
-When executing a flow with inputs, you must provide all required inputs (unless a default is defined) for the execution to be created.
+Provide input values from the **UI** (Kestra generates a form based on your input definitions), the **API**, the **CLI** (`kestractl`), **Python** (`kestra` pip package), or any HTTP client. See [Execute a flow](../03.execution/index.md#execute-via-api) for full examples with `curl`, Python, and kestractl.
 
-Let's consider the following example that defines multiple inputs:
+## Inputs vs. variables
 
-```yaml
-id: kestra_inputs
-namespace: company.team
-
-inputs:
-  - id: string
-    type: STRING
-    defaults: hello
-
-  - id: optional
-    type: STRING
-    required: false
-
-  - id: int
-    type: INT
-
-  - id: float
-    type: FLOAT
-
-  - id: instant
-    type: DATETIME
-
-  - id: file
-    type: FILE
-```
-
-Here, `string` and `optional` can be omitted because `string` has a default and `optional` is not required. All other inputs must be specified at runtime.
-
-### Set inputs from the web UI
-
-When creating an execution from the web UI, you must set the inputs in the UI form. Kestra's UI generates a dedicated form based on your `inputs` definition. For example, datetime input properties have a date picker.
-
-The input form for the inputs above looks as follows:
-
-![Flow inputs](./inputs.png)
-
-Once the inputs are set, you can trigger an execution of the flow.
-
-### Set inputs when executing the flow using the API
-
-To create an execution with these inputs using the API, we can use the `curl` command to make an API request:
-
-```bash
-curl -v "http://localhost:8080/api/v1/main/executions/example/kestra-inputs" \
-    -H "Transfer-Encoding:chunked" \
-    -H "Content-Type:multipart/form-data" \
-    -F string="a string"  \
-    -F optional="an optional string"  \
-    -F int=1  \
-    -F float=1.255  \
-    -F instant="2023-12-24T23:00:00.000Z" \
-    -F "files=@/tmp/128M.txt;filename=file"
-```
-
-Send files as `multipart/form-data` under the `files` field with `filename="<input-id>"`, where `<input-id>` is the input name.
-
-### Set inputs when executing the flow in Python
-
-To create an execution with these inputs in Python, you can use the following script:
-
-```python
-import io
-import requests
-from kestra import Flow
-
-flow = Flow()
-
-with open('/tmp/example.txt', 'rb') as fh:
-  flow.execute('example',
-               'kestra-inputs',
-               {'string': 'a string',
-                'optional': 'an optional string',
-                'int': 1,
-                'float': str(1.255),
-                'instant': '2020-01-14T23:00:00.000Z',
-                'files': ('file', fh, 'text/plain')})
-```
-
-:::alert{type="info"}
-Wrap floats with `str()`; otherwise, a bytes-like object error may occur when sending a file input.
-:::
-
-You can also use the `requests` library in Python to make requests to the Kestra API. Here's an example to execute a flow with multiple inputs:
-
-```python
-import io
-import requests
-from requests_toolbelt.multipart.encoder import MultipartEncoder
-
-with open("/tmp/128M.txt", 'rb') as fh:
-  url = f"http://kestra:8080/api/v1/main/executions/io.kestra.docs/my-flow"
-  mp_encoder = MultipartEncoder(fields={
-    "string": "a string",
-    "optional": "an optional string",
-    "int": 1,
-    "float": 1.255,
-    "instant": "2020-01-14T23:00:00.000Z",
-    "files": ("file", fh, "text/plain")
-  })
-  result = requests.post(
-      url,
-      data=mp_encoder,
-      headers={"Content-Type": mp_encoder.content_type},
-  )
-```
-
-### Set inputs when executing the flow in Java
-
-To create an execution with these inputs in Java (with [Apache Http Client 5](https://hc.apache.org/index.html)), you can use the following script:
-
-```java
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.entity.mime.FileBody;
-import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
-import org.apache.hc.client5.http.entity.mime.StringBody;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
-import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpEntity;
-
-import java.io.File;
-
-class Application {
-  public static void main(String[] args) {
-    HttpEntity multipartEntity = MultipartEntityBuilder.create()
-        .addPart("string", new StringBody("test", ContentType.DEFAULT_TEXT))
-        .addPart("int", new StringBody("1", ContentType.DEFAULT_TEXT))
-        .addPart("files", new FileBody(new File("/tmp/test.csv"), ContentType.DEFAULT_TEXT, "file"))
-        .build();
-
-    try (CloseableHttpClient httpclient = HttpClientBuilder.create().build()) {
-      HttpPost request = new HttpPost("http://kestra:8080/api/v1/main/executions/com.kestra.lde/inputs");
-      request.setEntity(multipartEntity);
-
-      CloseableHttpResponse response = httpclient.execute(request);
-
-      System.out.println("Response " + response);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-}
-```
-
-## Difference between inputs and variables
-
-[Variables] are similar to constants. They behave like inputs during execution but cannot be overridden once the execution starts. Variables must be defined before execution, whereas inputs can be set at execution time.
-
-Variables are best suited for values that you don't want to change and are used in multiple places within the flow. For example, a URL you use for an API request that won't change is best as a variable whereas an email address that changes every time you execute your flow is best as an input.
+[Variables](../04.variables/index.md) are defined before execution and cannot be changed once it starts. Inputs are provided at execution time and can differ between runs. Use variables for fixed values reused across tasks; use inputs for values that change per execution.
 
 ## Dynamic inputs
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
-Inputs in Kestra are strongly typed. Currently, you cannot enforce strong types and simultaneously use dynamically rendered Pebble expressions.
-
-The example below demonstrates using an expression inside of an input. When you select execute, the expression is rendered.
-
-```yaml
-id: test
-namespace: company.team
-
-inputs:
-  - id: date
-    type: DATETIME
-    defaults: "{{ now() }}"
-
-tasks:
-  - id: print_date
-    type: io.kestra.plugin.core.log.Log
-    message: "hello on {{ inputs.date }}"
-```
-
-### Dynamic Inputs with HTTP function
-
-With the `http()` function, you can make `SELECT` and `MULTISELECT` inputs dynamic by fetching options from an external API. This proves valuable when your data used in dropdowns changes frequently or when you already have an API serving that data for existing applications.
-
-The example below demonstrates how to create a flow with two dynamic dropdowns: one for selecting a product category and another for selecting a product from that category. The first dropdown fetches the product categories from an external HTTP API. The second dropdown makes another HTTP call to dynamically retrieve products matching the selected category.
-
-```yaml
-id: dynamic_dropdowns
-namespace: company.team
-inputs:
-  - id: category
-    type: SELECT
-    expression: "{{ http(uri = 'https://dummyjson.com/products/categories') | jq('.[].slug') }}"
-  - id: product
-    type: SELECT
-    dependsOn:
-      inputs:
-        - category
-    expression: "{{ http(uri = 'https://dummyjson.com/products/category/' + inputs.category) | jq('.products[].title') }}"
-tasks:
-  - id: display_selection
-    type: io.kestra.plugin.core.log.Log
-    message: |
-      You selected Category: {{ inputs.category }}
-      And Product: {{ inputs.product }}
-```
-
----
-
-Dynamic inputs are useful for flows using authenticated API requests like the following:
-
-```yaml
-id: approversFlow
-namespace: company.team
-
-inputs:
-  - id: executionIdsToBeApproved
-    type: MULTISELECT
-    expression: >-
-      {{
-      http(
-        uri = 'http://localhost:8080/api/v1/internal/executions/search?state=PAUSED',
-        method = 'GET',
-        contentType = 'application/json',
-        headers={
-          'User-Agent': 'kestra',
-          'Connection': 'keep-alive',
-          'Authorization': 'Bearer ' ~ secret("bearerToken")
-        }
-      ) | jq('.results[] | "ExecutionId: \(.id), FlowId: \(.flowId), RequestedBy: \(.labels[] | select(.key == "system.username").value) InputParams: \( .inputs | to_entries | map("\(.key):\(.value)") | join(" ") )"')  }}
-
-tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: Hello World! 🚀
-```
-
-:::alert{type="info"}
-When using `http()` inside an `expression` with secrets in headers (e.g., an authenticated API request), use named arguments and string concatenation ([Pebble Literals](https://pebbletemplates.io/wiki/guide/basic-usage/#literals)). The key to the syntax is to use string interpolation with `~`.
-:::
-
-### Dynamic inputs from a subflow
-
-For cases that require complex logic — running a script, calling a CLI command, or executing multi-step tasks — use the `subflow()` Pebble function in the `expression:` property. `subflow()` runs a flow synchronously at form render time and populates the dropdown from its outputs:
+`SELECT` and `MULTISELECT` inputs support an `expression` property that populates the dropdown from a Pebble expression — a KV store lookup, an HTTP API call, or a subflow result:
 
 ```yaml
 inputs:
-  - id: region
+  - id: environment
     type: SELECT
-    expression: "{{ subflow(namespace='company.ops', id='fetch_regions').outputs.region_list }}"
+    expression: "{{ kv('ENVIRONMENTS') }}"
 ```
 
-See [Populate a dropdown from a subflow](../../15.how-to-guides/dynamic-inputs/index.md#populate-a-dropdown-from-a-subflow) for a full example and constraints.
+See the [Dynamic inputs how-to guide](../../15.how-to-guides/dynamic-inputs/index.md) for HTTP function examples, subflow-populated dropdowns, and chaining dependent dropdowns.
 
-## Conditional inputs for interactive workflows
+## Conditional inputs
 
-You can set up inputs that depend on other inputs, letting further inputs be conditionally displayed based on user choices. This is useful for use cases such as approval workflows or dynamic resource provisioning.
-
-### How it works
-
-Create inputs that change based on other inputs using the `dependsOn` and `condition` properties. The example below shows different inputs appearing based on the selected resource type:
+Use `dependsOn` and `condition` to show inputs only when a previous input matches a value:
 
 ```yaml
-id: request_resources
-namespace: company.team
-
 inputs:
-  - id: resource_type
-    displayName: Resource type
-    type: SELECT
-    values:
-      - Access permissions
-      - SaaS application
-      - Development tool
-      - Cloud VM
+  - id: notify
+    type: BOOL
+    defaults: false
 
-  - id: access_permissions
-    displayName: Access permissions
-    type: SELECT
-    expression: "{{ kv('access_permissions') }}"
+  - id: slack_channel
+    type: STRING
     dependsOn:
       inputs:
-        - resource_type
-      condition: "{{ inputs.resource_type == 'Access permissions' }}"
-
-  - id: saas_applications
-    displayName: SaaS spplication
-    type: MULTISELECT
-    expression: "{{ kv('saas_applications') }}"
-    dependsOn:
-      inputs:
-        - resource_type
-      condition: "{{ inputs.resource_type == 'SaaS application' }}"
-
-  - id: cloud_provider
-    displayName: Cloud provider
-    type: SELECT
-    values:
-      - AWS
-      - GCP
-      - Azure
-    dependsOn:
-      inputs:
-        - resource_type
-      condition: "{{ inputs.resource_type == 'Cloud VM' }}"
-
-  - id: cloud_vms
-    displayName: Cloud VM
-    type: SELECT
-    expression: "{{ kv('cloud_vms')[inputs.cloud_provider] }}"
-    dependsOn:
-      inputs:
-        - resource_type
-        - cloud_provider
-      condition: "{{ inputs.resource_type == 'Cloud VM' }}"
+        - notify
+      condition: "{{ inputs.notify == true }}"
 ```
 
+`slack_channel` only appears in the Execute modal when `notify` is `true`. See the [Dynamic inputs how-to guide](../../15.how-to-guides/dynamic-inputs/index.md) for full conditional provisioning examples.
 
-In this example:
-- The `resource_type` input controls which additional inputs (such as `access_permissions`, `saas_applications`, and `cloud_vms`) appear.
-- `dependsOn` links inputs; `condition` defines when to display the related input.
+## Label/value pairs in SELECT and MULTISELECT
 
-Before running the flow, set up the key-value pairs for each input. Expand the example below to add all key-value pairs with a helper flow.
-
-:::collapse{title="Flow adding key-value pairs"}
-```yaml
-id: add_kv_pairs
-namespace: company.team
-
-tasks:
-  - id: access_permissions
-    type: io.kestra.plugin.core.kv.Set
-    key: "{{ task.id }}"
-    kvType: JSON
-    value: |
-      ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
-
-  - id: saas_applications
-    type: io.kestra.plugin.core.kv.Set
-    key: "{{ task.id }}"
-    kvType: JSON
-    value: |
-      ["Slack", "Notion", "HubSpot", "GitHub", "Jira"]
-
-  - id: development_tools
-    type: io.kestra.plugin.core.kv.Set
-    key: "{{ task.id }}"
-    kvType: JSON
-    value: |
-      ["Cursor", "IntelliJ IDEA", "PyCharm Professional", "DataGrip"]
-
-  - id: cloud_vms
-    type: io.kestra.plugin.core.kv.Set
-    key: "{{ task.id }}"
-    kvType: JSON
-    value: |
-      {
-        "AWS": ["t2.micro", "t2.small", "t2.medium", "t2.large"],
-        "GCP": ["f1-micro", "g1-small", "n1-standard-1", "n1-standard-2"],
-        "Azure": ["Standard_B1s", "Standard_B1ms", "Standard_B2s", "Standard_B2ms"]
-      }
-
-  - id: cloud_regions
-    type: io.kestra.plugin.core.kv.Set
-    key: "{{ task.id }}"
-    kvType: JSON
-    value: |
-      {
-        "AWS": ["us-east-1", "us-west-1", "us-west-2", "eu-west-1"],
-        "GCP": ["us-central1", "us-east1", "us-west1", "europe-west1"],
-        "Azure": ["eastus", "westus", "centralus", "northcentralus"]
-      }
-```
-:::
-
-You can also [add these key-value pairs](../../06.concepts/05.kv-store/index.md) via the API or the UI.
-
-## Label/value pairs in SELECT and MULTISELECT inputs
-
-Each item in the `values` list can be a plain string or an object with `label` and `value` fields. When you use the object form, the UI dropdown shows `label` while `{{ inputs.x }}` resolves to `value`. Plain strings remain valid — a plain string is treated as an option where the label equals the value, and you can mix both forms in the same list.
-
-This is useful when the UI should show a human-readable label while the flow uses a technical identifier such as an account ID.
+Each entry in `values` can be a plain string or a `{label, value}` object. The UI shows `label`; `{{ inputs.x }}` resolves to `value`:
 
 ```yaml
-id: aws_account_selector
-namespace: company.team
-
 inputs:
   - id: aws_account
     type: SELECT
     displayName: AWS Account
     values:
-      - label: "Production (Main)"
+      - label: "Production"
         value: "123456789012"
-      - label: "Staging (Sandbox)"
+      - label: "Staging"
         value: "987654321098"
 
 tasks:
-  - id: log_account
+  - id: log
     type: io.kestra.plugin.core.log.Log
-    message: "Selected account ID: {{ inputs.aws_account }}"
+    message: "Account ID: {{ inputs.aws_account }}"
 ```
 
-:::alert{type="info"}
-`{{ inputs.x }}`, `defaults`, `autoSelectFirst`, and validation all operate on the `value` field, not the `label`. If you set a `defaults` for a `{label, value}` option, use the `value` string. If `autoSelectFirst` is enabled, the first item's `value` is used as the default.
-:::
+`defaults`, `autoSelectFirst`, and validation all operate on the `value` field, not the `label`.
 
-The object form also works with `expression`-based dropdowns. When an expression returns a list of `{label, value}` objects — for example via a jq projection — the UI shows the labels while the flow receives the values:
+## Custom values in SELECT and MULTISELECT
 
-```yaml
-id: dynamic_account_selector
-namespace: company.team
-
-inputs:
-  - id: aws_account
-    type: SELECT
-    displayName: AWS Account
-    expression: "{{ http(uri = 'https://api.example.com/accounts') | jq('.accounts[] | {label: .name, value: .id}') }}"
-
-tasks:
-  - id: log_account
-    type: io.kestra.plugin.core.log.Log
-    message: "Selected account ID: {{ inputs.aws_account }}"
-```
-
-## Custom values in SELECT and MULTISELECT inputs
-
-If the predefined dropdown values do not fit a user’s needs, set `allowCustomValue` to `true` to allow custom entries. This lets you offer defaults while still accepting user-provided values.
-
-In the example below, `cloud_provider` lets users select a common provider (AWS, GCP, Azure) or enter a custom value (e.g., Oracle Cloud).
+Set `allowCustomValue: true` to let users enter a value outside the predefined list:
 
 ```yaml
-id: custom_values
-namespace: company.team
-
 inputs:
   - id: cloud_provider
-    displayName: Cloud provider
     type: SELECT
     allowCustomValue: true
     values:
       - AWS
       - GCP
       - Azure
-
-tasks:
-  - id: print_status
-    type: io.kestra.plugin.core.log.Log
-    message: Selected cloud provider {{ inputs.cloud_provider }}
 ```

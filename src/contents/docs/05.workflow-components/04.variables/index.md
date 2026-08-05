@@ -7,17 +7,15 @@ icon: /src/contents/docs/icons/flow.svg
 docId: variables
 ---
 
-Variables are key-value pairs that let you reuse values across tasks.
-
-You can also store variables at the namespace level to reuse them across multiple flows in that namespace.
+Variables are key-value pairs that let you reuse values across tasks in a flow, or across multiple flows when stored at the namespace level.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/1iSam2aftKo?si=NfrnWM86SFQ_IePo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## How to configure variables
+## Declaring variables
 
-The example below shows how you can configure variables in your flow:
+Define variables under the `variables` key in a flow and reference them with `{{ vars.variable_name }}`:
 
 ```yaml
 id: hello_world
@@ -33,27 +31,17 @@ tasks:
     format: "{{ vars.myvar }} world {{ vars.numeric_variable }}"
 ```
 
-Use variables with the syntax `{{ vars.variable_name }}`.
+## Rendering
 
-## How variables are rendered
-
-You can use variables in any task property documented as **dynamic**.
-
-Dynamic variables are rendered by the Pebble templating engine, which processes expressions with filters and functions. More information on variable processing can be found under [Expressions](../../expressions/index.mdx).
+Variables are rendered by the [Pebble templating engine](../../expressions/index.mdx), which processes expressions with filters and functions. You can use variables in any task property marked as **dynamic**.
 
 :::alert{type="info"}
-Variables are no longer rendered recursively. Learn more about this change — and how to adjust behavior — in the [migration guide](../../11.migration-guide/v0.14.0/recursive-rendering/index.md).
+Variables are no longer rendered recursively. See the [migration guide](../../11.migration-guide/v0.14.0/recursive-rendering/index.md) for details.
 :::
 
 ## Dynamic variables
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/IOoND_WDzkY?si=CPAX9sPHlndM2FbI" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
-If a variable contains an expression, wrap it with `render` when using it in a task.
-
-For example, the variable below displays the current time only when wrapped with `render`; otherwise, the log prints the expression as a string:
+If a variable contains an expression, wrap it with `render()` when using it in a task — otherwise the expression is treated as a literal string:
 
 ```yaml
 id: dynamic_variable
@@ -68,55 +56,35 @@ tasks:
     message: "{{ render(vars.time) }}"
 ```
 
-:::alert{type="info"}
-Wrap the variable expression with `render` every time you use it in a task.
+:::alert{type="warning"}
+Always wrap expression-valued variables with `render()` when referencing them in tasks.
 :::
 
-## Set or modify execution variables
+## Set or modify variables at runtime
 
-The `SetVariables` and `UnsetVariables` tasks can modify or delete variables within the execution context. For example, take the following flow:
+The `SetVariables` task updates variables in the execution context. Later tasks see the new values immediately:
 
 ```yaml
 id: variables_demo
 namespace: company.team
 
 variables:
-  state: FAILED
-  ansibleTicket: myticket
-  nested:
-    child: property
-    unchanged: stay the same
+  status: pending
 
 tasks:
-  - id: request
-    type: io.kestra.plugin.core.output.OutputValues
-    values:
-      ansibleTicket: new ticket value
-      state: SUCCESS
-
-  - id: updateVariables
+  - id: update
     type: io.kestra.plugin.core.execution.SetVariables
-    overwrite: true # true by default
     variables:
-      state: "{{ outputs.request.values.state }}"
-      ansibleTicket: "{{ outputs.request.values.ansibleTicket }}"
-      nested:
-        child: new value
+      status: complete
 
-  - id: confirmUpdate
+  - id: log
     type: io.kestra.plugin.core.log.Log
-    message: Hello "{{ vars }}"
+    message: "Status is now {{ vars.status }}"
 ```
 
-Initially, `state` is `FAILED` and `ansibleTicket` is `myticket`. Within the flow, the `updateVariables` task uses `io.kestra.plugin.core.execution.SetVariables` to modify `state` to `SUCCESS` and `ansibleTicket` to `new ticket value` per the `request` task, as well as change one of the nested variables, `nested.child` to `new value` (`nested.unchanged` is unmodified so it'll remain the same).
+## Unset variables
 
-After the flow runs, `state`, `ansibleTicket`, and `nested.child` have their new values, and `nested.unchanged` remains unchanged.
-
-![Set Variables](./set-variables.png)
-
-## Delete or unset execution variables
-
-To unset variables, use `io.kestra.plugin.core.execution.UnsetVariables`. Building on the example above, add the following task:
+The `UnsetVariables` task deletes variables from the execution context. It supports dot notation for nested keys:
 
 ```yaml
   - id: deleteVariables
@@ -124,160 +92,46 @@ To unset variables, use `io.kestra.plugin.core.execution.UnsetVariables`. Buildi
     variables:
       - state
       - ansibleTicket
-      - nested.child # remove only this key from the nested map
+      - nested.child
 ```
-
-After executing the flow, the only remaining variable is `nested.unchanged` with the value `stay the same`. In the unset task, `state`, `ansibleTicket`, and `nested.child` were deleted.
-
-![Unset Variables](./unset-variables.png)
 
 ## FAQ
 
-### How do I escape a block in Pebble syntax to ensure that it won't be parsed?
+### How do I escape a Pebble expression so it is not evaluated?
 
-To ensure that a block of code won't be parsed by Pebble, you can use the `{% raw %}` and `{% endraw %}` [Pebble tags](../../expressions/02.syntax/index.mdx#raw). For example, the following returns the string `{{ myvar }}` instead of the value of `myvar`:
+Use the `{% raw %}` and `{% endraw %}` tags. The following returns the string `{{ myvar }}` literally:
 
 ```yaml
 {% raw %}{{ myvar }}{% endraw %}
 ```
 
-### In which order are inputs and variables resolved?
+See [Pebble syntax](../../expressions/02.syntax/index.mdx#raw) for details.
 
-[Inputs](../05.inputs/index.md) are resolved first, before the execution starts. If a flow has an invalid input value, the execution will not be created.
+### In what order are inputs and variables resolved?
 
-Therefore, you can use inputs within variables, but you cannot use variables or Pebble expressions in most contexts (Check out [Dynamic Inputs](../05.inputs/index.md#dynamic-inputs) for more information) within inputs.
+[Inputs](../05.inputs/index.md) are resolved first, before the execution starts — an invalid input value prevents the execution from being created. You can use inputs within variables, but not variables within inputs (see [Dynamic Inputs](../05.inputs/index.md#dynamic-inputs) for the exception).
 
-[Expressions](../../expressions/index.mdx) are rendered recursively: if a variable references another variable, the inner one is resolved first.
-
-Triggers are handled similarly to inputs because they are known before the execution starts (they create the execution). This means you cannot use inputs (unless they have `defaults`) within triggers, but you can use trigger variables inside `variables`.
-
-#### Examples
-
-This flow uses inputs, trigger, and execution variables which are resolved before variables:
-
-```yaml
-id: upload_to_s3
-namespace: company.team
-
-inputs:
-  - id: bucket
-    type: STRING
-    defaults: declarative-data-orchestration
-
-tasks:
-  - id: get_zip_file
-    type: io.kestra.plugin.core.http.Download
-    uri: https://wri-dataportal-prod.s3.amazonaws.com/manual/global_power_plant_database_v_1_3.zip
-
-  - id: unzip
-    type: io.kestra.plugin.compress.ArchiveDecompress
-    algorithm: ZIP
-    from: "{{outputs.get_zip_file.uri}}"
-
-  - id: csv_upload
-    type: io.kestra.plugin.aws.s3.Upload
-    from: "{{ outputs.unzip.files['global_power_plant_database.csv'] }}"
-    bucket: "{{ inputs.bucket }}"
-    key: "powerplant/{{ trigger.date ?? execution.startDate | date('yyyy_MM_dd__HH_mm_ss') }}.csv"
-
-triggers:
-  - id: hourly
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "@hourly"
-```
-
-This flow starts a task conditionally based on whether the input is provided or not:
-
-```yaml
-id: conditional_branching
-namespace: company.team
-
-inputs:
-  - id: parameter
-    type: STRING
-    required: false
-
-tasks:
-  - id: if
-    type: io.kestra.plugin.core.flow.If
-    condition: "{{inputs.parameter ?? false }}"
-    then:
-      - id: if_not_null
-        type: io.kestra.plugin.core.log.Log
-        message: Received input {{inputs.parameter}}
-    else:
-      - id: if_null
-        type: io.kestra.plugin.core.log.Log
-        message: No input provided
-```
-
-Below is an example that uses a trigger variable within a trigger itself (_that's allowed!_):
-
-```yaml
-id: backfill_past_mondays
-namespace: company.team
-
-tasks:
-  - id: log_trigger_or_execution_date
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ trigger.date ?? execution.startDate }}"
-
-triggers:
-  - id: first_monday_of_the_month
-    type: io.kestra.plugin.core.trigger.Schedule
-    timezone: Europe/Berlin
-    backfill:
-      start: 2023-11-11T00:00:00Z
-    cron: "0 11 * * MON" # at 11:00 every Monday
-    when: "{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}" # only first Monday of the month
-```
-
+Triggers are resolved like inputs — before the execution starts — so you can reference trigger variables inside `variables`, but not inputs within triggers unless they have `defaults`.
 
 ### Can I transform variables with Pebble expressions?
 
-Yes. Kestra uses [Pebble templates](https://pebbletemplates.io/) along with the execution context to render **dynamic properties**. (such as filters, functions, and operators) to transform [inputs](../05.inputs/index.md) and [variables](../04.variables/index.md).
-
-The example below illustrates how to use variables and Pebble expressions to transform string values in dynamic task properties:
+Yes. Pebble filters and functions work in any dynamic property. For example, use a variable to store a date format and apply it with the `date` filter:
 
 ```yaml
-id: variables_demo
-namespace: company.team
-
 variables:
   DATE_FORMAT: "yyyy-MM-dd"
 
 tasks:
-  - id: seconds_of_day
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ 60 * 60 * 24 }}'
-
-  - id: start_date
+  - id: formatted
     type: io.kestra.plugin.core.debug.Return
     format: "{{ execution.startDate | date(vars.DATE_FORMAT) }}"
-
-  - id: curr_date_unix
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ now() | date(vars.DATE_FORMAT) | timestamp() }}"
-
-  - id: next_date
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ now() | dateAdd(1, 'DAYS') | date(vars.DATE_FORMAT) }}"
-
-  - id: next_date_unix
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ now() | dateAdd(1, 'DAYS') | date(vars.DATE_FORMAT) | timestamp() }}"
-
-  - id: pass_downstream
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-    commands:
-      - echo "{{ outputs.next_date_unix.value }}"
 ```
+
+See the [Expressions reference](../../expressions/index.mdx) for the full list of available filters and functions.
 
 ### Can I use nested variables?
 
-Yes. Depending on the task, you may need to wrap the root variable with `json()` to access specific keys. Below is an example using a list of maps as a variable:
+Yes. Use `json(item.value).key` to access fields on a nested object:
 
 ```yaml
 id: vars
@@ -289,11 +143,9 @@ variables:
       user: root
     - fqn: server02.mydomain.io
       user: guest
-    - fqn: server03.mydomain.io
-      user: rick
 
 tasks:
-  - id: parallel
+  - id: loop
     type: io.kestra.plugin.core.flow.Loop
     concurrencyLimit: 0
     values: "{{ vars.servers }}"
@@ -301,7 +153,7 @@ tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
         message:
-           - "{{ item.value }}" # for each element, prints the full JSON object (e.g., {"fqn":"server01.mydomain.io","user":"root"})
-           - "{{ json(item.value).fqn }}" # prints the value for that key (e.g., server01.mydomain.io)
-           - "{{ json(item.value).user }}" # prints the value for that key (e.g., root)
+           - "{{ item.value }}"
+           - "{{ json(item.value).fqn }}"
+           - "{{ json(item.value).user }}"
 ```
