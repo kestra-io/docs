@@ -6,11 +6,9 @@ sidebarTitle: Labels
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Labels are key-value pairs in Kestra that let you organize [flows](../01.flow/index.md) and [executions](../03.execution/index.md) across multiple dimensions, without being restricted to a single hierarchy.
+Labels are key-value pairs attached to [flows](../01.flow/index.md) and [executions](../03.execution/index.md). Unlike namespaces, which form a fixed hierarchy, labels let you slice execution data across any dimension — team, project, environment, priority — and combine them freely.
 
-You can organize flows and executions by project, priority, maintainer, or any other relevant criteria. Unlike fixed categories, labels support flexible filtering, grouping, and discovery.
-
-Labels can be associated with both the flow definition and individual execution instances. This allows you to distinguish between different executions of the same flow.
+A label can be set on the flow definition, on individual execution instances, or both, making it possible to group across flows or distinguish between runs of the same flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/dwuj5jOHIOA?si=ioct3HALKVKojax4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -44,7 +42,7 @@ Labels let you organize and filter flows and their executions. Key benefits incl
 
 - **Organization**: Manage workflows at scale by grouping executions by team, project, maintainer, or environment.
 
-You can also build custom dashboards using labels, for example: `http://localhost:8080/ui/executions?filters[labels][EQUALS][team]=finance`.
+You can also build custom dashboards using labels to filter executions by any label value.
 
 ### Common scenarios
 
@@ -52,8 +50,7 @@ To group flows related to the same project across [Kestra namespaces](../02.name
 
 When running the `process_invoice_flow`, you can add execution labels (e.g., `currency`) to capture attributes of the processed invoice. This allows you to filter executions by specific values, like `currency: USD`.
 
-You can also label executions related to a pre-production run. For example, using a `purpose: pre-prod` label. This enables you to safely
-delete only those executions associated with the pre-production phase.
+You can also label executions related to a pre-production run — for example, `purpose: pre-prod` — so you can safely delete only those executions when the pre-production phase is complete.
 
 In multi-team environments, labels help you separate executions by team, for example `support: EMEA` and `support: APAC`, when the same flow handles data from different regions.
 
@@ -61,9 +58,9 @@ In multi-team environments, labels help you separate executions by team, for exa
 
 When you execute a flow with labels, those labels are automatically applied to its executions.
 
-![labels1](./labels1.png)
+![Execution overview showing label chips inherited from the flow definition](./execution-overview-labels.png)
 
-![labels2](./labels2.png)
+![Executions list showing multiple runs with the same labels propagated from the flow](./executions-list-labels.png)
 
 ## Set execution labels manually
 
@@ -79,11 +76,11 @@ For example, you can add a label to a failed execution to indicate its status, s
 
 Go to the **Overview** tab of an execution and click **Set labels** to add one or more labels.
 
-![labels3](./labels3.png)
+![Set labels dialog open on an execution's Overview tab](./set-labels-dialog.png)
 
 You can also set labels for multiple executions at once — useful for bulk operations such as acknowledging multiple failed executions after an outage.
 
-![labels4](./labels4.png)
+![Bulk action menu with Set labels available after selecting multiple executions](./bulk-set-labels.png)
 
 ## Set labels based on flow inputs and task outputs
 
@@ -193,7 +190,7 @@ tasks:
     message: Hello World!
 ```
 
-Each execution started by this trigger carries a `year` label with the current year when the trigger fires, for example `year: year-2026`.
+Each execution started by this trigger carries a `year` label with the current year when the trigger fires.
 
 **Using a trigger variable:**
 

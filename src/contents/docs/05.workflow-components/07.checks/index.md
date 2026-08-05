@@ -7,9 +7,7 @@ icon: /src/contents/docs/icons/flow.svg
 version: ">= 1.2.0"
 ---
 
-Checks are pre-execution validations that block or fail an execution before any tasks run.
-
-`checks` are flow-level assertions evaluated when validating inputs and before creating a new execution. Each check defines a boolean `when` expression and a `message` shown when the expression evaluates to false.
+Checks are flow-level assertions evaluated against inputs before an execution is created. Each check defines a boolean `when` expression and a `message` to display when the expression evaluates to false.
 
 ## Properties
 
@@ -28,7 +26,7 @@ When you click **Execute**, the modal displays the `message` as soon as an input
 
 If several checks fail, the most restrictive behavior wins in this priority order: `BLOCK_EXECUTION` → `FAIL_EXECUTION` → `CREATE_EXECUTION`. This lets you mix hard stops with softer warnings in the same flow.
 
-### Evaluation behavior
+## Evaluation behavior
 
 Keep these rules in mind when writing `when` expressions:
 
