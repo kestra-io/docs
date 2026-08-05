@@ -30,7 +30,12 @@ export function getAliasMapping(allPlugins: Plugin[]) {
 */
 export function redirectAlias(aliasMapping: Record<string, string>, slug: string, pageList: string[] | undefined, pluginType: string | undefined) {
     if (pluginType && aliasMapping && !pageList?.includes(slug)) {
-        let redirectPath = pageList?.find(page => page?.endsWith("/" + pluginType));
+        // Compare case-insensitively: pageList entries are slugified (lowercase) while pluginType
+        // carries the FQCN's real casing, so a case-sensitive endsWith never matched and every
+        // non-canonical URL (e.g. /plugins/plugin-slack/<fqcn> for an element that lives under a
+        // subgroup) rendered a duplicate of the canonical page instead of 301-ing to it.
+        const target = "/" + pluginType.toLowerCase();
+        let redirectPath = pageList?.find(page => page?.toLowerCase().endsWith(target));
 
         if (!redirectPath) {
             const actualClass = aliasMapping[pluginType.toLowerCase()];
