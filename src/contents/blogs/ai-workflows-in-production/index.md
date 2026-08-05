@@ -74,7 +74,7 @@ The single classification task is now three [Classification](/plugins/plugin-ai/
   allowFailure: true
   runIf: "{{ outputs.classify.classification is not defined and outputs.classify_fallback_3.classification is not defined }}"
   provider:
-    modelName: gemini-2.5-pro
+    modelName: gemini-3.5-flash-lite
 ```
 
 **First call**: Gemini 3.1 Pro Preview, the latest and most accurate.
