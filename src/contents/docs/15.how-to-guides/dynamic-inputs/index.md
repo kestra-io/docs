@@ -207,6 +207,131 @@ inputs:
 - Recursion is capped at depth 3.
 - Each subflow referenced in a `SELECT` or `MULTISELECT` expression appears in the parent flow's **Dependencies** graph automatically.
 
+## Conditional inputs
+
+Use `dependsOn` and `condition` to show an input only when a previous input matches a value. The following flow shows different inputs depending on which resource type the user selects:
+
+```yaml
+id: request_resources
+namespace: company.team
+
+inputs:
+  - id: resource_type
+    displayName: Resource type
+    type: SELECT
+    values:
+      - Access permissions
+      - SaaS application
+      - Cloud VM
+
+  - id: access_permissions
+    displayName: Access permissions
+    type: SELECT
+    expression: "{{ kv('access_permissions') }}"
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type == 'Access permissions' }}"
+
+  - id: saas_applications
+    displayName: SaaS application
+    type: MULTISELECT
+    expression: "{{ kv('saas_applications') }}"
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type == 'SaaS application' }}"
+
+  - id: cloud_provider
+    displayName: Cloud provider
+    type: SELECT
+    values:
+      - AWS
+      - GCP
+      - Azure
+    dependsOn:
+      inputs:
+        - resource_type
+      condition: "{{ inputs.resource_type == 'Cloud VM' }}"
+
+  - id: cloud_vm
+    displayName: Cloud VM
+    type: SELECT
+    expression: "{{ kv('cloud_vms')[inputs.cloud_provider] }}"
+    dependsOn:
+      inputs:
+        - resource_type
+        - cloud_provider
+      condition: "{{ inputs.resource_type == 'Cloud VM' }}"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Resource type: {{ inputs.resource_type }}"
+```
+
+`dependsOn.inputs` lists the inputs that must be provided first. `dependsOn.condition` is a Pebble expression that controls visibility — the dependent input only appears in the Execute modal when the condition is `true`. An input can depend on multiple parents; all listed inputs must be provided before the condition is evaluated.
+
+Populate the KV store keys before running the flow:
+
+:::collapse{title="Flow to add key-value pairs"}
+```yaml
+id: add_kv_pairs
+namespace: company.team
+
+tasks:
+  - id: access_permissions
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON
+    value: |
+      ["Admin", "Developer", "Editor", "Launcher", "Viewer"]
+
+  - id: saas_applications
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON
+    value: |
+      ["Slack", "Notion", "HubSpot", "GitHub", "Jira"]
+
+  - id: cloud_vms
+    type: io.kestra.plugin.core.kv.Set
+    key: "{{ task.id }}"
+    kvType: JSON
+    value: |
+      {
+        "AWS": ["t2.micro", "t2.small", "t2.medium", "t2.large"],
+        "GCP": ["f1-micro", "g1-small", "n1-standard-1", "n1-standard-2"],
+        "Azure": ["Standard_B1s", "Standard_B1ms", "Standard_B2s", "Standard_B2ms"]
+      }
+```
+:::
+
+### dependsOn inside FORM inputs
+
+To make one child input inside a FORM depend on another, use the full dotted path in `dependsOn.inputs`:
+
+```yaml
+inputs:
+  - id: cloud
+    type: FORM
+    displayName: Cloud configuration
+    inputs:
+      - id: provider
+        type: SELECT
+        values: [AWS, GCP, Azure]
+
+      - id: region
+        type: SELECT
+        dependsOn:
+          inputs:
+            - cloud.provider
+          condition: "{{ inputs.cloud.provider == 'AWS' }}"
+        values:
+          - us-east-1
+          - eu-west-1
+```
+
 ## Label/value pairs for decoupled dropdowns
 
 When your API returns structured data, use a `{label, value}` jq projection so the dropdown shows a human-readable label while `{{ inputs.x }}` resolves to the underlying technical identifier:

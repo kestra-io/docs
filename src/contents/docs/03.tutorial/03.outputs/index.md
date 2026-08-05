@@ -156,7 +156,7 @@ tasks:
     store: true
 ```
 
-This example flow passes data between tasks using Outputs. The `inputFiles` argument of the `io.kestra.plugin.jdbc.duckdb.Query` task allows you to pass files from internal storage to the task. The `store: true` property ensures that the result of the SQL query is stored in the internal storage and can be previewed and downloaded from the Outputs tab.
+This example flow passes data between tasks using Outputs. The `inputFiles` argument of the `io.kestra.plugin.jdbc.duckdb.Query` task allows you to pass files from internal storage to the task. The `store: true` property ensures that the result of the SQL query is stored in the internal storage and can be previewed and downloaded from the Input/Output tab.
 
 ![Preview](./preview-2-0.png)
 
