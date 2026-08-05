@@ -292,7 +292,7 @@ kestra:
         display-name: Gemini - Private
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.5-flash-lite
           api-key: YOUR_GEMINI_API_KEY
       - id: gpt
         display-name: OpenAI
