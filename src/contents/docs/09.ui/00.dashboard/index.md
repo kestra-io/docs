@@ -449,7 +449,7 @@ To see all available properties to configure a custom dashboard as code, see exa
 
 Export table data as CSV using the download icon in the top-right corner of a table chart — no pagination required.
 
-![Dashboard Table Export](./dashboard-table-export.png)
+![Dashboard Table Export](./dashboard-table-export-2-0.png)
 
 ## Querying data
 

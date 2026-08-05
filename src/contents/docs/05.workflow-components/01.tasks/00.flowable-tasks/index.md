@@ -791,20 +791,3 @@ tasks:
 ```
 
 For more details, refer to the [Dag Task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.dag).
-
-### Template (deprecated)
-
-Templates are lists of tasks that can be shared between flows. You can define a template and call it from other flows, allowing them to share a list of tasks and keep these tasks updated without changing your flow.
-
-The following example uses the Template task to use a template.
-
-```yaml
-id: template
-namespace: company.team
-
-tasks:
-  - id: template
-    type: io.kestra.plugin.core.flow.Template
-    namespace: company.team
-    templateId: template
-```

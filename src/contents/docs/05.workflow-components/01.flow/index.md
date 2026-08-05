@@ -7,19 +7,17 @@ icon: /src/contents/docs/icons/flow.svg
 docId: flows
 ---
 
-Flow is a container for tasks and their orchestration logic.
-
-A Flow is the fundamental unit of orchestration in Kestra. It defines a set of tasks, their execution order, inputs, outputs, and orchestration logic.
+A flow is a container for tasks and their orchestration logic.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/sJJORcNmpM4?si=Xkaak8Je_f19km5e" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/sJJORcNmpM4?si=Xkaak8Je_f19km5e" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-background; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Components of a flow
 
-A flow organizes `tasks`, their `inputs` and `outputs`, error handling, and orchestration logic. It specifies **what** tasks run, **when** they run, and **how** they interact (sequentially, in parallel, or conditionally).
+A flow organizes tasks, their inputs and outputs, error handling, and orchestration logic. It specifies **what** tasks run, **when** they run, and **how** they interact (sequentially, in parallel, or conditionally).
 
-You can define a flow declaratively using a [YAML](https://en.wikipedia.org/wiki/YAML) file. Alternatively, you can also build flows using the [No Code editor](../../09.ui/01.flows/index.md) instead of writing your own YAML.
+You can define a flow declaratively in YAML or build it using the [No Code editor](../../09.ui/01.flows/index.md).
 
 A flow must have:
 
@@ -29,25 +27,23 @@ A flow must have:
 
 Optionally, a flow can also have:
 
-- [inputs](../05.inputs/index.md)
-- [outputs](../06.outputs/index.md)
-- [variables](../04.variables/index.md)
-- [triggers](../07.triggers/index.mdx)
-- [labels](../08.labels/index.md)
-- ~~pluginDefaults~~ (removed in 2.0 — see [migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md))
-- [errors](../11.errors/index.md)
-- [finally](../19.finally/index.md)
-- [retries](../12.retries/index.md)
-- [sla](../18.sla/index.md)
-- [concurrency](../14.concurrency/index.md)
-- [descriptions](../15.descriptions/index.md)
-- [disabled](../16.disabled/index.md)
-- [revision](../../06.concepts/03.revision/index.md)
-- [checks](../07.checks/index.md)
+- [inputs](../05.inputs/index.md) — typed parameters passed at execution time
+- [outputs](../06.outputs/index.md) — values or files a flow produces for downstream use
+- [variables](../04.variables/index.md) — reusable key/value pairs scoped to the flow
+- [triggers](../07.triggers/index.mdx) — schedule or event conditions that start executions automatically
+- [labels](../08.labels/index.md) — key/value metadata for filtering and grouping executions
+- [errors](../11.errors/index.md) — tasks that run when a flow or task fails
+- [finally](../19.finally/index.md) — tasks that always run at the end, regardless of execution outcome
+- [retries](../12.retries/index.md) — automatic retry policy on task failure
+- [sla](../18.sla/index.md) — time-based constraints that fail or alert when exceeded
+- [concurrency](../14.concurrency/index.md) — limits on how many executions of this flow can run simultaneously
+- [descriptions](../15.descriptions/index.md) — Markdown documentation attached to flows and tasks
+- [disabled](../16.disabled/index.md) — prevent a flow from executing without deleting it
+- [checks](../07.checks/index.md) — assertions that must pass before an execution is created
 
 ## Flow sample
 
-Below is a sample flow definition. It uses tasks available in Kestra core for testing purposes, such as the `Return` or `Log` tasks, and demonstrates how to use `labels`, `inputs`, `variables`, `triggers`, and various `descriptions`.
+The example below uses several of the optional components listed above — refer to each component's documentation for full configuration details.
 
 ```yaml
 id: hello-world
@@ -63,149 +59,67 @@ inputs:
   - id: my-value
     type: STRING
     defaults: "default value"
-    description: This input is has a default value.
+    description: This input has a default value.
 
 variables:
   first: "1"
-  second: "{{vars.first}} > 2"
+  second: "{{ vars.first }} > 2"
 
 tasks:
+  - id: hello
+    type: io.kestra.plugin.core.log.Log
+    description: "Log the input value passed at execution time."
+    message: "Hello, {{ inputs.['my-value'] }}!"
+
   - id: date
     type: io.kestra.plugin.core.debug.Return
-    description: "Some tasks **documentation** in *Markdown*"
-    format: "A log line content with a contextual date variable {{taskrun.startDate}}"
+    description: "Return the current date as a task output."
+    format: "{{ taskrun.startDate }}"
 
+outputs:
+  - id: execution_date
+    type: STRING
+    value: "{{ outputs.date.value }}"
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 9 * * *"
 ```
-
-### Plugin defaults
-
-The `pluginDefaults` keyword is removed in Kestra 2.0. In Enterprise Edition, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject default values for tasks at the namespace level. In OSS, set values directly on each task. See the [pluginDefaults Removed migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md).
-
-### Variables
-
-Flow-level variables define key/value pairs that tasks can access using `{{ vars.key }}`. Refer to the [flow variables documentation](../04.variables/index.md) for more details.
-
-### List of tasks
-
-The most important part of a flow is the list of tasks that will be run sequentially when the flow is executed.
-
-## Disable a flow
-
-By default, all flows are active and will execute whether or not a trigger has been set.
-
-You can [disable a flow](../16.disabled/index.md) to temporarily prevent it from running. This is useful for pausing scheduled executions, troubleshooting, or testing.
-
-![Disable a Flow](./disable_flow.png)
-
-## Task
-
-A task is a single action in a flow. A task can have properties, use flow inputs and other task's outputs, perform an action, and produce an [output](#outputs).
-
-There are two kinds of tasks in Kestra:
-
-- Runnable Tasks – Perform actual work (API calls, database queries, computations). Executed by workers.
-
-- Flowable Tasks – Control orchestration (branching, looping, parallelization). Executed by the executor, not suitable for heavy computation.
-
-### Runnable Task
-
-[Runnable Tasks](../01.tasks/01.runnable-tasks/index.md) handle computational work in the flow. For example, these include file system operations, API calls, database queries, etc. These tasks can be compute-intensive and are handled by workers.
-
-By default, Kestra only includes a few Runnable Tasks. However, many of them are available as [plugins](/plugins), and if you use our default Docker image, plenty of them are already included.
-
-### Flowable Task
-
-[Flowable Tasks](../01.tasks/00.flowable-tasks/index.md) only handle flow logic (branching, grouping, parallel processing, etc.) and start new tasks. For example, the [Switch task](/plugins/core/flow/io.kestra.plugin.core.flow.switch) decides the next task to run based on some inputs.
-
-A Flowable Task is handled by an executor and can be called very often. Because of that, these tasks cannot include intensive computations, unlike Runnable Tasks. Most of the common Flowable Tasks are available in the default Kestra installation.
-
-## Labels
-
-Labels are key-value pairs that you can add to flows. Labels are used to **organize** flows and can be used to **filter executions** of any given flow from the UI.
-
-## Inputs
-
-Inputs are strongly typed parameters provided at execution time. Can be required or optional, with default values and validation rules.
-
-Inputs of type `FILE` are uploaded to Kestra's [internal storage](../../08.architecture/data-components/index.md#internal-storage) and made available for all tasks.
-
-Flow inputs can be seen in the **Overview** tab of the **Execution** page.
-
-## Outputs
-
-Outputs are results produced by tasks or flows. Outputs can be reused in later tasks or downloaded if stored in internal storage.
-
-Some outputs are of a special type and are stored in Kestra's internal storage. Kestra automatically makes these outputs available for all tasks.
-
-You can view:
-
-- task outputs in the **Outputs** tab of the **Execution** page
-- flow outputs in the **Overview** tab of the **Execution** page
-
-If an output is a file from the internal storage, it will be available to download.
-
-For more details on both task and flow outputs, see the [Outputs](../06.outputs/index.md) page.
 
 ## Revision
 
 Every change to a flow creates a new revision. Kestra automatically manages revisions, similar to version control, and you can view them in the **Revisions** tab.
 
-You can access old revisions inside the **Revisions** tab of the **Flows** page.
-
-Use **Save as draft** to stage changes without affecting running executions. Draft revisions are not executed — any trigger or manual run will fall back to the last published revision until you publish the draft. See [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions) for details.
-
-## Triggers
-
-[Triggers](../07.triggers) are a way to start a flow from external events. For example, a trigger might initiate a flow at a scheduled time or based on external events (webhooks, file creation, message in a broker, etc.).
+Use **Save as draft** to stage changes without affecting running executions. Draft revisions are not executed — any trigger or manual run falls back to the last published revision until you publish the draft. See [Draft revisions](../../06.concepts/03.revision/index.md#draft-revisions) for details.
 
 ## Flow variable expressions
 
-Flows have a number of variable expressions giving you information about them dynamically, a few examples include:
-
-| Parameter                     | Description                                                                                                                       |
-|-------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
-| `{{ flow.id }}`               | The identifier of the flow.                                                                                                       |
-| `{{ flow.namespace }}`        | The name of the flow namespace.                                                                                                   |
-| `{{ flow.tenantId }}`         | The identifier of the tenant (EE only).                                                                                           |
-| `{{ flow.revision }}`         | The revision of the flow.                                                                                                         |
-
-## Listeners (deprecated)
-
-Listeners are special tasks that can listen to the current flow and launch tasks *outside the flow*, meaning launch tasks that are not part of the flow.
-
-The results of listeners do not change the execution status of the flow. Listeners are mainly used to send notifications or handle special behavior outside the primary flow.
-
-:::alert{type="warning"}
-These features are retained for backward compatibility and will be removed in future versions. Use alternative patterns (e.g., triggers, reusable tasks) instead.
-:::
-
-## Templates (deprecated)
-
-Templates are lists of tasks that can be shared between flows. You can define a template and call it from other flows. Templates allow you to share a list of tasks and keep them updated without changing all flows that use them.
+| Parameter | Description |
+|---|---|
+| `{{ flow.id }}` | The identifier of the flow. |
+| `{{ flow.namespace }}` | The name of the flow namespace. |
+| `{{ flow.tenantId }}` | The identifier of the tenant (EE only). |
+| `{{ flow.revision }}` | The revision of the flow. |
 
 ## FAQ
 
 ### Where does Kestra store flows?
 
-Flows are stored in a serialized format directly **in the Kestra backend database**.
+Flows are stored in a serialized format directly in the Kestra backend database.
 
-The easiest way to add new flows is to add them directly from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to add flows automatically after a pull request is merged to a given Git branch.
+The easiest way to add new flows is from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to deploy flows automatically after a pull request is merged.
 
-To see how flows are represented in a file structure, you can leverage the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
+To see how flows are represented in a file structure, use the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
 
 ### How to load flows at server startup?
 
-To pre-load flows from a directory when Kestra starts (so they’re available immediately), use the `-f` or `--flow-path` flag on the server command:
+To pre-load flows from a directory when Kestra starts, use the `-f` or `--flow-path` flag:
 
 ```bash
 ./kestra server standalone --flow-path /path/to/flows
 ```
 
-Point this to a directory of YAML flow definitions; Kestra will load them at startup and place them in the namespaces declared in each file.
-
-For more information about the Kestra server CLI, check the [Server CLI Reference](../../kestra-cli/kestra-server/index.md) section.
-
-### Can I sync a local flows directory to be continuously loaded into Kestra?
+### Can I sync a local flows directory into Kestra?
 
 Yes. See [Synchronize Local Flows](../../15.how-to-guides/local-flow-sync/index.md) for syncing a local directory, or [Sync Flows from a Git Repository](../../15.how-to-guides/syncflows/index.md) for Git-based workflows.
-

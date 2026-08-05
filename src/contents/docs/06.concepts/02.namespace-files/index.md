@@ -66,7 +66,7 @@ Namespace Files make it easy to:
 
 ### Embedded code editor
 
-While creating or editing a Flow, you can access Namespace Files from the **Namespace Files** tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
+While creating or editing a Flow, you can access Namespace Files from the **Files** tab. You can easily write, import, or paste custom scripts, queries, and configuration files.
 
 To start, add a new file (e.g., a Python script). Add a folder named `scripts` and a file called `hello.py` with the following content:
 
@@ -101,11 +101,11 @@ Namespace Files include revision history just like flows, so you can inspect or 
 
 To access a file's revision history, right-click on the file.
 
-![Namespace file revision history](./namespace-file-revision-history.png)
+![Namespace file revision history](./namespace-file-revision-history-2-0.png)
 
 From the history, view, compare, and restore prior versions.
 
-![Restore namespace file revision placeholder](./namespace-file-restore.png)
+![Restore namespace file revision placeholder](./namespace-file-restore-2-0.png)
 
 From the **Revisions** list, you can delete a given revision or all revisions older than the selected one. You will be prompted to confirm this choice, as there is no possible way to restore a revision once is has been deleted. 
 
