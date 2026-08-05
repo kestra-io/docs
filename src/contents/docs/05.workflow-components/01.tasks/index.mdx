@@ -8,9 +8,7 @@ sidebarTitle: Tasks
 
 import ChildCard from "~/components/docs/ChildCard.astro"
 
-Tasks are the steps within a flow.
-
-They represent discrete actions, capable of processing inputs and variables and producing outputs for downstream consumption by end users and other tasks.
+Tasks are the discrete steps within a flow that process inputs, run logic, and produce outputs.
 
 <div class="video-container">
     <iframe
@@ -59,7 +57,7 @@ All tasks share the following core properties:
 | `timeout`      | The [maximum time allowed](../13.timeout/index.md) for the task to complete expressed in [ISO 8601 Durations](https://en.wikipedia.org/wiki/ISO_8601#Durations)                                                                                                                                                                                                                                                                                                       |
 | `runIf`        | Skip a task if the provided condition evaluates to false                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `disabled`     | A boolean flag indicating whether the task is [disabled or not](../16.disabled/index.md); if set to `true`, the task will be skipped during the execution                                                                                                                                                                                                                                                                                                             |
-| `workerGroup`  | The [group of workers](../../07.enterprise/04.scalability/worker-group/index.md) (EE-only) that are eligible to execute the task; you can specify a `workerGroup.key` and a `workerGroup.fallback` (the default is `WAIT`)                                                                                                                                                                                                                                                                      |
+| `workerSelector` | (EE-only) Routes the task to a [Worker Queue](../../07.enterprise/04.scalability/worker-group/index.md#using-workerselector-in-tasks) matching the specified `tags`; `match` controls whether `ALL` or `ANY` tags must match (default: `ALL`), and `fallback` controls behavior when no matching worker is available: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` (default: `FAIL`) |
 | `allowFailure` | A boolean flag allowing to continue the execution even if this task fails                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `allowWarning` | A boolean flag allowing to mark a task run as Success despite Warnings                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `logLevel`     | Defines the log level persisted to the backend database. By default, all logs are stored. For example, restricting to `INFO` prevents `DEBUG` and `TRACE` logs from being saved.                                                                                                                                                                                                                                                                                                                   |
@@ -67,9 +65,7 @@ All tasks share the following core properties:
 
 ## Dynamic vs. static task properties
 
-Task properties can be static or dynamic. Dynamic properties can be set using expressions. To determine whether a property is static or dynamic (properties marked with a snowflake icon are non-dynamic), check the task’s documentation on the [plugin's homepage](/plugins) or in the UI by clicking on the documentation tab for the task.
-
-![dynamic_properties](./dynamic-properties.png)
+Task properties can be non-dynamic or dynamic. Dynamic properties can be set using expressions. To determine whether a property is non-dynamic or dynamic, check the task’s documentation on the [plugin's homepage](/plugins) or in the UI by clicking on the documentation tab for the task.
 
 Some properties are marked as **non-dynamic** because they are complex types (e.g., maps, lists of strings, lists of maps). These act as **placeholders** for other dynamic properties.
 
