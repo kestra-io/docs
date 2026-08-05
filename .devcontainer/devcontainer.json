@@ -5,7 +5,7 @@
     "dockerfile": "Dockerfile"
   },
   "workspaceFolder": "/workspaces/docs",
-  "forwardPorts": [3000],
+  "forwardPorts": [4321],
   "customizations": {
     "vscode": {
       "settings": {
