@@ -155,7 +155,7 @@ If you want to comment or uncomment out part of your code, use `CTRL + /` on Win
 
 To this point, we have shown some flows to run and get familiar with. Now, let's create a flow to use throughout the rest of the tutorial. Open the **Flows** view and click **+ Create**:
 
-![Create flow](./create_button.png)
+![Create flow](./create-button-2-0.png)
 
 Paste the following code into the Flow editor:
 
@@ -169,16 +169,18 @@ tasks:
     uri: https://dummyjson.com/products
 ```
 
-Then, hit the **Save** button.
+Then, hit the **Save** button, or you can also save as a draft in case you'd like to keep editing.
 
-![Create flow](./save_button.png)
+![Create flow](./save-button-2-0.png)
 
-This flow has a single task that fetches data from the [dummyjson](https://dummyjson.com/) API via an [HTTP Request task](/plugins/core/http/io.kestra.plugin.core.http.request). Run it to see the output.
-
-![New execution](./new_execution.png)
+This flow has a single task that fetches data from the [dummyjson](https://dummyjson.com/) API via an [HTTP Request task](/plugins/core/http/io.kestra.plugin.core.http.request). Run it with the **Execute** button to see the output.
 
 After execution, you’ll be directed to the Gantt view to see the stages of your flow’s progress. In this simple example, we see the API request successfully execute.
 
-![gantt view](./gantt-view.png)
+![gantt view](./gantt-view-2-0.png)
+
+Toggle over to the **Execution Overview** for a visualization of your flow tasks and explore the other post-execution tabs for even more detailed information about your run.
+
+![execution overview](./execution-overview-2-0.png)
 
 While fetching data is a great first step, it is just that, a first step. In the next sections, you'll explore the other critical components of Kestra flows: Inputs, Outputs, Triggers, and more.
