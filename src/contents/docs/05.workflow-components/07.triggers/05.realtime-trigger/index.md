@@ -4,18 +4,17 @@ h1: React Instantly to Kafka, SQS, and MQTT Events
 description: Achieve low-latency automation with Kestra's Realtime Triggers. React instantly to events from Kafka, SQS, MQTT, and other streaming systems.
 sidebarTitle: Realtime Trigger
 icon: /src/contents/docs/icons/flow.svg
-version: ">= 0.17.0"
 ---
 
 Trigger workflows instantly as events occur, with millisecond latency.
 
-[Triggers](./index.md) in Kestra can listen to external events and start a workflow execution when the event occurs. Most triggers in Kestra **poll** external systems at regular intervals (e.g., every second) to detect new events. This is effective for batch-style data processing. However, business-critical workflows often demand immediate reactions — within milliseconds. **Realtime Triggers** address this need by listening directly for events and starting workflows as soon as they occur.
+Most Kestra [triggers](./index.md) poll external systems at a fixed interval, which works well for batch processing. Realtime Triggers listen directly for events and start a flow the moment one arrives — with millisecond latency.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What are Realtime Triggers
+## Supported event sources
 
 Realtime Triggers continuously listen for events and launch a new workflow execution the moment an event occurs, such as:
 
@@ -102,9 +101,9 @@ kestra:
     terminationGracePeriod: PT1M  # default is PT5M
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Events are not lost during the failover window. They remain in the source system (Kafka topic, SQS queue, etc.) and will be consumed once the trigger listener is restarted on another worker.
-::
+:::
 
 ## Comparison with real-time data processing engines
 

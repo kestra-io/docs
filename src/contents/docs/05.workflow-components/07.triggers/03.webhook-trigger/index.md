@@ -20,10 +20,6 @@ When you create the trigger, you must provide a `key`. This `key` is embedded in
 
 For security, use a randomly generated string rather than something easy to guess. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL. Both the request body and headers are automatically available as variables inside your flow.
 
-:::alert{type="info"}
-Starting in Kestra 0.24, [Basic Authentication is required](../../../11.migration-guide/v0.24.0/basic-authentication/index.md) for all instances. This change makes it so API requests require an `Authorization` header. Follow these [Basic Authentication Encoding Steps](../../../15.how-to-guides/synchronous-executions-api/index.md#basic-authentication) to configure requests correctly.
-:::
-
 ## Example
 
 ```yaml
@@ -47,7 +43,7 @@ After creating the trigger, include the key in the webhook URL to start the flow
 https://{kestra_domain}/api/v1/main/executions/webhook/{namespace}/{flowId}/4wjtkzwVGBM9yKnjm3yv8r
 ```
 
-Make sure to replace `kestra_domain`, `namespace`, and `flowId`.
+Replace `kestra_domain`, `namespace`, and `flowId` with your values.
 
 You can also copy the formed Webhook URL from the **Triggers** tab.
 
@@ -74,7 +70,7 @@ triggers:
 
 ## Webhook trigger testing
 
-If your flow uses trigger variables (such as `{{ trigger.body }})`, you can test it directly from the execution modal. Kestra generates a ready-to-use `cURL` command that lets you trigger the flow with a custom JSON payload.
+To test a webhook trigger without an external tool, go to the flow's **Triggers** tab and click **Send a test event**. The modal lets you post a custom JSON payload and optional headers directly to the webhook URL:
 
 ![Webhook Trigger Test](./webhook-trigger-test.png)
 
@@ -102,7 +98,7 @@ triggers:
     when: "{{ trigger.body.event == 'push' and trigger.headers['x-github-event'] == 'push' }}"
 ```
 
-### Return flow outputs in the webhook response
+## Return flow outputs in the webhook response
 
 To send task outputs back to the caller in the HTTP response, configure the Webhook trigger to wait for the execution and return outputs. The flow must expose at least one `outputs` entry.
 

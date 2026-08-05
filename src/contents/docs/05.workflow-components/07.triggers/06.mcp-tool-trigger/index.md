@@ -81,6 +81,10 @@ toolDescription: >
   Call this tool whenever the user asks to be greeted or wants a welcome message.
 ```
 
+## Common trigger properties
+
+`McpToolTrigger` supports all [common trigger properties](../index.mdx#trigger-common-properties), including `when` (a Pebble guard evaluated before invoking the flow) and `inputs` (values passed to flow inputs on each invocation).
+
 ## Input and output mapping
 
 Flow inputs and outputs are automatically mapped to the MCP tool's input and output schema.

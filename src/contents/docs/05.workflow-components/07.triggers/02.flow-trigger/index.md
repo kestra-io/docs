@@ -12,7 +12,7 @@ Trigger one flow based on the execution of another flow.
 type: io.kestra.plugin.core.trigger.Flow
 ```
 
-A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams. This allows you to create dependencies between flows, even when those flows are owned by different teams.
+A Flow trigger runs a flow after another flow completes, enabling event-driven dependencies across teams and namespaces.
 
 Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
@@ -66,6 +66,54 @@ triggers:
 | `states`    | `List<State>`         | States that satisfy this entry. Defaults to `[SUCCESS, WARNING]`.                                                    |
 | `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
 | `when`      | `String`              | A Pebble expression evaluated against the upstream execution. The entry is satisfied only when this evaluates to true.|
+
+### Satisfaction mode
+
+The `mode` property controls how `dependsOn` entries are combined before the trigger fires:
+
+| Value | Behavior | Extra property |
+|---|---|---|
+| `ALL` (default) | All entries must be satisfied | — |
+| `ANY` | Fires as soon as any one entry is satisfied | — |
+| `AT_LEAST` | Fires when at least N entries are satisfied | `minSatisfied` (integer ≥ 1) |
+
+Use `mode: ANY` to replace multiple separate Flow triggers with one:
+
+```yaml
+triggers:
+  - id: react_to_any_source
+    type: io.kestra.plugin.core.trigger.Flow
+    mode: ANY
+    dependsOn:
+      - flowId: ingest_salesforce
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_hubspot
+        namespace: company.sources
+        states: [SUCCESS]
+```
+
+Use `mode: AT_LEAST` with `minSatisfied` for N-of-M logic — fire when 2 out of 3 upstream flows succeed:
+
+```yaml
+triggers:
+  - id: partial_success
+    type: io.kestra.plugin.core.trigger.Flow
+    mode: AT_LEAST
+    minSatisfied: 2
+    dependsOn:
+      - flowId: ingest_salesforce
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_hubspot
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_zendesk
+        namespace: company.sources
+        states: [SUCCESS]
+    window:
+      deadline: "09:00:00+01:00"
+```
 
 ### Prefix and pattern matching
 
