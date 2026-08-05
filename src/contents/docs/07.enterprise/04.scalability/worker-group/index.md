@@ -12,6 +12,16 @@ Worker Groups route tasks to the right machines in your fleet. A Worker Group is
 
 Worker Groups are an Enterprise Edition feature. In the open-source edition, all work runs in a single implicit default pool.
 
+## Getting started
+
+To set up Worker Groups end-to-end:
+
+1. [Create a Worker Queue](#worker-queues) — define a routing lane with tags
+2. [Create a Worker Group](#creating-and-managing-worker-groups) — create a pool and subscribe it to queues
+3. [Generate a registration token](#generating-a-registration-token) — authenticate workers to the group
+4. [Start a worker](#starting-a-worker-for-a-group) — connect with the token and controller endpoint
+5. [Route tasks](#using-workerselector-in-tasks) — add `workerSelector` to any task
+
 ## How Worker Groups work
 
 Three building blocks define the routing model:
@@ -32,6 +42,134 @@ The routing path flows from task requirements down to infrastructure:
 **Developer perspective**: declare what a task needs using tags. No machine names, no group names.
 
 **Operator perspective**: create queues with meaningful tags, subscribe groups to those queues, and set capacity guarantees per subscription.
+
+## Using workerSelector in tasks
+
+Add `workerSelector` to any task to route it to a matching Worker Queue. The `workerSelector` object has three properties:
+
+| Property | Description | Default |
+|---|---|---|
+| `tags` | List of RFC 1123 labels (max 20) identifying the required Worker Queue | — |
+| `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
+| `fallback` | Behavior when no worker is available for the matched queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
+
+:::alert{type="warning"}
+The default `fallback` in 2.0 is `FAIL`. If you upgraded from an earlier version where tasks waited by default, set `fallback: WAIT` directly on each task, or use a [Policy](../../02.governance/policies/index.md) with an `Add` rule to apply it across a namespace.
+:::
+
+```yaml
+id: process_sensitive_data
+namespace: company.team
+
+tasks:
+  - id: process
+    type: io.kestra.plugin.scripts.python.Commands
+    workerSelector:
+      tags: [sensitive, eu]
+      fallback: WAIT
+    commands:
+      - python process.py
+```
+
+Kestra routes the task to a Worker Queue whose tag set includes all declared tags (or any, when `match: ANY`). Any Worker Group subscribed to that queue may execute the task.
+
+If `workerSelector` is absent or all tags resolve to null, the task routes to the default queue.
+
+### Fallback options
+
+| Value | Behavior |
+|---|---|
+| `FAIL` | Fail the task run immediately if no worker is available (default) |
+| `WAIT` | Hold the task in `CREATED` state until a worker becomes available |
+| `CANCEL` | Cancel the task gracefully; the execution is marked `KILLED` |
+| `IGNORE` | Drop the tag requirement and route to the default Worker Queue instead |
+
+`IGNORE` is useful when the target infrastructure is optional — the task proceeds on any available worker rather than failing when the specialized pool is unavailable.
+
+`fallback` can only be set when `tags` is non-empty.
+
+:::alert{type="warning"}
+`fallback` only applies when a matching Worker Queue exists but has no live worker right now. If no queue matches the tags at all, the task fails immediately regardless of the `fallback` value — that is a configuration error, not a capacity gap.
+:::
+
+### Dynamic routing
+
+Use Pebble expressions to set tags at runtime:
+
+```yaml
+inputs:
+  - id: region
+    type: STRING
+    defaults: eu
+
+tasks:
+  - id: process
+    type: io.kestra.plugin.scripts.python.Commands
+    workerSelector:
+      tags:
+        - "{{ inputs.region }}"
+        - sensitive
+      fallback: WAIT
+    commands:
+      - python process.py
+```
+
+When an expression resolves to null or a blank string, that tag is omitted from the selector. If all tags resolve to null, the task routes to the default queue.
+
+### Namespace and tenant-level routing defaults
+
+Instead of adding `workerSelector` to every task, set a default selector at the namespace or tenant level. Kestra resolves the selector most-specific-first — task, then flow, then the nearest namespace ancestor, then the tenant — and stops at the first level that declares one.
+
+Set a namespace-level default in the namespace settings:
+
+```yaml
+workerSelector:
+  tags: [eu]
+  fallback: WAIT
+```
+
+Every task in that namespace (and its child namespaces, unless overridden closer) inherits this selector automatically. Any selector closer to the task — on the task itself or the flow — wins over the namespace or tenant default.
+
+This is the recommended approach when an entire namespace or team should always run on a specific fleet — it keeps flow YAML clean and makes routing changes a single admin update rather than a find-and-replace across all flows.
+
+### Applying workerSelector with Policies
+
+Use a [Policy](../../02.governance/policies/index.md) to route all tasks of a given plugin type to a specific Worker Queue without modifying each task individually:
+
+```yaml
+id: gpu-worker-routing
+description: "Route all Python tasks to GPU workers."
+enforcement: ACTIVE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.scripts.python
+    values:
+      workerSelector:
+        tags: [gpu]
+        fallback: WAIT
+```
+
+With this Policy applied to the namespace, flows need no per-task configuration:
+
+```yaml
+id: ml_pipeline
+namespace: company.team
+
+tasks:
+  - id: train
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python train.py
+
+  - id: evaluate
+    type: io.kestra.plugin.scripts.python.Commands
+    commands:
+      - python eval.py
+```
 
 ## Worker Queues
 
@@ -87,9 +225,9 @@ Manage subscriptions through the UI or the subscriptions API:
 
 ## Capacity reservation
 
-Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. Each worker independently allocates `floor(maxCapacity × reservedPercent / 100)` slots to a subscription, where `maxCapacity` is the worker's advertised maximum in-flight capacity. Remaining slots form a shared pool available to all of that worker's subscriptions.
+Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. Remaining slots beyond reserved percentages form a shared pool available to all of that worker's subscriptions.
 
-**Example**: a worker with a max capacity of 16 subscribing to two queues at 50% and 25% reserves 8 slots for queue A and 4 slots for queue B, with 4 slots in the shared pool.
+**Example**: a worker with 16 slots subscribing to two queues at 50% and 25% reserves 8 slots for queue A and 4 slots for queue B, with 4 slots in the shared pool.
 
 ### Interaction modes
 
@@ -137,133 +275,119 @@ kestra:
 
 ### Worker-side configuration
 
-Configure each worker with the registration token for its target group:
+Each worker needs two things to join a group: a registration token that identifies the group, and a controller endpoint that tells the worker where to connect. Both are required — a worker started with only the token will try `localhost` and fail.
 
 ```yaml
 kestra:
   worker:
-    name: gpu-pool-1    # optional display name
+    name: gpu-pool-1                       # optional display name
     auth:
       registration-token: "{{ token generated for the target group }}"
+      credentials-path: /var/kestra/worker/.auth/worker-credentials.json  # default: /tmp/kestra/worker/.auth/...
+      refresh-buffer: PT60S               # how early to refresh the access token before it expires
+    controllers:
+      type: STATIC
+      static:
+        endpoints:
+          - host: kestra-controller.internal
+            port: 50051
 ```
+
+:::alert{type="warning"}
+The endpoint `host` and `port` must be separate YAML keys. A single `host:port` string fails with `Static configuration requires at least one endpoint`.
+:::
+
+#### Controller discovery strategies
+
+`type: STATIC` is the default and suitable for most bare-metal and Docker deployments. Two other strategies are available:
+
+| Type | When to use |
+|---|---|
+| `STATIC` | Fixed controller addresses — explicit `host`/`port` list |
+| `DNS` | Kubernetes or any environment where controllers are reachable by a stable DNS name; resolves SRV or A records on an interval |
+| `STORAGE` | Dynamic, cross-cloud deployments; controllers self-register in internal storage and workers list the registry |
+
+For Kubernetes, use `type: DNS` with a service hostname:
+
+```yaml
+kestra:
+  worker:
+    controllers:
+      type: DNS
+      dns:
+        hostname: kestra-controller.kestra.svc.cluster.local
+        record-type: SRV      # or A if no SRV records
+        default-port: 50051   # used with A records only
+        refresh-interval: PT30S
+```
+
+For Helm deployments, controller discovery is preconfigured — see the [Helm gRPC and Worker-Controller migration guide](../../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md). For bare-metal or Docker with components on separate hosts, see [running Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
 
 ### Starting a worker for a group
 
-Start the worker normally — the registration token configured in `kestra.worker.auth.registration-token` identifies which group the worker joins at connection time. No extra CLI flags are needed.
+With both the registration token and controller endpoint configured, start the worker normally:
 
 ```bash
 kestra server worker
 ```
 
-Workers also need a controller endpoint configured under `kestra.worker.controllers` so they know where to connect. For Helm deployments, see the [Helm gRPC and Worker-Controller migration guide](../../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md). For bare-metal or Docker deployments, see [running Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
+No additional CLI flags are needed. The registration token in `kestra.worker.auth.registration-token` identifies which group the worker joins at connection time.
 
-## Using workerSelector in tasks
+## Transport security (TLS)
 
-Add `workerSelector` to any task to route it to a matching Worker Queue. The `workerSelector` object has three properties:
+By default, gRPC traffic between workers and the controller is unencrypted. For production deployments, enable TLS on both sides.
 
-| Property | Description | Default |
-|---|---|---|
-| `tags` | List of RFC 1123 labels (max 20) identifying the required Worker Queue | — |
-| `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
-| `fallback` | Behavior when no worker is available for the matched queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
+### Server-side TLS
 
-:::alert{type="warning"}
-The default `fallback` in 2.0 is `FAIL`. If you upgraded from an earlier version where tasks waited by default, set `fallback: WAIT` directly on each task, or use a [Policy](../../02.governance/policies/index.md) with an `Add` rule to apply it across a namespace.
+Add TLS config to the controller (or standalone) instance:
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      key-store:
+        path: /etc/kestra/tls/controller-keystore.p12
+        password: "{{ secret('TLS_KEYSTORE_PASSWORD') }}"
+      # Required when client-auth is OPTIONAL or REQUIRE
+      trust-store:
+        path: /etc/kestra/tls/ca-truststore.p12
+        password: "{{ secret('TLS_TRUSTSTORE_PASSWORD') }}"
+      client-auth: NONE    # NONE | OPTIONAL | REQUIRE (mTLS)
+```
+
+### Worker-side TLS
+
+Add matching TLS config to each worker:
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      # Required only for mTLS (client-auth: REQUIRE on the server)
+      key-store:
+        path: /etc/kestra/tls/worker-keystore.p12
+        password: "{{ secret('TLS_KEYSTORE_PASSWORD') }}"
+      # Optional — falls back to the system trust store
+      trust-store:
+        path: /etc/kestra/tls/ca-truststore.p12
+        password: "{{ secret('TLS_TRUSTSTORE_PASSWORD') }}"
+```
+
+:::alert{type="info"}
+When using `type: STATIC` discovery with TLS, the synthetic gRPC authority derived from the endpoint list may not match the certificate's SANs. Add `authority-override` to the worker config to specify the hostname the certificate was issued for:
+
+```yaml
+kestra:
+  grpc:
+    tls:
+      enabled: true
+      authority-override: kestra-controller
+```
+
+Under `type: DNS` discovery, the authority is derived from the DNS hostname automatically and no override is needed.
 :::
-
-```yaml
-id: process_sensitive_data
-namespace: company.team
-
-tasks:
-  - id: process
-    type: io.kestra.plugin.scripts.python.Commands
-    workerSelector:
-      tags: [sensitive, eu]
-      fallback: WAIT
-    commands:
-      - python process.py
-```
-
-Kestra routes the task to a Worker Queue whose tag set includes all declared tags (or any, when `match: ANY`). Any Worker Group subscribed to that queue may execute the task.
-
-If `workerSelector` is absent or all tags resolve to null, the task routes to the default queue.
-
-### Fallback options
-
-| Value | Behavior |
-|---|---|
-| `FAIL` | Fail the task run immediately if no worker is available (default) |
-| `WAIT` | Hold the task in `CREATED` state until a worker becomes available |
-| `CANCEL` | Cancel the task gracefully; the execution is marked `KILLED` |
-| `IGNORE` | Drop the tag requirement and route to the default Worker Queue instead |
-
-`IGNORE` is useful when the target infrastructure is optional — the task proceeds on any available worker rather than failing when the specialized pool is unavailable.
-
-`fallback` can only be set when `tags` is non-empty.
-
-### Dynamic routing
-
-Use Pebble expressions to set tags at runtime:
-
-```yaml
-inputs:
-  - id: region
-    type: STRING
-    defaults: eu
-
-tasks:
-  - id: process
-    type: io.kestra.plugin.scripts.python.Commands
-    workerSelector:
-      tags:
-        - "{{ inputs.region }}"
-        - sensitive
-      fallback: WAIT
-    commands:
-      - python process.py
-```
-
-When an expression resolves to null or a blank string, that tag is omitted from the selector. If all tags resolve to null, the task routes to the default queue.
-
-### Applying workerSelector with Policies
-
-Use a [Policy](../../02.governance/policies/index.md) to route all tasks of a given plugin type to a specific worker group without modifying each task individually:
-
-```yaml
-id: gpu-worker-routing
-description: "Route all Python tasks to GPU workers."
-enforcement: ACTIVE
-rules:
-  - type: io.kestra.plugin.ee.rules.Add
-    on: PLUGIN
-    where:
-      - field: type
-        operator: STARTS_WITH
-        value: io.kestra.plugin.scripts.python
-    values:
-      workerSelector:
-        tags: [gpu]
-        fallback: WAIT
-```
-
-With this Policy applied to the namespace, flows need no per-task configuration:
-
-```yaml
-id: ml_pipeline
-namespace: company.team
-
-tasks:
-  - id: train
-    type: io.kestra.plugin.scripts.python.Commands
-    commands:
-      - python train.py
-
-  - id: evaluate
-    type: io.kestra.plugin.scripts.python.Commands
-    commands:
-      - python eval.py
-```
 
 ## Use cases
 
@@ -310,17 +434,88 @@ Run two Worker Groups subscribed to the same queues simultaneously. Reduce the o
 
 For guidance on when to use Worker Groups versus Task Runners for compute-intensive scripting workloads, see [Task Runners vs Worker Groups](../../../task-runners/03.task-runners-vs-worker-groups/index.md).
 
+## Worker shutdown and task continuity
+
+When a worker process stops — whether from a deployment, a crash, or a manual restart — any tasks it was running may be interrupted. The `worker-task-restart-strategy` setting controls what happens to those tasks cluster-wide:
+
+| Strategy | Behavior |
+|---|---|
+| `AFTER_TERMINATION_GRACE_PERIOD` | The worker stops accepting new work and waits up to the grace period for in-flight tasks to finish; any tasks still running at that point are re-dispatched to another worker (default) |
+| `IMMEDIATELY` | Interrupted tasks are re-dispatched immediately to another worker without waiting |
+| `NEVER` | Interrupted tasks fail permanently and are not re-dispatched |
+
+Configure these in `application.yml` on each worker:
+
+```yaml
+kestra:
+  server:
+    termination-grace-period: 5m
+    worker-task-restart-strategy: AFTER_TERMINATION_GRACE_PERIOD
+```
+
+During the grace period, the worker stops accepting new jobs but lets running tasks finish. If the grace period elapses before all tasks complete, the worker force-terminates and the restart strategy decides the outcome for the remaining tasks.
+
+:::alert{type="info"}
+`AFTER_TERMINATION_GRACE_PERIOD` is the recommended setting for production deployments. It gives tasks time to finish cleanly while still guaranteeing that a stalled worker does not block the cluster indefinitely.
+:::
+
 ## Monitoring
 
-The following metrics are published by each running controller and tagged with `worker_group` and `worker_queue`:
+Metrics scoped to a group carry a `worker_group` tag; metrics scoped to a queue also carry a `worker_queue` tag. The configurable metrics prefix (default `kestra`) is prepended before export.
+
+### Controller metrics
+
+Published by the controller process — the server-side view of fleet capacity and dispatch activity:
+
+| Metric | Type | Tags | Description |
+|---|---|---|---|
+| `controller.worker.active` | gauge | `worker_group`, `worker_queue` | Workers currently subscribed to a queue |
+| `controller.worker.active.all` | gauge | — | Total workers connected to this controller |
+| `controller.permits.available` | gauge | `worker_group`, `worker_queue` | Remaining advertised capacity across subscribed workers |
+| `controller.permits.available.all` | gauge | — | Remaining capacity across all connected workers |
+| `controller.job.inflight` | gauge | `worker_queue` | In-flight jobs for a queue |
+| `controller.worker.group.job.inflight` | gauge | `worker_group` | In-flight jobs across workers in a group |
+| `controller.capacity.subscription.allocated` | gauge | `worker_group`, `worker_queue` | Reserved slots allocated to a queue subscription |
+| `controller.capacity.subscription.used` | gauge | `worker_group`, `worker_queue` | Reserved slots currently in use |
+| `controller.capacity.shared.allocated` | gauge | `worker_group` | Shared (unreserved) slots allocated |
+| `controller.capacity.shared.used` | gauge | `worker_group` | Shared slots currently in use |
+| `controller.job.dispatched.total` | counter | `worker_queue` | Total jobs dispatched to workers |
+| `controller.job.requeued.total` | counter | `worker_queue` | Jobs re-queued because no worker had capacity |
+| `controller.job.killed.total` | counter | `worker_queue` | Jobs short-circuited by the pre-dispatch kill check |
+| `controller.job.dispatch.failed.total` | counter | `worker_queue` | Dispatch attempts that failed on send |
+| `controller.worker.registered.total` | counter | — | Worker-queue subscription registrations |
+| `controller.worker.unregistered.total` | counter | — | Worker-queue subscription removals |
+| `controller.subscription.paused.total` | counter | — | Queue subscription pause transitions |
+| `controller.subscription.resumed.total` | counter | — | Queue subscription resume transitions |
+
+### Worker metrics
+
+Published by each worker process — the worker-side view of capacity and throughput:
 
 | Metric | Type | Description |
 |---|---|---|
-| `kestra.controller.capacity.subscription.allocated` | gauge | Reserved slots allocated to a queue subscription, aggregated across workers in the group |
-| `kestra.controller.capacity.subscription.used` | gauge | Reserved slots currently in use |
-| `kestra.controller.capacity.shared.allocated` | gauge | Shared (unreserved) slots allocated |
-| `kestra.controller.capacity.shared.used` | gauge | Shared slots currently in use |
-| `kestra.controller.worker.group.job.inflight` | gauge | Total in-flight jobs being processed by workers in the group |
+| `worker.job.thread` | gauge | Configured thread count (maximum concurrent jobs) |
+| `worker.max.concurrency` | gauge | Maximum in-flight capacity: threads + buffered jobs |
+| `worker.running.count` | gauge | Tasks currently executing |
+| `worker.pending.count` | gauge | Tasks waiting for a free thread slot |
+| `worker.queue.size` | gauge | Items currently held in a buffer (job, result, log, or metric) |
+| `worker.queue.remaining.capacity` | gauge | Free slots in the inbound job buffer — equals the worker's advertised permit count |
+| `worker.queued.duration` | timer | Time a task spent waiting before a thread was available |
+| `worker.started.count` | counter | Total tasks started |
+| `worker.ended.count` | counter | Total tasks completed (any terminal state) |
+| `worker.ended.duration` | timer | Task run duration as measured by the worker |
+| `worker.timeout.count` | counter | Tasks that exceeded their configured timeout |
+| `worker.killed.count` | counter | Kill events received from the controller |
+| `worker.queue.enqueued` | counter | Total items put into a buffer |
+| `worker.queue.dequeued` | counter | Total items drained from a buffer |
+| `worker.trigger.running.count` | gauge | Trigger evaluations currently in progress |
+| `worker.trigger.started.count` | counter | Total trigger evaluations started |
+| `worker.trigger.ended.count` | counter | Total trigger evaluations completed |
+| `worker.trigger.error.count` | counter | Trigger evaluations that failed |
+| `worker.trigger.execution.count` | counter | Executions produced by triggers on this worker |
+| `worker.trigger.duration` | timer | Trigger evaluation duration |
+
+When `worker.running.count` consistently equals `worker.job.thread` and `worker.pending.count` is non-zero, that worker is fully saturated — scale by adding more workers to the group or increasing the thread count. When `worker.queue.remaining.capacity` on the `job` buffer approaches zero, the worker's local inbound buffer is full.
 
 The live capacity snapshot is also available via the API:
 
