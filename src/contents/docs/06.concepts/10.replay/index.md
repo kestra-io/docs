@@ -80,7 +80,7 @@ When you run the above workflow, you should see an error in the `to_parquet` tas
 
 From the logs, you are able to see that the error is due to a misconfigured date format in the `datetimeFormat` field — in fact, the date format should have a full year, not just a two-digit year: `"yyyy-MM-dd' 'HH:mm:ss"`.
 
-You ask [AI](../../ai-tools/ai-copilot/index.md) to fix the flow for you, or you correct the error yourself in the workflow code and save it.
+You ask [AI](../../ai-tools/01.ai-copilot/index.md) to fix the flow for you, or you correct the error yourself in the workflow code and save it.
 
 ![Fix with AI](./replay-ai-fix.png)
 

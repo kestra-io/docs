@@ -18,7 +18,7 @@ Most flows mix several categories:
 Browse all available plugins at [kestra.io/plugins](/plugins).
 
 :::alert{type="info"}
-The [Kestra MCP server](../../ai-tools/kestra-mcp-resources/index.md) gives AI coding agents like Claude Code and Cursor live access to plugin task schemas, properties, and version history. Add it to your agent for accurate plugin reference while writing flows.
+The [Kestra MCP server](../../ai-tools/02.kestra-mcp-resources/index.md) gives AI coding agents like Claude Code and Cursor live access to plugin task schemas, properties, and version history. Add it to your agent for accurate plugin reference while writing flows.
 :::
 
 ## Choosing versions (Enterprise)

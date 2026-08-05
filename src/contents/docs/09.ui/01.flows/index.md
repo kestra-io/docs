@@ -88,7 +88,7 @@ You can close, open, and reposition panels at any time. In the example below, th
 Edits in No Code forms update YAML instantly, and edits in YAML reflect back in No Code. For complex expressions, advanced plugin fields, or bulk edits, switch to the YAML view — then switch back. Use the **Actions** menu to export or copy the flow at any time.
 
 :::alert{type="info"}
-You can also skip YAML with the [AI Copilot](../../ai-tools/ai-copilot/index.md), which generates a flow from a plain-language description.
+You can also skip YAML with the [AI Copilot](../../ai-tools/01.ai-copilot/index.md), which generates a flow from a plain-language description.
 :::
 
 ### Topology view

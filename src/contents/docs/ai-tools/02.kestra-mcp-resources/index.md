@@ -130,8 +130,8 @@ For prose questions — such as _"What does the `whenMissingInSource` property d
 
 The Kestra MCP server complements the other AI tools in this section:
 
-- **[AI Copilot](../ai-copilot/index.md)**: generates and refines flows from natural language inside the Kestra UI.
-- **[AI Agents](../ai-agents/index.md)**: autonomous task execution inside Kestra flows.
-- **[Agent Skills](../agent-skills/index.md)**: structured knowledge files that teach coding agents how to build Kestra flows and operate environments.
+- **[AI Copilot](../01.ai-copilot/index.md)**: generates and refines flows from natural language inside the Kestra UI.
+- **[AI Agents](../04.ai-agents/index.md)**: autonomous task execution inside Kestra flows.
+- **[Agent Skills](../03.agent-skills/index.md)**: structured knowledge files that teach coding agents how to build Kestra flows and operate environments.
 
 If you primarily work in an AI coding agent like Claude Code or Cursor, the MCP server gives you current Kestra context while building flows.

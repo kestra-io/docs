@@ -84,9 +84,9 @@ The **Gantt** tab visualizes each task's duration. From this interface, you can 
 
 ![Kestra User Interface Execution Gantt](./execution-gantt-view.png)
 
-The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, you can open the task and click the three dots to **"Fix with AI"**. This option reopens the flow editor with the [AI Copilot](../../ai-tools/ai-copilot/index.md) prompted to help resolve any issues with the task.
+The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, you can open the task and click the three dots to **"Fix with AI"**. This option reopens the flow editor with the [AI Copilot](../../ai-tools/01.ai-copilot/index.md) prompted to help resolve any issues with the task.
 
-![Fix with AI](../../ai-tools/ai-copilot/fix-with-ai-gantt.png)
+![Fix with AI](../../ai-tools/01.ai-copilot/fix-with-ai-gantt.png)
 
 ## Logs
 
@@ -94,7 +94,7 @@ The **Logs** tab gives access to a task's logs. You can filter by log level, cop
 
 ![Kestra User Interface Execution Log](./execution-logs-view.png)
 
-For failed tasks, click the three dots to **"Fix with AI"**. This option reopens the flow editor with the [AI Copilot](../../ai-tools/ai-copilot/index.md) prompted to help resolve any issues with the task.
+For failed tasks, click the three dots to **"Fix with AI"**. This option reopens the flow editor with the [AI Copilot](../../ai-tools/01.ai-copilot/index.md) prompted to help resolve any issues with the task.
 
 ![Fix with AI](./fix-with-ai-logs.png)
 
@@ -104,7 +104,7 @@ Similar to the Editor view, you can see your execution's topology. **Topology** 
 
 ![Kestra User Interface Execution Topology](./execution-topology-view.png)
 
-From a **FAILED** task, click the magnifying glass icon to open the logs and read the error message, investigate, and **"Fix with AI"** if you have [AI Copilot](../../ai-tools/ai-copilot/index.md) configured.
+From a **FAILED** task, click the magnifying glass icon to open the logs and read the error message, investigate, and **"Fix with AI"** if you have [AI Copilot](../../ai-tools/01.ai-copilot/index.md) configured.
 
 ## Outputs
 

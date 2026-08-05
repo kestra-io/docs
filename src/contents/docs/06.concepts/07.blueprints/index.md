@@ -23,7 +23,7 @@ All Blueprints are validated and documented. You can easily customize and integr
 To see more, check out the [Blueprints library](/blueprints).
 
 :::alert{type="info"}
-The [Kestra MCP server](../../ai-tools/kestra-mcp-resources/index.md) exposes the blueprints library directly to AI coding agents like Claude Code and Cursor. Ask your agent to find a blueprint by use case and it will retrieve the full flow YAML for you.
+The [Kestra MCP server](../../ai-tools/02.kestra-mcp-resources/index.md) exposes the blueprints library directly to AI coding agents like Claude Code and Cursor. Ask your agent to find a blueprint by use case and it will retrieve the full flow YAML for you.
 :::
 
 ![Blueprint](./blueprints.png)
