@@ -7,31 +7,23 @@ icon: /src/contents/docs/icons/flow.svg
 docId: namespaces
 ---
 
-Namespaces are logical groupings of flows and their components.
+Namespaces are logical groupings of flows that control access to secrets, key-value pairs, plugin defaults, and variables.
 
-Use namespaces to organize workflows and manage access to secrets, key-value pairs, plugin defaults, variables and more.
+Think of them as folders for your flows — use `.` to nest them to any depth and separate environments, teams, and projects within a single instance. Namespace names consist of alphanumeric characters and dots:
+
+- `project_one`
+- `company.project_two`
+- `company.team.project_three`
+
+To fully isolate environments with their own resources, see [Tenants](../../07.enterprise/02.governance/tenants/index.md) (Enterprise Edition).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/_HGz2qePYqY?si=QiIRTXasyJyyjWX4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-You can think of a namespace as a **folder for your flows**. Similar to folders on your file system, namespaces can be used to organize flows into logical categories. Similar to filesystems, namespaces can be indefinitely nested.
+## Assigning a namespace
 
-If you're looking to completely isolate environments with their own resources on the same Kestra instance, you should consider [Tenants](../../07.enterprise/02.governance/tenants/index.md), part of the [Enterprise Edition](../../07.enterprise/index.mdx).
-
-## Hierarchical structure with nested namespaces
-
-Using the dot `.` symbol, you can add a hierarchical structure to your namespaces which allows you to logically separate environments, projects, teams, and departments. This way, your product, engineering, marketing, finance, and data teams can all use the same Kestra instance, all while keeping their flows organized and separated. Various stakeholders can have their own child namespaces that belong to a parent namespace grouping them by environment, project, or team.
-
-## Namespace name
-A namespace name can be built from alphanumerical characters, optionally separated by `.`. The hierarchy depth for namespaces is unlimited. Here are some examples of namespaces:
-- `project_one`
-- `company.project_two`
-- `company.team.project_three`
-
-## Using namespaces to organize flows and files
-
-When you create a flow, you can assign a namespace to it:
+Every flow declares its namespace directly in the flow definition:
 
 ```yaml
 id: hello_world
@@ -43,43 +35,21 @@ tasks:
 ```
 
 :::alert{type="warning"}
-**Note:** Once you've saved your flow, you won't be able to change its namespace. You'll need to make a new flow in order to change the namespace.
+Once you save a flow, its namespace cannot be changed. Create a new flow to move it to a different namespace.
 :::
 
-Below, the flow is assigned to the `company.team` namespace. This assignment of a namespace to a flow already provides a benefit of improved organization and filtering:
+![Flows in the company.team namespace](./namespace-flows-2-0.png)
 
-![Namespace Organization](./namespace_1.png)
+## Namespace Files
 
-Additionally, you can organize your code on a namespace-level using the embedded Code editor and [Namespace Files](../../06.concepts/02.namespace-files/index.md), with the option to [sync those files from Git](../../version-control-cicd/04.git/index.md):
+Each namespace has an embedded code editor for managing scripts, configuration, and other files shared across flows in that namespace. You can [sync these files from Git](../../version-control-cicd/04.git/index.md) or manage them through the [Namespace Files](../../06.concepts/02.namespace-files/index.md) tab.
 
-![Namespace Flow and Files](./namespace_2.png)
+![Namespace Files editor](./namespace-files-2-0.png)
 
-## Namespace tab
+## Namespace overview
 
-In the **Namespaces** tab, you can see all the namespaces associated with the different flows in Kestra. You can also list and filter namespaces from the command line using [`kestractl namespaces list`](../../kestra-cli/kestractl/index.md).
+Open any namespace to see its execution dashboards, flows, dependencies, and [KV Store](../../06.concepts/05.kv-store/index.md). You can also list and filter namespaces from the command line using [`kestractl namespaces list`](../../kestra-cli/kestractl/index.md).
 
-<div class="video-container">
-  <iframe src="https://www.youtube.com/embed/MbG9BHJIMzU?si=cEgJHKc6qbIu6kMN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+Tabs marked with a lock icon — Edit, Secrets, Assets, Variables, Policies, Revisions, and Audit Logs — are available in Kestra EE. See the [Enterprise Edition documentation](../../07.enterprise/index.mdx) for details.
 
-![namespace_tab](./namespace_tab.png)
-
-Each namespace's overview page shows execution summaries and dashboards.
-
-![namespace_overview](./namespace_overview.png)
-
-On the top of this page, you have different tabs:
-
-1. **Overview:** the default landing page of the Namespace. This page contains the dashboards and summary about the executions of different flows in this namespace.
-
-2. **Executions:** View and manage all the executions details.
-
-3. **Flows:** View all flows in the namespace with execution details and statistics.
-
-4. **Dependencies:** View flow dependencies through subflows or flow triggers.
-
-5. **KV Store:** Manage key-value pairs for this namespace. See [KV Store](../../06.concepts/05.kv-store/index.md) for details.
-
-6. **Files:** To manage, view and modify all the Namespace files.
-
-The other tabs: Edit, Variables, Policies, Secrets, and Audit Logs are only available for Kestra EE. More details about them can be found in our [Enterprise Edition documentation](../../07.enterprise/index.mdx).
+![Namespace overview with execution dashboards and sidebar tabs](./namespace-overview-2-0.png)
