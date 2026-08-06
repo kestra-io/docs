@@ -6,7 +6,11 @@
     >
         <div class="selected-items">
             <span v-if="selectedValue?.length === 0">Filter by {{ name }}</span>
-            <div v-for="(item, index) in selectedValue" :key="index" class="selected-item">
+            <div
+                v-for="(item, index) in selectedValue"
+                :key="index"
+                class="selected-item"
+            >
                 <p>{{ item }}</p>
                 <Close @click.stop="removeItem(index)" />
             </div>
@@ -16,7 +20,11 @@
 
     <div class="custom-select" ref="dropdownRef">
         <ul v-if="showDropdown" class="dropdown-options">
-            <li v-for="option in options" :key="option" @click="selectItem(option)">
+            <li
+                v-for="option in options"
+                :key="option"
+                @click="selectItem(option)"
+            >
                 {{ option }}
             </li>
         </ul>
@@ -90,64 +98,72 @@
 </script>
 
 <style lang="scss" scoped>
-
-
     .multi-select {
-        display: flex;
-        padding: 4px 40px 4px 6px;
-        border-radius: 5px;
         position: relative;
-        border: $block-border;
-        font-size: $font-size-sm !important;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        min-height: 50px;
+        padding: 4px 48px 4px 16px;
+        border-radius: 4px;
+        border: 1px solid var(--ks-border-secondary);
+        background-color: var(--ks-background-input);
+        font-size: $font-size-sm;
+        line-height: 20px;
         color: var(--ks-content-primary);
-        max-width: 221px;
-        flex-wrap: wrap;
         cursor: pointer;
-        @include media-breakpoint-down(sm) {
-            max-width: 100%;
-        }
+
         &.focused {
-            box-shadow: 0 0 0 0.25rem rgba(132, 5, 255, 0.25);
+            border-color: var(--ks-border-active);
         }
+
         .selected-items {
             display: flex;
+            flex-wrap: wrap;
+            align-items: center;
             gap: 4px;
-            flex-direction: column;
-            align-items: start;
-            @include media-breakpoint-down(sm) {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
+            min-width: 0;
         }
+
+        // The chevron is the only icon rendered directly under `.selected-items`;
+        // it sits on the trailing edge of the field, outside the content flow.
         :deep(.material-design-icon) {
             position: absolute;
-            right: 10px;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
             .material-design-icon__svg {
-                fill: var(--ks-background-body);
+                bottom: 0;
+                fill: var(--ks-content-primary);
             }
         }
+
         .selected-item {
-            background-color: var(--ks-content-tertiary);
-            border-radius: 4px;
-            padding: 0 4px;
             display: flex;
             align-items: center;
             gap: 4px;
-            max-height: 20px;
+            padding: 2px 8px;
+            border-radius: 40px;
+            background-color: var(--ks-background-tertiary);
             cursor: pointer;
             p {
                 margin: 0;
-                font-size: 1rem;
-                font-weight: 500;
+                font-size: $font-size-xs;
+                line-height: 16px;
+                font-weight: 600;
                 white-space: nowrap;
-                color: var(--ks-content-primary);
+                color: var(--ks-content-secondary);
             }
             :deep(.material-design-icon) {
                 position: unset;
-                right: 0;
+                transform: none;
+                width: 14px;
+                height: 14px;
                 .material-design-icon__svg {
                     position: unset;
-                    fill: var(--ks-background-body);
+                    width: 14px;
+                    height: 14px;
+                    fill: var(--ks-content-secondary);
                 }
             }
         }
@@ -159,23 +175,27 @@
         top: 2px;
         .dropdown-options {
             list-style-type: none;
-            padding: 0;
+            padding: 4px;
             margin: 0;
-            background-color: #444;
+            background-color: var(--ks-background-input);
+            border: 1px solid var(--ks-border-secondary);
             position: absolute;
             width: max-content;
             min-width: 100%;
             top: 100%;
-            z-index: 1;
-            border-radius: 5px;
+            z-index: 2;
+            border-radius: 4px;
             overflow: hidden;
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
             li {
-                padding: 2px 4px;
-                color: white;
+                padding: 6px 8px;
+                border-radius: 4px;
+                color: var(--ks-content-primary);
                 cursor: pointer;
-                font-size: $font-size-sm !important;
+                font-size: $font-size-sm;
+                line-height: 20px;
                 &:hover {
-                    background-color: #666;
+                    background-color: var(--ks-background-tertiary);
                 }
             }
         }
