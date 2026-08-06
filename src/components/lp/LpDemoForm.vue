@@ -1,22 +1,28 @@
 <script lang="ts" setup>
     /**
-     * Google Ads LP demo form. Three fields, one CTA, native validation
-     * messages replaced by the inline copy from the brief.
+     * The /demo form (`components/demo/Meeting.vue`), restyled for the LP.
      *
-     * Submission order is mandatory and must not be reshuffled:
-     *   1. validate
-     *   2. PostHog identify() + `demo_requested`  — before any navigation
-     *   3. GA4 / Google Ads dataLayer events      — the primary conversion
-     *   4. HubSpot Forms submit                   — the lead record
-     *   5. redirect to /lp/<variant>/thanks
+     * Per the PR #5276 review (2026-08-06): exactly the same form as
+     * kestra.io/demo — same fields (First name, Last name, Company email,
+     * Number of employees), same HubSpot form GUID and payload, same "Let's
+     * Talk" button, same native validation with a single alert, and the same
+     * post-submit behaviour: the form swaps inline to the HubSpot Meetings
+     * calendar routed by company-size tier. No redirect. Matching the payload
+     * exactly also guarantees the HubSpot form definition accepts it — the
+     * earlier Company/Team-size variant sent properties the form may not carry.
      *
-     * Why that order matters: steps 2–3 must have left the tab before step 5
-     * navigates away (a known past bug on this site was a fire-and-forget
-     * identify() racing a redirect). Step 4 is an awaited network round-trip
-     * that sits between them, which is the real guarantee — plus an explicit
-     * bounded flush in `flushAnalytics()`.
+     * Only differences from Meeting.vue, all invisible:
+     * - DOM ids are instance-scoped (`idPrefix`) — the form renders twice per
+     *   page (hero + final section) and duplicate ids would break labels/focus;
+     * - the dataLayer additionally gets the pilot's `form_submit` event and
+     *   `lp_variant` on both events (GTM must keep ONE conversion trigger —
+     *   `form_submit` or `bookdemo_form` — or demos double-count);
+     * - the PostHog `bookdemo_form` capture carries lp_variant + first-touch
+     *   UTMs from `~/scripts/lp-attribution`;
+     * - the gclid falls back to the sessionStorage attribution copy when
+     *   localStorage is unavailable.
      */
-    import { ref } from "vue"
+    import { ref, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
@@ -25,425 +31,346 @@
         getLpAttribution,
         getLpUtmProperties,
     } from "~/scripts/lp-attribution"
-    import { LP_SHARED, LP_TEAM_SIZES } from "~/contents/lp/shared"
+    import {
+        ensureMeetingsScriptLoaded,
+        getMeetingUrl,
+        tierFromEmployees,
+    } from "~/composables/useMeeting.js"
+    import { $fetch } from "~/utils/fetch"
 
     const props = defineProps<{
-        /** Variant slug — also the `lp_variant` property on every event. */
+        /** Variant slug — the `lp_variant` property on every event. */
         variant: string
-        /**
-         * Instance prefix for DOM ids. The form renders twice on the page
-         * (hero and final CTA); without this the ids collide and label/focus
-         * targeting breaks.
-         */
+        /** Instance prefix for DOM ids (form renders twice per page). */
         idPrefix?: string
     }>()
 
     const fid = (name: string) => `lp-${props.idPrefix ?? "form"}-${name}`
 
-    const copy = LP_SHARED.form
+    /** Same live "Book a Demo" form as /demo (`demo/Meeting.vue`). */
+    const hubSpotFormId = "d8175470-14ee-454d-afc4-ce8065dee9f2"
 
-    /**
-     * TODO(virgile): confirm the HubSpot form to use. This is the live
-     * "Book a Demo" form (same GUID as `/demo`, see `demo/Meeting.vue`), chosen
-     * so the LP works on day one and the leads land in the existing workflow.
-     * Two things to verify before spending money on it:
-     *   1. the form definition must accept `company` (a standard contact
-     *      property, but the field has to exist on the form or the Forms API
-     *      rejects the whole submission),
-     *   2. free-mail domains must NOT be blocked on it — the pilot decision is
-     *      to accept them and route downstream (HubSpot answers BLOCKED_EMAIL
-     *      when its "blocked domains" setting is on; handled below).
-     * A dedicated "Google Ads LP" form would also give clean per-source
-     * reporting — swap the GUID here if one is created.
-     */
-    const HUBSPOT_FORM_ID = "d8175470-14ee-454d-afc4-ce8065dee9f2"
+    const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
+    const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
-    const CONTACT = "0-1"
-    const COMPANY = "0-2"
-
-    const FREE_EMAIL_DOMAINS = new Set([
-        "gmail.com",
-        "googlemail.com",
-        "yahoo.com",
-        "hotmail.com",
-        "outlook.com",
-        "live.com",
-        "msn.com",
-        "icloud.com",
-        "me.com",
-        "aol.com",
-        "gmx.com",
-        "proton.me",
-        "protonmail.com",
-        "yandex.com",
-        "qq.com",
-        "163.com",
-    ])
-
-    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-
-    const email = ref("")
-    const company = ref("")
-    const teamSize = ref("")
-
-    const errors = ref<{ email: string; company: string; teamSize: string }>({
-        email: "",
-        company: "",
-        teamSize: "",
-    })
-    const serverError = ref("")
+    const valid = ref(false)
+    const message = ref("")
+    const meetingUrl = ref<string>()
     const submitting = ref(false)
+    const formRef = useTemplateRef<HTMLFormElement>("lp-demo-form")
 
     /** Guard so a retry after a server failure never double-counts a conversion. */
     let conversionReported = false
 
-    const validateEmail = () => {
-        const value = email.value.trim()
-        errors.value.email = !value
-            ? copy.email.errorEmpty
-            : !EMAIL_RE.test(value)
-              ? copy.email.errorInvalid
-              : ""
-        return !errors.value.email
-    }
-
-    const validateCompany = () => {
-        errors.value.company = company.value.trim()
-            ? ""
-            : copy.company.errorEmpty
-        return !errors.value.company
-    }
-
-    const validateTeamSize = () => {
-        errors.value.teamSize = teamSize.value ? "" : copy.teamSize.errorEmpty
-        return !errors.value.teamSize
-    }
-
-    const focusFirstError = () => {
-        const order: Array<[string, string]> = [
-            ["email", fid("email")],
-            ["company", fid("company")],
-            ["teamSize", fid("team-size")],
-        ]
-        for (const [key, id] of order) {
-            if (errors.value[key as keyof typeof errors.value]) {
-                document.getElementById(id)?.focus()
-                return
-            }
-        }
-    }
-
-    /**
-     * posthog-js batches events. `send_instantly` puts the request on the wire
-     * now; `flush()` exists on recent versions, so use it when available and
-     * otherwise fall back to a short bounded wait. Never longer than 400ms —
-     * this sits in front of a user-visible redirect.
-     */
-    const flushAnalytics = async () => {
+    function withContactParams(
+        base: string,
+        {
+            firstname,
+            lastname,
+            email,
+        }: {
+            firstname?: string | null
+            lastname?: string | null
+            email?: string | null
+        } = {},
+    ) {
         try {
-            const flush = (posthog as unknown as { flush?: () => void }).flush
-            if (typeof flush === "function") flush.call(posthog)
+            const url = new URL(base, window.location.origin)
+            if (firstname)
+                url.searchParams.set("firstname", String(firstname).trim())
+            if (lastname)
+                url.searchParams.set("lastname", String(lastname).trim())
+            if (email) url.searchParams.set("email", String(email).trim())
+            return url.toString()
         } catch {
-            /* analytics must never block the lead */
+            const sep = base.includes("?") ? "&" : "?"
+            const qp = new URLSearchParams()
+            if (firstname) qp.set("firstname", String(firstname).trim())
+            if (lastname) qp.set("lastname", String(lastname).trim())
+            if (email) qp.set("email", String(email).trim())
+            return `${base}${sep}${qp.toString()}`
         }
-        await new Promise((resolve) => setTimeout(resolve, 150))
     }
 
-    const onSubmit = async (event: Event) => {
-        event.preventDefault()
+    const onSubmit = async (e: Event) => {
+        e.preventDefault()
+        e.stopPropagation()
+
         if (submitting.value) return
 
-        serverError.value = ""
+        const form = formRef.value
+        const hsq = ((window as unknown as { _hsq: unknown[] })._hsq ||=
+            []) as unknown[]
 
-        const validEmail = validateEmail()
-        const validCompany = validateCompany()
-        const validTeamSize = validateTeamSize()
-
-        if (!validEmail || !validCompany || !validTeamSize) {
-            focusFirstError()
+        if (!form?.checkValidity()) {
+            valid.value = false
+            message.value = "Please check the form fields and try again."
             return
         }
 
         submitting.value = true
+        message.value = ""
 
-        const emailValue = email.value.trim()
-        const companyValue = company.value.trim()
-        // Captured for downstream routing — free-mail leads are accepted, not
-        // blocked (pilot decision), but sales needs to see them as such.
-        const emailDomain = emailValue.split("@")[1]?.toLowerCase() ?? ""
-        const teamSizeOption = LP_TEAM_SIZES.find(
-            (option) => option.value === teamSize.value,
-        )
+        const fn = (form["first-name"] as HTMLInputElement).value
+        const ln = (form["last-name"] as HTMLInputElement).value
+        const em = (form["email"] as HTMLInputElement).value
+        const emp = (form["employees"] as HTMLSelectElement).value
         const attribution = getLpAttribution()
         const clickId = getStoredClickId()
         const clickIdValue = clickId?.value ?? attribution.gclid ?? ""
 
-        // ---------------------------------------------- 2. PostHog ----------
-        try {
-            identify(emailValue)
-            posthog.capture(
-                "demo_requested",
+        hsq.push([
+            "identify",
+            {
+                email: em,
+                firstname: fn,
+                lastname: ln,
+                kuid: localStorage.getItem("KUID") || "",
+            },
+        ])
+
+        const ip = await $fetch<{ ip: string }>(
+            "https://api.ipify.org?format=json",
+        )
+        const formData = {
+            fields: [
+                { objectTypeId: "0-1", name: "email", value: em },
+                { objectTypeId: "0-1", name: "firstname", value: fn },
+                { objectTypeId: "0-1", name: "lastname", value: ln },
                 {
-                    lp_variant: props.variant,
-                    team_size: teamSize.value,
-                    company: companyValue,
-                    email_domain: emailDomain,
-                    is_free_email: FREE_EMAIL_DOMAINS.has(emailDomain),
-                    has_gclid: Boolean(clickIdValue),
-                    ...getLpUtmProperties(),
+                    objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                    name: COMPANY_SIZE_PROPERTY,
+                    value: emp,
                 },
-                { send_instantly: true },
-            )
-            await flushAnalytics()
-        } catch (error) {
-            console.error("LP form: PostHog step failed", error)
+                {
+                    objectTypeId: "0-1",
+                    name: "kuid",
+                    value: localStorage.getItem("KUID") || "",
+                },
+                // Google Ads click id for offline conversion import — the
+                // standard `hs_google_click_id` property, read natively by
+                // HubSpot's Google Ads sync. Sent only when present.
+                ...(clickIdValue
+                    ? [
+                          {
+                              objectTypeId: "0-1",
+                              name: "hs_google_click_id",
+                              value: clickIdValue,
+                          },
+                      ]
+                    : []),
+            ],
+            context: {
+                hutk: getHubspotTracking() || undefined,
+                ipAddress: ip.ip,
+                pageUri: `/lp/${props.variant}`,
+                pageName: document.title,
+            },
         }
 
-        // ------------------------------------- 3. GA4 / Google Ads ----------
         try {
+            await submitHubspotForm<{ inlineMessage?: string }>(
+                hubSpotFormId,
+                formData,
+            )
+        } catch (error: any) {
+            submitting.value = false
+            valid.value = false
+            console.error("Error submitting form data to HubSpot", error)
+            if (
+                error?.response?.data?.errors?.some?.(
+                    (err: any) => err.errorType === "BLOCKED_EMAIL",
+                )
+            ) {
+                message.value = "Please use a professional email address"
+            } else {
+                message.value =
+                    error?.response?.data?.message ||
+                    "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
+            }
+            return
+        }
+
+        valid.value = true
+        meetingUrl.value = withContactParams(
+            getMeetingUrl(tierFromEmployees(emp)),
+            {
+                firstname: fn,
+                lastname: ln,
+                email: em,
+            },
+        )
+
+        try {
+            posthog.capture("bookdemo_form", {
+                lp_variant: props.variant,
+                company_size: emp,
+                ...getLpUtmProperties(),
+            })
+            hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }])
+            // Push directly to the dataLayer: the vue-gtm plugin is initialized
+            // with `enabled: false` (GTM loads after cookie consent), so
+            // gtm.trackEvent() would never reach the dataLayer.
             window.dataLayer = window.dataLayer || []
             if (!conversionReported) {
-                // Spec event for this pilot (needs its own GTM trigger).
-                window.dataLayer.push({
-                    event: "form_submit",
-                    noninteraction: false,
-                    lp_variant: props.variant,
-                    team_size: teamSize.value,
-                })
-                // The event the live Google Ads "Book a Demo" conversion action
-                // already triggers on (see GOOGLE-ADS-TRACKING-SOLUTION.md).
-                // Pushed as well so the LP converts without waiting on a GTM
-                // change — remove one of the two once GTM is reconfigured, or
-                // the same demo is counted twice.
                 window.dataLayer.push({
                     event: "bookdemo_form",
                     noninteraction: false,
                     lp_variant: props.variant,
                 })
+                // The pilot's spec event — GTM must trigger on this OR on
+                // bookdemo_form, not both, or the same demo counts twice.
+                window.dataLayer.push({
+                    event: "form_submit",
+                    noninteraction: false,
+                    lp_variant: props.variant,
+                    company_size: emp,
+                })
                 conversionReported = true
             }
-        } catch (error) {
-            console.error("LP form: dataLayer step failed", error)
+            if (typeof identify === "function") identify(em)
+        } catch (analyticsError) {
+            console.error("Demo form analytics error", analyticsError)
         }
 
-        // -------------------------------------------- 4. HubSpot ------------
-        const fields: Array<Record<string, unknown>> = [
-            { objectTypeId: CONTACT, name: "email", value: emailValue },
-            { objectTypeId: CONTACT, name: "company", value: companyValue },
-            {
-                objectTypeId: COMPANY,
-                name: "number_of_employees",
-                // Mapped to the property's allowed enum — see LP_TEAM_SIZES.
-                value: teamSizeOption?.companySize ?? "below 100",
-            },
-            {
-                objectTypeId: CONTACT,
-                name: "kuid",
-                value: localStorage.getItem("KUID") || "",
-            },
-        ]
-
-        if (clickIdValue) {
-            // Standard HubSpot property read natively by its Google Ads
-            // offline-conversion sync: this is what lets a *qualified* demo be
-            // imported back against the original ad click.
-            fields.push({
-                objectTypeId: CONTACT,
-                name: "hs_google_click_id",
-                value: clickIdValue,
-            })
-        }
-
-        // TODO(virgile): add these once the properties exist in HubSpot — they
-        // are the difference between "a lead came from Google Ads" and "a lead
-        // came from this ad group on this variant".
-        //   { objectTypeId: CONTACT, name: "lp_variant", value: props.variant },
-        //   { objectTypeId: CONTACT, name: "lp_team_size", value: teamSize.value },
-        //   { objectTypeId: CONTACT, name: "utm_source", value: attribution.utm_source ?? "" },
-        //   { objectTypeId: CONTACT, name: "utm_medium", value: attribution.utm_medium ?? "" },
-        //   { objectTypeId: CONTACT, name: "utm_campaign", value: attribution.utm_campaign ?? "" },
-        //   { objectTypeId: CONTACT, name: "utm_term", value: attribution.utm_term ?? "" },
-        //   { objectTypeId: CONTACT, name: "utm_content", value: attribution.utm_content ?? "" },
-
-        try {
-            await submitHubspotForm(HUBSPOT_FORM_ID, {
-                fields,
-                context: {
-                    hutk: getHubspotTracking() || undefined,
-                    pageUri: window.location.href,
-                    pageName: document.title,
-                },
-            })
-        } catch (error: any) {
-            submitting.value = false
-            console.error("LP form: HubSpot submit failed", error)
-
-            const hubspotErrors = error?.response?.data?.errors
-            if (
-                Array.isArray(hubspotErrors) &&
-                hubspotErrors.some((e: any) => e?.errorType === "BLOCKED_EMAIL")
-            ) {
-                // Should not happen once free-mail blocking is off on the form.
-                serverError.value = "Please use your work email address."
-                return
-            }
-
-            serverError.value = copy.errorServer
-            return
-        }
-
-        // ------------------------------------- 5. hand off to /thanks -------
-        // Only what the confirmation page actually needs: the mapped size, to
-        // route to the right calendar, and the variant, to label its analytics
-        // event. Neither is personal data.
-        //
-        // The email is deliberately NOT stored. It would let the scheduler
-        // prefill one field, at the cost of parking an address in clear text in
-        // web storage (CodeQL `js/clear-text-storage-of-sensitive-data`) for a
-        // convenience the visitor can cover by typing it once. Don't add it
-        // back without deciding that trade explicitly. Passing it through the
-        // URL instead is worse still — query strings leak into referrers, logs
-        // and analytics.
-        try {
-            sessionStorage.setItem(
-                "ka_lp_lead",
-                JSON.stringify({
-                    companySize: teamSizeOption?.companySize ?? "below 100",
-                    variant: props.variant,
-                }),
-            )
-        } catch {
-            /* sessionStorage unavailable — /thanks falls back to the
-               generic calendar, which still books a meeting */
-        }
-
-        window.location.assign(`/lp/${props.variant}/thanks`)
+        void ensureMeetingsScriptLoaded().then(() => {
+            hsq.push(["refreshPageHandlers"])
+            hsq.push(["trackPageView"])
+        })
     }
 </script>
 
 <template>
-    <form class="lp-form" novalidate @submit="onSubmit">
-        <p v-if="serverError" class="lp-form__server-error" role="alert">
-            {{ serverError }}
+    <div v-if="valid" class="lp-form__meeting">
+        <iframe
+            v-if="meetingUrl"
+            :src="meetingUrl"
+            title="Book a time for your demo"
+            allowtransparency="true"
+            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        />
+    </div>
+    <form
+        v-else
+        ref="lp-demo-form"
+        class="lp-form"
+        novalidate
+        @submit="onSubmit"
+    >
+        <p v-if="message" class="lp-form__server-error" role="alert">
+            {{ message }}
         </p>
 
+        <div class="lp-form__names">
+            <div class="lp-field">
+                <label class="lp-visually-hidden" :for="fid('first-name')">
+                    First name
+                </label>
+                <input
+                    :id="fid('first-name')"
+                    name="first-name"
+                    autocomplete="given-name"
+                    type="text"
+                    class="lp-input"
+                    placeholder="First name *"
+                    required
+                />
+            </div>
+
+            <div class="lp-field">
+                <label class="lp-visually-hidden" :for="fid('last-name')">
+                    Last name
+                </label>
+                <input
+                    :id="fid('last-name')"
+                    name="last-name"
+                    autocomplete="family-name"
+                    type="text"
+                    class="lp-input"
+                    placeholder="Last name *"
+                    required
+                />
+            </div>
+        </div>
+
         <div class="lp-field">
-            <label class="lp-label" :for="fid('email')">{{
-                copy.email.label
-            }}</label>
+            <label class="lp-visually-hidden" :for="fid('email')">
+                Company email
+            </label>
             <input
                 :id="fid('email')"
-                v-model="email"
-                class="lp-input"
-                type="email"
                 name="email"
-                inputmode="email"
+                type="email"
                 autocomplete="email"
-                :placeholder="copy.email.placeholder"
-                :aria-invalid="Boolean(errors.email)"
-                :aria-describedby="
-                    errors.email ? fid('email-error') : undefined
-                "
-                required
-                @blur="validateEmail"
-            />
-            <p
-                v-if="errors.email"
-                :id="fid('email-error')"
-                class="lp-error"
-                role="alert"
-            >
-                {{ errors.email }}
-            </p>
-        </div>
-
-        <div class="lp-field">
-            <label class="lp-label" :for="fid('company')">
-                {{ copy.company.label }}
-            </label>
-            <input
-                :id="fid('company')"
-                v-model="company"
                 class="lp-input"
-                type="text"
-                name="company"
-                autocomplete="organization"
-                :placeholder="copy.company.placeholder"
-                :aria-invalid="Boolean(errors.company)"
-                :aria-describedby="
-                    errors.company ? fid('company-error') : undefined
-                "
+                placeholder="Company email *"
                 required
-                @blur="validateCompany"
             />
-            <p
-                v-if="errors.company"
-                :id="fid('company-error')"
-                class="lp-error"
-                role="alert"
-            >
-                {{ errors.company }}
-            </p>
         </div>
 
         <div class="lp-field">
-            <label class="lp-label" :for="fid('team-size')">
-                {{ copy.teamSize.label }}
+            <label class="lp-visually-hidden" :for="fid('employees')">
+                Number of employees
             </label>
             <select
-                :id="fid('team-size')"
-                v-model="teamSize"
+                :id="fid('employees')"
+                name="employees"
                 class="lp-select"
-                name="team_size"
-                :aria-invalid="Boolean(errors.teamSize)"
-                :aria-describedby="
-                    errors.teamSize ? fid('team-size-error') : undefined
-                "
                 required
-                @change="validateTeamSize"
-                @blur="validateTeamSize"
             >
-                <option value="" disabled>
-                    {{ copy.teamSize.placeholder }}
+                <option value="" disabled selected>
+                    Number of employees *
                 </option>
-                <option
-                    v-for="option in LP_TEAM_SIZES"
-                    :key="option.value"
-                    :value="option.value"
-                >
-                    {{ option.value }}
-                </option>
+                <option value="below 100">below 100</option>
+                <option value="between 100 and 999">between 100 and 999</option>
+                <option value="1000+">1000+</option>
             </select>
-            <p
-                v-if="errors.teamSize"
-                :id="fid('team-size-error')"
-                class="lp-error"
-                role="alert"
-            >
-                {{ errors.teamSize }}
-            </p>
         </div>
+
+        <p class="lp-fineprint lp-form__agree">
+            By submitting this form, you agree to our
+            <a target="_blank" href="/privacy-policy">Privacy Policy.</a>
+        </p>
 
         <button
             class="lp-btn lp-btn--primary lp-btn--block lp-form__submit"
             type="submit"
             :disabled="submitting"
-            data-lp-cta="form"
         >
-            {{ submitting ? copy.submitting : copy.submit }}
+            Let's Talk
         </button>
-
-        <p class="lp-fineprint lp-form__reassurance">{{ copy.reassurance }}</p>
-        <p class="lp-fineprint">
-            By submitting, you agree to our
-            <a href="/privacy-policy">Privacy Policy</a>.
-        </p>
     </form>
 </template>
 
 <style lang="scss" scoped>
     .lp-form {
         width: 100%;
+    }
+
+    .lp-form__names {
+        display: grid;
+        gap: 1.125rem;
+
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.75rem;
+        }
+
+        /* The grid gap spaces these two; neutralise the global
+           `.lp-field + .lp-field` margin or Last name sits lower. */
+        :deep(.lp-field + .lp-field) {
+            margin-top: 0;
+        }
+    }
+
+    .lp-form__names + .lp-field,
+    .lp-field + .lp-field {
+        margin-top: 1.125rem;
+    }
+
+    /* Placeholder-grey until an option is picked (matches /demo). */
+    .lp-select:invalid {
+        color: var(--ks-content-tertiary);
     }
 
     .lp-form__server-error {
@@ -456,11 +383,23 @@
         font-size: 0.9375rem;
     }
 
-    .lp-form__submit {
-        margin-top: 1.5rem;
+    .lp-form__agree {
+        margin-top: 1rem;
     }
 
-    .lp-form__reassurance {
+    .lp-form__submit {
         margin-top: 1rem;
+    }
+
+    /* Post-submit inline calendar, as on /demo — no redirect. */
+    .lp-form__meeting {
+        width: 100%;
+
+        iframe {
+            display: block;
+            width: 100%;
+            min-height: 46.875rem; /* 750px, as /demo */
+            border: none;
+        }
     }
 </style>

@@ -288,33 +288,6 @@ export const LP_SHARED = {
         header: "Questions we get on every call",
     },
 
-    form: {
-        email: {
-            label: "Work email",
-            placeholder: "name@company.com",
-            errorEmpty: "Enter your work email.",
-            errorInvalid: "That doesn't look like a valid email address.",
-        },
-        company: {
-            label: "Company",
-            placeholder: "Company name",
-            errorEmpty: "Enter your company name.",
-        },
-        teamSize: {
-            label: "Team size",
-            placeholder: "Select team size",
-            errorEmpty: "Select your team size.",
-        },
-        submit: LP_CTA_LABEL,
-        submitting: "Sending…",
-        reassurance:
-            "We'll only use this to set up your demo — no newsletter, no spam.",
-        // TODO(virgile): confirm the sales alias before launch (sales@kestra.io
-        // is assumed — /contact-us routes to HubSpot, not to a public alias).
-        errorServer:
-            "Something went wrong on our side. Please try again — or email sales@kestra.io.",
-    },
-
     footer: {
         copyright: "© 2026 Kestra Technologies",
         // The only three links on the entire page.
@@ -341,32 +314,3 @@ export const LP_SHARED = {
     },
 } as const
 
-/**
- * Team-size options. `value` is what the user picks and what we send to
- * PostHog; `companySize` is the mapped value for the HubSpot
- * `number_of_employees` enum, which also drives meeting routing
- * (`tierFromEmployees` in `~/composables/useMeeting.js`).
- *
- * Named `companySize` rather than `employees` on purpose: it is a size bucket
- * string, not employee data, and CodeQL's clear-text-storage rule treats an
- * identifier called `employees` as personal data wherever it gets persisted.
- *
- * TODO(virgile): confirm HubSpot property + values. Two open points:
- *  1. `number_of_employees` (company object) only accepts the three strings
- *     below — a raw "11–50" submission is rejected by the Forms API, hence the
- *     mapping. A dedicated `lp_team_size` contact property would let us store
- *     the exact answer; add it in HubSpot and uncomment the field in
- *     `LpDemoForm.vue`.
- *  2. The buckets below are *team* size, while HubSpot's property is *company*
- *     size. Confirm this is acceptable or split the two.
- */
-export const LP_TEAM_SIZES = [
-    { value: "Just me", companySize: "below 100" },
-    { value: "2–10", companySize: "below 100" },
-    { value: "11–50", companySize: "below 100" },
-    { value: "51–200", companySize: "between 100 and 999" },
-    { value: "201–1,000", companySize: "between 100 and 999" },
-    { value: "1,000+", companySize: "1000+" },
-] as const
-
-export type LpTeamSize = (typeof LP_TEAM_SIZES)[number]["value"]
