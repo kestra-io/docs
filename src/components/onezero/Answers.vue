@@ -186,8 +186,8 @@
             }
             .session-card {
                 background: rgba(255, 255, 255, 0.021);
-                backdrop-filter: blur(7px);
                 -webkit-backdrop-filter: blur(7px);
+                backdrop-filter: blur(7px);
                 border-radius: 1.25rem;
                 border: $block-border;
                 padding: $rem-4 $rem-2;
