@@ -40,8 +40,10 @@ const { header, cards } = Astro.props
 </section>
 
 <style lang="scss">
+    /* No max-width: the 40rem cap forced "One platform. Every workflow.
+       Your infrastructure." onto two lines — review wants it on one. */
     .lp-benefits__header {
-        max-width: 40rem;
+        max-width: none;
     }
 
     .lp-benefits__grid {
