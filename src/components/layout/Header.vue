@@ -1094,9 +1094,7 @@
         max-height: 67px;
         width: 100vw;
         max-width: 100%;
-        background-color: var(--ks-background-header);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
+        background-color: transparent;
         color: var(--ks-content-primary);
         transition: background-color 250ms ease-in-out;
         z-index: 1030;
