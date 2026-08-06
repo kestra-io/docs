@@ -1124,6 +1124,10 @@
             }
         }
 
+        &.navbar {
+            backdrop-filter: blur(4px);
+        }
+
         .container-xl {
             @include media-breakpoint-down(xxl) {
                 .navbar-brand {
