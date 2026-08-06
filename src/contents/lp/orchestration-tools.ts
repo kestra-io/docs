@@ -28,6 +28,7 @@ const orchestrationTools: LpVariant = {
     },
     hero: {
         h1: "One Orchestration Tool for Data, Scripts, and Infrastructure",
+        h1Highlight: "Orchestration Tool",
         // ⚠️ DRAFT SUB — no locked sub existed for this variant; pending sign-off.
         sub: "Consolidate the schedulers, cron jobs, and point tools your teams cobbled together — into one orchestrator you can actually see.",
     },

@@ -28,6 +28,7 @@ const dataOrchestration: LpVariant = {
     },
     hero: {
         h1: "The Data Orchestration Platform Built for Scale",
+        h1Highlight: "Data Orchestration",
         // ⚠️ DRAFT SUB — no locked sub existed for this variant; pending sign-off.
         sub: "Orchestrate ingestion, transformation, and the ML and AI steps around them — one engine, any language, from first pipeline to millions of runs.",
     },

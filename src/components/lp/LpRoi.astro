@@ -72,49 +72,160 @@ const LOGOS: Record<string, string> = {
 
         {
             /*
-          Auto-scrolling quotes. Pure CSS marquee: the track renders twice and
-          slides by 50%, so the loop is seamless; the clone is aria-hidden.
-          Pauses on hover/focus; `prefers-reduced-motion` freezes it via the
-          global animation kill in lp.scss.
+          Quote slider: one full card visible at a time, stepped by the arrow
+          buttons (and swipe on touch). Auto-advances every 7s until the visitor
+          interacts, then stays manual; no auto-advance at all under
+          prefers-reduced-motion. The viewport is a scroll-snap container, so it
+          degrades to plain horizontal swipe without JavaScript.
         */
         }
-        <div class="lp-roi__carousel">
-            <div class="lp-roi__track">
+        <div
+            class="lp-roi__slider"
+            data-lp-quotes
+            role="group"
+            aria-roledescription="carousel"
+            aria-label="Customer quotes"
+        >
+            <ul class="lp-roi__viewport" tabindex="-1">
                 {
-                    [false, true].map((clone) => (
-                        <ul aria-hidden={clone || undefined}>
-                            {quotes.map((quote) => (
-                                <li>
-                                    <figure class="lp-roi__quote">
-                                        <blockquote>{quote.text}</blockquote>
-                                        <figcaption class="lp-roi__attribution">
-                                            <span>{quote.attribution}</span>
-                                            {LOGOS[quote.logo] && (
-                                                <span
-                                                    class="lp-roi__logo"
-                                                    role="img"
-                                                    aria-label={
-                                                        quote.attribution
-                                                    }
-                                                >
-                                                    <Fragment
-                                                        set:html={
-                                                            LOGOS[quote.logo]
-                                                        }
-                                                    />
-                                                </span>
-                                            )}
-                                        </figcaption>
-                                    </figure>
-                                </li>
-                            ))}
-                        </ul>
+                    quotes.map((quote) => (
+                        <li class="lp-roi__slide">
+                            <figure class="lp-roi__quote">
+                                <blockquote>{quote.text}</blockquote>
+                                <figcaption class="lp-roi__attribution">
+                                    <span>{quote.attribution}</span>
+                                    {LOGOS[quote.logo] && (
+                                        <span
+                                            class="lp-roi__logo"
+                                            role="img"
+                                            aria-label={quote.attribution}
+                                        >
+                                            <Fragment
+                                                set:html={LOGOS[quote.logo]}
+                                            />
+                                        </span>
+                                    )}
+                                </figcaption>
+                            </figure>
+                        </li>
                     ))
                 }
+            </ul>
+
+            <div class="lp-roi__nav">
+                <button
+                    type="button"
+                    class="lp-roi__navbtn"
+                    data-lp-quotes-prev
+                    aria-label="Previous quote"
+                >
+                    <Icon name="mdi:arrow-left" aria-hidden="true" />
+                </button>
+                <button
+                    type="button"
+                    class="lp-roi__navbtn"
+                    data-lp-quotes-next
+                    aria-label="Next quote"
+                >
+                    <Icon name="mdi:arrow-right" aria-hidden="true" />
+                </button>
             </div>
         </div>
     </div>
 </section>
+
+<script>
+    const initQuoteSlider = () => {
+        document
+            .querySelectorAll<HTMLElement>("[data-lp-quotes]")
+            .forEach((root) => {
+                if (root.dataset.initialized) return
+                root.dataset.initialized = "true"
+
+                const viewport =
+                    root.querySelector<HTMLElement>(".lp-roi__viewport")
+                if (!viewport) return
+                const slides = Array.from(viewport.children) as HTMLElement[]
+                if (slides.length < 2) return
+
+                let index = 0
+                const go = (next: number) => {
+                    index = (next + slides.length) % slides.length
+                    viewport.scrollTo({
+                        left: slides[index].offsetLeft,
+                        behavior: "smooth",
+                    })
+                }
+
+                // Auto-advance until the visitor takes over, then stay manual.
+                let timer: ReturnType<typeof setInterval> | null = null
+                const stopAuto = () => {
+                    if (timer) clearInterval(timer)
+                    timer = null
+                }
+                if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    timer = setInterval(() => go(index + 1), 7000)
+                }
+
+                root.querySelector("[data-lp-quotes-prev]")?.addEventListener(
+                    "click",
+                    () => {
+                        stopAuto()
+                        go(index - 1)
+                    },
+                )
+                root.querySelector("[data-lp-quotes-next]")?.addEventListener(
+                    "click",
+                    () => {
+                        stopAuto()
+                        go(index + 1)
+                    },
+                )
+
+                // Swiping counts as taking over; keep `index` in sync with
+                // wherever the snap landed.
+                viewport.addEventListener("pointerdown", stopAuto, {
+                    passive: true,
+                })
+                let scrollDebounce: ReturnType<typeof setTimeout>
+                viewport.addEventListener(
+                    "scroll",
+                    () => {
+                        clearTimeout(scrollDebounce)
+                        scrollDebounce = setTimeout(() => {
+                            index = slides.reduce(
+                                (best, slide, i) =>
+                                    Math.abs(
+                                        slide.offsetLeft - viewport.scrollLeft,
+                                    ) <
+                                    Math.abs(
+                                        slides[best].offsetLeft -
+                                            viewport.scrollLeft,
+                                    )
+                                        ? i
+                                        : best,
+                                0,
+                            )
+                        }, 80)
+                    },
+                    { passive: true },
+                )
+
+                document.addEventListener("astro:before-swap", stopAuto, {
+                    once: true,
+                })
+            })
+    }
+
+    document.addEventListener("astro:page-load", initQuoteSlider)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initQuoteSlider, {
+            once: true,
+        })
+    } else {
+        initQuoteSlider()
+    }
+</script>
 
 <style lang="scss">
     .lp-roi {
@@ -189,47 +300,67 @@ const LOGOS: Record<string, string> = {
         line-height: 1.5;
     }
 
-    .lp-roi__carousel {
+    .lp-roi__slider {
         margin-top: 1.5rem;
-        overflow: hidden;
-        /* Fade the cut edges so cards slide in and out softly. */
-        mask-image: linear-gradient(
-            90deg,
-            transparent,
-            #000 4rem,
-            #000 calc(100% - 4rem),
-            transparent
-        );
     }
 
-    .lp-roi__track {
+    .lp-roi__viewport {
         display: flex;
-        width: max-content;
         gap: 1.25rem;
-        animation: lp-roi-scroll 45s linear infinite;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
 
-        ul {
-            display: flex;
-            gap: 1.25rem;
-        }
-
-        &:hover,
-        &:focus-within {
-            animation-play-state: paused;
+        &::-webkit-scrollbar {
+            display: none;
         }
     }
 
-    @keyframes lp-roi-scroll {
-        to {
-            /* One full set + its gap — lands exactly on the clone. */
-            transform: translateX(calc(-50% - 0.625rem));
+    .lp-roi__slide {
+        /* One full card per step — never a cropped quote. */
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .lp-roi__nav {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .lp-roi__navbtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 50%;
+        background-color: var(--ks-background-primary);
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition:
+            background-color 0.15s ease,
+            color 0.15s ease;
+
+        :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        &:hover {
+            background-color: var(--ks-background-button-primary);
+            border-color: var(--ks-background-button-primary);
+            color: #fff;
         }
     }
 
     .lp-roi__quote {
         display: flex;
         flex-direction: column;
-        width: min(82vw, 33rem);
         height: 100%;
         padding: 1.5rem 1.75rem;
         border: 1px solid var(--ks-border-primary);

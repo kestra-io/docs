@@ -8,6 +8,7 @@
  * that leaves without converting.
  */
 import { LP_SHARED } from "~/contents/lp/shared"
+import logoBlack from "~/assets/logo-black.svg?raw"
 
 const { copyright, privacy, legal, github } = LP_SHARED.footer
 
@@ -21,6 +22,9 @@ const { stickyOffset = false } = Astro.props
 
 <footer class:list={["lp-footer", { "has-sticky-offset": stickyOffset }]}>
     <div class="lp-container lp-footer__inner">
+        <span class="lp-footer__logo" role="img" aria-label="Kestra">
+            <Fragment set:html={logoBlack} />
+        </span>
         <span>{copyright}</span>
         <span class="lp-footer__sep" aria-hidden="true">·</span>
         <a href={privacy.href}>{privacy.label}</a>
@@ -71,6 +75,16 @@ const { stickyOffset = false } = Astro.props
             &:hover {
                 color: var(--ks-content-primary);
             }
+        }
+    }
+
+    .lp-footer__logo {
+        display: inline-flex;
+        margin-right: 0.5rem;
+
+        :global(svg) {
+            height: 1.125rem;
+            width: auto;
         }
     }
 

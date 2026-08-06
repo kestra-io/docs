@@ -31,6 +31,7 @@ const workflowOrchestration: LpVariant = {
     },
     hero: {
         h1: "The Unified Workflow Orchestration Platform for Your Entire Stack",
+        h1Highlight: "Workflow Orchestration",
         sub: "One control plane to run, see, and govern every workflow across data, infrastructure, apps, and business processes. Any language, on your own infrastructure.",
     },
     /**

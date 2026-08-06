@@ -1,35 +1,64 @@
 ---
 /**
- * Section 1 — Hero: H1 and sub on the left, the demo form directly on the
- * right. No CTA button and no product visual — the form *is* the call to
- * action, so the ad click lands one field away from converting instead of one
- * scroll and one click away.
+ * Section 1 — Hero: H1 and sub on the left with the product UI underneath, the
+ * demo form directly on the right. No CTA button — the form is the call to
+ * action, one field away from the ad click.
  *
- * The form card carries its own small heading + microcopy so it reads as an
- * offer ("book a demo, 30 minutes with an engineer"), not as a toll booth.
+ * The H1's ad-group keyword renders in the brand purple (`h1Highlight`), so the
+ * message-match phrase is also the visual accent.
  *
- * Mobile: H1 → sub → form card. The top of the card (heading + first field)
- * is what must clear the fold at 375×667 — the submit button sits one short
- * scroll down, and the sticky bar covers the rest of the page.
+ * The product screenshot sits under the copy on large viewports only: it fills
+ * the column's dead space with the strongest brand signal available — the
+ * Kestra interface itself. On mobile it is hidden, and `loading="lazy"` keeps
+ * its bytes off the critical path there (display:none alone would not stop the
+ * fetch); on desktop it sits at the fold, so lazy still loads it immediately.
  */
+import { Image } from "astro:assets"
 import LpDemoForm from "./LpDemoForm.vue"
 import { LP_SHARED } from "~/contents/lp/shared"
+// INTERIM VISUAL — the /infra landing-page screenshot (declarative YAML editor
+// next to a topology). TODO(virgile): swap for the dedicated topology capture
+// when it lands; this import is the only line to change.
+import productUi from "~/assets/landing/infrastructure/infra-ui.png"
 
 interface Props {
     h1: string
+    h1Highlight?: string
     sub: string
     microcopy: string
     variant: string
 }
 
-const { h1, sub, microcopy, variant } = Astro.props
+const { h1, h1Highlight, sub, microcopy, variant } = Astro.props
+
+// Split the H1 around the highlight phrase; fall back to the plain string.
+const highlightIndex = h1Highlight ? h1.indexOf(h1Highlight) : -1
+const before = highlightIndex >= 0 ? h1.slice(0, highlightIndex) : h1
+const after =
+    highlightIndex >= 0 ? h1.slice(highlightIndex + h1Highlight!.length) : ""
 ---
 
 <section class="lp-hero" data-lp-hero-form>
     <div class="lp-container lp-hero__grid">
         <div class="lp-hero__copy">
-            <h1 class="lp-hero__title">{h1}</h1>
+            <h1 class="lp-hero__title">
+                {before}{
+                    highlightIndex >= 0 && (
+                        <span class="lp-hero__accent">{h1Highlight}</span>
+                    )
+                }{after}
+            </h1>
             <p class="lp-hero__sub">{sub}</p>
+
+            <div class="lp-hero__visual">
+                <Image
+                    src={productUi}
+                    alt="The Kestra UI: a declarative YAML flow in the editor next to its topology view."
+                    widths={[720, 1080, 1440]}
+                    sizes="(min-width: 992px) 55vw, 100vw"
+                    loading="lazy"
+                />
+            </div>
         </div>
 
         <div class="lp-hero__form">
@@ -68,6 +97,10 @@ const { h1, sub, microcopy, variant } = Astro.props
         text-wrap: balance;
     }
 
+    .lp-hero__accent {
+        color: var(--ks-content-color-highlight);
+    }
+
     .lp-hero__sub {
         margin-top: 1.125rem;
         max-width: 34rem;
@@ -76,6 +109,23 @@ const { h1, sub, microcopy, variant } = Astro.props
 
         @include media-breakpoint-up(md) {
             font-size: 1.1875rem;
+        }
+    }
+
+    .lp-hero__visual {
+        display: none;
+
+        @include media-breakpoint-up(lg) {
+            display: block;
+            margin-top: 2rem;
+
+            :global(img) {
+                width: 100%;
+                height: auto;
+                border: 1px solid var(--ks-border-primary);
+                border-radius: var(--lp-radius);
+                box-shadow: 0 12px 40px var(--ks-shadows-light);
+            }
         }
     }
 
@@ -94,6 +144,8 @@ const { h1, sub, microcopy, variant } = Astro.props
             max-width: 26rem;
             justify-self: end;
             width: 100%;
+            position: sticky;
+            top: 5rem;
         }
     }
 

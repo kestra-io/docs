@@ -107,6 +107,11 @@ export interface LpVariant {
      */
     hero: {
         h1: string
+        /**
+         * Substring of `h1` rendered in the brand purple — the ad-group
+         * keyword, so the message-match phrase is also the visual accent.
+         */
+        h1Highlight?: string
         sub: string
     }
     /**
