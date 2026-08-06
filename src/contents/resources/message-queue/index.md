@@ -4,7 +4,7 @@ description: "Explore message queues as a core component of distributed systems,
 metaTitle: "Message Queue: A Guide to Asynchronous Communication"
 metaDescription: "What a message queue is and its role in distributed systems for resilience and scalability — plus how Kestra orchestrates event-driven queue workflows."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-10
 slug: "message-queue"
 faq:
   - question: "What is a message queue?"

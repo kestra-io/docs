@@ -4,7 +4,7 @@ description: "Understand the fundamental differences between Amazon SQS and SNS,
 metaTitle: "AWS SQS vs SNS: Messaging for Modern Workflows"
 metaDescription: "Compare Amazon SQS and SNS to choose the best AWS messaging service for your application. Learn their differences, use cases, and how Kestra orchestrates them."
 tag: infrastructure
-date: 2026-07-07
+date: 2026-07-15
 slug: sqs-vs-sns
 faq:
   - question: "Is Kafka similar to SNS or SQS?"

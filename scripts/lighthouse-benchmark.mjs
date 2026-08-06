@@ -11,12 +11,13 @@
  *   OUTPUT_FILE   – Path for JSON output  (default: lighthouse-results.json)
  *   BASELINE_FILE – Path to baseline JSON (optional; omit to skip comparison)
  *   MARKDOWN_FILE – Path for Markdown report (default: lighthouse-report.md)
+ *   LHR_DIR       – Directory for per-page LHR JSON dumps (default: lhr-reports)
  *
  * Exits with code 0 on success, 1 on fatal error.
  * Score regressions never cause a non-zero exit — output is informational only.
  */
 
-import { writeFileSync, readFileSync, existsSync } from "node:fs"
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs"
 import { PAGES } from "../tests/fixtures/page-sample.mjs"
 
 // ---------------------------------------------------------------------------
@@ -28,6 +29,7 @@ const BASE_URL_OUTPUT = process.env.BASE_URL_OUTPUT ?? BASE_URL
 const OUTPUT_FILE = process.env.OUTPUT_FILE ?? "lighthouse-results.json"
 const BASELINE_FILE = process.env.BASELINE_FILE ?? ""
 const MARKDOWN_FILE = process.env.MARKDOWN_FILE ?? "lighthouse-report.md"
+const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
 
 if (!BASE_URL) {
     console.error("ERROR: BASE_URL environment variable is required.")
@@ -189,6 +191,19 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
         }
     }
     throw lastError
+}
+
+/**
+ * Turns a page label into a filesystem-safe slug.
+ *
+ * @param {string} label
+ * @returns {string}
+ */
+function slugify(label) {
+    return label
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
 }
 
 // ---------------------------------------------------------------------------
@@ -358,6 +373,12 @@ function buildMarkdown(output, baseline) {
         `Score threshold: ±${SCORE_THRESHOLD} pts &nbsp;·&nbsp; Metric threshold: ±${METRIC_THRESHOLD * 100}% of baseline`,
         "",
         "</details>",
+        "",
+        "<details><summary>View full Lighthouse HTML report for a page</summary>",
+        "",
+        "Full per-page Lighthouse Results (LHR) are attached as the `lhr-reports` artifact on this run. Download and unzip it, then open <https://googlechrome.github.io/lighthouse/viewer/> and drop the `<page>-lhr.json` file into the page to see every audit, opportunity, and diagnostic.",
+        "",
+        "</details>",
     )
 
     return lines.join("\n")
@@ -389,6 +410,8 @@ async function main() {
 
     console.log(`Chrome launched on port ${chrome.port}\n`)
 
+    mkdirSync(LHR_DIR, { recursive: true })
+
     /** @type {PageResult[]} */
     const results = []
 
@@ -399,6 +422,8 @@ async function main() {
 
             try {
                 const lhr = await runWithRetry(url, chrome.port)
+                const lhrPath = `${LHR_DIR}/${slugify(page.label)}-lhr.json`
+                writeFileSync(lhrPath, JSON.stringify(lhr))
                 const { scores, metrics } = extractResults(lhr)
                 results.push({
                     path: page.path,

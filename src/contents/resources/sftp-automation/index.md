@@ -4,7 +4,7 @@ description: "SFTP automation is crucial for secure, efficient, and auditable da
 metaTitle: "SFTP Automation: Secure File Transfers"
 metaDescription: "Master SFTP automation for secure and efficient data exchange. This guide covers SFTP fundamentals, benefits, and how Kestra simplifies implementation."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-14
 slug: "sftp-automation"
 faq:
   - question: "Can SFTP be automated?"

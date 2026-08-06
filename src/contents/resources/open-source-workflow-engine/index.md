@@ -4,7 +4,7 @@ description: "Explore the top open source workflow engines available today, incl
 metaTitle: "Open Source Workflow Engine: Top Tools & Selection Guide"
 metaDescription: "Find the best open source workflow engine. Compare Kestra, Airflow, Temporal, and others to automate and manage your data, AI, and infrastructure workflows."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-15
 slug: "open-source-workflow-engine"
 faq:
   - question: "What is an open source workflow engine?"
