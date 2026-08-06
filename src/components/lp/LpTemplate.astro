@@ -15,8 +15,10 @@
  * Gone with that review: the standalone problem section (re-explaining a pain
  * the visitor searched for reads as lecturing), the YAML code section (the page
  * targets decision-makers, not the engineers who will paste code), the product
- * screenshot (the form took its place), and the mid-page CTA band (the second
- * form replaces it; the band now closes the FAQ instead).
+ * screenshot (the form took its place), the mid-page CTA band (the second
+ * form replaces it; the band now closes the FAQ instead), and the enterprise
+ * checklist (2026-08-06: SSO/RBAC/secrets are table stakes — "soit on les met
+ * soit pas du tout" — the FAQ still answers all of it for whoever digs).
  */
 import type { LpVariant } from "~/contents/lp/types"
 import { LP_SHARED } from "~/contents/lp/shared"
@@ -24,7 +26,6 @@ import LpHero from "./LpHero.astro"
 import LpTrust from "./LpTrust.astro"
 import LpBenefits from "./LpBenefits.astro"
 import LpUseCases from "./LpUseCases.astro"
-import LpEnterprise from "./LpEnterprise.astro"
 import LpRoi from "./LpRoi.astro"
 import LpProof from "./LpProof.astro"
 import LpAdoption from "./LpAdoption.astro"
@@ -63,19 +64,11 @@ const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
         cards={variant.benefits.cards}
     />
 
-    <!-- 4 — what you get, plugins included… -->
+    <!-- 4 — what you get -->
     <LpUseCases
         header={LP_SHARED.useCases.header}
         intro={LP_SHARED.useCases.intro}
         columns={LP_SHARED.useCases.columns}
-    />
-
-    <!-- 4b — …with the enterprise checklist attached (same visual block) -->
-    <LpEnterprise
-        header={LP_SHARED.enterprise.header}
-        intro={LP_SHARED.enterprise.intro}
-        items={LP_SHARED.enterprise.items}
-        compact
     />
 
     <!-- 5 — ROI -->

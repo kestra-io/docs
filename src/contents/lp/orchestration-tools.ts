@@ -67,7 +67,7 @@ const orchestrationTools: LpVariant = {
 
     finalCta: {
         header: "See it on your use cases",
-        sub: "30 minutes with a Kestra engineer. Already on cron, Rundeck, or a legacy scheduler? We'll map your migration on the call — no generic slideware.",
+        sub: "Get a custom demo on your use cases — including the migration path from cron, Rundeck, or the legacy scheduler you run today.",
     },
 
     logos: {

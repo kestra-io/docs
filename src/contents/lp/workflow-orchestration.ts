@@ -24,13 +24,13 @@ import type { LpVariant } from "./types"
 const workflowOrchestration: LpVariant = {
     slug: "workflow-orchestration",
     meta: {
-        title: "Workflow Orchestration Platform | Kestra",
+        title: "Unified Workflow Orchestration Platform | Kestra",
         description:
             "One control plane to run, see, and govern every workflow across data, infrastructure, apps, and business processes. Any language, self-managed. Book a demo.",
-        ogTitle: "The Workflow Orchestration Platform for Your Entire Stack",
+        ogTitle: "The Unified Workflow Orchestration Platform for Your Entire Stack",
     },
     hero: {
-        h1: "The Workflow Orchestration Platform for Your Entire Stack",
+        h1: "The Unified Workflow Orchestration Platform for Your Entire Stack",
         sub: "One control plane to run, see, and govern every workflow across data, infrastructure, apps, and business processes. Any language, on your own infrastructure.",
     },
     /**
@@ -46,7 +46,7 @@ const workflowOrchestration: LpVariant = {
         cards: [
             {
                 lead: "One control plane for data, infra, and business processes.",
-                body: "Replace five schedulers with one governed platform, running on top of the tools you already have — on-prem, air-gapped, or in any cloud.",
+                body: "Replace your legacy schedulers with one governed platform, running on top of the tools you already have — on-prem, air-gapped, or in any cloud.",
             },
             {
                 lead: "Every job visible, owned, and audited.",

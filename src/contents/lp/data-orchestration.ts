@@ -64,7 +64,7 @@ const dataOrchestration: LpVariant = {
 
     finalCta: {
         header: "See it on your pipelines",
-        sub: "30 minutes with a Kestra engineer. Your warehouse, your dbt models, your sources — bring a pipeline you're stuck on and we'll build it live.",
+        sub: "Get a custom demo on your pipelines — your warehouse, your dbt models, your sources, and the ML steps around them.",
     },
 
     logos: {

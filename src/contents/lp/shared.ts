@@ -113,33 +113,11 @@ export const LP_SHARED = {
          */
         formTitle: "Discuss your orchestration strategy",
         microcopy:
-            "30 minutes with an engineer — see where Kestra fits your architecture and leave with a roadmap, not a sales deck.",
+            "30 minutes to see where Kestra fits your architecture — and leave with a roadmap for your orchestration strategy.",
     },
 
     trust: {
         line: "Run in production by enterprises across finance, public sector, and manufacturing.",
-    },
-
-    enterprise: {
-        header: "Enterprise-grade from day one",
-        intro: "Everything your security and platform teams will ask about — built in, not bolted on.",
-        /**
-         * Order note: the brief lists SSO first, but self-hosted / air-gapped is
-         * the #1 deployment requirement in the call corpus (×57 orgs — see
-         * `voc-lp-enrichment.md` §5.5) and the guardrail checklist in
-         * `claude-code-briefs.md` requires it first. Self-managed leads.
-         * To revert to the brief's literal order, move it back to position 5.
-         */
-        items: [
-            { label: "Self-managed & air-gapped", icon: "mdi:server-security" },
-            { label: "SSO / SAML", icon: "mdi:shield-key-outline" },
-            { label: "RBAC", icon: "mdi:account-lock-outline" },
-            { label: "Audit logs", icon: "mdi:clipboard-text-clock-outline" },
-            { label: "Secrets management", icon: "mdi:key-variant" },
-            { label: "High availability", icon: "mdi:server-network" },
-            { label: "Multi-tenancy", icon: "mdi:office-building-outline" },
-            { label: "SLA support", icon: "mdi:face-agent" },
-        ],
     },
 
     proof: {
@@ -162,11 +140,10 @@ export const LP_SHARED = {
      * its H1.
      */
     useCases: {
-        header: "What you get: one orchestrator, four kinds of work",
-        // Carries the ad-group phrase a second time (after the H1) as an actual
-        // argument. No category claims — just what most first workflows look
-        // like in practice.
-        intro: "Most teams arrive with a first workflow that already spans more than one of these columns. With 1,800+ plugins for your databases, clouds, and internal systems, workflow orchestration stops being a per-team tooling decision.",
+        // Wording from the PR #5276 review (2026-08-06) — "Unified" is the
+        // positioning word Gabe wants everywhere.
+        header: "Unified Orchestration Across Your Stack",
+        intro: "API-first, with 1,800+ plugins for your databases, clouds, and internal systems — workflow orchestration stops being a per-team tooling decision.",
         columns: [
             {
                 icon: "mdi:database-cog-outline",
@@ -242,7 +219,7 @@ export const LP_SHARED = {
     /** Closing CTA after the FAQ — anchors back up to the form (#demo). */
     midCta: {
         header: "See this on your own stack",
-        body: "Bring a workflow you're stuck on and we'll build it live on the call.",
+        body: "Get a demo tailored to your use cases and your architecture.",
     },
 
 
@@ -289,20 +266,21 @@ export const LP_SHARED = {
         },
     },
 
+    /**
+     * Custom-demo framing per the PR #5276 review (2026-08-06): the earlier
+     * agenda promised "an engineer, not an SDR" and "we'll build it live" —
+     * neither is true of the actual sales call. Every line below is a product
+     * claim the demo can honour. The pricing line stays: pricing opacity is the
+     * #1 friction in the call corpus (×70 orgs) and there is still no figure
+     * anywhere on the page.
+     */
     finalCta: {
         header: "See it on your use cases",
-        sub: "Book a live demo with a Kestra engineer, tailored to your stack and your questions.",
-        /**
-         * What the visitor gets, next to the form. The third line is deliberate:
-         * pricing opacity is the single most frequent friction in the call corpus
-         * (×70 orgs, `voc-lp-enrichment.md` §5.5). Saying we will explain the
-         * model on the call costs nothing, pre-qualifies the lead, and keeps the
-         * no-pricing rule intact — there is no figure anywhere on this page.
-         */
+        sub: "Get a custom demo — event-driven orchestration, full observability, and governance across your data, infrastructure, and business processes.",
         agenda: [
-            "A Kestra engineer on the call, not an SDR.",
-            "Your architecture, your workflows — bring one you're stuck on and we'll build it live.",
-            "Straight answers on deployment, security, and pricing — and a roadmap for your stack.",
+            "A demo tailored to your use cases and your architecture — not a generic script.",
+            "Deployment options — self-managed, air-gapped, or cloud — and the migration path from what you run today.",
+            "A clear view of how Kestra fits your platform, and straight answers on how we price.",
         ],
     },
 
@@ -352,7 +330,7 @@ export const LP_SHARED = {
 
     thanks: {
         h1: "Request received — now pick your time",
-        sub: "Choose a slot below. You'll meet a Kestra engineer, not an SDR.",
+        sub: "Choose a slot below — we'll come prepared for your stack.",
         fallback:
             "Can't find a time that works? We'll email you within one business day to arrange one.",
         meta: {
