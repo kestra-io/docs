@@ -7,19 +7,19 @@
  * The H1's ad-group keyword renders in the brand purple (`h1Highlight`), so the
  * message-match phrase is also the visual accent.
  *
- * The product screenshot sits under the copy on large viewports only: it fills
- * the column's dead space with the strongest brand signal available — the
- * Kestra interface itself. On mobile it is hidden, and `loading="lazy"` keeps
- * its bytes off the critical path there (display:none alone would not stop the
- * fetch); on desktop it sits at the fold, so lazy still loads it immediately.
+ * Under the copy, on large viewports only: the homepage's animated "Kestra
+ * Way" widget — the Kestra card orchestrating Data / Infra / AI, wordmark and
+ * brand baked in. Inline SVG + two small canvases, so it costs no image bytes;
+ * on mobile it is not rendered visually (display:none) and its rAF loop is the
+ * only idle cost. Swapped in for the UI screenshot per review (2026-08-06).
  */
-import { Image } from "astro:assets"
 import LpDemoForm from "./LpDemoForm.vue"
 import { LP_SHARED } from "~/contents/lp/shared"
-// INTERIM VISUAL — the /infra landing-page screenshot (declarative YAML editor
-// next to a topology). TODO(virgile): swap for the dedicated topology capture
-// when it lands; this import is the only line to change.
-import productUi from "~/assets/landing/infrastructure/infra-ui.png"
+// The homepage's animated "Kestra Way" widget (SVG + particle canvases):
+// the Kestra card orchestrating Data / Infra / AI, with the wordmark baked in.
+// Self-contained (inline script, no imports) and a singleton — its script
+// queries the first `.kestra-widget` on the page, so never render it twice.
+import KestraWayAnimation from "~/components/home/assets/comparison/kestra-way-animated.astro"
 
 interface Props {
     h1: string
@@ -51,13 +51,7 @@ const after =
             <p class="lp-hero__sub">{sub}</p>
 
             <div class="lp-hero__visual">
-                <Image
-                    src={productUi}
-                    alt="The Kestra UI: a declarative YAML flow in the editor next to its topology view."
-                    widths={[720, 1080, 1440]}
-                    sizes="(min-width: 992px) 55vw, 100vw"
-                    loading="lazy"
-                />
+                <KestraWayAnimation class="lp-hero__widget" />
             </div>
         </div>
 
@@ -116,16 +110,18 @@ const after =
         display: none;
 
         @include media-breakpoint-up(lg) {
-            display: block;
+            display: flex;
+            justify-content: center;
             margin-top: 2rem;
+        }
 
-            :global(img) {
-                width: 100%;
-                height: auto;
-                border: 1px solid var(--ks-border-primary);
-                border-radius: var(--lp-radius);
-                box-shadow: 0 12px 40px var(--ks-shadows-light);
-            }
+        /* The widget is a fixed 554×396 card; keep the same footprint the
+           homepage gives it, rounded and capped to the column. */
+        :global(.lp-hero__widget) {
+            width: auto;
+            height: 396px;
+            max-width: 100%;
+            border-radius: 0.5rem;
         }
     }
 
