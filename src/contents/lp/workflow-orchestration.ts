@@ -45,15 +45,18 @@ const workflowOrchestration: LpVariant = {
         header: "One platform. Every workflow. Your infrastructure.",
         cards: [
             {
+                icon: "mdi:monitor-dashboard",
                 lead: "One control plane for data, infra, and business processes.",
-                body: "Replace your legacy schedulers with one governed platform, running on top of the tools you already have — on-prem, air-gapped, or in any cloud.",
+                body: "Replace your legacy schedulers with one governed platform, running on top of the tools you already have: on-prem, air-gapped, or in any cloud.",
             },
             {
+                icon: "mdi:eye-check-outline",
                 lead: "Every job visible, owned, and audited.",
                 body: "Including the ones that used to live in cron tabs and legacy scripts. Declarative workflows versioned in Git, editable from a full UI, with RBAC and audit logs built in.",
             },
             {
-                lead: "Any language — every engineer on the team builds.",
+                icon: "mdi:code-braces",
+                lead: "Any language. Every engineer builds.",
                 body: "Python, Java, Shell, Node, and 1,800+ plugins for your databases, clouds, and SaaS tools. No rewrites to adopt, so one platform actually replaces many.",
             },
         ],

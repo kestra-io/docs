@@ -240,7 +240,7 @@ export const LP_SHARED = {
                 direction: "up",
                 value: "20–40%",
                 label: "Engineering productivity",
-                why: "Reuse — blueprints, plugins — plus guided authoring reduces rework and review cycles.",
+                why: "Reuse of blueprints and plugins, plus guided authoring, reduces rework and review cycles.",
             },
             {
                 direction: "down",
@@ -261,10 +261,29 @@ export const LP_SHARED = {
                 why: "Consolidating one to three overlapping tools reduces license and run costs.",
             },
         ] satisfies readonly LpRoiStat[],
-        quote: {
-            text: "Kestra allowed us to move from fragmented automation to a unified control plane — secure, scalable, and manageable by all our teams.",
-            attribution: "Leroy Merlin",
-        },
+        /**
+         * Auto-scrolling quote carousel. All three are already published:
+         * Leroy Merlin from the enterprise deck's ROI slide, USCCA from /cloud,
+         * Quadis from /use-cases/automotive — wording verbatim, logos from the
+         * same repo assets those pages use.
+         */
+        quotes: [
+            {
+                logo: "leroymerlin",
+                text: "Kestra allowed us to move from fragmented automation to a unified control plane — secure, scalable, and manageable by all our teams.",
+                attribution: "Leroy Merlin",
+            },
+            {
+                logo: "uscca",
+                text: "We didn't have centralized orchestration. That's where Kestra plays the most important role: all the fragmented production pipelines orchestrated through it.",
+                attribution: "Shilpa Pauly, Data Engineer, USCCA",
+            },
+            {
+                logo: "quadis",
+                text: "We're convinced to have chosen the right tool. The support and communication are great, it's easy to adapt to any tool, and easy for any team to understand.",
+                attribution: "Rubén Boniz Martinez, Senior Engineering Manager, Quadis",
+            },
+        ],
     },
 
     /**

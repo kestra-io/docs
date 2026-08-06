@@ -21,6 +21,8 @@ export interface LpMeta {
 }
 
 export interface LpBenefitCard {
+    /** mdi icon name (same set as the rest of the site). */
+    icon: string
     /** Bold lead phrase. */
     lead: string
     body: string

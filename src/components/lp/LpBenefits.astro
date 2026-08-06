@@ -1,8 +1,14 @@
 ---
 /**
- * Section 4 — Benefits. The loud section: filled background, three equal-height
- * cards, each a bold lead phrase plus supporting text.
+ * Section — Outcomes. The page's core value proposition: three cards, each an
+ * icon, a bold lead and its supporting line, with the pain implicit inside the
+ * gain (PR #5276 review rule — never re-explain the pain).
+ *
+ * Visually the loudest content section on the page: brand-gradient keyline on
+ * top of each card, icon chip in the brand purple, oversized leads. Everything
+ * is tokens already used on kestra.io — no new colours, no JavaScript.
  */
+import { Icon } from "astro-icon/components"
 import type { LpBenefitCard } from "~/contents/lp/types"
 
 interface Props {
@@ -21,6 +27,9 @@ const { header, cards } = Astro.props
             {
                 cards.map((card) => (
                     <li class="lp-benefits__card">
+                        <span class="lp-benefits__chip" aria-hidden="true">
+                            <Icon name={card.icon} class="lp-benefits__icon" />
+                        </span>
                         <p class="lp-benefits__lead">{card.lead}</p>
                         <p class="lp-benefits__body">{card.body}</p>
                     </li>
@@ -43,27 +52,68 @@ const { header, cards } = Astro.props
         @include media-breakpoint-up(md) {
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 1.5rem;
-            /* Equal heights: stretch is the grid default, spelled out because
-               the cards' content lengths differ per variant. */
             align-items: stretch;
         }
     }
 
     .lp-benefits__card {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 0.625rem;
         height: 100%;
-        padding: 1.5rem;
+        padding: 1.75rem;
         border: 1px solid var(--ks-border-primary);
         border-radius: var(--lp-radius);
         background-color: var(--ks-background-primary);
+        overflow: hidden;
+        transition:
+            transform 0.15s ease,
+            box-shadow 0.15s ease;
+
+        /* Brand keyline — the same purple ramp the site uses elsewhere
+           (#a796ff is the ClientRouter loading-indicator hue). */
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0 0 auto 0;
+            height: 3px;
+            background: linear-gradient(
+                90deg,
+                var(--ks-content-color-highlight),
+                #a796ff
+            );
+        }
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px var(--ks-shadows-light);
+        }
+    }
+
+    .lp-benefits__chip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: 0.5rem;
+        border-radius: 0.75rem;
+        background-color: var(--ks-background-purple-light);
+    }
+
+    .lp-benefits__icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--ks-content-color-highlight);
     }
 
     .lp-benefits__lead {
-        font-size: 1.0625rem;
+        font-size: 1.1875rem;
         font-weight: 600;
-        line-height: 1.35;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
     }
 
     .lp-benefits__body {

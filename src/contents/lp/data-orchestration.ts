@@ -39,16 +39,19 @@ const dataOrchestration: LpVariant = {
         header: "Your whole data stack, and the steps either side of it.",
         cards: [
             {
+                icon: "mdi:database-cog-outline",
                 lead: "Orchestrate your data stack end-to-end.",
-                body: "dbt, warehouses, ELT, streaming. Ingestion finishes before the transform runs, and a failed run restarts from the point it broke — with the run history to prove what happened.",
+                body: "dbt, warehouses, ELT, streaming. Ingestion finishes before the transform runs, and a failed run restarts from the point it broke, with the run history to prove what happened.",
             },
             {
+                icon: "mdi:code-braces",
                 lead: "Language-agnostic pipelines, not Python-only.",
-                body: "SQL, Python, R, Shell — your analysts' scripts, not a rewrite. 1,800+ plugins for your warehouses, lakes, and SaaS sources.",
+                body: "SQL, Python, R, Shell: your analysts' scripts, not a rewrite. 1,800+ plugins for your warehouses, lakes, and SaaS sources.",
             },
             {
+                icon: "mdi:chart-timeline-variant",
                 lead: "Data-aware triggers, backfills, and observability.",
-                body: "Trigger on new data or a schedule, backfill 600 days without hand-rolling a loop, and see every run, retry, and failure in one place — including the ML and LLM steps the same engine schedules.",
+                body: "Trigger on new data or a schedule, backfill 600 days without hand-rolling a loop, and see every run, retry, and failure in one place, including the ML and LLM steps the same engine schedules.",
             },
         ],
     },

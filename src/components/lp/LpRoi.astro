@@ -11,15 +11,29 @@
 import { Icon } from "astro-icon/components"
 import type { LpRoiStat } from "~/contents/lp/types"
 import leroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+import usccaLogo from "~/assets/quotes-companies/USCCA.svg?raw"
+import quadisLogo from "~/contents/customer-stories/quadis-drives-innovation-transforming-car-retail-operations-with-kestra/logo.svg?raw"
+
+interface RoiQuote {
+    logo: string
+    text: string
+    attribution: string
+}
 
 interface Props {
     header: string
     intro: string
     stats: readonly LpRoiStat[]
-    quote: { text: string; attribution: string }
+    quotes: readonly RoiQuote[]
 }
 
-const { header, intro, stats, quote } = Astro.props
+const { header, intro, stats, quotes } = Astro.props
+
+const LOGOS: Record<string, string> = {
+    leroymerlin: leroyMerlinLogo,
+    uscca: usccaLogo,
+    quadis: quadisLogo,
+}
 ---
 
 <section class="lp-section lp-roi">
@@ -56,15 +70,49 @@ const { header, intro, stats, quote } = Astro.props
             }
         </ul>
 
-        <figure class="lp-roi__quote">
-            <blockquote>{quote.text}</blockquote>
-            <figcaption class="lp-roi__attribution">
-                <span>{quote.attribution}</span>
-                <span class="lp-roi__logo" role="img" aria-label="Leroy Merlin">
-                    <Fragment set:html={leroyMerlinLogo} />
-                </span>
-            </figcaption>
-        </figure>
+        {
+            /*
+          Auto-scrolling quotes. Pure CSS marquee: the track renders twice and
+          slides by 50%, so the loop is seamless; the clone is aria-hidden.
+          Pauses on hover/focus; `prefers-reduced-motion` freezes it via the
+          global animation kill in lp.scss.
+        */
+        }
+        <div class="lp-roi__carousel">
+            <div class="lp-roi__track">
+                {
+                    [false, true].map((clone) => (
+                        <ul aria-hidden={clone || undefined}>
+                            {quotes.map((quote) => (
+                                <li>
+                                    <figure class="lp-roi__quote">
+                                        <blockquote>{quote.text}</blockquote>
+                                        <figcaption class="lp-roi__attribution">
+                                            <span>{quote.attribution}</span>
+                                            {LOGOS[quote.logo] && (
+                                                <span
+                                                    class="lp-roi__logo"
+                                                    role="img"
+                                                    aria-label={
+                                                        quote.attribution
+                                                    }
+                                                >
+                                                    <Fragment
+                                                        set:html={
+                                                            LOGOS[quote.logo]
+                                                        }
+                                                    />
+                                                </span>
+                                            )}
+                                        </figcaption>
+                                    </figure>
+                                </li>
+                            ))}
+                        </ul>
+                    ))
+                }
+            </div>
+        </div>
     </div>
 </section>
 
@@ -141,8 +189,48 @@ const { header, intro, stats, quote } = Astro.props
         line-height: 1.5;
     }
 
-    .lp-roi__quote {
+    .lp-roi__carousel {
         margin-top: 1.5rem;
+        overflow: hidden;
+        /* Fade the cut edges so cards slide in and out softly. */
+        mask-image: linear-gradient(
+            90deg,
+            transparent,
+            #000 4rem,
+            #000 calc(100% - 4rem),
+            transparent
+        );
+    }
+
+    .lp-roi__track {
+        display: flex;
+        width: max-content;
+        gap: 1.25rem;
+        animation: lp-roi-scroll 45s linear infinite;
+
+        ul {
+            display: flex;
+            gap: 1.25rem;
+        }
+
+        &:hover,
+        &:focus-within {
+            animation-play-state: paused;
+        }
+    }
+
+    @keyframes lp-roi-scroll {
+        to {
+            /* One full set + its gap — lands exactly on the clone. */
+            transform: translateX(calc(-50% - 0.625rem));
+        }
+    }
+
+    .lp-roi__quote {
+        display: flex;
+        flex-direction: column;
+        width: min(82vw, 33rem);
+        height: 100%;
         padding: 1.5rem 1.75rem;
         border: 1px solid var(--ks-border-primary);
         border-radius: var(--lp-radius);
@@ -167,13 +255,14 @@ const { header, intro, stats, quote } = Astro.props
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        margin-top: 0.875rem;
+        margin-top: auto;
+        padding-top: 0.875rem;
         color: var(--ks-content-secondary);
         font-size: 0.875rem;
     }
 
     .lp-roi__logo :global(svg) {
-        height: 1.75rem;
+        height: 1.5rem;
         width: auto;
         filter: brightness(0);
         opacity: 0.7;

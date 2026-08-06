@@ -39,16 +39,19 @@ const orchestrationTools: LpVariant = {
         header: "One place to run it all, and to see it all.",
         cards: [
             {
+                icon: "mdi:merge",
                 lead: "Consolidate schedulers, cron, and point tools.",
-                body: "Retire the cron jobs, the console apps on random servers, and the per-team scheduler — one platform to license, install, and look at.",
+                body: "Retire the cron jobs, the console apps on random servers, and the per-team scheduler: one platform to license, install, and look at.",
             },
             {
+                icon: "mdi:puzzle-outline",
                 lead: "Any language, 1,800+ integrations.",
-                body: "Bring the scripts you already have — Python, Shell, Java, SQL — with no rewrites. Plugins for your clouds, databases, and legacy systems.",
+                body: "Bring the scripts you already have: Python, Shell, Java, SQL. No rewrites, and plugins for your clouds, databases, and legacy systems.",
             },
             {
+                icon: "mdi:trending-up",
                 lead: "From first workflow to millions of executions.",
-                body: "Move workflows over one at a time — keep what works while you retire what doesn't. Retries, alerting, and a history of every run, so nothing fails silently.",
+                body: "Move workflows over one at a time, keeping what works while you retire what doesn't. Retries, alerting, and a history of every run, so nothing fails silently.",
             },
         ],
     },
