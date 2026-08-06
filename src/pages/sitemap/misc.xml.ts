@@ -9,7 +9,7 @@ import { sitemapResponse, formatLastMod, gitLastModified } from "~/utils/sitemap
  * keeping a second list here, so a page and its sitemap entry can't disagree.
  */
 const isNoindex = (body?: string) =>
-    /<meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(body ?? "")
+    /<meta(?=[^>]*name=["']robots["'])(?=[^>]*content=["'][^"']*noindex)[^>]*>/i.test(body ?? "")
 
 export const GET: APIRoute = async () => {
     const pages = await getCollection("legal")
