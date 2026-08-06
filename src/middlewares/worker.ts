@@ -2,7 +2,7 @@ import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
-import { injectConsentRegion } from "./consentRegion";
+import { withConsentRegion } from "./consentRegion";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -87,7 +87,9 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 })
 
 
-const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex, injectConsentRegion]
+// `withConsentRegion` is intentionally absent here — it must run outside the
+// edge-cache boundary, so it wraps each returned response below instead.
+const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
 
 // TTL (seconds) for edge-cached SSR HTML. Kept in sync with the 1h upstream
 // API cache in src/utils/fetch.ts so a page's HTML and its data expire
@@ -214,7 +216,9 @@ export default {
         if (cacheKey) {
             const hit = await edgeCache().match(cacheKey)
             if (hit) {
-                return hit
+                // A hit short-circuits the middleware chain, so the region has
+                // to be injected here too — the cached body carries none.
+                return withConsentRegion(hit, request)
             }
         }
 
@@ -247,8 +251,11 @@ export default {
             // today), but strip `Set-Cookie` from the stored copy so a future
             // cookie can never quietly break caching, and guard the write so a
             // failed `put()` degrades to "not cached" instead of an unhandled
-            // rejection. The response returned to this (cache-miss) visitor is
-            // left untouched.
+            // rejection.
+            //
+            // Cloned *before* `withConsentRegion` below so the stored copy stays
+            // region-agnostic and keeps its `s-maxage`; each later visitor gets
+            // their own region injected on the hit path above.
             const toStore = response.clone()
             toStore.headers.delete("Set-Cookie")
             ctx.waitUntil(
@@ -261,9 +268,9 @@ export default {
                     }),
             )
 
-            return response
+            return withConsentRegion(response, request)
         }
 
-        return finalResponse
+        return withConsentRegion(finalResponse, request)
     },
 }
