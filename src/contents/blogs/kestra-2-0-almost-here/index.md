@@ -31,7 +31,7 @@ Will walks through all of it in the video below if you want to see it running ra
 
 ## Already tested. Now it meets your workloads.
 
-Every release candidate undergoes our QA across the full deployment matrix, and we run 2.0 in production on our own infrastructure, orchestrating our own workloads. Release candidates ship roughly every two weeks. You can [run the latest one today](https://github.com/kestra-io/kestra/releases).
+Every release candidate undergoes our QA across the full deployment matrix, and we run 2.0 in production on our own infrastructure, orchestrating our own workloads. Release candidates ship roughly every two weeks. You can [pull the v2.0.0-rc7 Docker image](https://hub.docker.com/layers/kestra/kestra/v2.0.0-rc7/images/sha256-e85ab0746d54f7d6c87cbc31fefa587caeb28f78b55ea81a89e893eadf3e6442) and run it today.
 
 What we cannot reproduce in any test lab is your stack. Your flows, plugins, deployment, and edge cases. That is the part only you can bring, and it is exactly the feedback that shapes what GA looks like.
 
@@ -50,7 +50,7 @@ What you get:
 
 More than 40 teams have already joined, running the current release candidate against production-shaped workloads. Their feedback has already changed what ships at GA, from migration docs tested by the program itself to fixes landing in RC after RC. The 2.0 that reaches everyone else will be partly their release. It can be partly yours.
 
-And if you would rather watch before you jump in, we are hosting [a series of pre-launch sessions](https://luma.com/kestra) in the coming weeks covering governance, scale, AI, and deployment.
+And if you would rather watch before you jump in, we are hosting a series of pre-launch sessions in the coming weeks covering governance, scale, AI, and deployment.
 
 ## What about migration?
 
@@ -62,6 +62,6 @@ We would rather tell you now than surprise you later, so we built the tooling fi
 
 Kestra exists because engineers adopted it, contributed to it, and trusted that the open-source core would remain open. A major version is exactly the moment when that trust is tested, and exactly the moment when we get to prove it holds.
 
-Kestra 2.0 is almost here. Grab [the latest RC](https://github.com/kestra-io/kestra/releases/tag/v2.0.0-rc7), join the [Early Adopter Program](/early-adopter-program), or tell us what you found on [Slack](/slack).
+Kestra 2.0 is almost here. Download [the latest release candidate, v2.0.0-rc7](https://github.com/kestra-io/kestra/releases/tag/v2.0.0-rc7), or [pull the same build from Docker Hub](https://hub.docker.com/layers/kestra/kestra/v2.0.0-rc7/images/sha256-e85ab0746d54f7d6c87cbc31fefa587caeb28f78b55ea81a89e893eadf3e6442). Then join the [Early Adopter Program](/early-adopter-program), or tell us what you found on [Slack](/slack).
 
 The engine is rebuilt. Help shape the future of orchestration.
