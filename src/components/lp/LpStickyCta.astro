@@ -37,6 +37,11 @@ import { LP_FORM_ANCHOR, LP_CTA_LABEL } from "~/contents/lp/shared"
         let heroVisible = true
         let formVisible = false
 
+        // Same visibility rule drives the desktop header CTA (LpLayout).
+        const headerCta = document.querySelector<HTMLElement>(
+            "[data-lp-header-cta]",
+        )
+
         const sync = () => {
             const show = !heroVisible && !formVisible
             // `visibility` (in the stylesheet) takes the link out of the tab
@@ -44,6 +49,8 @@ import { LP_FORM_ANCHOR, LP_CTA_LABEL } from "~/contents/lp/shared"
             // attribute, which would kill the slide-in transition.
             bar.classList.toggle("is-visible", show)
             bar.setAttribute("aria-hidden", show ? "false" : "true")
+            headerCta?.classList.toggle("is-visible", show)
+            headerCta?.setAttribute("aria-hidden", show ? "false" : "true")
         }
 
         const heroObserver = new IntersectionObserver(

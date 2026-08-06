@@ -36,6 +36,8 @@
 html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Anchor targets (#demo) land below the sticky header. */
+    scroll-padding-top: 5rem;
 }
 
 body {

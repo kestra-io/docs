@@ -106,14 +106,15 @@ export const LP_SHARED = {
         /** Button label — the single conversion CTA, never reworded. */
         cta: "Book a demo",
         /**
-         * Form-card heading + line. Consultative framing per the PR #5276
-         * review: the card sells the architecture conversation — where Kestra
-         * fits, leave with a roadmap — not a transactional "book a demo".
-         * Deliberately NOT the /demo page's Pains/Needs/Resolution structure.
+         * Form-card heading + line. Benchmark-aligned (Stonebranch, Redwood —
+         * 2026-08-06): the category says "Get/Schedule a Demo", nobody says
+         * "discuss", and the ad → card → button chain should carry ONE ask.
+         * "custom" carries the differentiator; "fits your architecture" is the
+         * direction Martin-Pierre validated.
          */
-        formTitle: "Discuss your orchestration strategy",
+        formTitle: "Get a custom demo",
         microcopy:
-            "30 minutes to see where Kestra fits your architecture — and leave with a roadmap for your orchestration strategy.",
+            "See where Kestra fits your architecture, on your use cases, not a generic script.",
     },
 
     trust: {
