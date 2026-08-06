@@ -1106,8 +1106,8 @@
         &.open {
             @supports (backdrop-filter: none) {
                 background-color: var(--ks-background-header);
-                backdrop-filter: $menu-backdrop-filter;
                 -webkit-backdrop-filter: $menu-backdrop-filter;
+                backdrop-filter: $menu-backdrop-filter;
                 transition: background-color 250ms ease-in-out;
             }
 
