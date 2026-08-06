@@ -15,11 +15,13 @@
  */
 import LpDemoForm from "./LpDemoForm.vue"
 import { LP_SHARED } from "~/contents/lp/shared"
-// The homepage's animated "Kestra Way" widget (SVG + particle canvases):
-// the Kestra card orchestrating Data / Infra / AI, with the wordmark baked in.
-// Self-contained (inline script, no imports) and a singleton — its script
-// queries the first `.kestra-widget` on the page, so never render it twice.
-import KestraWayAnimation from "~/components/home/assets/comparison/kestra-way-animated.astro"
+// The animated "Kestra Way" widget (SVG + particle canvases): the Kestra card
+// orchestrating Data / Infra / AI, wordmark baked in. `LpKestraWay` is a
+// dedicated copy of the homepage component — importing the original from a
+// second page tree makes the bundler drop its scoped CSS everywhere (see the
+// comment in LpKestraWay.astro). Singleton: its script binds to the first
+// `.kestra-widget` on the page, so never render it twice.
+import KestraWayAnimation from "./LpKestraWay.astro"
 
 interface Props {
     h1: string
@@ -118,9 +120,10 @@ const after =
         /* The widget is a fixed 554×396 card; keep the same footprint the
            homepage gives it, rounded and capped to the column. */
         :global(.lp-hero__widget) {
-            width: auto;
+            /* Explicit width: the widget's children are absolutely positioned,
+               so `width: auto` collapses to 0 inside this flex container. */
+            width: min(554px, 100%);
             height: 396px;
-            max-width: 100%;
             border-radius: 0.5rem;
         }
     }
