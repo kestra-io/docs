@@ -62,6 +62,6 @@ We would rather tell you now than surprise you later, so we built the tooling fi
 
 Kestra exists because engineers adopted it, contributed to it, and trusted that the open-source core would remain open. A major version is exactly the moment when that trust is tested, and exactly the moment when we get to prove it holds.
 
-Kestra 2.0 is almost here. Grab [the latest RC](https://github.com/kestra-io/kestra/releases/tag/v2.0.0-rc6), join the [Early Adopter Program](/early-adopter-program), or tell us what you found on [Slack](/slack).
+Kestra 2.0 is almost here. Grab [the latest RC](https://github.com/kestra-io/kestra/releases/tag/v2.0.0-rc7), join the [Early Adopter Program](/early-adopter-program), or tell us what you found on [Slack](/slack).
 
 The engine is rebuilt. Help shape the future of orchestration.
