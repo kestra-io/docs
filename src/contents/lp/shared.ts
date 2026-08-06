@@ -103,9 +103,17 @@ export const LP_PROOF_CASES = {
 
 export const LP_SHARED = {
     hero: {
+        /** Button label — the single conversion CTA, never reworded. */
         cta: "Book a demo",
+        /**
+         * Form-card heading + line. Consultative framing per the PR #5276
+         * review: the card sells the architecture conversation — where Kestra
+         * fits, leave with a roadmap — not a transactional "book a demo".
+         * Deliberately NOT the /demo page's Pains/Needs/Resolution structure.
+         */
+        formTitle: "Discuss your orchestration strategy",
         microcopy:
-            "30 minutes with an engineer — on your stack, not a sales deck.",
+            "30 minutes with an engineer — see where Kestra fits your architecture and leave with a roadmap, not a sales deck.",
     },
 
     trust: {
@@ -293,8 +301,8 @@ export const LP_SHARED = {
          */
         agenda: [
             "A Kestra engineer on the call, not an SDR.",
-            "30 minutes on your stack — bring a workflow you're stuck on and we'll build it live.",
-            "Straight answers on deployment, security and how we price.",
+            "Your architecture, your workflows — bring one you're stuck on and we'll build it live.",
+            "Straight answers on deployment, security, and pricing — and a roadmap for your stack.",
         ],
     },
 
