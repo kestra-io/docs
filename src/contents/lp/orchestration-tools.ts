@@ -71,7 +71,7 @@ const orchestrationTools: LpVariant = {
 
     finalCta: {
         header: "See it on your use cases",
-        sub: "Get a custom demo on your use cases — including the migration path from cron, Rundeck, or the legacy scheduler you run today.",
+        sub: "Including the migration path from cron, Rundeck, or the legacy scheduler you run today.",
     },
 
     logos: {

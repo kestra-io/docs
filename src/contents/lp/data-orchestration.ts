@@ -68,7 +68,7 @@ const dataOrchestration: LpVariant = {
 
     finalCta: {
         header: "See it on your pipelines",
-        sub: "Get a custom demo on your pipelines — your warehouse, your dbt models, your sources, and the ML steps around them.",
+        sub: "Your warehouse, your dbt models, your sources, and the ML steps around them.",
     },
 
     logos: {

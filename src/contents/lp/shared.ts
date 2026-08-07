@@ -106,14 +106,17 @@ export const LP_SHARED = {
         /** Button label — the single conversion CTA, never reworded. */
         cta: "Book a demo",
         /**
-         * Form-card heading + line. Benchmark-aligned (Stonebranch, Redwood —
-         * 2026-08-06): the category says "Get/Schedule a Demo", nobody says
-         * "discuss", and the ad → card → button chain should carry ONE ask.
-         * "custom" carries the differentiator; "fits your architecture" is the
-         * direction Martin-Pierre validated.
+         * Form-card copy — Martin's final wording (2026-08-07), verbatim: no
+         * "demo" anywhere (it is a strategy conversation, and the /demo page's
+         * own framing). Title + two-line sub + three checkmarked promises.
          */
-        formTitle: "Get a custom demo",
-        microcopy: "See where Kestra fits your architecture, on your use cases.",
+        formTitle: "Discuss your orchestration strategy",
+        microcopy: "Your Architecture is Unique. Your Challenges are Specific.",
+        formPoints: [
+            "We'll discuss your requirements for security, scale, and language-agnostic support.",
+            "See exactly how Kestra's architecture resolves the friction points in your stack.",
+            "Get a clear understanding of how Kestra fits with your platform, along with a roadmap to address your current orchestration needs.",
+        ],
     },
 
     trust: {
@@ -219,7 +222,7 @@ export const LP_SHARED = {
     /** Closing CTA after the FAQ — anchors back up to the form (#demo). */
     midCta: {
         header: "See this on your own stack",
-        body: "Get a demo tailored to your use cases and your architecture.",
+        body: "Let's talk about your architecture and your use cases.",
     },
 
 
@@ -315,20 +318,17 @@ export const LP_SHARED = {
     },
 
     /**
-     * Custom-demo framing per the PR #5276 review (2026-08-06): the earlier
-     * agenda promised "an engineer, not an SDR" and "we'll build it live" —
-     * neither is true of the actual sales call. Every line below is a product
-     * claim the demo can honour. The pricing line stays: pricing opacity is the
-     * #1 friction in the call corpus (×70 orgs) and there is still no figure
-     * anywhere on the page.
+     * Closing form section — same copy discipline as the hero card (Martin,
+     * 2026-08-07): no "demo" talk. The checkmarks are his three promises,
+     * verbatim; the header stays variant-specific.
      */
     finalCta: {
         header: "See it on your use cases",
-        sub: "Get a custom demo — event-driven orchestration, full observability, and governance across your data, infrastructure, and business processes.",
+        sub: "Your Architecture is Unique. Your Challenges are Specific.",
         agenda: [
-            "A demo tailored to your use cases and your architecture — not a generic script.",
-            "Deployment options — self-managed, air-gapped, or cloud — and the migration path from what you run today.",
-            "A clear view of how Kestra fits your platform, and straight answers on how we price.",
+            "We'll discuss your requirements for security, scale, and language-agnostic support.",
+            "See exactly how Kestra's architecture resolves the friction points in your stack.",
+            "Get a clear understanding of how Kestra fits with your platform, along with a roadmap to address your current orchestration needs.",
         ],
     },
 
