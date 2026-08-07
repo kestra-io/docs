@@ -297,8 +297,6 @@ We've also revamped the RBAC system, with improved handling of Superadmin access
 
 The new **Service Accounts UI page** allows you to create and manage [service accounts](../../docs/07.enterprise/03.auth/service-accounts/index.md), and we've introduced API tokens valid for a specific period of time, allowing you to grant programmatic access to Kestra for Users and Service Accounts. This feature is particularly useful for CI/CD with GitHub Actions and Terraform, as well as for using the API token in API calls.
 
-![service_account_create](../../docs/07.enterprise/03.auth/service-accounts/service_account_create.png)
-
 ---
 
 ## Other Enhancements
