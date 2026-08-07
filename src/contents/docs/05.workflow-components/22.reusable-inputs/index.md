@@ -71,7 +71,7 @@ The set expands into three inputs — `ad.username`, `ad.domain`, and `ad.passwo
 
 Reference each child input as `{{ inputs.<refId>.<childId> }}`, where `refId` is the `id` of the `REUSABLE_INPUTS` input in the flow and `childId` is the `id` from the set definition.
 
-```twig
+```
 {{ inputs.ad.username }}
 {{ inputs.ad.domain }}
 {{ inputs.ad.password }}
@@ -97,7 +97,6 @@ inputs:
     revision: 3
 ```
 
-Omit `revision` to always resolve the latest published revision when the execution starts.
 
 ### Use a set from a parent namespace
 

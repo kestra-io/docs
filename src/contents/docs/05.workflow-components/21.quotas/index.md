@@ -7,13 +7,9 @@ icon: /src/contents/docs/icons/flow.svg
 editions: ["EE", "Cloud"]
 ---
 
-Cap the number of executions created within a time window — at the flow, namespace, or tenant level.
+Cap the number of executions created within a time window — at the flow, namespace, or tenant level. This is different from [`concurrency`](../14.concurrency/index.md), which limits how many executions **run simultaneously**.
 
 Each quota specifies a `duration` (the time window), a `limit` (the maximum executions allowed in that window), and a `behavior` (what happens when the limit is exceeded).
-
-:::alert{type="info"}
-Quotas limit how many executions are **created** within a time period. This is different from [`concurrency`](../14.concurrency/index.md), which limits how many executions **run simultaneously**.
-:::
 
 :::alert{type="warning"}
 Quotas are an Enterprise Edition feature. Adding a `quotas` block to a flow on an Open Source installation causes a validation error at save time.
