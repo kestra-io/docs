@@ -229,7 +229,7 @@ Notes
 - `LIST`: search or browse triggers.
 - `UNLOCK`: unlock a locked trigger.
 - `RESTART`: restart a trigger.
-- `DISABLE` / `ENABLE`: disable or enable triggers (both operations currently check the `DISABLE` action).
+- `DISABLE` / `ENABLE`: disable or enable triggers (both operations check the `DISABLE` action).
 - `DELETE`: delete triggers.
 - `EXPORT`: export trigger configuration.
 - `BACKFILL`: create, pause, unpause, or delete a backfill on a schedule trigger.

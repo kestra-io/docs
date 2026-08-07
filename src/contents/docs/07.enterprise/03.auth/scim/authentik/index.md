@@ -7,9 +7,7 @@ editions: ["EE", "Cloud"]
 version: ">= 0.18.0"
 ---
 
-Sync Users and Groups from authentik to Kestra using SCIM.
-
-## authentik SCIM provisioning
+Sync users and groups from authentik to Kestra using SCIM.
 
 ## Prerequisites
 
@@ -29,18 +27,14 @@ Tenants are enabled by default. Please refer to the [Migration Guide](../../../.
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
-2. Click on the `Create` button in the top right corner of the page.
+1. Go to **Settings → Super Admin**, select your tenant from the sidebar, open **IAM**, and click the **SCIM Provisioning** tab.
+2. Click **+ Create**.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.
    - **Description**: Provide a brief description of the integration.
-   - **Provisioning Type**: Currently, only SCIM 2.0 is supported — leave the default selection and click `Save`.
+   - **Provisioning Type**: Only SCIM 2.0 is supported — leave the default selection and click **Save**.
 
-![scim1](./scim_authentik.png)
-
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate authentik with the SCIM integration in Kestra. Save those details, as they will be needed in the next steps.
-
-![scim2](./scim_authentik2.png)
+These steps generate a SCIM endpoint URL and a Secret Token. Save both — you will need them in the next steps.
 
 The endpoint should look as follows:
 
@@ -52,12 +46,10 @@ The Secret Token will be a long string (approximately 200 characters) used to au
 
 ### Enable or disable SCIM integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests to that integration endpoint will be rejected.
-
-![scim3](../okta/scim3.png)
+You can disable or remove the SCIM integration at any time. When disabled, all incoming requests to that endpoint are rejected.
 
 :::alert{type="info"}
-At first, you can disable the integration to configure your authentik SCIM integration, and then enable it once the configuration is complete.
+You can disable the integration while configuring authentik, then enable it once setup is complete.
 :::
 
 ### IAM role and service account
@@ -106,7 +98,7 @@ You can set a password for each authentik user to allow them to log in directly 
 
 ![scim-for-authentik-11](./authentik11.png)
 
-Once groups and users are created, they should be visible in the Kestra UI under the `IAM` → `Users` and `Groups` sections. It’s best to log in as the default admin user and attach the desired `Role` to each group to ensure that the users have the necessary permissions.
+Once groups and users are created, they are visible in the Kestra UI under **IAM → Users** and **Groups**. Log in as the default admin user and attach the desired role to each group to set the necessary permissions.
 
 ![scim-for-authentik-12](./authentik12.png)
 

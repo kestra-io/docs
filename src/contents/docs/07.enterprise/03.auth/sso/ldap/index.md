@@ -8,11 +8,9 @@ editions: ["EE"]
 version: "0.22.0"
 ---
 
-Enable LDAP authentication in Kestra to authenticate users against your existing directory and sync group memberships automatically.
+Enable LDAP authentication to authenticate users against your existing directory, sync group memberships, or both. You can also use LDAP solely for group sync while keeping an existing SSO provider for login.
 
 ## Configure LDAP authentication
-
-Enable LDAP authentication in Kestra to authenticate users against your existing directory, sync group memberships, or both. You can also use LDAP solely for group sync while keeping an existing SSO provider for login.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/lGdoZf2SZrE?si=uPe9e-oO6e7NgKMM" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -32,11 +30,9 @@ With Kestra, you can use an existing LDAP directory to authenticate users and sy
 
 LDAP is configured under the security context of your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md) file.
 
-[LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) supports `context`, `search`, and `groups` as core configuration properties supported out of the box. These properties define the connection context, user attribute mapping, and group filtering needed to synchronize users and their group memberships with Kestra.
+[LDAP with Micronaut](https://micronaut-projects.github.io/micronaut-security/4.11.3/guide/#ldap) supports `context`, `search`, and `groups` as core configuration properties. These define the connection context, user attribute mapping, and group filtering needed to synchronize users and their group memberships with Kestra.
 
-The `user-attributes` section maps LDAP attributes such as `givenName`, `sn`, and `mail` to the corresponding Kestra user properties (first name, last name, and email).
-
-Below are example configurations with Kestra-specific properties on top of the Micronaut configuration.
+The `user-attributes` section maps LDAP attributes such as `givenName`, `sn`, and `mail` to Kestra user properties (first name, last name, and email).
 
 The `mode` property controls how Kestra uses the LDAP connection:
 
@@ -210,16 +206,16 @@ If the LDAP server is unreachable or misconfigured, group sync fails silently �
 
 ## LDAP users in Kestra
 
-Once LDAP is configured, when a user logs into Kestra for the first time using LDAP authentication, their credentials are validated against the LDAP directory and a corresponding user is created in Kestra. If a matching account already exists, the user is authenticated using their LDAP credentials.
+On first login with LDAP, Kestra validates the user's credentials against the directory and creates a corresponding user account. If an account already exists, the user authenticates with their LDAP credentials.
 
-If they are a part of any groups specified in the directory, those groups will be added to Kestra. If the group already exists in Kestra, they will be automatically added. If a user is added to a group after their initial login, they must log out and log back in for the new group assignment to sync, as synchronization occurs only at login. Any user authenticated via LDAP will show `LDAP` as their Authentication method in the **IAM - Users** tab in Kestra.
+If the user belongs to any groups in the directory, those groups are created in Kestra if they don't exist, and the user is added to each. Group assignments sync only at login — if a user is added to a group in LDAP after their first login, they must log out and back in to pick up the new membership. Any user authenticated via LDAP shows `LDAP` in the **Login & API Tokens** column on the **IAM → Users** page.
 
 ![IAM Users tab showing LDAP as the authentication method for a user](./ldap-1.png)
 
 Any updates to a user and their group access on the LDAP server will update in Kestra at the next synchronization (typically at the next login).
 
 :::alert{type="info"}
-Users who log in via SSO with `GROUP_SYNC_ONLY` mode show their SSO provider as their Authentication method in the IAM Users tab, not `LDAP`. The LDAP connection is used only to resolve group memberships in the background.
+Users who log in via SSO with `GROUP_SYNC_ONLY` mode show their SSO provider in the **Login & API Tokens** column on the **IAM → Users** page, not `LDAP`. The LDAP connection is used only to resolve group memberships in the background.
 :::
 
 :::alert{type="warning"}

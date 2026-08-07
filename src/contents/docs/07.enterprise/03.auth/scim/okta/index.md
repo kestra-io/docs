@@ -9,8 +9,6 @@ version: ">= 0.18.0"
 
 Sync users and groups from Okta to Kestra using SCIM.
 
-## Okta SCIM provisioning
-
 ## Prerequisites
 
 - **Okta Account**: An account with administrative privileges is required to configure SCIM provisioning.
@@ -29,16 +27,14 @@ Tenants are enabled by default. Please refer to the [Migration Guide](../../../.
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
-2. Click on the `Create` button in the top right corner of the page.
+1. Go to **Settings → Super Admin**, select your tenant from the sidebar, open **IAM**, and click the **SCIM Provisioning** tab.
+2. Click **+ Create**.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.
    - **Description**: Provide a brief description of the integration.
-   - **Provisioning Type**: Currently, only SCIM 2.0 is supported — leave the default selection and click `Save`.
+   - **Provisioning Type**: Only SCIM 2.0 is supported — leave the default selection and click **Save**.
 
-![scim1](./scim1_okta.png)
-
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Okta with the SCIM integration in Kestra. Save those details as we will need them in the next steps.
+These steps generate a SCIM endpoint URL and a Secret Token. Save both — you will need them in the next steps.
 
 ![scim2](./scim2.png)
 
@@ -50,18 +46,15 @@ https://<your_kestra_host>/api/v1/<your_tenant>/integrations/integration_id/scim
 
 The Secret Token is a long string (approx. 200 characters) used to authenticate requests from Okta to Kestra.
 
-### Enable or Disable SCIM Integration
+### Enable or disable SCIM integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests for that integration endpoint will be rejected.
-
-![scim3](./scim3.png)
-
+You can disable or remove the SCIM integration at any time. When disabled, all incoming requests to that endpoint are rejected.
 
 :::alert{type="info"}
-At first, you can disable the integration to configure your Okta SCIM integration, and then enable it once the configuration is complete.
+You can disable the integration while configuring Okta, then enable it once setup is complete.
 :::
 
-### IAM Role and Service Account
+### IAM role and service account
 
 When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
 
@@ -78,57 +71,42 @@ When creating a new Provisioning Integration, Kestra will automatically create t
 Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`? This is because you cannot delete a user through our SCIM implementation. Users are global and SCIM provisioning is per tenant. When we receive a `DELETE` query for a user, we remove their tenant access but the user itself remains in the system.
 :::
 
----
-
 ## Okta SCIM setup
 
-1. **Create an App Integration**:
-   - Navigate to Okta Admin Console → Applications → Applications.
-   - Click on "Create App Integration" and then select:
-     - Sign-in Method: **OIDC - OpenID Connect**
-     - Application Type: Web Application
-   - Then on the next page:
-       - Give your application a name, e.g., `Kestra`
-       - Grant Type: Client acting on behalf of itself → Client Credentials → True
-       - Login
-         - Sign-in redirect URIs → http://<kestra-hostname>/oauth/callback/okta
-         - Sign-out redirect URIs → http://<kestra-hostname>/logout
-   - Once application is created, select it in the Applications view and take note of the client ID and client secret.
+1. Navigate to Okta Admin Console → Applications → Applications and click **Create App Integration**:
+   - Sign-in Method: **OIDC - OpenID Connect**
+   - Application Type: Web Application
+   - Name: `Kestra`
+   - Grant Type: Client Credentials
+   - Sign-in redirect URIs: `http://<kestra-hostname>/oauth/callback/okta`
+   - Sign-out redirect URIs: `http://<kestra-hostname>/logout`
+
+   Note the client ID and client secret once the application is created.
+
    ![okta1](./okta1.png)
 
-2. **Configure Okta in Kestra**:
-   - With the above client ID and secret, add the following in your Kestra Micronaut configuration:
+2. Add the client credentials to your Kestra Micronaut configuration, and enter the SCIM endpoint URL and token provided by Kestra:
+
     ```yaml
-            micronaut:
-              security:
-                oauth2:
-                  enabled: true
-                  clients:
-                    okta:
-                      client-id: "CLIENT_ID"
-                      client-secret: "CLIENT-SECRET"
-                      openid:
-                        issuer: "https://{okta-account}.okta.com/"
+    micronaut:
+      security:
+        oauth2:
+          enabled: true
+          clients:
+            okta:
+              client-id: “CLIENT_ID”
+              client-secret: “CLIENT-SECRET”
+              openid:
+                issuer: “https://{okta-account}.okta.com/”
     ```
-   - Enter the SCIM endpoint URL and API token provided by Kestra.
 
-3. **Configure SCIM 2.0 in Okta**:
-   - In Okta, navigate to Applications → Applications → Browse App Catalog
-   - Search for SCIM 2.0
-   - Select SCIM 2.0 Test App (OAuth Bearer Token)
-   - in Sign-in options select Secure Web Authentication → user sets username/password
-   - Click Done
-   - Select the integration you have just created, then enter the `Provisioning` tab.
-   - Fill in the SCIM 2.0 Base URL field with the endpoint URL you obtained from Kestra. Enter the Secret Token generated in Kestra into the `OAuth Bearer Token` field.
-   - Finally, click `Test API Credentials` to verify the connection.
-    ![okta2](./okta2.png)
+3. In Okta, navigate to **Applications → Applications → Browse App Catalog**, search for **SCIM 2.0**, and select **SCIM 2.0 Test App (OAuth Bearer Token)**. In Sign-in options, select **Secure Web Authentication**, then click **Done**. Select the new integration, open the **Provisioning** tab, and enter the Kestra SCIM endpoint URL in the Base URL field and the Secret Token in the **OAuth Bearer Token** field. Click **Test API Credentials** to verify.
 
-4. **Map Attributes**:
-   - Select “Push Groups” and choose the Groups you wish to push to Kestra.
-   - Perform a test to ensure that the mappings are correct and data is syncing properly.
+   ![okta2](./okta2.png)
 
-5. **Enable Provisioning**:
-   - Enable the provisioning integration toggle in the Kestra UI to begin automatic synchronization of users and groups from Okta to Kestra.
+4. Select **Push Groups** and choose the groups to sync to Kestra. Run a test to verify the mappings.
+
+5. Enable the provisioning integration toggle in the Kestra UI to begin automatic synchronization.
 
 ## Additional resources
 

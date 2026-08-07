@@ -6,25 +6,22 @@ sidebarTitle: authentik SSO
 icon: /src/contents/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
-Set up authentik SSO to manage authentication for users.
 
-## Configure authentik SSO
+Set up authentik as an OIDC provider for Kestra authentication. In conjunction with SSO, see the [authentik SCIM provisioning guide](../../scim/authentik/index.md).
 
-In conjunction with SSO, check out the [authentik SCIM provisioning guide](../../scim/authentik/index.md).
+## Install authentik
 
-### Install authentik
-
-Authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
+authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
 
 ![scim-for-authentik-user](./authentik1.png)
 
-### Create Application and SSO Provider in authentik
+## Create application and SSO provider in authentik
 
 On the left-hand side, select **Applications → Applications**. For simplicity, we’ll use the **Create with Wizard** button, as this will create both an application and a provider.
 
 ![scim-for-authentik-2](./authentik2.png)
 
-On the **Application Details** screen, fill in the application `name` and `slug`. Set both here to `kestra` and click `Next`.
+On the **Application Details** screen, fill in the application **Name** and **Slug**. Set both to `kestra` and click **Next**.
 
 ![scim-for-authentik-3](./authentik3.png)
 
@@ -36,14 +33,14 @@ On the **Provider Configuration** screen:
 1. In the **Authentication flow** field, select “default-authentication-flow (Welcome to authentik!)”.
 2. In the **Authorization flow** field, select “default-provider-authorization-explicit-consent (Authorize Application)”.
 ![scim-for-authentik-5](./authentik5.png)
-3. Keep the Client type as **Confidential**. Under the **Redirect URIs/Origins (RegEx)**, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and then `Submit` the Application.
+3. Keep the Client type as **Confidential**. Under the **Redirect URIs/Origins (RegEx)**, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and click **Submit**.
 ![scim-for-authentik-6](./authentik6.png)
 
-Note the `Client ID` and `Client Secret` as you will need these to configure Kestra in the next step.
+Note the `Client ID` and `Client Secret` for the next step.
 
-### Configure Authentik SSO in Kestra Settings
+## Configure authentik SSO in Kestra
 
-With the above Client ID and Secret, add the following in the `micronaut` configuration section:
+Add the following to your `micronaut` configuration:
 
 ```yaml
         micronaut:
@@ -58,11 +55,11 @@ With the above Client ID and Secret, add the following in the `micronaut` config
                     issuer: "http://localhost:9000/application/o/kestra/"
 ```
 
-You may need to adjust the above `issuer` URL if you named your application something other than `kestra`. Make sure to update that URL to match your application name `http://localhost:9000/application/o/<application_name>/`.
+You may need to adjust the above `issuer` URL if you named your application something other than `kestra`. Update that URL to match your application name: `http://localhost:9000/application/o/<application_name>/`.
 
-### Configure a Default Role for your SSO users in Kestra Settings
+## Configure a default role for SSO users
 
-To ensure that your SSO users have initial permissions within the Kestra UI, set up a default role. Add the following to the `kestra.security` section of your configuration:
+SSO users need a default role for initial access in Kestra. Add the following to `kestra.security`:
 
 ```yaml
 kestra:

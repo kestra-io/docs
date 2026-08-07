@@ -7,21 +7,13 @@ icon: /src/contents/docs/icons/concepts.svg
 editions: ["EE"]
 ---
 
-Authenticate to external systems securely.
-
-## Credentials – Server to Server authentication for Flows
-
-Credentials are a reusable way to configure server-to-server authentication credentials once and use it across tasks.
-
-Instead of embedding token minting/refresh logic in each plugin, Kestra can mint and refresh access tokens at runtime and you reference them in your workflow with a simple expression.
+Credentials let you configure server-to-server authentication once and reuse it across tasks. Instead of embedding token minting and refresh logic in each plugin, Kestra handles this at runtime and you reference the current token with a simple expression.
 
 Many APIs are moving away from long-lived static API keys toward **short-lived tokens** (e.g. OAuth 2.0), which improves security and simplifies rotation and revocation.
 
 For simple static values (API keys, usernames/passwords), use [Secrets](../../../06.concepts/04.secret/index.md) directly.
 
-Sensitive material used by a credential (client secrets, private keys, certificates) is referenced via [Secrets](../../../06.concepts/04.secret/index.md) so it can be stored in external or read-only secret managers (e.g., [Secrets Manager](../../02.governance/secrets-manager/index.md) or [Read-only Secrets](../../02.governance/secrets-manager/index.md)) and never appears in plain text in the credential config.
-
----
+Sensitive material used by a credential (client secrets, private keys, certificates) is referenced via [Secrets](../../../06.concepts/04.secret/index.md) so it can be stored in an external secret manager and never appears in plain text in the credential config.
 
 ## Availability and scope
 
@@ -31,8 +23,6 @@ Credentials can be accessed and created at:
 - **Namespace level** (scoped to a single namespace)
 
 During setup, Kestra lets you **test token retrieval** from the UI to ensure your configuration is correct.
-
----
 
 ## Use a credential in a flow
 
@@ -56,8 +46,6 @@ tasks:
 
 For non-sensitive configuration (e.g., hostnames, table names, feature flags), prefer [Variables](../../../05.workflow-components/04.variables/index.md).
 
----
-
 ## Credential types
 
 Credentials cover common server-to-server authentication patterns, including:
@@ -69,8 +57,6 @@ Credentials cover common server-to-server authentication patterns, including:
 
 Credentials can reference sensitive inputs via existing [Secrets](../../../06.concepts/04.secret/index.md) (e.g., client secrets, private keys, certificates), including secrets stored in an external or [read-only secrets manager](../../02.governance/secrets-manager/index.md).
 
----
-
 ## Example: Google service account with JWT Bearer
 
 The following example shows how to use a Google Cloud service account with an OAuth2 JWT Bearer credential in Kestra.
@@ -79,7 +65,7 @@ The following example shows how to use a Google Cloud service account with an OA
 
 In Google Cloud:
 
-1. Go to **IAM & Admin** -> **Service Accounts**.
+1. Go to **IAM & Admin → Service Accounts**.
 2. Create a new service account and grant it only the roles required for your use case.
 3. Open the service account, go to **Keys**, and create a new **JSON** key.
 4. Download the JSON key file.
@@ -158,8 +144,6 @@ tasks:
 
 If the service account has the required permissions on the target project, the request should return `200` and the project metadata in the response body.
 
----
-
 ## Token lifecycle and caching
 
 - Tokens are **not persisted**.
@@ -171,10 +155,8 @@ If the service account has the required permissions on the target project, the r
 Avoid storing long-lived secrets directly in flow YAML. Prefer credentials + secrets so Kestra can handle token minting/refresh and reduce exposure risk.
 :::
 
----
-
 ## Credential hygiene
 
-- **Least privilege:** scope credentials to the smallest set of permissions required.
-- **Rotate regularly:** prefer short-lived tokens where possible; rotate long-lived keys.
-- **Avoid leaking values:** don’t print tokens or derived values (e.g., substrings) to logs; see [Best Practices for Secrets](../../../14.best-practices/9.secrets-management/index.md).
+- Scope credentials to the smallest set of permissions required.
+- Prefer short-lived tokens where possible; rotate long-lived keys.
+- Don’t print tokens or derived values to logs — see [Best Practices for Secrets](../../../14.best-practices/9.secrets-management/index.md).

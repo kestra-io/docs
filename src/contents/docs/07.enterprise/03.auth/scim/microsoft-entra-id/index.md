@@ -9,8 +9,6 @@ version: ">= 0.18.0"
 
 Sync users and groups from Microsoft Entra ID to Kestra using SCIM.
 
-## Microsoft Entra ID SCIM provisioning
-
 ## Prerequisites
 
 - **Microsoft Entra ID Account**: An account with administrative privileges is required to configure SCIM provisioning.
@@ -25,16 +23,14 @@ kestra:
 
 ## Kestra SCIM setup: create a new provisioning integration
 
-1. In the Kestra UI, navigate to the `Tenant` → `IAM` → `SCIM Provisioning` page.
-2. Click on the `Create` button in the top right corner of the page.
+1. Go to **Settings → Super Admin**, select your tenant from the sidebar, open **IAM**, and click the **SCIM Provisioning** tab.
+2. Click **+ Create**.
 3. Fill in the following fields:
    - **Name**: Enter a name for the provisioning integration.
    - **Description**: Provide a brief description of the integration.
-   - **Provisioning Type**: currently, we only support SCIM 2.0 — leave the default selection and click `Save`.
+   - **Provisioning Type**: Only SCIM 2.0 is supported — leave the default selection and click **Save**.
 
-![scim1](./scim1.png)
-
-The above steps will generate a SCIM endpoint URL and a Secret Token that you will use to authenticate Microsoft Entra ID with the SCIM integration in Kestra. Save those details as they will be needed in the next steps.
+These steps generate a SCIM endpoint URL and a Secret Token. Save both — you will need them in the next steps.
 
 ![scim2](../okta/scim2.png)
 
@@ -46,18 +42,15 @@ https://<your_kestra_host>/api/v1/<your_tenant>/integrations/integration_id/scim
 
 The Secret Token is a long string (approx. 200 characters) used to authenticate requests from Microsoft Entra ID to Kestra.
 
-### Enable or Disable SCIM Integration
+### Enable or disable SCIM integration
 
-Note that you can disable or completely remove the SCIM Integration at any time. When an integration is disabled, all incoming requests to that integration endpoint will be rejected.
-
-![scim3](../okta/scim3.png)
-
+You can disable or remove the SCIM integration at any time. When disabled, all incoming requests to that endpoint are rejected.
 
 :::alert{type="info"}
-At first, you can disable the integration to configure your Microsoft Entra ID integration in the Azure portal, and then enable it once the configuration is complete.
+You can disable the integration while configuring Entra ID, then enable it once setup is complete.
 :::
 
-### IAM Role and Service Account
+### IAM role and service account
 
 When creating a new Provisioning Integration, Kestra will automatically create two additional objects:
 
@@ -76,25 +69,29 @@ Why the `SCIMProvisioner` role doesn't have the `DELETE` permission for `USERS`?
 
 ## Microsoft Entra ID SCIM setup
 
-### 1. Register Kestra as an Enterprise Application:
-   - Navigate to Microsoft Entra ID → Enterprise Applications.
-   - Click on the `+ New application` button to create a new custom application. You can name the app "KestraSCIM" or any other relevant name.
+### 1. Register Kestra as an enterprise application
+
+- Navigate to **Microsoft Entra ID → Enterprise Applications**.
+- Click **+ New application** to create a custom application. Name it "KestraSCIM" or any relevant name.
+
   ![scim6](./scim6.png)
 
-### 2. Configure SCIM Provisioning:
-   - Go to the newly created Kestra application.
-   - Select "Provisioning" and set the Provisioning Mode to "Automatic".
-   - Enter the SCIM endpoint URL and the Secret Token provided by Kestra. Paste Kestra's SCIM endpoint URL into the Tenant URL field and the Secret Token into the Secret Token field.
-   - Finally, click on `Test Connection` and on the `Save` button.
+### 2. Configure SCIM provisioning
+
+- Go to the newly created Kestra application.
+- Select **Provisioning** and set the Provisioning Mode to **Automatic**.
+- Enter the SCIM endpoint URL and Secret Token from Kestra: paste the SCIM endpoint into the **Tenant URL** field and the token into the **Secret Token** field.
+- Click **Test Connection**, then **Save**.
+
   ![scim7](./scim7.png)
 
-### 3. Map User and Group Attributes:
+### 3. Map user and group attributes
 
-After entering and saving the **Admin Credentials** for the SCIM provisioning connection in Microsoft Entra ID (i.e., the Tenant URL and Secret Token), Azure will **enable the `Mappings` section** under the Provisioning settings.
+After entering and saving the **Admin Credentials** for the SCIM provisioning connection in Microsoft Entra ID — the Tenant URL and Secret Token — Azure will **enable the `Mappings` section** under the Provisioning settings.
 
 The **Mappings** section allows you to define how user and group attributes should flow between Microsoft Entra ID and Kestra.
 
-#### SCIM Schema Support in Kestra
+#### SCIM schema support in Kestra
 Kestra adheres to the [SCIM 2.0 specification (RFC 7643)](https://datatracker.ietf.org/doc/html/rfc7643#section-4), specifically supporting the following resource types:
 
 - **User Resource**:
@@ -104,7 +101,7 @@ Kestra adheres to the [SCIM 2.0 specification (RFC 7643)](https://datatracker.ie
 
 #### Retrieve supported schemas
 
-Kestra exposes SCIM resource schemas via its `/Schemas` endpoint exposed via the SCIM URL. This allows Microsoft Entra ID to discover the required attributes automatically.
+Kestra exposes SCIM resource schemas via its `/Schemas` endpoint at the SCIM URL. This allows Microsoft Entra ID to discover the required attributes automatically.
 
 ```plaintext
 GET /api/v1/<tenant>/integrations/<integration_id>/scim/v2/Schemas
@@ -116,7 +113,7 @@ Replace `<tenant>` with your actual tenant, and `<integration_id>` with your act
 
 This endpoint returns a list of supported schemas and their attributes. Use it as a reference when configuring attribute mappings in Entra ID.
 
-#### Configure user and group mapping
+#### Configure user and group mappings
 
 To configure mappings:
 
@@ -136,15 +133,16 @@ To configure mappings:
 By default, Azure will pre-populate the mapping with many Microsoft Entra ID attributes. You may need to **remove or simplify** some of these mappings if synchronization issues occur with users or groups in Kestra.
 :::
 
-#### Test the Configuration
+#### Test the configuration
 After mappings are configured:
 
 - Trigger a **manual provisioning cycle** from the **Provisioning** tab.
 - Verify that **users and groups** are correctly created or updated in Kestra.
 - Review **provisioning logs** in Entra ID for any errors or warnings.
 
-### 4. Enable Provisioning:
-   - Once everything is configured, you can enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID to Kestra.
+### 4. Enable provisioning
+
+Enable the provisioning integration toggle in the Kestra UI to start syncing users and groups from Microsoft Entra ID.
 
 ## Additional resources
 
