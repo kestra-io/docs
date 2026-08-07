@@ -8,50 +8,33 @@ version: ">= 0.10.0"
 docId: blueprints
 ---
 
-Ready-to-use examples designed to kickstart your workflow.
+Blueprints are a searchable catalog of validated, documented flow examples. Each blueprint combines code and documentation with tags for discoverability. Click **Use** to copy any blueprint into your editor and customize it from there.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/5mvYVLKLzGk?si=Ga4ndYv_pI3NIlLK" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Blueprints are a curated, organized, and searchable catalog of ready-to-use examples designed to help you kickstart your workflow.
-
-Each Blueprint combines code and documentation and can be assigned several tags for organization and discoverability.
-
-All Blueprints are validated and documented. You can easily customize and integrate them into your new or existing flows with a single click of **Use**.
-
-To see more, check out the [Blueprints library](/blueprints).
+Browse the full catalog at the [Blueprints library](/blueprints).
 
 :::alert{type="info"}
 The [Kestra MCP server](../../ai-tools/kestra-mcp-resources/index.md) exposes the blueprints library directly to AI coding agents like Claude Code and Cursor. Ask your agent to find a blueprint by use case and it will retrieve the full flow YAML for you.
 :::
 
-![Blueprint](./blueprints.png)
+![The Blueprints catalog showing flow blueprints filtered by tag with Use buttons on each card](./blueprints.png)
 
 ## Community blueprints
 
-We refer to all Blueprints available in the open-source product as Community Blueprints, as they are guided by the community feedback and represent common usage patterns we see among open-source users and contributors.
+Community blueprints are available in the open-source product and reflect common workflow patterns across the Kestra user base. All blueprints are verified by the Kestra team. To contribute a new blueprint or suggest improvements, use the [GitHub issue template](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=blueprint&projects=&template=blueprint.yml).
 
-Community Blueprints are particularly helpful when you're getting started with a new use case, integration, or with Kestra in general because they reflect fairly standardized workflow patterns. All Blueprints are verified by the Kestra team, but everyone is welcome to contribute new Blueprints or suggest improvements to the existing ones using [the following GitHub issue template](https://github.com/kestra-io/kestra/issues/new?assignees=&labels=blueprint&projects=&template=blueprint.yml).
+### Where to find blueprints
 
-### Where to find Blueprints
+Blueprints are available from the **Blueprints** item in the left sidebar. Each blueprint shows its full YAML and topology before you commit — click **Open in Edit Flow** to load it directly into the editor.
 
-Blueprints are accessible from two places in the UI:
+![Blueprint detail view showing the flow YAML alongside the topology graph, with an Open in Edit Flow button](./blueprints3.png)
 
-1. The left navigation sidebar
+### How to find the right blueprint
 
-![Blueprint UI](./blueprints2.png)
-
-2. A dedicated tab in the flow code editor named **Blueprints**, showing your source code and Blueprints side by side.
-
-![Flow Editor Blueprints](./blueprints3.png)
-
-### How to find the right Blueprint
-
-Once you are on the Blueprints page, you can:
-
-- **Search** Blueprints for a specific use case or integration, e.g., Snowflake, BigQuery, DuckDB, Slack, ETL, ELT, Pandas, GPU, Git, Python, Docker, Redis, MongoDB, dbt, Airbyte, Fivetran, etc.
-- **Filter** by one or multiple tags, e.g., filter for Docker to see various ways to run containers in your flow, or filter for Notifications to see several options for configuring alerts on success or failure.
+From the Blueprints page, **search** by use case or integration (Snowflake, DuckDB, Slack, dbt, Docker, etc.) or **filter** by tag to narrow results.
 
 ## Custom blueprints
 
@@ -59,4 +42,4 @@ Once you are on the Blueprints page, you can:
 This feature requires the [Enterprise Edition](../../07.enterprise/index.mdx).
 :::
 
-Apart from Community Blueprints, you can create custom Blueprints available only to your organization. You can use them to share, centralize, and document commonly used workflows in your team. Read more in the [Custom Blueprints](../../07.enterprise/02.governance/custom-blueprints/index.md) documentation.
+Custom Blueprints are private blueprints available only to your organization. Beyond static templates, you can create **Templated Blueprints** — form-driven blueprints that generate complete flows from user inputs using Pebble-style templating, without requiring users to edit YAML directly. Custom Blueprints can also be version-controlled with Git using the `PushBlueprints` and `SyncBlueprints` tasks. See the [Custom Blueprints](../../07.enterprise/02.governance/custom-blueprints/index.md) documentation for details.
