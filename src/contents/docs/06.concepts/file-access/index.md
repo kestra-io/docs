@@ -7,11 +7,9 @@ icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.24.0"
 ---
 
-Access local and namespace files in Kestra with universal file protocol.
+Kestra supports a universal file protocol for referencing local and [namespace files](../02.namespace-files/index.md) in your flows using consistent URI schemes.
 
-Kestra supports a universal file protocol that simplifies how to reference files in your flows. This protocol provides more consistent and flexible handling of local and [namespace files](../02.namespace-files/index.md) in your flows.
-
-You can still reference files inline by defining the file name and its content directly in YAML, but you can now also use `nsfile:///` and `file:///` URIs to reference files stored as namespace files or on the host machine. The example flow below shows a task demonstrating the various file access methods:
+You can reference files inline in YAML, or use `nsfile:///` and `file:///` URIs to point to namespace files or files on the host machine. The flow below demonstrates all three approaches:
 
 ```yaml
 id: protocol
@@ -41,9 +39,9 @@ tasks:
       hello.py: nsfile://company/scripts/hello.py
 ```
 
-### Allowed paths
+## Allowed paths
 
-Note that to use the `file:///` scheme, you will need to bind-mount the host directory containing the files into the Docker container running Kestra, as well as set the `kestra.local-files.allowed-paths` configuration property to allow access to that directory. For example, if you want to read files from the `scripts` folder on your host machine, you can add the following to your `kestra.yml` configuration:
+To use the `file:///` scheme, bind-mount the host directory into the Kestra container and set the `kestra.local-files.allowed-paths` configuration property. For example, to allow access to a `scripts` folder:
 
 ```yaml
   kestra:
@@ -65,19 +63,22 @@ If you see the following error:
 java.lang.SecurityException: The path /scripts/hello.py is not authorized. Only files inside the working directory are allowed by default, other paths must be allowed either globally inside the Kestra configuration using the `kestra.local-files.allowed-paths` property, or by plugin using the `allowed-paths` plugin configuration.`.
 ```
 
-It means that you have not configured the allowed paths correctly. Ensure that the host directory is bind-mounted into the container and that the `kestra.local-files.allowed-paths` configuration property includes the path to that directory.
+This means the allowed paths are not configured correctly. Confirm that the host directory is bind-mounted into the container and that `kestra.local-files.allowed-paths` includes that path.
 
-### Protocol reference
+## Protocol reference
 
-Here is a reference of the new file protocol:
-1. Use `file:///path/to/file.txt` to reference local files on the host machine from explicitly allowed paths.
-2. Use `nsfile:///path/to/file.txt` to reference files stored in the current namespace. Note that this protocol uses three slashes after `nsfile://` to indicate that you are referencing a file in the current namespace. The namespace inheritance doesn't apply here, i.e., if you specify `nsfile:///path/to/file.txt` in a flow from `company.team` namespace and Kestra can't find it there, Kestra won't look for that file in the parent namespace, i.e., the `company` namespace, unless you explicitly specify the parent namespace in the path, e.g., `nsfile://company/path/to/file.txt`.
-3. Use `nsfile://your.infinitely.nested.namespace/path/to/file.txt` to reference files stored in another namespace, provided that the current namespace has permission to access it. Note how this protocol uses two slashes after `nsfile://`, followed by the namespace name, to indicate that you are referencing a file in a different namespace. Under the hood, Kestra EE uses the Allowed Namespaces concept to check permissions to read that file.
-4. Kestra also uses the `kestra:///` scheme for internal storage files. If you need to reference files stored in the internal storage, you can use the `kestra:///path/to/file.txt` protocol.
+| Scheme | Purpose |
+|--------|---------|
+| `file:///path/to/file.txt` | Local file on the host machine from an explicitly allowed path |
+| `nsfile:///path/to/file.txt` | File in the current namespace (three slashes; no namespace inheritance) |
+| `nsfile://other.namespace/path/to/file.txt` | File in another namespace (two slashes + namespace name); requires that namespace to be allowed |
+| `kestra:///path/to/file.txt` | File in Kestra's internal storage |
 
-### Usage with `read()` function
+`nsfile:///` does not inherit from parent namespaces. If `nsfile:///scripts/hello.py` is not found in `company.team`, Kestra will not fall back to `company`. To reference a parent namespace explicitly, use `nsfile://company/scripts/hello.py`.
 
-You can also use the `read()` function to read namespace files or local files in tasks that expect content rather than a path to a script or SQL query. For example, if you want to read a SQL query from a namespace file, you can use the `read()` function as follows:
+## Usage with `read()`
+
+Use `read()` in tasks that expect file content rather than a path — for example, to load a SQL query from a namespace file:
 
 ```yaml
 id: query
@@ -88,7 +89,7 @@ tasks:
     type: io.kestra.plugin.jdbc.duckdb.Query
     sql: "{{ read('nsfile:///query.sql') }}"
 ```
-For local files on the host, you can use the `file:///` scheme:
+For local files on the host:
 
 ```yaml
 id: query
@@ -99,9 +100,9 @@ tasks:
     sql: "{{ read('file:///query.sql') }}"
 ```
 
-### Namespace files as default FILE-type inputs
+## Namespace files as default FILE-type inputs
 
-One of the benefits of this protocol is that you can reference Namespace Files as default FILE-type inputs in your flows. See the example below, which reads a local file, `hello.txt`, from the `demo` namespace and logs its content.
+You can reference a namespace file as the default value for a `FILE`-type input. This flow reads `hello.txt` from the `demo` namespace and logs its content:
 
 ```yaml
 id: file_input

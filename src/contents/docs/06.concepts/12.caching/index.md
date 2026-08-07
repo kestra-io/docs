@@ -6,13 +6,11 @@ sidebarTitle: Caching
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Manage file caching inside Kestra.
-
-Kestra provides file caching, which is especially useful when you work with sizable package dependencies that don't change often.
+Kestra can cache files between executions using the `WorkingDirectory` task — useful for large package dependencies that don't change often.
 
 ## Cache files in a `WorkingDirectory` task
 
-The file caching functionality on the `WorkingDirectory` task allows you to cache a subset of files to speed up your workflow execution. This is especially useful when you work with sizable package dependencies that don't change often.
+Add a `cache` block to a `WorkingDirectory` task to cache a subset of files across executions.
 
 :::alert{type="info"}
 Kestra can only cache files installed or created as part of the script tasks if the script uses a `PROCESS` runner. If the script uses a `DOCKER` runner, the files will not be cached and the `WorkingDirectory` task will [throw an error](https://github.com/kestra-io/kestra/issues/2233): `Unable to execute WorkingDirectory post actions`.
@@ -20,9 +18,7 @@ Kestra can only cache files installed or created as part of the script tasks if 
 
 ### Use cases for file caching
 
-The file caching is useful if you want to install some `pip` or `npm` packages before running your script. You can cache the `node_modules` or Python `venv` folder to avoid re-installing the dependencies on each run.
-
-To do that, add a `cache` to your `WorkingDirectory` task. The `cache` property accepts a list of glob `patterns` to match files to cache. The cache will be automatically invalidated after a specified time-to-live using the `ttl` property accepting a duration.
+Cache `node_modules` or a Python `venv` folder to avoid reinstalling dependencies on each run. The `cache` property accepts a list of glob `patterns` and a `ttl` duration after which the cache is invalidated.
 
 ```yaml
 id: caching_files
@@ -37,13 +33,13 @@ tasks:
       ttl: PT1H
 ```
 
-### How does it work under the hood
+### How caching works
 
-Kestra packages the files that need to be cached and stores them in the internal storage. When the task is executed again, the cached files are retrieved, initializing the working directory with their contents.
+Kestra packages the cached files and stores them in internal storage. On the next run, those files are retrieved and used to initialize the working directory before the task executes.
 
 ### Node.js example
 
-Below is an example of a flow that installs the `colors` package before running a Node.js script. The `node_modules` folder is cached for one hour.
+This flow installs the `colors` package before running a Node.js script and caches `node_modules` for one hour.
 
 ```yaml
 id: node_cached_dependencies
@@ -68,7 +64,7 @@ tasks:
 
 ### Python example
 
-Below is an example of a flow that installs the `pandas` package before running a Python script. The `deps` folder is cached for one day.
+This flow installs `pandas` into a `deps` folder and caches it for one day.
 
 ```yaml
 id: python_cached_dependencies
@@ -97,13 +93,8 @@ tasks:
 
 ### How to invalidate the cache
 
-Below are the details how to invalidate the cache:
-- After the first run, the files are cached
-- The next time the task is executed:
-  - If the `ttl` didn't pass, then the files are retrieved from cache.
-  - If the `ttl` passed, then the cache is invalidated and no files will be retrieved from cache; because cache is no longer present, the `npm install` command from the `beforeCommands` property will take a bit longer to execute.
-- If you edit the task and change the `ttl` to:
-  - a longer duration e.g., `PT5H` — the files will be cached for five hours using the new `ttl` duration
-  - a shorter duration e.g., `PT5M` — the cache will be invalidated after five minutes using the new `ttl` duration.
+- After the first run, the files are cached.
+- On subsequent runs, if the `ttl` has not elapsed, the cached files are restored. If the `ttl` has elapsed, the cache is cleared and `beforeCommands` (e.g. `npm install`) runs in full.
+- Changing the `ttl` takes effect on the next run: a longer value extends the cache lifetime; a shorter value may cause the cache to expire sooner.
 
-The `ttl` is evaluated at runtime. If the most recently set `ttl` duration has passed as compared to the last task run execution date, the cache is invalidated and the files are no longer retrieved from cache.
+The `ttl` is evaluated at runtime against the last task execution date.

@@ -6,158 +6,52 @@ sidebarTitle: Replay
 icon: /src/contents/docs/icons/dev.svg
 ---
 
-Replay allows you to re-run a workflow execution from any chosen task run.
+Replay re-runs a workflow execution from any chosen task — skipping tasks that already completed successfully. Use it to recover from failures without reprocessing upstream work, or to iterate on a specific task without re-running the full flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/RvNc3gLXMEs?si=sBuEo3yPfJvi4K48" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-By using Replay, you can re-run a workflow execution from any selected task run. To do that, open the **Gantt** tab of any execution (not just failed ones) and click the task run to re-run it. You can also re-run a single execution or bulk executions from the **Executions** page with the option to use the latest revision.
+To replay from a specific task, open the **Gantt** or **Logs** tab of any execution and use the three-dot menu on the task run. You can also replay a single execution or bulk-replay from the **Executions** page, with the option to use the latest flow revision.
 
-![replay6](./replay6.png)
+## Example: fixing a failed task and replaying
 
-Replays are extremely useful for iterative development and reprocessing data.
-
-Imagine the following scenario: you have a workflow that extracts a large compressed CSV dataset and you want to transform it into a Parquet file with a specific schema.
+Consider a flow that downloads a file and then validates its schema:
 
 ```yaml
-id: divvy_tripdata
+id: replay_demo
 namespace: company.team
 
-variables:
-  file_id: "{{ execution.startDate | dateAdd(-3, 'MONTHS') | date('yyyyMM') }}"
-
 tasks:
-  - id: get_zipfile
+  - id: download
     type: io.kestra.plugin.core.http.Download
-    uri: "https://divvy-tripdata.s3.amazonaws.com/{{ render(vars.file_id) }}-divvy-tripdata.zip"
+    uri: https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv
 
-  - id: unzip
-    type: io.kestra.plugin.compress.ArchiveDecompress
-    algorithm: ZIP
-    from: "{{ outputs.get_zipfile.uri }}"
+  - id: validate
+    type: io.kestra.plugin.core.execution.Assert
+    errorMessage: "Schema validation failed — unexpected number of columns"
+    conditions:
+      - "{{ 8 >= 5 }}"
 
-  - id: convert
-    type: io.kestra.plugin.serdes.csv.CsvToIon
-    from: "{{outputs.unzip.files[render(vars.file_id) ~ '-divvy-tripdata.csv']}}"
-
-  - id: to_parquet
-    type: io.kestra.plugin.serdes.avro.IonToAvro # render(vars.file_id)
-    from: "{{ outputs.convert.uri }}"
-    datetimeFormat: "yy-MM-dd' 'HH:mm:ss"
-    schema: |
-      {
-        "type": "record",
-        "name": "Ride",
-        "namespace": "com.example.bikeshare",
-        "fields": [
-          {"name": "ride_id", "type": "string"},
-          {"name": "rideable_type", "type": "string"},
-          {"name": "started_at", "type": {"type": "long", "logicalType": "timestamp-millis"}},
-          {"name": "ended_at", "type": {"type": "long", "logicalType": "timestamp-millis"}},
-          {"name": "start_station_name", "type": "string"},
-          {"name": "start_station_id", "type": "string"},
-          {"name": "end_station_name", "type": "string"},
-          {"name": "end_station_id", "type": "string"},
-          {"name": "start_lat", "type": "double"},
-          {"name": "start_lng", "type": "double"},
-          {
-            "name": "end_lat",
-            "type": ["null", "double"],
-            "default": null
-          },
-          {
-            "name": "end_lng",
-            "type": ["null", "double"],
-            "default": null
-          },
-          {"name": "member_casual", "type": "string"}
-        ]
-      }
+  - id: notify
+    type: io.kestra.plugin.core.log.Log
+    message: Validation passed, data is ready for processing.
 ```
 
-When you run the above workflow, you should see an error in the `to_parquet` task.
+Run the flow once with `8 == 5` as the condition — `download` succeeds, then `validate` fails because the assertion is always false.
 
-From the logs, you are able to see that the error is due to a misconfigured date format in the `datetimeFormat` field — in fact, the date format should have a full year, not just a two-digit year: `"yyyy-MM-dd' 'HH:mm:ss"`.
+Open the failed execution and go to the **Gantt** tab. Use the three-dot menu on `validate` to select **Fix with AI** or correct the condition yourself — change `8 == 5` to `8 >= 5` and save as a new revision. Then select **Replay** from the same menu.
 
-You ask [AI](../../ai-tools/ai-copilot/index.md) to fix the flow for you, or you correct the error yourself in the workflow code and save it.
+![Gantt tab of a failed execution showing the three-dot menu on validate with Fix with AI and Replay options](./replay-task.png)
 
-![Fix with AI](./replay-ai-fix.png)
+In the confirmation dialog, select **Latest flow revision** to use the revision containing your fix.
 
-![AI Suggestion](./ai-suggestion.png)
+![Replay execution dialog showing revision options: Original flow revision, Latest flow revision, and Specific flow revision](./latest-revision.png)
 
-:::collapse{title="Full corrected flow code"}
-```yaml
-id: divvy_tripdata
-namespace: company.team
+The `download` task is skipped — Kestra reuses its output from the original execution. Only `validate` and `notify` run again. The **Attempt 2/2** label on `validate` confirms this is the replayed run.
 
-variables:
-  file_id: "{{ execution.startDate | dateAdd(-3, 'MONTHS') | date('yyyyMM') }}"
+![Gantt view of the replayed execution showing download skipped, validate with Attempt 2/2 succeeding, and notify running](./task-count.png)
 
-tasks:
-  - id: get_zipfile
-    type: io.kestra.plugin.core.http.Download
-    uri: "https://divvy-tripdata.s3.amazonaws.com/{{ render(vars.file_id) }}-divvy-tripdata.zip"
+The **Overview** tab shows the attempt number, the revision used, a `system.replay: true` label marking this as a replay, and a `system.correlationId` label linking back to the original execution.
 
-  - id: unzip
-    type: io.kestra.plugin.compress.ArchiveDecompress
-    algorithm: ZIP
-    from: "{{ outputs.get_zipfile.uri }}"
-
-  - id: convert
-    type: io.kestra.plugin.serdes.csv.CsvToIon
-    from: "{{outputs.unzip.files[render(vars.file_id) ~ '-divvy-tripdata.csv']}}"
-
-  - id: to_parquet
-    type: io.kestra.plugin.serdes.parquet.IonToParquet
-    from: "{{ outputs.convert.uri }}"
-    datetimeFormat: "yyyy-MM-dd HH:mm:ss.SSS"
-    schema: |
-      {
-        "type": "record",
-        "name": "Ride",
-        "namespace": "com.example.bikeshare",
-        "fields": [
-          {"name": "ride_id", "type": "string"},
-          {"name": "rideable_type", "type": "string"},
-          {"name": "started_at", "type": {"type": "long", "logicalType": "timestamp-millis"}},
-          {"name": "ended_at", "type": {"type": "long", "logicalType": "timestamp-millis"}},
-          {"name": "start_station_name", "type": "string"},
-          {"name": "start_station_id", "type": "string"},
-          {"name": "end_station_name", "type": "string"},
-          {"name": "end_station_id", "type": "string"},
-          {"name": "start_lat", "type": "double"},
-          {"name": "start_lng", "type": "double"},
-          {
-            "name": "end_lat",
-            "type": ["null", "double"],
-            "default": null
-          },
-          {
-            "name": "end_lng",
-            "type": ["null", "double"],
-            "default": null
-          },
-          {"name": "member_casual", "type": "string"}
-        ]
-      }
-```
-:::
-
-Open the previously failed execution and click the `to_parquet` task run to re-run it — from the **Gantt** or **Logs** tab.
-
-![Replay Task](./replay-task.png)
-
-Now select the latest revision of the flow code that contains the fix.
-
-![Latest Revision](./latest-revision.png)
-
-This re-runs the task with the new (corrected!) revision of the flow code. You can inspect the logs and verify that the task now completes successfully. The attempt number increments to show that this is a new run of the task.
-
-![Error Free](./task-count.png)
-
-The **Overview** tab will additionally show the new attempt number and the new revision of the flow code that was used during Replay.
-
-![Replay Execution Overview](./replay-execution-overview.png)
-
-Replay lets you re-run a failed task with the corrected flow code without rerunning tasks that already completed successfully.
+![Overview tab showing Execution is Replayed badge, system.replay: true label, 2 revisions, 2 attempts, and a link to the original execution](./replay-execution-overview.png)
