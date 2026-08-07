@@ -131,7 +131,7 @@ Quadis needed to <strong class="problem-close-key">consolidate its financial-rep
 
 Quadis runs Kestra self-hosted on AWS, deployed in Docker containers on EC2 instances backed by an Amazon RDS database. Development and production run as separate instances, and as usage has grown, Quadis has added a dedicated non-production environment to test upgrades independently of day-to-day development, without touching the production flows the rest of the business depends on.
 
-Custom transformation logic runs in Docker containers, giving Quadis's engineers the flexibility to write tasks in C# and Python alongside Kestra's built-in plugins. Flows are version-controlled in Git and deployed through Azure DevOps CI/CD pipelines, so changes move from a developer's branch to production the same way any other code change would.
+Custom transformation logic runs through Kestra's [Docker task runner](/docs/task-runners/types/docker-task-runner), giving Quadis's engineers the flexibility to write tasks in [C# and Python](/docs/scripts/languages) alongside Kestra's built-in plugins. Flows are version-controlled in Git and deployed through Azure DevOps CI/CD pipelines, so changes move from a developer's branch to production the same way any other code change would.
 
 The financial-reporting flows call Quadis's ERP over API and FTP tasks, while a Salesforce integration handles customer-facing notifications when parts orders ship. As Quadis expands past Spain and prepares to onboard more than 30 additional users, including non-technical staff, it's building on this foundation to support a new data lake architecture for broader analytics.
 

@@ -1,5 +1,5 @@
 ---
-title: When Your API Writes Its Own Docs With Kestra
+title: "Gravitee: When Your API Writes Its Own Docs"
 rank: 2
 description: How Gravitee, a 2024 Gartner Magic Quadrant Leader for API Management, consolidated its AI-powered documentation and ML model pipelines onto Kestra, letting two engineers ship SpecGen in six months.
 metaTitle: "Gravitee & Kestra: When Your API Writes Its Own Docs"
@@ -37,7 +37,6 @@ tagline: Open-source API management platform for modern DevOps teams
 companyName: Gravitee
 useCase: Orchestrating AI-powered OpenAPI spec generation and ML model pipelines so Gravitee customers can auto-document their APIs with one click
 useCaseShort: API Management
-deployment: "TODO: deployment"
 intro: "Gravitee, a 2024 Gartner Magic Quadrant Leader for API Management, built SpecGen: a system that watches live API traffic and uses machine learning and generative AI to keep documentation in sync with what's actually deployed. Two engineers built and shipped the entire pipeline on Kestra in six months, from data ingestion through model training to one-click documentation generation."
 cta: "What would change if your API documentation stayed synchronized with every release, automatically, with no one having to remember to update it?"
 ---
@@ -130,9 +129,9 @@ An orchestration platform that could run declarative workflows across SQL, Docke
 
 ## Kestra at Gravitee
 
-Gravitee's SpecGen pipeline runs on Kestra as a set of declarative flows. Kestra polls SQL databases for new or updated API specifications, triggering downstream processing automatically whenever changes appear, with no manual kickoff required.
+Gravitee's SpecGen pipeline runs on Kestra as a set of declarative flows. Kestra uses a [polling trigger](/docs/workflow-components/triggers/polling-trigger) to watch SQL databases for new or updated API specifications, triggering downstream processing automatically whenever changes appear, with no manual kickoff required.
 
-Preprocessing runs in Docker containers, so the Python logic that structures and cleans API specs stays decoupled from the orchestration layer. Once specs are ready, Kestra's native `http.Request` task calls out to a large language model, the same mechanism the pipeline uses to reach NewtAI, Gravitee's own in-house agentic AI system, to generate human-readable descriptions and metadata. On the ML side, the same orchestration layer runs a champion-challenger pattern: new models are evaluated against live production traffic in parallel, and the best performer is promoted automatically.
+Preprocessing runs through Kestra's [Docker task runner](/docs/task-runners/types/docker-task-runner), so the Python logic that structures and cleans API specs stays decoupled from the orchestration layer. Once specs are ready, Kestra's native `http.Request` task calls out to a large language model, the same mechanism the pipeline uses to reach NewtAI, Gravitee's own in-house agentic AI system, to generate human-readable descriptions and metadata. On the ML side, the same orchestration layer runs a champion-challenger pattern: new models are evaluated against live production traffic in parallel, and the best performer is promoted automatically.
 
 Every run reports execution time, resource utilization, and success rate, and Slack receives an alert the moment anything fails, so Gravitee's two-person AI/ML team spends its time building new capabilities instead of babysitting pipelines.
 

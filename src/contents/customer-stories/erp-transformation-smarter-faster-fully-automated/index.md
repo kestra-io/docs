@@ -1,5 +1,5 @@
 ---
-title: "ERP Transformation: Smarter, Faster, Fully Automated"
+title: "Fila's ERP Transformation: Smarter, Faster, Fully Automated"
 rank: 1
 description: How Fila, a global sportswear brand, consolidated ERP, PLM, and e-commerce data onto Kestra, letting one engineer run a self-hosted integration layer processing 2 million executions a month.
 metaTitle: "Fila & Kestra: ERP Transformation, Smarter, Faster, Fully Automated"
@@ -133,9 +133,9 @@ An orchestration layer that could run on infrastructure Fila already controlled,
 
 ## Kestra at Fila
 
-Fila runs Kestra on a self-managed Docker Swarm cluster, with the web server, worker, executor, and scheduler deployed as separate, replicated services rather than a single standalone container. S3-compatible object storage handles internal storage and PostgreSQL backs the workflow metadata. Access runs through enterprise single sign-on with role-based access control, and a namespace-per-tenant structure maps to Fila's ERP environments across development, QA, staging, and production.
+Fila runs Kestra on a self-managed Docker Swarm cluster, with the web server, worker, executor, and scheduler deployed as separate, replicated services rather than a single standalone container. S3-compatible object storage handles internal storage and PostgreSQL backs the workflow metadata. Access runs through enterprise single sign-on with role-based access control, and a [namespace](/docs/workflow-components/namespace)-per-tenant structure maps to Fila's ERP environments across development, QA, staging, and production.
 
-The core integration pattern is a master flow that queries a source table for rows flagged as not yet interfaced, fans them out in parallel to a worker sub-flow that upserts each row into the destination ERP database, then marks the source row as processed. The same pattern extended to legacy batch jobs, triggered on a schedule against Fila's existing batch servers, and to e-commerce, where a queue-triggered flow ingests Shopify order and inventory events into the ERP.
+The core integration pattern is a master flow that queries a source table for rows flagged as not yet interfaced, fans them out in parallel to a worker [subflow](/docs/workflow-components/subflows) that upserts each row into the destination ERP database, then marks the source row as processed. The same pattern extended to legacy batch jobs, triggered on a schedule against Fila's existing batch servers, and to e-commerce, where a queue-triggered flow built on Kestra's [realtime triggers](/docs/workflow-components/triggers/realtime-trigger) ingests Shopify order and inventory events into the ERP.
 
 Beyond data integration, Fila is exploring Kestra for infrastructure automation, including automated certificate renewal, and is evaluating Kestra's AI Copilot to accelerate flow development further.
 

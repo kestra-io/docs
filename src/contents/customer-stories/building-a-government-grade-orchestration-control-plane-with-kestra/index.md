@@ -1,5 +1,5 @@
 ---
-title: Building a Government-Grade Orchestration Control Plane with Kestra
+title: "Dataport: Building a Government-Grade Orchestration Control Plane with Kestra"
 rank: 1
 description: How Dataport, Germany's public-sector IT services provider, consolidated API-driven cloud orchestration onto Kestra on a fully self-hosted private cloud.
 metaTitle: "Dataport & Kestra: Building a Government-Grade Orchestration Control Plane"
@@ -91,7 +91,7 @@ Dataport needed an orchestration layer it could <strong class="problem-close-key
 <div class="fix-check">✓</div>
 <div>
 <div class="fix-title">Kubernetes-native execution on OpenShift</div>
-<div class="fix-desc">Kestra's Kubernetes task runner replaced Docker-in-Docker as the execution model, running cleanly on Dataport's OpenShift cluster once namespace-level UID range configuration was in place.</div>
+<div class="fix-desc">Kestra's [Kubernetes task runner](/docs/task-runners/types/kubernetes-task-runner) replaced Docker-in-Docker as the execution model, running cleanly on Dataport's OpenShift cluster once namespace-level UID range configuration was in place.</div>
 </div>
 </div>
 <div class="fix-item">
@@ -133,7 +133,7 @@ Kestra runs self-hosted on Dataport's OpenShift cluster, on x86 infrastructure t
 
 The core workflow pattern sits behind Dataport's existing API management layer. An incoming request creates a tracking ID, triggers the relevant Kestra flow, and Kestra executes a subflow, for example, provisioning a virtual machine, while publishing status updates to Kafka at each stage so downstream systems stay informed without needing to poll Kestra directly. That pattern was validated first for VM provisioning, with the architecture designed to extend to other infrastructure and access-management workflows as the platform grows.
 
-Enterprise identity runs through an OIDC-based identity provider, and secrets are managed through a centralized secrets manager, scoped to Kestra namespaces. Deployment is defined as code and managed through the team's CI/CD pipeline, keeping the control plane's own configuration under the same governance model as the workflows it orchestrates.
+Enterprise identity runs through an OIDC-based identity provider, and secrets are managed through a centralized [secrets manager](/docs/best-practices/secrets-management), scoped to Kestra [namespaces](/docs/workflow-components/namespace). Deployment is defined as code and managed through the team's CI/CD pipeline, keeping the control plane's own configuration under the same governance model as the workflows it orchestrates.
 
 <div class="stack-row">
 <span class="stack-pill">OpenShift</span>
