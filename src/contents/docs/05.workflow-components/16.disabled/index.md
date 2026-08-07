@@ -6,20 +6,15 @@ sidebarTitle: Disabled flag
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-The `disabled` flag is a boolean property that lets you skip a flow, task, or trigger.
-
-This is useful for debugging or testing parts of a flow without removing existing logic. Instead of deleting parts of your YAML, you can add the `disabled` property.
+The `disabled` property is a boolean that skips a flow, task, or trigger without removing it — useful for debugging without deleting YAML.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FcDsU1YIToI?si=xc5fuRlIDaWNUjWn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-
 ## Disabled flow
 
-When a flow is disabled, it will not be executed — even if a trigger is set. If you have an active trigger on a disabled flow, it will be ignored. You don’t need to disable the trigger separately – it is ignored automatically. Setting a flow to `disabled` effectively prevents any future executions of the flow until it is re-enabled.
-
-Add the following flow, then attempt to run it and observe the scheduled executions:
+A disabled flow will not execute and its triggers are automatically ignored — you do not need to disable each trigger separately.
 
 ```yaml
 id: disabled_flow
@@ -37,9 +32,9 @@ triggers:
     cron: "*/1 * * * *"
 ```
 
-You will see that you cannot run the flow and that the trigger is ignored — no executions are created.
+The Execute dialog warns that the flow is disabled and no executions are created:
 
-![disabled_flag](./disabled_flag_1.png)
+![Execute dialog showing a warning that the flow is disabled and cannot be executed](./disabled-flow-execute-modal.png)
 
 When executing a disabled flow from a subflow:
 
@@ -53,27 +48,19 @@ tasks:
     namespace: company.team
 ```
 
-When you execute the parent flow, it immediately fails with the error message: `Cannot execute a flow which is disabled`.
+The parent flow immediately fails with the error: `Cannot execute a flow which is disabled`.
 
-![disabled_flag_2](./disabled_flag_2.png)
+![Gantt view of a failed execution showing the error Cannot execute a flow which is disabled](./disabled-subflow-error.png)
 
-Similarly, try running a disabled flow via an API call:
-
-```bash
-curl -X POST http://localhost:8080/api/v1/main/executions/trigger/example/parent_runs_disabled_flow
-```
-
-The API call itself is successful:
+The same error occurs when triggering via API — the execution is created then immediately marked as failed:
 
 ```bash
-{"id":"5ScXvrnOkjfKIXqYylRYME","namespace":"example","flowId":"parent_runs_disabled_flow","flowRevision":1,"state":{"current":"CREATED","histories":[{"state":"CREATED","date":"2024-01-19T20:38:48.474047013Z"}],"duration":"PT0.011094958S","startDate":"2024-01-19T20:38:48.474047013Z"},"originalId":"5ScXvrnOkjfKIXqYylRYME"}%
+curl -X POST http://localhost:8080/api/v1/main/executions/trigger/company.team/parent_runs_disabled_flow
 ```
-
-That execution is immediately marked as failed with the error message: `Cannot execute a flow which is disabled`.
 
 ## Disabled trigger
 
-When using a Schedule trigger, it is often useful to disable it temporarily. For example, you may want to disable a trigger while you are debugging a flow. You can do this by setting the `disabled` flag to `true` on the trigger:
+To disable a trigger without disabling the entire flow, set `disabled: true` on the trigger:
 
 ```yaml
 id: myflow
@@ -91,26 +78,11 @@ triggers:
     disabled: true
 ```
 
-You will see that no scheduled executions are created for this flow. Once you are done debugging, you can re-enable the trigger by setting the `disabled` flag to `false` or simply by removing the `disabled` flag:
-
-```yaml
-id: myflow
-namespace: company.team
-
-tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: hello from a scheduled flow
-
-triggers:
-  - id: daily
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 9 * * *"
-```
+No scheduled executions are created while the trigger is disabled. To re-enable it, set `disabled: false` or remove the property entirely.
 
 ## Disabled task
 
-Instead of disabling the entire flow or a trigger, you can also disable a single task. This is useful when you want to temporarily disable a single task without deleting it e.g., when troubleshooting a failure. You can do this by setting the `disabled` flag to `true` on the task:
+You can disable a single task to skip it without deleting it — useful when isolating a failure during debugging:
 
 ```yaml
 id: myflow
@@ -127,6 +99,6 @@ tasks:
     disabled: true
 ```
 
-You can see in the UI that disabled tasks are greyed out:
+Disabled tasks appear with a strikethrough on the task name in the Topology view:
 
-![disabled_flag_3](./disabled_flag_3.png)
+![Topology view showing an enabled task and a disabled task with a strikethrough on its name](./disabled-task-topology.png)
