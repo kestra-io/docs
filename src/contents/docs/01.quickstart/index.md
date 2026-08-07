@@ -80,5 +80,5 @@ You've taken the product tour, executed your first flow, and explored Kestra. Ne
 - [Contribute to Kestra](../04.contribute-to-kestra/index.mdx) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved!
 
 :::alert{type="info"}
-**Using an AI coding agent?** Add the [Kestra MCP server](../ai-tools/kestra-mcp-resources/index.md) to Claude Code, Cursor, or any MCP-compatible tool for live access to plugin docs, blueprints, and Kestra documentation while you build.
+**Prefer to work from your terminal or editor?** Claude Code, Cursor, Codex, and other coding agents can write and deploy flows for you using the Kestra MCP server, Agent Skills, and `kestractl`. See [AI tools](../ai-tools/index.mdx) to compare that with the in-product AI Copilot.
 :::

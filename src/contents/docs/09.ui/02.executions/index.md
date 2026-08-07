@@ -82,9 +82,9 @@ The **Gantt** tab visualizes each task's duration. From this interface, you can 
 
 ![Kestra User Interface Execution Gantt](./execution-gantt-view.png)
 
-The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/ai-copilot/index.md) pre-loaded with the error context.
+The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/01.ai-copilot/index.md) pre-loaded with the error context.
 
-![Fix with AI](../../ai-tools/ai-copilot/fix-with-ai-gantt.png)
+![Fix with AI](../../ai-tools/01.ai-copilot/fix-with-ai-gantt.png)
 
 ## Logs
 
@@ -92,7 +92,7 @@ The **Logs** tab gives access to a task's logs. You can filter by log level, cop
 
 ![Kestra User Interface Execution Log](./execution-logs-view.png)
 
-For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/ai-copilot/index.md) pre-loaded with the error context.
+For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/01.ai-copilot/index.md) pre-loaded with the error context.
 
 ![Fix with AI](./fix-with-ai-logs.png)
 
@@ -102,7 +102,7 @@ Similar to the Editor view, you can see your execution's topology. **Topology** 
 
 ![Kestra User Interface Execution Topology](./execution-topology-view.png)
 
-From a failed task, open the logs to read the error and use **Fix with AI** if [AI Copilot](../../ai-tools/ai-copilot/index.md) is configured.
+From a failed task, open the logs to read the error and use **Fix with AI** if [AI Copilot](../../ai-tools/01.ai-copilot/index.md) is configured.
 
 ## Outputs
 

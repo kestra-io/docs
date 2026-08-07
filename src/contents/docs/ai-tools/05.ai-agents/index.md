@@ -228,7 +228,7 @@ A single `Skill` tool can define multiple skills. Each skill must have a unique 
 
 ### MCP clients
 
-Kestra supports MCP in two directions. These clients cover the **Kestra-as-client** direction: your flow calls tools on an *external* MCP server. For the opposite direction — exposing your flows *as* MCP tools for external AI agents to call — see [MCP Server](../mcp-server/index.md) and the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md).
+Kestra supports MCP in two directions. These clients cover the **Kestra-as-client** direction: your flow calls tools on an *external* MCP server. For the opposite direction — exposing your flows *as* MCP tools for external AI agents to call — see [MCP Server](../03.mcp-server/index.md) and the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md).
 
 Connect the agent to any [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server to expose its tools:
 

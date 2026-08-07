@@ -16,10 +16,10 @@ A major release introducing AI-native orchestration, a redesigned trigger model,
 
 ### AI
 
-- **AI Copilot redesign** — persistent sidebar with Ask, Edit, and Plan modes; context pills; reads namespace metadata for credential-aware suggestions. [Docs](../../ai-tools/ai-copilot/index.md)
-- **AI Agents** — build agentic pipelines with LLM task orchestration; token usage metrics per execution. [Docs](../../ai-tools/ai-agents/index.md)
-- **AI RAG Workflows** — native retrieval-augmented generation support with vector store integration. [Docs](../../ai-tools/ai-rag-workflows/index.md)
-- **MCP Server** — expose flows as MCP tools; connect from Claude Desktop, Claude Code, Cursor, and Codex. [Docs](../../ai-tools/mcp-server/index.md)
+- **AI Copilot redesign** — persistent sidebar with Ask, Edit, and Plan modes; context pills; reads namespace metadata for credential-aware suggestions. [Docs](../../ai-tools/01.ai-copilot/index.md)
+- **AI Agents** — build agentic pipelines with LLM task orchestration; token usage metrics per execution. [Docs](../../ai-tools/05.ai-agents/index.md)
+- **AI RAG Workflows** — native retrieval-augmented generation support with vector store integration. [Docs](../../ai-tools/07.ai-rag-workflows/index.md)
+- **MCP Server** — expose flows as MCP tools; connect from Claude Desktop, Claude Code, Cursor, and Codex. [Docs](../../ai-tools/03.mcp-server/index.md)
 - **MCP Tool Trigger** — invoke flows directly from MCP-compatible agents. [Docs](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md)
 
 ### Workflow components

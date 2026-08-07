@@ -13,9 +13,9 @@ Give AI coding agents structured knowledge to generate Kestra flows and operate 
 
 Agent Skills are structured knowledge files (`SKILL.md`) that teach external AI coding agents how to work with Kestra. They provide the context, commands, and guardrails an agent needs to generate valid flow YAML or operate a Kestra environment via the CLI.
 
-Unlike [AI Copilot](../ai-copilot/index.md), which works inside the Kestra UI, Agent Skills bring Kestra expertise to the tools you already use in your editor or terminal — Claude Code, Cursor, Windsurf, OpenAI Codex, and others.
+Unlike [AI Copilot](../01.ai-copilot/index.md), which works inside the Kestra UI, Agent Skills bring Kestra expertise to the tools you already use in your editor or terminal — Claude Code, Cursor, Windsurf, OpenAI Codex, and others.
 
-Unlike [AI Agents](../ai-agents/index.md), which are autonomous tasks running inside Kestra flows, Agent Skills equip your external coding agent with Kestra-specific knowledge so it can help you build and operate flows from your development environment.
+Unlike [AI Agents](../05.ai-agents/index.md), which are autonomous tasks running inside Kestra flows, Agent Skills equip your external coding agent with Kestra-specific knowledge so it can help you build and operate flows from your development environment.
 
 Agent Skills follow an emerging standard for giving AI tools domain-specific knowledge. Learn more at [agentskills.io](https://agentskills.io/home), the community hub for agent skills across tools and domains.
 

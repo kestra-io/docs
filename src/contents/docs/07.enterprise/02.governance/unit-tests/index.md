@@ -30,7 +30,7 @@ The following diagram illustrates the structure of flows and unit tests together
 
 ## Configuration
 
-Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures`, `assertions`, and an optional `expectedState`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../ai-tools/ai-copilot/index.md).
+Unit tests are written in YAML like flows. A test is made up of `testCases`, and each test case is made up of `fixtures`, `assertions`, and an optional `expectedState`. Fixtures can target **files**, **inputs**, **tasks**, or **triggers** depending on what you need to mock or override. Like flows, you can write unit tests as code, in No Code, or with the [AI Copilot](../../../ai-tools/01.ai-copilot/index.md).
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.

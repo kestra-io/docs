@@ -16,7 +16,7 @@ type: io.kestra.plugin.core.trigger.McpToolTrigger
 ```
 
 :::alert{type="info"}
-Every tenant has a `default` MCP server provisioned on startup, so the trigger works without creating a server first. See [MCP Server](../../../ai-tools/mcp-server/index.md) to create additional servers and connect AI agent clients.
+Every tenant has a `default` MCP server provisioned on startup, so the trigger works without creating a server first. See [MCP Server](../../../ai-tools/03.mcp-server/index.md) to create additional servers and connect AI agent clients.
 :::
 
 ## Example
@@ -60,7 +60,7 @@ When deployed, an MCP client connected to the `default` server will discover a t
 | `toolName` | Yes | — | Tool identifier shown to the AI agent. Must contain only alphanumeric characters, hyphens, underscores, or dots, and must start and end with an alphanumeric character. Maximum 64 characters. |
 | `title` | Yes | — | Human-readable name shown to the AI agent. |
 | `toolDescription` | Yes | — | Description of the tool shown to the AI agent, used to decide when to invoke it. A well-written description significantly improves tool-selection accuracy. |
-| `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP server](../../../ai-tools/mcp-server/index.md). |
+| `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP server](../../../ai-tools/03.mcp-server/index.md). |
 | `annotations.readOnly` | No | `false` | Hint that this tool does not modify its environment. |
 | `annotations.destructive` | No | `true` | Hint that this tool may perform destructive updates. Only meaningful when `readOnly` is `false`. |
 | `annotations.openWorld` | No | `true` | Hint that this tool may interact with entities outside its closed domain. |
