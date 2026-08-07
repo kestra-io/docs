@@ -61,6 +61,8 @@ By default, executions that exceed the limit are queued. Set `behavior` to contr
 - `CANCEL` — immediately mark the execution as `CANCELLED`.
 - `FAIL` — immediately mark the execution as `FAILED`.
 
+If you expect execution spikes, combine a conservative limit with backoff at the source (e.g., slower trigger rates) to avoid large queues that increase database lock contention.
+
 ```yaml
 id: concurrency_limited_flow
 namespace: company.team
@@ -77,10 +79,6 @@ tasks:
     commands:
       - sleep 10
 ```
-
-:::alert{type="warning"}
-Each execution waiting for a concurrency slot holds a database lock. Large backlogs of queued executions can increase lock contention and slow scheduling. If you expect spikes, combine conservative limits with backoff at the source (e.g., trigger rates).
-:::
 
 :::alert{type="warning"}
 When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case — no new executions start while the trigger is locked.

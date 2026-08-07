@@ -366,7 +366,12 @@ tasks:
       - db-analytics
 ```
 
-`policyRefs` is valid at the flow level, on individual tasks, and on triggers. Flow-level `policyRefs` applies the bundle to all tasks in the flow:
+`policyRefs` is valid at the flow level, on individual tasks, and on triggers. The attachment level determines which rules in the bundle activate:
+
+- **Flow-level `policyRefs`** — activates all rules in the bundle: both `on: FLOW` and `on: PLUGIN` rules apply across the entire flow.
+- **Task- or trigger-level `policyRefs`** — activates only `on: PLUGIN` rules, scoped to that plugin and its nested configuration. `on: FLOW` rules in the same bundle are filtered out at rule-scoping time and are never enforced.
+
+Flow-level `policyRefs` applies the bundle to all tasks in the flow:
 
 ```yaml
 # Flow-level policyRefs — applies the bundle to all tasks
@@ -398,6 +403,10 @@ triggers:
     bucket: my-bucket
     prefix: "data/"
 ```
+
+:::alert{type="warning"}
+If a referenced bundle contains `on: FLOW` rules and `policyRefs` is on a task or trigger, those rules are silently dropped. Place `policyRefs` at the flow level to activate them.
+:::
 
 Reference policies do not propagate through namespace inheritance — flows and tasks must opt in explicitly using `policyRefs:`. Reference policies are designed for opt-in configuration injection: use `Add` rules to supply credentials, defaults, or runner configuration that teams can adopt voluntarily. Validate rules (`Deny`, `Restrict`, `Require`) are not enforced in `REFERENCE` mode.
 
