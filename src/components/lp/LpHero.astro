@@ -7,21 +7,13 @@
  * The H1's ad-group keyword renders in the brand purple (`h1Highlight`), so the
  * message-match phrase is also the visual accent.
  *
- * Under the copy, on large viewports only: the homepage's animated "Kestra
- * Way" widget — the Kestra card orchestrating Data / Infra / AI, wordmark and
- * brand baked in. Inline SVG + two small canvases, so it costs no image bytes;
- * on mobile it is not rendered visually (display:none) and its rAF loop is the
- * only idle cost. Swapped in for the UI screenshot per review (2026-08-06).
+ * Under the copy, on large viewports only: a restrained brand mark — the
+ * Kestra logo on a soft purple halo (the animated widget was removed in
+ * review, 2026-08-07; the product screenshot lives in the features section).
  */
 import LpDemoForm from "./LpDemoForm.vue"
 import { LP_SHARED } from "~/contents/lp/shared"
-// The animated "Kestra Way" widget (SVG + particle canvases): the Kestra card
-// orchestrating Data / Infra / AI, wordmark baked in. `LpKestraWay` is a
-// dedicated copy of the homepage component — importing the original from a
-// second page tree makes the bundler drop its scoped CSS everywhere (see the
-// comment in LpKestraWay.astro). Singleton: its script binds to the first
-// `.kestra-widget` on the page, so never render it twice.
-import KestraWayAnimation from "./LpKestraWay.astro"
+import logoBlack from "~/assets/logo-black.svg?raw"
 
 interface Props {
     h1: string
@@ -52,8 +44,17 @@ const after =
             </h1>
             <p class="lp-hero__sub">{sub}</p>
 
-            <div class="lp-hero__visual">
-                <KestraWayAnimation class="lp-hero__widget" />
+            {
+                /*
+              Restrained brand mark in the column's remaining space (the
+              animated widget was removed in review, 2026-08-07): the Kestra
+              logo on a soft purple halo. Decorative only.
+            */
+            }
+            <div class="lp-hero__visual" aria-hidden="true">
+                <span class="lp-hero__brand">
+                    <Fragment set:html={logoBlack} />
+                </span>
             </div>
         </div>
 
@@ -114,17 +115,26 @@ const after =
         @include media-breakpoint-up(lg) {
             display: flex;
             justify-content: center;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
+    }
 
-        /* The widget is a fixed 554×396 card; keep the same footprint the
-           homepage gives it, rounded and capped to the column. */
-        :global(.lp-hero__widget) {
-            /* Explicit width: the widget's children are absolutely positioned,
-               so `width: auto` collapses to 0 inside this flex container. */
-            width: min(554px, 100%);
-            height: 396px;
-            border-radius: 0.5rem;
+    .lp-hero__brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3.5rem 5rem;
+        /* Soft halo, not a card: fades to nothing so it sits in the layout
+           without competing with the form. */
+        background: radial-gradient(
+            closest-side,
+            var(--ks-background-purple-light),
+            transparent
+        );
+
+        :global(svg) {
+            height: 2.75rem;
+            width: auto;
         }
     }
 

@@ -3,12 +3,14 @@
  * Section — Features, Redwood-style split (Martin's review, 2026-08-07): the
  * product screenshot on the left, three checkmarked feature groups on the
  * right (Security & Compliance / Governance & Productivity / Scalability &
- * Infrastructure). This is also the page's one real product image — the hero
- * carries the animated brand widget, this carries the actual UI.
+ * Infrastructure). This is the page's one real product image — the dashboard
+ * capture (provided 2026-08-07).
  *
  * On mobile the screenshot stacks above the list, Redwood-style.
  */
+import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
+import dashboardUi from "./assets/dashboard-lp.png"
 
 interface Props {
     header: string
@@ -23,17 +25,14 @@ const { header, blocks } = Astro.props
         <h2 class="lp-h2">{header}</h2>
 
         <div class="lp-features__grid">
-            {
-                /*
-              Placeholder at the exact 16/10 footprint the screenshot will
-              occupy — TODO(virgile): swap for the dashboard capture when it
-              lands (an Astro <Image loading="lazy">, nothing else moves).
-            */
-            }
             <div class="lp-features__visual">
-                <div class="lp-features__placeholder" aria-hidden="true">
-                    <span>DASHBOARD_SCREENSHOT</span>
-                </div>
+                <Image
+                    src={dashboardUi}
+                    alt="The Kestra dashboard: success ratio, executions over time, and upcoming runs across namespaces, in one view."
+                    widths={[720, 1080, 1440]}
+                    sizes="(min-width: 992px) 50vw, 100vw"
+                    loading="lazy"
+                />
             </div>
 
             <ul class="lp-features__list">
@@ -72,21 +71,12 @@ const { header, blocks } = Astro.props
         }
     }
 
-    .lp-features__placeholder {
-        aspect-ratio: 16 / 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px dashed var(--ks-border-primary);
+    .lp-features__visual :global(img) {
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--ks-border-primary);
         border-radius: var(--lp-radius);
-        background-color: var(--ks-background-secondary);
-
-        span {
-            font-family: var(--font-family-jetbrains-mono), monospace;
-            font-size: 0.75rem;
-            letter-spacing: 0.06em;
-            color: var(--ks-content-secondary);
-        }
+        box-shadow: 0 12px 40px var(--ks-shadows-light);
     }
 
     .lp-features__list {
