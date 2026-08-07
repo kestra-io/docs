@@ -6,62 +6,55 @@ sidebarTitle: States
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-States control the status of your workflow execution.
+States represent where an execution or task run is in its lifecycle. Each state determines what Kestra does next — whether to continue, retry, wait for input, or terminate. For a broader overview of executions, see the [Execution documentation](../03.execution/index.md).
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h5AigXBAs6Y?si=ftaD1zM24b7BDUMo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Overview
-
-An execution is a single run of a flow in a specific state. Each state represents a point in the workflow where Kestra determines what happens next based on the control flow logic defined in the flow.
-
-You can read more about executions in the [workflow components documentation](../03.execution/index.md).
-
 ## Execution states
 
-Each Kestra execution can transition through several states during its lifecycle. The following diagram illustrates the possible states an execution can be in:
+![Diagram showing all possible execution states and the transitions between them](./execution_states.png)
 
-![execution_states](./execution_states.png)
+| State | Type | Description |
+|-------|------|-------------|
+| `CREATED` | Transient | Created but not yet started. Transitions quickly to `RUNNING`, `QUEUED`, or `CANCELLED`. Executions stuck here may indicate a system issue. |
+| `QUEUED` | Transient | Waiting for a free slot. Only occurs when [concurrency](../14.concurrency/index.md) limits are set and all slots are occupied. |
+| `RUNNING` | Transient | Currently in progress. Continues until all task runs complete. |
+| `PAUSED` | Transient | Awaiting manual approval or a fixed delay before continuing. Transitions directly back to `RUNNING` when resumed — there is no `RESUMING` or `RESUMED` state. |
+| `RESTARTED` | Transient | Equivalent to `CREATED` but for a failed execution that has been manually restarted from the UI. Transitions to `RUNNING` once processed. |
+| `RETRYING` | Transient | One or more failed task runs are being retried under a [flow-level retry policy](../12.retries/index.md#flow-level-retries). Transitions to `SUCCESS`, `WARNING`, or `FAILED` once all attempts are exhausted. |
+| `KILLING` | Transient | The user has issued a kill command. The system is terminating any task runs still in progress. Transitions to `KILLED` once all task runs are terminated. |
+| `SUCCESS` | Terminal | All tasks completed without errors, or any failures were explicitly allowed. |
+| `WARNING` | Terminal | Completed successfully, but one or more tasks emitted warnings. |
+| `FAILED` | Terminal | One or more tasks failed and will not be retried. If an [`errors` handler](../11.errors/index.md) is defined, its tasks run before the execution ends. With a [flow-level retry policy](../12.retries/index.md#flow-level-retries) set to `RETRY_FAILED_TASK`, the execution transitions to `RETRYING` instead. |
+| `RETRIED` | Terminal | The original execution failed and was retried under a flow-level retry policy set to `CREATE_NEW_EXECUTION`. The original execution is marked `RETRIED` and a new execution is created in its place. |
+| `CANCELLED` | Terminal | Automatically cancelled by the system because the [concurrency](../14.concurrency/index.md) limit was reached and `behavior` was set to `CANCEL`. |
+| `KILLED` | Terminal | Killed on request by the user. No further tasks will run. |
 
-Here is a brief description of each state:
-1. **CREATED**: The execution has been created but not yet started. This transient state means the execution is waiting to be processed. It usually transitions quickly to `RUNNING`, `CANCELLED`, or `QUEUED`. If you see executions stuck in this state, it may indicate a problem with the system.
-2. **QUEUED**: The execution is waiting for a free slot to start running. This transient state is only used when the flow has [concurrency](../14.concurrency/index.md) limits, and all available slots are taken.
-3. **RUNNING**: The execution is currently in progress. This transient state continues until all task runs are completed.
-4. **SUCCESS**: The execution has completed successfully. This terminal state indicates that the execution has completed successfully, and all tasks have finished without errors (or were allowed to fail).
-5. **WARNING**: This terminal state is used when the execution has completed successfully, but one or more tasks have emitted warnings.
-6. **FAILED**: This state indicates that one or more tasks have failed and will not be retried. If there is an `errors` branch defined in the flow, the error `tasks` will be executed before permanently ending the execution, e.g., to send an alert about failure. Without additional orchestration, this state is usually considered terminal. However, when the flow has a [flow-level retry policy](../12.retries/index.md#flow-level-retries) set to the `RETRY_FAILED_TASK` behavior, the execution will transition to the `RETRYING` state.
-7. **RETRYING**: This transient state indicates that the execution is currently [retrying](../12.retries/index.md) one or more failed task runs. After all retry attempts are exhausted, the execution will transition to the terminal `SUCCESS`, `WARNING`, or `FAILED` state.
-8. **RETRIED**: This terminal state indicates that the execution has been retried according to the [flow-level retry policy](../12.retries/index.md#flow-level-retries) set to the `CREATE_NEW_EXECUTION` behavior. This means that the original execution (which failed and has been retried) is marked as `RETRIED`, and a new execution is created to run the flow again.
-9. **PAUSED**: This transient state indicates that the execution is awaiting manual approval or has been paused for a fixed duration before continuing the execution. There are no `RESUMING` or `RESUMED` states. A paused execution transitions directly from `PAUSED` to `RUNNING` when resumed.
-10. **RESTARTED**: This transient state is equivalent to the `CREATED` state but for a failed execution that has been restarted e.g., from the UI. These executions transition to `RUNNING` once the restart is processed.
-11. **CANCELLED**: This terminal state indicates that the execution has been automatically cancelled by the system, usually because the `concurrency` limit was reached and the [concurrency](../14.concurrency/index.md) `behavior` was set to `CANCEL`, which cancels all executions that exceed the concurrency limit.
-12. **KILLING**: This transient state indicates that the user has issued a command to kill the execution, e.g., via a task or by clicking on the `Kill` button in the UI. The system is terminating (killing) any task runs still in progress. As soon as all task runs are terminated, the execution will transition to the `KILLED` state.
-13. **KILLED**: This terminal state indicates that the execution has been killed upon request by the user. No more tasks will be able to run, and the execution is considered terminated.
+## CANCELLED vs. KILLED
 
-## What is the difference between the `CANCELLED` and `KILLED` states?
+Both are terminal states that stop an execution, but they have different causes:
 
-1. The `CANCELLED` state is used when the **system** automatically cancels an execution due to the `concurrency` limit being reached.
-2. The `KILLING` state is used when the **user** manually kills an execution and the system is in the process of terminating the task runs associated with the execution.
-3. The `KILLED` state is used when the execution has been killed upon request by the **user**.
+- **`CANCELLED`** — triggered by the **system** when the concurrency limit is reached and `behavior: CANCEL` is configured. No user action required.
+- **`KILLED`** — triggered by the **user** via the **Kill** button in the UI or an API call. The execution first passes through `KILLING` while in-progress task runs are terminated, then settles in `KILLED`.
 
-## How are task run states different from execution states?
+## Task run states
 
-Task run states represent the status of a single task run within an execution.
+Task run states represent the status of a single task run within an execution. The lifecycle is similar but not identical — task runs have a `SUBMITTED` state (queued to a Worker) that executions do not, and executions have `QUEUED`, `CANCELLED`, and `PAUSED` states that task runs do not.
 
-![taskrun_states](./taskrun_states.png)
+![Diagram showing all possible task run states and the transitions between them](./taskrun_states.png)
 
-Each task run can be in one of the following states:
-1. **CREATED**: The task run has been created but not yet started.
-2. **SUBMITTED**: The task run has been submitted to a Worker but has not started running yet.
-3. **RUNNING**: The task run is currently in progress.
-4. **SUCCESS**: The task run has completed successfully.
-5. **WARNING**: The task run has completed successfully but with warnings.
-6. **FAILED**: The task run has failed.
-7. **RETRYING**: The task run is currently being retried.
-8. **RETRIED**: The task run has been retried.
-9. **RESTARTED**: The task run is currently being restarted.
-10. **KILLING**: The task run is in the process of being killed.
-11. **KILLED**: The task run has been killed upon request by the user.
-
-Note how there is no `QUEUED`, `CANCELLED`, or `PAUSED` states for task runs.
+| State | Description |
+|-------|-------------|
+| `CREATED` | Created but not yet started. |
+| `SUBMITTED` | Submitted to a Worker but not yet running. |
+| `RUNNING` | Currently in progress. |
+| `SUCCESS` | Completed successfully. |
+| `WARNING` | Completed with warnings. |
+| `FAILED` | Failed. |
+| `RETRYING` | Being retried. |
+| `RETRIED` | Retried and superseded by a new attempt. |
+| `RESTARTED` | Being restarted. |
+| `KILLING` | Kill in progress. |
+| `KILLED` | Killed on request by the user. |
