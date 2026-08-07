@@ -113,8 +113,7 @@ export const LP_SHARED = {
          * direction Martin-Pierre validated.
          */
         formTitle: "Get a custom demo",
-        microcopy:
-            "See where Kestra fits your architecture, on your use cases, not a generic script.",
+        microcopy: "See where Kestra fits your architecture, on your use cases.",
     },
 
     trust: {
@@ -225,20 +224,16 @@ export const LP_SHARED = {
 
 
     /**
-     * Features, 4 blocks — structure from Martin's review (2026-08-07): Core
-     * Orchestration in his own words, then one sentence per category with
-     * feature names dropped. Every name is sourced: /features (featureList)
-     * and /pricing (pricingData category/feature labels). Header is the
-     * /features page's own H1. No figures beyond "1,800+ plugins".
+     * Features — Redwood-style split (Martin's review, 2026-08-07): the
+     * product screenshot on one side, three checkmarked feature groups on the
+     * other. Core Orchestration was dropped from the set: declarative /
+     * any-language / as-code-and-from-the-UI is already said, almost verbatim,
+     * by the outcome cards above. Every feature name is sourced from /features
+     * and /pricing; the header is the /features page's own H1.
      */
     features: {
         header: "Powerful features for reliable workflows",
         blocks: [
-            {
-                icon: "mdi:sitemap",
-                title: "Core Orchestration",
-                body: "Declarative workflows every team member can read: any language, everything as code and from the UI, with event-driven triggers, scheduling, and 1,800+ plugins.",
-            },
             {
                 icon: "mdi:shield-check-outline",
                 title: "Security & Compliance",

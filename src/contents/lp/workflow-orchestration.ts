@@ -47,7 +47,7 @@ const workflowOrchestration: LpVariant = {
         cards: [
             {
                 icon: "mdi:monitor-dashboard",
-                lead: "One control plane for data, infra, and business processes.",
+                lead: "One control plane for data, infra, AI, and business processes.",
                 body: "Replace your legacy schedulers with one governed platform, running on top of the tools you already have: on-prem, air-gapped, or in any cloud.",
             },
             {

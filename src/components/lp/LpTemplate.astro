@@ -66,17 +66,18 @@ const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
         cards={variant.benefits.cards}
     />
 
-    <!-- 4 — what you get -->
+    <!-- 4 — features: product screenshot + three checkmarked groups,
+         Redwood-style, above the use-case columns (review, 2026-08-07) -->
+    <LpFeatures
+        header={LP_SHARED.features.header}
+        blocks={LP_SHARED.features.blocks}
+    />
+
+    <!-- 4b — what you get -->
     <LpUseCases
         header={LP_SHARED.useCases.header}
         intro={LP_SHARED.useCases.intro}
         columns={LP_SHARED.useCases.columns}
-    />
-
-    <!-- 4b — features: four category blocks (Martin's structure, 2026-08-07) -->
-    <LpFeatures
-        header={LP_SHARED.features.header}
-        blocks={LP_SHARED.features.blocks}
     />
 
     <!-- 5 — ROI -->
