@@ -225,6 +225,39 @@ export const LP_SHARED = {
 
 
     /**
+     * Features, 4 blocks — structure from Martin's review (2026-08-07): Core
+     * Orchestration in his own words, then one sentence per category with
+     * feature names dropped. Every name is sourced: /features (featureList)
+     * and /pricing (pricingData category/feature labels). Header is the
+     * /features page's own H1. No figures beyond "1,800+ plugins".
+     */
+    features: {
+        header: "Powerful features for reliable workflows",
+        blocks: [
+            {
+                icon: "mdi:sitemap",
+                title: "Core Orchestration",
+                body: "Declarative workflows every team member can read: any language, everything as code and from the UI, with event-driven triggers, scheduling, and 1,800+ plugins.",
+            },
+            {
+                icon: "mdi:shield-check-outline",
+                title: "Security & Compliance",
+                body: "SSO and SCIM, role-based access control, internal or external secrets managers, and full audit logs, on infrastructure you control, air-gapped included.",
+            },
+            {
+                icon: "mdi:scale-balance",
+                title: "Governance & Productivity",
+                body: "Namespaces and multi-tenancy, Git integration and versioning with revision history, human-in-the-loop approvals, custom blueprints, and built-in observability across every run.",
+            },
+            {
+                icon: "mdi:server-network",
+                title: "Scalability & Infrastructure",
+                body: "Worker groups, high availability, and unlimited executions, deployed with Docker, Kubernetes, a single VM, or managed Cloud, with backup, restore, and cluster health monitoring.",
+            },
+        ],
+    },
+
+    /**
      * ROI. Content mirrors the "Kestra ROI — Typical Impact After Standardizing
      * Orchestration" slide of the enterprise sales deck (provided by Virgile,
      * 2026-08-05, in the PR #5276 review). ⚠️ These ranges are not published

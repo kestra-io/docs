@@ -26,6 +26,7 @@ import LpHero from "./LpHero.astro"
 import LpTrust from "./LpTrust.astro"
 import LpBenefits from "./LpBenefits.astro"
 import LpUseCases from "./LpUseCases.astro"
+import LpFeatures from "./LpFeatures.astro"
 import LpRoi from "./LpRoi.astro"
 import LpProof from "./LpProof.astro"
 import LpAdoption from "./LpAdoption.astro"
@@ -70,6 +71,12 @@ const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
         header={LP_SHARED.useCases.header}
         intro={LP_SHARED.useCases.intro}
         columns={LP_SHARED.useCases.columns}
+    />
+
+    <!-- 4b — features: four category blocks (Martin's structure, 2026-08-07) -->
+    <LpFeatures
+        header={LP_SHARED.features.header}
+        blocks={LP_SHARED.features.blocks}
     />
 
     <!-- 5 — ROI -->

@@ -1,0 +1,96 @@
+---
+/**
+ * Section — Features, four category blocks (Martin's structure, 2026-08-07):
+ * Core Orchestration / Security & Compliance / Governance & Productivity /
+ * Scalability & Infrastructure. One sentence per block, feature names dropped,
+ * everything sourced from /features and /pricing.
+ *
+ * Replaces nothing and links nowhere: unlike the old enterprise checklist
+ * (checkbox pills, killed in review as table stakes), each block is a claim in
+ * prose — closer to how the categories read on /pricing than to a feature list.
+ */
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    header: string
+    blocks: readonly { icon: string; title: string; body: string }[]
+}
+
+const { header, blocks } = Astro.props
+---
+
+<section class="lp-section lp-features">
+    <div class="lp-container">
+        <h2 class="lp-h2">{header}</h2>
+
+        <ul class="lp-features__grid">
+            {
+                blocks.map((block) => (
+                    <li class="lp-features__card">
+                        <span class="lp-features__chip" aria-hidden="true">
+                            <Icon name={block.icon} class="lp-features__icon" />
+                        </span>
+                        <div>
+                            <h3 class="lp-features__title">{block.title}</h3>
+                            <p class="lp-features__body">{block.body}</p>
+                        </div>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-features__grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    .lp-features__card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        height: 100%;
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-secondary);
+    }
+
+    .lp-features__chip {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+        width: 2.75rem;
+        height: 2.75rem;
+        border-radius: 0.75rem;
+        background-color: var(--ks-background-purple-light);
+    }
+
+    .lp-features__icon {
+        width: 1.5rem;
+        height: 1.5rem;
+        color: var(--ks-content-color-highlight);
+    }
+
+    .lp-features__title {
+        font-size: 1.0625rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .lp-features__body {
+        margin-top: 0.5rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+</style>
