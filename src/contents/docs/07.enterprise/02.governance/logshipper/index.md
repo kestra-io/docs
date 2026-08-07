@@ -18,7 +18,7 @@ Log Shipper exports Kestra execution and audit logs to external observability pl
     <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=9BrJXbEZLXbRXQIN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Log shipper – centralize logs
+## Log shipper — centralize logs
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
@@ -84,8 +84,6 @@ The logs are then distributed to the exporters in chunks of 5000, 2000, and 1000
 
 ## Log shipper examples
 
-The Log Shipper integrates with many popular observability platforms. Below are a couple of example flows using a Kestra core plugin as well as external platform plugins.
-
 ### Kestra `FileLogExporter`
 
 The following example uses Kestra's core `FileLogExporter` plugin to synchronize the logs of the `company.team` namespace. The `synchronize_logs` task outputs a file, and the log file `uri` is passed as an expression in the `upload` task to then upload the logs to an S3 bucket.
@@ -120,7 +118,7 @@ tasks:
 
 ### Datadog
 
-The below example demonstrates an execution that runs a daily log synchronization and distribution of logs with [Datadog](https://www.datadoghq.com/) using the default property settings.
+This example exports logs to [Datadog](https://www.datadoghq.com/) using the default property settings:
 
 ```yaml
 id: log_shipper
@@ -148,9 +146,9 @@ The batched logs directly populate your Datadog instance like in the following s
 
 ![Datadog Logs](./logshipper_datadog.png)
 
-### AWS Cloudwatch
+### AWS CloudWatch
 
-This example exports logs to [AWS Cloudwatch](https://aws.amazon.com/cloudwatch/). The following example flow triggers a daily batch and exports to AWS's service [Amazon CloudWatch](https://docs.aws.amazon.com/cloudwatch/):
+This example exports logs to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/):
 
 ```yaml
 id: log_shipper
@@ -184,7 +182,7 @@ The logs are viewable in the interface of the specified Log Group and can be exa
 
 ### AWS S3
 
-This example exports logs to [AWS S3](https://aws.amazon.com/s3/). The following example flow triggers a daily batch and exports to AWS's S3 object storage:
+This example exports logs to [AWS S3](https://aws.amazon.com/s3/):
 
 ```yaml
 id: log_shipper
@@ -213,7 +211,7 @@ tasks:
 ```
 ### Google Operational Suite
 
-This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability). The following example flow triggers a daily batch and exports to Google Cloud Platform's observability monitor:
+This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability):
 
 ```yaml
 id: log_shipper
@@ -237,7 +235,7 @@ tasks:
         projectId: my-gcp-project
 ```
 
-This example exports logs to [Google Cloud Storage](https://cloud.google.com/storage?hl=en). The following example flow triggers a daily batch and exports to Google Cloud Storage:
+This example exports logs to [Google Cloud Storage](https://cloud.google.com/storage?hl=en):
 
 ```yaml
 id: log_shipper
@@ -265,7 +263,7 @@ tasks:
 
 ### Azure Monitor
 
-This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview). The following example flow triggers a daily batch and export to Azure Monitor:
+This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview):
 
 ```yaml
 id: log_shipper
@@ -296,7 +294,7 @@ tasks:
 
 ### Azure Blob Storage
 
-This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/). The following example flow triggers a daily batch and export to Azure Blob Storage:
+This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/):
 
 ```yaml
 id: log_shipper
@@ -327,7 +325,7 @@ tasks:
 
 ### Elasticsearch
 
-This example exports logs to [Elasticsearch](https://www.elastic.co). The following example flow triggers a daily batch and export to [Elasticsearch Observability platform](https://www.elastic.co/observability).
+This example exports logs to [Elasticsearch](https://www.elastic.co/observability):
 
 ```yaml
 id: logShipper
@@ -359,7 +357,7 @@ tasks:
 
 ### New Relic
 
-This example exports logs to [New Relic](https://newrelic.com/). The following example flow triggers a daily batch and export to the [New Relic Observability Platform](https://newrelic.com/platform).
+This example exports logs to [New Relic](https://newrelic.com/platform):
 
 ```yaml
 id: logShipper
@@ -386,7 +384,7 @@ tasks:
 
 ### Splunk
 
-This example exports logs to [Splunk](https://www.splunk.com/). The following example flow triggers a daily batch and export to [Splunk Observability Cloud](https://www.splunk.com/en_us/products/observability-cloud.html).
+This example exports logs to [Splunk Observability Cloud](https://www.splunk.com/en_us/products/observability-cloud.html):
 
 ```yaml
 id: log_shipper
@@ -397,23 +395,23 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
 
-  tasks:
-    - id: log_export
-      type: io.kestra.plugin.ee.core.log.LogShipper
-      logLevelFilter: INFO
-      lookbackPeriod: P1D
-      offsetKey: logShipperOffset
-      delete: false
-      logExporters:
-        - id: SplunkLogExporter
-          type: io.kestra.plugin.ee.splunk.LogExporter
-          host: https://example.splunkcloud.com:8088
-          token: "{{ secret('SPLUNK_API_KEY') }}"
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    delete: false
+    logExporters:
+      - id: SplunkLogExporter
+        type: io.kestra.plugin.ee.splunk.LogExporter
+        host: https://example.splunkcloud.com:8088
+        token: "{{ secret('SPLUNK_API_KEY') }}"
 ```
 
 ### OpenSearch
 
-This example exports logs to [OpenSearch](https://opensearch.org/) database. The following example flow triggers a daily batch and export to [OpenSearch Observability platform](https://opensearch.org/platform/observability/index.html).
+This example exports logs to the [OpenSearch observability platform](https://opensearch.org/platform/observability/index.html):
 
 ```yaml
 id: log_shipper
@@ -442,7 +440,7 @@ tasks:
 
 ### OpenTelemetry
 
-This example exports logs to [OpenTelemetry](https://opentelemetry.io/). The following example flow triggers a daily batch and export to an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).
+This example exports logs to an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/):
 
 ```yaml
 id: logShipper
@@ -470,10 +468,10 @@ tasks:
 
 ### Graylog
 
-This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch and sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
+This example exports logs to [Graylog](https://graylog.org/) using a GELF HTTP input. See the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for the full property reference.
 
 ```yaml
- id: log_shipper
+id: log_shipper
 namespace: system
 
 triggers:
@@ -496,7 +494,7 @@ tasks:
 
 ### Huawei Cloud LTS
 
-This example exports logs to [Huawei Cloud Log Tank Service (LTS)](https://www.huaweicloud.com/intl/en-us/product/lts.html). The following example flow triggers a daily batch and ships logs to an LTS log stream. Refer to the [Huawei EE Plugin Documentation](/plugins/plugin-ee-huawei) for more property details.
+This example exports logs to [Huawei Cloud Log Tank Service (LTS)](https://www.huaweicloud.com/intl/en-us/product/lts.html). See the [Huawei EE Plugin Documentation](/plugins/plugin-ee-huawei) for the full property reference.
 
 ```yaml
 id: log_shipper

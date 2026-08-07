@@ -171,73 +171,11 @@ Here's a table summarizing the key differences between an Admin and a Super Admi
 
 ## Super Admin
 
-Super Admin is a powerful type of user. Use the role sparingly and only for use cases that require it, such as creating a new tenant, troubleshooting tenant issues, or helping a user with a problem.
+Super Admin is a powerful user type with instance-wide privileges. Use it sparingly — only for tasks that require it, such as creating tenants, troubleshooting, or helping a user.
 
-Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance. There are multiple methods to create a Superadmin user.
+Unlike tenant-scoped roles, Super Admin operates across all tenants and does not require any Role or Binding. Superadmins access instance-wide controls through the [Super Admin console](../../05.instance/00.super-admin/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
 
-### Through the UI
-
-When you launch Kestra for the first time, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../../01.overview/02.setup/index.md).
-
-This interface invites you to create your first User which will be automatically assigned the `Superadmin` privilege.
-
-### Through the CLI
-
-To create a User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the `--superadmin` option:
-
-```bash
-kestra auths users create admin@kestra.io TopSecret42 --superadmin
-
-## schema:
-kestra auths users create <username> <password> \
---tenant=<tenant-id> --superadmin
-```
-
-To set or revoke Superadmin privileges, use the following in the CLI:
-
-```bash
-kestra auths users set-superadmin user@email.com true # (use false to revoke)
-```
-
-### Configuration
-
-A Super Admin can also be created from the configuration file using the configuration below:
-
-```yaml
-kestra:
-  security:
-    superAdmin:
-      username: <username>
-      password: <password>
-      tenantAdminAccess:
-        - <optional>
-```
-
-For more details, check the [Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) page.
-
-## Grant/Revoke Super Admin permissions
-
-:::alert{type="info"}
-Note that you need to be a Superadmin yourself.
-:::
-
-### Through the UI
-
-You can grant or revoke the Superadmin privilege using the switch in the User Edit page.
-
-![superadmin switch](./superadmin_switch.png)
-
-### Through the CLI
-
-To set an existing User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the dedicated command:
-
-```bash
-## Set a user as Super Admin
-kestra auths users set-superadmin admin@kestra.io true
-
-## Revoke Super Admin privilege
-kestra auths users set-superadmin admin@kestra.io false
-```
+For how to create Superadmin users and manage the privilege, see [Super Admin](../../05.instance/00.super-admin/index.md).
 
 ## Admin
 
@@ -310,7 +248,7 @@ kestra:
 
 ### Reset password (by a Super Admin)
 
-Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **IAM - Users**.
+Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Settings → Super Admin → Instance IAM → Users**.
 
 ![Reset Password](./forgot-password.png)
 

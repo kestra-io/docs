@@ -7,31 +7,25 @@ icon: /src/contents/docs/icons/kestra.svg
 editions: ["EE", "Cloud"]
 ---
 
-Learn about the Enterprise Edition and how it can help you run Kestra securely and reliably at scale.
+Kestra Enterprise Edition is built for production workloads with high security and compliance requirements, deployable wherever you need.
 
-## Kestra Enterprise features – high-availability platform
-
-Designed for production workloads with high security and compliance requirements, deployed wherever you need.
-
-## Key Features
+## Key features
 
 Kestra Enterprise is an additive overlay on the [Open Source Edition](https://github.com/kestra-io/kestra) — it shares one codebase and preserves all open-source behavior while adding enterprise capabilities on top.
 
-⚡️**High Availability**: Kestra Enterprise is designed to be highly available and fault-tolerant. It can use **Kafka**, **Redis**, **AMQP**, or **GCP Pub/Sub** as the queue backend, and **Elasticsearch** for the search and read model. This eliminates single points of failure and enables horizontal scaling for large workloads.
+**High availability**: Designed to be highly available and fault-tolerant. Supports **Kafka**, **Redis**, **AMQP**, or **GCP Pub/Sub** as the queue backend, and **Elasticsearch** for the search and read model — eliminating single points of failure and enabling horizontal scaling for large workloads.
 
-⚡️**Multi-Tenancy**: The Enterprise Edition supports multi-tenancy, enabling separate environments for different teams or projects. Each tenant is fully isolated, can have its own access control policies, and can optionally run with Worker Isolation and dedicated worker groups to prevent cross-tenant contention.
+**Multi-tenancy**: Separate environments for different teams or projects. Each tenant is fully isolated, with its own access control policies, and can optionally run with Worker Isolation and dedicated worker groups to prevent cross-tenant contention.
 
-⚡️**Security and Access Control**: Kestra Enterprise supports Single Sign-On (SSO) and Role-Based Access Control (RBAC), enabling you to integrate with your existing identity provider and manage user access to workflows and resources. Enforce plugin allow-lists, apply read-only secrets for least privilege, and lean on audit logs for full traceability.
+**Security and access control**: SSO and RBAC let you integrate with your existing identity provider and manage user access to workflows and resources. Enforce plugin allow-lists, apply read-only secrets for least privilege, and use audit logs for full traceability.
 
-⚡️**Enterprise Features**: Audit Logs, Custom Blueprints, Namespace-level secrets/variables and plugin defaults, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, and operational safeguards like the Kill Switch and in-product Announcements.
+**Enterprise features**: Audit Logs, Custom Blueprints, namespace-level secrets, variables and plugin defaults, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, and operational safeguards like the Kill Switch and in-product Announcements.
 
-⚡️**Secrets Management**: Kestra Enterprise securely stores and manages secrets. It supports read-only secrets for sensitive values and integrates with existing secret managers such as AWS Secrets Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, HashiCorp Vault, Doppler, 1Password, and more to come.
+**Secrets management**: Securely stores and manages secrets. Supports read-only secrets for sensitive values and integrates with AWS Secrets Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, HashiCorp Vault, Doppler, 1Password, and more.
 
-⚡️**Support**: The Enterprise Edition comes with guaranteed SLAs and priority support.
+**Support**: Guaranteed SLAs and priority support, with onboarding and training to ensure a fast and confident start.
 
-⚡️**Onboarding**: We provide onboarding and training for your team to ensure a fast and confident start.
-
-If you're interested to learn more, [get in touch!](/demo)
+[Get in touch](/demo) to learn more.
 
 :::alert{type="info"}
 **Kestra Cloud:** If you’re unable to host Kestra Enterprise yourself, you can try Kestra Cloud — a fully managed SaaS solution hosted by the Kestra team. Kestra Cloud is currently in early access. If you are interested in trying it out, [sign up here](/cloud).

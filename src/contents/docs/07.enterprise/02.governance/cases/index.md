@@ -14,14 +14,12 @@ When an execution fails, it is often an incident. Cases lets you track and resol
 
 Cases are not limited to failures — you can open one for executions that need approvals, or for successful executions that produced unexpected outputs.
 
-A dedicated `CreateCase` task in the Kestra YAML flow definition allows creating cases automatically:
+The `CreateCase` task lets you open cases automatically from your flow YAML:
 
 - in the `errors`, `finally`, or `afterExecution` blocks, to auto-create custom cases when the execution moves to a terminal state like Failed, Killed, Warning, or Success
 - anywhere in the regular `tasks` block, to create cases based on custom conditions within the flow, for example if a given output is bad (error status code on some API request).
 
 Not every execution needs to be treated as an independent case, though. Often a single production issue (e.g. an external API that is temporarily unreachable) can easily create 10 to 100 failed executions within an hour. Sending Slack alerts for each failed execution can quickly get so noisy that users mute the channel, making the alerting useless. Cases solve this with **deduplication**: with `linkMatchingExecutions: true`, new failing executions are attached to the already-open case for the same flow and task instead of opening a new one.
-
-This page covers the case model, the `CreateCase` task, deduplication and auto-attach, the UI, templates, notifications, permissions, and the API.
 
 :::alert{type="warning"}
 Cases require the [Kestra plugin](https://kestra.io/plugins/plugin-kestra) to be installed on your Kestra EE instance, because the `CreateCase` task used under the hood by Cases comes from this plugin. The default Docker image with plugins included already contains it. If you manage plugins yourself, install the Kestra plugin through [Versioned Plugins](../../05.instance/versioned-plugins/index.md) to use Cases reliably.

@@ -58,17 +58,11 @@ kestra:
       region: us-east-1
 ```
 
-**Enable per tenant** — toggle the setting in the **Dedicated secrets manager** configuration under the tenant settings:
+**Enable per tenant** — toggle the setting in the **Dedicated secrets manager** configuration under the tenant settings.
 
-![Tenant-level read-only toggle](./read-only-secrets-8.png)
+**Enable per namespace** — toggle the setting in the **Dedicated secrets manager** section of the namespace **Edit** tab.
 
-**Enable per namespace** — toggle the setting in the **Dedicated secrets manager** section of the namespace **Edit** tab:
-
-![Namespace-level read-only toggle](./read-only-secrets-1.png)
-
-Once enabled, secrets display a lock icon and the **Create New Secret** button is hidden:
-
-![Secrets tab showing lock icon in read-only mode](./read-only-secrets-4.png)
+Once enabled, secrets display a lock icon and the **Create New Secret** button is hidden.
 
 Required tags that must be set externally in read-only mode:
 - `namespace` — the namespace the secret belongs to.
@@ -420,9 +414,7 @@ kestra:
 2. `GOOGLE_APPLICATION_CREDENTIALS` environment variable pointing to a key file.
 3. Google default application credentials (Workload Identity, GCE metadata server, gcloud CLI).
 
-When configuring via the Kestra UI, only `project` and `service-account` fields appear:
-
-![GCP Secret Manager Configuration via UI](./gcp-secret-configuration.png)
+When configuring via the Kestra UI, only `project` and `service-account` fields are shown.
 
 ### Read-only mode
 
@@ -560,13 +552,7 @@ kestra:
 | `filter-on-tags` | map | No | — | Read-only mode: filter visible secrets by matching tags. |
 | `excluded-tags` | map | No | — | Secrets with these tags are excluded from Kestra's view. |
 
-In Vault, secrets created through Kestra are stored under `TENANT_ID/NAMESPACE_PARENT/.../NAMESPACE_CHILD/SECRET_NAME`. For a tenant `internal` and namespace `company.team`:
-
-![Vault Secret Structure](./secret-structure.png)
-
-When using `root-engine: dev`, the engine path appears in Vault as:
-
-![Vault Secret UI](./kv-secret-engine.png)
+In Vault, secrets created through Kestra are stored under `TENANT_ID/NAMESPACE_PARENT/.../NAMESPACE_CHILD/SECRET_NAME`. For a tenant `internal` and namespace `company.team`, the path would be `internal/company/team/SECRET_NAME` under the configured `root-engine`.
 
 ### Read-only mode
 

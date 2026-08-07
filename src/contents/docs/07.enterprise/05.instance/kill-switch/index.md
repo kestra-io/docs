@@ -25,9 +25,7 @@ Kill Switch replaces the CLI-only `--skip-executions` and `--skip-flows` command
 
 ## Configure a Kill Switch
 
-To configure a Kill Switch, navigate to your **Instance → Kill Switch** section in Kestra. From there, name the Kill Switch (e.g., `Kill Switch – Payments Namespace Outage (TEMP)` ) and configure the switch's specifications.
-
-![Create a Kill Switch](./create-kill-switch.png)
+To configure a Kill Switch, go to **Settings → Super Admin → Instance → Kill Switch**. Name the switch (e.g., `Kill Switch – Payments Namespace Outage (TEMP)`) and configure its specifications.
 
 ### Kill Switch types
 

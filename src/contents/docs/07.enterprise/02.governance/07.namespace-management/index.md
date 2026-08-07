@@ -8,13 +8,13 @@ editions: ["EE", "Cloud"]
 docId: namespace.management
 ---
 
-How to manage secrets, variables, and plugin defaults at the Namespace level.
+Namespaces provide an additional layer of isolation for secrets, variables, and plugin defaults within a tenant.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/As4y2oliD_8?si=d-2AsAuqlwaBFuEX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Namespace management – secure configuration
+## Namespace management — secure configuration
 
 Kestra is a [multi-tenant](../../02.governance/tenants/index.md) platform. Each tenant can have multiple Namespaces, and each Namespace provides additional isolation and security.
 
@@ -34,11 +34,7 @@ Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p
 
 ### Secrets
 
-On the namespace page, go to the **Secrets** tab and click **Add a secret**.
-
-![add_secret.png](./add_secret.png)
-
-Define the secret by entering its key and value. Save the secret.
+On the namespace page, go to the **Secrets** tab, click **Add a secret**, enter a key and value, and save.
 
 The secret key now appears on the **Secrets** tab. Edit or delete it using the action buttons on the right. Reference the secret in flows using its key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
 
@@ -120,8 +116,6 @@ Variables defined at the Namespace level can be used in any flow defined under t
 
 On the namespace page, go to the **Variables** tab, define the variables, and save.
 
-![define_variables.png](./define_variables.png)
-
 Here is an example flow where the Namespace variable is used:
 
 ```yaml
@@ -137,9 +131,7 @@ tasks:
     fetchOne: true
 ```
 
-When building new flows in a Namespace, Namespace variables are accessible from the **Variables** tab. Open the tab to view all available Namespace variables and their associated values.
-
-![Namespace Variables Tab](./namespace-variable-tab.png)
+When building new flows in a Namespace, Namespace variables are accessible from the **Variables** tab.
 
 ## Creating Namespaces
 

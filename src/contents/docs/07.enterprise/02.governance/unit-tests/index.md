@@ -8,9 +8,7 @@ editions: ["EE", "Cloud"]
 version: ">= 0.23.0"
 ---
 
-Build tests to ensure proper flow behavior.
-
-Tests let you verify that your flow behaves as expected, without cluttering your instance with test executions that run every task. For example, a unit test designed to mock the notification task of a flow ensures the configuration is correct without spamming dummy notifications to the recipient. They also let you isolate testing to specific changes to a task, rather than executing the entire flow.
+Unit tests verify that flows behave as expected without running every task or producing real side effects — for example, mocking a notification task to confirm the configuration is correct without sending dummy alerts, or isolating a single changed task without re-executing the whole flow.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/jMZ9Cs3xxpo?si=CieI3nUrE1rY-Oew" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -25,8 +23,6 @@ Unit tests are configured for and connected to their respective flows. To create
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/OXqOYL6Uz47IXDMD3afL?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Unit Test UI | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 Once tests are created, they can all be viewed from the **Tests** tab with their respective Id, Namespace, Tested Flow, and current State listed. Additionally, tests can be run from this view with expandable results.
-
-![Tests Interface](./unit-test-interface.png)
 
 The following diagram illustrates the structure of flows and unit tests together in Kestra:
 
@@ -132,21 +128,15 @@ The `id` is unique to the test suite, and the `namespace` and `flowId` must matc
 
 In the first test case, `extract_should_return_data`, the `fixtures` include tasks to replace the Slack alert and BigQuery data load so as to not clutter a Slack channel with test alert messages or a BigQuery table with test data but still test the overall design of the flow.
 
-The `assertions` property defines the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null. After running the test, we can see the results for the `extract_should_return_data` test by expanding the results.
+The `assertions` property defines the conditions for success or failure. In the example, the test aims to ensure that the outputs from the `transform_to_uppercase` task are not null.
 
-![Test case 1 results](./test-case-1.png)
+Because we wrote the test suite with two test cases, both execute during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the first test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this, the second test case `extract_should_transform_product_names_to_uppercase_mocked` mocks `extract` to prevent the API call and mocks `transform_to_products_name` to return `my-product-1` in lowercase — then asserts that `transform_to_uppercase` produced `MY-PRODUCT-1`.
 
-The assertion passed as the `extract` task downloading data from the API returned product names and was not null. Additionally, since we did not include a fixture for the `transform_to_uppercase` task, we can see that the returned product names were also transformed successfully to uppercase in the assertion's actual result.
+After running, both assertions pass with their actual and expected values visible in the expanded results:
 
-Because we wrote the test suite with two test cases, both executed during the run. For more isolation, you could separate test cases into multiple tests of the flow as needed. While we know from the previous test that the uppercase transformation was successful, you may not want to extract actual data during testing, as it could add load to an external service or send unnecessary alerts. To mitigate this and solely test the transformation, we added the `extract` and `transform_to_products_name` fixtures in the second test case, `extract_should_transform_product_names_to_uppercase_mocked`. The `extract` fixture prevents the API call, and the `transform_to_products_name` fixture simulates the return of the flow task with a mock output, `my-product-1`, all in lowercase.
+![Both test cases passing with expanded assertion results](./test-cases.png)
 
-After running, we can see that the assertion was successful and the actual result `MY-PRODUCT-1` was successfully transformed and matches the expected result defined in the `assertions` property of the test.
-
-![Test case 2 results](./test-case-2.png)
-
-Execution details are not stored in the Executions page like normally run flows to avoid cluttering that space with unnecessary execution details. To view an execution made from a test, you can open the test case and click on the link for the ExecutionId.
-
-![Test Execution Details](./test-execution.png)
+Execution details are not stored in the Executions page like normally run flows to avoid cluttering that space with unnecessary execution details. To view an execution made from a test, open the test case and click the ExecutionId link.
 
 ## Unit test with a namespace file
 

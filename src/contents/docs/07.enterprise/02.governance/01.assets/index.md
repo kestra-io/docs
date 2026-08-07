@@ -24,7 +24,7 @@ For an end-to-end architecture walkthrough with diagrams, see [Assets for infras
 
 Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`; you can also add them manually from the **Assets** tab. Once created, you can view asset details, check which workflow runs created or modified them, and see how assets connect to each other across your workflows.
 
-Assets enables:
+Assets enable:
 
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
@@ -55,7 +55,7 @@ Asset types fall into two categories:
 
 - **Kestra-defined asset types**: These predefined types use the `io.kestra.core.models.assets` model and provide structured metadata fields specific to each asset type. Plugins that support auto-generation populate these fields automatically during task execution — for example, a JDBC plugin creates a `Table` asset with `system`, `database`, and `schema` filled in from the connection details.
 
-The current Kestra-defined asset types are the following:
+Kestra provides these built-in asset types:
 
 - `io.kestra.plugin.ee.assets.Dataset`
   - Represents a dataset asset managed by Kestra.

@@ -100,28 +100,16 @@ Below is a video demonstration walking through each step from installation to ap
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Both official and custom plugins can be installed from the UI. Navigate to the **Instance > Versioned Plugins** section. You can click **+ Install** and open up the full library of available plugins.
+Both official and custom plugins can be installed from the UI. Go to **Settings → Super Admin → Infrastructure → Versioned Plugins** and click **+ Install** to browse the full plugin library. Search for the plugin, select the version, and confirm.
 
-![versioned-plugins-1](./versioned-plugins-1.png)
+After installing, the full list of versioned plugins is displayed. Kestra alerts you when a newer version is available. Upgrading installs the new version separately — the previous version stays active in existing flows.
 
-From the list, search and select the plugin to install and select the version.
+For a custom plugin, click **+ Install**, switch to **Custom plugin**, and provide:
 
-![versioned-plugins-2](./versioned-plugins-2.png)
+- **Group ID**: The group identifier of the plugin.
+- **Artifact ID**: The artifact identifier of the plugin.
 
-After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade by installing the latest version. When upgrading, the previous version of the plugin is preserved, and a separate, fresh installation of the latest version is added.
-
-![versioned-plugins-3](./versioned-plugins-3.png)
-
-For a custom plugin, after clicking **+ Install**, switch from Official plugin to Custom plugin. You need to specify two identifiers for each custom plugin installation:
-
-- Group ID: The group identifier of the plugin to be installed.
-- Artifact ID: The artifact identifier of the plugin to be installed.
-
-![versioned-plugins-5](./versioned-plugins-4.png)
-
-Instead of installing a new plugin, you can **Upload** a plugin by choosing a valid Java archive file (`.jar`).
-
-![versioned-plugins-4](./versioned-plugins-5.png)
+To upload a custom build, click **Upload** and select a valid `.jar` file.
 
 ### From the API
 
@@ -221,7 +209,7 @@ When there are multiple versions of a plugin available, Kestra resolves the vers
 4. **Instance-Level**: Using the value set in `kestra.plugins.management.defaultVersion` (default: `LATEST`).
     - This property can be configured to `NONE` to enforce that a version is always explicitly defined.
 
-**Note**: By default, Kestra defaults to `LATEST` for core plugins if no version can be resolved. For other plugins, if no version can be resolved, the Flow will be considered invalid.
+By default, Kestra uses `LATEST` for core plugins when no version can be resolved. For other plugins, an unresolvable version renders the flow invalid.
 
 :::alert{type="info"}
 The version is resolved both at flow creation time and execution time to ensure the correct plugin version is used during both stages. This means that a Task/Trigger can only be deserialized after ensuring that all default versions are properly resolved.

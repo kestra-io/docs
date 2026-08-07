@@ -183,7 +183,7 @@ Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and 
 
 ### Creating Worker Queues
 
-Navigate to **Instance → Worker Queues** and click **Create**. You can also create Worker Queues via the API or Terraform.
+Navigate to **Settings → Super Admin → Infrastructure → Worker Queues** and click **Create**. You can also create Worker Queues via the API or Terraform.
 
 **Tenant scoping**: a Worker Queue can restrict which tenants may route tasks through it. An empty tenant list means unrestricted.
 
@@ -193,7 +193,7 @@ A Worker Group is identified by a stable id (RFC 1123 label), has a display name
 
 ### Creating a Worker Group
 
-Navigate to **Instance → Worker Groups → Add Worker Group**. Set an id, display name, and optional description. You can add queue subscriptions and generate registration tokens immediately, or configure them after creation.
+Navigate to **Settings → Super Admin → Infrastructure → Worker Groups** and click **Add Worker Group**. Set an id, display name, and optional description. You can add queue subscriptions and generate registration tokens immediately, or configure them after creation.
 
 Worker Group ids must follow RFC 1123 label format.
 
