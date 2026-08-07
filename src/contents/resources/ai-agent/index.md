@@ -26,6 +26,8 @@ The rise of Large Language Models (LLMs) has transformed what's possible with au
 
 An AI agent is a software program that can perceive its environment, process that information, and take autonomous actions to achieve specific goals. Unlike a simple script that follows a rigid set of instructions, an agent operates within a perception-action cycle: it senses changes, makes decisions based on its programming and past experiences, and then acts upon its environment.
 
+An agent is one component in a wider system. Making it useful in production means [coordinating models, data and tools](/resources/ai/ai-orchestration) around it, not just improving the agent itself.
+
 This ability to operate autonomously is what sets AI agents apart. They are designed to be proactive and persistent, capable of running complex, long-duration tasks without direct human intervention. This could involve anything from monitoring a system for anomalies to executing a multi-step financial transaction or provisioning cloud infrastructure. The core idea is to delegate not just the "how" but also the "what" and "when" of a task to a system that can reason and react. For a deeper dive into how Kestra implements this, explore our documentation on [AI Agents in Kestra](/docs/ai-tools/ai-agents). Broader patterns around autonomous, goal-driven automation are covered in our guide to [agentic AI](/resources/ai/agentic-ai).
 
 ## Key characteristics of AI agents

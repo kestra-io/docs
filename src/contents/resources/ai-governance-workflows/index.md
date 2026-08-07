@@ -183,6 +183,8 @@ As you scale your AI initiatives, it's crucial to track their impact on business
 
 AI workflows can be broadly categorized into non-agentic and agentic systems, each requiring a tailored governance approach.
 
+Governance is only enforceable where execution is observable, which is why audit trails and approval gates belong to the orchestration layer. See [governed AI orchestration](/resources/ai/ai-orchestration) for how the two fit together.
+
 ### Non-agentic AI workflows
 
 These are traditional, deterministic workflows common in MLOps, such as [ETL for ML](https://kestra.io/resources/data/etl-workflow) and batch inference jobs. Governance for these workflows focuses on data quality, model versioning, and the reproducibility of the [machine learning pipeline](https://kestra.io/resources/ai/what-is-a-machine-learning-pipeline).
