@@ -5,7 +5,6 @@ description: Experiment in the Kestra Playground. Build and test tasks iterative
 sidebarTitle: Playground
 icon: /src/contents/docs/icons/ui.svg
 editions: ["OSS", "EE"]
-version: "0.24.0"
 ---
 
 Iteratively build and test flows task by task without running the entire workflow.
@@ -14,9 +13,7 @@ Iteratively build and test flows task by task without running the entire workflo
   <iframe src="https://www.youtube.com/embed/p7UXd66GI1M?si=1Dzc6cjghO8BGAhh" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Playground
-
-The **Playground mode** in Kestra allows you to build workflows iteratively, one task at a time. This feature is especially useful when building data processing flows, where you typically start with a task extracting data, and you need to inspect the output before knowing what kind of transformation might be required. Then, you can work on that transformation task without rerunning the extraction task.
+**Playground mode** lets you build workflows iteratively, one task at a time. This feature is especially useful when building data processing flows, where you typically start with a task extracting data, and you need to inspect the output before knowing what kind of transformation might be required. Then, you can work on that transformation task without rerunning the extraction task.
 
 If you've ever worked with a [Jupyter](https://jupyter.org/) notebook, you might be familiar with this pattern: you run the first cell to extract data, then you run the second cell to transform that data, and you can rerun the second cell multiple times to test different transformations without having to rerun the first cell again. Kestra's Playground mode allows you to do the same within your flows.
 
@@ -37,4 +34,33 @@ Playground mode requires a DAG (Directed Acyclic Graph) structure, so you cannot
 
 To see Playground in action, check out the demo below.
 
-<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/LjdQeZY6l0gVWb8zJ3PY?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Playground Demo | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(54.828% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/6ndSRG2Yeak23aKuwosz?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="playground_data_pipeline | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+```yaml
+id: playground_data_pipeline
+namespace: company.team
+description: |
+  A step-by-step data pipeline designed for the Playground feature.
+  Run each task individually to inspect outputs before proceeding to the next stage.
+labels:
+  team: engineering
+  type: demo
+
+tasks:
+  - id: fetch_products
+    type: io.kestra.plugin.core.http.Request
+    uri: https://jsonplaceholder.typicode.com/todos?_limit=10
+    method: GET
+
+  - id: extract_titles
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ outputs.fetch_products.body | jq('map(select(.completed == false)) | map(.title)') }}"
+
+  - id: count_pending
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ outputs.fetch_products.body | jq('[.[] | select(.completed == false)] | length') }}"
+
+  - id: build_report
+    type: io.kestra.plugin.core.debug.Return
+    format: "Pending tasks: {{ outputs.count_pending.value }} | First item: {{ outputs.extract_titles.value | jq('.[0]') }}"
+```

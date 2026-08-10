@@ -21,7 +21,7 @@ To add a custom in-app banner, go to **Settings → Super Admin → Instance →
 As a Superadmin, you can configure the following within each announcement:
 
 - **Message**: the text to display in the banner
-- **Type**: the type of banner to display (**INFO, WARNING, ERROR**)
-- The **START** and **END** date during which the announcement should be displayed.
+- **Type**: the severity of the banner — `INFO`, `WARNING`, or `ERROR`
+- **Start** and **End** date during which the announcement is displayed.
 
 ![Display Announcement](./display-announcement.png)

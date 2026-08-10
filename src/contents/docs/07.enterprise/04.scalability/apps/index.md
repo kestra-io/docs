@@ -15,7 +15,7 @@ Build custom UIs to interact with Kestra from the outside world.
   <iframe src="https://www.youtube.com/embed/KwBO8mcS3kk?si=VJC5a6YgVECR_bJ3" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Apps – build frontends for Flows
+## Apps – build frontends for flows
 
 Apps let you use your Kestra workflows as the backend for custom applications. Within each app, you can specify custom frontend blocks, such as forms for data entry, output displays, approval buttons, or markdown blocks.
 
@@ -35,7 +35,7 @@ Most Apps fall into one of these two patterns:
 
 ## App benefits
 
-Apps offer custom UIs on top of your Kestra workflows. Often, workflows are designed for non-technical users, and creating custom frontends for each of these workflows can be a lot of work. Imagine having to build and serve a frontend, connect it to Kestra’s API, validate user inputs, handle responses, manage workflow outputs, and deal with authentication and authorization — all from scratch. Apps generate a custom UI for any flow without custom frontend development.
+Apps generate a custom UI for any flow without custom frontend development. Building and serving a frontend, connecting it to Kestra’s API, validating user inputs, handling responses, managing workflow outputs, and dealing with authentication and authorization — Apps handle all of that so you don’t have to.
 
 Here are some common scenarios where a custom UI is useful:
 
@@ -44,8 +44,6 @@ Here are some common scenarios where a custom UI is useful:
 - **IT Helpdesk**: workflows that accept bug reports, feature requests, or other tickets, and automatically forward the ticket to the relevant team.
 - **User Feedback & Signups**: workflows that collect feedback or allow users to sign up for events or email lists.
 - **Data Entry**: workflows where business users enter data that is processed and either sent back to them or stored in a database.
-
-Apps let non-technical users interact with workflows without editing YAML or flow configuration.
 
 ## How App stages map to execution progress
 
@@ -77,14 +75,14 @@ The examples below are a good starting point when designing your own App:
 - **VM or infrastructure request**: collect the requested environment, size, region, and justification on `OPEN`, show validation progress on `RUNNING`, pause for approval on `PAUSE`, then display the created VM details on `SUCCESS`. This pattern also fits the infrastructure workflows described in the [infrastructure automation blog](../../../../blogs/infra-automation/index.md).
 - **Human-in-the-loop review**: display task outputs, logs, or model results, then let an approver accept or reject the execution from the same screen.
 
-When in doubt, start by mapping the user journey first:
+Start by mapping the user journey:
 
 1. What should the user submit?
 2. What should they see while the flow is running?
 3. Does the flow need approval or review?
 4. What is the final outcome you want to show back in the App?
 
-Once you know those answers, it becomes much easier to choose the right blocks for each stage.
+Those answers determine which blocks to choose for each stage.
 
 If you want inspiration beyond the examples on this page, browse the Apps-focused posts in the [blog section](../../../../blogs/introducing-apps/index.md) and [solutions content](../../../../blogs/use-case-apps/index.md).
 
@@ -104,7 +102,7 @@ You can set `disabled: true` in the YAML to create an app in an inactive state. 
 
 ### App to run a Hello World flow
 
-Apps serve as custom UIs for workflows, so you need to first create a flow. Here is a simple configuration for a parameterized flow that logs a message when triggered:
+Apps front a flow, so you need one to start. The following flow accepts a name input and logs a message when triggered:
 
 ```yaml
 id: myflow
@@ -160,9 +158,9 @@ This app is perfect for building **public forms** that anyone in the world can a
 
 ### App to request and download data
 
-Let's create a flow that fetches the relevant dataset based on user input: [flow source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/flows/company.team.get_data.yaml).
+Create a flow that fetches the relevant dataset based on user input: [flow source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/flows/company.team.get_data.yaml).
 
-Now, from the Apps page, you can create a new app that allows users to select the data they want to download: [app source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/apps/05_request_data_form.yaml).
+Then create an app that lets users select the data they want to download: [app source code](https://github.com/kestra-io/enterprise-edition-examples/blob/main/apps/05_request_data_form.yaml).
 
 This app is perfect for reporting and analytics use cases where users can request data and download the results.
 
@@ -189,8 +187,6 @@ This pattern also works for adjacent use cases such as database access requests,
 ## Creating Apps without code
 
 Like flows, Apps can also be created using the no-code editor. Every element available in code — such as blocks, properties, and configuration options — is fully supported in the no-code interface. When you build or update an App in the no-code editor, those changes are immediately reflected in the code view, preserving the declarative YAML definition behind the scenes. This ensures consistency between visual and code-first approaches, allowing teams to switch seamlessly between them without losing control, readability, or versioning.
-
-![Apps No Code](./app-no-code.png)
 
 ---
 
@@ -230,14 +226,14 @@ You can also export a selection of apps as a ZIP archive (`kestra-{tenant}-apps.
 
 ### Customize the Apps Catalog
 
-You can customize your Apps Catalog to align with organization branding by navigating to the **Tenant** tab and then **Apps Catalog**.
+You can customize your Apps Catalog to align with organization branding. Go to **Settings → Super Admin**, then in the left sidebar under your tenant, click **Apps Catalog**.
 
 ![Apps Catalog Customization](./apps-catalog-customization.png)
 
-Here, you can give your catalog a display title, set a primary banner display color, and upload an image for banner (typically an organization logo).
+The configuration panel lets you set a **Title**, **Title Color**, **Primary Color** (used for buttons), **Background Color**, **Tile Color**, **Button Text Color**, and a **Banner** image displayed at the top of the catalog page.
 
 :::alert{type="info"}
-Currently, the uploaded banner display image must be an `.svg` file.
+The banner image must be an `.svg` file.
 :::
 
 Once saved, open the **Apps Catalog** to see your branding:

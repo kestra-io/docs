@@ -152,6 +152,8 @@
   to: "/docs/concepts/blueprints"
 - regexp: "^/docs/workflow-components/task-runners(/.*)?$"
   to: "/docs/task-runners"
+- regexp: "^/docs/enterprise/scalability/task-runners(/.*)?$"
+  to: "/docs/task-runners"
 - regexp: "^/docs/workflow-components/tasks/flow/pause(/.*)?$"
   to: "/docs/how-to-guides/pause-resume"
 - regexp: "/docs/workflow-components/tasks/scripts/installing-dependencies"

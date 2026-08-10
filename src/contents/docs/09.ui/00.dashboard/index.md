@@ -8,22 +8,9 @@ icon: /src/contents/docs/icons/ui.svg
 
 Get insights into your workflows with Dashboards.
 
-The first time you access the **Dashboard**, a welcome screen helps you get started. Once you have executed a flow, your execution data appears here.
-
-## Dashboard page
-
-The Dashboard page displays both the **default dashboard** and any **custom dashboards** you've created. To switch between dashboards, use the hamburger menu. If you have over 10 dashboards, type the dashboard name in the search bar to quickly find it. The same menu also lets you edit or delete existing dashboards. From your dashboard, you can apply and save filters, refresh data, and set an automatic periodic refresh.
+The **Dashboards** page displays both the **default dashboard** and any **custom dashboards** you've created. To switch between dashboards, use the hamburger menu. If you have more than 10 dashboards, use the search bar to find one by name. The same menu lets you edit or delete existing dashboards. From any dashboard, you can apply and save filters, refresh data, and set an automatic periodic refresh.
 
 ![Dashboard Main Page](./main_page.png)
-
-Dashboards display the following data:
-- Executions over time
-- Execution Status for Today, Yesterday, as well as Last 30 days
-- Executions per namespace
-- Execution errors per namespace
-- List of failed Executions
-- List of error logs
-- A ratio of execution successes to total executions
 
 ## Custom dashboards
 

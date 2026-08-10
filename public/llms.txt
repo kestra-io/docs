@@ -309,7 +309,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Install Kestra Enterprise from Standalone JAR](https://kestra.io/docs/enterprise/overview/standalone-server-installation.md)
 - [Scale Kestra Enterprise: Worker Groups and Apps](https://kestra.io/docs/enterprise/scalability.md)
 - [Apps in Kestra Enterprise: Frontends for Flows](https://kestra.io/docs/enterprise/scalability/apps.md)
-- [Task Runners in Kestra Enterprise: Offload Compute](https://kestra.io/docs/enterprise/scalability/task-runners.md)
 - [Worker Groups in Kestra Enterprise: Target Workers](https://kestra.io/docs/enterprise/scalability/worker-group.md)
 - [Expressions in Kestra: Pebble Syntax and Variables](https://kestra.io/docs/expressions.md)
 - [Kestra Expression Context: Inputs, Outputs & Variables](https://kestra.io/docs/expressions/context.md)
