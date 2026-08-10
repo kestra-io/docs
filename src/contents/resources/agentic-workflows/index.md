@@ -90,6 +90,8 @@ GitHub is a prime example of a platform embracing agentic workflows. Their "GitH
 
 ## Kestra's Approach to Agentic Workflows
 
+Agentic workflows are one workload among several that a control plane has to run, which is why they are usually deployed on the same [AI orchestration platforms](/resources/ai/ai-orchestration) that already handle training, retrieval and inference.
+
 ### Declarative Orchestration for AI Agents
 
 Building reliable agentic workflows requires a robust orchestration layer. Kestra provides this through a declarative, YAML-based approach. Instead of writing complex, imperative code to manage an agent's lifecycle, you define the agent's goals, tools, and constraints in a simple, auditable [flow definition](/docs/workflow-components/flow).

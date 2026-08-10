@@ -140,6 +140,8 @@ A few things are worth noticing in this workflow:
 
 The terms "ML Orchestration" and "MLOps" are often used interchangeably, but they represent different scopes. MLOps is a broad discipline, while orchestration is a specific, foundational technology within it.
 
+Widen the frame once more and ML orchestration becomes one branch of [AI orchestration](/resources/ai/ai-orchestration), which extends the same scheduling and governance guarantees to inference, retrieval and autonomous agents.
+
 ### Orchestration as a Foundational Layer of MLOps
 MLOps (Machine Learning Operations) is a set of practices that aims to deploy and maintain ML models in production reliably and efficiently. It covers the entire lifecycle, including:
 *   Experiment Tracking (e.g., MLflow, Weights & Biases)

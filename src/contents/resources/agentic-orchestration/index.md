@@ -42,6 +42,8 @@ Agentic orchestration provides this missing framework. It's the discipline of de
 
 Agentic orchestration represents a significant evolution in automation, moving from simple, task-based scripts to goal-oriented systems. It's the structured practice of managing and coordinating multiple specialized [AI agents](/resources/ai/ai-agent) to achieve outcomes that no single agent could accomplish alone.
 
+Agentic orchestration is the newest layer of a longer-standing practice: [enterprise AI orchestration](/resources/ai/ai-orchestration), which coordinates models, data pipelines and tools whether or not an autonomous agent is involved.
+
 At its core, agentic orchestration is about creating a system where AI agents can collaborate, share context, and execute tasks in a governed, observable manner. This is not just about running a sequence of model calls; it's about building a framework that handles errors, incorporates human feedback, and interacts with external tools and APIs.
 
 This approach is a cornerstone of [AI-native orchestration platforms](/resources/ai/ai-native-orchestration-platform), which are designed from the ground up to manage the complexities of AI-driven processes. These platforms provide the control plane needed to move agentic systems from experimental prototypes to production-grade applications, so every action is auditable, repeatable, and aligned with business objectives.
