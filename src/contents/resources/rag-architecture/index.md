@@ -152,6 +152,8 @@ Evaluating a RAG system is a multi-faceted task that benefits from a systematic 
 
 A production-grade RAG system is not a single application but a complex pipeline of interconnected components that must be automated, monitored, and scaled. This is where an orchestration platform like Kestra becomes essential. Leading enterprises like Apple, JPMorgan Chase, and Toyota use Kestra to manage their complex data and AI pipelines at scale.
 
+Retrieval is one workload on a shared control plane. The same scheduling, retry and audit guarantees apply to training and agent execution, which is the scope of [AI orchestration for retrieval workloads](/resources/ai/ai-orchestration).
+
 ### Declarative YAML for RAG Pipeline Definition
 
 Kestra allows you to define your entire [RAG workflow](https://kestra.io/docs/ai-tools/ai-rag-workflows) as a simple, declarative YAML file. This brings GitOps principles to your AI pipelines, enabling version control, code reviews, and automated deployments. You can define every step, from data ingestion and chunking to embedding and indexing, in a single, auditable file.

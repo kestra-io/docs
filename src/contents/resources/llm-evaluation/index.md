@@ -139,6 +139,8 @@ The MLOps ecosystem has rapidly evolved to support LLM evaluation. Several open-
 
 Moving from theory to practice requires a systematic approach to building and automating evaluation pipelines. The goal is to create a reliable, repeatable process that integrates seamlessly into your MLOps lifecycle.
 
+Evaluation is only meaningful when it runs on every change, which makes it a scheduling problem as much as a measurement one. See how it fits into [unifying models, pipelines and agents](/resources/ai/ai-orchestration).
+
 ### Setting Up Systematic Evaluation Pipelines
 
 An evaluation pipeline is an automated workflow that executes a series of steps to assess an LLM. By orchestrating this process, you ensure consistency and scalability.
