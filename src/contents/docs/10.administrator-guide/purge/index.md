@@ -4,10 +4,9 @@ h1: Delete old executions, logs, and files to reclaim storage
 description: Reclaim storage by purging old executions, logs, KV entries, and orphaned execution files in Kestra. Configure scheduled purge jobs to keep your database lean in production.
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
-version: ">= 0.18.0"
 ---
 
-Use purge tasks to remove old executions, logs, and key-value pairs, helping reduce storage usage.
+Use purge tasks to remove old executions, logs, and key-value pairs and reduce storage usage.
 
 To keep storage optimized, use [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
 
@@ -24,14 +23,19 @@ The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAud
 
 ## Purge executions and logs
 
-The flow below purges executions and logs older than one month on a daily schedule:
+Use a multi-step log purge that applies progressively shorter retention windows by log level. Verbose logs accumulate far faster than errors or warnings, so keeping them longer than necessary inflates storage without adding much value:
+
+- All logs: purge anything older than **1 month**
+- DEBUG logs: purge anything older than **1 week** — error stacktraces are often logged at DEBUG level, so this also removes them; extend the window if you need those for post-incident debugging
+- TRACE logs: purge anything older than **1 day**
 
 ```yaml
 id: purge
-namespace: company.myteam
+namespace: system
 description: |
-  This flow will remove all executions and logs older than 1 month.
-  We recommend running it daily to prevent storage issues.
+  Multi-step purge: removes all logs older than one month, DEBUG logs older
+  than one week, and TRACE logs older than one day. Run daily to prevent
+  storage issues.
 
 tasks:
   - id: purge_executions
@@ -42,6 +46,20 @@ tasks:
   - id: purge_logs
     type: io.kestra.plugin.core.log.PurgeLogs
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+
+  # DEBUG logs often include error stacktraces; this shorter window keeps
+  # storage lean while still retaining recent failures for debugging.
+  - id: purge_debug_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-1, 'WEEKS') }}"
+    logLevels:
+      - DEBUG
+
+  - id: purge_trace_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-1, 'DAYS') }}"
+    logLevels:
+      - TRACE
 
 triggers:
   - id: daily
@@ -195,7 +213,7 @@ Both tasks run sequentially in the same execution. Check the `dry_run` task outp
 In the Enterprise Edition, sub-namespaces configured with their own dedicated storage are **not** reached by recursive namespace scoping — they must be targeted explicitly by setting `namespace` to that sub-namespace. This applies directly to the isolated worker group pattern above.
 :::
 
-## Purge Key-value pairs
+## Purge key-value pairs
 
 The example below purges expired key-value pairs from the `company` namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) namespace.
 
