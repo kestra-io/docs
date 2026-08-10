@@ -1,0 +1,124 @@
+---
+/**
+ * Mobile sticky CTA bar. Appears once the hero CTA has scrolled out of view and
+ * hides again while the form is on screen (a sticky button that covers the form
+ * the visitor is filling in is worse than no button at all).
+ *
+ * Two IntersectionObservers, no scroll listener, no layout thrash. Hidden
+ * entirely on ≥md, where the hero CTA and the form are close enough together.
+ * `translateY` transition is skipped under `prefers-reduced-motion` (handled
+ * globally in `lp.scss`).
+ */
+import { LP_FORM_ANCHOR, LP_CTA_LABEL } from "~/contents/lp/shared"
+---
+
+<div class="lp-sticky" data-lp-sticky aria-hidden="true">
+    <a
+        class="lp-btn lp-btn--primary lp-btn--block"
+        href={`#${LP_FORM_ANCHOR}`}
+        data-lp-cta="sticky"
+    >
+        {LP_CTA_LABEL}
+    </a>
+</div>
+
+<script>
+    const initStickyCta = () => {
+        const bar = document.querySelector<HTMLElement>("[data-lp-sticky]")
+        // The hero contains the first form; the bar appears once it has
+        // scrolled away and hides again while the bottom form (#demo) shows.
+        const heroCta = document.querySelector<HTMLElement>(
+            "[data-lp-hero-form]",
+        )
+        const form = document.getElementById("demo")
+
+        if (!bar || !heroCta || !form) return
+
+        let heroVisible = true
+        let formVisible = false
+
+        // Same visibility rule drives the desktop header CTA (LpLayout).
+        const headerCta = document.querySelector<HTMLElement>(
+            "[data-lp-header-cta]",
+        )
+
+        const sync = () => {
+            const show = !heroVisible && !formVisible
+            // `visibility` (in the stylesheet) takes the link out of the tab
+            // order when hidden, so the class alone is enough — no `hidden`
+            // attribute, which would kill the slide-in transition.
+            bar.classList.toggle("is-visible", show)
+            bar.setAttribute("aria-hidden", show ? "false" : "true")
+            headerCta?.classList.toggle("is-visible", show)
+            headerCta?.setAttribute("aria-hidden", show ? "false" : "true")
+        }
+
+        const heroObserver = new IntersectionObserver(
+            ([entry]) => {
+                heroVisible = entry.isIntersecting
+                sync()
+            },
+            { threshold: 0 },
+        )
+
+        const formObserver = new IntersectionObserver(
+            ([entry]) => {
+                formVisible = entry.isIntersecting
+                sync()
+            },
+            // Hide as soon as any meaningful part of the form is on screen.
+            { threshold: 0.15 },
+        )
+
+        heroObserver.observe(heroCta)
+        formObserver.observe(form)
+
+        document.addEventListener(
+            "astro:before-swap",
+            () => {
+                heroObserver.disconnect()
+                formObserver.disconnect()
+            },
+            { once: true },
+        )
+    }
+
+    document.addEventListener("astro:page-load", initStickyCta)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initStickyCta, {
+            once: true,
+        })
+    } else {
+        initStickyCta()
+    }
+</script>
+
+<style lang="scss">
+    .lp-sticky {
+        position: fixed;
+        inset: auto 0 0 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        min-height: var(--lp-sticky-height);
+        padding: 0.625rem var(--lp-gutter)
+            calc(0.625rem + env(safe-area-inset-bottom, 0px));
+        background-color: var(--ks-background-primary);
+        border-top: 1px solid var(--ks-border-primary);
+        box-shadow: 0 -4px 16px var(--ks-shadows-light);
+        transform: translateY(100%);
+        visibility: hidden;
+        transition:
+            transform 0.2s ease,
+            visibility 0.2s ease;
+
+        &.is-visible {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        @include media-breakpoint-up(md) {
+            display: none;
+        }
+    }
+</style>

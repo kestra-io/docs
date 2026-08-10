@@ -1,0 +1,169 @@
+---
+/**
+ * Section 1 — Hero: H1 and sub on the left with the product UI underneath, the
+ * demo form directly on the right. No CTA button — the form is the call to
+ * action, one field away from the ad click.
+ *
+ * The H1's ad-group keyword renders in the brand purple (`h1Highlight`), so the
+ * message-match phrase is also the visual accent.
+ *
+ * Left column: H1, sub, then Martin's three checkmarked promises — beside the
+ * form, not inside it (review, 2026-08-07). The card stays compact: title,
+ * two-line sub, fields. A strategy conversation, never a "demo".
+ */
+import { Icon } from "astro-icon/components"
+import LpDemoForm from "./LpDemoForm.vue"
+import { LP_SHARED } from "~/contents/lp/shared"
+
+interface Props {
+    h1: string
+    h1Highlight?: string
+    sub: string
+    microcopy: string
+    variant: string
+}
+
+const { h1, h1Highlight, sub, microcopy, variant } = Astro.props
+
+// Split the H1 around the highlight phrase; fall back to the plain string.
+const highlightIndex = h1Highlight ? h1.indexOf(h1Highlight) : -1
+const before = highlightIndex >= 0 ? h1.slice(0, highlightIndex) : h1
+const after =
+    highlightIndex >= 0 ? h1.slice(highlightIndex + h1Highlight!.length) : ""
+---
+
+<section class="lp-hero" data-lp-hero-form>
+    <div class="lp-container lp-hero__grid">
+        <div class="lp-hero__copy">
+            <h1 class="lp-hero__title">
+                {before}{
+                    highlightIndex >= 0 && (
+                        <span class="lp-hero__accent">{h1Highlight}</span>
+                    )
+                }{after}
+            </h1>
+            <p class="lp-hero__sub">{sub}</p>
+
+            <ul class="lp-hero__points">
+                {
+                    LP_SHARED.hero.formPoints.map((point) => (
+                        <li>
+                            <Icon
+                                name="mdi:check-circle"
+                                class="lp-hero__point-check"
+                                aria-hidden="true"
+                            />
+                            <span>{point}</span>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <div class="lp-hero__form">
+            <p class="lp-hero__form-title">{LP_SHARED.hero.formTitle}</p>
+            <p class="lp-hero__microcopy">{microcopy}</p>
+            <LpDemoForm variant={variant} idPrefix="hero" client:load />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-hero {
+        padding-block: 1.5rem 2.5rem;
+
+        @include media-breakpoint-up(lg) {
+            padding-block: 3rem 3.5rem;
+        }
+    }
+
+    .lp-hero__grid {
+        display: grid;
+        gap: 2rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+            align-items: start;
+            gap: 4rem;
+        }
+    }
+
+    .lp-hero__title {
+        font-size: clamp(2rem, 4.6vw, 3.25rem);
+        line-height: 1.08;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        text-wrap: balance;
+    }
+
+    .lp-hero__accent {
+        color: var(--ks-content-color-highlight);
+    }
+
+    .lp-hero__sub {
+        margin-top: 1.125rem;
+        max-width: 34rem;
+        color: var(--ks-content-secondary);
+        font-size: 1.0625rem;
+
+        @include media-breakpoint-up(md) {
+            font-size: 1.1875rem;
+        }
+    }
+
+    .lp-hero__form {
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+        box-shadow: 0 4px 24px var(--ks-shadows-light);
+
+        @include media-breakpoint-up(md) {
+            padding: 1.75rem;
+        }
+
+        @include media-breakpoint-up(lg) {
+            max-width: 26rem;
+            justify-self: end;
+            width: 100%;
+            position: sticky;
+            top: 5rem;
+        }
+    }
+
+    .lp-hero__form-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    .lp-hero__microcopy {
+        margin: 0.375rem 0 1.25rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+    }
+
+    .lp-hero__points {
+        display: grid;
+        gap: 0.875rem;
+        margin-top: 1.75rem;
+        max-width: 34rem;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            color: var(--ks-content-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+    }
+
+    .lp-hero__point-check {
+        flex: 0 0 auto;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-top: 0.075rem;
+        color: var(--ks-content-color-highlight);
+    }
+</style>

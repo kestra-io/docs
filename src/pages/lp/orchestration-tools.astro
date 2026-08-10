@@ -1,0 +1,19 @@
+---
+/**
+ * Google Ads landing page — variant 3 (ad group: orchestration / workflow tools).
+ */
+import LpLayout from "~/components/lp/LpLayout.astro"
+import LpTemplate from "~/components/lp/LpTemplate.astro"
+import variant from "~/contents/lp/orchestration-tools"
+---
+
+<LpLayout
+    title={variant.meta.title}
+    description={variant.meta.description}
+    ogTitle={variant.meta.ogTitle}
+    variant={variant.slug}
+    canonicalPath={`/lp/${variant.slug}`}
+    headerCta
+>
+    <LpTemplate variant={variant} />
+</LpLayout>

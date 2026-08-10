@@ -1,0 +1,191 @@
+---
+/**
+ * Section — Proof. Three customer cards: logo, three published figures, the
+ * quote, the attribution.
+ *
+ * Every string comes from content already live on kestra.io (each case carries
+ * a `source`), which is what makes the figures defensible rather than invented —
+ * the copy brief's constraint. The logos are the same asset files the homepage
+ * and the LP's own logo bar use.
+ *
+ * No links out of these cards. The customer stories they come from are public,
+ * but a link here is a paid click leaving before it converts.
+ */
+import type { LpProof } from "~/contents/lp/types"
+import jpmorganLogo from "~/components/home/assets/companies/jpmorgan.svg?raw"
+import filaLogo from "~/components/home/assets/companies/fila.svg?raw"
+import appleLogo from "~/assets/landing/data/apple.svg?raw"
+import pharmacyLogo from "~/contents/customer-stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment/logo.svg?raw"
+import leroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+
+interface Props {
+    proof: LpProof
+}
+
+const { proof } = Astro.props
+
+const LOGOS: Record<string, string> = {
+    jpmorgan: jpmorganLogo,
+    fila: filaLogo,
+    apple: appleLogo,
+    pharmacy: pharmacyLogo,
+    leroymerlin: leroyMerlinLogo,
+}
+---
+
+<section class="lp-section lp-proof">
+    <div class="lp-container">
+        <h2 class="lp-h2">{proof.header}</h2>
+        <p class="lp-lead lp-proof__intro">{proof.intro}</p>
+
+        <ul class="lp-proof__grid">
+            {
+                proof.cases.map((item) => (
+                    <li class="lp-proof__card">
+                        <figure class="lp-proof__figure">
+                            <div class="lp-proof__head">
+                                {LOGOS[item.logo] && (
+                                    <span
+                                        class="lp-proof__logo"
+                                        role="img"
+                                        aria-label={item.company}
+                                    >
+                                        <Fragment set:html={LOGOS[item.logo]} />
+                                    </span>
+                                )}
+                                <p class="lp-proof__context">{item.context}</p>
+                            </div>
+
+                            <ul class="lp-proof__kpis">
+                                {item.kpis.map((kpi) => (
+                                    <li>
+                                        <span class="lp-proof__kpi-value">
+                                            {kpi.value}
+                                        </span>
+                                        <span class="lp-proof__kpi-label">
+                                            {kpi.label}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <blockquote class="lp-proof__quote">
+                                {item.quote}
+                            </blockquote>
+                            <figcaption class="lp-proof__attribution">
+                                {item.attribution}
+                            </figcaption>
+                        </figure>
+                    </li>
+                ))
+            }
+        </ul>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-proof__intro {
+        margin-top: 0.875rem;
+        max-width: 42rem;
+    }
+
+    .lp-proof__grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.5rem;
+            align-items: stretch;
+        }
+    }
+
+    .lp-proof__card {
+        height: 100%;
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+    }
+
+    .lp-proof__figure {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .lp-proof__head {
+        min-height: 4.25rem;
+    }
+
+    .lp-proof__logo {
+        display: block;
+
+        :global(svg) {
+            height: 1.5rem;
+            width: auto;
+            max-width: 8rem;
+            filter: brightness(0);
+            opacity: 0.75;
+        }
+    }
+
+    .lp-proof__context {
+        margin-top: 0.625rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.875rem;
+        line-height: 1.45;
+    }
+
+    .lp-proof__kpis {
+        display: grid;
+        gap: 0.75rem;
+        margin: 1.25rem 0;
+        padding: 1.125rem 0;
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
+
+        li {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+    }
+
+    .lp-proof__kpi-value {
+        flex: 0 0 auto;
+        min-width: 5.25rem;
+        color: var(--ks-content-color-highlight);
+        font-size: 1.125rem;
+        font-weight: 600;
+        line-height: 1.2;
+    }
+
+    .lp-proof__kpi-label {
+        color: var(--ks-content-secondary);
+        font-size: 0.8125rem;
+        line-height: 1.4;
+    }
+
+    .lp-proof__quote {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+
+        &::before {
+            content: "“";
+        }
+
+        &::after {
+            content: "”";
+        }
+    }
+
+    .lp-proof__attribution {
+        margin-top: auto;
+        padding-top: 1rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.8125rem;
+        font-weight: 500;
+    }
+</style>

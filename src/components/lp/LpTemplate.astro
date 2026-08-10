@@ -1,0 +1,120 @@
+---
+/**
+ * The one template all three Google Ads landing pages render through.
+ *
+ * A variant page is nine lines of glue: import its content object, pass it here.
+ * Anything that differs between variants lives in `~/contents/lp/<slug>.ts`;
+ * anything shared lives in `~/contents/lp/shared.ts`.
+ *
+ * Structure per the PR #5276 review (2026-08-05):
+ *   hero with the form directly (no button) → trusted → outcomes (pains folded
+ *   into gains, never listed) → what you get + plugins → ROI → quotes →
+ *   the Kestra journey → the form again → FAQ → closing CTA anchored back to
+ *   the form. No menu; footer reduced to the legally required minimum.
+ *
+ * Gone with that review: the standalone problem section (re-explaining a pain
+ * the visitor searched for reads as lecturing), the YAML code section (the page
+ * targets decision-makers, not the engineers who will paste code), the product
+ * screenshot (the form took its place), the mid-page CTA band (the second
+ * form replaces it; the band now closes the FAQ instead), and the enterprise
+ * checklist (2026-08-06: SSO/RBAC/secrets are table stakes — "soit on les met
+ * soit pas du tout" — the FAQ still answers all of it for whoever digs).
+ */
+import type { LpVariant } from "~/contents/lp/types"
+import { LP_SHARED } from "~/contents/lp/shared"
+import LpHero from "./LpHero.astro"
+import LpTrust from "./LpTrust.astro"
+import LpBenefits from "./LpBenefits.astro"
+import LpUseCases from "./LpUseCases.astro"
+import LpFeatures from "./LpFeatures.astro"
+import LpRoi from "./LpRoi.astro"
+import LpProof from "./LpProof.astro"
+import LpAdoption from "./LpAdoption.astro"
+import LpFinalCta from "./LpFinalCta.astro"
+import LpFaq from "./LpFaq.astro"
+import LpCtaBand from "./LpCtaBand.astro"
+import LpFooter from "./LpFooter.astro"
+import LpStickyCta from "./LpStickyCta.astro"
+
+interface Props {
+    variant: LpVariant
+}
+
+const { variant } = Astro.props
+
+const proof = { ...LP_SHARED.proof, ...(variant.proof ?? {}) }
+const finalCta = { ...LP_SHARED.finalCta, ...(variant.finalCta ?? {}) }
+const showFaq = Boolean(variant.faq?.enabled && variant.faq.items.length)
+---
+
+<main>
+    <!-- 1 — hero: H1 + sub + the form itself -->
+    <LpHero
+        h1={variant.hero.h1}
+        h1Highlight={variant.hero.h1Highlight}
+        sub={variant.hero.sub}
+        microcopy={LP_SHARED.hero.microcopy}
+        variant={variant.slug}
+    />
+
+    <!-- 2 — trusted -->
+    <LpTrust line={LP_SHARED.trust.line} logos={variant.logos} />
+
+    <!-- 3 — outcomes: the pains, answered instead of listed -->
+    <LpBenefits
+        header={variant.benefits.header}
+        cards={variant.benefits.cards}
+    />
+
+    <!-- 4 — features: product screenshot + three checkmarked groups,
+         Redwood-style, above the use-case columns (review, 2026-08-07) -->
+    <LpFeatures
+        header={LP_SHARED.features.header}
+        blocks={LP_SHARED.features.blocks}
+    />
+
+    <!-- 4b — what you get -->
+    <LpUseCases
+        header={LP_SHARED.useCases.header}
+        intro={LP_SHARED.useCases.intro}
+        columns={LP_SHARED.useCases.columns}
+    />
+
+    <!-- 5 — ROI -->
+    <LpRoi
+        header={LP_SHARED.roi.header}
+        intro={LP_SHARED.roi.intro}
+        stats={LP_SHARED.roi.stats}
+        quotes={LP_SHARED.roi.quotes}
+    />
+
+    <!-- 6 — quotes -->
+    <LpProof proof={proof} />
+
+    <!-- 7 — the Kestra journey -->
+    <LpAdoption
+        header={LP_SHARED.adoption.header}
+        intro={LP_SHARED.adoption.intro}
+        steps={LP_SHARED.adoption.steps}
+    />
+
+    <!-- 8 — the form again -->
+    <LpFinalCta
+        header={finalCta.header}
+        sub={finalCta.sub}
+        agenda={finalCta.agenda}
+        variant={variant.slug}
+    />
+
+    <!-- 9 — FAQ, closed by a CTA anchoring back to the form -->
+    {
+        showFaq && (
+            <LpFaq header={LP_SHARED.faq.header} items={variant.faq!.items} />
+        )
+    }
+    <LpCtaBand header={LP_SHARED.midCta.header} body={LP_SHARED.midCta.body} />
+</main>
+
+<LpFooter stickyOffset />
+
+<LpStickyCta />

@@ -1,0 +1,94 @@
+---
+/**
+ * Section 9 — Footer. One line, three links, and those three links are the only
+ * exits on the entire page: Privacy Policy, Legal, and one discreet
+ * "Kestra is open source → GitHub".
+ *
+ * No navigation, no docs, no blog, no pricing — every extra exit is a paid click
+ * that leaves without converting.
+ */
+import { LP_SHARED } from "~/contents/lp/shared"
+import logoBlack from "~/assets/logo-black.svg?raw"
+
+const { copyright, privacy, legal, github } = LP_SHARED.footer
+
+/** Extra bottom padding on mobile so the sticky CTA never covers the links. */
+interface Props {
+    stickyOffset?: boolean
+}
+
+const { stickyOffset = false } = Astro.props
+---
+
+<footer class:list={["lp-footer", { "has-sticky-offset": stickyOffset }]}>
+    <div class="lp-container lp-footer__inner">
+        <span class="lp-footer__logo" role="img" aria-label="Kestra">
+            <Fragment set:html={logoBlack} />
+        </span>
+        <span>{copyright}</span>
+        <span class="lp-footer__sep" aria-hidden="true">·</span>
+        <a href={privacy.href}>{privacy.label}</a>
+        <span class="lp-footer__sep" aria-hidden="true">·</span>
+        <a href={legal.href}>{legal.label}</a>
+        <span class="lp-footer__sep" aria-hidden="true">·</span>
+        <a
+            class="lp-footer__github"
+            href={github.href}
+            rel="noopener noreferrer"
+            target="_blank"
+        >
+            {github.label}
+        </a>
+    </div>
+</footer>
+
+<style lang="scss">
+    .lp-footer {
+        padding-block: 2rem 2.5rem;
+        border-top: 1px solid var(--ks-border-primary);
+
+        &.has-sticky-offset {
+            padding-bottom: calc(
+                var(--lp-sticky-height) + env(safe-area-inset-bottom, 0px) +
+                    1rem
+            );
+
+            @include media-breakpoint-up(md) {
+                padding-bottom: 2.5rem;
+            }
+        }
+    }
+
+    .lp-footer__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.8125rem;
+
+        a {
+            color: var(--ks-content-secondary);
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+
+            &:hover {
+                color: var(--ks-content-primary);
+            }
+        }
+    }
+
+    .lp-footer__logo {
+        display: inline-flex;
+        margin-right: 0.5rem;
+
+        :global(svg) {
+            height: 1.125rem;
+            width: auto;
+        }
+    }
+
+    .lp-footer__sep {
+        color: var(--ks-border-primary);
+    }
+</style>

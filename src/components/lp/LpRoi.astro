@@ -1,0 +1,401 @@
+---
+/**
+ * Section — ROI. Four ranges with the mechanism behind each one, then one
+ * customer sentence that says the same thing in a buyer's words.
+ *
+ * Content mirrors the "Kestra ROI — Typical Impact After Standardizing
+ * Orchestration" slide of the enterprise sales deck (provided by Virgile,
+ * 2026-08-05). The ranges are framed as typical impact, never as a promise —
+ * that framing is load-bearing, keep it.
+ */
+import { Icon } from "astro-icon/components"
+import type { LpRoiStat } from "~/contents/lp/types"
+import leroyMerlinLogo from "~/contents/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent/logo.svg?raw"
+import usccaLogo from "~/assets/quotes-companies/USCCA.svg?raw"
+import quadisLogo from "~/contents/customer-stories/quadis-drives-innovation-transforming-car-retail-operations-with-kestra/logo.svg?raw"
+
+interface RoiQuote {
+    logo: string
+    text: string
+    attribution: string
+}
+
+interface Props {
+    header: string
+    intro: string
+    stats: readonly LpRoiStat[]
+    quotes: readonly RoiQuote[]
+}
+
+const { header, intro, stats, quotes } = Astro.props
+
+const LOGOS: Record<string, string> = {
+    leroymerlin: leroyMerlinLogo,
+    uscca: usccaLogo,
+    quadis: quadisLogo,
+}
+---
+
+<section class="lp-section lp-roi">
+    <div class="lp-container">
+        <h2 class="lp-h2">{header}</h2>
+        <p class="lp-lead lp-roi__intro">{intro}</p>
+
+        <ul class="lp-roi__grid">
+            {
+                stats.map((stat) => (
+                    <li class="lp-roi__card">
+                        <p class="lp-roi__label">{stat.label}</p>
+                        <p class="lp-roi__value">
+                            <Icon
+                                name={
+                                    stat.direction === "up"
+                                        ? "mdi:arrow-up"
+                                        : "mdi:arrow-down"
+                                }
+                                class:list={[
+                                    "lp-roi__arrow",
+                                    `lp-roi__arrow--${stat.direction}`,
+                                ]}
+                                aria-hidden="true"
+                            />
+                            <span class="lp-visually-hidden">
+                                {stat.direction === "up" ? "up" : "down"}
+                            </span>
+                            {stat.value}
+                        </p>
+                        <p class="lp-roi__why">{stat.why}</p>
+                    </li>
+                ))
+            }
+        </ul>
+
+        {
+            /*
+          Quote slider: one full card visible at a time, stepped by the arrow
+          buttons (and swipe on touch). Auto-advances every 7s until the visitor
+          interacts, then stays manual; no auto-advance at all under
+          prefers-reduced-motion. The viewport is a scroll-snap container, so it
+          degrades to plain horizontal swipe without JavaScript.
+        */
+        }
+        <div
+            class="lp-roi__slider"
+            data-lp-quotes
+            role="group"
+            aria-roledescription="carousel"
+            aria-label="Customer quotes"
+        >
+            <ul class="lp-roi__viewport" tabindex="-1">
+                {
+                    quotes.map((quote) => (
+                        <li class="lp-roi__slide">
+                            <figure class="lp-roi__quote">
+                                <blockquote>{quote.text}</blockquote>
+                                <figcaption class="lp-roi__attribution">
+                                    <span>{quote.attribution}</span>
+                                    {LOGOS[quote.logo] && (
+                                        <span
+                                            class="lp-roi__logo"
+                                            role="img"
+                                            aria-label={quote.attribution}
+                                        >
+                                            <Fragment
+                                                set:html={LOGOS[quote.logo]}
+                                            />
+                                        </span>
+                                    )}
+                                </figcaption>
+                            </figure>
+                        </li>
+                    ))
+                }
+            </ul>
+
+            <div class="lp-roi__nav">
+                <button
+                    type="button"
+                    class="lp-roi__navbtn"
+                    data-lp-quotes-prev
+                    aria-label="Previous quote"
+                >
+                    <Icon name="mdi:arrow-left" aria-hidden="true" />
+                </button>
+                <button
+                    type="button"
+                    class="lp-roi__navbtn"
+                    data-lp-quotes-next
+                    aria-label="Next quote"
+                >
+                    <Icon name="mdi:arrow-right" aria-hidden="true" />
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const initQuoteSlider = () => {
+        document
+            .querySelectorAll<HTMLElement>("[data-lp-quotes]")
+            .forEach((root) => {
+                if (root.dataset.initialized) return
+                root.dataset.initialized = "true"
+
+                const viewport =
+                    root.querySelector<HTMLElement>(".lp-roi__viewport")
+                if (!viewport) return
+                const slides = Array.from(viewport.children) as HTMLElement[]
+                if (slides.length < 2) return
+
+                let index = 0
+                const go = (next: number) => {
+                    index = (next + slides.length) % slides.length
+                    viewport.scrollTo({
+                        left: slides[index].offsetLeft,
+                        behavior: "smooth",
+                    })
+                }
+
+                // Auto-advance until the visitor takes over, then stay manual.
+                let timer: ReturnType<typeof setInterval> | null = null
+                const stopAuto = () => {
+                    if (timer) clearInterval(timer)
+                    timer = null
+                }
+                if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                    timer = setInterval(() => go(index + 1), 7000)
+                }
+
+                root.querySelector("[data-lp-quotes-prev]")?.addEventListener(
+                    "click",
+                    () => {
+                        stopAuto()
+                        go(index - 1)
+                    },
+                )
+                root.querySelector("[data-lp-quotes-next]")?.addEventListener(
+                    "click",
+                    () => {
+                        stopAuto()
+                        go(index + 1)
+                    },
+                )
+
+                // Swiping counts as taking over; keep `index` in sync with
+                // wherever the snap landed.
+                viewport.addEventListener("pointerdown", stopAuto, {
+                    passive: true,
+                })
+                let scrollDebounce: ReturnType<typeof setTimeout>
+                viewport.addEventListener(
+                    "scroll",
+                    () => {
+                        clearTimeout(scrollDebounce)
+                        scrollDebounce = setTimeout(() => {
+                            index = slides.reduce(
+                                (best, slide, i) =>
+                                    Math.abs(
+                                        slide.offsetLeft - viewport.scrollLeft,
+                                    ) <
+                                    Math.abs(
+                                        slides[best].offsetLeft -
+                                            viewport.scrollLeft,
+                                    )
+                                        ? i
+                                        : best,
+                                0,
+                            )
+                        }, 80)
+                    },
+                    { passive: true },
+                )
+
+                document.addEventListener("astro:before-swap", stopAuto, {
+                    once: true,
+                })
+            })
+    }
+
+    document.addEventListener("astro:page-load", initQuoteSlider)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initQuoteSlider, {
+            once: true,
+        })
+    } else {
+        initQuoteSlider()
+    }
+</script>
+
+<style lang="scss">
+    .lp-roi {
+        background-color: var(--ks-background-secondary);
+    }
+
+    .lp-roi__intro {
+        margin-top: 0.875rem;
+        max-width: 42rem;
+    }
+
+    .lp-roi__grid {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.5rem;
+        }
+
+        @include media-breakpoint-up(xl) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    .lp-roi__card {
+        height: 100%;
+        padding: 1.5rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+    }
+
+    .lp-roi__label {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .lp-roi__value {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-top: 0.5rem;
+        font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+        font-weight: 600;
+        line-height: 1.1;
+        letter-spacing: -0.01em;
+        color: var(--ks-content-color-highlight);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .lp-roi__arrow {
+        flex: 0 0 auto;
+        width: 1.375rem;
+        height: 1.375rem;
+    }
+
+    .lp-roi__arrow--up {
+        color: var(--ks-content-alert-success);
+    }
+
+    .lp-roi__arrow--down {
+        color: var(--ks-content-color-highlight);
+    }
+
+    .lp-roi__why {
+        margin-top: 0.75rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+
+    .lp-roi__slider {
+        margin-top: 1.5rem;
+    }
+
+    .lp-roi__viewport {
+        display: flex;
+        gap: 1.25rem;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .lp-roi__slide {
+        /* One full card per step — never a cropped quote. */
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .lp-roi__nav {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .lp-roi__navbtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: 50%;
+        background-color: var(--ks-background-primary);
+        color: var(--ks-content-primary);
+        cursor: pointer;
+        transition:
+            background-color 0.15s ease,
+            color 0.15s ease;
+
+        :global(svg) {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        &:hover {
+            background-color: var(--ks-background-button-primary);
+            border-color: var(--ks-background-button-primary);
+            color: #fff;
+        }
+    }
+
+    .lp-roi__quote {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 1.5rem 1.75rem;
+        border: 1px solid var(--ks-border-primary);
+        border-radius: var(--lp-radius);
+        background-color: var(--ks-background-primary);
+
+        blockquote {
+            font-size: 1.0625rem;
+            line-height: 1.55;
+
+            &::before {
+                content: "“";
+            }
+
+            &::after {
+                content: "”";
+            }
+        }
+    }
+
+    .lp-roi__attribution {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: auto;
+        padding-top: 0.875rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.875rem;
+    }
+
+    .lp-roi__logo :global(svg) {
+        height: 1.5rem;
+        width: auto;
+        filter: brightness(0);
+        opacity: 0.7;
+    }
+</style>

@@ -1,0 +1,104 @@
+---
+/**
+ * Section — Adoption path. Three numbered steps.
+ *
+ * Migration effort is the second-most frequent objection in the call corpus
+ * (×24 orgs) and the reason evaluations stall: the visitor is not weighing
+ * features, they are weighing whether this becomes a six-month project. The
+ * benchmark LP for this category (Redwood) devotes a full five-step section to
+ * exactly this, and it is the one thing the nine briefed sections never answered.
+ */
+import type { LpAdoptionStep } from "~/contents/lp/types"
+
+interface Props {
+    header: string
+    intro: string
+    steps: readonly LpAdoptionStep[]
+}
+
+const { header, intro, steps } = Astro.props
+---
+
+<section class="lp-section lp-adoption">
+    <div class="lp-container">
+        <h2 class="lp-h2">{header}</h2>
+        <p class="lp-lead lp-adoption__intro">{intro}</p>
+
+        <ol class="lp-adoption__steps">
+            {
+                steps.map((step, index) => (
+                    <li class="lp-adoption__step">
+                        <span class="lp-adoption__index" aria-hidden="true">
+                            {index + 1}
+                        </span>
+                        <p class="lp-adoption__when">{step.when}</p>
+                        <h3 class="lp-adoption__title">{step.title}</h3>
+                        <p class="lp-adoption__body">{step.body}</p>
+                    </li>
+                ))
+            }
+        </ol>
+    </div>
+</section>
+
+<style lang="scss">
+    .lp-adoption__intro {
+        margin-top: 0.875rem;
+        max-width: 42rem;
+    }
+
+    .lp-adoption__steps {
+        display: grid;
+        gap: 1.5rem;
+        margin-top: 2rem;
+        padding: 0;
+        list-style: none;
+
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2rem;
+        }
+    }
+
+    .lp-adoption__step {
+        padding-top: 1.25rem;
+        border-top: 2px solid var(--ks-border-primary);
+    }
+
+    .lp-adoption__index {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1.75rem;
+        height: 1.75rem;
+        border-radius: 50%;
+        background-color: var(--ks-background-tertiary);
+        color: var(--ks-content-secondary);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .lp-adoption__when {
+        margin-top: 0.875rem;
+        color: var(--ks-content-color-highlight);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .lp-adoption__title {
+        margin-top: 0.25rem;
+        font-size: 1.0625rem;
+        font-weight: 600;
+        line-height: 1.35;
+    }
+
+    .lp-adoption__body {
+        margin-top: 0.5rem;
+        color: var(--ks-content-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+</style>

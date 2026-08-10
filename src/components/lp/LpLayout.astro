@@ -1,0 +1,220 @@
+---
+/**
+ * Minimal layout for the Google Ads landing pages.
+ *
+ * Differences from `~/components/layout.astro`, all of them deliberate:
+ * - no site Header / Search / Announce bar / global Footer / Fixed widgets,
+ * - no site navigation of any kind (only a non-clickable brand mark),
+ * - `noindex, nofollow` (the site layout's `noindex` prop emits
+ *   `noindex, follow`, which is not what the pilot spec requires),
+ * - no Bootstrap/app CSS, no theme switcher, no mermaid/zoom/outbound scripts,
+ * - light theme is forced: `html` never receives the `dark` class, so the page
+ *   looks identical for every visitor. The one deliberate exception is the YAML
+ *   code block, which keeps Expressive Code's default dark theme (see
+ *   `ec.config.mjs`: `.light`/`.dark` scoped themes, and we set neither).
+ *
+ * Analytics kept, because the pilot's whole point is measurement:
+ * - `cookieconsent.ts` — GTM (GA4 + Google Ads) and PostHog bootstrap, EU
+ *   opt-in / non-EU opt-out. Also pushes the `content-view` dataLayer event
+ *   that the GTM page-view triggers rely on.
+ * - `analytics.js` — HubSpot page view + PostHog `$pageview`.
+ * - `gclid.ts` — captures gclid/gbraid/wbraid for offline conversion import.
+ * - `lp-attribution.ts` — captures utm_* + lp_variant for the form payload.
+ * All four register on `astro:page-load`, which is emitted by `<ClientRouter />`
+ * (production only, exactly as on the main site).
+ */
+import { ClientRouter } from "astro:transitions"
+import { Font } from "astro:assets"
+import { PREVIEW } from "astro:env/server"
+import logoBlack from "~/assets/logo-black.svg?raw"
+import { LP_CTA_LABEL, LP_FORM_ANCHOR } from "~/contents/lp/shared"
+import "~/assets/styles/lp.scss"
+
+interface Props {
+    /** Full <title>. No " | Kestra" suffix is appended. */
+    title: string
+    description: string
+    ogTitle?: string
+    /** Variant slug, exposed to the form as `lp_variant`. */
+    variant: string
+    /**
+     * Absolute path used for the self-referencing canonical, so the many
+     * `?gclid=…&utm_*=…` ad URLs never look like distinct pages.
+     */
+    canonicalPath: string
+    /**
+     * Renders the "Book a demo" button in the sticky header (desktop; mobile
+     * has the bottom bar). Off on the confirmation pages, which have no #demo
+     * anchor to point at.
+     */
+    headerCta?: boolean
+}
+
+const {
+    title,
+    description,
+    ogTitle,
+    variant,
+    canonicalPath,
+    headerCta = false,
+} = Astro.props
+
+const canonical = new URL(canonicalPath, Astro.site).toString()
+const ogImage = new URL("/og-image.png", Astro.site).toString()
+const slug = Astro.routePattern
+---
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href={canonical} />
+
+        <Font cssVariable="--font-family-mona-sans" preload />
+        <Font cssVariable="--font-family-jetbrains-mono" />
+
+        <link rel="icon" href="/favicon.ico" />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="/apple-touch-icon.png"
+        />
+        <meta name="theme-color" content="#2c0059" />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={ogTitle ?? title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:image:type" content="image/png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={ogTitle ?? title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImage} />
+
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://api.kestra.io" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://js-eu1.hs-scripts.com" />
+
+        {
+            /*
+          TODO(virgile): when the topology screenshot lands, preload it here so
+          it is fetched with the HTML rather than after hydration:
+          <link rel="preload" as="image" href={heroImage.src} fetchpriority="high" />
+        */
+        }
+
+        <slot name="head" />
+
+        {import.meta.env.PROD && <ClientRouter />}
+
+        {
+            /* prettier-ignore — self-closing <script /> must not be emitted */
+            import.meta.env.DEV || PREVIEW ? null : (
+                <>
+                    <script src="../../scripts/analytics.js" />
+                    <script src="../../scripts/cookieconsent.ts" />
+                </>
+            )
+        }
+        <script src="../../scripts/gclid.ts"></script>
+        <script src="../../scripts/lp-attribution.ts"></script>
+    </head>
+
+    <body data-lp-variant={variant}>
+        {
+            /*
+          Sticky header. The brand mark is an <svg>, not a link — the page stays
+          recognizable as Kestra without adding the exit link a logo-link would
+          be. The CTA (desktop only; mobile has the bottom bar) fades in once
+          the hero form scrolls away and hides again while the bottom form is
+          on screen — same visibility logic as the mobile bar, driven by the
+          script in LpStickyCta.astro.
+        */
+        }
+        <header class="lp-brand">
+            <div class="lp-container lp-brand__inner">
+                <span class="lp-brand__logo" role="img" aria-label="Kestra">
+                    <Fragment set:html={logoBlack} />
+                </span>
+                {
+                    headerCta && (
+                        <a
+                            class="lp-btn lp-btn--primary lp-brand__cta"
+                            href={`#${LP_FORM_ANCHOR}`}
+                            data-lp-header-cta
+                            aria-hidden="true"
+                        >
+                            {LP_CTA_LABEL}
+                        </a>
+                    )
+                }
+            </div>
+        </header>
+
+        {/* The page supplies its own <main> and <footer> (see LpTemplate). */}
+        <slot />
+
+        <script is:inline define:vars={{ slug }}>
+            window.astroClientConfig = { slug: slug }
+        </script>
+    </body>
+</html>
+
+<style lang="scss">
+    .lp-brand {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        padding-block: 0.875rem;
+        background-color: var(--ks-background-body);
+        border-bottom: 1px solid var(--ks-border-primary);
+    }
+
+    .lp-brand__inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        /* Reserve the button's height even while it is hidden, so the header
+           never changes size when it fades in. */
+        min-height: 2.75rem;
+    }
+
+    .lp-brand__logo {
+        display: block;
+
+        :global(svg) {
+            height: 1.5rem;
+            width: auto;
+        }
+    }
+
+    .lp-brand__cta {
+        /* Slimmer than the page buttons — it lives in a 60px bar. */
+        min-height: 2.75rem;
+        padding: 0.5rem 1.25rem;
+        font-size: 0.9375rem;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+            opacity 0.2s ease,
+            visibility 0.2s ease;
+
+        &.is-visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Mobile already has the sticky bottom bar — two floating CTAs is
+           clutter. */
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+</style>

@@ -20,6 +20,10 @@ export const GET: APIRoute = async () => {
         .filter((r) => r !== "/use-cases" && !r.startsWith("/use-cases/"))
         .filter((r) => r !== "/orchestration" && !r.startsWith("/orchestration/"))
         .filter((r) => r !== "/resources" && !r.startsWith("/resources/"))
+        // Paid-campaign landing pages: noindex/nofollow by design, outside the
+        // site navigation, and never to be submitted for indexing. This glob
+        // picks up every `pages/**/*.astro`, so the exclusion has to live here.
+        .filter((r) => !r.startsWith("/lp/"))
         .map((r) => "https://kestra.io" + r)
 
     return sitemapResponse(urls)
