@@ -159,19 +159,10 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
     // "AWS S3 Trigger") so <title> and <h1> are unique and descriptive. Without
     // this, every plugin's "Trigger"/"Query"/"Create"/"Delete" task shared the
     // same short, duplicated title across hundreds of pages.
-    // When the class name matches the container (e.g. "Kubernetes" + "Kubernetes"),
-    // use the subgroup title instead (e.g. "Kubernetes Runner").
     const elementName = pluginType ? formatElementName(pluginType) : undefined
-    const subGroupTitle = effectiveSubGroup
-        ? getPluginTitle(
-              pluginsWithoutDeprecated.find((p) => matchesSubGroup(p, effectiveSubGroup))
-                  ?? rootPlugin!,
-              metadataMap,
-          )
-        : undefined
     const headingTitle = pluginType && elementName
-        ? containerTitle.toLowerCase() === elementName.toLowerCase() && subGroupTitle
-            ? subGroupTitle
+        ? containerTitle.toLowerCase() === elementName.toLowerCase()
+            ? containerTitle
             : `${containerTitle} ${elementName}`
         : containerTitle
 
