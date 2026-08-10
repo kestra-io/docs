@@ -1,11 +1,10 @@
 ---
-title: "AI Agent Orchestration: Governing Autonomous Workflows in Production"
-description: "Explore AI agent orchestration, the critical discipline for coordinating multiple AI agents to achieve complex goals reliably. Learn how declarative platforms enable scalable, auditable, and human-in-the-loop agentic workflows."
-metaTitle: "AI Agent Orchestration: Governing Autonomous Workflows"
-metaDescription: "Coordinate multiple AI agents in production: manage complex goals and ensure reliability with declarative, auditable human-in-the-loop workflows."
+title: "AI Agent Orchestration: How to Coordinate AI Agents in Production"
+description: "AI agent orchestration coordinates multiple autonomous agents into one reliable system. Learn the four patterns, how agent orchestration differs from single-agent workflows, and what it takes to run agents in production."
+metaTitle: "AI Agent Orchestration: How to Coordinate Agents | Kestra"
+metaDescription: "What AI agent orchestration is, how it differs from single-agent workflows, and the four patterns that keep multi-agent systems reliable in production."
 tag: "ai"
 date: 2026-08-05
-slug: "ai-agent-orchestration"
 faq:
   - question: "What is AI agent orchestration?"
     answer: "AI agent orchestration is the practice of designing, coordinating, and managing multiple specialized AI agents to work collaboratively towards a common objective. It involves defining their roles, communication protocols, execution order, and error handling to ensure reliable and efficient goal achievement in complex environments."
@@ -17,6 +16,10 @@ faq:
     answer: "A typical system includes AI agents (specialized models with tools and memory), an orchestration layer (defining flow, triggers, and dependencies), a tool registry (APIs, databases, scripts), a communication bus, and an observability layer for monitoring and debugging. Human-in-the-loop mechanisms are also vital for oversight."
   - question: "What are common challenges in orchestrating AI agents?"
     answer: "Challenges include managing complex interdependencies, ensuring data consistency across agents, handling unexpected agent behaviors, maintaining security and compliance, and providing clear visibility into multi-agent decision-making. Scalability and cost optimization for LLM calls are also significant concerns."
+  - question: "What is the difference between agent orchestration and AI agent orchestration?"
+    answer: "The two terms are used interchangeably in practice. 'Agent orchestration' is the broader phrasing and can cover non-AI software agents; 'AI agent orchestration' specifies that the coordinated agents are LLM-driven, with tools, memory and goals. Both describe the same discipline: defining how multiple autonomous agents share context, execute in order, and hand off work under a single governed control plane."
+  - question: "Is AI orchestration the same as AI agent orchestration?"
+    answer: "AI orchestration is the broader discipline: coordinating models, data pipelines, tools and agents across an enterprise AI stack. AI agent orchestration is the subset that deals specifically with autonomous agents that plan and act. If your workload is a fixed sequence of model calls, you need AI orchestration; as soon as a component decides its own next step, you need agent orchestration on top of it."
   - question: "Can AI agent orchestration integrate with existing enterprise systems?"
     answer: "Yes, effective AI agent orchestration platforms are designed to integrate seamlessly with existing enterprise systems, including databases, CRM, ERP, cloud services, and custom APIs. This allows agents to leverage current data and trigger actions across the organization, extending automation capabilities without requiring a full system overhaul."
 ---
@@ -35,6 +38,8 @@ AI agent orchestration is the process of coordinating multiple autonomous AI age
 
 An orchestration platform acts as the central nervous system for a [multi-agent system](/resources/ai/multi-agent-system), ensuring that each agent, whether it's designed for data analysis, code generation, or customer interaction, contributes effectively to the overall goal without conflicts or redundancy.
 
+Agent orchestration is one discipline inside the wider practice of [coordinating models, pipelines and tools across an enterprise AI stack](/resources/ai/ai-orchestration). The distinguishing factor is who decides the next step: in a classic AI pipeline the sequence is fixed at design time, while in an agentic one at least one component chooses its own path at runtime. That single difference is what makes the guarantees below — durable state, retries, audit trails, spend ceilings — non-negotiable rather than nice to have.
+
 ### The Shift from Single Agents to Collaborative Systems
 
 Early AI applications often relied on a single agent to perform a task. However, complex real-world problems are rarely solved by a single skill set. A financial forecasting task might require one agent to gather market data, another to perform statistical analysis, a third to generate a report, and a fourth to summarize findings for an executive audience.
@@ -46,6 +51,18 @@ This is where [multi-agent collaboration](/resources/ai/multi-agent-collaboratio
 - **Ensuring Goal Alignment:** Keeping all agents focused on the primary objective, even as they operate with a degree of autonomy.
 
 Without orchestration, a team of powerful AI agents is just a collection of individuals. With it, they become a high-performance, autonomous workforce.
+
+## Agent Orchestration vs. Single-Agent Workflows
+
+A single-agent workflow has one reasoning loop: the agent receives a goal, calls tools until it believes the goal is met, and returns. It is easy to build, easy to reason about, and it degrades predictably — when it fails, there is one place to look.
+
+Agent orchestration changes three things at once, and each introduces a class of failure that single-agent setups never encounter:
+
+1. **Context has to be transferred, not shared.** One agent's conclusion becomes another's premise. If the handoff loses a caveat or a confidence level, the second agent reasons confidently from a distorted input, and nothing in the system flags it.
+2. **Failure stops being local.** A single agent that fails returns an error. An agent inside a chain that fails silently — returning a plausible but wrong answer — propagates that answer downstream, where it is expensive to trace back.
+3. **Cost and latency compound.** Five agents at ten seconds and thirty cents each is a very different operational profile from one agent at the same unit cost, and it scales with every input.
+
+None of these are solved by a better prompt or a stronger model. They are execution problems, which is why they belong to the orchestration layer: explicit contracts between agents, checkpoints where output is validated before it moves on, and a ceiling on how much a single run is allowed to spend.
 
 ## How Kestra Enables Declarative AI Agent Orchestration
 
@@ -80,7 +97,11 @@ tasks:
 
 This declarative approach makes it easy to [build and manage AI agents](/resources/ai/how-to-build-an-ai-agent), turning complex agentic logic into manageable, version-controlled code.
 
-### Orchestration Patterns for Agentic Workflows
+## How to Orchestrate AI Agents: Four Patterns
+
+Almost every production system that orchestrates AI agents is built from four patterns, alone or in combination. Choosing between them is the first design decision, and the one that most affects cost and debuggability.
+
+### Sequential, Parallel, Conditional and Hierarchical Routing
 
 Kestra’s flowable task model supports several key patterns for orchestrating agent interactions:
 
