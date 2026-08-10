@@ -235,6 +235,10 @@ export default defineConfig({
         "/docs/migration-guide/v0.24.0/retries-maxAttempts":
             "/docs/migration-guide/v0.24.0/retries-maxattempts",
     },
+    server: {
+        host: "::",
+        port: 4321,
+    },
     vite: {
         plugins: [
             {

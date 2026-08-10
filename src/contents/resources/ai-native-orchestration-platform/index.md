@@ -31,6 +31,8 @@ This article explores the emerging category of AI-native orchestration platforms
 
 An AI-native orchestration platform is a control plane designed specifically to manage the entire lifecycle of AI and machine learning applications. It goes beyond simple task scheduling to coordinate complex dependencies between data ingestion, model training, validation, deployment, and monitoring.
 
+An AI-native platform is one implementation of [AI orchestration](/resources/ai/ai-orchestration); the discipline itself is broader, and covers how models, pipelines, tools and agents are sequenced across the whole stack.
+
 ### Defining AI Orchestration: Models, Data, and Workflows
 
 AI orchestration involves the automated management of three core components:
