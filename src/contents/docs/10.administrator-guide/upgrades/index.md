@@ -52,7 +52,7 @@ The `Breaking Changes` section appears at the end of the [release notes](https:/
 If you run Kestra as separate components, you should:
 
 - Stop the executors and the scheduler
-- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminateGracePeriod = '5m'`, configurable in your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
+- Stop the workers — a graceful shutdown waits for active jobs to finish. The default is `kestra.server.terminationGracePeriod = 'PT5M'`, configurable in your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md).
 - If the job finishes within five minutes, the worker shuts down immediately. Otherwise, the task is killed and restarts when the worker restarts.
 - Stop the webserver (and the indexer if using EE with Kafka).
 
@@ -66,10 +66,8 @@ The webserver hosts the API, so stop and then start it immediately to avoid down
 
 If you want to stick to a specific Kestra version, you can pin the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to a specific release. Here are some examples:
 
-- `kestra/kestra:v0.21.4-no-plugins` includes the 0.21.4 release with the fourth patch version
-- `kestra/kestra:v0.21.4` includes the 0.21.4 release with all plugins
-- `kestra/kestra:v0.19.0-no-plugins` includes the 0.19 release without any plugins
-- `kestra/kestra:v0.19.0` includes the 0.19 release with all plugins.
+- `kestra/kestra:v2.0.0-no-plugins` — the 2.0.0 release without bundled plugins
+- `kestra/kestra:v2.0.0` — the 2.0.0 release with all plugins
 
 You can also create a custom image with your own plugins and dependencies, as explained in the [Docker installation](../../02.installation/02.docker/index.md).
 

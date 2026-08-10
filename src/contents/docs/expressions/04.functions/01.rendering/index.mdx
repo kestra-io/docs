@@ -39,8 +39,6 @@ Equivalent to `render(expression, recursive=false)`. Use `renderOnce()` when you
 {{ renderOnce(namespace.github.token) }}
 ```
 
-`renderOnce()` is the safer choice when you need one extra evaluation pass but do not want recursive expansion to keep walking nested Pebble content.
-
 ## `fetchContext()`
 
 Outputs the full execution context as a string. Use it in the Debug Expression console to inspect every variable available at that point in the execution:

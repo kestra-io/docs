@@ -54,7 +54,7 @@ tasks:
 
   - id: load
     type: io.kestra.plugin.aws.s3.Upload
-    from: "{{ outputs.extractLargeFile.uri }}"
+    from: "{{ outputs.extract.uri }}"
     bucket: myBucket
     key: largeFiles/orders.csv
 

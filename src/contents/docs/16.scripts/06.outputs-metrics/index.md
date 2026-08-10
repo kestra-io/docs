@@ -173,7 +173,7 @@ tasks:
     type: io.kestra.plugin.scripts.shell.Script
     containerImage: ubuntu
     script: |
-      echo '{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}'
+      echo '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'
       echo '::{"metrics":[{"name":"count","type":"counter","value":1,"tags":{"tag1":"i","tag2":"win"}}]}::'
       echo '::{"metrics":[{"name":"time","type":"timer","value":2.12,"tags":{"tag1":"i","tag2":"destroy"}}]}::'
 ```

@@ -159,7 +159,7 @@ For a full list of properties available in the Azure Batch task runner, see the 
 
 Before starting, ensure you have the following:
 1. A Microsoft Azure account.
-2. A Kestra instance (version 0.16.0 or later) with Azure credentials stored as [secrets](../../../06.concepts/04.secret/index.md) or environment variables.
+2. A Kestra instance with Azure credentials stored as [secrets](../../../06.concepts/04.secret/index.md) or environment variables.
 
 ### Azure portal setup
 

@@ -305,11 +305,3 @@ This distinction matters for compliance and troubleshooting: purge flows are bes
 Purge tasks do not affect Kestra’s [internal queues](../../08.architecture/01.main-components/index.md#queue). Queue retention is managed separately via the [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) for JDBC or the [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md) for Kafka.
 :::
 
-:::collapse{title="Renamed Purge Tasks in 0.18.0"}
-We've [improved](https://github.com/kestra-io/kestra/pull/4298) the mechanism of the **Purge tasks** to make them more performant and reliable — some tasks have been renamed to reflect their enhanced functionality.
-
-Here are the main `Purge` plugin changes in Kestra 0.18.0:
-
-- `io.kestra.plugin.core.storage.Purge` has been renamed to `io.kestra.plugin.core.execution.PurgeExecutions` to reflect that it only purges data related to executions (e.g., it doesn't include trigger logs; use the `PurgeLogs` task for those). An alias has been added so that using the old task type will still work, but it will emit a warning. Use the new task type going forward.
-- `io.kestra.plugin.core.storage.PurgeExecution` has been renamed to `io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles` to reflect that it purges all data from the current execution, including inputs and outputs. An alias has been added for backward compatibility, but update your flows to use the new task type.
-:::

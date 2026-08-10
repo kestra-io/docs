@@ -1,7 +1,7 @@
 ---
 title: "Server CLI in Kestra: Commands and Options"
 h1: "Kestra Server CLI Reference: All Commands and Options"
-sidebarTitle: Kestra Server Commmands
+sidebarTitle: Kestra Server Commands
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
 description: Reference guide for Kestra CLI commands to manage servers, flows, plugins, and configurations.
@@ -95,7 +95,6 @@ Commands:
   tenants    handle tenants
   migrate    handle migrations
   backups    (EE) handle metadata backups and restore
-  server     start Kestra servers (see `--flow-path` below for preloading flows)
 ```
 
 ### Preload flows at startup

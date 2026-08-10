@@ -42,7 +42,7 @@ The full resolution order is:
 
 ### Migration note
 
-Configuring an external log store applies to **new executions only**. Historical logs remain in the main database. A CLI command to migrate historical log data is planned for a future release.
+Configuring an external log store applies to **new executions only**. Historical logs remain in the main database.
 
 ## Configure the JDBC log store (OSS + EE)
 

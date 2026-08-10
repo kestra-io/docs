@@ -3,7 +3,6 @@ title: "Task Runner Benefits: Resource Control & Flexibility"
 h1: "Why Use Task Runners: Isolated Execution & Resource Control"
 sidebarTitle: Task Runner Benefits
 icon: /src/contents/docs/icons/concepts.svg
-version: ">= 0.18.0"
 editions: ["OSS", "EE"]
 description: Explore the benefits of using Task Runners in Kestra for isolated execution, resource control, and deployment flexibility.
 ---

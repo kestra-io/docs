@@ -397,7 +397,7 @@ kestra:
     timeout: 30s
 ```
 
-Accepts any [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) string (e.g., `5s`, `PT30S`, `1m`).
+Accepts ISO 8601 duration strings (e.g., `PT30S`, `PT1M`) or Micronaut shorthand (e.g., `5s`, `1m`).
 
 :::alert{type="info"}
 The timeout is set once at startup and cannot be changed at runtime without restarting the server.

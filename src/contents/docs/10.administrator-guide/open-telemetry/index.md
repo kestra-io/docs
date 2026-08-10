@@ -3,7 +3,6 @@ title: "OpenTelemetry for Kestra: Traces, Metrics, and Logs"
 h1: Collect traces, metrics, and logs with OpenTelemetry
 sidebarTitle: OpenTelemetry
 icon: /src/contents/docs/icons/admin.svg
-version: ">= 0.21.0"
 editions: ["OSS", "EE"]
 description: Implement observability in Kestra with OpenTelemetry to export traces, metrics, and logs to your preferred monitoring tools.
 ---
@@ -21,10 +20,6 @@ OpenTelemetry defines three different kinds of telemetry data:
 Kestra supports all three kinds of telemetry data via OpenTelemetry-compatible exporters. For more details, see the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
 
 ## Traces
-
-:::alert{type="info"}
-Exporting trace data in Kestra is currently a Beta feature.
-:::
 
 The first step is to enable distributed traces inside the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
 

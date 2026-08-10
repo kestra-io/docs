@@ -6,7 +6,7 @@ sidebarTitle: Alerting & Monitoring
 icon: /src/contents/docs/icons/admin.svg
 ---
 
-This page provides best practices for setting up alerting and monitoring in your Kestra instance.
+Set up failure alerting and Prometheus-based monitoring for your Kestra instance.
 
 Failure alerts are essential. When a production workflow fails, you should be notified immediately. To implement failure alerting, you can use Kestra’s built-in notification tasks, such as:
 
@@ -150,7 +150,7 @@ For a complete list of available metrics, refer to the [Prometheus metrics page]
 
 ### Kestra's metrics
 
-Use Kestra's internal metrics to configure custom alerts. Each metric provides multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
+Use Kestra's internal metrics to configure custom alerts. Each metric exposes time-series data tagged by at least `namespace` and `flow_id`, with additional tags depending on the task type.
 
 Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
@@ -226,7 +226,7 @@ See the [Micronaut documentation](https://micronaut-projects.github.io/micronaut
 
 ## Grafana and Kibana
 
-Kestra uses Elasticsearch to store all executions and metrics. You can create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
+You can create a Grafana dashboard backed by Prometheus metrics to monitor the health of your Kestra instance. If you use the Elasticsearch backend (Enterprise Edition), Kibana is another option.
 
 Share your dashboard with [the community](/slack). Below is an example Grafana dashboard you can use as a starting point:
 

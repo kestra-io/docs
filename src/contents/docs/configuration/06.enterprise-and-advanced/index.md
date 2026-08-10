@@ -87,7 +87,7 @@ kestra:
         - "Blueprints/Flow Blueprints"
 ```
 
-The old multi-tenancy and default-tenant configuration was removed in `0.23.0`; keep it only in mind for migration work.
+The old multi-tenancy and default-tenant configuration is no longer supported.
 
 ## gRPC TLS/mTLS (EE only)
 

@@ -14,6 +14,7 @@ Kestra maintains two tracks:
 
 | Type    | Version | Release Date | Supported Until           | Release Notes |
 |---------|---------|--------------|---------------------------|---------------|
+| LTS     | 2.0     | 2026‑09‑02   | 2027‑09                   | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v2.0.0) |
 | LTS     | 1.3     | 2026‑03‑03   | 2027‑03                   | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.3.0) |
 | Feature | 1.2     | 2026‑01‑13   | Support ended by LTS 1.3  | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.2.0) |
 | Feature | 1.1     | 2025‑11‑04   | Support ended by LTS 1.3  | [GitHub Release](https://github.com/kestra-io/kestra/releases/tag/v1.1.0) |

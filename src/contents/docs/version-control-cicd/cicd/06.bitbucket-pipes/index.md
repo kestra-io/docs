@@ -57,4 +57,4 @@ If you're using Kestra Enterprise Edition, you can replace ``--user $KESTRA_USER
 This example uses the Kestra CLI to:
 
 1. Validate flows contained in the `flows/` directory of the repository.
-2. Deploy flows into the `company.team` namespace of your Kestra instance.
+2. Deploy flows into the `dev` namespace of your Kestra instance.

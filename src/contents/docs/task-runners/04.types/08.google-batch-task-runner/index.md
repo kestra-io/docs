@@ -131,7 +131,7 @@ For a full list of available properties, see the [Google Batch plugin documentat
 You'll need the following prerequisites:
 
 1. A Google Cloud account.
-2. A Kestra instance (version 0.16.0 or later) with Google credentials stored as [secrets](../../../06.concepts/04.secret/index.md) or set as environment variables.
+2. A Kestra instance with Google credentials stored as [secrets](../../../06.concepts/04.secret/index.md) or set as environment variables.
 
 ### Required IAM roles
 

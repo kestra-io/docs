@@ -37,7 +37,7 @@ The old `workerGroups` map in `values.yaml`, which created multiple worker deplo
 
 For each group you previously defined in `workerGroups`:
 
-1. Start Kestra 2.0.0 and open **Instance → Worker Groups**.
+1. Start Kestra 2.0.0 and open the Super Admin console. Navigate to **Infrastructure → Worker Groups**.
 2. Create a Worker Group with the same id you used in the old `workerGroups` key (e.g. `wg-1`).
 3. Generate a registration token for that group. Copy it immediately — it is shown only once.
 4. Enable worker authentication server-side and configure the worker deployment with the registration token:
@@ -183,7 +183,7 @@ configurations:
           registration-token: "{{ token generated for the target group }}"
 ```
 
-Generate registration tokens from **Instance → Worker Groups → [group] → Tokens** in the Kestra UI, or via `POST /api/v1/instance/worker-groups/{id}/tokens`. The plaintext token is shown only once — copy it before closing the dialog.
+Generate registration tokens from **Infrastructure → Worker Groups → [group] → Tokens** in the Super Admin console, or via `POST /api/v1/instance/worker-groups/{id}/tokens`. The plaintext token is shown only once — copy it before closing the dialog.
 
 ## Upgrade steps
 

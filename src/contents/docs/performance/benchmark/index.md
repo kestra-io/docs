@@ -188,7 +188,7 @@ tasks:
 
 **Results for Kestra EE**
 
-![Kestra EE - Benchmark02](./bench02-OSS.png "Kestra OSS Benchmark02 results")
+![Kestra EE - Benchmark02](./bench02-EE.png "Kestra EE Benchmark02 results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -331,7 +331,7 @@ With 1.6 KB small-sized messages:
 
 With 16 KB medium-sized messages:
 
-![Kestra EE - Benchmark04 - Meidum messages](./bench04-EE-medium.png "Kestra OSS Benchmark04 with medium messages results")
+![Kestra EE - Benchmark04 - Medium messages](./bench04-EE-medium.png "Kestra EE Benchmark04 with medium messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -347,7 +347,7 @@ With 16 KB medium-sized messages:
 
 With 160 KB large-sized messages:
 
-![Kestra EE - Benchmark04 - Big messages](./bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
+![Kestra EE - Benchmark04 - Big messages](./bench04-EE-big.png "Kestra EE Benchmark04 with big messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
