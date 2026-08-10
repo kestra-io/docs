@@ -1,5 +1,4 @@
 import { $fetch } from "./fetch"
-import { slugify } from "./slugify"
 import { ASHBY_APIKEY } from "astro:env/server"
 
 const headers = {
@@ -53,18 +52,6 @@ export const fetchJobs = async (): Promise<AshbyJob[]> => {
                 ? 1
                 : -1
         })
-}
-
-/**
- * Path of a job opening, as resolved by
- * src/pages/careers/[id1]-[id2]-[id3]-[id4]-[id5]-[slug]/index.astro.
- *
- * Shared by the listing links and the sitemap so the two cannot drift. Returns
- * null for a job with no posting, which has no page to link to.
- */
-export const jobPath = (job: AshbyJob): string | null => {
-    const jobPostingId = job.jobPostingIds?.[0]
-    return jobPostingId ? `/careers/${jobPostingId}-${slugify(job.title)}` : null
 }
 
 export const fetchJob = async (

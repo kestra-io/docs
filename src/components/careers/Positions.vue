@@ -1,6 +1,7 @@
 <script lang="ts" setup>
     import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
-    import { jobPath, type AshbyJob } from "~/utils/careers.ts"
+    import type { AshbyJob } from "~/utils/careers.ts"
+    import { jobPath } from "~/utils/careersPath.ts"
     import {
         searchDepartment,
         searchLocation,

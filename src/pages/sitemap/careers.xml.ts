@@ -3,16 +3,17 @@
 export const prerender = false
 
 import type { APIRoute } from "astro"
-import { fetchJobs, jobPath } from "~/utils/careers.ts"
+import { fetchJobs } from "~/utils/careers.ts"
+import { jobPath } from "~/utils/careersPath.ts"
 import { sitemapResponse } from "~/utils/sitemap.ts"
 
 export const GET: APIRoute = async () => {
     const jobs = await fetchJobs()
 
-    const urls = jobs
-        .map((job) => jobPath(job))
-        .filter((path) => path !== null)
-        .map((path) => `https://kestra.io${path}`)
+    const urls = jobs.flatMap((job) => {
+        const path = jobPath(job)
+        return path ? [`https://kestra.io${path}`] : []
+    })
 
     return sitemapResponse(urls)
 }
