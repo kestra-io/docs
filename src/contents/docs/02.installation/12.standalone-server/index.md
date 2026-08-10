@@ -25,7 +25,7 @@ For example, to launch Kestra:
 For more information on database configuration, check out the [Runtime and Storage configuration guide](../../configuration/02.runtime-and-storage/index.md)
 
 :::alert{type="warning"}
-Running the jar version comes without any [plugins](/plugins). You need to install them manually with the `kestra plugins install directory_with_plugins/` command. Alternatively, point to a directory with the plugins in the configuration file or an environment variable `KESTRA_PLUGINS_PATH` (e.g., `KESTRA_PLUGINS_PATH=/Users/anna/dev/plugins`).
+Running the jar version comes without any [plugins](/plugins) — the JAR is kept small on purpose. When running `server standalone`, Kestra can install missing plugins automatically the first time a flow needs them (plugin auto-install, enabled with the `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable or `kestra.plugins.auto-install.enabled: true` in the configuration). Alternatively, install plugins manually with the `kestra plugins install directory_with_plugins/` command, or point to a directory with the plugins in the configuration file or an environment variable `KESTRA_PLUGINS_PATH` (e.g., `KESTRA_PLUGINS_PATH=/Users/anna/dev/plugins`).
 :::
 
 ## Configuration
