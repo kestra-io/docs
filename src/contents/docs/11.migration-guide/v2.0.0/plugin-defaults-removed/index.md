@@ -7,7 +7,7 @@ editions: ["OSS", "EE"]
 description: The pluginDefaults keyword is removed in Kestra 2.0 at all scopes. Replace flow-level and namespace-level defaults with Policies in Enterprise Edition, or inline task values in OSS.
 ---
 
-The `pluginDefaults` keyword is removed in Kestra 2.0 in all editions and at all scopes — flow level, namespace level (EE), and global server configuration.
+The `pluginDefaults` keyword is removed in Kestra 2.0 in all editions and at all scopes — flow level, namespace level (EE), and global server configuration. The older `taskDefaults` alias (used in Kestra versions before `pluginDefaults` was introduced) is also removed.
 
 :::alert{type="warning"}
 Flows that contain a `pluginDefaults` block fail to parse after upgrading to 2.0.0. Remove or migrate all `pluginDefaults` entries before upgrading.

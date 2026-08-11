@@ -472,7 +472,7 @@ triggers:
       - flowId: stg_marketing
         namespace: company.team
     window:
-      deadline: "09:00:00+01:00"
+      deadline: "09:00:00"
 ```
 
 `states` defaults to all terminal states and `PAUSED` when omitted. `window` moves to the trigger level. See [Window configuration](#window-configuration) for all window types and the `onMiss` property.
@@ -954,7 +954,7 @@ The `window` property applies to Flow triggers and controls how Kestra accumulat
 
 | Window type | Properties | Behavior |
 |---|---|---|
-| Deadline | `deadline: "09:00:00+01:00"` | Upstream flows must complete by a fixed time each day |
+| Deadline | `deadline: "09:00:00"` | Upstream flows must complete by a fixed time each day |
 | Daily time range | `from: "06:00:00"` + `to: "12:00:00"` | Only executions within a daily time range count |
 | Fixed interval | `every: P1D` + optional `offset: PT6H` | Recurring window of a fixed size, offset from midnight |
 | Lookback | `lookback: PT1H` | Rolling window looking back from the current evaluation time |
@@ -965,7 +965,7 @@ The `window` property applies to Flow triggers and controls how Kestra accumulat
 
 ```yaml
 window:
-  deadline: "09:00:00+01:00"
+  deadline: "09:00:00"
 ```
 
 ### Daily time range
@@ -995,31 +995,17 @@ window:
 
 ```yaml
 window:
-  deadline: "09:00:00+01:00"
+  deadline: "09:00:00"
   fireOnce: true
 ```
 
 Default is `false` — the trigger fires every time conditions are met within the window.
 
-### SLA misses with `onMiss`
-
-`onMiss` is a trigger-level property (peer to `window`) that declares what happens when the deadline passes without all dependencies being satisfied:
-
-```yaml
-onMiss:
-  behavior: FAIL
-  labels:
-    sla: miss
-    reason: upstreamNotFinishedOnTime
-```
-
-`behavior: FAIL` creates a `FAILED` execution when the deadline passes. Labels are applied to that execution for downstream alerting.
-
 ### Replacing `timeWindow` types
 
 | Old `timeWindow.type` | New `window` property |
 |---|---|
-| `DAILY_TIME_DEADLINE` | `deadline: "09:00:00+01:00"` |
+| `DAILY_TIME_DEADLINE` | `deadline: "09:00:00"` |
 | `DAILY_TIME_WINDOW` | `from: "06:00:00"` + `to: "12:00:00"` |
 | `DURATION_WINDOW` | `every: P1D` + optional `offset: PT6H` |
 | `SLIDING_WINDOW` | `lookback: PT1H` |
