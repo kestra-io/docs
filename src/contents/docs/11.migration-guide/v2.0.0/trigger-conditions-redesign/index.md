@@ -387,15 +387,13 @@ Both `conditions` (execution-level types such as `ExecutionStatus`, `ExecutionFl
 |---|---|---|---|
 | `flowId` | string | — | Exact flow ID to match. Omit to match any flow. |
 | `namespace` | string | — | Exact namespace to match. Use `when` for prefix or pattern matching. |
-| `states` | list | `[SUCCESS, WARNING]` | Execution states that satisfy this entry. |
+| `states` | list | all terminal states and `PAUSED` | Execution states that satisfy this entry. |
 | `labels` | map | — | Labels the upstream execution must carry (all must match). |
 | `when` | string | — | Pebble expression for additional filtering on the upstream execution context. |
 
 Both `flowId` and `namespace` use exact matching: `namespace: company.team` matches only `company.team`, not `company.team.project`. For prefix or pattern matching, use `when` with `startsWith` or `endsWith`.
 
-:::alert{type="warning"}
-The default `states` changed from `[SUCCESS, WARNING, PAUSED]` to `[SUCCESS, WARNING]`. If your flows relied on `PAUSED` being included by default, add it explicitly: `states: [SUCCESS, WARNING, PAUSED]`.
-:::
+When no `states` are specified on a `dependsOn` entry, the trigger evaluates against all terminal states (`SUCCESS`, `WARNING`, `FAILED`, `KILLED`, `CANCELLED`, `RETRIED`, `SKIPPED`, `RESUBMITTED`) and `PAUSED`. Specify `states` explicitly to narrow the match.
 
 ### Single upstream flow
 
@@ -477,7 +475,7 @@ triggers:
       deadline: "09:00:00+01:00"
 ```
 
-`states` defaults to `[SUCCESS, WARNING]`. `window` moves to the trigger level. See [Window configuration](#window-configuration) for all window types and the `onMiss` property.
+`states` defaults to all terminal states and `PAUSED` when omitted. `window` moves to the trigger level. See [Window configuration](#window-configuration) for all window types and the `onMiss` property.
 
 ### Multiple upstream flows (from `multipleConditions`)
 
@@ -1048,7 +1046,7 @@ Old-format events in the async queue are discarded gracefully (logged as a warni
 
 1. **Replace `conditions:` on all triggers** with a `when:` Pebble expression. This applies to Schedule, Webhook, HTTP, and any other trigger type that used `conditions`.
 2. **Replace `conditions:` and `preconditions:` on Flow triggers** with `dependsOn:` entries and (if applicable) `window:`.
-3. **Check for `PAUSED` state dependencies.** The default `states` changed from `[SUCCESS, WARNING, PAUSED]` to `[SUCCESS, WARNING]`. Add `PAUSED` explicitly if your flows depended on it: `states: [SUCCESS, WARNING, PAUSED]`.
+3. **Check `dependsOn` `states` values.** When omitted, `states` defaults to all terminal states and `PAUSED`. Add `states` explicitly on any entry that should match only specific states.
 4. **Update `trigger.outputs` references** in multi-flow triggers from `trigger.outputs.<key>` to `trigger.outputs.<flowId>.<key>`. Single-flow triggers can keep the unscoped form.
 5. **Update `timeWindow` to `window`** using the property mapping table above.
 6. **Validate** by saving updated flows in the Kestra UI or via the API and confirming they parse without errors.
