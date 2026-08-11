@@ -370,7 +370,7 @@ The flows table gains a Deploy column showing drift at a glance. If production i
 
 A later release will extend Promote to Git targets: promoting a flow will push a commit or open a pull request, routing through your existing review process with no new mental model.
 
-See the [Promote reference](/docs/enterprise/governance/promote).
+See the [Promote reference](/docs/version-control-cicd/promote).
 
 ## AWS EC2 Task Runner
 
