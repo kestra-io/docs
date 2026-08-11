@@ -1,9 +1,10 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import { generateApiMarkdown } from "~/utils/openapi-to-markdown"
 
-const API_MD_REDIRECTS: Record<string, string> = {
-    "api-reference/open-source": "/api-reference/kestra.md",
-    "api-reference/enterprise": "/api-reference/kestra-ee.md",
+const API_MD_SPECS: Record<string, string> = {
+    "api-reference/open-source": "kestra.yml",
+    "api-reference/enterprise": "kestra-ee.yml",
 }
 
 export async function getStaticPaths() {
@@ -21,10 +22,17 @@ export async function getStaticPaths() {
  * respond with the raw markdown content of the doc page.
  * to be used by AI or other tools that want to consume the markdown content directly.
  */
-export const GET: APIRoute = ({ params, props, redirect }) => {
-    const redirectTarget = API_MD_REDIRECTS[params.docsPath as string]
-    if (redirectTarget) {
-        return redirect(redirectTarget, 301)
+export const GET: APIRoute = async ({ params, props }) => {
+    const specFile = API_MD_SPECS[params.docsPath as string]
+    if (specFile) {
+        const markdown = await generateApiMarkdown(specFile)
+        return new Response(markdown, {
+            status: 200,
+            headers: {
+                "Content-Type": "text/markdown; charset=utf-8",
+                "Cache-Control": "public, max-age=3600",
+            },
+        })
     }
 
     return new Response(`# ${props.title}\n\n${props.source}`, {
