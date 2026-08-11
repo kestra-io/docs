@@ -16,7 +16,7 @@ Kestra 2.0 ships with intentional breaking changes. Version 2.0 removes construc
 
 The headline capability is MCP: Kestra flows can now be exposed as typed tools on an MCP server and invoked directly by Claude, Cursor, Codex, or any MCP-compatible agent. A class of AI-driven automation that previously required bespoke integrations now works out of the box. The AI Copilot is rebuilt from the ground up as a persistent agentic loop with three modes, multi-turn memory, and a confirmation gate before any mutations run. Worker Groups are redesigned from scratch with tag-based routing, capacity reservation, and JWT-based worker authentication. RBAC moves from generic CRUD on resources to resource-plus-action pairs, so you can grant a CI service account the right to execute flows without being able to delete them.
 
-This post covers what shipped. The [engineering post from April](/blogs/kestra-2-0-engineering) covers why.
+This post covers what shipped.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -30,6 +30,7 @@ This post covers what shipped. The [engineering post from April](/blogs/kestra-2
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE |
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
+| Promote | Move flows across environments from the UI, with drift detection and a review gate | EE |
 | AWS EC2 Task Runner | Native EC2 execution via SSM, with Spot support | EE, Cloud |
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | All |
 | External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
@@ -357,6 +358,20 @@ A new `CASE` RBAC resource controls access with actions for `VIEW`, `CREATE`, `U
 
 See the [Cases reference](/docs/enterprise/governance/cases).
 
+## Promote
+
+<!-- TODO: screenshot of Deploy tab or drift state in flows table -->
+
+Moving a flow from dev to prod has never been a first-class action in Kestra. The usual workarounds are fragile (copy-paste YAML between instances, which silently drifts) or require building a Git pipeline yourself, which blocks anyone who isn't fluent in CI/CD setup. Promote adds a dedicated path for moving flows across environments directly from the UI, with a review step before anything lands in production.
+
+Each flow gains a Deploy tab alongside the editor. From there, select a target environment, review a diff of exactly what changes in that revision, and confirm. Gated targets (typically production) require explicit confirmation before the promotion runs. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when.
+
+The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted. No opening each instance separately to check.
+
+A later release will extend Promote to Git targets: promoting a flow will push a commit or open a pull request, routing through your existing review process with no new mental model.
+
+See the [Promote reference](/docs/enterprise/governance/promote).
+
 ## AWS EC2 Task Runner
 
 <!-- TODO: optional screenshot or flow snippet for GPU Spot example -->
@@ -448,13 +463,9 @@ Syslog (CEF) log exporter: the EE Log Shipper and Audit Log Shipper gain a Syslo
 
 AI Agent observability: AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
 
-mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer.
+mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
 
-<!-- TODO: Promote (EE) - reviewed flow promotion between environments; fill with details + screenshot when feature ships -->
-
-<!-- TODO: Plugin auto-install (OSS standalone) - automatic plugin installation on demand; fill with config details when confirmed -->
-
-<!-- TODO: Drafts - save flows as drafts before publishing; fill with details + screenshot closer to GA -->
+Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed — any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Draft revisions](/docs/concepts/revision#draft-revisions).
 
 ## Upgrade and Migration
 
@@ -468,8 +479,10 @@ The breaking changes that require action:
 | Trigger `conditions` removed | Replace with `when` Pebble expression. Flow trigger uses `dependsOn` + `window`. |
 | `workerGroup.key` removed | Migrate to `workerSelector.tags`. Check the `fallback` default change (WAIT to FAIL). |
 | RBAC CRUD model replaced | Existing roles migrate automatically. Review custom roles against the new action model. |
-| `io.kestra.plugin.core.condition.json` Pebble function removed | Replace with `fromJson()` (same signature). |
-| `forced: true` on flow-level `pluginDefaults` removed | Move forced defaults to global or namespace level. |
+| `json()` Pebble function removed | Replace with `fromJson()` (same signature). |
+| Namespace and global `pluginDefaults` removed | Replace with Policies (EE) or remove them (OSS). |
+| `forced: true` on flow-level `pluginDefaults` removed | Remove the `forced` flag or migrate the default to Policies. |
+| `kestra.ee.execution-data.internal-storage` removed (EE) | Remove these keys from your configuration. Task run outputs are always in-memory in 2.0. |
 | ION binary format | `read()` on ION outputs followed by string ops needs `fromIon()` wrapping. |
 
 Each has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
