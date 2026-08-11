@@ -86,7 +86,7 @@ tasks:
     type: io.kestra.plugin.ai.agent.AIAgent
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
       apiKey: "{{ secret('GEMINI_API_KEY') }}"
     systemMessage: "You are an operations assistant. Use the available tools to resolve the request, and explain your reasoning."
     prompt: "{{ inputs.task }}"

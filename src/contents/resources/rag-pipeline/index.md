@@ -79,6 +79,8 @@ Orchestration concerns vary by type. Naïve RAG needs basic workflow scaffolding
 
 Five components define what a production RAG orchestration layer must handle:
 
+These components are not specific to retrieval. They are the general shape of [the layer that sequences AI workloads](/resources/ai/ai-orchestration), applied to a RAG use case.
+
 - **Data preparation and chunking.** Scheduled or event-driven ingestion of source documents. Chunking strategy choices (fixed-size, semantic, recursive). Quality tests on chunks (length distribution, overlap, deduplication). Source freshness monitoring.
 - **Vector indexing and retrieval.** Embedding generation (batched for efficiency), upsert to the [vector database](/resources/ai/vector-database), index freshness tracking, retrieval quality monitoring (are relevant documents being returned?).
 - **Prompt augmentation and context building.** Token budget management, context-window packing, deduplication of similar retrieved chunks, metadata injection (timestamps, source attribution). This is where "how much context" is decided dynamically.

@@ -122,7 +122,7 @@ tasks:
       kvName: ingest-documents-embedding-store
     chatProvider: #2
       type: io.kestra.plugin.langchain4j.provider.GoogleGemini
-      modelName: gemini-2.5-flash-preview-05-20
+      modelName: gemini-3.5-flash-lite
       apiKey: "{{secret('GEMINI_API_KEY')}}"
     embeddingProvider: #3
       type: io.kestra.plugin.langchain4j.provider.GoogleGemini

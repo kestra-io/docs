@@ -55,13 +55,6 @@
                         </div>
                     </div>
                     <div class="bubble">
-                        <Copy
-                            v-if="
-                                message.role === 'assistant' && message.content
-                            "
-                            class="copy-response"
-                            :code="message.content"
-                        />
                         <template v-if="message.role === 'assistant'">
                             <div
                                 v-if="message.markdown"
@@ -118,9 +111,19 @@
                             </div>
                         </div>
 
-                        <span class="timestamp">{{
-                            formatTimestamp(message.timestamp)
-                        }}</span>
+                        <div class="message-footer">
+                            <span class="timestamp">{{
+                                formatTimestamp(message.timestamp)
+                            }}</span>
+                            <Copy
+                                v-if="
+                                    message.role === 'assistant' &&
+                                    message.content &&
+                                    !(isLoading && index === messages.length - 1)
+                                "
+                                :code="message.content"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -599,6 +602,10 @@
                 gap: 0.5rem;
             }
 
+            &.message-user .bubble {
+                white-space: pre-line;
+            }
+
             .avatar {
                 flex-shrink: 0;
 
@@ -619,7 +626,6 @@
                 background: var(--ks-background-body);
                 border: $block-border;
                 color: var(--ks-content-primary);
-                white-space: pre-line;
                 max-width: calc(100% - 48px);
                 position: relative;
 
@@ -637,22 +643,17 @@
                     }
                 }
 
-                .timestamp {
-                    font-size: 0.7rem;
-                    color: var(--ks-content-tertiary);
-                    display: block;
-                    text-align: right;
+                .message-footer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 0.5rem;
                     margin-top: 0.5rem;
                 }
 
-                .copy-response {
-                    position: absolute;
-                    top: 0.75rem;
-                    right: 0.75rem;
-                }
-
-                &:has(.copy-response) {
-                    padding-top: 3rem;
+                .timestamp {
+                    font-size: 0.7rem;
+                    color: var(--ks-content-tertiary);
                 }
 
                 :deep(pre) {

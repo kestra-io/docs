@@ -61,6 +61,26 @@ export function extractPluginElements(plugin: Plugin): Record<string, string[]> 
     )
 }
 
+/**
+ * Whether `/plugins/{name}/{subGroup}/...` is a real URL for a given plugin.
+ *
+ * Mirrors the redirect in src/pages/plugins/[...slug].astro: a plugin that
+ * exposes a single subgroup 301s the subgroup segment away, so only the flat
+ * `/plugins/{name}/...` form is canonical. A plugin with no subgroup of its own
+ * has no subgroup form either — the segment can only come from another plugin
+ * sharing the same classes through the global cls -> subgroup mapping.
+ */
+export function buildSubGroupSegmentPredicate(plugins: Plugin[]): (pluginName: string) => boolean {
+    const subGroupCount = new Map<string, number>()
+
+    for (const plugin of plugins ?? []) {
+        if (!plugin.subGroup) continue
+        subGroupCount.set(plugin.name, (subGroupCount.get(plugin.name) ?? 0) + 1)
+    }
+
+    return (pluginName: string) => (subGroupCount.get(pluginName) ?? 0) > 1
+}
+
 export function filterPluginsWithoutDeprecated(plugins: Plugin[]): Plugin[] {
     return plugins.flatMap((plugin) => {
         const filteredEntries = Object.entries(plugin)
