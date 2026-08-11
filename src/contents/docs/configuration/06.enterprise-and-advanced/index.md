@@ -480,28 +480,6 @@ kestra:
 
 When enabled, the UI hides or adapts features that normally depend on external services, such as hosted fonts, external blueprint sources, or embedded internet content.
 
-### Execution data in internal storage
-
-If EE outputs and inputs must be isolated per tenant or namespace, store execution data in internal storage:
-
-```yaml
-kestra:
-  ee:
-    execution-data:
-      internal-storage:
-        enabled: true
-```
-
-To enforce that behavior everywhere:
-
-```yaml
-kestra:
-  ee:
-    execution-data:
-      internal-storage:
-        force-globally: true
-```
-
 ### Mail service
 
 Invitation and password-reset emails rely on the EE mail service:
