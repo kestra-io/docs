@@ -73,7 +73,7 @@ kestra:
 ```yaml
 kestra:
   policies:
-    - id: instance-plugin-defaults
+    instance-plugin-defaults:
       description: "Migrated from kestra.plugins.defaults."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
@@ -95,8 +95,7 @@ kestra:
             region: eu-west-1
 ```
 
-- `id` is required (lowercase alphanumeric and hyphens).
-- Do not set `scope`, `tenantId`, or `namespace` — static policies are always installation-wide.
+- `kestra.policies` is a map. The key (`instance-plugin-defaults` above) is the policy identity — do not add an `id` field inside the body.
 - A malformed static policy prevents server startup. Validate in staging first.
 
 ### Step 2 — namespace-level Plugin Defaults → namespace Policy

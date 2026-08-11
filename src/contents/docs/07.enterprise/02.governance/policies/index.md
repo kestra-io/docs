@@ -465,7 +465,7 @@ Static policies are declared in server configuration under `kestra.policies`. Th
 ```yaml
 kestra:
   policies:
-    - id: instance-defaults
+    instance-defaults:
       description: "Global task runner and cost controls."
       rules:
         - type: io.kestra.plugin.ee.rules.Add
@@ -484,8 +484,7 @@ kestra:
           errorMessage: "concurrency.limit cannot exceed 20."
 ```
 
-- `id` is required (lowercase alphanumeric and hyphens, RFC 1123 label format).
-- Do not set `scope`, `tenantId`, or `namespace` — static policies are always installation-wide.
+- `kestra.policies` is a map. The key (`instance-defaults` above) is the policy identity — do not add an `id` field inside the body.
 - A malformed static policy prevents server startup (fail-closed). Validate in a staging environment before deploying.
 
 Static policies are the replacement for the removed `kestra.plugins.defaults` server configuration key. See the [pluginDefaults Removed migration guide](../../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md) for the full conversion.
