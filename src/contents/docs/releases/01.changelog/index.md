@@ -89,3 +89,4 @@ Each breaking change has a dedicated migration guide. See the [2.0 migration gui
 | Helm gRPC worker-controller changes | [Guide](../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md) |
 | Management endpoint hardening | [Guide](../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md) |
 | Database migrations (EE) | [Guide](../../11.migration-guide/v2.0.0/database-migrations/index.md) |
+| `execution-data.internal-storage` config removed (EE) | [Guide](../../11.migration-guide/v2.0.0/execution-data-internal-storage/index.md) |

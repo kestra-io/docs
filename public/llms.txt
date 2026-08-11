@@ -154,6 +154,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 
 - [Plugin developer guide](https://kestra.io/docs/plugin-developer-guide.md): Build, test, document, and publish custom Kestra plugins in Java
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
+- [Promote (EE)](https://kestra.io/docs/version-control-cicd/promote.md): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
 - [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
 - [No Code editor](https://kestra.io/docs/ui/flows.md): Build and configure flows visually without writing YAML — form-based editing that generates schema-validated YAML in real time
 
@@ -525,6 +526,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Trigger Conditions Redesign](https://kestra.io/docs/migration-guide/v2.0.0/trigger-conditions-redesign.md)
 - [Helm Chart gRPC Worker-Controller Changes in Kestra 2.0.0](https://kestra.io/docs/migration-guide/v2.0.0/helm-grpc-worker-controller.md)
 - [Management Endpoint Hardening in Kestra 2.0.0](https://kestra.io/docs/migration-guide/v2.0.0/management-endpoint-hardening.md)
+- [Execution Data in Internal Storage Removed](https://kestra.io/docs/migration-guide/v2.0.0/execution-data-internal-storage.md)
 - [Open-Source vs. Enterprise Edition of Kestra](https://kestra.io/docs/oss-vs-paid.md)
 - [Performance in Kestra: Benchmarks and Tuning](https://kestra.io/docs/performance.md)
 - [Benchmarks: Orchestration Throughput & Latency](https://kestra.io/docs/performance/benchmark.md)

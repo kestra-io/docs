@@ -108,7 +108,7 @@ Use **Save as draft** to stage changes without affecting running executions. Dra
 
 Flows are stored in a serialized format directly in the Kestra backend database.
 
-The easiest way to add new flows is from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to deploy flows automatically after a pull request is merged.
+The easiest way to add new flows is from the Kestra UI. You can also use [`kestractl flows deploy`](../../kestra-cli/kestractl/index.md) to push flows from the command line, or use the Git Sync pattern or CI/CD integration to deploy flows automatically after a pull request is merged. On Kestra Enterprise, [Promote](../../version-control-cicd/06.promote/index.md) lets you move a flow between environments (dev, staging, production) directly from the UI without a pipeline.
 
 To see how flows are represented in a file structure, use the `_flows` directory in the [Namespace Files](../../06.concepts/02.namespace-files/index.md) editor.
 

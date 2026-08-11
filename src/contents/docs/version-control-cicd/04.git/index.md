@@ -27,6 +27,7 @@ There are multiple ways to combine Kestra with Git:
 - [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) (Enterprise Edition) commits and pushes custom blueprints from Kestra to Git.
 - [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) (Enterprise Edition) syncs custom blueprints from Git into Kestra.
 - A custom [CI/CD](../cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
+- [Promote](../06.promote/index.md) (Enterprise Edition) moves flows between environments directly from the Kestra UI, with a diff review and confirmation gate — no Git setup required.
 
 The image below shows how to choose the right pattern based on your needs:
 

@@ -166,3 +166,4 @@ All breaking changes have migration guides:
 | `local.Delete` recursive default changed | [Guide](./11.migration-guide/v2.0.0/local-delete-recursive-default/index.md) |
 | Helm gRPC worker-controller changes | [Guide](./11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md) |
 | Database migrations (EE) | [Guide](./11.migration-guide/v2.0.0/database-migrations/index.md) |
+| `execution-data.internal-storage` config removed (EE) | [Guide](./11.migration-guide/v2.0.0/execution-data-internal-storage/index.md) |

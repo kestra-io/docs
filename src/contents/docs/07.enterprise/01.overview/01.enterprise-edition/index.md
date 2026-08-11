@@ -19,7 +19,7 @@ Kestra Enterprise is an additive overlay on the [Open Source Edition](https://gi
 
 **Security and access control**: SSO and RBAC let you integrate with your existing identity provider and manage user access to workflows and resources. Enforce plugin allow-lists, apply read-only secrets for least privilege, and use audit logs for full traceability.
 
-**Enterprise features**: Audit Logs, Custom Blueprints, namespace-level secrets, variables and plugin defaults, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, and operational safeguards like the Kill Switch and in-product Announcements.
+**Enterprise features**: Audit Logs, Custom Blueprints, namespace-level secrets, variables and plugin defaults, Assets packaging, declarative Unit Tests for flows, Versioned Plugins for safe upgrades, operational safeguards like the Kill Switch and in-product Announcements, and [Promote](../../../version-control-cicd/06.promote/index.md) for moving flows across environments from the UI with a review gate.
 
 **Secrets management**: Securely stores and manages secrets. Supports read-only secrets for sensitive values and integrates with AWS Secrets Manager, Azure Key Vault, Elasticsearch, Google Secret Manager, HashiCorp Vault, Doppler, 1Password, and more.
 
