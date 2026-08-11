@@ -63,7 +63,7 @@ triggers:
 |-------------|-----------------------|----------------------------------------------------------------------------------------------------------------------|
 | `flowId`    | `String`              | The ID of the upstream flow to match. Omit to match any flow (combine with `when` to narrow the scope).             |
 | `namespace` | `String`              | The namespace of the upstream flow. Exact match only — use `when` for prefix or pattern matching.                    |
-| `states`    | `List<State>`         | States that satisfy this entry. Defaults to `[SUCCESS, WARNING]`.                                                    |
+| `states`    | `List<State>`         | States that satisfy this entry. Defaults to all terminal states and `PAUSED` when omitted.                           |
 | `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
 | `when`      | `String`              | A Pebble expression evaluated against the upstream execution. The entry is satisfied only when this evaluates to true.|
 
@@ -112,7 +112,7 @@ triggers:
         namespace: company.sources
         states: [SUCCESS]
     window:
-      deadline: "09:00:00+01:00"
+      deadline: "09:00:00"
 ```
 
 ### Prefix and pattern matching
@@ -148,7 +148,7 @@ The `window` property controls how long Kestra accumulates upstream executions b
 
 ### Deadline
 
-All upstream flows must complete before a fixed time each day. The deadline string must include a timezone offset:
+All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format — timezone offsets are not supported:
 
 ```yaml
 triggers:
@@ -160,7 +160,7 @@ triggers:
       - flowId: stg_marketing
         namespace: company.team
     window:
-      deadline: "09:00:00+01:00"
+      deadline: "09:00:00"
 ```
 
 ### Daily time range
@@ -218,7 +218,7 @@ Set `fireOnce: true` to ensure the trigger fires at most once per window, even i
 
 ```yaml
 window:
-  deadline: "09:00:00+01:00"
+  deadline: "09:00:00"
   fireOnce: true
 ```
 
@@ -312,7 +312,7 @@ triggers:
         namespace: company.team
         states: [SUCCESS]
     window:
-      deadline: "09:00:00+01:00"
+      deadline: "09:00:00"
 ```
 
 ## Example: alerting on failure

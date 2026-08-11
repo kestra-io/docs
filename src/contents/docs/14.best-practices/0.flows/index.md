@@ -86,4 +86,4 @@ triggers:
         states: [SUCCESS]
 ```
 
-`states` defaults to `[SUCCESS, WARNING]`. Declare it explicitly when you need a different set.
+`states` defaults to all terminal states and `PAUSED` when omitted. Declare it explicitly when you need a narrower set.

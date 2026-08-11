@@ -134,7 +134,7 @@ Add rules can target flow-level properties (like `retry`, `concurrency`, or `lab
   values:
     retry:
       type: constant
-      maxAttempt: 3
+      maxAttempts: 3
       interval: PT1M
     concurrency:
       limit: 5

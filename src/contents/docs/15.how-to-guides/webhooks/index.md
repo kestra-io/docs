@@ -32,7 +32,7 @@ description: |
 tasks:
   - id: out
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | json }}"
+    format: "{{ trigger | toJson }}"
 
 
 triggers:
@@ -85,7 +85,7 @@ description: |
 tasks:
   - id: out
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | json }}"
+    format: "{{ trigger | toJson }}"
 
 triggers:
   - id: webhook_trigger
