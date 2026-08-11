@@ -23,6 +23,13 @@ The Copilot has three modes, selectable from the dropdown at the bottom left of 
 
 Switch modes at any point in a conversation — the Copilot carries the conversation history across mode switches.
 
+| If you want to… | Use |
+|---|---|
+| Build, modify, or refactor a flow | Edit |
+| Diagnose a failed execution | Ask |
+| Ask about Kestra features, plugins, or configuration | Ask |
+| Complete a multi-step task with approval at each step | Plan |
+
 ## Context
 
 The Copilot automatically attaches the resource you are viewing as context when you open the panel. Attached resources appear as dismissible pills above the input. You can remove any pill to narrow the Copilot’s focus, and the transcript records each add and remove so you always know what the agent is looking at.
@@ -45,8 +52,6 @@ Copilot also reads Namespace metadata — Policies, Variables, Secrets, and Key-
 In **Edit** and **Plan** modes, actions that modify resources (creating or updating a flow, restarting an execution) require explicit confirmation before the Copilot executes them. A confirmation prompt appears in the chat with an optional field to steer the next step. Approving executes the action; rejecting resumes the conversation in Edit mode or cancels the current plan in Plan mode.
 
 ## Edit mode
-
-<!-- TODO: add updated screenshot or video of Edit mode in the new sidebar UI -->
 
 Edit mode generates and iteratively refines declarative flow YAML. Describe what you want to build; the Copilot searches available plugins, validates the generated YAML, and proposes the change for your approval. Once accepted, you can keep iterating — adding triggers, adjusting tasks, or refactoring a section — without the Copilot touching unrelated parts of the flow.
 
@@ -120,58 +125,87 @@ Replace `api-key` with your provider credentials. Optionally, you can add the fo
 Enterprise Edition includes an [RBAC permission](../../07.enterprise/03.auth/rbac/index.md) that lets administrators allow or disallow Copilot usage per role at tenant or namespace scope.
 :::
 
-<!-- TODO: replace with updated screenshot of the AI Copilot sidebar -->
-
 :::alert{type="info"}
-The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, and all open-source models supported by Ollama. Navigate down to the Enterprise configurations section for your provider. If you use a different provider, please [reach out to us](https://kestra.io/demo) and we'll add it.
+The open-source version supports only Google Gemini models. Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. See [Enterprise Edition Copilot configurations](#enterprise-edition-copilot-configurations) below. If you use a different provider, [reach out to us](https://kestra.io/demo) and we'll add it.
 :::
 
 ## Build flows with Edit mode
 
-<!-- TODO: replace with updated Arcade demo showing the new sidebar UI -->
+Open the Copilot sidebar, select **Edit** mode, and describe what you want to build. The Copilot searches for the right plugins, generates validated YAML, and proposes the change for your approval. The flow is marked **Valid** before the proposal is shown — you will not be asked to apply broken YAML.
 
-To get started, open the Copilot sidebar and write a prompt. For example:
-
-```txt
-Create a flow with a Python script that fetches weather data for New York City
-```
-
-Once prompted, the Copilot drafts the change and presents a confirmation step in the chat panel. Approve to apply it or reject to steer the next attempt.
-
-<!-- TODO: replace with updated screenshot of confirmation step in chat panel -->
-
-If accepted, the flow is created and can be saved for execution, iterated on manually, or continually iterated upon by the Copilot. For example, you want a trigger added to the flow to run it on a schedule. Reopen the Copilot and prompt it with the desired trigger setup such as:
+**Step 1: Build the initial flow**
 
 ```txt
-Add a trigger to run the flow every day at 9 AM
+Create a flow that downloads a CSV from S3 and loads it into Postgres
 ```
 
-The Copilot again makes a suggestion to add to the flow, but only in the targeted section, in this case a `triggers` block. This is also the case if you want the Copilot only to consider a specific task, input, or output.
+![AI Copilot Edit mode showing the Copilot searching plugins and proposing a validated S3-to-Postgres flow](./edit-step-1-build.png)
 
-<!-- TODO: replace with updated screenshot of trigger iteration in sidebar -->
+The Copilot searches for the S3 and Postgres plugins, authors the flow with secrets referenced via `{{ secret('...') }}`, and presents the proposal. Select **Apply** to write it to the editor, or **Open in editor** to review the diff before accepting.
 
-You can continuously collaborate with Copilot until the flow is exactly as you imagined. If accepted, suggestions are always declaratively written and manageable as code. You can keep track of the revision history using the built-in Revisions tab or with the help of Git Sync.
+**Step 2: Add error handling**
+
+```txt
+Add error handling that sends a Slack alert if any task fails
+```
+
+![AI Copilot Edit mode showing the Copilot adding an errors block with a Slack webhook task without touching the existing tasks](./edit-step-2-errors.png)
+
+The Copilot updates only the `errors` block — the existing `download_from_s3` and `load_to_postgres` tasks are untouched. The Copilot explains what it changed before presenting the proposal.
+
+**Step 3: Parameterize hardcoded values**
+
+```txt
+Parameterize the S3 bucket name and Postgres table as flow inputs
+```
+
+![AI Copilot Edit mode showing the Copilot adding an inputs block and wiring the values through the flow, with Flow and Namespace context pills attached](./edit-step-3-inputs.png)
+
+The Copilot reads the current flow (note the `read-flow` step in the sidebar), adds an `inputs` block with `s3_bucket`, `s3_key`, and `postgres_table`, and rewires the hardcoded values to `{{ inputs.* }}` references throughout the flow. The flow and namespace context pills are attached automatically while working inside the editor.
+
+Each accepted change is saved as a revision. You can track the full edit history from the **Revisions** tab, or use [Git sync](../../version-control-cicd/04.git/index.md) to push revisions to your repository.
 
 ## Ask mode
 
 Use Ask mode to ask natural-language questions about Kestra without generating any code. Ask mode grounds its answers in the Kestra documentation and can analyze execution failures by reading the execution logs directly.
 
-Example questions:
+**Diagnosing a failed execution**
+
+When you open the Copilot from a failed execution view, the execution is automatically attached as context. Ask "Why did this execution fail?" and the Copilot reads the execution metadata and logs, then gives a structured answer: which task failed, the root-cause error, and what to fix.
+
+![AI Copilot Ask mode showing the Copilot diagnosing a failed execution by reading logs and identifying missing secrets, with the execution and namespace context pills attached](./ask-mode-diagnose.png)
+
+In the example above, the Copilot ran `read-execution` and `read-execution-logs`, identified that the `download_from_s3` task failed due to `SecretNotFoundException`, and listed exactly which secrets — `AWS_ACCESS_KEY_ID`, `AWS_SECRET_KEY_ID`, `POSTGRES_USERNAME`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, and `SLACK_WEBHOOK` — need to be configured before running the flow again.
+
+Other example questions:
 - "What is the difference between a Worker Group and a Task Runner?"
 - "How do I configure namespace-level Policies?"
-- "Why did this execution fail?" (with an execution attached as context)
+- "What secrets and variables are available in this namespace?" (with a namespace attached as context)
+
+Ask mode is also a useful starting point before switching to Edit or Plan — use it to understand your options, then switch modes to act on the answer.
+
+## Plan mode
+
+Use Plan mode when a task involves multiple ordered steps that you want to approve individually before the Copilot executes them. Plan mode presents the full plan upfront as a numbered list, then waits for your confirmation before starting. You can approve and execute the plan, or reply to revise it before anything runs.
+
+![AI Copilot Plan mode showing a proposed ELT pipeline plan with four numbered steps and an Approve & execute button](./plan-mode.png)
+
+In the example above, the prompt "Build an ELT pipeline: extract from Salesforce, transform with dbt on DuckDB, load into Snowflake, and send a Slack summary on completion or failure" produced a four-step plan. The `company.team` namespace pill is attached, so the Copilot can reference available plugins and credentials in that namespace.
+
+Rejecting a step cancels the remaining steps. If you want to adjust the plan before it runs, use **Reply to revise** to send feedback and get a revised plan.
+
+Use Plan mode for tasks like:
+- Building a multi-stage pipeline where you want to review the structure before any YAML is generated
+- Migrating flows from one pattern to another (for example, from `ForEach` to the Loop task) across multiple steps
+- Setting up namespaces, variables, and RBAC in sequence for a new team
 
 ## Fix with AI
 
-With Copilot configured, there is also the added benefit of consulting Copilot to resolve execution errors from the Logs and Gantt views. For failed tasks, you can open the task and click the three dots to "**Fix with AI**". This option reopens the flow editor with the Copilot automatically prompted with the error context to help resolve any issues with the task.
-
-<!-- TODO: replace with updated Fix with AI screenshot -->
+From the Logs and Gantt views, click the three-dot menu on any failed task and select **Fix with AI**. The flow editor opens with the Copilot pre-loaded with the error context in Edit mode, ready to propose a fix.
 
 ## Starter prompts
 
-To get started with Copilot, here are some example prompts to test, iterate on, and use as a starting point for collaboratively building flows with AI in Kestra:
-
-:::collapse{title="Example prompts to get started"}
+:::collapse{title="Edit mode prompts"}
 ```markdown
 - Create a flow that runs a dbt build command on DuckDB
 - Create a flow cloning https://github.com/kestra-io/dbt-example Git repository from a main branch, then add a dbt CLI task using DuckDB backend that will run dbt build command for that cloned repository using my_dbt_project profile and dev target. The dbt project is located in the root directory so no dbt project needs to be configured.
@@ -216,11 +250,36 @@ To get started with Copilot, here are some example prompts to test, iterate on, 
 ```
 :::
 
+:::collapse{title="Ask mode prompts"}
+```markdown
+- Why did this execution fail? (attach the execution as context)
+- What secrets and variables are available in this namespace? (attach the namespace as context)
+- What is the difference between a Worker Group and a Task Runner?
+- What plugins are available for working with Kafka?
+- How do I configure RBAC so developers can run flows but not edit them?
+- What is the best way to handle retries for a flaky HTTP API?
+- How do I pass outputs from one task to the next?
+- What does the errors block do and when should I use it?
+- How do I schedule a flow to run only on weekdays?
+- What is the difference between Namespace Variables and the KV Store?
+```
+:::
+
+:::collapse{title="Plan mode prompts"}
+```markdown
+- Build an ELT pipeline: extract from Salesforce, transform with dbt on DuckDB, load into Snowflake, and send a Slack summary on completion or failure
+- Migrate all ForEach tasks in this flow to use the Loop task
+- Add retry logic, error notifications, and a timeout to every task in this flow
+- Set up namespaces for dev, staging, and prod with RBAC roles for the engineering team
+- Create a flow that ingests data from five different S3 paths in parallel, merges the results, and loads them into BigQuery
+```
+:::
+
 ## Enterprise Edition Copilot configurations
 
-Enterprise Edition users can configure any LLM provider, including Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models supported by Ollama. Add one or more of the snippets below as entries inside `kestra.ai.providers` (set `isDefault: true` on the default provider). Each configuration has slight differences, so adjust it for your provider.
+Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models via Ollama. Add one or more provider blocks inside `kestra.ai.providers` and set `isDefault: true` on the one Copilot should use by default.
 
-Only non-thinking modes are supported. If the used LLM is a pure thinking model (one that possesses thinking ability and cannot be disabled), the generated Flow will be incorrect and contain thinking elements.
+Only non-thinking models are supported. If a model cannot have thinking disabled, the generated YAML will be incorrect.
 
 ### Amazon Bedrock
 
@@ -348,8 +407,7 @@ If Ollama is running locally on your host machine while Kestra is running inside
 :::
 
 :::alert{type="info"}
-Some Ollama model names can be confusing. For example, at the time of writing, the model `qwen3:30b-a3b` is pointing to SHA `ad815644918f`, which is the `qwen3:30b-a3b-thinking-2507-q4_K_M` model behind the scenes. This is a thinking model that doesn't support disabling it.
-Please double-check that the chosen model has a non-thinking version or that a toggle is available.
+Some Ollama model tags resolve to thinking models behind the scenes. For example, `qwen3:30b-a3b` points to `qwen3:30b-a3b-thinking-2507-q4_K_M`, which cannot have thinking disabled. Check that the model you select has a non-thinking version or supports a toggle before using it with Copilot.
 :::
 
 ### OpenAI
