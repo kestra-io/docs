@@ -121,6 +121,8 @@ tasks:
       fallback: FAIL
 ```
 
+![Diagram showing how developers read task-to-queue top-down and operators read workers-to-group-to-queue bottom-up, meeting at the Worker Queue layer with a many-to-many relationship](./worker-groups-routing.png)
+
 A Worker Group subscribes to one or more queues. The platform routes a task to the first available group that covers all required tags (or any, with `match: ANY`). `fallback` controls what happens when no matching group is available: `FAIL` (the default in 2.0, changed from the 1.x default of `WAIT`), `WAIT`, `CANCEL`, or `IGNORE` (drop the requirement and route to the default queue).
 
 The fallback default flip is the sharpest gotcha for upgraders. Tasks that previously waited silently for a matching worker will now fail immediately. Set `fallback: WAIT` explicitly on tasks where the old behavior was intentional.
