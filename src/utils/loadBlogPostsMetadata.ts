@@ -1,5 +1,5 @@
 import type { CollectionEntry } from "astro:content"
-import yaml from "js-yaml"
+import * as yaml from "js-yaml"
 import generateId from "~/utils/generateId"
 
 const files = import.meta.glob("../contents/blogs/**/index.md", {
