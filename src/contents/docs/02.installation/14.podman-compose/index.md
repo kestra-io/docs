@@ -49,7 +49,8 @@ helper_binaries_dir = ["/path/to/bin"]
 Use the following command to create a Podman machine, start it up, and launch Kestra on it:
 
 ```bash
-podman machine init --cpus 2 --rootful -v /tmp:/tmp -v $PWD:$PWD
+mkdir -p /tmp/kestra-wd
+podman machine init --cpus 2 --rootful -v /tmp/kestra-wd:/tmp/kestra-wd -v $PWD:$PWD
 podman machine start
 podman compose up -d
 
@@ -63,7 +64,7 @@ podman compose up -d
 ```
 
 :::alert{type="info"}
-Podman executes containers through a VM on your local machine. In order to access local volumes from your container, you need to ensure you mount these to the podman VM, hence the `-v /tmp:/tmp -v $PWD:$PWD` arguments.
+Podman executes containers through a VM on your local machine. In order to access local volumes from your container, you need to ensure you mount these to the podman VM, hence the `-v /tmp/kestra-wd:/tmp/kestra-wd -v $PWD:$PWD` arguments. Podman forbids mounting `/tmp` directly on Mac (it would replace the VM's own `/tmp`); use a subdirectory instead.
 
 Note: Check if you have an existing podman VM on your local machine by navigating to the 'Resources' tab in podman desktop or running the command `podman machine list` in your terminal. If you have an existing VM, ensure the required volumes are mounted as expected. If that does not work, you can [recreate the podman VM](https://stackoverflow.com/questions/69298356/how-to-mount-a-volume-from-a-local-machine-on-podman) with volumes mounted and then run Kestra.
 :::
