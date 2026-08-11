@@ -12,6 +12,7 @@ import cloudflare from "@astrojs/cloudflare"
 import node from "@astrojs/node"
 import vue from "@astrojs/vue"
 import mdx from "@astrojs/mdx"
+import partytown from "@astrojs/partytown"
 import icon from "astro-icon"
 import expressiveCode from "astro-expressive-code"
 
@@ -64,6 +65,31 @@ export default defineConfig({
         expressiveCode(),
         mdx(),
         icon(),
+        // Runs GTM (and the gtag/tag scripts it loads) in a web worker instead
+        // of the main thread — PageSpeed attributed ~640ms of main-thread work
+        // and ~618 KiB of transfer to the GTM stack on plugin pages. The
+        // gtm.js script itself is injected after cookie consent in
+        // cookieconsent.ts with type="text/partytown".
+        partytown({
+            config: {
+                // All GTM interaction on the site goes through
+                // window.dataLayer.push (vue-gtm runs with enabled: false), so
+                // forwarding it is enough for events pushed from the main
+                // thread to reach the worker.
+                forward: ["dataLayer.push"],
+                // The HubSpot loader builds the chat widget and marketing
+                // banners with heavy main-window DOM access; keep it (and
+                // whatever it loads itself) on the main thread rather than
+                // risk breaking it inside the worker sandbox.
+                loadScriptsOnMainThread: [
+                    /hs-scripts\.com/,
+                    /hs-banner\.com/,
+                    /hubspot\.com/,
+                    /hs-analytics\.net/,
+                    /hsadspixel\.net/,
+                ],
+            },
+        }),
     ],
     markdown: {
         processor: unified({

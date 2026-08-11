@@ -81,6 +81,13 @@ export default {
         "ws://localhost:4000",
         "https://kestra.io",
         "https://*.kestra.io",
+        // GTM + the tags it loads run in a Partytown web worker, where every
+        // script download and beacon goes through fetch() and is therefore
+        // governed by connect-src (main-thread tags used script-src/img-src).
+        "https://*.googletagmanager.com",
+        "https://*.google-analytics.com",
+        "https://*.analytics.google.com",
+        "https://*.licdn.com",
         "https://*.google.com",
         "https://*.reddit.com",
         "https://*.redditstatic.com",
