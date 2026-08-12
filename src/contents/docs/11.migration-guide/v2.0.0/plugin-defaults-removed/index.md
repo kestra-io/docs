@@ -144,6 +144,31 @@ rules:
 
 Scope, tenant, and namespace come from the URL — not from the policy body.
 
+If multiple namespaces had identical Plugin Defaults, you can consolidate them into a single tenant-scoped Policy with a `target.namespaces` list instead of maintaining one policy per namespace:
+
+```yaml
+id: aws-credentials
+description: "Central AWS credentials — applies to analytics and data namespaces."
+enforcement: ACTIVE
+target:
+  namespaces:
+    - analytics
+    - data
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.aws
+    values:
+      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+      region: "us-east-1"
+```
+
+Create this via `POST /api/v1/{tenant}/policies` (tenant level). The `target.namespaces` list uses ancestor-chain matching — listing `analytics` covers `analytics` and all its children. See [Policies](../../../07.enterprise/02.governance/policies/index.md#policy-scope-and-inheritance) for the full `target` reference.
+
 ### Step 3 — flow-level pluginDefaults
 
 Flow-level `pluginDefaults` never supported `forced` in 1.x (it was stripped with a warning). Two migration options:

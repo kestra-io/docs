@@ -24,7 +24,7 @@ Policies address this with a model that supports:
 
 ## Policy structure
 
-A Policy has an `id`, an optional `description`, an optional `displayName` shown in the Governance UI, an `enforcement` mode, and a list of `rules`.
+A Policy has an `id`, an optional `description`, an optional `displayName` shown in the Governance UI, an `enforcement` mode, an optional `target` that narrows which tenants or namespaces the policy applies to within its scope, and a list of `rules`.
 
 ```yaml
 id: prod-cost-controls
@@ -437,10 +437,18 @@ Policies apply along a scope chain, from outermost to innermost:
 | `TENANT` | Tenant-level via API or UI | Tenant admin |
 | `NAMESPACE` | Namespace-level via API or UI | Namespace admin with `POLICY` permission |
 
-An optional `target` field lets you narrow a policy's reach within its scope: `INSTANCE` and `STATIC` policies can list specific `tenants`; `TENANT` policies can list specific namespace subtrees under `namespaces`. Absent means the full scope.
+An optional `target` field narrows a policy's reach within its scope. Which sub-field is valid depends on the scope:
+
+| Scope | Valid `target` sub-field | Effect |
+|---|---|---|
+| `STATIC`, `INSTANCE` | `tenants` | Apply only to the listed tenants; absent = every tenant |
+| `TENANT` | `namespaces` | Apply only to the listed namespace subtrees; absent = whole tenant |
+| `NAMESPACE` | — | `target` is not valid and will be rejected |
+
+**`target.namespaces` uses ancestor-chain matching.** Listing `analytics` covers `analytics` itself and every descendant (`analytics.finance`, `analytics.finance.reports`, and so on). Listing `analytics.finance` covers only that subtree. You do not need to list child namespaces explicitly.
 
 ```yaml
-# TENANT policy targeting only the `analytics` and `ml` namespace subtrees
+# TENANT policy scoped to the `analytics` subtree and the `ml` namespace
 id: data-team-policy
 enforcement: ACTIVE
 target:
@@ -452,7 +460,26 @@ rules:
     on: FLOW
     properties:
       - labels.team
+    errorMessage: "Every flow must declare labels.team."
 ```
+
+```yaml
+# INSTANCE policy scoped to specific tenants
+id: prod-only-controls
+enforcement: ACTIVE
+target:
+  tenants:
+    - prod
+    - staging
+rules:
+  - type: io.kestra.plugin.ee.rules.Restrict
+    on: FLOW
+    property: concurrency.limit
+    max: 20
+    errorMessage: "concurrency.limit cannot exceed 20."
+```
+
+A `target` must carry at least one entry — an empty `tenants: []` or `namespaces: []` is invalid.
 
 Policies from parent namespaces automatically apply to all child namespaces. Children can add stricter validate rules but cannot relax rules inherited from a parent.
 
