@@ -29,7 +29,9 @@ All resources (such as [flows](../../../05.workflow-components/01.flow/index.md)
 
 Data stored inside the internal storage is also separated by tenants.
 
-End-users can use the tenant selection dropdown menu from the [UI](../../../09.ui/index.mdx) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
+Users switch between tenants using the tenant dropdown in the bottom-left corner of the UI. The dropdown shows every tenant the user has access to; the active tenant is indicated with a checkmark. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`).
+
+![Tenant switcher dropdown showing Development, Production, North America, Europe, and Asia Pacific tenants](./tenant-switcher.png)
 
 Most [API](../../../api-reference/index.mdx) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
 
@@ -47,11 +49,11 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 
 ## Creating and managing tenants
 
-Tenants in Kestra can be managed in various ways: from the UI, CLI, API, or Terraform.
+Tenants are created and managed through the **Super Admin console** — only users with the Superadmin role can create, edit, or delete tenants. The console is accessible from **Settings → Super Admin → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
 
 ### Creating a tenant from the UI
 
-Go to **Settings → Super Admin → Tenants → All tenants**, click **Create**, fill in the form, and click **Save**.
+Go to **Settings → Super Admin → Tenants**, click **Create**, fill in the form, and click **Save**.
 
 The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 

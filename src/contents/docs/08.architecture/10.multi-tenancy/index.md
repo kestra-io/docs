@@ -16,18 +16,25 @@ This feature requires the [Enterprise Edition](../../07.enterprise/index.mdx).
 
 ## How does multi-tenancy work in Kestra
 
-Multi-tenancy is enabled by default and required. All resources (such as flows, triggers, executions, RBAC, and more) are isolated by the tenant. This means that you can have a flow with the same identifier and the same namespace in multiple tenants at the same time.
+Every resource in Kestra belongs to exactly one tenant. The following are fully isolated per tenant:
 
-Data stored inside the [Internal Storage](../data-components/index.md#internal-storage) is also isolated by tenants.
+| Resource | Description |
+|---|---|
+| [Flows](../../05.workflow-components/01.flow/index.md), [triggers](../../05.workflow-components/07.triggers/index.mdx), [executions](../../05.workflow-components/03.execution/index.md) | Core workflow resources — the same flow ID and namespace can exist independently in multiple tenants |
+| [Namespaces](../../07.enterprise/02.governance/07.namespace-management/index.md) | Namespace hierarchy, variables, KV store, namespace files, and task defaults |
+| [RBAC](../../07.enterprise/03.auth/rbac/index.md) — roles, users, groups, service accounts | Access control is fully scoped to the tenant |
+| [Secrets](../../07.enterprise/02.governance/secrets-manager/index.md) | Secret keys and values are never shared across tenants |
+| [Policies](../../07.enterprise/02.governance/policies/index.md) | Governance rules (injection, validation, enforcement) are scoped to tenant and namespace |
+| [Worker Queues](../../07.enterprise/04.scalability/worker-group/index.md) | Task routing rules are tenant-scoped |
+| [Audit logs](../../07.enterprise/02.governance/06.audit-logs/index.md) | Activity logs are isolated and queryable per tenant |
+| [Internal storage](../data-components/index.md#internal-storage) | Execution outputs and task data are stored in tenant-specific paths |
 
-End-users can use the tenant selection dropdown menu from the [UI](../../09.ui/index.mdx) to see tenants they have access to. Users can switch between tenants from this dropdown. Each UI page also includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
+Instance-level resources — configuration, license, static policies, and superadmin banners — sit above the tenant layer and require Superadmin access.
 
-![Tenants selection dropdown](./tenants-select.png "Tenants selection dropdown")
+Users switch between tenants using the tenant dropdown in the bottom-left corner of the UI. The dropdown lists every tenant the user has access to; the active tenant is indicated with a checkmark. Each UI page also includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`).
 
-Most [API](../../api-reference/index.mdx) endpoints also include the tenant identifier. The exception is instance-level endpoints such as `/configs`, `/license-info`, or `/banners`, which require Superadmin access.
+![Tenant switcher dropdown showing multiple tenants](./tenants-select.png "Tenant switcher dropdown")
 
-For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. See the [Enterprise Edition API Guide](../../api-reference/01.enterprise/index.mdx) for details.
+Tenants are created and managed through the **Super Admin console** (**Settings → Super Admin → Tenants**) — only users with the Superadmin role can create, edit, or delete tenants. Users must be granted access to a tenant before they can switch to it. See [Tenants](../../07.enterprise/02.governance/tenants/index.md) for configuration details.
 
-:::alert{type="warning"}
-Tenants must be created upfront, and a user needs to be granted access to use a specific tenant.
-:::
+Most [API](../../api-reference/index.mdx) endpoints are scoped to a tenant and include the tenant identifier in the path — for example, `/api/v1/{tenant_id}/flows/products` to list flows in the `products` namespace. Instance-level endpoints such as `/api/v1/configs` or `/api/v1/license-info` have no tenant segment. See the [Enterprise Edition API Guide](../../api-reference/01.enterprise/index.mdx) for the full reference.
