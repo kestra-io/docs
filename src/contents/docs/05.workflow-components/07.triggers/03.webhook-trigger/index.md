@@ -8,7 +8,7 @@ icon: /src/contents/docs/icons/flow.svg
 
 Trigger flows automatically in response to web-based events.
 
-A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) start new executions in Kestra. Each webhook URL requires a secret `key` — use a randomly generated string rather than something easy to guess. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL.
+A Webhook trigger generates a unique URL that lets external applications (such as GitHub, Amazon EventBridge, or any system that can send HTTP requests) start new executions in Kestra. Each webhook URL requires a secret `key`. Store the key value in [Kestra Secrets](../../../07.enterprise/02.governance/secrets/index.md) and reference it from the trigger definition — never hardcode a key directly in the flow YAML. Kestra accepts `GET`, `POST`, and `PUT` requests on the webhook URL.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/4-KrkkgSeic?si=Ujl09_9Pv5x64YaF" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -28,16 +28,16 @@ tasks:
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
 ```
 
 The `key` is embedded in the webhook URL: `/api/v1/main/executions/webhook/{namespace}/{flowId}/{key}`. To start the flow:
 
 ```bash
-https://{kestra_domain}/api/v1/main/executions/webhook/{namespace}/{flowId}/4wjtkzwVGBM9yKnjm3yv8r
+https://{kestra_domain}/api/v1/main/executions/webhook/{namespace}/{flowId}/{key}
 ```
 
-Replace `kestra_domain`, `namespace`, and `flowId` with your values. You can also copy the webhook URL from the **Triggers** tab.
+Replace `kestra_domain`, `namespace`, `flowId`, and `key` with your values. You can also copy the webhook URL from the **Triggers** tab.
 
 ## Handling the request body
 
@@ -47,7 +47,7 @@ By default, the webhook trigger reads the request body and makes it available as
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
     fetchType: FETCH   # FETCH (default) | STORE | NONE
 ```
 
@@ -77,7 +77,7 @@ tasks:
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
     fetchType: FETCH
 ```
 
@@ -101,7 +101,7 @@ tasks:
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
     fetchType: STORE
 ```
 
@@ -150,7 +150,7 @@ tasks:
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
 ```
 
 Stored bytes are scoped to the execution and purged with it. If no execution is created — for example, because a `when` condition vetoed the request — stored bytes are cleaned up automatically.
@@ -163,7 +163,7 @@ Use the `when` property to conditionally fire the trigger based on the request b
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
     when: "{{ trigger.body.hello == 'world' }}"
 ```
 
@@ -173,7 +173,7 @@ You can combine multiple criteria in a single expression using `and` / `or`:
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
     when: "{{ trigger.body.event == 'push' and trigger.headers['x-github-event'] == 'push' }}"
 ```
 
@@ -185,7 +185,7 @@ By default, the trigger responds immediately with JSON. When the caller needs to
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: your-secret-key
+    key: "{{ secret('WEBHOOK_KEY') }}"
     wait: true
     returnOutputs: true
     responseContentType: text/plain   # optional, defaults to application/json
@@ -215,7 +215,7 @@ outputs:
 triggers:
   - id: webhook
     type: io.kestra.plugin.core.trigger.Webhook
-    key: 4wjtkzwVGBM9yKnjm3yv8r
+    key: "{{ secret('WEBHOOK_KEY') }}"
     wait: true
     returnOutputs: true
     # optional: responseContentType: "text/plain"
