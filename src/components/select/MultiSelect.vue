@@ -1,18 +1,15 @@
 <template>
     <div
         ref="multiSelectRef"
-        :class="`multi-select   ${showDropdown ? 'focused' : ''}`"
-        @click="toggleDropdown"
+        class="multi-select"
+        :class="{ focused: showDropdown }"
+        @click="showDropdown = !showDropdown"
     >
         <div class="selected-items">
-            <span v-if="selectedValue?.length === 0">Filter by {{ name }}</span>
-            <div
-                v-for="(item, index) in selectedValue"
-                :key="index"
-                class="selected-item"
-            >
+            <span v-if="!selected.length">Filter by {{ name }}</span>
+            <div v-for="item in selected" :key="item" class="selected-item">
                 <p>{{ item }}</p>
-                <Close @click.stop="removeItem(index)" />
+                <Close @click.stop="toggleItem(item)" />
             </div>
             <ChevronDown />
         </div>
@@ -23,7 +20,8 @@
             <li
                 v-for="option in options"
                 :key="option"
-                @click="selectItem(option)"
+                :class="{ selected: selected.includes(option) }"
+                @click="toggleItem(option)"
             >
                 {{ option }}
             </li>
@@ -32,48 +30,39 @@
 </template>
 
 <script setup>
-    import { ref, watch, onMounted, onUnmounted } from "vue"
+    import { ref, onMounted, onUnmounted } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import Close from "vue-material-design-icons/Close.vue"
 
-    const props = defineProps({
+    defineProps({
         name: {
             type: String,
             default: "",
         },
-        selectedValue: {
-            type: Array,
-            default: [],
-        },
         options: {
             type: Array,
-            default: [],
-        },
-        removeItem: {
-            type: Function,
-        },
-        selectItem: {
-            type: Function,
-        },
-        toggleDropdown: {
-            type: Function,
-        },
-        showDropdown: {
-            type: Boolean,
-            default: false,
+            default: () => [],
         },
     })
 
+    const selected = defineModel({ type: Array, default: () => [] })
+
+    const showDropdown = ref(false)
     const multiSelectRef = ref(null)
     const dropdownRef = ref(null)
 
+    const toggleItem = (option) => {
+        selected.value = selected.value.includes(option)
+            ? selected.value.filter((item) => item !== option)
+            : [...selected.value, option]
+    }
+
     const handleClickOutside = (event) => {
         if (
-            dropdownRef.value &&
-            !multiSelectRef.value.contains(event.target) &&
-            !dropdownRef.value.contains(event.target)
+            !multiSelectRef.value?.contains(event.target) &&
+            !dropdownRef.value?.contains(event.target)
         ) {
-            props.toggleDropdown(false)
+            showDropdown.value = false
         }
     }
 
@@ -84,17 +73,6 @@
     onUnmounted(() => {
         document.removeEventListener("mousedown", handleClickOutside)
     })
-
-    watch(
-        () => props.showDropdown,
-        (newVal) => {
-            if (newVal) {
-                document.addEventListener("mousedown", handleClickOutside)
-            } else {
-                document.removeEventListener("mousedown", handleClickOutside)
-            }
-        },
-    )
 </script>
 
 <style lang="scss" scoped>
@@ -125,8 +103,6 @@
             min-width: 0;
         }
 
-        // The chevron is the only icon rendered directly under `.selected-items`;
-        // it sits on the trailing edge of the field, outside the content flow.
         :deep(.material-design-icon) {
             position: absolute;
             top: 50%;
@@ -142,28 +118,27 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            max-width: 100%;
             padding: 2px 8px;
             border-radius: 40px;
             background-color: var(--ks-background-tertiary);
-            cursor: pointer;
             p {
                 margin: 0;
                 font-size: $font-size-xs;
                 line-height: 16px;
                 font-weight: 600;
+                overflow: hidden;
                 white-space: nowrap;
+                text-overflow: ellipsis;
                 color: var(--ks-content-secondary);
             }
             :deep(.material-design-icon) {
                 position: unset;
+                flex-shrink: 0;
                 transform: none;
-                width: 14px;
-                height: 14px;
+                color: var(--ks-content-secondary);
                 .material-design-icon__svg {
                     position: unset;
-                    width: 14px;
-                    height: 14px;
-                    fill: var(--ks-content-secondary);
                 }
             }
         }
@@ -185,7 +160,6 @@
             top: 100%;
             z-index: 2;
             border-radius: 4px;
-            overflow: hidden;
             box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
             li {
                 padding: 6px 8px;
@@ -196,6 +170,10 @@
                 line-height: 20px;
                 &:hover {
                     background-color: var(--ks-background-tertiary);
+                }
+                &.selected {
+                    background-color: var(--ks-background-button-primary);
+                    color: $white;
                 }
             }
         }

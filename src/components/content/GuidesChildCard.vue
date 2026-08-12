@@ -14,23 +14,15 @@
             <div class="guides-filter">
                 <MultiSelect
                     name="topic"
-                    :selectedValue="topic"
+                    v-model="topic"
                     :options="topicOptions"
-                    :removeItem="removeTopicItem"
-                    :selectItem="selectTopicItem"
-                    :toggleDropdown="toggleTopicDropdown"
-                    :showDropdown="showTopicDropdown"
                 />
             </div>
             <div class="guides-filter">
                 <MultiSelect
                     name="stage"
-                    :selectedValue="stage"
+                    v-model="stage"
                     :options="stageOptions"
-                    :removeItem="removeStageItem"
-                    :selectItem="selectStageItem"
-                    :toggleDropdown="toggleStageDropdown"
-                    :showDropdown="showStageDropdown"
                 />
             </div>
             <button
@@ -49,8 +41,6 @@
             {{ filtered.length === 1 ? "Guide" : "Guides" }}
         </p>
 
-        <!-- Suspense so the async SSR markdown renderer can resolve during server
-             rendering instead of leaving skeletons in the HTML. -->
         <Suspense>
             <div class="guides-grid">
                 <a
@@ -87,14 +77,14 @@
                         <span
                             v-if="item.stage"
                             class="guide-tag"
-                            :class="stageClass(item.stage)"
+                            :class="stageClasses[item.stage]"
                         >
                             {{ item.stage }}
                         </span>
                         <span
-                            v-for="(topicName, index) in item.topics"
-                            :key="index"
-                            class="guide-tag guide-tag-topic"
+                            v-for="topicName in item.topics"
+                            :key="topicName"
+                            class="guide-tag"
                         >
                             {{ topicName }}
                         </span>
@@ -107,16 +97,15 @@
             No guides match your filters.
         </p>
 
-        <div v-else class="guides-pagination">
-            <PaginationContainer
-                :totalItems="filtered.length"
-                :currentUrl="currentUrl"
-                :sizeOptions="PAGE_SIZE_OPTIONS"
-                :defaultSize="DEFAULT_PAGE_SIZE"
-                nofollow
-                @update="onPaginationUpdate"
-            />
-        </div>
+        <PaginationContainer
+            v-else
+            :totalItems="filtered.length"
+            :currentUrl="currentUrl"
+            :sizeOptions="PAGE_SIZE_OPTIONS"
+            :defaultSize="DEFAULT_PAGE_SIZE"
+            nofollow
+            @update="onPaginationUpdate"
+        />
     </div>
 </template>
 
@@ -142,8 +131,6 @@
 
     const stage = ref([])
     const topic = ref([])
-    const showStageDropdown = ref(false)
-    const showTopicDropdown = ref(false)
     const search = ref("")
     const stageOptions = ["Getting Started", "Intermediate", "Advanced"]
     const topicOptions = [
@@ -156,56 +143,17 @@
         "Best Practices",
     ]
 
-    // `--ks-*` pairs the design assigns to each stage: success for the entry
-    // level, danger for the hardest. Intermediate sits between them on warning.
     const stageClasses = {
         "Getting Started": "guide-tag-stage-success",
         Intermediate: "guide-tag-stage-warning",
         Advanced: "guide-tag-stage-danger",
     }
 
-    const stageClass = (value) => stageClasses[value] ?? "guide-tag-topic"
-
-    // This route is prerendered (`getStaticPaths`), so `pageUrl` never carries a
-    // query string. Render with it so the server HTML and the first client render
-    // agree, then swap in the live URL once mounted — that is what lets a shared
-    // `?page=`/`?size=` link restore its slice, via PaginationContainer's own
-    // `currentUrl` watcher.
     const currentUrl = ref(props.pageUrl)
 
     onMounted(() => {
         currentUrl.value = window.location.href
     })
-
-    const toggleStageDropdown = (value = !showStageDropdown.value) => {
-        showStageDropdown.value = value
-    }
-
-    const toggleTopicDropdown = (value = !showTopicDropdown.value) => {
-        showTopicDropdown.value = value
-    }
-
-    const selectStageItem = (option) => {
-        if (!stage.value.includes(option)) {
-            stage.value = [...stage.value, option]
-        }
-        showStageDropdown.value = false
-    }
-
-    const selectTopicItem = (option) => {
-        if (!topic.value.includes(option)) {
-            topic.value = [...topic.value, option]
-        }
-        showTopicDropdown.value = false
-    }
-
-    const removeStageItem = (index) => {
-        stage.value = stage.value.filter((item, i) => i !== index)
-    }
-
-    const removeTopicItem = (index) => {
-        topic.value = topic.value.filter((item, i) => i !== index)
-    }
 
     const removeFilter = () => {
         stage.value = []
@@ -246,7 +194,6 @@
         return results
     })
 
-    // Four rows of the two-column grid, as laid out in the design.
     const DEFAULT_PAGE_SIZE = 8
     const PAGE_SIZE_OPTIONS = [8, 16, 32, 64]
 
@@ -263,8 +210,6 @@
             1,
             Math.ceil(filtered.value.length / pageSize.value),
         )
-        // Filtering can shrink the list under the active page — clamp rather
-        // than render an empty grid.
         const page = Math.min(currentPage.value, lastPage)
         const start = (page - 1) * pageSize.value
         return filtered.value.slice(start, start + pageSize.value)
@@ -272,6 +217,10 @@
 </script>
 
 <style lang="scss" scoped>
+    :deep(.material-design-icon__svg) {
+        bottom: 0;
+    }
+
     .guides-filters {
         display: flex;
         flex-wrap: wrap;
@@ -282,7 +231,6 @@
     .guides-search {
         position: relative;
         flex: 0 1 305px;
-        min-width: 0;
     }
 
     .guides-search-input {
@@ -294,7 +242,6 @@
         background-color: var(--ks-background-input);
         color: var(--ks-content-primary);
         font-size: $font-size-sm;
-        line-height: 20px;
         &::placeholder {
             color: var(--ks-content-primary);
         }
@@ -311,14 +258,10 @@
         transform: translateY(-50%);
         color: var(--ks-content-primary);
         pointer-events: none;
-        :deep(.material-design-icon__svg) {
-            bottom: 0;
-        }
     }
 
     .guides-filter {
         flex: 0 0 168px;
-        min-width: 0;
     }
 
     .guides-clear {
@@ -330,9 +273,14 @@
         background: none;
         color: var(--ks-content-secondary);
         font-size: $font-size-sm;
-        :deep(.material-design-icon__svg) {
-            bottom: 0;
-            fill: var(--ks-content-secondary);
+        cursor: pointer;
+    }
+
+    .guides-search-input,
+    .guides-clear {
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
         }
     }
 
@@ -344,8 +292,7 @@
     }
 
     .guides-count {
-        margin: 16px 0;
-        padding: 4px 0;
+        margin: 20px 0;
         font-size: $font-size-base;
         line-height: 24px;
         font-weight: 600;
@@ -381,39 +328,29 @@
 
     .guide-card-head {
         display: flex;
-        flex: 1;
         gap: 16px;
-        min-height: 0;
     }
 
     .guide-card-logo {
-        display: flex;
+        display: grid;
+        place-items: center;
         flex-shrink: 0;
-        align-items: center;
-        justify-content: center;
         width: 60px;
         height: 60px;
         border: 1px solid var(--ks-border-primary);
         border-radius: 8px;
-        // Guide logos are vendor marks drawn for a light backdrop, so the tile
-        // stays white in both themes — matching `grey/white` in the design.
-        background-color: #ffffff;
+        background-color: $white;
     }
 
     .guide-card-logo-img {
         width: 48px;
         height: 48px;
-        max-width: unset;
         object-fit: contain;
     }
 
     .guide-card-logo-icon {
+        font-size: 24px;
         color: var(--ks-icon-color);
-        :deep(.material-design-icon__svg) {
-            bottom: 0;
-            width: 24px;
-            height: 24px;
-        }
     }
 
     .guide-card-body {
@@ -445,14 +382,12 @@
             line-clamp: 2;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            text-overflow: ellipsis;
         }
     }
 
     .guide-card-tags {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
         gap: 8px;
         margin-top: auto;
     }
@@ -460,84 +395,30 @@
     .guide-tag {
         padding: 2px 8px;
         border-radius: 40px;
+        background-color: var(--guide-tag-bg, var(--ks-background-tertiary));
+        color: var(--guide-tag-fg, var(--ks-content-secondary));
         font-size: $font-size-xs;
         line-height: 16px;
         font-weight: 600;
         white-space: nowrap;
     }
 
-    .guide-tag-topic {
-        background-color: var(--ks-background-tertiary);
-        color: var(--ks-content-secondary);
-    }
+    $stage-tags: (
+        "success": "tag-success",
+        "warning": "alert-warning",
+        "danger": "alert-danger",
+    );
 
-    .guide-tag-stage-success {
-        background-color: var(--ks-background-tag-success);
-        color: var(--ks-content-tag-success);
-    }
-
-    .guide-tag-stage-warning {
-        background-color: var(--ks-background-alert-warning);
-        color: var(--ks-content-alert-warning);
-    }
-
-    .guide-tag-stage-danger {
-        background-color: var(--ks-background-alert-danger);
-        color: var(--ks-content-alert-danger);
+    @each $stage, $family in $stage-tags {
+        .guide-tag-stage-#{$stage} {
+            --guide-tag-bg: var(--ks-background-#{$family});
+            --guide-tag-fg: var(--ks-content-#{$family});
+        }
     }
 
     .guides-empty {
         margin: 0;
         color: var(--ks-content-secondary);
         font-size: $font-size-sm;
-    }
-
-    // PaginationContainer ships the wider spacing used on blog/blueprint
-    // listings; the docs layout puts it one 16px step under the grid.
-    .guides-pagination :deep(.pagination-container) {
-        margin-top: 16px !important;
-        margin-bottom: 0 !important;
-    }
-
-    .guides-pagination :deep(.items-per-page .form-select) {
-        width: 112px;
-        height: 32px;
-        padding: 4px 12px 4px 16px;
-        border: 1px solid var(--ks-border-secondary);
-        text-align: left;
-        font-size: $font-size-sm;
-        font-weight: 400;
-    }
-
-    .guides-pagination {
-        :deep(.pagination) {
-            li {
-                margin-right: 0;
-                & + li {
-                    margin-left: 8px;
-                }
-            }
-            .page-link {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 32px;
-                border-radius: 4px;
-            }
-            .page-list-item {
-                padding: 9px 13px;
-                border-color: var(--ks-border-primary);
-                font-size: $font-size-xs;
-                font-weight: 400;
-                line-height: 14px;
-            }
-            .active .page-list-item {
-                border-color: var(--ks-border-active);
-            }
-            .arrow-button {
-                padding: 9px 13px;
-                font-size: 14px;
-            }
-        }
     }
 </style>
