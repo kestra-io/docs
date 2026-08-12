@@ -60,12 +60,11 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                         type="button"
                         title="Copy command"
                         aria-label="Copy command"
-                        onclick={`(async function(){try{await navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always --rm -it -p 8080:8080 --user=root \\\n  --name kestra \\\n  -v kestra_data:/app/storage \\\n  -v kestra_db:/app/data \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -v /tmp:/tmp \\\n  kestra/kestra:latest server local`)});this.classList.add('copied');var l=document.getElementById('hero-copy-live');if(l){l.textContent='Copied to clipboard';setTimeout(function(){l.textContent=''},1500)}setTimeout(function(){this.classList.remove('copied')}.bind(this),1500)}catch(e){console.error(e)}}).call(this)`}
+                        data-get-started-copy
                     >
                         <Icon name="mdi:content-copy" class="icon-copy" />
                         <Icon name="mdi:check" class="icon-check" />
                     </button>
-                    <span id="hero-copy-live" aria-live="polite" class="sr-only">&nbsp;</span>
                 </div>
                 <pre class="command-code"><code set:html={dockerCommand} /></pre>
             </div>
@@ -77,6 +76,32 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
         </div>
     </div>
 </section>
+
+<script>
+    import { copyWithFeedback } from "~/utils/code-copy"
+
+    // The command is only authored once, in the highlighted markup above; the
+    // button copies what the user actually sees rather than a second copy of
+    // the string that could drift out of sync with it.
+    function wireHeroCopy() {
+        for (const button of document.querySelectorAll<HTMLButtonElement>(
+            "[data-get-started-copy]",
+        )) {
+            if (button.dataset.wired) continue
+            button.dataset.wired = "true"
+
+            button.addEventListener("click", () => {
+                const command = button
+                    .closest(".hero-command")
+                    ?.querySelector("code")
+                void copyWithFeedback(button, command?.textContent?.trimEnd() ?? "")
+            })
+        }
+    }
+
+    wireHeroCopy()
+    document.addEventListener("astro:page-load", wireHeroCopy)
+</script>
 
 <style lang="scss">
     .hero-section {
@@ -328,16 +353,6 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                 :global(.icon-check) { display: none; }
                 &.copied :global(.icon-copy) { display: none; }
                 &.copied :global(.icon-check) { display: inline-block; color: #6bd37a; }
-            }
-
-            .sr-only {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                white-space: nowrap;
-                border: 0;
             }
         }
 

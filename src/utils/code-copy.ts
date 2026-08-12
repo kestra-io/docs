@@ -12,7 +12,12 @@ export function injectCopyButtons(html: string): string {
     return html.replaceAll("<pre>", `<pre>${COPY_BUTTON}`)
 }
 
+// How long the copied state stays visible. Matches Copy.vue and
+// SchemaToCode.vue so every copy affordance on the site behaves the same.
+const FEEDBACK_DURATION = 2000
+
 let liveRegion: HTMLElement | null = null
+let liveTimer: ReturnType<typeof setTimeout> | undefined
 
 function getLiveRegion(): HTMLElement {
     if (liveRegion && liveRegion.isConnected) return liveRegion
@@ -26,31 +31,67 @@ function getLiveRegion(): HTMLElement {
     return liveRegion
 }
 
-export function handleCopyClick({ target }: MouseEvent): void {
-    const el = target as HTMLElement
+function announce(message: string): void {
+    const live = getLiveRegion()
+    clearTimeout(liveTimer)
 
-    let button = el.closest<HTMLButtonElement>(".code-copy")
-    if (!button) {
-        const pre = el.closest("pre")
-        button = pre?.querySelector<HTMLButtonElement>(".code-copy") ?? null
-    }
+    // Empty the region first: screen readers skip a mutation that leaves the
+    // text unchanged, so copying twice in a row would only announce once.
+    live.textContent = ""
+    setTimeout(() => {
+        live.textContent = message
+    })
 
-    const code = button?.parentElement?.querySelector("code")
+    liveTimer = setTimeout(() => {
+        live.textContent = ""
+    }, FEEDBACK_DURATION)
+}
 
-    if (!button || !code || !navigator.clipboard) {
+const resetTimers = new WeakMap<HTMLElement, ReturnType<typeof setTimeout>>()
+
+/**
+ * Copy `text` and confirm it on `button`: a `copied` class for the icon swap,
+ * plus a live-region announcement for screen readers. Shared by the injected
+ * markdown copy buttons and the get-started hero so both stay in step.
+ */
+export async function copyWithFeedback(
+    button: HTMLElement,
+    text: string,
+): Promise<void> {
+    if (!navigator.clipboard || !text) {
         return
     }
 
-    void navigator.clipboard.writeText(code.textContent?.trimEnd() ?? "")
+    try {
+        await navigator.clipboard.writeText(text)
+    } catch (error) {
+        // Nothing was copied, so don't claim otherwise.
+        console.error("Failed to copy to clipboard: ", error)
+        return
+    }
+
     button.classList.add("copied")
+    announce("Copied to clipboard")
 
-    const live = getLiveRegion()
-    live.textContent = "Copied to clipboard"
-    setTimeout(() => {
-        live.textContent = ""
-    }, 1500)
+    clearTimeout(resetTimers.get(button))
+    resetTimers.set(
+        button,
+        setTimeout(() => {
+            button.classList.remove("copied")
+            resetTimers.delete(button)
+        }, FEEDBACK_DURATION),
+    )
+}
 
-    setTimeout(() => {
-        button.classList.remove("copied")
-    }, 1500)
+export function handleCopyClick({ target }: MouseEvent): void {
+    const button = (target as HTMLElement).closest<HTMLButtonElement>(
+        ".code-copy",
+    )
+    const code = button?.parentElement?.querySelector("code")
+
+    if (!button || !code) {
+        return
+    }
+
+    void copyWithFeedback(button, code.textContent?.trimEnd() ?? "")
 }
