@@ -45,6 +45,8 @@ An agent's decision-making process often follows a pattern similar to the OODA l
 
 While the autonomy of agents is powerful, it also introduces complexity and non-determinism that can be risky in production environments. A robust orchestration layer is essential to govern, manage, and scale these dynamic workflows.
 
+A graph describes what should happen. Executing it under real failure conditions is [the difference between running a model and operating an AI system](/resources/ai/ai-orchestration).
+
 Orchestration provides critical capabilities that agents alone cannot:
 *   **Governance and Auditability:** An orchestrator tracks every decision made by each agent, every tool called, and all inputs and outputs. This creates an auditable trail, which is crucial for debugging, compliance, and understanding system behavior.
 *   **Reliability and Error Handling:** What happens if an agent hallucinates, a tool's API is down, or a decision loop occurs? An orchestration platform provides mechanisms for retries, fallbacks, timeouts, and alerting, ensuring the overall process is resilient.

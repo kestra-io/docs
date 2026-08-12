@@ -6,6 +6,7 @@ import {
     isEntryAPluginElementPredicate,
     subGroupName,
     buildPluginMappings,
+    buildSubGroupSegmentPredicate,
     filterPluginsWithoutDeprecated,
     type Plugin,
     type PluginElement,
@@ -17,13 +18,16 @@ export const GET: APIRoute = async () => {
     const allPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
 
     const mapping = buildPluginMappings(allPlugins)
-    const subgroups = Object.values(mapping.clsToSubgroup)
+    // Only plugins with more than one subgroup serve the subgroup segment; for the
+    // others the page 301s it away, so emitting it would list redirects in the sitemap.
+    const hasSubGroupSegment = buildSubGroupSegmentPredicate(allPlugins)
+
     const allPages = filterPluginsWithoutDeprecated(allPlugins).flatMap((plugin) => {
         const pluginName = plugin.name
-        const groupUrl = slugify(subGroupName(plugin))
+        const keepSubGroup = hasSubGroupSegment(pluginName)
         const urls = [`/plugins/${pluginName}`]
 
-        if (subgroups.includes(groupUrl)) {
+        if (keepSubGroup && plugin.subGroup) {
             urls.push(`/plugins/${pluginName}/${slugify(subGroupName(plugin))}`)
         }
 
@@ -35,7 +39,7 @@ export const GET: APIRoute = async () => {
                 .map(([_, value]) => value as PluginElement[])
                 .flatMap((value) => {
                     return value.map((t: PluginElement) => {
-                        const subgroup = mapping.clsToSubgroup[t.cls]
+                        const subgroup = keepSubGroup ? mapping.clsToSubgroup[t.cls] : undefined
                         const url = `/plugins/${pluginName}${subgroup ? "/" + subgroup : ""}/${t.cls.toLocaleLowerCase()}`
                         return t.deprecated ? null : url
                     }).filter(url => url !== null)

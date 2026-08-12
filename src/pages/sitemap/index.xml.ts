@@ -27,6 +27,15 @@ export const GET: APIRoute = async () => {
         <loc>https://kestra.io/sitemap/resources.xml</loc>
     </sitemap>
     <sitemap>
+        <loc>https://kestra.io/sitemap/vs.xml</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://kestra.io/sitemap/videos.xml</loc>
+    </sitemap>
+    <sitemap>
+        <loc>https://kestra.io/sitemap/careers.xml</loc>
+    </sitemap>
+    <sitemap>
         <loc>https://kestra.io/sitemap/misc.xml</loc>
     </sitemap>
 </sitemapindex>`
