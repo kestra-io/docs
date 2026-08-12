@@ -25,6 +25,7 @@ interface Props {
     pluginType: string | undefined
     blueprintsSectionHeading: { id: string } | undefined
     relatedBlogs: any[]
+    showLongDescription: boolean
 }
 
 const {
@@ -42,6 +43,7 @@ const {
     pluginType,
     blueprintsSectionHeading,
     relatedBlogs,
+    showLongDescription,
 } = Astro.props
 ---
 
@@ -55,6 +57,7 @@ const {
         {subgroupBlueprintCounts}
         {metadataMap}
         schemas={elementTitle}
+        {showLongDescription}
         client:idle
     />
 </PluginDocsFrame>

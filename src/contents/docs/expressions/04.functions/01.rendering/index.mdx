@@ -1,12 +1,12 @@
 ---
 title: "Rendering and Debugging Functions in Kestra"
 h1: "Rendering and Debugging Functions"
-description: Reference for Kestra's rendering and debugging functions — render(), renderOnce(), printContext(), block(), and parent() — for evaluating nested expressions and inspecting execution context.
+description: Reference for Kestra's rendering and debugging functions — render(), renderOnce(), fetchContext(), block(), and parent() — for evaluating nested expressions and inspecting execution context.
 sidebarTitle: Rendering Functions
 icon: /src/contents/docs/icons/expression.svg
 ---
 
-This group matters when expressions stop behaving the way you expect. `render()` and `printContext()` are often the quickest way to understand whether a value is missing, nested, or still just a string.
+This group matters when expressions stop behaving the way you expect. `render()` and `fetchContext()` are often the quickest way to understand whether a value is missing, nested, or still just a string.
 
 ## `render()`
 
@@ -41,12 +41,12 @@ Equivalent to `render(expression, recursive=false)`. Use `renderOnce()` when you
 
 `renderOnce()` is the safer choice when you need one extra evaluation pass but do not want recursive expansion to keep walking nested Pebble content.
 
-## `printContext()`
+## `fetchContext()`
 
 Outputs the full execution context as a string. Use it in the Debug Expression console to inspect every variable available at that point in the execution:
 
 ```twig
-{{ printContext() }}
+{{ fetchContext() }}
 ```
 
 This is the fastest way to discover the exact key names and structure of `inputs`, `outputs`, `trigger`, and other context variables when an expression is not resolving as expected.

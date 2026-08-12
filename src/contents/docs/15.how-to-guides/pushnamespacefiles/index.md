@@ -43,11 +43,11 @@ Start by creating a single `example.py` file in the `dev` namespace and pushing 
 print("Hello, World")
 ```
 
-Here is a system flow that will push the `example.py` file to a Git repository:
+Here is a flow that will push the `example.py` file to a Git repository:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -74,7 +74,7 @@ Set the `dryRun` property to `false` and push the `example.py` file to Git:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -115,11 +115,11 @@ console.log("Hello, World")
 
 ![git6_all_files.png](./git6_all_files.png)
 
-Adjust the system flow to push all files from the `dev` namespace to the `dev` branch:
+Adjust the flow to push all files from the `dev` namespace to the `dev` branch:
 
 ```yaml
 id: push_to_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: commit_and_push
@@ -138,7 +138,7 @@ Again, we can set the `dryRun` property to `true` to see what files will be adde
 
 ![git7.png](./git7.png)
 
-Now if you change the `dryRun` property to `false` and run the system flow again, you should see all three files being pushed to the `_files` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
+Now if you change the `dryRun` property to `false` and run the flow again, you should see all three files being pushed to the `_files` directory on the `develop` branch with the exact commit messages we have specified in the `commitMessage` property:
 
 ![git8.png](./git8.png)
 

@@ -193,7 +193,7 @@ testimonials:
         name: "Active users"
       - value: "+5000"
         name: "Workflows created"
-    storyLink: "/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/customers/leroy-merlin-france"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work
@@ -231,7 +231,7 @@ commonQuestions:
   - question: Does Kestra work with Python?
     answer: "Yes. Write inline Python in your YAML or reference external .py files with any pip packages. The optional Kestra Python library lets you pass outputs back to the orchestrator, but it's not required. Your existing scripts run without modification."
   - question: Can Kestra handle the same data pipeline use cases as Prefect?
-    answer: "Yes. Kestra orchestrates ETL/ELT pipelines, dbt models, Airbyte syncs, data quality checks, and warehouse operations, with 1200+ plugins covering the same integrations. Orchestration is declarative YAML while transformation logic runs in any language, not Python only."
+    answer: "Yes. Kestra orchestrates ETL/ELT pipelines, dbt models, Airbyte syncs, data quality checks, and warehouse operations, with 1400+ plugins covering the same integrations. Orchestration is declarative YAML while transformation logic runs in any language, not Python only."
   - question: How does Kestra's setup compare to Prefect's?
     answer: "Kestra is simpler for production-ready setups. A single docker compose up stands up the full platform including the embedded database and UI. Prefect's flow.serve() gets a basic flow running quickly, but production scheduling requires a running server, a configured work pool, and at least one worker."
   - question: Can I run Kestra in my own infrastructure like Prefect's hybrid model?

@@ -55,7 +55,7 @@ npm install
 npm run dev
 ```
 
-You can access the docs at [localhost:3001](http://localhost:3001/).
+You can access the docs at [localhost:4321](http://localhost:4321/).
 
 ## Contributing Tips
 

@@ -13,7 +13,7 @@ export async function GET({ params }: { params: { cls: string } }) {
         throw new Error("Failed to fetch icon")
     }
 
-    const svg = await optimizeSvgIcon(await response.text(), "cls")
+    const svg = optimizeSvgIcon(await response.text(), "cls")
 
     // replace all currentColor with the specified modifier if provided
     const modifiedSvg = modifier ? svg.replace(/currentColor/g, modifier) : svg

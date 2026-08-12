@@ -252,7 +252,7 @@ You should see that OpenAI classifies all reviews astoundingly well and provides
 
 ### Google Vertex AI plugin now supports multimodal completion with Gemini
 
-The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.multimodalcompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
+The [GCP plugin](/plugins/plugin-gcp) now supports [multimodal completion](/plugins/plugin-gcp/google-cloud-vertex-ai/io.kestra.plugin.gcp.vertexai.multimodalcompletion), allowing you to process text, image, video and audio content based on a prompt passed to [Google Gemini LLM](https://deepmind.google/technologies/gemini). This feature is particularly useful for generating captions for images or transcripts for audio and video files.
 
 Here is an example of a workflow that uses multimodal completion to describe an image:
 

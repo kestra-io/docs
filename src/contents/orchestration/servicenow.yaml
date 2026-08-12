@@ -267,7 +267,7 @@ comparison:
 
 faq:
   - question: "Does Kestra replace ServiceNow Flow Designer or Orchestration?"
-    answer: "No. Flow Designer is excellent for in-platform automations (form to record, approval to update, integration to MID server). ServiceNow Orchestration is a paid add-on for content packs. Kestra is a general-purpose orchestrator that uses ServiceNow tickets as triggers and uses the ServiceNow Table API to read CMDB context and write back results. Use Flow Designer for SN-native flows. Use Kestra when the work spans outside SN and needs to chain with Terraform, dbt, Argo CD, Kubernetes, or any of 1300+ plugins."
+    answer: "No. Flow Designer is excellent for in-platform automations (form to record, approval to update, integration to MID server). ServiceNow Orchestration is a paid add-on for content packs. Kestra is a general-purpose orchestrator that uses ServiceNow tickets as triggers and uses the ServiceNow Table API to read CMDB context and write back results. Use Flow Designer for SN-native flows. Use Kestra when the work spans outside SN and needs to chain with Terraform, dbt, Argo CD, Kubernetes, or any of 1400+ plugins."
   - question: "How does Kestra authenticate to ServiceNow?"
     answer: "Two options. Basic Auth: username and password (or a dedicated integration user with role itil or admin), passed as Kestra secrets. OAuth password grant: client ID, client secret, plus a username and password. Tokens go through Kestra's secrets backend and are decrypted per task. For high-security deployments, use a dedicated integration user with the minimum table-level ACLs (e.g. read on cmdb_ci_appl, write on change_request, write on incident)."
   - question: "Should I use webhooks or polling for ticket triggers?"
@@ -289,7 +289,7 @@ resources:
     - kind: "docs"
       title: "Ticket-driven orchestration with ServiceNow"
       description: "How to configure Business Rules, wire webhooks to Kestra triggers, and write runbooks that update tickets through the work."
-      href: "/docs/use-cases/business"
+      href: "/docs/use-cases"
     - kind: "resource"
       title: "Chain ServiceNow with Terraform"
       description: "The common pattern: a change request approval fires a Terraform apply, the ticket gets the plan output, the ticket closes with the apply result."

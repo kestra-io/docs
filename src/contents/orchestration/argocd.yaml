@@ -274,7 +274,7 @@ comparison:
         - "Self-hosted Kubernetes"
         - "Self-hosted Kubernetes"
     - feature: "Beyond Argo CD: orchestrate the rest of the stack"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Action marketplace, CI-centric"
         - "Kubernetes-centric workflow engine"

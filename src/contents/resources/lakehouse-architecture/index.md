@@ -1,8 +1,8 @@
 ---
 title: "Lakehouse Architecture: Principles & Benefits"
 description: "Explore lakehouse architecture, combining data lakes & warehouses for AI/analytics. Learn its benefits & how it works for your data strategy."
-metaTitle: "Lakehouse Architecture: Principles & Benefits | Kestra"
-metaDescription: "Understand lakehouse architecture, unifying data lakes and warehouses for advanced analytics and AI. Discover its core principles, key benefits, and how Kestra orchestrates its implementation for your data strategy."
+metaTitle: "Data Lakehouse Architecture: Principles & Benefits | Kestra"
+metaDescription: "Learn how data lakehouse architecture unifies data lakes and warehouses for AI and analytics. Explore key principles, benefits, and Kestra orchestration patterns."
 tag: data
 date: 2026-05-06
 faq:
@@ -18,8 +18,8 @@ faq:
     answer: "Lakehouse architecture is particularly well-suited for ELT (Extract, Load, Transform) pipelines. Data can be loaded directly into the lakehouse in its raw form (Load), and then transformations (Transform) are applied within the lakehouse using its powerful processing engines, leveraging the schema-on-read approach for flexibility."
   - question: "What are some common benefits of adopting a lakehouse architecture?"
     answer: "Benefits include reduced costs due to inexpensive object storage, enhanced scalability for massive datasets, simplified data governance through a unified platform, and improved support for advanced analytics, machine learning, and real-time use cases. It also eliminates data silos and reduces data movement, leading to greater efficiency."
-  - question: "What is another common term for a data lakehouse?"
-    answer: "While 'lakehouse' is the most widely accepted and specific term, some related or overlapping terms might include 'unified data platform,' 'modern data architecture,' or 'data fabric.' However, 'lakehouse' specifically denotes the combination of data lake and data warehouse capabilities into a single system."
+  - question: "What open table formats are used in a data lakehouse?"
+    answer: "The three most widely adopted open table formats for lakehouse architecture are Apache Iceberg, Delta Lake, and Apache Hudi. They bring ACID transactions, schema evolution, and time travel to cloud object storage. Apache Iceberg has emerged as the broadest standard, natively supported by all major cloud providers and query engines as of 2026."
 ---
 
 The explosion of data, coupled with the rising demands of AI and advanced analytics, has pushed traditional data architectures to their limits. Organizations often find themselves managing fragmented data estates, struggling to balance the flexibility of data lakes with the structured governance of data warehouses. This complexity leads to data silos, increased operational overhead, and slower time-to-insight. Enter the data lakehouse: an architectural paradigm designed to bridge this gap. This article will explore the core principles, benefits, and practical implementation of lakehouse architecture, demonstrating how a platform like Kestra can orchestrate its full potential for unified data and AI initiatives.
@@ -87,15 +87,15 @@ Machine learning models thrive on large volumes of diverse, raw data. A lakehous
 
 ### Simplified Data Governance and Management
 
-Managing a separate data lake and data warehouse creates governance headaches. A lakehouse centralizes data, making it easier to implement consistent security policies, manage access controls, and track data lineage. Features like schema enforcement and ACID transactions ensure data quality and reliability across all workloads. Platforms can further enhance this with features like [Kestra's data assets](/blogs/2026-01-26-data-assets-use-cases), which provide a complete view of pipeline lineage.
+Managing a separate data lake and data warehouse creates governance headaches. A lakehouse centralizes data, making it easier to implement consistent security policies, manage access controls, and track [data lineage](/resources/data/data-lineage). Features like schema enforcement and ACID transactions ensure [data quality](/resources/data/data-quality) and reliability across all workloads. Platforms can further enhance this with features like [Kestra's data assets](/blogs/2026-01-26-data-assets-use-cases), which provide a complete view of pipeline lineage.
 
 ## Implementing Data Lakehouse: Orchestrating ETL and ELT
 
-A robust orchestration layer is critical to realizing the full potential of a lakehouse.
+A robust [data orchestration](/resources/data/data-orchestration) layer is critical to realizing the full potential of a lakehouse.
 
 ### Is Data Lakehouse ETL or ELT? Understanding Data Pipelines
 
-Lakehouse architecture is ideally suited for the ELT (Extract, Load, Transform) paradigm. In this model, raw data is extracted from source systems and loaded directly into the lakehouse's storage layer with minimal changes. The transformation logic is then applied in-place using the lakehouse's powerful compute engines. This approach is more flexible than traditional ETL, as it preserves the raw data and allows for multiple transformations to be applied for different use cases.
+Lakehouse architecture is ideally suited for the ELT (Extract, Load, Transform) paradigm. In this model, raw data is extracted from source systems and loaded directly into the lakehouse's storage layer with minimal changes. The transformation logic is then applied in-place using the lakehouse's powerful compute engines. This approach is more flexible than traditional ETL, as it preserves the raw data and allows for multiple transformations to be applied for different use cases. For a deeper comparison of both patterns, see [ETL vs ELT](/resources/data/etl-vs-elt).
 
 ### Orchestrating Lakehouse Pipelines with Kestra
 
@@ -148,7 +148,7 @@ The lakehouse is not just a theoretical concept; it's being implemented by leadi
 ### Industry Examples of Lakehouse Architecture in Action
 
 - **Retail:** Companies in the [retail sector](/use-cases/retail) use lakehouses to analyze customer behavior, optimize supply chains, and personalize marketing campaigns by combining transactional data with unstructured data like social media feeds and customer reviews.
-- **Finance:** Financial institutions leverage lakehouses for fraud detection, risk management, and algorithmic trading, where processing large volumes of real-time data is critical.
+- **Finance:** Financial institutions leverage lakehouses for fraud detection, risk management, and algorithmic trading, where processing large volumes of real-time data is critical. [Change data capture](/resources/data/change-data-capture) patterns are commonly used to stream transactional events into the lakehouse continuously.
 - **Public Sector:** Government agencies use lakehouse principles to manage large datasets for everything from urban planning to public health, often within sovereign infrastructure as seen in [public services use cases](/use-cases/public-services).
 
 Organizations like Apple and Toyota use unified orchestration platforms to manage large-scale ML and data pipelines, while JPMorgan Chase applies these principles to power cybersecurity analytics, demonstrating the versatility of this approach at enterprise scale.

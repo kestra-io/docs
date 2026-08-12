@@ -1,4 +1,5 @@
 import {
+    extractPluginElements,
     filterPluginsWithoutDeprecated,
     isEntryAPluginElementPredicate,
     subGroupName,
@@ -24,16 +25,39 @@ interface BuildPluginPagePropsInput {
     subGroup: string | undefined
     pluginType: string | undefined
     pathname: string
-
     pageNames: Record<string, string>
     allPlugins: Plugin[]
     allPluginMetadata: PluginMetadata[]
-
     blueprintCounts: Record<string, number>
     relatedBlogs: any[]
-
     page: PluginPage | null
     sidebarPluginData: PluginPage | null
+}
+
+/** Drop a lone subgroup that only re-groups a foreign-package subset of the root (e.g. plugin-ee-git's
+ *  io.kestra.plugin.git tasks), so the page shows one flat task list instead of hiding the root's own tasks. */
+function dropRedundantSubgroup(plugins: Plugin[]): Plugin[] {
+    const subgroups = plugins.filter((p) => p.subGroup !== undefined)
+    const root = plugins.find((p) => p.subGroup === undefined)
+
+    if (subgroups.length !== 1 || !root) {
+        return plugins
+    }
+
+    const subgroupClasses = new Set(
+        Object.values(extractPluginElements(subgroups[0])).flat(),
+    )
+
+    const rootHasOwnTasks = (Object.entries(root) as [string, { cls: string; title?: string }[]][])
+        .filter(([key, value]) => isEntryAPluginElementPredicate(key, value))
+        .flatMap(([, value]) => value)
+        .some((element) => element.title && !subgroupClasses.has(element.cls))
+
+    if (!rootHasOwnTasks) {
+        return plugins
+    }
+
+    return plugins.filter((p) => p.subGroup === undefined)
 }
 
 export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
@@ -53,8 +77,12 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
 
     const subgroups = allPlugins.filter((r) => r.name === pluginName)
 
-    const pluginsWithoutDeprecated: Plugin[] = filterPluginsWithoutDeprecated(
-        pluginType ? (sidebarPluginData?.body?.plugins ?? []) : (page?.body?.plugins ?? []),
+    const pluginsWithoutDeprecated: Plugin[] = dropRedundantSubgroup(
+        filterPluginsWithoutDeprecated(
+            pluginType
+                ? (sidebarPluginData?.body?.plugins ?? [])
+                : (page?.body?.plugins ?? []),
+        ),
     )
 
     const subGroupPlugins = pluginsWithoutDeprecated.filter((p) => p.subGroup !== undefined)
@@ -120,11 +148,20 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         )
     })()
 
+    // Title of the plugin/subgroup container this page belongs to, e.g.
+    // "AWS S3", "Google Cloud BigQuery", "PostgreSQL".
+    const containerTitle =
+        (rootPlugin
+            ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
+            : undefined) ?? pluginName
+
+    // Task pages prefix the bare class name with their container title (e.g.
+    // "AWS S3 Trigger") so <title> and <h1> are unique and descriptive. Without
+    // this, every plugin's "Trigger"/"Query"/"Create"/"Delete" task shared the
+    // same short, duplicated title across hundreds of pages.
     const headingTitle = pluginType
-        ? formatElementName(pluginType)
-        : ((rootPlugin
-              ? getPluginTitle(currentSubgroupPlugin ?? rootPlugin, metadataMap)
-              : undefined) ?? pluginName)
+        ? `${containerTitle} ${formatElementName(pluginType)}`
+        : containerTitle
 
     const rootPluginTitle = rootPlugin
         ? getPluginTitle(rootPlugin, metadataMap)
@@ -237,10 +274,11 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
               : blueprintCounts?.[rootPlugin?.group ?? pluginName] > 0
 
         const isRootView = pluginType === undefined
+        const isRootPluginPage = isRootView && subGroup === undefined
 
         return [
             ...baseTocLinks,
-            ...(isRootView && rootPlugin?.longDescription
+            ...(isRootPluginPage && rootPlugin?.longDescription
                 ? [tocEntry("how-to-use-this-plugin", extractFirstHeading(rootPlugin.longDescription) ?? "How to use this plugin")]
                 : []),
             ...(isRootView && currentPluginVideos?.length > 0
@@ -275,8 +313,11 @@ export function buildPluginPageProps(input: BuildPluginPagePropsInput) {
         ),
     )
 
-    const ogImage = effectiveSubGroup
-        ? `/meta/plugins/group-${subgroups.find((r) => slugify(r.title) === effectiveSubGroup)?.subGroup}.svg`
+    const matchedSubGroup = effectiveSubGroup
+        ? subgroups.find((r) => slugify(r.title) === effectiveSubGroup)?.subGroup
+        : undefined
+    const ogImage = matchedSubGroup
+        ? `/meta/plugins/group-${matchedSubGroup}.svg`
         : `/meta/plugins/${pluginType ?? pluginName}.svg`
 
     const prunedRootPlugin = rootPlugin ? prunePluginsForSidebar([rootPlugin])[0] : undefined

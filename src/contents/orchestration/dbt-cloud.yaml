@@ -239,7 +239,7 @@ comparison:
         - "No"
         - "No"
     - feature: "Chain dbt Cloud with Fivetran, Hightouch, Spark"
-      kestra: "✓ 1300+ plugins"
+      kestra: "✓ 1400+ plugins"
       values:
         - "Possible, Python code required"
         - "Possible, fragile"

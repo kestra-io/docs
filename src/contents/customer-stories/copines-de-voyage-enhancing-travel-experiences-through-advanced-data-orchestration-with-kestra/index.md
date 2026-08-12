@@ -13,6 +13,7 @@ metaDescription: This is the story of how Copines De Voyage, an exclusively
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cloud.TriggerRun
   - io.kestra.plugin.jdbc.mysql.Query
@@ -20,10 +21,10 @@ tasks:
   - io.kestra.plugin.aws.cli.AwsCLI
 kpi1: |-
   ##### X2
-  Team Efficiency
+  team efficiency
 kpi2: |-
   ##### Simplified
-  Workflow Management
+  workflow management
 kpi3: |-
   ##### Terabytes
   of data parsed from APIs
@@ -32,8 +33,13 @@ quotePerson: Thomas Tourlourat
 quotePersonTitle: ""
 industry: Travel Industry
 headquarter: Annecy, France
+region: Europe
+companySize: "1–50"
 solution: Exclusive travel agency for women only.
-companyName: ""
+tagline: Exclusive travel agency for women
+companyName: Copines de Voyage
+useCase: Replacing legacy PHP cron jobs with dbt and BigQuery pipelines for a women-only travel agency, doubling team efficiency
+useCaseShort: Data Orchestration
 cta: "What would change if your travel data pipelines ran end-to-end automatically—delivering better experiences for every traveler?"
 ---
 

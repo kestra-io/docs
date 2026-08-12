@@ -192,7 +192,7 @@ quotes:
   - quote: "Kestra allowed us to move from fragmented automation to a unified control plane: secure, scalable, and manageable by all our teams."
     author: "Julien Legrand, PO Data at Crédit Agricole (CAGIP)"
     logoFile: "credit-agricole"
-    storyLink: "/customer-stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    storyLink: "/customers/credit-agricole"
     kpis:
       - name: "Data Teams Unified"
         value: "7"

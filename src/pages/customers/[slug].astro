@@ -1,0 +1,83 @@
+---
+import type { GetStaticPaths } from "astro"
+import { getCollection, type CollectionEntry } from "astro:content"
+import { slugify } from "~/utils/slugify"
+import StoryDetail from "~/components/stories/StoryDetail.vue"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Layout from "~/components/layout.astro"
+import { randomSortFunction } from "~/utils/random"
+
+interface Props {
+    entry: CollectionEntry<"customerStories">
+    related: {
+        results: Story[]
+        total: number
+    }
+}
+
+const toSlug = (entry: CollectionEntry<"customerStories">) =>
+    entry.data.companyName ? slugify(entry.data.companyName) : entry.id
+
+export const getStaticPaths = (async () => {
+    const allEntries = await getCollection("customerStories")
+
+    const toSlug = (entry: CollectionEntry<"customerStories">) =>
+        entry.data.companyName ? slugify(entry.data.companyName) : entry.id
+
+    return allEntries.map((entry) => ({
+        props: {
+            entry,
+            related: {
+                results: allEntries
+                    .filter((e) => e.id !== entry.id)
+                    .map((e) => ({
+                        id: e.id,
+                        slug: toSlug(e),
+                        ...e.data,
+                        heroImage: e.data.heroImage.src,
+                        featuredImage: e.data.featuredImage.src,
+                        logo: e.data.logo?.src,
+                        logoDark: e.data.logoDark?.src,
+                        logoIcon: e.data.logoIcon?.src,
+                        content: e.body ?? "",
+                    }))
+                    .sort(randomSortFunction)
+                    .slice(0, 3),
+                total: allEntries.length,
+            },
+        },
+        params: { slug: toSlug(entry) },
+    }))
+}) satisfies GetStaticPaths
+
+const { entry, related } = Astro.props
+
+const story = {
+    id: entry.id,
+    slug: toSlug(entry),
+    ...entry.data,
+    heroImage: entry.data.heroImage.src,
+    featuredImage: entry.data.featuredImage.src,
+    logo: entry.data.logo?.src,
+    logoDark: entry.data.logoDark?.src,
+    logoIcon: entry.data.logoIcon?.src,
+    content: entry.body ?? "",
+}
+---
+
+<Layout title={story.metaTitle} description={story.metaDescription}>
+    <div class="main">
+        <StoryDetail client:load slug={story.id} {story} content={story.content} {related}>
+            <SeeHow slot="change">
+                <Fragment slot="title"> Experience Kestra Today </Fragment>
+                {entry.data.cta ?? "What would change if your workflows ran on a unified orchestration platform—built for scale, reliability, and end-to-end automation?"}
+            </SeeHow>
+        </StoryDetail>
+    </div>
+</Layout>
+
+<style lang="scss">
+    .main {
+        overflow: clip;
+    }
+</style>

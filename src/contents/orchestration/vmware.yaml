@@ -240,7 +240,7 @@ comparison:
         - "Per-workload"
         - "Free (build minutes for cloud)"
     - feature: "Orchestrate beyond VMware"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "VMware-centric, multi-cloud add-ons"
         - "Multi-cloud (proprietary connectors)"

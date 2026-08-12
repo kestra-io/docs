@@ -1,6 +1,7 @@
 import { defineMiddleware } from "astro:middleware"
 import { sequence } from "astro/middleware"
 import YAML from "yaml"
+import { resolveRedirect } from "~/utils/redirects"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
     eager: true,
@@ -170,33 +171,32 @@ const notFoundRedirect = defineMiddleware(async (context, next) => {
         return response
     }
 
-    const storyIdMatch = context.url.pathname.match(/^\/use-cases\/stories\/(\d+)(?:-|$)/)
+    // A versioned plugin URL (/plugins/<name>/vX.Y.Z/...) only 404s when the version was never
+    // released. Let that 404 surface instead of letting the /plugins/plugin-*.* catch-all rewrite
+    // it to the plugin root (a soft-404). Real-but-unavailable versions render latest, not a 404.
+    if (/^\/plugins\/[^/]+\/v\d+\.\d+\.\d+(\/|$)/.test(context.url.pathname)) {
+        return response
+    }
+
+    const storyIdMatch = context.url.pathname.match(/^\/(?:use-cases\/stories|customers)\/(\d+)(?:-|$)/)
     if (storyIdMatch) {
         const slug = legacyCustomerStoryIdToSlug[storyIdMatch[1]]
         if (slug) {
-            return sendRedirect(`/use-cases/stories/${slug}`)
+            return sendRedirect(`/customers/${slug}`)
         }
     }
 
     const originalUrl = new URL(context.url)
     const split = originalUrl.pathname.split("/")
 
-    const allEntries = redirectCollection
+    const rules = redirectCollection
         .filter((item) => item.id === (split.length > 2 ? split[1] : "index"))
         .flatMap((item) => item.data)
-        .map((item) => {
-            const regexp = new RegExp(item.regexp)
-            const match = originalUrl.pathname.match(regexp)
-            if (match) {
-                return originalUrl.pathname.replace(regexp, item.to)
-            }
 
-            return null
-        })
-        .filter((item) => item !== null)
+    const target = resolveRedirect(originalUrl.pathname, rules)
 
-    if (allEntries.length > 0) {
-        return sendRedirect(allEntries[0])
+    if (target !== null) {
+        return sendRedirect(target)
     }
 
     return response

@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content"
+import { slugify } from "~/utils/slugify"
+
+import Layout from "~/components/layout.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import StoriesList from "~/components/stories/StoriesList.vue"
+import StoryGallery from "~/components/stories/StoryGallery.astro"
+
+const title = "Kestra Customer Stories"
+const description =
+    "See how engineering teams across industries use Kestra to automate critical workflows at scale."
+
+const allEntries = (await getCollection("customerStories")).sort(
+    (a, b) => a.data.rank - b.data.rank,
+)
+
+const totalStories = allEntries.length
+
+const toStory = (e: (typeof allEntries)[0]) => ({
+    id: e.id,
+    slug: e.data.companyName ? slugify(e.data.companyName) : e.id,
+    ...e.data,
+    heroImage: e.data.heroImage.src,
+    featuredImage: e.data.featuredImage.src,
+    logo: e.data.logo?.src,
+    logoDark: e.data.logoDark?.src,
+    logoIcon: e.data.logoIcon?.src,
+    content: e.body ?? "",
+})
+
+const stories = allEntries.map(toStory)
+
+// Featured carousel — explicit, CEO-curated order (by entry id / folder name)
+const featuredOrder = [
+    "scaling-secure-infrastructure-at-credit-agricole-with-kestra",      // Crédit Agricole
+    "erp-transformation-smarter-faster-fully-automated",                 // Fila
+    "datamesh-at-scale-increased-its-data-production-by-900percent",     // Leroy Merlin France
+    "orchestrating-cybersecurity-for-100-users-and-billions-of-rows",    // J.P. Morgan
+    "riverside-orchestrates-dbt-cloud-analytics-stack-with-kestra",      // Riverside
+    "modernizing-mission-critical-e-commerce-integrations-with-kestra",  // Víssimo Group
+    "amdocs-delivers-integration-environments-as-a-service-with-kestra", // Amdocs
+    "when-your-api-writes-its-own-docs-with-kestra",                     // Gravitee
+    "gorgias-using-declarative-data-engineering-orchestration-with-kestra", // Gorgias
+    "scaling-big-data-operations",                                       // Acxiom
+]
+const featuredStories = allEntries
+    .filter((e) => featuredOrder.includes(e.id))
+    .sort((a, b) => featuredOrder.indexOf(a.id) - featuredOrder.indexOf(b.id))
+    .map(toStory)
+---
+
+<Layout title={title} description={description}>
+    <StoryGallery featuredStories={featuredStories}>
+        <StoriesList
+            slot="stories"
+            stories={stories}
+            totalStories={totalStories}
+            client:idle
+        />
+    </StoryGallery>
+    <SeeHow cta={{ text: "Get Started", href: "/docs/quickstart" }}>
+        <Fragment slot="title">Getting started with Kestra</Fragment>
+        Start building with Kestra — Automate Everything Everywhere All at Once.
+    </SeeHow>
+</Layout>

@@ -10,7 +10,7 @@ Understand where different data components ([inputs](../../05.workflow-component
 
 Kestra processes and stores a variety of data, including [flow definitions](../../05.workflow-components/01.flow/index.md), workflow inputs, outputs, logs, execution metadata, and more. Understanding how these components are stored helps optimize performance, configure persistence, and integrate with external storage systems.
 
-Kestra data is stored in either the [repository](../01.main-components/index.md#repository), such as PostgreSQL, or in [internal storage](../data-components/index.md#internal-storage). By default, internal storage is local, but you can configure it to use services like [AWS S3](https://aws.amazon.com/s3/) or [MinIO](https://min.io/).
+Kestra data is stored in either the [repository](../01.main-components/index.md#repository), such as PostgreSQL, or in [internal storage](../data-components/index.md#internal-storage). By default, internal storage is local, but you can configure it to use cloud or S3-compatible object storage such as [AWS S3](https://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/storage), or [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 
 :::alert{type="info"}
 See [Kestra architecture](../../08.architecture/03.deployment-architecture/index.md) and [internal storage](../data-components/index.md#internal-storage) for more details.
@@ -44,23 +44,25 @@ The table below outlines key data components, where they are stored, and their p
 
 - **Purpose**: Handles inputs, outputs, temporary execution data, and artifacts such as [namespace files](../../06.concepts/02.namespace-files/index.md).
 - **KV store**: Stores key-value pairs in internal storage, with metadata in the repository. Metadata includes the key, URI, TTL, and timestamps.
-- **Backends**: By default, Kestra uses local storage, but for production you can configure cloud storage such as:
+- **Backends**: By default, Kestra uses local storage, but for production you can configure cloud or S3-compatible object storage:
   - [AWS S3](https://aws.amazon.com/s3/)
   - [Google Cloud Storage](https://cloud.google.com/storage)
   - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
-  - [MinIO](https://min.io/)
-  - Any S3-compatible service
+  - [Cloudflare R2](https://www.cloudflare.com/products/r2/)
+  - [Huawei OBS](https://www.huaweicloud.com/en-us/product/obs.html)
+  - Any S3-compatible service (Ceph, SeaweedFS, Garage, MinIO)
 
 ### Configuring internal storage
 
-Example `docker-compose.yaml` configuration for AWS S3:
+Example configuration for AWS S3:
 
 ```yaml
 kestra:
   storage:
     type: s3
-    bucket: "kestra-internal-storage"
-    region: "us-east-1"
+    s3:
+      bucket: "kestra-internal-storage"
+      region: "us-east-1"
 ```
 
 For full details, see [internal storage configuration](../../configuration/02.runtime-and-storage/index.md#internal-storage).

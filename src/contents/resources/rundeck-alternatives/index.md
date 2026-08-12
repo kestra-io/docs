@@ -61,7 +61,7 @@ StackStorm is an open-source, event-driven automation platform known for its "if
 *   **Best for:** DevOps teams focused on event-driven automation, auto-remediation, and ChatOps, especially those with strong Python expertise.
 
 ## 3. Jenkins
-Jenkins is one of the most established open-source automation servers in the DevOps world. While its primary use case is continuous integration and continuous delivery (CI/CD), its vast plugin ecosystem (over 1,800 plugins) allows it to be adapted for a wide range of automation tasks, including runbook execution. For organizations already heavily invested in Jenkins for their build and deploy pipelines, extending it to handle operational tasks can be a natural next step. However, its UI can feel dated, and managing its configuration ("Jenkinsfiles") can become complex.
+Jenkins is one of the most established open-source automation servers in the DevOps world. While its primary use case is continuous integration and continuous delivery (CI/CD), its vast plugin ecosystem (over 1,400 plugins) allows it to be adapted for a wide range of automation tasks, including runbook execution. For organizations already heavily invested in Jenkins for their build and deploy pipelines, extending it to handle operational tasks can be a natural next step. However, its UI can feel dated, and managing its configuration ("Jenkinsfiles") can become complex.
 
 *   **Best for:** Organizations with a strong DevOps culture and existing Jenkins investment, looking to extend automation beyond CI/CD into general IT tasks.
 

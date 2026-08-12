@@ -34,7 +34,7 @@ When automation becomes part of how a company moves money, operates factories, r
 
 At JPMorgan Chase, Kestra orchestrates critical cybersecurity pipelines across a complex data stack. By giving teams a central, accessible way to coordinate workflows, it reduces dependency on heavily code-driven approaches and standardizes automation across engineering and analyst teams alike — so analysts can define and run workflows themselves, without waiting on engineering for every change.
 
-At BHP, one of the world's largest mining companies, the move away from VMware vRA became an opportunity to modernize infrastructure automation across both IT and OT. With Kestra, the team rebuilt key workflows in a more modular, reusable, and intuitive way, gaining speed and flexibility while cutting dependency on an increasingly expensive legacy stack.
+At a Fortune Global 500 enterprise, the move away from a legacy VMware vRA environment became an opportunity to modernize infrastructure automation across both IT and OT. With Kestra, the team rebuilt key workflows in a more modular, reusable, and intuitive way, gaining speed and flexibility while cutting dependency on an increasingly expensive legacy stack.
 
 Enterprises don't lack automation. **They've accumulated too much of it, in too many places, without a unifying layer above it.**
 

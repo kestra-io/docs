@@ -203,7 +203,7 @@ testimonials:
         name: "Customers on multi-tenant platform"
       - value: "0"
         name: "Pipeline rewrites required"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Engineering Teams Work

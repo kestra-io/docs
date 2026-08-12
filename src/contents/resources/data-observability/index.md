@@ -1,8 +1,8 @@
 ---
 title: "What is Data Observability? & Why It Matters"
 description: "Data observability is crucial for maintaining data health and reliability in modern data stacks. This guide explores its core pillars, benefits, and how to implement it effectively to minimize errors and build trust in your data."
-metaTitle: "What is Data Observability & Why It Matters for Data Health"
-metaDescription: "Understand data observability, its key pillars (freshness, volume, schema, distribution, lineage), and how it improves data health and reliability. Explore its benefits and implementation best practices."
+metaTitle: "What Is Data Observability? Pillars & Benefits | Kestra"
+metaDescription: "Learn what data observability is, its five pillars (freshness, volume, schema, distribution, lineage), and how to build reliable, trustworthy data pipelines."
 tag: data
 date: 2026-05-15
 faq:
@@ -16,8 +16,8 @@ faq:
     answer: "The 5 C's of data refer to ethical and sustainable data analytics principles: Consent, Clarity, Consistency, Control & Transparency, and Consequences & Harm. While important for data governance, they are distinct from the technical aspects of data observability, which focuses on data health, quality, and reliability."
   - question: "What are the 4 golden signals of observability?"
     answer: "The 4 golden signals of *system* observability are latency, traffic, errors, and saturation. These are key indicators for monitoring the performance and reliability of services and applications. In data observability, while performance is relevant, the focus is more on the intrinsic quality and characteristics of the data itself, rather than service-level signals."
-  - question: "Is anyone actually using data observability tools?"
-    answer: "Yes, data observability tools are increasingly being adopted by data teams to manage the complexity and scale of modern data stacks. Many organizations use dedicated platforms like Monte Carlo or Acceldata, or build in-house solutions using orchestration platforms like Kestra to integrate monitoring, alerting, and automated remediation across their data pipelines."
+  - question: "How do you implement data observability in a data pipeline?"
+    answer: "Implementing data observability typically involves four steps: (1) instrument your pipelines to emit metadata — row counts, schema snapshots, arrival timestamps; (2) define rules or use ML-driven baselines for each of the five pillars (freshness, volume, schema, distribution, lineage); (3) configure alerting to notify engineers when thresholds are breached; and (4) connect lineage metadata so root-cause analysis can trace any issue back to its source. Orchestration platforms like Kestra let you embed these checks directly into YAML workflow definitions, making observability a native property of every pipeline run rather than a separate bolt-on tool."
 ---
 
 In today's data-driven landscape, every business relies on data for critical decisions. Yet, the journey from raw data to actionable insight is fraught with potential pitfalls: stale data, schema drift, unexpected volumes, or silent errors. Traditional data quality checks often fall short, reacting to problems rather than preventing them, leaving data teams constantly firefighting.
@@ -26,7 +26,7 @@ This guide delves into data observability, a proactive approach to understanding
 
 ## The Imperative of Data Observability in Modern Data Stacks
 
-As data systems grow in complexity—spanning multiple sources, transformation tools, and consumption layers—the potential for failure increases exponentially. A minor issue upstream can cascade into significant errors downstream, eroding trust and leading to flawed business decisions. Data observability provides the necessary visibility to manage this complexity effectively.
+As data systems grow in complexity—spanning multiple sources, transformation tools, and consumption layers—the potential for failure increases exponentially. A minor issue upstream can cascade into significant errors downstream, eroding trust and leading to flawed business decisions. Data observability provides the necessary visibility to manage this complexity effectively, and is a critical layer on top of any well-designed [data pipeline](/resources/data/data-pipeline).
 
 ### Defining Data Observability: Beyond Traditional Monitoring
 
@@ -145,10 +145,10 @@ The terms data observability, data quality, and data governance are often used i
 
 ### Data Observability vs. Data Quality Tools: A Synergistic Relationship
 
-The relationship between **data observability vs data quality** tools is not one of opposition but of synergy.
+The relationship between **data observability vs [data quality](/resources/data/data-quality)** tools is not one of opposition but of synergy.
 
 -   **Data Quality (DQ) tools** are focused on the *execution* of specific tests against data. They answer questions like: "Is this column unique?" or "Does this field match a specific regex?" They are the assertions and checks you run on your data.
--   **Data Observability (DO)** is a broader, more holistic practice. It's the system that provides the context around those DQ checks. It tells you *when* and *where* to apply quality checks, learns normal data behavior to detect issues you haven't written tests for, and provides the lineage to trace a quality failure back to its root cause.
+-   **Data Observability (DO)** is a broader, more holistic practice. It's the system that provides the context around those DQ checks. It tells you *when* and *where* to apply quality checks, learns normal data behavior to detect issues you haven't written tests for, and provides the [data lineage](/resources/data/data-lineage) to trace a quality failure back to its root cause.
 
 Think of it this way: a data quality tool is like a unit test for your data. Data observability is the CI/CD platform and monitoring dashboard for your entire data ecosystem. It provides the framework to run, monitor, and interpret the results of data quality checks at scale.
 
@@ -167,7 +167,7 @@ A data observability platform cannot exist in a vacuum. It must integrate deeply
 -   **BI platforms:** Tableau, Looker, Power BI.
 -   **Orchestration platforms:** Kestra, Airflow.
 
-The goal is to collect metadata and telemetry from every component in the data lifecycle to build a unified, end-to-end view of data health.
+The goal is to collect metadata and telemetry from every component in the data lifecycle to build a unified, end-to-end view of data health. This integration also extends to the ingestion layer — understanding [what data ingestion](/resources/data/what-is-data-ingestion) processes are running and their output characteristics is foundational to complete observability coverage.
 
 ## Implementing Data Observability with Kestra: A Practical Approach
 
@@ -180,15 +180,18 @@ Kestra's declarative orchestration model, based on simple YAML files, makes pipe
 You can embed observability checks directly into your flows. For example, a simple task can query a table's metadata to check its row count or latest partition date, providing freshness and volume metrics with every run.
 
 ```yaml
-id: check_row_count
-type: io.kestra.plugin.jdbc.duckdb.Query
-sql: |
-  SELECT COUNT(*) FROM read_parquet('{{ inputs.s3_path }}');
+id: validate_ingestion
+namespace: company.data
 tasks:
-  - id: check
+  - id: check_row_count
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      SELECT COUNT(*) AS cnt FROM read_parquet('{{ inputs.s3_path }}');
+  - id: assert_not_empty
     type: io.kestra.plugin.core.execution.Assert
-    expression: "{{ outputs.check_row_count.data[0].count > 0 }}"
-    error: "Data validation failed: No rows loaded."
+    conditions:
+      - "{{ outputs.check_row_count.rows[0].cnt > 0 }}"
+    errorMessage: "Data validation failed: No rows loaded."
 ```
 
 This simple example shows how an orchestration flow can prevent data downtime by halting a pipeline if a source file is empty, a common data quality issue.

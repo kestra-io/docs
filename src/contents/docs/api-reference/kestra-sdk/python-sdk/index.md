@@ -181,6 +181,8 @@ def follow_execution():
         execution_id=execution.id,
         tenant=tenant
     ):
+        if event.state is None:
+            continue  # keepalive frame
         print(event.state.current)
 ```
 
@@ -326,6 +328,184 @@ def restart_trigger():
         tenant=tenant
     )
     print("Trigger restarted")
+```
+
+---
+
+## Dashboards
+
+Create, search, and delete dashboards.
+
+### Create a dashboard
+
+```python
+def create_dashboard():
+    tenant = "main"
+    body = """
+    id: my_dashboard
+    title: My Dashboard
+    """
+    dashboard = kestra_client.dashboards.create_dashboard(tenant=tenant, yaml_body=body)
+    print(f"Dashboard created: {dashboard.get('id')}")
+```
+
+### Search dashboards
+
+```python
+def search_dashboards():
+    tenant = "main"
+    result = kestra_client.dashboards.search_dashboards(tenant=tenant)
+    for d in result.get('results', []):
+        print(d.get('id'))
+```
+
+### Delete a dashboard
+
+```python
+def delete_dashboard():
+    tenant = "main"
+    kestra_client.dashboards.delete_dashboard(id="my_dashboard_id", tenant=tenant)
+    print("Dashboard deleted")
+```
+
+---
+
+## Namespace files
+
+List, read, and delete files stored in a namespace.
+
+### List files
+
+```python
+def list_files():
+    tenant = "main"
+    files = kestra_client.files.list_namespace_directory_files(
+        namespace="my_namespace",
+        tenant=tenant,
+        path="/"
+    )
+    for f in files:
+        print(f.file_name)
+```
+
+### Read file content
+
+```python
+def read_file():
+    tenant = "main"
+    content = kestra_client.files.file_content(
+        namespace="my_namespace",
+        path="/scripts/main.py",
+        tenant=tenant,
+        revision=None
+    )
+    print(f"Downloaded {len(content)} bytes")
+```
+
+### Delete a file
+
+```python
+def delete_file():
+    tenant = "main"
+    kestra_client.files.delete_file_directory(
+        namespace="my_namespace",
+        path="/scripts/main.py",
+        tenant=tenant
+    )
+    print("File deleted")
+```
+
+---
+
+## Test suites
+
+:::alert{type="warning"}
+Test suites require Kestra Enterprise Edition.
+:::
+
+Create, run, and fetch results for unit test suites.
+
+### Create a test suite
+
+```python
+def create_test_suite():
+    tenant = "main"
+    body = """
+    id: my_tests
+    namespace: my_namespace
+    flows:
+      - flowId: my_flow
+    """
+    suite = kestra_client.test_suites.create_test_suite(tenant=tenant, yaml_body=body)
+    print(f"Test suite created: {suite.id}")
+```
+
+### Run a test suite
+
+```python
+def run_test_suite():
+    tenant = "main"
+    result = kestra_client.test_suites.run_test_suite(
+        namespace="my_namespace",
+        id="my_tests",
+        tenant=tenant
+    )
+    print(f"State: {result.state}")
+```
+
+### Get test results
+
+```python
+def get_test_result():
+    tenant = "main"
+    result = kestra_client.test_suites.test_result(id="run-id", tenant=tenant)
+    print(f"State: {result.state}")
+```
+
+---
+
+## Apps
+
+:::alert{type="warning"}
+Apps require Kestra Enterprise Edition.
+:::
+
+Create, enable, disable, and delete apps.
+
+### Create an app
+
+```python
+def create_app():
+    tenant = "main"
+    body = """
+    id: my_app
+    title: My App
+    """
+    app = kestra_client.apps.create_app(tenant=tenant, yaml_body=body)
+    print(f"App created: {app.uid}")
+```
+
+### Enable or disable an app
+
+```python
+def enable_app():
+    tenant = "main"
+    kestra_client.apps.enable_app(uid="app-uid", tenant=tenant)
+    print("App enabled")
+
+def disable_app():
+    tenant = "main"
+    kestra_client.apps.disable_app(uid="app-uid", tenant=tenant)
+    print("App disabled")
+```
+
+### Delete an app
+
+```python
+def delete_app():
+    tenant = "main"
+    kestra_client.apps.delete_app(uid="app-uid", tenant=tenant)
+    print("App deleted")
 ```
 
 ---

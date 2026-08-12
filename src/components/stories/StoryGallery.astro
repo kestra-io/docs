@@ -1,31 +1,211 @@
 ---
-import Squared from "~/components/layout/Squared.vue"
-import Breadcrumb from "~/components/layout/Breadcrumb.vue"
+import FeaturedCarousel from "~/components/stories/FeaturedCarousel.vue"
+
+interface FeaturedStory {
+    id: string
+    slug: string
+    title: string
+    heroImage: string
+    logo?: string
+    logoDark?: string
+    logoIcon?: string
+    companyName: string
+    kpi1: string
+    kpi2: string
+    kpi3: string
+    kpi4?: string
+    quote: string
+    quotePerson: string
+    quotePersonTitle?: string
+    tasks: string[]
+    industry: string
+    useCase?: string
+    description: string
+}
+
+interface Props {
+    featuredStories: FeaturedStory[]
+}
+
+const { featuredStories } = Astro.props
+
+function parseKpi(kpi: string | undefined): { value: string; label: string } | null {
+    if (!kpi) return null
+    const lines = kpi.trim().split("\n").map((l) => l.trim()).filter(Boolean)
+    const value = lines[0]?.replace(/^#{1,6}\s*/, "") ?? ""
+    const label = lines.slice(1).join(" ")
+    return value ? { value, label } : null
+}
+
+const storiesWithKpis = featuredStories.map((story) => ({
+    ...story,
+    kpis: [story.kpi1, story.kpi2, story.kpi3, story.kpi4]
+        .map(parseKpi)
+        .filter(Boolean) as { value: string; label: string }[],
+}))
+
 ---
 
-<Squared>
-    <div class="header">
-        <Breadcrumb items={[{ label: "Home", href: "/" }]} />
-        <h1 data-usal="fade-l">Customers Stories</h1>
-    </div>
-</Squared>
-
-<section class="stories">
+<section class="stories-hero">
     <div class="container">
-        <slot name="stories" />
+        <div class="hero-intro">
+            <h1>Trusted worldwide as the default<br />workflow orchestration platform<span class="accent-dot">.</span></h1>
+            <p class="hero-sub">Browse stories from engineering teams across every industry. Find the use case that matches yours — and see exactly how they built it.</p>
+        </div>
+
+        <FeaturedCarousel stories={storiesWithKpis} client:idle />
     </div>
 </section>
 
-<style lang="scss">
-    .header {
-        width: 100%;
-    }
+<section class="stories-list-section">
+    <slot name="stories" />
+</section>
 
-    .stories {
-        background: var(--ks-background-body);
+<style lang="scss">
+    .stories-hero {
+        background:
+            radial-gradient(
+                ellipse 80% 60% at 15% 100%,
+                rgba(108, 44, 255, 0.28) 0%,
+                transparent 60%
+            ),
+            #060613;
+        color: white;
+        padding-top: 4rem;
+        padding-bottom: 0;
+
+        @include media-breakpoint-down(lg) {
+            padding-top: 2.5rem;
+        }
 
         .container {
             max-width: 1180px;
+            padding-bottom: 3rem;
+        }
+    }
+
+    .hero-intro {
+        margin-bottom: 2.5rem;
+        text-align: center;
+
+        h1 {
+            font-size: clamp(2rem, 3.5vw, 3rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: white;
+            letter-spacing: -0.02em;
+            margin: 0 0 1rem;
+
+            .accent-dot {
+                color: #f62e76;
+            }
+        }
+
+        .hero-sub {
+            font-size: 1.0625rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.65;
+            margin: 0 auto;
+            max-width: 560px;
+        }
+    }
+
+    .stories-list-section {
+        background: var(--ks-background-body);
+    }
+</style>
+
+<style is:global lang="scss">
+    .stories-list-section {
+        .stories-inner {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 2.5rem 1rem 4rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+
+            @include media-breakpoint-down(sm) {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .stories-count {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--ks-content-primary);
+            flex-shrink: 0;
+        }
+
+        /* large: all 4 filters in one row · tablet: 2×2 · mobile: 1 column */
+        .filters {
+            flex: 1;
+            min-width: 0;
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 0.75rem;
+
+            @include media-breakpoint-down(lg) {
+                width: 100%;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .filter-select {
+            appearance: none;
+            background: var(--ks-background-secondary);
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.5rem;
+            padding: 0.5rem 2.25rem 0.5rem 0.875rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--ks-content-primary);
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2387858f' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            width: 100%;
+            transition: border-color 0.15s;
+
+            &:focus {
+                outline: none;
+                border-color: var(--ks-content-link);
+            }
+
+            &:hover {
+                border-color: var(--ks-content-link);
+            }
+        }
+
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem;
+
+            @include media-breakpoint-down(md) {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            @include media-breakpoint-down(sm) {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        .no-results {
+            text-align: center;
+            color: var(--ks-content-tertiary);
+            padding: 3rem 0;
+            font-size: 0.9375rem;
         }
     }
 </style>

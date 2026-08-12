@@ -17,6 +17,10 @@ Most flows mix several categories:
 
 Browse all available plugins at [kestra.io/plugins](/plugins).
 
+:::alert{type="info"}
+The [Kestra MCP server](../../ai-tools/kestra-mcp-resources/index.md) gives AI coding agents like Claude Code and Cursor live access to plugin task schemas, properties, and version history. Add it to your agent for accurate plugin reference while writing flows.
+:::
+
 ## Choosing versions (Enterprise)
 
 Kestra can host multiple versions of the same plugin. You can:
@@ -81,5 +85,5 @@ Installation paths vary by role:
 ## Building or requesting plugins
 
 If you can’t find the integration you need, you can build or request it:
-- Build: follow the [Plugin Developer Guide](../../plugin-developer-guide/index.md) to scaffold, test, and publish.
+- Build: follow the [Plugin Developer Guide](../../plugin-developer-guide/index.mdx) to scaffold, test, and publish.
 - Request: ask in the [Kestra Slack community](https://kestra.io/slack) or open an issue in the [Kestra repository](https://github.com/kestra-io/kestra/issues).

@@ -197,7 +197,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/customers/apple"
 
 platformStrengths:
   title: Kestra Is Built for Teams Who Need More Than AWS
@@ -237,7 +237,7 @@ commonQuestions:
   - question: What happens to my Airflow version on MWAA when Airflow 3 ships?
     answer: "MWAA's supported Airflow versions lag behind the open-source releases. Airflow 3 support on MWAA typically arrives months after the upstream release, and upgrading requires AWS to certify the version first. Kestra upgrades run on your schedule: pull a new image, test in staging, and ship when your team is ready."
   - question: Does Kestra support the same data pipeline use cases as MWAA?
-    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1200+ plugins, it covers the same AWS integrations available through Airflow providers: S3, Glue, Redshift, Athena, and more. The difference is YAML task definitions instead of Python operator classes."
+    answer: "Yes. Kestra orchestrates ETL and ELT pipelines, dbt models, data quality checks, warehouse operations, and file transfers. With 1400+ plugins, it covers the same AWS integrations available through Airflow providers: S3, Glue, Redshift, Athena, and more. The difference is YAML task definitions instead of Python operator classes."
   - question: Can Kestra and MWAA run in parallel during migration?
     answer: "Yes. Teams commonly run both during transition. Kestra can trigger MWAA DAGs via the Airflow REST API, so you migrate incrementally: start new workflows in Kestra, move existing pipelines over on your timeline, and keep MWAA running until you're ready to switch off."
   - question: How does Kestra handle multi-tenancy compared to MWAA?

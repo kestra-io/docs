@@ -13,7 +13,7 @@
             </div>
 
             <div class="items">
-                <CustomDetails v-for="(item, index) in items" :key="index" class="que" :title="item.question">
+                <CustomDetails v-for="(item, index) in items" :key="index" class="que" :title="item.question" :heading-level="3">
                     <div class="ans" v-html="item.answer"></div>
                 </CustomDetails>
             </div>

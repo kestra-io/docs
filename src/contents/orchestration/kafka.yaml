@@ -175,7 +175,7 @@ quotes:
   - quote: "Kestra gives us a modern orchestration platform we can run ourselves without compromising on governance."
     author: "Platform Architect, Dataport"
     logoFile: "dataport"
-    storyLink: "/customer-stories/building-a-government-grade-orchestration-control-plane-with-kestra"
+    storyLink: "/customers/dataport"
     kpis:
       - name: "Control plane"
         value: "1"

@@ -56,7 +56,7 @@ When using the internal storage, data is, by default, stored using [Amazon Ion](
 
 Tasks that can store data inside the internal storage usually have an output attribute named `uri` that can be used to access this file in following tasks.
 
-The following example uses the [DynamoDB Query](/plugins/plugin-aws/dynamodb/io.kestra.plugin.aws.dynamodb.query) task to query a table and the [FTP Upload](/plugins/plugin-fs/ftp-file-transfer-protocol/io.kestra.plugin.fs.ftp.upload) task to send the retrieved rows to an external FTP server.
+The following example uses the [DynamoDB Query](/plugins/plugin-aws/aws-dynamodb/io.kestra.plugin.aws.dynamodb.query) task to query a table and the [FTP Upload](/plugins/plugin-fs/ftp-file-transfer-protocol/io.kestra.plugin.fs.ftp.upload) task to send the retrieved rows to an external FTP server.
 
 ```yaml
 tasks:
@@ -260,8 +260,8 @@ Make sure to also check:
 
 Kestra can process data **row by row** using file transform tasks. The transformation is done with a small script written in Python, JavaScript, or Groovy.
 
-- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
-- The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
+- The [GraalVM Python FileTransform](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.filetransform) task allows transforming rows with Python.
+- The [GraalVM JavaScript FileTransform](/plugins/plugin-graalvm/js-graalvm/io.kestra.plugin.graalvm.js.filetransform) task allows transforming rows with JavaScript.
 - The [Groovy Script](/plugins/plugin-script-groovy/io.kestra.plugin.scripts.groovy.script) task allows running scripts with Groovy.
 
 The following example queries the BigQuery public dataset for Wikipedia pages, convert it row by row with the Nashorn FileTransform, and write it in a CSV file.

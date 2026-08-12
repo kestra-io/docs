@@ -14,6 +14,9 @@ import terraform from "./assets/terraform.svg"
 import databricks from "./assets/databricks.svg"
 import hanalytics from "./assets/hanalytics.svg"
 import motherduck from "./assets/motherduck.svg"
+import bitovi from "./assets/bitovi.svg"
+import jlcp from "./assets/jlcp.svg"
+import landeranalytics from "./assets/landeranalytics.avif"
 
 const PARTNERS = [
     {
@@ -120,6 +123,30 @@ const PARTNERS = [
             "Ashisuto is a leading Japanese bridge partner connecting enterprises with Kestra for strategic adoption and local support.",
         href: "/partners/ashisuto",
     },
+    {
+        name: "Bitovi",
+        logo: bitovi,
+        type: "Consulting",
+        description:
+            "Bitovi is a digital product consultancy helping teams design, build, and scale web apps, DevOps, and data infrastructure.",
+        href: "https://www.bitovi.com/",
+    },
+    {
+        name: "JLCP",
+        logo: jlcp,
+        type: "Consulting",
+        description:
+            "JLCP is a Brazilian systems integration consultancy delivering data engineering and automation solutions for enterprises.",
+        href: "https://jlcp.com.br/",
+    },
+    {
+        name: "Lander Analytics",
+        logo: landeranalytics,
+        type: "Consulting",
+        description:
+            "Lander Analytics is a systems integration and data consultancy specializing in analytics, machine learning, and data engineering.",
+        href: "https://www.landeranalytics.com/",
+    },
 ]
 ---
 
@@ -128,7 +155,7 @@ const PARTNERS = [
         <div class="row g-3">
             {
                 PARTNERS.map((partner) => {
-                    const isExternal = partner.href.startsWith("http");
+                    const isExternal = partner.href.startsWith("http")
                     return (
                         <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                             <div class="card">
@@ -171,7 +198,7 @@ const PARTNERS = [
                                 </a>
                             </div>
                         </div>
-                    );
+                    )
                 })
             }
         </div>

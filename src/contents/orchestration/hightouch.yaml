@@ -189,7 +189,7 @@ quotes:
   - quote: "Kestra has been a keystone to design complex execution flows while enhancing our Infrastructure as Code best practices. It now empowers our ingestion with Airbyte, transformation with dbt, and our Hightouch reverse-ETL jobs seamlessly."
     author: "Antoine Balliet, Senior Data Engineer at Gorgias"
     logoFile: "gorgias"
-    storyLink: "/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra"
+    storyLink: "/customers/gorgias"
     kpis:
       - name: "Workflows in production"
         value: "70+"

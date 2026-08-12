@@ -266,6 +266,27 @@ Relevant runtime-wide settings include:
 
 Those settings are documented in more detail on [Runtime and Storage](../02.runtime-and-storage/index.md), since they affect the whole instance and not just plugin behavior.
 
+### Subflow function configuration
+
+The `subflow()` Pebble function, used to populate `SELECT` and `MULTISELECT` input dropdowns at form render time, has three configurable limits. All three accept ISO 8601 duration strings or integers.
+
+```yaml
+kestra:
+  pebble:
+    subflow-function:
+      default-timeout: PT1M   # timeout when the caller omits the timeout argument
+      max-timeout: PT5M       # hard cap — larger values are rejected at runtime
+      max-depth: 3            # maximum nesting depth of subflow() calls on one render thread
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.pebble.subflow-function.default-timeout` | `PT1M` | Applied when the `timeout` argument is not passed. Keep this short — the call blocks the Execute form render. |
+| `kestra.pebble.subflow-function.max-timeout` | `PT5M` | Hard cap. A `timeout` argument larger than this value is rejected at runtime with an error. |
+| `kestra.pebble.subflow-function.max-depth` | `3` | Guards against runaway recursion. A subflow whose own inputs also call `subflow()` counts against this limit. |
+
+Increase `max-timeout` only if your data-fetching subflows genuinely need longer — long form renders degrade user experience. Increase `max-depth` only if you have intentionally nested multi-level dependent dropdowns.
+
 ## Related docs
 
 - Flow-level plugin defaults: [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md)

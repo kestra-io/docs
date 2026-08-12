@@ -253,7 +253,7 @@ comparison:
         - "Self-hosted"
         - "Self-hosted"
     - feature: "Beyond Kubernetes: orchestrate the rest of the stack"
-      kestra: "✓ 1300+ plugins, cross-stack"
+      kestra: "✓ 1400+ plugins, cross-stack"
       values:
         - "Cluster state only"
         - "Whatever you script"

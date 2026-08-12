@@ -140,7 +140,7 @@ taskDefaults:
 The `action: NONE` property allows you to _manually_ move or delete the file after it has been processed. The `taskDefaults` property is used to avoid duplicating the AWS credential configuration across multiple tasks and triggers from the AWS plugin.
 
 For more details on the `NONE` action, check out:
-- the plugin documentation e.g. [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger), [GCS Trigger](/plugins/plugin-gcp/cloud-storage-gcs/io.kestra.plugin.gcp.gcs.trigger), [Azure Blob Storage Trigger](/plugins/plugin-azure/azure-blob-storage/io.kestra.plugin.azure.storage.blob.trigger), and [SFTP Trigger](/plugins/plugin-fs/sftp-ssh-file-transfer-protocol/io.kestra.plugin.fs.sftp.trigger)
+- the plugin documentation e.g. [S3 Trigger](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger), [GCS Trigger](/plugins/plugin-gcp/google-cloud-storage-gcs/io.kestra.plugin.gcp.gcs.trigger), [Azure Blob Storage Trigger](/plugins/plugin-azure/azure-blob-storage/io.kestra.plugin.azure.storage.blob.trigger), and [SFTP Trigger](/plugins/plugin-fs/sftp-ssh-file-transfer-protocol/io.kestra.plugin.fs.sftp.trigger)
 - the GitHub issues [#1842](https://github.com/kestra-io/kestra/issues/1842) and [#262](https://github.com/kestra-io/plugin-gcp/issues/262).
 
 ### New HTTP Trigger

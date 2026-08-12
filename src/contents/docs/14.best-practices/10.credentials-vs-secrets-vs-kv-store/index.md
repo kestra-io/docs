@@ -88,7 +88,7 @@ Why secrets are the default for sensitive values:
 Best practice:
 
 - Store secrets at the lowest [namespace](../../07.enterprise/02.governance/07.namespace-management/index.md) level that still supports the required reuse.
-- Avoid placing broadly scoped secrets at the root [namespace](../../07.enterprise/02.governance/07.namespace-management/index.md) unless they truly need to be inherited everywhere. If you need inheritance without allowing downstream edits, consider [read-only secrets](../../07.enterprise/02.governance/read-only-secrets/index.md).
+- Avoid placing broadly scoped secrets at the root [namespace](../../07.enterprise/02.governance/07.namespace-management/index.md) unless they truly need to be inherited everywhere. If you need inheritance without allowing downstream edits, consider [read-only secrets](../../07.enterprise/02.governance/secrets-manager/index.md).
 - Avoid logging secrets or transforming them in ways that could bypass masking.
 
 For more details, see [Secrets](../../06.concepts/04.secret/index.md) and [Best Practices for Secrets in Kestra](../9.secrets-management/index.md).

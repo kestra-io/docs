@@ -12,13 +12,14 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.aws.athena.Query
   - io.kestra.plugin.aws.s3.CreateBucket
   - io.kestra.plugin.jdbc.postgresql.Trigger
 kpi1: |-
   ##### Terabytes
-  Of geospatial data managed
+  of geospatial data managed
 kpi2: |-
   ##### 50%
   cost reduction of processing
@@ -29,10 +30,15 @@ quote: Ntico is one of the first fans of Kestra! We use Kestra in our data
   projects and are not surprised by the community's interest. It’s a must-try!
 quotePerson: Stephane Delos
 quotePersonTitle: ""
-industry: Consulting and Integrations
+industry: Consulting
 headquarter: Villeneuve d'Ascq, France
+region: Europe
+companySize: "51–500"
 solution: Geospatial Data
-companyName: ""
+tagline: Geospatial data consulting and system integration
+companyName: Ntico
+useCase: Orchestrating 250+ geospatial datasets from satellite imagery and public APIs for a housing intelligence platform, cutting processing costs 50%
+useCaseShort: Data Orchestration
 cta: "What would change if your geospatial data operations were fully orchestrated—automated end-to-end, without the integration complexity?"
 ---
 

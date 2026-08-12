@@ -34,7 +34,7 @@ Infrastructure automation is the process of codifying and orchestrating infrastr
 
 ## Example: Infrastructure Automation Flow
 
-This workflow builds a Docker image, runs a container, provisions cloud resources with Terraform, and logs the results. You can substitute the `TerraformCLI` task with [OpenTofuCLI](/plugins/plugin-opentofu/cli/io.kestra.plugin.opentofu.cli.opentofucli) for a drop-in open-source alternative, or [TerragruntCLI](/plugins/plugin-terragrunt/cli/io.kestra.plugin.terragrunt.cli.terragruntcli) when orchestrating multi-module configurations.
+This workflow builds a Docker image, runs a container, provisions cloud resources with Terraform, and logs the results. You can substitute the `TerraformCLI` task with [OpenTofuCLI](/plugins/plugin-opentofu/io.kestra.plugin.opentofu.cli.opentofucli) for a drop-in open-source alternative, or [TerragruntCLI](/plugins/plugin-terragrunt/io.kestra.plugin.terragrunt.cli.terragruntcli) when orchestrating multi-module configurations.
 
 ```yaml
 id: infrastructure_automation

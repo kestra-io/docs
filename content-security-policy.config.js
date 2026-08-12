@@ -97,6 +97,11 @@ export default {
         "https://*.s3.amazonaws.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
+        // Google Ads conversion pings + Enhanced Conversions. The wildcard
+        // above only matches *.g.doubleclick.net, so ad.doubleclick.net (the
+        // conversion collect endpoint) was blocked and conversions failed.
+        "https://*.doubleclick.net",
+        "https://www.googleadservices.com",
         "https://*.ipify.org",
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",

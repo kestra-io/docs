@@ -1,9 +1,7 @@
-title: "kestractl: Manage and Deploy Flows Directly from the CLI"
-description: "Managing multiple environments and keeping local development in sync
-  can be a messy process. In this video, Will demonstrates how kestractl makes deploying
-  and managing your Kestra workflows easy and consistent."
-category: "Feature Highlight"
+title: "AI Workflows in Production: Failure Modes and Fixes"
+description: "Rafael Bartalotti rebuilt Víssimo's e-commerce integration stack and ran zero incidents through Black Friday, then his team added LLMs and found that the reliability contract breaks the moment one step is probabilistic. The failure modes are specific: non-deterministic outputs, variable latency, unbounded cost, silent partial execution. In this session, Rafael (Software Architect and Engineering Leader, Víssimo) and Will Russell (Lead Developer Advocate, Kestra) walk through how orchestration makes each one operationally safe, covering the four principles for reliable AI in production, how to build replay and audit by default, and what an orchestration platform needs to provide for AI workloads."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=8XeKFM8ovv4"
-publicationDate: "2026-05-21T00:00:00.000"
-contentType: "Feature Highlight"
+url: "https://www.youtube.com/watch?v=BzHqnQhV-_w"
+publicationDate: "2026-07-16T00:00:00.000"
+contentType: "Webinar"

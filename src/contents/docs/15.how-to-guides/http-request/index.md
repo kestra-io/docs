@@ -8,19 +8,19 @@ topics:
   - Integrations
 ---
 
-Make HTTP Requests to fetch data and generate outputs.
+Make HTTP requests to fetch data and generate outputs.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/sI-BDbb1aPI?si=ygTv9ZVoHPwYMaty" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-You can make HTTP Requests directly inside a flow as well as get outputs from the responses. In this guide, we'll walk you through what HTTP Requests are and how you can use the most common request methods in Kestra.
+You can make HTTP requests directly inside a flow and use the responses as outputs in downstream tasks. This guide covers what HTTP requests are and how to use the most common request methods in Kestra.
 
-## What is a HTTP Request?
+## What is an HTTP request?
 
 Hypertext Transfer Protocol (better known as HTTP) [requests](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_requests) are messages sent between a client and server to request something.
 
-Requests can send or request data, with common methods known as GET, POST, PUT and DELETE requests. We can use these directly in Kestra to interact with 3rd party systems to make our workflows more powerful.
+Requests can send or request data, with common methods known as GET, POST, PUT and DELETE requests. You can use these directly in Kestra to interact with third-party systems.
 
 | Request Method | Description |
 | - | - |
@@ -33,9 +33,9 @@ There are many other request methods too, which you can read more about on the [
 
 When you make a request, you will receive a [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#http_responses) from the server with the answer. This answer can drive Kestra automations. First, here is what makes up a request.
 
-### Status Code
+### Status code
 
-When you make a request, you'll receive a response with a status code. This will tell you if your request was successful or not. The format follows:
+When you make a request, you'll receive a response with a status code that indicates whether the request succeeded. The format follows:
 
 | Status Codes | Description |
 | - | - |
@@ -54,19 +54,19 @@ You can read the full list of status codes on the [MDN docs](https://developer.m
 
 ### Headers
 
-Each request also has a set of Request Headers which can provide additional information for the request, such as what client the user is using, as well as the type of content that sent with our request. You can read more about HTTP Headers on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/). The response will also have headers following the same structure.
+Each request also has a set of request headers that provide additional information, such as the client type and the content type being sent. You can read more about HTTP headers on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/). Responses include headers in the same structure.
 
 ### Body
 
-Lastly, requests can also have a Request Body which contains all the data we want to send as part of our request. For example, if you wanted to add a user to a system, you would include their information in the body like name and email. These are fundamental for POST and PUT requests which are used for creating and updating data on other systems, but other methods like GET don't have them. You can read more about the Request Body on the [MDN docs.](https://developer.mozilla.org/en-US/docs/Web/API/Request/body)
+Requests can also have a request body that contains data to send. For example, if you want to add a user to a system, you would include their name and email in the body. Request bodies are fundamental for POST and PUT requests, but methods like GET don't have them. You can read more about the request body on the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/API/Request/body).
 
-When you receive your [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#body_2), it might have a body, for example a GET Request. This is helpful as you can receive data which you can use in your workflows, such as a JSON.
+When you receive a [response](https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages#body_2), it may also have a body — for example, a GET request might return JSON data that you can pass to downstream tasks in your workflow.
 
-## How can I make HTTP Requests?
+## How can I make HTTP requests?
 
 You can make requests by putting a URL directly into your browser, especially for GET requests, but it can be challenging to specify the body and headers for other methods, such as POST and PUT requests. There's a variety of tools that can make this easier such as [Postman](https://www.postman.com/) and [cURL](https://curl.se/).
 
-In the example below, we can use Postman to make a POST Request to [dummyjson.com](https://dummyjson.com) which will give us some dummy data. We can use the `/products/add` route to add a new product by providing a body like this:
+The example below uses Postman to make a POST request to [dummyjson.com](https://dummyjson.com). Use the `/products/add` route to add a new product by providing a body like this:
 
 ```json
 {
@@ -78,7 +78,7 @@ In Postman, add the URL `https://dummyjson.com/products/add`, set the request ty
 
 ![postman](./postman.png)
 
-We can also do the same with cURL by using the command below:
+You can do the same with cURL:
 
 ```bash
 curl -X POST https://dummyjson.com/products/add \
@@ -87,11 +87,11 @@ curl -X POST https://dummyjson.com/products/add \
 ```
 
 The arguments used are:
-- `-X {method} {url}` which allows us to specify what type of HTTP method we want to make, in this case a POST request, as well as the URL we will make the request to.
-- `-H {header-type}` which allows us to specify the headers we want to use
-- `-d {body}` which allows us to provide the body we want to send
+- `-X {method} {url}` — specifies the HTTP method and URL
+- `-H {header-type}` — sets request headers
+- `-d {body}` — provides the request body
 
-We get the same response that we got in Postman:
+The response is the same as in Postman:
 ```json
 {
     "id": 101,
@@ -99,19 +99,19 @@ We get the same response that we got in Postman:
 }
 ```
 
-While these tools are very useful for testing APIs, it can be challenging to automate requests, as well as integrate them with other platforms.
+These tools work well for one-off API testing but require extra effort to automate or integrate with other systems.
 
-## Making HTTP Requests in Kestra
+## Making HTTP requests in Kestra
 
-This is where Kestra comes into enable us to automate requests with other tasks! Below, we'll cover how you can make a `GET`, `POST`, `PUT`, and `DELETE` request directly in your flow.
+Kestra's HTTP task lets you automate requests alongside other tasks. Below, you'll find examples for `GET`, `POST`, `PUT`, and `DELETE` requests in your flow.
 
-To make a request, you can use the task type `io.kestra.plugin.core.http.Request`. For more information on the the task type, head over to the [dedicated documentation](/plugins/core/http/io.kestra.plugin.core.http.request).
+To make a request, use the task type `io.kestra.plugin.core.http.Request`. For more information on the task type, see the [dedicated documentation](/plugins/core/http/io.kestra.plugin.core.http.request).
 
-### GET Request
+### GET request
 
-Making a `GET` Request in Kestra is super useful if you want to fetch up-to-date data from a server and then perform computation directly on it without needing to manually intervene.
+Use a GET request to fetch data from a server and pass it to downstream tasks.
 
-In this example, our flow is making a `GET` Request to collect a JSON of products and print the output to the logs:
+This flow sends a GET request to collect a list of products and print the output to the logs:
 
 ```yaml
 id: http_get_request_example
@@ -131,7 +131,7 @@ tasks:
 
 ```
 
-We can see the response from the Logs task in the Logs page:
+The Logs page shows the response:
 
 ![http_get_logs](./http_get_logs.png)
 
@@ -139,14 +139,14 @@ To view task outputs without Log tasks, use the Outputs page in the UI:
 
 ![http_get_outputs](./http_get_outputs.png)
 
-Here, we are using the [Debug Expression](../../05.workflow-components/06.outputs/index.md#using-debug-expression) option to allow us to view specific outputs by using an expression, like we would to output a dynamic value in a Log task, but after the flow has executed. This is very useful if you're trying to debug tasks and figure out what outputs were generated.
+The [Debug Expression](../../05.workflow-components/06.outputs/index.md#using-debug-expression) option lets you inspect specific outputs using an expression after the flow executes — useful when debugging tasks to see what was generated.
 
-### POST Request
+### POST request
 
-Using our `POST` Request example from earlier, we can recreate it directly in Kestra. We can use our `GET` request example above as a template and build from that. We'll need to change the following properties:
-- `uri` will change to `https://dummyjson.com/products/add`
-- `method` will change to `POST`
-- `body` will be added where we'll add the data we want to send to the server
+Build on the GET request example above by changing these properties:
+- `uri` → `https://dummyjson.com/products/add`
+- `method` → `POST`
+- `body` → add the data to send to the server
 
 
 ```yaml
@@ -174,19 +174,19 @@ tasks:
 
 ```
 
-We can define the request body as an input so it's easier to remember what it is, change it when we execute and to use in multiple places if we decide to make multiple requests with the same body.
+Defining the request body as an input makes it easy to change at execution time or reuse across multiple requests.
 
 :::alert{type="info"}
 If your body message input is multiple lines, the best practice is to use a pebble expression to convert it to JSON and avoid escape function issues. For more details, check out this [multiline JSON example with pebble](../../expressions/02.syntax/index.mdx#multiline-json-bodies).
 :::
 
-When we execute this as a `POST` request, this is the response we receive using the same Debug Expression option in the Outputs page:
+Executing this as a POST request returns the following response, visible in the Outputs page via the Debug Expression option:
 
 ![http_post_outputs](./http_post_outputs.png)
 
-As we can see, this generates the same output from our earlier example but with the added benefit that we can pass this data to later tasks to perform computation if we wanted to!
+This produces the same output as the earlier example, with the added ability to pass the response to downstream tasks.
 
-### PUT Request
+### PUT request
 
 Similar to the `POST` request, change the `method` property to `PUT`. Since the `PUT` request replaces content, adjust the body with the data to update. From the `GET` request, `id` 1 is an `iPhone 9` — change it to an `iPhone 10`:
 
@@ -214,13 +214,13 @@ tasks:
     message: "{{ outputs.send_data.body }}"
 ```
 
-As we can see, the response body is showing our updated title field.
+The response body confirms the updated title field.
 
 ![http_put_outputs](./http_put_outputs.png)
 
-### DELETE Request
+### DELETE request
 
-We can also remove a product from the list by using a `DELETE` Request. This example is very similar to the `GET` Request as we don't need to provide a body.
+Use a DELETE request to remove a resource. Unlike POST and PUT, you don't need to provide a body — just specify the resource ID as an input.
 
 ```yaml
 id: http_delete_request_example
@@ -248,6 +248,45 @@ Adding an input lets you specify which product to remove by providing the `id` a
 
 ![http_delete_outputs](./http_delete_input.png)
 
-As expected, we get the desired output:
+The response confirms the deletion:
 
 ![http_delete_outputs](./http_delete_outputs.png)
+
+## SSL and self-signed certificates
+
+If the endpoint you are calling uses a self-signed or internally issued certificate, the task fails with an SSL verification error.
+
+### Development and testing
+
+For non-production environments, you can disable certificate verification with `options.ssl.insecureTrustAllCertificates`:
+
+```yaml
+id: http_insecure_ssl_example
+namespace: company.team
+
+tasks:
+  - id: send_data
+    type: io.kestra.plugin.core.http.Request
+    uri: https://internal-service.example.com/api
+    method: GET
+    options:
+      ssl:
+        insecureTrustAllCertificates: true
+```
+
+:::alert{type="warning"}
+`insecureTrustAllCertificates: true` disables all certificate verification. Never use this in production — it exposes connections to man-in-the-middle attacks.
+:::
+
+### Production
+
+For production, import the CA certificate into the JVM trust store on the Kestra worker. Once imported, the worker trusts any endpoint signed by that CA and tasks connect without disabling verification.
+
+- **Kubernetes**: see [Trusting a custom CA for outbound connections on Kubernetes](../../10.administrator-guide/custom-ca-kubernetes/index.md) for keytool steps and Helm configuration.
+- **Standalone or Docker**: set `JAVA_OPTS` in your Kestra environment:
+
+```bash
+JAVA_OPTS="-Djavax.net.ssl.trustStore=/path/to/truststore.p12 \
+           -Djavax.net.ssl.trustStorePassword=changeit \
+           -Djavax.net.ssl.trustStoreType=PKCS12"
+```

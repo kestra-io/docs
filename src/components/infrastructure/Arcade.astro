@@ -1,5 +1,5 @@
 ---
-
+import ArcadeEmbed from "~/components/common/ArcadeEmbed.astro"
 ---
 
 <section class="arc">
@@ -9,13 +9,10 @@
             fully tracked lifecycle.
         </h4>
         <div class="arc-embed" data-usal="zoomin delay-0 duration-400 ease-out">
-            <iframe
-                class="arc-iframe"
-                src="https://demo.arcade.software/4ggZ33yP4fKHcs7yk6lz?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true&autoplay=true"
+            <ArcadeEmbed
+                src="https://demo.arcade.software/4ggZ33yP4fKHcs7yk6lz?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true"
                 title="Infra"
-                loading="lazy"
-                allow="clipboard-write"
-                allowfullscreen></iframe>
+            />
         </div>
     </div>
 </section>

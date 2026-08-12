@@ -206,6 +206,6 @@ Following these [flow best practices](https://kestra.io/docs/best-practices/flow
 
 ### Real-World ETL Scenarios with Kestra
 
-The principles of ETL are applied across industries to solve complex data challenges. For instance, [Apple's ML team orchestrates large-scale ETL workloads](https://kestra.io/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra) with Kestra, leveraging its declarative syntax and fault tolerance to manage pipelines that are critical for their products.
+The principles of ETL are applied across industries to solve complex data challenges. For instance, [Apple's ML team orchestrates large-scale ETL workloads](https://kestra.io/customers/apple) with Kestra, leveraging its declarative syntax and fault tolerance to manage pipelines that are critical for their products.
 
 Whether you're building a pipeline to move NoSQL data to an analytics warehouse or coordinating a multi-tool workflow with Airbyte and dbt, a robust orchestration layer is the key to success.

@@ -19,6 +19,8 @@ Pick and choose Kestra plugins to create lightweight builds and achieve a faster
 
 See also: [Versioned Plugins in Kestra Enterprise](../../07.enterprise/05.instance/versioned-plugins/index.md).
 
+To download plugins for a standalone worker or local development environment, use [`kestractl plugins download`](../../kestra-cli/kestractl/index.md#plugin-management).
+
 ## Plugin basics in Kestra Open Source
 
 Kestra plugins are distributed as individual JAR files and loaded at runtime. Plugins are not embedded by default in `-no-plugins` Docker images. You can:

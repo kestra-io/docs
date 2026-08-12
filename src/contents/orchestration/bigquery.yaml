@@ -175,7 +175,7 @@ quotes:
   - quote: "Kestra is the unifying layer for our data and workflows. You can start small, but then there is no limit to the possibilities and scalability of such an open architecture."
     author: "Julien Henrion, Head of Data Engineering at Leroy Merlin France"
     logoFile: "leroy-merlin"
-    storyLink: "/customer-stories/datamesh-at-scale-increased-its-data-production-by-900percent"
+    storyLink: "/customers/leroy-merlin-france"
     kpis:
       - name: "Increase in data production"
         value: "+900%"

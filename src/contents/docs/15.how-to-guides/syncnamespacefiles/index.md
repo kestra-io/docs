@@ -29,11 +29,11 @@ Before you start using the `SyncNamespaceFiles` task, ensure the following prere
 
 ## Using the `dryRun` property
 
-Here is a system flow that will sync the `git` namespace with files from the repository in the `_files` directory.
+Here is a sync flow that will sync the `git` namespace with files from the repository in the `_files` directory.
 
 ```yaml
 id: sync_files_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_files
@@ -59,7 +59,7 @@ Set the `dryRun` property to `false` and sync the repository with Kestra:
 
 ```yaml
 id: sync_files_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_files
@@ -82,7 +82,7 @@ A common use case for this task is to set up a routine schedule to keep Kestra i
 
 ```yaml
 id: sync_files_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_files
@@ -106,7 +106,7 @@ You can also automate the syncing process by adding a [Webhook trigger](../../05
 
 ```yaml
 id: sync_files_from_git
-namespace: system
+namespace: company.ops
 
 tasks:
   - id: sync_files
@@ -131,7 +131,7 @@ To setup this webhook, go to the Settings for your GitHub repository and head to
 For the Payload URL, your URL will follow the following format:
 
 ```plaintext
-https://{your_hostname}/api/v1/main/executions/webhook/system/sync_files_from_git/abcdefg
+https://{your_hostname}/api/v1/main/executions/webhook/company.ops/sync_files_from_git/abcdefg
 ```
 
 This will require your host name to be publicly accessible. If you want to test this without having to deploy Kestra first, you can use a tool like [ngrok](https://ngrok.com/) to tunnel Kestra so GitHub can see it. As we're putting the secret in the URL, we can leave the Secret field blank.

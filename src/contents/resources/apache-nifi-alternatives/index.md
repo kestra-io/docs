@@ -61,7 +61,7 @@ This declarative model separates the workflow definition from the execution logi
 
 Airbyte is a leading open-source platform for data integration, focusing on the "Extract" and "Load" parts of the ELT process. Its primary strength is its vast library of over 300 pre-built connectors, which enable data replication from a wide array of sources to destinations like data warehouses and lakes.
 
-While NiFi is a general-purpose data flow tool, Airbyte is purpose-built for moving data. It offers a user-friendly UI for configuring connectors and managing syncs, but it can also be controlled via API. This makes it a powerful component within a larger data stack, often orchestrated by a tool like Kestra to handle post-ingestion transformations and business logic. You can learn more about how to [integrate Kestra and Airbyte](https://kestra.io/blogs/kestra-airbyte) to build robust pipelines.
+While NiFi is a general-purpose data flow tool, Airbyte is purpose-built for moving data. It offers a user-friendly UI for configuring connectors and managing syncs, but it can also be controlled via API. This makes it a powerful component within a larger data stack, often orchestrated by a tool like Kestra to handle post-ingestion transformations and business logic. You can learn more about how to integrate Kestra and Airbyte to build robust pipelines.
 
 **Best for:** Airbyte is best for data teams needing extensive, customizable connectors for ELT, prioritizing rapid data ingestion over complex transformation logic.
 

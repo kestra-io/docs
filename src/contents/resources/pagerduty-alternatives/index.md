@@ -2,7 +2,7 @@
 title: "Top PagerDuty Alternatives & Competitors 2026"
 description: "Explore the best PagerDuty alternatives for 2026. Compare top solutions and find the perfect fit for your incident management needs today!"
 metaTitle: "Top PagerDuty Alternatives & Competitors for 2026"
-metaDescription: "Seeking PagerDuty alternatives? Discover the leading incident management and orchestration platforms, including Kestra, for 2026. Compare features, pricing, and find your ideal solution."
+metaDescription: "Compare top PagerDuty alternatives for 2026: Kestra, Grafana Cloud IRM, GoAlert, and more. Evaluate features, pricing, and deployment to find your ideal fit."
 tag: infrastructure
 date: 2026-06-03
 faq:
@@ -11,11 +11,11 @@ faq:
   - question: "Is Kestra a direct replacement for PagerDuty's alerting system?"
     answer: "Kestra is an orchestration platform that can significantly enhance incident response, but it is not a direct, standalone alerting system like PagerDuty. Kestra integrates with monitoring tools (including PagerDuty itself) to automate complex remediation workflows, trigger actions, and coordinate tasks across data, AI, and infrastructure, making it a powerful complement or a driver for automated incident resolution."
   - question: "What are some popular open-source alternatives to PagerDuty?"
-    answer: "Popular open-source PagerDuty alternatives include Zenduty, Grafana OnCall, and GoAlert. These tools offer varying levels of on-call management, alerting, and incident response features, often appealing to teams looking for self-hosted solutions, greater customization, or cost-effective options without proprietary lock-in."
+    answer: "Popular open-source or free-tier PagerDuty alternatives include Grafana OnCall (AGPLv3, though the OSS version entered maintenance mode in March 2025 with Grafana Cloud IRM as the active path) and GoAlert (Apache 2.0, self-hosted). Xurrent IMR (formerly Zenduty) offers a free tier for small teams but its core platform is a commercial SaaS product. These tools offer on-call management and alerting, often appealing to teams looking for self-hosted options or cost-effective entry points."
   - question: "How does Kestra's approach to incident management differ from traditional tools?"
     answer: "Kestra shifts the paradigm by focusing on orchestrating the *response* to incidents, rather than just alerting. It allows teams to define complex, event-driven workflows in YAML that can automatically diagnose issues, execute remediation scripts, update ITSM systems, and coordinate actions across multiple platforms, providing a governed and auditable automation layer for incident resolution."
   - question: "Which PagerDuty alternative is best for small teams or startups?"
-    answer: "For small teams or startups, cost-effectiveness and ease of setup are key. Options like Grafana OnCall (especially if already using Grafana), Zenduty, or even Kestra's open-source edition for automating simple responses, can be excellent choices. These platforms offer essential alerting and on-call features without the enterprise-level overhead."
+    answer: "For small teams or startups, cost-effectiveness and ease of setup are key. Options like Grafana Cloud IRM (especially if already using Grafana), GoAlert for a fully self-hosted solution, or Kestra's open-source edition for automating simple responses, can be excellent choices. These platforms offer essential alerting and on-call features without the enterprise-level overhead."
   - question: "How does Kestra integrate with existing monitoring and alerting tools?"
     answer: "Kestra integrates with existing monitoring and alerting tools (like Datadog, Splunk On-Call, or even PagerDuty) through its extensive plugin ecosystem and webhook triggers. It can listen for alerts from these systems, ingest event data, and then initiate predefined, automated workflows to address the incident, enriching the overall incident response process."
 ---
@@ -46,18 +46,18 @@ With its polyglot nature, Kestra can execute tasks in any language—Python, She
 -   **Best for:** Platform engineers and SREs looking to build comprehensive, automated incident response workflows that span multiple domains, integrate diverse tools, and require GitOps-driven governance.
 -   **Limitation:** Kestra is an automation engine, not a standalone human-centric alerting and scheduling tool. It works best when integrated with an alerting source like PagerDuty, Grafana OnCall, or Datadog.
 
-Learn more about [Kestra's approach to infrastructure automation](/resources/infrastructure/automation) and [why it's built for modern engineering teams](/docs/why-kestra).
+Learn more about [Kestra's approach to infrastructure automation](/resources/infrastructure/automation), how it fits into an [IT automation platform](/resources/infrastructure/it-automation-platform) strategy, and [why it's built for modern engineering teams](/docs/why-kestra).
 
-## 2. Opsgenie: Best for Atlassian-Centered Teams
+## 2. Opsgenie / Jira Service Management Operations: Best for Atlassian-Centered Teams
 
-Opsgenie, now part of Atlassian, is a leading incident management platform that provides robust alerting, on-call scheduling, and incident response coordination. Its primary strength lies in its deep and seamless integration with the Atlassian ecosystem, particularly Jira Service Management and Confluence. This allows for a smooth workflow from alert to ticket creation, resolution, and post-mortem documentation.
+Opsgenie, part of Atlassian since 2018, is being sunset. Atlassian closed new Opsgenie sales on June 4, 2025, and the product reaches full end of support on April 5, 2027. Atlassian's recommended migration paths are Jira Service Management (JSM) Operations for incident management and Compass for developer-focused on-call alerting. For teams evaluating this space today, Jira Service Management Operations is the forward-looking Atlassian offering. Its primary strength remains its deep integration with Jira, Confluence, and the broader Atlassian ecosystem.
 
 -   **Best for:** Teams heavily invested in the Atlassian ecosystem who want a tightly integrated incident management solution that connects directly to their existing ITSM and collaboration tools.
--   **Limitation:** Its tight coupling with Atlassian products can be a drawback for organizations that use a different set of tools, potentially limiting flexibility.
+-   **Limitation:** Existing Opsgenie customers must migrate before April 5, 2027. The tight coupling with Atlassian products can also be a drawback for organizations that use a different toolset.
 
-## 3. xMatters: Robust Incident Management and Automation
+## 3. xMatters (an Everbridge Company): Robust Incident Management and Automation
 
-xMatters is an enterprise-grade incident management platform known for its powerful automation and communication capabilities. It's designed to not only alert the right people but also to automate the resolution process through its visual workflow builder. xMatters can trigger actions in other systems, dynamically assign responders based on skills, and manage communications across multiple channels during a critical incident.
+xMatters is an enterprise-grade incident management platform known for its powerful automation and communication capabilities. It has been part of Everbridge, a critical event management company, since its acquisition was completed in May 2021. xMatters is designed to not only alert the right people but also to automate the resolution process through its visual workflow builder. It can trigger actions in other systems, dynamically assign responders based on skills, and manage communications across multiple channels during a critical incident.
 
 -   **Best for:** Large enterprises that require sophisticated, automated incident workflows, dynamic team assignments, and multi-channel communication for business-critical incidents.
 -   **Limitation:** The platform's extensive feature set can come with a steeper learning curve and may be overly complex for smaller teams with simpler needs.
@@ -83,18 +83,18 @@ Rootly is an SRE-focused incident management platform built to automate response
 -   **Best for:** SRE teams that prioritize automation, structured incident processes, and continuous improvement of their reliability practices.
 -   **Limitation:** Its SRE-centric approach might introduce a learning curve for teams not already familiar with established incident command frameworks and SRE best practices.
 
-## 7. Squadcast: SRE-Focused Incident Response
+## 7. Squadcast (a SolarWinds Company): SRE-Focused Incident Response
 
-Squadcast is another incident management platform with a strong focus on SRE principles. It offers a comprehensive suite of features, including on-call scheduling, multi-channel alerting, incident automation, and tools for conducting post-mortems. It's known for its intuitive user interface and flexible alerting rules, making it a popular choice for teams looking for a cost-effective yet powerful solution.
+Squadcast is an incident management platform with a strong focus on SRE principles, acquired by SolarWinds in March 2025. It offers a comprehensive suite of features, including on-call scheduling, multi-channel alerting, incident automation, and tools for conducting post-mortems. It's known for its intuitive user interface and flexible alerting rules, making it a popular choice for teams looking for a cost-effective yet powerful solution.
 
--   **Best for:** SRE and DevOps teams seeking a cost-effective solution with robust alerting, on-call management, and incident automation capabilities.
+-   **Best for:** SRE and DevOps teams seeking a cost-effective solution with robust alerting, on-call management, and incident automation capabilities, particularly those already in the SolarWinds ecosystem.
 -   **Limitation:** While it offers good automation features, it may not provide the same depth of cross-domain workflow orchestration as a dedicated control plane like Kestra.
 
-## 8. FireHydrant: Incident Management Platform for Reliability
+## 8. FireHydrant (acquired by Freshworks): Incident Management Platform for Reliability
 
-FireHydrant is a comprehensive platform designed to help organizations standardize their incident response processes. It enables teams to automate runbooks, manage incident communication, and track key reliability metrics like MTTR and MTTD. FireHydrant's incident command system helps structure the response process, ensuring that every incident is handled consistently and efficiently.
+FireHydrant is a comprehensive platform designed to help organizations standardize their incident response processes. It was acquired by Freshworks in early 2026 and is being integrated as the incident management and reliability layer inside Freshservice. FireHydrant enables teams to automate runbooks, manage incident communication, and track key reliability metrics like MTTR and MTTD. Its incident command system helps structure the response process, ensuring that every incident is handled consistently and efficiently.
 
--   **Best for:** Organizations focused on improving system reliability through structured incident response, automated runbooks, and detailed post-incident analysis.
+-   **Best for:** Organizations focused on improving system reliability through structured incident response, automated runbooks, and detailed post-incident analysis — especially those already using Freshservice or the Freshworks ecosystem.
 -   **Limitation:** The platform is primarily centered on the incident lifecycle and offers less flexibility for orchestrating broader workflows outside of incident response.
 
 ## 9. OnPage: Alert and Incident Management for Critical Communications
@@ -104,19 +104,19 @@ OnPage is a specialized alerting platform focused on ensuring that critical noti
 -   **Best for:** Teams in industries like healthcare, IT operations, or managed services that require guaranteed, high-priority alerting and critical communication capabilities.
 -   **Limitation:** OnPage is highly specialized in alerting and lacks the broader workflow automation and incident management features found in other platforms.
 
-## 10. Zenduty: Free and Open-Source Incident Management
+## 10. Xurrent IMR (formerly Zenduty): Free-Tier Incident Management
 
-Zenduty is an incident management platform that offers a free and open-source tier, making it an attractive option for smaller teams and startups. It provides essential features like on-call scheduling, alerting, escalation policies, and basic incident response automation. Being open-source, it offers a high degree of flexibility and customization for teams willing to self-host and manage the tool.
+Zenduty was acquired by Xurrent and rebranded to Xurrent IMR (Incident Management and Response) in late 2025. The platform is a commercial SaaS product — not open-source — though it offers a free tier for small teams. It provides essential features like on-call scheduling, alerting, escalation policies, and basic incident response automation, and is now part of Xurrent's broader enterprise service management ecosystem.
 
--   **Best for:** Small teams, startups, or organizations seeking a free, self-hosted incident management solution with core features and community support.
--   **Limitation:** The open-source version may require more setup and maintenance effort than commercial SaaS offerings, and its feature set might be less mature than enterprise-grade alternatives.
+-   **Best for:** Small teams and startups seeking a free-tier SaaS incident management solution with core on-call and alerting features.
+-   **Limitation:** The core platform is proprietary and hosted; teams needing a fully self-hosted or open-source solution should look at GoAlert or Grafana OnCall OSS instead.
 
-## 11. Grafana OnCall: Open-Source Incident Management for Grafana Users
+## 11. Grafana OnCall / Grafana Cloud IRM: Incident Management for Grafana Users
 
-Grafana OnCall is an open-source incident response tool that is deeply integrated into the Grafana ecosystem. It allows teams to manage on-call schedules, define escalation policies, and automatically trigger alerts from Grafana's monitoring platform. This tight integration provides a unified experience for observability and response.
+Grafana OnCall is deeply integrated into the Grafana ecosystem. In March 2025, Grafana Labs placed the self-hosted OSS version (AGPLv3) into maintenance mode, fixing only critical bugs and security vulnerabilities. The project is scheduled for archival in March 2026. For new deployments, Grafana's recommended path is Grafana Cloud IRM, a managed SaaS offering that replaces the OSS version with a broader incident response and on-call management experience.
 
--   **Best for:** Teams already using Grafana for monitoring who are looking for a seamless, open-source incident management solution within their existing stack.
--   **Limitation:** Its primary appeal is for Grafana users. Teams not using Grafana as their main monitoring tool may find other alternatives more suitable.
+-   **Best for:** Teams already using Grafana for monitoring who want a seamless, managed incident management solution within their existing observability stack.
+-   **Limitation:** The self-hosted OSS version is in maintenance mode and being archived. Teams should plan to migrate to Grafana Cloud IRM or evaluate other alternatives.
 
 ## 12. GoAlert: Self-Hosted On-Call Scheduling and Alerting
 
@@ -130,26 +130,26 @@ GoAlert is a simple, open-source, and self-hosted on-call scheduling and alertin
 | Tool                         | License              | Deployment                     | Best for                                            | Key Differentiator                                    |
 | ---------------------------- | -------------------- | ------------------------------ | --------------------------------------------------- | ----------------------------------------------------- |
 | Kestra                       | Apache 2.0 OSS / EE  | Hybrid (Cloud, On-prem, K8s)   | Automated, cross-domain incident response workflows | Declarative YAML, polyglot, event-driven orchestration|
-| Opsgenie                     | Proprietary          | SaaS                           | Atlassian-centric teams                             | Deep integration with Jira Service Management         |
-| xMatters                     | Proprietary          | SaaS                           | Large enterprises with complex automation           | Automated incident workflows, dynamic assignments     |
+| Opsgenie / JSM Operations    | Proprietary          | SaaS                           | Atlassian-centric teams (Opsgenie EOL Apr 2027)     | Deep integration with Jira Service Management         |
+| xMatters (Everbridge)        | Proprietary          | SaaS                           | Large enterprises with complex automation           | Automated incident workflows, dynamic assignments     |
 | Splunk On-Call (VictorOps)   | Proprietary          | SaaS                           | Splunk users needing real-time visibility           | Unified incident timeline and collaboration           |
 | Datadog                      | Proprietary          | SaaS                           | Teams seeking unified observability & response      | Single platform for monitoring & incident management  |
 | Rootly                       | Proprietary          | SaaS                           | SRE teams prioritizing automation & post-mortems    | Structured incident processes and automation          |
-| Squadcast                    | Proprietary          | SaaS                           | Cost-effective SRE-focused incident response        | Intuitive UI, flexible alerting, post-incident analysis|
-| FireHydrant                  | Proprietary          | SaaS                           | Reliability-focused organizations                   | Standardized incident response, automated runbooks    |
+| Squadcast (SolarWinds)       | Proprietary          | SaaS                           | Cost-effective SRE-focused incident response        | Intuitive UI, flexible alerting, post-incident analysis|
+| FireHydrant (Freshworks)     | Proprietary          | SaaS                           | Reliability-focused organizations                   | Standardized incident response, automated runbooks    |
 | OnPage                       | Proprietary          | SaaS                           | Critical communications & guaranteed alerting       | Persistent, high-priority notifications               |
-| Zenduty                      | Open-Source          | SaaS / Self-hosted             | Small teams, startups, cost-conscious users         | Free and open-source flexibility                      |
-| Grafana OnCall               | Open-Source          | SaaS / Self-hosted             | Grafana users                                       | Seamless integration with Grafana alerts              |
+| Xurrent IMR (fmr. Zenduty)   | Proprietary (free tier) | SaaS                        | Small teams, startups, cost-conscious users         | Free tier, part of Xurrent ESM ecosystem              |
+| Grafana Cloud IRM / OnCall   | OSS (maint. mode) / SaaS | SaaS / Self-hosted        | Grafana users                                       | Seamless integration with Grafana alerts              |
 | GoAlert                      | Open-Source          | Self-hosted                    | Small teams needing simple on-call                  | Simple, reliable, self-hosted on-call scheduling      |
 
 ## How to choose the best PagerDuty alternative for your needs
 
 Selecting the right tool depends on your team's specific context, existing stack, and maturity level in incident response.
 
--   **For data engineering teams**: You need a tool that understands the context of data incidents. Consider solutions that can trigger and orchestrate data quality checks, pipeline restarts, or backfills. Kestra excels here by connecting incident alerts to your data stack, allowing you to automate complex data remediation workflows. Explore Kestra for [data orchestration](/data).
--   **For infrastructure / DevOps teams**: Your focus is on reliability, automation, and GitOps. Look for platforms that integrate with your IaC tools like Terraform and Ansible. Kestra provides a powerful control plane to automate infrastructure diagnostics and remediation, all defined as code in your Git repository. See how Kestra enables [infrastructure automation](/infra-automation).
+-   **For data engineering teams**: You need a tool that understands the context of data incidents. Consider solutions that can trigger and orchestrate data quality checks, pipeline restarts, or backfills. Kestra excels here by connecting incident alerts to your data stack, allowing you to automate complex [data orchestration](/resources/data/data-orchestration) and remediation workflows. Explore Kestra for [data orchestration](/data).
+-   **For infrastructure / DevOps teams**: Your focus is on reliability, automation, and GitOps. Look for platforms that integrate with your IaC tools like Terraform and Ansible. Kestra provides a powerful control plane to automate infrastructure diagnostics and remediation, all defined as code in your Git repository. See how Kestra enables [infrastructure automation](/resources/infrastructure/automation) and [event-driven orchestration](/resources/infrastructure/event-driven-orchestration).
 -   **For AI / ML platform teams**: Incidents in AI/ML can range from model drift to data pipeline failures. You need an orchestrator that can trigger model retraining jobs, data validation pipelines, or even coordinate with AI agents for diagnostics. Kestra's AI-native features provide a unified platform for these tasks. Discover [AI automation with Kestra](/ai-automation).
--   **For small teams getting started**: If you're just starting with on-call, prioritize simplicity and cost-effectiveness. Open-source tools like Grafana OnCall or GoAlert, or the free tiers of commercial products, can provide the essential alerting and scheduling you need without a large investment.
+-   **For small teams getting started**: If you're just starting with on-call, prioritize simplicity and cost-effectiveness. GoAlert (self-hosted, Apache 2.0) or the free tier of Xurrent IMR, or Grafana Cloud IRM for Grafana users, can provide the essential alerting and scheduling you need without a large investment.
 
 Ultimately, the best choice is one that not only solves your immediate alerting needs but also provides a path toward a more automated and resilient incident management practice.
 

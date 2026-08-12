@@ -45,7 +45,7 @@ const techArticleSchema = {
 
 <Layout title={props.title} description={props.description} image={props.image}>
     <Fragment slot="head">
-        <script type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
     </Fragment>
     <link rel="preload" as="image" href={squaredGrid.src} />
     <div

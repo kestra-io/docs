@@ -1,11 +1,11 @@
 import { API_URL } from "astro:env/client"
 
-const cloudflareCache: RequestInit = {
+const cloudflareCache = {
     cf: {
         cacheTtl: 60 * 60, // 1 hour
         cacheEverything: true,
     },
-}
+} as RequestInit
 
 async function internalFetch(
     url: string,

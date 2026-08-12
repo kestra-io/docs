@@ -2,7 +2,7 @@
 title: "What is Data Lineage? Understand, Track & Visualize"
 description: "Explore data lineage: tracking data flow from origin to consumption. Learn its importance, methods, and real-world examples."
 metaTitle: "Data Lineage: Track, Visualize & Govern with Kestra"
-metaDescription: "Unravel data lineage: trace data from source to consumption, understand transformations, and ensure trust. Discover how Kestra enables automated tracking, visualization, and governance for your data assets."
+metaDescription: "Trace data from source to consumption, understand transformations, and ensure trust. Learn how Kestra enables automated lineage tracking and governance."
 tag: data
 date: 2026-05-09
 faq:
@@ -12,8 +12,6 @@ faq:
     answer: "Consider an e-commerce platform: a customer's order ID originates in the order database. It then moves to a data warehouse, is joined with product details, transformed to calculate sales metrics, and finally appears in a daily sales report. Data lineage tracks this entire path, showing how the raw order ID became part of a sales metric."
   - question: "What is the difference between data lineage and data flow?"
     answer: "Data lineage provides a historical, end-to-end view of data's lifecycle, including transformations and dependencies, akin to a data's family tree. Data flow, on the other hand, describes the actual movement of data between systems at a specific point in time, focusing on the channels and mechanisms of transfer rather than the full historical context or transformations."
-  - question: "How can data lineage be implemented?"
-    answer: "Data lineage can be implemented through a combination of manual documentation and automated tools. Automated solutions typically integrate with your data stack to scan code, logs, and metadata, automatically discovering and mapping data transformations. These tools often provide visual interfaces to explore the lineage graph, reducing manual effort and improving accuracy."
   - question: "Why is data lineage important for data quality?"
     answer: "Data lineage is crucial for data quality because it provides transparency into data origins and transformations. If a data quality issue arises, lineage allows teams to quickly trace back to the source of the error, identify problematic transformations, and understand the impact of changes, enabling faster resolution and improved data trust."
   - question: "What are the main benefits of data lineage?"
@@ -205,7 +203,7 @@ Data lineage is a component of a broader data governance strategy. Best practice
 To maximize value, data lineage should not be a siloed tool. It needs to be integrated with:
 *   **Orchestration Tools:** Tools like [Kestra and Airflow](https://kestra.io/vs/airflow) provide the operational metadata that forms the backbone of lineage.
 *   **Data Catalogs:** The lineage graph should be explorable within the data catalog, where users discover and understand data.
-*   **Data Quality Tools:** Linking data quality scores to the lineage graph helps pinpoint where quality issues are introduced.
+*   **Data Quality Tools:** Linking [data quality](/resources/data/data-quality) scores to the lineage graph helps pinpoint where quality issues are introduced. This connection is also central to [data observability](/resources/data/data-observability), which monitors pipelines in real time to detect anomalies before they reach consumers.
 
 ### Selecting the optimal data lineage solution for your needs
 
@@ -218,7 +216,7 @@ When choosing a tool, consider:
 
 ## Kestra's Approach to Automated Data Lineage and Governance
 
-Modern orchestration platforms are uniquely positioned to solve the data lineage challenge. Because they direct the flow of data and execute transformations, they have direct access to the operational metadata needed to build an accurate lineage graph automatically.
+Modern [data orchestration](/resources/data/data-orchestration) platforms are uniquely positioned to solve the data lineage challenge. Because they direct the flow of data and execute transformations, they have direct access to the operational metadata needed to build an accurate lineage graph automatically.
 
 ### Declarative workflows as the foundation for transparent lineage
 
@@ -255,7 +253,7 @@ While Kestra provides powerful native lineage capabilities, it also embraces the
 
 ### Real-time visibility and auditability for every data transformation
 
-With Kestra, data lineage is not a historical report generated after the fact. It's a live, operational tool. Every workflow execution updates the state of your assets, providing real-time visibility into data freshness and quality. This level of auditability is a core benefit, reinforced with every release, such as the [LTS release of Kestra 1.3](https://kestra.io/blogs/release-1-3), which focuses on enterprise-grade governance and reliability.
+With Kestra, data lineage is not a historical report generated after the fact. It's a live, operational tool. Every workflow execution updates the state of your assets, providing real-time visibility into data freshness and quality. This level of auditability is a core benefit, reinforced with every release, such as the [LTS release of Kestra 1.3](https://kestra.io/blogs/release-1-3), which delivers production-grade controls including Kill Switch incident response, centralized Credentials management, and expanded Assets lifecycle management.
 
 ## The Future of Data Lineage: Trends and Strategic Implementation
 

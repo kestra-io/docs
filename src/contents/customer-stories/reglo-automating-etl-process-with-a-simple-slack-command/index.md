@@ -19,21 +19,26 @@ tasks:
   - io.kestra.plugin.dbt.cloud.TriggerRun
 kpi1: |-
   ##### Automated
-  ETL Process
+  ETL process
 kpi2: |-
   ##### 1 day
   of manual effort saved each month
 kpi3: |-
   ##### Centralized
-  Control Plane
+  control plane
 quote: " Initially, we had to manually refresh data across three tools. Now, a
   single Slack command triggers a Kestra flow that automates Airbyte and dbt."
 quotePerson: Engineer at Reglo
 quotePersonTitle: ""
 industry: Retail
 headquarter: Paris, France
+region: Europe
+companySize: "51–500"
 solution: High Quality Pets Nutrition
-companyName: ""
+tagline: Premium pet nutrition brand
+companyName: Reglo
+useCase: Triggering Airbyte ingestion and dbt transformations from a single Slack command for a French premium pet nutrition e-commerce brand
+useCaseShort: Business Automation
 cta: "What would change if your ETL processes triggered automatically from a single command—no manual pipeline runs, just results?"
 ---
 

@@ -1,10 +1,10 @@
 ---
 title: "What is Infrastructure as Code (IaC)? Explained"
 description: "Understand Infrastructure as Code (IaC), its benefits, and how it automates IT infrastructure. Explore IaC with Kestra today!"
-metaTitle: "What is Infrastructure as Code (IaC)? Kestra Explained"
-metaDescription: "Demystify Infrastructure as Code (IaC). Learn its core principles, benefits like automation and consistency, common tools, and how Kestra helps manage IT infrastructure declaratively."
+metaTitle: "What is Infrastructure as Code (IaC)? | Kestra"
+metaDescription: "Learn what Infrastructure as Code (IaC) is, its core principles, benefits, top tools, and how Kestra orchestrates IaC workflows declaratively across any cloud."
 tag: infrastructure
-date: 2026-05-15
+date: 2026-07-01
 faq:
   - question: "Is Kubernetes an IaC tool?"
     answer: "Kubernetes itself is a container orchestration platform, not an Infrastructure as Code (IaC) tool in the traditional sense. However, it is deeply intertwined with IaC principles because Kubernetes resources (Deployments, Services, Pods) are defined declaratively using YAML or JSON. These definitions are version-controlled and managed like code, making Kubernetes a key enabler and consumer of IaC practices for containerized applications."
@@ -14,129 +14,247 @@ faq:
     answer: "AI Infrastructure as Code extends traditional IaC by integrating AI to enhance automation, optimization, and predictive capabilities. It involves using code to manage infrastructure specifically for AI/ML workloads, leveraging AI itself to improve resource allocation, predict performance bottlenecks, and automate complex deployment patterns for machine learning models and data pipelines."
   - question: "What are the top IaC tools?"
     answer: "The top IaC tools often include Terraform, AWS CloudFormation, Ansible, Pulumi, and Azure Resource Manager. Each tool has its strengths: Terraform is cloud-agnostic, CloudFormation is AWS-native, Ansible focuses on configuration management, Pulumi uses general-purpose programming languages, and Azure Resource Manager is Azure-native for Azure-specific infrastructure."
-  - question: "Why are people moving away from Kubernetes?"
-    answer: "While Kubernetes remains a powerful platform, some organizations are exploring alternatives or simpler setups due to its inherent complexity, significant operational overhead, and high resource consumption for certain use cases. Managing Kubernetes often requires specialized expertise, and for simpler applications, teams may find that more lightweight or specialized orchestration tools offer better results with less maintenance."
+  - question: "What is the difference between Terraform and OpenTofu?"
+    answer: "Terraform and OpenTofu both provision cloud infrastructure declaratively using HCL-like configuration files. Terraform, originally from HashiCorp (now part of IBM), changed its license from the open-source Mozilla Public License (MPL) to the Business Source License (BSL) starting with version 1.6 in August 2023. OpenTofu is a community-maintained open-source fork of Terraform under the Linux Foundation, licensed under the original MPL v2.0. Organizations that require a fully open-source IaC tool typically choose OpenTofu, while those already using Terraform in non-competing commercial contexts can continue with Terraform."
 ---
-In the rapidly evolving world of IT, managing infrastructure manually is a recipe for inconsistency, errors, and slow deployments. Infrastructure as Code (IaC) emerged as a transformative practice, allowing organizations to define and manage their IT infrastructure using code, just like application developers manage source code. This shift brings unprecedented levels of automation, reliability, and scalability to operations.
 
-This article will demystify Infrastructure as Code, exploring its core principles, the tangible benefits it delivers, and the leading tools that drive its adoption. We’ll also delve into best practices for effective implementation and examine how Kestra provides a unified platform to orchestrate IaC workflows across diverse environments and technologies.
+The era of manually provisioning servers, configuring networks, and deploying applications by hand is largely behind us. Yet many organizations still wrestle with inconsistent environments, slow deployments, and error-prone operational tasks. That friction slows down teams and introduces real security risks, turning infrastructure management into a bottleneck rather than an enabler.
 
-## What is Infrastructure as Code (IaC)?
+Infrastructure as Code (IaC) emerged to solve exactly this problem, turning infrastructure into a version-controlled, auditable, and automated asset. This article explains what Infrastructure as Code is, walks through its principles and benefits, shows real examples and the top tools, and examines how Kestra extends IaC with a unified orchestration layer that connects infrastructure provisioning to data, AI, and business workflows, moving toward true [Everything-as-Code](/resources/infrastructure/everything-as-code).
 
-### Defining IaC: More Than Just Automation
-Infrastructure as Code (IaC) is the practice of managing and provisioning IT infrastructure—servers, networks, databases, load balancers, and more—through machine-readable definition files rather than manual configuration or interactive tools. It treats infrastructure components as software artifacts, allowing you to apply the same versioning, testing, and deployment practices used in application development to your infrastructure.
+## What is Infrastructure as Code?
 
-At its core, IaC replaces the "click-and-configure" approach with a declarative model where you define the desired state of your infrastructure in configuration files. This code then becomes the single source of truth, ensuring that every environment, from development to production, is provisioned consistently and reliably.
+Infrastructure as Code is the practice of managing and provisioning IT infrastructure through machine-readable definition files, rather than through physical hardware setup or interactive configuration tools. It treats servers, networks, load balancers, and even entire data centers as software, applying the same version control, automated testing, and continuous integration that application developers have relied on for decades.
 
-### The Core Principles of Infrastructure as Code
-IaC is built on a set of foundational principles that ensure its effectiveness:
+In plain terms: instead of clicking through a cloud console to create a virtual machine, you write a file that says "I want a virtual machine of this size, in this region, with this network attached." A tool reads that file and makes it real. Because the file lives in Git, anyone can see exactly what infrastructure exists, who changed it, and why.
 
-- **Declarative Approach:** You define the desired end state of your infrastructure, and the IaC tool determines the necessary steps to achieve it. This contrasts with an imperative approach, which requires you to specify the exact sequence of commands.
-- **Idempotency:** An IaC script or configuration can be applied multiple times without changing the result beyond the initial application. If the system is already in the desired state, the script does nothing. This guarantees consistency and prevents unintended side effects.
-- **Version Control:** All infrastructure definitions are stored in a version control system like Git. This provides a detailed audit trail of every change, enables collaboration among team members, and allows for easy rollbacks to previous states.
-- **Automation:** IaC automates the entire provisioning and configuration process, eliminating manual steps and reducing the potential for human error.
-- **Consistency:** By using a single set of definition files, IaC ensures that every environment is identical, eliminating the configuration drift that plagues manually managed systems.
+### From Manual Provisioning to Declarative Automation
 
-## Why Infrastructure as Code is Essential for Modern IT
+IaC is a clear step forward from traditional infrastructure management. System administrators once relied on manual processes and runbooks. That gave way to scripting, which added some automation but often produced brittle scripts that were hard to maintain and scale. IaC formalizes automation by using higher-level, descriptive languages to define the desired state of infrastructure, then letting the tools work out the implementation details.
 
-Adopting IaC is no longer a niche practice; it's a critical component of modern DevOps and [platform engineering](/use-cases/platform-engineers). The benefits extend beyond simple automation, impacting speed, reliability, and cost.
+The result is infrastructure that is repeatable, reviewable, and recoverable. You stop treating servers as unique, hand-tended pets and start treating them as interchangeable units defined entirely by code.
 
-- **Consistency and Reliability:** IaC eliminates configuration drift by ensuring that every environment is provisioned from the same source of truth. This consistency drastically reduces bugs and deployment failures caused by environment-specific discrepancies.
-- **Speed and Efficiency:** Automation accelerates the entire lifecycle of infrastructure management. Provisioning new environments, from a single server to a complex multi-cloud setup, can be reduced from days or weeks to minutes.
-- **Cost Reduction:** By codifying infrastructure, you can optimize resource usage, automatically scale resources up or down based on demand, and easily tear down environments when they are not in use, leading to significant cost savings.
-- **Risk Mitigation:** Automating deployments reduces the risk of human error, a common cause of outages. IaC also makes it easier to enforce security policies and achieve compliance by embedding security checks directly into the provisioning process.
-- **Auditability and Compliance:** With every infrastructure change tracked in version control, you have a complete and auditable history. This traceability simplifies compliance with regulatory requirements and provides clear insights into how your infrastructure has evolved. For a deeper look into this topic, see our [full guide on infrastructure automation](/resources/infrastructure/automation).
+## Why is Infrastructure as Code Important? Benefits and Advantages
 
-## Key Approaches and Concepts in IaC
+Adopting IaC is not only a technical upgrade; it is a business decision driven by the need for speed, reliability, and efficiency. The benefits are concrete and address some of the most persistent problems in IT operations.
 
-### Declarative vs. Imperative IaC: Understanding the Differences
-IaC tools generally follow one of two approaches:
+### Accelerating Delivery and Reducing Human Error
 
-- **Declarative (What):** This is the most common approach in modern IaC. You define the desired state of the system—for example, "I need three web servers, a load balancer, and a database." The IaC tool is responsible for figuring out how to make the current state match the desired state. Tools like Terraform and AWS CloudFormation are primarily declarative.
-- **Imperative (How):** This approach involves writing scripts that specify the step-by-step commands to achieve a configuration. For example, "First, create a virtual machine. Second, install this software package. Third, start this service." While more flexible, this approach can be harder to maintain and less idempotent. Tools like Ansible and shell scripts often use an imperative style.
+Manual provisioning is slow and a primary source of mistakes. A forgotten configuration step or a single typo can mean hours of debugging. IaC automates the whole process, so teams spin up complete, production-ready environments in minutes instead of days. Because every environment is built from the same definitions, the "it works on my machine" problem disappears and configuration drift between stages is sharply reduced.
 
-Many modern tools offer a hybrid approach, but the trend is strongly towards declarative models that focus on the end state.
+### Improving Consistency, Auditability, and Security
 
-### Versioning and Collaboration in IaC Environments
-Treating infrastructure as code means leveraging tools like Git to their full potential. Storing IaC files in a repository enables powerful collaboration and governance workflows. Changes to infrastructure can be proposed through pull requests, reviewed by peers, and automatically tested before being merged and applied.
+With IaC, your definition files become the single source of truth. Stored in a version control system like Git, every change is reviewed, committed, and tracked. That creates a full audit trail showing who changed what, when, and why. Security policies can be written directly into the code, so every provisioned resource meets compliance standards from the moment it is created. This codified governance is a major win for security and regulatory compliance.
 
-This GitOps model provides a clear history of all infrastructure modifications, making it easy to understand who changed what, when, and why. If a change introduces problems, you can quickly revert to a previous, known-good state. This level of control and visibility is fundamental to building resilient and manageable systems. For more on this, check out our guide on [version control with Git in Kestra](/docs/best-practices/git). We chose this model because we believe in a [declarative-first approach to orchestration](/blogs/declarative-from-day-one).
+### Reducing Cost and Optimizing Resources
 
-## Popular Infrastructure as Code Tools and Examples
+IaC supports dynamic infrastructure management. Resources can be provisioned on demand to handle peak loads and torn down automatically when they are no longer needed, so idle resources stop quietly draining the budget. Defining resource requirements in code also makes cloud spend easier to forecast and control, a key part of effective [Day-2 operations](/resources/infrastructure/day-2-operations).
 
-### What are examples of Infrastructure as Code?
-IaC can be applied to a wide range of scenarios:
-- **Cloud Environment Setup:** Provisioning virtual machines, networks, storage, and IAM policies on AWS, Azure, or GCP — see Kestra's [provisioning and deployment use cases](/use-cases/provisioning-and-deployment) for end-to-end orchestration of these flows.
-- **Web Application Deployment:** Defining the entire stack for an application, including servers, load balancers, databases, and CDN configurations.
-- **Multi-Cloud Deployments:** Using a single set of configurations to deploy infrastructure consistently across different cloud providers.
-- **CI/CD Pipelines:** Automatically creating and destroying testing and staging environments as part of the software delivery pipeline.
-- **Disaster Recovery:** Codifying the process of rebuilding an entire infrastructure stack in a different region to ensure business continuity.
+## How Does Infrastructure as Code Work? Core Principles
 
-### What are the top IaC tools?
-The IaC landscape is rich with powerful tools, each with its own strengths:
-- **Terraform:** An open-source, cloud-agnostic tool from HashiCorp that uses a declarative language to provision infrastructure across hundreds of providers.
-- **AWS CloudFormation:** A native AWS service for defining and provisioning AWS infrastructure resources declaratively using JSON or YAML templates.
-- **Azure Resource Manager (ARM):** The native IaC service for Microsoft Azure, allowing you to define and deploy Azure resources.
-- **Ansible:** A configuration management tool from Red Hat that can also be used for infrastructure provisioning. It is agentless and often praised for its simplicity.
-- **Pulumi:** An open-source tool that lets you define infrastructure using general-purpose programming languages like Python, TypeScript, Go, and C#.
+Effective IaC rests on a handful of software engineering principles that keep infrastructure stable and predictable.
 
-### Is Kubernetes an IaC tool?
-While Kubernetes is a container orchestration platform, not a traditional IaC tool, it is fundamentally built on IaC principles. Kubernetes resources like Deployments, Services, and Pods are defined using declarative YAML files. These files are version-controlled and applied to the cluster to achieve a desired state, making Kubernetes a powerful enabler of IaC for containerized applications.
+### Version Control as the Single Source of Truth
 
-## Orchestrating Infrastructure as Code with Kestra
+Putting infrastructure definitions under version control is the foundational practice of IaC. It lets team members collaborate, gives you a full history of changes, and makes it easy to roll back to a previous known-good state. This approach is central to [GitOps](/resources/infrastructure/gitops), where the Git repository defines the desired state of the entire system, infrastructure included.
 
-IaC tools are excellent at managing the state of individual resources, but complex environments require orchestrating these tools as part of a larger workflow. This is where Kestra comes in. Kestra acts as a universal control plane, allowing you to orchestrate IaC tools like [Terraform](/plugins/plugin-terraform) and [Ansible](/plugins/plugin-ansible) alongside data pipelines, AI agents, and business processes.
+### Declarative vs. Imperative Approaches to IaC
 
-With Kestra, you can define end-to-end workflows in declarative YAML, treating your entire operational process as code. For example, a Kestra flow could:
-1.  Provision a new database using Terraform.
-2.  Run an Ansible playbook to configure the database.
-3.  Load initial data from an S3 bucket.
-4.  Run data quality checks.
-5.  Notify a Slack channel upon completion.
+There are two main ways to write IaC:
 
-This approach unifies your automation efforts, providing a single platform for observability, auditability, and governance. Companies like **BHP** have used Kestra to replace legacy systems, reducing infrastructure provisioning time from six months to just six days. Similarly, **Crédit Agricole** replaced fragmented scripts and cron jobs with Kestra to create a single, auditable orchestration layer for their infrastructure. For more details, explore how you can [automate infrastructure with Kestra, Ansible, and Terraform](/blogs/2024-04-16-infrastructure-orchestration-using-kestra).
+*   **Declarative:** You define the desired *end state* of your infrastructure, for example "I need three web servers, a load balancer, and a database." The tool figures out how to reach that state. Terraform and Kestra are primarily declarative.
+*   **Imperative:** You define the specific *steps* to run to reach the desired state, for example "create a virtual machine, install this software, then configure the network." Ansible is often used this way.
 
-Here is a simple Kestra flow that runs a Terraform plan and apply:
-```yaml
-id: terraform-provision-s3
-namespace: company.team.infra
+The declarative approach is generally preferred for modern IaC because it is more resilient and easier to manage. You describe what you want, and the system reconciles reality to match it, regardless of the current state. Kestra's YAML-based workflow definitions follow this declarative philosophy.
 
-tasks:
-  - id: git-clone
-    type: io.kestra.plugin.git.Clone
-    url: https://github.com/your-org/terraform-modules.git
-    branch: main
+### Idempotence and Immutability
 
-  - id: terraform-plan
-    type: io.kestra.plugin.terraform.cli.TerraformCLI
-    workingDir: "{{ outputs['git-clone'].uri }}"
-    commands:
-      - terraform init
-      - terraform plan
+Two related ideas make declarative IaC dependable. *Idempotence* means applying the same definition repeatedly produces the same result; running an apply twice will not create duplicate resources. *Immutability* means that instead of patching a running server in place, you replace it with a freshly built one from the same definition. Together they remove the slow accumulation of undocumented changes that make traditional infrastructure fragile.
 
-  - id: terraform-apply
-    type: io.kestra.plugin.terraform.cli.TerraformCLI
-    workingDir: "{{ outputs['git-clone'].uri }}"
-    commands:
-      - terraform apply -auto-approve
+### Fitting IaC into the Workflow Lifecycle
 
+IaC definitions are not static documents. They are active parts of the software delivery lifecycle, wired into CI/CD pipelines to create ephemeral test environments for each feature branch, provision staging, and ship production infrastructure updates as part of a release.
+
+## Key Components and Practices of IaC
+
+To get the full value of IaC, teams adopt practices that keep it scalable, high quality, and clear.
+
+### Modularity and Reusability for Scalable Designs
+
+Writing IaC for a large system can quickly become unwieldy. Teams manage this with modularity. Reusable components, such as a module for a standard database setup or a network configuration, are written once and referenced wherever they are needed. This cuts duplication, simplifies maintenance, and keeps configurations consistent across the organization.
+
+### Testing and Validation: Ensuring Infrastructure Quality
+
+Like application code, infrastructure code should be tested. That can include static analysis (linting) to catch syntax errors and policy violations, unit tests for individual modules, and integration tests that spin up a temporary environment to confirm everything works together. This discipline keeps faulty infrastructure changes out of production. You can read more about how to [automate infrastructure](/docs/use-cases/infrastructure) in our docs.
+
+### What are the foundational components of IaaS that IaC manages?
+
+When you apply IaC to Infrastructure as a Service (IaaS) platforms, you are codifying the virtualized building blocks that cloud vendors provide. These usually include:
+
+*   **Compute Resources:** Virtual machines (VMs), containers, and serverless functions.
+*   **Networking:** Virtual Private Clouds (VPCs), subnets, route tables, firewalls, and load balancers.
+*   **Storage Solutions:** Object storage (such as AWS S3), block storage (virtual hard drives), and file systems.
+*   **Security and Access:** Identity and Access Management (IAM) roles, security groups, and encryption keys.
+
+IaC tools talk to cloud provider APIs to create and configure these components based on your code.
+
+## What are Examples of Infrastructure as Code?
+
+The fastest way to understand IaC is to see it. Here are three short, recognizable examples.
+
+A **Terraform** configuration that provisions an AWS S3 bucket:
+
+```hcl
+resource "aws_s3_bucket" "reports" {
+  bucket = "acme-analytics-reports"
+  tags = {
+    Environment = "production"
+    ManagedBy   = "terraform"
+  }
+}
 ```
 
-By using Kestra, you can move from fire-and-forget automation to a governed system where infrastructure components are treated as live, auditable [assets](/blogs/assets-for-infra-automation). To get started, explore how you can [orchestrate your entire infrastructure from one control plane](/infra-automation).
+An **Ansible** play that ensures a web server is installed and running:
 
-## Best Practices for Effective IaC Adoption
+```yaml
+- name: Configure web server
+  hosts: web
+  become: true
+  tasks:
+    - name: Install nginx
+      ansible.builtin.package:
+        name: nginx
+        state: present
+    - name: Ensure nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+```
 
-- **Start Small and Iterate:** Begin with a non-critical project to gain experience. Gradually expand your IaC footprint as your team becomes more comfortable.
-- **Enforce Version Control:** Make Git the single source of truth for all IaC files. Mandate code reviews for all infrastructure changes.
-- **Automate Testing:** Implement a testing strategy for your infrastructure code, including static analysis, unit tests, and integration tests, to catch issues before they reach production.
-- **Implement Security Best Practices:** Use tools to scan your IaC for security vulnerabilities. Manage sensitive data using a secrets management solution and adhere to the principle of least privilege. Kestra provides built-in [secrets management capabilities](/docs/best-practices/secrets-management) to support this.
-- **Use Policy as Code:** Integrate tools like Open Policy Agent (OPA) to enforce governance and compliance rules automatically.
-- **Integrate with CI/CD:** Embed your IaC workflows into your CI/CD pipelines to fully automate the delivery of both applications and their underlying infrastructure. You can use [labels in Kestra](/docs/workflow-components/labels) to tag and manage these CI/CD flows effectively.
+A **Kubernetes** manifest that declares a deployment:
 
-## The Future of IaC and Advanced Concepts
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: acme/api:1.4.0
+```
 
-### What is AI Infrastructure as Code?
-The next frontier for IaC involves integrating artificial intelligence to create self-optimizing and predictive infrastructure. AI-driven IaC can analyze usage patterns to optimize resource allocation, predict potential failures before they occur, and even automate complex remediation tasks. As AI becomes more integrated into operations, IaC will provide the foundational automation layer for these intelligent systems. You can learn more about how Kestra enables [AI automation](/ai-automation).
+Each file describes a desired state. The tool reads it and reconciles the live environment to match, every time it runs.
 
-### IaC in Cloud-Native and Serverless Architectures
-In the cloud-native world, IaC is indispensable. It's the standard for managing Kubernetes clusters, deploying containerized applications, and provisioning serverless functions. The concept of immutable infrastructure—where servers are never modified after deployment but are instead replaced with new ones—is only practical with the automation provided by IaC. As architectures become more distributed and ephemeral, the need for a robust, code-driven approach to infrastructure management will only grow.
+## What are the Top IaC Tools?
+
+A rich ecosystem of tools supports IaC, each with its own strengths and focus.
+
+### Popular IaC Tools: A Quick Overview
+
+The most prominent tools in the IaC space include:
+
+*   **Terraform:** An open-source, cloud-agnostic tool for provisioning infrastructure across hundreds of providers.
+*   **OpenTofu:** A community-governed open-source fork of Terraform, compatible with existing Terraform configurations.
+*   **Pulumi:** Lets you define infrastructure in general-purpose programming languages such as Python, Go, or TypeScript.
+*   **Ansible:** Focused on configuration management and application deployment.
+*   **AWS CloudFormation:** AWS-native templates for defining and managing AWS stacks.
+*   **Chef and Puppet:** Earlier-generation configuration management tools that laid the groundwork for modern IaC. If you are evaluating successors, see our guides to [Puppet alternatives](/resources/infrastructure/puppet-alternatives) and [Chef alternatives](/resources/infrastructure/chef-alternatives).
+
+### Terraform: The Multi-Cloud Standard
+
+As of 2026, Terraform is still a dominant force in the IaC world. Its strengths are its declarative syntax and a large ecosystem of "providers" that let it manage resources across hundreds of cloud services and on-premises technologies. That multi-cloud reach makes it a default choice for organizations avoiding vendor lock-in. Kestra's [partnership with Terraform](/blogs/2023-09-19-kestra-terraform-partnership) brings this tool into broader orchestration workflows.
+
+### Terraform vs. OpenTofu
+
+In 2023, a license change to Terraform prompted the community to create **OpenTofu**, an open-source fork governed by the Linux Foundation under the permissive MPL 2.0 license. For most users the two are nearly interchangeable: OpenTofu started as a drop-in replacement and reads the same HCL configuration and state format. The practical difference is governance and licensing. Teams that want a vendor-neutral, community-run tool tend toward OpenTofu, while teams already invested in HashiCorp's ecosystem and commercial offerings often stay on Terraform. Both remain actively developed, and either one can run as a task inside a Kestra workflow.
+
+### Cloud-Native IaC: CloudFormation, ARM, and Deployment Manager
+
+The major cloud providers offer their own native IaC services: AWS CloudFormation, Azure Resource Manager (ARM), and Google Cloud Deployment Manager. These tools integrate deeply with their platforms and often expose new services faster than third-party tools. The trade-off is portability; a CloudFormation template cannot be reused on Azure or GCP.
+
+### Is Kubernetes an IaC tool?
+
+While [Kubernetes](/resources/infrastructure/kubernetes) is not an IaC tool in the same category as Terraform, it runs on IaC principles. You define the desired state of your applications, services, and configurations in YAML manifests, and the Kubernetes control plane works to make that state real. In that sense Kubernetes consumes IaC definitions to manage containerized workloads.
+
+For deeper tool comparisons, see our guides to [Ansible alternatives](/resources/infrastructure/alternatives-to-ansible) and how Kestra fits alongside [GitHub Actions](/resources/infrastructure/kestra-vs-github-actions).
+
+## IaC and the Rise of DevOps and GitOps
+
+### Integrating IaC into CI/CD Pipelines
+
+IaC is a cornerstone of modern CI/CD. Pipelines no longer just build and test code; they also provision the infrastructure that code runs on. That tight coupling validates every code change against a production-like environment, improving reliability and deployment speed. It also blurs the line between traditional CI/CD and broader workflow orchestration, a space where teams often compare [Kestra and GitHub Actions](/resources/infrastructure/kestra-vs-github-actions).
+
+### Why are some teams rethinking Kubernetes?
+
+Despite its power, some teams are stepping back from self-managed Kubernetes because of its operational complexity, steep learning curve, and resource overhead. For many use cases, running a full cluster is hard to justify. That has driven interest in simpler alternatives and in orchestration platforms that abstract away the underlying complexity of container management.
+
+## Kestra as the Control Plane for Everything-as-Code
+
+IaC tools are excellent at provisioning, but provisioning is only one piece of the puzzle. Real automation needs an orchestration layer that coordinates IaC tasks with everything else. This is where Kestra provides a unified control plane, turning isolated IaC scripts into governed, auditable workflows.
+
+### Declarative Orchestration for Terraform, Ansible, and Cloud APIs
+
+Kestra extends the declarative philosophy of IaC to the entire workflow. Using plain YAML, you can define multi-step processes that run Terraform plans, execute Ansible playbooks, and call cloud APIs. A single Kestra workflow can provision infrastructure with Terraform, configure it with Ansible, and then deploy an application. This is how Kestra acts as the [Terraform of Automation and Orchestration](/blogs/2023-12-05-kestra-the-terrafrom-of-orchestration-and-automation).
+
+Here is a minimal Kestra flow that clones an infrastructure repository and runs Terraform through the Terraform plugin:
+
+```yaml
+id: provision_infrastructure
+namespace: company.platform
+
+tasks:
+  - id: working_dir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    tasks:
+      - id: clone
+        type: io.kestra.plugin.git.Clone
+        url: https://github.com/acme/infrastructure
+        branch: main
+
+      - id: terraform
+        type: io.kestra.plugin.terraform.cli.TerraformCLI
+        beforeCommands:
+          - terraform init
+        commands:
+          - terraform plan -out=tfplan
+          - terraform apply -auto-approve tfplan
+        env:
+          AWS_ACCESS_KEY_ID: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+          AWS_SECRET_ACCESS_KEY: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+          AWS_DEFAULT_REGION: "{{ secret('AWS_DEFAULT_REGION') }}"
+```
+
+Because the flow is itself declarative YAML stored in Git, the orchestration logic gets the same version control and review treatment as the Terraform code it runs. You could add an Ansible task after `terraform` to configure the new servers, or a notification task to post the result to Slack, all in the same definition.
+
+This pattern makes Kestra a strong fit for building platforms for [provisioning and deployment](/use-cases/provisioning-and-deployment) and for enabling [self-service infrastructure](/resources/infrastructure/self-service-infrastructure). A Fortune 500 industrial company used Kestra to replace VMware Aria Automation, cutting costs and securing hybrid cloud automation across both IT and OT environments.
+
+### Bridging IaC with Data, AI, and Business Workflows
+
+Modern workflows rarely live in a silo. An infrastructure change might need to be preceded by a database backup, followed by a data pipeline run, and finished with a notification to a business system. Kestra's strength is unifying these domains in one place. CAGIP, the IT production arm of Crédit Agricole, used Kestra to transform its infrastructure operations and scale data workflows across more than 100 clusters.
+
+### Adding Governance and Auditability to IaC
+
+Kestra layers important governance on top of IaC execution. With [Role-Based Access Control (RBAC)](/resources/infrastructure/rbac), audit logs, and integrated secrets management, you can control who is allowed to run infrastructure changes and keep a complete record of every action. That keeps powerful automation safe and aligned with organizational policy.
+
+## The Evolving Role of IaC in the Everything-as-Code Era
+
+### Is Infrastructure as Code dead?
+
+Far from dead, IaC is more relevant than ever, but its role is changing. The practice is no longer only about defining static configurations; it is about enabling dynamic, event-driven automation. IaC provides the foundational building blocks, and its real power shows up when those blocks are orchestrated as part of a larger automated system.
+
+### Beyond Provisioning: The Rise of Orchestrated IaC
+
+The future of infrastructure management is orchestrated IaC, where a platform like Kestra sits above your IaC tools and coordinates their execution in response to events, on a schedule, or through human-in-the-loop approvals. This model supports sophisticated lifecycle management, disaster recovery, and dynamic scaling.
+
+By adopting an orchestration control plane, you move from simply defining infrastructure to truly automating the end-to-end processes that depend on it. To go deeper, browse our [infrastructure automation resources](/resources/infrastructure) or see how Kestra can help you [orchestrate your entire infrastructure](/infra-automation).
