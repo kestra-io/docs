@@ -16,15 +16,11 @@ Run database migrations before starting Kestra 2.0 for the first time. The migra
 | Open-source | Migrations run automatically on every startup. No configuration required. |
 | Enterprise Edition | Migrations do **not** run automatically (`kestra.migration.auto=false` by default). Kestra **refuses to start** if any pending migrations exist. Execute `kestra migrate run` before restarting. |
 
-To configure an EE instance to auto-migrate on startup, set:
+:::alert{type="warning"}
+Do not set `kestra.migration.auto: true` in production Enterprise Edition environments. Auto-migration runs migrations on every startup without a preview step, removing your ability to control timing, review changes, or recover cleanly if a migration fails. The default (`false`) is the right setting for EE production. Only set `auto: true` for local development or non-critical environments where convenience outweighs the risk.
+:::
 
-```yaml
-kestra:
-  migration:
-    auto: true
-```
-
-Running migrations manually with `kestra migrate run` is recommended for production. It gives you control over timing and lets you preview changes with `kestra migrate plan` first.
+Running migrations manually with `kestra migrate run` gives you full control: preview with `kestra migrate plan`, apply at a scheduled maintenance window, and verify before restarting your instances.
 
 ## Upgrade sequence
 

@@ -5,9 +5,7 @@ release: 2.0.0
 description: Migration guide for upgrading from Kestra 1.3 to 2.0.0, covering the RBAC action model, deprecated properties, and trigger types that are now removed.
 ---
 
-import ChildCard from "~/components/docs/ChildCard.astro"
-
-This guide covers what you need to change when upgrading from **Kestra 1.3** to **2.0.0**.
+Upgrade from Kestra 1.3 to 2.0.0 by reviewing and applying the breaking changes below.
 
 :::alert{type="warning"}
 **Start from Kestra 1.3.** This guide assumes you are already running the latest **1.3.x** release. If you are on an older version, complete the required metadata migrations before upgrading to 2.0.0:
@@ -18,20 +16,121 @@ This guide covers what you need to change when upgrading from **Kestra 1.3** to 
 If you are upgrading directly from 1.0, the [LTS migration guide (1.0 → 1.3)](../v1.3.0/lts-migration) consolidates all required steps in one pass.
 :::
 
-## Before you start: run database migrations
+## Before you start
+
+### Back up your database
+
+Take a full database backup before upgrading. Several 2.0 migrations are irreversible — in particular, the BasicAuth password rehash prevents rollback to 1.x.
+
+### Run database migrations (EE)
 
 **Enterprise Edition users must run database migrations manually before starting Kestra 2.0.** By default, Kestra EE refuses to start if pending migrations exist. Stop your 1.3 instance, then run the following using the 2.0 binary:
 
 ```bash
-kestra migrate run
+kestra migrate plan   # preview what will run
+kestra migrate run    # apply migrations
 ```
 
-Open-source users do not need to do this manually. Migrations run automatically on startup.
+Open-source users do not need to do this manually — migrations run automatically on startup.
 
-See [Database Migrations](./database-migrations) for the full upgrade sequence, Docker Compose and Kubernetes examples, a description of key migration scripts, and configuration options.
+See [Database Migrations](./database-migrations) for the full upgrade sequence, Docker Compose and Kubernetes examples, and configuration options.
+
+### Inventory your flows
+
+Before upgrading, scan your flow sources for constructs that are removed in 2.0:
+
+```bash
+grep -rl "pluginDefaults:" flows/
+grep -rl "ForEach\|ForEachItem" flows/
+grep -rl "conditions:" flows/
+grep -rl "preconditions:" flows/
+```
+
+Fix each match using the guides below before restarting Kestra.
+
+## Migration tooling
+
+Two tools are available to reduce manual effort during the upgrade.
+
+### kestra-migrate CLI
+
+[`kestra-migrate`](https://github.com/kestra-io/kestra2-flow-migration) is a command-line tool that automatically rewrites v1.3 flow YAML to the v2.0 format. It covers 16 migration rules — type renames, property renames, auth restructuring, and more — and flags flows that use removed types requiring manual rewriting.
+
+**Install on macOS or Linux:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestra2-flow-migration/main/install-scripts/install.sh | bash
+```
+
+**Check which flows need migration:**
+
+```bash
+kestra-migrate --check ./flows/
+```
+
+**Migrate flows to an output directory:**
+
+```bash
+kestra-migrate -o v2-flows/ ./flows/
+```
+
+Run `--check` first to scope the work. After `kestra-migrate` runs, use the guides below for the two patterns the CLI cannot handle automatically: the `json()` function and `pluginDefaults` replacement.
+
+### Claude Code migration skill
+
+The [`migrate-kestra-2`](https://github.com/kestra-io/agent-skills) Claude Code skill guides the full upgrade journey: pre-flight access audit, server upgrade (Docker Compose and Helm paths), CLI-first flow migration using `kestra-migrate`, and guided rewrites for patterns the CLI does not cover.
+
+**Install:**
+
+```bash
+git clone git@github.com:kestra-io/agent-skills.git
+ln -s $(pwd)/agent-skills/skills/migrate-kestra-2 ~/.claude/skills/migrate-kestra-2
+```
+
+Then open any Claude Code session and say: "migrate my Kestra instance to 2.0".
 
 ## What changed in 2.0.0
 
-Kestra 2.0.0 removes several task properties and trigger condition types that were deprecated throughout the 1.x series but continued to work as aliases. If you completed the 1.3 migration, the changes in this guide are all that remain before upgrading.
+The changes below are grouped by the area they affect. Work through the categories relevant to your setup — not every change applies to every installation.
 
-<ChildCard />
+### Flows
+
+Changes that affect how flows are written or behave at runtime. Review all of these before upgrading, regardless of edition.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [ForEach replaced by Loop](./foreach-loop) | OSS, EE | `ForEach` and `ForEachItem` are removed. Migrate all uses to the `Loop` task before upgrading — flows that reference either task fail to parse in 2.0. |
+| [Trigger conditions redesign](./trigger-conditions-redesign) | OSS, EE | The `conditions` list and `preconditions` block on triggers are removed. All trigger types now use a top-level `when` Pebble expression. |
+| [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. |
+| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function is removed. Replace all calls with `fromJson()` — the signature is identical. |
+| [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
+
+### Governance and plugins
+
+Changes to Enterprise Edition configuration, permissions, and plugin defaults.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [pluginDefaults removed](./plugin-defaults-removed) | OSS, EE | The `pluginDefaults` keyword is removed at all scopes. EE users migrate to Policies; OSS users inline task values manually. |
+| [pluginDefaults.forced removed from flows](./plugin-defaults-forced-removed) | OSS, EE | The `forced` property on flow-level `pluginDefaults` is removed. Use `Add` rules with `override: true` in a Policy (EE) or inline the values (OSS). |
+| [RBAC action model](./rbac-action-model) | EE | The CRUD-based permission model is replaced by a resource and action model. Existing roles are migrated automatically; CLI role definitions require updates. |
+
+### Data and storage
+
+Changes to execution data formats, API responses, and storage configuration.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [Execution API response](./execution-api-response) | OSS, EE | The execution endpoint response no longer includes task run outputs. Update any API consumers that read `taskRunList[*].outputs`. |
+| [ION binary format](./ion-binary-format) | OSS, EE | ION task output files are now written in binary format. Expressions that call `read()` on ION output and then perform string operations will fail — wrap with `fromIon()`. |
+| [Execution data in internal storage removed](./execution-data-internal-storage) | EE | The configuration option that stored task run outputs in internal storage is removed. Remove the affected keys from your configuration. |
+
+### Infrastructure
+
+Changes to deployment, Helm charts, and server configuration. Relevant primarily for operators and platform teams.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [Database migrations](./database-migrations) | OSS, EE | How to run the 2.0 schema migrations, including the upgrade sequence, Docker Compose and Kubernetes examples, and key scripts. |
+| [Helm gRPC worker-controller](./helm-grpc-worker-controller) | EE | Port 50051 is now exposed by default on all pods, and a dedicated controller deployment is added to the Helm chart. Review before upgrading. |
+| [Management endpoint hardening](./management-endpoint-hardening) | OSS, EE | Several management endpoints that were open without authentication in 1.x now require explicit opt-in. Review before upgrading in production. |

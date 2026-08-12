@@ -21,12 +21,13 @@ In Kestra 1.x, plugin defaults could be defined at three levels:
 |---|---|
 | Flow-level `pluginDefaults:` block | Values inlined onto tasks (OSS), or a `REFERENCE` Policy attached via `policyRefs:` (EE) |
 | Namespace-level Plugin Defaults (EE) | Namespace-scoped Policy (UI / API) — existing namespace-level defaults are migrated automatically |
-| Tenant-level plugin defaults (EE) | Tenant-scoped Policy (UI / API) |
 | `kestra.plugins.defaults` in server config | Static policy under `kestra.policies` in server config |
 | `forced: false` (fill only when unset) | `Add` rule with `override: false` (the default) |
 | `forced: true` (policy value always wins) | `Add` rule with `override: true` |
 
-All are removed in 2.0.0. In **Enterprise Edition**, they are replaced by [Policies](../../../07.enterprise/02.governance/policies/index.md) — a governance layer that covers injection, enforcement, and validation in one place. Policies also extend `pluginDefaults` with the ability to target **flow-level properties** (`retry`, `concurrency`, `labels`) in addition to plugin properties. In **OSS**, there is no direct replacement; move default values inline onto each task or use flow-level variables.
+Tenant-scoped governance did not exist in 1.x. Kestra 2.0 introduces tenant-scoped Policies as a new capability — you can now apply defaults and enforcement rules across an entire tenant without touching individual namespaces.
+
+All `pluginDefaults` constructs are removed in 2.0.0. In **Enterprise Edition**, they are replaced by [Policies](../../../07.enterprise/02.governance/policies/index.md) — a governance layer that covers injection, enforcement, and validation in one place. Policies also extend `pluginDefaults` with the ability to target **flow-level properties** (`retry`, `concurrency`, `labels`) in addition to plugin properties. In **OSS**, there is no direct replacement and no automated migration tooling — move default values inline onto each task or use flow-level variables.
 
 Precedence is preserved. Policies apply along a scope chain `STATIC → INSTANCE → TENANT → NAMESPACE`:
 
@@ -38,7 +39,7 @@ Precedence is preserved. Policies apply along a scope chain `STATIC → INSTANCE
 Collect every place plugin defaults are defined **before** upgrading. The 1.x UI for namespace and tenant defaults does not exist in 2.x.
 
 1. **Server configuration**: every entry under `kestra.plugins.defaults` in your `application.yml` or Helm values.
-2. **Tenant and namespace defaults** (EE): export them from each tenant's and namespace's **Plugin Defaults** settings page, or via the 1.x API.
+2. **Namespace defaults** (EE): export them from each namespace's **Plugin Defaults** settings page, or via the 1.x API.
 3. **Flow-level blocks**: search your flow sources for `pluginDefaults:`:
 
 ```bash

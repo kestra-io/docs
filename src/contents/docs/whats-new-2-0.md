@@ -3,15 +3,17 @@ title: "What's New in Kestra 2.0"
 h1: What's New in Kestra 2.0
 sidebarTitle: What's New in 2.0
 icon: /src/contents/docs/icons/admin.svg
-description: Overview of every major feature, capability, and behavior change in Kestra 2.0 for Early Access Program participants.
+description: Overview of every major feature, capability, and behavior change in Kestra 2.0.
 version: ">= 2.0.0"
 ---
 
-Kestra 2.0 is a major release. This page orients Early Access Program participants on what's new and what to explore. As you test, use the feedback channels your EAP contact provided.
+Kestra 2.0 is a major release introducing AI-native orchestration, redesigned governance, and significant infrastructure improvements.
 
-For a full list of breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx).
+For breaking changes and migration steps, see the [2.0 migration guide](./11.migration-guide/v2.0.0/index.mdx).
 
-## AI (In Development)
+## AI
+
+Native AI capabilities built into the platform for flow authoring, agent orchestration, and external tool integration.
 
 ### AI Copilot
 
@@ -38,6 +40,8 @@ The [Kestra MCP server](./ai-tools/03.mcp-server/index.md) exposes flows as tool
 ---
 
 ## Workflow components
+
+Updates to the core primitives used to build flows.
 
 ### Loop task
 
@@ -87,6 +91,8 @@ New [Pebble date functions](./expressions/04.functions/06.dates/index.mdx) make 
 
 ## Security
 
+New controls for what flows can access and how they are governed.
+
 ### Policies (EE)
 
 [Policies](./07.enterprise/02.governance/policies/index.md) enforce governance rules on flows at save time and execution time. Rules can require specific task types, block others, or validate property values — applied per namespace.
@@ -99,6 +105,8 @@ New [Pebble date functions](./expressions/04.functions/06.dates/index.mdx) make 
 
 ## Enterprise
 
+New capabilities available in Enterprise Edition.
+
 ### Custom Blueprints (EE)
 
 [Custom Blueprints](./07.enterprise/02.governance/custom-blueprints/index.md) let you publish Pebble-templated flow skeletons to your organization's Blueprint library. Each blueprint defines form fields using standard input types; when a user instantiates it, Kestra renders the template into a ready-to-use flow. Useful for standardizing common flow patterns across teams.
@@ -106,6 +114,8 @@ New [Pebble date functions](./expressions/04.functions/06.dates/index.mdx) make 
 ---
 
 ## Developer experience
+
+Improvements to the tools and workflows used to build and manage flows.
 
 ### VS Code extension: Namespace files
 
@@ -126,6 +136,8 @@ The `kestractl` CLI now supports IAM management: roles, role bindings, service a
 ---
 
 ## Infrastructure
+
+Changes to deployment, storage, and runtime behavior.
 
 ### GCE Task Runner
 
