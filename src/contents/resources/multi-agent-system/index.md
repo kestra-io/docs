@@ -28,6 +28,8 @@ This article will demystify Multi-Agent Systems, exploring their fundamental com
 
 At its core, a Multi-Agent System is a collection of autonomous, interacting computational entities called agents. These agents work within a shared environment to solve problems that are often beyond the scope or capabilities of any single agent. The power of a MAS lies not just in the individual agents, but in their collective behavior and interactions.
 
+A multi-agent system rarely runs in isolation. It sits on top of retrieval, feature and inference pipelines, which is why [AI orchestration for multi-agent systems](/resources/ai/ai-orchestration) has to govern far more than agent-to-agent messaging.
+
 ### Defining agents and their collective intelligence
 
 An agent is more than just a piece of code; it's a computational entity with specific properties that enable it to function autonomously. While the exact definition can vary, most agents exhibit four key characteristics:

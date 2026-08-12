@@ -602,6 +602,10 @@
                 gap: 0.5rem;
             }
 
+            &.message-user .bubble {
+                white-space: pre-line;
+            }
+
             .avatar {
                 flex-shrink: 0;
 
@@ -622,7 +626,6 @@
                 background: var(--ks-background-body);
                 border: $block-border;
                 color: var(--ks-content-primary);
-                white-space: pre-line;
                 max-width: calc(100% - 48px);
                 position: relative;
 

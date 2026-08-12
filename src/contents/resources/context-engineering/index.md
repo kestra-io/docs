@@ -46,6 +46,8 @@ Where a prompt engineer might write, "Based on our latest Q3 report, summarize s
 
 In a production environment, the quality of an AI agent's output is directly tied to the quality of its context. Poor or missing context leads to a host of problems:
 
+Context is assembled by the pipelines that run before the model is called, so reliable context is ultimately a question of [AI orchestration across models and tools](/resources/ai/ai-orchestration) rather than of prompt wording.
+
 -   **Hallucinations:** The LLM invents facts to fill knowledge gaps.
 -   **Irrelevant Responses:** The agent answers based on its general training data, not the specific user need.
 -   **Incorrect Tool Use:** The agent calls the wrong API or provides invalid parameters because it lacks situational awareness.
