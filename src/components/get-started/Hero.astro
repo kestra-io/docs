@@ -55,9 +55,17 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                 <div class="command-label">
                     <img src="/icon-simple.svg" alt="Kestra" width="20" height="20" style="width:20px;height:20px;flex-shrink:0" />
                     <span class="command-hint">Run this. That's it.</span>
-                    <button class="copy-btn" title="Copy command" onclick={`navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always --rm -it -p 8080:8080 --user=root \\\n  --name kestra \\\n  -v kestra_data:/app/storage \\\n  -v kestra_db:/app/data \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -v /tmp:/tmp \\\n  kestra/kestra:latest server local`)})`}>
-                        <Icon name="mdi:content-copy" />
+                    <button
+                        class="copy-btn"
+                        type="button"
+                        title="Copy command"
+                        aria-label="Copy command"
+                        onclick={`(async function(){try{await navigator.clipboard.writeText(${JSON.stringify(`docker run --pull=always --rm -it -p 8080:8080 --user=root \\\n  --name kestra \\\n  -v kestra_data:/app/storage \\\n  -v kestra_db:/app/data \\\n  -v /var/run/docker.sock:/var/run/docker.sock \\\n  -v /tmp:/tmp \\\n  kestra/kestra:latest server local`)});this.classList.add('copied');var l=document.getElementById('hero-copy-live');if(l){l.textContent='Copied to clipboard';setTimeout(function(){l.textContent=''},1500)}setTimeout(function(){this.classList.remove('copied')}.bind(this),1500)}catch(e){console.error(e)}}).call(this)`}
+                    >
+                        <Icon name="mdi:content-copy" class="icon-copy" />
+                        <Icon name="mdi:check" class="icon-check" />
                     </button>
+                    <span id="hero-copy-live" aria-live="polite" class="sr-only">&nbsp;</span>
                 </div>
                 <pre class="command-code"><code set:html={dockerCommand} /></pre>
             </div>
@@ -304,7 +312,7 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                 padding: 4px;
                 cursor: pointer;
                 color: rgba(255, 255, 255, 0.4);
-                display: flex;
+                display: inline-flex;
                 align-items: center;
                 transition: color 0.2s;
                 border-radius: 4px;
@@ -314,7 +322,22 @@ const dockerCommand = `<span class="t-cmd">docker</span> <span class="t-sub">run
                 :global(svg) {
                     width: 16px;
                     height: 16px;
+                    pointer-events: none;
                 }
+
+                :global(.icon-check) { display: none; }
+                &.copied :global(.icon-copy) { display: none; }
+                &.copied :global(.icon-check) { display: inline-block; color: #6bd37a; }
+            }
+
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
             }
         }
 

@@ -17,6 +17,39 @@
         }
     }
 
+    & :deep(pre) .code-copy {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: transparent;
+        border: none;
+        padding: 6px;
+        border-radius: 4px;
+        cursor: pointer;
+        color: var(--ks-content-tertiary);
+        display: inline-flex;
+        align-items: center;
+    }
+
+    & :deep(pre) .code-copy svg {
+        width: 16px;
+        height: 16px;
+        pointer-events: none;
+    }
+
+    & :deep(pre) .code-copy .icon-check {
+        display: none;
+    }
+
+    & :deep(pre) .code-copy.copied .icon-copy {
+        display: none;
+    }
+
+    & :deep(pre) .code-copy.copied .icon-check {
+        display: inline-block;
+        color: #6bd37a;
+    }
+
     :deep(h3) {
         padding: 0;
     }

@@ -12,10 +12,29 @@ export function injectCopyButtons(html: string): string {
     return html.replaceAll("<pre>", `<pre>${COPY_BUTTON}`)
 }
 
-export function handleCopyClick({ target }: MouseEvent): void {
-    const button = (target as HTMLElement).closest<HTMLButtonElement>(
-        ".code-copy",
+let liveRegion: HTMLElement | null = null
+
+function getLiveRegion(): HTMLElement {
+    if (liveRegion && liveRegion.isConnected) return liveRegion
+    liveRegion = document.createElement("span")
+    liveRegion.setAttribute("aria-live", "polite")
+    liveRegion.setAttribute(
+        "style",
+        "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0",
     )
+    document.body.appendChild(liveRegion)
+    return liveRegion
+}
+
+export function handleCopyClick({ target }: MouseEvent): void {
+    const el = target as HTMLElement
+
+    let button = el.closest<HTMLButtonElement>(".code-copy")
+    if (!button) {
+        const pre = el.closest("pre")
+        button = pre?.querySelector<HTMLButtonElement>(".code-copy") ?? null
+    }
+
     const code = button?.parentElement?.querySelector("code")
 
     if (!button || !code || !navigator.clipboard) {
@@ -25,7 +44,13 @@ export function handleCopyClick({ target }: MouseEvent): void {
     void navigator.clipboard.writeText(code.textContent?.trimEnd() ?? "")
     button.classList.add("copied")
 
+    const live = getLiveRegion()
+    live.textContent = "Copied to clipboard"
+    setTimeout(() => {
+        live.textContent = ""
+    }, 1500)
+
     setTimeout(() => {
         button.classList.remove("copied")
-    }, 2000)
+    }, 1500)
 }
