@@ -134,6 +134,8 @@ The evolution of AI in software development is heading towards more autonomous s
 
 Kestra is uniquely positioned to serve as the backbone for AI code generation pipelines. Its declarative YAML interface makes workflows auditable and version-controllable, which is essential for governing AI-driven processes. As a polyglot platform, Kestra can run any tool or script, regardless of language, providing the flexibility needed to integrate various AI models, linters, and security scanners.
 
+Code generation is one AI workload among many, which is [why teams end up putting every AI workload on the same scheduler](/resources/ai/ai-orchestration) instead of running a separate tool per use case.
+
 With native [AI tools](https://kestra.io/docs/ai-tools) like the AI Copilot and autonomous agents, Kestra is not just an orchestrator but an active participant in the AI-driven development lifecycle. It provides the unified control plane needed to manage these complex workflows, from data ingestion for RAG systems to the final deployment of AI-generated code. This is [why Kestra](https://kestra.io/docs/why-kestra) is a powerful choice for teams looking to build the next generation of software delivery pipelines.
 
 ## Conclusion
