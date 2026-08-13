@@ -3,7 +3,7 @@ description: "Trigger Databricks jobs when upstream data is ready, chain with in
 
 tool:
   name: "Databricks"
-  pluginClass: "io.kestra.plugin.databricks.job.CreateRun"
+  pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
   color: "#FF3621"
 
 hero:
@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "Databricks handles the distributed lakehouse compute. Kestra orchestrates everything around it: triggers <code>io.kestra.plugin.databricks.job.CreateRun</code> the moment upstream ingestion confirms rather than waiting for the next cron window, chains the Databricks job with upstream syncs and downstream warehouse writes in one flow with a shared execution ID, and logs every step — the job ID, run state, and output — in one searchable execution record."
+nutshell: "Databricks handles the distributed lakehouse compute. Kestra orchestrates everything around it: triggers <code>io.kestra.plugin.databricks.job.SubmitRun</code> the moment upstream ingestion confirms rather than waiting for the next cron window, chains the Databricks job with upstream syncs and downstream warehouse writes in one flow with a shared execution ID, and logs every step — the job ID, run state, and output — in one searchable execution record."
 
 pillars:
   title: "Above the Databricks job scheduler."
@@ -24,7 +24,7 @@ pillars:
   items:
     - icon: "mdi:lightning-bolt-outline"
       title: "Event-driven jobs, not fixed cron"
-      description: "Submitting a Databricks job on a fixed schedule means it may run on incomplete upstream data. Kestra triggers <code>io.kestra.plugin.databricks.job.CreateRun</code> the moment the upstream step confirms — whether that is a file landing in S3 or ADLS, an Airbyte sync completing, or a webhook. The job always runs on fresh input."
+      description: "Submitting a Databricks job on a fixed schedule means it may run on incomplete upstream data. Kestra triggers <code>io.kestra.plugin.databricks.job.SubmitRun</code> the moment the upstream step confirms — whether that is a file landing in S3 or ADLS, an Airbyte sync completing, or a webhook. The job always runs on fresh input."
     - icon: "mdi:pipe-disconnected"
       title: "Full pipeline in one flow"
       description: "A Databricks job is one step in a larger pipeline. Kestra runs the ingestion step upstream, the Databricks job, and the downstream warehouse load as ordered tasks in one flow. A load failure retries without re-running the expensive lakehouse job, and every step shares one execution ID for debugging."
@@ -33,7 +33,7 @@ pillars:
       description: "Databricks compute is billed by the minute. Kestra chains a cluster creation step, the job run, and a deletion step in one flow, with an error handler that ensures deletion runs even when the job fails. No cluster is left running after an error."
     - icon: "mdi:shield-check-outline"
       title: "Quality gate before job submission"
-      description: "Running a Databricks job on malformed input wastes DBU and time. Kestra can check row counts or run a schema validation step before <code>CreateRun</code> fires. If input data fails the check, the flow halts and pages the team before any compute is consumed."
+      description: "Running a Databricks job on malformed input wastes DBU and time. Kestra can check row counts or run a schema validation step before <code>SubmitRun</code> fires. If input data fails the check, the flow halts and pages the team before any compute is consumed."
     - icon: "mdi:source-branch"
       title: "Parallel job fan-out across notebooks"
       description: "Some pipelines process multiple partitions or datasets independently. Kestra fans out Databricks job runs with <code>ForEach</code> and a <code>concurrencyLimit</code>, runs each in isolation, and isolates failures with <code>allowFailure</code> so one bad partition does not halt the whole batch."
@@ -55,7 +55,7 @@ useCases:
           pluginClass: "io.kestra.plugin.aws.s3.Trigger"
         - node: "databricks job"
           label: "run notebook"
-          pluginClass: "io.kestra.plugin.databricks.job.CreateRun"
+          pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
         - node: "row check"
           label: "validate output"
           pluginClass: "io.kestra.plugin.core.flow.If"
@@ -80,7 +80,7 @@ useCases:
           pluginClass: "io.kestra.plugin.airbyte.connections.Sync"
         - node: "databricks job"
           label: "transform in lakehouse"
-          pluginClass: "io.kestra.plugin.databricks.job.CreateRun"
+          pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
         - node: "warehouse load"
           label: "write result"
           pluginClass: "io.kestra.plugin.gcp.bigquery.Query"
@@ -108,7 +108,7 @@ useCases:
           pluginClass: "io.kestra.plugin.databricks.cluster.CreateCluster"
         - node: "databricks job"
           label: "run notebook"
-          pluginClass: "io.kestra.plugin.databricks.job.CreateRun"
+          pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
         - node: "delete cluster"
           label: "teardown compute"
           pluginClass: "io.kestra.plugin.databricks.cluster.DeleteCluster"
@@ -118,7 +118,7 @@ useCases:
         - title: "Teardown on failure"
           description: "Error handler ensures the cluster is deleted even when the job errors."
         - title: "Wait built in"
-          description: "CreateRun blocks until the run reaches terminal status."
+          description: "Set <code>waitForCompletion</code> and SubmitRun blocks until the run reaches terminal status."
           wide: true
     - badge: "Quality gate"
       badgeIcon: "mdi:shield-check-outline"
@@ -133,7 +133,7 @@ useCases:
           pluginClass: "io.kestra.plugin.core.flow.If"
         - node: "databricks job"
           label: "run if valid"
-          pluginClass: "io.kestra.plugin.databricks.job.CreateRun"
+          pluginClass: "io.kestra.plugin.databricks.job.SubmitRun"
         - node: "notify"
           label: "alert if invalid"
           pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
@@ -224,13 +224,13 @@ comparison:
 
 faq:
   - question: "How does Kestra trigger a Databricks job when upstream data is ready?"
-    answer: "Kestra has native triggers for S3 and ADLS file arrivals, webhooks, and sync completions from tools like Airbyte and Fivetran. When the upstream event fires, Kestra starts the flow and runs <code>io.kestra.plugin.databricks.job.CreateRun</code> as the next step. The job only runs after the upstream trigger confirms, not on a fixed cron schedule."
+    answer: "Kestra has native triggers for S3 and ADLS file arrivals, webhooks, and sync completions from tools like Airbyte and Fivetran. When the upstream event fires, Kestra starts the flow and runs <code>io.kestra.plugin.databricks.job.SubmitRun</code> as the next step. The job only runs after the upstream trigger confirms, not on a fixed cron schedule."
   - question: "Can Kestra control Databricks cluster lifecycle in one flow?"
-    answer: "Yes. Chain <code>io.kestra.plugin.databricks.cluster.CreateCluster</code>, <code>io.kestra.plugin.databricks.job.CreateRun</code>, and <code>io.kestra.plugin.databricks.cluster.DeleteCluster</code> as sequential tasks in one flow. Add an <code>errors</code> block that also calls <code>DeleteCluster</code> so the cluster is always torn down and billed compute stops, even when the job fails."
+    answer: "Yes. Chain <code>io.kestra.plugin.databricks.cluster.CreateCluster</code>, <code>io.kestra.plugin.databricks.job.SubmitRun</code>, and <code>io.kestra.plugin.databricks.cluster.DeleteCluster</code> as sequential tasks in one flow. Add an <code>errors</code> block that also calls <code>DeleteCluster</code> so the cluster is always torn down and billed compute stops, even when the job fails."
   - question: "How does Kestra chain a Databricks job with ingestion and a downstream warehouse load?"
-    answer: "Each step is a separate task in one flow. An ingestion plugin runs first, Kestra waits for it to confirm, then <code>CreateRun</code> fires the Databricks job, and a warehouse task loads the output. A failure in the warehouse load step retries that step only, without re-running the Databricks job. Every step shares one execution ID."
+    answer: "Each step is a separate task in one flow. An ingestion plugin runs first, Kestra waits for it to confirm, then <code>SubmitRun</code> fires the Databricks job, and a warehouse task loads the output. A failure in the warehouse load step retries that step only, without re-running the Databricks job. Every step shares one execution ID."
   - question: "Can Kestra validate input data before the Databricks job runs?"
-    answer: "Yes. Add an <code>io.kestra.plugin.core.flow.If</code> task before <code>CreateRun</code> to check row counts, schema, or data freshness. If the check fails, the flow halts and sends a Slack alert before any cluster compute is billed. This pattern prevents wasted DBU on bad input data."
+    answer: "Yes. Add an <code>io.kestra.plugin.core.flow.If</code> task before <code>SubmitRun</code> to check row counts, schema, or data freshness. If the check fails, the flow halts and sends a Slack alert before any cluster compute is billed. This pattern prevents wasted DBU on bad input data."
   - question: "How is this different from Databricks Workflows?"
     answer: "Databricks Workflows coordinates jobs that run inside the Databricks lakehouse. Kestra orchestrates the steps around those jobs: what triggers them (file arrivals, external sync completions, webhooks), what data feeds them, what runs after (warehouse loads, notifications, downstream APIs), and where the cross-stack audit trail lives. Kestra also manages non-Databricks steps in the same flow without requiring everything to live inside the Databricks workspace."
   - question: "Is Kestra self-hosted or managed?"

@@ -3,7 +3,7 @@ description: "Trigger LangChain chains and agents on any event, chain AI steps w
 
 tool:
   name: "LangChain"
-  pluginClass: "io.kestra.plugin.langchain4j.TextCompletion"
+  pluginClass: "io.kestra.plugin.ai.completion.ChatCompletion"
   color: "#1C3C3C"
 
 hero:
@@ -16,7 +16,7 @@ hero:
     label: "Get Started"
     href: "/get-started"
 
-nutshell: "LangChain defines the chains, retrievers, and agents. Kestra runs the workflow around them: triggers <code>io.kestra.plugin.langchain4j.TextCompletion</code> or a Python LangChain script on a schedule or when new documents arrive, retries on rate limit errors without re-running the data prep, chains the LLM step with upstream ingestion and downstream vector store writes, and logs every prompt, model, and output in one execution record."
+nutshell: "LangChain defines the chains, retrievers, and agents. Kestra runs the workflow around them: triggers <code>io.kestra.plugin.ai.completion.ChatCompletion</code> or a Python LangChain script on a schedule or when new documents arrive, retries on rate limit errors without re-running the data prep, chains the LLM step with upstream ingestion and downstream vector store writes, and logs every prompt, model, and output in one execution record."
 
 pillars:
   title: "Above the LangChain application layer."
@@ -24,10 +24,10 @@ pillars:
   items:
     - icon: "mdi:clock-outline"
       title: "Scheduled AI batch runs"
-      description: "LangChain applications that run as scripts have no scheduling, no retry on rate limits, and no execution history. Kestra wraps them in a scheduled flow: a <code>Schedule</code> trigger fires the flow, <code>langchain4j.TextCompletion</code> or a Python script runs the chain, and every output is logged with the prompt, model, and token count."
+      description: "LangChain applications that run as scripts have no scheduling, no retry on rate limits, and no execution history. Kestra wraps them in a scheduled flow: a <code>Schedule</code> trigger fires the flow, <code>ai.completion.ChatCompletion</code> or a Python script runs the chain, and every output is logged with the prompt, model, and token count."
     - icon: "mdi:lightning-bolt-outline"
       title: "Trigger on data arrival"
-      description: "RAG pipelines need to ingest new documents as they arrive, not on the next cron tick. Kestra triggers the embedding and ingestion step the moment a new file lands in S3 or GCS, runs <code>io.kestra.plugin.langchain4j.rag.IngestDocument</code>, and writes to the vector store. No polling loop in user code."
+      description: "RAG pipelines need to ingest new documents as they arrive, not on the next cron tick. Kestra triggers the embedding and ingestion step the moment a new file lands in S3 or GCS, runs <code>io.kestra.plugin.ai.rag.IngestDocument</code>, and writes to the vector store. No polling loop in user code."
     - icon: "mdi:refresh"
       title: "Retry on rate limits without re-running prep"
       description: "A rate limit error mid-chain would re-run the entire script if retried from the top. Kestra retries at the task level: the data preparation step is separate from the LLM call, so a rate limit error retries only the LLM task without re-fetching or re-processing the input data."
@@ -48,7 +48,7 @@ useCases:
     - badge: "RAG ingestion"
       badgeIcon: "mdi:database-import-outline"
       title: "Scheduled document ingestion into a vector store"
-      description: "New documents arrive periodically. Kestra fetches them, runs <code>langchain4j.rag.IngestDocument</code> to embed and index them in the vector store, and confirms on Slack. A failed vector write retries without re-embedding the document."
+      description: "New documents arrive periodically. Kestra fetches them, runs <code>ai.rag.IngestDocument</code> to embed and index them in the vector store, and confirms on Slack. A failed vector write retries without re-embedding the document."
       flow:
         - node: "schedule"
           label: "periodic trigger"
@@ -58,7 +58,7 @@ useCases:
           pluginClass: "io.kestra.plugin.core.http.Download"
         - node: "ingest doc"
           label: "embed + index"
-          pluginClass: "io.kestra.plugin.langchain4j.rag.IngestDocument"
+          pluginClass: "io.kestra.plugin.ai.rag.IngestDocument"
         - node: "slack"
           label: "confirm ingestion"
           pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
@@ -80,10 +80,10 @@ useCases:
           pluginClass: "io.kestra.plugin.aws.s3.Trigger"
         - node: "ingest doc"
           label: "embed + index"
-          pluginClass: "io.kestra.plugin.langchain4j.rag.IngestDocument"
+          pluginClass: "io.kestra.plugin.ai.rag.IngestDocument"
         - node: "rag confirm"
           label: "verify indexed"
-          pluginClass: "io.kestra.plugin.langchain4j.rag.ChatCompletion"
+          pluginClass: "io.kestra.plugin.ai.rag.ChatCompletion"
         - node: "slack"
           label: "confirm"
           pluginClass: "io.kestra.plugin.notifications.slack.SlackIncomingWebhook"
@@ -102,7 +102,7 @@ useCases:
       flow:
         - node: "text completion"
           label: "generate draft"
-          pluginClass: "io.kestra.plugin.langchain4j.TextCompletion"
+          pluginClass: "io.kestra.plugin.ai.completion.ChatCompletion"
         - node: "pause"
           label: "await approval"
           pluginClass: "io.kestra.plugin.core.flow.Pause"
@@ -123,7 +123,7 @@ useCases:
     - badge: "Batch LLM"
       badgeIcon: "mdi:format-list-bulleted"
       title: "Batch LLM enrichment with per-item retry"
-      description: "A list of records needs LLM enrichment. Kestra fans them out with <code>ForEach</code>, runs <code>langchain4j.TextCompletion</code> per item, and retries rate-limited items without touching the others. Results are written to a downstream store."
+      description: "A list of records needs LLM enrichment. Kestra fans them out with <code>ForEach</code>, runs <code>ai.completion.ChatCompletion</code> per item, and retries rate-limited items without touching the others. Results are written to a downstream store."
       flow:
         - node: "fetch records"
           label: "pull batch"
@@ -133,7 +133,7 @@ useCases:
           pluginClass: "io.kestra.plugin.core.flow.ForEach"
         - node: "text completion"
           label: "enrich per item"
-          pluginClass: "io.kestra.plugin.langchain4j.TextCompletion"
+          pluginClass: "io.kestra.plugin.ai.completion.ChatCompletion"
         - node: "write result"
           label: "store output"
           pluginClass: "io.kestra.plugin.jdbc.duckdb.Query"
@@ -154,18 +154,18 @@ blueprints:
   items:
     - name: "Scheduled RAG ingestion"
       blueprintId: "langchain-rag-ingestion"
-      title: "Scheduled document ingestion with LangChain4J"
-      description: "Fetches new documents on a schedule, runs <code>langchain4j.rag.IngestDocument</code> to embed and index them, and confirms on Slack. A failed vector write retries without re-embedding."
+      title: "Scheduled document ingestion with the Kestra AI plugin"
+      description: "Fetches new documents on a schedule, runs <code>ai.rag.IngestDocument</code> to embed and index them, and confirms on Slack. A failed vector write retries without re-embedding."
       href: "/blueprints"
     - name: "Human-in-the-loop generation"
       blueprintId: "langchain-human-approval"
       title: "Generate LLM content and pause for human review"
-      description: "Runs a <code>langchain4j.TextCompletion</code> task, pauses for a human reviewer in the Kestra UI, and publishes only on approval. Who approved and when is logged in the execution record."
+      description: "Runs a <code>ai.completion.ChatCompletion</code> task, pauses for a human reviewer in the Kestra UI, and publishes only on approval. Who approved and when is logged in the execution record."
       href: "/blueprints"
     - name: "Batch LLM enrichment"
       blueprintId: "langchain-batch-enrichment"
       title: "Batch LLM enrichment with per-item retry"
-      description: "Fans a list of records out via <code>ForEach</code>, runs <code>TextCompletion</code> per item with a concurrency limit, and retries rate-limited items in isolation. Results are written incrementally."
+      description: "Fans a list of records out via <code>ForEach</code>, runs <code>ChatCompletion</code> per item with a concurrency limit, and retries rate-limited items in isolation. Results are written incrementally."
       href: "/blueprints"
 
 comparison:
@@ -220,13 +220,13 @@ faq:
   - question: "What does Kestra add to a LangChain application?"
     answer: "LangChain defines the chain logic, prompts, and retrievers. Kestra wraps those chains in observable, automated workflows: triggers on schedules or events, retries LLM calls at the task level without re-running data prep, pauses for human approval before publishing, and logs every prompt, model, and output in one searchable execution record."
   - question: "Does Kestra have a native LangChain plugin?"
-    answer: "Kestra has a native <code>langchain4j</code> plugin that covers text completion, RAG document ingestion, and RAG chat completion. For teams using the Python LangChain library directly, Kestra runs it via <code>io.kestra.plugin.scripts.python.Script</code> in an isolated container with full execution logging."
+    answer: "Kestra has a native AI plugin built on LangChain4j, <code>io.kestra.plugin.ai</code>, that covers chat completion, RAG document ingestion, and RAG chat completion. For teams using the Python LangChain library directly, Kestra runs it via <code>io.kestra.plugin.scripts.python.Script</code> in an isolated container with full execution logging."
   - question: "How does Kestra handle LLM rate limit retries?"
-    answer: "Each task in Kestra has its own retry configuration. Set a retry count and backoff on the <code>TextCompletion</code> or Python script task. If the LLM call hits a rate limit, Kestra retries that task only. The data preparation step that ran before it is not re-executed, so retries are fast and do not waste compute."
+    answer: "Each task in Kestra has its own retry configuration. Set a retry count and backoff on the <code>ChatCompletion</code> or Python script task. If the LLM call hits a rate limit, Kestra retries that task only. The data preparation step that ran before it is not re-executed, so retries are fast and do not waste compute."
   - question: "Can Kestra pause a flow for a human to review AI output before publishing?"
     answer: "Yes. The <code>io.kestra.plugin.core.flow.Pause</code> task halts execution and surfaces the current state in the Kestra UI. A reviewer can inspect the LLM output, approve or reject it from the UI, and the flow continues or branches accordingly. Who approved and when is recorded in the execution history."
   - question: "Can Kestra trigger a RAG ingestion pipeline when a new document arrives?"
-    answer: "Yes. An S3 or GCS trigger fires the flow the moment a matching file lands in the bucket. The file path from the trigger is available as a named variable in the <code>langchain4j.rag.IngestDocument</code> task, so the embedding and indexing step runs immediately without a polling interval."
+    answer: "Yes. An S3 or GCS trigger fires the flow the moment a matching file lands in the bucket. The file path from the trigger is available as a named variable in the <code>ai.rag.IngestDocument</code> task, so the embedding and indexing step runs immediately without a polling interval."
   - question: "Is Kestra self-hosted or managed?"
     answer: "Kestra offers fully self-hosted deployment on Docker or Kubernetes, a managed cloud version, and air-gapped options for regulated environments. The open-source edition includes unlimited workflows and event-driven triggers. Self-hosted keeps your pipeline execution, prompts, and model credentials inside your own network."
 
