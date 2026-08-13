@@ -111,7 +111,7 @@
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
     import {
-        CONNOR_MEETING_LINK,
+        CONNOR_CLOUD_MEETING_LINK,
         ensureMeetingsScriptLoaded,
     } from "~/composables/useMeeting"
 
@@ -173,7 +173,7 @@
             await submitHubspotForm(HUBSPOT_FORM_ID, payload)
 
             valid.value = true
-            meetingUrl.value = CONNOR_MEETING_LINK
+            meetingUrl.value = CONNOR_CLOUD_MEETING_LINK
 
             try {
                 posthog.capture("cloud_form")

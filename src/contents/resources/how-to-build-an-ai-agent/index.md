@@ -48,6 +48,8 @@ While ChatGPT can exhibit agent-like behaviors, it is fundamentally an LLM. It l
 
 As agents move from prototypes to production systems, managing their behavior becomes critical. This is where a dedicated orchestration layer is essential for several reasons:
 
+What an agent cannot supply for itself is durable state, retries and an audit trail. Those come from [the control plane above your models](/resources/ai/ai-orchestration).
+
 *   **State Management and Context Preservation**: Agents need persistent memory across interactions. An orchestrator manages this state, ensuring the agent has the right context for each decision without requiring complex custom code.
 *   **Tool Integration and Management**: Securely connecting agents to external systems like APIs, databases, or other Kestra flows is paramount. Orchestration provides a secure, governed way to define and manage these tools.
 *   **Error Handling and Resilience**: What happens when a tool fails or an LLM gives an unexpected response? Orchestration platforms provide automatic retries, fallback mechanisms, and human-in-the-loop approval gates to ensure resilience.
