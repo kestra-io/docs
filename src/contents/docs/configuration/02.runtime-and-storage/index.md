@@ -291,6 +291,22 @@ kestra:
 | `sts-endpoint-override` | string | No | — | Override the STS endpoint URL. |
 | `s3-files-compatible` | boolean | No | `false` | Enable S3 bucket versioning when the bucket is first initialized. Set to `true` when the same bucket is shared with the `S3FilesStorage` backend (`type: s3-files`), which mounts S3 Files as a local NFS filesystem and requires versioning to be enabled. |
 
+#### S3-compatible endpoints
+
+The `s3` backend targets Amazon S3 by default. Set `endpoint` to point that same backend at another S3-compatible object store, for example Backblaze B2, Cloudflare R2, or MinIO. Some endpoints also require `force-path-style: true`; MinIO deployments can alternatively use the dedicated [`type: minio`](#minio--s3-compatible) backend.
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      bucket: my-kestra-bucket
+      endpoint: https://your-s3-endpoint.example.com
+      force-path-style: true
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+```
+
 #### Credential resolution order
 
 1. `access-key` / `secret-key` in config.

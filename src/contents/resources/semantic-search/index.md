@@ -122,6 +122,8 @@ The applications of semantic search extend far beyond public web search. Interna
 
 Building and maintaining a semantic search system involves a series of interconnected data pipelines. Kestra is ideally suited to orchestrate this entire lifecycle, from data ingestion to query time.
 
+Index refreshes, embedding jobs and relevance evaluation all run on the same schedule-and-retry foundation, described in full in [Kestra's AI orchestration guide](/resources/ai/ai-orchestration).
+
 ### Building robust data pipelines for embeddings and indexing
 
 A semantic search index is only as good as the data it contains. Kestra can automate the process of keeping your index fresh and accurate. This typically involves:
