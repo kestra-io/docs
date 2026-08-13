@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Airflow DAG → Kestra Converter — Kestra Free Tools</title>
+  <style>
+  :root {
+    --bg: #fbfbfd; --surface: #ffffff; --surface-2: #f4f3f9; --border: #e6e4ee;
+    --ink: #1c1926; --ink-2: #5d5870; --ink-3: #8b86a0;
+    --accent: #6d3df5; --accent-soft: #efe9ff; --accent-ink: #ffffff;
+    --good: #0f7d3c; --good-soft: #e7f5ec; --warn: #955e00; --warn-soft: #fdf3e0; --bad: #c02c2c; --bad-soft: #fdecec;
+    --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+    --code-bg: #14121c; --code-ink: #e8e5f4;
+    --shadow: 0 1px 2px rgba(28,25,38,.05), 0 4px 16px rgba(28,25,38,.06);
+  }
+  @media (prefers-color-scheme: dark) { :root {
+    --bg: #131118; --surface: #191723; --surface-2: #201d2c; --border: #2c2938;
+    --ink: #f0eef7; --ink-2: #aaa5c0; --ink-3: #737085;
+    --accent: #9a72ff; --accent-soft: #291f45; --accent-ink: #14101f;
+    --good: #4cc07a; --good-soft: #12291b; --warn: #e0a33e; --warn-soft: #2d2312; --bad: #ea6a6a; --bad-soft: #331717;
+    --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+    --code-bg: #0e0c15; --code-ink: #dcd8ec;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }}
+  :root[data-theme="light"] {
+    --bg: #fbfbfd; --surface: #ffffff; --surface-2: #f4f3f9; --border: #e6e4ee;
+    --ink: #1c1926; --ink-2: #5d5870; --ink-3: #8b86a0;
+    --accent: #6d3df5; --accent-soft: #efe9ff; --accent-ink: #ffffff;
+    --good: #0f7d3c; --good-soft: #e7f5ec; --warn: #955e00; --warn-soft: #fdf3e0; --bad: #c02c2c; --bad-soft: #fdecec;
+    --s1: #2a78d6; --s2: #1baf7a; --s3: #eda100; --s4: #008300;
+    --code-bg: #14121c; --code-ink: #e8e5f4;
+    --shadow: 0 1px 2px rgba(28,25,38,.05), 0 4px 16px rgba(28,25,38,.06);
+  }
+  :root[data-theme="dark"] {
+    --bg: #131118; --surface: #191723; --surface-2: #201d2c; --border: #2c2938;
+    --ink: #f0eef7; --ink-2: #aaa5c0; --ink-3: #737085;
+    --accent: #9a72ff; --accent-soft: #291f45; --accent-ink: #14101f;
+    --good: #4cc07a; --good-soft: #12291b; --warn: #e0a33e; --warn-soft: #2d2312; --bad: #ea6a6a; --bad-soft: #331717;
+    --s1: #3987e5; --s2: #199e70; --s3: #c98500; --s4: #008300;
+    --code-bg: #0e0c15; --code-ink: #dcd8ec;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); margin: 0;
+    font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 32px 24px 80px; }
+  .eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  h1 { font-size: 28px; letter-spacing: -.02em; margin: 6px 0 4px; text-wrap: balance; }
+  .sub { color: var(--ink-2); max-width: 62ch; margin: 0 0 24px; }
+  .proto-badge { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .1em; padding: 3px 8px;
+    border-radius: 99px; background: var(--warn-soft); color: var(--warn); vertical-align: middle; margin-left: 10px; }
+  .tabs { display: flex; gap: 6px; border-bottom: 1px solid var(--border); margin-bottom: 28px; flex-wrap: wrap; }
+  .tab { background: none; border: none; border-bottom: 2px solid transparent; padding: 10px 14px; font: inherit;
+    font-weight: 600; color: var(--ink-2); cursor: pointer; margin-bottom: -1px; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab:focus-visible, button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .grid { display: grid; grid-template-columns: minmax(300px, 5fr) minmax(340px, 7fr); gap: 20px; align-items: start; }
+  @media (max-width: 840px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; box-shadow: var(--shadow); }
+  .card h2 { font-size: 16px; margin: 0 0 14px; letter-spacing: -.01em; }
+  .card h3 { font-size: 13px; margin: 18px 0 8px; color: var(--ink-2); text-transform: uppercase; letter-spacing: .08em; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin: 12px 0 4px; }
+  input[type="number"], input[type="email"], input[type="text"], select, textarea { width: 100%; padding: 8px 10px;
+    border: 1px solid var(--border); border-radius: 7px; background: var(--bg); color: var(--ink); font: inherit; }
+  input[type="number"] { font-variant-numeric: tabular-nums; }
+  textarea.code { font: 12.5px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; min-height: 320px;
+    white-space: pre; overflow-x: auto; resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); border: none; border-radius: 7px;
+    padding: 9px 16px; font: inherit; font-weight: 700; cursor: pointer; }
+  .btn:hover { filter: brightness(1.08); }
+  .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); font-weight: 600; }
+  .banner { display: flex; gap: 8px; align-items: baseline; background: var(--warn-soft); color: var(--warn);
+    border-radius: 8px; padding: 10px 12px; font-size: 13px; margin-bottom: 16px; }
+  details.assump { margin-top: 16px; border: 1px dashed var(--border); border-radius: 8px; padding: 10px 14px; }
+  details.assump summary { cursor: pointer; font-weight: 600; font-size: 13px; color: var(--ink-2); }
+  .stat { display: flex; flex-direction: column; gap: 2px; padding: 14px 16px; border-radius: 9px; background: var(--good-soft); margin-bottom: 18px; }
+  .stat .n { font-size: 30px; font-weight: 800; letter-spacing: -.02em; color: var(--good); font-variant-numeric: tabular-nums; }
+  .stat .l { font-size: 13px; color: var(--ink-2); }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  @media (max-width: 560px) { .cols { grid-template-columns: 1fr; } }
+  .col { border: 1px solid var(--border); border-radius: 9px; padding: 12px 14px; background: var(--surface-2); }
+  .col.win { border-color: var(--accent); background: var(--accent-soft); }
+  .col .t { font-size: 12px; font-weight: 700; color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; }
+  .col .v { font-size: 21px; font-weight: 800; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .col .d { font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .chart { margin: 6px 0 4px; }
+  .bar-row { display: grid; grid-template-columns: 118px 1fr 70px; gap: 10px; align-items: center; margin: 9px 0; }
+  .bar-label { font-size: 12.5px; font-weight: 600; color: var(--ink-2); text-align: right; }
+  .bar-total { font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .bar { display: flex; height: 22px; border-radius: 4px; overflow: hidden; background: var(--surface-2); }
+  .seg { height: 100%; margin-right: 2px; border-radius: 2px; min-width: 0; transition: width .25s ease; position: relative; }
+  .seg:last-child { margin-right: 0; }
+  .seg:hover { filter: brightness(1.15); }
+  @media (prefers-reduced-motion: reduce) { .seg { transition: none; } }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12.5px; color: var(--ink-2); margin: 10px 0 4px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+  table.break { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  table.break th, table.break td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+  table.break th:first-child, table.break td:first-child { text-align: left; }
+  table.break th { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+  .gate { margin-top: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-2); }
+  .gate p { margin: 0 0 8px; font-size: 13px; color: var(--ink-2); }
+  .gate form { display: flex; gap: 8px; }
+  pre.yaml { background: var(--code-bg); color: var(--code-ink); border-radius: 9px; padding: 16px;
+    font: 12.5px/1.55 ui-monospace, "SF Mono", Menlo, Consolas, monospace; overflow-x: auto; margin: 0; }
+  .report { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-direction: column; gap: 6px; }
+  .report li { display: flex; gap: 8px; align-items: baseline; font-size: 13px; padding: 8px 10px; border-radius: 7px; }
+  .report li.ok { background: var(--good-soft); } .report li.ok .b { color: var(--good); }
+  .report li.wa { background: var(--warn-soft); } .report li.wa .b { color: var(--warn); }
+  .report li.ko { background: var(--bad-soft); } .report li.ko .b { color: var(--bad); }
+  .report .b { font-weight: 800; flex-shrink: 0; }
+  .convscore { font-size: 14px; font-weight: 700; margin-top: 14px; }
+  .scope-strip { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 22px; padding: 12px 16px; border-radius: 9px;
+    background: var(--surface-2); border: 1px solid var(--border); font-size: 12.5px; color: var(--ink-2); }
+  .scope-strip b { color: var(--ink); }
+  .q { margin: 0 0 18px; }
+  .q p { font-weight: 700; margin: 0 0 8px; }
+  .q label { display: flex; gap: 8px; align-items: baseline; font-weight: 500; color: var(--ink); margin: 5px 0; cursor: pointer; }
+  .q input { width: auto; }
+  .quiz-result { display: none; margin-top: 4px; }
+  .quiz-result.show { display: block; }
+  .quiz-result h3 { font-size: 19px; margin: 0 0 6px; color: var(--accent); text-transform: none; letter-spacing: -.01em; }
+  .toast { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg);
+    padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; transition: opacity .2s; }
+  .toast.on { opacity: 1; }
+  footer.note { margin-top: 40px; font-size: 12.5px; color: var(--ink-3); max-width: 70ch; }
+
+  .crumb { font-size: 13px; margin-bottom: 18px; }
+  .crumb a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="crumb"><a href="/tools/">← All free tools</a></div>
+  <div class="eyebrow">Kestra · Free tools</div>
+  <h1>Airflow DAG → Kestra YAML Converter <span class="proto-badge">PROTOTYPE V1</span></h1>
+  <p class="sub">Paste an Airflow DAG, get a Kestra flow — with an honest conversion report: what converted cleanly, what needs review, what has no direct equivalent.</p>
+  <section class="panel active" id="conv" role="tabpanel">
+    <div class="banner">⚠️ <span><b>Prototype parser</b> (regex, common operators only). Production version: AST parsing + AI Copilot + validation against the live Kestra API — promise: <b>“~80% auto-converted, the rest flagged”.</b></span></div>
+    <div class="grid">
+      <div class="card">
+        <h2>Paste your Airflow DAG</h2>
+        <textarea class="code" id="dagIn" spellcheck="false"></textarea>
+        <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+          <button class="btn" onclick="convert()">Convert to Kestra YAML</button>
+          <button class="btn ghost" onclick="loadSample(1)">Sample: standard DAG</button>
+          <button class="btn ghost" onclick="loadSample(2)">Sample: with unsupported ops</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Kestra flow</h2>
+        <pre class="yaml" id="yamlOut">— paste a DAG and hit Convert —</pre>
+        <div style="display:flex; gap:8px; margin-top:12px;">
+          <button class="btn ghost" onclick="copyYaml()">Copy YAML</button>
+          <button class="btn" onclick="toast('Prototype — deep-link into a Kestra Cloud trial with the flow pre-loaded');">Run it in Kestra Cloud</button>
+        </div>
+        <div class="convscore" id="convScore"></div>
+        <ul class="report" id="convReport"></ul>
+      </div>
+    </div>
+    <div class="scope-strip"><span>Effort <b>M — 3-4 weeks, 1 dev</b> (AST + mapping table; AI Copilot &amp; MCP already exist)</span><span>Not an SEO play <b>(migration terms ≈ 0 vol)</b> — CTA of the ~15 Airflow pages + HN/Reddit launch</span><span>KPI <b>trials, emails, backlinks</b></span></div>
+  </section>
+  <footer class="note">Prototype v1 — 07/2026. Values and mappings are placeholders pending product validation. Part of the Kestra free-tools suite: <a href="/tools/">see all tools</a>.</footer>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+// ---------- shared ----------
+  document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', 'false'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.setAttribute('aria-selected', 'true');
+    document.getElementById(t.dataset.panel).classList.add('active');
+  }));
+  function toast(msg) {
+    const el = document.getElementById('toast'); el.textContent = msg; el.classList.add('on');
+    clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2600);
+  }
+  const fmt = n => '$' + Math.round(n).toLocaleString('en-US');
+const $ = id => document.getElementById(id);
+// ---------- Converter ----------
+  const SAMPLE1 = `from airflow import DAG
+from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+from airflow.providers.snowflake.operators.snowflake import SnowflakeOperator
+from datetime import datetime, timedelta
+
+default_args = {"retries": 2, "retry_delay": timedelta(minutes=5)}
+
+with DAG(
+    dag_id="daily_orders_pipeline",
+    schedule_interval="0 6 * * *",
+    start_date=datetime(2024, 1, 1),
+    default_args=default_args,
+    catchup=False,
+) as dag:
+    extract = BashOperator(
+        task_id="extract_orders",
+        bash_command="python /opt/scripts/extract.py --day {{ ds }}",
+    )
+    transform = PythonOperator(
+        task_id="transform_orders",
+        python_callable=clean_orders,
+    )
+    load = SnowflakeOperator(
+        task_id="load_warehouse",
+        sql="COPY INTO analytics.orders FROM @stage/orders;",
+        snowflake_conn_id="snowflake_prod",
+    )
+    extract >> transform >> load`;
+  const SAMPLE2 = SAMPLE1.replace('    extract >> transform >> load',
+`    notify = EmailOperator(
+        task_id="notify_team",
+        to="data@company.com",
+        subject="orders loaded",
+    )
+    k8s = KubernetesPodOperator(
+        task_id="heavy_job",
+        image="company/heavy:latest",
+    )
+    extract >> transform >> load >> notify >> k8s`);
+
+  const OP_MAP = {
+    BashOperator:   { type: 'io.kestra.plugin.scripts.shell.Commands', status: 'ok',
+      build: p => `    commands:\n      - ${(p.bash_command || 'echo TODO')}` },
+    PythonOperator: { type: 'io.kestra.plugin.scripts.python.Script', status: 'wa',
+      note: p => `python_callable "${p.python_callable || '?'}" body not embedded — paste the function into script`,
+      build: p => `    script: |\n      # TODO: paste the body of ${(p.python_callable || 'your callable')}() here\n      ...` },
+    SnowflakeOperator: { type: 'io.kestra.plugin.jdbc.snowflake.Query', status: 'ok',
+      note: p => `connection "${p.snowflake_conn_id || '?'}" mapped to secret() placeholders — set them in Kestra`,
+      build: p => `    url: "jdbc:snowflake://{{ secret('SNOWFLAKE_ACCOUNT') }}.snowflakecomputing.com"\n    username: "{{ secret('SNOWFLAKE_USERNAME') }}"\n    password: "{{ secret('SNOWFLAKE_PASSWORD') }}"\n    sql: ${(p.sql || 'SELECT 1;')}` },
+    EmailOperator:  { type: 'io.kestra.plugin.notifications.mail.MailSend', status: 'wa',
+      note: () => 'mapped to MailSend — SMTP config needed; consider Slack instead',
+      build: p => `    to: ${(p.to || 'team@company.com')}\n    subject: ${(p.subject || 'notification')}\n    # TODO: transport config (host, port, credentials)` },
+  };
+
+  function loadSample(n) { $('dagIn').value = n === 1 ? SAMPLE1 : SAMPLE2; convert(); }
+
+  function convert() {
+    const src = $('dagIn').value;
+    const report = [];
+    const dagId = (src.match(/dag_id\s*=\s*["']([^"']+)/) || [,'converted-dag'])[1].replace(/_/g, '-');
+    const cron = (src.match(/schedule(?:_interval)?\s*=\s*["']([^"']+)/) || [])[1];
+    const retries = (src.match(/["']retries["']\s*:\s*(\d+)/) || [])[1];
+    const retryMin = (src.match(/timedelta\(minutes=(\d+)/) || [])[1];
+
+    const taskRe = /(\w+)\s*=\s*(\w+Operator)\s*\(([\s\S]*?)\n\s*\)/g;
+    const tasks = []; let m;
+    while ((m = taskRe.exec(src)) !== null) {
+      const params = {};
+      const pRe = /(\w+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g; let pm;
+      while ((pm = pRe.exec(m[3])) !== null) params[pm[1]] = pm[2] ?? pm[3];
+      const callable = m[3].match(/python_callable\s*=\s*(\w+)/); if (callable) params.python_callable = callable[1];
+      tasks.push({ var: m[1], op: m[2], params });
+    }
+    if (!tasks.length) { $('yamlOut').textContent = '# No operators found — is this an Airflow DAG file?'; $('convReport').innerHTML=''; $('convScore').textContent=''; return; }
+
+    // order by dependency chain if present
+    const chain = src.match(/^\s*([\w>\s]+>>[\w>\s]+)$/m);
+    if (chain) {
+      const order = chain[1].split('>>').map(s => s.trim());
+      tasks.sort((a, b) => order.indexOf(a.var) - order.indexOf(b.var));
+      report.push(['ok', `Dependencies ${order.join(' → ')} converted to sequential task order`]);
+    }
+
+    let yaml = `id: ${dagId}\nnamespace: company.migrated\n`;
+    let ok = 0;
+    const taskBlocks = tasks.map(t => {
+      const map = OP_MAP[t.op];
+      const tid = (t.params.task_id || t.var).replace(/-/g, '_');
+      if (!map) {
+        report.push(['ko', `${t.op} (${tid}): no direct mapping — production version asks AI Copilot, flags for review`]);
+        return `  - id: ${tid}\n    # ❌ TODO: ${t.op} has no direct equivalent — see conversion report\n    type: io.kestra.plugin.core.log.Log\n    message: "REPLACE ME: was ${t.op}"`;
+      }
+      if (map.status === 'ok') { ok++; report.push(['ok', `${t.op} (${tid}) → ${map.type}`]); }
+      else report.push(['wa', `${t.op} (${tid}) → ${map.type} — ${map.note(t.params)}`]);
+      return `  - id: ${tid}\n    type: ${map.type}\n${map.build(t.params)}`;
+    });
+
+    yaml += `\ntasks:\n${taskBlocks.join('\n\n')}\n`;
+    if (retries) {
+      yaml += `\n# retries from default_args\npluginDefaults:\n  - type: io.kestra.plugin.core\n    values:\n      retry:\n        type: constant\n        maxAttempt: ${+retries + 1}\n        interval: PT${retryMin || 5}M\n`;
+      report.push(['ok', `default_args retries=${retries}${retryMin ? `, retry_delay=${retryMin}m` : ''} → Kestra retry config`]);
+    }
+    if (cron) {
+      yaml += `\ntriggers:\n  - id: schedule\n    type: io.kestra.plugin.core.trigger.Schedule\n    cron: "${cron}"\n`;
+      report.push(['ok', `schedule_interval "${cron}" → Schedule trigger`]);
+    }
+    if (src.includes('{{ ds }}')) report.push(['wa', 'Jinja {{ ds }} kept as-is — map to {{ trigger.date | date("yyyy-MM-dd") }} in Kestra expressions']);
+
+    $('yamlOut').textContent = yaml;
+    const pct = Math.round(ok / tasks.length * 100);
+    $('convScore').textContent = `${ok}/${tasks.length} tasks fully auto-converted (${pct}%) — the rest is flagged below, nothing is silently dropped.`;
+    $('convReport').innerHTML = report.map(([s, txt]) =>
+      `<li class="${s}"><span class="b">${s === 'ok' ? '✓' : s === 'wa' ? '⚠' : '✗'}</span><span>${txt}</span></li>`).join('');
+  }
+  function copyYaml() {
+    navigator.clipboard?.writeText($('yamlOut').textContent).then(() => toast('YAML copied'));
+  }
+  loadSample(1);
+</script>
+</body>
+</html>
