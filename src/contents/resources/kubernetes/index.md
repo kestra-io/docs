@@ -138,7 +138,7 @@ One of the most significant benefits of Kubernetes is its portability. It provid
 
 ## Real-world applications and use cases
 
-Kubernetes is used by thousands of organizations, from startups to large enterprises, to run their most critical applications. For example, Apple's ML team uses Kestra to orchestrate large-scale data pipelines, which often run in containerized environments managed by systems like Kubernetes to handle the massive scale. Leading enterprises in finance and resources, such as JPMorgan Chase and BHP, leverage Kestra for complex infrastructure and cybersecurity workflows, which frequently involve orchestrating tasks across Kubernetes clusters and other systems.
+Kubernetes is used by thousands of organizations, from startups to large enterprises, to run their most critical applications. For example, Apple's ML team uses Kestra to orchestrate large-scale data pipelines, which often run in containerized environments managed by systems like Kubernetes to handle the massive scale. Leading enterprises in finance and resources, such as JPMorgan Chase and other Fortune 500 organizations, leverage Kestra for complex infrastructure and cybersecurity workflows, which frequently involve orchestrating tasks across Kubernetes clusters and other systems.
 
 ### Is Netflix using Kubernetes?
 

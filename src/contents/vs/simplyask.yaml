@@ -85,7 +85,7 @@ easeOfUse:
   title: Built for Engineers vs. Built for Operations
   kestra:
     title: "Kestra: Readable by your whole team"
-    description: "YAML is readable on day 1. Docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start from our library of 200+ Blueprints. Engineers bring their existing scripts with no wrappers or refactoring required."
+    description: "YAML is readable on day 1. Docs are embedded in the UI for easy reference, the <a href='/docs/ai-tools/ai-copilot' target='_blank'>AI Copilot</a> writes workflows for you, or start from our library of Blueprints. Engineers bring their existing scripts with no wrappers or refactoring required."
     code: |
       id: infra_deploy
       namespace: engineering
@@ -185,7 +185,7 @@ testimonials:
         name: Active users
       - value: "+5000"
         name: Workflows created
-    storyLink: /use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent
+    storyLink: /customers/leroy-merlin-france
 
 platformStrengths:
   title: Kestra Is Built for Engineering Teams

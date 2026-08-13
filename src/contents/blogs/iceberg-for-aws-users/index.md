@@ -628,7 +628,7 @@ triggers:
     cron: "@hourly"
 ```
 
-The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. To leverage private repositories, you only need to add your Git user name and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). Check the [Secrets docs](../../docs/07.enterprise/02.governance/secrets/index.md) to see how to manage sensitive values in Kestra.
+The [kestra-io/scripts](https://github.com/kestra-io/scripts) is a public repository, so you can reproduce that flow directly as long as you adjust the S3 bucket name and set your AWS credentials. To leverage private repositories, you only need to add your Git user name and a [Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens). Check the [Secrets docs](../../docs/07.enterprise/02.governance/secrets-manager/index.md) to see how to manage sensitive values in Kestra.
 
 Executing this workflow should give you the following output:
 

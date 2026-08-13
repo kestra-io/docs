@@ -958,25 +958,6 @@
         }
     }
 
-    function updateCurrentNode(html, showCsr) {
-        if (!_currentNode) {
-            _currentNode = document.createElement("span")
-            codeBody.appendChild(_currentNode)
-        }
-        _currentNode.innerHTML = html
-        if (showCsr) {
-            if (!_cursorNode) {
-                _cursorNode = document.createElement("span")
-                _cursorNode.className = "code-cursor"
-                codeBody.appendChild(_cursorNode)
-            }
-        } else {
-            if (_cursorNode) {
-                _cursorNode.remove()
-                _cursorNode = null
-            }
-        }
-    }
 
     function sliceHtml(htmlStr, n) {
         let rem = n

@@ -65,6 +65,8 @@ Implementing a well-structured AI pipeline moves AI development from an artisana
 
 While the benefits are clear, building and managing AI pipelines presents significant challenges. Teams often struggle with fragmented tools, brittle custom scripts, and a lack of visibility across the data, infrastructure, and ML domains. Kestra provides a unified, declarative control plane to [orchestrate AI workflows](/docs/ai-tools/ai-workflows) and overcome these hurdles.
 
+A single pipeline is straightforward. Running dozens of them alongside inference, evaluation and agents is where [AI orchestration best practices](/resources/ai/ai-orchestration) start to matter.
+
 As [the orchestration control plane of the AI era](/blogs/kestra-series-a), Kestra is designed to manage complex, multi-system pipelines with ease. Here’s how it addresses common challenges:
 
 *   **Declarative YAML Workflows:** AI pipelines are defined as simple, readable YAML files. This makes them easy to version in Git, review with colleagues, and manage like any other piece of code.

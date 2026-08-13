@@ -7,6 +7,7 @@ interface Item {
     title: string;
     subtitle?: string;
     description?: string;
+    badge?: string;
     link?: {
         href: string;
         text: string;
@@ -41,6 +42,12 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                         class:list={["card", { "even-bg": item.evenBg }]}
                         data-usal={`${index % 2 === 0 ? "fade" : "zoomin"} delay-0 duration-400 ease-out`}
                     >
+                        {item.badge && (
+                            <span class="card-badge">
+                                <Icon name="mdi:check-bold" class="badge-check" />
+                                {item.badge}
+                            </span>
+                        )}
                         {item.icon && <Icon name={item.icon} class="icon" />}
                         {item.number && <h3 class="number">{item.number}</h3>}
                         <h6
@@ -161,6 +168,7 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                 width: 100%;
 
                 .card {
+                    position: relative;
                     border-radius: 12px;
                     background: var(--ks-background-primary);
                     padding: 2rem;
@@ -172,6 +180,26 @@ const { title, subtitle, items, align = "center" } = Astro.props;
                     min-width: 0;
                     border: 1px solid var(--ks-border-secondary);
                     box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+
+                    .card-badge {
+                        position: absolute;
+                        top: 1rem;
+                        right: 1rem;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                        padding: 2px 8px;
+                        border-radius: 40px;
+                        font-size: $font-size-xs;
+                        font-weight: 600;
+                        background: var(--ks-background-alert-info);
+                        color: var(--ks-content-alert-info);
+                        white-space: nowrap;
+
+                        .badge-check {
+                            font-size: 0.75rem;
+                        }
+                    }
 
                     @include media-breakpoint-up(lg) {
                         flex: 0 0 calc(33.333% - 1rem);

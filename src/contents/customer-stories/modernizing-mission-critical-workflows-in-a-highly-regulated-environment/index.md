@@ -10,19 +10,20 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.kafka.Trigger
   - io.kestra.plugin.scripts.python.Script
   - io.kestra.plugin.core.http.Request
 kpi1: |-
   ##### 400+
-  Pharmacy relies on Kestra workflows
+  pharmacy relies on Kestra workflows
 kpi2: |-
   ##### 50+
-  Cricital workflows modernized
+  cricital workflows modernized
 kpi3: |-
   ##### 30+ Years
-  Old platform, replaced in few months
+  old platform, replaced in few months
 quote: Stability was the turning point. With Kestra, our most critical flows
   finally run the way they should.
 quotePerson: Infrastructure Lead
@@ -34,7 +35,8 @@ companySize: "501–5,000"
 solution: Pharmacy Retail
 tagline: Leading pharmacy retail chain operating in a highly regulated market
 companyName: Pharmacy Retailer
-useCase: IT Automation
+useCase: Replacing a 30-year-old legacy integration platform to modernize 50+ critical workflows across 400+ on-prem pharmacies
+useCaseShort: IT Automation
 cta: "What would change if your mission-critical healthcare workflows ran reliably—meeting compliance requirements without the operational overhead?"
 ---
 

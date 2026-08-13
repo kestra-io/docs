@@ -1,7 +1,7 @@
 import type { Loader } from "astro/loaders"
 import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
-import { z } from "astro:content"
+import { z } from "astro/zod"
 
 export default {
     name: "plugins",

@@ -21,13 +21,13 @@ tasks:
   - io.kestra.plugin.aws.lambda.Invoke
 kpi1: |-
   ##### Cut
-  Maintenance time
+  maintenance time
 kpi2: |-
   ##### Increased
-  Response rate to customers
+  response rate to customers
 kpi3: |-
   ##### Improved
-  Automation capabilities
+  automation capabilities
 quote: Being used to Python orchestration frameworks, using Kestra has been
   refreshing! Integration with my APIs, ChatGPT, and migrating my AWS Lambda
   functions is effortless with Kestra. It works so well. I'm sticking to Kestra!
@@ -40,7 +40,8 @@ companySize: "1–50"
 solution: Educational platform that offers network lessons focused on Cisco technologies
 tagline: Online learning platform for Cisco network certifications
 companyName: NetworkLessons
-useCase: Business Automation
+useCase: Consolidating AWS Lambda functions, ChatGPT, and Zendesk into one platform as a one-man Cisco training business
+useCaseShort: Business Automation
 cta: "What would change if you could automate your entire content and business workflow as a solo operator—without a dedicated engineering team?"
 ---
 

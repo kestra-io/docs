@@ -173,7 +173,7 @@ With Airflow 2.x now end-of-life, many teams are evaluating their options. While
 
 ### Orchestrating Databricks Workflows and other cloud-native tools
 
-Platform-specific orchestrators like [Databricks Workflows](https://kestra.io/vs/databricks-workflows) or [Azure Data Factory](https://kestra.io/vs/azure-data-factory) are effective within their ecosystems but struggle to manage tasks outside of it. Kestra acts as a universal control plane, orchestrating your Databricks jobs alongside your ingestion tools, infrastructure provisioning, and business applications. This provides a unified view and control over your entire end-to-end process. BHP successfully used Kestra to replace a vendor-locked automation tool, reducing infrastructure provisioning time from months to days.
+Platform-specific orchestrators like [Databricks Workflows](https://kestra.io/vs/databricks-workflows) or [Azure Data Factory](https://kestra.io/vs/azure-data-factory) are effective within their ecosystems but struggle to manage tasks outside of it. Kestra acts as a universal control plane, orchestrating your Databricks jobs alongside your ingestion tools, infrastructure provisioning, and business applications. This provides a unified view and control over your entire end-to-end process. A Fortune 500 mining company successfully used Kestra to replace a vendor-locked automation tool, reducing infrastructure provisioning time from months to days.
 
 ## Post-migration optimization and management
 

@@ -38,6 +38,7 @@ export const getStaticPaths = (async () => {
                         featuredImage: e.data.featuredImage.src,
                         logo: e.data.logo?.src,
                         logoDark: e.data.logoDark?.src,
+                        logoIcon: e.data.logoIcon?.src,
                         content: e.body ?? "",
                     }))
                     .sort(randomSortFunction)
@@ -59,6 +60,7 @@ const story = {
     featuredImage: entry.data.featuredImage.src,
     logo: entry.data.logo?.src,
     logoDark: entry.data.logoDark?.src,
+    logoIcon: entry.data.logoIcon?.src,
     content: entry.body ?? "",
 }
 ---

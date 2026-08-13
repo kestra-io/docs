@@ -14,7 +14,7 @@
                 :key="i"
                 class="metric-cell"
             >
-                <span class="metric-value">{{ kpi.value }}</span>
+                <span class="metric-value" v-html="kpi.value"></span>
                 <div class="metric-label">{{ kpi.label }}</div>
                 <div v-if="kpi.context" class="metric-context">{{ kpi.context }}</div>
             </div>
@@ -30,13 +30,17 @@
             </footer>
         </blockquote>
 
-        <MDCParserAndRenderer v-if="content" :content="content" class="bd-markdown" />
+        <!-- Suspense so the async SSR markdown renderer can resolve during
+             server rendering instead of leaving a skeleton in the HTML. -->
+        <Suspense>
+            <MDCParserAndRendererSSR v-if="content" :content="content" class="bd-markdown" />
+        </Suspense>
     </div>
 </template>
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import MDCParserAndRendererSSR from "~/components/MDCParserAndRendererSSR.vue"
 
     const props = defineProps<{
         story: Story

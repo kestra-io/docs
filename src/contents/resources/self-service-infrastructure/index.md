@@ -126,4 +126,4 @@ With Kestra, you can:
 *   **Leverage Git-Native Workflows:** Store all your infrastructure workflows in Git for version control, peer review, and CI/CD integration.
 *   **Provide Reusable Blueprints:** Create a catalog of standardized infrastructure patterns using Kestra's [Blueprints](https://kestra.io/blueprints), ensuring consistency and promoting best practices.
 
-Global enterprises like **BHP** have used Kestra to replace legacy tools, reducing infrastructure provisioning time from six months to just six days. **Crédit Agricole** replaced fragmented scripts and cron jobs with a single, auditable orchestration layer. Kestra provides the capabilities needed to build a true self-service platform that is both powerful for operators and simple for developers.
+Global **Fortune 500 enterprises** have used Kestra to replace legacy tools, reducing infrastructure provisioning time from six months to just six days. **Crédit Agricole** replaced fragmented scripts and cron jobs with a single, auditable orchestration layer. Kestra provides the capabilities needed to build a true self-service platform that is both powerful for operators and simple for developers.

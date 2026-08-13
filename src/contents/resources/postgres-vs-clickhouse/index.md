@@ -114,7 +114,7 @@ While PostgreSQL is widely used across various government and scientific organiz
 
 You don't always have to choose one over the other. In many modern data architectures, PostgreSQL and ClickHouse work together, each playing to its strengths. A common pattern is to use PostgreSQL as the primary OLTP database for an application and replicate data to ClickHouse for analytical workloads.
 
-This hybrid approach allows you to maintain transactional integrity in your application while powering fast, real-time analytics without putting a heavy load on your production database. As an example, the company **Displayce** uses [PostgreSQL for its transactional data and ClickHouse for analytics](https://kestra.io/use-cases/stories/displayce-optimized-workflow-orchestration-and-enhanced-data-management), showcasing a real-world application of this pattern.
+This hybrid approach allows you to maintain transactional integrity in your application while powering fast, real-time analytics without putting a heavy load on your production database. As an example, the company **Displayce** uses [PostgreSQL for its transactional data and ClickHouse for analytics](https://kestra.io/customers/displayce), showcasing a real-world application of this pattern.
 
 This is where an orchestration platform like Kestra becomes invaluable. Kestra can manage the entire workflow, from extracting data from PostgreSQL, transforming it, and loading it into ClickHouse, all within a single, declarative YAML file.
 

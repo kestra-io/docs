@@ -1,7 +1,10 @@
 /api/feeds
   Content-Type: application/json
 
-/.well-known/mcp
+/.well-known/mcp.json
+  Content-Type: application/json
+
+/.well-known/mcp/index.json
   Content-Type: application/json
 
 /_astro/*

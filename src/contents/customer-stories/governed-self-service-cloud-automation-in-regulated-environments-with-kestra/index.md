@@ -11,31 +11,33 @@ heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
   - io.kestra.plugin.scripts.shell.Script
   - io.kestra.plugin.scripts.python.Script
 kpi1: |-
   ##### 100%
-  Automation runs auditable and traceable
+  automation runs auditable and traceable
 kpi2: |-
   ##### 0
-  Uncontrolled access
+  uncontrolled access
 kpi3: |-
   ##### 3 Environments
-  Regulated, standardized & Isolated
+  regulated, standardized & isolated
 quote: Kestra turned automation into a governed platform instead of a collection
   of scripts.
 quotePerson: Platform Engineering Lead
 quotePersonTitle: ""
-industry: Enterprise Software (Regulated Industries)
+industry: Cloud Provider
 headquarter: Switzerland
 region: Europe
 companySize: "501–5,000"
 solution: Regulated Cloud Platform for Banking and Insurance Customers
 tagline: Cloud platform provider for regulated banking and insurance industries
 companyName: Software Provider
-useCase: IT Automation
+useCase: Turning ad-hoc Terraform scripts into auditable, least-privilege self-service automation across three isolated environments for banking and insurance customers
+useCaseShort: Infrastructure Orchestration
 cta: "What would change if your regulated-industry clients could self-serve cloud automation—with full governance and compliance built into every flow?"
 ---
 

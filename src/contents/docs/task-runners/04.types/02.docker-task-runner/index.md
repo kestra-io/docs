@@ -36,13 +36,15 @@ tasks:
 
 Once you specify the `taskRunner` type, you get autocompletion and validation for the runner-specific properties. In the example above, the task allocates one CPU to the container.
 
+The container does not start in the Kestra working directory. Use `{{ workingDir }}` or `WORKING_DIR` to reference input and output files — do not rely on relative paths.
+
 ![docker_runner](../../02.benefits/docker_runner.png)
 
 ## Docker task runner properties
 
 The only required property when using the Docker task runner is `containerImage`, which must be set on the script task. The image can come from a public or private registry.
 
-Additionally, when using the Docker task runner, you can configure memory allocation, volumes, environment variables, and more. For a full list of available properties, refer to the [Docker plugin documentation](/plugins/plugin-script-python/io.kestra.plugin.scripts.runner.docker.docker) or explore them in the built-in Code Editor in the Kestra UI.
+Additionally, when using the Docker task runner, you can configure memory allocation, volumes, environment variables, and more. For a full list of available properties, refer to the [Docker plugin documentation](/plugins/core/docker-task-runner/io.kestra.plugin.scripts.runner.docker.docker) or explore them in the built-in Code Editor in the Kestra UI.
 
 :::alert{type="info"}
 The Docker task runner executes the script task as a container in a Docker-compatible engine. This means you can use it to run scripts within a Kubernetes cluster using Docker-In-Docker (DinD) or in a local Docker engine.

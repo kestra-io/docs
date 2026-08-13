@@ -10,6 +10,7 @@ interface Blueprint {
     namespace: string
     name: string
     description: string
+    shortDescription?: string
     metaTitle: string
     metaDescription: string
     flow: string
@@ -40,6 +41,7 @@ interface Story {
     heroImage: string
     logo?: string
     logoDark?: string
+    logoIcon?: string
     kpi1: string
     kpi2: string
     kpi3: string
@@ -48,6 +50,7 @@ interface Story {
     quotePerson: string
     quotePersonTitle: string
     industry: string
+    industry2?: string
     region: string
     headquarter: string
     solution: string
@@ -56,6 +59,7 @@ interface Story {
     intro?: string
     deployment?: string
     useCase?: string
+    useCaseShort?: string
     companySize?: string
     tasks: string[]
     content: string

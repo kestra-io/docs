@@ -69,7 +69,7 @@ tasks:
     from: "{{ outputs.http_download.uri }}"
 ```
 
-You can see the list of generated metrics generated in the [BigQuery Load task documentation](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.load#metrics).
+You can see the list of generated metrics generated in the [BigQuery Load task documentation](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.load#metrics).
 
 After executing the flow, view the BigQuery Load task metrics in the **Metrics** tab.
 

@@ -120,7 +120,7 @@ Use **Debug Expression** to inspect task outputs and test expressions interactiv
 
 ## Metrics
 
-The Metrics tab shows every metric exposed by tasks after execution. For example, a [BigQuery load task](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.load) might show the amount of files inputted, rows inserted, and how long the operation took to complete. Another example, a flow using an AI plugin shows token usage as a metric for the task.
+The Metrics tab shows every metric exposed by tasks after execution. For example, a [BigQuery load task](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.load) might show the amount of files inputted, rows inserted, and how long the operation took to complete. Another example, a flow using an AI plugin shows token usage as a metric for the task.
 
 ![Kestra User Interface Execution Metric](./execution-metrics-view.png)
 

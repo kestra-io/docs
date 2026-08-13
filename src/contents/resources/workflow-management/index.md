@@ -71,7 +71,7 @@ Workflow management brings clarity and structure, which fosters a more productiv
 
 - **Better Visibility and Transparency**: Everyone involved can see the status of a workflow in real-time. This eliminates ambiguity about who is responsible for the next step and where bottlenecks are occurring.
 - **Enhanced Compliance and Auditability**: With every action logged and every workflow versioned, creating audit trails for compliance purposes becomes straightforward.
-- **Greater Agility**: Standardized, automated workflows make it easier to adapt to changing business requirements. New processes can be designed, tested, and deployed much faster. As seen in [customer stories](https://kestra.io/use-cases/stories/23-boosted-productivity-slashed-costs-and-accelerated-delivery), this can shorten deployment cycles from weeks to minutes.
+- **Greater Agility**: Standardized, automated workflows make it easier to adapt to changing business requirements. New processes can be designed, tested, and deployed much faster. As seen in [customer stories](https://kestra.io/customers/foundation-data), this can shorten deployment cycles from weeks to minutes.
 
 Explore more [use cases](https://kestra.io/use-cases) to see how different industries leverage these benefits.
 

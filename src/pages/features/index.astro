@@ -1,6 +1,7 @@
 ---
 import Faq from "~/components/common/Faq.vue"
 import Layout from "~/components/layout.astro"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Run from "~/components/features/core/Run.astro"
 import Stacked from "~/components/common/Stacked.astro"
@@ -16,6 +17,20 @@ const totalPlugins = await fetchTotalPluginsCount()
 const title = "Powerful Features for Reliable Workflows"
 const description =
     "Create and Deploy all kinds Data Pipelines with Ease and Speed with Kestra | Your All-in-One Solution for Orchestrating Workflows"
+
+const featureList = [
+    "Declarative YAML workflows",
+    "Language-agnostic tasks (Python, SQL, R, Bash, and more)",
+    "Event-driven triggers (S3, GCS, Azure, webhooks, Kafka, database changes, message queues)",
+    "Scheduling and cron-based automation",
+    "API-first — fully managed via REST API",
+    `${totalPlugins}+ plugins and integrations`,
+    "Built-in observability and monitoring",
+    "Error handling, retries, and automatic recovery",
+    "Unlimited executions",
+    "RBAC, SSO, audit logs, and multi-tenancy (Enterprise)",
+    "Deploy via Docker, Kubernetes (Helm), single-VM, managed Cloud, or air-gapped",
+]
 
 const items = [
     {
@@ -51,7 +66,8 @@ const items = [
 
 <Layout {title} {description} headerTheme="lightText">
     <Fragment slot="head">
-        <SchemaSoftwareApplication url="https://kestra.io/features" />
+        <SchemaSoftwareApplication url="https://kestra.io/features" featureList={featureList} />
+        <SchemaFAQ items={items} />
     </Fragment>
     <div class="core">
         <Intro />

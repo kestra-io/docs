@@ -1,30 +1,35 @@
 <template>
-    <MDCRenderer
-        v-if="docAst?.body"
-        :body="docAst.body"
-        :data="docAst.data"
+    <div
+        v-if="htmlContent"
         :key="content"
         class="mdc-renderer"
+        v-html="htmlContent"
+        @click="handleCopyClick"
     />
+    <div v-else-if="parseError" class="parse-error">
+        <strong>MDC parse error:</strong> {{ parseError }}
+    </div>
     <div v-else class="skeleton"></div>
 </template>
 
 <script lang="ts" setup>
-    import { getMDCParser, MDCRenderer } from "@kestra-io/ui-libs"
     import { onMounted, ref, watch } from "vue"
+    import { getMarked } from "~/markdown/marked-shiki"
+    import { handleCopyClick, injectCopyButtons } from "~/utils/code-copy"
 
     const props = defineProps<{
         content: string
+        copyable?: boolean
     }>()
 
-    const docAst = ref<any>()
+    const htmlContent = ref<string>("")
 
     async function parseContent() {
-        const parse = await getMDCParser()
         if (!props.content) {
             throw new Error("No content provided to MDCParserAndRenderer.vue")
         }
-        docAst.value = await parse(props.content)
+        const html = await getMarked().parse(props.content)
+        htmlContent.value = props.copyable ? injectCopyButtons(html) : html
     }
 
     onMounted(async () => {
@@ -48,26 +53,10 @@
 </style>
 
 <style scoped lang="scss">
-
+    @use "/src/assets/styles/mdc-renderer" as mdc;
 
     .mdc-renderer {
-        & :deep(pre) {
-            padding: 1rem;
-            padding-bottom: 0;
-            margin-bottom: 0;
-            & code{
-                border: none;
-                background: transparent;
-                padding: 0;
-                .line {
-                    min-height: 1rem;
-                    white-space: pre-wrap;
-                }
-            }
-        }
-        :deep(h3) {
-            padding: 0;
-        }
+        @include mdc.mdc-renderer;
     }
 
     @keyframes pulse {
@@ -77,6 +66,15 @@
         100% {
             background-position: 40px 40px;
         }
+    }
+
+    .parse-error {
+        background: #fee;
+        border: 1px solid #f88;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        color: #c00;
+        font-size: 0.875rem;
     }
 
     .skeleton {

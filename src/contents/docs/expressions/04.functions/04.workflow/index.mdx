@@ -54,6 +54,53 @@ Retrieves the output of a parent task. The optional `index` argument specifies w
 {{ parentOutput(1) }}
 ```
 
+## `subflow()`
+
+Synchronously runs a subflow and returns its terminal execution result, so you can read the subflow's outputs, state, or labels from within an expression.
+
+```twig
+{{ subflow(namespace='company.team', id='my_subflow', inputs={'key': 'value'}).outputs.my_output }}
+```
+
+**Arguments:**
+
+| Argument | Required | Description |
+|---|---|---|
+| `namespace` | Yes | Namespace of the subflow to run |
+| `id` | Yes | Flow ID of the subflow to run |
+| `inputs` | No | Map of inputs to pass to the subflow |
+| `revision` | No | Specific revision to run; defaults to latest |
+| `labels` | No | Labels to attach to the subflow execution |
+| `timeout` | No | ISO 8601 duration; defaults to `PT1M`, hard cap `PT5M` |
+
+**Return value** — an object with four fields:
+
+| Field | Type | Description |
+|---|---|---|
+| `.id` | string | Execution ID of the subflow run |
+| `.state` | string | Terminal state name, e.g. `SUCCESS`, `FAILED` |
+| `.outputs.<key>` | any | Flow-level outputs declared in the subflow's `outputs:` block |
+| `.labels.<key>` | string | Execution labels as a key → value map |
+
+**Primary use case** — populating a `SELECT` or `MULTISELECT` input's `expression:` at form render time:
+
+```yaml
+inputs:
+  - id: datacenter
+    type: SELECT
+    expression: "{{ subflow(namespace='company.ops', id='fetch_datacenters').outputs.datacenter_list }}"
+```
+
+When a user opens the Execute form, Kestra runs the subflow synchronously, reads its output, and populates the dropdown before the main flow begins.
+
+**Important constraints:**
+
+- Only valid in an input `expression:` context. Using `subflow()` inside a task or trigger property throws an error, because blocking a worker thread while waiting for a child execution can deadlock a worker under load.
+- Only available on `WEBSERVER` and `STANDALONE` server types. The function is not registered on other server types.
+- The default timeout is `PT1M`. The hard cap is `PT5M` — passing a larger `timeout` value is rejected at runtime. Both limits are configurable; see [configuration reference](../../../configuration/04.plugins-and-execution/index.md#subflow-function-configuration).
+- Subflow recursion depth is capped at 3. A subflow whose own inputs call `subflow()` counts against this limit.
+- Executions triggered by `subflow()` carry a `system.from: subflow` label automatically.
+
 ## `appLink()`
 
 Enterprise Edition's `appLink()` builds links back to Kestra Apps:

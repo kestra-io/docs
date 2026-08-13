@@ -47,7 +47,7 @@ The market for Kubernetes workflow orchestration is diverse, with tools tailored
 
 ### Argo Workflows: The Kubernetes-Native Approach
 
-[Argo Workflows](https://kestra.io/vs/argo-workflows) is a popular open-source, container-native workflow engine. Its defining feature is its deep integration with Kubernetes; workflows are defined as Custom Resource Definitions (CRDs) and managed directly via `kubectl`. This makes it a natural choice for platform engineering teams already fluent in Kubernetes.
+Argo Workflows is a popular open-source, container-native workflow engine. Its defining feature is its deep integration with Kubernetes; workflows are defined as Custom Resource Definitions (CRDs) and managed directly via `kubectl`. This makes it a natural choice for platform engineering teams already fluent in Kubernetes.
 
 Argo is primarily used for orchestrating parallel jobs on Kubernetes. It excels at CI/CD pipelines, machine learning workflows, and large-scale batch processing where each step can be encapsulated in a container. Its strengths lie in its lightweight design and efficient handling of container-based parallelism. However, its UI is more functional than user-friendly for non-Kubernetes experts, and its plugin ecosystem is less mature than that of other orchestrators.
 

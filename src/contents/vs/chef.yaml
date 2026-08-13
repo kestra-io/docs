@@ -223,7 +223,7 @@ testimonials:
         name: "Agents to install and maintain"
       - value: "5x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/governed-self-service-cloud-automation-in-regulated-environments-with-kestra"
+    storyLink: "/customers/software-provider"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

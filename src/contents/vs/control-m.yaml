@@ -215,7 +215,7 @@ testimonials:
         name: "Java app servers to maintain"
       - value: "10x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra"
+    storyLink: "/customers/credit-agricole"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

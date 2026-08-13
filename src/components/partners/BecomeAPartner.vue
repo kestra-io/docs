@@ -172,7 +172,7 @@
 
 <script lang="ts" setup>
     import { ref, useTemplateRef } from "vue"
-    import { getHubspotTracking } from "~/utils/hubspot"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
@@ -188,8 +188,7 @@
         { id: "ai-orchestration", label: "AI Orchestration" },
     ]
 
-    const HUBSPOT_URL =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/e044de55-bda2-4bb8-9e50-ed8c78b94922"
+    const HUBSPOT_FORM_ID = "e044de55-bda2-4bb8-9e50-ed8c78b94922"
 
     const gtm = useGtm()
     const formRef = useTemplateRef("partner-form")
@@ -319,13 +318,7 @@
         identify(data.email)
 
         try {
-            await $fetch(HUBSPOT_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(hubspotData),
-            })
+            await submitHubspotForm(HUBSPOT_FORM_ID, hubspotData)
             valid.value = true
             validMessage.value =
                 "Thanks for your interest in becoming a Kestra Partner! We will get back to you soon! \ud83d\ude80"

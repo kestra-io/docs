@@ -13,19 +13,20 @@ featured: true
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.airbyte.connections.Sync
   - io.kestra.plugin.dbt.cloud.TriggerRun
   - io.kestra.plugin.hightouch.Sync
 kpi1: |-
   ##### Centralized
-  Control Plane
+  control plane
 kpi2: |-
   ##### 20 000+
-  Executions per month
+  executions per month
 kpi3: |-
   ##### 70+
-  Workflows in production
+  workflows in production
 quote: Declarative Data Engineering is rising as Data teams embrace software
   practices and Kestra got this point right allowing data practitioners to
   collaborate around a common tool.
@@ -38,7 +39,8 @@ companySize: "51–500"
 solution: Gorgias is the leading AI customer experience platform for ecommerce stores. Trusted by over 15000 merchants worldwide.
 tagline: Leading AI customer experience platform for ecommerce brands
 companyName: Gorgias
-useCase: Data Orchestration
+useCase: Unifying data ingestion, dbt transformations, and reverse-ETL in a declarative IaC stack
+useCaseShort: Data Orchestration
 cta: "What would change if your CI/CD pipelines and data workflows were unified in a single orchestration platform—shipping faster with full visibility?"
 ---
 

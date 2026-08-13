@@ -430,17 +430,16 @@
             return !!root.closest(".paused")
         }
 
-        var sleep = function (ms) {
-            return new Promise(function (resolve) {
+        var sleep = async function (ms) {
+            await new Promise(function (resolve) {
                 setTimeout(resolve, ms)
-            }).then(function () {
-                return new Promise(function (resolve) {
-                    function check() {
-                        if (isPaused()) setTimeout(check, 100)
-                        else resolve()
-                    }
-                    check()
-                })
+            })
+            await new Promise(function (resolve) {
+                function check() {
+                    if (isPaused()) setTimeout(check, 100)
+                    else resolve()
+                }
+                check()
             })
         }
 
@@ -725,7 +724,6 @@
             curFail = 51,
             curRun = 12
         var failRowObj = null
-        var phase = "healthy"
 
         async function loop() {
             initTable()
@@ -830,10 +828,7 @@
                 await sleep(2200)
 
                 phase = "recover"
-                var snapS = curS,
-                    snapF = curF
-
-                for (var i = 0; i < 6; i++) {
+                    for (var i = 0; i < 6; i++) {
                     await sleep(350)
                     curS = Math.min(98.7, curS + 1.8 + Math.random() * 0.5)
                     curF = Math.max(1.3, curF - 1.7 - Math.random() * 0.4)

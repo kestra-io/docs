@@ -4,7 +4,6 @@ import GradientCard from "~/components/card/GradientCard.vue"
 import { $fetchApiCached } from "~/utils/fetch"
 import { type PluginMetadata } from "~/utils/plugins/plugin"
 import TaskIcon from "./TaskIcon.astro"
-import { NO_RANDOM_ORDER } from "astro:env/client"
 import { randomSortFunction } from "~/utils/random"
 
 const totalPlugins = await fetchTotalPluginsCount()
@@ -31,11 +30,9 @@ const plugins = await Promise.all(
             title: plugin.title,
             name: plugin.name,
             artifactId: plugin.artifactId,
-            link:
-                `/plugins/${plugin.artifactId}` +
-                (`plugin-${plugin.name}` != plugin.artifactId
-                    ? "/" + plugin.name
-                    : ""),
+            // Link logos to the plugin group page (always 200) to avoid the
+            // 404 -> 301 hop the `/${plugin.name}` subgroup suffix caused for ~82 plugins.
+            link: `/plugins/${plugin.artifactId}`,
             group: plugin.group,
         }
     }),

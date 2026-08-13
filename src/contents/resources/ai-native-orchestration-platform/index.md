@@ -31,6 +31,8 @@ This article explores the emerging category of AI-native orchestration platforms
 
 An AI-native orchestration platform is a control plane designed specifically to manage the entire lifecycle of AI and machine learning applications. It goes beyond simple task scheduling to coordinate complex dependencies between data ingestion, model training, validation, deployment, and monitoring.
 
+An AI-native platform is one implementation of [AI orchestration](/resources/ai/ai-orchestration); the discipline itself is broader, and covers how models, pipelines, tools and agents are sequenced across the whole stack.
+
 ### Defining AI Orchestration: Models, Data, and Workflows
 
 AI orchestration involves the automated management of three core components:
@@ -136,7 +138,7 @@ For teams seeking flexibility and control, open-source frameworks are a compelli
 *   **Kestra** stands out with its declarative, YAML-based approach that unifies data, AI, and infrastructure workflows. Its language-agnostic design and extensive plugin library make it a versatile choice for multi-domain orchestration.
 *   **[Prefect](https://kestra.io/vs/prefect)** is a strong choice for Python-centric teams, offering a modern developer experience for defining workflows as Python code.
 *   **Dagster** appeals to analytics engineering teams with its asset-centric paradigm, which provides strong data lineage and observability.
-*   **[Argo Workflows](https://kestra.io/vs/argo-workflows)** is a powerful, Kubernetes-native solution ideal for teams that want their orchestration to live entirely within the Kubernetes control plane.
+*   **Argo Workflows** is a powerful, Kubernetes-native solution ideal for teams that want their orchestration to live entirely within the Kubernetes control plane.
 
 ### Agentic AI Orchestration for Autonomous Workflows
 
@@ -152,7 +154,7 @@ An [AI agent](https://kestra.io/resources/ai/ai-agent) is a system that can perc
 
 ### How Agentic AI Platforms Revolutionize Business
 
-The applications of agentic AI are vast. In cybersecurity, agents can autonomously detect threats and execute remediation workflows. In IT operations, they can diagnose system failures and attempt repairs without human intervention. Leading tech companies are already leveraging this paradigm; for instance, [Apple's ML team orchestrates large-scale data pipelines with Kestra](https://kestra.io/use-cases/stories/32-apple's-ml-team-orchestrates-large-scale-data-pipelines-with-kestra) to manage complex dependencies across their services. This level of automation frees up human experts to focus on more strategic tasks, driving significant efficiency gains.
+The applications of agentic AI are vast. In cybersecurity, agents can autonomously detect threats and execute remediation workflows. In IT operations, they can diagnose system failures and attempt repairs without human intervention. Leading tech companies are already leveraging this paradigm; for instance, [Apple's ML team orchestrates large-scale data pipelines with Kestra](https://kestra.io/customers/apple) to manage complex dependencies across their services. This level of automation frees up human experts to focus on more strategic tasks, driving significant efficiency gains.
 
 ### Coordinating AI Agents for Collaborative Teams
 

@@ -42,7 +42,7 @@ We evaluated each alternative on several key criteria: deployment model (self-ho
 
 ### 1. Kestra: Unifying Workflows Across Domains
 
-Kestra stands out as an open-source, declarative orchestration platform designed to unify data, AI, infrastructure, and business workflows under a single control plane. Workflows are defined in YAML, enabling GitOps practices for all automation. Its JVM-based engine supports polyglot task execution, allowing teams to run Python, SQL, Shell, Go, R, and more as first-class citizens. Kestra's event-driven architecture and extensive plugin ecosystem simplify complex integrations and reduce operational overhead. This versatility is demonstrated in use cases like [Apple's ML team orchestrating large-scale data pipelines](/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra).
+Kestra stands out as an open-source, declarative orchestration platform designed to unify data, AI, infrastructure, and business workflows under a single control plane. Workflows are defined in YAML, enabling GitOps practices for all automation. Its JVM-based engine supports polyglot task execution, allowing teams to run Python, SQL, Shell, Go, R, and more as first-class citizens. Kestra's event-driven architecture and extensive plugin ecosystem simplify complex integrations and reduce operational overhead. This versatility is demonstrated in use cases like [Apple's ML team orchestrating large-scale data pipelines](/customers/apple).
 
 *   **Best for:** Organizations seeking a versatile, language-agnostic orchestrator for cross-domain automation with a strong emphasis on declarative configuration and GitOps.
 

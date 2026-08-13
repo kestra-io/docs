@@ -170,7 +170,7 @@ The rewards for investing in data quality are substantial, impacting everything 
 
 ### Enhanced Customer Satisfaction and Trust
 
-When customer data is accurate and consistent, businesses can provide better, more personalized experiences. This builds trust and loyalty. Companies like [Displayce have optimized their operations](https://kestra.io/use-cases/stories/displayce-optimized-workflow-orchestration-and-enhanced-data-management) by centralizing data flows, which is a prerequisite for ensuring quality.
+When customer data is accurate and consistent, businesses can provide better, more personalized experiences. This builds trust and loyalty. Companies like [Displayce have optimized their operations](https://kestra.io/customers/displayce) by centralizing data flows, which is a prerequisite for ensuring quality.
 
 ### Operational Efficiency and Cost Savings
 
@@ -178,7 +178,7 @@ Clean data reduces the time employees spend hunting for information and correcti
 
 ### Competitive Advantage Through Reliable Data
 
-Organizations that trust their data can move faster and make smarter decisions. They can identify market trends, optimize pricing, and innovate with confidence. For companies like [Leroy Merlin France, implementing a Data Mesh](https://kestra.io/use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent) with strong orchestration was key to scaling their data production and ensuring its quality and reliability.
+Organizations that trust their data can move faster and make smarter decisions. They can identify market trends, optimize pricing, and innovate with confidence. For companies like [Leroy Merlin France, implementing a Data Mesh](https://kestra.io/customers/leroy-merlin-france) with strong orchestration was key to scaling their data production and ensuring its quality and reliability.
 
 ## How Kestra Orchestrates Data Quality
 

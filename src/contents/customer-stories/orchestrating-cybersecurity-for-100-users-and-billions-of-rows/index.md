@@ -31,14 +31,16 @@ quote: For the first time, with Kestra, our analysts weren’t waiting for
   changed everything.
 quotePerson: Product Owner
 quotePersonTitle: ""
-industry: Banking & Investment
+industry: Banking
+industry2: Investment
 headquarter: New York City, USA
-region: North America
+region: Americas
 companySize: "5,000+"
 solution: Helping power economic growth by creating opportunities for all through business and community investments, local collaborations and policy advocacy.
 tagline: Global financial services and investment banking leader
 companyName: JPMorgan Chase
-useCase: Security Automation
+useCase: Processing billions of cybersecurity records and 4,000+ weekly API pulls for 100+ JPMorgan Chase analysts fighting fraud and threat intelligence
+useCaseShort: Security Automation
 cta: "What would change if your cybersecurity workflows orchestrated billions of rows automatically—protecting your organization at financial-industry scale?"
 ---
 

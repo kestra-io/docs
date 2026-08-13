@@ -1,0 +1,122 @@
+---
+export const prerender = false
+
+import { $fetchApiCached } from "~/utils/fetch"
+import Layout from "~/components/layout.astro"
+import BlueprintCard from "~/components/layout/BlueprintCard.astro"
+import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
+import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
+import { MAIN_BANNER } from "~/utils/blueprints/banners"
+import { PATTERN_TAGS } from "~/utils/blueprints/useCaseTags"
+import {
+    fetchToolIndex,
+    fetchCoreToolIndex,
+} from "~/utils/blueprints/toolIndex"
+import { fetchFullCatalog } from "~/utils/blueprints/catalog"
+
+const { slug } = Astro.params
+const pattern = PATTERN_TAGS.find((p) => p.slug === slug)
+
+if (!pattern) {
+    return Astro.redirect("/blueprints")
+}
+
+const PAGE_SIZE = 24
+const q = Astro.url.searchParams.get("q") ?? undefined
+
+const tags = await $fetchApiCached<BlueprintTag[]>(
+    `/blueprints/versions/latest/tags`,
+)
+const tag = tags.find((t) => t.name === pattern.name)
+
+const { results: blueprints = [], total = 0 } = tag
+    ? ((await $fetchApiCached<{ results: Blueprint[]; total: number }>(
+          `/blueprints/versions/latest?size=${PAGE_SIZE}&page=1&tags=${tag.id}` +
+              (q ? `&q=${encodeURIComponent(q)}` : ""),
+      )) ?? { results: [], total: 0 })
+    : { results: [], total: 0 }
+
+const fullCatalog = await fetchFullCatalog()
+const toolIndex = await fetchToolIndex(fullCatalog)
+const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
+
+const heroSiblings = PATTERN_TAGS.map((p) => ({
+    label: p.name,
+    icon: p.icon,
+    active: p.slug === slug,
+    href: p.slug === slug ? "/blueprints" : `/blueprints/patterns/${p.slug}`,
+    removeLabel: p.slug === slug ? `Remove the ${p.name} filter` : undefined,
+}))
+
+const title = `${pattern.name} blueprints`
+const description = pattern.description
+---
+
+<Layout {title} {description}>
+    <BlueprintHero
+        eyebrow="Pattern"
+        title={`${pattern.name} blueprints`}
+        blurb={pattern.description}
+        banner={MAIN_BANNER}
+        {q}
+        tagsSelected={pattern.name}
+        {toolIndex}
+        {coreToolIndex}
+        siblings={heroSiblings}
+    />
+
+    <section class="bp-row">
+        <div class="container-xxl">
+            {
+                blueprints.length > 0 ? (
+                    <LoadMoreBlueprints
+                        tagId={tag?.id}
+                        {q}
+                        tags={tags}
+                        total={total}
+                        initialShown={blueprints.length}
+                        pageSize={PAGE_SIZE}
+                        client:idle
+                    >
+                        <div class="row g-3" slot="initial">
+                            {blueprints.map((blueprint) => (
+                                <div class="col-md-4 col-lg-6 col-xl-6 col-xxl-4">
+                                    <BlueprintCard
+                                        {blueprint}
+                                        {tags}
+                                        href={`/blueprints/${blueprint.id}`}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </LoadMoreBlueprints>
+                ) : (
+                    <div class="col-12 text-center py-5">
+                        <p>
+                            {q
+                                ? `No ${pattern.name} blueprints found for "${q}".`
+                                : "No blueprints tagged with this pattern yet."}
+                        </p>
+                        <a href="/blueprints" class="btn btn-primary">
+                            Clear all filters
+                        </a>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+</Layout>
+
+<style lang="scss">
+    .bp-row {
+        padding: $rem-1 0 $rem-3;
+
+        .container-xxl {
+            padding-inline: $rem-1;
+        }
+    }
+
+    .text-center p {
+        color: var(--ks-content-tertiary);
+    }
+</style>

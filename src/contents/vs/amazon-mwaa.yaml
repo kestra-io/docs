@@ -197,7 +197,7 @@ testimonials:
         name: Faster workflow creation
       - value: "0"
         name: Pipeline failures
-    storyLink: "/use-cases/stories/apple-ml-team-orchestrates-large-scale-data-pipelines-with-kestra"
+    storyLink: "/customers/apple"
 
 platformStrengths:
   title: Kestra Is Built for Teams Who Need More Than AWS

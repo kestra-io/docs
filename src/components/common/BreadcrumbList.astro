@@ -29,7 +29,11 @@ function slugToLabel(slug: string): string {
 const rawPath = url.pathname.replace(/\/+$/, "")
 
 // Homepage — no breadcrumb needed
-const segments = rawPath.split("/").filter(Boolean)
+const versionSegmentRegex = /^v\d+\.\d+\.\d+$/
+const segments = rawPath
+    .split("/")
+    .filter(Boolean)
+    .filter((seg) => !versionSegmentRegex.test(seg))
 
 const breadcrumbs =
     segments.length === 0
@@ -64,6 +68,6 @@ const jsonLd =
 
 {
     jsonLd && (
-        <script type="application/ld+json" set:html={jsonLd} />
+        <script is:inline type="application/ld+json" set:html={jsonLd} />
     )
 }

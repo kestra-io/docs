@@ -1,0 +1,141 @@
+---
+import AlertOutline from "vue-material-design-icons/AlertOutline.vue"
+import ArrowRight from "vue-material-design-icons/ArrowRight.vue"
+
+interface Props {
+    version: string
+    latestHref: string
+    pending?: boolean
+    unavailable?: boolean
+}
+
+const { version, latestHref, pending = false, unavailable = false } = Astro.props
+---
+
+<div class="archived-banner" role="status" data-pending={pending ? "true" : undefined}>
+    <div class="content">
+        <AlertOutline class="icon" />
+        {pending ? (
+            <span class="message">
+                Loading archived docs for <strong>v{version}</strong>. Showing the latest version meanwhile.
+            </span>
+        ) : unavailable ? (
+            <span class="message">
+                Archived docs for <strong>v{version}</strong> are not available. Showing the latest version instead.
+            </span>
+        ) : (
+            <span class="message">
+                You are viewing archived docs for <strong>v{version}</strong>.
+            </span>
+        )}
+    </div>
+    {pending ? (
+        <span class="cta cta-loading" aria-live="polite">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>Loading v{version}</span>
+        </span>
+    ) : unavailable ? (
+        <a class="cta" href={latestHref}>
+            <span>Latest docs</span>
+            <ArrowRight class="cta-arrow" />
+        </a>
+    ) : (
+        <a class="cta" href={latestHref}>
+            <span>View latest</span>
+            <ArrowRight class="cta-arrow" />
+        </a>
+    )}
+</div>
+
+<style lang="scss">
+    .archived-banner {
+        align-items: center;
+        background: #2E2B00;
+        border: 1px solid rgba(255, 248, 112, 0.25);
+        border-radius: 4px;
+        color: #FFF870;
+        display: flex;
+        font-size: $font-size-sm;
+        gap: 1rem;
+        justify-content: space-between;
+        margin: -0.55rem 0 -3rem;
+        padding: 0.45rem 0.85rem;
+
+        .content {
+            align-items: center;
+            display: flex;
+            gap: 0.55rem;
+            min-width: 0;
+        }
+
+        .icon {
+            color: #FFF870;
+            display: inline-flex;
+            line-height: 1;
+
+            :global(svg) {
+                font-size: 1rem;
+            }
+        }
+
+        .message {
+            color: #FFF870;
+            font-weight: 400;
+
+            strong {
+                color: #FFF870;
+                font-weight: 600;
+            }
+        }
+
+        .cta {
+            align-items: center;
+            background: #FFF870;
+            border-radius: 6px;
+            color: #2E2B00;
+            display: inline-flex;
+            font-size: $font-size-xs;
+            font-weight: 600;
+            gap: 0.25rem;
+            padding: 0.3rem 0.8rem 0.3rem 0.95rem;
+            text-decoration: none;
+            transition: filter 0.15s ease;
+            white-space: nowrap;
+
+            &:hover {
+                filter: brightness(1.1);
+            }
+
+            .cta-arrow {
+                display: inline-flex;
+                line-height: 1;
+
+                :global(svg) {
+                    font-size: 0.95rem;
+                }
+            }
+        }
+
+        .cta-loading {
+            cursor: default;
+
+            &:hover {
+                filter: none;
+            }
+
+            .spinner {
+                animation: archived-banner-spin 0.7s linear infinite;
+                border: 2px solid rgba(46, 43, 0, 0.25);
+                border-radius: 50%;
+                border-top-color: #2E2B00;
+                display: inline-block;
+                height: 0.7rem;
+                width: 0.7rem;
+            }
+        }
+    }
+
+    @keyframes archived-banner-spin {
+        to { transform: rotate(360deg); }
+    }
+</style>

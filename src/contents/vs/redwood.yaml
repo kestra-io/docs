@@ -228,7 +228,7 @@ testimonials:
         name: "Open-source plugins available"
       - value: "5x"
         name: "More teams building automation"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Teams Work

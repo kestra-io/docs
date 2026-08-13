@@ -27,7 +27,7 @@ This flow has potentially long running operations, so to optimize testing certai
 - GitHub personal access token stored as `GITHUB_TOKEN`.
 - GCP service account JSON key stored as `GCP_SERVICE_ACCOUNT`.
 - A target bucket such as `gs://your_gcs_bucket/kestra-backups/`.
-- The [Google Cloud Storage plugin](/plugins/plugin-gcp/cloud-storage-gcs/io.kestra.plugin.gcp.gcs.upload) available to your workers.
+- The [Google Cloud Storage plugin](/plugins/plugin-gcp/google-cloud-storage-gcs/io.kestra.plugin.gcp.gcs.upload) available to your workers.
 
 ---
 

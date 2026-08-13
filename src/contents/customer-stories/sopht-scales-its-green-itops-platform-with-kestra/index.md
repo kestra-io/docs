@@ -12,6 +12,7 @@ heroImage: ./hero.png
 featuredImage: ./hero.png
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
   - io.kestra.plugin.docker.Build
@@ -20,13 +21,13 @@ tasks:
   - io.kestra.plugin.scripts.python.Script
 kpi1: |-
   ##### Plug & Play Terraform
-  Managed Flow Activation
+  managed flow activation
 kpi2: |-
   ##### 99.5%
-  Job Success Rate
+  job success rate
 kpi3: |-
   ##### Multi-Tenant
-  Customer Isolated Orchestration
+  customer isolated orchestration
 quote: Kestra’s declarative model and Terraform integration gave us exactly what
   we needed to build customer-specific pipelines, automate deployment, and
   monitor everything reliably.
@@ -39,7 +40,8 @@ companySize: "1–50"
 solution: Sopht is a French startup focused on Green ITOps. Their platform helps organizations automate decarbonization strategies and track their environmental and financial performance.
 tagline: French startup automating Green ITOps and decarbonization tracking
 companyName: Sopht
-useCase: Business Automation
+useCase: Scaling from 1,240 to 6,200 daily jobs with 99.5% reliability in tenant-isolated pipelines for a Green ITOps decarbonization platform
+useCaseShort: Business Automation
 cta: "What would change if your green IT platform scaled from 1,200 to 6,200 daily jobs—with 99.5% reliability built in?"
 ---
 

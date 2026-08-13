@@ -1,10 +1,7 @@
-title: "Become an AI Orchestration Expert with the LLM Zoomcamp"
-description: "In Module 3 of the LLM Zoomcamp, learn how to orchestrate AI workflows
-  using Kestra, an open-source orchestration platform. This module covers everything
-  from basic AI assistants to autonomous multi-agent systems that can research, reason,
-  and act."
-category: "Deep Dive Tutorials"
+title: "What is dbt?"
+description: "Everyone in data keeps saying dbt like you already know what it means. This is the five minute version for those who don't."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=0tG0Ao5iL8o"
-publicationDate: "2026-06-03T00:00:00.000"
-contentType: "Deep Dive Tutorials"
+url: "https://www.youtube.com/watch?v=jrK6S5Bhl7E"
+publicationDate: "2026-07-22T00:00:00.000"
+contentType: "Data"

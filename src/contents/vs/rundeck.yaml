@@ -214,7 +214,7 @@ testimonials:
         name: "HA uptime achieved"
       - value: "3x"
         name: "More workflows automated"
-    storyLink: "/use-cases/stories/modernizing-mission-critical-workflows-in-a-highly-regulated-environment"
+    storyLink: "/customers/pharmacy-retailer"
 
 platformStrengths:
   title: "Kestra Solves What Rundeck Cannot"

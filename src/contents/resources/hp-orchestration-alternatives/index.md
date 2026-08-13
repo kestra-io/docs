@@ -29,7 +29,7 @@ HP Operations Orchestration (HP OO), now part of Micro Focus, is a traditional I
 
 ### Why Seek Alternatives to HP Operations Orchestration?
 The shift to cloud-native architectures and DevOps practices has exposed the limitations of legacy tools like HP OO. Modern engineering teams often seek alternatives for several key reasons:
-*   **Operational Burden:** HP OO can be complex to manage, requiring specialized knowledge and significant infrastructure, which can [increase orchestration complexity](//resources/infrastructure/orchestration-problems-complexity) rather than reduce it.
+*   **Operational Burden:** HP OO can be complex to manage, requiring specialized knowledge and significant infrastructure, which can [increase orchestration complexity](/resources/infrastructure/orchestration-problems-complexity) rather than reduce it.
 *   **Lack of Cloud-Native Capabilities:** It was designed for a pre-cloud era. Integrating with modern cloud services, container orchestration platforms like Kubernetes, and serverless functions can be cumbersome.
 *   **Limited Integration:** While it has a library of integrations, connecting to modern data and AI stacks, SaaS APIs, and developer-centric tools is often not as seamless as with newer platforms.
 *   **Cost and Vendor Lock-in:** Proprietary licensing models can be expensive and create dependency on a single vendor, hindering flexibility.

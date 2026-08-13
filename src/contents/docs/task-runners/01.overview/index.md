@@ -8,11 +8,9 @@ editions: ["OSS", "EE"]
 description: Learn about Kestra Task Runners capabilities and supported plugins for executing tasks in diverse environments.
 ---
 
-Understand the capabilities of Task Runners and the plugins that support them.
+Task Runners control where and how Kestra executes script tasks — locally, on Kubernetes, or on cloud platforms like AWS, Azure, and Google Cloud.
 
-## Understand task runner capabilities
-
-Task Runners provide a flexible and efficient way to execute compute-intensive workloads across different environments. Whether you’re running scripts locally, on Kubernetes, or on cloud platforms like AWS, Azure, or Google Cloud, Task Runners ensure consistent, isolated, and configurable task execution.
+## Capabilities
 
 The table below outlines the main capabilities of Task Runners in Kestra.
 
@@ -53,8 +51,8 @@ Task Runners are primarily used in tasks from the [Script Plugin](https://github
 - [Ansible](/plugins/plugin-ansible)
 - [Terraform](/plugins/plugin-terraform)
 - [Modal](/plugins/plugin-modal)
-- [AWS CLI](/plugins/plugin-aws/cli/io.kestra.plugin.aws.cli.awscli)
-- [GCloud CLI](/plugins/plugin-gcp/cli/io.kestra.plugin.gcp.cli.gcloudcli)
-- [Azure CLI](/plugins/plugin-azure/cli/io.kestra.plugin.azure.cli.azcli)
+- [AWS CLI](/plugins/plugin-aws/aws-cli/io.kestra.plugin.aws.cli.awscli)
+- [GCloud CLI](/plugins/plugin-gcp/google-cloud-cli/io.kestra.plugin.gcp.cli.gcloudcli)
+- [Azure CLI](/plugins/plugin-azure/azure-cli/io.kestra.plugin.azure.cli.azcli)
 
 Whenever you see a task capable of executing a `script` or a series of `commands`, it’s a script-based task that can leverage a `taskRunner` to define where and how that task runs.

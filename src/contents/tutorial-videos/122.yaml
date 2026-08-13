@@ -1,9 +1,7 @@
-title: "DAGs vs Workflows: Are They the Same Thing?"
-description: "Developer Advocate Will Russell explains the differences between a DAG
-  and a Workflow in data engineering through practical examples to clarify how these
-  commonly confused terms actually differ."
-category: "Deep Dive Tutorials"
+title: "Building and Maintaining Kestra's 1600+ Plugins"
+description: "Kestra has over 1,600 plugins, and a small team builds and maintains all of them across dozens of third-party APIs, multiple Kestra versions, and a release cadence that doesn't slow down. Join François Delbrayelle and Will Russell for a live Q&A on how the plugin team uses AI to ship faster, where it shows up in the real workflow, where it falls short, and how they keep quality consistent at that scale."
+category: "Webinar"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
-publicationDate: "2026-05-12T00:00:00.000"
-contentType: "Deep Dive Tutorials"
+url: "https://www.youtube.com/watch?v=FLwFfCUU5XI"
+publicationDate: "2026-07-02T00:00:00.000"
+contentType: "Webinar"

@@ -253,13 +253,16 @@ const faqItems = [
                     var gradient = item.getAttribute("data-gradient") || ""
                     if (gradient) {
                         heroName.style.background = gradient
-                        heroName.style.webkitBackgroundClip = "text"
+                        heroName.style.setProperty(
+                            "-webkit-background-clip",
+                            "text",
+                        )
                         heroName.style.webkitTextFillColor = "transparent"
                         heroName.style.backgroundClip = "text"
                         heroName.style.color = ""
                     } else {
                         heroName.style.background = ""
-                        heroName.style.webkitBackgroundClip = ""
+                        heroName.style.setProperty("-webkit-background-clip", "")
                         heroName.style.webkitTextFillColor = ""
                         heroName.style.backgroundClip = ""
                         heroName.style.color = color

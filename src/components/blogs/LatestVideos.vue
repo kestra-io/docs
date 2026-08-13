@@ -31,7 +31,7 @@
         </div>
 
         <div class="d-flex justify-content-end">
-            <Link href="/tutorial-videos" text="More Videos" />
+            <Link href="/videos" text="More Videos" />
         </div>
 
         <div

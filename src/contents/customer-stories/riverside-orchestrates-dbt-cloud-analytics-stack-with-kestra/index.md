@@ -6,6 +6,7 @@ metaTitle: How Riverside Connected dbt Cloud, Snowflake, and Hightouch Into a Si
 metaDescription: Riverside's analytics engineering team connected dbt Cloud, Snowflake, and Hightouch into a single dependency-aware pipeline using Kestra Cloud. No rewrites, no Python framework, no infrastructure to manage.
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
+logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.dbt.cloud.TriggerRun
   - io.kestra.plugin.scripts.python.Script
@@ -14,7 +15,6 @@ tasks:
 kpi1: |
   6+
   data tools orchestrated
-  ELT sources, dbt Cloud, Metaplane, Hightouch, and more
 kpi2: |
   4
   orchestrators evaluated
@@ -30,16 +30,18 @@ kpi4: |
 quote: Simply powerful yet simple enough.
 quotePerson: Hernán Estrin
 quotePersonTitle: Analytics Engineering Lead, Riverside
-industry: Media Tech / SaaS
+industry: Media Tech
+industry2: SaaS
 headquarter: Tel Aviv, Israel
-region: North America
+region: Americas
 companySize: "51–500"
 solution: Orchestration layer connecting ELT ingestion, sequential dbt Cloud jobs, Metaplane data quality gates, and Hightouch reverse ETL across Riverside's Snowflake-based analytics stack
 tagline: Remote recording platform for podcasts and video interviews
 companyName: Riverside
 intro: Riverside is a podcast recording and editing platform used by creators and media teams worldwide. Their analytics engineering team runs the company's internal data operations — ELT ingestion into Snowflake, sequential dbt Cloud transformation jobs, Metaplane data quality checks, and Hightouch reverse ETL to downstream platforms. Six tools in total, all with dependencies on each other, all previously running on isolated time-based schedules with no actual handoff between them. The team evaluated Astronomer, Dagster, Mage, and Orchestra. All four were rejected. Airflow was too complex for a team of SQL and YAML practitioners. Dagster required too steep a learning curve. Orchestra abstracted too much away. They chose Kestra Cloud and connected their full analytics stack without rewriting a single pipeline.
 deployment: Cloud · Kestra Cloud · GCP
-useCase: Data Orchestration
+useCase: Connecting dbt Cloud, Snowflake, Metaplane, and Hightouch into a single dependency-aware pipeline without rewriting a single existing script
+useCaseShort: Data Orchestration
 cta: What would your analytics team build if your pipelines ran in sync, with no framework overhead and no infrastructure to manage?
 ---
 

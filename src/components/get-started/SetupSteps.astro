@@ -2,6 +2,9 @@
 import { Icon } from "astro-icon/components"
 import Snippets from "~/components/common/Snippets.astro"
 import Link from "~/components/common/Link.astro"
+import { fetchTotalBlueprintsCount } from "~/utils/blueprints/blueprintCount"
+
+const totalBlueprints = await fetchTotalBlueprintsCount()
 
 const dockerCommandUnix = `docker run --pull=always --rm -it -p 8080:8080 --user=root \\
   --name kestra \\
@@ -11,12 +14,12 @@ const dockerCommandUnix = `docker run --pull=always --rm -it -p 8080:8080 --user
   -v /tmp:/tmp \\
   kestra/kestra:latest server local`
 
-const dockerCommandWindows = `docker run --pull=always --rm -it -p 8080:8080 --user=root ^
-  --name kestra ^
-  -v kestra_data:/app/storage ^
-  -v kestra_db:/app/data ^
-  -v /var/run/docker.sock:/var/run/docker.sock ^
-  -v /tmp:/tmp ^
+const dockerCommandWindows = `docker run --pull=always --rm -it -p 8080:8080 --user=root \`
+  --name kestra \`
+  -v kestra_data:/app/storage \`
+  -v kestra_db:/app/data \`
+  -v /var/run/docker.sock:/var/run/docker.sock \`
+  -v /tmp:/tmp \`
   kestra/kestra:latest server local`
 ---
 
@@ -86,8 +89,7 @@ const dockerCommandWindows = `docker run --pull=always --rm -it -p 8080:8080 --u
                 </div>
                 <div class="step-body">
                     <p>
-                        Use the built-in editor to create a YAML flow, or pick from
-                        <a href="/blueprints">250+ Blueprints</a> to start instantly.
+                        Use the built-in editor to create a YAML flow, or pick from <a href="/blueprints">{totalBlueprints}+ Blueprints</a> to start instantly.
                     </p>
                 </div>
             </div>

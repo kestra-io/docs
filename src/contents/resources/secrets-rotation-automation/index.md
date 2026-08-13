@@ -117,7 +117,7 @@ To build a successful secrets rotation strategy, follow these best practices:
 *   **Centralize Secret Management:** Use a dedicated secret manager as the single source of truth for all credentials.
 *   **Implement Least Privilege:** Ensure that automated processes and users only have the permissions necessary to perform their tasks.
 *   **Use Granular Access Control:** Define clear roles and permissions for who can manage and access secrets.
-*   **Audit Everything:** Regularly review access logs and rotation histories to ensure compliance and detect anomalies. As seen in the case of [Scaling Secure Infrastructure at Crédit Agricole with Kestra](/use-cases/stories/scaling-secure-infrastructure-at-credit-agricole-with-kestra), integrating with tools like Vault is key to this.
+*   **Audit Everything:** Regularly review access logs and rotation histories to ensure compliance and detect anomalies. As seen in the case of [Scaling Secure Infrastructure at Crédit Agricole with Kestra](/customers/credit-agricole), integrating with tools like Vault is key to this.
 *   **Test Your Workflows:** Regularly test rotation workflows in a non-production environment to ensure they work as expected.
 *   **Monitor for Failures:** Set up alerts to notify your team immediately if a rotation workflow fails.
 

@@ -204,7 +204,7 @@ testimonials:
         name: Customers on multi-tenant platform
       - value: "0"
         name: Pipeline rewrites required
-    storyLink: "/use-cases/stories"
+    storyLink: "/customers"
 
 platformStrengths:
   title: Kestra Is Built for How Engineering Teams Work
