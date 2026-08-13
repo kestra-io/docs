@@ -41,7 +41,7 @@ EOT
 
 ### Required
 
-- `namespace_id` (String) The namespace.
+- `namespace_id` (String) The namespace id.
 
 ### Optional
 
@@ -49,23 +49,23 @@ EOT
 - `description` (String) The namespace friendly description.
 - `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
 - `plugin_defaults` (String) The namespace plugin defaults in yaml string.
-- `secret_configuration` (Map of String) The secret configuration.
-- `secret_isolation` (Block List, Max: 1) Secret isolation configuration (same shape as storage_isolation). (see [below for nested schema](#nestedblock--secret_isolation))
+- `secret_configuration` (Dynamic) Per-backend secret configuration. The whole value is a free-form map keyed by backend type (e.g. `vault`, `aws`, `gcp`), where each value is either a string or a nested object describing that backend's config.
+- `secret_isolation` (Block List) Secret isolation configuration. (see [below for nested schema](#nestedblock--secret_isolation))
 - `secret_read_only` (Boolean) Whether secrets are read-only in this namespace.
 - `secret_type` (String) The secret type.
 - `storage_configuration` (Map of String) The storage configuration.
-- `storage_isolation` (Block List, Max: 1) Storage isolation configuration. (see [below for nested schema](#nestedblock--storage_isolation))
+- `storage_isolation` (Block List) Storage isolation configuration. (see [below for nested schema](#nestedblock--storage_isolation))
 - `storage_type` (String) The storage type.
 - `variables` (String) The namespace variables in yaml string.
-- `worker_group` (Block List, Max: 1) The worker group. (see [below for nested schema](#nestedblock--worker_group))
+- `worker_group` (Block List) The worker group. (see [below for nested schema](#nestedblock--worker_group))
 
 ### Read-Only
 
-- `id` (String) The ID of this resource.
+- `id` (String) The namespace id.
 - `tenant_id` (String) The tenant id.
 
 <a id="nestedblock--allowed_namespaces"></a>
-### Nested schema for `allowed_namespaces`
+### Nested Schema for `allowed_namespaces`
 
 Required:
 
@@ -77,8 +77,8 @@ Required:
 
 Optional:
 
-- `denied_services` (List of String) List of denied services for secret isolation.
-- `enabled` (Boolean) Enable secret isolation.
+- `denied_services` (Set of String) Set of denied services.
+- `enabled` (Boolean) Whether isolation is enabled.
 
 
 <a id="nestedblock--storage_isolation"></a>
@@ -86,8 +86,8 @@ Optional:
 
 Optional:
 
-- `denied_services` (List of String) List of denied services for isolation.
-- `enabled` (Boolean) Enable storage isolation.
+- `denied_services` (Set of String) Set of denied services.
+- `enabled` (Boolean) Whether isolation is enabled.
 
 
 <a id="nestedblock--worker_group"></a>
@@ -104,6 +104,8 @@ Optional:
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_namespace.example {{namespace}}

@@ -10,7 +10,7 @@ description: The kestra_template data source allows you to read templates in Kes
 
 Use this data source to access information about an existing Kestra Template
 
-## Example usage
+## Example Usage
 
 ```hcl
 data "kestra_template" "example" {

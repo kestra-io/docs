@@ -14,7 +14,7 @@ Manages a Kestra Group.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_group" "example" {
@@ -44,6 +44,8 @@ resource "kestra_group" "example" {
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_group.example {{group_id}}

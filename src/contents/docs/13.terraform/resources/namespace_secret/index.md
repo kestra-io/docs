@@ -14,7 +14,7 @@ Manages a Kestra Namespace Secret.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_namespace_secret" "example" {

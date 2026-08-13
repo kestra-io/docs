@@ -6,19 +6,11 @@ editLink: false
 description: |-
 ---
 
-## Kestra 1.0.x compatibility
+## Provider configurations
 
-:::alert{type="danger"}
-**Warning:** Kestra Terraform provider 1.0.x is only compatible with Kestra 1.0.x and above.
-:::
 
-Additionally, if you want to terraform Kestra 1.0.x you need to use Kestra Terraform provider 1.0.x
 
-### Breaking changes from 1.0.x
-
-Various breaking changes were made around from 0.24.x to 1.0.x, especially around IAM.
-
-## Example usage
+## Example Usage
 
 ```hcl
 provider "kestra" {
@@ -54,8 +46,8 @@ provider "kestra" {
 - `extra_headers` (Map of String) Extra headers to add to every request
 - `jwt` (String, Sensitive) The JWT token (EE)
 - `keep_original_source` (Boolean) Keep original source code, keeping comment and indentation. Setting to false is now deprecated and will be removed in the future.
-- `password` (String, Sensitive) The basic-auth password
+- `password` (String, Sensitive) The BasicAuth password
 - `tenant_id` (String) The tenant id (EE)
 - `timeout` (Number) The timeout (in seconds) for http requests
 - `url` (String) The endpoint url
-- `username` (String) The basic-auth username
+- `username` (String) The BasicAuth username

@@ -14,7 +14,7 @@ Use this data source to access information about an existing Kestra Namespace.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 data "kestra_namespace" "example" {
@@ -48,7 +48,7 @@ data "kestra_namespace" "example" {
 - `worker_group` (List of Object) The worker group. (see [below for nested schema](#nestedatt--worker_group))
 
 <a id="nestedatt--allowed_namespaces"></a>
-### Nested schema for `allowed_namespaces`
+### Nested Schema for `allowed_namespaces`
 
 Read-Only:
 
@@ -56,7 +56,7 @@ Read-Only:
 
 
 <a id="nestedatt--secret_isolation"></a>
-### Nested schema for `secret_isolation`
+### Nested Schema for `secret_isolation`
 
 Read-Only:
 
@@ -65,7 +65,7 @@ Read-Only:
 
 
 <a id="nestedatt--storage_isolation"></a>
-### Nested schema for `storage_isolation`
+### Nested Schema for `storage_isolation`
 
 Read-Only:
 
@@ -74,7 +74,7 @@ Read-Only:
 
 
 <a id="nestedatt--worker_group"></a>
-### Nested schema for `worker_group`
+### Nested Schema for `worker_group`
 
 Read-Only:
 

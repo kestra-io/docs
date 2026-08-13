@@ -14,7 +14,7 @@ Manages a Kestra Role.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_role" "example" {
@@ -53,7 +53,7 @@ resource "kestra_role" "example" {
 - `tenant_id` (String) The tenant id.
 
 <a id="nestedblock--permissions"></a>
-### Nested schema for `permissions`
+### Nested Schema for `permissions`
 
 Required:
 
@@ -63,6 +63,8 @@ Required:
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_role.example {{role_id}}

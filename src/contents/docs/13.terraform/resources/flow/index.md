@@ -10,7 +10,7 @@ description: The kestra_flow resource allows you to manage flows in Kestra using
 
 Manages a Kestra Flow.
 
-## Example usage
+## Example Usage
 
 ```hcl
 resource "kestra_flow" "example" {
@@ -46,6 +46,9 @@ EOT
 ### Required
 
 - `content` (String) The flow full content in yaml string.
+
+### Optional
+
 - `flow_id` (String) The flow id.
 - `namespace` (String) The flow namespace.
 
@@ -58,6 +61,8 @@ EOT
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_flow.example {{namespace}}/{{flow_id}}
