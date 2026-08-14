@@ -82,7 +82,7 @@ If your repository is Elasticsearch, your instance likely stores a large amount 
 kestra migrate default-tenant \
     --tenant-id=tenant \
     --tenant-name="Tenant Name" \
-    --excludes=executions,logs,metrics \
+    --excludes=kestra_executions,kestra_logs,kestra_metrics \
     [--dry-run]
 ```
 

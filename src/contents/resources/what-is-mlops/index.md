@@ -121,6 +121,8 @@ Finally, it **strengthens governance and risk management**. With a complete audi
 
 At the core of any MLOps practice sits an orchestration engine able to manage the complex dependencies of an [AI pipeline](/resources/ai/ai-pipeline). Kestra is an [AI-native orchestration platform](/resources/ai/ai-native-orchestration-platform) that unifies data, AI, and infrastructure workflows under a single declarative control plane.
 
+Teams that already run MLOps on a single scheduler tend to extend it rather than adopt a second one — a pattern covered in our comparison of [AI orchestration tools](/resources/ai/ai-orchestration).
+
 Kestra's design lines up directly with MLOps principles:
 *   **Declarative Workflows:** ML pipelines are defined in simple, reviewable YAML files, which makes them easy to version, audit, and manage with GitOps practices.
 *   **Language-Agnostic Execution:** MLOps pipelines often span multiple languages and frameworks. Kestra runs Python, R, SQL, Shell scripts, and Docker containers as first-class citizens in the same workflow, removing the need for glue code.

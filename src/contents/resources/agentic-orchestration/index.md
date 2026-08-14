@@ -6,6 +6,14 @@ metaDescription: "Learn what agentic orchestration is, how it coordinates AI age
 tag: ai
 date: 2026-07-01
 faq:
+  - question: "What is agentic orchestration?"
+    answer: "Agentic orchestration is a structured approach to managing specialized AI agents so they collaborate and complete tasks autonomously. It coordinates agents, governs their actions, and moves data between them to achieve complex organizational goals reliably."
+  - question: "What is an agentic orchestration platform?"
+    answer: "An agentic orchestration platform is a control plane that lets AI agents, automation, machine learning, and people work together. It provides the capabilities to design, run, monitor, and optimize long-running processes end-to-end, with audit trails and access controls for AI initiatives."
+  - question: "What is the difference between agentic workflows and orchestration?"
+    answer: "In agentic systems, workflows are the processes where agents execute tasks. Orchestration defines explicit checkpoints and rules, letting agents do preparatory and analytical work autonomously while keeping human judgment where it is required. This lets people focus on outcomes rather than supervising every step."
+  - question: "What is the difference between orchestration and choreography in agentic AI?"
+    answer: "Orchestration provides a central authority for control, ensuring compliance, governance, and predictable execution across AI agents. Choreography emphasizes decentralized, self-organizing interactions that favor adaptability. A blend of both can create resilient agentic ecosystems tailored to an organization's need for control and autonomy."
   - question: "What is the difference between agentic and orchestration?"
     answer: "'Agentic' refers to the quality of an AI system having autonomous, goal-driven actors (agents). 'Orchestration' refers to the framework that coordinates these agents, along with other systems and people, to achieve a larger business process. Agentic is about the actor; orchestration is about the system managing the actors."
   - question: "What is an orchestrator in agentic AI?"
@@ -26,32 +34,6 @@ faq:
     answer: "Common pitfalls include underestimating the need for governance, giving agents access to too many or poorly defined tools, failing to implement human oversight for critical tasks, and not having adequate monitoring to observe and debug agent behavior. Starting with a strong orchestration platform helps avoid these issues."
 ---
 
-```yaml
----
-title: "Agentic Orchestration: Unifying AI Agents and Workflows"
-description: "Agentic orchestration provides the framework for AI agents to collaborate effectively, tackling complex tasks across diverse domains. Learn how a declarative orchestration platform can bring governance and scalability to your AI workflows."
-metaTitle: "Agentic Orchestration: Unifying AI Agents & Workflows"
-metaDescription: "Learn what agentic orchestration is, how it differs from choreography, and how a declarative platform coordinates AI agents into governed, auditable systems."
-tag: "ai"
-date: 2026-07-01
-slug: "agentic-orchestration"
-faq:
-  - question: "What is agentic orchestration?"
-    answer: "Agentic orchestration is a structured approach to managing specialized AI agents so they collaborate and complete tasks autonomously. It coordinates agents, governs their actions, and moves data between them to achieve complex organizational goals reliably."
-  - question: "What is an agentic orchestration platform?"
-    answer: "An agentic orchestration platform is a control plane that lets AI agents, automation, machine learning, and people work together. It provides the capabilities to design, run, monitor, and optimize long-running processes end-to-end, with audit trails and access controls for AI initiatives."
-  - question: "What is the difference between an agent and an orchestrator?"
-    answer: "An agent is an autonomous unit that reasons, calls tools, and acts toward a goal. An orchestrator is the layer above it that decides which agents run, in what order, with what data, and under what governance. The agent does the work; the orchestrator coordinates and supervises it."
-  - question: "What is the difference between agentic workflows and orchestration?"
-    answer: "In agentic systems, workflows are the processes where agents execute tasks. Orchestration defines explicit checkpoints and rules, letting agents do preparatory and analytical work autonomously while keeping human judgment where it is required. This lets people focus on outcomes rather than supervising every step."
-  - question: "What is the difference between orchestration and choreography in agentic AI?"
-    answer: "Orchestration provides a central authority for control, ensuring compliance, governance, and predictable execution across AI agents. Choreography emphasizes decentralized, self-organizing interactions that favor adaptability. A blend of both can create resilient agentic ecosystems tailored to an organization's need for control and autonomy."
-  - question: "How to build agentic orchestration?"
-    answer: "Building agentic orchestration involves assessment and planning, selecting specialized AI agents, implementing an orchestration framework, assigning agents to tasks, coordinating workflow execution, and managing data sharing and context. Continuous optimization and learning are essential for long-term success."
-  - question: "What exactly is orchestration?"
-    answer: "Orchestration is the coordinated execution of multiple IT automation tasks or processes across various systems, applications, and services. Its purpose is to ensure that complex sequences—deployments, configuration management, and data pipelines—run in the correct order, with proper error handling and dependency management."
----
-```
 The rise of AI agents promises a new level of automation, but their real power lies not in isolated capabilities, but in their ability to collaborate and execute complex, multi-step workflows. Without a central coordinating intelligence, these agents quickly become chaotic, creating new silos and operational blind spots.
 
 Agentic orchestration provides this missing framework. It's the discipline of designing, managing, and monitoring teams of AI agents, making sure they work together across diverse systems—from data pipelines and cloud infrastructure to business logic and human approvals. This article explores how agentic orchestration unifies these disparate elements into a single, auditable control plane, so enterprises can build reliable, scalable AI-powered systems.
@@ -59,6 +41,8 @@ Agentic orchestration provides this missing framework. It's the discipline of de
 ## What is agentic orchestration?
 
 Agentic orchestration represents a significant evolution in automation, moving from simple, task-based scripts to goal-oriented systems. It's the structured practice of managing and coordinating multiple specialized [AI agents](/resources/ai/ai-agent) to achieve outcomes that no single agent could accomplish alone.
+
+Agentic orchestration is the newest layer of a longer-standing practice: [enterprise AI orchestration](/resources/ai/ai-orchestration), which coordinates models, data pipelines and tools whether or not an autonomous agent is involved.
 
 At its core, agentic orchestration is about creating a system where AI agents can collaborate, share context, and execute tasks in a governed, observable manner. This is not just about running a sequence of model calls; it's about building a framework that handles errors, incorporates human feedback, and interacts with external tools and APIs.
 

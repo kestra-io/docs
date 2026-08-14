@@ -121,6 +121,8 @@ Deployed models often handle sensitive data, making security paramount. This inc
 
 A robust orchestration platform like Kestra can unify and automate the entire model deployment lifecycle, from data preparation and model training to deployment and monitoring. By defining the entire MLOps workflow as declarative YAML, Kestra ensures reproducibility, version control, and collaboration.
 
+Deployment is one stage in a longer chain that also covers retraining, evaluation and rollback — the reason most teams standardise on a single [enterprise AI orchestration platform](/resources/ai/ai-orchestration).
+
 ```yaml
 id: ml-model-deployment
 namespace: production.mlops

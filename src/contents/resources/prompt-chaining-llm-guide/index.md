@@ -176,6 +176,8 @@ The technique is model-agnostic and applies to any capable LLM. Common use cases
 
 Building a production-ready prompt chain requires a structured development workflow and the right tooling.
 
+A chain is a small orchestration problem. The same questions — order, failure handling, observability — reappear at scale when [coordinating model calls end to end](/resources/ai/ai-orchestration).
+
 ### Planning your prompt chain workflow
 
 Before writing a single prompt, map out the entire process. A simple flowchart can help visualize the sequence of steps, the data that flows between them, and any conditional logic. For each step, define:
