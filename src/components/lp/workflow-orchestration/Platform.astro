@@ -1,0 +1,130 @@
+---
+import { Icon } from "astro-icon/components"
+
+const cards = [
+    {
+        kicker: "Control",
+        title: "One control plane for data, infra, AI, and business processes.",
+        body: "Replace your legacy schedulers with one governed platform, running on top of the tools you already have.",
+        icon: "mdi:monitor-dashboard",
+    },
+    {
+        kicker: "Declarative workflows",
+        title: "Every job visible, owned, and audited.",
+        body: "Including the ones that used to live in cron tabs and legacy scripts. Declarative workflows versioned in Git, editable from a full UI, with RBAC and audit logs built in.",
+        icon: "mdi:eye-outline",
+    },
+    {
+        kicker: "Language-agnostic",
+        title: "Any language. Every engineer builds.",
+        body: "Python, Java, Shell, Node, and 1,800+ plugins for your databases, clouds, and SaaS tools. No rewrites to adopt, so one platform actually replaces many.",
+        icon: "mdi:cube-outline",
+    },
+]
+---
+
+<section class="platform">
+    <h2>One platform. Every workflow. Your infrastructure.</h2>
+
+    <div class="cards">
+        {
+            cards.map((card) => (
+                <article class="card-fancy">
+                    <Icon name={card.icon} class="watermark" />
+                    <p class="kicker">{card.kicker}</p>
+                    <h3>{card.title}</h3>
+                    <p class="body">{card.body}</p>
+                </article>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .platform {
+        padding: 5rem 1rem;
+        /* The design's stack of white-to-transparent washes composites to flat
+         * white here — verified against the Figma render. */
+        background-color: #ffffff;
+    }
+
+    h2 {
+        max-width: 1140px;
+        margin: 0 auto 2.5rem;
+        color: var(--lp-content-primary);
+        font-size: 1.875rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.045rem;
+        text-align: center;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .cards {
+        display: grid;
+        gap: 1rem;
+        max-width: 1146px;
+        margin-inline: auto;
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .card-fancy {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        overflow: hidden;
+        padding: 1.5rem 1.5rem 2rem;
+        border: 1px solid var(--lp-purple);
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 2px 3px 16px 0 var(--lp-shadow-light);
+    }
+
+    .watermark {
+        position: absolute;
+        /* Sized and placed to land the glyph where the design does: a ~190px
+         * mark centred just above the card's top-right corner. */
+        top: -3.75rem;
+        right: -3.5rem;
+        width: 190px;
+        height: 190px;
+        /* The design layers a faint two-stop purple wash here; at this alpha
+         * a single tint is indistinguishable from it. */
+        color: var(--lp-purple);
+        opacity: 0.09;
+        transform: rotate(-18deg);
+        pointer-events: none;
+    }
+
+    .kicker {
+        position: relative;
+        margin: 0;
+        color: var(--lp-purple);
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    h3 {
+        position: relative;
+        margin: 0;
+        color: var(--lp-content-primary);
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.167;
+        letter-spacing: -0.0075rem;
+    }
+
+    .body {
+        position: relative;
+        margin: 0.5rem 0 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 1.43;
+    }
+</style>

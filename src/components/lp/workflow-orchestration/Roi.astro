@@ -1,0 +1,217 @@
+---
+import { Icon } from "astro-icon/components"
+
+import QuoteCarousel from "./QuoteCarousel.vue"
+
+import LeroyMerlinLogo from "~/assets/quotes-companies/LeroyMerlin.svg?raw"
+import QuadisLogo from "~/assets/quotes-companies/quadis.svg?raw"
+import UsccaLogo from "~/assets/quotes-companies/USCCA.svg?raw"
+
+const stats = [
+    {
+        kicker: "Engineering productivity",
+        trend: "mdi:arrow-up-thin",
+        value: "20-40%",
+        body: "Reuse of blueprints and plugins, plus guided authoring, reduces rework and review cycles.",
+    },
+    {
+        kicker: "Ops effort",
+        trend: "mdi:arrow-down-thin",
+        value: "30-60%",
+        body: "Targeted replay, built-in observability, and deterministic runs reduce incidents and time-to-recovery.",
+    },
+    {
+        kicker: "Infra waste",
+        trend: null,
+        value: "10-30%",
+        body: "Partial replays and targeted reruns cut reprocessing compute, storage, and network.",
+    },
+    {
+        kicker: "Tool spend",
+        trend: null,
+        value: "15-35%",
+        body: "Consolidating one to three overlapping tools reduces license and run costs.",
+    },
+]
+
+const quotes = [
+    {
+        quote: "Kestra allowed us to move from fragmented automation to a unified control plane — secure, scalable, and manageable by all our teams.",
+        author: "Data Platform Engineering",
+        company: "Leroy Merlin",
+        logoSvg: LeroyMerlinLogo,
+    },
+    {
+        quote: "We're convinced to have chosen the right tool. The support and communication are great, it's easy to adapt to any tool, and easy for any team to understand.",
+        author: "Rubén Boniz Martinez, Senior Engineering Manager",
+        company: "Quadis",
+        logoSvg: QuadisLogo,
+    },
+    {
+        quote: "We didn't have centralized orchestration. That's where Kestra plays the most important role: all the fragmented production pipelines orchestrated through it.",
+        author: "Shilpa Pauly, Data Engineer",
+        company: "USCCA",
+        logoSvg: UsccaLogo,
+    },
+]
+---
+
+<section class="roi">
+    <div class="head">
+        <h2>The ROI of standardizing orchestration</h2>
+        <p>
+            Typical impact once the schedulers, cron jobs, and point tools run
+            on one platform.
+        </p>
+    </div>
+
+    <div class="cards">
+        {
+            stats.map((stat) => (
+                <article class="card-fancy">
+                    <p class="kicker">{stat.kicker}</p>
+                    <p class="value">
+                        {stat.trend && <Icon name={stat.trend} class="trend" />}
+                        <span>{stat.value}</span>
+                    </p>
+                    <p class="body">{stat.body}</p>
+                </article>
+            ))
+        }
+    </div>
+
+    <QuoteCarousel {quotes} client:visible />
+</section>
+
+<style lang="scss">
+    .roi {
+        padding: 5rem 1rem;
+        /* The one light section the design does NOT leave flat white: a soft
+         * lavender wash sits over it, densest across the top and down the left,
+         * clearing to white before the bottom edge. (In Figma this is a raster
+         * texture at 10% opacity; sampling its render gives #f3edff at peak.) */
+        background-color: #ffffff;
+        background-image:
+            radial-gradient(
+                90% 70% at 50% -10%,
+                #f0e8ff 0%,
+                rgba(243, 237, 255, 0.55) 45%,
+                rgba(255, 255, 255, 0) 85%
+            ),
+            radial-gradient(
+                55% 60% at -5% 45%,
+                rgba(243, 237, 255, 0.9) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            radial-gradient(
+                40% 50% at 100% 5%,
+                rgba(240, 240, 254, 0.9) 0%,
+                rgba(255, 255, 255, 0) 100%
+            );
+    }
+
+    .head {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+
+        h2 {
+            margin: 0 0 2rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+    }
+
+    .cards {
+        display: grid;
+        gap: 1rem;
+        max-width: 1212px;
+        margin-inline: auto;
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    .card-fancy {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.5rem 1rem 2rem;
+        border: 1.2px solid #8c56ff;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow:
+            0 -0.515px 1.328px 0 rgba(109, 14, 175, 0.08),
+            0 -7.771px 20.053px 0 rgba(109, 14, 175, 0.2);
+        text-align: center;
+    }
+
+    .kicker {
+        margin: 0;
+        color: var(--lp-purple);
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        font-size: 2.25rem;
+        font-weight: 800;
+        line-height: 1.04;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+
+        span {
+            /* Near-vertical, not horizontal: the design lights the numbers from
+             * the top, so the light purple is at the cap height and the navy at
+             * the baseline. The stops past 100% are the design's own — they fall
+             * outside the gradient box, so only the first three are visible. */
+            background-image: linear-gradient(
+                -7.365deg,
+                #2f136a 34.34%,
+                #7737fe 71.21%,
+                #d2a4ff 138.64%
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+    }
+
+    .trend {
+        flex-shrink: 0;
+        width: 1em;
+        height: 1em;
+        color: #7737fe;
+    }
+
+    .body {
+        margin: 0.25rem 0 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 1.43;
+    }
+</style>

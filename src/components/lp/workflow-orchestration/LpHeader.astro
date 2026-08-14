@@ -1,0 +1,85 @@
+---
+// Campaign header per the design: logo plus the two conversion CTAs, and none
+// of the site nav — a paid landing page keeps exit paths off the page.
+import LogoWhite from "~/assets/logo-white.svg"
+---
+
+<header class="lp-header">
+    <a href="/" class="logo" aria-label="Kestra home">
+        <LogoWhite />
+    </a>
+    <div class="actions">
+        <a href="/demo" class="btn-outline">Book a demo</a>
+        <a href="/get-started" class="btn-solid">Get started</a>
+    </div>
+</header>
+
+<style lang="scss">
+    .lp-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        /* The design floats this band on the frame's near-black ground, flush
+         * against the hero below — whose own blooms start lower down, so a flat
+         * fill here joins the two seamlessly. */
+        background-color: var(--lp-bg-dark);
+        padding: 1.5rem 1rem;
+        @include media-breakpoint-up(lg) {
+            /* 80px tall with a 100px inset, per the design's nav band. */
+            min-height: 80px;
+            padding: 1rem 6.25rem;
+        }
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        :global(svg) {
+            width: auto;
+            height: 26px;
+            @include media-breakpoint-up(lg) {
+                height: 30px;
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-outline,
+    .btn-solid {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 32px;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        color: #ffffff;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 1.33;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .btn-outline {
+        border: 1px solid var(--lp-content-dark-secondary);
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+    }
+
+    .btn-solid {
+        border: 1px solid #9f82bf;
+        background-color: var(--lp-purple);
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+</style>

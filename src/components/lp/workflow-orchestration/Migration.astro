@@ -1,0 +1,154 @@
+---
+const steps = [
+    {
+        number: "01",
+        title: "Run your first workflow",
+        body: "Take one you already have. Your scripts run as they are, in whatever language they were written in. No rewrite, no commitment.",
+        // Each badge carries its own radial wash over the same near-black base.
+        wash: "radial-gradient(120% 150% at 92% -45%, rgba(99, 27, 255, 1) 0%, rgba(227, 24, 224, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+    {
+        number: "02",
+        title: "Migrate at your own pace",
+        body: "Move the workflows that hurt the most first. The old tools keep running next to Kestra until you decide otherwise, team by team.",
+        wash: "radial-gradient(150% 170% at -20% 140%, rgba(99, 27, 255, 1) 0%, rgba(24, 227, 61, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+    {
+        number: "03",
+        title: "Switch off your old stack",
+        body: "When the last workflow moves, decommission what it replaced: the licenses, the servers, and the maintenance nobody will miss.",
+        wash: "radial-gradient(130% 150% at -30% -30%, rgba(99, 27, 255, 1) 0%, rgba(24, 166, 227, 0.73) 28%, rgba(72, 19, 184, 0.3) 70%, rgba(59, 16, 153, 0) 100%)",
+    },
+]
+---
+
+<section class="migration">
+    <div class="head">
+        <h2>Replace your Legacy Scheduler</h2>
+        <p>
+            Kestra runs alongside your current tools for as long as you need
+            them.
+        </p>
+    </div>
+
+    <div class="steps">
+        {
+            steps.map((step) => (
+                <article class="step">
+                    <span
+                        class="numero"
+                        style={`background-image: ${step.wash}`}
+                    >
+                        {step.number}
+                    </span>
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                </article>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .migration {
+        padding: 5rem 1rem;
+        background-color: #ffffff;
+    }
+
+    .head {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+
+        h2 {
+            margin: 0 0 2rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+    }
+
+    .steps {
+        position: relative;
+        display: grid;
+        gap: 2rem;
+        max-width: 1220px;
+        margin-inline: auto;
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+    }
+
+    /* Dashed rail linking the three badges, behind them. */
+    .steps::before {
+        content: "";
+        display: none;
+        @include media-breakpoint-up(md) {
+            display: block;
+            position: absolute;
+            top: 4.125rem;
+            left: 16.6%;
+            width: 66.8%;
+            border-top: 1px dashed var(--lp-purple-rail);
+        }
+    }
+
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.5rem 1.5rem 2rem;
+        text-align: center;
+    }
+
+    /* Named after the design's layer rather than `.badge`, which Bootstrap owns. */
+    .numero {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 3.5rem;
+        padding: 0.3125rem 0.625rem;
+        border-radius: 10px;
+        background-color: #111115;
+        color: #ffffff;
+        font-size: 2.1875rem;
+        font-weight: 600;
+        line-height: 1.36;
+        box-shadow:
+            0 1.557px 1.159px rgba(18, 33, 85, 0.03),
+            0 7.043px 5.243px rgba(18, 33, 85, 0.05),
+            0 23.5px 17.494px rgba(18, 33, 85, 0.07),
+            0 56.25px 41.875px rgba(18, 33, 85, 0.1);
+    }
+
+    h3 {
+        margin: -0.5rem 0 0;
+        color: var(--lp-content-primary);
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.167;
+        letter-spacing: -0.0075rem;
+    }
+
+    .step p {
+        margin: 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 1.43;
+    }
+</style>

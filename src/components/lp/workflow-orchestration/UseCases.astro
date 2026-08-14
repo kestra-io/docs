@@ -1,0 +1,176 @@
+---
+import { Icon } from "astro-icon/components"
+
+import Meeting from "~/components/demo/Meeting.vue"
+
+interface Props {
+    /** Passed to HubSpot as the originating page URI. */
+    routePath: string
+}
+
+const { routePath } = Astro.props
+
+const bullets = [
+    {
+        text: "We'll discuss your requirements for security, scale, and language-agnostic support.",
+        strong: true,
+    },
+    {
+        text: "See exactly how Kestra's architecture resolves the friction points in your stack.",
+        strong: false,
+    },
+    {
+        text: "Get a clear understanding of how Kestra fits with your platform, along with a roadmap to address your current orchestration needs.",
+        strong: false,
+    },
+]
+---
+
+<section class="use-cases">
+    <div class="inner">
+        <div class="copy">
+            <h2>See it on<br />your use cases</h2>
+            <p class="lead-copy">
+                Your Architecture is Unique.<br />
+                Your Challenges are Specific.
+            </p>
+            <ul class="bullets">
+                {
+                    bullets.map((bullet) => (
+                        <li>
+                            <Icon
+                                name="mdi:check-circle-outline"
+                                class="check"
+                            />
+                            {bullet.strong ? (
+                                <strong>{bullet.text}</strong>
+                            ) : (
+                                <span>{bullet.text}</span>
+                            )}
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <div class="form-card">
+            <Meeting {routePath} variant="plain" client:visible />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .use-cases {
+        position: relative;
+        overflow: clip;
+        padding: 5rem 1rem;
+        background-color: var(--lp-bg-dark);
+        background-image:
+            radial-gradient(
+                70% 60% at 12% 8%,
+                rgba(109, 40, 217, 0.75) 0%,
+                rgba(60, 25, 140, 0.4) 42%,
+                rgba(17, 17, 21, 0) 78%
+            ),
+            radial-gradient(
+                55% 45% at 45% 105%,
+                rgba(99, 27, 255, 0.35) 0%,
+                rgba(17, 17, 21, 0) 72%
+            );
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        max-width: 1140px;
+        margin-inline: auto;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-up(lg) {
+            max-width: 605px;
+        }
+    }
+
+    h2 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 2.25rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    /* Not `.lead` — see the note in Hero.astro. */
+    .lead-copy {
+        margin: -1rem 0 0;
+        color: var(--lp-content-dark-secondary);
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: 1.1667;
+        letter-spacing: -0.0075rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 1.5rem;
+        }
+    }
+
+    .bullets {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        @include media-breakpoint-up(lg) {
+            max-width: 471px;
+        }
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: $font-size-sm;
+            line-height: 1.43;
+        }
+        strong {
+            font-weight: 700;
+        }
+        .check {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--lp-purple-mid);
+        }
+    }
+
+    .form-card {
+        width: 100%;
+        padding: 1.5rem 1.75rem;
+        border: 1.2px solid #8c56ff;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow:
+            0 2.767px 1.107px rgba(0, 0, 0, 0.1),
+            0 6.65px 2.66px rgba(0, 0, 0, 0.15),
+            0 22.336px 8.935px rgba(0, 0, 0, 0.22),
+            0 100px 40px rgba(0, 0, 0, 0.37);
+        @include media-breakpoint-up(lg) {
+            flex-shrink: 0;
+            width: 417px;
+            max-width: 417px;
+        }
+    }
+</style>

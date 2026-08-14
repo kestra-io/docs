@@ -1,0 +1,143 @@
+---
+interface Props {
+    items: { question: string; answer: string }[]
+}
+
+const { items } = Astro.props
+---
+
+<section class="faq">
+    <h2>Questions we get on every call</h2>
+
+    <div class="items">
+        {
+            items.map((item, index) => (
+                <details name="lp-faq" open={index === 0}>
+                    <summary>
+                        <h3>{item.question}</h3>
+                        <span class="marker" aria-hidden="true" />
+                    </summary>
+                    <div class="answer">
+                        <p set:html={item.answer} />
+                    </div>
+                </details>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .faq {
+        padding: 5rem 1rem;
+        background-color: #ffffff;
+    }
+
+    h2 {
+        max-width: 1140px;
+        margin: 0 auto 2.5rem;
+        color: var(--lp-content-primary);
+        font-size: 1.875rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.045rem;
+        text-align: center;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+        max-width: 1140px;
+        margin-inline: auto;
+    }
+
+    details {
+        border: 1px solid var(--lp-border-subtle);
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 2px 3px 8px var(--lp-shadow-light);
+
+        &[open] {
+            /* The answer panel supplies the rounded bottom when expanded. */
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.0625rem 1.25rem;
+        cursor: pointer;
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--lp-content-primary);
+        font-size: 1.0625rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.00625rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* Plus that becomes a minus when the row is open. */
+    .marker {
+        position: relative;
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 13px;
+            height: 2.5px;
+            border-radius: 2px;
+            background-color: var(--lp-purple);
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        &::after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+    }
+
+    details[open] .marker::after {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    .answer {
+        padding: 1.0625rem 1.25rem;
+        border-top: 1px solid var(--lp-border-subtle);
+        border-radius: 0 0 12px 12px;
+        background-color: var(--lp-bg-base);
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+
+        :global(a) {
+            color: var(--lp-purple);
+        }
+    }
+</style>

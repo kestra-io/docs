@@ -16,12 +16,20 @@
     const meetingUrl = ref<string>()
     const formRef = useTemplateRef("demo-form")
 
-    const props = defineProps<{
-        routePath: string
-        headerBackground: {
-            src: string
-        }
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            routePath: string
+            /**
+             * `"demo"` keeps the /demo page's dark, gradient-lit half-column.
+             * `"plain"` strips the wrapper chrome and the form's own border so
+             * the parent owns the card — used by the /lp/* landing pages.
+             */
+            variant?: "demo" | "plain"
+        }>(),
+        {
+            variant: "demo",
+        },
+    )
 
     const hubSpotFormId = "d8175470-14ee-454d-afc4-ce8065dee9f2"
 
@@ -189,7 +197,13 @@
 </script>
 
 <template>
-    <div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
+    <div
+        :class="
+            variant === 'plain'
+                ? 'meeting-plain'
+                : 'col-12 col-lg-6 align-items-center d-flex meeting-container'
+        "
+    >
         <div
             v-if="valid"
             class="custom-meetings-iframe-container embed-responsive"
@@ -307,6 +321,45 @@
 </template>
 
 <style lang="scss" scoped>
+    /* The parent supplies the card, so the form itself is chrome-free. */
+    .meeting-plain {
+        width: 100%;
+
+        .alert.alert-danger {
+            color: var(--ks-content-alert-danger);
+        }
+
+        form {
+            width: 100%;
+            padding: 0;
+            border: none;
+            background: transparent;
+
+            .form-label {
+                display: none;
+            }
+
+            select.form-control {
+                /* Bootstrap's .form-control drops the native caret on a
+                 * <select>; the landing-page design shows one. */
+                appearance: none;
+                padding-right: 2.25rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237e7e9b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.625rem center;
+                background-size: 1.25rem 1.25rem;
+
+                &:invalid {
+                    color: var(--bs-secondary-color);
+                }
+            }
+        }
+
+        .iframe-wrapper {
+            width: 100%;
+        }
+    }
+
     .meeting-container {
         position: relative;
         background-color: #151515;

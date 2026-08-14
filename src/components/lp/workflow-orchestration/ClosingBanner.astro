@@ -1,0 +1,101 @@
+---
+import Link from "~/components/common/Link.astro"
+---
+
+<section class="closing">
+    <div class="banner">
+        <div class="copy">
+            <h2>See this on your own stack</h2>
+            <p>Let's talk about your architecture and your use cases.</p>
+        </div>
+        <Link href="/demo" class="cta" text="Book a demo" />
+    </div>
+</section>
+
+<style lang="scss">
+    .closing {
+        padding: 0 1rem 5rem;
+        background-color: #ffffff;
+    }
+
+    .banner {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        overflow: hidden;
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 2.5rem;
+        border-radius: 8px;
+        /* Near-black slab lit by a soft purple bloom off the top edge, plus a
+         * fainter one to its right. */
+        background:
+            radial-gradient(
+                55% 150% at 46% -25%,
+                rgba(158, 76, 255, 0.55) 0%,
+                rgba(99, 27, 255, 0.22) 40%,
+                rgba(19, 19, 19, 0) 72%
+            ),
+            radial-gradient(
+                26% 90% at 88% -10%,
+                rgba(140, 86, 255, 0.28) 0%,
+                rgba(19, 19, 19, 0) 70%
+            ),
+            linear-gradient(180deg, #131313 50%, #212732 111.37%);
+        @include media-breakpoint-up(md) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            padding: 2.5rem 3.75rem 2.5rem 2.5rem;
+        }
+    }
+
+    .copy {
+        position: relative;
+        min-width: 0;
+
+        h2 {
+            margin: 0;
+            color: #ffffff;
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.22;
+            letter-spacing: -0.0225rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 2.25rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-dark-secondary);
+            font-size: $font-size-lg;
+            line-height: 1.56;
+        }
+    }
+
+    .closing :global(.cta) {
+        position: relative;
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        min-width: 160px;
+        height: 50px;
+        padding: 0.5rem 1.25rem;
+        border: 1px solid #ffffff;
+        border-radius: 8px;
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        font-size: $font-size-lg;
+        font-weight: 700;
+        box-shadow:
+            inset 0 0 14px 0 #be62ff,
+            2px 2px 5.5px rgba(0, 0, 0, 0.1);
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+</style>

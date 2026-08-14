@@ -1,0 +1,264 @@
+---
+import { Icon } from "astro-icon/components"
+
+import Meeting from "~/components/demo/Meeting.vue"
+import LogoBar from "~/components/home/LogoBar.astro"
+
+interface Props {
+    /** Passed to HubSpot as the originating page URI. */
+    routePath: string
+}
+
+const { routePath } = Astro.props
+
+const bullets = [
+    {
+        text: "We'll discuss your requirements for security, scale, and language-agnostic support.",
+        strong: true,
+    },
+    {
+        text: "See exactly how Kestra's architecture resolves the friction points in your stack.",
+        strong: false,
+    },
+    {
+        text: "Get a clear understanding of how Kestra fits with your platform, along with a roadmap to address your current orchestration needs.",
+        strong: false,
+    },
+]
+---
+
+<section class="lp-hero">
+    <div class="container-fluid inner">
+        <div class="copy">
+            <h1>
+                Unified <span class="grad grad-a">Workflow</span>{" "}
+                <span class="grad grad-b">Orchestration</span> Platform for the AI
+                era.
+            </h1>
+            <p class="lead-copy">
+                Build, run, and govern every workflow across data,
+                infrastructure, apps, and business processes.{" "}
+                <strong>Any language, on your own infrastructure.</strong>
+            </p>
+            <ul class="bullets">
+                {
+                    bullets.map((bullet) => (
+                        <li>
+                            <Icon
+                                name="mdi:check-circle-outline"
+                                class="check"
+                            />
+                            {bullet.strong ? (
+                                <strong>{bullet.text}</strong>
+                            ) : (
+                                <span>{bullet.text}</span>
+                            )}
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        <div class="form-card">
+            <h2>Discuss your orchestration strategy</h2>
+            <p class="form-sub">
+                Your Architecture is Unique.<br />
+                Your Challenges are Specific.
+            </p>
+            <Meeting {routePath} variant="plain" client:idle />
+        </div>
+    </div>
+
+    <div class="logos">
+        <p>
+            Run in production by enterprises across finance, public sector, and
+            manufacturing.
+        </p>
+        <LogoBar />
+    </div>
+</section>
+
+<style lang="scss">
+    /* Deliberately NOT `.hero`: app.scss owns that class as a site component and
+     * its `.hero h1, .hero p { max-width: 730px }` would clamp the copy here. */
+    .lp-hero {
+        position: relative;
+        overflow: clip;
+        padding: 2.5rem 1rem;
+        background-color: var(--lp-bg-dark);
+        /* The purple bloom sits under the logo row, bottom-centre, and fades
+         * out well before the top of the section. */
+        background-image:
+            radial-gradient(
+                80% 55% at 50% 118%,
+                #6d28d9 0%,
+                rgba(88, 28, 190, 0.55) 38%,
+                rgba(20, 16, 40, 0) 72%
+            ),
+            radial-gradient(
+                60% 40% at 88% 96%,
+                rgba(124, 58, 237, 0.45) 0%,
+                rgba(17, 17, 21, 0) 70%
+            );
+        @include media-breakpoint-up(lg) {
+            padding: 5rem 1rem 2.5rem;
+        }
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        gap: 3rem;
+        max-width: 1140px;
+        margin-inline: auto;
+        padding: 0;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-up(lg) {
+            max-width: 589px;
+        }
+    }
+
+    h1 {
+        margin: 0;
+        color: #ffffff;
+        font-size: 2.25rem;
+        font-weight: 800;
+        line-height: 1.0417;
+        letter-spacing: -0.045rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    /* Two gradients rather than one: in the design each highlighted word
+     * carries the fill across its own width, so "Workflow" runs blue to
+     * periwinkle and "Orchestration" cyan to blue. */
+    .grad {
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    .grad-a {
+        background-image: linear-gradient(90deg, #1ba0ff 0%, #8fb0fa 100%);
+    }
+
+    .grad-b {
+        background-image: linear-gradient(90deg, #16ffff 0%, #1ba0ff 100%);
+    }
+
+    /* Not `.lead` — that is Bootstrap's, and its `font-weight: 300` would win
+     * over anything this block does not restate. */
+    .lead-copy {
+        margin: -1rem 0 0;
+        color: var(--lp-content-dark-secondary);
+        font-size: 1.125rem;
+        font-weight: 400;
+        line-height: 1.1667;
+        @include media-breakpoint-up(lg) {
+            font-size: 1.5rem;
+        }
+        strong {
+            font-weight: 700;
+        }
+    }
+
+    .bullets {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        @include media-breakpoint-up(lg) {
+            max-width: 471px;
+        }
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: #ffffff;
+            font-size: $font-size-sm;
+            line-height: 1.43;
+        }
+        strong {
+            font-weight: 700;
+        }
+        .check {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            /* Lighter than --lp-purple: on the dark ground the design steps the
+             * ticks up to the focus tint so they read against #111115. */
+            color: var(--lp-purple-mid);
+        }
+    }
+
+    .form-card {
+        width: 100%;
+        padding: 1.75rem;
+        border: 1.2px solid #8c56ff;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow:
+            0 2.767px 1.107px rgba(0, 0, 0, 0.1),
+            0 6.65px 2.66px rgba(0, 0, 0, 0.15),
+            0 22.336px 8.935px rgba(0, 0, 0, 0.22),
+            0 100px 40px rgba(0, 0, 0, 0.37);
+        @include media-breakpoint-up(lg) {
+            flex-shrink: 0;
+            width: 417px;
+            max-width: 417px;
+        }
+
+        h2 {
+            margin: 0;
+            color: var(--lp-content-primary);
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.00625rem;
+        }
+    }
+
+    .form-sub {
+        margin: 0.375rem 0 0;
+        /* Warmer and darker than --lp-content-secondary: the design uses its
+         * content-secondary token on white cards, not the text-secondary one. */
+        color: var(--lp-content-on-card);
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .form-card :global(.meeting-plain) {
+        padding-top: 1.25rem;
+    }
+
+    .logos {
+        max-width: 1152px;
+        margin: 2.3125rem auto 0;
+        p {
+            /* The design gives the caption a 790px box so it stays on one line. */
+            max-width: 790px;
+            margin: 0 auto;
+            color: var(--lp-content-muted);
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.7;
+            text-align: center;
+        }
+    }
+</style>

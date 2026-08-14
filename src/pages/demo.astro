@@ -2,7 +2,6 @@
 import Layout from "~/components/layout.astro"
 import Meeting from "~/components/demo/Meeting.vue"
 import Quotes from "~/components/common/Quotes.vue"
-import headerBackground from "../components/demo/assets/header-background.png"
 import Logos from "~/components/demo/Logos.astro"
 import AppleLogo from "~/components/demo/assets/logos/apple.svg?raw"
 
@@ -43,11 +42,7 @@ const quotes = [
                 roadmap to solve your current orchestration headaches.
             </p>
         </div>
-        <Meeting
-            routePath="/demo"
-            headerBackground={headerBackground}
-            client:idle
-        />
+        <Meeting routePath="/demo" client:idle />
     </section>
     <Logos />
     <Quotes quotes={quotes} />
