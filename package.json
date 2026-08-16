@@ -60,7 +60,7 @@
     "marked": "^14.0.0",
     "marked-highlight": "^2.2.4",
     "medium-zoom": "^1.1.0",
-    "mermaid": "^11.15.0",
+    "mermaid": "^11.16.1",
     "oxfmt": "^0.55.0",
     "oxlint": "^1.70.0",
     "posthog-js": "^1.391.7",
