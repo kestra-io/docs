@@ -1,8 +1,16 @@
 <template>
     <div v-if="prev || next" class="docs-prev-next">
         <a v-if="prev" :href="prev.path" class="prev" @click="activeSlug = prev.path">
-            <ChevronLeft class="chevron" />
-            Previous
+            <div class="prev-side">
+                <ChevronLeft class="chevron" />
+                <span class="prev-button-label">
+                    Previous
+                </span>
+            </div>
+            <div class="wrapper">
+                <span v-if="prev.sidebarTitle" class="title">{{ prev.sidebarTitle }}</span>
+                <span class="description">{{ prev.title }}</span>
+            </div>
         </a>
         <span v-else />
         <a v-if="next" :href="next.path" class="next" @click="activeSlug = next.path">
@@ -71,10 +79,39 @@
             align-items: center;
             color: var(--ks-content-secondary);
             font-size: $font-size-sm;
+            min-height: 60px;
             .chevron {
                 font-size: 16px;
                 :deep(svg){
                     bottom:0;
+                }
+            }
+            &.prev {
+                border-radius: 8px;
+                border: $block-border;
+                justify-content: flex-start;
+                text-align: left;
+                background-color: var(--ks-background-primary);
+                flex: 1;
+                gap: 1.5rem;
+                .wrapper{
+                    color: var(--ks-content-primary);
+                }
+
+                .prev-side{
+                    border-right: $block-border;
+                    white-space: nowrap;
+                    padding-right: 1.5rem;
+                    padding-block: 0.5rem;
+                    align-items: center;
+                    gap: 1rem;
+                    display: flex;
+                    .prev-button-label{
+                        display: none;
+                        @include media-breakpoint-up(md) {
+                            display: block;
+                        }
+                    }
                 }
             }
             &.next {
