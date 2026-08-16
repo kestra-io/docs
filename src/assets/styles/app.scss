@@ -203,7 +203,7 @@ blockquote.blockquote {
     }
 }
 
-.btn-secondary {
+@mixin btn-secondary-on-light-surface {
     background-color: var(--ks-background-button-secondary);
     color: var(--ks-content-primary) !important;
     border: 1px solid var(--ks-border-button-secondary);
@@ -211,6 +211,47 @@ blockquote.blockquote {
     &:hover {
         background: var(--ks-background-button-secondary-hover) !important;
         color: var(--ks-content-btn-secondary-hover) !important;
+    }
+}
+
+@mixin btn-secondary-on-dark-surface {
+    background-color: transparent;
+    color: $white !important;
+    border: 1px solid $white;
+
+    &:hover {
+        background: $white !important;
+        color: $black !important;
+    }
+}
+
+// Default: secondary button on the primary (light) document surface.
+.btn-secondary {
+    @include btn-secondary-on-light-surface;
+}
+
+// Dark backgrounds — context-based, not theme-based (e.g. inverted sections in light theme).
+.surface-dark .btn-secondary,
+.surface-inverse .btn-secondary {
+    @include btn-secondary-on-dark-surface;
+}
+
+// Dark theme: the body surface is dark; invert only on deliberately light inverse sections.
+html.dark {
+    .btn-secondary {
+        @include btn-secondary-on-dark-surface;
+    }
+
+    .surface-inverse .btn-secondary {
+        @include btn-secondary-on-light-surface;
+        background-color: $white;
+        color: $black !important;
+        border-color: $black;
+
+        &:hover {
+            background: $black !important;
+            color: $white !important;
+        }
     }
 }
 
