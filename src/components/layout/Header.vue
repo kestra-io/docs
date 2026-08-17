@@ -305,6 +305,12 @@
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
+                                        :target="item.target"
+                                        :rel="
+                                            item.target === '_blank'
+                                                ? 'noopener'
+                                                : undefined
+                                        "
                                         @click="globalClick(true)"
                                     >
                                         <div class="item-row">
@@ -608,6 +614,12 @@
                                             <a
                                                 class="dropdown-item"
                                                 :href="item.link"
+                                                :target="item.target"
+                                                :rel="
+                                                    item.target === '_blank'
+                                                        ? 'noopener'
+                                                        : undefined
+                                                "
                                                 @click="globalClick(true)"
                                                 @keydown="
                                                     onMenuKeydown(

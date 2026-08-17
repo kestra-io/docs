@@ -10801,6 +10801,11 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/AssetsInOut"
+        assetEmits:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/AssetsInOut"
         state:
           $ref: "#/components/schemas/State"
         iteration:
