@@ -19,7 +19,9 @@ Below are three common deployment architectures.
 
 ## Small-sized deployment
 
-![Kestra Standalone Architecture](./archi-diagram-small.png "Kestra Standalone Architecture")
+<!-- ![Kestra Standalone Architecture](./archi-diagram-small.png "Kestra Standalone Architecture") -->
+![Kestra Standalone Architecture](./test-diagram.png#light "Kestra Standalone Architecture")
+![Kestra Standalone Architecture](./test-diagram-dark.png#dark "Kestra Standalone Architecture")
 
 For small-scale deployments, you can use the Kestra **standalone server**, which runs all server components in a single process. This architecture has no scaling capability.
 
