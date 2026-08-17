@@ -37,7 +37,7 @@ tasks:
   - id: ask_ai
     type: io.kestra.plugin.gemini.StructuredOutputCompletion
     apiKey: "{{ secret('GEMINI_API_KEY') }}"
-    model: "gemini-2.5-flash-preview-05-20"
+    model: "gemini-3.5-flash-lite"
     prompt: "I like to go sailing when the wind is above 10 knots but below 30 knots. I sail in Cambridgeshire. If the wind is within that range, I want to know if I should go sailing or not. Also tell me the current wind speed speeds"
     jsonResponseSchema: |
       {

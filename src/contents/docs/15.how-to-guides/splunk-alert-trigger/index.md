@@ -174,5 +174,5 @@ The add-on makes up to three attempts on 5xx responses and transient network err
 
 - [TA-kestra add-on source and installation](https://github.com/kestra-io/splunk-addon)
 - [Kestra API Tokens](../../07.enterprise/03.auth/api-tokens/index.md)
-- [Trigger flows via the Kestra API](./api/index.md)
+- [Trigger flows via the Kestra API](../api/index.md)
 - [Log Shipper](../../07.enterprise/02.governance/logshipper/index.md) — the reverse direction: ship Kestra logs into Splunk
