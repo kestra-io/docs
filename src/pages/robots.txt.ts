@@ -29,6 +29,13 @@ Disallow: /*?q=
 Disallow: /*?search=
 Disallow: /*?ref=
 Disallow: /*?utm_
+# External trackers appended by inbound links. They canonicalise correctly,
+# so this is crawl budget only — but it lands on /docs and /plugins, which we
+# want crawled cleanly. __hssc/__hsfp always follow __hstc, so one rule covers
+# the HubSpot set.
+Disallow: /*?clid=
+Disallow: /*?from_theconsensus=
+Disallow: /*?__hstc=
 `}${disabled ? "" : "Sitemap: https://kestra.io/sitemap/index.xml"}`
 
     return new Response(result, {
