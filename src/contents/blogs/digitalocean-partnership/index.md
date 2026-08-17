@@ -44,6 +44,7 @@ namespace: company.team
 tasks:
   - id: create_droplet
     type: io.kestra.plugin.digitalocean.droplet.Create
+    apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
     name: "runner-{{ execution.id | lower }}"
     region: nyc3
     size: s-2vcpu-4gb
@@ -59,17 +60,14 @@ tasks:
     tasks:
       - id: poll
         type: io.kestra.plugin.digitalocean.droplet.Get
+        apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
         dropletId: "{{ outputs.create_droplet.id }}"
 
 finally:
   - id: delete_droplet
     type: io.kestra.plugin.digitalocean.droplet.Delete
+    apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
     dropletId: "{{ outputs.create_droplet.id }}"
-
-pluginDefaults:
-  - type: io.kestra.plugin.digitalocean
-    values:
-      apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
 ```
 
 ### Business-hours database scaling
