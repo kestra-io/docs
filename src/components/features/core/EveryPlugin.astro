@@ -2,7 +2,7 @@
 import TaskIcon from "~/components/common/TaskIcon.vue"
 import { Icon } from "astro-icon/components"
 import { $fetchApiCached } from "~/utils/fetch"
-import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import KestraIcon from "~/components/icons/KestraIcon.vue"
 import { randomSortFunction } from "~/utils/random"
 
@@ -12,7 +12,7 @@ let plugins: {
     name: string
     link: string
 }[] = []
-let totalPlugins = "0+"
+const totalPlugins = `${await fetchTotalPluginsCount()}+`
 
 try {
     const excluded =
@@ -32,9 +32,6 @@ try {
         .sort(randomSortFunction)
         .slice(0, 20)
 
-    const subgroupsData = await $fetchApiCached("/plugins/subgroups")
-    const count = calculateTotalPlugins(subgroupsData)
-    totalPlugins = `${Math.floor(count / 100) * 100}+`
 } catch (e) {
     console.error("Failed to fetch plugins", e)
 }

@@ -1,14 +1,12 @@
-import { $fetchApiCached } from "~/utils/fetch"
+import { getBlueprintCountRounded } from "~/data/counts"
 
+/**
+ * Blueprint count floored to the ten, without the trailing "+", e.g. "480".
+ *
+ * This used to return a zero when the fetch failed, which rendered the hero
+ * headline with a zeroed count — the same failure mode as the plugin count.
+ * It now falls back to the committed value in ~/data/counts.
+ */
 export async function fetchTotalBlueprintsCount(): Promise<string> {
-    try {
-        const { total = 0 } = await $fetchApiCached<{ total: number }>(
-            "/blueprints/versions/latest?size=1&page=1",
-        )
-        const rounded = Math.floor(total / 10) * 10
-        return `${rounded}`
-    } catch (e) {
-        console.error("Failed to fetch blueprints count:", e)
-        return "0"
-    }
+    return await getBlueprintCountRounded()
 }

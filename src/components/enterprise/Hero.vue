@@ -20,7 +20,7 @@
                     />
                 </div>
             </div>
-            <Dashboard />
+            <Dashboard :total-plugins="totalPlugins" />
             <div class="logos-wrap">
                 <div class="logos">
                     <div
@@ -43,6 +43,9 @@
 <script setup lang="ts">
     import Link from '~/components/common/Link.vue';
     import Dashboard from '~/components/enterprise/Dashboard.vue';
+
+    defineProps<{ totalPlugins: string }>();
+
     import fortune500Logo from '~/components/enterprise/assets/fortune500.svg';
 
     const logos = import.meta.glob("/src/components/enterprise/assets/logos/*.svg", { eager: true });

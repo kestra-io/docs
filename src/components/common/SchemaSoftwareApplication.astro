@@ -1,4 +1,6 @@
 ---
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
 interface Props {
     id?: string
     name?: string
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const { id, name, description, url, isVariantOf, featureList } = Astro.props
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const canonicalUrl =
     url ?? new URL(Astro.url.pathname, Astro.site ?? "https://kestra.io").toString().replace(/\/$/, "")
@@ -21,7 +25,7 @@ const schema: Record<string, unknown> = {
     "url": canonicalUrl,
     "description":
         description ??
-        "Open-source workflow orchestration platform for data pipelines, infrastructure automation, and AI workflows. YAML-native, language-agnostic, 1400+ plugins.",
+        `Open-source workflow orchestration platform for data pipelines, infrastructure automation, and AI workflows. YAML-native, language-agnostic, ${totalPlugins}+ plugins.`,
     "applicationCategory": "DeveloperApplication",
     "applicationSubCategory": "Workflow Orchestration",
     "operatingSystem": "Linux, macOS, Windows",

@@ -12,6 +12,9 @@ import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import Capabilities from "~/components/enterprise/Capabilities.vue"
 import StatsHeader from "~/components/enterprise/StatsHeader.astro"
 import CustomerQuotes from "~/components/common/CustomerQuotes.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "Get More Out of Your Data With the Enterprise Edition"
 const description =
@@ -79,7 +82,7 @@ const items = [
         />
         <SchemaFAQ items={items} />
     </Fragment>
-    <Hero client:load />
+    <Hero client:load totalPlugins={`${totalPlugins}+`} />
     <div class="enterprise">
         <ScrollSpy client:load />
     </div>

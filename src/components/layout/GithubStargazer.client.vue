@@ -8,7 +8,11 @@
     import { ref, onMounted } from "vue"
 
     const emit = defineEmits(["apiError"])
-    const stargazersText = ref<string | undefined>(undefined)
+    const props = defineProps<{ initial?: string }>()
+
+    // Starts from the build-time value so there is no placeholder flash, and no
+    // empty slot for a crawler to read.
+    const stargazersText = ref<string | undefined>(props.initial)
 
     onMounted(async () => {
         try {
@@ -17,7 +21,9 @@
                 response.stargazers,
             )
         } catch (error) {
-            emit("apiError")
+            // With a build-time value already on screen, a failed refresh is not
+            // worth hiding the button for.
+            if (!props.initial) emit("apiError")
         }
     })
 </script>
