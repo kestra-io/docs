@@ -31,8 +31,6 @@ const entries = vsEntries
         category: entry.data.category,
         monogram: monogramMap[entry.id] ?? "",
         shortDescription: entry.data.shortDescription,
-        color: entry.data.brandColor.color,
-        gradient: entry.data.brandColor.gradient ?? "",
     }))
 
 const faqItems = [
@@ -82,23 +80,12 @@ const faqItems = [
                                     { active: i === 0 },
                                 ]}
                                 set:html={entry.monogram}
-                                data-name={entry.competitorName}
-                                data-color={entry.color}
-                                data-gradient={entry.gradient}
                             />
                         ))
                     }
                 </div>
             </div>
-            <h1>
-                Kestra vs. <span
-                    id="hero-name"
-                    style={entries[0].gradient
-                        ? `background: ${entries[0].gradient}; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;`
-                        : `color: ${entries[0].color}`}
-                    >{entries[0].competitorName}</span
-                >
-            </h1>
+            <h1>Kestra vs. Alternatives</h1>
             <p>
                 See how Kestra compares to other orchestration and automation
                 tools
@@ -241,44 +228,15 @@ const faqItems = [
 
             // Hero carousel
             var carousel = document.getElementById("hero-carousel")
-            var heroName = document.getElementById("hero-name")
-            if (carousel && heroName) {
+            if (carousel) {
                 var items = carousel.querySelectorAll(".carousel-item")
                 var current = 0
                 var total = items.length
 
-                function updateHeroName(item) {
-                    heroName.textContent = item.getAttribute("data-name") || ""
-                    var color = item.getAttribute("data-color") || "#8465ff"
-                    var gradient = item.getAttribute("data-gradient") || ""
-                    if (gradient) {
-                        heroName.style.background = gradient
-                        heroName.style.setProperty(
-                            "-webkit-background-clip",
-                            "text",
-                        )
-                        heroName.style.webkitTextFillColor = "transparent"
-                        heroName.style.backgroundClip = "text"
-                        heroName.style.color = ""
-                    } else {
-                        heroName.style.background = ""
-                        heroName.style.setProperty("-webkit-background-clip", "")
-                        heroName.style.webkitTextFillColor = ""
-                        heroName.style.backgroundClip = ""
-                        heroName.style.color = color
-                    }
-                }
-
                 window.__vsCarouselTimer = setInterval(function () {
                     items[current].classList.remove("active")
-                    heroName.style.opacity = "0"
-                    heroName.style.transition = "opacity 0.2s ease"
-                    setTimeout(function () {
-                        current = (current + 1) % total
-                        items[current].classList.add("active")
-                        updateHeroName(items[current])
-                        heroName.style.opacity = "1"
-                    }, 200)
+                    current = (current + 1) % total
+                    items[current].classList.add("active")
                 }, 2000)
             }
         }
@@ -376,10 +334,6 @@ const faqItems = [
                 font-weight: 600;
                 color: var(--ks-content-primary);
                 margin-bottom: 0.5rem;
-
-                span {
-                    color: var(--ks-border-active);
-                }
             }
 
             p {
