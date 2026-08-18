@@ -61,51 +61,51 @@ Kestra is an open-source, declarative orchestration platform rather than a pure 
 
 ### 2. Airbyte (Open-Source Data Integration)
 
-Airbyte is the leading open-source alternative to Fivetran, offering a massive library of over 300 pre-built connectors for databases, APIs, and file storage. 
+Airbyte is the reference open-source alternative to Fivetran, with a connector library well past 300 sources and destinations. Its real differentiator is the escape hatch: because the platform and most connectors are open source, a connector that does not exist yet is something your team can build with the connector development kit rather than a support ticket you wait on. You can run it entirely on your own infrastructure — which is often the deciding factor for regulated workloads that cannot route payloads through a multi-tenant cloud.
 
-- **Best for:** Organizations with engineering capacity to manage their own infrastructure who want to eliminate per-row data fees.
-- **Key advantage:** Dual deployment model. You can self-host Airbyte on Kubernetes or Docker for free, retaining full ownership of your data pipelines, or use Airbyte Cloud for managed execution.
-- **Honest limitation:** Self-hosting Airbyte introduces operational overhead. Managing worker nodes, upgrading container versions, and troubleshooting replication failures falls entirely on your platform engineering team.
+- **Best for:** Engineering teams that want connector coverage close to Fivetran's without the per-row bill, and organisations whose compliance posture requires self-hosting.
+- **Key advantage:** Two deployment models from one codebase — free self-hosted, or managed Cloud with consumption pricing — plus the ability to fork or author connectors when coverage falls short.
+- **Honest limitation:** Connector quality varies between the certified set and community contributions, so validate the specific sources you depend on. Self-hosting also means you own the operational burden: Kubernetes, upgrades, and monitoring are now your problem, which is precisely the cost Fivetran's premium removes.
 
 ### 3. Hevo Data (No-Code Automated Pipelines)
 
-Hevo Data is a fully managed, zero-data-loss ELT platform designed for rapid deployment without writing custom code.
+Hevo occupies the same managed, zero-maintenance niche as Fivetran, and most teams evaluate it as a like-for-like swap rather than an architectural change. It handles schema drift automatically, supports lightweight in-flight transformations for teams that do not want a separate modelling layer for simple cleanups, and leans on responsive support as part of the product rather than an upsell.
 
-- **Best for:** BI and analytics teams that need managed pipelines and cannot spare dedicated data engineers for maintenance.
-- **Key advantage:** Automated schema management and real-time data replication with built-in data transformation capabilities.
-- **Honest limitation:** Like Fivetran, Hevo operates on a consumption-based pricing model. As data volumes scale, subscription costs increase accordingly.
+- **Best for:** Teams that liked the Fivetran operating model but not its invoice, and data teams without the headcount to run integration infrastructure themselves.
+- **Key advantage:** Genuinely no-code setup with automatic schema handling, so a non-specialist can stand up a reliable pipeline and keep it running.
+- **Honest limitation:** It is SaaS-only, so self-hosted and air-gapped requirements rule it out entirely. Its event-based pricing can also surprise you in the same way MAR does: a frequently-updated operational table generates far more billable events than its row count suggests, so model your highest-churn table before switching.
 
 ### 4. Estuary (Real-Time Data Streaming & Replication)
 
-Estuary Flow is built on a streaming architecture using Flux, offering exceptionally low-latency Change Data Capture (CDC) and data replication.
+Estuary Flow approaches integration from a streaming angle rather than a scheduled-batch one. Instead of running syncs every fifteen minutes or every hour, it reads the database write-ahead log continuously, so the destination trails the source by seconds. The same pipeline handles the historical backfill and the ongoing tail, which removes the usual seam between "load the past" and "keep up with the present" that batch ELT tools force you to manage separately.
 
-- **Best for:** Teams requiring sub-second data streaming from operational databases into cloud data warehouses.
-- **Key advantage:** Real-time processing guarantees and high throughput for event-driven architectures.
-- **Honest limitation:** Steeper learning curve compared to traditional batch-oriented ELT tools, especially when configuring custom derivations.
+- **Best for:** Teams that need sub-second replication from operational databases into a warehouse or lake, and event-driven use cases where a fifteen-minute sync window is already too slow.
+- **Key advantage:** Continuous CDC with backfill and streaming unified in one pipeline, plus in-flight transformations (derivations) so you can reshape data before it lands rather than after.
+- **Honest limitation:** A smaller connector catalogue than the established ELT vendors, and a steeper learning curve — derivations and streaming semantics ask more of the team than configuring a batch sync. Throughput-based pricing also makes forecasting harder if your event volume is spiky.
 
 ### 5. Stitch (Simple Managed Replication)
 
-Stitch is a lightweight, developer-focused managed replication tool designed for straightforward analytics stacks.
+Stitch is the most deliberately minimal option on this list: point it at a source, pick a destination, set a replication frequency. Its lasting contribution to the ecosystem is Singer, the open-source tap-and-target specification it originated, which means a Stitch pipeline is conceptually portable — a Singer tap you rely on can be run outside Stitch if you ever move. Stitch now sits inside the Talend product family under Qlik, which shapes how you should read its roadmap.
 
-- **Best for:** Small to mid-sized teams looking for a straightforward, managed alternative to enterprise ELT platforms.
-- **Key advantage:** Minimalist interface with fast setup times for standard SaaS sources and cloud warehouses.
-- **Honest limitation:** Less robust customization and advanced transformation options compared to Fivetran or Hevo.
+- **Best for:** Small to mid-sized teams that want managed replication for standard SaaS and database sources without operating a platform, and teams already comfortable with the Singer ecosystem.
+- **Key advantage:** Very fast setup and a small surface area to learn, with volume-based pricing that stays predictable for stable, moderate row counts.
+- **Honest limitation:** No transformation layer and limited support for advanced CDC scenarios, so complex pipelines need a separate orchestrator and modelling tool. Connector development has also moved more slowly than at the newer open-source projects, so verify that your specific sources are actively maintained before committing.
 
 ### 6. Matillion (Cloud-Native Data ETL & Transformation)
 
-Matillion is an enterprise data integration platform focused on push-down transformation inside cloud data warehouses like Snowflake, Databricks, and BigQuery.
+Matillion inverts the usual ELT cost model. Rather than processing data on the vendor's infrastructure, it pushes transformation logic down into the warehouse — Snowflake, Databricks, BigQuery or Redshift — so the heavy lifting runs on compute you already pay for. That makes it attractive to teams whose warehouse is unambiguously the centre of gravity, and it pairs a visual canvas with code components so analytics engineers and less technical contributors can work in the same project.
 
-- **Best for:** Analytics engineering teams that want to execute heavy transformations directly inside their data warehouse.
-- **Key advantage:** Visual and code-based authoring environments optimized for cloud warehouse compute.
-- **Honest limitation:** Can become expensive and complex when managing large multi-cloud deployments.
+- **Best for:** Analytics engineering teams standardised on one cloud warehouse who want transformation and orchestration in a single visual tool.
+- **Key advantage:** Push-down execution keeps data inside the warehouse boundary, which simplifies both performance tuning and governance reviews.
+- **Honest limitation:** The push-down model presumes a warehouse destination, so it fits awkwardly when your target is object storage or a lakehouse. Costs do not disappear either — they move onto the warehouse bill, where they are easy to under-forecast — and multi-cloud estates add real configuration overhead.
 
 ### 7. AWS Glue & Native Cloud Services
 
-AWS Glue, Azure Data Factory, and Google Cloud Dataflow offer native data integration capabilities tightly coupled to specific hyperscaler ecosystems.
+AWS Glue, Azure Data Factory and Google Cloud Dataflow are the integration services each hyperscaler ships with its own platform. The appeal is less about features than about friction: identity, networking and billing are already solved, data never leaves the provider's boundary, and procurement is a line item on an existing contract rather than a new vendor review — often the fastest path to approval in a large enterprise.
 
-- **Best for:** Enterprises committed entirely to a single cloud provider (AWS, Azure, or GCP).
-- **Key advantage:** Deep security integration, IAM role management, and zero egress friction within the same cloud network.
-- **Honest limitation:** Vendor lock-in. Migrating pipelines away from native cloud services if your infrastructure strategy changes is notoriously difficult.
+- **Best for:** Enterprises committed to a single cloud, and teams whose blocking constraint is security review or procurement rather than connector coverage.
+- **Key advantage:** Native IAM and VPC integration, no cross-cloud egress, and consumption billing folded into the existing cloud spend.
+- **Honest limitation:** Lock-in is the whole trade. Pipelines written against Glue or Data Factory do not port to another cloud without a rewrite, so a change of infrastructure strategy becomes a migration project. SaaS connector coverage is also thinner than the dedicated ELT vendors', and the developer experience assumes comfort with the provider's compute model — Spark, in Glue's case.
 
 ## Comparison table: Fivetran vs top alternatives
 
