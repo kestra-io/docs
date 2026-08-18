@@ -73,6 +73,7 @@ Inputs are strongly typed and validated before execution starts.
 | `MULTISELECT` | One or more values from a predefined list | Same as `SELECT` |
 | `FILE` | Uploaded file, `nsfile:///` (namespace file), or `file:///` (local allowed path) | `allowedFileExtensions`; stored in [internal storage](../../08.architecture/data-components/index.md#internal-storage); the only type that accepts a multipart file upload via the API — all other types require a plain string value |
 | `JSON` | Valid JSON string | `jsonSchema` (JSON Schema Draft 2020-12) |
+| `ION` | Ion-formatted text, parsed into a structured object (Map or List) accessible with dot notation — e.g. `{{ inputs.record.name }}`; use Ion syntax for `defaults`: `'{name:"Ada",score:21}'` | — |
 | `YAML` | Valid YAML string | — |
 | `URI` | Valid URI, kept as a string | — |
 | `SECRET` | Encrypted string, decrypted at runtime and masked in UI and logs | `validator` (regex); requires [encryption key](../../configuration/05.security-and-secrets/index.md) |
