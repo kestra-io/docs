@@ -293,9 +293,10 @@ const quotes = [
             if (Number.isFinite(target)) targets.set(figure, target)
         }
 
-        function roll(figure: HTMLElement, index: number) {
-            const target = targets.get(figure)
-            if (target === undefined) return
+        /* target is passed in rather than looked up here: narrowing an optional
+         * does not survive into the nested requestAnimationFrame closure, which
+         * astro check flags as ts(18048). */
+        function roll(figure: HTMLElement, target: number, index: number) {
             const startAt = performance.now() + index * STAGGER
 
             function frame(now: number) {
@@ -325,7 +326,9 @@ const quotes = [
                      * the USAL fade the cards are still playing. */
                     for (const figure of targets.keys())
                         figure.textContent = "0"
-                    figures.forEach(roll)
+                    let index = 0
+                    for (const [figure, target] of targets)
+                        roll(figure, target, index++)
                 }
             },
             { threshold: 0.35 },
