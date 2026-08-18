@@ -103,7 +103,7 @@ From the history, you can recompute the diff of any past promotion to see exactl
 
 ## What is and is not promoted
 
-Promote copies the flow's YAML definition from the selected revision to the target instance. It does not copy namespace-level resources. If the flow depends on KV pairs, secrets, variables, or namespace files that differ between environments, those must be managed separately on the target.
+Promote copies the flow's YAML definition from the selected revision to the target instance. It does not copy namespace-level resources. If the flow depends on KV pairs, secrets, variables, or namespace files that differ between environments, those must be managed separately on the target. See [Namespace Management](../07.namespace-management/index.md) and [Secrets Manager](../secrets-manager/index.md) for managing these resources per environment.
 
 ---
 
