@@ -71,7 +71,7 @@ Inputs are strongly typed and validated before execution starts.
 | `DURATION` | ISO 8601 duration — e.g. `PT5M6S` | `min`, `max` |
 | `SELECT` | One value from a predefined list | `values`, `expression`, `allowCustomValue`, `autoSelectFirst` |
 | `MULTISELECT` | One or more values from a predefined list | Same as `SELECT` |
-| `FILE` | Uploaded file, `nsfile:///` (namespace file), or `file:///` (local allowed path) | `allowedFileExtensions`; stored in [internal storage](../../08.architecture/data-components/index.md#internal-storage) |
+| `FILE` | Uploaded file, `nsfile:///` (namespace file), or `file:///` (local allowed path) | `allowedFileExtensions`; stored in [internal storage](../../08.architecture/data-components/index.md#internal-storage); the only type that accepts a multipart file upload via the API — all other types require a plain string value |
 | `JSON` | Valid JSON string | `jsonSchema` (JSON Schema Draft 2020-12) |
 | `YAML` | Valid YAML string | — |
 | `URI` | Valid URI, kept as a string | — |
