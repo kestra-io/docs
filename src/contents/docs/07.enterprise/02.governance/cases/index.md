@@ -171,7 +171,11 @@ Cases sit in the left menu between Executions and System Flows.
 - List view: columns for Case, Title, Severity, Status, Resolution SLA, and Assignee, with an inline next-step button per row (Acknowledge, Investigating, Resolve) and bulk Acknowledge/Delete.
 - Toolbar: full-text search; filters on namespace, status, severity, assignee, and time range; an "Assigned to me" toggle; and one chip per status with live counts.
 
+![Cases board view showing Open, Acknowledged, Investigating, and Resolved columns with a case card and the notifications panel](./cases-board-view.png)
+
 The case detail page shows the editable header (title, severity, status, quick transitions, Resolve/Reopen), the Markdown description, custom fields, a resolution card once resolved, SLA countdowns, assignees and watchers (with a Watch/Unwatch toggle and "Assign with note"), case actions, linked executions, linked assets, and the activity timeline.
+
+![Case detail page showing linked executions, SLA countdowns, assignees, case actions, and the activity timeline](./cases-detail.png)
 
 ## Comments and activity timeline
 
@@ -190,7 +194,9 @@ A case action is a flow attached to the case as a one-click button, intended for
 
 Templates standardize how cases are created. A template can define a default severity, default assignees and watchers, a title pattern (supporting the same expressions as the task title), a description, both SLA targets, custom field definitions, default case actions, allowed resolution reasons, and whether a resolution note is required. One template per tenant can be marked as the default; it is preselected in the Create Case modal.
 
-Templates are managed in **Cases → Settings** and require the `TEMPLATE` action on the `CASE` permission. A template can be scoped to a namespace or left tenant-wide (tenant-wide templates and the default flag require a global grant).
+Templates are managed in **Cases → Settings** and require the `TEMPLATE` action on the `CASE` permission.
+
+![Case templates settings showing the built-in Execution failure incident template with High severity](./cases-templates.png) A template can be scoped to a namespace or left tenant-wide (tenant-wide templates and the default flag require a global grant).
 
 Every tenant is seeded with a built-in "Execution failure incident" template: severity High, title pattern `{{ execution.id }} failed for {{ flow.id }}`, 1 hour acknowledgement and 8 hour resolution SLA, and the built-in resolution reasons.
 

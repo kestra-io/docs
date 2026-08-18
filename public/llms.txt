@@ -127,6 +127,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 - [Secrets Manager](https://kestra.io/docs/enterprise/governance/secrets-manager.md): Connect Kestra to an external secrets backend — AWS Secrets Manager, GCP Secret Manager, Azure Key Vault, or HashiCorp Vault
 - [Namespace management](https://kestra.io/docs/enterprise/governance/namespace-management.md): Govern allowed plugins, allowed task types, and inherited defaults at the namespace level
 - [Worker isolation](https://kestra.io/docs/enterprise/governance/worker-isolation.md): Restrict which workers can execute tasks from a given namespace
+- [Promote](https://kestra.io/docs/enterprise/governance/promote.md): Copy flows between Kestra instances from the UI — diff review, optional confirmation gate, drift detection, and promotion history without a Git pipeline
 
 **Scalability**
 - [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
@@ -194,6 +195,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Software and Hardware Requirements to Run Kestra](https://kestra.io/docs/administrator-guide/requirements.md)
 - [Security Hardening for Kestra: Network and Process Isolation](https://kestra.io/docs/administrator-guide/security-hardening.md)
 - [Server Heartbeats and Job Recovery in Kestra](https://kestra.io/docs/administrator-guide/server-lifecycle.md)
+- [Service Instance Metrics in Kestra – Expose via the Webserver](https://kestra.io/docs/administrator-guide/service-instance-metrics.md)
 - [SSL/TLS Configuration: Enable HTTPS for Kestra](https://kestra.io/docs/administrator-guide/ssl-configuration.md)
 - [Troubleshoot Kestra: Kubernetes, Docker, and Startup Issues](https://kestra.io/docs/administrator-guide/troubleshooting.md)
 - [Upgrade Kestra: Rolling Updates, Migrations, and Rollback](https://kestra.io/docs/administrator-guide/upgrades.md)
@@ -298,11 +300,13 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Unit Tests in Kestra Enterprise: Validate Flows](https://kestra.io/docs/enterprise/governance/unit-tests.md)
 - [Worker Isolation in Kestra Enterprise: Separation](https://kestra.io/docs/enterprise/governance/worker-isolation.md)
 - [Cases in Kestra: Incident Management for Executions](https://kestra.io/docs/enterprise/governance/cases.md)
+- [Promote Flows Across Environments in Kestra](https://kestra.io/docs/enterprise/governance/promote.md)
 - [Instance Management in Kestra Enterprise: Health](https://kestra.io/docs/enterprise/instance.md)
 - [Announcements in Kestra Enterprise: In-App Banners](https://kestra.io/docs/enterprise/instance/announcements.md)
 - [Kill Switch in Kestra Enterprise: Stop Executions](https://kestra.io/docs/enterprise/instance/kill-switch.md)
 - [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
 - [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
+- [Super Admin Console in Kestra Enterprise](https://kestra.io/docs/enterprise/instance/super-admin.md)
 - [Enterprise Edition in Kestra: Architecture and Setup](https://kestra.io/docs/enterprise/overview.md)
 - [Enterprise Features in Kestra: High-Availability](https://kestra.io/docs/enterprise/overview/enterprise-edition.md)
 - [Migrate from OSS to Kestra Enterprise Edition](https://kestra.io/docs/enterprise/overview/migrate-from-oss.md)
@@ -545,6 +549,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Add Unit Tests for Kestra Plugins](https://kestra.io/docs/plugin-developer-guide/unit-tests.md)
 - [Quickstart Guide: Run Your First Kestra Workflow](https://kestra.io/docs/quickstart.md)
 - [Releases & LTS Policy in Kestra: Cadence and Support](https://kestra.io/docs/releases.md)
+- [Kestra Changelog](https://kestra.io/docs/releases/changelog.md)
 - [Run Scripts in Kestra: Multi-Language Tasks & Runners](https://kestra.io/docs/scripts.md)
 - [Bind Mount Scripts into Kestra – Run Local Code](https://kestra.io/docs/scripts/bind-mount.md)
 - [Commands vs Script Tasks in Kestra](https://kestra.io/docs/scripts/commands-vs-scripts.md)
@@ -642,7 +647,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [GitHub Actions for Kestra – CI/CD Workflow Examples](https://kestra.io/docs/version-control-cicd/cicd/github-action.md)
 - [GitLab CI for Kestra: Automate Flow Validation](https://kestra.io/docs/version-control-cicd/cicd/gitlab.md)
 - [CI/CD Helpers in Kestra: Local Dev and Read-Only Flows](https://kestra.io/docs/version-control-cicd/cicd/helpers.md)
-- [Kubernetes Operator in Kestra: GitOps for Flows](https://kestra.io/docs/version-control-cicd/cicd/kubernetes-operator.md)
 - [Terraform for Kestra – Manage Resources as Code](https://kestra.io/docs/version-control-cicd/cicd/terraform.md)
 - [Version Control with Git: Sync, Push, and Clone Flows](https://kestra.io/docs/version-control-cicd/git.md)
 - [Kestra VS Code Extension: Edit, Validate, and Run Flows](https://kestra.io/docs/version-control-cicd/vscode.md)
@@ -661,7 +665,6 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Labels in Kestra – Tag Flows and Executions](https://kestra.io/docs/workflow-components/labels.md)
 - [Namespaces in Kestra – Organize and Secure Workflows](https://kestra.io/docs/workflow-components/namespace.md)
 - [Workflow Outputs in Kestra: Share Data Between Tasks](https://kestra.io/docs/workflow-components/outputs.md)
-- [Policies – Enforce Governance Rules](https://kestra.io/docs/enterprise/governance/policies.md)
 - [Plugins in Kestra: Tasks, Triggers, Integrations](https://kestra.io/docs/workflow-components/plugins.md)
 - [Flow Quotas in Kestra: Rate-Limit Execution Creation](https://kestra.io/docs/workflow-components/quotas.md)
 - [Reusable Inputs in Kestra Enterprise](https://kestra.io/docs/workflow-components/reusable-inputs.md)
