@@ -10,28 +10,30 @@ author:
 image: ./main.jpg
 ---
 
-**We are excited to announce that Kestra is now an official [DigitalOcean](https://www.digitalocean.com/) technology partner. Alongside the partnership, we are shipping a dedicated DigitalOcean plugin covering the whole account surface, six production-tested blueprints, and a full [orchestration guide](/orchestration/digitalocean), so teams running on the developer cloud get the operations layer the control panel never shipped.**
+**We are excited to announce that Kestra is now an official [DigitalOcean](https://www.digitalocean.com/) technology partner. With this partnership, we are releasing a dedicated DigitalOcean plugin that covers the most common tasks, and blueprints to get you started!**
 
 ## About DigitalOcean
 
-DigitalOcean is the cloud built for developers and growing digital businesses: droplets you can boot in under a minute, managed Postgres, MySQL, Redis, and Kafka, managed Kubernetes (DOKS), block storage, load balancers, and DNS, all with predictable pricing and an API that is a pleasure to work with. That simplicity is exactly why millions of developers choose it, and exactly why it deserves better automation than cron jobs running doctl scripts on a forgotten VM.
+DigitalOcean is designed for developers and expanding digital businesses, offering quick-boot droplets, managed databases like Postgres, MongoDB, MySQL, Redis, and Kafka, as well as managed Kubernetes (DOKS), block storage, load balancers, and DNS. All features are provided with transparent pricing and an easy-to-use API. Its simplicity explains why millions of developers prefer it, and why it requires smarter automation than just cron jobs running doctl scripts on neglected VMs.
 
 ## What the integration covers
 
-The new [`plugin-digitalocean`](/plugins/plugin-digitalocean) turns every resource type on a DigitalOcean account into declarative Kestra tasks:
+With the new [`plugin-digitalocean`](/plugins/plugin-digitalocean), the DigitalOcean resources most teams touch daily become declarative Kestra tasks:
 
 - Droplets: create, get, list, resize, delete, plus actions for power off, reboot, and snapshots
 - Managed databases: create, get, list, resize, and delete clusters across Postgres, MySQL, Redis, MongoDB, Kafka, and OpenSearch
 - Domains and DNS records: full record lifecycle for zones managed by DigitalOcean
 - Kubernetes (DOKS): cluster lifecycle plus `GetKubeconfig`, which drops the kubeconfig straight into Kestra's internal storage ready for `kubectl`
-- Firewalls, volumes, and load balancers: create, attach, update, and delete
-- An account-level trigger: `droplet.Trigger` polls the account and fires one execution for every new droplet it discovers, turning the DigitalOcean API into an event source
+- Firewalls, volumes, and load balancers: full lifecycle management
+- An account-level trigger: `droplet.Trigger` polls the account and fires one execution for every new droplet it discovers
 
-Every `List` task supports `fetchType` control, returning row data for iteration, counts for reporting, or ion files stored in Kestra's internal storage for downstream analytics.
+Every `List` task supports `fetchType` control, returning row data for iteration, counts for reporting, or ION files stored in Kestra's internal storage for downstream analytics.
 
-## The patterns this unlocks
+DigitalOcean uses a single personal access token for its API. Ths single broad credential is exactly the thing you don't want pasted into a flow definition in Git. With Kestra its easy to securely store and reference it within a flow e.g. `{{ secret('DIGITALOCEAN_TOKEN') }}`
 
-The plugin's real value shows when tasks compose into operations DigitalOcean has no native answer for.
+## Kestra and DigitalOcean unlocking value
+
+The plugin earns its place on operations that span several API calls, need to poll for state, and have to behave correctly when something fails partway through. Those are orchestration problems, and they are where a flow beats a script.
 
 ### Ephemeral compute with guaranteed teardown
 
@@ -49,6 +51,7 @@ tasks:
     region: nyc3
     size: s-2vcpu-4gb
     image: ubuntu-24-04-x64
+    apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
 
   - id: wait_until_active
     type: io.kestra.plugin.core.flow.LoopUntil
@@ -62,29 +65,32 @@ tasks:
         type: io.kestra.plugin.digitalocean.droplet.Get
         apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
         dropletId: "{{ outputs.create_droplet.id }}"
+        apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
 
 finally:
   - id: delete_droplet
     type: io.kestra.plugin.digitalocean.droplet.Delete
     apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
     dropletId: "{{ outputs.create_droplet.id }}"
+    apiToken: "{{ secret('DIGITALOCEAN_TOKEN') }}"
+
 ```
-
-### Business-hours database scaling
-
-DigitalOcean has no scheduled resize. With Kestra, two schedules pass different size slugs into one flow that checks the cluster is healthy, submits the resize, and polls until the migration completes. Scale managed Postgres up before the workday and back down at night, and stop paying peak prices for idle capacity.
 
 ### Governance for shadow infrastructure
 
-The droplet trigger fires minutes after anyone creates a droplet, however they created it. A naming-policy check powers off machines provisioned outside your process, reversibly, and posts their full identity to Slack for review.
+Most teams find unauthorized infrastructure only when invoicing. For example, someone created a droplet in March for testing purposes; once the test ended, the droplet remained. Since nothing was monitoring, there was no time to catch it.
+
+Kestra has events such as `droplet.Trigger` that bridge that gap by activating within minutes of a droplet appearing on the account, regardless of how it arrived, whether through the control panel, `doctl`, Terraform, or a teammate's laptop. The key point isn't just the notification, but that what was once a discovery becomes an action. This enables Kestra to perform any workflow operation on an unanticipated machine, just as it would normally.
+
+This approach offers various responses tailored to the scenario. Enhance the event by matching tags and naming conventions with your inventory, shifting the focus from "what is this?" to "whose is this and is it authorized?". Share the incident on Slack for awareness and then pause. Use a `HumanTask` before any action that could destroy someone's work, ensuring detection is automatic but consequences are not. Escalate according to a schedule or notify upon discovery, follow up if unclaimed after a week, and quarantine behind a strict firewall instead of powering down. For namespaces with clear policies, take immediate action and document it. These are just some of the many possibilities with using Kestra as your enterprise grade orchestrator for DigitalOcean deployments.
 
 ### Fleet backups, DNS cutovers, and inventory
 
 Tag-filtered nightly snapshots with dated names, verified blue-green DNS cutovers with duplicate cleanup, and a weekly parallel census of every resource type on the account posted to Slack. Each pattern ships as a blueprint you can copy today.
 
-## Six production blueprints, tested end to end
+## Get started with DigitalOcean blueprints
 
-Talk is cheap, so every pattern above ships as a ready-to-run blueprint in the [catalog](/blueprints):
+TKestra offers sample patterns in the blueprint catalog that serve as a great starting point for your orchestration tasks. Here are a few of the DigitalOcean blueprints:
 
 1. [Ephemeral droplet runner with guaranteed teardown](/blueprints/digitalocean-ephemeral-droplet-runner)
 2. [Business-hours resize for managed databases](/blueprints/digitalocean-database-business-hours-resize)
@@ -92,12 +98,6 @@ Talk is cheap, so every pattern above ships as a ready-to-run blueprint in the [
 4. [New droplet governance guard](/blueprints/digitalocean-new-droplet-governance-guard)
 5. [Blue-green DNS cutover](/blueprints/digitalocean-dns-blue-green-cutover)
 6. [Weekly account inventory report](/blueprints/digitalocean-account-inventory-report)
-
-Each one was executed end to end against the DigitalOcean API surface before publication, including the failure paths: the teardown blueprint was verified by making the workload fail and confirming the droplet and firewall were still destroyed.
-
-## What's next
-
-The partnership keeps going from here. We are working toward one-click Kestra deployment through the DigitalOcean Marketplace, so spinning up an orchestrator on a droplet or a DOKS cluster becomes a single click. And since DigitalOcean Spaces is S3-compatible, it already works with Kestra's object storage tasks today; deeper coverage is on the roadmap.
 
 ## Get started
 
