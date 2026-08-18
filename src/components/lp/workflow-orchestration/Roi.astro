@@ -34,6 +34,15 @@ const stats = [
     },
 ]
 
+/* Only the digits animate, so each figure is split from the words around it.
+ * Returns null when a value carries no number, which renders it whole. */
+const splitFigure = (value: string) => {
+    const match = value.match(/^(\D*)(\d+)(\D*)$/)
+    if (!match) return null
+    const [, pre, num, post] = match
+    return { pre, num, post }
+}
+
 const quotes = [
     {
         quote: "Kestra allowed us to move from fragmented automation to a unified control plane — secure, scalable, and manageable by all our teams.",
@@ -57,7 +66,7 @@ const quotes = [
 ---
 
 <section class="roi">
-    <div class="head">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
         <h2>The ROI of standardizing orchestration</h2>
         <p>
             Typical impact once the schedulers, cron jobs, and point tools run
@@ -67,16 +76,37 @@ const quotes = [
 
     <div class="cards">
         {
-            stats.map((stat) => (
-                <article class="card-fancy">
-                    <p class="kicker">{stat.kicker}</p>
-                    <p class="value">
-                        {stat.trend && <Icon name={stat.trend} class="trend" />}
-                        <span>{stat.value}</span>
-                    </p>
-                    <p class="body">{stat.body}</p>
-                </article>
-            ))
+            stats.map((stat, index) => {
+                const figure = splitFigure(stat.value)
+                return (
+                    <article
+                        class="card-fancy"
+                        data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                    >
+                        <p class="kicker">{stat.kicker}</p>
+                        <p class="value">
+                            {stat.trend && (
+                                <Icon name={stat.trend} class="trend" />
+                            )}
+                            <span>
+                                {/* An array, not sibling markup: whitespace
+                                    between template elements would render as a
+                                    stray space inside the figure. */}
+                                {figure
+                                    ? [
+                                          figure.pre,
+                                          <span class="figure">
+                                              {figure.num}
+                                          </span>,
+                                          figure.post,
+                                      ]
+                                    : stat.value}
+                            </span>
+                        </p>
+                        <p class="body">{stat.body}</p>
+                    </article>
+                )
+            })
         }
     </div>
 
@@ -203,6 +233,15 @@ const quotes = [
         }
     }
 
+    .figure {
+        display: inline-block;
+        /* Tabular digits in a two-digit box — every figure here is 0-99 — so
+         * counting up from 0 cannot shift the centred line as a digit is
+         * gained. A wider figure would still fit, just re-centre slightly. */
+        min-width: 2ch;
+        font-variant-numeric: tabular-nums;
+    }
+
     .trend {
         flex-shrink: 0;
         /* The design's glyph is 48px against a 40px figure, but mdi carries more
@@ -220,3 +259,81 @@ const quotes = [
         line-height: 1.43;
     }
 </style>
+
+<script>
+    /* Rolls the ROI figures up from zero the first time the cards come into
+     * view. Deliberately not USAL — that library reveals elements but does not
+     * count. The site turns scroll animation off wholesale via .no-animation or
+     * reduced-motion, so honour both and simply leave the final figures.
+     *
+     * Run directly as well as on astro:page-load: layout.astro only mounts
+     * <ClientRouter /> in PROD, so the event never fires in dev — and the
+     * listener still re-arms this after a view-transition navigation. */
+    function initRoiFigureRoll() {
+        const cards = document.querySelector<HTMLElement>(".roi .cards")
+        const figures = document.querySelectorAll<HTMLElement>(".roi .figure")
+        if (!cards || figures.length === 0) return
+        if (cards.dataset.rollArmed === "true") return
+
+        if (
+            document.documentElement.classList.contains("no-animation") ||
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+            !("IntersectionObserver" in window)
+        ) {
+            return
+        }
+
+        const DURATION = 1200
+        const STAGGER = 90
+
+        /* Captured before the figures are zeroed below. */
+        const targets = new Map<HTMLElement, number>()
+        for (const figure of figures) {
+            const target = Number(figure.textContent)
+            if (Number.isFinite(target)) targets.set(figure, target)
+        }
+
+        function roll(figure: HTMLElement, index: number) {
+            const target = targets.get(figure)
+            if (target === undefined) return
+            const startAt = performance.now() + index * STAGGER
+
+            function frame(now: number) {
+                const elapsed = now - startAt
+                if (elapsed < 0) {
+                    requestAnimationFrame(frame)
+                    return
+                }
+                const progress = Math.min(elapsed / DURATION, 1)
+                /* Ease-out cubic: quick off the mark, settling onto the figure. */
+                const eased = 1 - Math.pow(1 - progress, 3)
+                figure.textContent = String(Math.round(target * eased))
+                if (progress < 1) requestAnimationFrame(frame)
+            }
+
+            requestAnimationFrame(frame)
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue
+                    observer.disconnect()
+                    /* Zeroed here rather than up front: the figures keep their
+                     * real values until the moment the roll begins, so nothing
+                     * can strand them at nought, and the reset is hidden behind
+                     * the USAL fade the cards are still playing. */
+                    for (const figure of targets.keys())
+                        figure.textContent = "0"
+                    figures.forEach(roll)
+                }
+            },
+            { threshold: 0.35 },
+        )
+        observer.observe(cards)
+        cards.dataset.rollArmed = "true"
+    }
+
+    initRoiFigureRoll()
+    document.addEventListener("astro:page-load", initRoiFigureRoll)
+</script>

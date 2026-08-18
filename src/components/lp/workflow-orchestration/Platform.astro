@@ -24,12 +24,17 @@ const cards = [
 ---
 
 <section class="platform">
-    <h2>One platform. Every workflow. Your infrastructure.</h2>
+    <h2 data-usal="fade-u delay-50 duration-500 ease-out">
+        One platform. Every workflow. Your infrastructure.
+    </h2>
 
     <div class="cards">
         {
-            cards.map((card) => (
-                <article class="card-fancy">
+            cards.map((card, index) => (
+                <article
+                    class="card-fancy"
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
                     <Icon name={card.icon} class="watermark" />
                     <p class="kicker">{card.kicker}</p>
                     <h3>{card.title}</h3>

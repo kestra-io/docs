@@ -56,7 +56,7 @@ const columns = [
 ---
 
 <section class="stack">
-    <div class="head">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
         <h2>Unified Orchestration Across Your Stack</h2>
         <p>
             API-first, with 1,800+ plugins for your databases, clouds, and
@@ -66,8 +66,11 @@ const columns = [
 
     <div class="columns">
         {
-            columns.map((column) => (
-                <article class="column">
+            columns.map((column, index) => (
+                <article
+                    class="column"
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
                     <column.Glyph class="glyph" role="presentation" />
                     <h3>{column.title}</h3>
                     <ul>

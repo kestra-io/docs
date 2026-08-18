@@ -29,8 +29,13 @@ const bullets = [
 <section class="use-cases">
     <div class="inner">
         <div class="copy">
-            <h2>See it on<br />your use cases</h2>
-            <ul class="bullets">
+            <h2 data-usal="fade-r delay-0 duration-500 ease-out">
+                See it on<br />your use cases
+            </h2>
+            <ul
+                class="bullets"
+                data-usal="fade-r delay-100 duration-500 ease-out"
+            >
                 {
                     bullets.map((bullet) => (
                         <li>

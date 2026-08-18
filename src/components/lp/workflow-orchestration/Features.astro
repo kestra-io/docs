@@ -24,10 +24,15 @@ const features = [
 ---
 
 <section class="features">
-    <h2>Powerful features for reliable workflows</h2>
+    <h2 data-usal="fade-u delay-50 duration-500 ease-out">
+        Powerful features for reliable workflows
+    </h2>
 
     <div class="split">
-        <div class="illustration">
+        <div
+            class="illustration"
+            data-usal="slide-r delay-0 duration-600 ease-out"
+        >
             <Image
                 src={dashboard}
                 alt="The Kestra dashboard showing execution success ratios, an executions bar chart, and a status breakdown"
@@ -39,8 +44,11 @@ const features = [
 
         <div class="control-pane">
             {
-                features.map((feature) => (
-                    <div class="feature">
+                features.map((feature, index) => (
+                    <div
+                        class="feature"
+                        data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                    >
                         <h3>
                             <Icon name={feature.icon} class="icon" />
                             {feature.title}

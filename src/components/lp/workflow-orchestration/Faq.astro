@@ -7,12 +7,18 @@ const { items } = Astro.props
 ---
 
 <section class="faq">
-    <h2>Questions we get on every call</h2>
+    <h2 data-usal="fade-u delay-50 duration-500 ease-out">
+        Questions we get on every call
+    </h2>
 
     <div class="items">
         {
             items.map((item, index) => (
-                <details name="lp-faq" open={index === 0}>
+                <details
+                    name="lp-faq"
+                    open={index === 0}
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
                     <summary>
                         <h3>{item.question}</h3>
                         <span class="marker" aria-hidden="true" />

@@ -23,7 +23,7 @@ const steps = [
 ---
 
 <section class="migration">
-    <div class="head">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
         <h2>Replace your Legacy Scheduler</h2>
         <p>
             Kestra runs alongside your current tools for as long as you need
@@ -33,8 +33,11 @@ const steps = [
 
     <div class="steps">
         {
-            steps.map((step) => (
-                <article class="step">
+            steps.map((step, index) => (
+                <article
+                    class="step"
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
                     <span
                         class="numero"
                         style={`background-image: ${step.wash}`}
