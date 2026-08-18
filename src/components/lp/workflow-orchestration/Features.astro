@@ -95,6 +95,32 @@ const features = [
             width: 100%;
             max-width: 619px;
             height: auto;
+
+            /* The export bakes the design's big soft drop shadow onto an opaque
+             * near-white plate, and the file bounds cut straight through it —
+             * every edge steps from #fafafb to the section's #fff with no
+             * falloff, which reads as the shadow being clipped. Scaling the
+             * image cannot help, since the clip is in the raster. Dissolving the
+             * plate's outer edge hides the seam. The stops are percentages, not
+             * pixels, so they keep clear of the card as the image scales down —
+             * the plate's margins are 2.9/4.9/6.3/23.1% of the export on the
+             * top/left/right/bottom, and each fade stays inside its own. */
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    $black 2%,
+                    $black 88%,
+                    transparent
+                ),
+                linear-gradient(
+                    to right,
+                    transparent,
+                    $black 3%,
+                    $black 96%,
+                    transparent
+                );
+            mask-composite: intersect;
         }
     }
 
