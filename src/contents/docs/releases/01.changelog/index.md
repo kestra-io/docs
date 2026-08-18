@@ -50,7 +50,8 @@ New controls for locking down what flows can do and how they are governed.
 
 New features available in the Enterprise Edition.
 
-- **Cases** — track and resolve execution failures as incidents with automatic creation, deduplication, SLA targets, and a Kanban board. [Docs](../../07.enterprise/02.governance/cases/index.md)
+- **Cases** — track and resolve execution failures as incidents with automatic creation, deduplication, SLA targets, and a kanban board. [Docs](../../07.enterprise/02.governance/cases/index.md)
+- **Promote** — copy flows between Kestra instances from the UI with a diff review, optional confirmation gate, drift detection across the flows list, and full promotion history. No Git pipeline required. [Docs](../../07.enterprise/02.governance/promote/index.md)
 - **Custom Blueprints** — Pebble-templated flow skeletons with form fields, published to your organization's Blueprint library. [Docs](../../07.enterprise/02.governance/custom-blueprints/index.md)
 
 ### Developer experience

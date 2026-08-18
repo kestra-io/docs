@@ -107,6 +107,20 @@ New controls for what flows can access and how they are governed.
 
 New capabilities available in Enterprise Edition.
 
+### Cases (EE)
+
+[Cases](./07.enterprise/02.governance/cases/index.md) is a full incident management system built into Kestra. When an execution fails, it becomes an incident you can track without leaving the platform.
+
+The `CreateCase` task opens a case automatically from your flow's `errors`, `finally`, or `afterExecution` block. With `linkMatchingExecutions: true`, repeated failures of the same flow and task attach to the already-open case rather than creating a new one — keeping alert volume under control when a single outage generates dozens of executions. Cases track severity, status (`Open`, `Acknowledged`, `Investigating`, `Resolved`), SLA targets with live countdowns, assignees and watchers, linked executions and assets, and one-click remediation actions. A kanban board and list view surface all open incidents across the tenant.
+
+### Promote (EE)
+
+[Promote](./07.enterprise/02.governance/promote/index.md) copies a flow from one Kestra instance to another directly from the UI — no Git pipeline required.
+
+From the **Deploy** tab on any flow, select a target environment, review a source-to-target diff, and confirm. A **Deploy** column in the flows list shows the drift state of every flow (`IN_SYNC`, `OUT_OF_SYNC`, `NOT_PROMOTED`) so you can see at a glance what needs to be deployed. Production targets can require an explicit confirmation gate before any promotion lands. Promotion history is recorded per flow and surfaced in the audit log.
+
+Promote is the right path for teams that author flows in the Kestra UI and run separate instances per environment but do not want to maintain a CI/CD pipeline. Teams already using Git as the source of truth should continue with [Git-based deployment](./version-control-cicd/04.git/index.md).
+
 ### Custom Blueprints (EE)
 
 [Custom Blueprints](./07.enterprise/02.governance/custom-blueprints/index.md) let you publish Pebble-templated flow skeletons to your organization's Blueprint library. Each blueprint defines form fields using standard input types; when a user instantiates it, Kestra renders the template into a ready-to-use flow. Useful for standardizing common flow patterns across teams.
