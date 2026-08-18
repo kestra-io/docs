@@ -6,6 +6,7 @@
 // [legal].astro only generates the individual documents — so this uses the
 // sibling the site footer pairs with Privacy Policy.
 import LogoBlack from "~/assets/logo-black.svg"
+import Certifications from "~/components/layout/Certifications.astro"
 ---
 
 <footer class="lp-footer">
@@ -18,17 +19,10 @@ import LogoBlack from "~/assets/logo-black.svg"
                 &copy; 2026 <a href="/">Kestra Technologies</a>.
             </p>
         </div>
+        <Certifications />
         <nav class="links" aria-label="Legal">
             <a href="/privacy-policy">Privacy Policy</a>
             <a href="/cookie-policy">Cookie Policy</a>
-            <a
-                href="https://github.com/kestra-io/kestra"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="github"
-            >
-                Kestra is open source &rarr; GitHub
-            </a>
         </nav>
     </div>
 </footer>
@@ -95,7 +89,8 @@ import LogoBlack from "~/assets/logo-black.svg"
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: 0.75rem 1rem;
+        /* 24px between the two links, per the design. */
+        gap: 0.75rem 1.5rem;
         font-size: $font-size-sm;
         line-height: 1.43;
 
@@ -105,10 +100,6 @@ import LogoBlack from "~/assets/logo-black.svg"
             &:hover {
                 color: var(--lp-purple);
             }
-        }
-
-        .github {
-            color: var(--lp-content-secondary);
         }
     }
 </style>

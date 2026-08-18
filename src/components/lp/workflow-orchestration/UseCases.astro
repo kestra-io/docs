@@ -20,7 +20,7 @@ const bullets = [
         strong: false,
     },
     {
-        text: "Get a clear understanding of how Kestra fits with your platform, along with a roadmap to address your current orchestration needs.",
+        text: "See how Kestra fits your platform, and get a roadmap for your orchestration needs.",
         strong: false,
     },
 ]
@@ -30,10 +30,6 @@ const bullets = [
     <div class="inner">
         <div class="copy">
             <h2>See it on<br />your use cases</h2>
-            <p class="lead-copy">
-                Your Architecture is Unique.<br />
-                Your Challenges are Specific.
-            </p>
             <ul class="bullets">
                 {
                     bullets.map((bullet) => (
@@ -114,19 +110,6 @@ const bullets = [
         }
     }
 
-    /* Not `.lead` — see the note in Hero.astro. */
-    .lead-copy {
-        margin: -1rem 0 0;
-        color: var(--lp-content-dark-secondary);
-        font-size: 1.125rem;
-        font-weight: 400;
-        line-height: 1.1667;
-        letter-spacing: -0.0075rem;
-        @include media-breakpoint-up(lg) {
-            font-size: 1.5rem;
-        }
-    }
-
     .bullets {
         display: flex;
         flex-direction: column;
@@ -135,15 +118,18 @@ const bullets = [
         padding: 0;
         list-style: none;
         @include media-breakpoint-up(lg) {
-            max-width: 471px;
+            /* The design hangs 24px of clearance under the last bullet so the
+             * copy column stays optically centred against the taller form card. */
+            padding-bottom: 1.5rem;
+            max-width: 498px;
         }
         li {
             display: flex;
             align-items: flex-start;
             gap: 0.5rem;
             color: #ffffff;
-            font-size: $font-size-sm;
-            line-height: 1.43;
+            font-size: $font-size-lg;
+            line-height: 1.5556;
         }
         strong {
             font-weight: 700;

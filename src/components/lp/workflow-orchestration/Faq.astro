@@ -55,15 +55,46 @@ const { items } = Astro.props
     }
 
     details {
+        /* Clips the answer panel to the card's own corners, so the rounded
+         * bottom needs no [open] state of its own — which matters once the
+         * panel animates, as `open` drops the instant a close begins. */
+        overflow: hidden;
         border: 1px solid var(--lp-border-subtle);
         border-radius: 12px;
         background-color: #ffffff;
         box-shadow: 2px 3px 8px var(--lp-shadow-light);
+        transition: background-color 0.2s ease-in-out;
 
-        &[open] {
-            /* The answer panel supplies the rounded bottom when expanded. */
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
+        /* Figma's `btn-bg-primary`, on the collapsed hover state only. */
+        &:not([open]):hover {
+            background-color: #eee7fe;
+        }
+    }
+
+    /* The panel eases open and shut instead of snapping. `::details-content`
+     * plus interpolate-size is the no-JS route to it; browsers missing either
+     * still open the row, just instantly. */
+    @supports selector(details::details-content) and
+        (interpolate-size: allow-keywords) {
+        details {
+            interpolate-size: allow-keywords;
+
+            &::details-content {
+                block-size: 0;
+                transition:
+                    block-size 0.3s ease-in-out,
+                    content-visibility 0.3s ease-in-out allow-discrete;
+            }
+
+            &[open]::details-content {
+                block-size: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            details::details-content {
+                transition: none;
+            }
         }
     }
 
@@ -126,7 +157,6 @@ const { items } = Astro.props
     .answer {
         padding: 1.0625rem 1.25rem;
         border-top: 1px solid var(--lp-border-subtle);
-        border-radius: 0 0 12px 12px;
         background-color: var(--lp-bg-base);
 
         p {

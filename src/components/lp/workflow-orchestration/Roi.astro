@@ -11,26 +11,26 @@ const stats = [
     {
         kicker: "Engineering productivity",
         trend: "mdi:arrow-up-thin",
-        value: "20-40%",
-        body: "Reuse of blueprints and plugins, plus guided authoring, reduces rework and review cycles.",
+        value: "Up to 40%",
+        body: "Reusable blueprints, plugins, and guided authoring reduce rework and review cycles.",
     },
     {
-        kicker: "Ops effort",
+        kicker: "Operational effort",
         trend: "mdi:arrow-down-thin",
-        value: "30-60%",
-        body: "Targeted replay, built-in observability, and deterministic runs reduce incidents and time-to-recovery.",
+        value: "60% less",
+        body: "Targeted reruns, built-in observability, and deterministic execution reduce incidents and time-to-recovery.",
     },
     {
         kicker: "Infra waste",
-        trend: null,
-        value: "10-30%",
-        body: "Partial replays and targeted reruns cut reprocessing compute, storage, and network.",
+        trend: "mdi:arrow-down-thin",
+        value: "30% less",
+        body: "Targeted reruns avoid unnecessary reprocessing across compute, storage, and network.",
     },
     {
         kicker: "Tool spend",
-        trend: null,
-        value: "15-35%",
-        body: "Consolidating one to three overlapping tools reduces license and run costs.",
+        trend: "mdi:arrow-down-thin",
+        value: "35% less",
+        body: "Consolidate overlapping orchestration tools to reduce licenses, infrastructure, and operating costs.",
     },
 ]
 
@@ -175,12 +175,14 @@ const quotes = [
         align-items: center;
         justify-content: center;
         margin: 0;
-        font-size: 2.25rem;
-        font-weight: 800;
-        line-height: 1.04;
-        letter-spacing: -0.045rem;
+        /* The design keeps arrow and figure on one line inside a 291px card. */
+        white-space: nowrap;
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.0375rem;
         @include media-breakpoint-up(lg) {
-            font-size: 3rem;
+            font-size: 2.5rem;
         }
 
         span {
@@ -203,6 +205,9 @@ const quotes = [
 
     .trend {
         flex-shrink: 0;
+        /* The design's glyph is 48px against a 40px figure, but mdi carries more
+         * sidebearing than Material Symbols, so 1em matches it optically and
+         * still leaves "Up to 40%" room on one line. */
         width: 1em;
         height: 1em;
         color: #7737fe;

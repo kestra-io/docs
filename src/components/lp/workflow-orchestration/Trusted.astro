@@ -1,7 +1,11 @@
 ---
+/* The demo/ copies of these two are cropped to their ink, so height-normalising
+ * them lands the wordmarks at the size the design gives them. The
+ * trusted-companies/ Fila.svg pads a 24px mark into a 58px box, which renders
+ * it about half the height it should be. */
 import JpMorganLogo from "~/assets/trusted-companies/JPMorgan.svg?raw"
-import FilaLogo from "~/assets/trusted-companies/Fila.svg?raw"
 import ApotekLogo from "~/components/demo/assets/logos/apotek.svg?raw"
+import FilaLogo from "~/components/demo/assets/logos/fila.svg?raw"
 
 /* Each logo carries the exact render height the design gives it, so the three
  * wordmarks read as one set inside the 30px logo row. */
@@ -55,9 +59,8 @@ const cards = [
     <div class="head">
         <h2>Trusted in Production</h2>
         <p>
-            Three deployments, three different kinds of work, <strong>
-                one platform underneath.
-            </strong>
+            <strong>One platform.</strong> Less engineering effort, infrastructure
+            waste, and tool spend.
         </p>
     </div>
 
@@ -97,7 +100,7 @@ const cards = [
 
 <style lang="scss">
     .trusted {
-        padding: 7.5rem 1rem 5rem;
+        padding: 2.5rem 1rem 7.5rem;
         background-color: #ffffff;
     }
 

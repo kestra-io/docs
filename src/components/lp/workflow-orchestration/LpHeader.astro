@@ -1,7 +1,9 @@
 ---
-// Campaign header per the design: logo plus the two conversion CTAs, and none
-// of the site nav — a paid landing page keeps exit paths off the page.
+// Campaign header per the design: logo, the GitHub star widget, and a single
+// sales CTA — and none of the site nav, since a paid landing page keeps exit
+// paths off the page.
 import LogoWhite from "~/assets/logo-white.svg"
+import GithubButton from "~/components/layout/GithubButton.vue"
 ---
 
 <header class="lp-header">
@@ -9,8 +11,8 @@ import LogoWhite from "~/assets/logo-white.svg"
         <LogoWhite />
     </a>
     <div class="actions">
-        <a href="/demo" class="btn-outline">Book a demo</a>
-        <a href="/get-started" class="btn-solid">Get started</a>
+        <GithubButton client:idle />
+        <a href="/demo" class="btn-solid">Contact Sales</a>
     </div>
 </header>
 
@@ -51,14 +53,22 @@ import LogoWhite from "~/assets/logo-white.svg"
         gap: 0.5rem;
     }
 
-    .btn-outline,
+    /* The shared star widget carries Bootstrap spacing utilities for the site
+     * header; the design centres it on this row instead, and Bootstrap's own
+     * !important is the only thing that will yield. */
+    .actions :global(.github-button-wrapper) {
+        margin: 0 !important;
+    }
+
     .btn-solid {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         min-height: 32px;
         padding: 0.5rem 1rem;
+        border: 1px solid #9f82bf;
         border-radius: 4px;
+        background-color: var(--lp-purple);
         color: #ffffff;
         font-size: $font-size-xs;
         font-weight: 600;
@@ -66,18 +76,6 @@ import LogoWhite from "~/assets/logo-white.svg"
         text-align: center;
         text-decoration: none;
         white-space: nowrap;
-    }
-
-    .btn-outline {
-        border: 1px solid var(--lp-content-dark-secondary);
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-        }
-    }
-
-    .btn-solid {
-        border: 1px solid #9f82bf;
-        background-color: var(--lp-purple);
         &:hover {
             background-color: #7737fe;
         }

@@ -5,11 +5,11 @@ import { Icon } from "astro-icon/components"
  * a separate <svg> does not resolve through astro-icon's <symbol>/<use> pair,
  * so these ship as standalone assets rather than <Icon> calls. Generated from
  * @iconify-json/mdi: database-arrow-up-outline, folder-cog-outline,
- * plus-circle-outline, brain. */
+ * view-dashboard-edit-outline, plus-circle-outline. */
 import DataPipelinesIcon from "./assets/stack-data-pipelines.svg"
 import InfraPlatformIcon from "./assets/stack-infra-platform.svg"
+import AppMicroservicesIcon from "./assets/stack-app-microservices.svg"
 import BusinessProcessesIcon from "./assets/stack-business-processes.svg"
-import AiMlIcon from "./assets/stack-ai-ml.svg"
 
 const columns = [
     {
@@ -33,6 +33,16 @@ const columns = [
         ],
     },
     {
+        Glyph: AppMicroservicesIcon,
+        title: "App & microservices",
+        items: [
+            "API and microservice calls sequenced with retries, timeouts and state",
+            "Event-driven choreography on top of streaming and messaging layer",
+            "Handoffs picked up where ServiceNow or Salesforce automation stops",
+            "ERP and core-banking migrations where the workflows keep running through the cutover",
+        ],
+    },
+    {
         Glyph: BusinessProcessesIcon,
         title: "Business processes",
         items: [
@@ -40,16 +50,6 @@ const columns = [
             "Order, invoice and settlement steps across internal systems",
             "Reports generated and distributed on a schedule or an event",
             "Approvals with a human step in the middle of the flow",
-        ],
-    },
-    {
-        Glyph: AiMlIcon,
-        title: "AI & ML",
-        items: [
-            "Model training and scoring on the same engine as the data feeding it",
-            "LLM and agent tasks with retries, timeouts and guardrails",
-            "Embedding and vector-store refreshes next to the pipelines that fill them",
-            "Human review before an AI decision reaches production",
         ],
     },
 ]
@@ -141,9 +141,13 @@ const columns = [
         gap: 1rem;
         padding: 1rem;
 
-        /* The design's dividers are not flat hairlines: each is a 1px rule that
-         * starts at the focus purple beside the glyph and fades out over the
-         * copy below, so a border-left will not do. */
+        /* The design's dividers are not flat hairlines, and they are not
+         * anchored at the top either: each 1px rule fades up out of nothing
+         * beside the glyph, holds solid down the length of the list, then fades
+         * back out at the foot of the column — so neither a border-left nor a
+         * one-way gradient will do. Stops are sampled off the Figma render,
+         * where the rule is clear by its own top edge, fully opaque across the
+         * middle 36–77% of its own span, and clear again by the bottom. */
         @include media-breakpoint-up(lg) {
             & + &::before {
                 content: "";
@@ -154,9 +158,10 @@ const columns = [
                 width: 1px;
                 background-image: linear-gradient(
                     180deg,
-                    var(--lp-purple-mid) 0%,
-                    var(--lp-purple-mid) 28%,
-                    rgba(152, 105, 247, 0) 68%
+                    rgba(152, 105, 247, 0) 10%,
+                    var(--lp-purple-mid) 43%,
+                    var(--lp-purple-mid) 79%,
+                    rgba(152, 105, 247, 0) 100%
                 );
             }
         }

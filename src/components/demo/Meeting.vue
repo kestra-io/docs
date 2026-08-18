@@ -193,7 +193,6 @@
             return `${base}${sep}${qp.toString()}`
         }
     }
-
 </script>
 
 <template>
@@ -329,14 +328,76 @@
             color: var(--ks-content-alert-danger);
         }
 
+        /* Bootstrap's grid drives this form on /demo, but the landing-page
+         * design is a plain 2-up-then-stacked grid with one uniform 16px rhythm
+         * — including down to the consent line and the button. Laying it out
+         * here is shorter than reverse-engineering gutters, and the !importants
+         * are the only way past the .mt-3/.mt-4 utilities in the markup. */
         form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem 0.5rem;
             width: 100%;
+            margin: 0;
             padding: 0;
             border: none;
             background: transparent;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            > * {
+                /* Bootstrap's column widths and row-gutter margins are both
+                 * meaningless once the parent is a grid, and would only fight
+                 * the track sizing. */
+                width: auto;
+                margin-top: 0 !important;
+                padding: 0;
+            }
+
+            /* The name fields carry col-12 too, for the stacked breakpoint the
+             * single-column grid already handles — so they must not match here. */
+            > .col-12:not(.col-md-6),
+            > .alert {
+                grid-column: 1 / -1;
+            }
 
             .form-label {
                 display: none;
+            }
+
+            .form-control {
+                min-height: 48px;
+                padding: 0.75rem 0.875rem;
+                border: 1px solid #e9e9ee;
+                border-radius: 8px;
+                font-size: $font-size-sm;
+                line-height: 1.4286;
+
+                &::placeholder {
+                    color: #7e7e9b;
+                }
+            }
+
+            .agree {
+                color: #3b3a41;
+                font-size: $font-size-xs;
+                line-height: 1.3333;
+
+                a {
+                    color: #631bff;
+                    text-decoration: underline;
+                }
+            }
+
+            .btn-primary {
+                min-height: 52px;
+                padding: 0.875rem 1.75rem;
+                border-radius: 8px;
+                font-size: 1.25rem;
+                font-weight: 700;
+                line-height: 1.2;
+                letter-spacing: -0.00625rem;
             }
 
             select.form-control {

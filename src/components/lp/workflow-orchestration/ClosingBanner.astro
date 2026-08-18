@@ -5,11 +5,15 @@ import Link from "~/components/common/Link.astro"
 <section class="closing">
     <div class="banner">
         <div class="copy">
-            <h2>See this on your own stack</h2>
-            <p>Let's talk about your architecture and your use cases.</p>
+            <h2>Bring your own list of questions</h2>
+            <p>We'll go through them against your own architecture.</p>
         </div>
         <Link href="/demo" class="cta" text="Book a demo" />
     </div>
+
+    <p class="reassurance">
+        Self-managed or air-gapped. Your data never leaves your network.
+    </p>
 </section>
 
 <style lang="scss">
@@ -74,6 +78,16 @@ import Link from "~/components/common/Link.astro"
             font-size: $font-size-lg;
             line-height: 1.56;
         }
+    }
+
+    .reassurance {
+        max-width: 1140px;
+        margin: 1rem auto 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-md;
+        font-style: italic;
+        line-height: 1.5;
+        text-align: center;
     }
 
     .closing :global(.cta) {

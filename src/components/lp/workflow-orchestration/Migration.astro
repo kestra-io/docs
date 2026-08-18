@@ -83,25 +83,31 @@ const steps = [
     .steps {
         position: relative;
         display: grid;
+        /* The design's Numero box. The rail centres on it, so the two are
+         * derived from one value rather than kept in step by hand. */
+        --numero-size: 3.625rem;
+        --steps-gap: 1rem;
         gap: 2rem;
         max-width: 1220px;
         margin-inline: auto;
         @include media-breakpoint-up(md) {
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: var(--steps-gap);
         }
     }
 
-    /* Dashed rail linking the three badges, behind them. */
+    /* Dashed rail linking the three badges, behind them. Each badge is centred
+     * in its grid column, so the rail runs column-1 centre to column-3 centre —
+     * i.e. half a column in from each edge. */
     .steps::before {
         content: "";
         display: none;
         @include media-breakpoint-up(md) {
             display: block;
             position: absolute;
-            top: 4.125rem;
-            left: 16.6%;
-            width: 66.8%;
+            top: calc(1.5rem + var(--numero-size) / 2);
+            left: calc((100% - 2 * var(--steps-gap)) / 6);
+            width: calc(100% - (100% - 2 * var(--steps-gap)) / 3);
             border-top: 1px dashed var(--lp-purple-rail);
         }
     }
@@ -121,8 +127,11 @@ const steps = [
         display: flex;
         align-items: center;
         justify-content: center;
+        /* Explicit rather than a product of the font metrics, so the rail's
+         * centre line cannot drift off it. */
+        height: var(--numero-size);
         min-width: 3.5rem;
-        padding: 0.3125rem 0.625rem;
+        padding: 0 0.625rem;
         border-radius: 10px;
         background-color: #111115;
         color: #ffffff;

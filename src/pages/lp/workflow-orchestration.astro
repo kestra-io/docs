@@ -16,7 +16,7 @@ import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.
 
 const title = "Unified Workflow Orchestration Platform for the AI era"
 const description =
-    "Build, run, and govern every workflow across data, infrastructure, apps, and business processes. Any language, on your own infrastructure."
+    "Build, run, and govern every workflow across data, infrastructure, agent, and business processes. Any language, on your own infrastructure."
 
 /** HubSpot records this as the page the lead converted on. */
 const routePath = "/lp/workflow-orchestration"
@@ -25,29 +25,29 @@ const faqItems = [
     {
         question:
             "Can we run it fully self-hosted, on-prem, or air-gapped, with our data never leaving our network?",
-        answer: "Yes — self-hosted is a first-class deployment. Workers run inside your VPC or on-prem, so data stays in your environment.",
+        answer: "Yes. Self-hosted is a first-class deployment rather than a workaround. Workers run inside your VPC or on-prem, you bring your own secret manager, and Kestra holds no access to your data. Worker Groups let one control plane reach physically isolated networks, and licensing works offline so a fully air-gapped install is supported.",
     },
     {
         question:
             "Does it support SSO/SAML, RBAC, audit logs, and multi-tenant isolation?",
-        answer: 'Yes. The Enterprise Edition adds SSO (SAML and OIDC) with SCIM provisioning, fine-grained role-based access control, full audit logs, and tenant-level isolation so teams share one deployment without seeing each other\'s workloads. See the <a href="/docs/enterprise">Enterprise documentation</a> for the full list.',
+        answer: "Yes, all four. Fine-grained role-based access control, SSO and SCIM, full audit logs, and native multi-tenancy where namespace isolation lets dozens of teams run on one deployment.",
     },
     {
         question: "Do we need Kubernetes?",
-        answer: 'No. Kestra runs from a single Docker container on one VM, and scales out to worker groups and high availability when you need it. Kubernetes and Helm are supported but never required — see <a href="/docs/installation">the installation guides</a>.',
+        answer: "No. Kestra runs on a single VM with Docker if that's what you have. Kubernetes is supported and common at scale, and it is not a requirement to start or to run in production.",
     },
     {
         question: "How do we avoid lock-in?",
-        answer: 'Workflows are plain YAML stored in Git, and your scripts stay in whatever language they were written in. The core is open source under Apache 2.0, so you can keep running it yourself, and everything is reachable over a documented <a href="/docs/api-reference">REST API</a>.',
+        answer: "The engine is open source under Apache 2.0, and it is the same engine that runs in production. Your workflows are declarative files in your own Git repository, so the definitions stay yours whether or not you stay. Any script or API call runs natively as a task, so you are never waiting on a proprietary connector.",
     },
     {
         question:
-            "Can one platform run data, infra, and business workflows — or do we end up with two orchestrators?",
-        answer: "One platform. The same engine schedules data pipelines, infrastructure jobs, AI workloads, and business processes, with namespaces to keep each team's workflows separate and 1,800+ plugins covering the systems they each depend on.",
+            "Can one platform run data, infrastructure, application and business workflows, or do we end up with two orchestrators?",
+        answer: "One platform. All four run on the same engine, with the same access model and the same audit trail. Teams keep their own namespaces, so a single deployment serves many teams without them colliding.",
     },
     {
         question: "How is Kestra priced?",
-        answer: 'The open-source edition is free with no execution limits. Enterprise Edition and Cloud are priced per deployment based on your scale and support needs — see <a href="/pricing">pricing</a> or talk to us for a quote.',
+        answer: "Kestra does not price per execution. The model scales with how broadly the platform is deployed rather than how often your workflows run, so adding volume or agent steps does not change the bill. Enterprise pricing depends on deployment scope and support tier, and we walk through it on the call.",
     },
 ]
 ---
@@ -57,12 +57,12 @@ const faqItems = [
         <LpHeader />
         <Hero {routePath} />
         <Platform />
+        <Migration />
         <Features />
         <Stack />
-        <Roi />
         <Trusted />
-        <Migration />
         <UseCases {routePath} />
+        <Roi />
         <Faq items={faqItems} />
         <ClosingBanner />
         <LpFooter />

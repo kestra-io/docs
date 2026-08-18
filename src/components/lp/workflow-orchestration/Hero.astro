@@ -1,6 +1,4 @@
 ---
-import { Icon } from "astro-icon/components"
-
 import Meeting from "~/components/demo/Meeting.vue"
 import LogoBar from "~/components/home/LogoBar.astro"
 
@@ -10,21 +8,6 @@ interface Props {
 }
 
 const { routePath } = Astro.props
-
-const bullets = [
-    {
-        text: "We'll discuss your requirements for security, scale, and language-agnostic support.",
-        strong: true,
-    },
-    {
-        text: "See exactly how Kestra's architecture resolves the friction points in your stack.",
-        strong: false,
-    },
-    {
-        text: "Get a clear understanding of how Kestra fits with your platform, along with a roadmap to address your current orchestration needs.",
-        strong: false,
-    },
-]
 ---
 
 <section class="lp-hero">
@@ -32,31 +15,14 @@ const bullets = [
         <div class="copy">
             <h1>
                 Unified <span class="grad grad-a">Workflow</span>{" "}
-                <span class="grad grad-b">Orchestration</span> Platform for the AI
-                era.
+                <span class="grad grad-b">Orchestration</span> Platform for{" "}
+                <br class="wrap" />the AI era.
             </h1>
             <p class="lead-copy">
                 Build, run, and govern every workflow across data,
-                infrastructure, apps, and business processes.{" "}
+                infrastructure, agent, and business processes.{" "}
                 <strong>Any language, on your own infrastructure.</strong>
             </p>
-            <ul class="bullets">
-                {
-                    bullets.map((bullet) => (
-                        <li>
-                            <Icon
-                                name="mdi:check-circle-outline"
-                                class="check"
-                            />
-                            {bullet.strong ? (
-                                <strong>{bullet.text}</strong>
-                            ) : (
-                                <span>{bullet.text}</span>
-                            )}
-                        </li>
-                    ))
-                }
-            </ul>
         </div>
 
         <div class="form-card">
@@ -70,10 +36,7 @@ const bullets = [
     </div>
 
     <div class="logos">
-        <p>
-            Run in production by enterprises across finance, public sector, and
-            manufacturing.
-        </p>
+        <p>Trusted in production by:</p>
         <LogoBar />
     </div>
 </section>
@@ -123,9 +86,9 @@ const bullets = [
     .copy {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 2.5rem;
         @include media-breakpoint-up(lg) {
-            max-width: 589px;
+            max-width: 677px;
         }
     }
 
@@ -134,10 +97,23 @@ const bullets = [
         color: #ffffff;
         font-size: 2.25rem;
         font-weight: 800;
-        line-height: 1.0417;
-        letter-spacing: -0.045rem;
+        line-height: 1.0667;
+        letter-spacing: -0.075rem;
         @include media-breakpoint-up(lg) {
-            font-size: 3rem;
+            /* The 554px box is what breaks the headline the way the design
+             * does — "Orchestration" alone on its own line, then "Platform
+             * for" / "the AI era." */
+            max-width: 554px;
+            font-size: 3.75rem;
+        }
+    }
+
+    /* The design breaks the headline before "the AI era."; below lg the
+     * narrower column wraps better on its own. */
+    .wrap {
+        display: none;
+        @include media-breakpoint-up(lg) {
+            display: inline;
         }
     }
 
@@ -162,47 +138,18 @@ const bullets = [
     /* Not `.lead` — that is Bootstrap's, and its `font-weight: 300` would win
      * over anything this block does not restate. */
     .lead-copy {
-        margin: -1rem 0 0;
+        margin: 0;
         color: var(--lp-content-dark-secondary);
         font-size: 1.125rem;
         font-weight: 400;
         line-height: 1.1667;
+        letter-spacing: -0.0075rem;
         @include media-breakpoint-up(lg) {
+            max-width: 571px;
             font-size: 1.5rem;
         }
         strong {
             font-weight: 700;
-        }
-    }
-
-    .bullets {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-        @include media-breakpoint-up(lg) {
-            max-width: 471px;
-        }
-        li {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            color: #ffffff;
-            font-size: $font-size-sm;
-            line-height: 1.43;
-        }
-        strong {
-            font-weight: 700;
-        }
-        .check {
-            flex-shrink: 0;
-            width: 20px;
-            height: 20px;
-            /* Lighter than --lp-purple: on the dark ground the design steps the
-             * ticks up to the focus tint so they read against #111115. */
-            color: var(--lp-purple-mid);
         }
     }
 
@@ -249,10 +196,16 @@ const bullets = [
 
     .logos {
         max-width: 1152px;
+        /* The design's 205px enterprise-logos frame: 37px above the caption,
+         * 44px between caption and wordmarks, 60px of clearance below. */
         margin: 2.3125rem auto 0;
+        @include media-breakpoint-up(lg) {
+            padding-bottom: 3.75rem;
+            :global(.logo-carousel) {
+                margin: 2.75rem 0 0;
+            }
+        }
         p {
-            /* The design gives the caption a 790px box so it stays on one line. */
-            max-width: 790px;
             margin: 0 auto;
             color: var(--lp-content-muted);
             font-size: 1.25rem;
