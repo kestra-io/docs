@@ -12,7 +12,7 @@ Cap the number of executions created within a time window — at the flow, names
 Each quota specifies a `duration` (the time window and the unique identifier for that quota entry), a `limit` (the maximum executions allowed in that window), and a `behavior` (what happens when the limit is exceeded).
 
 :::alert{type="warning"}
-Quotas are an Enterprise Edition feature. Adding a `quotas` block to a flow on an Open Source installation causes a validation error at save time.
+Quotas are an Enterprise Edition and Cloud feature. Adding a `quotas` block to a flow on an Open Source installation causes a validation error at save time.
 :::
 
 ## Quota properties

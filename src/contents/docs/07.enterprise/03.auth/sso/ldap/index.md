@@ -4,7 +4,7 @@ h1: Connect Your LDAP Directory for User Login and Group Sync
 description: Enable LDAP authentication in Kestra. Use your LDAP directory for user login, group synchronization, or both — including alongside an existing SSO provider.
 sidebarTitle: LDAP
 icon: /src/contents/docs/icons/admin.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 version: "0.22.0"
 ---
 

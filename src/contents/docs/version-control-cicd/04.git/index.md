@@ -309,7 +309,7 @@ tasks:
 
 ## Git PushBlueprints and SyncBlueprints
 
-These tasks are available in the Enterprise Edition only.
+These tasks are available in Enterprise Edition and Cloud only.
 
 [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) and [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) bring Git version control to custom blueprints, following the same push/sync pattern as flows and namespace files. Because blueprints are tenant-scoped rather than namespace-scoped, both tasks operate across all blueprints in the tenant regardless of the flow's own namespace.
 
@@ -350,7 +350,7 @@ triggers:
 
 ## Git SyncApps and SyncUnitTests
 
-These tasks are available in the Enterprise Edition only.
+These tasks are available in Enterprise Edition and Cloud only.
 
 [SyncApps](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncapps) and [SyncUnitTests](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncunittests) treat Git as the source of truth for apps and unit tests, following the same sync pattern as flows and namespace files.
 

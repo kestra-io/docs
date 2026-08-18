@@ -82,7 +82,7 @@ For full details, see [internal storage configuration](../../configuration/02.ru
 ### Logs
 
 - By default, logs are stored in the repository. In Kestra 2.0+, you can route them to a separate database or Elasticsearch using the [external log data store](../../10.administrator-guide/log-data-store/index.md).
-  - JDBC log stores (H2, PostgreSQL, MySQL) are available in OSS. Elasticsearch is Enterprise Edition only.
+  - JDBC log stores (H2, PostgreSQL, MySQL) are available in OSS. Elasticsearch is available in Enterprise Edition and Cloud only.
   - Audit logs are always stored in the repository.
 - Logs can be accessed through the API, UI, or external logging integrations such as the [Log Shipper](../../07.enterprise/02.governance/logshipper/index.md).
 
@@ -129,10 +129,10 @@ Understanding where data is persisted is critical when flows process personally 
 #### Encrypting sensitive task outputs
 
 :::alert{type="info"}
-`encryptedOutputs` is an Enterprise Edition feature.
+`encryptedOutputs` is an Enterprise Edition and Cloud feature.
 :::
 
-In Enterprise Edition, script tasks support an `encryptedOutputs` key in the `::{}::` output protocol. Values written this way are wrapped in an `EncryptedString` and stored encrypted in the task_outputs table rather than as plaintext. They are merged into the same outputs map as regular outputs and are decrypted by Kestra at evaluation time.
+In Enterprise Edition and Cloud, script tasks support an `encryptedOutputs` key in the `::{}::` output protocol. Values written this way are wrapped in an `EncryptedString` and stored encrypted in the task_outputs table rather than as plaintext. They are merged into the same outputs map as regular outputs and are decrypted by Kestra at evaluation time.
 
 ```yaml
 id: sensitive_data_flow

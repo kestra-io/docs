@@ -63,8 +63,8 @@ Available for commands that talk to the server API.
 - `--server` — Kestra server URL (default: `http://localhost:8080`).
 - `--headers` — Add custom headers (`<name=value>`).
 - `--user` — Basic auth (`user:password`).
-- `--tenant` — Tenant identifier (**EE only**).
-- `--api-token` — API token (**EE only**).
+- `--tenant` — Tenant identifier (**EE and Cloud only**).
+- `--api-token` — API token (**EE and Cloud only**).
 
 **Examples**
 

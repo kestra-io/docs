@@ -3,7 +3,7 @@ title: "Promote Flows Across Environments in Kestra"
 h1: Promote Flows Between Environments from the UI
 sidebarTitle: Promote (EE)
 icon: /src/contents/docs/icons/dev.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 description: Move flows from dev to staging to production directly from the Kestra UI, with a diff review, confirmation gate, and full promotion history.
 ---
 

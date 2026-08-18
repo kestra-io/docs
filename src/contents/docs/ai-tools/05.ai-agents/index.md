@@ -127,7 +127,7 @@ These outputs can then be passed on as notifications or system messages to exter
 
 ### Centralizing provider configuration
 
-Each task using the AI Agent requires the `provider` property. To avoid repeating it on every task, use a [Policy](../../07.enterprise/02.governance/policies/index.md) with an `Add` rule to inject the `provider` block into all `AIAgent` tasks across a namespace — this is an Enterprise Edition feature. For your provider API key, store it as a [Secret](../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`.
+Each task using the AI Agent requires the `provider` property. To avoid repeating it on every task, use a [Policy](../../07.enterprise/02.governance/policies/index.md) with an `Add` rule to inject the `provider` block into all `AIAgent` tasks across a namespace — this is an Enterprise Edition and Cloud feature. For your provider API key, store it as a [Secret](../../06.concepts/04.secret/index.md) and reference it with `{{ secret('...') }}`.
 
 ## Agent tools
 

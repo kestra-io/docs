@@ -56,7 +56,7 @@ The [Kestra CLI](/docs/version-control-cicd/cicd/helpers) includes built-in comm
 ```
 
 :::alert{type="info"}
-The `--api-token` flag is available in the [Enterprise Edition](/docs/enterprise/auth/api-tokens).
+The `--api-token` flag is available in the [Enterprise Edition and Cloud](/docs/enterprise/auth/api-tokens).
 In the open-source edition, use basic authentication with the `--user` flag:
 
 ```bash
@@ -248,7 +248,7 @@ terraform {
 
 provider "kestra" {
   url = "http://localhost:8080" # Kestra webserver/standalone server URL
-  api_token = "<your-api-token>" # Only available in the Enterprise Edition
+  api_token = "<your-api-token>" # EE and Cloud only
 }
 
 resource "kestra_flow" "flows" {

@@ -4,7 +4,7 @@ h1: Securely Connect Flows to External Systems with Credentials
 description: Authenticate to external systems securely with Kestra Credentials. Store and manage server-to-server auth tokens for use across flows and namespaces.
 sidebarTitle: Credentials
 icon: /src/contents/docs/icons/concepts.svg
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 ---
 
 Credentials let you configure server-to-server authentication once and reuse it across tasks. Instead of embedding token minting and refresh logic in each plugin, Kestra handles this at runtime and you reference the current token with a simple expression.

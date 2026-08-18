@@ -39,15 +39,15 @@ Each server has the following fields:
 | `description` | Optional description shown in the UI. |
 | `systemPrompt` | Instructions prepended to every AI agent session connected to this server. Use this to guide agent behavior — for example, to restrict which tools to call or define the agent's persona. |
 | `serverType` | `PRIVATE` (default) or `PUBLIC`. A private server requires authentication; a public server accepts unauthenticated connections. |
-| `authType` | `BASIC` (username/password, available in OSS and EE), `API_TOKEN` (EE only), or `OAUTH` (EE only). |
+| `authType` | `BASIC` (username/password, available in OSS and EE), `API_TOKEN` (EE and Cloud only), or `OAUTH` (EE and Cloud only). |
 
 ### Authentication types
 
 | Auth type | Available in | Notes |
 |---|---|---|
 | `BASIC` | OSS, EE | Username and password required on connect. |
-| `API_TOKEN` | EE only | API token required on connect. Rejected on OSS. |
-| `OAUTH` | EE only | OAuth 2.0 flow. Required for browser-based MCP clients such as Claude web. Configure the OAuth provider name via `oauthProvider`. |
+| `API_TOKEN` | EE and Cloud | API token required on connect. Rejected on OSS. |
+| `OAUTH` | EE and Cloud | OAuth 2.0 flow. Required for browser-based MCP clients such as Claude web. Configure the OAuth provider name via `oauthProvider`. |
 
 Keep servers private unless you have a specific reason to expose them publicly. A public server allows any MCP client to call any flow registered on it without authentication.
 

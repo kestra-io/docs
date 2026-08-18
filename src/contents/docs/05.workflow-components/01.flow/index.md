@@ -99,7 +99,7 @@ Use **Save as draft** to stage changes without affecting running executions. Dra
 |---|---|
 | `{{ flow.id }}` | The identifier of the flow. |
 | `{{ flow.namespace }}` | The name of the flow namespace. |
-| `{{ flow.tenantId }}` | The identifier of the tenant (EE only). |
+| `{{ flow.tenantId }}` | The identifier of the tenant (EE and Cloud only). |
 | `{{ flow.revision }}` | The revision of the flow. |
 
 ## FAQ

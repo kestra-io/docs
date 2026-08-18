@@ -13,7 +13,7 @@ The **Flows** page lists all flows. Click a flow ID to open it, or create a new 
 
 ![Kestra User Interface Flows Page](./04-Flows.png)
 
-A **Flow** page has multiple tabs that allow you to: see the flow topology, all flow executions, edit the flow, view its revisions, logs, metrics, and dependencies. You can also edit namespace files in the Flow editor.
+A **Flow** page has tabs for Overview, Executions, Edit, Revisions, Triggers, Logs, Metrics, Dependencies, and more.
 
 ![Kestra User Interface Flow Page](./05-Flows-Flow.png)
 
@@ -25,9 +25,9 @@ From the main Flows page, you can filter the displayed flows on fields like name
 
 ## Edit
 
-The Edit interface provides a rich view of your workflow, as well as Namespace Files. The editor allows you to add multiple panels:
+The **Edit** tab is the main authoring environment. Open panels from the tab bar and arrange them side by side:
 - **Flow Code** — YAML editor with autocomplete
-- **No-code** — form-based flow builder
+- **No-code** — visual flow builder with task cards and a structured outline
 - **Topology** — visual DAG of the flow
 - **Docs** — plugin documentation, updates as you move the cursor
 - **Files** — namespace files editor
@@ -42,75 +42,62 @@ From the top-right of the editor, you can access **Revisions**, **Dependencies**
 
 ### Flow Code view
 
-The **Flow Code** view allows you to edit your workflows with YAML. Autocomplete is available as you write. As new tasks are added, they automatically appear in the No-code and Topology views.
+The **Flow Code** view is a YAML editor with autocomplete. Tasks added here appear immediately in the No-code and Topology views.
 
 ![Flow Code](./flow-editor.png)
 
 ### No Code view
 
-The **No Code** view lets you edit workflows directly in the UI using structured forms. As you modify your flow, YAML is generated in real time in the code view and you can switch between both views at any time.
+The **No Code** view is a canvas-based flow editor. The canvas displays each flow section — Triggers, Tasks, Errors, Finally, and After Execution — as a group of visual blocks. Selecting a block opens its configuration form in a third panel alongside the canvas.
 
-- **Speed & onboarding**: Build flows without writing YAML first; switch to code view whenever you need advanced control.
-- **Consistency**: UI-driven forms align with plugin schemas and validation, reducing drift.
-- **No ceiling**: When you outgrow forms, switch to YAML, add files/scripts, and keep everything in one place.
+![No Code canvas showing a schedule trigger selected with its configuration form open](./no-code-canvas.png)
 
-#### Build a flow in No Code
+Click any block to open its form. The form has two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). You can switch to **Source** to write or paste YAML directly — the flow YAML editor on the left stays in sync instantly.
 
-1. **Create a flow** from **Flows → + Create**; confirm namespace and identifiers.
-2. **Open No Code view** from the editor panel. Browse or search the plugin catalog and select a plugin to reveal its form fields.
+![Errors block with two tasks, notify_failure selected and its YAML open in the Source tab](./no-code-errors.png)
 
-![No Code Panel View](./no-code-flow-panel.png)
+To add a block, click **+ Add task** or **+ Add trigger** in the relevant section, or press `/` anywhere on the canvas to search and insert a block at the cursor position. Use the keyboard shortcuts shown in the bottom bar to navigate (`↑ ↓`), open a selected block (`⇧`), or insert after the current selection.
 
-You can close, open, and reposition panels at any time. In the example below, the Slack plugin documentation is open alongside the No Code editor with the YAML view closed.
+Click **Configure** at the top of the canvas to edit flow-level properties (namespace, description, inputs, outputs, variables, and more).
 
-![No Code Documentation View](./multi-panel.png)
+#### Focused view
 
-3. **Configure inputs** by clicking **+ Add** in the inputs section. Each input opens a configuration tab. If the YAML view is open, you'll see it update in real time as you add inputs.
+Opening a block expands it into a focused modal by default. The modal has two panels:
 
-![No Code Input Configuration](./no-code-inputs.png)
+- **Left — Inputs**: lists every value you can reference in this task's properties. **Upstream Outputs** shows the output keys of all tasks that run before this one; **Execution Context** lists all built-in variables available at runtime (`flow.id`, `execution.id`, `taskrun.id`, `trigger.date`, and so on). Use these as a reference when writing Pebble expressions in the form fields.
+- **Right — Form / Source**: the task configuration form. Switch to **Source** to edit raw YAML for the block. An **Output** panel on the right edge shows the task's output schema.
 
-4. **Configure task properties** via forms. Each task opens a No Code tab and generates YAML as you select properties. Fields can autocomplete expressions from inputs you've already configured.
+![Focused modal for a Python Script task, showing upstream outputs and execution context on the left and the task form on the right](./no-code-task-modal.png)
 
-![No Code Task Configuration](./no-code-tasks.png)
+Tasks open as a modal by default. To open blocks as tabs in the editor instead, change the default in **Settings**.
 
-5. **Add flow logic** — If, Switch, Loop, and Subflow tasks — to control execution paths.
-6. **Add a trigger** (schedule, file event, webhook) to automate runs.
-
-![No Code Trigger Configuration](./no-code-trigger.png)
-
-7. **Add additional flow components** such as [outputs](../../05.workflow-components/06.outputs/index.md), [retry](../../05.workflow-components/12.retries/index.md), [SLA](../../05.workflow-components/18.sla/index.md), and [afterExecution](../../05.workflow-components/20.afterexecution/index.md). Everything possible in YAML is available in No Code.
-
-![Additional Flow Components](./additional-components.png)
-
-8. **Save and run**: execute from the UI to see logs and results.
-
-Edits in No Code forms update YAML instantly, and edits in YAML reflect back in No Code. For complex expressions, advanced plugin fields, or bulk edits, switch to the YAML view — then switch back. Use the **Actions** menu to export or copy the flow at any time.
+You can open multiple panels simultaneously — for example, keep **Docs** open alongside the canvas to reference plugin documentation while configuring a task. Use the **Actions** menu to export or copy the flow at any time.
 
 :::alert{type="info"}
-You can also skip YAML with the [AI Copilot](../../ai-tools/01.ai-copilot/index.md), which generates a flow from a plain-language description.
+Flow Code, No-code, and [AI Copilot](../../ai-tools/01.ai-copilot/index.md) all stay in sync. Start in any mode — write YAML, describe your flow to the Copilot, or build visually on the canvas — and switch freely at any point. Every change is reflected across all three views instantly.
 :::
 
 ### Topology view
 
-The **Topology** view allows you to visualize the structure of your flow. This is especially useful when you have complex flows with multiple branches of logic. Zoom controls and a `.png` export are available in the bottom-left corner of the Topology view.
+The **Topology** view shows a visual DAG of the flow — useful for complex flows with multiple branches. Zoom controls and a `.png` export are in the bottom-left corner.
 
 ![Topology](./topology-editor.png)
 
 ### Documentation view
 
-The **Documentation** view displays Kestra's documentation directly inside the editor. As you move your cursor around the editor, the documentation panel updates to reflect the specific task type documentation.
+The **Documentation** view displays plugin docs directly inside the editor. The panel updates as you move your cursor to reflect the task type at the current position.
 
 :::alert{type="warning"}
 If you use the [Brave browser](https://brave.com/), you may need to disable Brave Shields to make the editor work as expected. To view task documentation, set the **Block cookies** option to **Disabled** in Shields settings at `brave://settings/shields`.
 :::
 
-## Files view
+### Files view
 
-The **Files** view allows you to create, edit, and delete [Namespace Files](../../06.concepts/02.namespace-files/index.md). Multiple files can be opened at the same time and displayed side by side using multiple panels.
+The **Files** view lets you create, edit, and delete [Namespace Files](../../06.concepts/02.namespace-files/index.md). Open multiple files side by side using the multi-panel layout.
 
 ### Blueprints view
 
-The **Blueprints** view gives you example flows to copy directly into your flow. Blueprints are especially useful when working with a new plugin, since you can start from a working example.
+The **Blueprints** view gives you example flows to copy directly into the editor — useful when working with a new plugin.
 
 ### Context panel (Enterprise)
 

@@ -127,7 +127,7 @@ Best practice:
 - define retention based on operational or compliance requirements
 - purge only the records you intend to remove, especially if you want to keep lineage or usage data longer than the assets themselves
 
-[`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) is an Enterprise Edition feature.
+[`PurgeAssets`](../../10.administrator-guide/purge/index.md#purge-assets-and-lineage-retention) is an Enterprise Edition and Cloud feature.
 
 ## Purge tasks vs. UI deletion
 
