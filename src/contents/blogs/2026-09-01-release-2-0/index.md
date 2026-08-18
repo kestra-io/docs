@@ -356,13 +356,11 @@ Each case tracks severity, status, assignees, watchers, SLA targets (acknowledge
 
 The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required.
 
-A new `CASE` RBAC resource controls access with actions for `VIEW`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`.
+A new `CASE` RBAC resource controls access with actions for `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`.
 
 See the [Cases reference](/docs/enterprise/governance/cases).
 
 ## Promote
-
-<!-- TODO: screenshot of Deploy tab or drift state in flows table -->
 
 Moving a flow from dev to prod has never been a first-class action in Kestra. The usual workarounds are fragile (copy-paste YAML between instances, which silently drifts) or require building a Git pipeline yourself, which blocks anyone who isn't fluent in CI/CD setup. Promote adds a dedicated path for moving flows across environments directly from the UI, with a review step before anything lands in production.
 
@@ -370,9 +368,11 @@ Each flow gains a Deploy tab alongside the editor. From there, select a target e
 
 The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted. No opening each instance separately to check.
 
-A later release will extend Promote to Git targets: promoting a flow will push a commit or open a pull request, routing through your existing review process with no new mental model.
+![Flows list with the Deploy column showing Not promoted, In sync, and Out of sync states](./promote-flows-list.png)
 
-See the [Promote reference](/docs/version-control-cicd/promote).
+![Deploy tab showing a source-to-target diff with the target selector and Promote button](./promote-deploy-tab.png)
+
+See the [Promote reference](/docs/enterprise/governance/promote).
 
 ## AWS EC2 Task Runner
 
@@ -467,7 +467,7 @@ AI Agent observability: AI Agents emit Prometheus metrics for tool calls, provid
 
 mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
 
-Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed — any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Draft revisions](/docs/concepts/revision#draft-revisions).
+Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed — any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Revisions](/docs/concepts/revision).
 
 ## Upgrade and Migration
 
