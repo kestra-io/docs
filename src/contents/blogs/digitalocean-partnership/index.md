@@ -4,9 +4,9 @@ description: "Kestra is now an official DigitalOcean technology partner. A dedic
 date: 2026-08-17T13:00:00
 category: Company News
 author:
-  name: Martin-Pierre Roset
-  linkedin: https://www.linkedin.com/in/martin-pierre-roset/
-  image: "mproset"
+  name: Robert Walters
+  linkedin: https://www.linkedin.com/in/robwaltersprofile/
+  image: "rwalters"
 image: ./main.jpg
 ---
 
