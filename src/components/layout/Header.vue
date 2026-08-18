@@ -777,7 +777,24 @@
             measureAllMenuHeights()
         })
 
-        document.fonts?.ready.then(() => measureAllMenuHeights())
+        // Publishes the navbar's real height for `--header-offset`, which drives
+        // `scroll-padding-top` and the hero offsets. Re-run on resize and after
+        // fonts load: measured once on mount it goes stale as soon as the navbar
+        // changes height, and anchored headings then land under the header.
+        const syncTopBarHeight = () => {
+            const height = navbar.value?.offsetHeight
+            if (height) {
+                document.documentElement.style.setProperty(
+                    "--top-bar-height",
+                    height + "px",
+                )
+            }
+        }
+
+        document.fonts?.ready.then(() => {
+            measureAllMenuHeights()
+            syncTopBarHeight()
+        })
 
         const syncMobileState = () => {
             isMobile.value = window.innerWidth <= 1199
@@ -790,13 +807,13 @@
         syncMobileState()
         syncScrollState()
 
-        useEventListener(window, "resize", syncMobileState)
+        useEventListener(window, "resize", () => {
+            syncMobileState()
+            syncTopBarHeight()
+        })
         useEventListener(window, "scroll", syncScrollState, { passive: true })
 
-        document.documentElement.style.setProperty(
-            "--top-bar-height",
-            navbar.value?.offsetHeight + "px",
-        )
+        syncTopBarHeight()
     })
 
     watch(
