@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # request.cf (Cloudflare's per-request geo/runtime properties) only
+      # type-checks via this generated file — it's never committed, so it
+      # must be regenerated here before `astro check` runs.
+      - name: Generate Cloudflare Worker types
+        run: npm run cf-typegen
+
       - name: Set up reviewdog
         uses: reviewdog/action-setup@v1
         with:

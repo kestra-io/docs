@@ -28,6 +28,11 @@ interface Window {
     _hsq: Array<any>
 }
 
+interface Navigator {
+    // Global Privacy Control (not in lib.dom.d.ts) — CPRA opt-out signal.
+    globalPrivacyControl?: boolean
+}
+
 interface Story {
     id: string
     slug: string

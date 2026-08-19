@@ -8,6 +8,9 @@ export default {
         "https://*.cr-relay.com",
         "https://*.kestra-io.pages.dev",
         "https://kestra.io",
+        // Cloudflare Access re-auth redirect for preview (*.workers.dev)
+        // deploys, needed since manifest-src falls back to default-src.
+        "https://kestra-io-pages.cloudflareaccess.com",
     ],
     // scripts
     "script-src": [
