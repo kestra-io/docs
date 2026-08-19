@@ -58,6 +58,10 @@ import GithubButton from "~/components/layout/GithubButton.vue"
      * !important is the only thing that will yield. */
     .actions :global(.github-button-wrapper) {
         margin: 0 !important;
+        display: none;
+        @include media-breakpoint-up(sm) {
+            display: inline-block;
+        }
     }
 
     .btn-solid {
