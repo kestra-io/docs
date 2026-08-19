@@ -16,7 +16,7 @@ Communicate planned maintenance or incidents with in-app banners
 
 ## How to create an announcement
 
-To add a custom in-app banner, go to **Settings → Super Admin → Instance → Announcements**.
+To add a custom in-app banner, go to **Super Admin → Instance → Announcements**.
 
 As a Superadmin, you can configure the following within each announcement:
 

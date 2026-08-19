@@ -15,9 +15,9 @@ Super Admin operations are instance-wide. Changes to tenants, users, worker grou
 
 ## Entering Super Admin
 
-From the bottom-left corner of any page, click **Settings**. Under the **Instance** section, select **Super Admin**:
+In the sidebar footer, click **Super Admin** (directly above **Settings**). The entry is only visible to users with the Superadmin privilege.
 
-![Settings page showing the Super Admin entry point](./super-admin-settings.png)
+<!-- TODO: replace super-admin-settings.png with a screenshot of the new sidebar footer showing the Super Admin entry (PR kestra-io/kestra-ee#10059) -->
 
 The UI switches to the Super Admin console and shows a banner confirming you are administering the whole instance. Your regular tenant workspace is unaffected — you can return to it at any time.
 

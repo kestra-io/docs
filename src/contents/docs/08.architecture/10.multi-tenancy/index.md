@@ -35,6 +35,6 @@ Users switch between tenants using the tenant dropdown in the bottom-left corner
 
 ![Tenant switcher dropdown showing multiple tenants](./tenants-select.png "Tenant switcher dropdown")
 
-Tenants are created and managed through the **Super Admin console** (**Settings → Super Admin → Tenants**) — only users with the Superadmin role can create, edit, or delete tenants. Users must be granted access to a tenant before they can switch to it. See [Tenants](../../07.enterprise/02.governance/tenants/index.md) for configuration details.
+Tenants are created and managed through the **Super Admin console** (**Super Admin → Tenants**) — only users with the Superadmin role can create, edit, or delete tenants. Users must be granted access to a tenant before they can switch to it. See [Tenants](../../07.enterprise/02.governance/tenants/index.md) for configuration details.
 
 Most [API](../../api-reference/index.mdx) endpoints are scoped to a tenant and include the tenant identifier in the path — for example, `/api/v1/{tenant_id}/flows/products` to list flows in the `products` namespace. Instance-level endpoints such as `/api/v1/configs` or `/api/v1/license-info` have no tenant segment. See the [Enterprise Edition API Guide](../../api-reference/01.enterprise/index.mdx) for the full reference.

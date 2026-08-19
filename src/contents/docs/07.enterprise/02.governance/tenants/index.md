@@ -49,11 +49,11 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 
 ## Creating and managing tenants
 
-Tenants are created and managed through the **Super Admin console** — only users with the Superadmin role can create, edit, or delete tenants. The console is accessible from **Settings → Super Admin → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
+Tenants are created and managed through the **Super Admin console** — only users with the Superadmin role can create, edit, or delete tenants. The console is accessible from **Super Admin → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
 
 ### Creating a tenant from the UI
 
-Go to **Settings → Super Admin → Tenants**, click **Create**, fill in the form, and click **Save**.
+Go to **Super Admin → Tenants**, click **Create**, fill in the form, and click **Save**.
 
 The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 

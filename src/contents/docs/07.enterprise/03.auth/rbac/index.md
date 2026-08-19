@@ -246,7 +246,7 @@ kestra:
 
 ### Reset a password as a Superadmin
 
-Users can reset their password via the Forgot Password link on the login page. A Superadmin can also reset a user's password from the User Edit page at **Settings → Super Admin → Instance IAM → Users**.
+Users can reset their password via the Forgot Password link on the login page. A Superadmin can also reset a user's password from the User Edit page at **Super Admin → Instance IAM → Users**.
 
 ![Reset Password](./forgot-password.png)
 

@@ -24,4 +24,4 @@ When activated:
 
 ## Enter maintenance mode
 
-Go to **Settings → Super Admin → Instance → Services** and click **Enter maintenance mode** in the top-right corner. A confirmation prompt explains what will happen before the transition begins. To exit, click the same button and confirm you want to return to a live state.
+Go to **Super Admin → Instance → Services** and click **Enter maintenance mode** in the top-right corner. A confirmation prompt explains what will happen before the transition begins. To exit, click the same button and confirm you want to return to a live state.
