@@ -46,11 +46,7 @@
         color: var(--ks-content-primary);
         margin-bottom: 1rem;
         position: relative;
-        // Anchor offset comes from `--scroll-anchor-offset` via
-        // `html { scroll-padding-top }`, which already accounts for the announce
-        // bar and the navbar's measured height. A `scroll-margin` here would add
-        // to it — the 4.5rem this used to carry stacked into a 72px overshoot
-        // that also ignored the announce bar.
+        scroll-margin: 4.5rem;
         text-box: trim-both cap alphabetic;
 
         &:hover [href] {

@@ -20,13 +20,13 @@ const totalPlugins = await fetchTotalPluginsCount()
 
 <Layout headerTheme="darkHeader">
     <Fragment slot="head">
-        <SchemaSoftwareApplication
-            url="https://kestra.io"
-        />
-        {/* The mobile hero background is the LCP element but lives in CSS
+        <SchemaSoftwareApplication url="https://kestra.io" />
+        {
+            /* The mobile hero background is the LCP element but lives in CSS
             (Hero.astro .mobile-bg), so the browser only discovers it after
             the stylesheets load. Preload it so it starts downloading with
-            the document instead. */}
+            the document instead. */
+        }
         <link
             rel="preload"
             as="image"
@@ -55,8 +55,9 @@ const totalPlugins = await fetchTotalPluginsCount()
             </span>
             <span slot="description">
                 Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With {totalPlugins}+ plugins, you
-                can orchestrate everything without building custom glue code.
+                infrastructure, and SaaS tools. <br />With {totalPlugins}+
+                plugins, you can orchestrate everything without building custom
+                glue code.
             </span>
         </PluginsBlock>
         <Testimonial />
@@ -115,3 +116,23 @@ const totalPlugins = await fetchTotalPluginsCount()
     }
 </style>
 
+<style lang="scss" is:global>
+    /* Anchored-heading offset, scoped to the homepage on purpose.
+     *
+     * Site-wide, `html { scroll-padding-top }` clears the navbar but its
+     * `var(--announce-height, 0px)` term always resolves to the 0px fallback
+     * (the variable is declared on `body`, and custom properties don't inherit
+     * upwards to `html`), while the global `h1..h6 { scroll-margin-top: 100px }`
+     * stacks on top of it. Net effect: headings overshoot by ~60px and, with the
+     * announce bar shown, anchors can land underneath it.
+     *
+     * Rather than touch those global rules, override the scroll-margin for the
+     * homepage's own anchor headings only: this element-level rule *is* inside
+     * `body`, so it sees the real `--announce-height`, and 1rem of air replaces
+     * the flat 100px. Total offset = navbar (scroll-padding) + announce + 1rem,
+     * so anchors land 16px below the header at every width, with or without the
+     * announce bar. Docs/blog anchors keep their current behaviour. */
+    .home-page :is(h1, h2, h3)[id] {
+        scroll-margin-top: calc(var(--announce-height, 0px) + 1rem);
+    }
+</style>

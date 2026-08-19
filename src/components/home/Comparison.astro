@@ -21,35 +21,54 @@ const kestraDomains = ["Data", "Infra", "AI"]
         >
     </h2>
     <div class="comparison">
-        <div class="legacy-approach">
-            <h3>The Legacy approach</h3>
-            <div class="legacy-diagram">
-                <LegacyApproachIcon class="legacy-approach-image" />
-                <ul class="diagram-text legacy-text">
-                    {
-                        legacySilos.map((label, index) => (
-                            <li class={`row-${index + 1}`}>{label}</li>
-                        ))
-                    }
-                </ul>
+        <div class="column">
+            <div class="legacy-approach">
+                <h3>The Legacy approach</h3>
+                <div class="legacy-diagram">
+                    <LegacyApproachIcon class="legacy-approach-image" />
+                    <ul class="diagram-text legacy-text">
+                        {
+                            legacySilos.map((label, index) => (
+                                <li class={`row-${index + 1}`}>{label}</li>
+                            ))
+                        }
+                    </ul>
+                </div>
+                <span class="summary">Fragile Glue Code</span>
             </div>
-            <span class="summary">Fragile Glue Code</span>
+            {
+                /* DRAFT COPY — pending copy review (see PR). The diagrams only
+                carry labels; these two paragraphs are the connective claim
+                written out as crawlable prose. */
+            }
+            <p class="column-note">
+                Separate tools for data pipelines, infrastructure, and AI
+                scripts — three silos stitched together with custom glue code
+                that breaks whenever one of them changes.
+            </p>
         </div>
 
-        <div class="kestra-way">
-            <KestraWayAnimation class="kestra-way-image" />
-            <div class="diagram-text kestra-text">
-                <h3 class="kestra-title">The Kestra Way</h3>
-                <p class="kestra-brand">Kestra</p>
-                <ul class="kestra-domains">
-                    {
-                        kestraDomains.map((label, index) => (
-                            <li class={`card-${index + 1}`}>{label}</li>
-                        ))
-                    }
-                </ul>
-                <p class="kestra-summary">Unified Orchestration</p>
+        <div class="column">
+            <div class="kestra-way">
+                <KestraWayAnimation class="kestra-way-image" />
+                <div class="diagram-text kestra-text">
+                    <h3 class="kestra-title">The Kestra Way</h3>
+                    <p class="kestra-brand">Kestra</p>
+                    <ul class="kestra-domains">
+                        {
+                            kestraDomains.map((label, index) => (
+                                <li class={`card-${index + 1}`}>{label}</li>
+                            ))
+                        }
+                    </ul>
+                    <p class="kestra-summary">Unified Orchestration</p>
+                </div>
             </div>
+            <p class="column-note">
+                One platform orchestrates data, infrastructure, and AI workflows
+                together — unified orchestration instead of glue code, with one
+                place to build, govern, and scale.
+            </p>
         </div>
     </div>
     <p class="caption">
@@ -283,6 +302,21 @@ const kestraDomains = ["Data", "Infra", "AI"]
     .comparison .kestra-text h3 {
         margin: 0;
         color: #fff;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    // DRAFT COPY — the prose restating each diagram's claim, pending copy
+    // review. Styled like the captions so the diagrams stay the visual focus.
+    .column-note {
+        font-size: 0.875rem;
+        color: var(--hp-content-tertiary);
+        max-width: 30rem;
+        margin: 0 auto;
     }
 
     .caption {
