@@ -54,7 +54,7 @@
     "dayjs": "^1.11.21",
     "eventsource-parser": "^3.1.0",
     "expressive-code-collapsible": "^0.1.0",
-    "jose": "^6.2.3",
+    "jose": "^6.2.9",
     "lodash": "^4.18.1",
     "lottie-web": "^5.13.0",
     "marked": "^14.0.0",
@@ -73,15 +73,15 @@
     "remark-directive": "^4.0.0",
     "remark-link-rewrite": "^1.0.7",
     "sass": "^1.101.0",
-    "sharp": "^0.35.2",
+    "sharp": "^0.35.3",
     "shiki": "^4.2.0",
     "slugify": "^1.6.9",
     "strip-indent": "^4.1.1",
-    "svgo": "^4.0.1",
+    "svgo": "^4.0.2",
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",
-    "vue": "^3.5.38",
+    "vue": "^3.5.41",
     "vue-material-design-icons": "^5.3.1",
     "vue3-carousel": "^0.17.0",
     "wrangler": "^4.103.0"
@@ -89,7 +89,7 @@
   "devDependencies": {
     "@astrojs/node": "^11.0.0",
     "@playwright/test": "^1.61.0",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.10"
   },
   "engines": {
     "node": ">= 26",
@@ -104,9 +104,9 @@
     }
   },
   "optionalDependencies": {
-    "@rollup/rollup-darwin-arm64": "^4.62.2",
-    "@rollup/rollup-darwin-x64": "^4.62.2",
-    "@rollup/rollup-linux-x64-gnu": "^4.62.2"
+    "@rollup/rollup-darwin-arm64": "^4.62.4",
+    "@rollup/rollup-darwin-x64": "^4.62.4",
+    "@rollup/rollup-linux-x64-gnu": "^4.62.4"
   },
   "allowScripts": {
     "@parcel/watcher@2.5.6": true,
