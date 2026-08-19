@@ -41,6 +41,32 @@
     const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
     const COMPANY_SIZE_PROPERTY = "number_of_employees"
 
+    /* The funnel had nothing between the landing-page view and a completed
+     * submit, so a flat week couldn't be told apart from friction inside the
+     * form. This marks the first interaction with any field, once per mounted
+     * form. `focusin` rather than `input` on purpose: someone who tabs in and
+     * gives up on "number of employees" has still started the form, and that
+     * is exactly the drop-off worth seeing. */
+    const started = ref(false)
+
+    const onFormStart = () => {
+        if (started.value) return
+        started.value = true
+
+        try {
+            posthog.capture("bookdemo_form_start")
+            // Same reason as the submit event below: the vue-gtm plugin runs
+            // with `enabled: false`, so the dataLayer has to be written here.
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
+                event: "bookdemo_form_start",
+                noninteraction: false,
+            })
+        } catch (analyticsError) {
+            console.error("Demo form analytics error", analyticsError)
+        }
+    }
+
     const onSubmit = async (e: Event) => {
         e.preventDefault()
         e.stopPropagation()
@@ -234,6 +260,7 @@
                 ref="demo-form"
                 novalidate
                 data-usal="fade-l"
+                @focusin="onFormStart"
                 @submit="onSubmit"
             >
                 <div v-if="message" class="alert alert-danger mt-3 mb-0">
