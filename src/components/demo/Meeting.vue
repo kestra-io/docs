@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { ref, useTemplateRef } from "vue"
+    import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot.js"
@@ -10,6 +10,11 @@
         tierFromEmployees,
     } from "~/composables/useMeeting.js"
     import { $fetch } from "~/utils/fetch"
+
+    /* This form is mounted more than once per page (the landing pages show it
+     * in the hero and again lower down), so the field ids must be unique per
+     * instance or every `label for` resolves to the first form. */
+    const uid = useId()
 
     const valid = ref(false)
     const message = ref("")
@@ -236,11 +241,11 @@
                 </div>
 
                 <div class="col-md-6 col-12">
-                    <label for="demo-first-name" class="form-label mb-0">
+                    <label :for="`${uid}-first-name`" class="form-label mb-0">
                         First name
                     </label>
                     <input
-                        id="demo-first-name"
+                        :id="`${uid}-first-name`"
                         name="first-name"
                         autocomplete="given-name"
                         type="text"
@@ -251,11 +256,11 @@
                 </div>
 
                 <div class="col-md-6 col-12">
-                    <label for="demo-last-name" class="form-label mb-0">
+                    <label :for="`${uid}-last-name`" class="form-label mb-0">
                         Last name
                     </label>
                     <input
-                        id="demo-last-name"
+                        :id="`${uid}-last-name`"
                         name="last-name"
                         autocomplete="family-name"
                         type="text"
@@ -266,11 +271,11 @@
                 </div>
 
                 <div class="col-12">
-                    <label for="demo-email" class="form-label mb-0">
+                    <label :for="`${uid}-email`" class="form-label mb-0">
                         Company email
                     </label>
                     <input
-                        id="demo-email"
+                        :id="`${uid}-email`"
                         name="email"
                         type="email"
                         class="form-control"
@@ -280,11 +285,11 @@
                 </div>
 
                 <div class="col-12">
-                    <label for="demo-employees" class="form-label mb-0">
+                    <label :for="`${uid}-employees`" class="form-label mb-0">
                         Number of employees
                     </label>
                     <select
-                        id="demo-employees"
+                        :id="`${uid}-employees`"
                         name="employees"
                         class="form-control"
                         required

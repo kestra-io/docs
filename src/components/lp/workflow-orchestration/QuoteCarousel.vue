@@ -9,7 +9,8 @@
             <ChevronLeft />
         </button>
 
-        <figure class="quote">
+        <!-- The arrows swap the quote in place, so announce the new one. -->
+        <figure class="quote" aria-live="polite">
             <span class="quote-mark" aria-hidden="true">&ldquo;</span>
             <blockquote>{{ active.quote }}</blockquote>
             <figcaption>
