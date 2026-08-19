@@ -7,10 +7,10 @@ icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.13.0"
 ---
 
-Concurrency limits control how many executions of a flow can run at the same time. When the limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
+Concurrency limits control how many executions can run at the same time — at the flow, namespace, or tenant level. When a limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
 
 :::alert{type="info"}
-Concurrency limits executions of a flow, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
+Concurrency limits executions, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
 :::
 
 <div class="video-container">
@@ -33,6 +33,8 @@ Do **not** use concurrency to:
 
 ## Configuring concurrency
 
+### Flow level
+
 Set `concurrency.limit` on a flow to cap its parallel executions:
 
 ```yaml
@@ -52,6 +54,20 @@ tasks:
 ```
 
 With `limit: 2`, a third execution waits until one of the two running executions completes.
+
+### Namespace level
+
+Set a concurrency limit on a namespace to cap the total simultaneous executions across all flows within that namespace and its children.
+
+Navigate to **Namespaces**, open the target namespace, click **Edit**, and scroll to the **Concurrency** section. Set the **Limit** and choose a **Behavior** (`Queue`, `Cancel`, or `Fail`).
+
+A namespace concurrency limit applies to every flow whose namespace matches or is a child of the configured namespace. For example, a limit on `company` applies to flows in `company`, `company.team`, and `company.team.project`.
+
+### Tenant level
+
+Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
+
+In **Super Admin**, click **Concurrency Limits** in the sidebar, then **Administer** on the target tenant.
 
 ## `behavior` property
 
@@ -86,6 +102,18 @@ When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger
 Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
 :::
 
+## Evaluation order
+
+Kestra evaluates concurrency limits from the most specific scope to the most general:
+
+1. **Flow-level** concurrency is checked first.
+2. **Namespace-level** concurrency is checked next, starting from the flow's own namespace and moving up through each parent namespace to the root.
+3. **Tenant-level** concurrency is checked last.
+
+The first limit reached defines the behavior for that execution. When a more specific limit is reached, no slot is consumed at higher levels.
+
+For example, if a flow defines `limit: 5` with `QUEUE` and its parent namespace defines `limit: 10` with `FAIL`, a sixth execution of that flow is queued (flow-level limit is reached first). If the flow has no limit of its own but the parent namespace is at its limit of 10, the execution fails.
+
 ## Monitoring concurrency
 
 ### Per-flow Concurrency tab
@@ -96,7 +124,7 @@ The **Concurrency** tab on a Flow page shows current slot usage, the configured 
 
 ### Concurrency Limits page
 
-The **Concurrency Limits** page under **Tenant** in the sidebar lists every flow that has a concurrency limit configured, along with its live running count. Use it for a tenant-wide view of concurrency usage across all flows.
+The **Concurrency Limits** page under **Tenant** in the sidebar lists every flow, namespace, and tenant concurrency limit configured, along with its live running count. Use it for a tenant-wide view of concurrency usage across all scopes.
 
 ![Concurrency Limits page listing two flows with their namespaces and running counts](./concurrency-limits-page.png)
 

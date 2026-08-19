@@ -56,13 +56,13 @@ quotas:
 
 ### Namespace level
 
-Define quotas on a namespace to apply limits to all flows within that namespace. Open the namespace, go to the **Quotas** section, and add one or more quota entries.
+Define quotas on a namespace to apply limits to all flows within that namespace. Navigate to **Namespaces**, open the target namespace, click **Edit**, and scroll to the **Quotas** section.
 
 Namespace quotas apply to every flow whose namespace matches or is a child of the configured namespace.
 
 ### Tenant level
 
-Define quotas on a tenant to apply limits across all flows in the entire tenant. Navigate to **Admin → Tenants**, select the tenant, click **Edit Tenant**, and add quota entries in the **Quotas** section.
+Define quotas on a tenant to apply limits across all flows in the entire tenant. In **Super Admin**, click **Quota Limits** in the sidebar, then **Administer** on the target tenant.
 
 ## Evaluation order
 
