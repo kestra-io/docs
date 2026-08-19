@@ -121,6 +121,7 @@
         line-height: 1.167;
         letter-spacing: -0.0075rem;
         text-align: center;
+        text-wrap: balance;
         @include media-breakpoint-up(lg) {
             font-size: 1.5rem;
         }
