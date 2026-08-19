@@ -68,6 +68,7 @@ Improvements to the tools and workflows used to build and manage flows.
 Changes to deployment, storage, and runtime behavior.
 
 - **GCE Task Runner** — ephemeral Google Compute Engine VMs per task execution. [Docs](../../task-runners/04.types/09.google-computeengine-task-runner/index.md)
+- **Huawei Cloud CCI Task Runner** (EE) — run tasks as bare Pods on Huawei Cloud CCI with OBS file staging, flavor-tier resource sizing, and AK/SK or temporary credential auth. [Docs](../../task-runners/04.types/11.huawei-cci-task-runner/index.md)
 - **Worker Groups** — `key` property removed; groups now identified by label selectors. [Docs](../../07.enterprise/04.scalability/worker-group/index.md)
 - **External Log Data Store** — route execution logs to a separate JDBC database or Elasticsearch. [Docs](../../10.administrator-guide/log-data-store/index.md)
 - **ION binary format** — task output files in ION format stored as binary (~20–40% smaller). [Migration guide](../../11.migration-guide/v2.0.0/ion-binary-format/index.md)

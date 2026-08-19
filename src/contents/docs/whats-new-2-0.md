@@ -157,6 +157,10 @@ Changes to deployment, storage, and runtime behavior.
 
 A [Google Compute Engine Task Runner](./task-runners/04.types/09.google-computeengine-task-runner/index.md) provisions ephemeral VMs on GCE for each task execution, complementing the existing Cloud Run and Kubernetes runners.
 
+### Huawei Cloud CCI Task Runner (EE)
+
+A [Huawei Cloud CCI Task Runner](./task-runners/04.types/11.huawei-cci-task-runner/index.md) runs tasks as bare Pods on Huawei Cloud CCI (Cloud Container Instance) — the Huawei equivalent of AWS Batch/ECS. It manages the full Pod lifecycle and supports file staging via OBS, resource sizing against CCI's flavor tiers, and both AK/SK and temporary credential authentication.
+
 ### Worker Groups
 
 Worker Group configuration no longer uses a `key` property. Groups are identified by label selectors. See the [Worker Groups](./07.enterprise/04.scalability/worker-group/index.md) page for the updated configuration.
