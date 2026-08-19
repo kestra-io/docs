@@ -1,11 +1,14 @@
 ---
 import Layout from "~/components/layout.astro"
 import Header from "~/components/onezero/Header.vue"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import Info from "~/components/onezero/Info.vue"
 import AiCopilot from "~/components/onezero/AiCopilot.vue"
 import Orchestration from "~/components/onezero/Orchestration.astro"
 import Unified from "~/components/onezero/Unified.vue"
 import Answers from "~/components/onezero/Answers.vue"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title =
     "Introducing Kestra 1.0: The Declarative Agentic Orchestration Platform."
@@ -14,9 +17,9 @@ const description =
 ---
 
 <Layout {title} {description} headerTheme="lightText">
-    <Header client:load />
+    <Header client:load totalPlugins={`${totalPlugins}+`} />
     <Info client:visible />
-    <AiCopilot client:visible />
+    <AiCopilot client:visible totalPlugins={`${totalPlugins}+`} />
     <Orchestration />
     <Unified client:visible />
     <Answers client:visible />

@@ -77,6 +77,7 @@
                 </a>
                 <GithubButton
                     :small="true"
+                    :stars="props.stars"
                     class="d-none d-lg-inline-block"
                 />
                 <a
@@ -728,6 +729,8 @@
     const props = defineProps<{
         scrolled?: boolean
         transparentHeader?: boolean
+        /** Star count resolved at build time, so it is in the static HTML. */
+        stars?: string
     }>()
 
     const isOpen = ref(false)

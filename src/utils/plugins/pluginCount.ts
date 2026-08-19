@@ -1,15 +1,12 @@
-import { $fetchApiCached } from "~/utils/fetch";
-import type { Plugin } from "./plugin";
-import { calculateTotalPlugins } from "~/composables/usePluginsCount";
+import { getPluginCountRounded } from "~/data/counts"
 
+/**
+ * Plugin count floored to the hundred, without the trailing "+", e.g. "1900".
+ * Call sites add the "+" themselves.
+ *
+ * Kept as a thin wrapper so existing pages keep working; the fetch, the
+ * fallback and the build-time assertion all live in ~/data/counts.
+ */
 export async function fetchTotalPluginsCount(): Promise<string> {
-    try {
-        const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
-        const count = calculateTotalPlugins(pluginGroups);
-        const rounded = Math.floor(count / 100) * 100;
-        return `${rounded}`;
-    } catch (e) {
-        console.error("Failed to fetch plugins count:", e);
-        return "0";
-    }
+    return await getPluginCountRounded()
 }

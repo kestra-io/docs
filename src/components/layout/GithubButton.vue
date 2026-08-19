@@ -10,7 +10,12 @@
                 <span class="star-text">Star</span>
             </div>
             <div class="right-part">
-                <LayoutGithubStargazer v-if="onClient" @api-error="hasError = true" />
+                <LayoutGithubStargazer
+                    v-if="onClient"
+                    :initial="stars"
+                    @api-error="hasError = true"
+                />
+                <span v-else-if="stars">{{ stars }}</span>
                 <span v-else class="placeholder"></span>
             </div>
         </a>
@@ -28,7 +33,10 @@
         onClient.value = true
     })
 
-    withDefaults(defineProps<{ small?: boolean }>(), { small: false })
+    // `stars` is resolved at build time and rendered server-side, so crawlers
+    // and AI assistants see the figure without executing JS. The client
+    // component still refreshes it after hydration.
+    const { stars } = defineProps<{ small?: boolean; stars?: string }>()
 </script>
 
 <style lang="scss" scoped>

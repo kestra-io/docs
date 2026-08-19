@@ -58,14 +58,15 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import { usePluginsCount } from "~/composables/usePluginsCount"
 
-    const { totalPlugins } = usePluginsCount()
+    // Resolved at build time by the Astro page. usePluginsCount fetches after
+    // hydration, which shipped "0+ Plugins" in the static HTML.
+    const props = defineProps<{ totalPlugins: string }>()
 
     const HIGHLIGHTS = computed(() => [
         { title: "LTS Release" },
         { title: "Apache 2.0 License" },
-        { title: `${totalPlugins.value} Plugins` },
+        { title: `${props.totalPlugins} Plugins` },
         { title: "Deploy anywhere" },
     ])
 

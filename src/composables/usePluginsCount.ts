@@ -2,6 +2,7 @@ import type { Plugin, PluginElement } from "~/utils/plugins/plugin"
 import { isEntryAPluginElementPredicate } from "~/utils/plugins/plugin"
 import { computed, ref, type Ref } from "vue"
 import { $fetchApiCached } from "~/utils/fetch.ts"
+import FALLBACK from "~/data/counts.fallback.json"
 
 export function calculateTotalPlugins(plugins: Plugin[]): number {
     const classes = new Set<string>()
@@ -30,8 +31,13 @@ export function usePluginsCount(pluginsRef?: Ref<Plugin[]>) {
     }
 
     const totalPlugins = computed(() => {
-        if (!plugins.value) return "0+"
-        const count = calculateTotalPlugins(plugins.value)
+        // Before the fetch resolves there is nothing to count. Fall back to the
+        // committed value rather than rendering a zero: this computed used to
+        // return "0+", which is how "0+ Plugins" reached /enterprise and /1-0.
+        // Prefer ~/data/counts in anything rendered server-side.
+        const count = plugins.value?.length
+            ? calculateTotalPlugins(plugins.value)
+            : FALLBACK.plugins
         const rounded = Math.floor(count / 100) * 100
         return `${rounded}+`
     })

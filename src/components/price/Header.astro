@@ -1,5 +1,6 @@
 ---
 import Squared from "~/components/layout/Squared.vue"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import LogoCarousel from "~/components/common/LogoCarousel.astro"
 
 import Plus from "vue-material-design-icons/Plus.vue"
@@ -10,6 +11,8 @@ import awsSVG from "~/assets/enterprise/aws.svg?raw"
 import azureSVG from "~/assets/enterprise/azure.svg?raw"
 import googleSVG from "~/assets/enterprise/google.svg?raw"
 import homeRoofSVG from "~/assets/enterprise/home-roof.svg?raw"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const ENTERPRISE_FEATURES = {
     "Access & Governance": [
@@ -49,7 +52,7 @@ const ENTERPRISE_EXTRAS = [
 
 const OS_FEATURES = [
     "Declarative Workflows",
-    "1,200+ Plugins",
+    `${totalPlugins}+ Plugins`,
     "Event-Driven Scheduling",
     "Business Logic in Any Language",
     "Everything as Code & From the UI",

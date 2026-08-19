@@ -98,10 +98,11 @@
     import GamepadSquare from "vue-material-design-icons/GamepadSquare.vue"
     import TimerCheck from "vue-material-design-icons/TimerCheck.vue"
     import SpiderWeb from "vue-material-design-icons/SpiderWeb.vue"
-    import { usePluginsCount } from "~/composables/usePluginsCount"
     import { computed } from "vue"
 
-    const { totalPlugins } = usePluginsCount()
+    // Resolved at build time by the Astro page. usePluginsCount fetches after
+    // hydration, which shipped "0+ Plugins & Safe Upgrades" in the static HTML.
+    const props = defineProps<{ totalPlugins: string }>()
 
     const AI_BLOCKS_1 = [
         {
@@ -134,7 +135,7 @@
             height: 656,
         },
         {
-            title: `${totalPlugins.value} Plugins & Safe Upgrades`,
+            title: `${props.totalPlugins} Plugins & Safe Upgrades`,
             description:
                 "Our extensive ecosystem spans data, AI, and infrastructure. Plugin Versioning allows you to pin and run multiple versions simultaneously for safer, more controlled rollouts.",
             imgSrc: "/landing/onezero/PluginsUpgrade.png",

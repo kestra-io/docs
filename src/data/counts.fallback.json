@@ -1,0 +1,7 @@
+{
+    "_comment": "Last known-good counters. Used only when a build-time fetch fails, so the site never ships a zeroed placeholder. Values verified against the live APIs on the updatedAt date.",
+    "updatedAt": "2026-08-18",
+    "plugins": 1906,
+    "blueprints": 488,
+    "stars": 27849
+}

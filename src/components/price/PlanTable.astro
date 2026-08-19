@@ -1,12 +1,9 @@
 ---
 import { Icon } from "astro-icon/components"
-import { calculateTotalPlugins } from "~/composables/usePluginsCount"
-import { $fetchApiCached } from "~/utils/fetch"
-import { type Plugin } from "~/utils/plugins/plugin"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import { PLANS, getSections, SHARED_FEATURES, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
 
-const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
-const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+const totalPlugins = await fetchTotalPluginsCount()
 const SECTIONS = getSections(totalPlugins)
 ---
 
