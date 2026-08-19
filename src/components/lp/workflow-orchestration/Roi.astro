@@ -170,11 +170,13 @@ const quotes = [
         gap: 1rem;
         max-width: 1212px;
         margin-inline: auto;
+        /* minmax(0, …) so a nowrap figure cannot raise one track's min-content
+         * floor and leave that card wider than its neighbours. */
         @include media-breakpoint-up(sm) {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
         @include media-breakpoint-up(lg) {
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
     }
 
@@ -207,13 +209,10 @@ const quotes = [
         margin: 0;
         /* The design keeps arrow and figure on one line inside a 291px card. */
         white-space: nowrap;
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: 700;
         line-height: 1.1;
         letter-spacing: -0.0375rem;
-        @include media-breakpoint-up(lg) {
-            font-size: 2.5rem;
-        }
 
         span {
             /* Near-vertical, not horizontal: the design lights the numbers from

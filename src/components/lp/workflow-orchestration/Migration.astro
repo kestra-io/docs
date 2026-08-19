@@ -86,11 +86,10 @@ const steps = [
     .steps {
         position: relative;
         display: grid;
-        /* The design's Numero box. The rail centres on it, so the two are
-         * derived from one value rather than kept in step by hand. */
         --numero-size: 3.625rem;
         --steps-gap: 1rem;
-        gap: 2rem;
+        --steps-gap-stacked: 2rem;
+        gap: var(--steps-gap-stacked);
         max-width: 1220px;
         margin-inline: auto;
         @include media-breakpoint-up(md) {
@@ -116,12 +115,27 @@ const steps = [
     }
 
     .step {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         gap: 1.5rem;
         padding: 1.5rem 1.5rem 2rem;
         text-align: center;
+
+        /* Stacked below md, where the horizontal rail cannot apply: the dash
+         * turns vertical and fills the 2rem gap between consecutive steps, so
+         * it links the badges without ever crossing the copy. */
+        @include media-breakpoint-down(md) {
+            & + &::before {
+                content: "";
+                position: absolute;
+                top: calc(-1 * var(--steps-gap-stacked));
+                left: 50%;
+                height: var(--steps-gap-stacked);
+                border-left: 1px dashed var(--lp-purple-rail);
+            }
+        }
     }
 
     /* Named after the design's layer rather than `.badge`, which Bootstrap owns. */

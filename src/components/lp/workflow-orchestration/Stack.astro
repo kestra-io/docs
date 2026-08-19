@@ -124,7 +124,8 @@ const columns = [
 
     .columns {
         display: grid;
-        gap: 2rem;
+        --columns-gap: 2rem;
+        gap: var(--columns-gap);
         max-width: 1164px;
         margin-inline: auto;
         @include media-breakpoint-up(sm) {
@@ -164,6 +165,24 @@ const columns = [
                     rgba(152, 105, 247, 0) 10%,
                     var(--lp-purple-mid) 43%,
                     var(--lp-purple-mid) 79%,
+                    rgba(152, 105, 247, 0) 100%
+                );
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            & + &::before {
+                content: "";
+                position: absolute;
+                top: calc(var(--columns-gap) / -2);
+                left: 15%;
+                width: 70%;
+                height: 1px;
+                background-image: linear-gradient(
+                    90deg,
+                    rgba(152, 105, 247, 0) 0%,
+                    var(--lp-purple-mid) 30%,
+                    var(--lp-purple-mid) 70%,
                     rgba(152, 105, 247, 0) 100%
                 );
             }

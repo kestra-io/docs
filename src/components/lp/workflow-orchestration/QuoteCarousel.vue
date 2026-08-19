@@ -91,6 +91,10 @@
         :deep(.material-design-icon) {
             font-size: 1.75rem;
         }
+
+        :deep(.material-design-icon__svg) {
+            bottom: 0;
+        }
     }
 
     .quote {
