@@ -1,0 +1,179 @@
+---
+interface Props {
+    items: { question: string; answer: string }[]
+}
+
+const { items } = Astro.props
+---
+
+<section class="faq">
+    <h2 data-usal="fade-u delay-50 duration-500 ease-out">
+        Questions we get on every call
+    </h2>
+
+    <div class="items">
+        {
+            items.map((item, index) => (
+                <details
+                    name="lp-faq"
+                    open={index === 0}
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
+                    <summary>
+                        <h3>{item.question}</h3>
+                        <span class="marker" aria-hidden="true" />
+                    </summary>
+                    <div class="answer">
+                        <p set:html={item.answer} />
+                    </div>
+                </details>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .faq {
+        padding: 5rem 1rem;
+        background-color: #ffffff;
+    }
+
+    h2 {
+        max-width: 1140px;
+        margin: 0 auto 2.5rem;
+        color: var(--lp-content-primary);
+        font-size: 1.875rem;
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.045rem;
+        text-align: center;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.375rem;
+        max-width: 1140px;
+        margin-inline: auto;
+    }
+
+    details {
+        /* Clips the answer panel to the card's own corners, so the rounded
+         * bottom needs no [open] state of its own — which matters once the
+         * panel animates, as `open` drops the instant a close begins. */
+        overflow: hidden;
+        border: 1px solid var(--lp-border-subtle);
+        border-radius: 12px;
+        background-color: #ffffff;
+        box-shadow: 2px 3px 8px var(--lp-shadow-light);
+        transition: background-color 0.2s ease-in-out;
+
+        /* Figma's `btn-bg-primary`, on the collapsed hover state only. */
+        &:not([open]):hover {
+            background-color: #eee7fe;
+        }
+    }
+
+    /* The panel eases open and shut instead of snapping. `::details-content`
+     * plus interpolate-size is the no-JS route to it; browsers missing either
+     * still open the row, just instantly. */
+    @supports selector(details::details-content) and
+        (interpolate-size: allow-keywords) {
+        details {
+            interpolate-size: allow-keywords;
+
+            &::details-content {
+                block-size: 0;
+                transition:
+                    block-size 0.3s ease-in-out,
+                    content-visibility 0.3s ease-in-out allow-discrete;
+            }
+
+            &[open]::details-content {
+                block-size: auto;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            details::details-content {
+                transition: none;
+            }
+        }
+    }
+
+    summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.0625rem 1.25rem;
+        cursor: pointer;
+        list-style: none;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--lp-content-primary);
+        font-size: 1.0625rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.00625rem;
+        @include media-breakpoint-up(lg) {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* Plus that becomes a minus when the row is open. */
+    .marker {
+        position: relative;
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 13px;
+            height: 2.5px;
+            border-radius: 2px;
+            background-color: var(--lp-purple);
+            transform: translate(-50%, -50%);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        &::after {
+            transform: translate(-50%, -50%) rotate(90deg);
+        }
+    }
+
+    details[open] .marker::after {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    .answer {
+        padding: 1.0625rem 1.25rem;
+        border-top: 1px solid var(--lp-border-subtle);
+        background-color: var(--lp-bg-base);
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+
+        :global(a) {
+            color: var(--lp-purple);
+        }
+    }
+</style>
