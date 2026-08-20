@@ -4,7 +4,7 @@ description: "A workflow engine is the software core that automates task sequenc
 metaTitle: "Workflow Engine: Definition, Benefits, and Orchestration"
 metaDescription: "Understand what a workflow engines is, its key benefits for automation, and how Kestra provides a declarative, event-driven platform for unified orchestration."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-14
 slug: "workflow-engine"
 faq:
   - question: "What is a workflow engine?"

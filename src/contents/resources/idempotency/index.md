@@ -4,7 +4,7 @@ description: "Idempotency is the property of an operation that produces the same
 metaTitle: "Idempotency for Reliable Distributed Workflows"
 metaDescription: "Idempotency keeps APIs, data pipelines, and event-driven systems reliable. Learn its principles, patterns, and how Kestra ensures repeatable operations."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-10
 slug: "idempotency"
 faq:
   - question: "What is idempotency in API?"

@@ -399,7 +399,7 @@ To use the AWS Batch task runner, you must configure resources in your AWS accou
 You will need:
 
 1. An AWS account.
-2. A Kestra Enterprise Edition instance running version 0.18.0 or later with AWS credentials stored as [secrets](../../../06.concepts/04.secret/index.md).
+2. A Kestra Enterprise Edition instance with AWS credentials stored as [secrets](../../../06.concepts/04.secret/index.md).
 
 ---
 

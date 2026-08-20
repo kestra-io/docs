@@ -4,7 +4,7 @@ description: "Explore Azure Batch for managing compute-intensive tasks at scale 
 metaTitle: "Azure Batch Orchestration for Large-Scale Compute"
 metaDescription: "Manage large-scale parallel computing with Azure Batch. Kestra orchestrates Batch jobs with declarative YAML, triggers, and monitoring for automated compute."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-14
 slug: "azure-batch"
 faq:
   - question: "What is Azure Batch?"

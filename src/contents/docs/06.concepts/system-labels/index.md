@@ -8,15 +8,11 @@ editions: ["OSS", "EE"]
 version: ">= 0.20.0"
 ---
 
-Special labels for system use only.
+System Labels and Hidden Labels are reserved metadata labels used to manage and monitor Kestra. They are hidden in the UI by default. To find executions tagged with a specific hidden label, use the **Labels** filter with the key and value explicitly — for example, `system.correlationId: o8014I6GBOxqcQg8guKRP`.
 
-System Labels and Hidden Labels are reserved for storing metadata used by administrators to manage and monitor Kestra. These labels are hidden in the UI by default. To view executions with a specific Hidden Label, you must explicitly filter for it using the `Labels` filter, such as `system.correlationId: 6WuLA1vh9lpFsGyrkuVRYb`.
+![Executions Labels filter with system.correlationId key and value entered](./correlationId.png)
 
-![correlationId](./correlationId.png)
-
-The table will then show the execution connected to that ID.
-
-![Correlation ID Filter Result](./correlationId-filter-result.png)
+After applying the filter, the executions table shows only the matching execution.
 
 ## Hidden labels
 
@@ -31,11 +27,11 @@ kestra:
       - admin.
 ```
 
-By default, System Labels (prefixed with `system.`) are hidden. To display them, simply remove the `system.` prefix from the list of hidden prefixes.
+By default, System Labels (prefixed with `system.`) are hidden. To display them, remove `system.` from the list of hidden prefixes.
 
 ## System labels
 
-System Labels are labels prefixed with `system.` that serve specific purposes. Below are the available System Labels. For a step-by-step guide on using `system.correlationId` specifically as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
+System Labels are labels prefixed with `system.` that serve specific purposes. The labels below are set automatically by Kestra. For a step-by-step guide on using `system.correlationId` as an idempotency key, see [Idempotency with correlation IDs](../../15.how-to-guides/idempotency/index.md).
 
 ### `system.correlationId`
 
@@ -49,8 +45,6 @@ For example, if a parent flow triggers multiple subflows, filtering by the paren
 :::alert{type="info"}
 The Execution API supports setting this label at execution creation but not modification.
 :::
-
----
 
 ### `system.username`
 
@@ -77,21 +71,17 @@ tasks:
     message: Hello from a read-only flow!
 ```
 
-Once this label is set, the editor for this flow will be disabled in the UI.
-
-![readOnly](./readOnly.png)
+![Flow editor showing system.readOnly: true label with Cannot edit in read-only editor tooltip](./readOnly.png)
 
 :::alert{type="info"}
 In the Enterprise Edition, updating a read-only flow server-side is restricted to service accounts or API keys.
 :::
 
----
-
 ### `system.from`
 
-- Automatically set on every execution created by a Kestra MCP server
-- Value is always `mcp`
-- Use this label to filter all executions triggered by AI agents via the [McpToolTrigger](../../05.workflow-components/07.triggers/06.mcp-tool-trigger/index.md)
+- Automatically set on every execution to indicate how it was triggered
+- Common values include `ui` (triggered from the Kestra UI) and `mcp` (triggered by a Kestra MCP server)
+- Use this label to filter executions by their trigger source
 
 ### `system.mcpServerId`
 

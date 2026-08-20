@@ -16,7 +16,7 @@ type: io.kestra.plugin.core.trigger.McpToolTrigger
 ```
 
 :::alert{type="info"}
-Every tenant has a `default` MCP server provisioned on startup, so the trigger works without creating a server first. See [MCP Server](../../../ai-tools/mcp-server/index.md) to create additional servers and connect AI agent clients.
+Every tenant has a `default` MCP server provisioned on startup, so the trigger works without creating a server first. See [MCP Server](../../../ai-tools/03.mcp-server/index.md) to create additional servers and connect AI agent clients.
 :::
 
 ## Example
@@ -60,12 +60,12 @@ When deployed, an MCP client connected to the `default` server will discover a t
 | `toolName` | Yes | — | Tool identifier shown to the AI agent. Must contain only alphanumeric characters, hyphens, underscores, or dots, and must start and end with an alphanumeric character. Maximum 64 characters. |
 | `title` | Yes | — | Human-readable name shown to the AI agent. |
 | `toolDescription` | Yes | — | Description of the tool shown to the AI agent, used to decide when to invoke it. A well-written description significantly improves tool-selection accuracy. |
-| `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP server](../../../ai-tools/mcp-server/index.md). |
+| `mcpServer` | No | `"default"` | ID of the MCP server to register this tool on. Must match the `id` of an existing [MCP server](../../../ai-tools/03.mcp-server/index.md). |
 | `annotations.readOnly` | No | `false` | Hint that this tool does not modify its environment. |
 | `annotations.destructive` | No | `true` | Hint that this tool may perform destructive updates. Only meaningful when `readOnly` is `false`. |
 | `annotations.openWorld` | No | `true` | Hint that this tool may interact with entities outside its closed domain. |
 | `annotations.idempotent` | No | `false` | Hint that calling the tool repeatedly with the same arguments has no additional effect. Only meaningful when `readOnly` is `false`. |
-| `annotations.returnDirect` | No | `false` | When `true`, the AI agent forwards the raw tool output to the user without further interpretation or summarisation. |
+| `annotations.returnDirect` | No | `false` | When `true`, the AI agent forwards the raw tool output to the user without further interpretation or summarization. |
 
 Annotations are informational hints for MCP clients. They do not affect execution behavior.
 
@@ -81,6 +81,10 @@ toolDescription: >
   Call this tool whenever the user asks to be greeted or wants a welcome message.
 ```
 
+## Common trigger properties
+
+`McpToolTrigger` supports all [common trigger properties](../index.mdx#trigger-common-properties), including `when` (a Pebble guard evaluated before invoking the flow) and `inputs` (values passed to flow inputs on each invocation).
+
 ## Input and output mapping
 
 Flow inputs and outputs are automatically mapped to the MCP tool's input and output schema.
@@ -92,7 +96,7 @@ To constrain the structure of a `JSON`-type input, use the `jsonSchema` property
 
 ## Observability
 
-Every execution created via MCP carries two [system labels](../../../06.concepts/system-labels/index.md):
+Every execution created via MCP carries these [system labels](../../../06.concepts/system-labels/index.md):
 
 | Label | Value |
 |---|---|

@@ -93,7 +93,7 @@ As we wrapped up the deck, it was clear that **Kestra wasn’t just addressing a
 
 This is a story of **accessibility, scalability, and community-led innovation**. It’s not about flashy features or overpromising—it’s about delivering a product that users can **rely on, grow with, and build upon**. That’s the story that secured our **$8M seed round**. And it’s the story that continues to drive us today.
 
-We are immensely grateful to our **investors** who believe in our vision and have provided their unwavering support throughout this journey. Check out our full [announcement](//blogs/2024-09-23-kestra-raises-8m-seed) here for more details on what’s next for Kestra and how we plan to continue building.
+We are immensely grateful to our **investors** who believe in our vision and have provided their unwavering support throughout this journey. Check out our full [announcement](/blogs/2024-09-23-kestra-raises-8m-seed) here for more details on what’s next for Kestra and how we plan to continue building.
 
 **Help us build the leading platform for Unified Orchestration** by [starring us on GitHub](https://go.kestra.io/github-fundraise) and joining this exciting journey.
 

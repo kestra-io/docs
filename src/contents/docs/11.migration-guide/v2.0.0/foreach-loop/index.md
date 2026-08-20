@@ -34,7 +34,7 @@ The table below maps every `ForEach` expression to its `Loop` equivalent. The se
 | `taskrun.value` | `item.value` | |
 | `taskrun.iteration` | `item.index` | Zero-based in both |
 | `parent.taskrun.value` | `item.value` | No prefix needed — `item` is accessible from any depth inside a Loop sub-execution, including inside `If` or `Parallel` |
-| `parents[0].taskrun.value` | `item.parent.value` | Only when inside an inner of two nested Loops; when used inside a nested flowable (If, Parallel) within a single Loop, it maps to `item.value` instead |
+| `parents[0].taskrun.value` | `item.parent.value` | Only when inside the inner Loop of two nested Loops. When used inside a nested flowable (If, Parallel) within a single Loop, use `item.value` instead |
 | `parents[1].taskrun.value` | `item.parents[1].value` | One level further up |
 | `outputs.task_id[taskrun.value].value` | `outputs.task_id.value` | Inside the iteration; task outputs are scoped to the current sub-execution |
 | `outputs.foreach_id[value].field` (after the loop) | `outputs.loop_id.outputs[n].outputs.output_id` (by index) or `loopOutputs(outputs.loop_id.outputs, 'output_id')` (all values as a list) | Outside the loop; outputs are now a list — key-based access by value string is no longer supported |

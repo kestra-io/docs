@@ -7,47 +7,23 @@ icon: /src/contents/docs/icons/flow.svg
 docId: executions
 ---
 
-Execute flows and view the results.
-
 An execution is a single run of a flow with a specific state.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/6TqWWz9difM?si=cUKVVbohgNjlpd19" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Task run
+Each execution contains one or more [task runs](../01.tasks/02.taskruns/index.md) — one per task in the flow. Task runs support [retries](../12.retries/index.md): if retries are configured, a failure generates new attempts until the `maxAttempts` or `maxDuration` threshold is reached.
 
-A task run is a single run of an individual task within an execution.
-
-Each task run has associated data such as:
-
-- Execution ID
-- State
-- Start Date
-- End Date
-
-Read more about task runs on the [dedicated docs page](../01.tasks/02.taskruns/index.md).
-
-## Attempts
-
-Each task run can have one or more attempts. Most task runs have only one attempt, but you can configure [retries](../12.retries/index.md) for a task.
-If retries have been configured, a task failure will generate new attempts until the retry `maxAttempts` or `maxDuration` threshold is hit.
+![Execution overview showing the visual task graph and execution tabs](./executions-overview.png)
 
 ## Outputs
 
-Each task can generate output data that other tasks in the current flow execution can use.
-These outputs can be variables or files that are stored inside Kestra's internal storage.
-
-Outputs are described on each task’s documentation page and can be viewed in the **Outputs** tab of the **Execution** page.
-Read more on the [Outputs page](../../05.workflow-components/06.outputs/index.md).
+Each task can produce output data — variables or files stored in Kestra's internal storage — that downstream tasks in the same execution can reference. View outputs in the **Outputs** tab of the execution page. See the [Outputs page](../../05.workflow-components/06.outputs/index.md) for details.
 
 ## Metrics
 
-Each task can expose metrics that help you understand task internals. Metrics may include file size, number of returned rows, or query duration. You can view the available metrics for a task type on its documentation page.
-
-Metrics can be seen in the **Metrics** tab of the **Executions** page.
-
-Below is an example of a flow generating metrics:
+Tasks can expose metrics such as file size, row count, or query duration. View them in the **Metrics** tab of the execution page, or on the task's plugin documentation page.
 
 ```yaml
 id: load_data_to_bigquery
@@ -60,7 +36,6 @@ tasks:
 
   - id: load_bigquery
     type: io.kestra.plugin.gcp.bigquery.Load
-    description: Load data into BigQuery
     autodetect: true
     csvOptions:
       fieldDelimiter: ","
@@ -69,85 +44,53 @@ tasks:
     from: "{{ outputs.http_download.uri }}"
 ```
 
-You can see the list of generated metrics generated in the [BigQuery Load task documentation](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.load#metrics).
+## States
 
-After executing the flow, view the BigQuery Load task metrics in the **Metrics** tab.
+Executions and task runs move through the following states:
 
-![bigquery_metrics](./bigquery_metrics.png)
+| State | Description |
+| - | - |
+| `CREATED` | Waiting to be processed — queued but not yet started. |
+| `RUNNING` | Currently being processed. |
+| `PAUSED` | Paused for manual validation or a configured delay. |
+| `SUCCESS` | Completed successfully. |
+| `WARNING` | Completed with warnings — execution continued but was flagged. |
+| `FAILED` | Encountered errors that caused the execution to fail. |
+| `KILLING` | Kill command issued; system is terminating associated tasks. |
+| `KILLED` | Killed on request — no further tasks will run. |
+| `RESTARTED` | Transitional state equivalent to `CREATED` for a restarted failed execution. |
+| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior. |
+| `QUEUED` | On hold due to a concurrency limit with `QUEUE` behavior. |
+| `RETRYING` | Currently being [retried](../12.retries/index.md). |
+| `RETRIED` | Stopped and created a new execution as defined by a [flow-level retry policy](../12.retries/index.md#flow-level-retries) with `CREATE_NEW_EXECUTION` behavior. |
 
-## State
-
-An execution or a task run can be in a particular state.
-
-There are multiple possible states:
-
-| State | Description                                                                                                                                                                                                                               |
-| - |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `CREATED` | The Execution or task run is waiting to be processed. This state usually means that the Execution is in a queue and is yet to be started.                                                                                                 |
-| `RUNNING` | The Execution or task run is currently being processed.                                                                                                                                                                                   |
-| `PAUSED` | The Execution or task run has been paused. Used for manual validation or waiting for a specified duration before continuing the execution.                                                                                                |
-| `SUCCESS` | The Execution or task run has been completed successfully.                                                                                                                                                                                |
-| `WARNING` | The Execution or task run exhibited unintended behavior, but the execution continued and was flagged with a warning.                                                                                                                      |
-| `FAILED` | The Execution or task run exhibited unintended behavior that caused the execution to fail.                                                                                                                                                |
-| `KILLING` | A command was issued that asked for the Execution or task run to be killed. The system is in the process of killing the associated tasks.                                                                                                 |
-| `KILLED` | An Execution or task run was killed (upon request), and no more tasks will run.                                                                                                                                                           |
-| `RESTARTED` | Transitional status equivalent to `CREATED`for a flow that was executed, failed, and then restarted.                                                                                                                                      |
-| `CANCELLED` | An Execution or task run has been aborted because it has reached the defined [concurrency limit](../14.concurrency/index.md) or exceeded the [SLA](../18.sla/index.md) . The behavior was set to the `CANCEL`.                                                                 |
-| `QUEUED` | An Execution or task run has been put on hold because it has reached its defined concurrency limit. The limit was set to the `QUEUE` behavior.                                                                                            |
-| `RETRYING` | The Execution or task run is currently being [retried](../12.retries/index.md).                                                                                                                                                           |
-| `RETRIED` | An Execution or task run exhibited unintended behavior, stopped, and created a new execution as defined by its [flow-level retry policy](../12.retries/index.md#flow-level-retries). The policy was set to the `CREATE_NEW_EXECUTION` behavior. |
-
-:::alert{type="info"}
-For a detailed overview of how each execution and task run transitions through states, see the [States](../17.states/index.md) page.
-:::
+For a detailed overview of state transitions, see the [States](../17.states/index.md) page.
 
 ## Execution expressions
 
-You can use the following execution expressions in your flow.
-
 | Parameter | Description |
 | - | - |
-| `{{ execution.id }}`          | The execution ID, a generated unique ID for each execution                                                                       |
-| `{{ execution.startDate }}`   | The start date of the current execution, can be formatted with `{{ execution.startDate | date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
-| `{{ execution.originalId }}`  | The original execution ID, this ID never changes, even in case of a replay and keeps the first execution ID.                      |
+| `{{ execution.id }}` | Unique identifier generated for each execution. |
+| `{{ execution.startDate }}` | Start date of the current execution; can be formatted with `{{ execution.startDate \| date("yyyy-MM-dd HH:mm:ss.SSSSSS") }}`. |
+| `{{ execution.originalId }}` | The original execution ID — never changes across replays. |
 
+## Execute from the UI
 
-## Execute a flow from the UI
-
-Click **Execute** on the flow page to trigger a run manually for testing or on-demand use.
-
-![execute_button](./execute_button.png)
+Click **Execute** on the flow page to trigger a run manually.
 
 ## Use automatic triggers
 
-You can add a **Schedule trigger** to automatically launch a flow execution at a regular time interval.
+Add a [Schedule trigger](../07.triggers/01.schedule-trigger/index.md) to launch executions on a time interval, or a [Flow trigger](../07.triggers/index.mdx) to launch an execution when another flow completes — useful for namespace-level error handling or event-driven patterns where flows are decoupled rather than explicitly calling each other as subflows.
 
-Alternatively, you can add a **Flow trigger** to automatically launch a flow execution when another flow execution is completed. This is helpful when you want to:
-
-- Implement a centralized namespace-level error handling strategy, e.g., to send a notification when any flow execution fails in a production namespace. Check the [Alerting & Monitoring](../../10.administrator-guide/03.monitoring/index.md) section for more details.
-- Decouple your flows by following an event-driven pattern where a flow is triggered by the completion of another flow (as opposed to the [subflow pattern]… where a parent flow explicitly calls child flows).
-
-You can also use the **Webhook trigger** to automatically launch a flow execution when a given HTTP request is received. You can leverage the `{{ trigger.body }}` variable to access the request body and the `{{ trigger.headers }}` variable to access the request headers in your flow.
-
-To launch a flow and send data to the flow's execution context from an external system using a webhook, you can send a POST request to the Kestra API using the following URL:
+Use a [Webhook trigger](../07.triggers/03.webhook-trigger/index.md) to launch an execution from an external HTTP request. Access the request body with `{{ trigger.body }}` and headers with `{{ trigger.headers }}`. See the [Webhooks how-to guide](../../15.how-to-guides/webhooks/index.md) for setup and real-world examples.
 
 ```bash
 http://<kestra-host>:<kestra-port>/api/v1/main/executions/webhook/<namespace>/<flow-id>/<webhook-key>
 ```
 
-Below is an example:
+## Execute via API
 
-```bash
-http://localhost:8080/api/v1/main/executions/webhook/dev/hello-world/secretWebhookKey42
-```
-
-You can also pass inputs to the flow using the `inputs` query parameter.
-
-## Execute a flow via an API call
-
-You can trigger a flow execution by calling the [API](../../api-reference/index.mdx) directly. This is useful when you want to start a flow execution from another application or service.
-
-Use the following flow as an example:
+Trigger an execution by calling the [API](../../api-reference/index.mdx) directly. Given this flow:
 
 ```yaml
 id: hello_world
@@ -162,62 +105,46 @@ tasks:
   - id: hello
     type: io.kestra.plugin.core.log.Log
     message: "{{ inputs.greeting }}"
-
-triggers:
-  - id: webhook
-    type: io.kestra.plugin.core.trigger.Webhook
-    key: test1234
 ```
 
-If Kestra runs locally, trigger a flow by calling `/api/v1/main/executions/{namespace}/{flowId}` endpoint. This example uses `curl` but you could use something else like [Postman](https://www.postman.com/) to test this too:
+Trigger it with `curl`:
 
 ```bash
-curl -X POST \
-http://localhost:8080/api/v1/main/executions/company.team/hello_world
+curl -X POST http://localhost:8080/api/v1/main/executions/company.team/hello_world
 ```
 
-The above command triggers an execution of the latest revision of the `hello_world` flow from the `company.team` namespace.
-
-### Execute a specific revision of a flow
-
-If you want to trigger an execution for a specific revision, you can use the `revision` query parameter:
+### Execute a specific revision
 
 ```bash
-curl -X POST \
-http://localhost:8080/api/v1/main/executions/company.team/hello_world?revision=2
+curl -X POST http://localhost:8080/api/v1/main/executions/company.team/hello_world?revision=2
 ```
 
-### Execute a flow with inputs
+### Execute with inputs
 
-You can also trigger a flow execution with inputs by adding the `inputs` as form data (the `-F` flag in the `curl` command):
+Pass inputs as form data:
 
 ```bash
-curl -X POST \
-http://localhost:8080/api/v1/main/executions/company.team/hello_world \
+curl -X POST http://localhost:8080/api/v1/main/executions/company.team/hello_world \
 -F greeting="hey there"
 ```
 
-You can pass inputs of different types, such as `STRING`, `INT`, `FLOAT`, `DATETIME`, `FILE`, `BOOLEAN`, and more.
+For multiple input types:
 
 ```bash
 curl -v "http://localhost:8080/api/v1/main/executions/company.team/kestra-inputs" \
     -H "Transfer-Encoding:chunked" \
     -H "Content-Type:multipart/form-data" \
-    -F string="a string"  \
-    -F optional="an optional string"  \
-    -F int=1  \
-    -F float=1.255  \
-    -F boolean=true  \
+    -F string="a string" \
+    -F int=1 \
+    -F float=1.255 \
+    -F boolean=true \
     -F instant="2023-12-24T23:00:00.000Z" \
     -F "files=@/tmp/128M.txt;filename=file"
 ```
 
+### Execute with FILE inputs
 
-### Execute a flow with FILE-type inputs
-
-You can also pass files as an input. All files must be sent as multipart form data named `files` with a header `filename=your_kestra_input_name` indicating the name of the input.
-
-Let's look at an example to make this clearer. Suppose you have a flow that takes a JSON file as input and reads the file's content:
+Pass files as multipart form data named `files`, with a `filename` header matching the input ID:
 
 ```yaml
 id: large_json_payload
@@ -238,20 +165,38 @@ tasks:
       - cat myfile.json
 ```
 
-Assuming you have a file `myfile.json` in the current working directory, you can invoke the flow using the following `curl` command:
-
 ```bash
-curl -X POST -F "files=@./myfile.json;filename=myCustomFileInput" 'http://localhost:8080/api/v1/main/executions/company.team/large_json_payload'
+curl -X POST -F "files=@./myfile.json;filename=myCustomFileInput" \
+  'http://localhost:8080/api/v1/main/executions/company.team/large_json_payload'
 ```
 
 :::alert{type="info"}
-We recommend this pattern if you need to pass large payloads to a flow. Passing a large payload directly in the request body (e.g., as `JSON`-type input or as a raw JSON webhook body) is not recommended for privacy, performance, and maintainability reasons. Such large payloads would be stored directly in your Kestra's database backend, cluttering valuable storage space and leading to potential performance or privacy issues. However, if you pass it as a JSON file using a `FILE`-type input, it will be stored in internal storage (such as S3, GCS, Azure Blob), making it more performant and cost-effective to store and retrieve.
+Prefer FILE-type inputs for large payloads. Files are stored in internal storage (S3, GCS, Azure Blob), whereas JSON-type inputs or raw webhook bodies are stored directly in the database.
 :::
 
+### Get a URL to follow execution progress
 
-### Execute a flow via an API call in Python
+The executions endpoint returns a `url` field in its response, which links directly to the execution in the UI:
 
-You can also use the `requests` library in Python to make requests to the Kestra API. Here's an example:
+```bash
+curl -X POST http://localhost:8080/api/v1/main/executions/company.team/myflow
+```
+
+```json
+{
+  "id": "1ZiZQWCHj7bf9XLtgvAxyi",
+  "url": "http://localhost:8080/ui/executions/company.team/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
+}
+```
+
+To receive a full URL rather than a path suffix, configure your instance URL in [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md):
+
+```yaml
+kestra:
+  url: http://localhost:8080
+```
+
+### Execute via API in Python
 
 ```python
 import requests
@@ -273,120 +218,14 @@ with open("/tmp/128M.txt", 'rb') as fh:
   )
 ```
 
-### Get URL to follow the Execution progress
-
-The executions endpoint also [returns a URL](https://github.com/kestra-io/kestra/issues/4256), allowing you to follow the execution progress from the UI. This is helpful for externally triggered, long-running executions that require users to monitor workflow progress. Below are the steps to use it:
-
-1) First, create a flow:
-
-```yaml
-id: myflow
-namespace: company.team
-
-tasks:
-  - id: long_running_task
-    type: io.kestra.plugin.scripts.shell.Commands
-    commands:
-      - sleep 90
-    taskRunner:
-      type: io.kestra.plugin.core.runner.Process
-```
-
-2) Execute the flow via an API call:
-
-```shell
-curl -X POST http://localhost:8080/api/v1/main/executions/company.team/myflow
-```
-
-You will see output similar to the following:
-
-```bash
-{
-  "id": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "namespace": "company.team",
-  "flowId": "myflow",
-  "flowRevision": 1,
-  "state": {
-    "current": "CREATED",
-    "histories": [
-      {
-        "state": "CREATED",
-        "date": "2024-09-24T13:35:32.983335847Z"
-      }
-    ],
-    "duration": "PT0.017447417S",
-    "startDate": "2024-09-24T13:35:32.983335847Z"
-  },
-  "originalId": "1ZiZQWCHj7bf9XLtgvAxyi",
-  "deleted": false,
-  "metadata": {
-    "attemptNumber": 1,
-    "originalCreatedDate": "2024-09-24T13:35:32.983420055Z"
-  },
-  "url": "http://localhost:8080/ui/executions/company.team/myflow/1ZiZQWCHj7bf9XLtgvAxyi"
-}
-```
-
-Click that URL to follow execution progress, or return it from your application to the user who initiated the flow.
-
-Keep in mind that you need to configure the URL of your Kestra instance within your [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) file to have a full URL rather than just the suffix `/ui/executions/company.team/myflow/uuid`. Here is how you can do it:
-
-```yaml
-kestra:
-  url: http://localhost:8080
-```
-
-
 ## Webhook vs. API call
 
-When sending a POST request to the `/api/v1/main/executions/{namespace}/{flowId}` endpoint, you can send data to the flow's execution context using `inputs`. If you want to send arbitrary metadata to the flow's execution context based on some event happening in your application, you can leverage a Webhook trigger.
-
-You can adjust the previous `hello_world` example to use the webhook trigger instead of an API call:
-
-```yaml
-id: hello_world
-namespace: company.team
-
-inputs:
-  - id: greeting
-    type: STRING
-    defaults: hey
-
-tasks:
-  - id: hello
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ trigger.body ?? inputs.greeting }}"
-
-triggers:
-  - id: webhook
-    type: io.kestra.plugin.core.trigger.Webhook
-    key: test1234
-```
-
-You can now send a POST request to the `/api/v1/main/executions/webhook/{namespace}/{flowId}/{webhookKey}` endpoint to trigger an execution and pass any metadata to the flow using the request body. In this example, the webhook URL would be `http://localhost:8080/api/v1/main/executions/webhook/company.team/hello_world/test1234`.
-
-You can test the webhook trigger using a tool like Postman or cURL. Paste the webhook URL in the URL field and a [sample JSON payload](https://gist.github.com/anna-geller/df2532c0699e3ba4f572a88fbdf19a13) in the request body. Make sure to set:
-
-- the request method to POST
-- the request body type to raw JSON format
-
-Finally, click the **Send** button to trigger the flow execution. You should get a response with the execution ID and status code 200 OK.
-
-![postman webhook](./postman.png)
-
 :::alert{type="info"}
-⚡️ **When to use a webhook trigger vs. an API call?** To decide whether to use a webhook trigger or an API call to create an Execution, consider the following:
-
-- Use the **webhook trigger** when you want **to send arbitrary metadata** to the flow's execution context based on some event happening in your application.
-- Use the **webhook trigger** when you want to create new executions based on some **event** happening in an **external application**, such as a GitHub event (_e.g. a Pull Request is merged_) or a new record in a SaaS application, and you want to send the event metadata (header and body) to the flow to act on it.
-- Use an **API call** when you only need to pass **typed inputs** and do not need to send an arbitrary payload.
+- Use the **webhook trigger** when you want to pass arbitrary metadata from an external event (GitHub PR merged, new SaaS record, etc.) to the flow via `{{ trigger.body }}` and `{{ trigger.headers }}`.
+- Use an **API call** when you only need to pass typed inputs and don't need an arbitrary payload.
 :::
 
----
-
-## Execute a flow via kestractl
-
-You can trigger and inspect executions from the command line using [kestractl](../../kestra-cli/kestractl/index.md).
+## Execute via kestractl
 
 ```bash
 # Run a flow and wait for completion
@@ -396,19 +235,15 @@ kestractl executions run prod nightly-refresh --wait
 kestractl executions run prod nightly-refresh --wait --output json
 ```
 
----
+See [kestractl](../../kestra-cli/kestractl/index.md) for the full command reference.
 
-## Execute a flow from Python
+## Execute from Python
 
-You can also execute a flow using the [kestra pip package](https://github.com/kestra-io/libs). This is useful when you want to trigger a flow execution from a Python application without crafting the HTTP request manually, as shown earlier.
-
-First, install the package:
+Use the [kestra pip package](https://github.com/kestra-io/libs) to trigger executions without crafting HTTP requests manually:
 
 ```bash
 pip install kestra
 ```
-
-Then, you can trigger a flow execution by calling the `execute()` method. Below is an example for the same `hello_world` flow in the namespace `company.team` as above:
 
 ```python
 from kestra import Flow
@@ -416,175 +251,17 @@ flow = Flow()
 flow.execute('company.team', 'hello_world', {'greeting': 'hello from Python'})
 ```
 
-Now imagine that you have a flow that takes a FILE-type input and reads the file's content:
-
-```yaml
-id: myflow
-namespace: company.team
-
-inputs:
-  - id: myfile
-    type: FILE
-
-tasks:
-  - id: print_data
-    type: io.kestra.plugin.core.log.Log
-    message: "file's content {{ read(inputs.myfile) }}"
-```
-
-Assuming you have a file called `example.txt` in the same directory as your Python script, you can pass a file as an input to the flow using the following Python code:
+To pass a FILE input:
 
 ```python
 import os
 from kestra import Flow
 
-os.environ["KESTRA_HOSTNAME"] = "http://host.docker.internal:8080" # Set this when executing inside Kestra
+os.environ["KESTRA_HOSTNAME"] = "http://host.docker.internal:8080"
 
 flow = Flow()
 with open('example.txt', 'rb') as fh:
     flow.execute('company.team', 'myflow', {'files': ('myfile', fh, 'text/plain')})
 ```
 
-Keep in mind that `files` is a tuple with the following structure: `('input_id', file_object, 'content_type')`.
-
-## Execute with Loop
-
-The `Loop` task iterates over a set of values and runs child tasks for each item. Each iteration runs as an isolated sub-execution — its own state, outputs, and error handling — with `item.value` holding the current value.
-
-The `Loop` task is a **Flowable** task, which means it can be used to define flow logic and control execution.
-
-### Basic usage
-
-```yaml
-id: loop_example
-namespace: company.team
-tasks:
-  - id: loop
-    type: io.kestra.plugin.core.flow.Loop
-    values:
-      - alpha
-      - bravo
-      - charlie
-    tasks:
-      - id: log_item
-        type: io.kestra.plugin.core.log.Log
-        message: "Processing {{ item.value }} (index {{ item.index }})"
-```
-
-After the loop completes, the loop task always exposes `iterationCount`, `runningIterations`, and `terminatedIterations`. To access per-iteration results from a subsequent task, declare an `outputs:` block on the Loop task — without it, per-iteration outputs are not accessible:
-
-```yaml
-  - id: loop
-    type: io.kestra.plugin.core.flow.Loop
-    values: [a, b, c]
-    tasks:
-      - id: step
-        type: io.kestra.plugin.core.debug.Return
-        format: "processed_{{ item.value }}"
-    outputs:
-      - id: result
-        type: STRING
-        value: "{{ outputs.step.value }}"
-```
-
-Then access the collected outputs from any subsequent sibling task:
-
-```twig
-{{ outputs.loop.outputs[0].outputs.result }}        {# first iteration's declared output #}
-{{ outputs.loop.outputs[0].item.value }}             {# first iteration's input value #}
-{{ loopOutputs(outputs.loop.outputs, 'result') }}   {# all iterations as a list #}
-```
-
-### Iterating over storage URIs
-
-`values` accepts a list, a JSON array string, a map, or an ION file URI from internal storage. When passing a URI, set `fetchType` to control how Kestra reads the file:
-
-| `fetchType` | Behavior |
-|---|---|
-| `AUTO` (default) | Kestra decides based on the value type |
-| `FETCH` | Loads the full dataset into memory; use for moderate-sized result sets |
-| `STORE` | Streams rows from the storage URI one at a time; use for large datasets |
-
-```yaml
-  - id: loop
-    type: io.kestra.plugin.core.flow.Loop
-    values: "{{ outputs.extract.uri }}"
-    fetchType: STORE
-    tasks:
-      - id: process
-        type: io.kestra.plugin.core.log.Log
-        message: "{{ item.value }}"
-```
-
-When iterating over a storage URI, each `item.value` is a string representation of the row. To access individual fields, use `fromJson(item.value).field_name`.
-
-### Error handling and failure propagation
-
-`transmitFailed` (default `true`) controls what happens when an iteration fails:
-- `true`: the loop stops after the failing iteration completes; subsequent iterations do not run.
-- `false`: the loop continues through all iterations regardless of individual failures.
-
-An `errors:` block within the loop runs inside the failing sub-execution regardless of `transmitFailed`. A `finally:` block always runs after all iterations complete.
-
-### Concurrency
-
-Use `concurrencyLimit` to cap how many iterations run in parallel (`0` = unlimited):
-
-```yaml
-    concurrencyLimit: 4
-```
-
-### Advanced: Loop with Subflow
-
-Use Loop with `Subflow` to fan out isolated executions — each subflow gets its own retry policy, logs, and failure state:
-
-:::collapse{title="Full Example"}
-
-Subflow:
-
-```yaml
-id: subflow
-namespace: company.team
-
-inputs:
-  - id: item
-    type: STRING
-
-tasks:
-  - id: log
-    type: io.kestra.plugin.core.log.Log
-    message: "{{ inputs.item }}"
-```
-
-Parent flow:
-
-```yaml
-id: each_parent
-namespace: company.team
-
-tasks:
-  - id: extract
-    type: io.kestra.plugin.jdbc.duckdb.Query
-    sql: |
-      INSTALL httpfs;
-      LOAD httpfs;
-      SELECT *
-      FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
-    store: true
-
-  - id: loop
-    type: io.kestra.plugin.core.flow.Loop
-    values: "{{ outputs.extract.uri }}"
-    tasks:
-      - id: process
-        type: io.kestra.plugin.core.flow.Subflow
-        namespace: company.team
-        flowId: subflow
-        wait: true
-        transmitFailed: true
-        inputs:
-          item: "{{ item.value }}"
-```
-:::
-
-For the full Loop property reference, see the [flowable tasks page](../01.tasks/00.flowable-tasks/index.md#loop).
+`files` takes a tuple: `('input_id', file_object, 'content_type')`.

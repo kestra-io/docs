@@ -4,7 +4,7 @@ description: "Learn to build production-ready AI agents using Kestra's declarati
 metaTitle: "Build AI Agents: Step-by-Step with Kestra Orchestration"
 metaDescription: "Build AI agents with declarative orchestration, LLM integration, tool definition, and governance. Master robust AI workflows from concept to production."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-10
 slug: "how-to-build-an-ai-agent"
 faq:
   - question: "Is it free to build an AI agent?"
@@ -47,6 +47,8 @@ While ChatGPT can exhibit agent-like behaviors, it is fundamentally an LLM. It l
 ## Why AI Agents Require Robust Orchestration
 
 As agents move from prototypes to production systems, managing their behavior becomes critical. This is where a dedicated orchestration layer is essential for several reasons:
+
+What an agent cannot supply for itself is durable state, retries and an audit trail. Those come from [the control plane above your models](/resources/ai/ai-orchestration).
 
 *   **State Management and Context Preservation**: Agents need persistent memory across interactions. An orchestrator manages this state, ensuring the agent has the right context for each decision without requiring complex custom code.
 *   **Tool Integration and Management**: Securely connecting agents to external systems like APIs, databases, or other Kestra flows is paramount. Orchestration provides a secure, governed way to define and manage these tools.

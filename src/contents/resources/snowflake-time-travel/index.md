@@ -4,7 +4,7 @@ description: "Explore Snowflake Time Travel's capabilities for data recovery, hi
 metaTitle: "Snowflake Time Travel: Recover & Audit Data"
 metaDescription: "Snowflake Time Travel recovers historical data, audits changes, and analyzes past states. Learn how Kestra orchestrates advanced Time Travel workflows in YAML."
 tag: "data"
-date: 2026-07-07
+date: 2026-07-10
 slug: "snowflake-time-travel"
 faq:
   - question: "What is Snowflake Time Travel?"

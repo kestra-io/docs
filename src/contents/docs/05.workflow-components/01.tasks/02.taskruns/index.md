@@ -9,15 +9,6 @@ docId: taskruns
 
 A task run is a single execution of an individual task within an [Execution](../../03.execution/index.md), where an execution represents a run of the entire flow. One execution can therefore contain multiple task runs.
 
-## Understand task runs
-
-Each task run includes associated data such as:
-
-- Execution ID
-- State
-- Start Date
-- End Date
-
 ## Attempts
 
 A task run can include one or more attempts. Most have only a single attempt, but you can configure [retries](../../12.retries/index.md) if needed.
@@ -40,9 +31,7 @@ Similar to executions, task runs can exist in different states.
 | `KILLING` | A kill command was issued and the system is terminating the task run.                                                                                                                                                                        |
 | `KILLED` | An execution or task run was killed (upon request), and no more tasks will run.                                                                                                                                                              |
 
-:::alert{type="info"}
-For a detailed overview of how each task run transition through different states, see the [States](../../17.states/index.md#how-are-task-run-states-different-from-execution-states) page.
-:::
+For a detailed overview of how task runs transition through states, see the [States](../../17.states/index.md#how-are-task-run-states-different-from-execution-states) page.
 
 ## Expression
 

@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-    import { getHubspotTracking } from "~/utils/hubspot.js"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot.js"
     import posthog from "posthog-js"
     import { ref, useTemplateRef } from "vue"
     import identify from "~/utils/identify"
@@ -141,8 +141,7 @@
     const validMessage = ref("")
     const message = ref("")
 
-    const hubSpotUrl =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/230d0ed2-2484-4e9e-86c6-135a6398fac5"
+    const hubSpotFormId = "230d0ed2-2484-4e9e-86c6-135a6398fac5"
 
     const onSubmit = async (e: Event) => {
         e.preventDefault()
@@ -204,13 +203,7 @@
             hsq.push(["trackCustomBehavioralEvent", { name: "cloud_form" }])
             gtm?.trackEvent({ event: "cloud_form", noninteraction: false })
             identify(form["email"].value)
-            $fetch<{ inlineMessage?: string }>(hubSpotUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            })
+            submitHubspotForm<{ inlineMessage?: string }>(hubSpotFormId, formData)
                 .then((response) => {
                     valid.value = true
                     validMessage.value = response.inlineMessage || ""

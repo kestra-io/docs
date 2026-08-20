@@ -109,6 +109,6 @@ triggers:
 
 With a trigger added to a flow, you can now see the trigger's details in the flow's **Triggers** tab.
 
-![Flow Triggers Tab](./flow-triggers.png)
+![Flow Triggers Tab](./flow-triggers-2-0.png)
 
 To learn more about Triggers, check out the full [Triggers documentation](../../05.workflow-components/07.triggers/index.mdx). Next up, we'll check out Flowable tasks – ways to loop, condition, and parallelize tasks.

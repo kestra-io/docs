@@ -29,14 +29,14 @@ inputs:
     type: STRING
 
 tasks:
-- id: update
-  type: io.kestra.plugin.jdbc.postgresql.Query
-  url: "{{ inputs.db_url }}"
-  sql: DELETE * FROM my_table
+  - id: update
+    type: io.kestra.plugin.jdbc.postgresql.Query
+    url: "{{ inputs.db_url }}"
+    sql: DELETE FROM my_table
 
-- id: log
-  type: io.kestra.plugin.core.log.Log
-  message: "{{ trigger.rows }}"
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ trigger.rows }}"
 
 triggers:
   - id: watch
@@ -46,11 +46,15 @@ triggers:
     sql: "SELECT * FROM my_table"
 ```
 
-In [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md), you can assign polling triggers to a specific [Worker Group](../../../07.enterprise/04.scalability/worker-group/index.md) using the `workerGroup.key` property. This allows you to control where the polling is executed.
+Like all triggers, polling triggers support a `when` Pebble expression. When set, the trigger only creates an execution if `when` evaluates to `true` after new data is detected — useful for filtering results before the flow runs.
+
+In [Enterprise Edition](../../../07.enterprise/01.overview/01.enterprise-edition/index.md), you can assign polling triggers to a specific [Worker Queue](../../../07.enterprise/04.scalability/worker-group/index.md) using `workerSelector.tags`. This controls which workers execute the polling.
+
+Browse the [plugin catalog](/plugins) and filter by **Trigger** to see all available polling triggers, including file detection, database, and message queue variants.
 
 ## Enterprise example
 
-In Enterprise Edition (Kestra 0.24+), the `Salesforce Trigger` enables flows to start automatically when new records are created in Salesforce. For example, the flow below sends a Slack notification whenever a new contact is added.
+In Enterprise Edition, the `Salesforce Trigger` enables flows to start automatically when new records are created in Salesforce. For example, the flow below sends a Slack notification whenever a new contact is added.
 
 ```yaml
 id: salesforce_contact_trigger

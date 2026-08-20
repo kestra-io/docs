@@ -18,7 +18,7 @@ To contribute to the documentation, fork the [docs repository](https://github.co
 ## Build the documentation locally
 
 The following dependencies are required to build Kestra docs locally:
-- Node 14+ and npm
+- Node 26+ and npm
 - An IDE (such as VS Code, IntelliJ, etc.)
 
 To start contributing:
@@ -59,22 +59,24 @@ The index file's markdown looks like this:
 
 ```markdown
 ---
-title: Getting Started
+title: "Install Kestra: Docker, Kubernetes, VM, and JAR"
+sidebarTitle: Installation Guide
+icon: /src/contents/docs/icons/installation.svg
 ---
 
-Follow the [Quickstart Guide](../../01.quickstart/index.md) to install Kestra and start building your first workflows.
+import ChildCard from "~/components/docs/ChildCard.astro"
 
 <ChildCard />
 ```
 
-And the page displays the following with all the sub topics of "Getting Started" listed with their card and icon:
+And the page displays the following with all child topics listed as cards:
 
-![Getting Started ChildCard](./child-card.png)
+![Installation Guide ChildCard](./child-card.png)
 
-Note that when writing a standalone documentation page, the first sentence appears in the ChildCard view to introduce the topic. In the above example for [Quickstart Guide](../../01.quickstart/index.md) this sentence is visible:
+Note that when writing a standalone documentation page, the first sentence appears in the ChildCard view to introduce the topic. In the above example for the [Kubernetes installation page](../../02.installation/index.mdx) this sentence is visible:
 
 ```markdown
-Start Kestra in a Docker container and create your first flow.
+Deploy Kestra on Kubernetes using the official Helm chart, scalable for production with PostgreSQL and object storage.
 ```
 
 Ideally, keep this first sentence as clear and concise as possible to not clutter the view on the card.
@@ -226,6 +228,10 @@ editions: ["OSS", "EE"]
 ```
 
 ### Writing style
+
+For the complete editorial reference — page types, capitalization rules, procedures structure, anti-patterns, and a full review checklist — see the [Kestra Docs Style Guide](../../docs-style-guide.md).
+
+The most common conventions to keep in mind:
 
 #### Headings
 
@@ -381,7 +387,7 @@ Kestra Plugins each have their own documentation page on the website in [Plugins
 For example, if you want to contribute to the [OpenAI Plugin](/plugins/plugin-openai), you can find the documentation in the [OpenAI Plugin Repository](https://github.com/kestra-io/plugin-openai).
 
 :::alert{type="info"}
-All plugin repos are searchable from the central [Kestra GitHub](https://github.com/kestra-io). The name of the repository is in the URL of the plugin documentation page. For example, the OpenAI repo is called `plugin-openai` which is in the URL path `https://kestra.io/plugins/plugin-openai/io.kestra.plugin.openai.chatcompletion`. Simply searching the tool's name should suffice, but this always works just in case.
+All plugin repos are searchable from the central [Kestra GitHub](https://github.com/kestra-io). The name of the repository is in the URL of the plugin documentation page. For example, the OpenAI repo is called `plugin-openai`, which is in the URL path `https://kestra.io/plugins/plugin-openai/io.kestra.plugin.openai.chatcompletion`. Searching the tool's name should suffice, but this always works as a fallback.
 :::
 
 To contribute to a plugin's documentation, fork the repository. Once cloned, contributions are welcome to four key components of plugin task documentation: title, description, examples, and properties.

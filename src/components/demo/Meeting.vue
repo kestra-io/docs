@@ -1,31 +1,42 @@
 <script lang="ts" setup>
-    import { onMounted, ref, useTemplateRef } from "vue"
+    import { ref, useId, useTemplateRef } from "vue"
     import posthog from "posthog-js"
-    import { useGtm } from "@gtm-support/vue-gtm"
     import identify from "~/utils/identify"
-    import { getHubspotTracking } from "~/utils/hubspot.js"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot.js"
+    import { getStoredClickId } from "~/scripts/gclid"
     import {
+        ensureMeetingsScriptLoaded,
         getMeetingUrl,
-        getGeoMeetingUrl,
         tierFromEmployees,
     } from "~/composables/useMeeting.js"
     import { $fetch } from "~/utils/fetch"
 
-    const gtm = useGtm()
+    /* This form is mounted more than once per page (the landing pages show it
+     * in the hero and again lower down), so the field ids must be unique per
+     * instance or every `label for` resolves to the first form. */
+    const uid = useId()
+
     const valid = ref(false)
     const message = ref("")
     const meetingUrl = ref<string>()
     const formRef = useTemplateRef("demo-form")
 
-    const props = defineProps<{
-        routePath: string
-        headerBackground: {
-            src: string
-        }
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            routePath: string
+            /**
+             * `"demo"` keeps the /demo page's dark, gradient-lit half-column.
+             * `"plain"` strips the wrapper chrome and the form's own border so
+             * the parent owns the card — used by the /lp/* landing pages.
+             */
+            variant?: "demo" | "plain"
+        }>(),
+        {
+            variant: "demo",
+        },
+    )
 
-    const hubSpotUrl =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/d8175470-14ee-454d-afc4-ce8065dee9f2"
+    const hubSpotFormId = "d8175470-14ee-454d-afc4-ce8065dee9f2"
 
     const COMPANY_SIZE_OBJECT_TYPE_ID = "0-2"
     const COMPANY_SIZE_PROPERTY = "number_of_employees"
@@ -34,123 +45,128 @@
         e.preventDefault()
         e.stopPropagation()
 
-        const script = document.createElement("script")
-        script.src =
-            "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js"
-        script.defer = true
-        document.body.appendChild(script)
+        const form = formRef.value
+        const hsq = (window._hsq = window._hsq || [])
 
-        script.addEventListener(
-            "load",
-            async () => {
-                const form = formRef.value
-                const hsq = (window._hsq = window._hsq || [])
+        if (!form?.checkValidity()) {
+            valid.value = false
+            message.value = "Please check the form fields and try again."
+            return
+        }
 
-                if (!form?.checkValidity()) {
-                    valid.value = false
-                    message.value =
-                        "Please check the form fields and try again."
-                    return
-                }
+        const fn = form["first-name"].value
+        const ln = form["last-name"].value
+        const em = form["email"].value
+        const emp = form["employees"].value
+        const clickId = getStoredClickId()
 
-                const fn = form["first-name"].value
-                const ln = form["last-name"].value
-                const em = form["email"].value
-                const emp = form["employees"].value
-
-                hsq.push([
-                    "identify",
-                    {
-                        email: em,
-                        firstname: fn,
-                        lastname: ln,
-                        kuid: localStorage.getItem("KUID") || "",
-                    },
-                ])
-
-                const ip = await $fetch<{ ip: string }>(
-                    "https://api.ipify.org?format=json",
-                )
-                const formData = {
-                    fields: [
-                        { objectTypeId: "0-1", name: "email", value: em },
-                        { objectTypeId: "0-1", name: "firstname", value: fn },
-                        { objectTypeId: "0-1", name: "lastname", value: ln },
-                        {
-                            objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
-                            name: COMPANY_SIZE_PROPERTY,
-                            value: emp,
-                        },
-                        {
-                            objectTypeId: "0-1",
-                            name: "kuid",
-                            value: localStorage.getItem("KUID") || "",
-                        },
-                    ],
-                    context: {
-                        hutk: getHubspotTracking() || undefined,
-                        ipAddress: ip.ip,
-                        pageUri: props.routePath,
-                        pageName: document.title,
-                    },
-                }
-
-                posthog.capture("bookdemo_form")
-                hsq.push([
-                    "trackCustomBehavioralEvent",
-                    { name: "bookdemo_form" },
-                ])
-                gtm?.trackEvent({
-                    event: "bookdemo_form",
-                    noninteraction: false,
-                })
-                // Guarded in case identify() isn't globally defined
-                // eslint-disable-next-line no-undef
-                if (typeof identify === "function") identify(em)
-
-                $fetch<{ inlineMessage?: string }>(hubSpotUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
-                })
-                    .then(async () => {
-                        valid.value = true
-                        hsq.push(["refreshPageHandlers"])
-                        hsq.push(["trackPageView"])
-
-                        meetingUrl.value = withContactParams(
-                            getMeetingUrl(tierFromEmployees(emp)),
-                            {
-                                firstname: fn,
-                                lastname: ln,
-                                email: em,
-                            },
-                        )
-                    })
-                    .catch((error) => {
-                        valid.value = false
-                        console.error(
-                            "Error submitting form data to HubSpot",
-                            error,
-                        )
-                        if (
-                            error?.response?.data?.errors?.some?.(
-                                (e: any) => e.errorType === "BLOCKED_EMAIL",
-                            )
-                        ) {
-                            message.value =
-                                "Please use a professional email address"
-                        } else {
-                            message.value =
-                                error?.response?.data?.message ||
-                                "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
-                        }
-                    })
+        hsq.push([
+            "identify",
+            {
+                email: em,
+                firstname: fn,
+                lastname: ln,
+                kuid: localStorage.getItem("KUID") || "",
             },
-            { once: true },
+        ])
+
+        const ip = await $fetch<{ ip: string }>(
+            "https://api.ipify.org?format=json",
         )
+        const formData = {
+            fields: [
+                { objectTypeId: "0-1", name: "email", value: em },
+                { objectTypeId: "0-1", name: "firstname", value: fn },
+                { objectTypeId: "0-1", name: "lastname", value: ln },
+                {
+                    objectTypeId: COMPANY_SIZE_OBJECT_TYPE_ID,
+                    name: COMPANY_SIZE_PROPERTY,
+                    value: emp,
+                },
+                {
+                    objectTypeId: "0-1",
+                    name: "kuid",
+                    value: localStorage.getItem("KUID") || "",
+                },
+                // Google Ads click id (gclid/gbraid/wbraid) for offline
+                // conversion import. Written to the standard HubSpot
+                // property `hs_google_click_id`, which HubSpot's Google
+                // Ads offline-conversion sync reads natively, so the
+                // booked demo can be attributed back to the paid click.
+                // Sent only when a click id is present.
+                ...(clickId
+                    ? [
+                          {
+                              objectTypeId: "0-1",
+                              name: "hs_google_click_id",
+                              value: clickId.value,
+                          },
+                      ]
+                    : []),
+            ],
+            context: {
+                hutk: getHubspotTracking() || undefined,
+                ipAddress: ip.ip,
+                pageUri: props.routePath,
+                pageName: document.title,
+            },
+        }
+
+        try {
+            await submitHubspotForm<{ inlineMessage?: string }>(
+                hubSpotFormId,
+                formData,
+            )
+        } catch (error: any) {
+            valid.value = false
+            console.error("Error submitting form data to HubSpot", error)
+            if (
+                error?.response?.data?.errors?.some?.(
+                    (err: any) => err.errorType === "BLOCKED_EMAIL",
+                )
+            ) {
+                message.value = "Please use a professional email address"
+            } else {
+                message.value =
+                    error?.response?.data?.message ||
+                    "It looks like we've hit a snag. Please ensure cookies are enabled and that any ad-blockers are disabled for this site, then try again."
+            }
+            return
+        }
+
+        valid.value = true
+        meetingUrl.value = withContactParams(
+            getMeetingUrl(tierFromEmployees(emp)),
+            {
+                firstname: fn,
+                lastname: ln,
+                email: em,
+            },
+        )
+
+        try {
+            posthog.capture("bookdemo_form")
+            hsq.push(["trackCustomBehavioralEvent", { name: "bookdemo_form" }])
+            // Push directly to the dataLayer: the vue-gtm plugin is
+            // initialized with `enabled: false` (GTM is loaded manually
+            // after cookie consent in cookieconsent.ts), so
+            // gtm.trackEvent() is a no-op and never reaches the dataLayer.
+            window.dataLayer = window.dataLayer || []
+            window.dataLayer.push({
+                event: "bookdemo_form",
+                noninteraction: false,
+            })
+            // Guarded in case identify() isn't globally defined
+            // eslint-disable-next-line no-undef
+            if (typeof identify === "function") identify(em)
+        } catch (analyticsError) {
+            console.error("Demo form analytics error", analyticsError)
+        }
+
+        void ensureMeetingsScriptLoaded().then(() => {
+            hsq.push(["refreshPageHandlers"])
+            hsq.push(["trackPageView"])
+        })
     }
 
     function withContactParams(
@@ -182,23 +198,16 @@
             return `${base}${sep}${qp.toString()}`
         }
     }
-
-    onMounted(() => {
-        if (getHubspotTracking() === null) {
-            const base = getGeoMeetingUrl()
-            const current = new URLSearchParams(window.location.search)
-            meetingUrl.value = withContactParams(base, {
-                firstname: current.get("firstname"),
-                lastname: current.get("lastname"),
-                email: current.get("email"),
-            })
-            valid.value = true
-        }
-    })
 </script>
 
 <template>
-    <div class="col-12 col-lg-6 align-items-center d-flex meeting-container">
+    <div
+        :class="
+            variant === 'plain'
+                ? 'meeting-plain'
+                : 'col-12 col-lg-6 align-items-center d-flex meeting-container'
+        "
+    >
         <div
             v-if="valid"
             class="custom-meetings-iframe-container embed-responsive"
@@ -232,11 +241,11 @@
                 </div>
 
                 <div class="col-md-6 col-12">
-                    <label for="demo-first-name" class="form-label mb-0">
+                    <label :for="`${uid}-first-name`" class="form-label mb-0">
                         First name
                     </label>
                     <input
-                        id="demo-first-name"
+                        :id="`${uid}-first-name`"
                         name="first-name"
                         autocomplete="given-name"
                         type="text"
@@ -247,11 +256,11 @@
                 </div>
 
                 <div class="col-md-6 col-12">
-                    <label for="demo-last-name" class="form-label mb-0">
+                    <label :for="`${uid}-last-name`" class="form-label mb-0">
                         Last name
                     </label>
                     <input
-                        id="demo-last-name"
+                        :id="`${uid}-last-name`"
                         name="last-name"
                         autocomplete="family-name"
                         type="text"
@@ -262,11 +271,11 @@
                 </div>
 
                 <div class="col-12">
-                    <label for="demo-email" class="form-label mb-0">
+                    <label :for="`${uid}-email`" class="form-label mb-0">
                         Company email
                     </label>
                     <input
-                        id="demo-email"
+                        :id="`${uid}-email`"
                         name="email"
                         type="email"
                         class="form-control"
@@ -276,11 +285,11 @@
                 </div>
 
                 <div class="col-12">
-                    <label for="demo-employees" class="form-label mb-0">
+                    <label :for="`${uid}-employees`" class="form-label mb-0">
                         Number of employees
                     </label>
                     <select
-                        id="demo-employees"
+                        :id="`${uid}-employees`"
                         name="employees"
                         class="form-control"
                         required
@@ -316,6 +325,107 @@
 </template>
 
 <style lang="scss" scoped>
+    /* The parent supplies the card, so the form itself is chrome-free. */
+    .meeting-plain {
+        width: 100%;
+
+        .alert.alert-danger {
+            color: var(--ks-content-alert-danger);
+        }
+
+        /* Bootstrap's grid drives this form on /demo, but the landing-page
+         * design is a plain 2-up-then-stacked grid with one uniform 16px rhythm
+         * — including down to the consent line and the button. Laying it out
+         * here is shorter than reverse-engineering gutters, and the !importants
+         * are the only way past the .mt-3/.mt-4 utilities in the markup. */
+        form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem 0.5rem;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: transparent;
+            @include media-breakpoint-up(md) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            > * {
+                /* Bootstrap's column widths and row-gutter margins are both
+                 * meaningless once the parent is a grid, and would only fight
+                 * the track sizing. */
+                width: auto;
+                margin-top: 0 !important;
+                padding: 0;
+            }
+
+            /* The name fields carry col-12 too, for the stacked breakpoint the
+             * single-column grid already handles — so they must not match here. */
+            > .col-12:not(.col-md-6),
+            > .alert {
+                grid-column: 1 / -1;
+            }
+
+            .form-label {
+                display: none;
+            }
+
+            .form-control {
+                min-height: 48px;
+                padding: 0.75rem 0.875rem;
+                border: 1px solid #e9e9ee;
+                border-radius: 8px;
+                font-size: $font-size-sm;
+                line-height: 1.4286;
+
+                &::placeholder {
+                    color: #7e7e9b;
+                }
+            }
+
+            .agree {
+                color: #3b3a41;
+                font-size: $font-size-xs;
+                line-height: 1.3333;
+
+                a {
+                    color: #631bff;
+                    text-decoration: underline;
+                }
+            }
+
+            .btn-primary {
+                min-height: 52px;
+                padding: 0.875rem 1.75rem;
+                border-radius: 8px;
+                font-size: 1.25rem;
+                font-weight: 700;
+                line-height: 1.2;
+                letter-spacing: -0.00625rem;
+            }
+
+            select.form-control {
+                /* Bootstrap's .form-control drops the native caret on a
+                 * <select>; the landing-page design shows one. */
+                appearance: none;
+                padding-right: 2.25rem;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%237e7e9b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.625rem center;
+                background-size: 1.25rem 1.25rem;
+
+                &:invalid {
+                    color: var(--bs-secondary-color);
+                }
+            }
+        }
+
+        .iframe-wrapper {
+            width: 100%;
+        }
+    }
+
     .meeting-container {
         position: relative;
         background-color: #151515;

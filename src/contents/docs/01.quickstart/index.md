@@ -48,9 +48,7 @@ The container is ready when the logs show `Main server is running at http://...:
 
 Open `http://localhost:8080` in your browser. You will see the Kestra UI when the container is running. From here, create your user, create a flow with the AI Copilot, and complete the deep-dive tutorial to begin building your first flows.
 
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/Vzkk6nAJSdkaXvGDSdBC?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Welcome to Kestra | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
-
-<br />
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/ts2ZMkTWIBQTH0MyQ8V9?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="AI Copilot | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 :::alert{type="info"}
 The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../02.installation/03.docker-compose/index.md).
@@ -82,5 +80,5 @@ You've taken the product tour, executed your first flow, and explored Kestra. Ne
 - [Contribute to Kestra](../04.contribute-to-kestra/index.mdx) – whether a developer or not, we value outside contribution of all kinds: Plugins, Features, Documentation, Feature Requests, and Bug Reports. Get involved!
 
 :::alert{type="info"}
-**Using an AI coding agent?** Add the [Kestra MCP server](../ai-tools/kestra-mcp-resources/index.md) to Claude Code, Cursor, or any MCP-compatible tool for live access to plugin docs, blueprints, and Kestra documentation while you build.
+**Prefer to work from your terminal or editor?** Claude Code, Cursor, Codex, and other coding agents can write and deploy flows for you using the Kestra MCP server, Agent Skills, and `kestractl`. See [AI tools](../ai-tools/index.mdx) to compare that with the in-product AI Copilot.
 :::

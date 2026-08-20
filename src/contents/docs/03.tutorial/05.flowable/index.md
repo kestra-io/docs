@@ -107,7 +107,11 @@ tasks:
         uri: "https://openlibrary.org/search.json?author={{ item.value }}&sort=new"
 ```
 
-After execution, the Gantt view shows a separate task group for each author. See the [Loop documentation](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) for output collection, nested loops, error handling, and map-reduce patterns.
+After execution, the Gantt view shows the main Loop task with the sub-executions for each loop through the values list for each author. Click into **Iterations** to view each loop individually.
+
+![Loop Execution](./loop-authors-2-0.png)
+
+See the [Loop documentation](../../05.workflow-components/01.tasks/00.flowable-tasks/index.md#loop) for output collection, nested loops, error handling, and map-reduce patterns.
 
 ### LoopUntil
 

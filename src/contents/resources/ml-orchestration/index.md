@@ -4,7 +4,7 @@ description: "ML orchestration automates, manages, and monitors the entire lifec
 metaTitle: "ML Orchestration: Automate Machine Learning Pipelines"
 metaDescription: "Automate and manage your machine learning workflows with ML orchestration. Explore best practices, tools, and how Kestra simplifies scaling your ML models."
 tag: "ai"
-date: 2026-07-07
+date: 2026-07-14
 slug: "ml-orchestration"
 faq:
   - question: "What is ML orchestration?"
@@ -139,6 +139,8 @@ A few things are worth noticing in this workflow:
 ## ML Orchestration vs. MLOps: Understanding the Broader Picture
 
 The terms "ML Orchestration" and "MLOps" are often used interchangeably, but they represent different scopes. MLOps is a broad discipline, while orchestration is a specific, foundational technology within it.
+
+Widen the frame once more and ML orchestration becomes one branch of [AI orchestration](/resources/ai/ai-orchestration), which extends the same scheduling and governance guarantees to inference, retrieval and autonomous agents.
 
 ### Orchestration as a Foundational Layer of MLOps
 MLOps (Machine Learning Operations) is a set of practices that aims to deploy and maintain ML models in production reliably and efficiently. It covers the entire lifecycle, including:

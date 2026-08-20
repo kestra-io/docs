@@ -150,12 +150,11 @@
 
     import CheckBoldIcon from "vue-material-design-icons/CheckBold.vue"
 
-    import { getHubspotTracking } from "~/utils/hubspot"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import { $fetch } from "~/utils/fetch"
     import identify from "~/utils/identify"
 
-    const HUBSPOT_URL =
-        "https://api-eu1.hsforms.com/submissions/v3/integration/submit/27220195/a75dff2b-9d18-46fc-8d94-16815b4e3898"
+    const HUBSPOT_FORM_ID = "a75dff2b-9d18-46fc-8d94-16815b4e3898"
 
     const gtm = useGtm()
     const formRef = useTemplateRef<HTMLFormElement>("early-adopter-form")
@@ -220,13 +219,7 @@
                 },
             }
 
-            await $fetch(HUBSPOT_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            })
+            await submitHubspotForm(HUBSPOT_FORM_ID, payload)
 
             posthog.capture("early_adopter_form")
             hsq.push([

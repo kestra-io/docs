@@ -17,6 +17,16 @@ pre {
     color: var(--ks-content-primary);
 }
 
+// Shiki dual-theme: token colors apply inline (light) via Shiki's own
+// per-token `style` attribute; switch to the dark theme via the per-token
+// `--shiki-dark` CSS variable when `.dark` is set on <html>. `!important`
+// is required to beat the inline light-theme color. Single source for the
+// v-html markdown output of MDCParserAndRendererSSR, BlueprintMarkdownBody
+// and Snippets — don't duplicate this per-component.
+html.dark .mdc-renderer pre code span {
+    color: var(--shiki-dark) !important;
+}
+
 body {
     --announce-height: 0px;
     min-width: 320px;

@@ -7,15 +7,7 @@ icon: /src/contents/docs/icons/installation.svg
 editions: ["EE"]
 ---
 
-Install Kestra on a standalone server with a simple executable file.
-
-## Run Kestra Enterprise from a standalone JAR
-
-To deploy Kestra without Docker, there's a standalone JAR available that allows deployment in any environment that has JVM version 21+.
-
-## Instructions
-
-The following is a quick start guide to get your Kestra Enterprise Edition up and running in standalone mode.
+To deploy Kestra without Docker, use the standalone JAR — a single executable that runs in any environment with JVM 21+.
 
 ## Standalone JAR
 
@@ -34,7 +26,7 @@ Make sure to store your credentials in an `application.yaml` file.
 
 This provides a single JAR file that can be used to start Kestra. Store the file in your execution environment as `kestra` (make it executable).
 
-To make the file executable, Linux or MacOS users use the following with filename:
+Make the file executable (Linux or macOS):
 
 ```bash
 chmod +x kestra-ee-VERSION # Replace VERSION with your version
@@ -47,7 +39,7 @@ mv kestra-ee-VERSION /usr/local/bin/kestra # Replace with your version and execu
 chmod +x /usr/local/bin/kestra
 ```
 
-The file is then executable with:
+Then run:
 
 ```bash
 ./kestra-ee-VERSION server standalone # Replace VERSION with your version
@@ -82,7 +74,7 @@ kestra plugins install --all
 
 This installs task plugins in the `plugins` directory. To install them elsewhere, specify a path with the `-p` argument.
 
-Additional Enterprise Edition plugins that are not task related may also be required -- such as secrets or storage plugins.
+Additional Enterprise Edition plugins that are not task-related may also be required — such as secrets or storage plugins.
 
 ## Secret plugins
 
@@ -125,7 +117,7 @@ To enable Kestra Enterprise features, configure the following parameters:
 
 Kestra can be started in **standalone mode** or in a **distributed setup** for production.
 
-Make sure to have a database configured and your Enterprise credentials stored in the `application.yaml` file.
+Ensure a database is configured and your Enterprise credentials are stored in `application.yaml`.
 
 ## Standalone server
 
@@ -137,7 +129,7 @@ This starts Kestra as a standalone service on port `8080`.
 
 ## Distributed mode
 
-For production usage, Kestra should run in distributed mode for scalability and high availability.
+For production, run Kestra in distributed mode for scalability and high availability.
 
 Each component can run independently across servers, with shared access to the same database (no TCP communication is required between components).
 

@@ -63,6 +63,7 @@
                                 <MDCParserAndRenderer
                                     class="bd-markdown"
                                     :content="message.markdown"
+                                    copyable
                                 />
                             </div>
 
@@ -110,9 +111,19 @@
                             </div>
                         </div>
 
-                        <span class="timestamp">{{
-                            formatTimestamp(message.timestamp)
-                        }}</span>
+                        <div class="message-footer">
+                            <span class="timestamp">{{
+                                formatTimestamp(message.timestamp)
+                            }}</span>
+                            <Copy
+                                v-if="
+                                    message.role === 'assistant' &&
+                                    message.content &&
+                                    !(isLoading && index === messages.length - 1)
+                                "
+                                :code="message.content"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -162,6 +173,7 @@
     import TrashCan from "vue-material-design-icons/TrashCan.vue"
     import AccountCircle from "vue-material-design-icons/AccountCircle.vue"
     import FileDocumentOutline from "vue-material-design-icons/FileDocumentOutline.vue"
+    import Copy from "~/components/common/Copy.vue"
     import {
         extractSourcesFromMarkdown,
         isInternalLink,
@@ -430,6 +442,8 @@
             )
         } finally {
             isLoading.value = false
+            await nextTick()
+            textareaRef.value?.focus()
         }
     }
 </script>
@@ -588,6 +602,10 @@
                 gap: 0.5rem;
             }
 
+            &.message-user .bubble {
+                white-space: pre-line;
+            }
+
             .avatar {
                 flex-shrink: 0;
 
@@ -608,7 +626,6 @@
                 background: var(--ks-background-body);
                 border: $block-border;
                 color: var(--ks-content-primary);
-                white-space: pre-line;
                 max-width: calc(100% - 48px);
                 position: relative;
 
@@ -626,26 +643,51 @@
                     }
                 }
 
-                .timestamp {
-                    font-size: 0.7rem;
-                    color: var(--ks-content-tertiary);
-                    display: block;
-                    text-align: right;
+                .message-footer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 0.5rem;
                     margin-top: 0.5rem;
                 }
 
+                .timestamp {
+                    font-size: 0.7rem;
+                    color: var(--ks-content-tertiary);
+                }
+
                 :deep(pre) {
+                    position: relative;
                     border: $block-border;
                     padding: 1rem;
                     border-radius: 0.5rem;
                     margin: 1rem 0;
-                }
 
-                :deep(.language),
-                :deep(.copy) {
-                    position: absolute;
-                    top: 1.75rem;
-                    right: 1rem;
+                    .code-copy {
+                        position: absolute;
+                        top: 0.5rem;
+                        right: 0.5rem;
+                        display: inline-flex;
+                        padding: 0.25rem;
+                        border: 0;
+                        border-radius: 4px;
+                        background: var(--ks-background-body);
+                        color: var(--ks-content-tertiary);
+                        cursor: pointer;
+
+                        &:hover {
+                            color: var(--ks-content-primary);
+                        }
+
+                        .icon-check,
+                        &.copied .icon-copy {
+                            display: none;
+                        }
+
+                        &.copied .icon-check {
+                            display: block;
+                        }
+                    }
                 }
 
                 :deep(.code-block) {

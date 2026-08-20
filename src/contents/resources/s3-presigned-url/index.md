@@ -4,7 +4,7 @@ description: "S3 Presigned URLs offer a secure, temporary way to share or upload
 metaTitle: "S3 Presigned URLs: Secure Access to Amazon S3 Objects"
 metaDescription: "S3 presigned URLs provide secure, time-limited access to Amazon S3 objects. Learn how they work and automate their generation for uploads and downloads."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-14
 slug: "s3-presigned-url"
 faq:
   - question: "What is an S3 presigned URL?"

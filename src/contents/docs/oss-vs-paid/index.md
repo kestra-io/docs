@@ -46,6 +46,8 @@ The Open-Source Edition runs by default on a single server, which can become a b
 Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
 :::
 
+The [External Log Data Store](../10.administrator-guide/log-data-store/index.md) routes execution logs to a dedicated JDBC database (OSS) or Elasticsearch (EE), keeping the main database lean and reducing schema migration time.
+
 [Maintenance Mode](../07.enterprise/05.instance/maintenance-mode/index.md) allows safe upgrades: new executions queue while in-progress tasks complete gracefully, avoiding abrupt workflow termination. [Cluster monitoring](../07.enterprise/05.instance/index.mdx) provides real-time visibility into resource usage, helping teams proactively address infrastructure bottlenecks. Additionally, using **Custom Dashboards**, you can create custom views to track specific metrics, logs, or executions. The [Backup and Restore](../10.administrator-guide/backup-and-restore/index.md) eliminates the risk of data loss or corruption during upgrades, allowing you to recover from accidental deletions or system failures.
 
 [Versioned Plugins](../07.enterprise/05.instance/versioned-plugins/index.md) let you pin plugin versions per environment for safe rollouts, while the [Kill Switch](../07.enterprise/05.instance/kill-switch/index.md) can pause risky changes instantly. [Announcements](../07.enterprise/05.instance/announcements/index.md) provide in-product notifications for maintenance or policy updates.

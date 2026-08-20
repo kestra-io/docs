@@ -8,23 +8,27 @@ editions: ["EE", "Cloud"]
 version: "0.21.0"
 ---
 
-Manage and distribute logs across your entire infrastructure.
+Log Shipper exports Kestra execution and audit logs to external observability platforms and SIEMs.
+
+:::alert{type="info"}
+**Log Shipper vs External Log Data Store** — these solve different problems. Log Shipper copies logs to third-party observability platforms (Datadog, Splunk, CloudWatch, etc.) for alerting and search. The [External Log Data Store](../../../10.administrator-guide/log-data-store/index.md) routes Kestra's primary log storage to a separate database or Elasticsearch, reducing main database size without any flow or sidecar. Both can be active at the same time.
+:::
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=9BrJXbEZLXbRXQIN" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Log shipper – centralize logs
+## Log shipper — centralize logs
 
 Log Shipper can distribute Kestra logs from across your instance to an external logging platform. Log synchronization fetches logs and batches them into optimized chunks automatically. The batch process is done intelligently through defined synchronization points. Once batched, the Log Shipper delivers consistent and reliable data to your monitoring platform.
 
-Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, Huawei Cloud LTS, OpenTelemetry, and Dash0.
+Log Shipper is built on top of [Kestra plugins](/plugins), ensuring it can integrate with popular logging platforms and expand as more plugins are developed. Supported observability platforms include ElasticSearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS Cloudwatch, Splunk, OpenSearch, Huawei Cloud LTS, OpenTelemetry, Graylog, Dash0, and Syslog (CEF).
 
 ## Log shipper properties
 
 The Log Shipper plugin has several key properties to define where the logs should be sent and how they are batched. Below is a list of the definable properties and their purpose:
 
-- `logExporters` - This property is required, and it specifies the platform where the logs will be exported. It support a list of entries, allowing you to export logs to different platforms at once
+- `logExporters` - This property is required, and it specifies the platform where the logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
 - `logLevelFilter` - Specifies the minimum log level to send with the default being `INFO`. With `INFO`, all log levels `INFO` and above (`WARNING` and `ERROR`) are batched. If you only want logs that are warnings or errors, then you can set this property to `WARNING` and so on.
 - `lookbackPeriod` - Determines the fetch period for logs to be sent. For example, with a default value of `P1D`, all logs generated between now and one day ago are batched.
 - `namespace` - Sets the task to only gather logs from a specific Kestra [Namespace](../../../05.workflow-components/02.namespace/index.md). If not specified, all instance logs are fetched.
@@ -33,7 +37,7 @@ The Log Shipper plugin has several key properties to define where the logs shoul
 
 ## How log shipper works
 
-Let's take a look at a simple example of a Log Shipper task that fetches logs and exports them to AWS CloudWatch, Google Operational Suite, and Azure Monitor at the same time.
+The following flow exports logs to AWS CloudWatch, Google Operational Suite, and Azure Monitor simultaneously.
 
 ```yaml
 id: logShipper
@@ -80,8 +84,6 @@ The logs are then distributed to the exporters in chunks of 5000, 2000, and 1000
 
 ## Log shipper examples
 
-The Log Shipper integrates with many popular observability platforms. Below are a couple of example flows using a Kestra core plugin as well as external platform plugins.
-
 ### Kestra `FileLogExporter`
 
 The following example uses Kestra's core `FileLogExporter` plugin to synchronize the logs of the `company.team` namespace. The `synchronize_logs` task outputs a file, and the log file `uri` is passed as an expression in the `upload` task to then upload the logs to an S3 bucket.
@@ -116,7 +118,7 @@ tasks:
 
 ### Datadog
 
-The below example demonstrates an execution that runs a daily log synchronization and distribution of logs with [Datadog](https://www.datadoghq.com/) using the default property settings.
+This example exports logs to [Datadog](https://www.datadoghq.com/) using the default property settings:
 
 ```yaml
 id: log_shipper
@@ -144,9 +146,9 @@ The batched logs directly populate your Datadog instance like in the following s
 
 ![Datadog Logs](./logshipper_datadog.png)
 
-### AWS Cloudwatch
+### AWS CloudWatch
 
-This example exports logs to [AWS Cloudwatch](https://aws.amazon.com/cloudwatch/). The following example flow triggers a daily batch and exports to AWS's service [Amazon CloudWatch](https://docs.aws.amazon.com/cloudwatch/):
+This example exports logs to [AWS CloudWatch](https://aws.amazon.com/cloudwatch/):
 
 ```yaml
 id: log_shipper
@@ -180,7 +182,7 @@ The logs are viewable in the interface of the specified Log Group and can be exa
 
 ### AWS S3
 
-This example exports logs to [AWS S3](https://aws.amazon.com/s3/). The following example flow triggers a daily batch and exports to AWS's S3 object storage:
+This example exports logs to [AWS S3](https://aws.amazon.com/s3/):
 
 ```yaml
 id: log_shipper
@@ -209,7 +211,7 @@ tasks:
 ```
 ### Google Operational Suite
 
-This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability). The following example flow triggers a daily batch and exports to Google Cloud Platform's observability monitor:
+This example exports logs to [Google Cloud Observability](https://cloud.google.com/products/observability):
 
 ```yaml
 id: log_shipper
@@ -233,7 +235,7 @@ tasks:
         projectId: my-gcp-project
 ```
 
-This example exports logs to [Google Cloud Storage](https://cloud.google.com/storage?hl=en). The following example flow triggers a daily batch and exports to Google Cloud Storage:
+This example exports logs to [Google Cloud Storage](https://cloud.google.com/storage?hl=en):
 
 ```yaml
 id: log_shipper
@@ -261,7 +263,7 @@ tasks:
 
 ### Azure Monitor
 
-This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview). The following example flow triggers a daily batch and export to Azure Monitor:
+This example exports logs to [Azure Monitor](https://learn.microsoft.com/en-us/azure/azure-monitor/overview):
 
 ```yaml
 id: log_shipper
@@ -292,7 +294,7 @@ tasks:
 
 ### Azure Blob Storage
 
-This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/). The following example flow triggers a daily batch and export to Azure Blob Storage:
+This example exports logs to [Azure Blob Storage](https://azure.microsoft.com/en-us/products/storage/blobs/):
 
 ```yaml
 id: log_shipper
@@ -323,7 +325,7 @@ tasks:
 
 ### Elasticsearch
 
-This example exports logs to [Elasticsearch](https://www.elastic.co). The following example flow triggers a daily batch and export to [Elasticsearch Observability platform](https://www.elastic.co/observability).
+This example exports logs to [Elasticsearch](https://www.elastic.co/observability):
 
 ```yaml
 id: logShipper
@@ -355,7 +357,7 @@ tasks:
 
 ### New Relic
 
-This example exports logs to [New Relic](https://newrelic.com/). The following example flow triggers a daily batch and export to the [New Relic Observability Platform](https://newrelic.com/platform).
+This example exports logs to [New Relic](https://newrelic.com/platform):
 
 ```yaml
 id: logShipper
@@ -382,7 +384,7 @@ tasks:
 
 ### Splunk
 
-This example exports logs to [Splunk](https://www.splunk.com/). The following example flow triggers a daily batch and export to [Splunk Observability Cloud](https://www.splunk.com/en_us/products/observability-cloud.html).
+This example exports logs to [Splunk Observability Cloud](https://www.splunk.com/en_us/products/observability-cloud.html):
 
 ```yaml
 id: log_shipper
@@ -393,23 +395,23 @@ triggers:
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@daily"
 
-  tasks:
-    - id: log_export
-      type: io.kestra.plugin.ee.core.log.LogShipper
-      logLevelFilter: INFO
-      lookbackPeriod: P1D
-      offsetKey: logShipperOffset
-      delete: false
-      logExporters:
-        - id: SplunkLogExporter
-          type: io.kestra.plugin.ee.splunk.LogExporter
-          host: https://example.splunkcloud.com:8088
-          token: "{{ secret('SPLUNK_API_KEY') }}"
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: logShipperOffset
+    delete: false
+    logExporters:
+      - id: SplunkLogExporter
+        type: io.kestra.plugin.ee.splunk.LogExporter
+        host: https://example.splunkcloud.com:8088
+        token: "{{ secret('SPLUNK_API_KEY') }}"
 ```
 
 ### OpenSearch
 
-This example exports logs to [OpenSearch](https://opensearch.org/) database. The following example flow triggers a daily batch and export to [OpenSearch Observability platform](https://opensearch.org/platform/observability/index.html).
+This example exports logs to the [OpenSearch observability platform](https://opensearch.org/platform/observability/index.html):
 
 ```yaml
 id: log_shipper
@@ -438,7 +440,7 @@ tasks:
 
 ### OpenTelemetry
 
-This example exports logs to [OpenTelemetry](https://opentelemetry.io/). The following example flow triggers a daily batch and export to an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/).
+This example exports logs to an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/):
 
 ```yaml
 id: logShipper
@@ -466,10 +468,10 @@ tasks:
 
 ### Graylog
 
-This example exports logs to [Graylog](https://graylog.org/). The following example flow triggers a daily batch sends logs to Graylog using a GELF HTTP input. Refer to the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for more property details.
+This example exports logs to [Graylog](https://graylog.org/) using a GELF HTTP input. See the [Graylog Plugin Documentation](/plugins/plugin-ee-graylog) for the full property reference.
 
 ```yaml
- id: log_shipper
+id: log_shipper
 namespace: system
 
 triggers:
@@ -492,7 +494,7 @@ tasks:
 
 ### Huawei Cloud LTS
 
-This example exports logs to [Huawei Cloud Log Tank Service (LTS)](https://www.huaweicloud.com/intl/en-us/product/lts.html). The following example flow triggers a daily batch and ships logs to an LTS log stream. Refer to the [Huawei EE Plugin Documentation](/plugins/plugin-ee-huawei) for more property details.
+This example exports logs to [Huawei Cloud Log Tank Service (LTS)](https://www.huaweicloud.com/intl/en-us/product/lts.html). See the [Huawei EE Plugin Documentation](/plugins/plugin-ee-huawei) for the full property reference.
 
 ```yaml
 id: log_shipper
@@ -524,6 +526,65 @@ tasks:
 
 The Huawei Cloud LTS exporter authenticates with Huawei Cloud using either static AK/SK credentials (`accessKeyId` and `secretAccessKey`), a pre-obtained `securityToken`, or inline IAM STS credential exchange via `temporaryCredentials`. The `logGroupId` and `logStreamId` are UUIDs that you can copy from the LTS console (they are not the human-readable group and stream names).
 
+### Syslog (CEF)
+
+This example exports logs to a syslog-compatible SIEM such as ArcSight, QRadar, or Trellix using [Common Event Format (CEF)](https://www.microfocus.com/documentation/arcsight/arcsight-smartconnectors-8.4/cef-implementation-standard/) over TCP. Refer to the [Syslog Plugin Documentation](/plugins/plugin-ee-syslog) for the full property reference.
+
+```yaml
+id: log_shipper
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    offsetKey: syslog-log-offset
+    logExporters:
+      - id: syslog
+        type: io.kestra.plugin.ee.syslog.LogExporter
+        host: "{{ secret('SIEM_HOST') }}"
+        port: 601
+        protocol: TCP
+```
+
+For TLS transport — recommended for production — use port 6514 and configure the truststore:
+
+```yaml
+id: log_shipper_tls
+namespace: system
+
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "@daily"
+
+tasks:
+  - id: log_export
+    type: io.kestra.plugin.ee.core.log.LogShipper
+    logLevelFilter: INFO
+    lookbackPeriod: P1D
+    logExporters:
+      - id: syslog
+        type: io.kestra.plugin.ee.syslog.LogExporter
+        host: "{{ secret('SIEM_HOST') }}"
+        port: 6514
+        protocol: TLS
+        trustStore: "{{ secret('SIEM_TRUSTSTORE_BASE64') }}"
+        trustStorePassword: "{{ secret('SIEM_TRUSTSTORE_PASSWORD') }}"
+```
+
+:::alert{type="warning"}
+`skipCertVerification: true` disables certificate validation. Use it only in lab environments with self-signed certificates, never in production.
+:::
+
+To ship [Audit Logs](../06.audit-logs/index.md) to your SIEM, use the same exporter with `AuditLogShipper` — replace `logLevelFilter` with `resources`.
+
 ### Dash0
 
 This example exports logs to [Dash0](https://www.dash0.com/) via OTLP/HTTP. Set `endpoint` to the ingestion URL for your Dash0 region. Set `dataset` to route logs to a named dataset, or omit it to use the Dash0 `default` dataset.
@@ -552,7 +613,7 @@ tasks:
 
 ## Audit log shipper
 
-To send [Audit Logs](../06.audit-logs/index.md) to an external system, there is the Audit Log Shipper task type. The Audit Log Shipper task extracts logs from the Kestra backend and loads them to desired destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, and Azure Monitor.
+Use [Audit Log Shipper](../06.audit-logs/index.md) to ship audit logs from the Kestra backend to external destinations including Datadog, Elasticsearch, New Relic, OpenTelemetry, AWS CloudWatch, Google Operational Suite, Azure Monitor, and Syslog (CEF).
 
 The Audit Log Shipper uses the following properties similar to the execution Log Shipper, except that the `resources` property replaces the `logLevelFilter` property.
 - `logExporters` - This property is required, and it specifies the platform where the audit logs will be exported. It supports a list of entries, allowing you to export logs to different platforms at once
@@ -561,7 +622,7 @@ The Audit Log Shipper uses the following properties similar to the execution Log
 - `offsetKey` - Specifies the [key](../../../06.concepts/05.kv-store/index.md) that contains the last fetched date. By default, Kestra uses the key `LogShipper-state`. You can change the value of that KV pair if you want to export previously fetched logs again.
 - `delete` - Boolean property that, when set to `true`, deletes the logs from Kestra’s database immediately after successful export, helping optimize storage by removing logs that no longer need to reside in Kestra’s metadata store. By default, this property is set to `false`.
 
-The below workflow ships Audit Logs to multiple destinations using each of the supported monitoring systems.
+The following workflow ships audit logs to multiple destinations simultaneously.
 
 ```yaml
 id: Audit-logShipper

@@ -119,7 +119,7 @@ tasks:
     type: io.kestra.plugin.ai.rag.ChatCompletion
     chatProvider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
       apiKey: "{{ secret('GEMINI_API_KEY') }}"
     embeddingProvider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
@@ -175,5 +175,5 @@ If you're working through the LLM Zoomcamp orchestration module, this is the sam
 
 Once the pipeline is running reliably, the natural next step is giving it more autonomy.
 
-- Docs: [RAG workflows in Kestra](../../docs/ai-tools/ai-rag-workflows/index.md)
+- Docs: [RAG workflows in Kestra](../../docs/ai-tools/07.ai-rag-workflows/index.md)
 - Reference: [the RAG plugin](/plugins/plugin-ai/rag) and [vector databases explained](/resources/ai/vector-database)

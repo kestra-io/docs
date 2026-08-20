@@ -23,7 +23,7 @@ Kestra 2.0 moves task run outputs to a dedicated storage layer and changes what 
 
 **Paginated execution list** (`GET /api/v1/{tenant}/executions/search`):
 
-- `taskRunList` is removed entirely from list responses. Each item in the list contains execution-level fields only (`id`, `namespace`, `flowId`, `state`, `outputs`, `labels`, etc.).
+- `taskRunList` is removed entirely from list responses. Each item in the list contains execution-level fields only (`id`, `namespace`, `flowId`, `state`, `labels`, `kind`, `originalId`, etc.). Flow-level `outputs` are not included in list items — fetch the single execution endpoint to get them.
 
 **Both endpoints:**
 

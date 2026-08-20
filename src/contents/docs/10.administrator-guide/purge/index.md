@@ -4,15 +4,14 @@ h1: Delete old executions, logs, and files to reclaim storage
 description: Reclaim storage by purging old executions, logs, KV entries, and orphaned execution files in Kestra. Configure scheduled purge jobs to keep your database lean in production.
 sidebarTitle: Purge
 icon: /src/contents/docs/icons/admin.svg
-version: ">= 0.18.0"
 ---
 
-Use purge tasks to remove old executions, logs, and key-value pairs, helping reduce storage usage.
+Use purge tasks to remove old executions, logs, and key-value pairs and reduce storage usage.
 
 To keep storage optimized, use [`PurgeExecutions`](/plugins/core/execution/io.kestra.plugin.core.execution.purgeexecutions), [`PurgeLogs`](/plugins/core/log/io.kestra.plugin.core.log.purgelogs), [`PurgeKV`](/plugins/core/kv/io.kestra.plugin.core.kv.purgekv), and [`PurgeStorage`](/plugins/core/storage/io.kestra.plugin.core.storage.purgestorage).
 
 - `PurgeExecutions`: deletes execution records from the database and their associated storage files
-- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently
+- `PurgeLogs`: removes execution logs and non-execution logs (e.g. trigger logs) in bulk; use `purgeExecutionLogs` and `purgeNonExecutionLogs` to target each type independently. If you have configured an [external log data store](../log-data-store/index.md) that does not support purge, `PurgeLogs` is a no-op for logs — manage retention directly in that backend.
 - `PurgeKV`: deletes expired keys globally for a specific namespace
 - `PurgeStorage`: removes orphaned execution files from internal storage — files that exist on disk but whose execution records are no longer in the database
 
@@ -24,14 +23,19 @@ The [Enterprise Edition](../../07.enterprise/index.mdx) also includes [`PurgeAud
 
 ## Purge executions and logs
 
-The flow below purges executions and logs older than one month on a daily schedule:
+Use a multi-step log purge that applies progressively shorter retention windows by log level. Verbose logs accumulate far faster than errors or warnings, so keeping them longer than necessary inflates storage without adding much value:
+
+- All logs: purge anything older than **1 month**
+- DEBUG logs: purge anything older than **1 week** — error stacktraces are often logged at DEBUG level, so this also removes them; extend the window if you need those for post-incident debugging
+- TRACE logs: purge anything older than **1 day**
 
 ```yaml
 id: purge
-namespace: company.myteam
+namespace: system
 description: |
-  This flow will remove all executions and logs older than 1 month.
-  We recommend running it daily to prevent storage issues.
+  Multi-step purge: removes all logs older than one month, DEBUG logs older
+  than one week, and TRACE logs older than one day. Run daily to prevent
+  storage issues.
 
 tasks:
   - id: purge_executions
@@ -42,6 +46,20 @@ tasks:
   - id: purge_logs
     type: io.kestra.plugin.core.log.PurgeLogs
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
+
+  # DEBUG logs often include error stacktraces; this shorter window keeps
+  # storage lean while still retaining recent failures for debugging.
+  - id: purge_debug_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-1, 'WEEKS') }}"
+    logLevels:
+      - DEBUG
+
+  - id: purge_trace_logs
+    type: io.kestra.plugin.core.log.PurgeLogs
+    endDate: "{{ now() | dateAdd(-1, 'DAYS') }}"
+    logLevels:
+      - TRACE
 
 triggers:
   - id: daily
@@ -195,7 +213,7 @@ Both tasks run sequentially in the same execution. Check the `dry_run` task outp
 In the Enterprise Edition, sub-namespaces configured with their own dedicated storage are **not** reached by recursive namespace scoping — they must be targeted explicitly by setting `namespace` to that sub-namespace. This applies directly to the isolated worker group pattern above.
 :::
 
-## Purge Key-value pairs
+## Purge key-value pairs
 
 The example below purges expired key-value pairs from the `company` namespace. It's set up as a flow in the [`system`](../../06.concepts/system-flows/index.md) namespace.
 
@@ -305,11 +323,3 @@ This distinction matters for compliance and troubleshooting: purge flows are bes
 Purge tasks do not affect Kestra’s [internal queues](../../08.architecture/01.main-components/index.md#queue). Queue retention is managed separately via the [Runtime and Storage configuration](../../configuration/02.runtime-and-storage/index.md) for JDBC or the [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md) for Kafka.
 :::
 
-:::collapse{title="Renamed Purge Tasks in 0.18.0"}
-We've [improved](https://github.com/kestra-io/kestra/pull/4298) the mechanism of the **Purge tasks** to make them more performant and reliable — some tasks have been renamed to reflect their enhanced functionality.
-
-Here are the main `Purge` plugin changes in Kestra 0.18.0:
-
-- `io.kestra.plugin.core.storage.Purge` has been renamed to `io.kestra.plugin.core.execution.PurgeExecutions` to reflect that it only purges data related to executions (e.g., it doesn't include trigger logs; use the `PurgeLogs` task for those). An alias has been added so that using the old task type will still work, but it will emit a warning. Use the new task type going forward.
-- `io.kestra.plugin.core.storage.PurgeExecution` has been renamed to `io.kestra.plugin.core.storage.PurgeCurrentExecutionFiles` to reflect that it purges all data from the current execution, including inputs and outputs. An alias has been added for backward compatibility, but update your flows to use the new task type.
-:::

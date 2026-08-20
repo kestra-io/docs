@@ -6,42 +6,23 @@ sidebarTitle: Dashboards
 icon: /src/contents/docs/icons/ui.svg
 ---
 
-Get insights into your workflows with Dashboards.
-
-The first time you access the **Dashboard**, a welcome screen helps you get started. Once you have executed a flow, your execution data appears here.
-
-## Dashboard page
-
-The Dashboard page displays both the **default dashboard** and any **custom dashboards** you've created. To switch between dashboards, use the hamburger menu. If you have over 10 dashboards, type the dashboard name in the search bar to quickly find it. The same menu also lets you edit or delete existing dashboards. From your dashboard, you can apply and save filters, refresh data, and set an automatic periodic refresh.
+The **Dashboards** page displays the default dashboard and any custom dashboards you've created. Switch between them using the hamburger menu — if you have more than 10, use the search bar. The same menu lets you edit or delete dashboards. From any dashboard you can apply and save filters, refresh data, and set an automatic periodic refresh.
 
 ![Dashboard Main Page](./main_page.png)
 
-Dashboards display the following data:
-- Executions over time
-- Execution Status for Today, Yesterday, as well as Last 30 days
-- Executions per namespace
-- Execution errors per namespace
-- List of failed Executions
-- List of error logs
-- A ratio of execution successes to total executions
-
 ## Custom dashboards
 
-Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra's home screen, you can create a custom dashboard with charts that answer specific questions and track key metrics. Each chart's configuration can be modified individually using the pencil icon in the dashboard view.
+Custom dashboards let you define queries and charts to visualize execution, log, and metric data. Edit each chart individually using the pencil icon in the dashboard view.
 
-You can build custom dashboards using the **No Code editor** (form-based, no YAML required) or by **writing YAML directly**. Both produce the same schema-validated output.
+Build dashboards using the **No Code editor** (no YAML required) or by **writing YAML directly**. Both produce the same schema-validated output.
 
 ### No Code editor
 
-The No Code editor lets you design dashboards directly in the UI using structured forms. As you configure charts and data sources, the editor generates YAML in real time and stays synchronized with the live preview — switch between views at any time.
-
-- **Speed & accessibility**: Build dashboards without writing YAML — ideal for analysts, operators, or anyone new to Kestra.
-- **Visual clarity**: Live previews let you see your dashboard evolve as you edit.
-- **No ceiling**: Switch to YAML when you need filters, dynamic queries, or advanced layout logic — all in the same editor.
+The No Code editor lets you design dashboards using structured forms. As you configure charts and data sources, YAML is generated in real time and the live preview stays in sync. Switch to YAML at any point for filters, dynamic queries, or advanced layout logic — both views reflect the same underlying definition.
 
 #### Interactive demo
 
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/osPYHR3VcFqjZ1HDVF8A?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="No Code Dashboard | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/A1Gzd3z79SqN1t2cSqGN?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dashboard No Code | Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 For a step-by-step walkthrough of building your first KPI chart using the No Code editor, see [Build a KPI success ratio chart](../../15.how-to-guides/dashboard-kpi-chart/index.md).
 
@@ -49,7 +30,7 @@ For a step-by-step walkthrough of building your first KPI chart using the No Cod
 
 Dashboards support six chart types: **Bar**, **Pie**, **TimeSeries**, **Table**, **KPI**, and **Markdown**. Each data chart type is composed of `chartOptions` and `data`.
 
-A chart's `chartOptions` property is where you customize display names and descriptions, and choose whether to add legends and tooltips to complement the visualization. A chart's `data` property is where you specify which Kestra data to use as a column, how you want the data displayed (e.g., an aggregate count or an `ORDER BY`), and add any [filters](#querying-data) you might want applied to the chart (e.g., REGEX match, greater or less than, or not Null).
+A chart's `chartOptions` property controls display names, descriptions, legends, and tooltips. The `data` property specifies the data source, which columns to display (including aggregations and sort order), and any [filters](#querying-data) to apply.
 
 Each chart's options are listed in the [Chart Plugin Documentation](/plugins/core/chart) where you can dive further into the properties of each type.
 
@@ -304,13 +285,9 @@ charts:
       flowId: my_flow
 ```
 
-:::alert{type="info"}
-To use `FlowDescription`, set `source.type` to `FlowDescription` and provide the `namespace` and `flowId`. For inline Markdown, set `source.type` to `Text` and write your content under `source.content`.
-:::
+## Dashboard as code
 
-## Create a new custom dashboard as code
-
-The **+ Create new dashboard** button opens a code editor where you can define the dashboard layout and data sources as code.
+The **+ Create new dashboard** button opens the editor. Select the YAML view to define the dashboard layout and charts directly as code.
 
 The top-level dashboard properties are:
 
@@ -322,7 +299,7 @@ The top-level dashboard properties are:
 | `timeWindow.max` | Maximum selectable time range (e.g., `P365D`) |
 | `charts` | List of chart definitions |
 
-Below is an example of a dashboard definition that displays executions over time, flow execution success ratio, a table that uses metrics to display the sum of sales per namespace, a table that shows the log count by level per namespace, and a Markdown insights panel:
+The example below defines a dashboard with a TimeSeries execution chart, a success ratio KPI, two data tables, and a Markdown panel:
 
 :::collapse{title="Expand for an example dashboard definition"}
 ```yaml
@@ -441,15 +418,13 @@ charts:
 ```
 :::
 
-:::alert{type="info"}
-To see all available properties to configure a custom dashboard as code, see examples provided in the [Enterprise Edition Examples](https://github.com/kestra-io/enterprise-edition-examples) repository.
-:::
+More dashboard examples are available in the [Enterprise Edition Examples](https://github.com/kestra-io/enterprise-edition-examples) repository.
 
 ## Exporting data
 
 Export table data as CSV using the download icon in the top-right corner of a table chart — no pagination required.
 
-![Dashboard Table Export](./dashboard-table-export.png)
+![Dashboard Table Export](./dashboard-table-export-2-0.png)
 
 ## Querying data
 
@@ -470,7 +445,7 @@ Dashboards can query data from these source `types`:
 | `io.kestra.plugin.core.dashboard.data.Metrics` | Metrics emitted by your plugins |
 | `io.kestra.plugin.core.dashboard.data.MetricsKPI` | Metrics data for KPI charts (supports `numerator`) |
 | `io.kestra.plugin.core.dashboard.data.Triggers` | Trigger state and scheduling data |
-| `io.kestra.plugin.ee.dashboard.data.Assets` | Asset inventory data (EE only). Not filtered by the dashboard time range — charts always reflect the current inventory. |
+| `io.kestra.plugin.ee.dashboard.data.Assets` | Asset inventory data (EE and Cloud only). Not filtered by the dashboard time range — charts always reflect the current inventory. |
 
 ### Available fields by data source
 
@@ -541,7 +516,7 @@ After defining the data source, specify the columns to display in the chart. Eac
 | `NEXT_EXECUTION_DATE` | Scheduled next execution date |
 | `WORKER_ID` | Worker handling the trigger |
 
-#### Assets (EE only)
+#### Assets (EE and Cloud only)
 
 | Field | Description |
 | --- | --- |
@@ -561,7 +536,7 @@ Each entry in `data.columns` supports the following properties:
 
 | Property | Description |
 | --- | --- |
-| `field` | The only required property; specifies which field from the data source to use |
+| `field` | Required. The field from the data source to display. |
 | `displayName` | Sets the label displayed in the chart |
 | `agg` | Aggregation function: `AVG`, `COUNT`, `MAX`, `MIN`, or `SUM` |
 | `graphStyle` | Series render style for TimeSeries charts: `LINES`, `BARS`, or `POINTS` (defaults to `LINES` when `agg` is set) |

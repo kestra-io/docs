@@ -1,7 +1,7 @@
 ---
 title: "Server CLI in Kestra: Commands and Options"
 h1: "Kestra Server CLI Reference: All Commands and Options"
-sidebarTitle: Kestra Server Commmands
+sidebarTitle: Kestra Server Commands
 icon: /src/contents/docs/icons/admin.svg
 editions: ["OSS", "EE"]
 description: Reference guide for Kestra CLI commands to manage servers, flows, plugins, and configurations.
@@ -63,8 +63,8 @@ Available for commands that talk to the server API.
 - `--server` — Kestra server URL (default: `http://localhost:8080`).
 - `--headers` — Add custom headers (`<name=value>`).
 - `--user` — Basic auth (`user:password`).
-- `--tenant` — Tenant identifier (**EE only**).
-- `--api-token` — API token (**EE only**).
+- `--tenant` — Tenant identifier (**EE and Cloud only**).
+- `--api-token` — API token (**EE and Cloud only**).
 
 **Examples**
 
@@ -95,7 +95,6 @@ Commands:
   tenants    handle tenants
   migrate    handle migrations
   backups    (EE) handle metadata backups and restore
-  server     start Kestra servers (see `--flow-path` below for preloading flows)
 ```
 
 ### Preload flows at startup
@@ -214,9 +213,50 @@ kestra flow delete my-namespace my-flow-id
 
 ## Migration commands
 
+### `kestra migrate plan`
+
+Lists all pending database migrations without applying them. Read-only: acquires no lock, writes nothing.
+
+**Options**: `--sql` (print the raw SQL for each SQL-based migration)
+
+```bash
+kestra migrate plan
+kestra migrate plan --sql
+```
+
+---
+
+### `kestra migrate run`
+
+Applies all pending migrations in lexicographic order. Acquires a distributed lock so only one process migrates at a time. Makes a single non-blocking lock attempt; if the lock is already held, exits immediately with code `1`.
+
+```bash
+kestra migrate run
+```
+
+:::alert{type="info"}
+Enterprise Edition users must run this command manually before starting Kestra 2.0 for the first time. By default (`kestra.migration.auto=false`), Kestra EE refuses to start if any pending migrations exist. Open-source Kestra runs migrations automatically on startup.
+:::
+
+---
+
+### `kestra migrate unlock`
+
+Force-releases the migration lock. Use only when `kestra migrate run` exited abnormally and left the lock held.
+
+```bash
+kestra migrate unlock
+```
+
+:::alert{type="warning"}
+On **PostgreSQL, MySQL, and H2**, the lock is session-scoped. `kestra migrate unlock` always exits `0` but does nothing on these backends. The lock releases when the holding process terminates. Kill the hung process instead. On **Elasticsearch**, the command works as expected.
+:::
+
+---
+
 ### `kestra migrate default-tenant`
 
-Migrate all resources without tenant to a new tenant (multi-tenant setups).
+Migrate all resources without a tenant to a new tenant (multi-tenant setups).
 
 **Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
 
@@ -352,7 +392,7 @@ kestra server webserver --no-tutorials
 
 Start a worker.
 
-**Options**: `-t, --thread` (max threads), `-g, --worker-group` (EE only)
+**Options**: `-t, --thread` (max threads)
 
 ```bash
 kestra server worker --thread 16

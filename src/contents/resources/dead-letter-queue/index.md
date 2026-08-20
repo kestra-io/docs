@@ -4,7 +4,7 @@ description: "Explore the concept of a dead letter queue (DLQ) and its vital rol
 metaTitle: "Dead Letter Queue (DLQ) Explained"
 metaDescription: "Understand what a dead letter queue (DLQ) is and why it's crucial for robust messaging. Learn how Kestra provides declarative orchestration for DLQ management."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-10
 slug: "dead-letter-queue"
 faq:
   - question: "What is the point of a dead-letter queue (DLQ)?"

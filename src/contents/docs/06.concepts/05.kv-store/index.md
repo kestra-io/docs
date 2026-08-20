@@ -8,34 +8,19 @@ version: ">= 0.18.0"
 docId: kv
 ---
 
-Build stateful workflows with the KV Store.
+The KV Store lets you persist and share key-value data across executions and flows — beyond what task outputs alone can carry.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/CNv_z-tnwnQ?si=69b0O0fxKESDnQs7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Kestra's workflows are stateless by design. All workflow executions and task runs are isolated from each other by default to avoid any unintended side effects. When you pass data between tasks, you do so explicitly by passing outputs from one task to another, and that data is stored transparently in Kestra's internal storage. This stateless execution model ensures that workflows are idempotent and can be executed anywhere in parallel at scale.
+Kestra's execution model is stateless by design — task runs are isolated and data moves between tasks via explicit outputs. The KV Store extends this with a namespace-scoped key-value layer for cases where you need to persist state across executions or share values between flows. Values are stored in Kestra's internal storage (your private cloud bucket); the database holds only metadata such as the key, TTL, and timestamps.
 
-However, in certain scenarios, your workflow might need to share data beyond passing outputs from one task to another. For example, you might want to persist data across executions or even across different workflows. This is where the Key Value (KV) store comes into play.
+## Keys and values
 
-KV Store allows you to store any data in a convenient key-value format. You can create them directly from the UI, via dedicated tasks, Terraform, or through the API.
+Keys are arbitrary strings containing uppercase or lowercase letters and standard ASCII characters.
 
-## How KV store fits into Kestra's architecture
-
-Kestra's architecture has been designed to offer a transparent separation between the orchestration and data processing capabilities. Kestra's [Executor](../../08.architecture/02.server-components/index.md#executor) is responsible for executing tasks and workflows without directly interacting with the user's infrastructure. The Executor relies on [Workers](../../08.architecture/02.server-components/index.md#worker), which are stateless processes that carry out the computation of runnable tasks and polling triggers. For privacy reasons, workers are the only components that interact with the user's infrastructure, including the internal storage and external services.
-
-Given that data persisted in the KV Store might contain sensitive information, the **KV Store has been built on top of Kestra's internal storage**. This ensures that all values are stored in your private cloud storage bucket, and Kestra's database only contains metadata about the object, such as the key, file URI, any attached metadata about the object like TTL, creation date, last updated timestamp, etc.
-
-In short, the KV Store gives you full control and privacy over your data, and Kestra only stores metadata about the KV pairs.
-
-## Keys and Values
-
-`Keys` are arbitrary strings. Keys can contain:
-
-- characters in uppercase and or lowercase
-- standard ASCII characters
-
-`Values` are stored as ION files in Kestra's internal storage. Values are strongly typed and can be of one of the following types:
+Values are stored as ION files in Kestra's internal storage and are strongly typed. Supported types:
 
 - string
 - number
@@ -43,52 +28,41 @@ In short, the KV Store gives you full control and privacy over your data, and Ke
 - datetime
 - date
 - duration
-- JSON.
+- JSON
 
-For each KV pair, you can set a `Time to Live` (TTL) to avoid cluttering your storage with data that may only be relevant for a limited time.
+Each KV pair can have a Time to Live (TTL) to automatically expire data that is only relevant for a limited period.
 
 ## Namespace binding
 
-Key value pairs are defined at a namespace level, and you can access them from the namespace page in the UI in the KV Store tab.
+KV pairs are scoped to a namespace. Access them under **Namespaces → [namespace] → KV Store** or under **Tenant → KV Store** in the sidebar for a tenant-wide view.
 
 You can create and read KV pairs across namespaces as long as those namespaces are [allowed](../../07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces).
 
-## Manage KV pairs in the UI
+## Managing KV pairs
 
-Here is a list of the different ways to manage KV pairs:
-1. **Kestra UI**: select a Namespace and go to the KV Store tab — from here, you can create, edit, and delete KV pairs.
-2. **Task in a flow**: use the `io.kestra.plugin.core.kv.Set`, `io.kestra.plugin.core.kv.Get`, and `io.kestra.plugin.core.kv.Delete` tasks to create, read, and delete KV pairs in a flow.
-3. **Kestra's API**: use our HTTP REST API to create, read, and delete KV pairs.
-4. **Kestra's Terraform provider**: use the `kestra_kv` resource to create, read, and delete KV pairs.
-5. **Pebble function**: use the `kv()` function to retrieve a value by key in a flow.
-6. **GitHub Actions**: create, read, and delete KV pairs in your CI/CD pipeline.
-7. **kestractl**: use `kestractl kv` to list, set, update, get, and delete KV pairs from the command line. See the [kestractl docs](../../kestra-cli/kestractl/index.md) for setup.
+KV pairs can be managed from the UI, in flows via tasks, through the REST API, via Terraform, or from the command line:
 
-The sections below provide detailed instructions on how to create and manage KV pairs using each of these methods.
+1. **Kestra UI**: create, edit, and delete KV pairs directly (see [Namespace binding](#namespace-binding) for navigation paths).
+2. **Tasks in a flow**: use `io.kestra.plugin.core.kv.Set`, `Get`, and `Delete` tasks.
+3. **REST API**: create, read, and delete KV pairs via the HTTP API.
+4. **Terraform**: use the `kestra_kv` resource.
+5. **Pebble function**: use `kv()` to retrieve a value inline in a flow expression.
+6. **GitHub Actions**: manage KV pairs in your CI/CD pipeline.
+7. **kestractl**: use `kestractl kv` to list, set, get, and delete from the command line. See the [kestractl docs](../../kestra-cli/kestractl/index.md) for setup.
 
-### Create new KV pairs from the UI
+### Create a KV pair from the UI
 
-1. Open the namespace where you want to create the KV pair.
-  ![navigate_to_namespace](./navigate_to_namespace.png)
-2. Open the **KV Store** tab.
-  ![navigate_to_keystore](./navigate_to_keystore.png)
-3. Click **New Key-Value** to create a KV pair. Enter a `Key` name and `Type` — string, number, boolean, datetime, date, duration, or JSON.
-  ![create_kv_pair](./create_kv_pair.png)
-4. Enter the value in the `Value` field.
-5. Optionally, you can configure a Time to Live (TTL) for the KV pair. The dropdown contains some standard durations. You can also select `Custom duration` to enter a custom duration as a string in ISO 8601 duration format.
-6. Finally, `Save` the changes. Your new KV pair should now be displayed in the list of KV pairs for that namespace.
+Open the **KV Store** tab and click **New Key-Value**. Enter a key name, select a type (string, number, boolean, datetime, date, duration, or JSON), and enter the value. Optionally set a TTL — choose a standard duration from the dropdown or select **Custom duration** to enter an ISO 8601 duration string. Click **Save**.
 
 ### Update, delete, and copy KV pairs
 
-Edit, delete, or copy any KV pair using the action buttons on the right. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (i.e., `{{ kv('YOUR_KEY') }}`) so you can use it directly in your flow.
+Edit, delete, or copy any KV pair using the action buttons on the right. The copy option copies the [Pebble expression for the KV pair](#read-kv-pairs-with-pebble) (`{{ kv('YOUR_KEY') }}`) ready to paste into a flow.
 
-![edit_delete_kv_pair](./edit_delete_kv_pair.png)
+## KV tasks in flows
 
-## CODE: How to Create, Read, Update and Delete KV pairs in your flow code
+### Create a KV pair with the `Set` task
 
-### Create a new KV pair with the `Set` task in a flow
-
-To create a KV pair from a flow, you can use the `io.kestra.plugin.core.kv.Set` task. Below is an example of how to create a KV pair in a flow:
+Use `io.kestra.plugin.core.kv.Set` to create or update a KV pair from a flow:
 
 ```yaml
 id: add_kv_pair
@@ -129,19 +103,17 @@ tasks:
       favorite_song: "{{ fromJson(kv('json_kv')).song }}"
 ```
 
-You can use the `io.kestra.plugin.core.kv.Set` task to create or modify any KV pair. When modifying existing values, you can leverage the `overwrite` boolean parameter to control whether to overwrite the existing value or fail if a value for that key already exists. By default, the `overwrite` parameter is set to `true` so that the existing value is always updated.
+Set `overwrite: false` to fail instead of silently replacing an existing value. The default is `true`.
 
 ### Read KV pairs with Pebble
 
-The easiest way to retrieve a value by key is to use the `{{ kv('YOUR_KEY'') }}` Pebble function.
+Use `{{ kv('YOUR_KEY') }}` to retrieve a value inline. The full signature is:
 
-Below is the full syntax of that function:
-
-```twig
+```
 {{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}
 ```
 
-Assuming that you retrieve the key in a flow in the same namespace as the one for which the key was created, you can simply use `"{{ kv('my_key') }}"` to retrieve the value:
+When reading from the same namespace as the flow, the namespace argument is optional:
 
 ```yaml
 id: read_kv_pair
@@ -152,7 +124,7 @@ tasks:
     message: "{{ kv('my_key') }}"
 ```
 
-When retrieving the key from another namespace, you can use the following syntax:
+To read from another namespace, pass it as the second argument:
 
 ```yaml
 id: read_kv_pair_from_another_namespace
@@ -163,7 +135,7 @@ tasks:
     message: "{{ kv('my_key', 'kestra.engineering.myproject') }}"
 ```
 
-By default, when you try to retrieve a key that doesn't exist, the task using the `"{{ kv('non_existing_key') }}"` expression will run with an error. If you prefer to instead run without error when the key doesn't exist, you can set the `errorOnMissing` parameter to `false` (that expression will simply return `null`):
+By default, referencing a missing key causes the task to fail. Set `errorOnMissing=false` to return `null` instead:
 
 ```yaml
 id: read_non_existing_kv_pair
@@ -174,22 +146,9 @@ tasks:
     format: "{{ kv('non_existing_key', errorOnMissing=false) }}"
 ```
 
-The function arguments such as the `errorOnMissing` keyword can be skipped for brevity as long as you fill in all positional arguments i.e., `{{ kv(key='your_key_name', namespace='your_namespace_name', errorOnMissing=false) }}` — the version below has the same effect:
-`{{ kv(key='my_key', namespace='company.team') }}`
-```yaml
-id: read_non_existing_kv_pair
-namespace: company.team
-tasks:
-  - id: log_key_from_another_namespace
-    type: io.kestra.plugin.core.debug.Return
-    format: "{{ kv('my_key', 'kestra.engineering.myproject', false) }}"
-```
-
 ### Read KV pairs with the `Get` task
 
-You can also retrieve the value of any KV pair using the `Get` task. The `Get` task produces the `value` output, which you can use in subsequent tasks. This option is a little more verbose, but it has two benefits:
-1. More declarative syntax
-2. Useful when you need to pass the current state of that value to multiple downstream tasks
+The `Get` task produces a `value` output you can reference in downstream tasks — useful when you need to pass the same KV value to multiple steps:
 
 ```yaml
 id: get_kv_pair
@@ -250,7 +209,7 @@ tasks:
 
 ### Read keys by prefix with the `GetKeys` task
 
-If you want to check if some values already exist for a given key, you can search keys by prefix:
+Search for keys matching a prefix with `GetKeys`:
 
 ```yaml
 id: get_keys_by_prefix
@@ -267,11 +226,11 @@ tasks:
     message: "{{ outputs.get.keys }}"
 ```
 
-The output is a list of keys - if no keys were found, an empty list will be returned.
+The output is a list of matching keys, or an empty list if none are found.
 
 ### Delete a KV pair with the `Delete` task
 
-The `io.kestra.plugin.core.kv.Delete` task produces the boolean output `deleted` to confirm whether a given KV pair was deleted or not.
+`Delete` produces a boolean `deleted` output confirming whether the key existed and was removed:
 
 ```yaml
 id: delete_kv_pair
@@ -291,53 +250,28 @@ tasks:
 
 ---
 
-## API: How to Create, Read, Update and Delete KV pairs via REST API
-
-Let's look at how you can interact with the KV Store via the REST API.
+## REST API
 
 ### Create a KV pair
 
-The API call to set the KV pair follows the structure:
-
-```bash
-curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv/{key} -d '<value>'
-```
-
-For example:
+Use a `PUT` request to set a KV pair:
 
 ```bash
 curl -X PUT -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key -d '"Hello World"'
 ```
 
-The above `curl` command creates the KV pair with key `my_key` and the `Hello World` string value in the `company.team` namespace. The API does not return any response.
+The API returns no response body on success.
 
-### Read all keys in the namespace
-
-You can get all KV pairs using:
-
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/kv/
-```
-
-You can also use the `filters` to get all KV pairs from a specific Namespace (replace `namespace-name`):
+### Read all keys in a namespace
 
 ```bash
 curl -G "http://localhost:8080/api/v1/main/kv" \
-  --data-urlencode "filters[namespace][EQUALS]= namespace-name" \
+  --data-urlencode "filters[namespace][EQUALS]=company.team" \
   -H "Authorization: Bearer <API-TOKEN>"
 ```
 
-Older versions of Kestra may use the path to specify a Namespace:
+The response is a JSON array of keys with their creation and update timestamps:
 
-```bash
-curl -X GET -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv/{key}
-```
-
-:::alert{type="info"}
-As a general tip, your Kestra instance exposes an interactive API reference at https://<your-kestra-host>/api which lists all available endpoints for your installed version.
-:::
-
-The output is returned as a JSON array of all keys in the namespace:
 ```json
 [
   {"key":"my_key","creationDate":"2024-07-27T06:10:33.422Z","updateDate":"2024-07-27T06:11:08.911Z"},
@@ -345,37 +279,23 @@ The output is returned as a JSON array of all keys in the namespace:
 ]
 ```
 
+:::alert{type="info"}
+Your Kestra instance exposes an interactive API reference at `https://<your-kestra-host>/api` listing all available endpoints.
+:::
+
 ### Delete a KV pair
-
-You can delete any KV pair using the following API call:
-
-```bash
-curl -X DELETE -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/{namespace}/kv/{key}
-```
-
-This call returns a boolean indicating whether the key was deleted.
-
-For example, the following `curl` command returns `false` because the key `non_existing_key` does not exist:
-
-```bash
-curl -X DELETE -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/non_existing_key
-```
-
-However, when we try to delete a key `my_key` which exists in the `company.team` namespace, the same API call returns `true`:
 
 ```bash
 curl -X DELETE -H "Content-Type: application/json" http://localhost:8080/api/v1/main/namespaces/company.team/kv/my_key
 ```
 
+Returns `true` if the key existed and was deleted, `false` if it did not exist.
+
 ---
 
-## TERRAFORM: How to Create, Read, Update and Delete KV pairs via Terraform
+## Terraform
 
-### Create a KV pair
-
-You can create a KV pair via Terraform by using the `kestra_kv` resource.
-
-Below is an example of how to create a KV pair:
+Use the `kestra_kv` resource to create or update a KV pair:
 
 ```hcl
 resource "kestra_kv" "my_key" {
@@ -386,11 +306,7 @@ resource "kestra_kv" "my_key" {
 }
 ```
 
-### Read a KV pair
-
-You can read a KV pair via Terraform by using the `kestra_kv` data source.
-
-Below is an example of how to read a KV pair:
+Use the `kestra_kv` data source to read a KV pair:
 
 ```hcl
 data "kestra_kv" "new" {
@@ -399,4 +315,4 @@ data "kestra_kv" "new" {
 }
 ```
 
-As with anything in Terraform, you can manage the state of your KV resources by adjusting the Terraform code and running the `terraform apply` command to create, update, or delete your KV pairs.
+Run `terraform apply` to create, update, or delete KV pairs from your Terraform state.

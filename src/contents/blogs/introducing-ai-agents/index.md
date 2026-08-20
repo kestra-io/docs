@@ -81,7 +81,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       apiKey: "{{ secret('GEMINI_API_KEY') }}"
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
     prompt: "{{ inputs.prompt }}"
     systemMessage: |
       You are a research assistant that must always follow this process:
@@ -179,7 +179,7 @@ tasks:
       Return only the Execution URI with no extra characters - the structure of URL is {{ kestra.url ?? 'http://localhost:8080/'}}ui/<tenantId>/executions/<namespace>/<flowId>/<id>
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
       apiKey: "{{ secret('GEMINI_API_KEY') }}"
     tools:
       - type: io.kestra.plugin.ai.tool.KestraFlow
@@ -230,7 +230,7 @@ tasks:
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       apiKey: "{{ secret('GEMINI_API_KEY') }}"
-      modelName: gemini-2.5-flash
+      modelName: gemini-3.5-flash-lite
     systemMessage: You are an expert data analyst. Extract insights based on the provided data.
     prompt: "Analyze the following dataset: {{ inputs.data }}"
 ```
@@ -255,7 +255,7 @@ With Kestra, you get the best of both worlds: traditional task-based orchestrati
 
 ## Next Steps
 
-Ready to get started? Check out our [AI Agent documentation](../../docs/ai-tools/ai-agents/index.md) for detailed examples and configuration options.
+Ready to get started? Check out our [AI Agent documentation](../../docs/ai-tools/05.ai-agents/index.md) for detailed examples and configuration options.
 
 If you like the project, give us a [GitHub star](https://github.com/kestra-io/kestra).
 

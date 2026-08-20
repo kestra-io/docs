@@ -12,26 +12,29 @@ import CloudForm from "~/components/cloud/Form.vue"
 
 const FEATURES = [
     {
-        icon: "mdi:calendar-month",
-        title: "Start Fast",
-        desc: "We provision and operate your environment.",
+        icon: "mdi:gift-outline",
+        title: "Up to 3 months free",
+        desc: "Full access while you get set up.",
     },
     {
-        icon: "mdi:cloud-outline",
-        title: "Operate Confidently",
-        desc: "Monitoring and observability built in.",
+        icon: "mdi:autorenew",
+        title: "We handle the upgrades",
+        desc: "Hosting, scaling and version upgrades, managed for you.",
     },
     {
-        icon: "mdi:face-agent",
-        title: "Get Help When It Matters",
-        desc: "Expert onboarding and support.",
-    },
-    {
-        icon: "mdi:check-circle-outline",
+        icon: "mdi:shield-lock-outline",
         title: "Stay Secure",
-        desc: "RBAC, SSO, audit logs, governance controls.",
+        desc: "Enterprise-grade RBAC, SSO, and audit logs.",
+    },
+    {
+        icon: "mdi:server-outline",
+        title: "Bring your own compute",
+        desc: "Run tasks in your own environment. Your data never leaves your server.",
     },
 ]
+
+const TRUST_CENTER_URL =
+    "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604"
 ---
 
 <section class="header">
@@ -40,18 +43,19 @@ const FEATURES = [
             <div class="img-title" data-usal="fade-r">
                 <Image src={cloudVisual} alt="Cloud Visual" />
                 <h1>
-                    Kestra Cloud<br /><span class="highlight"
-                        >Request Access</span
+                    Kestra, fully managed.<br /><span class="highlight"
+                        >Try it today.</span
                     >
                 </h1>
             </div>
 
             <div class="description" data-usal="fade-r">
-                <h2>Fully Managed, Ready For Production.</h2>
+                <h2>You build the pipelines.<br />We run the platform.</h2>
                 <p>
-                    Get Kestra Cloud provisioned and operated for you: upgrades,
-                    scaling, reliability, and security handled by our team, so
-                    you can focus on building workflows.
+                    Kestra, managed by the team that built it. We handle
+                    hosting, scaling and upgrades, with SSO, custom roles, a
+                    secret manager, remote runners and Apps, without operating
+                    any of it.
                 </p>
             </div>
 
@@ -72,19 +76,26 @@ const FEATURES = [
                 }
             </div>
 
-            <div class="bottom-tiles" data-usal="fade-u">
-                <a href="https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604" target="_blank" class="tile">
-                    <Image src={soc2Img} alt="SOC 2" />
-                    <small>SOC 2 Type 1 / Type 2</small>
-                </a>
-                <a href="https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604" target="_blank" class="tile">
-                    <Image src={gdprImg} alt="GDPR" />
-                    <small>GDPR</small>
-                </a>
+            <div class="trust" data-usal="fade-u">
+                <div class="bottom-tiles">
+                    <a href={TRUST_CENTER_URL} target="_blank" class="tile">
+                        <Image src={soc2Img} alt="SOC 2" />
+                        <small>SOC 2 Type 1 / Type 2</small>
+                    </a>
+                    <a href={TRUST_CENTER_URL} target="_blank" class="tile">
+                        <Image src={gdprImg} alt="GDPR" />
+                        <small>GDPR</small>
+                    </a>
+                </div>
+                <small class="trust-verified">
+                    Verified on our <a href={TRUST_CENTER_URL} target="_blank"
+                        >Trust Center</a
+                    >
+                </small>
             </div>
         </div>
 
-        <div class="col-xl-6 col-12 right-column">
+        <div class="col-xl-6 col-12 right-column" id="get-access">
             <div class="form-container" data-usal="zoomin-d">
                 <CloudForm client:idle />
             </div>
@@ -173,13 +184,33 @@ const FEATURES = [
                     }
                 }
 
+                .trust {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.75rem;
+                    margin-top: $rem-2;
+
+                    .trust-verified {
+                        font-size: $font-size-xs;
+                        font-family: $font-family-monospace;
+                        color: var(--ks-content-secondary);
+
+                        a {
+                            color: var(--ks-content-color-highlight);
+                            text-decoration: none;
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+                }
+
                 .bottom-tiles {
                     display: flex;
                     max-width: 316px;
                     border: 1px solid var(--ks-border-secondary);
                     border-radius: $border-radius-lg;
                     overflow: hidden;
-                    margin-top: $rem-2;
                     background: var(--ks-background-secondary);
 
                     .tile {

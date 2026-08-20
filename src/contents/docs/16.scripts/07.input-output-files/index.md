@@ -115,10 +115,6 @@ To generate files in your script and make them available for download and use in
 
 ### Generating outputs from a script task using `outputFiles`
 
-:::alert{type="info"}
-From 0.17.0, `outputDir` has been deprecated. Use the `outputFiles` property instead.
-:::
-
 The `outputFiles` property allows to specify a list of files to be persisted in Kestra's internal storage. Here is an example:
 
 ```yaml

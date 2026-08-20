@@ -16,6 +16,10 @@ Every Kestra deployment must define:
 - queue type
 - internal storage type
 
+Optionally, in Kestra 2.0 and later, you can also configure a separate log store:
+
+- log data store (defaults to the repository backend if not set)
+
 The common production path is PostgreSQL for queue and repository, plus an object store or durable internal storage backend.
 
 Queues and repositories must stay compatible:
@@ -123,6 +127,22 @@ Use H2 for local development. For production, prefer PostgreSQL, or MySQL if Pos
 :::alert{type="info"}
 For PostgreSQL performance issues, consider `random_page_cost=1.1` and `kestra.queue.postgres.disable-seq-scan=true` if queue polling is choosing poor query plans.
 :::
+
+## Log data store
+
+By default, execution logs are stored in the same database as flows and executions. In Kestra 2.0+, you can route logs to a separate store by setting `kestra.logs.type`. If this key is not set, logs continue to use the repository backend — no migration needed.
+
+```yaml
+kestra:
+  logs:
+    type: postgres          # or h2, mysql, elasticsearch
+    postgres:
+      url: jdbc:postgresql://logs-db:5432/kestra_logs
+      username: kestra
+      password: k3str4
+```
+
+The JDBC log store (H2, Postgres, MySQL) is available in OSS. The Elasticsearch log store is available in Enterprise Edition and Cloud only. For full configuration examples and the capability reference, see the [External Log Data Store](../../10.administrator-guide/log-data-store/index.md) guide.
 
 ## Connection pooling and JDBC queue tuning
 
@@ -319,6 +339,22 @@ kestra:
 | `sts-role-session-duration` | duration | No | `PT15M` | Duration of the assumed-role session. |
 | `sts-endpoint-override` | string | No | — | Override the STS endpoint URL. |
 | `s3-files-compatible` | boolean | No | `false` | Enable S3 bucket versioning when the bucket is first initialized. Set to `true` when the same bucket is shared with the `S3FilesStorage` backend (`type: s3-files`), which mounts S3 Files as a local NFS filesystem and requires versioning to be enabled. |
+
+#### S3-compatible endpoints
+
+The `s3` backend targets Amazon S3 by default. Set `endpoint` to point that same backend at another S3-compatible object store, for example Backblaze B2, Cloudflare R2, or MinIO. Some endpoints also require `force-path-style: true`; MinIO deployments can alternatively use the dedicated [`type: minio`](#minio--s3-compatible) backend.
+
+```yaml
+kestra:
+  storage:
+    type: s3
+    s3:
+      bucket: my-kestra-bucket
+      endpoint: https://your-s3-endpoint.example.com
+      force-path-style: true
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+```
 
 #### Credential resolution order
 

@@ -12,7 +12,7 @@ Trigger one flow based on the execution of another flow.
 type: io.kestra.plugin.core.trigger.Flow
 ```
 
-A Flow trigger runs a flow after another flow completes, enabling event-driven workflows and dependencies across teams. This allows you to create dependencies between flows, even when those flows are owned by different teams.
+A Flow trigger runs a flow after another flow completes, enabling event-driven dependencies across teams and namespaces.
 
 Check the [Flow trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.flow) documentation for the list of all properties.
 
@@ -63,9 +63,57 @@ triggers:
 |-------------|-----------------------|----------------------------------------------------------------------------------------------------------------------|
 | `flowId`    | `String`              | The ID of the upstream flow to match. Omit to match any flow (combine with `when` to narrow the scope).             |
 | `namespace` | `String`              | The namespace of the upstream flow. Exact match only — use `when` for prefix or pattern matching.                    |
-| `states`    | `List<State>`         | States that satisfy this entry. Defaults to `[SUCCESS, WARNING]`.                                                    |
+| `states`    | `List<State>`         | States that satisfy this entry. Defaults to all terminal states and `PAUSED` when omitted.                           |
 | `labels`    | `Map<String, String>` | Key-value pairs that must all be present on the upstream execution's labels.                                         |
 | `when`      | `String`              | A Pebble expression evaluated against the upstream execution. The entry is satisfied only when this evaluates to true.|
+
+### Satisfaction mode
+
+The `mode` property controls how `dependsOn` entries are combined before the trigger fires:
+
+| Value | Behavior | Extra property |
+|---|---|---|
+| `ALL` (default) | All entries must be satisfied | — |
+| `ANY` | Fires as soon as any one entry is satisfied | — |
+| `AT_LEAST` | Fires when at least N entries are satisfied | `minSatisfied` (integer ≥ 1) |
+
+Use `mode: ANY` to replace multiple separate Flow triggers with one:
+
+```yaml
+triggers:
+  - id: react_to_any_source
+    type: io.kestra.plugin.core.trigger.Flow
+    mode: ANY
+    dependsOn:
+      - flowId: ingest_salesforce
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_hubspot
+        namespace: company.sources
+        states: [SUCCESS]
+```
+
+Use `mode: AT_LEAST` with `minSatisfied` for N-of-M logic — fire when 2 out of 3 upstream flows succeed:
+
+```yaml
+triggers:
+  - id: partial_success
+    type: io.kestra.plugin.core.trigger.Flow
+    mode: AT_LEAST
+    minSatisfied: 2
+    dependsOn:
+      - flowId: ingest_salesforce
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_hubspot
+        namespace: company.sources
+        states: [SUCCESS]
+      - flowId: ingest_zendesk
+        namespace: company.sources
+        states: [SUCCESS]
+    window:
+      deadline: "09:00:00"
+```
 
 ### Prefix and pattern matching
 
@@ -100,7 +148,7 @@ The `window` property controls how long Kestra accumulates upstream executions b
 
 ### Deadline
 
-All upstream flows must complete before a fixed time each day. The deadline string must include a timezone offset:
+All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format — timezone offsets are not supported:
 
 ```yaml
 triggers:
@@ -112,7 +160,7 @@ triggers:
       - flowId: stg_marketing
         namespace: company.team
     window:
-      deadline: "09:00:00+01:00"
+      deadline: "09:00:00"
 ```
 
 ### Daily time range
@@ -170,7 +218,7 @@ Set `fireOnce: true` to ensure the trigger fires at most once per window, even i
 
 ```yaml
 window:
-  deadline: "09:00:00+01:00"
+  deadline: "09:00:00"
   fireOnce: true
 ```
 
@@ -264,7 +312,7 @@ triggers:
         namespace: company.team
         states: [SUCCESS]
     window:
-      deadline: "09:00:00+01:00"
+      deadline: "09:00:00"
 ```
 
 ## Example: alerting on failure

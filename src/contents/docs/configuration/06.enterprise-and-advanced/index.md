@@ -87,7 +87,7 @@ kestra:
         - "Blueprints/Flow Blueprints"
 ```
 
-The old multi-tenancy and default-tenant configuration was removed in `0.23.0`; keep it only in mind for migration work.
+The old multi-tenancy and default-tenant configuration is no longer supported.
 
 ## gRPC TLS/mTLS (EE only)
 
@@ -455,7 +455,7 @@ kestra:
         display-name: Gemini - Private
         type: gemini
         configuration:
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.5-flash-lite
           api-key: YOUR_GEMINI_API_KEY
       - id: gpt
         display-name: OpenAI
@@ -479,28 +479,6 @@ kestra:
 ```
 
 When enabled, the UI hides or adapts features that normally depend on external services, such as hosted fonts, external blueprint sources, or embedded internet content.
-
-### Execution data in internal storage
-
-If EE outputs and inputs must be isolated per tenant or namespace, store execution data in internal storage:
-
-```yaml
-kestra:
-  ee:
-    execution-data:
-      internal-storage:
-        enabled: true
-```
-
-To enforce that behavior everywhere:
-
-```yaml
-kestra:
-  ee:
-    execution-data:
-      internal-storage:
-        force-globally: true
-```
 
 ### Mail service
 

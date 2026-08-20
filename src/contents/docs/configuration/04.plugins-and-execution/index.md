@@ -60,49 +60,63 @@ kestra:
 
 Most teams only need custom repositories if they publish private plugins or mirror public artifacts through an internal registry.
 
-## Global plugin defaults and shared behavior
+## Static policies (global defaults and enforcement)
 
-Use plugin defaults when many flows should inherit the same behavior. This is usually preferable to repeating the same task settings across dozens of flow definitions.
-
-Apply global defaults that flows can still override:
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.core.log.Log
-        values:
-          level: ERROR
-```
-
-Use forced defaults when teams must not override the value:
-
-```yaml
-kestra:
-  plugins:
-    defaults:
-      - type: io.kestra.plugin.scripts.shell.Commands
-        forced: true
-        values:
-          containerImage: ubuntu:latest
-          taskRunner:
-            type: io.kestra.plugin.scripts.runner.docker.Docker
-```
+In Kestra 2.0, global plugin defaults are replaced by static policies declared under `kestra.policies` in server configuration. Static policies form the outermost scope, apply across all tenants, and cannot be overridden through the API.
 
 :::alert{type="warning"}
-Plugin defaults are evaluated by the Executor and propagated to other components, so every server should use the same `kestra.plugins.defaults`.
+`kestra.plugins.defaults` is removed in Kestra 2.0. See the [pluginDefaults Removed migration guide](../../11.migration-guide/v2.0.0/plugin-defaults-removed/index.md) to convert existing defaults to policies.
 :::
 
-`kestra.plugins.defaults` is the canonical global configuration key. The older `kestra.tasks.defaults` key is still recognized for compatibility, but it is deprecated and should be replaced.
+Apply an installation-wide default that flows can still override:
+
+```yaml
+kestra:
+  policies:
+    - id: global-log-level
+      description: "Default log level for all Log tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: PLUGIN
+          where:
+            - field: type
+              operator: EQUAL_TO
+              value: io.kestra.plugin.core.log.Log
+          values:
+            level: ERROR
+```
+
+Enforce a value that tasks cannot override (`override: true`):
+
+```yaml
+kestra:
+  policies:
+    - id: enforce-docker-isolation
+      description: "Force Docker task runner for all shell script tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: PLUGIN
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.scripts.shell
+          values:
+            containerImage: ubuntu:latest
+            taskRunner:
+              type: io.kestra.plugin.scripts.runner.docker.Docker
+```
+
+Static policies are evaluated by the Executor and propagated to all components, so every server should have the same `kestra.policies` configuration. A malformed static policy prevents server startup (fail-closed) — validate in a staging environment first.
 
 Precedence works as follows:
 
-- global plugin defaults provide the base values
-- flow-level `pluginDefaults` override global defaults
-- task properties override non-forced defaults
-- `forced: true` prevents the task from overriding that property
+- Static policies (`kestra.policies`) form the outermost scope
+- Tenant-level and namespace-level Policies apply inside that
+- Task properties fill any remaining unset values
+- `override: true` on a policy rule always wins over the author's value
 
-Use non-forced defaults for convenience and consistency, and use forced defaults when the platform must enforce a value such as a specific task runner.
+Use `override: false` (the default) for convenience defaults and `override: true` when the platform must enforce a value such as a specific task runner.
 
 Enable or preconfigure plugin features globally:
 
@@ -175,6 +189,7 @@ This part of the configuration also includes:
 
 - retries
 - temporary task storage
+- HTTP task URL filtering
 - tutorial flows
 - system flows
 - local flow synchronization
@@ -228,6 +243,28 @@ volumes:
   - /var/run/docker.sock:/var/run/docker.sock
   - /home/kestra:/home/kestra
 ```
+
+### HTTP task URL filtering
+
+Use `kestra.tasks.http` to restrict which URLs HTTP plugin tasks can call. Configure an allow-list, a deny-list, or both:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      allowed-list:
+        - https://api.example.com
+      denied-list:
+        - http://169.254.169.254
+        - http://localhost
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+
+For security guidance and matching behavior, see [HTTP task URL filtering](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering).
 
 Reserve `system` for background workflows, or rename it if your organization already uses that namespace for something else:
 
@@ -300,7 +337,7 @@ Increase `max-timeout` only if your data-fetching subflows genuinely need longer
 
 ## Related docs
 
-- Flow-level plugin defaults: [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md)
+- Installation-wide configuration rules: [Policies](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition)
 - Universal file access: [File Access](../../06.concepts/file-access/index.md)
 - Storage backends, JVM, and global variables: [Runtime and Storage](../02.runtime-and-storage/index.md)
 - Execution data isolation and enterprise-only runtime features: [Enterprise and Advanced](../06.enterprise-and-advanced/index.md)

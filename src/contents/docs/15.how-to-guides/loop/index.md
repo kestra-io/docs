@@ -118,6 +118,57 @@ tasks:
               - "echo done {{ item.value }}"
 ```
 
+## Fan out with subflows
+
+Use `Loop` with `Subflow` to launch an isolated child execution per iteration. Each subflow gets its own retry policy, logs, and failure state — useful when you want per-item isolation rather than running everything inside a single parent execution.
+
+The subflow to call per iteration:
+
+```yaml
+id: process_item
+namespace: company.team
+
+inputs:
+  - id: item
+    type: STRING
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Processing: {{ inputs.item }}"
+```
+
+The parent flow that queries a dataset and fans out one subflow per row:
+
+```yaml
+id: fan_out
+namespace: company.team
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    sql: |
+      INSTALL httpfs;
+      LOAD httpfs;
+      SELECT * FROM read_csv_auto('https://huggingface.co/datasets/kestra/datasets/raw/main/csv/orders.csv', header=True);
+    store: true
+
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
+    values: "{{ outputs.extract.uri }}"
+    tasks:
+      - id: process
+        type: io.kestra.plugin.core.flow.Subflow
+        namespace: company.team
+        flowId: process_item
+        wait: true
+        transmitFailed: true
+        inputs:
+          item: "{{ item.value }}"
+```
+
+Set `wait: true` so the parent tracks each child's outcome. Set `transmitFailed: true` to fail the loop if any subflow fails. Combine with `concurrencyLimit` on the Loop task to cap how many subflows run simultaneously.
+
 ## Next steps
 
 - For the full Loop property reference, see the [Loop task documentation](/plugins/core/flow/io.kestra.plugin.core.flow.loop).

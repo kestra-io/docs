@@ -7,17 +7,13 @@ icon: /src/contents/docs/icons/flow.svg
 version: "0.22.0"
 ---
 
-Run tasks after a flow execution completes.
-
-`afterExecution` tasks run once a flow has finished, allowing you to act on the final execution status.
+`afterExecution` tasks run once a flow reaches a terminal state, giving you access to the final execution status for notifications, reporting, or conditional follow-up actions.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/7PCOvxOl9LI?si=opJjV_Drs-dsjy_L" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## `afterExecution` property
-
-`afterExecution` is a block of tasks that run after the flow ends. You can use it to run conditional tasks based on the final state, such as **SUCCESS** or **FAILED**. This is especially useful for custom notifications and alerts. For example, you can combine `afterExecution` with the `runIf` property to send different Slack messages depending on the execution state.
+Use `afterExecution` with `runIf` to branch on the final execution state:
 
 ```yaml
 id: alerts_demo
@@ -29,43 +25,32 @@ tasks:
 
 afterExecution:
   - id: onSuccess
-    runIf: "{{execution.state == 'SUCCESS'}}"
+    runIf: "{{ execution.state == 'SUCCESS' }}"
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
-    messageText: "{{flow.namespace}}.{{flow.id}} finished successfully!"
+    messageText: "{{ flow.namespace }}.{{ flow.id }} finished successfully!"
 
   - id: onFailure
-    runIf: "{{execution.state == 'FAILED'}}"
+    runIf: "{{ execution.state == 'FAILED' }}"
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: https://hooks.slack.com/services/xxxxx
-    messageText: "Oh no, {{flow.namespace}}.{{flow.id}} failed!!!"
+    messageText: "Oh no, {{ flow.namespace }}.{{ flow.id }} failed!!!"
 ```
 
 ## `afterExecution` vs `errors`
 
-Both constructs are useful for notifications and follow-up actions, but they run at different moments.
+Both run near the end of a flow, but at different moments and for different purposes:
 
-- `errors` runs when a task or flow errors and is primarily for failure handling.
-- `afterExecution` runs only after the execution reaches its final state.
+| | `afterExecution` | `errors` |
+|---|---|---|
+| When it runs | After the execution reaches a terminal state | When a task or flow errors |
+| State visibility | Sees the final execution state (`SUCCESS`, `FAILED`, etc.) | Sees `RUNNING` — the execution hasn't settled yet |
+| Scope | Flow level only | Flow level or local to a flowable task |
 
-For failure-specific handling, including local handlers inside flowable tasks, see the [`errors` documentation](../11.errors/index.md).
+Use `afterExecution` when you need to branch on the final status — one message for `SUCCESS`, another for `FAILED`, a third for `WARNING`. Use `errors` when you only need failure handling or local error handling inside a specific flowable task. See the [`errors` documentation](../11.errors/index.md) for details.
 
-Choose `afterExecution` when you need to branch on the final status of the whole execution, for example to send one message for `SUCCESS`, another for `FAILED`, and a third for `WARNING`.
-
-Choose `errors` when you only care about failure handling or when you need local error handling inside a specific flowable task.
-
-Pros of `afterExecution`:
-
-- It works naturally with final states such as `SUCCESS`, `FAILED`, and `WARNING`.
-- It keeps all post-run outcome logic in one place.
-- It is well suited for final notifications, reporting, and auditing tasks.
-
-Cons of `afterExecution`:
-
-- It cannot be scoped locally to a flowable task the way `errors` can.
-- Errors inside `afterExecution` do not change the final execution state.
-
-Any errors in the `afterExecution` block will not change the state of the flow from `SUCCESS` to `FAILED`, and they will not trigger a flow that relies on `ExecutionStatus = FAILED`. You can force a state change by using a [Sequential flowable task](../01.tasks/00.flowable-tasks/index.md#sequential) with an `errors` block, as in the example below:
+:::alert{type="warning"}
+Errors inside an `afterExecution` block do not change the final execution state. A failing `afterExecution` task will not flip the execution from `SUCCESS` to `FAILED`, and will not trigger flows that listen for `FAILED` executions. To force a state change, use a [Sequential](../01.tasks/00.flowable-tasks/index.md#sequential) task with its own `errors` block:
 
 ```yaml
 afterExecution:
@@ -83,18 +68,13 @@ afterExecution:
         url: https://hooks.slack.com/services/xxxxx
         messageText: "Flow {{ flow.namespace }}.{{ flow.id }} with execution ID {{ execution.id }} failed."
 ```
+:::
 
 ## `afterExecution` vs `finally`
 
-`afterExecution` and `finally` are both end-of-flow constructs, but they serve different purposes.
+`finally` runs while the execution is still `RUNNING` — it cannot see the terminal state. `afterExecution` runs after the execution settles, so it sees `SUCCESS`, `FAILED`, or `WARNING`. Use `finally` for cleanup that must always happen; use `afterExecution` when follow-up logic depends on the outcome.
 
-The `afterExecution` property differs from the `finally` property because:
-1. `finally` runs tasks at the end of the flow while the execution is still in a `RUNNING` state.
-2. `afterExecution` runs tasks after the execution finishes in a terminal state like **SUCCESS** or **FAILED**.
-
-Use `finally` for cleanup operations that should always run, regardless of the outcome. See the [`finally` documentation](../19.finally/index.md) for examples. When follow-up actions depend on the final state, use `afterExecution` to capture the result.
-
-To demonstrate, take the following flow that uses both `finally` and `afterExecution`:
+The following flow demonstrates the difference:
 
 ```yaml
 id: state_demo
@@ -119,10 +99,6 @@ afterExecution:
     message: Execution {{ execution.state }} # Will show FAILED
 ```
 
-After running the example above, the `finally` task appears with a `RUNNING` state while the `afterExecution` task shows `FAILED`.
+The `finally` task logs `Execution RUNNING` because it runs before the execution reaches its terminal state. The `afterExecution` task logs `Execution FAILED` because it runs after. See the [`finally` documentation](../19.finally/index.md) for more on cleanup patterns.
 
-![after-execution-1](./after-execution-1.png)
-
-:::alert{type="info"}
-Best practice: Use `afterExecution` when you need to act on the final state of an execution. Use `finally` when you need to ensure cleanup happens regardless of state.
-:::
+![Execution logs showing the finally task logging Execution RUNNING and the afterExecution task logging Execution FAILED](./after-execution-1.png)

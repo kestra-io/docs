@@ -30,5 +30,6 @@ export interface BlueprintPreview {
     title: string
     tags: string[]
     includedTasks: string[]
+    shortDescription?: string
 }
 

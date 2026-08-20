@@ -106,7 +106,7 @@ Inside the loop, sibling task outputs are accessed with plain `outputs.task_id.a
 
 - `1` (default) — sequential execution
 - A positive integer — bounded parallelism; prefer this for heavy workloads
-- `0` — unlimited; all iterations run simultaneously; avoid for large datasets without understanding resource implications
+- `0` — unlimited; all iterations run simultaneously; avoid for large datasets unless you understand the resource implications
 
 ## Process large files with Split and Loop
 

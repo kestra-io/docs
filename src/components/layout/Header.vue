@@ -305,6 +305,12 @@
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
+                                        :target="item.target"
+                                        :rel="
+                                            item.target === '_blank'
+                                                ? 'noopener'
+                                                : undefined
+                                        "
                                         @click="globalClick(true)"
                                     >
                                         <div class="item-row">
@@ -608,6 +614,12 @@
                                             <a
                                                 class="dropdown-item"
                                                 :href="item.link"
+                                                :target="item.target"
+                                                :rel="
+                                                    item.target === '_blank'
+                                                        ? 'noopener'
+                                                        : undefined
+                                                "
                                                 @click="globalClick(true)"
                                                 @keydown="
                                                     onMenuKeydown(
@@ -1106,8 +1118,8 @@
         &.open {
             @supports (backdrop-filter: none) {
                 background-color: var(--ks-background-header);
-                backdrop-filter: $menu-backdrop-filter;
                 -webkit-backdrop-filter: $menu-backdrop-filter;
+                backdrop-filter: $menu-backdrop-filter;
                 transition: background-color 250ms ease-in-out;
             }
 

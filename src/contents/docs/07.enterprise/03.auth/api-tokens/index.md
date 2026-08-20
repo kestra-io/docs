@@ -8,71 +8,38 @@ editions: ["EE", "Cloud"]
 version: ">= 0.15.0"
 ---
 
-How to manage API tokens in Kestra.
+API tokens grant programmatic access to the Kestra API for users and [service accounts](../service-accounts/index.md).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/g-740VZLRdA?si=lHUE7qeI6ehOyfsf" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## API tokens – manage programmatic access
-
-API tokens authenticate requests to the Kestra API. You can create an API token for a user or a [service account](../service-accounts/index.md).
-
 ## Where you can use API tokens
 
-API tokens are used anytime you want to grant programmatic access to the Kestra API. To authenticate your custom API calls, you can pass a bearer token to the request header. For example, you can use API tokens to authenticate with the Kestra API from a CI/CD pipeline or from a custom application.
+Pass a token as a `Bearer` header to authenticate any Kestra API call — from a CI/CD pipeline, a custom application, or any of the following:
 
-Currently, we support API tokens as an authentication mechanism for the following services:
-1. [GitHub Actions](https://github.com/kestra-io/deploy-action)
-2. [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
-3. [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md)
-4. [kestractl](../../../kestra-cli/kestractl/index.md)
-5. [Kestra API](../api/index.md)
+- [GitHub Actions](https://github.com/kestra-io/deploy-action)
+- [Terraform Provider](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs)
+- [Kestra Server CLI](../../../kestra-cli/kestra-server/index.md)
+- [kestractl](../../../kestra-cli/kestractl/index.md)
+- [Kestra API](../api/index.md)
 
-## How to create a User API token
+## How to create a user API token
 
-Open your profile and click **+ Create API Token**.
+Two ways to reach the token creation form:
 
-![user-api-token](./user-api-token.png)
+- Click your user avatar at the bottom-left and select **Create API Token**.
+- Go to **Settings → API Tokens** and click **+ Create API Token**.
 
-Once in your profile, click **+ Create API Token** in the **Manage your API Tokens** section.
+Fill in a **Name**, optional **Description**, and **Max age** (leave blank for a non-expiring token). Enable **Extended** to automatically reset the expiry each time the token is used. Click **Generate**, then copy the token immediately — it is shown only once.
 
-![create-api-token](./create-api-token.png)
+## How to create a service account API token
 
-Fill in the form with the required information, including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
-
-![new-token-details](./new-token-details.png)
-
-:::alert{type="info"}
-**Note:** you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that automatically prolongs the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. This toggle is disabled by default.
-:::
-
-Once confirmed, copy the token and store it securely — it won't be shown again.
-
-![copy-and-save](./copy-and-save.png)
-
-## How to create a Service Account API token
-
-Go to **Administration → Service Accounts**, open the **API Tokens** tab, and click **Create**:
-
-![api-token](./api-token.png)
-
-Fill in the form with the required information including the `Name`, `Description`, and `Max age`. Once satisfied, click `Generate`:
-
-![api-token2](./api-token2.png)
-
-:::alert{type="info"}
-**Note:** same as for a user token, you can configure the token to expire after a certain period of time or to never expire. Also, there is a toggle called `Extended` that will automatically prolong the token's expiration date by the specified number of days (`Max Age`) if the token is actively used. That toggle is disabled by default.
-:::
-
-Once generated, copy the token and store it securely — it won't be shown again.
-
-![api-token3](./api-token3.png)
-
+Go to **IAM → Service Accounts**, open the service account, click the **API Tokens** tab, and click **Create**. The form fields and expiry options are the same as for user tokens.
 
 ## How to use an API token in an API request
 
-To authenticate your custom API calls, pass a `Bearer` token to the request's `Authorization` header. Here is an example that will trigger a flow execution using the Kestra API:
+To authenticate your custom API calls, pass a `Bearer` token to the request's `Authorization` header. The following example triggers a flow execution via the Kestra API:
 
 ```bash
 curl -X POST http://localhost:8080/api/v1/executions/dev/hello-world \

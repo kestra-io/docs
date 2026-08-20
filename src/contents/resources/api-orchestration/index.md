@@ -4,7 +4,7 @@ description: "API orchestration coordinates multiple APIs into complex, event-dr
 metaTitle: "What is API Orchestration? Definition & Practices"
 metaDescription: "Master API orchestration to streamline complex workflows, integrate multiple APIs, and enhance data management. Explore how Kestra simplifies API automation."
 tag: "infrastructure"
-date: 2026-07-07
+date: 2026-07-14
 slug: "api-orchestration"
 faq:
   - question: "What is API orchestration?"

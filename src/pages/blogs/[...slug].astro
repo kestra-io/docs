@@ -10,7 +10,7 @@ import BlogMobileHeader from "~/components/blogs/BlogMobileHeader.vue"
 import { default as Avatars } from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Mesh from "~/components/layout/Mesh.vue"
-import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
+import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
@@ -108,10 +108,13 @@ const jsonLinkedData = {
                     class="row d-flex justify-content-between align-items-center header-content"
                 >
                     <div class="header-left">
-                        <a href="/blogs" class="header-breadcrumb">
-                            Blog
-                            <ChevronRight class="fs-5" />
-                        </a>
+                        <Breadcrumb
+                            items={[
+                                { label: "Home", href: "/" },
+                                { label: "Blog", href: "/blogs" },
+                                { label: title, href: "" },
+                            ]}
+                        />
                         <h1 class="header-title">{page.title}</h1>
                     </div>
                     {
@@ -188,20 +191,13 @@ const jsonLinkedData = {
         justify-content: center;
         gap: 10px;
 
-        .header-breadcrumb {
-            display: flex;
-            align-items: center;
-
-            .chevron-right-icon {
-                bottom: 0.1rem;
-            }
+        :global(.breadcrumb-item.active span) {
+            display: block;
+            max-width: 40ch;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
-    }
-
-    .header-breadcrumb {
-        font-size: $font-size-xs;
-        color: var(--ks-content-secondary);
-        text-decoration: none;
     }
 
     .header-title {

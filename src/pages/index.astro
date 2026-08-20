@@ -13,6 +13,7 @@ import EarlyAdopterBanner from "~/components/early-adopter-program/EarlyAdopterB
 import GetStarted from "~/components/common/GetStarted.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import mobileHeroBgUrl from "~/components/home/assets/hero/bg-mobile.webp?url"
 
 const totalPlugins = await fetchTotalPluginsCount()
 ---
@@ -21,6 +22,17 @@ const totalPlugins = await fetchTotalPluginsCount()
     <Fragment slot="head">
         <SchemaSoftwareApplication
             url="https://kestra.io"
+        />
+        {/* The mobile hero background is the LCP element but lives in CSS
+            (Hero.astro .mobile-bg), so the browser only discovers it after
+            the stylesheets load. Preload it so it starts downloading with
+            the document instead. */}
+        <link
+            rel="preload"
+            as="image"
+            href={mobileHeroBgUrl}
+            media="(max-width: 767.98px)"
+            fetchpriority="high"
         />
     </Fragment>
     <div class="home-page">
