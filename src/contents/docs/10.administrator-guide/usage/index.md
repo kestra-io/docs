@@ -6,9 +6,9 @@ icon: /src/contents/docs/icons/admin.svg
 description: Learn about anonymous usage reporting in Kestra and how to configure or disable data collection.
 ---
 
-Configuration options for the usage report.
+Configure whether Kestra shares anonymous usage data and how frequently.
 
-The `kestra.anonymous-usage-report.enabled` option is mandatory: decide whether to share anonymous data to help improve Kestra.
+The `kestra.anonymous-usage-report.enabled` option controls the server-side report — decide whether to share anonymous data to help improve Kestra.
 
 - `kestra.anonymous-usage-report.enabled`: (default true)
 - `kestra.anonymous-usage-report.initial-delay`: (default 5m)

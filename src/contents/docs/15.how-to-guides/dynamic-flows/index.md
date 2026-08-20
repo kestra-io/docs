@@ -240,7 +240,7 @@ tasks:
   - id: create_flow
     type: io.kestra.plugin.scripts.shell.Commands
     inputFiles:
-      flow.yaml: "{{ outputs.create_kestra_flow.outputFiles['kestra_flow.yaml'] }}"
+      flow.yaml: "{{ outputs.generate_kestra_flow.outputFiles['kestra_flow.yaml'] }}"
     beforeCommands:
       - apt-get update
       - apt-get -y install curl

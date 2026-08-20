@@ -109,11 +109,11 @@ tasks:
         import logging
         from fastapi import FastAPI, Request, BackgroundTasks
         from fastapi.responses import JSONResponse
-        from modal import Image, Stub, asgi_app
+        from modal import Image, App, asgi_app
         import requests
 
         web_app = FastAPI()
-        stub = Stub("slack_app")
+        app = App("slack_app")
 
         image = Image.debian_slim().pip_install("requests")
 
@@ -144,7 +144,7 @@ tasks:
             logger.info("Responding immediately to Slack")
             return JSONResponse(content={"status": "ok"})
 
-        @stub.function(image=image)
+        @app.function(image=image)
         @asgi_app()
         def fastapi_app():
             return web_app

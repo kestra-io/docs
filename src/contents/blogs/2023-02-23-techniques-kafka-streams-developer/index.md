@@ -119,7 +119,7 @@ Et voilà! We have detection of dead consumers using just the Kafka API. 🎉
 
 ## Beware of State Store `all()`
 
-We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md). For all the flows on the cluster, we test all the flow's [conditions](../../docs/05.workflow-components/07.triggers/index.mdx#conditions) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
+We use a [GlobalKTable](https://kafka.apache.org/31/documentation/streams/developer-guide/dsl-api.html#streams_concepts_globalktable) to detect [flow triggers](../../docs/05.workflow-components/07.triggers/02.flow-trigger/index.md). For all the flows on the cluster, we test all the flow's [conditions](../../docs/05.workflow-components/07.triggers/index.mdx) to find matching flows. For this, we are using an API to fetch all flows from a `GlobalKTable` using `store.all()` that returns all the flows from RocksDB (internal database from Kafka Stream).
 
 Our first assumption was that `all()` returns an object (Flow in our case), as the API return Object, but we discovered that the `all()` method will:
 - Fetch all the data from RocksDB

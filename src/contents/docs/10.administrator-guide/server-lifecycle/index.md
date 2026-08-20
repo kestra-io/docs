@@ -62,4 +62,4 @@ In the timeline, one of the states will be `RESUBMITTED`.
 
 ## Instance view (EE only)
 
-Kestra Enterprise exposes an instance dashboard (**Administration → Instance**) that summarizes heartbeats, liveness status, and maintenance activity across clusters. See the [instance dashboard documentation](../../07.enterprise/05.instance/index.mdx) for a walkthrough.
+Kestra Enterprise exposes an instance dashboard accessible via the [Super Admin console](../../07.enterprise/05.instance/00.super-admin/index.md) that summarizes heartbeats, liveness status, and maintenance activity across clusters. See the [instance dashboard documentation](../../07.enterprise/05.instance/index.mdx) for a walkthrough.

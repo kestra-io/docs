@@ -19,7 +19,7 @@ This approach helps with:
 
 ## Why use the `company.team` structure
 
-By defining a **root namespace named after your company**, you can centralize management of [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md), [variables](../../05.workflow-components/04.variables/index.md), and [secrets](../../06.concepts/04.secret/index.md).
+By defining a **root namespace named after your company**, you can centralize management of [Policies](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition), [variables](../../05.workflow-components/04.variables/index.md), and [secrets](../../06.concepts/04.secret/index.md).
 These configurations can then be inherited by all namespaces under that root.
 
 This structure also simplifies [Git synchronization](../../version-control-cicd/04.git/index.md).

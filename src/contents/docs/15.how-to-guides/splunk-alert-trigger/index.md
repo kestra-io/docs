@@ -5,7 +5,7 @@ icon: /src/contents/docs/icons/splunk.svg
 stage: Intermediate
 topics:
   - Integrations
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 description: Install the Kestra Add-on for Splunk and configure the Trigger Kestra Flow alert action to start Kestra flows from Splunk saved-search alerts using a Bearer API token.
 ---
 

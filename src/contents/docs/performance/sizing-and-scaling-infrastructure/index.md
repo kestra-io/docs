@@ -106,7 +106,7 @@ To improve executor throughput:
 
 ## Backend considerations
 
-- **JDBC/Postgres backend (Enterprise and OSS)**: simpler to operate with low latency for up to ~1,000 task runs/min. [Performance tunin](../../performance/performance-tuning/index.md)g involves adjusting JDBC queue polling intervals and executor threads beyond scaling the infrastructure.
+- **JDBC/Postgres backend (Enterprise and OSS)**: simpler to operate with low latency for up to ~1,000 task runs/min. [Performance tuning](../../performance/performance-tuning/index.md) involves adjusting JDBC queue polling intervals and executor threads beyond scaling the infrastructure.
 - **Kafka backend (Enterprise)**: required for higher throughput, real-time triggers, and scaling beyond ~2,000 task runs/min. Ensure enough partitions are allocated (≥ number of Executors/Workers) for full parallelism.
 
 ---

@@ -7,19 +7,15 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-How to enable and set up SSO in your Kestra Enterprise instance.
-
-## Configure single sign-on
-
-Single Sign-On (SSO) is an authentication process that allows users to access multiple applications with a single set of login credentials (e.g., "Sign in with Google"). Kestra supports SSO using the OpenID Connect (OIDC) protocol, which is a simple identity layer built on top of the OAuth 2.0 protocol.
+Single Sign-On (SSO) lets users authenticate to Kestra using an external identity provider such as Google, Microsoft, Okta, or Keycloak.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/avb90NfNdTc?si=G-pzFMy8zxzsgynm" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Configuring single sign-on with OpenID Connect (OIDC)
+## Configure OIDC
 
-To implement OIDC SSO, you'll need to configure the Micronaut framework that Kestra uses under the hood. Start by enabling OIDC in your `yaml` configuration file as follows:
+Kestra supports SSO using the OpenID Connect (OIDC) protocol, a simple identity layer built on top of OAuth 2.0. Enable OIDC in your configuration file:
 
 ```yaml
 micronaut:
@@ -40,9 +36,10 @@ For more configuration details, refer to the [Micronaut OIDC configuration guide
 
 ## Provider guides
 
-Check out our guides for specific SSO providers:
+Provider-specific setup guides:
 - [Google](/docs/enterprise/auth/sso/google-oidc)
 - [Microsoft](/docs/enterprise/auth/sso/microsoft-oidc)
 - [Keycloak](/docs/enterprise/auth/sso/keycloak)
 - [Okta](/docs/enterprise/auth/sso/okta)
 - [authentik](/docs/enterprise/auth/sso/authentik)
+- [LDAP](/docs/enterprise/auth/sso/ldap)

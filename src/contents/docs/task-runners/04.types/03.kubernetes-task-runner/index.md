@@ -29,6 +29,7 @@ If your cluster is configured with [RBAC](https://kubernetes.io/docs/reference/a
 - `pods`: get, create, delete, watch, list
 - `pods/log`: get, watch
 - `pods/exec`: get, watch
+- `secrets`: create, delete (required only when `credentials` is set for private registry access)
 
 The following role grants these authorizations:
 
@@ -47,6 +48,9 @@ rules:
 - apiGroups: [""]
   resources: ["pods/log"]
   verbs: ["get", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create", "delete"]
 ```
 
 When `job.enabled: true` (see [Job mode](#job-mode) below), the service account additionally needs:
@@ -136,6 +140,119 @@ taskRunner:
   config:
     masterUrl: https://docker-for-desktop:6443
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+## Failure scenarios
+
+If a task is resubmitted (for example, due to a retry or a Worker crash), the new Worker reattaches to the existing (or completed) pod instead of starting a new one.
+
+Set `resume: false` to force a new pod to be created on every execution attempt rather than reattaching to an existing pod.
+
+By default, pods are deleted after the task completes. Set `delete: false` to keep the pod alive after completion, which is useful when debugging failures — you can then inspect the pod with `kubectl exec` or `kubectl logs`:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  delete: false
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+### Exec timeout and residual `InterruptedIOException` errors
+
+The sequence diagram below illustrates a failure mode that occurs when the `waitUntilRunning` timeout expires while the OkHttp dispatcher is still retrying the `/exec` WebSocket upgrade in the background.
+
+```mermaid
+sequenceDiagram
+    participant W as Kestra Worker (Main Thread)
+    participant OK as OkHttp Dispatcher (Background Threads)
+    participant API as EKS API Server (Control Plane)
+    participant P as Target Task Pod (Worker Node)
+
+    Note over W: Task Start: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+    W->>API: 1. POST /api/v1/namespaces/default/pods (Create Pod)
+    API-->>P: Schedule & Initialize Container
+
+    Note over W: Wait for 'waitUntilRunning' (Default PT10M)
+
+    W->>OK: 2. Initiate /exec Handshake (File/Marker Upload)
+
+    loop Background Retry Loop
+        OK->>API: 3. GET /api/v1/.../exec (WebSocket Upgrade)
+        API-->>OK: 500 Internal Server Error (Kubelet/Node not ready)
+        Note over OK: Wait for retry interval
+    end
+
+    Note over W: 4. Main Thread Timeout Reached
+    W->>W: Mark TaskRun as FAILED
+
+    par Cleanup Phase
+        W->>API: 5. DELETE /api/v1/namespaces/default/pods/{name}
+        API-->>P: Terminate Pod
+        W->>W: 6. SHUTDOWN OkHttp Thread Pool (Executor)
+    and Residual Logging
+        Note over OK: 7. Background Thread wakes for Attempt 3
+        OK->>OK: Thread INTERRUPTED (Pool is Terminated)
+        Note right of OK: Log: java.io.InterruptedIOException: executor rejected
+        Note right of OK: Log: ERROR Stop retry, attempts 3 elapsed after 24 seconds
+    end
+```
+
+
+The task is already marked `FAILED` at step 4. The `java.io.InterruptedIOException: executor rejected` and `ERROR Stop retry` log lines emitted at step 7 are residual — they confirm the cleanup path ran correctly and can be safely ignored. If the `waitUntilRunning` timeout fires before the pod is ready (for example, due to slow image pulls or kubelet initialization on a cold node), increase the value to give the cluster more time:
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  waitUntilRunning: PT20M
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+```
+
+## Private registry credentials
+
+Use the `credentials` block to pull the task image from a private container registry. The runner creates an ephemeral `kubernetes.io/dockerconfigjson` imagePullSecret in the pod namespace, references it from the task pod, and deletes it when the pod is deleted.
+
+| Property | Required | Description |
+|---|---|---|
+| `registry` | No | Registry URL. If omitted, extracted from the `containerImage` name. |
+| `username` | No | Registry username. |
+| `password` | No | Registry password. |
+| `auth` | No | Base64-encoded `username:password` string. When set, used as-is; otherwise computed from `username` and `password`. |
+
+:::alert{type="warning"}
+Ensure the runner service account has `create` and `delete` permissions on `secrets` in the pod namespace. Without this, the runner cannot create the imagePullSecret and the pod will fail to start. See the [RBAC role](#overview) above.
+:::
+
+:::alert{type="info"}
+The `credentials` field names mirror those of the Docker task runner, so a flow switching from the Docker runner to the Kubernetes runner can reuse its credentials block unchanged.
+:::
+
+The following example pulls from a private Amazon ECR registry:
+
+```yaml
+id: private_registry_task
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: 123456789.dkr.ecr.eu-west-1.amazonaws.com/my-image:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      namespace: default
+      config:
+        masterUrl: https://eks-cluster.eu-west-1.eks.amazonaws.com
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+        oauthToken: "{{ secret('K8S_OAUTH_TOKEN') }}"
+      credentials:
+        registry: 123456789.dkr.ecr.eu-west-1.amazonaws.com
+        username: AWS
+        password: "{{ secret('ECR_PASSWORD') }}"
+    script: |
+      print("Running from a private registry image")
 ```
 
 ## Specifying resource requests
@@ -240,73 +357,27 @@ taskRunner:
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
 ```
 
-## Failure scenarios
+## Connection and concurrency settings
 
-If a task is resubmitted (for example, due to a retry or a Worker crash), the new Worker reattaches to the existing (or completed) pod instead of starting a new one.
+At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and slow API server responses, compounding timeout issues.
 
-Set `resume: false` to force a new pod to be created on every execution attempt rather than reattaching to an existing pod.
+Three properties on the `config:` block let you cap concurrent connections and tune reconnect backoff:
 
-By default, pods are deleted after the task completes. Set `delete: false` to keep the pod alive after completion, which is useful when debugging failures — you can then inspect the pod with `kubectl exec` or `kubectl logs`:
-
-```yaml
-taskRunner:
-  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-  delete: false
-  config:
-    masterUrl: https://docker-for-desktop:6443
-    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
-```
-
-### Exec timeout and residual `InterruptedIOException` errors
-
-The sequence diagram below illustrates a failure mode that occurs when the `waitUntilRunning` timeout expires while the OkHttp dispatcher is still retrying the `/exec` WebSocket upgrade in the background.
-
-```mermaid
-sequenceDiagram
-    participant W as Kestra Worker (Main Thread)
-    participant OK as OkHttp Dispatcher (Background Threads)
-    participant API as EKS API Server (Control Plane)
-    participant P as Target Task Pod (Worker Node)
-
-    Note over W: Task Start: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-    W->>API: 1. POST /api/v1/namespaces/default/pods (Create Pod)
-    API-->>P: Schedule & Initialize Container
-
-    Note over W: Wait for 'waitUntilRunning' (Default PT10M)
-
-    W->>OK: 2. Initiate /exec Handshake (File/Marker Upload)
-
-    loop Background Retry Loop
-        OK->>API: 3. GET /api/v1/.../exec (WebSocket Upgrade)
-        API-->>OK: 500 Internal Server Error (Kubelet/Node not ready)
-        Note over OK: Wait for retry interval
-    end
-
-    Note over W: 4. Main Thread Timeout Reached
-    W->>W: Mark TaskRun as FAILED
-
-    par Cleanup Phase
-        W->>API: 5. DELETE /api/v1/namespaces/default/pods/{name}
-        API-->>P: Terminate Pod
-        W->>W: 6. SHUTDOWN OkHttp Thread Pool (Executor)
-    and Residual Logging
-        Note over OK: 7. Background Thread wakes for Attempt 3
-        OK->>OK: Thread INTERRUPTED (Pool is Terminated)
-        Note right of OK: Log: java.io.InterruptedIOException: executor rejected
-        Note right of OK: Log: ERROR Stop retry, attempts 3 elapsed after 24 seconds
-    end
-```
-
-
-The task is already marked `FAILED` at step 4. The `java.io.InterruptedIOException: executor rejected` and `ERROR Stop retry` log lines emitted at step 7 are residual — they confirm the cleanup path ran correctly and can be safely ignored. If the `waitUntilRunning` timeout fires before the pod is ready (for example, due to slow image pulls or kubelet initialization on a cold node), increase the value to give the cluster more time:
+| Property | Default | Description |
+|---|---|---|
+| `maxConcurrentRequests` | `64` | Maximum total concurrent HTTP requests per client. |
+| `maxConcurrentRequestsPerHost` | `5` | Maximum concurrent HTTP requests to the API server host. |
+| `watchReconnectInterval` | `PT1S` | Backoff between watch reconnects. Increase to prevent reconnect storms under API pressure. |
 
 ```yaml
 taskRunner:
   type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-  waitUntilRunning: PT20M
   config:
     masterUrl: https://docker-for-desktop:6443
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+    maxConcurrentRequests: 32
+    maxConcurrentRequestsPerHost: 3
+    watchReconnectInterval: PT5S
 ```
 
 ## Job mode
@@ -380,6 +451,7 @@ Rules are evaluated top to bottom and stop at the first match. This example puts
 `resume: true` (the default) reattaches to an existing Job for the current task run rather than creating a new one — the same semantics as pod mode, applied at the Job level.
 
 `delete: true` (the default) deletes the Job after the task completes. Job deletion cascades to its pods automatically. Set `delete: false` to keep the Job and its pods after completion — useful when debugging a failed attempt, since you can then inspect pods with `kubectl exec` or `kubectl logs`.
+
 
 ## Pod and container customization
 
@@ -551,9 +623,35 @@ taskRunner:
 | `output` | — | A Pebble expression evaluated against the task's output map to extract the token string. |
 | `cache` | `PT5M` | How long the fetched token is reused before the provider runs the task again. Set to `PT0S` to disable caching. |
 
-## Using plugin defaults to avoid repetition
+## Centralizing runner configuration with Policies
 
-You can use `pluginDefaults` to avoid repeating configuration across multiple tasks. For example, you can set the `pullPolicy` to `ALWAYS` for all tasks in a namespace:
+In Enterprise Edition, use a [Policy](../../../07.enterprise/02.governance/policies/index.md) to apply the Kubernetes runner to all Python script tasks in a namespace without repeating the configuration in each flow:
+
+```yaml
+id: k8s-runner-defaults
+description: "Kubernetes task runner for all Python script tasks."
+enforcement: ACTIVE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    override: true
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.scripts.python
+    values:
+      taskRunner:
+        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+        namespace: default
+        pullPolicy: ALWAYS
+        config:
+          masterUrl: https://docker-for-desktop:6443
+          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
+          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
+```
+
+With this Policy applied to the namespace, individual flows need only declare their tasks:
 
 ```yaml
 id: k8s_taskrunner
@@ -578,20 +676,6 @@ tasks:
           ip_address = socket.gethostbyname(socket.gethostname())
           print("Hello from Kubernetes and Kestra!")
           print(f"Host IP Address: {ip_address}")
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python
-    forced: true
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-        namespace: default
-        pullPolicy: ALWAYS
-        config:
-          masterUrl: https://docker-for-desktop:6443
-          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
-          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
-          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
 ```
 
 ## Guides
@@ -671,6 +755,34 @@ Update the following arguments with your own values:
 - `clusterProjectId`: the ID of your Google Cloud project.
 
 After running the command, access your config with `kubectl config view --minify --flatten` to replace `caCertData`, `masterUrl`, and `username`.
+
+## Execution details
+
+When you open an execution in the topology view, each Kubernetes task runner task shows a visual step tracker that displays progress through the pod lifecycle in real time. Each step shows its status and elapsed duration as it completes.
+
+| Step | Completes when |
+|---|---|
+| `pod.created` | Always |
+| `pod.scheduled` | Always |
+| `files.uploaded` | `inputFiles` or `namespaceFiles` are set |
+| `task.running` | Always |
+| `files.retrieved` | `outputFiles` or `outputDir` are set |
+| `pod.deleted` | Always |
+
+All six steps are always shown in the tracker; steps that do not apply (no input or output files configured) remain in a waiting state. A long `files.uploaded` step suggests large or numerous input files; a long `files.retrieved` step suggests large outputs.
+
+**Show Details modal — Configuration:**
+- Namespace
+- Pull policy (when set)
+- Service account name (when set)
+- CPU and memory requests and limits (when set)
+- Node selector labels (when set)
+
+**Show Details modal — Pod details (post-execution):**
+- Pod name and node it ran on — useful for `kubectl logs` and `kubectl exec` debugging
+- Pod phase badge (Succeeded / Failed)
+- Scheduling wait — time between pod creation and the pod entering `Running` state; a long value indicates cluster pressure, a slow image pull, or insufficient node capacity
+- Per-container exit codes
 
 ### Amazon Elastic Kubernetes Service (EKS)
 

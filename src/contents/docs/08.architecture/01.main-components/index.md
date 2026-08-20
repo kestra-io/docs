@@ -6,13 +6,11 @@ sidebarTitle: Main components
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
-Technical overview of Kestra’s main components: internal storage, queue, repository, and plugins.
-
 Kestra relies on the following internal components:
 
 - **Internal storage**: stores flow data such as task outputs and flow inputs.
 - **Queue**: enables internal communication between Kestra server components.
-- **Repository**: persists flows, templates, executions, logs, and all other internal objects.
+- **Repository**: persists flows, executions, logs, and all other internal objects.
 - **Plugins**: extend Kestra’s core with additional task and trigger types, storage implementations, and data transformations.
 
 Each component has multiple implementations depending on deployment architecture. Some require additional plugins.
@@ -34,7 +32,7 @@ Execution metadata — including storage file paths — is recorded in the **rep
 
 ### Storage types
 
-By default, Kestra uses **local storage**, which stores files on the host filesystem. This option is simple but not scalable and is usually not recommended for production (unless for standalone deployments).
+By default, Kestra uses **local storage**, which stores files on the host filesystem. Local storage is not recommended for production distributed deployments — use cloud object storage or a self-hosted alternative instead.
 
 :::alert{type="warning"}
 Local storage behavior differs between standalone and distributed deployments:
@@ -58,21 +56,22 @@ For details, see [Runtime and Storage](../../configuration/02.runtime-and-storag
 
 ## Queue
 
-The **queue** is used internally for communication between Kestra’s server components. Each repository type has a matching queue implementation:
+The **queue** is the internal communication channel between Kestra’s server components. Server roles emit typed messages onto named queues and subscribe to the queues they consume — no role calls another directly. The full queue surface is defined once as an abstract contract, satisfied by one chosen backend:
 
-- **In-memory queue** — must be used with the in-memory repository.
-- **Database queue** — must be used with the database repository.
-- **Kafka queue** — must be used with the Elasticsearch repository.
-  **Only available in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).**
+- **Database queue** (default) — backed by PostgreSQL or MySQL. Available in all editions.
+- **In-memory queue** — for testing and ephemeral use only.
+- **Kafka queue** — Enterprise Edition. Higher throughput; pairs with the Elasticsearch repository.
+- **Redis queue** — Enterprise Edition.
+- **AMQP queue** — Enterprise Edition.
+- **GCP Pub/Sub queue** — Enterprise Edition.
 
 ## Repository
 
-The **repository** persists all internal objects, including flows, executions, logs, and templates. Each repository type must be paired with its corresponding queue:
+The **repository** persists all domain entities, including flows, executions, logs, and triggers. The backend is chosen alongside the queue:
 
-- **In-memory repository** — must be used with the in-memory queue.
-- **Database repository** — must be used with the database queue.
-- **Elasticsearch repository** — must be used with the Kafka queue.
-  **Only available in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).**
+- **Database repository** (default) — backed by PostgreSQL, MySQL, or H2. Available in all editions.
+- **In-memory repository** — for testing only.
+- **Elasticsearch repository** — Enterprise Edition. Backs the high-volume search and read model; requires the Kafka queue and the Indexer server role to keep it in sync.
 
 ## Plugins
 

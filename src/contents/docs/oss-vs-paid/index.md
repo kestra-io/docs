@@ -38,13 +38,15 @@ Enterprise Edition provides [audit logs](../07.enterprise/02.governance/06.audit
 
 ## Scalability and Reliability
 
-The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition can use Kafka and Elasticsearch for distributed event processing, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
+The Open-Source Edition runs by default on a single server, which can become a bottleneck for large workloads. Enterprise Edition can use Kafka (paired with Elasticsearch for the search and read model), Redis, AMQP, or GCP Pub/Sub as the queue backend, enabling horizontal scaling and high throughput. High Availability (HA) architecture eliminates single points of failure — if a worker node fails, tasks automatically reroute to healthy nodes.
 
 [Worker Groups](../07.enterprise/04.scalability/worker-group/index.md) let you assign tasks to specialized infrastructure. For example, GPU-heavy machine learning workflows can target a worker group with NVIDIA GPUs, while ETL jobs run on cost-optimized spot instances. [Task Runners](../07.enterprise/04.scalability/task-runners/index.md) offload compute-intensive scripts on-demand to Kubernetes or cloud batch services such as Azure Batch, Google Cloud Run or AWS ECS Fargate to prevent resource contention and making it easy to scale in a cost-effective way.
 
 :::alert{type="info"}
 Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
 :::
+
+The [External Log Data Store](../10.administrator-guide/log-data-store/index.md) routes execution logs to a dedicated JDBC database (OSS) or Elasticsearch (EE), keeping the main database lean and reducing schema migration time.
 
 [Maintenance Mode](../07.enterprise/05.instance/maintenance-mode/index.md) allows safe upgrades: new executions queue while in-progress tasks complete gracefully, avoiding abrupt workflow termination. [Cluster monitoring](../07.enterprise/05.instance/index.mdx) provides real-time visibility into resource usage, helping teams proactively address infrastructure bottlenecks. Additionally, using **Custom Dashboards**, you can create custom views to track specific metrics, logs, or executions. The [Backup and Restore](../10.administrator-guide/backup-and-restore/index.md) eliminates the risk of data loss or corruption during upgrades, allowing you to recover from accidental deletions or system failures.
 

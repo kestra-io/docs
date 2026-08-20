@@ -7,25 +7,36 @@ icon: /src/contents/docs/icons/ui.svg
 docId: settings
 ---
 
-Configure Settings for Kestra.
-
-**Settings** are accessible from the bottom left environment menu. All configuration options are per-user.
+Configure per-user preferences, profile details, and API tokens from the **Settings** page, accessible via the bottom-left environment menu.
 
 ![Kestra User Interface Settings Page](./settings.png)
 
+## Preferences
 
-## Main configuration
+Options you can configure under **Preferences** include:
+- **Default Namespace**: Pre-selects a namespace when creating a new flow and filters the Flows and Executions pages to that namespace by default.
+- **Default Log Level**: Minimum log level shown in execution logs (e.g., `INFO`, `TRACE`).
+- **Default Log Display**: How logs are presented when opening an execution — expand all, collapse all, or expand only failed tasks.
+- **Default Editor Type**: Editor shown when opening a flow for the first time — YAML Editor or No Code Editor.
+- **Execute the Flow**: Where execution results open after triggering a run — in the same tab or a new tab.
+- **Default Execution Tab**: Tab selected when navigating to an execution (e.g., Gantt, Logs, Outputs).
+- **Default Flow Tab**: Tab selected when navigating to a flow (e.g., Overview, Topology, Edit).
+- **Default Triggers Tab**: Tab selected when navigating to the triggers page.
+- **Auto Refresh Interval**: Seconds between automatic data refreshes on list pages.
+- **Playground**: Toggle to enable or disable the editor playground, which lets you run tasks individually.
+- **Customize Sidebar**: Drag and drop items to reorder the left navigation sidebar, or remove items you don't need.
 
-Options you can configure under **Main Configuration** include:
-- **Default Namespace**: e.g., `company.team` - by default, this is empty. Once set, this will be the default namespace when creating a new flow (otherwise `company.team` is used as a placeholder). Also, when navigating to the Flows or Executions pages, it will filter for this default namespace.
-- **Default Editor Type**: e.g., "YAML Editor" or "No Code Editor"
-- **Default Log Level**: e.g., `TRACE`
-- **Default Log Display**: Expand all, Collapse all, or Expand only failed tasks
-- **Execute the Flow**: In the same tab or in a new tab
-- **Default Execution Tab**: Sets which Execution tab you are directed to (e.g., Gantt, Logs, Outputs, etc.) after executing a flow.
-- **Default Flow Tab**: Sets which flow tab opens by default when you click a flow (e.g., Overview, Topology, Edit, etc.)
+## Profile
 
-## Theme preferences
+Access **Profile** from the Settings left-hand menu to manage your personal account details.
+
+The following fields are editable directly — no separate save step is required:
+- **First Name** and **Last Name**
+- **Password** — enter and confirm a new password to update your login credentials.
+
+Your avatar displays your initials derived from your first and last name. If you have pending workspace invitations, they appear in a table at the bottom of the Profile page.
+
+## Appearance
 
 Kestra supports both Light and Dark mode.
 
@@ -33,11 +44,7 @@ You can also configure the Editor independently in Light or Dark mode. In additi
 
 There's also the option to change the environment name and color to help you identify if you have multiple Kestra instances, for example a `dev` and `prod` environment.
 
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/8hXLiVKUr8k?si=EuxnZcfmVQqxVw45" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
-Below is a detailed list of the Theme Preferences you can configure:
+Below is a detailed list of the Appearance options you can configure:
 
 - **Theme Mode**: Dark or Light
 - **Chart Color Scheme**: Classic (red-green) or Kestra (pink-purple)
@@ -71,6 +78,3 @@ Below is a detailed list of the Theme Preferences you can configure:
 This setting only affects the UI display. It does not affect [Schedule triggers](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) or flow execution times, which run on UTC by default.
 :::
 
-## Export
-
-You can also export all of your flows as a `.zip` file. This allows you to back up your flows or migrate them to another instance of Kestra.

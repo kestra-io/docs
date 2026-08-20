@@ -42,13 +42,13 @@ The `repositories.Search` task exposes a `fetchType` property that controls how 
 | `STORE` (default) | `uri` — an Ion file written to Kestra internal storage | Large result sets, auditing, or when you need to persist the raw data |
 | `NONE` | _(empty)_ | Triggering a side-effect without needing results |
 
-Use `FETCH` when you want to feed results directly into a ForEach loop with a simple Pebble expression. Use `STORE` when the result set may be large, when you want the raw file persisted in internal storage for inspection or reuse, or when downstream tasks need to read the data multiple times.
+Use `FETCH` when you want to feed results directly into a Loop task with a simple Pebble expression. Use `STORE` when the result set may be large, when you want the raw file persisted in internal storage for inspection or reuse, or when downstream tasks need to read the data multiple times.
 
 ---
 
 ## Flow Definition — FETCH mode
 
-`fetchType: FETCH` places results directly in `outputs.search_kestra_repos.rows` as a list of objects. The ForEach `values` expression reads from that list without any file I/O step.
+`fetchType: FETCH` places results directly in `outputs.search_kestra_repos.rows` as a list of objects. The Loop `values` expression reads from that list without any file I/O step.
 
 ```yaml
 id: github_repo_backup
@@ -64,7 +64,7 @@ tasks:
     oauthToken: "{{ secret('GITHUB_TOKEN') }}"
 
   - id: for_each_repo
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     description: Iterate over each found repository.
     values: "{{ outputs.search_kestra_repos.rows | jq('.[].clone_url') }}"
     tasks:
@@ -75,8 +75,8 @@ tasks:
           - id: clone_repo
             type: io.kestra.plugin.git.Clone
             description: Clone the current repository from GitHub.
-            url: "{{ taskrun.value }}"
-            directory: "{{ taskrun.value | split('/') | last | split('.') | first }}"
+            url: "{{ item.value }}"
+            directory: "{{ item.value | split('/') | last | split('.') | first }}"
 
           - id: zip_repo
             type: io.kestra.plugin.scripts.shell.Commands
@@ -120,7 +120,7 @@ tasks:
     oauthToken: "{{ secret('GITHUB_TOKEN') }}"
 
   - id: for_each_repo
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     description: Iterate over each found repository.
     values: "{{ outputs.search_kestra_repos.uri | internalStorage.get() | jq('.[].clone_url') }}"
     tasks:
@@ -131,8 +131,8 @@ tasks:
           - id: clone_repo
             type: io.kestra.plugin.git.Clone
             description: Clone the current repository from GitHub.
-            url: "{{ taskrun.value }}"
-            directory: "{{ taskrun.value | split('/') | last | split('.') | first }}"
+            url: "{{ item.value }}"
+            directory: "{{ item.value | split('/') | last | split('.') | first }}"
 
           - id: zip_repo
             type: io.kestra.plugin.scripts.shell.Commands
@@ -162,7 +162,7 @@ tasks:
 
 Both variants share the same structure. The only difference is how the search results move from the `search_kestra_repos` task to the `for_each_repo` loop.
 
-With `FETCH`, results live in `outputs.search_kestra_repos.rows` as a native list — no file read needed. With `STORE`, results are written to an Ion file and the ForEach expression reads the file via `internalStorage.get()` before applying the `jq` filter.
+With `FETCH`, results live in `outputs.search_kestra_repos.rows` as a native list — no file read needed. With `STORE`, results are written to an Ion file and the Loop `values` expression reads the file via `internalStorage.get()` before applying the `jq` filter.
 
 In both cases:
 

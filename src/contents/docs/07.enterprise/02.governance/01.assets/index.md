@@ -24,7 +24,7 @@ For an end-to-end architecture walkthrough with diagrams, see [Assets for infras
 
 Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`; you can also add them manually from the **Assets** tab. Once created, you can view asset details, check which workflow runs created or modified them, and see how assets connect to each other across your workflows.
 
-Assets enables:
+Assets enable:
 
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
@@ -55,7 +55,7 @@ Asset types fall into two categories:
 
 - **Kestra-defined asset types**: These predefined types use the `io.kestra.core.models.assets` model and provide structured metadata fields specific to each asset type. Plugins that support auto-generation populate these fields automatically during task execution — for example, a JDBC plugin creates a `Table` asset with `system`, `database`, and `schema` filled in from the connection details.
 
-The current Kestra-defined asset types are the following:
+Kestra provides these built-in asset types:
 
 - `io.kestra.plugin.ee.assets.Dataset`
   - Represents a dataset asset managed by Kestra.
@@ -429,6 +429,8 @@ namespace: kestra.company.data
 tasks:
   - id: create_staging_layer_asset
     type: io.kestra.plugin.jdbc.duckdb.Query
+    url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+    fetchType: STORE
     sql: |
       CREATE TABLE IF NOT EXISTS trips AS
       select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
@@ -443,28 +445,25 @@ tasks:
               model_layer: staging
 
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - passenger_count
       - trip_distance
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
-        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
+        url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+        fetchType: STORE
+        sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;
         assets:
           inputs:
               - id: trips
           outputs:
-              - id: avg_{{taskrun.value}}
+              - id: avg_{{item.value}}
                 type: io.kestra.plugin.ee.assets.Table
                 namespace: "{{flow.namespace}}"
                 metadata:
                   model_layer: mart
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.duckdb
-    values:
-      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
-      fetchType: STORE
 ```
 
 **What's happening in this pipeline**:
@@ -473,7 +472,7 @@ pluginDefaults:
 
 2. **Staging Layer**: The `trips` table is created and registered with `model_layer: staging` metadata. This becomes an intermediate asset that mart layers will consume.
 
-3. **Dynamic Mart Creation**: The `ForEach` task generates two mart tables:
+3. **Dynamic Mart Creation**: The `Loop` task generates two mart tables:
    - `avg_passenger_count`
    - `avg_trip_distance`
 
@@ -487,9 +486,6 @@ pluginDefaults:
 - **Dependency Tracking**: Know exactly which tables depend on others before making schema changes
 - **Audit Trail**: Track which workflows created each table and when
 
-See the flow in action in this interactive demo:
-
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/MXR1KD6by4izutxRMMNK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Data Pipeline Assets | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 :::
 
@@ -519,28 +515,24 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ inputs.teams }}"
     tasks:
       - id: create_bucket
         type: io.kestra.plugin.aws.cli.AwsCLI
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_REGION') }}"
+        allowFailure: true
         commands:
-          - aws s3 mb s3://kestra-{{ taskrun.value | slugify }}-bucket
+          - aws s3 mb s3://kestra-{{ item.value | slugify }}-bucket
         assets:
           outputs:
-            - id: kestra-{{ taskrun.value | slugify }}-bucket
+            - id: kestra-{{ item.value | slugify }}-bucket
               type: AWS_BUCKET
               metadata:
                 provider: s3
-                address: s3://kestra-{{ taskrun.value | slugify }}-bucket
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
-      allowFailure: true
+                address: s3://kestra-{{ item.value | slugify }}-bucket
 ```
 
 This flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata.
@@ -558,6 +550,9 @@ tasks:
 
   - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_REGION') }}"
     bucket: kestra-data-bucket
     from: '{{ outputs.download.uri }}'
     key: raw_customer.csv
@@ -569,13 +564,6 @@ tasks:
           type: io.kestra.plugin.ee.assets.File
           metadata:
             owner: data
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
 ```
 
 In this workflow:
@@ -655,12 +643,12 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{inputs.assets}}"
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "{{taskrun.value}}"
+        message: "{{item.value}}"
 ```
 
 **Filter assets by namespace:**
@@ -779,3 +767,9 @@ tasks:
       - io.kestra.plugin.ee.assets.VM
     endDate: "{{ now() | dateAdd(-180, 'DAYS') }}"
 ```
+
+## Visualizing assets in dashboards
+
+Use the `io.kestra.plugin.ee.dashboard.data.Assets` data source to build charts over your asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range — they always reflect the current state of your inventory.
+
+See [Assets (EE and Cloud only)](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.
