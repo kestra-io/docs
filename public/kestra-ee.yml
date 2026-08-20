@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.32
+  version: 1.3.34
 tags:
 - name: Flows
   description: Flows api
@@ -5238,6 +5238,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BlueprintController.ApiFlowBlueprint"
+  /api/v1/{tenant}/blueprints/flows/validate:
+    post:
+      tags:
+      - Blueprints
+      summary: Validate a Flow Blueprint
+      description: Validates a flow blueprint source without persisting it. Returns
+        constraint violations if any. Requires BLUEPRINT permission with the READ
+        action.
+      operationId: validateFlowBlueprint
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The flow blueprint source code
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: validateFlowBlueprint 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateConstraintViolation"
   /api/v1/{tenant}/blueprints/flows/{id}:
     get:
       tags:
@@ -23209,6 +23238,8 @@ components:
           $ref: "#/components/schemas/SupportDebugInfo.AuthType"
         deploymentType:
           $ref: "#/components/schemas/SupportDebugInfo.DeploymentType"
+        deploymentTopology:
+          $ref: "#/components/schemas/SupportDebugInfo.DeploymentTopology"
         queueType:
           type: string
         queueVersion:
@@ -23231,14 +23262,20 @@ components:
       - LDAP
       - BASIC_AUTH
       x-type: String
+    SupportDebugInfo.DeploymentTopology:
+      type: string
+      enum:
+      - STANDALONE
+      - DISTRIBUTED
+      x-type: String
     SupportDebugInfo.DeploymentType:
       type: string
-      description: Deployment type detected from active Micronaut environments.
+      description: "Infrastructure platform: Kubernetes, a Docker container, or a\
+        \ plain JAR."
       enum:
       - KUBERNETES
-      - DOCKER_COMPOSE
       - DOCKER
-      - STANDALONE
+      - JAR
       x-type: String
     Task:
       required:
@@ -23394,6 +23431,11 @@ components:
           nullable: true
           allOf:
           - $ref: "#/components/schemas/AssetsInOut"
+        assetEmits:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/AssetsInOut"
         state:
           $ref: "#/components/schemas/State"
         iteration:
