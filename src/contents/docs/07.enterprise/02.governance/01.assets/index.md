@@ -47,7 +47,7 @@ Every asset includes these fields:
 
 ## Asset identifier
 
-An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it - the `id` must be unique per tenant. Neither the namespace nor the type is part of that identity: two assets with the same `id` and different namespaces or types cannot exist in the same tenant. Creating an asset with an `id` that is already taken is rejected, and the type of an existing asset cannot be changed.
+An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it - the `id` must be unique per tenant. Neither the namespace nor the type is part of that identity: two assets with the same `id` and different namespaces or types cannot exist in the same tenant. Creating an asset with an `id` that is already taken is rejected.
 
 You can attach a namespace to an asset to improve filtering and to restrict visibility so only users or groups with the appropriate RBAC can access the asset.
 
