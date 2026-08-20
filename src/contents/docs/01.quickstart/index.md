@@ -31,7 +31,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
   -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
-  kestra/kestra:latest-no-plugins server standalone
+  kestra/kestra:latest-slim server standalone
 ```
 
 If you re-run the command and Docker reports `You have to remove (or rename) that container to be able to reuse that name.`, remove the old container with `docker rm -f kestra` or pick a different `--name`.
@@ -41,11 +41,11 @@ If you re-run the command and Docker reports `You have to remove (or rename) tha
 - stores local files in the `kestra_data` Docker volume
 - persists the H2 database in the `kestra_db` Docker volume
 - mounts `/tmp` and the Docker socket so script and container tasks can run locally
-- uses the lightweight `no-plugins` image and installs plugins automatically on demand
+- uses the lightweight `slim` image and installs plugins automatically on demand
 :::
 
 :::alert{type="info"}
-The `kestra/kestra:latest-no-plugins` image ships without any plugins to keep the download small. The `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable makes Kestra install any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
+The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. The `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable makes Kestra install any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
 :::
 
 The container is ready when the logs show `Main server is running at http://...:8080`.
