@@ -52,7 +52,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `FLOW` | Flows, their revisions, graphs, and dependencies |
 | `EXECUTION` | Executions, their state, logs, outputs, and files |
 | `TRIGGER` | Triggers attached to flows |
-| `NAMESPACE` | Namespaces and their files, plugin defaults |
+| `NAMESPACE` | Namespaces and their files |
 | `KVSTORE` | Key-value store entries |
 | `SECRET` | Secrets stored in the namespace |
 | `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
@@ -80,6 +80,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `SERVICE_ACCOUNT` | Service accounts |
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
+| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
 | `SYSTEM_SETTINGS` | Instance-level settings |
 | `TENANT_SETTINGS` | Tenant-level settings |
 
@@ -104,7 +105,8 @@ Each resource defines its own set of allowed actions. Not every action applies t
 | `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
 | `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
-| `NAMESPACE` | `MANAGE_FILES` (all namespace file operations), `EXPORT_PLUGIN_DEFAULTS`, `IMPORT_PLUGIN_DEFAULTS` |
+| `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
+| `POLICY` | `EXECUTE` (dry-run evaluate a policy against its scope), `EXPORT`, `IMPORT` |
 | `APP` | `EXECUTE`, `ACCESS_FILES`, `ACCESS_LOGS` |
 | `TESTSUITE` | `EXECUTE` |
 | `AUDITLOG` | `EXPORT` |
