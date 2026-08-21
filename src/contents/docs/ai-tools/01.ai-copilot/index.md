@@ -65,7 +65,7 @@ To remove the limit, configure your own LLM provider in the `kestra.ai.providers
 
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`isDefault: true`):
+To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
 
 ```yaml
 kestra:
@@ -76,19 +76,19 @@ kestra:
         display-name: Gemini - Private
         type: gemini
         configuration:
-          model-name: gemini-3.1-flash-lite
+          model-name: gemini-2.5-flash
           api-key: YOUR_GEMINI_API_KEY
       - id: gpt
-        display-name: Open AI
+        display-name: OpenAI
         type: openai
-        isDefault: true
+        is-default: true
         configuration:
-          model-name: gpt-4
+          model-name: gpt-4o
           api-key: YOUR_OPENAI_API_KEY
 ```
 
 :::alert{type="info"}
-Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`isDefault: true`).
+Legacy single-provider configs (`kestra.ai.type` + provider block) still work, but the `providers` array lets you register multiple providers and choose a default (`is-default: true`).
 :::
 
 ### Disabling AI Copilot
@@ -107,18 +107,7 @@ When disabled, the Copilot UI will not appear and all AI endpoints will be deact
 
 When multiple providers are configured, users can switch models from a dropdown in the Copilot UI instead of relying only on the default.
 
-Replace `api-key` with your provider credentials. Optionally, you can add the following properties inside each provider `configuration` block (availability varies by provider):
-
-- `temperature`: Controls randomness in responses — lower values make outputs more focused and deterministic, while higher values increase creativity and variability.
-- `topP` (nucleus sampling): Ranges from 0.0–1.0; lower values (0.1–0.3) produce safer, more focused responses for technical tasks, while higher values (0.7–0.9) encourage more creative and varied outputs.
-- `topK`: Typically ranges from 1–200+ depending on the API; lower values restrict choices to a few predictable tokens, while higher values allow more options and greater variety in responses.
-- `maxOutputTokens`: Sets the maximum number of tokens the model can generate, capping the response length.
-- `logRequests`: Creates logs in Kestra for LLM requests.
-- `logResponses`: Creates logs in Kestra for LLM responses.
-- `baseURL`: Specifies the endpoint address where the LLM API is hosted.
-- `clientPem`: (Required for mTLS) PEM bundle with client cert + private key (e.g., `cat client.crt.pem client.key.pem > client-bundle.pem`). Used for mutual TLS.
-- `caPem`: CA PEM file to add a custom CA without `trustAll`. Usually not needed since hosts already trust the CA.
-- `customHeaders`: Specify custom HTTP headers for authentication and routing through internal AI gateways. Custom headers should be passed as a map inside the property.
+For a full reference of every configuration property — including generation parameters, extended reasoning, mTLS, custom headers, and per-provider availability — see the [AI Copilot configuration reference](../../configuration/06.enterprise-and-advanced/index.md#ai-copilot).
 - `timeout`: Specifies the maximum duration to wait for an AI model API request to complete before timing out. ISO 8601 duration format (Java Duration): `PT30S` = 30 seconds. You can set it per provider to enforce strict SLAs.
 
 :::alert{type="info"}
@@ -277,9 +266,11 @@ From the Logs and Gantt views, click the three-dot menu on any failed task and s
 
 ## Enterprise Edition Copilot configurations
 
-Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models via Ollama. Add one or more provider blocks inside `kestra.ai.providers` and set `isDefault: true` on the one Copilot should use by default.
+Enterprise Edition supports Amazon Bedrock, Anthropic, Azure OpenAI, DeepSeek, Google Gemini, Google Vertex AI, Mistral, OpenAI, OpenRouter, and all open-source models via Ollama. Add one or more provider blocks inside `kestra.ai.providers` and set `is-default: true` on the one Copilot should use by default.
 
-Only non-thinking models are supported. If a model cannot have thinking disabled, the generated YAML will be incorrect.
+:::alert{type="warning"}
+Some Ollama model tags resolve to thinking models behind the scenes (for example, `qwen3:30b-a3b` points to a thinking variant). Thinking models that cannot have thinking disabled will produce incorrect YAML. Check that your chosen model supports a non-thinking mode, or use `thinking-enabled: false` where the provider supports it.
+:::
 
 ### Amazon Bedrock
 
@@ -298,6 +289,8 @@ kestra:
 
 ### Anthropic
 
+Anthropic does not accept an `api-key` configuration field. Set the `ANTHROPIC_API_KEY` environment variable on the Kestra server instead.
+
 ```yaml
 kestra:
   ai:
@@ -306,8 +299,7 @@ kestra:
         display-name: Anthropic
         type: anthropic
         configuration:
-          model-name: claude-opus-4-1-20250805
-          api-key: CLAUDE_API_KEY
+          model-name: claude-opus-4-5
 ```
 
 ### Azure OpenAI
@@ -353,11 +345,13 @@ kestra:
         display-name: Google Gemini
         type: gemini
         configuration:
-          model-name: gemini-3.1-flash-lite
+          model-name: gemini-2.5-flash
           api-key: YOUR_GEMINI_API_KEY
 ```
 
 ### Google Vertex AI
+
+Authenticates via Application Default Credentials — no `api-key` field. Ensure the Kestra runtime has ADC configured (e.g. `GOOGLE_APPLICATION_CREDENTIALS` env var or Workload Identity).
 
 ```yaml
 kestra:
@@ -367,10 +361,9 @@ kestra:
         display-name: Google Vertex AI
         type: googlevertexai
         configuration:
-          model-name: gemini-3.1-flash-lite
+          model-name: gemini-2.5-flash
           project: GOOGLE_PROJECT_ID
-          location: GOOGLE_CLOUD_REGION
-          endpoint: VERTEX-AI-ENDPOINT
+          location: us-central1
 ```
 
 ### Mistral
@@ -406,10 +399,6 @@ kestra:
 If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
 :::
 
-:::alert{type="info"}
-Some Ollama model tags resolve to thinking models behind the scenes. For example, `qwen3:30b-a3b` points to `qwen3:30b-a3b-thinking-2507-q4_K_M`, which cannot have thinking disabled. Check that the model you select has a non-thinking version or supports a toggle before using it with Copilot.
-:::
-
 ### OpenAI
 
 ```yaml
@@ -433,9 +422,8 @@ kestra:
     providers:
       - id: openrouter
         display-name: OpenRouter
-        type: openrouter
+        type: open-router
         configuration:
           api-key: OPENROUTER_API_KEY
-          base-url: "https://openrouter.ai/api/v1"
           model-name: "anthropic/claude-sonnet-4"
 ```
