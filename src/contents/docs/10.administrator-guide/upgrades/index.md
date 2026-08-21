@@ -66,8 +66,10 @@ The webserver hosts the API, so stop and then start it immediately to avoid down
 
 If you want to stick to a specific Kestra version, you can pin the [Docker image tag](https://hub.docker.com/r/kestra/kestra/tags) to a specific release. Here are some examples:
 
-- `kestra/kestra:v2.0.0-no-plugins` — the 2.0.0 release without bundled plugins
+- `kestra/kestra:v2.0.0-slim` — the 2.0.0 release without bundled plugins
 - `kestra/kestra:v2.0.0` — the 2.0.0 release with all plugins
+
+The `-slim` suffix replaces the former `-no-plugins` suffix; releases older than the rename only exist under `-no-plugins` (e.g. `kestra/kestra:v0.21.4-no-plugins`).
 
 You can also create a custom image with your own plugins and dependencies, as explained in the [Docker installation](../../02.installation/02.docker/index.md).
 
