@@ -529,7 +529,7 @@ For `PUBLIC` apps, execution IDs exposed through file download or log links are 
 
 ### Private access for using apps
 
-When an app is set to `PRIVATE`, only authenticated users with `APP: EXECUTE` permission on the app's namespace can open or submit it. You can further narrow access to specific IAM groups using the `groups` field:
+When an app is set to `PRIVATE`, only users with `APP: EXECUTE` permission on the app's namespace can open or submit it. `PRIVATE` apps are also only visible in the App Catalog to users with `APP: EXECUTE` — they do not appear for users who only hold `APP: LIST` or `APP: VIEW`. You can further narrow access to specific IAM groups using the `groups` field:
 
 ```yaml
 access:

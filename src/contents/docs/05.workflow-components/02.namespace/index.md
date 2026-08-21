@@ -9,7 +9,7 @@ docId: namespaces
 
 Namespaces are logical groupings of flows that control access to secrets, key-value pairs, plugin defaults, and variables.
 
-Think of them as folders for your flows — use `.` to nest them to any depth and separate environments, teams, and projects within a single instance. Namespace names consist of alphanumeric characters and dots:
+Think of them as folders for your flows — use `.` to nest them to any depth and separate environments, teams, and projects within a single instance. Namespace names consist of lowercase alphanumeric characters, dots, underscores, and hyphens. They must start with a letter or digit and have a maximum length of 150 characters:
 
 - `project_one`
 - `company.project_two`
@@ -50,6 +50,6 @@ Each namespace has an embedded code editor for managing scripts, configuration, 
 
 Open any namespace to see its execution dashboards, flows, dependencies, and [KV Store](../../06.concepts/05.kv-store/index.md). You can also list and filter namespaces from the command line using [`kestractl namespaces list`](../../kestra-cli/kestractl/index.md).
 
-Tabs marked with a lock icon — Edit, Secrets, Assets, Variables, Policies, Revisions, and Audit Logs — are available in Kestra EE. See the [Enterprise Edition documentation](../../07.enterprise/index.mdx) for details.
+Tabs marked with a lock icon — Edit, Secrets, Credentials, Assets, Variables, Policies, Reusable Inputs, Revisions, and Audit Logs — are available in Kestra EE. See the [Enterprise Edition documentation](../../07.enterprise/index.mdx) for details.
 
 ![Namespace overview with execution dashboards and sidebar tabs](./namespace-overview-2-0.png)
