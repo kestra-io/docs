@@ -134,3 +134,11 @@ Changes to deployment, Helm charts, and server configuration. Relevant primarily
 | [Database migrations](./database-migrations) | OSS, EE | How to run the 2.0 schema migrations, including the upgrade sequence, Docker Compose and Kubernetes examples, and key scripts. |
 | [Helm gRPC worker-controller](./helm-grpc-worker-controller) | EE | Port 50051 is now exposed by default on all pods, and a dedicated controller deployment is added to the Helm chart. Review before upgrading. |
 | [Management endpoint hardening](./management-endpoint-hardening) | OSS, EE | Several management endpoints that were open without authentication in 1.x now require explicit opt-in. Review before upgrading in production. |
+
+### Terraform provider
+
+Changes to the official Terraform provider. Relevant for teams managing Kestra resources as Infrastructure as Code.
+
+| Guide | Editions | What changed |
+|---|---|---|
+| [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
