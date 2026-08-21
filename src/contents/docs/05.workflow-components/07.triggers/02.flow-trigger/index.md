@@ -212,15 +212,9 @@ triggers:
       lookback: PT1H
 ```
 
-### Fire once per window
+### Firing more than once in a window
 
-Set `fireOnce: true` to ensure the trigger fires at most once per window, even if conditions are satisfied multiple times:
-
-```yaml
-window:
-  deadline: "09:00:00"
-  fireOnce: true
-```
+Once every `dependsOn` entry has been satisfied and an execution has been created, the stored results are reset. The trigger can fire again in the same window, though every dependency has to be satisfied again first. To create an execution as soon as any single upstream flow succeeds, use `mode: ANY` instead.
 
 ## Scoped trigger outputs
 

@@ -942,7 +942,7 @@ triggers:
 | `HasRetryAttempt` | `when: "{{ hasRetryAttempt == true }}"` on the entry |
 | `Not` > `ExecutionStatus` | Explicit `states` list or `when: "{{ state != 'SUCCESS' }}"` |
 | Multiple triggers for OR logic | `mode: ANY` with `dependsOn` entries |
-| `preconditions.resetOnSuccess: true` | `window.fireOnce: true` |
+| `preconditions.resetOnSuccess: true` | remove it, this is the only behavior in 2.0 |
 | `timeWindow.type: DAILY_TIME_DEADLINE` | `window.deadline` |
 | `timeWindow.type: DAILY_TIME_WINDOW` | `window.from` + `window.to` |
 | `timeWindow.type: DURATION_WINDOW` | `window.every` |
@@ -959,7 +959,7 @@ The `window` property applies to Flow triggers and controls how Kestra accumulat
 | Fixed interval | `every: P1D` + optional `offset: PT6H` | Recurring window of a fixed size, offset from midnight |
 | Lookback | `lookback: PT1H` | Rolling window looking back from the current evaluation time |
 
-`fireOnce: true` can be added to any window type to limit the trigger to firing once per window period rather than every time conditions are met.
+None of the window types changes how often the trigger fires. Once every `dependsOn` entry has been satisfied and an execution has been created, the stored results are reset, so every dependency has to be satisfied again before another execution is created.
 
 ### Deadline
 
@@ -991,16 +991,6 @@ window:
   lookback: PT1H
 ```
 
-### Fire once per window
-
-```yaml
-window:
-  deadline: "09:00:00"
-  fireOnce: true
-```
-
-Default is `false` — the trigger fires every time conditions are met within the window.
-
 ### Replacing `timeWindow` types
 
 | Old `timeWindow.type` | New `window` property |
@@ -1010,7 +1000,7 @@ Default is `false` — the trigger fires every time conditions are met within th
 | `DURATION_WINDOW` | `every: P1D` + optional `offset: PT6H` |
 | `SLIDING_WINDOW` | `lookback: PT1H` |
 
-`preconditions.resetOnSuccess: true` maps to `window.fireOnce: true`.
+`preconditions.resetOnSuccess: true` can be removed, since resetting after firing is the only behavior in 2.0. `resetOnSuccess: false` has no equivalent; use `mode: ANY` if you want an execution to be created as soon as any single upstream flow succeeds.
 
 ## Behavior changes after upgrading
 
