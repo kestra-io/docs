@@ -192,7 +192,7 @@ tasks:
 
   - id: agent
     type: io.kestra.plugin.ai.agent.AIAgent
-    prompt: Review this Python function - "def add(a, b): return a + b"
+    prompt: "Review this Python function - 'def add(a, b): return a + b'"
     provider:
       type: io.kestra.plugin.ai.provider.GoogleGemini
       modelName: gemini-3.5-flash-lite
