@@ -100,7 +100,7 @@ Below is a video demonstration walking through each step from installation to ap
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Both official and custom plugins can be installed from the UI. Go to **Super Admin → Infrastructure → Versioned Plugins** and click **+ Install** to browse the full plugin library. Search for the plugin, select the version, and confirm.
+Both official and custom plugins can be installed from the UI. Go to **Instance Owner → Infrastructure → Versioned Plugins** and click **+ Install** to browse the full plugin library. Search for the plugin, select the version, and confirm.
 
 After installing, the full list of versioned plugins is displayed. Kestra alerts you when a newer version is available. Upgrading installs the new version separately — the previous version stays active in existing flows.
 
@@ -113,7 +113,7 @@ To upload a custom build, click **Upload** and select a valid `.jar` file.
 
 ### From the API
 
-Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the API POST request with your username and password with `-u` or an [API token](../../03.auth/api-tokens/index.md).
+Only Instance Owner users can install versioned plugins with the API. To install a versioned plugin, you can use the API POST request with your username and password with `-u` or an [API token](../../03.auth/api-tokens/index.md).
 
 With Kestra username and password:
 

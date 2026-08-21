@@ -142,3 +142,4 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 | Guide | Editions | What changed |
 |---|---|---|
 | [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
+| [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin` — update API consumers that read this field. |

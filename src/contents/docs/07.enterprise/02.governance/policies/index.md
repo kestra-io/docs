@@ -433,7 +433,7 @@ Policies apply along a scope chain, from outermost to innermost:
 | Scope | Where defined | Who can edit |
 |---|---|---|
 | `STATIC` | `kestra.policies` in server configuration | Infrastructure / platform team |
-| `INSTANCE` | Tenant root (no specific namespace) | Superadmin |
+| `INSTANCE` | Tenant root (no specific namespace) | Instance Owner |
 | `TENANT` | Tenant-level via API or UI | Tenant admin |
 | `NAMESPACE` | Namespace-level via API or UI | Namespace admin with `POLICY` permission |
 

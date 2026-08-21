@@ -107,7 +107,7 @@ To enable Kestra Enterprise features, configure the following parameters:
 | Multi-tenancy | Yes | [Enterprise and Advanced Features](../../../configuration/06.enterprise-and-advanced/index.md)                                     | Enables/disables multi-tenancy (required for SCIM) |
 | Secret Manager | Yes | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure a secret manager in RW or RO mode |
 | Encryption Key | Yes | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Key to encrypt inputs/outputs in flows |
-| Security | No | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure Super Admin (also settable in UI on startup) |
+| Security | No | [Security and Secrets](../../../configuration/05.security-and-secrets/index.md)                                                   | Configure Instance Owner (also settable in UI on startup) |
 | User Invitations | No | [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md), [Observability and Networking](../../../configuration/03.observability-and-networking/index.md) | Required for email invitations (not needed with LDAP/SCIM) |
 | SSO | No | [SSO](../../03.auth/sso/index.md)                                                                                                  | Configure OIDC provider |
 | LDAP | No | [LDAP](../../03.auth/sso/ldap/index.md)                                                                                            | Connect to an existing LDAP provider |

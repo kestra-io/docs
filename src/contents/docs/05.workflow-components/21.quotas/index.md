@@ -62,7 +62,7 @@ Namespace quotas apply to every flow whose namespace matches or is a child of th
 
 ### Tenant level
 
-Define quotas on a tenant to apply limits across all flows in the entire tenant. In **Super Admin**, click **Quota Limits** in the sidebar, then **Administer** on the target tenant.
+Define quotas on a tenant to apply limits across all flows in the entire tenant. In **Instance Owner**, click **Quota Limits** in the sidebar, then **Administer** on the target tenant.
 
 ## Evaluation order
 

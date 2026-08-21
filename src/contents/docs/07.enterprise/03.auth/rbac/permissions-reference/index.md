@@ -645,7 +645,7 @@ EXPORT
 - `GET /api/v1/{tenant}/auditlogs/export`
 
 Notes
-- Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are superadmin-only and are not controlled by `AUDITLOG` permissions.
+- Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are instance-owner-only and are not controlled by `AUDITLOG` permissions.
 :::
 
 ---
@@ -681,7 +681,7 @@ Notes
 
 Notes
 - `USER` is not included in any of the standard managed roles (Viewer, Launcher, Editor, Developer). Only Admin includes it. Custom roles with `USER` actions are intended for platform administrators.
-- IAM user management endpoints under `/api/v1/users` (no tenant segment) are superadmin-only and do not require `USER` permissions.
+- IAM user management endpoints under `/api/v1/users` (no tenant segment) are instance-owner-only and do not require `USER` permissions.
 :::
 
 ---
@@ -811,7 +811,7 @@ DELETE
 - `DELETE /api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}`
 
 Notes
-- Superadmin-only endpoints under `/api/v1/service-accounts` (no tenant segment) do not use `SERVICE_ACCOUNT` permissions.
+- Instance-owner-only endpoints under `/api/v1/service-accounts` (no tenant segment) do not use `SERVICE_ACCOUNT` permissions.
 :::
 
 ---
@@ -894,7 +894,7 @@ VALIDATE (any `POLICY` VIEW action — no dedicated check)
 - `POST /api/v1/{tenant}/namespaces/{namespace}/policies/validate`
 
 Notes
-- Instance-scope policy endpoints (`/api/v1/instance/policies/...`) manage read-only static policies declared in server configuration and are superadmin-only; they are not governed by `POLICY` RBAC permissions.
+- Instance-scope policy endpoints (`/api/v1/instance/policies/...`) manage read-only static policies declared in server configuration and are instance-owner-only; they are not governed by `POLICY` RBAC permissions.
 :::
 
 ---

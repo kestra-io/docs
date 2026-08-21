@@ -93,6 +93,10 @@ New [Pebble date functions](./expressions/04.functions/06.dates/index.mdx) make 
 
 New controls for what flows can access and how they are governed.
 
+### Instance Owner (formerly Super Admin)
+
+The Super Admin privilege is renamed to [Instance Owner](./07.enterprise/05.instance/00.instance-owner/index.md). The privilege itself is unchanged — Instance Owners retain the same instance-wide authority over tenants, IAM, infrastructure, and governance. Deprecated aliases are retained for the CLI, config, and HTTP request bodies. HTTP API responses now emit `instanceOwner` instead of `superAdmin`.
+
 ### Policies (EE)
 
 [Policies](./07.enterprise/02.governance/policies/index.md) enforce governance rules on flows at save time and execution time. Rules can require specific task types, block others, or validate property values — applied per namespace.
@@ -197,3 +201,4 @@ All breaking changes have migration guides:
 | Helm gRPC worker-controller changes | [Guide](./11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md) |
 | Database migrations (EE) | [Guide](./11.migration-guide/v2.0.0/database-migrations/index.md) |
 | `execution-data.internal-storage` config removed (EE) | [Guide](./11.migration-guide/v2.0.0/execution-data-internal-storage/index.md) |
+| Super Admin renamed to Instance Owner (EE, Cloud) | [Guide](./11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md) |

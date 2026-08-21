@@ -475,7 +475,7 @@ You can also export a selection of apps as a ZIP archive (`kestra-{tenant}-apps.
 
 ### Customize the Apps Catalog
 
-Customize the catalog's title, colors, and banner image to match your organization's look and feel. Go to **Super Admin**, then in the left sidebar under your tenant, click **Apps Catalog**.
+Customize the catalog's title, colors, and banner image to match your organization's look and feel. Go to **Instance Owner**, then in the left sidebar under your tenant, click **Apps Catalog**.
 
 ![Apps Catalog Customization](./apps-catalog-customization.png)
 
