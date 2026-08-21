@@ -148,7 +148,7 @@ The `window` property controls how long Kestra accumulates upstream executions b
 
 ### Deadline
 
-All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format — timezone offsets are not supported:
+All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format. It is resolved in the server timezone unless a `timezone` is set:
 
 ```yaml
 triggers:
@@ -211,6 +211,24 @@ triggers:
     window:
       lookback: PT1H
 ```
+
+### Timezone
+
+`deadline`, `from`, `to`, `every` and `offset` are anchored on daily or midnight boundaries, which are resolved in the server timezone by default. A flow therefore behaves differently depending on where it is deployed. Set `timezone` to a time-zone ID so the window follows the intended zone, including across daylight-saving transitions:
+
+```yaml
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+    window:
+      deadline: "09:00:00"
+      timezone: Europe/Paris
+```
+
+`lookback` is relative to the evaluation time rather than to a daily boundary, so it is not affected by `timezone`.
 
 ### Firing more than once in a window
 
