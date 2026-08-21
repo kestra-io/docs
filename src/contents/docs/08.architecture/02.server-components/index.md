@@ -81,11 +81,9 @@ By default, Kestra handles all date and time values using your system's timezone
 
 ## Indexer
 
-The **Indexer** is responsible for reading content from Kafka topics — such as flows and executions — and indexing it into Elasticsearch. This component enables [low-latency querying](../../11.migration-guide/v0.20.0/elasticsearch-indexer/index.md) when using Kafka and Elasticsearch together.
+The **Indexer** reads content from the queue — flows, executions, logs, metrics, and audit logs — and writes it to the repository backend. It is required in all deployments.
 
-By default, the Indexer runs as part of the [Web Server](#webserver). However, you can choose to run the Web Server independently without the Indexer by using the `server webserver --no-indexer` CLI option.
-
-The Indexer is required for deployments that rely on Kafka and Elasticsearch, particularly in **Kestra Enterprise Edition** and **Kestra Cloud**.
+By default, the Indexer runs embedded in the [Webserver](#webserver). You can disable it there with the `server webserver --no-indexer` CLI option and run it as a standalone process — useful when the Webserver and Indexer need access to different infrastructure, or when you want to isolate the Webserver behind a bastion host.
 
 ## Webserver
 
