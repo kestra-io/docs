@@ -25,7 +25,20 @@ Total pages: ${sorted.length}
         return `# ${title}\n\nURL: ${url}\n${description}\n${doc.body ?? ""}\n\n---\n`
     })
 
-    return new Response(header + sections.join("\n"), {
+    const apiReference = `
+# REST API Reference (Machine-Readable)
+
+The complete API reference is available as standalone Markdown files generated from the OpenAPI specifications:
+
+- Open Source API: https://kestra.io/api-reference/kestra.md
+- Enterprise API: https://kestra.io/api-reference/kestra-ee.md
+
+These files contain all endpoints, request/response schemas, parameters, and examples.
+
+---
+`
+
+    return new Response(header + sections.join("\n") + apiReference, {
         status: 200,
         headers: {
             "Content-Type": "text/plain; charset=utf-8",
