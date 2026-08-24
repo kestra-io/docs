@@ -51,7 +51,7 @@ A Policy has no `type` field of its own — each rule has a `type` that selects 
 
 | Mode | Behavior |
 |------|----------|
-| `ACTIVE` | Rules are enforced on save and before execution. Block violations reject the operation. Default. |
+| `ACTIVE` | Rules are enforced on save and before execution. A `block` violation on a caller-initiated route (API, UI, webhook) returns `403` with the policy reason and creates no execution. System-initiated routes (schedule, flow trigger) skip the execution silently and log the block. Default. |
 | `EVALUATE` | Validate rule violations are reported in the Governance UI without blocking. Mutate rules (`Add`, `Delete`) are suppressed — no values are injected or removed, and the Governance UI shows no violations for them. Use this mode to audit validate rule compliance before enabling enforcement; it is not useful for auditing mutate rule coverage. |
 | `DISABLED` | The Policy is inactive. Rules are not checked. |
 | `REFERENCE` | The Policy is opt-in. It only applies to flows or tasks that explicitly list it via `policyRefs:`. Use reference policies for opt-in configuration injection (`Add` rules); validate rules are not enforced. |
