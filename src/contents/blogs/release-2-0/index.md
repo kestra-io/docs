@@ -1,12 +1,13 @@
 ---
-title: "Kestra 2.0: MCP Tools, Worker Groups, and a Leaner Core"
-description: "Kestra 2.0 makes flows callable by AI agents via MCP, redesigns Worker Groups with tag-based routing and JWT auth, brings action-based RBAC, and removes legacy constructs in favor of cleaner primitives."
+title: "Kestra 2.0: MCP Tools, Enterprise Governance, and Worker Groups"
+description: "Kestra 2.0 ships enterprise governance for the first time (Policies, Cases, Promote), makes flows callable by AI agents via MCP, rebuilds Worker Groups with tag-based routing and JWT auth, and replaces accumulated legacy constructs with cleaner primitives."
 date: 2026-09-08T10:00:00
 category: News & Product Updates
 authors:
   - name: "AJ Emerich"
-    image: aemerich
     linkedin: https://www.linkedin.com/in/alex-emerich/
+    image: aemerich
+    role: Technical Writer
 image: ./main.jpg
 ---
 
@@ -95,7 +96,7 @@ A mode selector at the bottom of the panel switches between three behaviors:
 
 ![AI Copilot Edit mode sidebar showing the Copilot searching plugins and proposing a validated S3-to-Postgres flow with an Apply button](./ai-copilot-edit-mode.png)
 
-When you open the sidebar while viewing a resource, that resource attaches automatically as a context pill above the input. Pills are independently dismissible. Each add and remove is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
+When you open the sidebar while viewing a resource, that resource attaches automatically as a context tag above the input. Context tags are independently dismissible. Each add and remove is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
 
 Actions that modify resources require explicit confirmation before the Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
 
