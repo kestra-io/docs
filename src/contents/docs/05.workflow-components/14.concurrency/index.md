@@ -13,6 +13,8 @@ The flow-level `concurrency` property lets you limit how many executions of a fl
 
 Think of concurrency as a global execution limit for that specific flow. The concurrency limit and behavior is then applied to all executions of that flow, regardless of whether those executions have been started automatically via a trigger, webhook, an API call, or manually created from the UI.
 
+Once an execution occupies a concurrency slot, it keeps that slot until it reaches a terminal state. This includes executions in the `PAUSED` state while they wait for manual approval. For example, with `concurrency.limit` set to 1, a flow paused by a `Pause` task blocks all subsequent executions until the paused execution is resumed, killed, or otherwise reaches a terminal state. Resuming the execution continues to use its existing slot, so it cannot exceed the configured limit.
+
 :::alert{type="info"}
 Concurrency limits executions of a flow, not the number of tasks a worker runs. Task processing is still governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions fighting for the same lock) can increase database load and slow scheduling.
 :::
@@ -101,7 +103,7 @@ Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) sec
 
 ## Tracking concurrency slots from the UI
 
-The `Concurrency` tab on the `Flow` page lets you track and troubleshoot concurrency issues. It shows a progress bar with the number of active slots compared to the total slots available. Below that progress bar, you can see a table showing currently running and queued Executions, providing a clear overview of the flow's concurrency status.
+The `Concurrency` tab on the `Flow` page lets you track and troubleshoot concurrency issues. It shows a progress bar with the number of active slots compared to the total slots available. Below that progress bar, you can see a table showing executions that occupy slots, including `RUNNING` and `PAUSED` executions, alongside `QUEUED` executions waiting for a slot.
 
 ![concurrency_page_1](./concurrency_page_1.png)
 
@@ -157,7 +159,7 @@ Imagine that you encounter a situation where the concurrency limit is reached, a
 
 ### Check the Concurrency tab
 
-The `Concurrency` tab on the `Flow` UI page described above allows you to see which executions are `RUNNING` and which are `QUEUED` (i.e., waiting or stuck). This page can help you troubleshoot which Executions are taking concurrency slots and which are waiting to be processed.
+The `Concurrency` tab on the `Flow` UI page described above allows you to see which executions occupy slots, including those in the `RUNNING` and `PAUSED` states, and which are `QUEUED` (i.e., waiting or stuck). This page can help you troubleshoot which Executions are taking concurrency slots and which are waiting to be processed.
 
 In the future, this page will also let you run stuck executions while ignoring concurrency limits.
 
