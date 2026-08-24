@@ -11,11 +11,7 @@ authors:
 image: ./main.jpg
 ---
 
-<!-- TODO: hero image (main.jpg) needed -->
-
-Kestra 2.0 covers more ground than any previous release, and the breadth is deliberate. Enterprise governance ships for the first time (Policies, Cases, Promote), flows open to AI agents via MCP, Worker Groups are rebuilt for production-scale routing, and the constructs that accumulated debt since the early days are replaced. We've been looking forward to shipping this one.
-
-This post covers what shipped.
+Kestra 2.0 covers more ground than any previous release, and the breadth is deliberate. Enterprise governance ships for the first time (Policies, Cases, Promote), flows open to AI agents via MCP, Worker Groups are rebuilt for production-scale routing, and the constructs that accumulated debt since the early days are replaced. The headline features are Enterprise Edition; OSS users get Loop, the trigger `when` expression, PurgeStorage, and the ION binary format. We've been looking forward to shipping this one.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -24,22 +20,18 @@ This post covers what shipped.
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
 | RBAC action-based permissions | Resource + action model replaces CRUD | EE |
 | Policies | Namespace-scoped governance rules replace `pluginDefaults` | EE |
-| Loop task | Replaces ForEach and ForEachItem with isolated sub-executions | All |
-| Trigger `when` expression | Pebble replaces Java-class conditions on all trigger types | All |
+| Loop task | Replaces ForEach and ForEachItem with isolated sub-executions | OSS, EE, Cloud |
+| Trigger `when` expression | Pebble replaces Java-class conditions on all trigger types | OSS, EE, Cloud |
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE |
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
 | Promote | Move flows across environments from the UI, with drift detection and a review gate | EE |
-| AWS EC2 Task Runner | Native EC2 execution via SSM, with Spot support | EE, Cloud |
-| PurgeStorage | Storage-driven cleanup for orphaned execution files | All |
+| New task runners | AWS EC2, Azure VM, Google Compute Engine, Huawei CCI | EE, Cloud |
+| PurgeStorage | Storage-driven cleanup for orphaned execution files | OSS, EE, Cloud |
 | External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
 | Reusable Inputs | Shared input groups defined once at namespace level | EE, Cloud |
 
-<!-- TODO: video embed if one exists at release time -->
-
 ## MCP Tool Trigger and MCP Server
-
-<!-- TODO: screenshot of MCP server Tool Flows tab or Connect tab config snippet -->
 
 Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs. No custom API wrapper or polling loop required.
 
@@ -106,7 +98,7 @@ See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
 
 ## Worker Groups 2.0
 
-Worker Groups in 2.0 is a ground-up redesign. The old model assigned tasks to a group by name with `workerGroup.key`. The new model separates three concerns that the old model conflated: Workers (compute units that authenticate via tokens), Worker Groups (pools of workers), and Worker Queues (routing lanes identified by tags).
+Worker Groups in 2.0 separates three concerns the old model conflated. The old model assigned tasks to a group by name with `workerGroup.key`. The new model distinguishes: Workers (compute units that authenticate via tokens), Worker Groups (pools of workers), and Worker Queues (routing lanes identified by tags).
 
 Tasks declare routing requirements with `workerSelector.tags`:
 
@@ -166,9 +158,7 @@ See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide fo
 
 ## Policies
 
-Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies addresses this at the platform layer.
-
-Policies is the EE replacement for `pluginDefaults`. It gives platform administrators governance rules that inject configuration, validate compliance, and block non-conforming flows across namespaces, tenants, and flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
+Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies addresses this at the platform layer, replacing `pluginDefaults` in EE with governance rules that inject configuration, validate compliance, and block non-conforming flows, including flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
 
 A Policy is a named set of rules scoped to a namespace or a tenant. Rules from a parent namespace cascade to all child namespaces automatically, so a company-wide constraint placed at the root namespace reaches every team without per-namespace configuration.
 
@@ -287,7 +277,7 @@ triggers:
 
 New date and calendar helper functions ship alongside the redesign: `isWeekend()`, `isPublicHoliday()` (with country and subdivision), `isDayWeekInMonth()`, `isLastWorkingDay()`, `dayOfWeek()`, `dayOfMonth()`, `monthOfYear()`, and `hourOfDay()`.
 
-Flow triggers also change significantly. The old `conditions` and `preconditions` system is replaced by a `dependsOn` list of upstream flow entries, each specifying `flowId`, `namespace`, `states` (default: all terminal states and PAUSED), `labels`, and an optional per-entry `when`. A top-level `when` on the Flow trigger evaluates before the `dependsOn` check and can use `trigger.namespace`, `trigger.flowId`, `trigger.state`, and `trigger.outputs`.
+Flow triggers also change significantly. The old `conditions` and `preconditions` system is replaced by a `dependsOn` list of upstream flow entries, each specifying `flowId`, `namespace`, `states` (default: all terminal states and PAUSED), `labels`, and an optional per-entry `when`. A `window` property at the trigger level controls how Kestra accumulates upstream executions, replacing the old `timeWindow` on `preconditions`. A top-level `when` on the Flow trigger evaluates before the `dependsOn` check and can use `trigger.namespace`, `trigger.flowId`, `trigger.state`, and `trigger.outputs`.
 
 The [trigger conditions migration guide](/docs/migration-guide/v2.0.0/trigger-conditions-redesign) maps every condition class to its `when` equivalent.
 
@@ -378,46 +368,14 @@ The flows table gains a Deploy column showing drift at a glance. If production i
 
 See the [Promote reference](/docs/enterprise/governance/promote).
 
-## AWS EC2 Task Runner
+## New Task Runners
 
-<!-- TODO: optional screenshot or flow snippet for GPU Spot example -->
+Four new EE task runners ship in 2.0, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters.
 
-The EC2 task runner is a new EE runner type that executes task commands directly on an EC2 instance via [AWS Systems Manager Run Command](https://docs.aws.amazon.com/systems-manager/latest/userguide/execute-remote-commands.html), with no SSH and no container runtime required.
-
-Kestra launches the instance from the configured AMI, waits for the SSM Agent to register, uploads input files to S3, and runs the task as a bash script. Output streams via CloudWatch Logs to the Kestra execution log in near real-time. When the run finishes, Kestra downloads output files and terminates the instance unconditionally.
-
-The primary use cases are workloads that cannot or should not run inside a container: GPU training and inference jobs tied to a custom CUDA AMI, licensed software bound to a specific machine image, and Spot-optimized workloads where you want direct control over the instance type and max bid price.
-
-:::collapse{title="Example: GPU inference on a Spot instance"}
-
-```yaml
-id: gpu_inference
-namespace: company.ml
-
-tasks:
-  - id: inference
-    type: io.kestra.plugin.scripts.shell.Commands
-    taskRunner:
-      type: io.kestra.plugin.ee.aws.runner.Ec2
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-      region: "{{ secret('AWS_REGION') }}"
-      amiId: "{{ secret('DEEP_LEARNING_AMI_ID') }}"
-      instanceType: g4dn.xlarge
-      iamInstanceProfile: "{{ secret('INSTANCE_PROFILE_ARN') }}"
-      bucket: "{{ secret('S3_STAGING_BUCKET') }}"
-      spotMaxPrice: "0.25"
-    commands:
-      - python /opt/myapp/inference.py --model /opt/models/my-model
-```
-
-:::
-
-If the Kestra Worker restarts mid-run, the runner reattaches to the existing instance and SSM command rather than launching a new one (`resume: true` by default).
-
-For comparison: use the [AWS Batch task runner](/docs/task-runners/04.types/04.aws-batch-task-runner) for containerized workloads on Batch (ECS Fargate, EC2, EKS). Use the EC2 task runner when containers are not an option.
-
-See the [AWS EC2 Task Runner reference](/docs/task-runners/04.types/05.aws-ec2-task-runner) for IAM permissions, AMI requirements, and setup.
+- [AWS EC2 Task Runner](/docs/task-runners/types/aws-ec2-task-runner): runs commands directly on an EC2 instance via AWS Systems Manager Run Command, with no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
+- [Azure Virtual Machine Task Runner](/docs/task-runners/types/azure-virtualmachine-task-runner): runs commands on Azure VMs via the Azure Run Command API, with no SSH and no public IP required.
+- [Google Compute Engine Task Runner](/docs/task-runners/types/google-computeengine-task-runner): runs commands directly on a Compute Engine VM as a startup script, with no SSH or IAP tunnel.
+- [Huawei Cloud CCI Task Runner](/docs/task-runners/types/huawei-cci-task-runner): runs tasks as bare Pods on Huawei Cloud CCI for serverless container execution.
 
 ## PurgeStorage
 
