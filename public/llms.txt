@@ -341,6 +341,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Extend Kestra with the API](https://kestra.io/docs/how-to-guides/api.md)
 - [Deploy Kestra with ArgoCD](https://kestra.io/docs/how-to-guides/argocd.md)
 - [Use Azure Managed Workload Identity with Kestra](https://kestra.io/docs/how-to-guides/azure-workload-id.md)
+- [Automate Clever Cloud with Kestra](https://kestra.io/docs/how-to-guides/clever-cloud.md)
 - [Add Conditional Branching in Kestra](https://kestra.io/docs/how-to-guides/conditional-branching.md)
 - [Build a Custom Plugin for Kestra](https://kestra.io/docs/how-to-guides/custom-plugin.md)
 - [Build a KPI Success Ratio Chart in Kestra Dashboards](https://kestra.io/docs/how-to-guides/dashboard-kpi-chart.md)
