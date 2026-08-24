@@ -1,7 +1,7 @@
 ---
 title: "Kestra Joins the DigitalOcean Partner Program: Orchestrate the Developer Cloud"
 description: "Kestra is now an official DigitalOcean technology partner. A dedicated plugin covers droplets, managed databases, DNS, Kubernetes, firewalls, and volumes, backed by six production blueprints."
-date: 2026-08-17T13:00:00
+date: 2026-08-24T13:00:00
 category: Company News
 author:
   name: Robert Walters
