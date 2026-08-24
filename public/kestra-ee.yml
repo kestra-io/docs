@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Superadmin-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Superadmin-only are not tenant-scoped.
-  version: 1.3.33
+  version: 1.3.34
 tags:
 - name: Flows
   description: Flows api
@@ -5238,6 +5238,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BlueprintController.ApiFlowBlueprint"
+  /api/v1/{tenant}/blueprints/flows/validate:
+    post:
+      tags:
+      - Blueprints
+      summary: Validate a Flow Blueprint
+      description: Validates a flow blueprint source without persisting it. Returns
+        constraint violations if any. Requires BLUEPRINT permission with the READ
+        action.
+      operationId: validateFlowBlueprint
+      parameters:
+      - name: tenant
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: The flow blueprint source code
+        content:
+          application/x-yaml:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: validateFlowBlueprint 200 response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidateConstraintViolation"
   /api/v1/{tenant}/blueprints/flows/{id}:
     get:
       tags:

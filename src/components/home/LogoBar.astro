@@ -56,7 +56,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
 
     .companies-container {
         width: 100%;
-        overflow: hidden;
         @include media-breakpoint-down(sm) {
             margin-top: 1rem;
         }
@@ -67,10 +66,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
             justify-content: center;
             gap: 2rem;
 
-            @include media-breakpoint-up(sm) {
-                gap: 2rem;
-                margin-left: -14px;
-            }
             @include media-breakpoint-up(xl) {
                 gap: 3rem;
             }
@@ -82,7 +77,6 @@ const logos = import.meta.glob<{ default: ImageMetadata }>(
                 flex-wrap: wrap;
                 gap: 0;
                 row-gap: 2rem;
-                margin-left: 0;
             }
         }
 

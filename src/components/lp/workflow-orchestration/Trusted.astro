@@ -1,0 +1,256 @@
+---
+/* The demo/ copies of these two are cropped to their ink, so height-normalising
+ * them lands the wordmarks at the size the design gives them. The
+ * trusted-companies/ Fila.svg pads a 24px mark into a 58px box, which renders
+ * it about half the height it should be. */
+import JpMorganLogo from "~/assets/trusted-companies/JPMorgan.svg?raw"
+import ApotekLogo from "~/components/demo/assets/logos/apotek.svg?raw"
+import FilaLogo from "~/components/demo/assets/logos/fila.svg?raw"
+
+/* Each logo carries the exact render height the design gives it, so the three
+ * wordmarks read as one set inside the 30px logo row. */
+const cards = [
+    {
+        logoSvg: JpMorganLogo,
+        logoAlt: "JPMorgan Chase",
+        logoHeight: 27,
+        title: "Data at scale, built by the analysts themselves",
+        stats: [
+            { value: "Billions", label: "of records processed securely" },
+            { value: "< 3 months", label: "from zero to full production" },
+            { value: "100+", label: "users building their own workflows" },
+        ],
+        quote: "For the first time, our analysts aren't waiting for engineering, they're building the workflows themselves.",
+        role: "VP of Cybersecurity",
+        company: "JPMorgan Chase",
+    },
+    {
+        logoSvg: ApotekLogo,
+        logoAlt: "Apothek",
+        logoHeight: 24,
+        title: "Mission-critical ops off a 30-year-old platform",
+        stats: [
+            { value: "400+", label: "pharmacies rely on the workflows" },
+            { value: "50+", label: "critical workflows modernized" },
+            { value: "30+ yrs", label: "old platform, replaced in months" },
+        ],
+        quote: "Stability was the turning point. With Kestra, our most critical flows finally run the way they should.",
+        role: "Infrastructure Lead",
+        company: "Apothek",
+    },
+    {
+        logoSvg: FilaLogo,
+        logoAlt: "Fila",
+        logoHeight: 29,
+        title: "One platform carrying the company's automation",
+        stats: [
+            { value: "2.5M", label: "executions every month" },
+            { value: "2,000+", label: "workflows in production" },
+            { value: "25+", label: "engineers working with Kestra" },
+        ],
+        quote: "Instead of days fixing issues, we have full visibility and control. A system that scales with us is invaluable.",
+        role: "John Kim, IT Lead",
+        company: "Fila",
+    },
+]
+---
+
+<section class="trusted">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
+        <h2>Trusted in Production</h2>
+        <p>
+            <strong>One platform.</strong> Less engineering effort, infrastructure
+            waste, and tool spend.
+        </p>
+    </div>
+
+    <div class="cards">
+        {
+            cards.map((card, index) => (
+                <article
+                    class="card-fancy"
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
+                    <div
+                        class="logo"
+                        role="img"
+                        aria-label={card.logoAlt}
+                        style={`--logo-height: ${card.logoHeight}px`}
+                        set:html={card.logoSvg}
+                    />
+                    <h3>{card.title}</h3>
+                    <dl class="stats">
+                        {card.stats.map((stat) => (
+                            <div class="stat">
+                                <dt>{stat.value}</dt>
+                                <dd>{stat.label}</dd>
+                            </div>
+                        ))}
+                    </dl>
+                    <blockquote>&ldquo;{card.quote}&rdquo;</blockquote>
+                    <p class="attribution">
+                        <span>{card.role}</span>
+                        <span class="sep" aria-hidden="true">
+                            |
+                        </span>
+                        <strong>{card.company}</strong>
+                    </p>
+                </article>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .trusted {
+        padding: 2.5rem 1rem 7.5rem;
+        background-color: #ffffff;
+    }
+
+    .head {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+
+        h2 {
+            margin: 0 0 2rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+
+        strong {
+            color: var(--lp-content-primary);
+            font-weight: 700;
+        }
+    }
+
+    .cards {
+        display: grid;
+        gap: 1rem;
+        max-width: 1145px;
+        margin-inline: auto;
+        @include media-breakpoint-up(md) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    .card-fancy {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        overflow: hidden;
+        padding: 1.5rem 1.5rem 2rem;
+        border: 1px solid var(--lp-purple);
+        border-radius: 12px;
+        /* White card lifted by the design's cool radial wash from the top-left. */
+        background:
+            radial-gradient(
+                120% 90% at -10% -20%,
+                rgba(12, 40, 255, 0.06) 0%,
+                rgba(12, 40, 255, 0) 100%
+            ),
+            #ffffff;
+        box-shadow: 2px 3px 16px 0 var(--lp-shadow-light);
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        color: var(--lp-content-primary);
+        /* Height-normalised and monochrome, so the three brands sit level and
+         * read as one set — as in the design. */
+        :global(svg) {
+            width: auto;
+            height: var(--logo-height);
+            max-width: 100%;
+        }
+        :global(svg *) {
+            fill: currentColor;
+        }
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--lp-content-primary);
+        font-size: 1.5rem;
+        font-weight: 700;
+        line-height: 1.167;
+        letter-spacing: -0.0075rem;
+    }
+
+    .stats {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 1rem 0;
+        border-top: 1px solid var(--lp-border);
+        border-bottom: 1px solid var(--lp-border);
+    }
+
+    .stat {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+    }
+
+    dt {
+        flex-shrink: 0;
+        color: var(--lp-purple);
+        font-size: 1.25rem;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.00625rem;
+    }
+
+    dd {
+        margin: 0;
+        color: var(--lp-content-secondary);
+        font-family: $font-family-monospace;
+        font-size: $font-size-xs;
+        line-height: 1.33;
+    }
+
+    blockquote {
+        margin: 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .attribution {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.25rem;
+        margin: auto 0 0;
+        color: var(--lp-content-muted);
+        font-size: $font-size-xs;
+        line-height: 1.33;
+
+        strong {
+            color: var(--lp-content-secondary);
+            font-weight: 700;
+        }
+    }
+
+    .sep {
+        color: var(--lp-border);
+        font-weight: 300;
+    }
+</style>
