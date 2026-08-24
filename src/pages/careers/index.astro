@@ -7,6 +7,7 @@ import Positions from "~/components/careers/Positions.vue"
 import CardGrid from "~/components/card/CardGrid.astro"
 import imgSrc from "~/components/careers/assets/see_how.png"
 import { type AshbyJob, fetchJobs } from "~/utils/careers.ts"
+import { OPEN_APPLICATION_PATH } from "~/utils/careersPath.ts"
 import SeeHow from "~/components/common/SeeHow.astro"
 
 const positions: AshbyJob[] = await fetchJobs()
@@ -66,7 +67,7 @@ const description =
     <SeeHow
         cta={{
             text: "Send an Open Application",
-            href: "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application",
+            href: OPEN_APPLICATION_PATH,
         }}
         imgSrc={imgSrc}
     >
