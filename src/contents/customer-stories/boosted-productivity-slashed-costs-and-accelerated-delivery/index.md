@@ -1,9 +1,9 @@
 ---
-title: How One Engineer Manages 50+ Production Pipelines for 2,800 Automotive Clients
+title: How One Engineer Manages 50+ Production Pipelines for 1,000s of Automotive Clients
 rank: 1
 description: This is the story of how Foundation Data consolidated their entire data stack on Kestra, replacing three tools, cutting toolchain costs by more than 90%, and giving one engineer the leverage to keep up with 40% client growth.
-metaTitle: "Foundation Data & Kestra: One Engineer, 50+ Pipelines, 2,800 Clients"
-metaDescription: Foundation Data replaced SuperMetrics, Prefect, and dbt Cloud with Kestra, cutting toolchain costs by more than 90% and enabling a solo engineer to serve 2,800 automotive dealerships.
+metaTitle: "Foundation Data & Kestra: One Engineer, 50+ Pipelines, 1,000s of Clients"
+metaDescription: Foundation Data replaced SuperMetrics, Prefect, and dbt Cloud with Kestra, cutting toolchain costs by more than 90% and enabling a solo engineer to serve 1,000s of automotive dealerships.
 heroImage: ./hero.png
 featured: false
 featuredImage: ./hero.png
@@ -28,19 +28,19 @@ kpi4: |-
   pipeline success rate
 quote: Kestra completely transformed our operational workflows. We now deploy new pipelines rapidly, easily manage our integrations, and have vastly improved our productivity and cost efficiency.
 quotePerson: Jack Perry
-quotePersonTitle: Head of Data Operations
+quotePersonTitle: Founding Engineer
 industry: Advertising
 headquarter: Leesburg, VA
 region: Americas
 companySize: "< 100"
-solution: Foundation Data is a technology company that powers marketing analytics and digital advertising intelligence for automotive dealerships across the United States. They handle the data infrastructure behind OEM integrations, dbt transformations, BigQuery analytics, and Looker dashboards for over 2,800 dealership clients.
+solution: Foundation Data is a technology company that powers marketing analytics and digital advertising intelligence for automotive dealerships across the United States. They handle the data infrastructure behind OEM integrations, dbt transformations, BigQuery analytics, and Looker dashboards for 1,000s of dealership clients.
 tagline: Data and analytics partner for automotive dealerships
 companyName: Foundation Data
-useCase: Replacing SuperMetrics, Prefect, and dbt Cloud with one platform to cut toolchain costs 90% and serve 2,800 automotive dealerships
+useCase: Replacing SuperMetrics, Prefect, and dbt Cloud with one platform to cut toolchain costs 90% and serve 1,000s of automotive dealerships
 useCaseShort: Data Orchestration
 deployment: Kestra Cloud
-intro: "Foundation Data serves over 2,800 automotive dealerships across the United States. One engineer runs the entire data stack. That ratio became possible because of two decisions made early in the company's life as an independent entity: commit to Infrastructure as Code from day one, and find an orchestrator that could run Go. Both pointed to Kestra."
-cta: "What would change if one engineer could orchestrate 50+ pipelines, serve 2,800 clients, and still have time to innovate?"
+intro: "Foundation Data serves 1,000s of automotive dealerships across the United States. One engineer runs the entire data stack. That ratio became possible because of two decisions made early in the company's life as an independent entity: commit to Infrastructure as Code from day one, and find an orchestrator that could run Go. Both pointed to Kestra."
+cta: "What would change if one engineer could orchestrate 50+ pipelines, serve 1,000s of clients, and still have time to innovate?"
 ---
 
 ## The problem
@@ -59,7 +59,7 @@ cta: "What would change if one engineer could orchestrate 50+ pipelines, serve 2
 <div class="problem-item">
 <span class="problem-number">03</span>
 <div class="problem-title">Non-technical users needed to trigger complex workflows without engineering help</div>
-<div class="problem-desc">Foundation Data's measurement team (four or five analysts who monitor Google Analytics across 2,800 dealership websites) needed to trigger workflows on demand: updating tags, running audits, syncing changes across hundreds of dealer sites simultaneously. These workflows involve 30 to 40 conditional inputs and six or seven underlying subflows. The team couldn't route every request through the engineering queue, and they couldn't give analysts access to raw pipeline tooling.</div>
+<div class="problem-desc">Foundation Data's measurement team (four or five analysts who monitor Google Analytics across 1,000s of dealership websites) needed to trigger workflows on demand: updating tags, running audits, syncing changes across hundreds of dealer sites simultaneously. These workflows involve 30 to 40 conditional inputs and six or seven underlying subflows. The team couldn't route every request through the engineering queue, and they couldn't give analysts access to raw pipeline tooling.</div>
 </div>
 </div>
 
@@ -96,7 +96,7 @@ An orchestrator that could run <strong class="problem-close-key">any language, d
 <div class="fix-check">✓</div>
 <div>
 <div class="fix-title">Kestra Apps: non-engineers triggering complex workflows with guardrails</div>
-<div class="fix-desc">The measurement team uses a Kestra App built by Jack to manage Google Analytics across all 2,800 dealership websites. The App presents 30 to 40 conditional inputs, routes users through the right options, and handles six or seven underlying subflows automatically. Concurrency controls cap execution at Google Tag Manager's rate limit of 200 requests per minute, queuing simultaneous runs rather than letting them collide. <em class="inline-quote">"Deploying workflows went from a cumbersome task to something we handle effortlessly in minutes. Our engineers are now free to focus on innovation rather than troubleshooting manual scripts."</em> — Jack Perry</div>
+<div class="fix-desc">The measurement team uses a Kestra App built by Jack to manage Google Analytics across 1,000s of dealership websites. The App presents 30 to 40 conditional inputs, routes users through the right options, and handles six or seven underlying subflows automatically. Concurrency controls cap execution at Google Tag Manager's rate limit of 200 requests per minute, queuing simultaneous runs rather than letting them collide. <em class="inline-quote">"Deploying workflows went from a cumbersome task to something we handle effortlessly in minutes. Our engineers are now free to focus on innovation rather than troubleshooting manual scripts."</em> — Jack Perry</div>
 </div>
 </div>
 </div>
@@ -110,7 +110,7 @@ An orchestrator that could run <strong class="problem-close-key">any language, d
 </div>
 <div class="result-item">
 <div class="result-metric">40% client growth at 10% cloud cost increase</div>
-<div class="result-desc">Foundation Data grew from 2,000 dealership clients to 2,800 between 2024 and 2025. Their cloud bill grew roughly 10%. The architecture scaled horizontally without requiring proportional infrastructure spend or additional headcount. <em class="inline-quote">"We went from 2,000 to 2,800 dealers — 40% growth — and our cloud bill went up maybe 10%. I don't think people realize how much Jack has made our systems efficient."</em> — Mike Heidner, SVP Analytics</div>
+<div class="result-desc">Foundation Data grew their client base 40% from 2024 to 2025. Their cloud bill grew roughly 10%. The architecture scaled horizontally without requiring proportional infrastructure spend or additional headcount. <em class="inline-quote">"When we saw a 40% growth in a client, essentially growing our data pipelines our actual cloud bill went up maybe 10%. I don't think people realize how much Jack has made our systems efficient."</em> — Mike Heidner, CDO</div>
 </div>
 <div class="result-item">
 <div class="result-metric">99% pipeline success rate</div>
@@ -118,7 +118,7 @@ An orchestrator that could run <strong class="problem-close-key">any language, d
 </div>
 <div class="result-item">
 <div class="result-metric">One engineer, 50+ production workflows</div>
-<div class="result-desc">Jack Perry manages the full data stack as Foundation Data's sole data engineer. Three outsourced data contractors were let go. Mike Heidner, Foundation Data's SVP of Analytics, monitors pipeline health and executes flows himself from the Kestra UI daily. <em class="inline-quote">"Today I approved five flows in Kestra just sitting there. Two clicks of a button. I feel like I'm more aware of what's going on with our data pipelines than I ever was before."</em> — Mike Heidner, SVP Analytics. <em class="inline-quote">"Kestra has fundamentally changed the way we manage our data workflows. We now deploy pipelines faster, manage integrations, and scale confidently. It's essential for our continued growth and success."</em> — Jack Perry</div>
+<div class="result-desc">Jack Perry manages the full data stack as Foundation Data's sole data engineer. Three outsourced data contractors were let go. Mike Heidner, Foundation Data's CDO, monitors pipeline health and executes flows himself from the Kestra UI daily. <em class="inline-quote">"Today I approved five flows in Kestra just sitting there. Two clicks of a button. I feel like I'm more aware of what's going on with our data pipelines than I ever was before."</em> — Mike Heidner, CDO. <em class="inline-quote">"Kestra has fundamentally changed the way we manage our data workflows. We now deploy pipelines faster, manage integrations, and scale confidently. It's essential for our continued growth and success."</em> — Jack Perry</div>
 </div>
 </div>
 
@@ -128,7 +128,7 @@ Foundation Data runs on Kestra Cloud (GCP US Central, dedicated instance). Jack 
 
 OEM extraction jobs run in containerized Go workers that query dealership APIs with 50 to 60 concurrent requests. The previous Python-based approach was limited to 3 concurrent requests, turning a rate-limited API into a multi-hour bottleneck. dbt Core runs directly inside Kestra, replacing dbt Cloud without changing any transformation logic. BigQuery is the analytics target; Looker dashboards sit on top for client-facing reporting.
 
-The measurement team's workflow (monitoring and updating Google Analytics across 2,800 dealership websites) runs through a Kestra App. Analysts trigger updates on demand through a guided interface. Concurrency controls and API rate-limit queuing are declared in the flow definition, not written into application code, which means they're visible, reviewable, and consistent regardless of who triggers the workflow.
+The measurement team's workflow (monitoring and updating Google Analytics across 1,000s of dealership websites) runs through a Kestra App. Analysts trigger updates on demand through a guided interface. Concurrency controls and API rate-limit queuing are declared in the flow definition, not written into application code, which means they're visible, reviewable, and consistent regardless of who triggers the workflow.
 
 <div class="stack-row">
 <span class="stack-pill">Kestra Cloud</span>
