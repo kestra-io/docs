@@ -20,7 +20,7 @@ kpi1: |-
   pharmacy relies on Kestra workflows
 kpi2: |-
   ##### 50+
-  cricital workflows modernized
+  critical workflows modernized
 kpi3: |-
   ##### 30+ Years
   old platform, replaced in few months

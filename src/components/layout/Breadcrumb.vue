@@ -113,8 +113,5 @@
                 }
             }
         }
-        .link {
-            text-transform: capitalize;
-        }
     }
 </style>
