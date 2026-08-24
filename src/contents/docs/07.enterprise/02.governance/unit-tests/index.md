@@ -34,7 +34,7 @@ Unit tests are written in YAML like flows. A test is made up of `testCases`, and
 
 - A **fixture** refers to the setup required before a test runs, such as initializing objects or configuring environments, to ensure the test has a consistent starting state.
 - An **assertion** is a statement that checks if a specific condition is true during the test. If the condition is false, the test fails, indicating an issue with the code being tested, while true indicates the expectation is met.
-- **expectedState** sets the terminal state the flow must reach for the test to pass. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state to test intentional failure paths.
+- **expectedState** sets the terminal state the flow must reach for the test to pass. It defaults to `SUCCESS`; set it to `FAILED`, `WARNING`, `KILLED`, or any other valid state to test intentional failure paths. Note that `assertions` is required on every test case — a case with only `expectedState` and no `assertions` is rejected.
 
 Common fixture types:
 - **files**: provide inline files or namespace file URIs the flow can read.
@@ -233,7 +233,7 @@ testCases:
           description: "don't send end output"
     assertions:
       - value: "{{outputs.transform_to_uppercase.value}}"
-        equalsTo: "[BOWLER HAT, TRILBY HAT]"
+        equalTo: "[BOWLER HAT, TRILBY HAT]"
 ```
 
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
@@ -444,6 +444,9 @@ testCases:
     fixtures:
       inputs:
         quantity: -1
+    assertions:
+      - value: "{{ inputs.quantity }}"
+        lessThan: 1
 ```
 
 When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test fails and reports both the expected and actual states.

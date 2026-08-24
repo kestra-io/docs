@@ -67,7 +67,7 @@ A namespace concurrency limit applies to every flow whose namespace matches or i
 
 Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
 
-In **Super Admin**, click **Concurrency Limits** in the sidebar, then **Administer** on the target tenant.
+In **Instance Owner**, click **Concurrency Limits** in the sidebar, then **Administer** on the target tenant.
 
 ## `behavior` property
 

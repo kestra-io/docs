@@ -148,7 +148,7 @@ The `window` property controls how long Kestra accumulates upstream executions b
 
 ### Deadline
 
-All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format — timezone offsets are not supported:
+All upstream flows must complete before a fixed time each day. The deadline is a `java.time.LocalTime` value in `HH:mm:ss` format. It is resolved in the server timezone unless a `timezone` is set:
 
 ```yaml
 triggers:
@@ -212,15 +212,27 @@ triggers:
       lookback: PT1H
 ```
 
-### Fire once per window
+### Timezone
 
-Set `fireOnce: true` to ensure the trigger fires at most once per window, even if conditions are satisfied multiple times:
+`deadline`, `from`, `to`, `every` and `offset` are anchored on daily or midnight boundaries, which are resolved in the server timezone by default. A flow therefore behaves differently depending on where it is deployed. Set `timezone` to a time-zone ID so the window follows the intended zone, including across daylight-saving transitions:
 
 ```yaml
-window:
-  deadline: "09:00:00"
-  fireOnce: true
+triggers:
+  - id: after_staging
+    type: io.kestra.plugin.core.trigger.Flow
+    dependsOn:
+      - flowId: stg_sales
+        namespace: company.team
+    window:
+      deadline: "09:00:00"
+      timezone: Europe/Paris
 ```
+
+`lookback` is relative to the evaluation time rather than to a daily boundary, so it is not affected by `timezone`.
+
+### Firing more than once in a window
+
+Once every `dependsOn` entry has been satisfied and an execution has been created, the stored results are reset. The trigger can fire again in the same window, though every dependency has to be satisfied again first. To create an execution as soon as any single upstream flow succeeds, use `mode: ANY` instead.
 
 ## Scoped trigger outputs
 

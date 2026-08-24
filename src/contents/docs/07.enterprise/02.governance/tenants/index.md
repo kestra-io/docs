@@ -33,7 +33,7 @@ Users switch between tenants using the tenant dropdown in the bottom-left corner
 
 ![Tenant switcher dropdown showing Development, Production, North America, Europe, and Asia Pacific tenants](./tenant-switcher.png)
 
-Most [API](../../../api-reference/index.mdx) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
+Most [API](../../../api-reference/index.mdx) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Instance Owner access.
 
 For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. You can check the [Enterprise Edition API Guide](../../../api-reference/01.enterprise/index.mdx) for more information.
 
@@ -49,11 +49,11 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 
 ## Creating and managing tenants
 
-Tenants are created and managed through the **Super Admin console** — only users with the Superadmin role can create, edit, or delete tenants. The console is accessible from **Super Admin → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
+Tenants are created and managed through the **Instance Owner console** — only users with the Instance Owner privilege can create, edit, or delete tenants. The console is accessible from **Instance Owner → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
 
 ### Creating a tenant from the UI
 
-Go to **Super Admin → Tenants**, click **Create**, fill in the form, and click **Save**.
+Go to **Instance Owner → Tenants**, click **Create**, fill in the form, and click **Save**.
 
 The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 
@@ -137,7 +137,7 @@ Key-value pairs and namespace files will not be deleted as they are persisted in
 
 Regardless of which of the above methods you use to create a tenant, the User who creates the tenant automatically gets the Admin Role assigned. That role grants admin rights to that user on that tenant.
 
-Note that there is an exception to this rule if a tenant is created by a Superadmin. In that case, the Superadmin has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
+Note that there is an exception to this rule if a tenant is created by an Instance Owner. In that case, the Instance Owner has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
 
 ### Dedicated storage and secrets backend per tenant
 

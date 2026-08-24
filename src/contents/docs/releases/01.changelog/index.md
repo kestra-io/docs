@@ -45,6 +45,7 @@ New controls for locking down what flows can do and how they are governed.
 - **HTTP task URL filtering** — allow-list and deny-list for URLs reachable by HTTP plugin tasks. [Docs](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering)
 - **ZIP bomb protection** — opt-in protection on flow import and namespace file upload via `kestra.security.zip-bomb-protection`. [Docs](../../10.administrator-guide/security-hardening/index.md#zip-bomb-protection)
 - **Multi-field secrets** — secrets can now store structured objects with multiple fields, not just single string values.
+- **Instance Owner (formerly Super Admin)** — the Super Admin privilege is renamed to Instance Owner across the UI, CLI, config, and API. Deprecated aliases are retained; HTTP API responses emit `instanceOwner` instead of `superAdmin`. [Migration guide](../../11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md)
 
 ### Enterprise
 
@@ -92,3 +93,4 @@ Each breaking change has a dedicated migration guide. See the [2.0 migration gui
 | Management endpoint hardening | [Guide](../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md) |
 | Database migrations (EE) | [Guide](../../11.migration-guide/v2.0.0/database-migrations/index.md) |
 | `execution-data.internal-storage` config removed (EE) | [Guide](../../11.migration-guide/v2.0.0/execution-data-internal-storage/index.md) |
+| Super Admin renamed to Instance Owner (EE, Cloud) | [Guide](../../11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md) |

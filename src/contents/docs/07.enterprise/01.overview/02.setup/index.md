@@ -58,9 +58,9 @@ If you enabled a default tenant, you can skip this step.
 
 ## Step 3: Create your first user
 
-Create the first user. This user receives the [Superadmin](../../03.auth/rbac/index.md#super-admin) role and can manage tenants, users, and roles across the instance.
+Create the first user. This user receives the [Instance Owner](../../03.auth/rbac/index.md#instance-owner) privilege and can manage tenants, users, and roles across the instance.
 
-![Create first Superadmin user form](./setup_page3.png)
+![Create first Instance Owner user form](./setup_page3.png)
 
 ## Step 4: Start Kestra UI
 

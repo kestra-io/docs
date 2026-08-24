@@ -648,6 +648,10 @@ For more details, refer to the [Subflow Task documentation](/plugins/core/flow/i
 
 `WorkingDirectory` runs all nested tasks sequentially in the same directory on the same worker, so downstream tasks can read files written by earlier ones. It is useful for compute-intensive file system operations.
 
+:::alert{type="warning"}
+Only runnable tasks are accepted as children of a `WorkingDirectory`. Nesting a flowable task such as `Parallel` or `Loop` inside a `WorkingDirectory` is rejected at save time.
+:::
+
 ```yaml
 id: working_dir_flow
 namespace: company.team

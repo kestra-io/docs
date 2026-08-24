@@ -475,7 +475,7 @@ You can also export a selection of apps as a ZIP archive (`kestra-{tenant}-apps.
 
 ### Customize the Apps Catalog
 
-Customize the catalog's title, colors, and banner image to match your organization's look and feel. Go to **Super Admin**, then in the left sidebar under your tenant, click **Apps Catalog**.
+Customize the catalog's title, colors, and banner image to match your organization's look and feel. Go to **Instance Owner**, then in the left sidebar under your tenant, click **Apps Catalog**.
 
 ![Apps Catalog Customization](./apps-catalog-customization.png)
 
@@ -529,7 +529,7 @@ For `PUBLIC` apps, execution IDs exposed through file download or log links are 
 
 ### Private access for using apps
 
-When an app is set to `PRIVATE`, only authenticated users with `APP: EXECUTE` permission on the app's namespace can open or submit it. You can further narrow access to specific IAM groups using the `groups` field:
+When an app is set to `PRIVATE`, only users with `APP: EXECUTE` permission on the app's namespace can open or submit it. `PRIVATE` apps are also only visible in the App Catalog to users with `APP: EXECUTE` — they do not appear for users who only hold `APP: LIST` or `APP: VIEW`. You can further narrow access to specific IAM groups using the `groups` field:
 
 ```yaml
 access:

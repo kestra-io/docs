@@ -35,7 +35,7 @@ Users, service accounts, and groups can hold any number of roles simultaneously.
 
 ## Impersonate
 
-After assigning permissions to a user, Superadmins can impersonate users to verify their access is correct. Impersonation switches your view to that user's perspective and can be closed back to the Superadmin view at any time.
+After assigning permissions to a user, Instance Owners can impersonate users to verify their access is correct. Impersonation switches your view to that user's perspective and can be closed back to the Instance Owner view at any time.
 
 ![Impersonate](./impersonate-user.png)
 
@@ -52,7 +52,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `FLOW` | Flows, their revisions, graphs, and dependencies |
 | `EXECUTION` | Executions, their state, logs, outputs, and files |
 | `TRIGGER` | Triggers attached to flows |
-| `NAMESPACE` | Namespaces and their files, plugin defaults |
+| `NAMESPACE` | Namespaces and their files |
 | `KVSTORE` | Key-value store entries |
 | `SECRET` | Secrets stored in the namespace |
 | `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
@@ -80,6 +80,7 @@ A resource is a category of product entity or capability that can be controlled 
 | `SERVICE_ACCOUNT` | Service accounts |
 | `INVITATION` | User invitations |
 | `AUDITLOG` | Audit log entries |
+| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
 | `SYSTEM_SETTINGS` | Instance-level settings |
 | `TENANT_SETTINGS` | Tenant-level settings |
 
@@ -104,7 +105,8 @@ Each resource defines its own set of allowed actions. Not every action applies t
 | `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
 | `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
 | `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
-| `NAMESPACE` | `MANAGE_FILES` (all namespace file operations), `EXPORT_PLUGIN_DEFAULTS`, `IMPORT_PLUGIN_DEFAULTS` |
+| `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
+| `POLICY` | `EXECUTE` (dry-run evaluate a policy against its scope), `EXPORT`, `IMPORT` |
 | `APP` | `EXECUTE`, `ACCESS_FILES`, `ACCESS_LOGS` |
 | `TESTSUITE` | `EXECUTE` |
 | `AUDITLOG` | `EXPORT` |
@@ -137,7 +139,7 @@ In addition to these permissions, access to a **private** MCP server is also flo
 
 ### Managed roles
 
-Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Superadmins can create additional custom roles on top of these. Users can hold multiple roles.
+Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Instance Owners can create additional custom roles on top of these. Users can hold multiple roles.
 
 | Role | Description |
 |---|---|
@@ -147,32 +149,32 @@ Kestra ships five managed roles. Each role's full permission set is visible unde
 | **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
 | **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
 
-## Superadmin and Admin
+## Instance Owner and Admin
 
-Kestra provides two roles for managing your instance: Superadmin and Admin.
+Kestra provides two roles for managing your instance: Instance Owner and Admin.
 
-- Superadmin is a user type with elevated privileges for global control.
+- Instance Owner is a user type with elevated privileges for global control.
 - Admin is a customizable role that grants full access to all resources (scoped to a tenant if multi-tenancy is enabled).
 
 :::collapse{title="Summary"}
-Key differences between Admin and Superadmin:
+Key differences between Admin and Instance Owner:
 
-| Feature                             | Admin (scoped to a tenant if enabled)              | Superadmin                                           |
+| Feature                             | Admin (scoped to a tenant if enabled)              | Instance Owner                                       |
 |-------------------------------------|----------------------------------------------------|------------------------------------------------------|
 | Access Level                        | By default as all permissions, depends on the Role | Manages tenants and IAM across all tenants           |
 | Tenant Management                   | No                                                 | View, create, update, delete tenants across all tenants |
 | User/Role/Group/Bindings Management | Has the permission by default                      | View, create, update, delete across all tenants         |
 | Flow/Execution Management           | Has the permission by default                      | No                                                   |
-| Set Superadmin privilege            | No                                                 | Yes                                                  |
+| Set Instance Owner privilege        | No                                                 | Yes                                                  |
 :::
 
-## Super Admin
+## Instance Owner
 
-Super Admin is a powerful user type with instance-wide privileges. Use it sparingly — only for tasks that require it, such as creating tenants, troubleshooting, or helping a user.
+Instance Owner is a powerful user type with instance-wide privileges. Use it sparingly — only for tasks that require it, such as creating tenants, troubleshooting, or helping a user.
 
-Unlike tenant-scoped roles, Super Admin operates across all tenants and does not require any Role or Binding. Superadmins access instance-wide controls through the [Super Admin console](../../05.instance/00.super-admin/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
+Unlike tenant-scoped roles, Instance Owner operates across all tenants and does not require any Role or Binding. Instance Owners access instance-wide controls through the [Instance Owner console](../../05.instance/00.instance-owner/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
 
-For how to create Superadmin users and manage the privilege, see [Super Admin](../../05.instance/00.super-admin/index.md).
+For how to create Instance Owner users and manage the privilege, see [Instance Owner](../../05.instance/00.instance-owner/index.md).
 
 ## Admin
 
@@ -227,7 +229,7 @@ The key attributes are:
 - `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock.
 - `lock-duration`: Defines how long the account remains locked.
 
-With the configuration above, a user gets 10 failed login attempts in a 5-minute window before lockout. They must wait 30 minutes, be unlocked by an Admin, or reset their password using the Forgot Password link. A Superadmin can also unlock a user manually from the user's detail page.
+With the configuration above, a user gets 10 failed login attempts in a 5-minute window before lockout. They must wait 30 minutes, be unlocked by an Admin, or reset their password using the Forgot Password link. An Instance Owner can also unlock a user manually from the user's detail page.
 
 ## Change password
 
@@ -244,13 +246,13 @@ kestra:
           window: PT1H         # Time window during which password reset requests are counted for rate limiting
 ```
 
-### Reset a password as a Superadmin
+### Reset a password as an Instance Owner
 
-Users can reset their password via the Forgot Password link on the login page. A Superadmin can also reset a user's password from the User Edit page at **Super Admin → Instance IAM → Users**.
+Users can reset their password via the Forgot Password link on the login page. An Instance Owner can also reset a user's password from the User Edit page at **Instance Owner → Instance IAM → Users**.
 
 ![Reset Password](./forgot-password.png)
 
-![Superadmin Change Password](./create-user-password.png)
+![Instance Owner Change Password](./create-user-password.png)
 
 ## RBAC FAQ
 

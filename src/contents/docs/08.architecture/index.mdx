@@ -19,7 +19,7 @@ Kestra has six server roles. In a standalone deployment, all six run as threads 
 | **Worker** | Executes runnable tasks and polling triggers. Connects to the Worker Controller via gRPC. The only role that accesses user infrastructure and [internal storage](./data-components/index.md#internal-storage). |
 | **Scheduler** | Evaluates trigger conditions (except flow triggers, which the Executor handles) and submits executions to the queue. |
 | **Webserver** | Serves the [REST API](../api-reference/index.mdx) and [UI](../09.ui/index.mdx). |
-| **Indexer** | Reads from the queue and writes to the Elasticsearch search backend. Required only in Kafka + Elasticsearch deployments (Enterprise Edition). |
+| **Indexer** | Reads from the queue and writes indexed content — flows, executions, logs, metrics, and audit logs — to the repository backend. Required in all deployments. |
 
 ## Queue and persistence
 

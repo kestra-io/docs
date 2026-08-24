@@ -274,21 +274,18 @@ BACKFILL
 **Scope:** Namespace
 
 **Actions and their meaning**
-- `VIEW`: read a namespace's details, inherited variables, and inherited plugin defaults.
+- `VIEW`: read a namespace's details and inherited variables.
 - `LIST`: search or browse namespaces.
 - `CREATE`: create a namespace.
 - `UPDATE`: update namespace configuration.
 - `DELETE`: delete a namespace.
 - `MANAGE_FILES`: all namespace file operations (search, read, create, move, delete, export).
-- `EXPORT_PLUGIN_DEFAULTS`: export a namespace's plugin defaults.
-- `IMPORT_PLUGIN_DEFAULTS`: import plugin defaults into a namespace.
 
 **Endpoints**
 
 VIEW
 - `GET /api/v1/{tenant}/namespaces/{id}`
 - `GET /api/v1/{tenant}/namespaces/{id}/inherited-variables`
-- `GET /api/v1/{tenant}/namespaces/{id}/inherited-plugindefaults`
 
 LIST
 - `GET /api/v1/{tenant}/namespaces/search`
@@ -315,12 +312,8 @@ MANAGE_FILES (all namespace file operations)
 - `PUT /api/v1/{tenant}/namespaces/{namespace}/files` (move file or directory)
 - `DELETE /api/v1/{tenant}/namespaces/{namespace}/files` (delete file or directory)
 
-EXPORT_PLUGIN_DEFAULTS
-- `POST /api/v1/{tenant}/namespaces/{id}/plugindefaults/export`
-
-IMPORT_PLUGIN_DEFAULTS
-- `POST /api/v1/{tenant}/namespaces/{id}/plugindefaults/import`
 :::
+
 
 ---
 
@@ -652,7 +645,7 @@ EXPORT
 - `GET /api/v1/{tenant}/auditlogs/export`
 
 Notes
-- Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are superadmin-only and are not controlled by `AUDITLOG` permissions.
+- Cross-tenant audit log endpoints under `/api/v1/auditlogs/...` (no tenant segment) are instance-owner-only and are not controlled by `AUDITLOG` permissions.
 :::
 
 ---
@@ -688,7 +681,7 @@ Notes
 
 Notes
 - `USER` is not included in any of the standard managed roles (Viewer, Launcher, Editor, Developer). Only Admin includes it. Custom roles with `USER` actions are intended for platform administrators.
-- IAM user management endpoints under `/api/v1/users` (no tenant segment) are superadmin-only and do not require `USER` permissions.
+- IAM user management endpoints under `/api/v1/users` (no tenant segment) are instance-owner-only and do not require `USER` permissions.
 :::
 
 ---
@@ -818,7 +811,7 @@ DELETE
 - `DELETE /api/v1/{tenant}/service-accounts/{id}/api-tokens/{tokenId}`
 
 Notes
-- Superadmin-only endpoints under `/api/v1/service-accounts` (no tenant segment) do not use `SERVICE_ACCOUNT` permissions.
+- Instance-owner-only endpoints under `/api/v1/service-accounts` (no tenant segment) do not use `SERVICE_ACCOUNT` permissions.
 :::
 
 ---
@@ -844,6 +837,67 @@ CREATE
 DELETE
 - `DELETE /api/v1/{tenant}/invitations/{id}`
 :::
+
+:::collapse{title="POLICY"}
+**Scope:** Namespace or Tenant (a policy targets either a namespace or the full tenant, and is authorized accordingly)
+
+**Actions and their meaning**
+- `VIEW`: read a single policy.
+- `LIST`: search or browse policies.
+- `CREATE`: create a policy.
+- `UPDATE`: update a policy.
+- `DELETE`: delete a policy.
+- `EXECUTE`: dry-run evaluate a policy against every flow in its scope without persisting any changes.
+- `EXPORT`: export policies as YAML.
+- `IMPORT`: import policies from a YAML file. Each document is authorized against its own scope before anything is written — a single denial rejects the whole import.
+
+**Endpoints**
+
+VIEW
+- `GET /api/v1/{tenant}/policies/{id}` (tenant-scope)
+- `GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}` (namespace-scope)
+
+LIST
+- `GET /api/v1/{tenant}/policies/search` (tenant-scope)
+- `GET /api/v1/{tenant}/namespaces/{namespace}/policies/search` (namespace-scope)
+
+CREATE
+- `POST /api/v1/{tenant}/policies` (tenant-scope)
+- `POST /api/v1/{tenant}/namespaces/{namespace}/policies` (namespace-scope)
+
+UPDATE
+- `PUT /api/v1/{tenant}/policies/{id}` (tenant-scope)
+- `PUT /api/v1/{tenant}/namespaces/{namespace}/policies/{id}` (namespace-scope)
+
+DELETE
+- `DELETE /api/v1/{tenant}/policies/{id}` (tenant-scope)
+- `DELETE /api/v1/{tenant}/policies/delete/by-ids` (tenant-scope)
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/policies/{id}` (namespace-scope)
+- `DELETE /api/v1/{tenant}/namespaces/{namespace}/policies/delete/by-ids` (namespace-scope)
+
+EXECUTE (dry-run evaluate)
+- `GET /api/v1/{tenant}/policies/{id}/evaluate` (tenant-scope)
+- `GET /api/v1/{tenant}/namespaces/{namespace}/policies/{id}/evaluate` (namespace-scope)
+
+EXPORT
+- `POST /api/v1/{tenant}/policies/export` (tenant-scope, all policies)
+- `POST /api/v1/{tenant}/policies/export/by-ids` (tenant-scope, by IDs)
+- `POST /api/v1/{tenant}/namespaces/{namespace}/policies/export` (namespace-scope, all policies)
+- `POST /api/v1/{tenant}/namespaces/{namespace}/policies/export/by-ids` (namespace-scope, by IDs)
+
+IMPORT
+- `POST /api/v1/{tenant}/policies/import`
+- `POST /api/v1/{tenant}/namespaces/{namespace}/policies/import`
+
+VALIDATE (any `POLICY` VIEW action — no dedicated check)
+- `POST /api/v1/{tenant}/policies/validate`
+- `POST /api/v1/{tenant}/namespaces/{namespace}/policies/validate`
+
+Notes
+- Instance-scope policy endpoints (`/api/v1/instance/policies/...`) manage read-only static policies declared in server configuration and are instance-owner-only; they are not governed by `POLICY` RBAC permissions.
+:::
+
+---
 
 ## Related
 

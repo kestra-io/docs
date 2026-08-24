@@ -211,7 +211,7 @@ This section is about hardening the running platform rather than managing secret
 
 This group includes:
 
-- super-admin behavior
+- instance owner behavior
 - default roles
 - invitation expiration
 - password rules
@@ -238,19 +238,23 @@ endpoints:
       password: your-password
 ```
 
-### Super-admin
+### Instance Owner
 
-The super-admin account has the highest level of platform access and should be reserved for break-glass administration:
+The instance owner account has the highest level of platform access and should be reserved for break-glass administration:
 
 ```yaml
 kestra:
   security:
-    super-admin:
+    instance-owner:
       username: your_username
-      password: ${KESTRA_SUPERADMIN_PASSWORD}
+      password: ${KESTRA_INSTANCE_OWNER_PASSWORD}
       tenant-admin-access:
         - <optional>
 ```
+
+:::alert{type="info"}
+`kestra.security.super-admin` is a deprecated alias for `kestra.security.instance-owner` and still works.
+:::
 
 :::alert{type="warning"}
 Never store clear-text passwords in config. Use environment variables or your platform secret mechanism.

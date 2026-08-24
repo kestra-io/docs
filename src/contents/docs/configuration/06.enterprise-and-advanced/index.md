@@ -442,31 +442,261 @@ This page also includes:
 
 ### AI Copilot
 
-Set `kestra.ai.enabled` to `false` to fully disable the AI Copilot, including the built-in fallback to `api.kestra.io`. Defaults to `true`.
+AI Copilot configuration lives under `kestra.ai` and controls which LLM providers are active, how each provider is authenticated and tuned, and how the agent runtime behaves.
 
-Enterprise Edition supports multiple providers in one configuration, which is useful when teams need both a default internal model and a fallback external model:
+#### Enabling and disabling
+
+`kestra.ai.enabled` (default: `true`) controls whether AI Copilot is active. Set it to `false` to disable the feature entirely, including the built-in fallback to `api.kestra.io`.
+
+#### Providers
+
+Enterprise Edition lets you configure multiple providers in a single deployment. Each entry in `kestra.ai.providers` is an independent provider the UI can offer to users.
 
 ```yaml
 kestra:
   ai:
-    enabled: true # set to false to disable AI Copilot entirely
+    enabled: true
     providers:
-      - id: gemini
-        display-name: Gemini - Private
+      - id: internal-gemini
+        display-name: Gemini (internal)
         type: gemini
         configuration:
-          model-name: gemini-3.5-flash-lite
           api-key: YOUR_GEMINI_API_KEY
-      - id: gpt
-        display-name: OpenAI
+          model-name: gemini-2.5-flash
+      - id: openai-gpt
+        display-name: OpenAI GPT
         type: openai
-        isDefault: true
+        is-default: true
         configuration:
-          model-name: gpt-4
           api-key: YOUR_OPENAI_API_KEY
+          model-name: gpt-4o
 ```
 
-Optional provider settings include `temperature`, `top-p`, `top-k`, `max-output-tokens`, `log-requests`, `log-responses`, and `base-url`.
+**Provider wrapper fields**
+
+| Field | Required | Description |
+|---|---|---|
+| `id` | ✅ | Unique identifier for this provider entry. |
+| `display-name` | ✅ | Label shown to users in the Copilot UI. |
+| `type` | ✅ | Provider type. One of: `openai`, `azure-openai`, `gemini`, `googlevertexai`, `anthropic`, `bedrock`, `deepseek`, `mistralai`, `ollama`, `open-router`. |
+| `is-default` | ❌ | When `true`, this provider is selected automatically when no explicit choice is made. |
+| `configuration` | ❌ | Provider-specific settings. See the property reference and provider sections below. |
+| `system-prompt` | ❌ | (EE only) Override the built-in system prompt per Copilot mode. A non-blank value for a mode fully replaces the built-in prompt for that mode. |
+| `system-prompt.ask` | ❌ | Custom system prompt for Ask mode. |
+| `system-prompt.plan` | ❌ | Custom system prompt for Plan mode. |
+| `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
+
+#### Configuration property reference
+
+These properties appear inside the `configuration:` block of a provider entry. Not every property is available on every provider — the per-provider sections below show which apply and which are required.
+
+**Authentication**
+
+| Property | Description |
+|---|---|
+| `api-key` | API key for the provider. Most providers require this; Anthropic and Google Vertex AI do not (see their sections). |
+| `access-key-id` | AWS access key ID. Amazon Bedrock only. |
+| `secret-access-key` | AWS secret access key. Amazon Bedrock only. |
+| `client-pem` | PEM-encoded client certificate used for mutual TLS (mTLS) when the provider endpoint requires client authentication. |
+| `ca-pem` | PEM-encoded CA certificate to add additional TLS trust beyond the system trust store. Not required for standard provider endpoints. |
+
+**Model selection**
+
+| Property | Description |
+|---|---|
+| `model-name` | The model identifier to use. The accepted values are provider-specific (e.g. `gpt-4o`, `gemini-2.5-flash`, `claude-opus-4-5`). Each provider section lists its default. |
+
+**Generation parameters**
+
+| Property | Description |
+|---|---|
+| `temperature` | Controls randomness in sampling. Lower values (e.g. `0.2`) produce more deterministic output; higher values (e.g. `1.0`) produce more varied responses. Most providers default to `0.7`; OpenAI and OpenRouter default to `1`. |
+| `top-p` | Nucleus sampling: only tokens whose cumulative probability reaches `top-p` are considered. An alternative to `temperature` — set one or the other, not both. |
+| `top-k` | Limits sampling to the top K most probable tokens at each step. Supported by Gemini, Google Vertex AI, Anthropic, Amazon Bedrock, and Ollama. |
+| `max-output-tokens` | Maximum number of tokens the model may produce in a single response. Defaults to `8000` on providers that support it. Mistral AI does not expose this setting. |
+
+**Extended reasoning**
+
+| Property | Description |
+|---|---|
+| `thinking-enabled` | When `true`, enables the provider's extended reasoning or thinking mode. Supported by OpenAI, Azure OpenAI, Gemini, Anthropic, and Amazon Bedrock. Anthropic requires `temperature: 1` and disables `top-p` and `top-k` when thinking is on — these constraints are applied automatically. |
+| `thinking-effort` | Provider-neutral reasoning effort: `LOW`, `MEDIUM`, or `HIGH`. Supported by OpenAI, Azure OpenAI, and Gemini. Each provider maps this to its own vocabulary (e.g. OpenAI `reasoning_effort`, Gemini `thinkingLevel`). |
+| `thinking-budget-tokens` | Token budget for the reasoning process. Supported by Gemini, Anthropic, and Amazon Bedrock. Anthropic requires a minimum of `1024`; when `thinking-enabled` is `true` and no budget is set, `1024` is used automatically. |
+
+**Network and connectivity**
+
+| Property | Description |
+|---|---|
+| `base-url` | Override the default API endpoint. Use this for self-hosted deployments, proxies, or OpenAI-compatible local servers. Available on OpenAI, Gemini, DeepSeek, Mistral AI, Ollama, and OpenRouter. For Ollama, `base-url` is required (there is no cloud endpoint). |
+| `custom-headers` | A flat map of extra HTTP headers sent with every request to the provider. Useful for passing organization IDs, routing headers, or authentication tokens that the provider requires alongside the API key. |
+| `timeout` | Maximum duration for a single HTTP request to the provider (e.g. `PT30S`, `PT2M`). Does not apply to Google Vertex AI. |
+
+**Logging**
+
+| Property | Description |
+|---|---|
+| `log-requests` | When `true`, logs the full request body sent to the provider. Useful for debugging prompt construction. Avoid in production — request bodies may contain sensitive data. |
+| `log-responses` | When `true`, logs the full response body received from the provider. Same caveats as `log-requests`. |
+| `log-requests-and-responses` | Azure OpenAI equivalent of `log-requests` + `log-responses` combined in a single toggle. |
+
+#### Provider types
+
+Each provider section lists only its required fields and properties unique to that provider. All other properties from the reference above are available unless noted.
+
+##### OpenAI (`type: openai`)
+
+| Property | Required | Default |
+|---|---|---|
+| `api-key` | ✅ | — |
+| `model-name` | ❌ | `gpt-5-nano` |
+| `temperature` | ❌ | `1` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `thinking-enabled` and `thinking-effort`. Supports `base-url` for OpenAI-compatible self-hosted endpoints.
+
+Does not support `top-k`.
+
+##### Azure OpenAI (`type: azure-openai`)
+
+Supports two authentication methods: API key or Azure Active Directory (AAD).
+
+| Property | Required | Default |
+|---|---|---|
+| `endpoint` | ✅ | — |
+| `model-name` | ✅ | — |
+| `api-key` | ❌ (use this or AAD) | — |
+| `tenant-id` | ❌ (AAD auth) | — |
+| `client-id` | ❌ (AAD auth) | — |
+| `client-secret` | ❌ (AAD auth) | — |
+| `service-version` | ❌ | — |
+| `temperature` | ❌ | `1` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `thinking-enabled` and `thinking-effort`.
+
+Uses `log-requests-and-responses` instead of separate `log-requests` / `log-responses` toggles. Does not support `top-k`, `base-url`, `client-pem`, or `ca-pem`.
+
+##### Gemini (`type: gemini`)
+
+| Property | Required | Default |
+|---|---|---|
+| `api-key` | ✅ | — |
+| `model-name` | ❌ | `gemini-2.5-flash` |
+| `temperature` | ❌ | `0.7` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `thinking-enabled`, `thinking-effort`, and `thinking-budget-tokens`. Supports `base-url` and `top-k`.
+
+##### Google Vertex AI (`type: googlevertexai`)
+
+Authenticates via [Application Default Credentials](https://cloud.google.com/docs/authentication/application-default-credentials). No `api-key` field — ensure the Kestra runtime environment has ADC configured (e.g. a service account key via `GOOGLE_APPLICATION_CREDENTIALS`, Workload Identity, or `gcloud auth application-default login`).
+
+| Property | Required | Default |
+|---|---|---|
+| `project` | ✅ | — |
+| `location` | ✅ | — |
+| `model-name` | ✅ | — |
+| `temperature` | ❌ | `0.7` |
+
+Supports `top-k`. Does not support `thinking-enabled`, `thinking-effort`, `thinking-budget-tokens`, `base-url`, `client-pem`, `ca-pem`, `max-output-tokens`, or `timeout`.
+
+##### Anthropic (`type: anthropic`)
+
+No `api-key` configuration field. Set the `ANTHROPIC_API_KEY` environment variable on the Kestra server instead.
+
+| Property | Required | Default |
+|---|---|---|
+| `model-name` | ✅ | — |
+| `temperature` | ❌ | `0.7` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `thinking-enabled` and `thinking-budget-tokens` (minimum `1024`; defaults to `1024` when thinking is enabled without an explicit budget). When `thinking-enabled` is `true`, Anthropic requires `temperature: 1` and ignores `top-p` and `top-k` — these constraints are applied automatically regardless of what you configure. Supports `top-k`.
+
+Does not support `thinking-effort`.
+
+##### Amazon Bedrock (`type: bedrock`)
+
+| Property | Required | Default |
+|---|---|---|
+| `access-key-id` | ✅ | — |
+| `secret-access-key` | ✅ | — |
+| `model-name` | ✅ | — |
+| `temperature` | ❌ | `0.7` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `thinking-enabled` and `thinking-budget-tokens`. Supports `top-k`.
+
+Does not support `thinking-effort`, `base-url`, `client-pem`, or `ca-pem`.
+
+##### DeepSeek (`type: deepseek`)
+
+| Property | Required | Default |
+|---|---|---|
+| `api-key` | ✅ | — |
+| `model-name` | ❌ | `deepseek-chat` |
+| `temperature` | ❌ | `0.7` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `base-url` for self-hosted or compatible endpoints. Does not support `top-k`, `thinking-enabled`, or `thinking-effort`.
+
+##### Mistral AI (`type: mistralai`)
+
+| Property | Required | Default |
+|---|---|---|
+| `api-key` | ✅ | — |
+| `model-name` | ✅ | — |
+| `temperature` | ❌ | `0.7` |
+
+Supports `base-url`. Does not support `max-output-tokens`, `top-k`, `thinking-enabled`, or `thinking-effort`.
+
+##### Ollama (`type: ollama`)
+
+Ollama runs locally — there is no cloud API key. `base-url` points to your Ollama server and is required.
+
+| Property | Required | Default |
+|---|---|---|
+| `base-url` | ✅ | — |
+| `model-name` | ✅ | — |
+| `temperature` | ❌ | `0.7` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `top-k`. Does not support `api-key`, `thinking-enabled`, or `thinking-effort`.
+
+##### OpenRouter (`type: open-router`)
+
+| Property | Required | Default |
+|---|---|---|
+| `api-key` | ✅ | — |
+| `model-name` | ❌ | `gpt-5-nano` |
+| `temperature` | ❌ | `1` |
+| `max-output-tokens` | ❌ | `8000` |
+
+Supports `base-url`. Does not support `top-k`, `thinking-enabled`, or `thinking-effort`.
+
+#### Agent runtime settings
+
+`kestra.ai.agent` controls the Copilot agent runtime. The defaults suit most deployments — tune only when hitting provider rate limits, memory pressure, or needing to adjust conversation scope.
+
+| Property | Default | Description |
+|---|---|---|
+| `model-call-timeout` | `PT5M` | Maximum duration of a single streaming model call. If a provider call hangs beyond this threshold, the turn is failed rather than leaving a thread pinned indefinitely. |
+| `docs-mcp-url` | `https://api.kestra.io/v1/mcp` | Kestra docs MCP endpoint used for context grounding in Ask mode. Override this in air-gapped deployments that run a local docs MCP server. |
+| `max-sequential-tools-invocations` | `25` | Maximum number of sequential tool-calling round-trips within a single turn. Bounds runaway reasoning loops — each round-trip is a paid model call. |
+| `max-turns-per-thread` | `50` | Maximum number of user turns in a single conversation thread before new turns are refused. |
+| `max-concurrent-turns` | `32` | Per-node ceiling on simultaneously running agent turns. New turns receive a 429 response when the ceiling is reached rather than queuing. Bounds concurrent provider load — agent turns run on virtual threads so the thread count itself is not a concern. |
+| `max-context-turns` | `10` | How many of the most recent turns are replayed into the model context per turn. Older turns remain stored for history but are windowed out of the prompt. Windowing operates on whole turns so tool-call and result pairs are never split. |
+| `in-memory-conversation-ttl` | `PT1H` | In-memory store only: how long a conversation is retained after its last activity before eviction. Ignored when a durable backend is configured. |
+| `max-in-memory-conversations` | `50` | In-memory store only: hard cap on retained conversations. The least-recently-active conversation is evicted when the cap is exceeded. Ignored when a durable backend is configured. |
+
+```yaml
+kestra:
+  ai:
+    agent:
+      model-call-timeout: PT5M
+      max-sequential-tools-invocations: 25
+      max-concurrent-turns: 32
+      max-context-turns: 10
+```
 
 ### Air-gapped mode
 

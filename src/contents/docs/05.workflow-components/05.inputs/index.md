@@ -62,6 +62,7 @@ Inputs are strongly typed and validated before execution starts.
 | Type | Accepts | Constraints & extra properties |
 |---|---|---|
 | `STRING` | Any string | `validator` (regex) |
+| `EMAIL` | Valid email address | `validator` (regex) |
 | `INT` | Integer | `min`, `max` |
 | `FLOAT` | Float | `min`, `max` |
 | `BOOL` | `true` or `false` | — |

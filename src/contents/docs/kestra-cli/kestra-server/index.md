@@ -590,10 +590,14 @@ kestra sys state-store migrate
 Create a user.
 
 **Inputs**: `username` (required), `password` (optional)
-**Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
+**Options**: `--groups`, `--tenant`, `--admin`, `--instance-owner`, `--if-not-exists`
+
+:::alert{type="info"}
+`--superadmin` is a deprecated alias for `--instance-owner` and still works.
+:::
 
 ```bash
-kestra auths users create --superadmin --tenant=default admin Admin_password@123
+kestra auths users create --instance-owner --tenant=default admin Admin_password@123
 ```
 
 ### `kestra auths users create-basic-auth`
@@ -612,15 +616,19 @@ Refresh users to update their properties.
 kestra auths users refresh
 ```
 
-### `kestra auths users set-superadmin`
+### `kestra auths users set-instance-owner`
 
-Set or remove Superadmin status.
+Set or remove Instance Owner status.
 
-**Inputs**: `user`, `isSuperAdmin` (true|false)
+**Inputs**: `user`, `instanceOwner` (true|false)
 
 ```bash
-kestra auths users set-superadmin alice true
+kestra auths users set-instance-owner alice true
 ```
+
+:::alert{type="info"}
+`set-superadmin` is a deprecated alias for `set-instance-owner` and still works.
+:::
 
 ### `kestra auths users email-replace-username`
 
