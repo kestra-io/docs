@@ -233,7 +233,7 @@ testCases:
           description: "don't send end output"
     assertions:
       - value: "{{outputs.transform_to_uppercase.value}}"
-        equalsTo: "[BOWLER HAT, TRILBY HAT]"
+        equalTo: "[BOWLER HAT, TRILBY HAT]"
 ```
 
 With a combination of namespace files and tests, you can target specific components of your flow for correct functionality without using up any external resources or unnecessarily communicating with external hosts for scripts or files.
@@ -445,9 +445,8 @@ testCases:
       inputs:
         quantity: -1
     assertions:
-      - actual: "{{ inputs.quantity }}"
-        expected:
-          lessThan: 1
+      - value: "{{ inputs.quantity }}"
+        lessThan: 1
 ```
 
 When `expectedState` is set, the test passes only if the execution ends in exactly that state. If it ends in a different state, the test fails and reports both the expected and actual states.
