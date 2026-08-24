@@ -333,6 +333,10 @@ kestra server worker
 
 No additional CLI flags are needed. The registration token in `kestra.worker.auth.registration-token` identifies which group the worker joins at connection time.
 
+:::alert{type="info"}
+Workers do not connect to the database. Any `datasources` or `kestra.repository.type` keys in the config are ignored; a startup warning lists which keys were skipped.
+:::
+
 ## Transport security (TLS)
 
 By default, gRPC traffic between workers and the controller is unencrypted. For production deployments, enable TLS on both sides.
