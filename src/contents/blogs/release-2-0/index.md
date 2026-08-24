@@ -12,9 +12,7 @@ image: ./main.jpg
 
 <!-- TODO: hero image (main.jpg) needed -->
 
-Kestra 2.0 ships with intentional breaking changes. Version 2.0 removes constructs that accumulated technical debt across three release cycles (ForEach, Java-class trigger conditions, CRUD-based RBAC permissions) and replaces them with designs that hold up under production load, multi-team governance, and the increasingly common requirement that your orchestration platform be reachable by AI agents.
-
-The headline capability is MCP: Kestra flows can now be exposed as typed tools on an MCP server and invoked directly by Claude, Cursor, Codex, or any MCP-compatible agent. A class of AI-driven automation that previously required bespoke integrations now works out of the box. The AI Copilot is rebuilt from the ground up as a persistent agentic loop with three modes, multi-turn memory, and a confirmation gate before any mutations run. Worker Groups are redesigned from scratch with tag-based routing, capacity reservation, and JWT-based worker authentication. RBAC moves from generic CRUD on resources to resource-plus-action pairs, so you can grant a CI service account the right to execute flows without being able to delete them.
+Kestra 2.0 covers more ground than any previous release, and the breadth is deliberate. Enterprise governance ships for the first time (Policies, Cases, Promote), flows open to AI agents via MCP, Worker Groups are rebuilt for production-scale routing, and the constructs that accumulated debt since the early days are replaced. We've been looking forward to shipping this one.
 
 This post covers what shipped.
 
@@ -75,6 +73,8 @@ A `default` MCP server is provisioned for every tenant on startup. Additional se
 
 Authentication options vary by edition: BASIC is available on all editions, API_TOKEN on EE, and OAuth2 on EE and Cloud. OAuth2 support means browser-based clients like Claude web can authenticate without any local credential setup.
 
+The MCP server also works in the other direction. Connect Claude, Cursor, or any MCP-compatible client to the Kestra MCP server and you can create, search, and manage flows directly from your editor or AI assistant, no UI required.
+
 All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
 
 For access control, the `MCP_SERVER` resource in the EE RBAC model governs who can create and manage MCP servers. A user needs `FLOW: EXECUTE` permission on at least one namespace with a registered `McpToolTrigger` to call the matching tool.
@@ -99,7 +99,7 @@ When you open the sidebar while viewing a resource, that resource attaches autom
 
 Actions that modify resources require explicit confirmation before the Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
 
-The `COPILOT` resource in the RBAC model controls who can use the feature. Assign `VIEW` or `DENY` at tenant or namespace scope via the Roles UI.
+The `COPILOT` resource in the RBAC model controls who can use the feature. Assign `USE` at tenant or namespace scope via the Roles UI.
 
 See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
 
@@ -123,7 +123,7 @@ tasks:
 
 ![Diagram showing how developers read task-to-queue top-down and operators read workers-to-group-to-queue bottom-up, meeting at the Worker Queue layer with a many-to-many relationship](./worker-groups-routing.png)
 
-A Worker Group subscribes to one or more queues. The platform routes a task to the first available group that covers all required tags (or any, with `match: ANY`). `fallback` controls what happens when no matching group is available: `FAIL` (the default in 2.0, changed from the 1.x default of `WAIT`), `WAIT`, `CANCEL`, or `IGNORE` (drop the requirement and route to the default queue).
+A Worker Group subscribes to one or more queues. The platform routes a task to the first available group that covers all required tags (or any, with `match: ANY`). `fallback` controls what happens when a matching Worker Queue exists but has no live workers: `FAIL` (the default in 2.0, changed from the 1.x default of `WAIT`), `WAIT`, `CANCEL`, or `IGNORE` (drop the requirement and route to the default queue). If no Worker Queue with those tags exists at all, the task fails immediately regardless of the `fallback` setting.
 
 The fallback default flip is the sharpest gotcha for upgraders. Tasks that previously waited silently for a matching worker will now fail immediately. Set `fallback: WAIT` explicitly on tasks where the old behavior was intentional.
 
@@ -152,7 +152,7 @@ A few examples of what this makes possible:
 
 | Goal | Old model (minimum viable) | New model |
 |---|---|---|
-| CI/CD service account deploys and runs flows | FLOW: CREATE + EXECUTION: CREATE | `FLOW: EXECUTE` |
+| CI/CD service account deploys and runs flows | FLOW: CREATE + EXECUTION: CREATE | `FLOW: CREATE, UPDATE, EXECUTE` |
 | Support engineer reads logs | EXECUTION: READ | `EXECUTION: ACCESS_LOGS` |
 | Scheduler triggers backfills | EXECUTION: CREATE | `TRIGGER: BACKFILL` |
 | Analyst follows a live execution | EXECUTION: READ | `EXECUTION: FOLLOW` |
@@ -165,7 +165,7 @@ See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide fo
 
 ## Policies
 
-Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies solves this at the platform layer.
+Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies addresses this at the platform layer.
 
 Policies is the EE replacement for `pluginDefaults`. It gives platform administrators governance rules that inject configuration, validate compliance, and block non-conforming flows across namespaces, tenants, and flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
 
@@ -201,11 +201,13 @@ rules:
 
 `Add` rules inject values at resolution time. With `override: false` (the default), the author's explicit value wins and the policy fills in only what's absent. With `override: true`, the policy value always wins. Either way, every injection is annotated in the flow editor's merged preview, so forced values are never invisible to authors.
 
-Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but nothing is blocked and no values are injected. When the violation report looks right, flip to `ACTIVE`.
+Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but violations are only reported: nothing is blocked, and `Add`/`Delete` mutate rules are skipped. When the violation report looks right, flip to `ACTIVE`.
 
 Policies also support opt-in bundles with `enforcement: REFERENCE`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles (an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one) selected per task in the same flow.
 
 `pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. See the [Policies reference](/docs/enterprise/governance/policies) for the full rule DSL.
+
+Quotas: where `concurrency` limits how many executions run simultaneously, quotas limit how many can be created in a time window. Set `CANCEL` or `FAIL` behavior, a `limit`, and an ISO-8601 `duration` on any flow. Windows are UTC-aligned, not rolling. Quotas stack at flow, namespace, and tenant scope, evaluated most-specific-first.
 
 ## Loop Task
 
@@ -213,13 +215,14 @@ ForEach and ForEachItem are removed in 2.0. The `Loop` task replaces both.
 
 The removal was driven by a real stability problem. A `ForEach` task with a large input list could generate thousands of child task runs within a single flow execution, exhausting executor memory and affecting every other flow running on the instance at the same time. `Loop` runs each iteration as an isolated sub-execution. A runaway loop cannot destabilize the instance.
 
-The expression syntax is also cleaner. Where ForEach used `{{ taskrun.value }}` and ForEachItem used `{{ taskrun.value }}` with a `parentOutput()` helper for nested access, Loop uses:
+The expression syntax is also cleaner. Where ForEach and ForEachItem both used `{{ taskrun.value }}` (with `{{ parent.taskrun.value }}` for nested access), Loop uses:
 
 | Old expression | New expression |
 |---|---|
 | `{{ taskrun.value }}` | `{{ item.value }}` |
 | `{{ taskrun.iteration }}` | `{{ item.index }}` |
-| `{{ parent.taskrun.value }}` | `{{ item.parent.value }}` |
+| `{{ parent.taskrun.value }}` | `{{ item.value }}` (accessible at any nesting depth) |
+| `{{ parents[0].taskrun.value }}` | `{{ item.parent.value }}` (inner loop of two nested loops) |
 
 Outputs work differently too. ForEach had implicit output collection; Loop requires an explicit `outputs:` block on each task inside the loop, and the `loopOutputs()` function extracts a flat list of one field across all iterations:
 
@@ -283,7 +286,7 @@ triggers:
 
 New date and calendar helper functions ship alongside the redesign: `isWeekend()`, `isPublicHoliday()` (with country and subdivision), `isDayWeekInMonth()`, `isLastWorkingDay()`, `dayOfWeek()`, `dayOfMonth()`, `monthOfYear()`, and `hourOfDay()`.
 
-Flow triggers also change significantly. The old `conditions` and `preconditions` system is replaced by a `dependsOn` list of upstream flow entries, each specifying `flowId`, `namespace`, `states` (default: SUCCESS and WARNING), `labels`, and an optional per-entry `when`. A top-level `when` on the Flow trigger evaluates before the `dependsOn` check and can use `trigger.namespace`, `trigger.flowId`, `trigger.state`, and `trigger.outputs`.
+Flow triggers also change significantly. The old `conditions` and `preconditions` system is replaced by a `dependsOn` list of upstream flow entries, each specifying `flowId`, `namespace`, `states` (default: all terminal states and PAUSED), `labels`, and an optional per-entry `when`. A top-level `when` on the Flow trigger evaluates before the `dependsOn` check and can use `trigger.namespace`, `trigger.flowId`, `trigger.state`, and `trigger.outputs`.
 
 The [trigger conditions migration guide](/docs/migration-guide/v2.0.0/trigger-conditions-redesign) maps every condition class to its `when` equivalent.
 
@@ -309,8 +312,8 @@ kestractl service-accounts create \
 # Create a role with exactly the permissions it needs
 kestractl roles create \
   --name ci-role \
-  --permission FLOW:READ,CREATE,UPDATE \
-  --permission EXECUTION:CREATE,READ
+  --permission FLOW:CREATE,UPDATE,EXECUTE \
+  --permission EXECUTION:VIEW,LIST
 
 # Bind the role to the service account
 kestractl roles bind \
@@ -334,9 +337,9 @@ See the [Custom Blueprints reference](/docs/enterprise/governance/custom-bluepri
 
 ## Cases
 
-Failed executions are incidents, and most teams track them in a separate tool. Cases brings incident management into Kestra so you can create, assign, and resolve incidents next to the executions that caused them.
+Failed executions are incidents, and they usually get tracked outside Kestra. Cases brings incident management in so you can create, assign, and resolve incidents next to the executions that caused them.
 
-The `CreateCase` task opens a case from any block in a flow: `errors`, `finally`, `afterExecution`, or a regular task combined with `runIf`. It calls the Kestra API, so it needs an endpoint and credentials — `kestraUrl` defaults to the current instance, and `auth` accepts an API token or username/password. Namespace or tenant-level default credentials work as a fallback so you don't have to repeat auth config on every task.
+The `CreateCase` task opens a case from any block in a flow: `errors`, `finally`, `afterExecution`, or a regular task combined with `runIf`. It calls the Kestra API, so it needs an endpoint and credentials: `kestraUrl` defaults to the current instance, and `auth` accepts an API token or username/password. Namespace or tenant-level default credentials work as a fallback so you don't have to repeat auth config on every task.
 
 ```yaml
 errors:
@@ -366,7 +369,7 @@ Moving a flow from dev to prod has never been a first-class action in Kestra. Th
 
 Each flow gains a Deploy tab alongside the editor. From there, select a target environment, review a diff of exactly what changes in that revision, and confirm. Gated targets (typically production) require explicit confirmation before the promotion runs. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when.
 
-The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted. No opening each instance separately to check.
+The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
 
 ![Flows list with the Deploy column showing Not promoted, In sync, and Out of sync states](./promote-flows-list.png)
 
@@ -378,7 +381,7 @@ See the [Promote reference](/docs/enterprise/governance/promote).
 
 <!-- TODO: optional screenshot or flow snippet for GPU Spot example -->
 
-The EC2 task runner is a new EE runner type that executes task commands directly on an EC2 instance via [AWS Systems Manager Run Command](https://docs.aws.amazon.com/systems-manager/latest/userguide/execute-remote-commands.html). No SSH. No container runtime.
+The EC2 task runner is a new EE runner type that executes task commands directly on an EC2 instance via [AWS Systems Manager Run Command](https://docs.aws.amazon.com/systems-manager/latest/userguide/execute-remote-commands.html), with no SSH and no container runtime required.
 
 Kestra launches the instance from the configured AMI, waits for the SSM Agent to register, uploads input files to S3, and runs the task as a bash script. Output streams via CloudWatch Logs to the Kestra execution log in near real-time. When the run finishes, Kestra downloads output files and terminates the instance unconditionally.
 
@@ -421,7 +424,7 @@ The existing `PurgeExecutions` task deletes execution records and their associat
 
 `io.kestra.plugin.core.storage.PurgeStorage` takes the storage-driven approach instead. It walks the storage tree directly and deletes files based on last-modified date, regardless of whether a matching execution record exists. The task defaults to `dryRun: true`, so the first run only reports what would be deleted.
 
-The workerGroup property (inherited from all Kestra tasks) means PurgeStorage can target a specific worker's isolated storage by running on that worker group.
+Running PurgeStorage on a specific worker group via `workerSelector.tags` targets that worker's isolated storage directly.
 
 See the [purge guide](/docs/administrator-guide/purge) for setup and the two-step orphan-file remediation pattern.
 
@@ -445,29 +448,30 @@ kestra:
 
 When `kestra.logs.type` is set, Kestra opens a separate HikariCP connection pool against the log database, runs log-table migrations there, and routes all log reads and writes to it. The main database handles only flows, executions, and state.
 
-If `kestra.logs.type` is not set, logs continue using the repository backend. Existing installations see no change on upgrade. Historical logs written before the switch remain in the main database; a CLI migration command is planned for a future release.
+If `kestra.logs.type` is not set, logs continue using the repository backend. Existing installations see no change on upgrade. Historical logs written before the switch remain in the main database.
 
 See the [External Log Data Store guide](/docs/administrator-guide/log-data-store) for the Elasticsearch config, the capability reference (aggregation, pagination type, purge), and the plugin developer guide for custom log backends.
 
 ## Additional Improvements
 
-Reusable Inputs (EE/Cloud): define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Namespace hierarchy inheritance and revision pinning are supported.
+- Reusable Inputs (EE/Cloud): define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Namespace hierarchy inheritance and revision pinning are supported.
+- ION binary format: ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The [migration guide](/docs/migration-guide/v2.0.0/ion-binary-format) covers affected tasks and patterns.
+- Input improvements: SELECT and MULTISELECT inputs now support `{label, value}` objects, so the UI can show a human-readable label while flows receive the underlying technical value. JSON inputs gain a `jsonSchema` property (JSON Schema Draft 2020-12) that validates at execution creation time, rejecting invalid payloads before any task runs.
+- Unit test `expectedState`: flow unit tests can now assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. Testing intentional failure paths (validation guards using `io.kestra.plugin.core.execution.Fail`, SLA breaches, and so on) is now first-class.
+- TRACEPARENT propagation: pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. This closes a distributed tracing gap for teams running scripts inside Docker containers.
+- Syslog (CEF) log exporter: the EE Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
+- AI Agent observability: AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
+- AIAgent task: `guardrails` attach input and output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Set `maxSequentialToolsInvocations` explicitly; it defaults to unlimited.
+- VS Code extension: the extension now downloads the flow schema from your connected instance rather than bundling a generic one, so completion reflects the plugins actually installed. Live validation, Pebble autocompletion, topology preview with live task states during a run, and run-from-editor are all in.
+- Plugin UI artifacts: plugins can now ship Vue.js components that render domain-specific views directly in the execution topology. A task runner can decompose into per-step timing nodes (pod scheduling, image pull, file transfer, your code), so latency has an owner. Plugin authors build against three UI slots; the `artifact-sdk` handles Module Federation wiring.
+- mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
+- Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Revisions](/docs/concepts/revision).
+- `latest-slim` image: `kestra/kestra:latest-slim` ships without bundled plugins, keeping the image lean. Set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to install what your instance needs on startup, or bake a custom image with exactly the plugins you use.
+- Infrastructure plugins (EE): NetApp ONTAP, Veeam Backup, Pure Storage, Dell EMC PowerStore, Ceph, Huawei Cloud, F5, and SolarWinds IPAM plugins join the existing VMware, Nutanix, Proxmox, Infoblox, and Netbox family, covering day-two operations: snapshot before patching, clone volumes for dev/test, provision and register infrastructure in a single flow.
 
-ION binary format: ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The [migration guide](/docs/migration-guide/v2.0.0/ion-binary-format) covers affected tasks and patterns.
+## Security
 
-Input improvements: SELECT and MULTISELECT inputs now support `{label, value}` objects, so the UI can show a human-readable label while flows receive the underlying technical value. JSON inputs gain a `jsonSchema` property (JSON Schema Draft 2020-12) that validates at execution creation time, rejecting invalid payloads before any task runs.
-
-Unit test `expectedState`: flow unit tests can now assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. Testing intentional failure paths (validation guards using `io.kestra.plugin.core.execution.Fail`, SLA breaches, and so on) is now first-class.
-
-TRACEPARENT propagation: pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. This closes a distributed tracing gap for teams running scripts inside Docker containers.
-
-Syslog (CEF) log exporter: the EE Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
-
-AI Agent observability: AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
-
-mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
-
-Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed — any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Revisions](/docs/concepts/revision).
+A systematic audit in the 2.0 cycle closed a range of issues covering secret encryption, password hashing, management endpoint exposure, and injection vectors. Several defaults moved from open to closed; review the migration guide before upgrading.
 
 ## Upgrade and Migration
 
@@ -486,8 +490,21 @@ The breaking changes that require action:
 | `forced: true` on flow-level `pluginDefaults` removed | Remove the `forced` flag or migrate the default to Policies. |
 | `kestra.ee.execution-data.internal-storage` removed (EE) | Remove these keys from your configuration. Task run outputs are always in-memory in 2.0. |
 | ION binary format | `read()` on ION outputs followed by string ops needs `fromIon()` wrapping. |
+| Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed. Replace with their equivalents in the `plugin-kestra` SDK. |
+| `CANCELED` enum alias removed | Replace the single-L spelling with `CANCELLED` in flow expressions, API consumers, and any tooling that checks execution state. |
 
 Each has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
+
+For flows, the `kestra-migrate` CLI handles the bulk of the rewrite:
+
+```bash
+kestra-migrate --check ./flows/       # scope the work, no changes written
+kestra-migrate -o v2-flows/ ./flows/  # rewrite into a new directory
+```
+
+`ForEach` and `pluginDefaults` are flagged for manual review rather than automatically rewritten, as both require judgment about the intended behavior.
+
+2.0 is a Long Term Support release. Bug and security fixes are backported for one year, so teams upgrading now can expect a stable patch cadence without another major migration in that window.
 
 ## Get Started
 
