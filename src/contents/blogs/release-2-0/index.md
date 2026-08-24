@@ -1,7 +1,7 @@
 ---
 title: "Kestra 2.0: MCP Tools, Worker Groups, and a Leaner Core"
 description: "Kestra 2.0 makes flows callable by AI agents via MCP, redesigns Worker Groups with tag-based routing and JWT auth, brings action-based RBAC, and removes legacy constructs in favor of cleaner primitives."
-date: 2026-09-01T10:00:00
+date: 2026-09-08T10:00:00
 category: News & Product Updates
 authors:
   - name: "AJ Emerich"
