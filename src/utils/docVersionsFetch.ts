@@ -1,48 +1,56 @@
 import { $fetchApiCached } from "~/utils/fetch"
-import { docVersions, type DocVersion } from "~/utils/versionedDocs"
+import { docVersionLabels, versionMajorMinor } from "~/utils/versionedDocs"
 
-// The version list only feeds the version selector and changes a few times a
-// year, so it must not be fetched on every page render. Memoize it per worker
-// isolate with a TTL — fetched once when warm, refreshed every 10 minutes so
-// new releases appear on versioned-doc requests without a redeploy. Latest
-// docs are prerendered, so their selector only picks up a new release on the
-// next build regardless of this TTL. (Date.now() is available in both the
-// Cloudflare runtime and the Node build.)
-const VERSIONS_TTL_MS = 10 * 60 * 1000
-// A failure (cold-start or otherwise) gets a much shorter TTL than a success:
-// middleware.ts 404s any /docs/X.Y/* whose version isn't in this list, so
-// caching a failure for the full 10 minutes would keep every versioned doc
-// 404ing for that long after the API recovers.
-const VERSIONS_FAILURE_TTL_MS = 60 * 1000
-let versionsCache: { at: number; data: DocVersion[]; ok: boolean } | null = null
+// Memoized per worker isolate; changes only a few times a year so it must not be fetched per render.
+const TTL_MS = 10 * 60 * 1000
+// Shorter TTL on failure so a sustained outage retries sooner without hammering the API.
+const FAILURE_TTL_MS = 60 * 1000
 
-export interface DocVersionsResult {
-    versions: DocVersion[]
+let latestCache: { at: number; data: string | undefined; ok: boolean } | null = null
+
+/** MAJOR.MINOR of the current GA release (e.g. "1.3"), or undefined if unavailable/stale-empty. */
+export async function getLatestDocVersion(): Promise<string | undefined> {
+    const now = Date.now()
+    if (latestCache) {
+        const ttl = latestCache.ok ? TTL_MS : FAILURE_TTL_MS
+        if (now - latestCache.at < ttl) {
+            return latestCache.data
+        }
+    }
+    try {
+        const raw = await $fetchApiCached<{ version: string }>("/versions/latest")
+        latestCache = { at: now, data: versionMajorMinor(raw.version), ok: true }
+    } catch (error) {
+        // Cache the failure too, so a sustained outage isn't refetched on every render.
+        console.error("Failed to fetch latest doc version:", error)
+        latestCache = { at: now, data: latestCache?.data, ok: false }
+    }
+    return latestCache.data
+}
+
+export interface KnownDocVersionsResult {
+    versions: string[]
     /** false when the last refresh attempt failed — `versions` is stale or empty. */
     ok: boolean
 }
 
-/** Version list plus fetch health, for callers whose response depends on it (the middleware's 404-vs-503 split). */
-export async function getDocVersionsResult(): Promise<DocVersionsResult> {
+let knownCache: { at: number; data: string[]; ok: boolean } | null = null
+
+/** All routable MAJOR.MINOR labels (>= 1.0), plus fetch health for the middleware's 404-vs-503 split. */
+export async function getKnownDocVersions(): Promise<KnownDocVersionsResult> {
     const now = Date.now()
-    if (versionsCache) {
-        const ttl = versionsCache.ok ? VERSIONS_TTL_MS : VERSIONS_FAILURE_TTL_MS
-        if (now - versionsCache.at < ttl) {
-            return { versions: versionsCache.data, ok: versionsCache.ok }
+    if (knownCache) {
+        const ttl = knownCache.ok ? TTL_MS : FAILURE_TTL_MS
+        if (now - knownCache.at < ttl) {
+            return { versions: knownCache.data, ok: knownCache.ok }
         }
     }
     try {
         const raw = await $fetchApiCached<{ version: string }[]>("/versions")
-        versionsCache = { at: now, data: docVersions(raw), ok: true }
+        knownCache = { at: now, data: docVersionLabels(raw), ok: true }
     } catch (error) {
-        // Cache the failure too (even with no prior data) so a sustained
-        // outage costs one fetch per short TTL window, not one per page rendered.
-        console.error("Failed to fetch doc versions:", error)
-        versionsCache = { at: now, data: versionsCache?.data ?? [], ok: false }
+        console.error("Failed to fetch known doc versions:", error)
+        knownCache = { at: now, data: knownCache?.data ?? [], ok: false }
     }
-    return { versions: versionsCache.data, ok: versionsCache.ok }
-}
-
-export async function getDocVersions(): Promise<DocVersion[]> {
-    return (await getDocVersionsResult()).versions
+    return { versions: knownCache.data, ok: knownCache.ok }
 }
