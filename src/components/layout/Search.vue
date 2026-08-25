@@ -259,6 +259,7 @@
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import posthog from "posthog-js"
     import { $fetchApi } from "~/utils/fetch"
+    import { prepareSearchResults } from "~/utils/searchResults"
 
     export default {
         props: {
@@ -336,23 +337,12 @@
                 })
                     .then((response) => {
                         this.initialLoad = true
-                        if (response?.results?.length) {
-                            this.searchResults = response.results.map(
-                                (result) => {
-                                    const searchTerm = value
-                                        ?.trim()
-                                        ?.toLowerCase()
-                                    if (searchTerm) {
-                                        const index = result.title
-                                            .toLowerCase()
-                                            .indexOf(searchTerm)
-                                        if (index !== -1) {
-                                            result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`
-                                        }
-                                    }
-                                    return result
-                                },
-                            )
+                        const results = prepareSearchResults(
+                            response?.results,
+                            value,
+                        )
+                        if (results.length) {
+                            this.searchResults = results
 
                             this.selectedIndex = 0
                             this.selectedItem = this.searchResults[0]
