@@ -9,6 +9,8 @@ version: ">= 0.13.0"
 
 Concurrency limits control how many executions can run at the same time — at the flow, namespace, or tenant level. When a limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
 
+Once an execution occupies a concurrency slot, it keeps that slot until it reaches a terminal state. This includes executions in the `PAUSED` state while they wait for manual approval. For example, with `concurrency.limit` set to 1, a flow paused by a `Pause` task blocks all subsequent executions until the paused execution is resumed, killed, or otherwise reaches a terminal state. Resuming the execution continues to use its existing slot, so it cannot exceed the configured limit.
+
 :::alert{type="info"}
 Concurrency limits executions, not the number of tasks a worker runs. Task processing is governed by worker thread pools and task runners. Concurrency uses database locks to hold slots, so heavy contention (many executions competing for the same lock) can increase database load and slow scheduling.
 :::
