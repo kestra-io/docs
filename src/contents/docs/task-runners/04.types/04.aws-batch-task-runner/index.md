@@ -288,7 +288,7 @@ variables:
 tasks:
   - id: shell
     type: io.kestra.plugin.scripts.shell.Commands
-    containerImage: amazonlinux:2
+    containerImage: amazonlinux:2023
     taskRunner:
       type: io.kestra.plugin.ee.aws.runner.Batch
       region: "{{ vars.region }}"
