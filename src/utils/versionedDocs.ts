@@ -333,6 +333,10 @@ export interface DocChildMeta {
     sidebarTitle?: string
     /** true for a directory's own index page */
     isIndex?: boolean
+    /** how-to-guide difficulty, feeds GuidesChildCard's stage filter */
+    stage?: string
+    /** how-to-guide categories, feeds GuidesChildCard's topic filter */
+    topics?: string[]
 }
 /** Flat children-endpoint payload, keyed by full path ("docs", "docs/x", ...). */
 export type DocChildren = Record<string, DocChildMeta>

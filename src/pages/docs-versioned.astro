@@ -6,6 +6,7 @@ import { API_URL } from "astro:env/client"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
+import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
 import { renderVersionedDocBody, type VersionedDocBody } from "~/utils/renderVersionedDoc"
 import { buildVersionedNavigation, versionedBreadcrumbItems } from "~/utils/versionedNavigation"
 import * as versionedDocs from "~/utils/versionedDocs"
@@ -73,6 +74,9 @@ const navigation = [
         />
     </Fragment>
     <div class="mdc-renderer" set:html={body.html} />
+    {body.guidesChildCard && (
+        <GuidesChildCardRender navigation={body.guidesChildCard} client:load />
+    )}
     <PrevNext {navigation} currentPath={activeStem} rootPath={`/docs/${version}`} client:idle />
 </LayoutDocs>
 

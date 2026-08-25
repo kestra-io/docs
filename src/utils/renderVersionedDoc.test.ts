@@ -20,6 +20,16 @@ const textOnly = (html: string) => {
 }
 
 describe("renderVersionedDocBody MDC directive handling", () => {
+    it("gives markdown tables the site's table classes, like latest's remark plugin", async () => {
+        const html = await render(`---
+title: T
+---
+| Runner | Isolation |
+| ------ | --------- |
+| Docker | container |`)
+        expect(html).toContain('<table class="table table-dark">')
+    })
+
     it("renders a known ::alert block with the site's alert classes, no :: leak", async () => {
         const html = await render(`---
 title: T
@@ -471,6 +481,42 @@ title: T
         expect(body.html).toContain("<input")
         expect(body.html).toContain("<audio")
     })
+
+    it("still reports an unrecognized component when it's the last, childless thing on the page", async () => {
+        // A component that's both trailing and childless is trimmed as
+        // presumed-decorative residue (trimTrailingResidue) unless it's in
+        // ATTR_DRIVEN_COMPONENTS — trimmed away before componentHtml ever
+        // sees it, which used to make it invisible to this diagnostic too
+        // (this exact shape silently dropped GuidesChildCard in production).
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+Before.
+
+<SomeFutureComponent />`,
+        })
+        expect(body.unknownComponents).toEqual(["some-future-component"])
+        expect(body.html).toBe("<p>Before.</p>")
+    })
+
+    it("doesn't mistake a code sample's <Foo> generic/tag for a component reference", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+\`\`\`java
+List<Foo> items = new ArrayList<>();
+\`\`\`
+
+Trailing inline \`<Bar/>\` code too.`,
+        })
+        expect(body.unknownComponents).toEqual([])
+    })
 })
 
 describe("renderVersionedDocBody bespoke components", () => {
@@ -657,6 +703,47 @@ describe("renderVersionedDocBody data-driven components", () => {
         const html = await render(`---\ntitle: T\n---\n:::ChildCard\n:::`)
         expect(html).not.toContain('class="ks-card-grid"')
         expect(html).not.toContain("ChildCard")
+    })
+
+    it("surfaces GuidesChildCard's data for the real Vue island, even as the trailing page element", async () => {
+        // Matches the real how-to-guides index page exactly: a genuinely
+        // self-closing JSX tag (not the ":::" fence form) with nothing after
+        // it — GuidesChildCard's real filtering is interactive, so it's
+        // rendered by docs-versioned.astro as an actual client:load island,
+        // not a static grid; this only needs to surface its data correctly,
+        // including from the trailing/childless source position that used to
+        // get the whole component silently trimmed away pre-serialize.
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "getting-started",
+            markdown: `---\ntitle: T\n---\nAdjust the filters based on your needs or search directly.\n\n<GuidesChildCard />`,
+            children,
+        })
+        expect(body.html).not.toContain("ks-card-grid")
+        expect(body.html).not.toContain("GuidesChildCard")
+        expect(body.unknownComponents).toEqual([])
+        expect(body.guidesChildCard).toEqual([
+            {
+                title: "Quickstart",
+                description: undefined,
+                path: "/docs/1.3/getting-started/quickstart",
+                icon: "https://api.kestra.io/v1/docs/docs/icons/quickstart.svg/versions/1.3.0",
+                stage: undefined,
+                topics: undefined,
+            },
+        ])
+    })
+
+    it("omits guidesChildCard when the page doesn't use the component", async () => {
+        const html = await renderWith("getting-started", ":::ChildCard\n:::")
+        expect(html).toContain('class="ks-card-grid"')
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "getting-started",
+            markdown: `---\ntitle: T\n---\n:::ChildCard\n:::`,
+            children,
+        })
+        expect(body.guidesChildCard).toBeUndefined()
     })
 
     it("re-points absolute /docs links that exist in this version", async () => {

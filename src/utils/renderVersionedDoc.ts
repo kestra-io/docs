@@ -112,6 +112,8 @@ interface RenderCtx {
     pageKey: string
     /** MDC components the serializer didn't recognize — the drift signal. */
     unknownComponents: Set<string>
+    /** Every tag componentHtml was actually called with, handled or not. */
+    seenComponents: Set<string>
 }
 
 // Style the handful of known MDC components with the site's own component
@@ -125,6 +127,7 @@ function componentHtml(
     inner: string,
     ctx: RenderCtx,
 ): string {
+    ctx.seenComponents.add(tag)
     switch (tag) {
         case "alert":
             return `<div class="doc-alert alert-${escapeHtml(String(props.type ?? "info"))}">${inner}</div>`
@@ -169,6 +172,13 @@ function componentHtml(
                     : ctx.pageKey
             return childCardsHtml(key, ctx) + inner
         }
+        // Rendered separately, as a real client:load Vue island (the real
+        // component's topic/stage/search filtering is genuinely interactive,
+        // unlike ChildCard/BigChildCards) — renderVersionedDocBody surfaces
+        // its data on the returned guidesChildCard field; docs-versioned.astro
+        // renders the actual GuidesChildCard.vue with it. Nothing to emit here.
+        case "guides-child-card":
+            return inner
         default:
             ctx.unknownComponents.add(tag)
             return inner
@@ -206,6 +216,33 @@ function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
 }
 
 const SUPPORT_LINKS_HTML = `<div class="support-links-row"><a class="support-link" href="https://kestra.io/slack"><h3>Community Slack</h3><p>Discuss topics with other users and kestra Team</p></a><a class="support-link" href="https://github.com/kestra-io/kestra"><h3>GitHub</h3><p>Give our open-source project a star</p></a><a class="support-link" href="https://kestra.io/demo"><h3>Help Center</h3><p>Contact support for help with your Enterprise account</p></a></div>`
+
+export interface GuideCard {
+    title: string
+    description?: string
+    path: string
+    icon?: string
+    stage?: string
+    topics?: string[]
+}
+
+/** Data for the real GuidesChildCard.vue island — docs-versioned.astro renders it directly, client:load. */
+function guidesChildCardData(parentKey: string, ctx: RenderCtx): GuideCard[] {
+    return directDocChildren(ctx.children, parentKey).map(({ key, meta }) => {
+        // Same 1.2+ content-root prefix strip as childCardsHtml.
+        const iconRef = meta.icon?.replace(/^\/src\/contents/, "")
+        return {
+            title: meta.sidebarTitle ?? meta.title ?? key.split("/").pop() ?? key,
+            description: meta.description,
+            path: docChildHref(ctx.version, key),
+            icon: iconRef && isVersionedAssetRef(iconRef)
+                ? versionedAssetUrl(ctx.apiUrl, ctx.version, iconRef)
+                : undefined,
+            stage: meta.stage,
+            topics: meta.topics,
+        }
+    })
+}
 
 // Mirrors the real docs' expressive-code copy button: same outline icon/
 // checkmark glyphs (astro-expressive-code's built-in `.copy` icon), so
@@ -326,6 +363,15 @@ function transformTree(node: MdcNode | undefined, ctx: TransformCtx): void {
         }
         if (HEADING_TAGS.has(node.tag)) {
             node.props.id = ctx.slugger.slug(textOf(node) || "section")
+        }
+        // Latest runs remark-classname to give every markdown table the
+        // site's bordered dark styling — mirror it (attrs() maps className →
+        // class and joins arrays).
+        if (node.tag === "table") {
+            const existing = node.props.className
+            node.props.className = existing
+                ? [...(Array.isArray(existing) ? existing : [existing]), "table", "table-dark"]
+                : "table table-dark"
         }
     }
     if (node.children?.length) {
@@ -508,6 +554,32 @@ function normalizeHomePageHeaderJsx(markdown: string): string {
     )
 }
 
+// Diagnostics only — never affects rendered HTML. A component that's the
+// last, childless thing on a page is trimmed by trimTrailingResidue/
+// isTrailingResidue below unless it's in ATTR_DRIVEN_COMPONENTS — the exact
+// gap that silently dropped GuidesChildCard (see that set's comment).
+// Trimmed-before-serialize means it never reaches componentHtml either, so
+// unknownComponents' switch-case coverage check can't see it. Cross-checking
+// every JSX tag actually referenced in the source (skipping code samples,
+// which routinely contain unrelated `<Foo>` generics/HTML) against every tag
+// componentHtml actually saw closes that hole for any future component.
+const FENCED_CODE_BLOCK = /```[\s\S]*?```|~~~[\s\S]*?~~~/g
+const INLINE_CODE = /`[^`\n]*`/g
+const JSX_TAG_REF = /(?<![\w-])<([A-Z][A-Za-z0-9]*)(?=[\s/>])/g
+
+function kebabCaseTag(tag: string): string {
+    return tag.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
+}
+
+function referencedComponentTags(markdown: string): Set<string> {
+    const stripped = markdown.replace(FENCED_CODE_BLOCK, "").replace(INLINE_CODE, "")
+    const tags = new Set<string>()
+    for (const match of stripped.matchAll(JSX_TAG_REF)) {
+        tags.add(kebabCaseTag(match[1]))
+    }
+    return tags
+}
+
 const escapeHtml = (s: string) =>
     s
         .replace(/&/g, "&amp;")
@@ -571,6 +643,8 @@ export interface VersionedDocBody {
      * corpus and componentHtml needs a case for it — surface, don't swallow.
      */
     unknownComponents: string[]
+    /** Set when the page uses GuidesChildCard — docs-versioned.astro renders the real Vue component with this. */
+    guidesChildCard?: GuideCard[]
 }
 
 /** Render a versioned doc's markdown body to HTML using the site's own component classes. */
@@ -603,10 +677,37 @@ export async function renderVersionedDocBody({
     trimTrailingResidue(body as MdcNode)
     await highlightCodeBlocks(body as MdcNode)
     const pageKey = currentDocKey(path)
-    const ctx: RenderCtx = { version, apiUrl, children, pageKey, unknownComponents: new Set() }
+    const ctx: RenderCtx = {
+        version,
+        apiUrl,
+        children,
+        pageKey,
+        unknownComponents: new Set(),
+        seenComponents: new Set(),
+    }
     const html = serialize(body as MdcNode, ctx)
     const headings: { id: string; text: string; level: number }[] = []
     collectHeadings(body as MdcNode, headings)
 
-    return { title, h1, description, html, headings, unknownComponents: [...ctx.unknownComponents].sort() }
+    const referencedTags = referencedComponentTags(markdown)
+    for (const tag of referencedTags) {
+        // Handled below via guidesChildCard, not componentHtml's switch — it's
+        // childless and trimmed as trailing residue before componentHtml ever
+        // runs on the real how-to-guides page, so it'd otherwise false-flag.
+        if (tag === "guides-child-card") continue
+        if (!ctx.seenComponents.has(tag)) ctx.unknownComponents.add(tag)
+    }
+    const guidesChildCard = referencedTags.has("guides-child-card")
+        ? guidesChildCardData(pageKey, ctx)
+        : undefined
+
+    return {
+        title,
+        h1,
+        description,
+        html,
+        headings,
+        unknownComponents: [...ctx.unknownComponents].sort(),
+        guidesChildCard,
+    }
 }
