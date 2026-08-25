@@ -24,7 +24,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
   -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
-  kestra/kestra:latest-slim server standalone
+  kestra/kestra:latest-slim server local
 ```
 
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
@@ -157,7 +157,7 @@ Two image variants are available:
 
 Both variants are based on the [`eclipse-temurin:21-jre`](https://hub.docker.com/_/eclipse-temurin) Docker image.
 
-The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-slim` images do not bundle any plugins, which keeps them much smaller to download. When running the standalone server with plugin auto-install enabled (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`), Kestra downloads and installs any missing plugin automatically the first time a flow uses it — so the `-slim` image stays fully usable.
+The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-slim` images do not bundle any plugins, which keeps them much smaller to download. When plugin auto-install is enabled (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`), Kestra downloads and installs any missing plugin automatically the first time a flow uses it — so the `-slim` image stays fully usable.
 
 :::alert{type="info"}
 The `*-slim` images were previously published under the `*-no-plugins` suffix. The `-no-plugins` tags are deprecated aliases of `-slim` and will be removed in a future release.
@@ -173,7 +173,7 @@ The following tags are available for each Docker image (append `-slim` to any im
 - `v<X.X.X>`: Immutable tag for an exact version (e.g., `v1.0.1`). Never changes; **best for locked-down production.**
 - `develop`: Nightly/continuous build from the `develop` branch. Unstable and not recommended for production, only for testing.
 
-The **default Kestra image** `kestra/kestra:latest` already includes **all plugins**. To use a lightweight version of Kestra without bundled plugins, add the suffix `-slim`. These images ship without plugins on purpose — they are a fraction of the size of the full image, and combined with plugin auto-install (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` on a standalone server), missing plugins are fetched on demand when a flow needs them.
+The **default Kestra image** `kestra/kestra:latest` already includes **all plugins**. To use a lightweight version of Kestra without bundled plugins, add the suffix `-slim`. These images ship without plugins on purpose — they are a fraction of the size of the full image, and combined with plugin auto-install (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`), missing plugins are fetched on demand when a flow needs them.
 
 ### Recommended images for production
 

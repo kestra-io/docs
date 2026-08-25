@@ -31,7 +31,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
   -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
-  kestra/kestra:latest-slim server standalone
+  kestra/kestra:latest-slim server local
 ```
 
 If you re-run the command and Docker reports `You have to remove (or rename) that container to be able to reuse that name.`, remove the old container with `docker rm -f kestra` or pick a different `--name`.
