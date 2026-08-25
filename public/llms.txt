@@ -113,7 +113,7 @@ Use this section when interacting with Kestra programmatically — deploying flo
 Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud account. OSS deployments do not have access to the features in this section. Use this section when setting up authentication, governance, multi-tenancy, or scale-oriented features.
 
 - [Enterprise overview](https://kestra.io/docs/enterprise.md): Full feature set, setup guidance, and migration path from OSS
-- [OSS vs Enterprise](https://kestra.io/docs/oss-vs-paid.md): Side-by-side feature comparison across Open Source, Enterprise, and Cloud editions
+- [OSS vs Enterprise](https://kestra.io/docs/oss-vs-paid.md): Side-by-side feature comparison across Open Source, Enterprise, and Cloud editions — covers auth, governance (including Policies), scalability, and when to upgrade
 
 **Authentication and access control**
 - [RBAC](https://kestra.io/docs/enterprise/auth/rbac.md): Role-based access control — define roles with namespace-scoped permissions and assign them to users or service accounts
@@ -130,7 +130,7 @@ Enterprise and Cloud features require a Kestra EE license or a Kestra Cloud acco
 - [Promote](https://kestra.io/docs/enterprise/governance/promote.md): Copy flows between Kestra instances from the UI — diff review, optional confirmation gate, drift detection, and promotion history without a Git pipeline
 
 **Scalability**
-- [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools — use `workerGroup.key` on any task to target a specific pool
+- [Worker groups](https://kestra.io/docs/enterprise/scalability/worker-group.md): Route tasks to labeled worker pools — start workers with `--worker-group=key` and set `workerGroup.key` on any task to target a specific pool
 - [Apps](https://kestra.io/docs/enterprise/scalability/apps.md): Build and publish lightweight form-based UIs on top of flows for non-technical users
 - [Flow Quotas](https://kestra.io/docs/workflow-components/quotas.md): Cap how many executions a flow can create within a time window — use `CANCEL` or `FAIL` behavior when the limit is exceeded
 - [Reusable Inputs](https://kestra.io/docs/workflow-components/reusable-inputs.md): Define a named input group once at the namespace level and reference it across multiple flows via `type: REUSABLE_INPUTS`; children resolve as `{{ inputs.<refId>.<childId> }}`
@@ -157,7 +157,7 @@ Use this section when building custom plugins, managing flows in Git, deploying 
 - [Version control and CI/CD](https://kestra.io/docs/version-control-cicd.md): GitOps patterns — Git push/pull for flows, and automated deployment pipelines using GitHub Actions, GitLab CI, and others
 - [Promote (EE)](https://kestra.io/docs/version-control-cicd/promote.md): Move flows between environments directly from the Kestra UI with a diff review and confirmation gate — no Git or pipeline required
 - [VS Code extension](https://kestra.io/docs/version-control-cicd/vscode.md): Edit flows in VS Code with instance-aware validation, Pebble autocompletion, topology preview, and run-from-editor with live log streaming
-- [No Code editor](https://kestra.io/docs/ui/flows.md): Build and configure flows visually without writing YAML — form-based editing that generates schema-validated YAML in real time
+- [No Code editor](https://kestra.io/docs/ui/flows.md): Build flows visually using the No Code canvas — drag-and-drop editing that stays in three-way sync with the YAML editor and AI Copilot in real time
 
 ## Reference
 
@@ -165,7 +165,7 @@ Use this section for definitions, architecture questions, or understanding Kestr
 
 - [Glossary](https://kestra.io/docs/glossary.md): Definitions of Kestra-specific and general orchestration terms
 - [Architecture](https://kestra.io/docs/architecture.md): How Kestra's components fit together — six server roles (Executor, Worker Controller, Worker, Scheduler, Webserver, Indexer), pluggable queue backends, and storage layers
-- [Why Kestra](https://kestra.io/docs/why-kestra.md): How Kestra compares to other orchestration tools and where it is best suited
+- [Why Kestra](https://kestra.io/docs/why-kestra.md): Positioning and market context — why Kestra is built for data, AI, and infrastructure workflows across the whole organization, not just a single team
 
 ## Getting started
 
