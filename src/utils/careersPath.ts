@@ -16,3 +16,10 @@ export const jobPath = (job: AshbyJob): string | null => {
     const jobPostingId = job.jobPostingIds?.[0]
     return jobPostingId ? `/careers/${jobPostingId}-${slugify(job.title)}` : null
 }
+
+/**
+ * Ashby posting for the catch-all "Open Application". Shared by the careers
+ * page CTA and the Open Roles empty state so the two cannot drift.
+ */
+export const OPEN_APPLICATION_PATH =
+    "/careers/cae0ad96-ff52-4f13-9d07-350037a0f7ef-open-application"

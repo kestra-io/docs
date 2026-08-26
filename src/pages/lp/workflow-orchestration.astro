@@ -1,0 +1,110 @@
+---
+import Layout from "~/components/layout.astro"
+
+import LpHeader from "~/components/lp/workflow-orchestration/LpHeader.astro"
+import LpFooter from "~/components/lp/workflow-orchestration/LpFooter.astro"
+import Hero from "~/components/lp/workflow-orchestration/Hero.astro"
+import Platform from "~/components/lp/workflow-orchestration/Platform.astro"
+import Features from "~/components/lp/workflow-orchestration/Features.astro"
+import Stack from "~/components/lp/workflow-orchestration/Stack.astro"
+import Roi from "~/components/lp/workflow-orchestration/Roi.astro"
+import Trusted from "~/components/lp/workflow-orchestration/Trusted.astro"
+import Migration from "~/components/lp/workflow-orchestration/Migration.astro"
+import UseCases from "~/components/lp/workflow-orchestration/UseCases.astro"
+import Faq from "~/components/lp/workflow-orchestration/Faq.astro"
+import ClosingBanner from "~/components/lp/workflow-orchestration/ClosingBanner.astro"
+
+const title = "Unified Workflow Orchestration Platform for the AI era"
+const description =
+    "Build, run, and govern every workflow across data, infrastructure, agent, and business processes. Any language, on your own infrastructure."
+
+/** HubSpot records this as the page the lead converted on. */
+const routePath = "/lp/workflow-orchestration"
+
+const faqItems = [
+    {
+        question:
+            "Can we run it fully self-hosted, on-prem, or air-gapped, with our data never leaving our network?",
+        answer: "Yes. Self-hosted is a first-class deployment rather than a workaround. Workers run inside your VPC or on-prem, you bring your own secret manager, and Kestra holds no access to your data. Worker Groups let one control plane reach physically isolated networks, and licensing works offline so a fully air-gapped install is supported.",
+    },
+    {
+        question:
+            "Does it support SSO/SAML, RBAC, audit logs, and multi-tenant isolation?",
+        answer: "Yes, all four. Fine-grained role-based access control, SSO and SCIM, full audit logs, and native multi-tenancy where namespace isolation lets dozens of teams run on one deployment.",
+    },
+    {
+        question: "Do we need Kubernetes?",
+        answer: "No. Kestra runs on a single VM with Docker if that's what you have. Kubernetes is supported and common at scale, and it is not a requirement to start or to run in production.",
+    },
+    {
+        question: "How do we avoid lock-in?",
+        answer: "The engine is open source under Apache 2.0, and it is the same engine that runs in production. Your workflows are declarative files in your own Git repository, so the definitions stay yours whether or not you stay. Any script or API call runs natively as a task, so you are never waiting on a proprietary connector.",
+    },
+    {
+        question:
+            "Can one platform run data, infrastructure, application and business workflows, or do we end up with two orchestrators?",
+        answer: "One platform. All four run on the same engine, with the same access model and the same audit trail. Teams keep their own namespaces, so a single deployment serves many teams without them colliding.",
+    },
+    {
+        question: "How is Kestra priced?",
+        answer: "Kestra does not price per execution. The model scales with how broadly the platform is deployed rather than how often your workflows run, so adding volume or agent steps does not change the bill. Enterprise pricing depends on deployment scope and support tier, and we walk through it on the call.",
+    },
+]
+---
+
+<Layout {title} {description} noindex bareChrome>
+    <div class="lp-workflow-orchestration">
+        <LpHeader />
+        <Hero {routePath} />
+        <Platform />
+        <Migration />
+        <Features />
+        <Stack />
+        <Trusted />
+        <UseCases {routePath} />
+        <Roi />
+        <Faq items={faqItems} />
+        <ClosingBanner />
+        <LpFooter />
+    </div>
+</Layout>
+
+<style lang="scss">
+    /* An ad landing page has to look identical for every visitor, so this page
+     * pins literal values instead of the theme-aware --ks-* tokens (which all
+     * shift in dark mode) — the same approach the homepage takes with --hp-*.
+     * The values below that DO have a token are the light-theme value of it;
+     * the rest come from the newer Figma set that the palette doesn't carry
+     * yet. Swap them for --ks-* once that set lands in _color-palette.scss. */
+    .lp-workflow-orchestration {
+        --lp-purple: #631bff; /* --ks-content-color-highlight */
+        --lp-purple-light: #f1efff; /* --ks-background-purple-light */
+        --lp-purple-rail: #cdc5ff; /* --ks-background-purple-hover */
+        --lp-shadow-light: #3952f21a; /* --ks-shadows-light */
+
+        /* Figma-only, no palette equivalent yet. */
+        --lp-bg-dark: #111115;
+        /* Figma's `border-focus`. The design reaches for it wherever #631bff
+         * would go muddy: ticks on the dark ground, the Stack rules. */
+        --lp-purple-mid: #9869f7;
+        /* Figma's `content-secondary`, distinct from `text-secondary` above —
+         * the design uses this one for body copy inside white cards. */
+        --lp-content-on-card: #3b3a41;
+        /* Only the open FAQ answer panel uses this; every other light section in
+         * the design is flat white. */
+        --lp-bg-base: #f7f7f8;
+        --lp-content-primary: #08090a;
+        --lp-content-secondary: #5f5f7c;
+        --lp-content-muted: #7e7e9b;
+        --lp-content-dark-secondary: #adadbf;
+        --lp-border: #d0d0da;
+        --lp-border-subtle: #e9e9ee;
+
+        background-color: #ffffff;
+        overflow-x: clip;
+    }
+    
+    :global(html) {
+        --top-bar-height: 80px;
+    }
+</style>

@@ -28,7 +28,7 @@
     const foundationQuotes = [
         {
             quote: "Kestra Cloud has been a pivotal part of giving us flexibility and scalability we need to pull off complex processes we do at Foundation Direct.",
-            author: "Michael Heidner - SVP of Analytics and Business Intelligence",
+            author: "Michael Heidner - CDO",
             smallLogoSvg: foundationLogo
         }
     ]

@@ -115,13 +115,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy Kestra Flows
-        uses: kestra-io/deploy-action@v1
+        uses: kestra-io/github-actions/deploy-flows@main
         with:
           server: ${{ secrets.KESTRA_SERVER_URL }}
-          token: ${{ secrets.KESTRA_API_TOKEN }}
-          path: 'flows/'
+          apiToken: ${{ secrets.KESTRA_API_TOKEN }}
+          directory: 'flows/'
           namespace: 'company.team.production'
-          delete: false
 ```
 This approach combines the robust CI/CD capabilities of GitHub Actions with the powerful orchestration engine of Kestra. You can find more detailed guidance on how to [validate and deploy flows with GitHub Actions](/docs/how-to-guides/github-actions) in our documentation.
 

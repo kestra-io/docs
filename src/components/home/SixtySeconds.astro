@@ -75,7 +75,17 @@
             border: none;
             background: transparent;
             padding: 0.5rem;
-            color: var(--ks-content-primary);
+            /* The backdrop is always dark, so this cannot follow the theme
+               tokens: --ks-content-primary is dark in light mode and
+               --ks-content-primary-inverse is dark in dark mode. */
+            color: #fff;
+            opacity: 0.75;
+            transition: opacity 0.2s ease;
+
+            &:hover,
+            &:focus-visible {
+                opacity: 1;
+            }
         }
         .video-container {
             iframe {
