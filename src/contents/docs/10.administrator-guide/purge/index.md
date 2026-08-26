@@ -155,8 +155,9 @@ tasks:
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
     purgeExecution: false
     purgeStorage: true
-    workerGroup:
-      key: my-worker-group
+    workerSelector:
+      tags:
+        - my-worker-group
 
   - id: purge_executions
     type: io.kestra.plugin.core.execution.PurgeExecutions
@@ -180,16 +181,18 @@ tasks:
     namespace: company.team
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
     dryRun: true
-    workerGroup:
-      key: my-worker-group
+    workerSelector:
+      tags:
+        - my-worker-group
 
   - id: real_run
     type: io.kestra.plugin.core.storage.PurgeStorage
     namespace: company.team
     endDate: "{{ now() | dateAdd(-1, 'MONTHS') }}"
     dryRun: false
-    workerGroup:
-      key: my-worker-group
+    workerSelector:
+      tags:
+        - my-worker-group
 
 triggers:
   - id: daily

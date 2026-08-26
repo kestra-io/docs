@@ -408,7 +408,7 @@ kestra server local
 
 ## Kestra with server components in different services
 
-Server components can run independently from each other. Each of them communicate through the database.
+Server components run independently from each other. Most communicate through the queue layer; Workers communicate with the Worker Controller over a bidirectional gRPC stream and never connect to the database directly.
 
 Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
