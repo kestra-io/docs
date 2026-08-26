@@ -26,6 +26,11 @@ The `check_products` If task has a `condition` of `"{{ json(outputs.api.body).pr
 id: getting_started
 namespace: company.team
 
+triggers:
+  - id: every_monday_at_10_am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * 1
+
 inputs:
   - id: category
     type: SELECT
@@ -74,11 +79,6 @@ tasks:
       - id: when_false
         type: io.kestra.plugin.core.log.Log
         message: "No products found for category {{ inputs.category }}."
-
-triggers:
-  - id: every_monday_at_10_am
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: 0 10 * * 1
 ```
 
 Execute the flow twice, once with `beauty` and once with `notebooks` to examine the results.

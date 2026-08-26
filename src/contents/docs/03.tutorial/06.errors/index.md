@@ -56,6 +56,11 @@ Taking our flow from earlier stages, we can add a Slack alert on an execution er
 id: getting_started_category_check
 namespace: company.team
 
+triggers:
+  - id: every_monday_at_10_am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * 1
+
 inputs:
   - id: category
     type: SELECT
@@ -109,11 +114,6 @@ errors:
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
-
-triggers:
-  - id: every_monday_at_10_am
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: 0 10 * * 1
 ```
 
 Now if there is an error, say our API endpoint is unreachable, we'll get a Slack alert notifying a team to investigate. For more, check the [error handling](../../05.workflow-components/11.errors/index.md) page.

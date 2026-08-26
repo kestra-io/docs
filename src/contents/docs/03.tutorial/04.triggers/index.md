@@ -66,6 +66,11 @@ The `getting_started` flow now runs every Monday at 10 AM, starting the week wit
 id: getting_started
 namespace: company.team
 
+triggers:
+  - id: every_monday_at_10_am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * 1
+
 inputs:
   - id: api_url
     type: STRING
@@ -100,12 +105,6 @@ tasks:
       GROUP BY brand
       ORDER BY avg_price DESC;
     store: true
-
-
-triggers:
-  - id: every_monday_at_10_am
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: 0 10 * * 1
 ```
 
 With a trigger added to a flow, you can now see the trigger's details in the flow's **Triggers** tab.
