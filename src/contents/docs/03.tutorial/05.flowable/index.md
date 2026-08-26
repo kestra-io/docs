@@ -160,7 +160,7 @@ namespace: company.team
 description: Process partitions in parallel
 
 tasks:
-  - id: getPartitions
+  - id: get_partitions
     type: io.kestra.plugin.scripts.python.Script
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
@@ -170,10 +170,10 @@ tasks:
       partitions = [f"file_{nr}.parquet" for nr in range(1, 10)]
       Kestra.outputs({'partitions': partitions})
 
-  - id: processPartitions
+  - id: process_partitions
     type: io.kestra.plugin.core.flow.ForEach
     concurrencyLimit: 0
-    values: '{{ outputs.getPartitions.vars.partitions }}'
+    values: '{{ outputs.get_partitions.vars.partitions }}'
     tasks:
       - id: partition
         type: io.kestra.plugin.scripts.python.Script
