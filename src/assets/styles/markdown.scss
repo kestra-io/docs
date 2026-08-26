@@ -516,7 +516,7 @@
     border-radius: 0.5rem;
     :root.light main &, :root.dark main &{
          &:not(.light,.dark){
-            #{--ec-frm-tooltipSuccessBg}: var(--ks-button-background-primary);
+            #{--ec-frm-tooltipSuccessBg}: var(--ks-background-button-primary);
             #{--ec-frm-frameBoxShdCssVal}: none !important;
             #{--ec-codeFontFml}: var(--font-family-jetbrains-mono) !important;
             #{--code-background}: var(--ks-background-input);

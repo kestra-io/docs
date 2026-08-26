@@ -69,6 +69,17 @@ Podman executes containers through a VM on your local machine. In order to acces
 Note: Check if you have an existing podman VM on your local machine by navigating to the 'Resources' tab in podman desktop or running the command `podman machine list` in your terminal. If you have an existing VM, ensure the required volumes are mounted as expected. If that does not work, you can [recreate the podman VM](https://stackoverflow.com/questions/69298356/how-to-mount-a-volume-from-a-local-machine-on-podman) with volumes mounted and then run Kestra.
 :::
 
+:::alert{type="warning"}
+On macOS, Podman's default VM (applehv) runs Fedora CoreOS with SELinux enforcing. This blocks the Kestra container from connecting to the `docker.sock` and from creating subdirectories under bind-mounted volumes such as `/tmp/kestra-wd`, even when running as root. Add `security_opt` to the `kestra` service in your `docker-compose.yml` to run the container unconfined:
+
+```yaml
+kestra:
+  user: "root"
+  security_opt:
+    - label=disable
+```
+:::
+
 Open the URL `http://localhost:8080` in your browser to launch the UI.
 
 ### Adjusting the configuration
