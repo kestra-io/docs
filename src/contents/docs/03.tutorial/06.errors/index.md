@@ -76,7 +76,7 @@ tasks:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
         message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
-      - id: python
+      - id: transform
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
         dependencies:
@@ -89,10 +89,10 @@ tasks:
           df = pl.from_dicts(data)
           df.glimpse()
           df.select(["title", "brand", "price", "rating"]).write_csv("products.csv")
-      - id: sqlQuery
+      - id: sql_query
         type: io.kestra.plugin.jdbc.duckdb.Queries
         inputFiles:
-          in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+          in.csv: "{{ outputs.transform.outputFiles['products.csv'] }}"
         sql: |
           SELECT brand, round(avg(price), 2) AS avg_price, count(*) AS cnt
           FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
