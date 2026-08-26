@@ -26,7 +26,7 @@ Internal storage is used to:
 - Automatically persist [flow inputs](../../05.workflow-components/05.inputs/index.md) of type `FILE`.
 - Provide download links for stored files in the **Outputs** tab of an execution.
 
-Files can be retrieved in the execution context using `{{ outputs.task_id.output_attribute }}` (often the `uri` property). Kestra fetches the file automatically when referenced.
+Files are addressed by stable `kestra://` URIs that the engine resolves on demand. A worker on one host and the Webserver on another can both reach the same artifact through the same URI. Files can be retrieved in the execution context using `{{ outputs.task_id.output_attribute }}` (often the `uri` property). Kestra fetches the file automatically when referenced.
 
 Execution metadata — including storage file paths — is recorded in the **repository**.
 
@@ -64,6 +64,15 @@ The **queue** is the internal communication channel between Kestra’s server co
 - **Redis queue** — Enterprise Edition.
 - **AMQP queue** — Enterprise Edition.
 - **GCP Pub/Sub queue** — Enterprise Edition.
+
+The queue surface covers four delivery families:
+
+- **Dispatch** — point-to-point; exactly one subscriber processes each message. Used for executions, execution events and commands, worker task results, logs, and metrics.
+- **Keyed dispatch** — point-to-point partitioned by a routing key so a subscriber receives only messages for its key. Used for worker job routing: each Worker Queue is a key, and a worker subscribes only to the queues its group covers.
+- **VNode dispatch** — sharded across a fixed set of virtual nodes so a scaled component can divide a single logical stream deterministically. Used for trigger evaluation across a Scheduler fleet.
+- **Broadcast** — fan-out; every active subscriber receives every message. Used for kill signals, flow and metadata change notifications, follow-execution streams, and cluster-wide events.
+
+Messages above a configurable size limit are rejected before reaching the backend, protecting it from oversized payloads. Terminal execution states are always allowed through regardless of size. Message protection is enabled by default with a 1 MB limit and can be adjusted under `kestra.queue.message-protection`.
 
 ## Repository
 

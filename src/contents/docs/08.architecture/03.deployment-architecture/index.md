@@ -18,9 +18,11 @@ Kestra's plugin system allows you to choose the dependency types that best match
 
 ![Kestra Standalone Architecture](./archi-diagram-small.png "Kestra Standalone Architecture")
 
-For small-scale deployments, you can use the Kestra **standalone server**, which runs all server components in a single process. This architecture has no scaling capability.
+For small-scale deployments, you can use the Kestra **standalone server**, which runs all server components as threads inside a single process. This architecture has no scaling capability but behaves identically to a distributed cluster — the same components run, collocated in one JVM.
 
-In this setup, a database is the only dependency, minimizing the stack to maintain. Supported databases include:
+For quick local experimentation, Kestra also offers a **local mode** (`server local`) that reduces the footprint further: it uses an embedded H2 database with no external dependencies, requiring no infrastructure setup.
+
+In standalone mode, a database is the only dependency. Supported databases include:
 
 - PostgreSQL
 - MySQL
