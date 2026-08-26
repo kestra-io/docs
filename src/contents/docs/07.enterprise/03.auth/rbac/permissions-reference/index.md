@@ -577,6 +577,8 @@ EXECUTE
 - `VIEW` / `LIST`: view assets and their dependency or usage graphs.
 - `CREATE`: create assets.
 - `DELETE`: delete assets.
+- `LOCK`: acquire a write lock on an asset (from a flow task or the UI).
+- `UNLOCK`: release a write lock on an asset (from a flow task or the UI). UI unlock is forced regardless of owner.
 
 **Endpoints**
 
@@ -593,6 +595,12 @@ DELETE
 - `DELETE /api/v1/{tenant}/assets/{id}`
 - `DELETE /api/v1/{tenant}/assets/by-ids`
 - `DELETE /api/v1/{tenant}/assets/by-query`
+
+LOCK
+- `POST /api/v1/{tenant}/assets/{id}/lock`
+
+UNLOCK
+- `DELETE /api/v1/{tenant}/assets/{id}/lock`
 :::
 
 ---
