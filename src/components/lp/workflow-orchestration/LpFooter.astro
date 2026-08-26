@@ -1,0 +1,106 @@
+---
+// Campaign footer per the design: copyright and legal links only, none of the
+// site footer's newsletter block or nav columns.
+//
+// The design's second link reads "Legal", but no /legal hub page exists —
+// [legal].astro only generates the individual documents — so this uses the
+// sibling the site footer pairs with Privacy Policy.
+import LogoBlack from "~/assets/logo-black.svg"
+import Certifications from "~/components/layout/Certifications.astro"
+---
+
+<footer class="lp-footer">
+    <div class="inner">
+        <div class="brand">
+            <a href="/" class="logo" aria-label="Kestra home">
+                <LogoBlack />
+            </a>
+            <p>
+                &copy; {new Date().getFullYear()}{" "}
+                <a href="/">Kestra Technologies</a>.
+            </p>
+        </div>
+        <Certifications />
+        <nav class="links" aria-label="Legal">
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/cookie-policy">Cookie Policy</a>
+        </nav>
+    </div>
+</footer>
+
+<style lang="scss">
+    .lp-footer {
+        border-top: 1px solid var(--lp-border-subtle);
+        background-color: #ffffff;
+        padding: 1.25rem 1rem;
+        @include media-breakpoint-up(lg) {
+            /* The design insets the row 32px from the top and 24px from the
+             * bottom, for a 99px band. */
+            padding: 2rem 1rem 1.5rem;
+        }
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        max-width: 1520px;
+        margin-inline: auto;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            /* The design insets the row itself another 10px inside the band. */
+            padding-block: 0.625rem;
+        }
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        :global(svg) {
+            width: auto;
+            height: 23px;
+        }
+    }
+
+    .brand p {
+        margin: 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 1.43;
+        a {
+            color: inherit;
+            text-decoration: none;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        /* 24px between the two links, per the design. */
+        gap: 0.75rem 1.5rem;
+        font-size: $font-size-sm;
+        line-height: 1.43;
+
+        a {
+            color: var(--lp-content-muted);
+            text-decoration: underline;
+            &:hover {
+                color: var(--lp-purple);
+            }
+        }
+    }
+</style>

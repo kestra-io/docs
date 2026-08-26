@@ -23,8 +23,7 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        
----
+        ---
         - hosts: localhost
           tasks:
             - name: Print Hello World

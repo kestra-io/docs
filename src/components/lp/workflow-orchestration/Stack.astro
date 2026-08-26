@@ -1,0 +1,232 @@
+---
+import { Icon } from "astro-icon/components"
+
+/* mdi glyphs with the design's vertical gradient baked in — a paint server in
+ * a separate <svg> does not resolve through astro-icon's <symbol>/<use> pair,
+ * so these ship as standalone assets rather than <Icon> calls. Generated from
+ * @iconify-json/mdi: database-arrow-up-outline, folder-cog-outline,
+ * view-dashboard-edit-outline, plus-circle-outline. */
+import DataPipelinesIcon from "./assets/stack-data-pipelines.svg"
+import InfraPlatformIcon from "./assets/stack-infra-platform.svg"
+import AppMicroservicesIcon from "./assets/stack-app-microservices.svg"
+import BusinessProcessesIcon from "./assets/stack-business-processes.svg"
+
+const columns = [
+    {
+        Glyph: DataPipelinesIcon,
+        title: "Data pipelines",
+        items: [
+            "Ingestion from warehouses, lakes, APIs and SaaS sources",
+            "Dbt runs that start only once ingestion has actually finished",
+            "Data-quality gates before anything downstream reads the table",
+            "Backfills across hundreds of days without hand-rolling a loop",
+        ],
+    },
+    {
+        Glyph: InfraPlatformIcon,
+        title: "Infra & platform",
+        items: [
+            "VM, cluster and environment provisioning with Terraform or Ansible",
+            "Certificate rotation, patching and scheduled maintenance",
+            "Self-service platform actions your teams can trigger safely",
+            "Cron entries and legacy scheduler jobs, moved across as they are",
+        ],
+    },
+    {
+        Glyph: AppMicroservicesIcon,
+        title: "App & microservices",
+        items: [
+            "API and microservice calls sequenced with retries, timeouts and state",
+            "Event-driven choreography on top of streaming and messaging layer",
+            "Handoffs picked up where ServiceNow or Salesforce automation stops",
+            "ERP and core-banking migrations where the workflows keep running through the cutover",
+        ],
+    },
+    {
+        Glyph: BusinessProcessesIcon,
+        title: "Business processes",
+        items: [
+            "Employee onboarding and offboarding across directory, cloud and email",
+            "Order, invoice and settlement steps across internal systems",
+            "Reports generated and distributed on a schedule or an event",
+            "Approvals with a human step in the middle of the flow",
+        ],
+    },
+]
+---
+
+<section class="stack">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
+        <h2>Unified Orchestration Across Your Stack</h2>
+        <p>
+            API-first, with 1,800+ plugins for your databases, clouds, and
+            internal systems
+        </p>
+    </div>
+
+    <div class="columns">
+        {
+            columns.map((column, index) => (
+                <article
+                    class="column"
+                    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                >
+                    <column.Glyph class="glyph" role="presentation" />
+                    <h3>{column.title}</h3>
+                    <ul>
+                        {column.items.map((item) => (
+                            <li>
+                                <Icon
+                                    name="mdi:check-circle-outline"
+                                    class="check"
+                                />
+                                <span>{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </article>
+            ))
+        }
+    </div>
+</section>
+
+<style lang="scss">
+    .stack {
+        padding: 2.5rem 1rem 5rem;
+        background-color: #ffffff;
+    }
+
+    .head {
+        /* Wide enough to keep the heading on one line, as the design has it. */
+        max-width: 1140px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+
+        h2 {
+            margin: 0 0 0.5rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+    }
+
+    .columns {
+        display: grid;
+        --columns-gap: 2rem;
+        gap: var(--columns-gap);
+        max-width: 1164px;
+        margin-inline: auto;
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+    }
+
+    .column {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+
+        /* The design's dividers are not flat hairlines, and they are not
+         * anchored at the top either: each 1px rule fades up out of nothing
+         * beside the glyph, holds solid down the length of the list, then fades
+         * back out at the foot of the column — so neither a border-left nor a
+         * one-way gradient will do. Stops are sampled off the Figma render,
+         * where the rule is clear by its own top edge, fully opaque across the
+         * middle 36–77% of its own span, and clear again by the bottom. */
+        @include media-breakpoint-up(lg) {
+            & + &::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                width: 1px;
+                background-image: linear-gradient(
+                    180deg,
+                    rgba(152, 105, 247, 0) 10%,
+                    var(--lp-purple-mid) 43%,
+                    var(--lp-purple-mid) 79%,
+                    rgba(152, 105, 247, 0) 100%
+                );
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            & + &::before {
+                content: "";
+                position: absolute;
+                top: calc(var(--columns-gap) / -2);
+                left: 15%;
+                width: 70%;
+                height: 1px;
+                background-image: linear-gradient(
+                    90deg,
+                    rgba(152, 105, 247, 0) 0%,
+                    var(--lp-purple-mid) 30%,
+                    var(--lp-purple-mid) 70%,
+                    rgba(152, 105, 247, 0) 100%
+                );
+            }
+        }
+
+        h3 {
+            margin: 0;
+            color: var(--lp-content-primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.0075rem;
+            text-align: center;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            color: var(--lp-content-secondary);
+            font-size: $font-size-sm;
+            line-height: 1.43;
+        }
+    }
+
+    .glyph {
+        width: 120px;
+        height: 120px;
+    }
+
+    .check {
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+        margin-top: 0.15rem;
+        color: var(--lp-purple);
+    }
+</style>

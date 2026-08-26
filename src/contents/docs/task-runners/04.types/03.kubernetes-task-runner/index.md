@@ -94,7 +94,7 @@ tasks:
       data.txt: "{{ inputs.file }}"
     outputFiles:
       - "*.txt"
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       config:
@@ -683,7 +683,7 @@ namespace: company.team
 tasks:
   - id: shell
     type: io.kestra.plugin.scripts.shell.Commands
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       config:
