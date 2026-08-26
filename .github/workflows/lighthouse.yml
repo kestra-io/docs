@@ -64,7 +64,7 @@ jobs:
       - name: Download main branch baseline
         id: baseline
         if: github.event_name == 'pull_request'
-        uses: dawidd6/action-download-artifact@v6
+        uses: dawidd6/action-download-artifact@v24
         continue-on-error: true
         with:
           workflow: lighthouse.yml
