@@ -3,6 +3,11 @@ title: "AI Workflow Governance: Governing What AI Actually Ships"
 description: AI agents ship workflows in hours. Model guardrails aren't enough — six controls that put AI workflow governance in the execution layer.
 date: 2026-08-26T09:00:00
 category: Solutions
+author:
+  name: Virgile Fanucci
+  image: "vfanucci"
+  linkedin: https://www.linkedin.com/in/virgile-fanucci/
+image: ./main.png
 ---
 
 In Temporal's *State of Development 2026* survey of 554 developers, 85.5% said they trust or somewhat trust the output of their AI agents. In the same survey, 41.1% said they hit problems with those agents daily or more often, and 16.4% said hourly.
