@@ -65,6 +65,11 @@ The `getting_started` flow now runs every Monday at 10 AM, starting the week wit
 id: getting_started
 namespace: company.team
 
+triggers:
+  - id: every_monday_at_10_am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * 1
+
 inputs:
   - id: api_url
     type: STRING
@@ -75,7 +80,7 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_url }}"
 
-  - id: python
+  - id: transform
     type: io.kestra.plugin.scripts.python.Script
     containerImage: python:slim
     beforeCommands:
@@ -89,22 +94,16 @@ tasks:
       df.glimpse()
       df.select(["brand", "price"]).write_csv("products.csv")
 
-  - id: sqlQuery
+  - id: sql_query
     type: io.kestra.plugin.jdbc.duckdb.Query
     inputFiles:
-      in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+      in.csv: "{{ outputs.transform.outputFiles['products.csv'] }}"
     sql: |
       SELECT brand, round(avg(price), 2) as avg_price
       FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
       GROUP BY brand
       ORDER BY avg_price DESC;
     store: true
-
-
-triggers:
-  - id: every_monday_at_10_am
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: 0 10 * * 1
 ```
 
 With a trigger added to a flow, you can now see the trigger's details in the flow's **Triggers** tab.
