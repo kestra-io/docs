@@ -21,7 +21,7 @@ Kestra has six server roles. In a standalone deployment, all six run as threads 
 | **Webserver** | Serves the [REST API](../api-reference/index.mdx) and [UI](../09.ui/index.mdx). |
 | **Indexer** | Reads from the queue and writes indexed content — flows, executions, logs, metrics, and audit logs — to the repository backend. Required in all deployments. |
 
-## Queue and persistence
+## Queue and repository
 
 The queue layer is the only channel through which server roles communicate. A server emits a typed message onto a named queue; another server consumes it. One backend implementation satisfies all queue contracts:
 
@@ -29,7 +29,7 @@ The queue layer is the only channel through which server roles communicate. A se
 - **Kafka** — Enterprise Edition. Pairs with Elasticsearch for the search and read model.
 - **Redis**, **AMQP**, **GCP Pub/Sub** — Enterprise Edition. Additional broker-backed options for higher throughput.
 
-The persistence layer stores all domain entities: flows, executions, logs, triggers, and secrets. In a JDBC deployment, the relational database handles both the queue and persistence. In a Kafka deployment, Elasticsearch backs the high-volume read model; the Indexer keeps it in sync.
+The repository stores all domain entities: flows, executions, logs, triggers, and secrets. In a JDBC deployment, the relational database handles both the queue and repository. In a Kafka deployment, Elasticsearch backs the high-volume read model; the Indexer keeps it in sync.
 
 ## Worker communication
 
@@ -39,7 +39,7 @@ Workers do not subscribe to the job queue directly. Each worker opens a persiste
 - Workers return results, logs, and metrics over the same stream.
 - Kill signals and metadata changes are broadcast to all connected workers.
 
-gRPC transport is available in all editions. TLS, mTLS, and JWT-based worker authentication are Enterprise Edition features.
+gRPC transport is available in all editions. TLS and mTLS secure the connection in all editions; JWT-based worker authentication is an Enterprise Edition feature.
 
 ## Execution context
 
