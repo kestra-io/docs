@@ -64,7 +64,13 @@ tasks:
 
 ## Affected tasks
 
-Any task that reads from or writes to the Kestra API internally — such as git sync tasks (`io.kestra.plugin.git.*`) — requires this change. If a task fails with a 401 error after upgrading, adding credentials is the fix.
+Any task that calls the Kestra API internally requires credentials. The affected plugin families are:
+
+- `io.kestra.plugin.git.*` — sync tasks such as `SyncFlows`, `SyncNamespaceFiles`, and `NamespaceSync`
+- `io.kestra.plugin.kestra.*` — Kestra SDK tasks such as `CreateCase`
+- `io.kestra.plugin.ai.*` — the `KestraFlow` tool
+
+If a task fails with a 401 error after upgrading, adding credentials is the fix.
 
 **Not affected:** Purge tasks (`io.kestra.plugin.core.execution.PurgeExecutions`, etc.) are now SystemTasks that run directly on the Executor and do not go through the SDK.
 
