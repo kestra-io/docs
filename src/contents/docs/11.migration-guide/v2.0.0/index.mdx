@@ -111,6 +111,7 @@ Changes to Enterprise Edition configuration, permissions, and plugin defaults.
 
 | Guide | Editions | What changed |
 |---|---|---|
+| [SDK authentication required for internal tasks](./sdk-authentication) | OSS, EE | Tasks that call the Kestra API internally (git sync tasks, and others) now require explicit credentials. Add an `auth` block to the task, configure a namespace/tenant default service account, or set `kestra.tasks.sdk.authentication` in your server config. |
 | [pluginDefaults removed](./plugin-defaults-removed) | OSS, EE | The `pluginDefaults` keyword is removed at all scopes. EE users migrate to Policies; OSS users inline task values manually. |
 | [pluginDefaults.forced removed from flows](./plugin-defaults-forced-removed) | OSS, EE | The `forced` property on flow-level `pluginDefaults` is removed. Use `Add` rules with `override: true` in a Policy (EE) or inline the values (OSS). |
 | [RBAC action model](./rbac-action-model) | EE | The CRUD-based permission model is replaced by a resource and action model. Existing roles are migrated automatically; CLI role definitions require updates. |
