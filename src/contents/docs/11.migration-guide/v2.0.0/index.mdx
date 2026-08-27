@@ -143,3 +143,21 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 |---|---|---|
 | [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
 | [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin` — update API consumers that read this field. |
+
+## Completing the migration
+
+A practical completion criterion: the 1.3 instance reaches zero flows.
+
+Migrate flows incrementally. For each flow:
+
+1. **Migrate dependencies first.** A flow will break at runtime if any of its dependencies are missing on the 2.0 instance. Before migrating a flow, ensure the following are in place:
+   - **Subflows** — migrate and validate any subflows the flow calls before migrating the parent. Removing a subflow from 1.3 while a parent flow still runs there will break in-flight executions.
+   - **Namespace files** — sync any namespace files the flow reads.
+   - **KV store** — migrate KV entries the flow reads at runtime.
+   - **Secrets** — confirm secrets are available in the 2.0 secret backend.
+2. **Validate on 2.0.** Trigger at least one test execution on the 2.0 instance and confirm it completes successfully.
+3. **Drain before removing.** Wait for any active executions of the flow on 1.3 to finish before deleting it. Removing a flow with running executions leaves those executions in an unresolvable state.
+4. **Activate triggers on 2.0 first.** If the flow has a schedule or polling trigger, confirm the trigger is active on 2.0 before removing the flow from 1.3 — otherwise scheduled runs are silently dropped during the gap.
+5. **Delete from 1.3.** Once validated, drained, and triggers are live, delete the flow from the 1.3 instance.
+
+When the 1.3 flow count reaches zero, all flows have been migrated and validated.
