@@ -99,15 +99,12 @@ const { routePath } = Astro.props
         margin: 0;
         color: #ffffff;
         font-size: 2.25rem;
-        font-weight: 800;
-        line-height: 1.0667;
-        letter-spacing: -0.075rem;
+        font-weight: 600;
+        line-height: 0.9375;
+        letter-spacing: -0.02em;
         @include media-breakpoint-up(lg) {
-            /* The 554px box is what breaks the headline the way the design
-             * does — "Orchestration" alone on its own line, then "Platform
-             * for" / "the AI era." */
             max-width: 554px;
-            font-size: 3.75rem;
+            font-size: 4rem;
         }
     }
 
@@ -152,7 +149,7 @@ const { routePath } = Astro.props
             font-size: 1.5rem;
         }
         strong {
-            font-weight: 700;
+            font-weight: 600;
         }
     }
 
@@ -177,7 +174,7 @@ const { routePath } = Astro.props
             margin: 0;
             color: var(--lp-content-primary);
             font-size: 1.25rem;
-            font-weight: 700;
+            font-weight: 600;
             line-height: 1.2;
             letter-spacing: -0.00625rem;
         }
