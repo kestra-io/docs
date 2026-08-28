@@ -8,6 +8,8 @@ icon: /src/contents/docs/icons/architecture.svg
 
 Kestra is built on a single unified, pluggable backend. One set of queue and persistence contracts is satisfied by your chosen backend — a relational database by default, or a broker-backed alternative for higher throughput. All server roles are stateless and communicate only through the queue layer; no role calls another directly.
 
+![Kestra 2.0 Architecture Overview](./architecture-overview.png "Kestra 2.0 Architecture Overview")
+
 ## Control plane and data plane
 
 Kestra's server roles divide into two planes:
@@ -49,6 +51,8 @@ Workers do not subscribe to the job queue directly. Each worker opens a persiste
 - Kill signals and metadata changes are broadcast to all connected workers.
 
 gRPC transport is available in all editions. TLS and mTLS secure the connection in all editions; JWT-based worker authentication is an Enterprise Edition feature.
+
+![Kestra 2.0 Data Plane Architecture](./architecture-data-planes.png "Kestra 2.0 Data Plane Architecture")
 
 ## How an execution runs
 
