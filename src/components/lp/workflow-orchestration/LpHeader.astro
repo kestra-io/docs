@@ -18,18 +18,18 @@ import GithubButton from "~/components/layout/GithubButton.vue"
 
 <style lang="scss">
     .lp-header {
+        position: sticky;
+        top: 0;
+        z-index: $zindex-fixed;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        /* The design floats this band on the frame's near-black ground, flush
-         * against the hero below — whose own blooms start lower down, so a flat
-         * fill here joins the two seamlessly. */
+        min-height: var(--top-bar-height, 80px);
         background-color: var(--lp-bg-dark);
-        padding: 1.5rem 1rem;
+        padding: 1rem;
         @include media-breakpoint-up(lg) {
-            /* 80px tall with a 100px inset, per the design's nav band. */
-            min-height: 80px;
+            /* A 100px inset, per the design's nav band. */
             padding: 1rem 6.25rem;
         }
     }
