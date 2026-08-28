@@ -42,7 +42,7 @@ tasks:
 
 ### Upload the file to a channel
 
-Use the [`io.kestra.plugin.slack.app.files.Upload`](https://kestra.io/plugins/plugin-slack/io.kestra.plugin.slack.app.files.upload) task:
+Use the [`io.kestra.plugin.slack.app.files.Upload`](https://kestra.io/plugins/plugin-slack/io.kestra.plugin.slack.app.files.upload) task, with `initialComment` to attach a message to the file in the same call:
 
 ```yaml
 id: send_report_to_slack
@@ -60,25 +60,11 @@ tasks:
     from: "{{ outputs.download.uri }}"
     filename: "orders.csv"
     title: "Daily orders export"
+    initialComment: "Here is today's orders export :point_down:"
 ```
 
 :::alert{type="info"}
-`Upload` doesn't yet support attaching a text comment to the file in the same API call. If you want a message next to the file, post it first with [`io.kestra.plugin.slack.app.chats.Post`](https://kestra.io/plugins/plugin-slack/io.kestra.plugin.slack.app.chats.post) using the same `token` and channel, then run `Upload` right after:
-
-```yaml
-  - id: announce
-    type: io.kestra.plugin.slack.app.chats.Post
-    token: "{{ secret('SLACK_TOKEN') }}"
-    channel: "#reports"
-    messageText: "Here is today's orders export :point_down:"
-
-  - id: upload_to_slack
-    type: io.kestra.plugin.slack.app.files.Upload
-    token: "{{ secret('SLACK_TOKEN') }}"
-    channels: ["#reports"]
-    from: "{{ outputs.download.uri }}"
-    filename: "orders.csv"
-```
+`initialComment` requires a recent version of the Slack plugin. On older versions, post a message with [`io.kestra.plugin.slack.app.chats.Post`](https://kestra.io/plugins/plugin-slack/io.kestra.plugin.slack.app.chats.post) to the same channel before running `Upload` instead.
 :::
 
 ## Option 2: send the file as an email attachment via Gmail
@@ -139,6 +125,7 @@ tasks:
     from: "{{ outputs.download.uri }}"
     filename: "orders.csv"
     title: "Daily orders export"
+    initialComment: "Here is today's orders export :point_down:"
 
   - id: send_email
     type: io.kestra.plugin.email.MailSend
