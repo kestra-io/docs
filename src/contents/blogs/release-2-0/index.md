@@ -31,6 +31,8 @@ Kestra 2.0 covers more ground than any previous release, and the breadth is deli
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | OSS, EE, Cloud |
 | External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
 | Reusable Inputs | Shared input groups defined once at namespace level | EE, Cloud |
+| Slim image + plugin auto-install | `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to install what's needed on first use | OSS |
+| Plugin artifacts | Plugins can ship Vue.js UI components that load into the Kestra execution topology at runtime | OSS, EE, Cloud |
 
 ## MCP Tool Trigger and MCP Server
 
@@ -424,6 +426,32 @@ If `kestra.logs.type` is not set, logs continue using the repository backend. Ex
 
 See the [External Log Data Store guide](/docs/administrator-guide/log-data-store) for the Elasticsearch config, the capability reference (aggregation, pagination type, purge), and the plugin developer guide for custom log backends.
 
+## Slim Image and Plugin Auto-Install
+
+Getting started with Kestra OSS used to mean pulling a large image that bundled every plugin, most of which you'd never use. The `kestra/kestra:*-slim` image flips that: pull a minimal image and let Kestra figure out what to install as you build.
+
+Set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`. When a flow references a plugin that isn't installed, Kestra fetches it from Maven Central before the execution starts and caches it for subsequent runs. Plugin autocomplete in the editor stays current as plugins are added, so you don't lose discoverability while keeping the initial pull fast. The quickstart uses this configuration by default.
+
+Auto-install requires outbound access to Maven Central and pulls the current version of each plugin at install time. If your environment restricts outbound access or needs a fixed plugin set, install plugins explicitly with `kestra plugins install`.
+
+The suffix was renamed from `-no-plugins` to `-slim` in 2.0. Update any Dockerfiles or compose files that reference the old tag.
+
+See the [Docker installation guide](/docs/installation/docker) for tag conventions and the [selected plugin installation guide](/docs/how-to-guides/selected-plugin-installation) for build patterns.
+
+## Plugin Artifacts
+
+Plugins can now ship Vue.js frontend components that load into the Kestra UI at runtime, without any changes to the core application. A plugin author writes a component targeting one of three named slots; when that plugin's task types appear in an execution, the component renders in place.
+
+The three available slots: `topology-details` renders when a task node is selected in the execution topology view, `topology-task-drawer` renders in the side drawer opened from a task node, and `topology-task-modal` renders in the full task detail modal.
+
+Each component is compiled as a Module Federation micro-frontend using `@kestra-io/artifact-sdk` and bundled into the plugin JAR at `src/main/resources/plugin-ui/`. A `manifest.json` in the bundle declares which task types have UI components and which slots they fill. At startup, Kestra discovers these bundles and makes them available to the host UI without static linking.
+
+Components call the Kestra API through `@kestra-io/kestra-sdk`, which provides typed methods for executions, flows, metrics, logs, and live progress events.
+
+A concrete example: a task runner that breaks execution into distinct infrastructure phases (scheduling, image pull, file transfer, task code) can render a `topology-details` component showing per-phase timing directly in the execution view, so slow executions have an identifiable owner. Without a plugin artifact, that timing data lives in raw log output.
+
+Plugin artifacts are available to all plugin authors starting in 2.0. See the [plugin artifact developer guide](/docs/plugin-developer-guide/develop-plugin-artifacts) for setup.
+
 ## Additional Improvements
 
 - [Asset locking](/docs/enterprise/governance/assets#locking-assets) (EE): flows can now acquire a TTL-bounded write lock on an asset using `io.kestra.plugin.kestra.ee.locks.Acquire` and release it with `Release`. While a lock is held, concurrent writes from other flows are rejected with a 423; reads stay open. User-initiated locks (via the asset detail page) block all flow writes and can be released from the UI by anyone with the `UNLOCK` permission.
@@ -437,11 +465,9 @@ See the [External Log Data Store guide](/docs/administrator-guide/log-data-store
 - [AI Agent](/docs/ai-tools/ai-agents) observability: AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
 - [AIAgent task](/docs/ai-tools/ai-agents): `guardrails` attach input and output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Set `maxSequentialToolsInvocations` explicitly; it defaults to unlimited.
 - [VS Code extension](/docs/version-control-cicd/vscode): the extension now downloads the flow schema from your connected instance rather than bundling a generic one, so completion reflects the plugins actually installed. Live validation, Pebble autocompletion, topology preview with live task states during a run, and run-from-editor are all in.
-- Plugin UI artifacts: plugins can now ship Vue.js components that render domain-specific views directly in the execution topology. A task runner can decompose into per-step timing nodes (pod scheduling, image pull, file transfer, your code), so latency has an owner. Plugin authors build against three UI slots; the `artifact-sdk` handles Module Federation wiring.
 - mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
 - Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Revisions](/docs/concepts/revision).
 - Execution API performance: task run outputs now live in dedicated storage rather than inline in the execution record. `GET /executions/search` responses are significantly lighter, which directly improves execution list load time on large instances. Integrations that read `taskRunList[*].outputs` from the execution endpoint should switch to `GET /outputs/{executionId}/{taskRunId}`. See the [execution API response migration guide](/docs/migration-guide/v2.0.0/execution-api-response).
-- `latest-slim` image: `kestra/kestra:latest-slim` ships without bundled plugins, keeping the image lean. Set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to install what your instance needs on startup, or bake a custom image with exactly the plugins you use.
 - Infrastructure plugins (EE): NetApp ONTAP, Veeam Backup, Pure Storage, Dell EMC PowerStore, Ceph, Huawei Cloud, F5, and SolarWinds IPAM plugins join the existing VMware, Nutanix, Proxmox, Infoblox, and Netbox family, covering day-two operations: snapshot before patching, clone volumes for dev/test, provision and register infrastructure in a single flow.
 
 ## Security
