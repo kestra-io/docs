@@ -250,7 +250,7 @@ comparison:
         - "No"
         - "No"
     - feature: "Orchestrate beyond dbt (full stack)"
-      kestra: "✓ 1400+ plugins"
+      kestra: "✓ {totalPlugins}+ plugins"
       values:
         - "dbt only"
         - "Possible, fragile"
