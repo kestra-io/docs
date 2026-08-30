@@ -2,16 +2,29 @@ import { $fetchApiCached } from "~/utils/fetch";
 import type { Plugin } from "./plugin";
 import { calculateTotalPlugins } from "~/composables/usePluginsCount";
 
-export async function fetchTotalPluginsCount(): Promise<string> {
-    try {
-        const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
-        const count = calculateTotalPlugins(pluginGroups);
-        const rounded = Math.floor(count / 100) * 100;
-        return `${rounded}`;
-    } catch (e) {
-        console.error("Failed to fetch plugins count:", e);
-        return "0";
+async function loadTotalPluginsCount(): Promise<string> {
+    const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
+    const count = calculateTotalPlugins(pluginGroups);
+    const rounded = Math.floor(count / 100) * 100;
+    return `${rounded}`;
+}
+
+let totalPluginsCountPromise: Promise<string> | undefined;
+
+// Memoized at module level: dozens of pages render this count, and sharing one
+// request keeps them all on the same value within a build. A failure is not
+// cached (the next caller retries) and propagates instead of degrading to "0",
+// so a build fails loudly rather than shipping "0+ Plugins" in copy and SEO
+// markup.
+export function fetchTotalPluginsCount(): Promise<string> {
+    if (!totalPluginsCountPromise) {
+        totalPluginsCountPromise = loadTotalPluginsCount().catch((e) => {
+            totalPluginsCountPromise = undefined;
+            console.error("Failed to fetch plugins count:", e);
+            throw e;
+        });
     }
+    return totalPluginsCountPromise;
 }
 
 const TOTAL_PLUGINS_PLACEHOLDER = "{totalPlugins}";
