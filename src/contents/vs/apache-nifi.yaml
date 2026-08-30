@@ -36,7 +36,7 @@ businessValue:
       - "YAML-first, Git-native, deployed through CI/CD like application code"
       - "Event-driven at core: react to webhooks, S3 uploads, Kafka messages, and database changes"
       - "Language-agnostic: Python, SQL, Bash, Go, R, Node.js in isolated containers"
-      - "Open source with 26k+ GitHub stars and 1400+ plugins"
+      - "Open source with 26k+ GitHub stars and {totalPlugins}+ plugins"
   competitor:
     title: Data Flow and Routing
     list:
@@ -156,7 +156,7 @@ easeOfUse:
 visualPreview:
   mainTitle: One Platform for Your Entire Technology Stack
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
+    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. {totalPlugins}+ open-source plugins."
   competitor:
     description: "Ingest data from any source, route FlowFiles through a directed graph of processors, transform content in motion, and mediate between disparate systems in real time. NiFi's visual canvas connects processors for continuous data flow with built-in back-pressure and provenance tracking."
     shadowColor: "#1A9FB9"

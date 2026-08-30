@@ -32,7 +32,7 @@ businessValue:
       - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly, no framework wrapping)"
       - "Event-driven at core: file arrivals, Kafka, webhooks, database changes, schedules"
       - "Self-service for non-engineers via Kestra Apps"
-      - "1300+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+      - "{totalPlugins}+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
   competitor:
     title: Python Batch Pipelines
     list:

@@ -6,6 +6,7 @@ import SeeHow from "~/components/common/SeeHow.astro"
 import Header from "~/components/cloud/Header.astro"
 import RunningOrNew from "~/components/cloud/RunningOrNew.astro"
 import { optimizeSvgIcon } from "~/utils/svgo"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 import USCCALogo from "~/assets/quotes-companies/USCCA.svg?raw"
 import ExtracadabraLogo from "~/assets/quotes-companies/Extracadabra.svg?raw"
@@ -17,8 +18,9 @@ const title = "Kestra Cloud Early Adopter Program"
 const description =
     "Be among the first to experience Kestra Cloud with exclusive access before general availability"
 
-const platformSubtitle =
-    'Run your declarative flows, event-driven triggers, language-agnostic tasks with <a href="/plugins">1,700+ plugins</a> and let us handle the provisioning, scaling, upgrades and security.'
+const totalPlugins = await fetchTotalPluginsCount()
+
+const platformSubtitle = `Run your declarative flows, event-driven triggers, language-agnostic tasks with <a href="/plugins">${totalPlugins}+ plugins</a> and let us handle the provisioning, scaling, upgrades and security.`
 
 const platformCards = [
     {

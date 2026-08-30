@@ -1,8 +1,8 @@
 title: "Kestra vs. Windmill: Workflow Orchestration at Scale, Not Just Developer Scripts"
-description: "Compare Kestra vs Windmill: YAML-first orchestration with 1200+ native plugins vs a code-first developer platform for scripts, flows, and internal apps. See use cases, setup, and which architecture fits your team."
+description: "Compare Kestra vs Windmill: YAML-first orchestration with {totalPlugins}+ native plugins vs a code-first developer platform for scripts, flows, and internal apps. See use cases, setup, and which architecture fits your team."
 competitorName: Windmill
 category: Data Orchestration
-shortDescription: "Developer scripts and flows platform vs. YAML-first workflow orchestration with 1400+ plugins at scale."
+shortDescription: "Developer scripts and flows platform vs. YAML-first workflow orchestration with {totalPlugins}+ plugins at scale."
 seeHowTitle: "Getting Started with Declarative Orchestration"
 seeHowBody: "See how Kestra can simplify your workflows—and scale beyond developer scripts."
 
@@ -11,7 +11,7 @@ brandColor:
 
 intro:
   title: "Kestra vs. Windmill: Workflow Orchestration at Scale, Not Just Developer Scripts"
-  description: "Windmill is a developer platform for writing scripts, building flows, and creating internal apps, all in code. Kestra is a workflow orchestration platform built around declarative YAML, 1200+ pre-built plugins, and first-class event-driven triggers. Both run workflows; they're built for different teams with different scope requirements."
+  description: "Windmill is a developer platform for writing scripts, building flows, and creating internal apps, all in code. Kestra is a workflow orchestration platform built around declarative YAML, {totalPlugins}+ pre-built plugins, and first-class event-driven triggers. Both run workflows; they're built for different teams with different scope requirements."
 
 philosophy:
   mainTitle: Two Platforms Built for Different Jobs
@@ -32,7 +32,7 @@ businessValue:
     title: Orchestration for Data and Engineering Teams
     list:
       - "Data pipelines, infrastructure automation, business processes, AI workflows"
-      - "1400+ plugins: dbt, Airbyte, Spark, Snowflake, Kafka, Databricks, and more"
+      - "{totalPlugins}+ plugins: dbt, Airbyte, Spark, Snowflake, Kafka, Databricks, and more"
       - "Event-driven at core: file arrivals, Kafka, webhooks, database changes, schedules"
       - "YAML-first: any engineer can read, modify, and run a workflow"
       - "Enterprise RBAC with namespace isolation and SSO/SAML"
@@ -46,7 +46,7 @@ businessValue:
       - "Limited native data pipeline plugin library"
     shadowColor: "#DBEAFE"
     bulletColor: "#3B82F6"
-  footerText: "Windmill is the right choice for developer teams who need a single platform for writing scripts, building lightweight flows, and shipping internal apps without a dedicated infrastructure team. Kestra is the right choice for data engineers, infrastructure teams, and enterprises who need YAML-first orchestration, 1200+ pre-built integrations, and the ability to scale from one pipeline to 100,000 concurrent tasks."
+  footerText: "Windmill is the right choice for developer teams who need a single platform for writing scripts, building lightweight flows, and shipping internal apps without a dedicated infrastructure team. Kestra is the right choice for data engineers, infrastructure teams, and enterprises who need YAML-first orchestration, {totalPlugins}+ pre-built integrations, and the ability to scale from one pipeline to 100,000 concurrent tasks."
 
 setupSpeed:
   title: Time to First Workflow
@@ -144,7 +144,7 @@ easeOfUse:
 visualPreview:
   mainTitle: Two Platforms, Two Scopes
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3, Kafka, webhooks, and database changes. 1400+ plugins cover the full data and infrastructure stack, all defined in YAML."
+    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows in one unified platform. Event-driven at its core, with native triggers for S3, Kafka, webhooks, and database changes. {totalPlugins}+ plugins cover the full data and infrastructure stack, all defined in YAML."
   competitor:
     description: "A developer platform that combines script execution, flow orchestration, and internal app building in one workspace. Teams get scripts and lightweight automations alongside a drag-and-drop UI builder. Native data pipeline integrations (dbt, Airbyte, Snowflake) require writing and maintaining connection code rather than dropping in a plugin task."
     shadowColor: "#DBEAFE"
@@ -156,7 +156,7 @@ featureGrid:
       kestra: Declarative YAML
       competitor: "Code (Python, TypeScript, Go, Bash) + visual editor"
     - feature: Native data pipeline plugins
-      kestra: "✓ 1400+ plugins (dbt, Airbyte, Spark, Snowflake, Kafka)"
+      kestra: "✓ {totalPlugins}+ plugins (dbt, Airbyte, Spark, Snowflake, Kafka)"
       competitor: "No pre-built plugin library; integrations require custom code"
     - feature: Event-driven triggers
       kestra: "✓ Native (S3, Kafka, webhooks, database changes, schedules)"
@@ -195,8 +195,8 @@ testimonials:
 platformStrengths:
   title: Kestra Is Built for Teams Who Orchestrate the Full Data Stack
   features:
-    - title: 1200+ data and infrastructure plugins, no code required
-      description: "Kestra ships native plugin tasks for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and 1200+ more. Drop one into a YAML workflow and it runs with no connection code to write or API docs to parse. Every integration is a pre-built task type, not custom code your team writes and maintains."
+    - title: "{totalPlugins}+ data and infrastructure plugins, no code required"
+      description: "Kestra ships native plugin tasks for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and {totalPlugins}+ more. Drop one into a YAML workflow and it runs with no connection code to write or API docs to parse. Every integration is a pre-built task type, not custom code your team writes and maintains."
     - title: YAML any analyst can read and modify
       description: "A Kestra workflow is a YAML file that any team member can read and modify; ops teams can trigger runs from the UI without touching the implementation. Business users interact with workflows through Kestra Apps — no-code forms that trigger, monitor, and collect input without exposing the underlying YAML."
     - title: Event-driven triggers as first-class declarations
@@ -228,10 +228,10 @@ commonQuestions:
   - question: Does Kestra support the same languages as Windmill?
     answer: "Kestra runs scripts in any language inside isolated Docker containers: Python, TypeScript, Go, Bash, SQL, R, and more, with no SDK required. Windmill has native workers for Python, TypeScript, Go, PHP, Bash, SQL, Rust, and C#. The difference is that Kestra wraps script execution in a plugin system with pre-built task types for common integrations, so you don't write connection code for dbt, Airbyte, or Snowflake. Windmill scripts give you more flexibility at the cost of writing that code yourself."
   - question: How does Kestra's plugin library compare to Windmill's integrations?
-    answer: "Kestra ships 1200+ native plugin tasks covering dbt, Airbyte, Spark, Snowflake, BigQuery, Redshift, Kafka, Databricks, AWS, GCP, Azure, and the full modern data stack. Each is a typed YAML task definition. Windmill has a community script hub with shared scripts, but integrations aren't pre-built plugin tasks you drop into a workflow. They're community-maintained scripts you copy into your workspace and adapt. For teams who need reliable, versioned integrations with production data systems, the plugin model is faster to start and easier to maintain."
+    answer: "Kestra ships {totalPlugins}+ native plugin tasks covering dbt, Airbyte, Spark, Snowflake, BigQuery, Redshift, Kafka, Databricks, AWS, GCP, Azure, and the full modern data stack. Each is a typed YAML task definition. Windmill has a community script hub with shared scripts, but integrations aren't pre-built plugin tasks you drop into a workflow. They're community-maintained scripts you copy into your workspace and adapt. For teams who need reliable, versioned integrations with production data systems, the plugin model is faster to start and easier to maintain."
   - question: How does migration from Windmill to Kestra work?
     answer: "Your existing Python, TypeScript, and Bash scripts move directly into Kestra Script tasks with no modification. Logic that was spread across multiple Windmill script steps gets reorganized into a single YAML workflow file, with task inputs and outputs handled by Kestra's output system. Teams typically migrate flow by flow, running both platforms in parallel until the Kestra version is validated in production."
   - question: Can Kestra and Windmill run in parallel?
-    answer: "Yes. Kestra can trigger Windmill flows via HTTP webhook, and Windmill can call Kestra workflow executions through the Kestra API. Teams running both sometimes use Windmill for developer scripts and internal apps while using Kestra for data pipeline orchestration that requires the 1200+ plugin ecosystem."
+    answer: "Yes. Kestra can trigger Windmill flows via HTTP webhook, and Windmill can call Kestra workflow executions through the Kestra API. Teams running both sometimes use Windmill for developer scripts and internal apps while using Kestra for data pipeline orchestration that requires the {totalPlugins}+ plugin ecosystem."
   - question: How does Kestra handle multi-tenancy compared to Windmill?
     answer: "Kestra uses namespace isolation out-of-the-box: teams, environments, and projects get separate namespaces with scoped RBAC, secrets, and execution history. Windmill uses workspaces with role-based access. For enterprise deployments with strict tenant separation, Kestra's namespace model maps cleanly to team and environment boundaries without requiring separate deployments."

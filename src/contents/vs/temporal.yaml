@@ -35,7 +35,7 @@ businessValue:
       - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly, no SDK)"
       - "Event-driven at core: file arrivals, Kafka, webhooks, schedules"
       - "Self-service for non-engineers via Kestra Apps"
-      - "1400+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+      - "{totalPlugins}+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
   competitor:
     title: Durable Workflow Execution for Engineers
     list:
@@ -168,7 +168,7 @@ featureGrid:
       kestra: "Data pipelines, infrastructure automation, business workflows"
       competitor: "Long-running stateful workflows and distributed application logic"
     - feature: Data pipeline tooling
-      kestra: "✓ Native support (dbt, Airbyte, Spark, Snowflake, 1400+ plugins)"
+      kestra: "✓ Native support (dbt, Airbyte, Spark, Snowflake, {totalPlugins}+ plugins)"
       competitor: "No native data pipeline plugins"
     - feature: Event-driven triggers
       kestra: "✓ Native (schedules, file arrivals, Kafka, webhooks)"
@@ -205,7 +205,7 @@ platformStrengths:
   title: Kestra Is Built for the Workflows That Run Your Business
   features:
     - title: Data pipeline tooling out of the box
-      description: "Kestra ships with native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and 1200+ more. Run a dbt model, trigger an Airbyte sync, or load to Snowflake in a YAML task with no extra SDK to install. Every integration is a pre-built task type, not custom code your team writes and maintains."
+      description: "Kestra ships with native plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and {totalPlugins}+ more. Run a dbt model, trigger an Airbyte sync, or load to Snowflake in a YAML task with no extra SDK to install. Every integration is a pre-built task type, not custom code your team writes and maintains."
     - title: Workflows non-engineers can participate in
       description: "A Kestra workflow is a YAML file that any team member can read and understand. Kestra Apps let business users trigger workflows, fill in parameters, and monitor results without engineering involvement. RBAC and namespace isolation keep business-user workflows separate from engineering infrastructure without restricting access to either."
     - title: Scheduling and event triggers as first-class primitives
@@ -220,7 +220,7 @@ decisionGuide:
       - "Your team includes data engineers, analysts, and ops who shouldn't need to learn an SDK to modify a workflow."
       - "You want scheduling, event triggers, and monitoring defined declaratively alongside the workflow logic."
       - "Non-engineers need to trigger or monitor workflows without writing code."
-      - "You need 1200+ pre-built integrations without writing and maintaining custom Activities."
+      - "You need {totalPlugins}+ pre-built integrations without writing and maintaining custom Activities."
   competitor:
     title: Choose Temporal When
     list:
@@ -239,7 +239,7 @@ commonQuestions:
   - question: How does Kestra handle failures and retries?
     answer: "Kestra supports per-task retry policies with configurable attempt counts, backoff strategies, and retry conditions, all declared in YAML. Failed tasks can be restarted from the point of failure without re-running upstream tasks. For multi-step workflows, Kestra tracks execution state across restarts. Temporal's durability model goes further: it persists the full workflow history and replays it deterministically, which is stronger for workflows with complex branching state."
   - question: Does Kestra have data pipeline integrations that Temporal lacks?
-    answer: "Yes. Kestra ships with 1400+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. These are YAML task types, not code you write. Temporal has no native data pipeline plugins; integrating with data tools requires writing and maintaining custom Activities in your SDK language."
+    answer: "Yes. Kestra ships with {totalPlugins}+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. These are YAML task types, not code you write. Temporal has no native data pipeline plugins; integrating with data tools requires writing and maintaining custom Activities in your SDK language."
   - question: Can Kestra and Temporal coexist in the same stack?
     answer: "Yes, and it's a reasonable pattern. Teams use Kestra to orchestrate data pipelines, infrastructure jobs, and business processes in YAML, while Temporal handles the application-layer workflows that need durable stateful execution. Kestra can trigger Temporal workflows via HTTP or SDK calls from a Script task, so the two platforms compose cleanly."
   - question: How does Kestra handle scheduling compared to Temporal?
