@@ -29,6 +29,7 @@
     "@astrojs/cloudflare": "^14.0.0",
     "@astrojs/markdown-remark": "^7.2.0",
     "@astrojs/mdx": "^7.0.0",
+    "@astrojs/partytown": "^2.1.7",
     "@astrojs/rss": "^4.0.18",
     "@astrojs/vue": "^7.0.0",
     "@cloudflare/workers-types": "^4.20260621.1",
