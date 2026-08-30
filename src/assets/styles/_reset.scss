@@ -1,0 +1,197 @@
+// Minimal reset — replaces Bootstrap reboot, root, type, images.
+// Covers cross-browser normalization for the elements this project uses.
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    text-size-adjust: 100%;
+    tab-size: 4;
+    line-height: 1.5;
+}
+
+body {
+    margin: 0;
+    font-family: $font-family-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: $font-size-base;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--ks-content-primary);
+    background-color: var(--ks-background-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// Headings
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h1 { font-size: $h1-font-size; }
+h2 { font-size: $h2-font-size; }
+h3 { font-size: $h3-font-size; }
+h4 { font-size: $h4-font-size; }
+h5 { font-size: $h5-font-size; }
+h6 { font-size: $h6-font-size; }
+
+// Paragraphs
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+// Links
+a {
+    color: var(--ks-content-link);
+    text-decoration: $link-decoration;
+
+    &:hover {
+        color: var(--ks-content-color-highlight);
+    }
+}
+
+// Lists
+ol,
+ul {
+    padding-left: 2rem;
+}
+
+ol,
+ul,
+dl {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+// Bold
+b,
+strong {
+    font-weight: 700;
+}
+
+// Small
+small {
+    font-size: 0.875em;
+}
+
+// Code
+pre,
+code,
+kbd,
+samp {
+    font-family: $font-family-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1em;
+}
+
+pre {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    overflow: auto;
+    font-size: 0.875em;
+}
+
+code {
+    font-size: 0.875em;
+    word-wrap: break-word;
+}
+
+// Images
+img,
+svg {
+    vertical-align: middle;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+// Tables
+table {
+    caption-side: bottom;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: inherit;
+    text-align: -webkit-match-parent;
+}
+
+// Forms
+button,
+input,
+optgroup,
+select,
+textarea {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+button,
+select {
+    text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    -webkit-appearance: button;
+    appearance: button;
+}
+
+button:not(:disabled),
+[type="button"]:not(:disabled),
+[type="reset"]:not(:disabled),
+[type="submit"]:not(:disabled) {
+    cursor: pointer;
+}
+
+fieldset {
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+label {
+    display: inline-block;
+}
+
+textarea {
+    resize: vertical;
+}
+
+// Misc
+hr {
+    margin: 1rem 0;
+    color: inherit;
+    border: 0;
+    border-top: 1px solid;
+    opacity: 0.25;
+}
+
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+
+blockquote {
+    margin: 0 0 1rem;
+}
+
+// Hidden attribute
+[hidden] {
+    display: none !important;
+}
