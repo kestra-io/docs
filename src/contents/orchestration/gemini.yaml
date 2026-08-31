@@ -341,7 +341,7 @@ resources:
     - kind: "resource"
       title: "What is an AI agent?"
       description: "The building blocks of agentic systems, and where an orchestrator fits around a model call."
-      href: "/resources/ai-agent"
+      href: "/resources/ai/ai-agent"
     - kind: "plugin"
       title: "Gemini plugin reference"
       description: "Every Gemini task, property, and parameter, with copy-ready YAML examples."
