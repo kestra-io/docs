@@ -13,9 +13,7 @@ image: ./main.jpg
 
 Kestra 2.0 is the most significant release in the product's history. Every feature in 1.x required two implementations (one for JDBC, one for Kafka) because the queue was tied to the database. That constraint is gone. Workers now communicate with the platform over gRPC instead of connecting to the database directly, which separates the control plane from the data plane and makes workers independently deployable: across regions, inside restricted networks, or within infrastructure you control.
 
-That foundation is what makes the rest of this release possible. AI agents can now invoke flows directly as MCP tools — Kestra orchestrates your AI stack, not the other way around. Enterprise governance ships for the first time in Policies, Cases, and Promote. Worker Groups are rebuilt with tag-based routing, capacity reservation, and JWT authentication. The permission model moves from CRUD to a resource-plus-action model. The editor gains a No Code canvas and a persistent Copilot sidebar with multi-turn memory. Loop replaces ForEach with isolated sub-executions, and the trigger `when` expression replaces Java class conditions across all trigger types. The feature table below covers edition availability for everything.
-
-This post covers what changed, why it matters, and what to do before upgrading.
+That foundation is what makes the rest of this release possible. AI agents can now invoke flows directly as MCP tools — Kestra orchestrates your AI stack, not the other way around. Enterprise governance ships for the first time in Policies, Cases, and Promote. Worker Groups are rebuilt with tag-based routing, capacity reservation, and JWT authentication. The permission model moves from CRUD to a resource-plus-action model. The editor gains a No Code canvas and a persistent Copilot sidebar with multi-turn memory. Loop replaces ForEach with isolated sub-executions, and the trigger `when` expression replaces Java class conditions across all trigger types. The feature table covers edition availability for everything.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -97,7 +95,7 @@ A mode selector at the bottom of the panel switches between three behaviors:
 
 ![AI Copilot Edit mode sidebar showing the Copilot searching plugins and proposing a validated S3-to-Postgres flow with an Apply button](./ai-copilot-edit-mode.png)
 
-When you open the sidebar while viewing a resource, that resource attaches automatically as a context tag above the input. Context tags are independently dismissible. Each add and remove is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
+When you open the sidebar while viewing a resource, that resource attaches automatically as a context tag above the input. Context tags are independently dismissible. Every addition and removal is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
 
 Actions that modify resources require explicit confirmation before the Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
 
@@ -138,7 +136,7 @@ See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide fo
 
 ## Policies
 
-Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies addresses this at the platform layer, replacing `pluginDefaults` in EE with governance rules that inject configuration, validate compliance, and block non-conforming flows, including flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
+Without enforcement tooling, keeping flows compliant across many namespaces is a manual coordination problem: authors must set values correctly on every task, and administrators have no way to verify or block non-compliant flows. Policies address this at the platform layer, replacing `pluginDefaults` in EE with governance rules that inject configuration, validate compliance, and block non-conforming flows, including flow-level properties that `pluginDefaults` could never reach, like `retry`, `concurrency`, and `labels`.
 
 A Policy is a named set of rules scoped to a namespace or a tenant. Rules from a parent namespace cascade to all child namespaces automatically, so a company-wide constraint placed at the root namespace reaches every team without per-namespace configuration.
 
@@ -178,7 +176,7 @@ Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks ever
 
 ## Cases
 
-Failed executions are incidents, and they usually get tracked outside Kestra. Cases brings incident management in so you can create, assign, and resolve incidents next to the executions that caused them.
+Failed executions are incidents, and they usually get tracked outside Kestra. Cases bring incident management in so you can create, assign, and resolve incidents next to the executions that caused them.
 
 The `CreateCase` task opens a case from any block in a flow: `errors`, `finally`, `afterExecution`, or a regular task combined with `runIf`. It calls the Kestra API, so it needs an endpoint and credentials: `kestraUrl` defaults to the current instance, and `auth` accepts an API token or username/password. Namespace or tenant-level default credentials work as a fallback so you don't have to repeat auth config on every task.
 
@@ -243,7 +241,7 @@ See the [kestractl reference](/docs/kestra-cli/kestractl) for all commands and a
 
 ## Worker Groups 2.0
 
-Worker Groups in 2.0 separates three concerns the old model conflated. The old model assigned tasks to a group by name with `workerGroup.key`. The new model distinguishes: Workers (compute units that authenticate via tokens), Worker Groups (pools of workers), and Worker Queues (routing lanes identified by tags).
+Worker Groups in 2.0 separate three concerns the old model conflated. The old model assigned tasks to a group by name with `workerGroup.key`. The new model distinguishes: Workers (compute units that authenticate via tokens), Worker Groups (pools of workers), and Worker Queues (routing lanes identified by tags).
 
 Tasks declare routing requirements with `workerSelector.tags`:
 
@@ -444,7 +442,7 @@ kestra-migrate --check ./flows/       # scope the work, no changes written
 kestra-migrate -o v2-flows/ ./flows/  # rewrite into a new directory
 ```
 
-`ForEach` and `pluginDefaults` are flagged for manual review rather than automatically rewritten, as both require judgment about intended behavior. Everything else in the table below has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
+`ForEach` and `pluginDefaults` are flagged for manual review rather than automatically rewritten, as both require judgment about intended behavior. Everything else in the table has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
 
 The breaking changes that require action:
 
@@ -464,10 +462,8 @@ The breaking changes that require action:
 | SDK auth required for internal tasks | Tasks that call the Kestra API internally (git sync tasks and others) now require explicit credentials. See the [migration guide](/docs/migration-guide/v2.0.0/sdk-authentication). |
 | Super Admin renamed to Instance Owner | The Super Admin role is renamed to Instance Owner across the UI, CLI, config, and API. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update any consumers that read this field. See the [migration guide](/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner). |
 
-2.0 is a Long Term Support release. Bug and security fixes are backported for one year, so teams upgrading now can expect a stable patch cadence without another major migration in that window.
-
 ## Get Started
 
-The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0.
+2.0 is the foundation the next phase of Kestra is built on — and it's the first LTS release, with bug and security fixes backported for one year. Teams upgrading now won't face another major migration in that window.
 
-If you run into anything unexpected during the upgrade, open an issue on [GitHub](https://github.com/kestra-io/kestra/issues) or reach out on [Slack](https://kestra.io/slack).
+The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0. For questions or anything unexpected during the upgrade, find us on [GitHub](https://github.com/kestra-io/kestra/issues) or [Slack](https://kestra.io/slack).
