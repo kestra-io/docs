@@ -89,6 +89,67 @@ kestra:
 
 The old multi-tenancy and default-tenant configuration is no longer supported.
 
+## Worker topology bootstrap (kestra.ee.setup)
+
+`kestra.ee.setup` lets you declare worker queues, worker groups, subscriptions, and registration tokens in configuration so the full topology is provisioned at startup without any runtime API calls.
+
+```yaml
+kestra:
+  ee:
+    setup:
+      enabled: true
+
+      worker-queues:
+        - id: gpu
+          tags: [gpu, linux]
+          allowed-tenants: [acme]   # optional; empty = unrestricted
+        - id: etl
+          tags: [etl]
+
+      worker-groups:
+        - id: gpu-workers
+          name: GPU workers
+          registration-tokens:
+            - name: bootstrap
+              token-file: /var/run/secrets/kestra/gpu-workers-token
+          subscriptions:
+            - worker-queue-id: gpu
+              reserved-percent: 70
+            - worker-queue-id: etl
+```
+
+Only the webserver and standalone server roles apply this configuration at startup. Worker processes never apply it.
+
+Each declared entity is created only if it does not already exist in the database. Existing entities are skipped as a whole — no subscriptions are changed and no tokens are added or revoked. The database remains the source of truth once an entity exists.
+
+**Token secret handling.** Each registration token entry requires exactly one of:
+
+| Field | Description |
+|---|---|
+| `token-file` | Path to a mounted secret file containing the token. Preferred in Kubernetes environments. |
+| `token` | Environment variable placeholder resolved at startup, e.g. `"${MY_TOKEN}"`. |
+
+Plaintext tokens in committed configuration files are not recommended.
+
+**Configuration reference**
+
+| Property | Required | Description |
+|---|---|---|
+| `kestra.ee.setup.enabled` | No | Set to `true` to activate declarative bootstrap. Defaults to `false`. |
+| `worker-queues[].id` | Yes | RFC 1123 label. `default` and `system` are reserved and cannot be used. |
+| `worker-queues[].tags` | Yes | Non-empty list of routing tags. Must be unique across queues. |
+| `worker-queues[].allowed-tenants` | No | Tenant ids permitted to route through this queue. Empty = unrestricted. |
+| `worker-groups[].id` | Yes | RFC 1123 label. Use `default` to seed the default group. |
+| `worker-groups[].name` | No | Display name. Defaults to the id when omitted. |
+| `worker-groups[].registration-tokens[].name` | No | Token display name. Defaults to `bootstrap`. |
+| `worker-groups[].registration-tokens[].token-file` | One of | Path to a file containing a pre-generated registration token. Surrounding whitespace is trimmed. |
+| `worker-groups[].registration-tokens[].token` | One of | Environment variable placeholder, e.g. `"${MY_TOKEN}"`. Surrounding whitespace is trimmed. |
+| `worker-groups[].subscriptions[].worker-queue-id` | Yes | Id of a queue declared under `worker-queues` or already in the database. |
+| `worker-groups[].subscriptions[].reserved-percent` | No | Per-worker capacity floor, 1–100. Sum across subscriptions must not exceed 100. |
+| `worker-groups[].subscriptions[].mode` | No | `STRICT` or `ELASTIC`. See [Capacity reservation](../../07.enterprise/04.scalability/worker-group/index.md#capacity-reservation). Defaults to `STRICT`. |
+
+See [Declarative configuration](../../07.enterprise/04.scalability/worker-group/index.md#declarative-configuration) for full semantics, validation behavior, and a Kubernetes deployment example.
+
 ## gRPC TLS/mTLS (EE only)
 
 Use this section when running Kestra in a distributed topology where the Worker Controller and Workers communicate over gRPC and you need to encrypt that channel. By default, gRPC traffic is plaintext. Enabling TLS here encrypts the controller ↔ worker channel; enabling mTLS additionally requires workers to present a certificate the controller trusts.

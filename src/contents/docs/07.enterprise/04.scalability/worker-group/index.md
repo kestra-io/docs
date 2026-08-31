@@ -22,6 +22,8 @@ To set up Worker Groups end-to-end:
 4. [Start a worker](#starting-a-worker-for-a-group) — connect with the token and controller endpoint
 5. [Route tasks](#using-workerselector-in-tasks) — add `workerSelector` to any task
 
+For IaC and Helm deployments, see [Declarative configuration](#declarative-configuration) to provision the full topology at startup without runtime API calls.
+
 ## How Worker Groups work
 
 Three building blocks define the routing model:
@@ -336,6 +338,93 @@ No additional CLI flags are needed. The registration token in `kestra.worker.aut
 :::alert{type="info"}
 Workers do not connect to the database. Any `datasources` or `kestra.repository.type` keys in the config are ignored; a startup warning lists which keys were skipped.
 :::
+
+## Declarative configuration
+
+You can declare the entire worker topology — queues, groups, subscriptions, and registration tokens — in `application.yml` under `kestra.ee.setup`. Kestra applies this configuration at startup, which enables a fully automated single-pass deployment with no runtime API calls.
+
+```yaml
+kestra:
+  ee:
+    setup:
+      enabled: true
+
+      worker-queues:
+        - id: gpu
+          tags: [gpu, linux]
+          allowed-tenants: [acme]   # optional; empty = unrestricted
+        - id: etl
+          tags: [etl]
+
+      worker-groups:
+        - id: gpu-workers
+          name: GPU workers
+          registration-tokens:
+            - name: bootstrap
+              token-file: /var/run/secrets/kestra/gpu-workers-token
+          subscriptions:
+            - worker-queue-id: gpu
+              reserved-percent: 70
+            - worker-queue-id: etl
+```
+
+Workers already retry registration until their token is known to the controller, so all services can start concurrently. Workers converge as soon as the webserver has applied the configuration.
+
+### Secret handling
+
+Registration tokens must not appear as plaintext in a committed configuration file. Two options are available per token entry:
+
+- **`token-file`** — path to a file containing the pre-generated token. Preferred in Kubernetes environments where Secrets mount as files. The file must exist and be non-empty at startup.
+- **`token: "${ENV_VAR}"`** — environment variable placeholder resolved at startup. Simpler outside Kubernetes, but environment variables are readable from `/proc/<pid>/environ` and may appear in crash dumps.
+
+Exactly one of the two is required. Use `kestra workers registration-tokens generate` to mint a token offline before deployment.
+
+### The default group
+
+The default group can be declared under its reserved id `default`:
+
+```yaml
+worker-groups:
+  - id: default
+    name: Shared workers
+    registration-tokens:
+      - name: bootstrap
+        token-file: /var/run/secrets/kestra/default-workers-token
+```
+
+The default group always subscribes to the default queue — Kestra adds that subscription automatically even when `subscriptions` is omitted or does not include the default queue. Any subscriptions you declare are added alongside it.
+
+### Semantics
+
+`kestra.ee.setup` is a seed, not a desired state:
+
+- Each declared entity is created only when no entity with the same id already exists in the database.
+- An existing entity is skipped as a whole — no subscriptions are changed, no tokens are added or revoked.
+- Re-applying a changed configuration against an existing entity is a no-op. The database remains the source of truth once an entity exists; editing a live topology stays an API or UI operation.
+
+A rogue instance cannot self-authorize by changing configuration: declarative setup can only add what is absent, never replace or revoke what the authenticated API created.
+
+### Which server roles apply it
+
+Only the webserver and standalone server roles apply `kestra.ee.setup` at startup. Worker processes never apply it — a worker must not be able to create the group or the token it authenticates against.
+
+### Validation
+
+The entire declaration is validated before anything is written. An invalid configuration fails startup with an actionable message identifying the offending path:
+
+```
+The subscription declared at 'kestra.ee.setup.worker-groups[0].subscriptions[1]'
+references the unknown Worker Queue 'etl'. Declare it under
+'kestra.ee.setup.worker-queues' or create it first.
+```
+
+Validation rejects: missing or duplicate ids, non-RFC-1123 ids, the reserved worker queue ids `default` and `system`, empty tag sets, tag collisions with existing queues, unknown `worker-queue-id` references, `reserved-percent` out of range or summing above 100, unreadable or empty token files, tokens already registered on another group, and malformed registration tokens.
+
+Validation is all-or-nothing, but writes are not atomic. A failure mid-apply leaves already-created entities in place. The next startup resumes from where it stopped because existing entities are skipped.
+
+### Observability
+
+Kestra logs one line per created entity and one line per skipped entity. A summary line follows after the setup phase completes. Each created entity also produces a regular audit log entry. Token values are never logged.
 
 ## Transport security (TLS)
 
