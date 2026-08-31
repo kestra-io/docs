@@ -16,6 +16,7 @@ import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
 import Faq from "~/components/common/Faq.vue"
 import { randomSortFunction } from "~/utils/random"
 import { findOrchestrationLinks } from "~/utils/orchestrationLink"
+import { buildTaskUrls } from "~/utils/plugins/taskUrls"
 import { isUseCaseTag } from "~/utils/blueprints/useCaseTags"
 import {
     fetchToolIndex,
@@ -59,6 +60,7 @@ let graph: unknown
 let detailTags: BlueprintTag[] = []
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
 let orchestrationLinks: ReturnType<typeof findOrchestrationLinks> = []
+let taskUrls: Record<string, string> = {}
 
 const fullCatalog = await fetchFullCatalog()
 const toolIndex = await fetchToolIndex(fullCatalog)
@@ -201,6 +203,13 @@ if (isCategoryPage && category) {
         pageData.includedTasks,
         orchestrationEntries,
     )
+
+    // The Tasks panel links one page per task. Resolve each class to its canonical
+    // plugin URL here so the link does not go through the lowercase and
+    // subgroup-stripping redirects. Only the classes this blueprint uses are handed
+    // to the island. A plugin API failure leaves the map empty and the panel falls
+    // back to the flat /plugins/<cls> form, which still redirects to the right page.
+    taskUrls = await buildTaskUrls(pageData.includedTasks)
 
     title = pageData.metaTitle || pageData.title
     description = pageData.metaDescription
@@ -354,6 +363,7 @@ if (isCategoryPage && category) {
                         page={pageData}
                         description={pageData.description}
                         orchestrationLinks={orchestrationLinks}
+                        taskUrls={taskUrls}
                     />
                     {relatedRows.map((row) => (
                         <Related
