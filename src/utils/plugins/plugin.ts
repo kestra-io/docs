@@ -1,5 +1,3 @@
-import { slugify } from "../slugify"
-
 export type PluginElement = {
     cls: string
     deprecated?: boolean
@@ -61,26 +59,6 @@ export function extractPluginElements(plugin: Plugin): Record<string, string[]> 
     )
 }
 
-/**
- * Whether `/plugins/{name}/{subGroup}/...` is a real URL for a given plugin.
- *
- * Mirrors the redirect in src/pages/plugins/[...slug].astro: a plugin that
- * exposes a single subgroup 301s the subgroup segment away, so only the flat
- * `/plugins/{name}/...` form is canonical. A plugin with no subgroup of its own
- * has no subgroup form either — the segment can only come from another plugin
- * sharing the same classes through the global cls -> subgroup mapping.
- */
-export function buildSubGroupSegmentPredicate(plugins: Plugin[]): (pluginName: string) => boolean {
-    const subGroupCount = new Map<string, number>()
-
-    for (const plugin of plugins ?? []) {
-        if (!plugin.subGroup) continue
-        subGroupCount.set(plugin.name, (subGroupCount.get(plugin.name) ?? 0) + 1)
-    }
-
-    return (pluginName: string) => (subGroupCount.get(pluginName) ?? 0) > 1
-}
-
 export function filterPluginsWithoutDeprecated(plugins: Plugin[]): Plugin[] {
     return plugins.flatMap((plugin) => {
         const filteredEntries = Object.entries(plugin)
@@ -90,36 +68,4 @@ export function filterPluginsWithoutDeprecated(plugins: Plugin[]): Plugin[] {
 
         return filteredEntries.length > 0 ? [{ ...plugin, ...Object.fromEntries(filteredEntries) }] : []
     })
-}
-
-export type PluginMappings = {
-    clsToSubgroup: Record<string, string>
-    clsToPlugin: Record<string, { slug: string; raw: string }>
-    shortNameToCls: Record<string, string[]>
-}
-
-export function buildPluginMappings(plugins: Plugin[]): PluginMappings {
-    const mappings: PluginMappings = { clsToSubgroup: {}, clsToPlugin: {}, shortNameToCls: {} }
-
-    for (const plugin of plugins ?? []) {
-        const elements = extractPluginElements(plugin)
-        const group = plugin.group ?? plugin.name ?? ""
-        const pluginSlug = slugify(group)
-        const subgroupSlug = plugin.subGroup ? slugify(subGroupName(plugin)) : undefined
-
-        Object.values(elements).forEach((names) => {
-            names.forEach((cls) => {
-                if (subgroupSlug) mappings.clsToSubgroup[cls] = subgroupSlug
-                mappings.clsToPlugin[cls] = { slug: pluginSlug, raw: group }
-
-                const short = (cls.split(".").pop() ?? cls).toLowerCase()
-                mappings.shortNameToCls[short] = mappings.shortNameToCls[short] ?? []
-                if (!mappings.shortNameToCls[short].includes(cls)) {
-                    mappings.shortNameToCls[short].push(cls)
-                }
-            })
-        })
-    }
-
-    return mappings
 }

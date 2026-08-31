@@ -132,3 +132,59 @@ describe("canonicalPluginPath", () => {
         expect(canonicalPluginPath({} as Plugin, index)).toBeUndefined()
     })
 })
+
+// The /plugins/subgroups payload repeats every element a subgroup declares on the plugin
+// root entry too, without saying which subgroup it belongs to. The root entry must never
+// win, whatever order the payload lists the entries in — an equal-rank tie is first-seen-
+// wins, so a precedence that only held by luck of the array order would silently move
+// canonical URLs the day the API reorders its response.
+describe("buildPluginUrlIndex payload order", () => {
+    const rootRepeatingSubGroups = [
+        {
+            name: "plugin-gcp",
+            title: "Google Cloud",
+            group: "io.kestra.plugin.gcp",
+            tasks: [
+                { cls: "io.kestra.plugin.gcp.pubsub.Publish" },
+                { cls: "io.kestra.plugin.gcp.gcs.Upload" },
+            ],
+        },
+        {
+            name: "plugin-gcp",
+            title: "Google Cloud Pub/Sub",
+            group: "io.kestra.plugin.gcp",
+            subGroup: "io.kestra.plugin.gcp.pubsub",
+            tasks: [{ cls: "io.kestra.plugin.gcp.pubsub.Publish" }],
+        },
+        {
+            name: "plugin-gcp",
+            title: "Google Cloud Storage (GCS)",
+            group: "io.kestra.plugin.gcp",
+            subGroup: "io.kestra.plugin.gcp.gcs",
+            tasks: [{ cls: "io.kestra.plugin.gcp.gcs.Upload" }],
+        },
+    ] as unknown as Plugin[]
+
+    const expected = {
+        "io.kestra.plugin.gcp.pubsub.Publish":
+            "/plugins/plugin-gcp/google-cloud-pubsub/io.kestra.plugin.gcp.pubsub.publish",
+        "io.kestra.plugin.gcp.gcs.Upload":
+            "/plugins/plugin-gcp/google-cloud-storage-gcs/io.kestra.plugin.gcp.gcs.upload",
+    }
+
+    it("prefers the subgroup entry over the root entry that repeats its classes", () => {
+        expect(buildPluginUrlIndex(rootRepeatingSubGroups).clsToUrl).toEqual(expected)
+    })
+
+    it("builds the same index when the root entry comes last", () => {
+        const rootLast = [...rootRepeatingSubGroups.slice(1), rootRepeatingSubGroups[0]]
+
+        expect(buildPluginUrlIndex(rootLast).clsToUrl).toEqual(expected)
+    })
+
+    it("builds the same index whatever the order of the subgroup entries", () => {
+        const reversed = [...rootRepeatingSubGroups].reverse()
+
+        expect(buildPluginUrlIndex(reversed).clsToUrl).toEqual(expected)
+    })
+})
