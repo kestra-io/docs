@@ -316,6 +316,7 @@
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
+                                            <OpenInNew v-if="item.target === '_blank'" class="external-link-icon" />
                                         </div>
                                     </a>
                                 </li>
@@ -636,6 +637,7 @@
                                                         <span>{{
                                                             item.title
                                                         }}</span>
+                                                        <OpenInNew v-if="item.target === '_blank'" class="external-link-icon" />
                                                         <strong
                                                             v-if="item.tag"
                                                             class="tag"
@@ -718,6 +720,7 @@
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
+    import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
     import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
@@ -1831,6 +1834,15 @@
             width: 16px;
             height: 16px;
             filter: brightness(0);
+        }
+    }
+
+    .external-link-icon {
+        margin-left: 0.25rem;
+
+        :deep(svg) {
+            width: 0.9rem;
+            height: 0.9rem;
         }
     }
 </style>
