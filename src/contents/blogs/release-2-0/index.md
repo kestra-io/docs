@@ -67,13 +67,9 @@ Flow inputs map automatically to the tool's JSON schema parameter spec. Outputs 
 
 A `default` MCP server is provisioned for every tenant on startup. Additional servers (separate servers per team, or one per environment) can be created from the UI. Each server generates ready-to-paste connection configuration for Claude Desktop, Claude Code, Cursor, and Codex on its Connect tab.
 
-Authentication options vary by edition: BASIC is available on all editions, API_TOKEN on EE, and OAuth2 on EE and Cloud. OAuth2 support means browser-based clients like Claude web can authenticate without any local credential setup.
-
 The MCP server also works in the other direction. Connect Claude, Cursor, or any MCP-compatible client to the Kestra MCP server and you can create, search, and manage flows directly from your editor or AI assistant, no UI required.
 
 All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
-
-For access control, the `MCP_SERVER` resource in the EE RBAC model governs who can create and manage MCP servers. A user needs `FLOW: EXECUTE` permission on at least one namespace with a registered `McpToolTrigger` to call the matching tool.
 
 See the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger) for full setup.
 
@@ -170,11 +166,7 @@ rules:
 
 Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but violations are only reported: nothing is blocked, and `Add`/`Delete` mutate rules are skipped. When the violation report looks right, flip to `ACTIVE`.
 
-Policies also support opt-in bundles with `enforcement: REFERENCE`. A reference policy only applies to flows or tasks that explicitly list it in `policyRefs`. This covers named configuration profiles (an analytics warehouse connection vs an OLTP connection, or a CPU-bound runner profile vs a GPU-bound one) selected per task in the same flow.
-
 `pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. See the [Policies reference](/docs/enterprise/governance/policies) for the full rule DSL.
-
-Quotas: where [`concurrency`](/docs/workflow-components/concurrency) limits how many executions run simultaneously, [quotas](/docs/workflow-components/quotas) limit how many can be created in a time window. Set `CANCEL` or `FAIL` behavior, a `limit`, and an ISO-8601 `duration` on any flow. Windows are UTC-aligned, not rolling. Quotas stack at flow, namespace, and tenant scope, evaluated most-specific-first.
 
 ## Cases
 
@@ -196,11 +188,9 @@ errors:
 
 The `linkMatchingExecutions` property is the most useful option for high-frequency flows. A single external API going down can generate dozens of failed executions per hour. With `linkMatchingExecutions: true`, each subsequent failure attaches to the already-open case rather than creating a new one. The same behavior is available from the UI on any existing case via auto-attach, which generates a Flow trigger behind the scenes and removes it when the case resolves.
 
-Each case tracks severity, status, assignees, watchers, SLA targets (acknowledgement and resolution), linked executions, linked assets, and a full activity timeline with comments and file attachments. Cases can also have case actions: flows attached as one-click remediation buttons on the case detail page.
+Each case tracks status, severity, assignees, SLA timers, and linked executions, with a full activity timeline. Cases can also carry case actions: flows attached as one-click remediation buttons on the case detail page.
 
 The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required.
-
-A new `CASE` RBAC resource controls access with actions for `VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`, `FOLLOW`, and `TEMPLATE`.
 
 See the [Cases reference](/docs/enterprise/governance/cases).
 
@@ -291,12 +281,7 @@ The fallback default flip is the sharpest gotcha for upgraders. Tasks that previ
 
 ### Capacity reservation
 
-Each Worker Group subscription now supports per-subscription capacity reservation. A `reservedPercent` value on a subscription sets a floor: the worker keeps that percentage of its thread pool available for tasks from that queue, regardless of competing demand. Two modes control whether idle reserved slots can be used by other queues:
-
-- `STRICT` keeps reserved capacity exclusive. An idle reserved slot stays idle rather than being used by another queue.
-- `ELASTIC` lends idle reserved capacity to other ELASTIC subscriptions, reclaiming it when the owning queue has work. Strict guarantees beat elastic ones when both queues have work.
-
-Reserved percentages are configurable live, without restarting workers. Changes propagate within seconds.
+Each Worker Group subscription now supports per-subscription capacity reservation. A `reservedPercent` value on a subscription sets a floor: the worker keeps that percentage of its thread pool available for tasks from that queue, regardless of competing demand. Two modes control idle slot lending: `STRICT` keeps reserved capacity exclusive; `ELASTIC` lends idle reserved slots to other queues and reclaims them on demand. Reserved percentages are configurable live without restarting workers.
 
 ### Worker authentication
 
@@ -304,7 +289,11 @@ Workers now authenticate with the platform using JWT. The setup flow: a registra
 
 This replaces the previous trust model where workers connected without credential verification.
 
-See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for migration steps, including the `workerGroup.key` to `workerSelector.tags` mapping.
+### Declarative topology bootstrap
+
+A `kestra.ee.setup` configuration block lets you declare the full worker topology (queues, groups, subscriptions, and registration tokens) in `application.yml`. Kestra provisions everything at startup, so there is no need for a second deployment pass or an init Job against a running webserver. Workers retry registration until their token is known to the controller, so all services can start concurrently. The semantics are create-if-not-exists: an existing entity is skipped on restart, so the database stays the source of truth once an entity exists.
+
+See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for migration steps, the `workerGroup.key` to `workerSelector.tags` mapping, and full [declarative configuration](/docs/enterprise/scalability/worker-group#declarative-configuration) details.
 
 ## New Task Runners
 
@@ -392,9 +381,7 @@ triggers:
 
 New date and calendar helper functions ship alongside the redesign: `isWeekend()`, `isPublicHoliday()` (with country and subdivision), `isDayWeekInMonth()`, `isLastWorkingDay()`, `dayOfWeek()`, `dayOfMonth()`, `monthOfYear()`, and `hourOfDay()`.
 
-Flow triggers also change significantly. The old `conditions` and `preconditions` system is replaced by a `dependsOn` list of upstream flow entries, each specifying `flowId`, `namespace`, `states` (default: all terminal states and PAUSED), `labels`, and an optional per-entry `when`. A `window` property at the trigger level controls how Kestra accumulates upstream executions, replacing the old `timeWindow` on `preconditions`. A top-level `when` on the Flow trigger evaluates before the `dependsOn` check and can use `trigger.namespace`, `trigger.flowId`, `trigger.state`, and `trigger.outputs`.
-
-The [trigger conditions migration guide](/docs/migration-guide/v2.0.0/trigger-conditions-redesign) maps every condition class to its `when` equivalent.
+Flow triggers also change: `preconditions` is replaced by a `dependsOn` list with a `window` property for accumulation. The [trigger conditions migration guide](/docs/migration-guide/v2.0.0/trigger-conditions-redesign) maps every condition class to its `when` equivalent.
 
 ## PurgeStorage
 
@@ -424,9 +411,7 @@ kestra:
       password: k3str4
 ```
 
-When `kestra.logs.type` is set, Kestra opens a separate HikariCP connection pool against the log database, runs log-table migrations there, and routes all log reads and writes to it. The main database handles only flows, executions, and state.
-
-If `kestra.logs.type` is not set, logs continue using the repository backend. Existing installations see no change on upgrade. Historical logs written before the switch remain in the main database.
+When `kestra.logs.type` is set, the main database handles only flows, executions, and state. Existing installations see no change on upgrade; historical logs written before the switch remain in the main database.
 
 See the [External Log Data Store guide](/docs/administrator-guide/log-data-store) for the Elasticsearch config, the capability reference (aggregation, pagination type, purge), and the plugin developer guide for custom log backends.
 
@@ -444,9 +429,7 @@ See the [Docker installation guide](/docs/installation/docker) for tag conventio
 
 ## Plugin Artifacts
 
-Plugins can now ship Vue.js frontend components that load into the Kestra UI at runtime, without any changes to the core application. A plugin author writes a component targeting one of three named slots; when that plugin's task types appear in an execution, the component renders in place.
-
-The three available slots: `topology-details` renders when a task node is selected in the execution topology view, `topology-task-drawer` renders in the side drawer opened from a task node, and `topology-task-modal` renders in the full task detail modal.
+Plugins can now ship Vue.js frontend components that load into the Kestra UI at runtime, without any changes to the core application. Three named slots let components render in the execution topology view, the task side drawer, or the task detail modal; when a plugin's task types appear in an execution, the matching component renders in place.
 
 Each component is compiled as a Module Federation micro-frontend using `@kestra-io/artifact-sdk` and bundled into the plugin JAR at `src/main/resources/plugin-ui/`. A `manifest.json` in the bundle declares which task types have UI components and which slots they fill. At startup, Kestra discovers these bundles and makes them available to the host UI without static linking.
 
@@ -458,6 +441,7 @@ Plugin artifacts are available to all plugin authors starting in 2.0. See the [p
 
 ## Additional Improvements
 
+- [Quotas](/docs/workflow-components/quotas): limit how many executions a flow can create in a time window. Set `CANCEL` or `FAIL` behavior, a `limit`, and an ISO-8601 `duration`. Quotas stack at flow, namespace, and tenant scope, evaluated most-specific-first. Where [`concurrency`](/docs/workflow-components/concurrency) limits simultaneous runs, quotas limit creation rate.
 - [Asset locking](/docs/enterprise/governance/assets#locking-assets) (EE): flows can now acquire a TTL-bounded write lock on an asset using `io.kestra.plugin.kestra.ee.locks.Acquire` and release it with `Release`. While a lock is held, concurrent writes from other flows are rejected with a 423; reads stay open. User-initiated locks (via the asset detail page) block all flow writes and can be released from the UI by anyone with the `UNLOCK` permission.
 - [Reusable Inputs](/docs/workflow-components/reusable-inputs) (EE/Cloud): define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Namespace hierarchy inheritance and revision pinning are supported.
 - ION binary format: ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The [migration guide](/docs/migration-guide/v2.0.0/ion-binary-format) covers affected tasks and patterns.
@@ -466,8 +450,7 @@ Plugin artifacts are available to all plugin authors starting in 2.0. See the [p
 - TRACEPARENT propagation: pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. This closes a distributed tracing gap for teams running scripts inside Docker containers.
 - Syslog (CEF) log exporter: the EE [Log Shipper](/docs/enterprise/governance/logshipper) and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. CEF-formatted Kestra log events route directly into SIEM infrastructure (Graylog, Splunk, QRadar) without a custom adapter.
 - [LDAP](/docs/enterprise/auth/sso/ldap) group-sync-only mode (EE): `mode: GROUP_SYNC_ONLY` lets teams keep their existing SSO provider for login while using LDAP exclusively to resolve group memberships.
-- [AI Agent](/docs/ai-tools/ai-agents) observability: AI Agents emit Prometheus metrics for tool calls, provider calls, and embedding store calls (`ai.agent.tool.calls`, `ai.provider.calls`, `ai.embedding.store.calls`). New MCP client tasks (`SseMcpClient`, `StdioMcpClient`, `DockerMcpClient`, `StreamableHttpMcpClient`) let Agent tasks call external MCP servers as tools.
-- [AIAgent task](/docs/ai-tools/ai-agents): `guardrails` attach input and output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Set `maxSequentialToolsInvocations` explicitly; it defaults to unlimited.
+- [AI Agent](/docs/ai-tools/ai-agents): `guardrails` attach input/output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Prometheus metrics now cover tool calls, provider calls, and embedding store calls. New MCP client tasks let Agent tasks call external MCP servers as tools.
 - [VS Code extension](/docs/version-control-cicd/vscode): the extension now downloads the flow schema from your connected instance rather than bundling a generic one, so completion reflects the plugins actually installed. Live validation, Pebble autocompletion, topology preview with live task states during a run, and run-from-editor are all in.
 - mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
 - Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Revisions](/docs/concepts/revision).
@@ -498,7 +481,7 @@ The breaking changes that require action:
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed. Replace with their equivalents in the `plugin-kestra` SDK. |
 | `CANCELED` enum alias removed | Replace the single-L spelling with `CANCELLED` in flow expressions, API consumers, and any tooling that checks execution state. |
 | SDK auth required for internal tasks | Tasks that call the Kestra API internally (git sync tasks and others) now require explicit credentials. See the [migration guide](/docs/migration-guide/v2.0.0/sdk-authentication). |
-| Super Admin renamed to Instance Owner | The Super Admin role is renamed to Instance Owner across the UI, CLI, config, and API. HTTP API responses emit `instanceOwner` instead of `superAdmin` — update any consumers that read this field. See the [migration guide](/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner). |
+| Super Admin renamed to Instance Owner | The Super Admin role is renamed to Instance Owner across the UI, CLI, config, and API. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update any consumers that read this field. See the [migration guide](/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner). |
 
 Each has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
 
