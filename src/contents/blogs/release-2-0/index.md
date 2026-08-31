@@ -38,6 +38,10 @@ This post covers what changed, why it matters, and what to do before upgrading.
 | Slim image + plugin auto-install | `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to install what's needed on first use | OSS |
 | Plugin artifacts | Plugins can ship Vue.js UI components that load into the Kestra execution topology at runtime | OSS, EE, Cloud |
 
+:::alert{type="info"}
+**Upgrading from 1.x?** You must be on Kestra 1.3.x before upgrading. Several constructs are removed in 2.0 (ForEach, trigger conditions, `workerGroup.key`, `pluginDefaults`), but `kestra-migrate` handles most flow rewrites automatically. The [Upgrade and Migration](#upgrade-and-migration) section at the bottom covers the full checklist, and every breaking change has a dedicated guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
+:::
+
 ## MCP Tool Trigger and MCP Server
 
 Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs. No custom API wrapper or polling loop required.
