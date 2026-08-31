@@ -1,5 +1,8 @@
-﻿<svg viewBox="41 46.886 276.693 267.422" xmlns="http://www.w3.org/2000/svg">
-  <!-- Icon symbol centered, black background removed, viewBox tightened to icon bounds -->
+<svg viewBox="0 0 360 360" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fundo preto -->
+  <rect width="360" height="360" fill="#050505"/>
+  <!-- Símbolo JLCP centralizado com padding (translate 41,35; scale ~1.0) -->
+  <!-- Original viewBox era 277x291; aplicamos translate para centralizar com 41px de padding lateral -->
   <g fill="#c3f53c" transform="translate(41, 35)">
     <rect x="0" y="11.886" width="160.453" height="54.821"/>
     <rect x="221.365" y="11.886" width="55.328" height="55.328"/>
