@@ -11,7 +11,11 @@ authors:
 image: ./main.jpg
 ---
 
-Kestra 2.0 covers more ground than any previous release, and the breadth is deliberate. Enterprise governance ships for the first time (Policies, Cases, Promote), flows open to AI agents via MCP, the editor gains a No Code canvas with live Copilot sync, Worker Groups are rebuilt for production-scale routing, and the constructs that accumulated debt since the early days are replaced. The headline features are Enterprise Edition; OSS users get Loop, the trigger `when` expression, PurgeStorage, and the ION binary format. We've been looking forward to shipping this one.
+Kestra 2.0 is the most significant release in the product's history. Every feature in 1.x required two implementations (one for JDBC, one for Kafka) because the queue was tied to the database. That constraint is gone. Workers now communicate with the platform over gRPC instead of connecting to the database directly, which separates the control plane from the data plane and makes workers independently deployable: across regions, inside restricted networks, or within infrastructure you control.
+
+That foundation is what makes the rest of this release possible. AI agents can now invoke flows directly as MCP tools — Kestra orchestrates your AI stack, not the other way around. Enterprise governance ships for the first time in Policies, Cases, and Promote. Worker Groups are rebuilt with tag-based routing, capacity reservation, and JWT authentication. The permission model moves from CRUD to a resource-plus-action model. The editor gains a No Code canvas and a persistent Copilot sidebar with multi-turn memory. Loop replaces ForEach with isolated sub-executions, and the trigger `when` expression replaces Java class conditions across all trigger types. The feature table below covers edition availability for everything.
+
+This post covers what changed, why it matters, and what to do before upgrading.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -231,28 +235,6 @@ kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. The ne
 
 The `--output json` flag applies across all commands, so kestractl output can pipe directly into `jq` or other tooling in CI scripts.
 
-:::collapse{title="Example: Provision a CI service account from a script"}
-
-```bash
-# Create the service account
-kestractl service-accounts create \
-  --name ci-deployer \
-  --description "Flow deploy and execute for CI"
-
-# Create a role with exactly the permissions it needs
-kestractl roles create \
-  --name ci-role \
-  --permission FLOW:CREATE,UPDATE,EXECUTE \
-  --permission EXECUTION:VIEW,LIST
-
-# Bind the role to the service account
-kestractl roles bind \
-  --role ci-role \
-  --service-account ci-deployer
-```
-
-:::
-
 See the [kestractl reference](/docs/kestra-cli/kestractl) for all commands and authentication configuration.
 
 ## Worker Groups 2.0
@@ -387,7 +369,7 @@ Flow triggers also change: `preconditions` is replaced by a `dependsOn` list wit
 
 The existing `PurgeExecutions` task deletes execution records and their associated files, but it is database-driven: it cannot clean files whose execution records are already gone. This becomes a problem in deployments where worker groups use isolated internal storage and files accumulate without any corresponding execution record to trigger a cleanup.
 
-`io.kestra.plugin.core.storage.PurgeStorage` takes the storage-driven approach instead. It walks the storage tree directly and deletes files based on last-modified date, regardless of whether a matching execution record exists. The task defaults to `dryRun: true`, so the first run only reports what would be deleted.
+`PurgeStorage` takes the storage-driven approach instead. It walks the storage tree directly and deletes files based on last-modified date, regardless of whether a matching execution record exists. The task defaults to `dryRun: true`, so the first run only reports what would be deleted.
 
 Running PurgeStorage on a specific worker group via `workerSelector.tags` targets that worker's isolated storage directly.
 
@@ -397,21 +379,7 @@ See the [purge guide](/docs/administrator-guide/purge) for setup and the two-ste
 
 Execution logs are the highest-volume data Kestra writes. In most production installations they dwarf flows and executions combined, yet they share the same database. Schema migrations pay a per-row cost across every table including logs. Backup and retention schedules apply uniformly when the operational reality is that logs and executions have different lifecycles.
 
-In 2.0, logs can be routed to a separate store using `kestra.logs.type`. JDBC backends (H2, PostgreSQL, MySQL) are available in OSS. Elasticsearch is EE-only.
-
-```yaml
-kestra:
-  repository:
-    type: postgres
-  logs:
-    type: postgres
-    postgres:
-      url: jdbc:postgresql://logs-db:5432/kestra_logs
-      username: kestra
-      password: k3str4
-```
-
-When `kestra.logs.type` is set, the main database handles only flows, executions, and state. Existing installations see no change on upgrade; historical logs written before the switch remain in the main database.
+In 2.0, logs can be routed to a separate store using `kestra.logs.type`. JDBC backends (H2, PostgreSQL, MySQL) are available in OSS; Elasticsearch is EE-only. When configured, the main database handles only flows, executions, and state. Existing installations see no change on upgrade; historical logs written before the switch remain in the main database.
 
 See the [External Log Data Store guide](/docs/administrator-guide/log-data-store) for the Elasticsearch config, the capability reference (aggregation, pagination type, purge), and the plugin developer guide for custom log backends.
 
@@ -431,7 +399,7 @@ See the [Docker installation guide](/docs/installation/docker) for tag conventio
 
 Plugins can now ship Vue.js frontend components that load into the Kestra UI at runtime, without any changes to the core application. Three named slots let components render in the execution topology view, the task side drawer, or the task detail modal; when a plugin's task types appear in an execution, the matching component renders in place.
 
-Each component is compiled as a Module Federation micro-frontend using `@kestra-io/artifact-sdk` and bundled into the plugin JAR at `src/main/resources/plugin-ui/`. A `manifest.json` in the bundle declares which task types have UI components and which slots they fill. At startup, Kestra discovers these bundles and makes them available to the host UI without static linking.
+Each component is compiled as a Module Federation micro-frontend using `@kestra-io/artifact-sdk` and bundled into the plugin JAR. At startup, Kestra discovers these bundles and makes them available to the host UI without static linking.
 
 Components call the Kestra API through `@kestra-io/kestra-sdk`, which provides typed methods for executions, flows, metrics, logs, and live progress events.
 
@@ -465,6 +433,15 @@ A systematic audit in the 2.0 cycle closed a range of issues covering secret enc
 
 2.0 requires being on Kestra 1.3.x before upgrading. If you are on an earlier version, follow the [1.1](/docs/migration-guide/v1.1.0) and [1.2](/docs/migration-guide/v1.2.0) migration guides first.
 
+For most flows, `kestra-migrate` handles the mechanical rewrites automatically:
+
+```bash
+kestra-migrate --check ./flows/       # scope the work, no changes written
+kestra-migrate -o v2-flows/ ./flows/  # rewrite into a new directory
+```
+
+`ForEach` and `pluginDefaults` are flagged for manual review rather than automatically rewritten, as both require judgment about intended behavior. Everything else in the table below has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
+
 The breaking changes that require action:
 
 | Change | What to update |
@@ -482,17 +459,6 @@ The breaking changes that require action:
 | `CANCELED` enum alias removed | Replace the single-L spelling with `CANCELLED` in flow expressions, API consumers, and any tooling that checks execution state. |
 | SDK auth required for internal tasks | Tasks that call the Kestra API internally (git sync tasks and others) now require explicit credentials. See the [migration guide](/docs/migration-guide/v2.0.0/sdk-authentication). |
 | Super Admin renamed to Instance Owner | The Super Admin role is renamed to Instance Owner across the UI, CLI, config, and API. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update any consumers that read this field. See the [migration guide](/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner). |
-
-Each has a dedicated migration guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
-
-For flows, the `kestra-migrate` CLI handles the bulk of the rewrite:
-
-```bash
-kestra-migrate --check ./flows/       # scope the work, no changes written
-kestra-migrate -o v2-flows/ ./flows/  # rewrite into a new directory
-```
-
-`ForEach` and `pluginDefaults` are flagged for manual review rather than automatically rewritten, as both require judgment about the intended behavior.
 
 2.0 is a Long Term Support release. Bug and security fixes are backported for one year, so teams upgrading now can expect a stable patch cadence without another major migration in that window.
 
