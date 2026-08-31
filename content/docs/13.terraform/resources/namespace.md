@@ -18,22 +18,38 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 ## Example Usage
 
 ```hcl
+resource "kestra_worker_queue" "gpu" {
+  queue_id = "gpu"
+  tags     = ["gpu", "linux"]
+}
+
 resource "kestra_namespace" "example" {
-  namespace_id    = "company.team"
-  description     = "Friendly description"
-  variables       = <<EOT
+  namespace_id = "company.team"
+  description  = "Friendly description"
+  variables    = <<EOT
 k1: 1
 k2:
     v1: 1
 EOT
-  plugin_defaults = <<EOT
-- type: io.kestra.core.tasks.log.Log
-  values:
-    message: first {{flow.id}}
-- type: io.kestra.core.tasks.debugs.Return
-  values:
-    format: first {{flow.id}}
-EOT
+
+  # route every task of the namespace to a Worker Queue matching these tags
+  default_worker_selector {
+    tags     = kestra_worker_queue.gpu.tags
+    match    = "ALL"
+    fallback = "WAIT"
+  }
+
+  # cap how many executions of this namespace and its descendants run at once
+  concurrency {
+    limit    = 5
+    behavior = "QUEUE"
+  }
+
+  quotas {
+    duration = "PT1H"
+    limit    = 50
+    behavior = "FAIL"
+  }
 }
 ```
 
@@ -47,9 +63,11 @@ EOT
 ### Optional
 
 - `allowed_namespaces` (Block List) The allowed namespaces. (see [below for nested schema](#nestedblock--allowed_namespaces))
+- `concurrency` (Block List) The concurrency limit applied to the executions of every flow inside this scope and its descendants. (see [below for nested schema](#nestedblock--concurrency))
+- `default_worker_selector` (Block List) The default routing applied to every task of the namespace that does not define its own. Tasks are routed to a `kestra_worker_queue` whose tag set matches. (see [below for nested schema](#nestedblock--default_worker_selector))
 - `description` (String) The namespace friendly description.
 - `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
-- `plugin_defaults` (String) The namespace plugin defaults in yaml string.
+- `quotas` (Block List) Quotas evaluated before an execution starts. Without any quota, executions run normally. (see [below for nested schema](#nestedblock--quotas))
 - `secret_configuration` (Dynamic) Per-backend secret configuration. The whole value is a free-form map keyed by backend type (e.g. `vault`, `aws`, `gcp`), where each value is either a string or a nested object describing that backend's config.
 - `secret_isolation` (Block List) Secret isolation configuration. (see [below for nested schema](#nestedblock--secret_isolation))
 - `secret_read_only` (Boolean) Whether secrets are read-only in this namespace.
@@ -58,7 +76,6 @@ EOT
 - `storage_isolation` (Block List) Storage isolation configuration. (see [below for nested schema](#nestedblock--storage_isolation))
 - `storage_type` (String) The storage type.
 - `variables` (String) The namespace variables in yaml string.
-- `worker_group` (Block List) The worker group. (see [below for nested schema](#nestedblock--worker_group))
 
 ### Read-Only
 
@@ -71,6 +88,38 @@ EOT
 Required:
 
 - `namespace` (String) The namespace.
+
+
+<a id="nestedblock--concurrency"></a>
+### Nested Schema for `concurrency`
+
+Required:
+
+- `behavior` (String) What happens to an execution once the limit is reached.
+- `limit` (Number) The maximum number of concurrent executions.
+
+
+<a id="nestedblock--default_worker_selector"></a>
+### Nested Schema for `default_worker_selector`
+
+Required:
+
+- `tags` (Set of String) The tags used to route to a matching Worker Queue (each tag is an RFC 1123 label). Required: the API rejects `match` and `fallback` without a non-empty tag set.
+
+Optional:
+
+- `fallback` (String) The strategy when no worker is available: `FAIL` (default), `WAIT`, `CANCEL` or `IGNORE`.
+- `match` (String) How the tags are matched against a Worker Queue tag set: `ALL` (default, the queue tags must be a superset) or `ANY` (they must intersect).
+
+
+<a id="nestedblock--quotas"></a>
+### Nested Schema for `quotas`
+
+Required:
+
+- `behavior` (String) What happens to an execution once the quota is exhausted.
+- `duration` (String) The sliding window the quota is counted over, as an ISO-8601 duration (for example `PT1H`).
+- `limit` (Number) The maximum number of executions allowed inside the window.
 
 
 <a id="nestedblock--secret_isolation"></a>
@@ -89,18 +138,6 @@ Optional:
 
 - `denied_services` (Set of String) Set of denied services.
 - `enabled` (Boolean) Whether isolation is enabled.
-
-
-<a id="nestedblock--worker_group"></a>
-### Nested Schema for `worker_group`
-
-Required:
-
-- `key` (String) The worker group key.
-
-Optional:
-
-- `fallback` (String) The fallback strategy.
 
 ## Import
 
