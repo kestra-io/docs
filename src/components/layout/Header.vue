@@ -1800,6 +1800,10 @@
                                         align-self: unset;
                                         color: var(--ks-icon-color);
                                         transition: color 0.2s ease;
+
+                                        &.external-link-icon {
+                                            margin: 0;
+                                        }
                                     }
 
                                     &:hover {
@@ -1837,12 +1841,12 @@
         }
     }
 
-    .external-link-icon {
-        margin-left: 0.25rem;
+    .external-link-icon.material-design-icon {
+        margin: 0;
 
         :deep(svg) {
-            width: 0.9rem;
-            height: 0.9rem;
+            width: 14px;
+            height: 14px;
         }
     }
 </style>
