@@ -14,6 +14,8 @@ A trigger can be a scheduled date, the arrival of a new file, a new message in a
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/Zz6yoGm3u7M?si=adFMQY4kn0LCyzHR" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/UkQ1TmwUuHU?si=DC3utDzMs-BcbBfh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Defining triggers
