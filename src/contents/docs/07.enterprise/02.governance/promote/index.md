@@ -71,6 +71,8 @@ From the flows list, select up to 100 flows and choose **Promote** from the acti
 
 ![Bulk promote dialog showing 9 flows selected, drift summary per target, and the gate confirmation checkbox](./promote-bulk-dialog.png)
 
+<div style="position: relative; padding-bottom: calc(49.0084% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/5bsRGVNXSLuSoWETF8vM?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Promote a Flow to a Different Environment - Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ---
 
 ## Drift detection
