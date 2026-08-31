@@ -77,6 +77,8 @@ For access control, the `MCP_SERVER` resource in the EE RBAC model governs who c
 
 See the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger) for full setup.
 
+<div style="position: relative; padding-bottom: calc(49.0084% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/kDts1ykI4fbKZcf9b7SP?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flow MCP Tool - Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ## AI Copilot
 
 The AI Copilot is rebuilt in 2.0. The old one-shot generation modal is replaced by a persistent right-sidebar chat panel, opened via the **AI** button in the top toolbar. Conversations are multi-turn and held in memory for the browser session. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
