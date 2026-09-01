@@ -73,7 +73,7 @@ Each plugin component targets a specific **slot** — a named extension point in
 Renders in the **execution topology view** when a task node is selected. The contract is defined in [`ui/packages/slot-contracts/src/topology-details.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-details.ts) in Kestra core and distributed via `@kestra-io/artifact-sdk`:
 
 ```ts
-import type { Execution, MetricEntry, Task } from "@kestra-io/kestra-sdk"
+import type { Execution, PagedResultsMetricEntry, Task } from "@kestra-io/kestra-sdk"
 import { z } from "zod"
 
 export const progressEventSchema = z.object({
@@ -89,14 +89,25 @@ export const propsSchema = z.object({
     execution: z.custom<Execution>().optional(),
     namespace: z.string().optional(),
     flowId: z.string().optional(),
-    metrics: z.custom<MetricEntry>().array(),
+    tenant: z.string().optional(),
+    source: z.string().optional(),
     progress: progressEventSchema.array(),
+    fetchOutputs: z.custom<(query?: { taskRunId?: string }) => Promise<Record<string, unknown>>>().optional(),
+    fetchMetrics: z.custom<(query?: { page?: number; size?: number; sort?: string; taskRunId?: string }) => Promise<PagedResultsMetricEntry>>().optional(),
 })
 ```
 
-`Task`, `Execution`, and `MetricEntry` are imported from `@kestra-io/kestra-sdk`.
+`Task`, `Execution`, and `PagedResultsMetricEntry` are imported from `@kestra-io/kestra-sdk` for typing purposes only — your component doesn't call the SDK to populate these.
 
-Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. `metrics` is always an array (empty before execution). `progress` is covered in [Tracking live task progress](#tracking-live-task-progress) below.
+- **`task`** is complete — the host merges the graph node's task with the same task parsed out of `source`, so you never need to fetch the flow definition to fill in properties missing from the execution-graph node.
+- **`tenant`** is the current tenant, so you don't need to read it from `localStorage` or resolve it yourself.
+- **`fetchOutputs(query?)`** and **`fetchMetrics(query?)`** are lazy fetchers, not values: calling them resolves the current task run's outputs/metrics (scoped to this task and tenant already), and a component that renders neither costs no request. Both accept an optional `taskRunId` to address one iteration of a looped task; outside an execution they resolve to `{}` / an empty page rather than being absent. See [Fetching outputs and metrics](#fetching-outputs-and-metrics) below.
+
+Check `execution?.id` to detect whether execution data is available and adjust the rendered content accordingly. `progress` is covered in [Tracking live task progress](#tracking-live-task-progress) below.
+
+:::alert{type="info"}
+**A new data need is a new slot prop, never a new SDK call.** If your component needs something the host already knows (task config, execution state, outputs, metrics) and it isn't in `propsSchema` yet, that's a gap in the contract, not a reason to reach for `@kestra-io/kestra-sdk`. An artifact should render what core hands it — calling the REST API directly bypasses the permission model and ties your component to internal API shapes that can change independently of the slot contract.
+:::
 
 The host also injects `displayMode` as an HTML attribute — it is not in the props type, so it lands in `attrs`. Use `useAttrs()` to read it:
 
@@ -122,7 +133,7 @@ async function loadFlowData() {
 
 ### `topology-task-drawer`
 
-Renders in the **flow editor** (low-code editor) drawer when a task node is selected. It shares the exact same `propsSchema` as `topology-details` (defined in [`topology-task-drawer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-drawer.ts)). This slot targets the design-time context, so `execution` is typically absent and `metrics` will be an empty array.
+Renders in the **flow editor** (low-code editor) drawer when a task node is selected. It shares the exact same `propsSchema` as `topology-details` (defined in [`topology-task-drawer.ts`](https://github.com/kestra-io/kestra/blob/develop/ui/packages/slot-contracts/src/topology-task-drawer.ts)). This slot targets the design-time context, so `execution` is typically absent and `fetchOutputs`/`fetchMetrics` will resolve to empty results.
 
 Same as `topology-details`, `displayMode` is injected as an HTML attribute and must be read via `useAttrs()`. `namespace` and `flowId` are props.
 
@@ -265,104 +276,54 @@ ui/
 
 The component file is the only file you need to edit. The rest of the scaffolding is boilerplate that wires up the local dev server, Storybook, and the production build.
 
-## Calling the Kestra API
+## Fetching outputs and metrics
 
-Plugin components often need to fetch data from Kestra — task outputs, execution metrics, flow definitions — to render meaningful information. Use the [`@kestra-io/kestra-sdk`](https://www.npmjs.com/package/@kestra-io/kestra-sdk) package for all API calls instead of raw `fetch()`.
-
-### Why not raw `fetch()`?
-
-Kestra EE uses cookie-based authentication with JWT access tokens and automatic token refresh. Raw `fetch()` bypasses this entirely: it won't include the right credentials in cross-origin contexts, and it won't retry on 401 by refreshing the token. This causes silent failures or authentication errors in production EE deployments.
-
-The SDK wraps every call in an axios instance that the Kestra host configures at startup with `withCredentials: true`, a 401 → token-refresh interceptor, and impersonation support. Any SDK function you call in your component automatically inherits this configuration — no extra setup needed.
-
-### Installation
-
-The scaffolder asks whether to include `@kestra-io/kestra-sdk` during setup. If you answered yes, the package is already in your `package.json`. If you skipped it, add it manually:
-
-```bash
-cd ui
-npm install @kestra-io/kestra-sdk
-```
-
-### Why your plugin doesn't call `configureAxios`
-
-The Kestra host application calls `configureAxios()` once at boot, passing it the auth store, router, and other runtime dependencies. This call registers the EE-aware axios instance globally inside the SDK. Your plugin component only needs to import and call the typed API functions — the auth layer is already wired up by the time your component loads.
+Task outputs and metrics are the two things almost every `topology-details` component needs, and they no longer require calling the API yourself. Use the `fetchOutputs` and `fetchMetrics` props instead — they're bound to this task and the current tenant by the host, and resolve on call rather than on mount, so a component that never renders them never fires a request:
 
 ```ts
-// ✅ correct — import from the appropriate subpath and call it
-import * as ExecutionAPI from "@kestra-io/kestra-sdk/executions";
-import * as MetricsAPI from "@kestra-io/kestra-sdk/metrics";
-
-// ❌ do not call configureAxios yourself — that's the host's responsibility
-// import { configureAxios } from "@kestra-io/kestra-sdk";
-// configureAxios(...);
-```
-
-### Usage example
-
-The SDK exposes flat async functions, one per API operation. Tenant is injected automatically (the host sets it via `setSelectedTenant` at boot):
-
-```ts
+import type { KnownSlotProps } from "@kestra-io/artifact-sdk";
 import { ref, watch, computed } from "vue";
-import * as ExecutionAPI from "@kestra-io/kestra-sdk/executions";
-import * as MetricsAPI from "@kestra-io/kestra-sdk/metrics";
 
-// Fetch task outputs from the full execution
-const fetchedOutputs = ref<Record<string, any> | null>(null);
+const props = defineProps<KnownSlotProps["topology-details"]>();
+
 const executionId = computed(() => props.execution?.id as string | undefined);
 
+// Task outputs
+const outputs = ref<Record<string, unknown>>({});
+
 watch(executionId, async (id) => {
-  if (!id) return;
-  try {
-    const exec = await ExecutionAPI.execution({ path: { executionId: id } });
-    const tr = exec.taskRunList?.filter((r: any) => r.taskId === props.task.id).at(-1);
-    fetchedOutputs.value = (tr as any)?.outputs ?? null;
-  } catch { /* best-effort */ }
+  outputs.value = id ? await props.fetchOutputs?.() ?? {} : {};
 }, { immediate: true });
 
-// Fetch execution metrics
+// Task metrics
 const metrics = ref<Array<{ name: string; value: number }>>([]);
 
 watch(executionId, async (id) => {
-  if (!id) return;
-  try {
-    const resp = await MetricsAPI.searchByExecution({ path: { executionId: id } });
-    metrics.value = resp.results ?? [];
-  } catch { /* best-effort */ }
+  metrics.value = id ? (await props.fetchMetrics?.())?.results ?? [] : [];
 }, { immediate: true });
 ```
 
-Key API functions for topology and log components:
-
-| Function | Import | Description |
-|---|---|---|
-| `flow` | `@kestra-io/kestra-sdk/flows` | Fetch a flow definition (namespace, task config) |
-| `execution` | `@kestra-io/kestra-sdk/executions` | Fetch a full execution with task run list |
-| `searchByExecution` | `@kestra-io/kestra-sdk/metrics` | Fetch all metrics for an execution |
-| `listLogsFromExecution` | `@kestra-io/kestra-sdk/logs` | Fetch log entries for an execution |
-| `taskRunOutputs` | `@kestra-io/kestra-sdk/outputs` | Fetch outputs for a specific task run |
-
-:::alert{type="info"}
-Wrap every SDK call in `try { … } catch { /* best-effort */ }`. In Storybook and the local dev server (`npm run dev`) there is no Kestra host, so calls will fail — the component should degrade gracefully and fall back to whatever static data the stories or dev harness provides via props.
-:::
-
-:::alert{type="warning"}
-**404 responses trigger a full-page error overlay.** The SDK's 404 interceptor unconditionally sets `coreStore.error = 404`, which replaces the entire Kestra UI with an error page. Passing `showMessageOnError: false` is **not enough** — that only suppresses toast messages; the 404 interceptor runs before that check.
-
-For any SDK call that may legitimately return 404 (e.g. fetching a flow definition before the flow has been saved), pass `validateStatus` to route the 404 through the success path instead of the error interceptor:
+Both fetchers take an optional query object:
 
 ```ts
-import * as FlowAPI from "@kestra-io/kestra-sdk/flows";
-
-try {
-  const f = await FlowAPI.flow(
-    { path: { namespace: ns, id: fid } },
-    { showMessageOnError: false, validateStatus: (s: number) => s === 200 || s === 404 },
-  );
-  // f.tasks will be undefined on a 404 — handle that gracefully
-  const tasks = (f as any)?.tasks as any[] | undefined;
-} catch { /* best-effort */ }
+fetchOutputs(query?: { taskRunId?: string }): Promise<Record<string, unknown>>
+fetchMetrics(query?: { page?: number; size?: number; sort?: string; taskRunId?: string }): Promise<PagedResultsMetricEntry>
 ```
+
+Pass `taskRunId` to address one iteration of a looped task; omit it to let the host resolve the task's current run. Outside an execution both resolve to an empty result (`{}` / an empty page) rather than rejecting — no `try/catch` needed for that case.
+
+:::alert{type="info"}
+`fetchOutputs` and `fetchMetrics` are optional in the type because they aren't injected in every rendering context (e.g. a bare dev-server harness). Guard with `?.()` and a fallback, as in the example above, rather than assuming they're always present.
+:::
+
+## Calling the Kestra API
+
+**A new data need is a new slot prop, not a new SDK call.** The `@kestra-io/kestra-sdk` package still exists and your plugin can depend on it, but for a `topology-details` component the props above — `task`, `execution`, `tenant`, `fetchOutputs`, `fetchMetrics` — already cover flow definitions, execution state, outputs, and metrics. There's no remaining legitimate reason to call `ExecutionAPI`, `FlowAPI`, `OutputsAPI`, or `MetricsAPI` directly from a topology component: those endpoints route through the host's authenticated client with no capability scoping, which is exactly what the props exist to avoid. If you find yourself reaching for one of those, it usually means the slot contract is missing a prop your component needs — that's worth raising, not working around.
+
+One case still legitimately goes through the SDK today: [rendering Pebble expressions](#rendering-pebble-expressions) for display, since that's a stateless render call rather than a read of host-known data.
+
+:::alert{type="warning"}
+**404 responses trigger a full-page error overlay.** If you do call the SDK directly for something not yet covered by a slot prop, note that the SDK's 404 interceptor unconditionally sets `coreStore.error = 404`, which replaces the entire Kestra UI with an error page. Passing `showMessageOnError: false` is **not enough** — that only suppresses toast messages; the 404 interceptor runs before that check. Pass `validateStatus: (s) => s === 200 || s === 404` to route a legitimate 404 through the success path instead, and wrap the call in `try { … } catch { /* best-effort */ }` — in Storybook and the local dev server there is no Kestra host, so any SDK call will fail there.
 :::
 
 ## Rendering Pebble expressions
@@ -405,7 +366,7 @@ async function loadRenderedExpressions() {
     const { rendered: result } = await renderExpressions(
       {
         expressions: values,
-        tenant: window.localStorage.getItem("selectedTenant") ?? undefined,
+        tenant: props.tenant,
         executionId: executionId.value,
         namespace: resolved(props.namespace),
         flowId: resolved(props.flowId),
@@ -451,9 +412,9 @@ Guard `namespace` and `flowId` with the `startsWith("{")` check described in [`t
 :::
 
 :::alert{type="info"}
-**Pass `tenant` explicitly on EE.** A plugin artifact bundles its own copy of `@kestra-io/kestra-sdk`, whose global tenant stays at the `"main"` default and is *not* updated by the host's `setSelectedTenant`. Read the active tenant from where the host persists it — `window.localStorage.getItem("selectedTenant")` — so requests hit the right tenant on a non-`main` Enterprise Edition instance. On single-tenant OSS, `"main"` is already correct and the value can be omitted.
+**Pass `tenant` explicitly on EE.** A plugin artifact bundles its own copy of `@kestra-io/kestra-sdk`, whose global tenant stays at the `"main"` default and is *not* updated by the host. Use the `tenant` prop the host injects — `props.tenant` — so requests hit the right tenant on a non-`main` Enterprise Edition instance. On single-tenant OSS, `"main"` is already correct and the value can be omitted.
 
-This differs from other SDK calls (executions, metrics, flows), where tenant *is* injected automatically — the `/expressions/render` wrapper takes it as an explicit field.
+`/expressions/render` is one of the few calls left that still needs `tenant` passed explicitly as a field — it's a stateless render call, not a read of data the host already scopes to a task.
 :::
 
 ## Configuring the exposed components
@@ -506,12 +467,12 @@ A single task can expose components for multiple slots:
 
 ## Complete example
 
-The snippet below is adapted from the BigQuery plugin ([plugin-gcp#599](https://github.com/kestra-io/plugin-gcp/pull/599)). It shows a `topology-details` component that:
+The snippet below is adapted from the BigQuery plugin's topology component. It shows a `topology-details` component that:
 
-- renders project/location before execution
-- adds duration and cost estimates after execution
-- uses `displayMode === "full"` to show a rich job-details section only in the expanded drawer
-- fetches outputs and metrics via `@kestra-io/kestra-sdk`
+- renders project/location before execution — read straight off `task`, which the host already fills in from the flow source
+- adds duration and cost estimates after execution, via `fetchMetrics`
+- adds a job-details section fed by `fetchOutputs`
+- uses `displayMode === "full"` to show the rich job-details section only in the expanded drawer
 - reuses the same file for the `topology-task-drawer` slot
 
 ```vue
@@ -519,60 +480,39 @@ The snippet below is adapted from the BigQuery plugin ([plugin-gcp#599](https://
 <script setup lang="ts">
 import type { KnownSlotProps } from "@kestra-io/artifact-sdk";
 import { computed, ref, watch, useAttrs } from "vue";
-import * as ExecutionAPI from "@kestra-io/kestra-sdk/executions";
-import * as FlowAPI from "@kestra-io/kestra-sdk/flows";
 
-// KnownSlotProps["topology-details"] includes taskType, task, execution, namespace, flowId, metrics
+// KnownSlotProps["topology-details"] includes taskType, task, execution, namespace, flowId,
+// tenant, source, progress, fetchOutputs, fetchMetrics
 const props = defineProps<KnownSlotProps["topology-details"]>();
 const attrs = useAttrs();
 const isFullView = computed(() => attrs.displayMode === "full");
 
 const taskId = computed(() => props.task?.id as string | undefined);
 
-// Fetch the full flow definition to resolve task config that may not be in props.task.
-// namespace/flowId are proper props (injected by the host).
-const flowTask = ref<Record<string, any> | null>(null);
-
-async function loadFlowTask() {
-  const ns = props.namespace;
-  const fid = props.flowId;
-  if (!ns || ns.startsWith("{") || !fid || fid.startsWith("{")) return;
-  try {
-    const f = await FlowAPI.flow({ path: { namespace: ns, id: fid } });
-    const tasks = (f as any).tasks as any[] | undefined;
-    flowTask.value = tasks?.find((t: any) => t.id === taskId.value) ?? null;
-  } catch { /* best-effort */ }
-}
-
-watch([() => props.namespace, () => props.flowId], () => loadFlowTask(), { immediate: true });
-
-const projectId = computed(() =>
-  (props.task?.projectId ?? flowTask.value?.projectId) as string | undefined
-);
-const location = computed(() =>
-  (props.task?.location ?? flowTask.value?.location) as string | undefined
-);
+// task is already complete — the host merges the graph node's task with the same task
+// parsed out of `source`, so no flow fetch is needed to read config not on the graph node.
+const projectId = computed(() => props.task?.projectId as string | undefined);
+const location = computed(() => props.task?.location as string | undefined);
 
 // Execution state
 const hasExecution = computed(() => !!props.execution?.id);
 const executionId = computed(() => props.execution?.id as string | undefined);
 
-// Fetch the full execution to get task outputs (props.execution contains task runs but not outputs)
-const fetchedOutputs = ref<Record<string, any> | null>(null);
+// Task outputs, via the lazy fetchOutputs prop — resolves to {} outside an execution
+const taskOutputs = ref<Record<string, unknown>>({});
 
 watch(executionId, async (id) => {
-  if (!id) return;
-  try {
-    const exec = await ExecutionAPI.execution({ path: { executionId: id } });
-    const tr = (exec.taskRunList as any[])?.filter((r: any) => r.taskId === taskId.value).at(-1);
-    fetchedOutputs.value = (tr as any)?.outputs ?? null;
-  } catch { /* best-effort */ }
+  taskOutputs.value = id ? await props.fetchOutputs?.() ?? {} : {};
 }, { immediate: true });
 
-const taskOutputs = computed(() => fetchedOutputs.value ?? null);
+// Task metrics, via the lazy fetchMetrics prop — already scoped to this task and execution
+const metrics = ref<Array<{ name: string; value: number }>>([]);
 
-// Metrics come from props — no SDK fetch needed
-const getMetric = (name: string) => props.metrics.find((m) => m.name === name)?.value;
+watch(executionId, async (id) => {
+  metrics.value = id ? (await props.fetchMetrics?.())?.results ?? [] : [];
+}, { immediate: true });
+
+const getMetric = (name: string) => metrics.value.find((m) => m.name === name)?.value;
 const bytesBilled  = computed(() => getMetric("total.bytes.billed"));
 const durationMs   = computed(() => getMetric("duration"));
 
@@ -692,7 +632,6 @@ export const PreExecution: Story = {
     task: baseTask,
     namespace: "company.team",
     flowId: "my-flow",
-    metrics: [],
   },
 };
 
@@ -706,19 +645,18 @@ export const PostExecution: Story = {
     execution: {
       id: "exec-abc123",
       state: { current: "SUCCESS" },
-      taskRunList: [
-        {
-          id: "tr-001",
-          taskId: "run-query",
-          executionId: "exec-abc123",
-          outputs: { jobId: "my-project:US.bqjob_r1234", size: 42500 },
-        },
-      ],
+      taskRunList: [{ id: "tr-001", taskId: "run-query", executionId: "exec-abc123" }],
     },
-    metrics: [
-      { name: "duration", value: 1230, taskId: "run-query" },
-      { name: "total.bytes.billed", value: 10737418240, taskId: "run-query" },
-    ],
+    // Plain prop fixtures — no transport to stub, since fetchOutputs/fetchMetrics are
+    // just functions the host would otherwise inject.
+    fetchOutputs: async () => ({ jobId: "my-project:US.bqjob_r1234", size: 42500 }),
+    fetchMetrics: async () => ({
+      results: [
+        { name: "duration", value: 1230, taskId: "run-query" },
+        { name: "total.bytes.billed", value: 10737418240, taskId: "run-query" },
+      ],
+      total: 2,
+    }),
   },
 };
 ```
