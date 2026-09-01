@@ -40,6 +40,7 @@ Core primitives for building flows have been updated and extended.
 
 New controls for locking down what flows can do and how they are governed.
 
+- **RBAC action model (EE)** — CRUD replaced by resource-plus-action permissions (`EXECUTION: ACCESS_LOGS`, `TRIGGER: BACKFILL`, etc.). New resources: `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, `MCP_SERVER`. Five managed roles ship with 2.0; existing roles migrate automatically. [Docs](../../07.enterprise/01.auth/rbac/index.md) [Migration guide](../../11.migration-guide/v2.0.0/rbac-action-model/index.md)
 - **Policies (EE)** — enforce governance rules on flows at save and execution time, per namespace. [Docs](../../07.enterprise/02.governance/policies/index.md)
 - **Management endpoint hardening** — `/env` disabled by default, health details require authentication, logger writes protected, `/worker` and `/scheduler` now sensitive, docker-compose no longer exposes port `8081`. [Migration guide](../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md)
 - **HTTP task URL filtering** — allow-list and deny-list for URLs reachable by HTTP plugin tasks. [Docs](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering)
@@ -59,7 +60,9 @@ New features available in the Enterprise Edition.
 
 Improvements to the tools and workflows used to build and manage flows.
 
+- **No Code Editor** — canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard.
 - **VS Code namespace files** — Open namespace (VFS mount), Upload file, and Sync folder commands; `kestra.namespaceFiles.exclude` setting. [Docs](../../version-control-cicd/05.vscode/index.md)
+- **Plugin Artifacts** — plugins can ship Vue.js frontend components (Module Federation) that load into named slots in the execution topology view, task side drawer, or task detail modal without changes to the core application. [Docs](../../plugin-developer-guide/develop-plugin-artifacts/index.md)
 - **Plugin file renderers** — plugins can register format-specific renderers for inline output file preview. [Docs](../../plugin-developer-guide/09.file-renderer/index.md)
 - **Dynamic Apps content blocks** — Apps support content blocks that update based on execution state. [Docs](../../07.enterprise/04.scalability/apps/index.md)
 - **`kestractl` IAM commands** — roles, role bindings, service accounts, and invitations via CLI. [Docs](../../kestra-cli/kestractl/index.md)
@@ -68,11 +71,23 @@ Improvements to the tools and workflows used to build and manage flows.
 
 Changes to deployment, storage, and runtime behavior.
 
-- **GCE Task Runner** — ephemeral Google Compute Engine VMs per task execution. [Docs](../../task-runners/04.types/09.google-computeengine-task-runner/index.md)
-- **Huawei Cloud CCI Task Runner** (EE) — run tasks as bare Pods on Huawei Cloud CCI with OBS file staging, flavor-tier resource sizing, and AK/SK or temporary credential auth. [Docs](../../task-runners/04.types/11.huawei-cci-task-runner/index.md)
-- **Worker Groups** — `key` property removed; groups now identified by label selectors. [Docs](../../07.enterprise/04.scalability/worker-group/index.md)
+- **gRPC worker-controller** — JDBC queue replaced by gRPC; separates control plane (executor, scheduler, webserver) from data plane (workers). Workers connect to the controller rather than the database directly, enabling cross-region and restricted-network deployments. Task run outputs stored in dedicated storage rather than inline in the execution record.
+- **New VM task runners** — AWS EC2 (SSM Run Command, no SSH, Spot support), Azure Virtual Machine (Run Command API, no SSH or public IP), Google Compute Engine (startup script, no SSH), Huawei Cloud CCI (bare Pods, OBS staging, AK/SK or temp credentials). [Docs](../../task-runners/04.types/index.md)
+- **Worker Groups 2.0 (EE)** — tag-based routing via `workerSelector.tags` replaces `workerGroup.key`; Worker Queues as routing lanes; per-subscription capacity reservation (STRICT/ELASTIC modes); JWT worker authentication; declarative topology bootstrap via `kestra.ee.setup`. [Docs](../../07.enterprise/04.scalability/worker-group/index.md)
+- **PurgeStorage** — storage-driven file cleanup by last-modified date, independent of execution records. Defaults to `dryRun: true`. [Docs](../../10.administrator-guide/purge/index.md)
+- **Slim image + plugin auto-install** — `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to auto-fetch from Maven Central. Renamed from `-no-plugins`. [Docs](../../02.installation/02.docker/index.md)
 - **External Log Data Store** — route execution logs to a separate JDBC database or Elasticsearch. [Docs](../../10.administrator-guide/log-data-store/index.md)
 - **ION binary format** — task output files in ION format stored as binary (~20–40% smaller). [Migration guide](../../11.migration-guide/v2.0.0/ion-binary-format/index.md)
+
+### Additional
+
+- **Execution API performance** — task run outputs moved to dedicated storage; `GET /executions/search` responses are significantly lighter. Integrations reading `taskRunList[*].outputs` should switch to `GET /outputs/{executionId}/{taskRunId}`. [Migration guide](../../11.migration-guide/v2.0.0/execution-api-response/index.md)
+- **TRACEPARENT propagation** — pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent OpenTelemetry spans under the Kestra task span.
+- **mTLS on the worker channel** — worker-to-controller communication supports mutual TLS with per-worker client certificates. [Docs](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only)
+- **Syslog CEF log exporter (EE)** — Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS for SIEM integration.
+- **LDAP group-sync-only mode (EE)** — `mode: GROUP_SYNC_ONLY` uses LDAP exclusively for group membership resolution while keeping an existing SSO provider for login. [Docs](../../07.enterprise/01.auth/sso/ldap/index.md)
+- **Unit test `expectedState`** — flow unit tests can assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. [Docs](../../07.enterprise/02.governance/unit-tests/index.md)
+- **Draft revisions** — save flow changes as drafts without affecting live executions. [Docs](../../06.concepts/03.revision/index.md#draft-revisions)
 
 ### Breaking changes
 
@@ -95,3 +110,6 @@ Each breaking change has a dedicated migration guide. See the [2.0 migration gui
 | `execution-data.internal-storage` config removed (EE) | [Guide](../../11.migration-guide/v2.0.0/execution-data-internal-storage/index.md) |
 | Super Admin renamed to Instance Owner (EE, Cloud) | [Guide](../../11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md) |
 | SDK auth required for internal tasks | [Guide](../../11.migration-guide/v2.0.0/sdk-authentication/index.md) |
+| `workerGroup.key` removed | Migrate to `workerSelector.tags`. Check `fallback` default change (WAIT → FAIL). [Guide](../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md) |
+| `CANCELED` enum alias removed | Replace with `CANCELLED` in flow expressions, API consumers, and tooling. |
+| Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, `log.Fetch` — replace with equivalents in `plugin-kestra`. |
