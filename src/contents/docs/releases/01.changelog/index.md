@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/admin.svg
 description: A record of notable changes in each Kestra release, organized by version.
 ---
 
-Notable changes by release. For full details, see the [GitHub releases](https://github.com/kestra-io/kestra/releases).
+Notable changes by release. For a complete list of every release including patch versions, see the [full changelog](/docs/changelog) or the [GitHub releases](https://github.com/kestra-io/kestra/releases).
 
 ---
 
