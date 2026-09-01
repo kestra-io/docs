@@ -22,7 +22,7 @@
                 <h6 data-usal="fade-l">
                     <Plus class="icon me-2" />Enterprise-Ready Deployment:<br>
                     <span class="fw-normal">
-                        Cloud, On-Prem, Air-Gapped
+                        Any cloud, on-prem, or air-gapped
                         <span class="deployments">
                             <span v-html="awsSVG"></span>
                             <span v-html="vectorSVG"></span>
