@@ -13,8 +13,7 @@ export type PluginMetadata = {
     title: string
     description?: string
     videos?: string[]
-    createdBy?: string
-    managedBy?: string
+    partner?: string
     version?: string
     icon?: string
 }

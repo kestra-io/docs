@@ -133,4 +133,3 @@ The shift away from monolithic, top-down BPM reflects a broader trend in softwar
 Choosing an alternative to Camunda is about more than finding a replacement; it's an opportunity to adopt a workflow automation platform that aligns with modern engineering practices and future business needs. While traditional BPM tools have their place, platforms like Kestra offer a more universal, declarative, and developer-friendly approach. By unifying orchestration for data, AI, infrastructure, and business processes, Kestra provides a scalable foundation to automate your entire enterprise.
 
 Ready to see how a declarative control plane can simplify your complex workflows? [Book a demo with one of our experts](/demo) to explore Kestra's capabilities.
-```
