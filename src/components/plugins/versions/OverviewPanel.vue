@@ -26,18 +26,18 @@
             />
 
             <div class="managed">
-                <div>
-                    <p>Created by</p>
+                <div v-if="repoUrl">
+                    <p>Maintained by</p>
                     <div class="meta-info">
-                        <img :src="createdByIcon" v-if="createdByIcon" alt="author icon" class="author-icon" />
-                        <span>{{ createdBy }}</span>
+                        <a :href="`${repoUrl}/graphs/contributors`" target="_blank" rel="noopener noreferrer">
+                            Contributors
+                        </a>
                     </div>
                 </div>
-                <div>
-                    <p>Managed by</p>
+                <div v-if="partner">
+                    <p>Partnered with</p>
                     <div class="meta-info">
-                        <img :src="managedByIcon" v-if="managedByIcon" alt="author icon" class="author-icon" />
-                        <span>{{ managedBy }}</span>
+                        <span>{{ partner }}</span>
                     </div>
                 </div>
             </div>
@@ -82,8 +82,6 @@
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
     import Versions from "./Versions.vue"
     import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
-    import kestraIcon from "../assets/kestra.svg"
-    import conapiIcon from "../assets/conapi.svg"
 
     const props = withDefaults(
         defineProps<{
@@ -125,22 +123,7 @@
             : null,
     )
 
-    const createdBy = computed(() => metadataItem.value?.createdBy ?? "Kestra Core Team")
-    const managedBy = computed(() => metadataItem.value?.managedBy ?? "Kestra Core Team")
-
-    // Hardcoded branding logic for primary contributors. This should be refactored into 
-    // a more scalable API as external contributions expand.
-    const createdByIcon = computed(() => {
-        if (createdBy.value.includes("Kestra Core Team")) return kestraIcon.src
-        if (createdBy.value.includes("Conapi GmbH")) return conapiIcon.src
-        return null
-    })
-
-    const managedByIcon = computed(() => {
-        if (managedBy.value.includes("Kestra Core Team")) return kestraIcon.src
-        if (managedBy.value.includes("Conapi GmbH")) return conapiIcon.src
-        return null
-    })
+    const partner = computed(() => metadataItem.value?.partner)
 
     const kestraCore = computed(
         () => props.releasesUrl === "https://github.com/kestra-io/kestra/releases",
@@ -224,9 +207,18 @@
                         object-fit: contain;
                     }
 
-                    span {
+                    span,
+                    a {
                         color: var(--ks-content-secondary);
                         font-size: $font-size-xs;
+                    }
+
+                    a {
+                        text-decoration: none;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
                     }
                 }
             }
