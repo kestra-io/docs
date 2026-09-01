@@ -34,7 +34,9 @@
         display: inline-block;
         overflow: hidden;
         vertical-align: bottom;
-        height: 1.2em;
+        // 1lh resolves to the line-height inherited from .hero h1, so the box
+        // tracks the heading's line box exactly at every breakpoint
+        height: 1lh;
         position: relative;
         // force a fixed width to prevent layout shift; adjust as needed based on longest word
         width: 115px;
@@ -45,8 +47,7 @@
 
     .word {
         display: block;
-        height: 1.2em;
-        line-height: 1.2em;
+        height: 1lh;
         white-space: nowrap;
     }
 
