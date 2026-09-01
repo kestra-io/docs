@@ -2,20 +2,74 @@
 import LegacyApproachIcon from "./assets/comparison/legacy-approach.svg"
 import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
 import SixtySeconds from "./SixtySeconds.astro"
+
+// Every string in the two diagrams used to be glyph outlines inside the SVGs,
+// so the positioning argument of this section was invisible to crawlers and to
+// AI assistants reading the HTML. The paths are gone; this is now the only copy
+// of that copy. Each label is laid out over the graphic in the diagram's own
+// viewBox coordinates, so the rendering is unchanged — see the `--vb-*` maths in
+// the stylesheet below. Keep these lists and the `.row-*` / `.card-*` rules in
+// sync: a label added here needs a position, or it stacks at the origin.
+const legacySilos = ["Data Orchestrator", "Infra Tool", "AI Scripts"]
+const kestraDomains = ["Data", "Infra", "AI"]
 ---
 
 <section aria-labelledby="comparison">
     <h2 id="comparison">
-        Most Orchestrators Are Built for One Team.&nbsp;<span>Kestra is Built for the Whole Organization.</span>
+        Most Orchestrators Are Built for One Team.&nbsp;<span
+            >Kestra is Built for the Whole Organization.</span
+        >
     </h2>
-    <div role="region" aria-label="Comparison table" class="comparison">
-        <div class="legacy-approach" aria-label="Legacy approach">
-            <h3>The Legacy approach</h3>
-            <LegacyApproachIcon class="legacy-approach-image" />
-            <span>Fragile Glue Code</span>
+    <div class="comparison">
+        <div class="column">
+            <div class="legacy-approach">
+                <h3>The Legacy approach</h3>
+                <div class="legacy-diagram">
+                    <LegacyApproachIcon class="legacy-approach-image" />
+                    <ul class="diagram-text legacy-text">
+                        {
+                            legacySilos.map((label, index) => (
+                                <li class={`row-${index + 1}`}>{label}</li>
+                            ))
+                        }
+                    </ul>
+                </div>
+                <span class="summary">Fragile Glue Code</span>
+            </div>
+            {
+                /* DRAFT COPY — pending copy review (see PR). The diagrams only
+                carry labels; these two paragraphs are the connective claim
+                written out as crawlable prose. */
+            }
+            <p class="column-note">
+                Separate tools for data pipelines, infrastructure, and AI
+                scripts — three silos stitched together with custom glue code
+                that breaks whenever one of them changes.
+            </p>
         </div>
 
-        <KestraWayAnimation class="kestra-way-image" />
+        <div class="column">
+            <div class="kestra-way">
+                <KestraWayAnimation class="kestra-way-image" />
+                <div class="diagram-text kestra-text">
+                    <h3 class="kestra-title">The Kestra Way</h3>
+                    <p class="kestra-brand">Kestra</p>
+                    <ul class="kestra-domains">
+                        {
+                            kestraDomains.map((label, index) => (
+                                <li class={`card-${index + 1}`}>{label}</li>
+                            ))
+                        }
+                    </ul>
+                    <p class="kestra-summary">Unified Orchestration</p>
+                </div>
+            </div>
+            <p class="column-note">
+                One platform orchestrates data, infrastructure, and AI workflows
+                together — unified orchestration instead of glue code, with one
+                place to build, govern, and scale.
+            </p>
+        </div>
     </div>
     <p class="caption">
         Kestra scales because it is designed for cross-team orchestration from
@@ -66,7 +120,7 @@ import SixtySeconds from "./SixtySeconds.astro"
             margin-bottom: 1rem;
         }
 
-        span {
+        .summary {
             font-size: 0.825rem;
             color: var(--hp-content-tertiary);
             margin-bottom: 3rem;
@@ -88,15 +142,181 @@ import SixtySeconds from "./SixtySeconds.astro"
             width: auto;
         }
         .kestra-way {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: relative;
         }
         .kestra-way-image {
             width: auto;
             height: 396px;
             border-radius: 0.5rem;
         }
+    }
+
+    // ── Diagram text layers ────────────────────────────────────────────────
+    // The labels below were glyph outlines inside the two SVGs. They are now
+    // real text positioned over the graphic, in percentages of the diagram's
+    // viewBox, so they track it at every breakpoint without a media query.
+    //
+    // `--vb-w` / `--vb-h` are the viewBox dimensions. A label's box is written
+    // as the design's own coordinates divided by those, which keeps the numbers
+    // traceable back to the SVG instead of being opaque percentages. Font sizes
+    // use `cqw` against the layer, so 1cqw = 1% of the diagram width and a font
+    // size in viewBox units converts as `size / --vb-w * 100cqw`.
+    .diagram-text {
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        container-type: size;
+        // Text is decoration-free here; the graphic supplies the framing.
+        pointer-events: none;
+
+        li,
+        p,
+        h3 {
+            position: absolute;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            white-space: nowrap;
+        }
+    }
+
+    // ── Legacy diagram: three siloed tools, one per box ────────────────────
+    .legacy-diagram {
+        position: relative;
+        height: 210px;
+        aspect-ratio: 311 / 214;
+    }
+
+    .legacy-text {
+        --vb-w: 311;
+        --vb-h: 214;
+        inset: 0;
+
+        li {
+            // Box rects: x 19, width 266, height 44.
+            left: calc(19 / var(--vb-w) * 100%);
+            width: calc(266 / var(--vb-w) * 100%);
+            height: calc(44 / var(--vb-h) * 100%);
+            // Mona Sans 400 at 16 viewBox units, matching the outlines.
+            font-size: calc(16 / var(--vb-w) * 100cqw);
+            font-weight: 400;
+            color: #131316;
+        }
+
+        .row-1 {
+            top: calc(17 / var(--vb-h) * 100%);
+        }
+        .row-2 {
+            top: calc(85 / var(--vb-h) * 100%);
+        }
+        .row-3 {
+            top: calc(154.1 / var(--vb-h) * 100%);
+        }
+    }
+
+    // ── Kestra diagram: one platform over Data, Infra and AI ───────────────
+    // This layer has to land on the SVG's *rendered content box*, which is not
+    // the SVG's element box: the markup carries `height="396"`, so below `md`
+    // the graphic is letterboxed inside a 396px-tall element and only
+    // `width x width * 396/554` of it is painted. The rules below therefore
+    // mirror `.kestra-widget svg` exactly — 100% wide (letterboxed, and the
+    // aspect-ratio reproduces the painted height) then a fixed 554px from `md`,
+    // where `width: auto` resolves to the intrinsic width. Diverging from that
+    // pair of rules — `min(100%, 554px)` for instance — drifts between `md` and
+    // ~1130px, where the column is narrower than 554px and the graphic is
+    // centre-clipped rather than scaled.
+    .kestra-text {
+        --vb-w: 554;
+        --vb-h: 396;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        aspect-ratio: 554 / 396;
+        color: #fff;
+        // The widget stacks svg 1 / glow 2 / particles 3, and it is not itself a
+        // stacking context, so those canvases paint against an ancestor and
+        // would cover this layer at `z-index: auto`. 4 puts the labels back on
+        // top, where the outlines used to be.
+        z-index: 4;
+
+        @include media-breakpoint-up(md) {
+            width: 554px;
+        }
+
+        // Centred single lines: positioned on the cap-height centre of the
+        // outline they replace, hence the translate rather than a box.
+        .kestra-title,
+        .kestra-summary {
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        .kestra-title {
+            top: calc(65.3 / var(--vb-h) * 100%);
+            font-size: calc(20 / var(--vb-w) * 100cqw);
+            font-weight: 600;
+        }
+
+        // Sits to the right of the logo diamonds, so it is left-aligned, not
+        // centred on the card.
+        .kestra-brand {
+            top: calc(145.9 / var(--vb-h) * 100%);
+            left: calc(259.88 / var(--vb-w) * 100%);
+            transform: translateY(-50%);
+            font-size: calc(21.3 / var(--vb-w) * 100cqw);
+            font-weight: 600;
+        }
+
+        // Domain cards: y 239.383, 92.3082 wide, 57.7665 tall.
+        .kestra-domains li {
+            top: calc(239.383 / var(--vb-h) * 100%);
+            width: calc(92.3082 / var(--vb-w) * 100%);
+            height: calc(57.7665 / var(--vb-h) * 100%);
+            font-family: var(--font-family-jetbrains-mono);
+            font-size: calc(14.21 / var(--vb-w) * 100cqw);
+        }
+        .card-1 {
+            left: calc(127.531 / var(--vb-w) * 100%);
+        }
+        .card-2 {
+            left: calc(230.846 / var(--vb-w) * 100%);
+        }
+        .card-3 {
+            left: calc(334.161 / var(--vb-w) * 100%);
+        }
+
+        .kestra-summary {
+            top: calc(338.33 / var(--vb-h) * 100%);
+            font-size: calc(14.19 / var(--vb-w) * 100cqw);
+        }
+    }
+
+    // The Kestra column's heading lives inside the diagram, so it must not take
+    // the shared `.comparison h3` spacing that the legacy column's heading uses.
+    .comparison .kestra-text h3 {
+        margin: 0;
+        color: #fff;
+    }
+
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    // DRAFT COPY — the prose restating each diagram's claim, pending copy
+    // review. Styled like the captions so the diagrams stay the visual focus.
+    .column-note {
+        font-size: 0.875rem;
+        color: var(--hp-content-tertiary);
+        max-width: 30rem;
+        margin: 0 auto;
     }
 
     .caption {
@@ -108,4 +328,3 @@ import SixtySeconds from "./SixtySeconds.astro"
         margin-top: 1.5rem;
     }
 </style>
-
