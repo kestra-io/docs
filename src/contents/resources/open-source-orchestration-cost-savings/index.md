@@ -23,7 +23,6 @@ faq:
     answer: "Open source typically involves upfront investment in internal expertise and infrastructure, with ongoing operational costs. Proprietary solutions often have high recurring licensing fees, bundled support, and potential for escalating costs with scale or feature upgrades, with less flexibility to self-manage."
 author: ""
 ---
-```
 In an era where every dollar counts, optimizing operational expenses is paramount for engineering teams. Workflow orchestration, essential for managing complex data, AI, and infrastructure pipelines, often comes with a hefty price tag when relying on proprietary solutions. Yet, a powerful alternative exists: open source orchestration.
 
 This guide delves into how leveraging open source tools can unlock significant cost savings for your organization, far beyond merely eliminating licensing fees. We'll explore direct financial benefits, indirect efficiencies, and strategic advantages, including how a unified, declarative platform like Kestra empowers teams to achieve more with less.
