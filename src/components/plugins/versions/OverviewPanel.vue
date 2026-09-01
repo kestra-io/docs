@@ -218,6 +218,7 @@
 
                         &:hover {
                             text-decoration: underline;
+                            text-decoration-skip-ink: none;
                         }
                     }
                 }
