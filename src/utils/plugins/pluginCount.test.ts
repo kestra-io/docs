@@ -78,13 +78,15 @@ describe("fetchTotalPluginsCount", () => {
         fetchApiCachedMock.mockReset()
     })
 
-    it("counts distinct element classes floored to the hundred", async () => {
+    it("counts distinct element classes floored to the hundred, in one request", async () => {
         fetchApiCachedMock.mockResolvedValue([
             { tasks: Array.from({ length: 234 }, (_, i) => ({ cls: `cls.${i}` })) },
         ])
         const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
         expect(await fetchTotalPluginsCount()).toBe("200")
+        // A successful first attempt is not retried.
+        expect(fetchApiCachedMock).toHaveBeenCalledTimes(1)
     })
 
     it("shares one request across concurrent and repeated callers", async () => {
@@ -102,18 +104,99 @@ describe("fetchTotalPluginsCount", () => {
         expect(fetchApiCachedMock).toHaveBeenCalledTimes(1)
     })
 
-    it("propagates failures instead of returning a fake count, and retries on the next call", async () => {
-        vi.spyOn(console, "error").mockImplementation(() => {})
-        fetchApiCachedMock
-            .mockRejectedValueOnce(new Error("API down"))
-            .mockResolvedValueOnce([
-                { tasks: Array.from({ length: 150 }, (_, i) => ({ cls: `cls.${i}` })) },
-            ])
-        const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
+    it("retries a transient failure within one call and succeeds", async () => {
+        vi.useFakeTimers()
+        try {
+            fetchApiCachedMock
+                .mockRejectedValueOnce(new Error("blip"))
+                .mockResolvedValueOnce([
+                    { tasks: Array.from({ length: 150 }, (_, i) => ({ cls: `cls.${i}` })) },
+                ])
+            const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
-        await expect(fetchTotalPluginsCount()).rejects.toThrow("API down")
-        // The failed promise is not memoized: the next call retries and succeeds.
-        await expect(fetchTotalPluginsCount()).resolves.toBe("100")
-        expect(fetchApiCachedMock).toHaveBeenCalledTimes(2)
+            const promise = fetchTotalPluginsCount()
+            await vi.runAllTimersAsync()
+
+            await expect(promise).resolves.toBe("100")
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(2)
+        } finally {
+            vi.useRealTimers()
+        }
+    })
+
+    it("survives two failures and succeeds on the final attempt", async () => {
+        vi.useFakeTimers()
+        try {
+            fetchApiCachedMock
+                .mockRejectedValueOnce(new Error("blip 1"))
+                .mockRejectedValueOnce(new Error("blip 2"))
+                .mockResolvedValueOnce([
+                    { tasks: Array.from({ length: 150 }, (_, i) => ({ cls: `cls.${i}` })) },
+                ])
+            const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
+
+            const promise = fetchTotalPluginsCount()
+            await vi.runAllTimersAsync()
+
+            await expect(promise).resolves.toBe("100")
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(3)
+        } finally {
+            vi.useRealTimers()
+        }
+    })
+
+    it("backs off between attempts and throws once all attempts fail", async () => {
+        vi.spyOn(console, "error").mockImplementation(() => {})
+        vi.useFakeTimers()
+        try {
+            fetchApiCachedMock.mockRejectedValue(new Error("API down"))
+            const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
+
+            const promise = fetchTotalPluginsCount()
+            promise.catch(() => {}) // observed below; avoid an unhandled rejection
+
+            await vi.advanceTimersByTimeAsync(0)
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(1)
+            // Second attempt only after the first 500ms backoff...
+            await vi.advanceTimersByTimeAsync(499)
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(1)
+            await vi.advanceTimersByTimeAsync(1)
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(2)
+            // ...and the third after a longer 1000ms backoff.
+            await vi.advanceTimersByTimeAsync(1000)
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(3)
+
+            await expect(promise).rejects.toThrow("API down")
+        } finally {
+            vi.useRealTimers()
+        }
+    })
+
+    it("does not memoize an exhausted failure: the next call starts fresh and can succeed", async () => {
+        vi.spyOn(console, "error").mockImplementation(() => {})
+        vi.useFakeTimers()
+        try {
+            fetchApiCachedMock
+                .mockRejectedValueOnce(new Error("API down"))
+                .mockRejectedValueOnce(new Error("API down"))
+                .mockRejectedValueOnce(new Error("API down"))
+                .mockResolvedValueOnce([
+                    { tasks: Array.from({ length: 150 }, (_, i) => ({ cls: `cls.${i}` })) },
+                ])
+            const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
+
+            const failing = fetchTotalPluginsCount()
+            failing.catch(() => {})
+            await vi.runAllTimersAsync()
+            await expect(failing).rejects.toThrow("API down")
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(3)
+
+            const retried = fetchTotalPluginsCount()
+            await vi.runAllTimersAsync()
+            await expect(retried).resolves.toBe("100")
+            expect(fetchApiCachedMock).toHaveBeenCalledTimes(4)
+        } finally {
+            vi.useRealTimers()
+        }
     })
 })

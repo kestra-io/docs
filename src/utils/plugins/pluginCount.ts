@@ -2,8 +2,31 @@ import { $fetchApiCached } from "~/utils/fetch";
 import type { Plugin } from "./plugin";
 import { calculateTotalPlugins } from "~/composables/usePluginsCount";
 
+const FETCH_ATTEMPTS = 3;
+const RETRY_BASE_DELAY_MS = 500;
+
+// Retries transient fetch failures (with a short growing backoff) before
+// giving up: the count is rendered on ~30 pages, so a single network blip
+// should not fail the whole build.
+async function fetchWithRetry<T>(url: string): Promise<T> {
+    let lastError: unknown;
+    for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt++) {
+        try {
+            return await $fetchApiCached<T>(url);
+        } catch (e) {
+            lastError = e;
+            if (attempt < FETCH_ATTEMPTS) {
+                await new Promise((resolve) =>
+                    setTimeout(resolve, RETRY_BASE_DELAY_MS * attempt),
+                );
+            }
+        }
+    }
+    throw lastError;
+}
+
 async function loadTotalPluginsCount(): Promise<string> {
-    const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups");
+    const pluginGroups = await fetchWithRetry<Plugin[]>("/plugins/subgroups");
     const count = calculateTotalPlugins(pluginGroups);
     const rounded = Math.floor(count / 100) * 100;
     return `${rounded}`;

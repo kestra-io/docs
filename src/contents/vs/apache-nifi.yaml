@@ -156,7 +156,7 @@ easeOfUse:
 visualPreview:
   mainTitle: One Platform for Your Entire Technology Stack
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. {totalPlugins}+ open-source plugins."
+    description: "Orchestrate data pipelines, infrastructure operations, AI workloads, and business processes in one unified platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. {totalPlugins}+ plugins."
   competitor:
     description: "Ingest data from any source, route FlowFiles through a directed graph of processors, transform content in motion, and mediate between disparate systems in real time. NiFi's visual canvas connects processors for continuous data flow with built-in back-pressure and provenance tracking."
     shadowColor: "#1A9FB9"
