@@ -34,25 +34,21 @@
         display: inline-block;
         overflow: hidden;
         vertical-align: bottom;
-        height: 2.375rem;
+        // 1lh resolves to the line-height inherited from .hero h1, so the box
+        // tracks the heading's line box exactly at every breakpoint
+        height: 1lh;
         position: relative;
         // force a fixed width to prevent layout shift; adjust as needed based on longest word
         width: 115px;
         @include media-breakpoint-up(md) {
-            height: 3.9375rem;
             width: 200px;
         }
     }
 
     .word {
         display: block;
-        height: 2.375rem;
-        line-height: 2.375rem;
+        height: 1lh;
         white-space: nowrap;
-        @include media-breakpoint-up(md) {
-            height: 3.9375rem;
-            line-height: 3.9375rem;
-        }
     }
 
     .slide-enter-active,
