@@ -16,12 +16,8 @@ For server components and system maintenance commands (starting standalone serve
 Source code and releases are available at [github.com/kestra-io/kestractl](https://github.com/kestra-io/kestractl).
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | VERSION=2 bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
 ```
-
-:::alert{type="warning"}
-The default install script (without `VERSION=2`) installs kestractl 1.x, which is compatible with Kestra 1.x only. Pass `VERSION=2` to install the Kestra 2.0-compatible release.
-:::
 
 ## Quick Setup
 
