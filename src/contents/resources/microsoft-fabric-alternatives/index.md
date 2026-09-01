@@ -308,4 +308,3 @@ Ready to see how a declarative, vendor-neutral orchestration layer can unify you
   ]
 }
 ```
-```

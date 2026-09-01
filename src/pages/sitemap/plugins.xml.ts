@@ -4,32 +4,29 @@ import type { APIRoute } from "astro"
 import { sitemapResponse, formatLastMod } from "~/utils/sitemap.ts"
 import {
     isEntryAPluginElementPredicate,
-    subGroupName,
-    buildPluginMappings,
-    buildSubGroupSegmentPredicate,
     filterPluginsWithoutDeprecated,
     type Plugin,
     type PluginElement,
 } from "~/utils/plugins/plugin"
+import {
+    buildPluginUrlIndex,
+    canonicalPluginPath,
+    canonicalPluginUrl,
+} from "~/utils/plugins/canonicalUrl"
 import { $fetchApiCached } from "~/utils/fetch.ts"
-import { slugify } from "~/utils/slugify"
 
 export const GET: APIRoute = async () => {
     const allPlugins = await $fetchApiCached<Plugin[]>(`/plugins/subgroups`)
 
-    const mapping = buildPluginMappings(allPlugins)
-    // Only plugins with more than one subgroup serve the subgroup segment; for the
-    // others the page 301s it away, so emitting it would list redirects in the sitemap.
-    const hasSubGroupSegment = buildSubGroupSegmentPredicate(allPlugins)
-
+    const index = buildPluginUrlIndex(allPlugins)
     const allPages = filterPluginsWithoutDeprecated(allPlugins).flatMap((plugin) => {
         const pluginName = plugin.name
-        const keepSubGroup = hasSubGroupSegment(pluginName)
-        const urls = [`/plugins/${pluginName}`]
-
-        if (keepSubGroup && plugin.subGroup) {
-            urls.push(`/plugins/${pluginName}/${slugify(subGroupName(plugin))}`)
-        }
+        const root = `/plugins/${pluginName}`
+        // Only the subgroup pages that survive canonicalisation: for a plugin with a
+        // single subgroup the segment is stripped with a 301, so listing it would put a
+        // redirect in the sitemap.
+        const base = canonicalPluginPath(plugin, index) ?? root
+        const urls = base === root ? [root] : [root, base]
 
         const pluginUpdated = (plugin as any).updatedAt ?? (plugin as any).updated ?? null
 
@@ -39,9 +36,11 @@ export const GET: APIRoute = async () => {
                 .map(([_, value]) => value as PluginElement[])
                 .flatMap((value) => {
                     return value.map((t: PluginElement) => {
-                        const subgroup = keepSubGroup ? mapping.clsToSubgroup[t.cls] : undefined
-                        const url = `/plugins/${pluginName}${subgroup ? "/" + subgroup : ""}/${t.cls.toLocaleLowerCase()}`
-                        return t.deprecated ? null : url
+                        if (t.deprecated) return null
+                        return (
+                            canonicalPluginUrl(t.cls, index)
+                            ?? `${base}/${t.cls.toLocaleLowerCase()}`
+                        )
                     }).filter(url => url !== null)
                 }),
         ).map((url) => ({
