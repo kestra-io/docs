@@ -29,6 +29,8 @@ Configure **Default authentication credentials** in the Kestra UI. Any SDK-based
 
 The resolution order is: namespace default → tenant default → global config (below).
 
+The namespace and tenant defaults are replaced as whole objects, not merged field by field. If a namespace sets only **Kestra URL** with no credentials, it does not inherit the tenant's credentials — the task will be unauthenticated. Set all required fields (URL and at least one credential) at each level you configure.
+
 ### 2. Global configuration fallback
 
 Add credentials to your server configuration. These apply to all SDK-based tasks across the instance that have no namespace or tenant default:
@@ -71,7 +73,7 @@ tasks:
 Any task that calls the Kestra API internally requires credentials. The affected plugin families are:
 
 - `io.kestra.plugin.git.*` — sync tasks such as `SyncFlows`, `SyncNamespaceFiles`, and `NamespaceSync`
-- `io.kestra.plugin.kestra.*` — Kestra SDK tasks such as `CreateCase`
+- `io.kestra.plugin.kestra.*` — Kestra SDK tasks such as `CreateCase`. These tasks resolve the webserver URL in this order: the task's `kestraUrl` property → the SDK auth `url` from config or namespace/tenant default → the internal `{{ kestra.url }}` variable. In a split worker/webserver deployment, set `kestraUrl` explicitly or configure `url` at the global/namespace/tenant level. Set `auto: false` on the task to opt out of all default SDK credentials and URL resolution.
 - `io.kestra.plugin.ai.*` — the `KestraFlow` tool
 
 If a task fails with a 401 error after upgrading, adding credentials is the fix.
