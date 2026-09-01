@@ -24,8 +24,8 @@ There are three ways to supply credentials, in recommended order.
 
 Configure **Default authentication credentials** in the Kestra UI. Any SDK-based task running in that scope picks up the credentials automatically — no changes to individual flows are required.
 
-- **Tenant**: go to **Tenants → [tenant] → Settings** and scroll to **Default authentication credentials**. Enter an API token, or a username and password. This applies to all namespaces in the tenant.
-- **Namespace**: go to **Namespaces → [namespace] → Edit** and scroll to **Default authentication credentials**. A namespace-level credential overrides the tenant-level one.
+- **Tenant**: go to **Tenants → [tenant] → Settings** and scroll to **Default authentication credentials**. Set **Kestra URL** to the webserver address, then enter an API token or a username and password. This applies to all namespaces in the tenant.
+- **Namespace**: go to **Namespaces → [namespace] → Edit** and scroll to **Default authentication credentials**. Set **Kestra URL** and credentials here to override the tenant-level values for this namespace.
 
 The resolution order is: namespace default → tenant default → global config (below).
 
@@ -38,12 +38,15 @@ kestra:
   tasks:
     sdk:
       authentication:
+        url: "http://your-webserver:8080"  # required in worker deployments; see note below
         api-token: "${KESTRA_API_TOKEN}"   # recommended: use a service account API token
         # username: my-user               # alternative: basic auth
         # password: "${KESTRA_PASSWORD}"
 ```
 
 **OSS:** if `kestra.server.basic-auth` is already configured, Kestra automatically derives the global SDK credentials from it — no additional configuration is needed.
+
+**Worker deployments:** in a setup where workers run separately from the webserver, the SDK call originates from the worker process and will by default target the worker's own host rather than the webserver. Set `url` to the webserver's address so SDK-based tasks route their API calls correctly. You can set this at any level: the global config above, the namespace or tenant default in the UI, or the task-level `auth` block.
 
 ### 3. Inline auth on the task
 
@@ -58,6 +61,7 @@ tasks:
     url: https://github.com/your-org/your-repo
     branch: main
     auth:
+      url: "http://your-webserver:8080"
       apiToken: "{{ secret('KESTRA_API_TOKEN') }}"
       # username and password are also accepted instead of apiToken
 ```
