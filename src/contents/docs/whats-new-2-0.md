@@ -202,3 +202,4 @@ All breaking changes have migration guides:
 | Database migrations (EE) | [Guide](./11.migration-guide/v2.0.0/database-migrations/index.md) |
 | `execution-data.internal-storage` config removed (EE) | [Guide](./11.migration-guide/v2.0.0/execution-data-internal-storage/index.md) |
 | Super Admin renamed to Instance Owner (EE, Cloud) | [Guide](./11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md) |
+| SDK auth required for internal tasks | [Guide](./11.migration-guide/v2.0.0/sdk-authentication/index.md) |

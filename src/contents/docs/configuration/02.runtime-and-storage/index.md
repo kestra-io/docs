@@ -43,7 +43,7 @@ This is useful when you want to limit how aggressively Kestra allocates worker, 
 
 ## Database and datasources
 
-Start here if you are choosing the persistence layer for a new Kestra instance or moving from a local setup to a durable environment. In most teams, this is the first configuration page they revisit after initial installation.
+Start here if you are choosing the queue and repository backend for a new Kestra instance or moving from a local setup to a durable environment. In most teams, this is the first configuration page they revisit after initial installation.
 
 Use `kestra.queue.type` and `kestra.repository.type` to select your backend:
 

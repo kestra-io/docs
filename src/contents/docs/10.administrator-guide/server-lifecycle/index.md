@@ -12,7 +12,7 @@ These components are called **server components** or just **servers**.
 
 See the [server components](../../08.architecture/02.server-components/index.md) and [deployment](../../08.architecture/03.deployment-architecture/index.md) sections for more information.
 
-Kestra has a built-in liveness mechanism. Each server sends a periodic heartbeat stored inside the database, and other servers check whether the server is still alive.
+Kestra has a built-in liveness mechanism. Each server sends a periodic heartbeat stored inside the database. The Executor runs the cluster-wide liveness coordinator: it reviews every registered service instance on a scheduled tick and drives state transitions when heartbeats are missed.
 
 When a server is not alive, Kestra runs maintenance routines such as [worker job resubmission](#worker-job-resubmission).
 

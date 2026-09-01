@@ -212,6 +212,83 @@ Case events are wired into the in-app notification system (the bell icon). Seven
 - Audit: create, update, and delete of cases and case templates are recorded in the [audit log](../06.audit-logs/index.md) (resource types `CASE` and `CASE_TEMPLATE`). Timeline events and comments are not separately audited.
 - Backup: cases, templates, timeline events, and execution links are included in backup and restore.
 
+## API
+
+All case operations are available via REST under `/api/v1/{tenant}/cases`. The calls below cover the most common integration patterns. For the full endpoint list, request shapes, and filter DSL, see the [Enterprise API reference](../../../api-reference/01.enterprise/index.mdx).
+
+**Search cases**
+
+```bash
+curl -X GET "https://{host}/api/v1/{tenant}/cases/search?page=1&size=25" \
+  -H "Authorization: Bearer {token}"
+```
+
+Accepts `filters` (a list of structured query filter objects), `sort`, and `dateFilter` as query parameters. Use `GET /cases/counts` to get a `{status: count}` breakdown without pagination.
+
+**Create a case**
+
+```bash
+curl -X POST "https://{host}/api/v1/{tenant}/cases" \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "namespace": "company.team",
+    "title": "Orders sync failed",
+    "severity": "HIGH",
+    "sla": { "acknowledgement": "PT1H", "resolution": "PT8H" }
+  }'
+```
+
+Returns the full case object including the generated `id`.
+
+**Acknowledge and resolve**
+
+```bash
+# Acknowledge
+curl -X POST "https://{host}/api/v1/{tenant}/cases/{id}/acknowledge" \
+  -H "Authorization: Bearer {token}"
+
+# Resolve
+curl -X POST "https://{host}/api/v1/{tenant}/cases/{id}/resolve" \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '{ "reason": "Fixed", "note": "Deployed hotfix v1.2.3" }'
+```
+
+A `reason` is required to resolve. The reason is a free-form string; case templates can configure a `resolutionReasons` list to restrict which values are accepted.
+
+**Link executions**
+
+```bash
+curl -X POST "https://{host}/api/v1/{tenant}/cases/{id}/executions" \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '["execution-id-1", "execution-id-2"]'
+```
+
+Use `POST /cases/{id}/executions/by-query` to link everything matching a filter query (capped at 1,000).
+
+**Look up cases by execution**
+
+```bash
+curl -X POST "https://{host}/api/v1/{tenant}/cases/by-executions" \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '["execution-id-1", "execution-id-2"]'
+```
+
+Returns `{ "executionId": [caseSummary, ...] }` — useful for annotating an execution list with its linked cases.
+
+**Add a comment**
+
+```bash
+curl -X POST "https://{host}/api/v1/{tenant}/cases/{id}/comments" \
+  -H "Authorization: Bearer {token}" \
+  -F 'comment={"message":"Restarted the service, monitoring now."};type=application/json'
+```
+
+Supports up to 5 file attachments (10 MB each) as additional `-F file=@path` parts.
+
 ## Current limitations
 
 - Notifications are in-app only: case events appear in the notification bell, but no Slack message or email is sent by Cases. External alerting can be added with standard notification tasks alongside `CreateCase`, or as a case action.

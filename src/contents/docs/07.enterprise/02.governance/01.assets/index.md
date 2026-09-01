@@ -47,7 +47,9 @@ Every asset includes these fields:
 
 ## Asset identifier
 
-An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it. You can attach a namespace to an asset to improve filtering and to restrict visibility so only users or groups with the appropriate RBAC can access the asset.
+An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it - the `id` must be unique per tenant. Neither the namespace nor the type is part of that identity: two assets with the same `id` and different namespaces or types cannot exist in the same tenant. Creating an asset with an `id` that is already taken is rejected.
+
+You can attach a namespace to an asset to improve filtering and to restrict visibility so only users or groups with the appropriate RBAC can access the asset.
 
 ## Asset type
 
@@ -148,8 +150,7 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        
----
+        ---
         - hosts: localhost
           tasks:
             - name: Print Hello World
@@ -371,6 +372,67 @@ tasks:
 ```
 
 :::
+
+## Locking assets
+
+A lock prevents concurrent writes to a shared asset while a flow operates on it. Locks are TTL-bounded: they expire automatically when their duration elapses and can also be released explicitly. Reads are always open — only writes (edit, delete) are blocked while a lock is held.
+
+Two owner types exist:
+
+| Owner type | Acquired by | Behavior while held |
+|---|---|---|
+| `EXECUTION` | `Acquire` task | Blocks other executions' writes. The lock-holding execution can still write to the asset, and each write extends the lease. |
+| `USER` | UI or REST API | Blocks all execution writes. Use for manual maintenance windows. |
+
+### Locking from a flow
+
+The `Acquire` and `Release` tasks wrap the work that needs exclusive write access. Both require the `LOCK` permission on the `ASSET` resource (`UNLOCK` for `Release`).
+
+If another execution already holds the lock when `Acquire` runs, the task fails with a 423 error. Add a `Retry` to the `Acquire` task to wait for the lock to become available.
+
+```yaml
+id: update_customer_asset
+namespace: company.team
+
+tasks:
+  - id: acquire
+    type: io.kestra.plugin.kestra.ee.locks.Acquire
+    assetId: customers_by_country
+    ttl: PT1H
+
+  - id: write
+    type: io.kestra.plugin.core.log.Log
+    message: Writing to the locked asset
+
+  - id: release
+    type: io.kestra.plugin.kestra.ee.locks.Release
+    assetId: customers_by_country
+```
+
+**`Acquire`** properties:
+
+| Property | Required | Description |
+|---|---|---|
+| `assetId` | Yes | ID of the asset to lock. |
+| `ttl` | No | How long to hold the lock before it expires automatically. ISO-8601 duration (e.g. `PT1H`). Uses the server default when unset. |
+
+**`Acquire`** outputs:
+
+| Output | Description |
+|---|---|
+| `lockedUntil` | When the lock expires. |
+| `ownerType` | Always `EXECUTION` for a task-acquired lock. |
+| `executionId` | ID of the execution holding the lock. |
+
+`Release` is owner-checked: it removes the lock only if the current execution holds it. If the lock has already expired or belongs to a different owner, `Release` is a no-op — safe to call unconditionally.
+
+### Locking from the UI
+
+From any asset's detail page, users with the `LOCK` permission can lock the asset manually. Choose from preset durations (5 minutes to 24 hours) or enter a custom ISO-8601 duration. The page shows who holds the lock and when it expires. Users with the `UNLOCK` permission can release any lock regardless of owner.
+
+When an asset is locked, the detail page shows a banner: *You might be seeing outdated metadata as this asset is currently locked for writing.*
+
+The asset list supports filtering by lock status.
 
 ## Data pipeline use cases
 

@@ -12,6 +12,8 @@ Launch Kestra locally, create a simple flow, and run your first execution in a f
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/bQNmXge5vSY?si=ueqzWRVVtuGiAwjU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/0jxLQEOWbZ4?si=wzg3Vnt56MMK5i2K" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Prerequisites
@@ -30,7 +32,8 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
-  kestra/kestra:latest server local
+  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
+  kestra/kestra:latest-slim server local
 ```
 
 If you re-run the command and Docker reports `You have to remove (or rename) that container to be able to reuse that name.`, remove the old container with `docker rm -f kestra` or pick a different `--name`.
@@ -40,6 +43,11 @@ If you re-run the command and Docker reports `You have to remove (or rename) tha
 - stores local files in the `kestra_data` Docker volume
 - persists the H2 database in the `kestra_db` Docker volume
 - mounts `/tmp` and the Docker socket so script and container tasks can run locally
+- uses the lightweight `slim` image and installs plugins automatically on demand
+:::
+
+:::alert{type="info"}
+The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. The `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable makes Kestra install any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
 :::
 
 The container is ready when the logs show `Main server is running at http://...:8080`.

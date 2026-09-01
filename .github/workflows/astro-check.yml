@@ -1,8 +1,8 @@
 name: Lint & Astro Check
 
-# Runs `astro check` (TypeScript / Astro diagnostics), oxlint, and the SSR
-# collection-import check on every pull request, reporting findings as inline
-# review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
+# Runs the vitest unit tests, `astro check` (TypeScript / Astro diagnostics),
+# oxlint, and the SSR collection-import check on every pull request, reporting
+# lint/check findings as inline review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
 # and [imported content]. The job fails if any tool reports anything, keeping
 # the tree clean.
 on:
@@ -28,6 +28,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+
+      - name: Run unit tests
+        run: npm run test:unit
 
       - name: Set up reviewdog
         uses: reviewdog/action-setup@v1

@@ -9,7 +9,7 @@ icon: /src/contents/docs/icons/tutorial.svg
 Run tasks or subflows in parallel, create loops, and conditional branching.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/pRRAz5l2WWw?si=WJ_0RW2LVAVtXtgQ" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/3aMEnwznl_4?si=YOgXp7SajWA2n1pA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 The example flow from earlier in this tutorial extracts data from an API, processes it in a Python script, executes a SQL query, and generates a downloadable artifact on a predefined schedule. Many real-world use cases require branching, looping, or running several tasks simultaneously. Kestra handles these requirements with Flowable tasks.

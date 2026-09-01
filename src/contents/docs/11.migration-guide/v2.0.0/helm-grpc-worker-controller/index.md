@@ -33,9 +33,13 @@ The controller deployment is **disabled by default**. Existing standalone deploy
 
 ### `workerGroups` Helm key removed
 
-The old `workerGroups` map in `values.yaml`, which created multiple worker deployments each pinned to a named group, is no longer supported in 2.0. Worker Groups are now managed server-side — created and configured via the Kestra UI or API — and workers join a group at runtime by presenting a registration token (see [Worker authentication](#worker-authentication) below).
+The old `workerGroups` map in `values.yaml`, which created multiple worker deployments each pinned to a named group, is no longer supported in 2.0. Worker Groups are now managed server-side — created and configured via the Kestra UI, API, or declarative configuration — and workers join a group at runtime by presenting a registration token (see [Worker authentication](#worker-authentication) below).
 
-For each group you previously defined in `workerGroups`:
+:::alert{type="info"}
+For automated and IaC deployments, use `kestra.ee.setup` to declare the full worker topology in `application.yml`. Kestra applies it at startup, so all services can start concurrently in a single Helm pass. See [Declarative configuration](../../../07.enterprise/04.scalability/worker-group/index.md#declarative-configuration) on the Worker Groups page.
+:::
+
+For each group you previously defined in `workerGroups`, the manual path is:
 
 1. Start Kestra 2.0.0 and open the Instance Owner console. Navigate to **Infrastructure → Worker Groups**.
 2. Create a Worker Group with the same id you used in the old `workerGroups` key (e.g. `wg-1`).

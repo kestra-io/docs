@@ -58,10 +58,10 @@ Here are common use cases in which **Task Runners** can be beneficial:
 
 ### Worker Groups usage
 
-Start the worker with the `--worker-group` flag, along with a registration token configured in the worker's auth settings. The worker must have access to the same backend database and internal storage as the rest of the Kestra cluster. Pass the configuration file via `--config`:
+Start the worker with a registration token configured in the worker's auth settings — the group is determined by the token. Workers connect to the Worker Controller over gRPC and never access the backend database directly. The worker host needs access to the same internal storage as the rest of the cluster. Pass the configuration file via `--config`:
 
 ```shell
-kestra server worker --worker-group=myWorkerGroupKey --config=/path/to/kestra-config.yaml
+kestra server worker --config=/path/to/kestra-config.yaml
 ```
 
 To route a task to a Worker Group, add `workerSelector.tags` to the task definition with tags matching the target Worker Queue. Any Worker Group subscribed to that queue may execute the task.

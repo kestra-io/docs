@@ -204,7 +204,7 @@ volumes:
 
 ## Store capabilities
 
-JDBC and Elasticsearch are complete implementations: they support offset pagination with exact totals, dashboard aggregation, and on-demand purge. Additional log backends planned for a future release may support a subset of these capabilities.
+JDBC and Elasticsearch are complete implementations: they support offset pagination with exact totals, dashboard aggregation, and on-demand purge.
 
 Each store declares its capabilities, and Kestra adapts gracefully:
 
@@ -233,7 +233,10 @@ Use the External Log Data Store when you want logs **out of the main database**.
 
 ## Build a new log store plugin
 
-A new log store is a Kestra plugin that implements `LogDataStoreInterface`. The Splunk log data store plugin is a useful reference for the complete pattern.
+A new log store is a Kestra plugin that implements `LogDataStoreInterface`. Two reference implementations are available:
+
+- [log-data-store-splunk](https://github.com/kestra-io/log-data-store-splunk) — offset pagination, full aggregation support, `canPurge() == true`
+- [log-data-store-datadog](https://github.com/kestra-io/log-data-store-datadog) — cursor pagination, `canPurge() == false` (logs expire via index retention)
 
 ### 1. Implement the interface
 
@@ -260,7 +263,9 @@ The defaults are `canPurge() == true`, `canAggregate() == true`, and `pagination
 @Override public PaginationType paginationType() { return PaginationType.CURSOR; }
 ```
 
-A store declaring `canPurge() == false` must no-op all delete/purge methods and must not publish audit events. A store declaring `CURSOR` must return a `CursoredPage` with a `nextPageable()` cursor token from paginated `find(...)` methods.
+A store declaring `canPurge() == false` must no-op all delete/purge methods: return `0` for integer-return methods and provide an empty body for void ones. A store declaring `CURSOR` must return a `CursoredPage` with a `nextPageable()` cursor token from paginated `find(...)` methods.
+
+When the backend has no further results, emit an end-of-results sentinel as the next cursor token. If a caller sends that sentinel back, return an empty page without hitting the backend. The exact sentinel value is an implementation detail; your store just needs to recognize it on inbound requests and short-circuit.
 
 ### 4. Pass the contract test
 
@@ -270,8 +275,10 @@ Every log store implementation must pass `io.kestra.core.repositories.AbstractLo
 class MyLogDataStoreTest extends AbstractLogDataStoreTest {}
 ```
 
-Wire your store as the injected `LogDataStoreInterface` bean via test config. The suite adapts to whatever your store declares — but your store must genuinely honour its declarations.
+Wire your store as the injected `LogDataStoreInterface` bean via test config. The suite adapts to whatever your store declares, but your store must genuinely honor its declarations.
 
 :::alert{type="info"}
-Most external backends have an indexing delay — writes are not immediately queryable. Override `awaitIndexing(BooleanSupplier ready)` in your test class to poll until data is visible before assertions run.
+Most external backends have an indexing delay — writes are not immediately queryable. Override `awaitIndexing(BooleanSupplier ready)` in your test class to poll until data is visible before assertions run. Polling until a probe write is visible is not always sufficient: different fixture groups can have slightly different indexing lag, so the first visible write does not guarantee all writes are queryable. Add a short settle period after the probe goes green to absorb that skew.
 :::
+
+Two testing strategies are viable: run the contract suite against a real backend via Testcontainers (the Splunk approach, using the same Docker Compose stack as local QA), or inject a mock client through a package-private test constructor and gate live backend testing in a separate integration test class (the Datadog approach). Testcontainers gives higher confidence in query assembly and wire behavior; mock injection keeps CI fast when a live account is not available.

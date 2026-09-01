@@ -13,10 +13,10 @@ Kestra is designed to scale from lightweight workflows to enterprise-scale orche
 ## Core concepts
 
 Before diving into numbers, it helps to understand how Kestra executes work:
-1. **Executors** orchestrate workflows: they orchestrate workflow logic via flowable tasks, delegate tasks to the right worker nodes, and manage execution state and concurrency.
+1. **Executors** drive the execution state machine: they process flowable tasks, manage concurrency, retries, and pauses, and dispatch runnable tasks to Workers via the Worker Controller.
 2. **Workers** run the tasks themselves: from lightweight logging to long-running scripts or container workloads.
-3. **Schedulers** handle triggers such as scheduled events, webhook calls, or polling external resources.
-4. **Webservers** provide the API and UI, they handle user interactions incl. processing execution inputs.
+3. **Schedulers** handle time-based, polling, and realtime triggers. Flow Triggers are evaluated by the Executor; Webhook triggers are handled by the Webserver.
+4. **Webservers** provide the API and UI and handle inbound webhook triggers.
 
 Performance depends on balancing **throughput** (task runs per minute) and **latency** (how quickly executions start and complete) given your infrastructure.
 

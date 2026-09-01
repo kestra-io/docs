@@ -46,16 +46,38 @@ The `kestra-starter` chart installs Versity (object storage) and PostgreSQL (dat
 
 ### Enterprise edition
 
-To deploy the Enterprise Edition, authenticate before pulling images:
+To deploy the Enterprise Edition, Kubernetes needs its own credentials to pull images from the private registry — authenticating with Docker CLI on your local machine does not propagate to the cluster nodes.
+
+Create a Kubernetes secret with your license credentials:
 
 ```bash
-docker login registry.kestra.io --username $LICENSEID --password $FINGERPRINT
+kubectl create secret docker-registry kestra-ee-pull-secret \
+  --docker-server=registry.kestra.io \
+  --docker-username=$LICENSEID \
+  --docker-password=$FINGERPRINT
 ```
 
-Use:
+Reference the secret through `imagePullSecrets`, and point `image` at the Enterprise Edition repository:
 
-- `registry.kestra.io/docker/kestra-ee:latest`
-- or a pinned version such as `registry.kestra.io/docker/kestra-ee:v1.0`
+```yaml
+imagePullSecrets:
+  - name: kestra-ee-pull-secret
+
+image:
+  repository: registry.kestra.io/docker/kestra-ee
+  tag: latest # or a pinned version such as v1.3
+```
+
+For the `kestra-starter` chart, nest these under `kestra:` — like the [ingress configuration](#kestra-starter-chart) below:
+
+```yaml
+kestra:
+  imagePullSecrets:
+    - name: kestra-ee-pull-secret
+  image:
+    repository: registry.kestra.io/docker/kestra-ee
+    tag: latest # or a pinned version such as v1.3
+```
 
 Review [Enterprise requirements](../../07.enterprise/05.instance/index.mdx) before deploying.
 Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.

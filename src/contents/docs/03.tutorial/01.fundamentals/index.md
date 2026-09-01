@@ -16,6 +16,8 @@ If you haven't already, follow the [Quickstart Guide](../../01.quickstart/index.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/Foq3RZfwV90?si=uO7xdC5TXZxMGShB" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/LOb3eF-AR8Y?si=_3vtPeNy5mwlzba3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Flows

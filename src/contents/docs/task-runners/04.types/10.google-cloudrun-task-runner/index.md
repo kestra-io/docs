@@ -272,7 +272,7 @@ tasks:
       data.txt: "{{ inputs.file }}"
     outputFiles:
       - out.txt
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.ee.gcp.runner.CloudRun
       projectId: "{{ vars.projectId }}"
@@ -369,7 +369,7 @@ tasks:
       data.txt: "{{ inputs.file }}"
     outputFiles:
       - out.txt
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.ee.gcp.runner.CloudRun
       projectId: "{{ secret('GCP_PROJECT_ID') }}"

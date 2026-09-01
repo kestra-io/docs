@@ -15,7 +15,7 @@ Tasks and flows can generate outputs that are passed to downstream processes. To
 This storage layer helps avoid connector sprawl. For example, the PostgreSQL plugin can extract data and load it into internal storage. Other tasks can then load that data into Snowflake, BigQuery, or Redshift — or process it with another plugin — without direct point-to-point connections. Let's check out Outputs in practice.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/ZcITW-Hcv_k?si=3Y22ErLEv4-Q6wt-" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/UWmxjyXp45c?si=XuDVdPdSuNihAGyd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## How to retrieve outputs
@@ -62,7 +62,7 @@ Kestra is language-agnostic — run custom scripts in any flow. You can run Pyth
 :::
 
 ```yaml
-id: getting_started_output
+id: getting_started
 namespace: company.team
 
 inputs:
@@ -79,7 +79,7 @@ tasks:
     type: io.kestra.plugin.core.log.Log
     message: "API Status Code: {{ outputs.api.code }}"
 
-  - id: python
+  - id: transform
     type: io.kestra.plugin.scripts.python.Script
     containerImage: python:slim
     beforeCommands:
@@ -130,7 +130,7 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_url }}"
 
-  - id: python
+  - id: transform
     type: io.kestra.plugin.scripts.python.Script
     containerImage: python:slim
     beforeCommands:
@@ -144,10 +144,10 @@ tasks:
       df.glimpse()
       df.select(["brand", "price"]).write_csv("products.csv")
 
-  - id: sqlQuery
+  - id: sql_query
     type: io.kestra.plugin.jdbc.duckdb.Query
     inputFiles:
-      in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+      in.csv: "{{ outputs.transform.outputFiles['products.csv'] }}"
     sql: |
       SELECT brand, round(avg(price), 2) as avg_price
       FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
@@ -180,7 +180,7 @@ tasks:
     type: io.kestra.plugin.core.http.Request
     uri: "{{ inputs.api_url }}"
 
-  - id: python
+  - id: transform
     type: io.kestra.plugin.scripts.python.Script
     taskRunner:
       type: io.kestra.plugin.core.runner.Process # Runs the Python script in the same process as the flow rather than a Docker container
@@ -195,10 +195,10 @@ tasks:
       df.glimpse()
       df.select(["brand", "price"]).write_csv("products.csv")
 
-  - id: sqlQuery
+  - id: sql_query
     type: io.kestra.plugin.jdbc.duckdb.Query
     inputFiles:
-      in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+      in.csv: "{{ outputs.transform.outputFiles['products.csv'] }}"
     sql: |
       SELECT brand, round(avg(price), 2) as avg_price
       FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
