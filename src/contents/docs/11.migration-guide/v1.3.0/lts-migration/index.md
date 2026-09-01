@@ -28,8 +28,8 @@ Three migration commands must be run — **all three are required** for a comple
 The `secrets` migration applies only to **Enterprise Edition** users. Open-source users can skip it — running it on OSS will produce an exception that can be safely ignored.
 :::
 
-:::alert{type="warning"}
-Do **not** run the `secrets` migration when your secret manager is configured in **read-only** mode. Read-only secret managers do not use the secrets metadata store, so the migration is neither needed nor supported: the command fails on purpose with a message explaining this, and skipping it has no impact on your instance — secrets keep resolving at runtime and remain listed in the UI.
+:::alert{type="info"}
+The `secrets` migration automatically **skips any tenant or namespace whose secret manager is in read-only mode** — read-only secret managers do not use the secrets metadata store, so nothing needs to be migrated for them, and each skipped namespace is logged. Writable tenants and namespaces are migrated as usual, so a setup that mixes read-only and writable secret managers still migrates correctly. Skipped read-only namespaces are unaffected: their secrets keep resolving at runtime and remain listed in the UI.
 :::
 
 ## Order of operations
