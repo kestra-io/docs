@@ -34,20 +34,25 @@
         display: inline-block;
         overflow: hidden;
         vertical-align: bottom;
-        height: 1.2em;
+        height: 2.375rem;
         position: relative;
         // force a fixed width to prevent layout shift; adjust as needed based on longest word
         width: 115px;
         @include media-breakpoint-up(md) {
+            height: 3.9375rem;
             width: 200px;
         }
     }
 
     .word {
         display: block;
-        height: 1.2em;
-        line-height: 1.2em;
+        height: 2.375rem;
+        line-height: 2.375rem;
         white-space: nowrap;
+        @include media-breakpoint-up(md) {
+            height: 3.9375rem;
+            line-height: 3.9375rem;
+        }
     }
 
     .slide-enter-active,
