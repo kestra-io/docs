@@ -339,4 +339,3 @@ Ready to see how a declarative approach can simplify your orchestration? [Get st
   ]
 }
 ```
-```

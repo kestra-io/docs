@@ -15,7 +15,7 @@
                         <a
                             v-for="icon in visibleTaskIcons"
                             :key="icon"
-                            :href="'/plugins/' + icon"
+                            :href="taskHref(icon)"
                             class="task"
                         >
                             <div class="box">
@@ -72,7 +72,13 @@
         page: { title: string; includedTasks?: string[] }
         description: string
         orchestrationLinks?: { slug: string; name: string }[]
+        /** Class -> canonical plugin URL, resolved server-side by the page. */
+        taskUrls?: Record<string, string>
     }>()
+
+    // Falls back to the flat form for a class the plugin payload does not know: it still
+    // reaches the right page, just through the redirects this map exists to avoid.
+    const taskHref = (cls: string) => props.taskUrls?.[cls] ?? `/plugins/${cls}`
 
     const visibleTaskIcons = computed(() =>
         (props.page.includedTasks ?? []).filter(

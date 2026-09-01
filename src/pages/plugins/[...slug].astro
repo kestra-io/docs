@@ -250,8 +250,10 @@ if (
 ) {
     if (!versionState.version) {
         console.warn("Redirecting due to no content")
+        // With a single slug segment the parent is the index: build "/plugins", not
+        // "/plugins/", which the trailing-slash rule would bounce a second time.
         return Astro.redirect(
-            `/plugins/${splitRouteSlug.slice(0, -1).join("/")}`,
+            ["/plugins", ...splitRouteSlug.slice(0, -1)].join("/"),
             301,
         )
     }
