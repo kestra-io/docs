@@ -121,4 +121,3 @@ While powerful for application integration, Step Functions is less suited for tr
 ## Conclusion
 
 Choosing the right orchestration platform is a strategic decision that impacts team productivity, operational costs, and future scalability. While Astronomer offers a robust managed Airflow experience, the market provides diverse alternatives tailored to specific needs—from Kestra's universal declarative approach to Dagster's asset-centric data focus. By carefully evaluating your team's technical stack, operational preferences, and long-term vision, you can select an orchestrator that truly empowers your engineering efforts.
-```
