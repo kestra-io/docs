@@ -17,8 +17,6 @@ Instance Owner operations are instance-wide. Changes to tenants, users, worker g
 
 In the sidebar footer, click **Instance Owner** (directly above **Settings**). The entry is only visible to users with the Instance Owner privilege.
 
-<!-- TODO: replace super-admin-settings.png with a screenshot of the new sidebar footer showing the Super Admin entry (PR kestra-io/kestra-ee#10059) -->
-
 The UI switches to the Instance Owner console and shows a banner confirming you are administering the whole instance. Your regular tenant workspace is unaffected — you can return to it at any time.
 
 ## The Instance Owner console

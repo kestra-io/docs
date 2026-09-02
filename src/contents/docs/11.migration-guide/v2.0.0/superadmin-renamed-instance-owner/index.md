@@ -55,14 +55,6 @@ Responses now emit `instanceOwner` instead of `superAdmin`:
 
 Deprecated HTTP paths under `/superadmin` still work but will be removed in a future major version.
 
-### kestractl
-
-<!-- TODO: update when kestractl ships the rename -->
-
-### Terraform provider
-
-<!-- TODO: update when Terraform provider ships the rename -->
-
 ## What requires action
 
 1. **API consumers reading `superAdmin` from responses** — update to read `instanceOwner`. This is the only change without a deprecated alias.

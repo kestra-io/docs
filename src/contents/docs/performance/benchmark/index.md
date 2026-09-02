@@ -6,6 +6,10 @@ icon: /src/contents/docs/icons/admin.svg
 description: View performance benchmarks for Kestra's orchestration throughput and latency across Open Source and Enterprise editions.
 ---
 
+:::alert{type="info"}
+These benchmarks were measured on Kestra 1.3. Updated results for Kestra 2.0 will be published after release.
+:::
+
 Kestra is an orchestration platform: you define a flow, and Kestra orchestrates it.
 Flows can range from lightweight tasks running in milliseconds to complex scripts in containers that run for tens of minutes.
 

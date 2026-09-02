@@ -599,7 +599,7 @@ Add a thumbnail to give catalog users a visual indicator of what the app does. U
 
 ![Image Namespace File](./app-namespace-file.png)
 
-In your app code, add the `thumbnail` string property and point it towards the correct namespace file using `nsfiles:///<your-file>`. For example:
+In your app code, add the `thumbnail` string property and point it toward the correct namespace file using `nsfiles:///<your-file>`. For example:
 
 ```yaml
 id: request_data_form
