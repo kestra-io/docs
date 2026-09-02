@@ -105,6 +105,10 @@ const navigation = [
         if (!cta || !shouldInterceptCtaClick(event)) return
 
         event.preventDefault()
+        const banner = cta.closest<HTMLElement>(".archived-banner")
+        banner?.setAttribute("data-pending", "true")
+        cta.setAttribute("aria-busy", "true")
+
         // Never leave the CTA dead once the default is prevented.
         void resolveVersionSwitchHref("", window.location.pathname)
             .then((href) => window.location.assign(href))
