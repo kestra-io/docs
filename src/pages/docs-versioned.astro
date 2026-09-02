@@ -134,7 +134,11 @@ const navigation = [
 </script>
 
 <style lang="scss">
-    // The banner's own margins are tuned for the plugins article, which has no breadcrumb above it.
+    // The banner's own margins are tuned for the plugins article, which has no
+    // breadcrumb above it. Inside .bd-title it inherits that block's top margin,
+    // and must stay a plain child: a direct .bd-main child would take a grid row
+    // of its own, dropping the content out of the .bd-toc row span and inflating
+    // the title row by the ToC's height.
     .version-banner :global(.archived-banner) {
         margin: 0 0 1.5rem;
     }
