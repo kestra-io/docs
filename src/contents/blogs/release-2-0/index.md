@@ -21,7 +21,7 @@ Everything else in 2.0 is built on those two changes. In this post, we cover wha
 |---|---|---|
 | MCP Tool Trigger + MCP Server | Flows exposed as tools callable by AI agents | EE, Cloud |
 | AI Copilot agentic loop | Three-mode chat sidebar (Edit, Plan, Ask) with multi-turn memory and a confirmation step | EE, Cloud |
-| No Code canvas editor | Visual canvas-based flow editor with guided forms, in sync with YAML and AI Copilot | OSS, EE, Cloud |
+| No-code editor | Guided form editor with a contextual data panel showing available inputs and outputs at each step; in sync with YAML and AI Copilot | OSS, EE, Cloud |
 | RBAC action-based permissions | Resource plus action model in place of CRUD | EE |
 | Policies | Namespace-scoped governance rules in place of `pluginDefaults` | EE |
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
@@ -31,7 +31,7 @@ Everything else in 2.0 is built on those two changes. In this post, we cover wha
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
 | New task runners | AWS EC2, Azure VM, Google Compute Engine, Huawei CCI | EE, Cloud |
 | Loop task | In place of ForEach and ForEachItem, with isolated sub-executions | OSS, EE, Cloud |
-| Trigger `when` expression | Pebble expression in place of Java-class conditions on all trigger types | OSS, EE, Cloud |
+| Trigger `when` expression | Pebble expression in place of chained condition syntax on all trigger types | OSS, EE, Cloud |
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | OSS, EE, Cloud |
 | External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
 | Reusable Inputs | Shared input groups defined once at namespace level | EE, Cloud |
@@ -172,11 +172,11 @@ See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
 
 ## No-code Editor
 
-The No Code editor is redesigned in 2.0. The most useful addition is the contextual data panel: every flow input, upstream task output, and execution context variable available at that point in the flow is listed alongside the configuration form, organized by category and filterable. No switching to the YAML editor to look up variable names.
+The No-code editor is redesigned in 2.0. The most useful addition is the contextual data panel: every flow input, upstream task output, and execution context variable available at that point in the flow is listed alongside the configuration form, organized by category and filterable. No switching to the YAML editor to look up variable names.
 
 Each flow section (Triggers, Tasks, Errors, Finally, After Execution) is displayed as a group of blocks. Clicking a block opens its configuration form with two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). Tasks can be opened in a focused centered view for editing, or in separate tabs when you're working across multiple flow components at once.
 
-Add blocks with **+ Add task** or **+ Add trigger**, or press `/` to search and insert a plugin at the cursor position. All three views (YAML editor, No Code editor, and AI Copilot) stay in sync. Start in any mode and switch freely; every change reflects instantly across all three.
+Add blocks with **+ Add task** or **+ Add trigger**, or press `/` to search and insert a plugin at the cursor position. All three views (YAML editor, No-code editor, and AI Copilot) stay in sync. Start in any mode and switch freely; every change reflects instantly across all three.
 
 A new `FORM` input type groups related inputs as a multi-step wizard in the Execute modal. Each step is a labeled section in the inputs list, making complex trigger forms easier to fill out without presenting every field at once.
 
@@ -348,7 +348,7 @@ The expression syntax is also cleaner. Where ForEach and ForEachItem both used `
 |---|---|
 | `{{ taskrun.value }}` | `{{ item.value }}` |
 | `{{ taskrun.iteration }}` | `{{ item.index }}` |
-| `{{ parent.taskrun.value }}` | `{{ item.value }}` (accessible at any nesting depth) |
+| `{{ parent.taskrun.value }}` | `{{ item.value }}` (no prefix needed — `item` is accessible at any depth inside a loop) |
 | `{{ parents[0].taskrun.value }}` | `{{ item.parent.value }}` (inner loop of two nested loops) |
 
 Outputs work differently too. ForEach had implicit output collection; Loop requires an explicit `outputs:` block on the Loop task itself, and the `loopOutputs()` function extracts a flat list of one field across all iterations:
@@ -471,7 +471,7 @@ Plugin artifacts are available to all plugin authors starting in 2.0. See the [p
 - [Quotas](/docs/workflow-components/quotas): limit how many executions a flow can create in a time window. Set `CANCEL` or `FAIL` behavior, a `limit`, and an ISO-8601 `duration`. Quotas stack at flow, namespace, and tenant scope, evaluated most-specific-first. Where [`concurrency`](/docs/workflow-components/concurrency) limits simultaneous runs, quotas limit creation rate.
 - [Asset locking](/docs/enterprise/governance/assets#locking-assets) (EE): flows can now acquire a TTL-bounded write lock on an asset using `io.kestra.plugin.kestra.ee.locks.Acquire` and release it with `Release`. While a lock is held, concurrent writes from other flows are rejected with a 423; reads stay open. User-initiated locks (via the asset detail page) block all flow writes and can be released from the UI by anyone with the `UNLOCK` permission.
 - [Reusable Inputs](/docs/workflow-components/reusable-inputs) (EE/Cloud): define a named input group once at the namespace level (`type: REUSABLE_INPUTS`) and reference it across flows with a single line. Child inputs are accessible as `{{ inputs.<refId>.<childId> }}`. Namespace hierarchy inheritance and revision pinning are supported.
-- ION binary format: ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The [migration guide](/docs/migration-guide/v2.0.0/ion-binary-format) covers affected tasks and patterns.
+- [ION binary format](/docs/migration-guide/v2.0.0/ion-binary-format): ION output files are now stored in binary format, reducing storage consumption by roughly 20 to 40 percent. Expressions that call `read()` on ION outputs and then do string operations need `fromIon()` wrapping. The migration guide covers affected tasks and patterns.
 - [Input improvements](/docs/workflow-components/inputs): SELECT and MULTISELECT inputs now support `{label, value}` objects, so the UI can show a human-readable label while flows receive the underlying technical value. A `subflow()` Pebble function in `expression:` populates dropdown values from a subflow execution at form render time, for cases where `kv()` or `http()` aren't enough. JSON inputs gain a `jsonSchema` property (JSON Schema Draft 2020-12) that validates at execution creation time, rejecting invalid payloads before any task runs.
 - [Unit test](/docs/enterprise/governance/unit-tests) `expectedState`: flow unit tests can now assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. Testing intentional failure paths (validation guards using `io.kestra.plugin.core.execution.Fail`, SLA breaches, and so on) is now first-class.
 - TRACEPARENT propagation: pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent their OpenTelemetry spans under the Kestra task span. This closes a distributed tracing gap for teams running scripts inside Docker containers.
@@ -479,8 +479,8 @@ Plugin artifacts are available to all plugin authors starting in 2.0. See the [p
 - [LDAP](/docs/enterprise/auth/sso/ldap) group-sync-only mode (EE): `mode: GROUP_SYNC_ONLY` lets teams keep their existing SSO provider for login while using LDAP exclusively to resolve group memberships.
 - [AI Agent](/docs/ai-tools/ai-agents): `guardrails` attach input/output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Prometheus metrics now cover tool calls, provider calls, and embedding store calls. New MCP client tasks let Agent tasks call external MCP servers as tools.
 - [VS Code extension](/docs/version-control-cicd/vscode): the extension now downloads the flow schema from your connected instance rather than bundling a generic one, so completion reflects the plugins actually installed. Live validation, Pebble autocompletion, topology preview with live task states during a run, and run-from-editor are all in.
-- mTLS on the worker channel: Worker-to-Executor communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer. See the [gRPC TLS/mTLS configuration reference](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only).
-- Draft revisions: save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft. See [Revisions](/docs/concepts/revision).
+- [mTLS on the worker channel](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only) (EE): Worker-to-controller communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer.
+- [Draft revisions](/docs/concepts/revision): save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft.
 - Execution API performance: task run outputs now live in dedicated storage rather than inline in the execution record. `GET /executions/search` responses are significantly lighter, which directly improves execution list load time on large instances. Integrations that read `taskRunList[*].outputs` from the execution endpoint should switch to `GET /outputs/{executionId}/{taskRunId}`. See the [execution API response migration guide](/docs/migration-guide/v2.0.0/execution-api-response).
 - Infrastructure plugins (EE): NetApp ONTAP, Veeam Backup, Pure Storage, Dell EMC PowerStore, Ceph, Huawei Cloud, F5, and SolarWinds IPAM plugins join the existing VMware, Nutanix, Proxmox, Infoblox, and Netbox family, covering day-two operations: snapshot before patching, clone volumes for dev/test, provision and register infrastructure in a single flow.
 
@@ -512,7 +512,7 @@ The breaking changes that require action:
 | `json()` Pebble function removed | Replace with `fromJson()` (same signature). |
 | Namespace and global `pluginDefaults` removed | Replace with Policies (EE) or remove them (OSS). |
 | `forced: true` on flow-level `pluginDefaults` removed | Remove the `forced` flag or migrate the default to Policies. |
-| `kestra.ee.execution-data.internal-storage` removed (EE) | Remove these keys from your configuration. Task run outputs are always in-memory in 2.0. |
+| `kestra.ee.execution-data.internal-storage` removed (EE) | Remove these keys from your configuration. Task run outputs are now stored separately from the execution record in 2.0. |
 | ION binary format | `read()` on ION outputs followed by string ops needs `fromIon()` wrapping. |
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed. Replace with their equivalents in the `plugin-kestra` SDK. |
 | `CANCELED` enum alias removed | Replace the single-L spelling with `CANCELLED` in flow expressions, API consumers, and any tooling that checks execution state. |
