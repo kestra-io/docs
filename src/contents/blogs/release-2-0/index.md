@@ -351,7 +351,7 @@ The expression syntax is also cleaner. Where ForEach and ForEachItem both used `
 | `{{ parent.taskrun.value }}` | `{{ item.value }}` (accessible at any nesting depth) |
 | `{{ parents[0].taskrun.value }}` | `{{ item.parent.value }}` (inner loop of two nested loops) |
 
-Outputs work differently too. ForEach had implicit output collection; Loop requires an explicit `outputs:` block on each task inside the loop, and the `loopOutputs()` function extracts a flat list of one field across all iterations:
+Outputs work differently too. ForEach had implicit output collection; Loop requires an explicit `outputs:` block on the Loop task itself, and the `loopOutputs()` function extracts a flat list of one field across all iterations:
 
 :::collapse{title="Example: Collect outputs across loop iterations"}
 
@@ -363,14 +363,21 @@ tasks:
   - id: loop
     type: io.kestra.plugin.core.flow.Loop
     values: "{{ inputs.file_list }}"
+    fetchType: FETCH
+    outputs:
+      - id: result_path
+        type: STRING
+        value: "{{ outputs.transform.vars.result_path }}"
     tasks:
       - id: transform
-        type: io.kestra.plugin.scripts.python.Commands
-        commands:
-          - python transform.py --input "{{ item.value }}"
-        outputs:
-          - id: result_path
-            type: STRING
+        type: io.kestra.plugin.scripts.python.Script
+        dependencies:
+          - kestra
+        script: |
+          from kestra import Kestra
+          input_path = "{{ item.value }}"
+          # process the file and return the output path
+          Kestra.outputs({"result_path": f"output/{input_path.split('/')[-1]}"})
 
   - id: collect_results
     type: io.kestra.plugin.core.log.Log
