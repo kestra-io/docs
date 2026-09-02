@@ -37,11 +37,11 @@ By default, Kestra uses **local storage**, which stores files on the host filesy
 :::alert{type="warning"}
 Local storage behavior differs between standalone and distributed deployments:
 - ✅ **Standalone**: Local storage with persistent volumes is OK
-- ❌ **Distributed with ReadWriteOnce**: NOT recommended for distributed services
-- ✅ **Distributed with ReadWriteMany**: OK for distributed services (rarely available)
+- ❌ **Distributed on single-writer storage**: NOT recommended — storage that only one instance can mount read-write at a time (in Kubernetes, `ReadWriteOnce`) cannot back a distributed service
+- ✅ **Distributed on shared storage**: OK when all instances can mount it read-write at once (in Kubernetes, `ReadWriteMany`), though this is rarely available
 - ❌ **Host storage sharing**: NOT recommended — difficult to achieve reliably
 
-When `ReadWriteMany` is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
+When shared read-write storage (`ReadWriteMany`) is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
 :::
 
 Scalable alternatives are available as plugins:
