@@ -333,6 +333,8 @@ export interface DocChildMeta {
     // Pages flagged hideSidebar (brand-assets, why-kestra) are omitted from the
     // tree, mirroring the latest-docs sidebar (RecursiveNavSidebar.vue).
     hideSidebar?: boolean
+    /** keeps the page in the sidebar but collapses its subtree (how-to-guides renders its own card grid instead) */
+    hideSubMenus?: boolean
     /** short markdown-flavored summary, feeds the ChildCard grids */
     description?: string
     /** root-absolute icon ref ("/docs/icons/x.svg"), versioned like any asset */

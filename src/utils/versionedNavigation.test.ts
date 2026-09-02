@@ -101,6 +101,25 @@ describe("buildVersionedNavigation", () => {
         const titles = JSON.stringify(nav)
         expect(titles).not.toContain("Brand Assets")
     })
+
+    it("carries hideSubMenus through, so a card-grid page keeps its subtree collapsed", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/quickstart": { title: "Quickstart" },
+            "docs/installation-guide": { title: "Installation Guide" },
+            "docs/tutorial": { title: "Tutorial" },
+            "docs/architecture": { title: "Architecture" },
+            "docs/how-to-guides": { title: "How-to Guides", hideSubMenus: true },
+            "docs/how-to-guides/webhooks": { title: "Webhooks" },
+        }
+        const nav = buildVersionedNavigation(children, "1.3")
+        const flat = nav.flatMap((n) => n.children ?? n)
+        const guides = flat.find((n) => n.title === "How-to Guides")
+        expect(guides?.hideSubMenus).toBe(true)
+        // The subtree stays in the tree — the sidebar component is what collapses it.
+        expect(guides?.children?.map((c) => c.title)).toEqual(["Webhooks"])
+        expect(flat.find((n) => n.title === "Tutorial")?.hideSubMenus).toBeUndefined()
+    })
 })
 
 describe("versionedBreadcrumbItems", () => {

@@ -24,12 +24,17 @@ const LATEST_SECTIONS: DocSection[] = Object.entries(SECTION_TITLES).map(
     ([title, pages]) => ({ title, pages }),
 )
 
-function toNavigationItem(node: DocTreeNode, version: string): NavigationItem {
+function toNavigationItem(
+    node: DocTreeNode,
+    version: string,
+    children: DocChildren,
+): NavigationItem {
     return {
         title: node.title,
         path: docChildHref(version, node.path),
+        hideSubMenus: children[node.path]?.hideSubMenus,
         children: node.children.length
-            ? node.children.map((c) => toNavigationItem(c, version))
+            ? node.children.map((c) => toNavigationItem(c, version, children))
             : undefined,
     }
 }
@@ -77,18 +82,23 @@ export function buildVersionedNavigation(
             title: section,
             isSection: true,
             path: "#",
-            children: sectionChildren.map((n) => toNavigationItem(n, version)),
+            children: sectionChildren.map((n) =>
+                toNavigationItem(n, version, children),
+            ),
         })
     }
 
     if (!sections && matched < MIN_MATCHED_SECTION_TITLES) {
-        return topNodes.map((n) => toNavigationItem(n, version))
+        return topNodes.map((n) => toNavigationItem(n, version, children))
     }
 
     // A top-level node the curated map doesn't mention (a page added since the
     // map was last updated) is appended after the last section, ungrouped.
     const unclaimed = topNodes.filter((n) => !claimedPaths.has(n.path))
-    return [...grouped, ...unclaimed.map((n) => toNavigationItem(n, version))]
+    return [
+        ...grouped,
+        ...unclaimed.map((n) => toNavigationItem(n, version, children)),
+    ]
 }
 
 /**
