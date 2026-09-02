@@ -91,6 +91,28 @@ const navigation = [
 </LayoutDocs>
 
 <script>
+    // The banner's href points at this page in latest, which may be gone there
+    // (renamed with no redirect rule, or dropped). Probe it exactly as the
+    // version <select> does — bounded HEAD, /docs on 404 — so both controls
+    // behave the same, keeping the plain href as the no-JS path. Delegated on
+    // `document` for the same ClientRouter reason as below.
+    import { resolveVersionSwitchHref, shouldInterceptCtaClick } from "~/utils/versionedDocs"
+
+    document.addEventListener("click", (event) => {
+        const cta = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+            ".version-banner a.cta",
+        )
+        if (!cta || !shouldInterceptCtaClick(event)) return
+
+        event.preventDefault()
+        // Never leave the CTA dead once the default is prevented.
+        void resolveVersionSwitchHref("", window.location.pathname)
+            .then((href) => window.location.assign(href))
+            .catch(() => window.location.assign(cta.href))
+    })
+</script>
+
+<script>
     // Delegated on `document`, not `.mdc-renderer`: the PROD-only ClientRouter
     // swaps the page's elements without re-running this module (killing an
     // element-bound handler), while dev never fires astro:page-load — document
