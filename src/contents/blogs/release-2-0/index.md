@@ -1,6 +1,6 @@
 ---
-title: "Kestra 2.0: MCP Tools, Enterprise Governance, and Worker Groups"
-description: "Kestra 2.0 ships enterprise governance for the first time (Policies, Cases, Promote), makes flows callable by AI agents via MCP, rebuilds Worker Groups with tag-based routing and JWT auth, and replaces accumulated legacy constructs with cleaner primitives."
+title: "Kestra 2.0: A New Engine, Workers Anywhere, and Flows as Agent Tools"
+description: "Flow configuration, incidents and promotion between environments can now be governed with Policies, Cases and Promote. Flows can be saved as Drafts and published when ready, and the AI Copilot is now a persistent chat panel with memory."
 date: 2026-09-08T10:00:00
 category: News & Product Updates
 authors:
@@ -21,23 +21,23 @@ That foundation is what makes the rest of this release possible. AI agents can n
 | AI Copilot agentic loop | Three-mode chat sidebar (Edit, Plan, Ask) with multi-turn memory and confirmation gate | EE, Cloud |
 | No Code canvas editor | Visual canvas-based flow editor with guided forms, synced with YAML and Copilot | OSS, EE, Cloud |
 | RBAC action-based permissions | Resource + action model replaces CRUD | EE |
-| Policies | Namespace-scoped governance rules replace `pluginDefaults` | EE |
+| Policies | Namespace-scoped governance rules in place of `pluginDefaults` | EE |
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
-| Promote | Move flows across environments from the UI, with drift detection and a review gate | EE |
+| Promote | Move flows across environments from the UI, with drift detection and a review step | EE |
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE |
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
 | New task runners | AWS EC2, Azure VM, Google Compute Engine, Huawei CCI | EE, Cloud |
-| Loop task | Replaces ForEach and ForEachItem with isolated sub-executions | OSS, EE, Cloud |
-| Trigger `when` expression | Pebble replaces Java-class conditions on all trigger types | OSS, EE, Cloud |
+| Loop task | In place of ForEach and ForEachItem, with isolated sub-executions | OSS, EE, Cloud |
+| Trigger `when` expression | Pebble expression in place of Java-class conditions on all trigger types | OSS, EE, Cloud |
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | OSS, EE, Cloud |
 | External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
 | Reusable Inputs | Shared input groups defined once at namespace level | EE, Cloud |
-| Slim image + plugin auto-install | `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to install what's needed on first use | OSS |
-| Plugin artifacts | Plugins can ship Vue.js UI components that load into the Kestra execution topology at runtime | OSS, EE, Cloud |
+| Slim image + plugin auto-install | `kestra/kestra:*-slim` has no bundled plugins; with `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`, whatever a flow references is installed on first use | OSS |
+| Plugin artifacts | Vue.js UI components bundled in a plugin and loaded into the execution topology at runtime | OSS, EE, Cloud |
 
 :::alert{type="info"}
-**Upgrading from 1.x?** You must be on Kestra 1.3.x before upgrading. Several constructs are removed in 2.0 (ForEach, trigger conditions, `workerGroup.key`, `pluginDefaults`), but `kestra-migrate` handles most flow rewrites automatically. The [Upgrade and Migration](#upgrade-and-migration) section at the bottom covers the full checklist, and every breaking change has a dedicated guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
+**Upgrading from 1.x?** You must be on Kestra 1.3.x before upgrading. Several constructs are removed in 2.0 (ForEach, trigger conditions, `workerGroup.key`, `pluginDefaults`), but most flow rewrites are handled automatically by `kestra-migrate`. The full checklist is in [Upgrade and Migration](#upgrade-and-migration), and every breaking change has a dedicated guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
 :::
 
 ## MCP Tool Trigger and MCP Server
@@ -95,9 +95,9 @@ A mode selector at the bottom of the panel switches between three behaviors:
 
 ![AI Copilot Edit mode sidebar showing the Copilot searching plugins and proposing a validated S3-to-Postgres flow with an Apply button](./ai-copilot-edit-mode.png)
 
-When you open the sidebar while viewing a resource, that resource attaches automatically as a context tag above the input. Context tags are independently dismissible. Every addition and removal is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
+When you open the sidebar while viewing a resource, that resource attaches automatically as a context tag above the input. Context tags are independently dismissible. Every addition and removal is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The AI Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
 
-Actions that modify resources require explicit confirmation before the Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
+Actions that modify resources require explicit confirmation before the AI Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
 
 The `COPILOT` resource in the RBAC model controls who can use the feature. Assign `USE` at tenant or namespace scope via the Roles UI.
 
@@ -140,9 +140,9 @@ Without enforcement tooling, keeping flows compliant across many namespaces is a
 
 A Policy is a named set of rules scoped to a namespace or a tenant. Rules from a parent namespace cascade to all child namespaces automatically, so a company-wide constraint placed at the root namespace reaches every team without per-namespace configuration.
 
-Five rule types ship in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: FLOW`) or any plugin instance in it (tasks, triggers, task runners) (`on: PLUGIN`), narrowed by a `where` clause that matches on the plugin type.
+Five rule types are available in 2.0: `Add` and `Delete` mutate configuration before execution without altering stored flow YAML; `Deny`, `Restrict`, and `Require` validate it and can block or warn when a flow violates a constraint. Rules target either the flow (`on: FLOW`) or any plugin instance in it (tasks, triggers, task runners) (`on: PLUGIN`), narrowed by a `where` clause that matches on the plugin type.
 
-A practical example: require that every flow carries a team label, and restrict all script tasks to an approved container registry.
+A practical example: require that every flow declares a team label, and restrict all script tasks to an approved container registry.
 
 ```yaml
 id: prod-standards
@@ -194,7 +194,7 @@ errors:
 
 The `linkMatchingExecutions` property is the most useful option for high-frequency flows. A single external API going down can generate dozens of failed executions per hour. With `linkMatchingExecutions: true`, each subsequent failure attaches to the already-open case rather than creating a new one. The same behavior is available from the UI on any existing case via auto-attach, which generates a Flow trigger behind the scenes and removes it when the case resolves.
 
-Each case tracks status, severity, assignees, SLA timers, and linked executions, with a full activity timeline. Cases can also carry case actions: flows attached as one-click remediation buttons on the case detail page.
+Each case tracks status, severity, assignees, SLA timers, and linked executions, with a full activity timeline. Cases can also have case actions: flows attached as one-click remediation buttons on the case detail page.
 
 The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required.
 
@@ -202,9 +202,9 @@ See the [Cases reference](/docs/enterprise/governance/cases).
 
 ## Promote
 
-Moving a flow from dev to prod has never been a first-class action in Kestra. The usual workarounds are fragile (copy-paste YAML between instances, which silently drifts) or require building a Git pipeline yourself, which blocks anyone who isn't fluent in CI/CD setup. Promote adds a dedicated path for moving flows across environments directly from the UI, with a review step before anything lands in production.
+Moving a flow from dev to prod has never been a first-class action in Kestra. The usual workarounds are fragile (copy-paste YAML between instances, which silently drifts) or require building a Git pipeline yourself, which blocks anyone who isn't fluent in CI/CD setup. Promote adds a dedicated path for moving flows across environments directly from the UI, with a review step before anything is deployed to production.
 
-Each flow gains a Deploy tab alongside the editor. From there, select a target environment, review a diff of exactly what changes in that revision, and confirm. Gated targets (typically production) require explicit confirmation before the promotion runs. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when.
+Each flow gains a Deploy tab alongside the editor. From there, select a target environment, review a diff of exactly what changes in that revision, and confirm. Protected targets (typically production) require explicit confirmation before the promotion runs. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when.
 
 The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
 
@@ -281,7 +281,7 @@ See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for
 
 ## New Task Runners
 
-Four new EE task runners ship in 2.0, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters.
+Four new EE task runners arrive in 2.0, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters.
 
 - [AWS EC2 Task Runner](/docs/task-runners/types/aws-ec2-task-runner): runs commands directly on an EC2 instance via AWS Systems Manager Run Command, with no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
 - [Azure Virtual Machine Task Runner](/docs/task-runners/types/azure-virtualmachine-task-runner): runs commands on Azure VMs via the Azure Run Command API, with no SSH and no public IP required.
@@ -292,7 +292,7 @@ Four new EE task runners ship in 2.0, each targeting workloads that cannot or sh
 
 ForEach and ForEachItem are removed in 2.0. The `Loop` task replaces both.
 
-The removal was driven by a real stability problem. A `ForEach` task with a large input list could generate thousands of child task runs within a single flow execution, exhausting executor memory and affecting every other flow running on the instance at the same time. `Loop` runs each iteration as an isolated sub-execution. A runaway loop cannot destabilize the instance.
+The removal was driven by a stability problem. A `ForEach` task with a large input list could generate thousands of child task runs within a single flow execution, exhausting executor memory and affecting every other flow running on the instance at the same time. `Loop` runs each iteration as an isolated sub-execution. A runaway loop cannot destabilize the instance.
 
 The expression syntax is also cleaner. Where ForEach and ForEachItem both used `{{ taskrun.value }}` (with `{{ parent.taskrun.value }}` for nested access), Loop uses:
 
@@ -464,6 +464,6 @@ The breaking changes that require action:
 
 ## Get Started
 
-2.0 is the foundation the next phase of Kestra is built on — and it's the first LTS release, with bug and security fixes backported for one year. Teams upgrading now won't face another major migration in that window.
+2.0 is the foundation the next phase of Kestra is built on, and it's an LTS release, with bug and security fixes backported for one year. Anyone upgrading now won't face another major migration in that window.
 
 The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0. For questions or anything unexpected during the upgrade, find us on [GitHub](https://github.com/kestra-io/kestra/issues) or [Slack](https://kestra.io/slack).
