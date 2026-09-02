@@ -48,28 +48,91 @@ The hardest part of connecting an AI agent to real infrastructure is the glue. T
 
 Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs.
 
-The `McpToolTrigger` handles registration. Add it to any flow alongside your task list:
+The `McpToolTrigger` handles registration. This flow returns a pipeline health summary for any namespace, the kind of question an AI agent can answer on demand and then chain into a remediation tool if failures are found:
+
+:::collapse{title="Example: Get pipeline status as an MCP tool"}
 
 ```yaml
-id: run_dbt_model
-namespace: company.data
+id: get_pipeline_status
+namespace: company.ai
+
+inputs:
+  - id: namespace
+    type: STRING
+    defaults: company.analytics
+    description: "The namespace to report on. Defaults to company.analytics."
+  - id: hours
+    type: INT
+    defaults: 24
+    description: "How many hours back to look. Defaults to 24."
 
 tasks:
-  - id: dbt
-    type: io.kestra.plugin.dbt.cli.DbtCLI
-    commands:
-      - dbt run --select {{ inputs.model_name }}
+  - id: fetch_executions
+    type: io.kestra.plugin.core.http.Request
+    uri: "{{ secret('KESTRA_URL') | trim }}/api/v1/dev/executions/search?namespace={{ inputs.namespace }}&size=100&sort=state.startDate:desc"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ secret('KESTRA_API_TOKEN') | trim }}"
+
+  - id: summarize
+    type: io.kestra.plugin.scripts.python.Script
+    dependencies:
+      - kestra
+    inputFiles:
+      executions.json: "{{ outputs.fetch_executions.body }}"
+    env:
+      NAMESPACE: "{{ inputs.namespace }}"
+      HOURS: "{{ inputs.hours }}"
+    script: |
+      import json, os
+      from collections import Counter
+      from datetime import datetime, timezone, timedelta
+
+      with open("executions.json") as f:
+          data = json.load(f)
+
+      executions = data.get("results", [])
+      namespace = os.environ["NAMESPACE"]
+      hours = int(os.environ["HOURS"])
+      cutoff = datetime.now(timezone.utc) - timedelta(hours=hours)
+
+      recent = [e for e in executions if datetime.fromisoformat(e["state"]["startDate"]) >= cutoff]
+      states = Counter(e["state"]["current"] for e in recent)
+      failed = [e for e in recent if e["state"]["current"] == "FAILED"]
+
+      lines = [f"Namespace: {namespace}  |  Last {hours}h  |  {len(recent)} executions"]
+      lines.append("  " + "   ".join(f"{s}: {c}" for s, c in sorted(states.items())))
+
+      if failed:
+          lines.append("\nFailed:")
+          for e in failed[:5]:
+              ts = e["state"]["startDate"][:16].replace("T", " ")
+              lines.append(f"  - {e['flowId']} at {ts}")
+      else:
+          lines.append("\nNo failures.")
+
+      from kestra import Kestra
+      Kestra.outputs({"summary": "\n".join(lines)})
+
+outputs:
+  - id: summary
+    type: STRING
+    value: "{{ outputs.summarize.vars.summary }}"
 
 triggers:
   - id: mcp
     type: io.kestra.plugin.core.trigger.McpToolTrigger
-    toolName: run-dbt-model
-    title: Run a dbt model
+    toolName: get_pipeline_status
+    title: Get Pipeline Status
     toolDescription: >
-      Runs a specific dbt model in the production warehouse. Use when a user asks
-      to refresh a specific model or rebuild a table. Input: the model name as it
-      appears in the dbt project (e.g. "stg_orders", "fct_revenue").
+      Returns a summary of recent pipeline executions in a Kestra namespace,
+      including counts by state (SUCCESS, FAILED, RUNNING),
+      names of any failed flows with timestamps. Call this when the user asks
+      about pipeline health, recent runs, or failures.
+    mcpServer: default
 ```
+
+:::
 
 The `toolDescription` field is the most important property to get right. Agents use it to decide when and how to invoke the tool, so a vague description produces poor routing. Write it from the agent's perspective: what situation should trigger this call, and what does the input represent.
 
