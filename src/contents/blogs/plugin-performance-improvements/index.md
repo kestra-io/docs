@@ -1,7 +1,7 @@
 ---
 title: "Plugin performance improvements"
 description: "An audit across seven Kestra plugins removed repeated work on hot paths and fixed silent data loss, with the hot-path changes backed by benchmarks."
-date: 2026-07-01T13:00:00
+date: 2026-09-02T13:00:00
 category: Engineering
 author:
   name: Malay Dewangan
