@@ -178,7 +178,7 @@ export const menuItems: MenuItems = {
             },
             {
                 icon: PresentationPlay,
-                title: "Webinars",
+                title: "Events",
                 link: "https://luma.com/kestra",
                 target: "_blank"
             },

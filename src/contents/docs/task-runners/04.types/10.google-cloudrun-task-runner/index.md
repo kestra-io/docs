@@ -59,7 +59,7 @@ If the Kestra Worker running this task is terminated, the Cloud Run job continue
 If you manually stop the execution from the Kestra UI, the Cloud Run job is terminated to avoid unnecessary costs. _(This behavior is under development; track progress [on GitHub](https://github.com/kestra-io/plugin-gcp/issues/381))._
 :::
 
-By default, jobs are deleted after the task completes. When a task is resubmitted, the runner reattaches to an existing job for the same task run rather than creating a new one. Use `delete: false` to keep the job for inspection after completion, or `resume: false` to force a new job on every execution attempt:
+By default, jobs are deleted after the task completes. When a Kestra Worker restarts mid-execution, `resume: true` (the default) reattaches to the already-running execution of a matching job so the task continues instead of re-running from scratch. When no running execution is found, a new job definition is created with a unique ID, unless `useBucketForLog` is enabled and the previous run had already completed, in which case its logs and outputs are recovered from the bucket instead of the work being re-run. `resume` does not reuse job definitions across independent task runs. Note that `resume: true` issues a `listJobs` call on every task start to look for a match — its cost grows with the project's job inventory. Use `delete: false` to keep the job for inspection after completion, or `resume: false` to force a new execution on every attempt:
 
 ```yaml
 taskRunner:
@@ -124,6 +124,10 @@ Three properties control how long the runner waits and how often it checks job s
 | `waitUntilCompletion` | `PT1H` | Maps to the GCP **Task timeout** field visible in the GCP console under Task capacity. Controls both the GCP-enforced task timeout and the Kestra polling timeout — the Cloud Run task is forcibly terminated by GCP when this duration elapses. The Kestra task-level `timeout` property takes precedence when set. GCP maximum is 168 hours (`PT168H`). |
 | `completionCheckInterval` | `PT5S` | How often to poll the Cloud Run API for job status. Lower values reduce latency for short jobs; higher values reduce API calls for long ones. |
 | `waitForLogInterval` | `PT5S` | Extra time to stream late log entries after job completion. |
+
+:::alert{type="info"}
+The task-level `logToFile` property controls where Kestra stores log lines it has already retrieved. It does not affect polling frequency or quota consumption. On the default log transport, retrieval goes through `entries.list` at the `logPollInterval` rate, which defaults to `completionCheckInterval`. To reduce Cloud Logging read-quota pressure, raise `logPollInterval`, which does not slow status detection, or set `useBucketForLog: true` to have the container write its logs to the staging bucket instead, which removes the 60 requests per minute per project cap entirely.
+:::
 
 ```yaml
 taskRunner:
