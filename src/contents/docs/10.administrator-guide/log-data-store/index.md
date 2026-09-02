@@ -127,7 +127,9 @@ The main backend keeps using `datasources.postgres`. The log store opens its own
 
 The Elasticsearch log store is an Enterprise Edition and Cloud feature. It reuses the existing `kestra.elasticsearch.*` connection config; you add a `kestra.logs` block naming the index.
 
+:::alert{type="warning"}
 Kestra fails at startup if no Elasticsearch client is configured or if the required index declaration (with `cls: io.kestra.core.models.executions.LogEntry`) is missing.
+:::
 
 ### Config reference
 
