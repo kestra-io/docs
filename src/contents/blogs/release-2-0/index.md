@@ -11,16 +11,18 @@ authors:
 image: ./main.jpg
 ---
 
-Kestra 2.0 is the most significant release in the product's history. Every feature in 1.x required two implementations (one for JDBC, one for Kafka) because the queue was tied to the database. That constraint is gone. Workers now communicate with the platform over gRPC instead of connecting to the database directly, which separates the control plane from the data plane and makes workers independently deployable: across regions, inside restricted networks, or within infrastructure you control.
+Kestra 2.0 is available today. Until now, network access to the Kestra database was required for every worker, so workers could only be deployed on the same network as the control plane. The queue was coupled to the database as well, so every feature had to be built twice, once for JDBC and once for Kafka.
 
-That foundation is what makes the rest of this release possible. AI agents can now invoke flows directly as MCP tools — Kestra orchestrates your AI stack, not the other way around. Enterprise governance ships for the first time in Policies, Cases, and Promote. Worker Groups are rebuilt with tag-based routing, capacity reservation, and JWT authentication. The permission model moves from CRUD to a resource-plus-action model. The editor gains a No Code canvas and a persistent Copilot sidebar with multi-turn memory. Loop replaces ForEach with isolated sub-executions, and the trigger `when` expression replaces Java class conditions across all trigger types. The feature table covers edition availability for everything.
+In 2.0, each worker is connected to the control plane over a single outbound gRPC stream, so it can be deployed in another region, in a different cloud, or in a network that only allows outbound connections. The queue is independent of the database now, so there is a single implementation for both backends.
+
+Everything else in 2.0 is built on those two changes. In this post, we cover what's new and what has to be changed when upgrading. The table below lists features we introduced in each edition.
 
 | Feature | What | Edition |
 |---|---|---|
-| MCP Tool Trigger + MCP Server | Expose flows as tools callable by AI agents | EE, Cloud |
-| AI Copilot agentic loop | Three-mode chat sidebar (Edit, Plan, Ask) with multi-turn memory and confirmation gate | EE, Cloud |
-| No Code canvas editor | Visual canvas-based flow editor with guided forms, synced with YAML and Copilot | OSS, EE, Cloud |
-| RBAC action-based permissions | Resource + action model replaces CRUD | EE |
+| MCP Tool Trigger + MCP Server | Flows exposed as tools callable by AI agents | EE, Cloud |
+| AI Copilot agentic loop | Three-mode chat sidebar (Edit, Plan, Ask) with multi-turn memory and a confirmation step | EE, Cloud |
+| No Code canvas editor | Visual canvas-based flow editor with guided forms, in sync with YAML and AI Copilot | OSS, EE, Cloud |
+| RBAC action-based permissions | Resource plus action model in place of CRUD | EE |
 | Policies | Namespace-scoped governance rules in place of `pluginDefaults` | EE |
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
 | Promote | Move flows across environments from the UI, with drift detection and a review step | EE |
@@ -103,7 +105,7 @@ The `COPILOT` resource in the RBAC model controls who can use the feature. Assig
 
 See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
 
-## No Code Editor
+## No-code Editor
 
 The flow editor gains a No Code canvas view alongside the existing YAML editor. The canvas displays each flow section (Triggers, Tasks, Errors, Finally, After Execution) as a group of visual blocks. Clicking a block opens its configuration form in a side panel with two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block).
 
@@ -117,20 +119,15 @@ See the [flow editor reference](/docs/ui/flows).
 
 ## RBAC: Action-Based Permissions
 
-The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource now exposes only the actions that make sense for it.
+In 2.0, RBAC permissions have been redesigned to give fine-grained control over what each user is allowed to do. Every resource used to have the same four permissions (CREATE, READ, UPDATE, DELETE) regardless of what could actually be done with them. There are now 159 permissions across the product, one per action.
 
-A few examples of what this makes possible:
+Executions are the clearest example. Under CRUD, restarting an execution, killing a running one, replaying it and deleting it all had to be expressed as CREATE, UPDATE or DELETE, and it wasn't obvious which permission allowed which action. Killing an execution changes its state, so UPDATE seems right, but it also terminates the run, so DELETE seems just as plausible. Each of those actions is a separate permission now: `RESTART`, `REPLAY`, `KILL`, `PAUSE`, `RESUME`, `UNQUEUE`, `FORCE_RUN`, `CHANGE_LABELS`, `UPDATE`, `DELETE` and `EXPORT`, alongside read-only ones like `VIEW`, `LIST`, `FOLLOW`, `ACCESS_LOGS`, `ACCESS_OUTPUTS` and `ACCESS_FILES`. Whoever is on call can be allowed to kill a runaway execution without being able to delete it, while a data engineer can restart or replay a failed run without being able to stop a running one.
 
-| Goal | Old model (minimum viable) | New model |
-|---|---|---|
-| CI/CD service account deploys and runs flows | FLOW: CREATE + EXECUTION: CREATE | `FLOW: CREATE, UPDATE, EXECUTE` |
-| Support engineer reads logs | EXECUTION: READ | `EXECUTION: ACCESS_LOGS` |
-| Scheduler triggers backfills | EXECUTION: CREATE | `TRIGGER: BACKFILL` |
-| Analyst follows a live execution | EXECUTION: READ | `EXECUTION: FOLLOW` |
+Every other resource works the same way, with its own action list. Starting a flow, for instance, is `FLOW: EXECUTE`, kept separate from anything that happens to the execution afterwards.
 
 New resources in 2.0 include `TRIGGER` (previously part of `FLOW`), `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`.
 
-Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings are migrated automatically on upgrade.
+Setting every permission by hand isn't the expected path. Five managed roles come with 2.0, available as presets when a role is created: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings are migrated automatically on upgrade.
 
 See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide for the RBAC action model](/docs/migration-guide/v2.0.0/rbac-action-model).
 
