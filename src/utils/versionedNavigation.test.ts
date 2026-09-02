@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import { buildVersionedNavigation, versionedBreadcrumbItems } from "./versionedNavigation"
-import type { DocChildren } from "./versionedDocs"
+import type { DocChildren, DocSection } from "./versionedDocs"
 
 describe("buildVersionedNavigation", () => {
     it("groups top-level pages into the curated sections when enough titles match", () => {
@@ -145,6 +145,75 @@ describe("versionedBreadcrumbItems", () => {
         expect(items).toEqual([
             { label: "Docs", href: "/docs/1.3" },
             { label: "unlisted-page", href: "/docs/1.3/unlisted-page" },
+        ])
+    })
+})
+
+describe("buildVersionedNavigation with the version's own sections", () => {
+    // 1.0's real page set and its published sections: "Use Cases" doesn't exist
+    // in 1.0, and "User Interface"/"No-Code" were later renamed in the latest
+    // map, so grouping by the latest map strands them in the ungrouped tail.
+    const children: DocChildren = {
+        docs: { title: "Documentation" },
+        "docs/getting-started": { title: "Getting Started" },
+        "docs/tutorial": { title: "Tutorial" },
+        "docs/user-interface": { title: "User Interface" },
+        "docs/no-code": { title: "No-Code" },
+        "docs/concepts": { title: "Concepts" },
+        "docs/task-runners": { title: "Task Runners" },
+    }
+    const sections: DocSection[] = [
+        { title: "Get Started with Kestra", pages: ["Getting Started", "Tutorial", "User Interface"] },
+        { title: "Build with Kestra", pages: ["Concepts", "No-Code"] },
+        { title: "Scale with Kestra", pages: ["Task Runners"] },
+    ]
+
+    it("groups by the published sections instead of the latest map", () => {
+        const nav = buildVersionedNavigation(children, "1.0", sections)
+        expect(nav.map((n) => n.title)).toEqual([
+            "Get Started with Kestra",
+            "Build with Kestra",
+            "Scale with Kestra",
+        ])
+        expect(nav[0].children?.map((c) => c.title)).toEqual([
+            "Getting Started",
+            "Tutorial",
+            "User Interface",
+        ])
+        expect(nav[1].children?.map((c) => c.title)).toEqual(["Concepts", "No-Code"])
+        expect(nav[2].children?.map((c) => c.title)).toEqual(["Task Runners"])
+    })
+
+    it("keeps every page reachable: nothing is stranded in an ungrouped tail", () => {
+        const nav = buildVersionedNavigation(children, "1.0", sections)
+        const grouped = nav.flatMap((n) => n.children?.map((c) => c.title) ?? [])
+        expect(grouped).toContain("User Interface")
+        expect(grouped).toContain("No-Code")
+        expect(nav.every((n) => n.isSection)).toBe(true)
+    })
+
+    it("does not apply the latest-map match threshold to a version's own sections", () => {
+        // Two matches would fall below MIN_MATCHED_SECTION_TITLES and flatten
+        // the tree on the fallback path; the version's own map is authoritative.
+        const sparse: DocSection[] = [
+            { title: "Get Started with Kestra", pages: ["Getting Started", "Tutorial"] },
+        ]
+        const nav = buildVersionedNavigation(children, "1.0", sparse)
+        expect(nav[0].isSection).toBe(true)
+        expect(nav[0].children?.map((c) => c.title)).toEqual(["Getting Started", "Tutorial"])
+    })
+
+    it("appends pages the published sections don't mention, after the sections", () => {
+        const nav = buildVersionedNavigation(children, "1.0", [
+            { title: "Get Started with Kestra", pages: ["Getting Started"] },
+        ])
+        expect(nav[0].title).toBe("Get Started with Kestra")
+        expect(nav.slice(1).map((n) => n.title)).toEqual([
+            "Tutorial",
+            "User Interface",
+            "No-Code",
+            "Concepts",
+            "Task Runners",
         ])
     })
 })

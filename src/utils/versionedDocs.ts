@@ -328,6 +328,13 @@ export interface DocChildMeta {
 /** Flat children-endpoint payload, keyed by full path ("docs", "docs/x", ...). */
 export type DocChildren = Record<string, DocChildMeta>
 
+/** One curated sidebar section as published per version in docs/_sections.json. */
+export interface DocSection {
+    title: string
+    /** page titles, in sidebar order */
+    pages: string[]
+}
+
 /** Data the versionedDocs middleware hands off to the `docs-versioned` SSR page via `Astro.locals`. */
 export interface VersionedDocLocals {
     version: string
