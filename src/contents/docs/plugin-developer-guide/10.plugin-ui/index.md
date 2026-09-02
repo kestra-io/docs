@@ -233,7 +233,7 @@ The CLI will:
 1. **Detect your plugin** — reads `settings.gradle[.kts]` to infer the plugin group ID (e.g. `io.kestra.plugin.example`).
 2. **Ask which task** you want to add UI for (e.g. `query.RunQuery`).
 3. **Ask which UI slot** to target (`topology-details` or `topology-task-drawer`).
-4. **Ask whether to add `@kestra-io/kestra-sdk`** as a dependency (default: no — add it only if your component needs to call Kestra APIs, see [Calling the Kestra API](#calling-the-kestra-api)).
+4. **Ask whether to add `@kestra-io/kestra-sdk`** as a dependency (default: no — see [Calling the Kestra API](#calling-the-kestra-api) for why a `topology-details`/`topology-task-drawer`/`topology-task-modal` component should almost never need it).
 5. **Show a summary** and ask for confirmation before writing anything.
 6. **Scaffold the `ui/` directory** with all required files and run `npm install`.
 
@@ -318,103 +318,24 @@ Pass `taskRunId` to address one iteration of a looped task; omit it to let the h
 
 ## Calling the Kestra API
 
-**A new data need is a new slot prop, not a new SDK call.** The `@kestra-io/kestra-sdk` package still exists and your plugin can depend on it, but for a `topology-details` component the props above — `task`, `execution`, `tenant`, `fetchOutputs`, `fetchMetrics` — already cover flow definitions, execution state, outputs, and metrics. There's no remaining legitimate reason to call `ExecutionAPI`, `FlowAPI`, `OutputsAPI`, or `MetricsAPI` directly from a topology component: those endpoints route through the host's authenticated client with no capability scoping, which is exactly what the props exist to avoid. If you find yourself reaching for one of those, it usually means the slot contract is missing a prop your component needs — that's worth raising, not working around.
+**A new data need is a new slot prop, not a new SDK call.** The `@kestra-io/kestra-sdk` package exists and other parts of your plugin can depend on it, but a `topology-details`/`topology-task-drawer`/`topology-task-modal` component has no legitimate reason to import it at all: the props above — `task`, `execution`, `tenant`, `fetchOutputs`, `fetchMetrics` — already cover flow definitions, execution state, outputs, and metrics, and there is no remaining case (including rendering task properties for display, see [Pebble expressions](#pebble-expressions-in-task-config) below) where an artifact needs to call `ExecutionAPI`, `FlowAPI`, `OutputsAPI`, `MetricsAPI`, or the expression-rendering endpoint directly. Those endpoints route through the host's authenticated client with no capability scoping, which is exactly what the props exist to avoid. If you find yourself reaching for one of them, it means the slot contract is missing a prop your component needs — raise that, don't work around it.
 
-One case still legitimately goes through the SDK today: [rendering Pebble expressions](#rendering-pebble-expressions) for display, since that's a stateless render call rather than a read of host-known data.
+Don't add `@kestra-io/kestra-sdk` to your `ui/package.json` for one of these three slots. If a build-time CI check exists in your target Kestra version, a runtime import of it under a plugin `ui/` will fail it.
 
-:::alert{type="warning"}
-**404 responses trigger a full-page error overlay.** If you do call the SDK directly for something not yet covered by a slot prop, note that the SDK's 404 interceptor unconditionally sets `coreStore.error = 404`, which replaces the entire Kestra UI with an error page. Passing `showMessageOnError: false` is **not enough** — that only suppresses toast messages; the 404 interceptor runs before that check. Pass `validateStatus: (s) => s === 200 || s === 404` to route a legitimate 404 through the success path instead, and wrap the call in `try { … } catch { /* best-effort */ }` — in Storybook and the local dev server there is no Kestra host, so any SDK call will fail there.
-:::
+## Pebble expressions in task config
 
-## Rendering Pebble expressions
+Task configuration is authored with [Pebble expressions](../../expressions/index.mdx): a `sql` property might be `SELECT * FROM {{ vars.dataset }}.users`, a `projectId` might be `{{ inputs.project }}`. The `task` prop your component receives holds these **as written, unrendered** — your component does not resolve them.
 
-Task configuration is authored with [Pebble expressions](../../expressions/index.mdx): a `sql` property might be `SELECT * FROM {{ vars.dataset }}.users`, a `projectId` might be `{{ inputs.project }}`. The raw `task` config your component receives (from props or a `flow` fetch) still holds these **unrendered** templates. Showing `{{ vars.dataset }}` in a details panel is rarely what a user wants — they want the resolved value.
-
-The `@kestra-io/kestra-sdk/expressions` subpath exposes `renderExpressions`, a wrapper over the `POST /expressions/render` backend endpoint. It takes a list of expression strings and returns a `{ rendered }` map keyed by the **original** string, so you can look each value back up after resolution.
-
-This is the approach used by the BigQuery plugin's topology component ([plugin-gcp#658](https://github.com/kestra-io/plugin-gcp/pull/658)), which resolves `projectId`, `location`, and `sql` for display.
-
-### Usage
+Display the raw value as-is:
 
 ```ts
-import { ref, computed, watch } from "vue";
-import { renderExpressions } from "@kestra-io/kestra-sdk/expressions";
-
-// Raw config values — these may contain {{ … }} templates
 const projectId = computed(() => props.task?.projectId as string | undefined);
-const location  = computed(() => props.task?.location  as string | undefined);
-const sql       = computed(() => props.task?.sql       as string | undefined);
-
-const executionId = computed(() => props.execution?.id as string | undefined);
-
-// A value that still looks like a URL template ("{namespace}") isn't a usable context value.
-const resolved = (v?: string) => (v && !v.startsWith("{") ? v : undefined);
-
-// Only strings that actually contain a Pebble expression are worth a round-trip.
-const EXPRESSION_RE = /\{\{.*?}}/;
-const rendered = ref<Record<string, string>>({});
-
-async function loadRenderedExpressions() {
-  const values = [projectId.value, location.value, sql.value].filter(
-    (v): v is string => typeof v === "string" && EXPRESSION_RE.test(v),
-  );
-  if (!values.length) {
-    rendered.value = {};
-    return;
-  }
-  try {
-    const { rendered: result } = await renderExpressions(
-      {
-        expressions: values,
-        tenant: props.tenant,
-        executionId: executionId.value,
-        namespace: resolved(props.namespace),
-        flowId: resolved(props.flowId),
-      },
-      {
-        // Best-effort display call: keep failures off the host's global error UI.
-        validateStatus: (s: number) => s === 200 || s === 404,
-        showMessageOnError: false,
-      },
-    );
-    rendered.value = result ?? {};
-  } catch {
-    // Drop rendered values so display() falls back to the raw template.
-    rendered.value = {};
-  }
-}
-
-watch(
-  [projectId, location, sql, executionId, () => props.namespace, () => props.flowId],
-  loadRenderedExpressions,
-  { immediate: true },
-);
-
-// Returns the rendered value, falling back to the raw template.
-const display = (value?: string) =>
-  value === undefined ? undefined : (rendered.value[value] ?? value);
 ```
 
-In the template, render `display(projectId)` instead of `projectId` — a resolvable expression shows its value, and everything else shows the original string unchanged.
-
-### Resolution context
-
-The context you pass determines what the expressions can resolve against, in order of specificity:
-
-- **`executionId`** — resolves against a specific execution (its inputs, outputs, and trigger data). Available post-execution.
-- **`namespace` + `flowId`** — resolves against the flow's scope (namespace variables, flow-level values). Available pre-execution, in the flow editor.
-- **globals** — namespace and global-level values are the fallback when neither execution nor flow context is supplied.
-
-Guard `namespace` and `flowId` with the `startsWith("{")` check described in [`topology-details`](#topology-details): during some render phases they arrive as unresolved URL templates (`"{namespace}"`), which are not valid context.
-
-:::alert{type="warning"}
-**Rendering is display-only and best-effort.** The backend uses a *restricted* display engine: functions with side effects or external lookups (`env()`, `kv()`, `secret()`), and references to variables that don't exist in the given context, are returned **unchanged** rather than resolved. Never rely on `renderExpressions` for anything but display — the raw template is always the source of truth, and your `display()` helper must fall back to it on any failure.
-:::
+A user sees `{{ vars.dataset }}` rather than the value it would resolve to. That's the current, intentional behavior — plugin artifacts do not call an expression-rendering endpoint to resolve template strings for display, because doing so is exactly the kind of direct-API-call the props contract exists to replace, and a rendering endpoint is inherently best-effort (functions with side effects like `env()`/`kv()`/`secret()`, and out-of-context variable references, can't safely resolve outside a real execution anyway).
 
 :::alert{type="info"}
-**Pass `tenant` explicitly on EE.** A plugin artifact bundles its own copy of `@kestra-io/kestra-sdk`, whose global tenant stays at the `"main"` default and is *not* updated by the host. Use the `tenant` prop the host injects — `props.tenant` — so requests hit the right tenant on a non-`main` Enterprise Edition instance. On single-tenant OSS, `"main"` is already correct and the value can be omitted.
-
-`/expressions/render` is one of the few calls left that still needs `tenant` passed explicitly as a field — it's a stateless render call, not a read of data the host already scopes to a task.
+The fix in progress is architectural, not artifact-side: a task property a user needs to see resolved in an artifact should become a proper task **output** — computed once, server-side, at the point the value is actually known — rather than an artifact re-resolving a template string on the client. Once a given task exposes the value as an output, read it via [`fetchOutputs`](#fetching-outputs-and-metrics) like any other post-execution data, same as everything else in this guide. Until a given plugin's tasks are updated to publish these as outputs, the pre-execution/raw-template value is what your component should show — don't work around it with a client-side rendering call.
 :::
 
 ## Configuring the exposed components
