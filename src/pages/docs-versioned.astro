@@ -4,6 +4,7 @@
 // on its own path only with empty locals, so guard and bounce to /docs.
 import { API_URL } from "astro:env/client"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
+import ArchivedBanner from "~/components/layout/ArchivedBanner.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
 import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
@@ -64,6 +65,13 @@ const navigation = [
     noindex
     isHomePage={pageKey === "docs"}
 >
+    <div class="version-banner" slot="banner">
+        <ArchivedBanner version={version} latestHref={versionedDocs.switchVersionHref("", activeStem)}>
+            <Fragment slot="message">
+                You are viewing the docs for <strong>v{version}</strong>, which is not the latest release.
+            </Fragment>
+        </ArchivedBanner>
+    </div>
     <h1 class="title" slot="title">{body.h1}</h1>
     <Fragment slot="headings">
         <NavToc
@@ -100,6 +108,11 @@ const navigation = [
 </script>
 
 <style lang="scss">
+    // The banner's own margins are tuned for the plugins article, which has no breadcrumb above it.
+    .version-banner :global(.archived-banner) {
+        margin: 0 0 1.5rem;
+    }
+
     .title {
         line-height: 3.25rem;
         margin: 0 auto;

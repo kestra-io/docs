@@ -110,6 +110,7 @@ const techArticleSchema = {
                 { homepage: props.isHomePage },
             ]}
         >
+            <slot name="banner" />
             <div class="bd-title">
                 <Breadcrumb
                     slug={props.activeStem}

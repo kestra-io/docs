@@ -25,7 +25,9 @@ const { version, latestHref, pending = false, unavailable = false } = Astro.prop
             </span>
         ) : (
             <span class="message">
-                You are viewing archived docs for <strong>v{version}</strong>.
+                <slot name="message">
+                    You are viewing archived docs for <strong>v{version}</strong>.
+                </slot>
             </span>
         )}
     </div>
