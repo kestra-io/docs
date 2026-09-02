@@ -44,7 +44,9 @@ Everything else in 2.0 is built on those two changes. In this post, we cover wha
 
 ## MCP Tool Trigger and MCP Server
 
-Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs. No custom API wrapper or polling loop required.
+The hardest part of connecting an AI agent to real infrastructure is the glue. The MCP Tool Trigger skips it: any flow you've already built (a data pipeline, a provisioning sequence, an incident response) is callable by an AI agent as a named tool. No custom API, no polling loop.
+
+Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs.
 
 The `McpToolTrigger` handles registration. Add it to any flow alongside your task list:
 
@@ -85,7 +87,7 @@ See the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger referen
 
 ## AI Copilot
 
-The AI Copilot is rebuilt in 2.0. The old one-shot generation modal is replaced by a persistent right-sidebar chat panel, opened via the **AI** button in the top toolbar. Conversations are multi-turn and held in memory for the browser session. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
+The AI Copilot is now a persistent right-sidebar chat panel that stays open while you work. Conversations are multi-turn: say "add retry logic" and it refines what's already in the flow rather than generating from scratch. Open it with the **AI** button in the top toolbar. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
 
 A mode selector at the bottom of the panel switches between three behaviors:
 
@@ -107,11 +109,11 @@ See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
 
 ## No-code Editor
 
-The flow editor gains a No Code canvas view alongside the existing YAML editor. The canvas displays each flow section (Triggers, Tasks, Errors, Finally, After Execution) as a group of visual blocks. Clicking a block opens its configuration form in a side panel with two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block).
+The No Code editor is redesigned in 2.0. The most useful addition is the contextual data panel: every flow input, upstream task output, and execution context variable available at that point in the flow is listed alongside the configuration form, organized by category and filterable. No switching to the YAML editor to look up variable names.
 
-The form's left panel lists every upstream task output and execution context variable available at that point in the flow, so you can reference them in Pebble expressions without leaving the form or switching to the YAML editor to look them up.
+Each flow section (Triggers, Tasks, Errors, Finally, After Execution) is displayed as a group of blocks. Clicking a block opens its configuration form with two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). Tasks can be opened in a focused centered view for editing, or in separate tabs when you're working across multiple flow components at once.
 
-Add blocks with **+ Add task** or **+ Add trigger**, or press `/` on the canvas to search and insert a plugin at the cursor position. All three views (YAML editor, No Code canvas, and AI Copilot) stay in sync. Start in any mode and switch freely; every change reflects instantly across all three.
+Add blocks with **+ Add task** or **+ Add trigger**, or press `/` to search and insert a plugin at the cursor position. All three views (YAML editor, No Code editor, and AI Copilot) stay in sync. Start in any mode and switch freely; every change reflects instantly across all three.
 
 A new `FORM` input type groups related inputs as a multi-step wizard in the Execute modal. Each step is a labeled section in the inputs list, making complex trigger forms easier to fill out without presenting every field at once.
 
@@ -199,15 +201,15 @@ See the [Cases reference](/docs/enterprise/governance/cases).
 
 ## Promote
 
-Moving a flow from dev to prod has never been a first-class action in Kestra. The usual workarounds are fragile (copy-paste YAML between instances, which silently drifts) or require building a Git pipeline yourself, which blocks anyone who isn't fluent in CI/CD setup. Promote adds a dedicated path for moving flows across environments directly from the UI, with a review step before anything is deployed to production.
+Before Promote, moving a flow between environments meant a CI/CD pipeline outside Kestra, a manual copy-paste of YAML, or both, with no drift visibility and no audit trail inside the platform.
 
-Each flow gains a Deploy tab alongside the editor. From there, select a target environment, review a diff of exactly what changes in that revision, and confirm. Protected targets (typically production) require explicit confirmation before the promotion runs. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when.
+Promote gives you a built-in path for moving flows between environments. Each flow gains a Promote tab alongside the editor: select a target, review a diff of exactly what changes in that revision, and confirm. Protected targets require explicit confirmation before anything lands in production. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when. No Git pipeline required.
 
 The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
 
 ![Flows list with the Deploy column showing Not promoted, In sync, and Out of sync states](./promote-flows-list.png)
 
-![Deploy tab showing a source-to-target diff with the target selector and Promote button](./promote-deploy-tab.png)
+![Promote tab showing a source-to-target diff with the target selector and Promote button](./promote-deploy-tab.png)
 
 See the [Promote reference](/docs/enterprise/governance/promote).
 
@@ -225,7 +227,7 @@ See the [Custom Blueprints reference](/docs/enterprise/governance/custom-bluepri
 
 ## kestractl IAM Commands
 
-kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. The new command groups cover every entity in the action-based permission model:
+kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. If you're provisioning Kestra programmatically (onboarding teams, managing service accounts in CI/CD, or scripting role assignments) you no longer need the UI. Every IAM entity is now reachable from the CLI:
 
 - `kestractl users`: create, list, get, update, delete users; set passwords
 - `kestractl groups`: manage groups and memberships (tenant-scoped)
@@ -238,9 +240,9 @@ See the [kestractl reference](/docs/kestra-cli/kestractl) for all commands and a
 
 ## Worker Groups 2.0
 
-Worker Groups in 2.0 separate three concerns the old model conflated. The old model assigned tasks to a group by name with `workerGroup.key`. The new model distinguishes: Workers (compute units that authenticate via tokens), Worker Groups (pools of workers), and Worker Queues (routing lanes identified by tags).
+With workers deployable across regions and clouds, you need a routing and access model to match. Tag-based routing means a single worker can serve multiple queues at once, so you no longer need a separate group for every task type. Combined with capacity reservation and JWT authentication, you can dedicate thread capacity to latency-sensitive workloads and lock down who can connect, without any manual provisioning step.
 
-Tasks declare routing requirements with `workerSelector.tags`:
+Worker Groups now route tasks by tags instead of a single group name. Replace `workerGroup.key` with `workerSelector.tags`:
 
 ```yaml
 tasks:
@@ -254,27 +256,13 @@ tasks:
       fallback: FAIL
 ```
 
-![Diagram showing how developers read task-to-queue top-down and operators read workers-to-group-to-queue bottom-up, meeting at the Worker Queue layer with a many-to-many relationship](./worker-groups-routing.png)
+A task is routed to the first available Worker Group that covers all required tags. `match: ANY` requires at least one match instead.
 
-A Worker Group subscribes to one or more queues. The platform routes a task to the first available group that covers all required tags (or any, with `match: ANY`). `fallback` controls what happens when a matching Worker Queue exists but has no live workers: `FAIL` (the default in 2.0, changed from the 1.x default of `WAIT`), `WAIT`, `CANCEL`, or `IGNORE` (drop the requirement and route to the default queue). If no Worker Queue with those tags exists at all, the task fails immediately regardless of the `fallback` setting.
+One important default changed: `fallback` now defaults to `FAIL` instead of `WAIT`. Tasks that previously waited silently for a matching worker will fail immediately after upgrading. Set `fallback: WAIT` explicitly on any task where the old behavior was intentional.
 
-The fallback default flip is the sharpest gotcha for upgraders. Tasks that previously waited silently for a matching worker will now fail immediately. Set `fallback: WAIT` explicitly on tasks where the old behavior was intentional.
+Workers also now authenticate via JWT rather than connecting without credentials. Each group subscription supports capacity reservation, which sets a thread pool floor dedicated to that queue. Without it, a high-volume flow can exhaust all worker threads and starve latency-sensitive tasks even when a dedicated worker exists for them. For platform admins, a `kestra.ee.setup` block in `application.yml` lets you declare the full topology at startup without a manual provisioning step.
 
-### Capacity reservation
-
-Each Worker Group subscription now supports per-subscription capacity reservation. A `reservedPercent` value on a subscription sets a floor: the worker keeps that percentage of its thread pool available for tasks from that queue, regardless of competing demand. Two modes control idle slot lending: `STRICT` keeps reserved capacity exclusive; `ELASTIC` lends idle reserved slots to other queues and reclaims them on demand. Reserved percentages are configurable live without restarting workers.
-
-### Worker authentication
-
-Workers now authenticate with the platform using JWT. The setup flow: a registration token is created in the UI or via kestractl; the worker presents it on first connect; Kestra issues a short-lived JWT access token and a rotating refresh token. Revoking a registration token fails the next refresh, cutting off that worker immediately.
-
-This replaces the previous trust model where workers connected without credential verification.
-
-### Declarative topology bootstrap
-
-A `kestra.ee.setup` configuration block lets you declare the full worker topology (queues, groups, subscriptions, and registration tokens) in `application.yml`. Kestra provisions everything at startup, so there is no need for a second deployment pass or an init Job against a running webserver. Workers retry registration until their token is known to the controller, so all services can start concurrently. The semantics are create-if-not-exists: an existing entity is skipped on restart, so the database stays the source of truth once an entity exists.
-
-See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for migration steps, the `workerGroup.key` to `workerSelector.tags` mapping, and full [declarative configuration](/docs/enterprise/scalability/worker-group#declarative-configuration) details.
+See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for migration steps and the `workerGroup.key` to `workerSelector.tags` mapping.
 
 ## New Task Runners
 
@@ -332,9 +320,11 @@ The [ForEach to Loop migration guide](/docs/migration-guide/v2.0.0/foreach-loop)
 
 ## Trigger `when` Expression
 
-The `conditions` list on all trigger types is removed. All triggers gain a top-level `when` property that takes a Pebble expression. This applies to Schedule, Webhook, Flow, and Polling triggers.
+The old `conditions` list required chaining specific condition types, each with its own syntax, nested inside each other for anything beyond a single check. The firing logic was spread across multiple blocks and hard to read at a glance. A `when` Pebble expression puts it all in one place, uses the same syntax authors already know from tasks, and keeps the trigger self-contained.
 
-The old model required fully-qualified Java class names:
+All triggers now accept a top-level `when` Pebble expression in place of the `conditions` list:
+
+The old model:
 
 ```yaml
 triggers:
@@ -461,6 +451,6 @@ The breaking changes that require action:
 
 ## Get Started
 
-2.0 is the foundation the next phase of Kestra is built on, and it's an LTS release, with bug and security fixes backported for one year. Anyone upgrading now won't face another major migration in that window.
+2.0 is the foundation the next phase of Kestra is built on. It's an LTS release, with bug and security fixes backported for one year. Anyone upgrading now won't face another major migration in that window.
 
 The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0. For questions or anything unexpected during the upgrade, find us on [GitHub](https://github.com/kestra-io/kestra/issues) or [Slack](https://kestra.io/slack).
