@@ -85,7 +85,11 @@ const navigation = [
     </Fragment>
     <div class="mdc-renderer" set:html={body.html} />
     {body.guidesChildCard && (
-        <GuidesChildCardRender navigation={body.guidesChildCard} client:load />
+        <GuidesChildCardRender
+            navigation={body.guidesChildCard}
+            pageUrl={new URL(activeStem, Astro.url).href}
+            client:load
+        />
     )}
     <PrevNext {navigation} currentPath={activeStem} rootPath={`/docs/${version}`} client:idle />
 </LayoutDocs>
