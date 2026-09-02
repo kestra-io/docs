@@ -73,7 +73,7 @@ Flow inputs map automatically to the tool's JSON schema parameter spec. Outputs 
 
 A `default` MCP server is provisioned for every tenant on startup. Additional servers (separate servers per team, or one per environment) can be created from the UI. Each server generates ready-to-paste connection configuration for Claude Desktop, Claude Code, Cursor, and Codex on its Connect tab.
 
-The MCP server also works in the other direction. Connect Claude, Cursor, or any MCP-compatible client to the Kestra MCP server and you can create, search, and manage flows directly from your editor or AI assistant, no UI required.
+The MCP server also works in the other direction. Connect Claude, Cursor, or any MCP-compatible client to the Kestra MCP server and you can interact with flows as tools directly from your editor or AI assistant, no UI required.
 
 All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
 
