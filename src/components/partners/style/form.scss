@@ -38,6 +38,18 @@
         outline: none;
         border-color: var(--ks-border-active);
     }
+
+    &.is-invalid,
+    &.is-invalid:focus {
+        border-color: var(--ks-border-alert-danger);
+        background-image: none;
+    }
+}
+
+.field-error {
+    margin-top: 6px;
+    font-size: $font-size-sm;
+    color: var(--ks-content-alert-danger);
 }
 
 .checkbox-options {
@@ -78,6 +90,10 @@
                 color: $white;
                 font-size: 12px;
             }
+        }
+
+        &.is-invalid {
+            border-color: var(--ks-border-alert-danger);
         }
     }
 

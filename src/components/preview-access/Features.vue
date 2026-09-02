@@ -78,9 +78,14 @@
                             name="firstname"
                             type="text"
                             class="form-control"
+                            :class="{ 'is-invalid': errors.firstname }"
                             id="firstname"
                             required
+                            @input="clearError('firstname')"
                         />
+                        <div v-if="errors.firstname" class="field-error">
+                            {{ errors.firstname }}
+                        </div>
                     </div>
                     <div class="col-6">
                         <label for="lastname">
@@ -91,9 +96,14 @@
                             name="lastname"
                             type="text"
                             class="form-control"
+                            :class="{ 'is-invalid': errors.lastname }"
                             id="lastname"
                             required
+                            @input="clearError('lastname')"
                         />
+                        <div v-if="errors.lastname" class="field-error">
+                            {{ errors.lastname }}
+                        </div>
                     </div>
                     <div class="col-12 mt-3">
                         <label for="email">
@@ -104,9 +114,14 @@
                             name="email"
                             type="email"
                             class="form-control"
+                            :class="{ 'is-invalid': errors.email }"
                             id="email"
                             required
+                            @input="clearError('email')"
                         />
+                        <div v-if="errors.email" class="field-error">
+                            {{ errors.email }}
+                        </div>
                     </div>
                     <div class="col-12 mt-4 pb-5 d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary w-100">
@@ -126,6 +141,7 @@
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { $fetch } from "~/utils/fetch"
+    import { getFormErrors } from "~/utils/formValidation"
     import calendarMonthImage from "./images/calendar_month.png"
     import smallCloudImage from "./images/small_cloud.png"
     import hammerWrenchImage from "./images/hammer_wrench.png"
@@ -140,6 +156,11 @@
     const valid = ref(false)
     const validMessage = ref("")
     const message = ref("")
+    const errors = ref<Record<string, string>>({})
+
+    function clearError(id: string) {
+        delete errors.value[id]
+    }
 
     const hubSpotFormId = "230d0ed2-2484-4e9e-86c6-135a6398fac5"
 
@@ -148,9 +169,15 @@
         e.stopPropagation()
         const form = formRef.value as HTMLFormElement
         const hsq = ((window as any)._hsq = (window as any)._hsq || [])
-        if (!form.checkValidity()) {
+        errors.value = getFormErrors(form, {
+            firstname: "first name",
+            lastname: "last name",
+            email: "company email",
+        })
+        if (Object.keys(errors.value).length > 0) {
             valid.value = false
-            message.value = "Invalid form, please review the fields."
+            message.value = "Please correct the highlighted fields below."
+            ;(form.querySelector(":invalid") as HTMLElement | null)?.focus()
         } else {
             hsq.push([
                 "identify",
@@ -228,6 +255,17 @@
 </script>
 
 <style scoped lang="scss">
+    .form-control.is-invalid,
+    .form-control.is-invalid:focus {
+        border-color: var(--ks-border-alert-danger);
+    }
+
+    .field-error {
+        margin-top: 6px;
+        font-size: $font-size-sm;
+        color: var(--ks-content-alert-danger);
+    }
+
     .livedemo {
         & img {
             width: 180px;
