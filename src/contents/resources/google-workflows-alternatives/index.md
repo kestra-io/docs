@@ -16,6 +16,31 @@ faq:
   - question: "Can Kestra replace Google Workflows for GCP orchestration?"
     answer: "Yes, Kestra can orchestrate GCP services through its extensive plugin ecosystem (e.g., BigQuery, GCS, Cloud Functions) while providing the flexibility to integrate non-GCP tools and manage workflows declaratively across multiple clouds, effectively replacing Google Workflows for broader use cases."
 author: "Virgile Fanucci"
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top 5 Google Workflows Alternatives"
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      name: "Kestra"
+      url: "https://kestra.io/vs/google-workflows"
+    - "@type": "ListItem"
+      position: 2
+      name: "Apache Airflow / Google Cloud Composer"
+      url: "https://kestra.io/vs/airflow"
+    - "@type": "ListItem"
+      position: 3
+      name: "n8n"
+      url: "https://kestra.io/vs/n8n"
+    - "@type": "ListItem"
+      position: 4
+      name: "AWS Step Functions"
+      url: "https://kestra.io/vs/aws-step-functions"
+    - "@type": "ListItem"
+      position: 5
+      name: "Temporal"
+      url: "https://kestra.io/vs/temporal"
 ---
 
 Google Workflows offers a serverless approach to orchestrating GCP services, but many teams seek alternatives for broader cloud strategies, cost control, or specific feature sets. That search increasingly comes from infrastructure teams as much as data teams: groups midway through an on-premise to GCP migration who want their automation to survive the next platform decision as well as this one. This guide explores leading options for application, process, [infrastructure](/resources/infrastructure/hybrid-infrastructure-automation), and data pipeline automation, helping you choose an orchestrator that aligns with your operational needs and technical stack.
@@ -120,119 +145,3 @@ Temporal is a durable execution platform for developers, enabling the creation o
 ## How to choose the right alternative
 
 For **multi-cloud flexibility** and declarative workflows, [Kestra is the ideal choice](/vs/google-workflows). **Data engineering teams** with deep Python expertise might prefer [Airflow/Composer](/vs/airflow). **SaaS-heavy automation** points to [n8n](/vs/n8n). For **AWS-native serverless** workloads, [Step Functions](/vs/aws-step-functions) excel. Meanwhile, **application developers** needing durable execution should consider [Temporal](/vs/temporal). Each tool addresses a different center of gravity, from data to infrastructure to application logic.
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Why look for alternatives to Google Workflows?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Users often seek alternatives to Google Workflows to reduce cloud vendor lock-in, address limitations in specific use cases like complex data pipelines, or to gain more control over execution environments beyond Google Cloud's native offerings."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What does it cost to migrate off Google Workflows?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Measure it in layers. Your business logic (scripts, queries, containers) is portable. Your workflow definition is not: the Google Workflows DSL only runs on Google Cloud, so leaving means rewriting the orchestration itself, not repointing it. With a declarative YAML orchestrator, the definition stays a file you own and only the provider-specific connection tasks change."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the best open-source alternative to Google Workflows?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Kestra stands out as a leading open-source alternative, offering declarative YAML-based workflows that can orchestrate tasks across any cloud, on-premise, or hybrid environment. It supports a wide array of programming languages and integrates with diverse tools."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Kestra replace Google Workflows for GCP orchestration?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, Kestra can orchestrate GCP services through its extensive plugin ecosystem (e.g., BigQuery, GCS, Cloud Functions) while providing the flexibility to integrate non-GCP tools and manage workflows declaratively across multiple clouds, effectively replacing Google Workflows for broader use cases."
-      }
-    }
-  ]
-}
-```
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top 5 Google Workflows Alternatives",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Kestra",
-      "url": "https://kestra.io/vs/google-workflows"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Apache Airflow / Google Cloud Composer",
-      "url": "https://kestra.io/vs/airflow"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "n8n",
-      "url": "https://kestra.io/vs/n8n"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "AWS Step Functions",
-      "url": "https://kestra.io/vs/aws-step-functions"
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "name": "Temporal",
-      "url": "https://kestra.io/vs/temporal"
-    }
-  ]
-}
-```
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Infrastructure",
-      "item": "https://kestra.io/resources/infrastructure"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Google Workflows Alternatives: Choose Your Orchestration",
-      "item": "https://kestra.io/resources/infrastructure/google-workflows-alternatives"
-    }
-  ]
-}
-```
