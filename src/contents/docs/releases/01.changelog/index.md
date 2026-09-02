@@ -60,7 +60,7 @@ New features available in the Enterprise Edition.
 
 Improvements to the tools and workflows used to build and manage flows.
 
-- **No Code Editor** — canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard.
+- **No-code Editor** — canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard.
 - **VS Code namespace files** — Open namespace (VFS mount), Upload file, and Sync folder commands; `kestra.namespaceFiles.exclude` setting. [Docs](../../version-control-cicd/05.vscode/index.md)
 - **Plugin Artifacts** — plugins can ship Vue.js frontend components (Module Federation) that load into named slots in the execution topology view, task side drawer, or task detail modal without changes to the core application. [Docs](../../plugin-developer-guide/develop-plugin-artifacts/index.md)
 - **Plugin file renderers** — plugins can register format-specific renderers for inline output file preview. [Docs](../../plugin-developer-guide/09.file-renderer/index.md)
@@ -87,7 +87,6 @@ Changes to deployment, storage, and runtime behavior.
 - **Syslog CEF log exporter (EE)** — Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS for SIEM integration.
 - **LDAP group-sync-only mode (EE)** — `mode: GROUP_SYNC_ONLY` uses LDAP exclusively for group membership resolution while keeping an existing SSO provider for login. [Docs](../../07.enterprise/01.auth/sso/ldap/index.md)
 - **Unit test `expectedState`** — flow unit tests can assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. [Docs](../../07.enterprise/02.governance/unit-tests/index.md)
-- **Draft revisions** — save flow changes as drafts without affecting live executions. [Docs](../../06.concepts/03.revision/index.md#draft-revisions)
 
 ### Breaking changes
 

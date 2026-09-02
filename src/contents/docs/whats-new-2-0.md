@@ -125,7 +125,7 @@ The `CreateCase` task opens a case automatically from your flow's `errors`, `fin
 
 [Promote](./07.enterprise/02.governance/promote/index.md) copies a flow from one Kestra instance to another directly from the UI — no Git pipeline required.
 
-From the **Deploy** tab on any flow, select a target environment, review a source-to-target diff, and confirm. A **Deploy** column in the flows list shows the drift state of every flow (`IN_SYNC`, `OUT_OF_SYNC`, `NOT_PROMOTED`) so you can see at a glance what needs to be deployed. Production targets can require an explicit confirmation gate before any promotion lands. Promotion history is recorded per flow and surfaced in the audit log.
+From the **Promote** tab on any flow, select a target environment, review a source-to-target diff, and confirm. A **Deploy** column in the flows list shows the drift state of every flow (`IN_SYNC`, `OUT_OF_SYNC`, `NOT_PROMOTED`) so you can see at a glance what needs to be deployed. Production targets can require an explicit confirmation gate before any promotion lands. Promotion history is recorded per flow and surfaced in the audit log.
 
 Promote is the right path for teams that author flows in the Kestra UI and run separate instances per environment but do not want to maintain a CI/CD pipeline. Teams already using Git as the source of truth should continue with [Git-based deployment](./version-control-cicd/04.git/index.md).
 
@@ -151,11 +151,11 @@ The [VS Code extension](./version-control-cicd/05.vscode/index.md) now supports 
 
 [Apps](./07.enterprise/04.scalability/apps/index.md) support dynamic content blocks that update based on execution state, enabling richer interactive UIs built on flow outputs.
 
-### No Code Editor
+### No-code Editor
 
-The flow editor gains a canvas-based view alongside the YAML editor. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as a group of visual blocks. Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel of the form lists every upstream task output and execution context variable available at that point in the flow.
+The flow editor gains a No-code view alongside the YAML editor. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as a list of blocks. Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel of the form lists every upstream task output and execution context variable available at that point in the flow.
 
-All three views — YAML editor, No Code canvas, and AI Copilot — stay in sync. Changes made in any view reflect immediately in the others.
+All three views — YAML editor, No-code editor, and AI Copilot — stay in sync. Changes made in any view reflect immediately in the others.
 
 A new `FORM` input type groups related inputs into a labeled multi-step wizard in the Execute modal.
 
