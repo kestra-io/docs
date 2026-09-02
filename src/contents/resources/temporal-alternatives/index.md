@@ -8,6 +8,8 @@ date: 2026-05-06
 faq:
   - question: "Why do teams look for alternatives to Temporal?"
     answer: "Teams often seek Temporal alternatives due to its steep learning curve, code-centric workflow definition (requiring Java, Go, Python, or TypeScript SDKs), and the operational overhead of managing its infrastructure cluster. While powerful for durable microservices orchestration, Temporal is not purpose-built for data pipelines, AI/ML workflows, or infrastructure automation, which drives teams toward more specialized or unified platforms."
+  - question: "Is Temporal overkill for infrastructure automation?"
+    answer: "Often, yes. Temporal exists to provide durable execution: long-running, stateful workflows that resume exactly where they failed. Most infrastructure automation is a sequence of idempotent API calls, scripts, and approval gates, where a plain retry is enough. If your steps decompose that far, Temporal's worker model and cluster overhead buy resilience you never draw on."
   - question: "Is Kestra a good alternative to Temporal?"
     answer: "Yes, Kestra is a strong alternative, especially for teams seeking a declarative, language-agnostic, and event-driven orchestrator. Unlike Temporal's code-first approach, Kestra defines workflows in YAML, simplifying version control and enabling broader team collaboration across data, DevOps, and application teams. It unifies data, AI, and infrastructure workflows on a single platform under an Apache 2.0 open-source license."
   - question: "What are some open-source and self-hosted Temporal alternatives?"
@@ -35,6 +37,18 @@ However, several factors drive teams to look for alternatives:
 *   **Narrow Focus:** While excellent for microservices, Temporal is not purpose-built for the specific needs of [data orchestration](/resources/data/data-orchestration), AI/ML pipelines, or infrastructure automation, which often require different integration patterns and execution models.
 
 For a direct comparison of how Kestra addresses these points, see our in-depth analysis of [Kestra vs. Temporal](https://kestra.io/vs/temporal).
+
+### Before you compare: does your problem need durable execution?
+
+Every tool on this list is a different answer to the question Temporal answers with durable execution: workflow state that survives a crash and resumes mid-execution, hours or days later. Before comparing answers, test whether you have the question. Three checks:
+
+1.  Do your workflows carry state that must survive hours or days of interruption?
+2.  Do you need exact resumption in the middle of an execution, or is an idempotent retry from the top enough?
+3.  Are your steps mostly API calls, scripts, and human approval gates?
+
+If the answers are no, retry is enough, and yes, then your problem is decomposable — and durable execution is a cost with nothing on the other side of it. As one engineer put it while evaluating both tools:
+
+> I would prefer, for me personally, I prefer to stick with Kestra because I don't think we'll have the complexity — or at least, I think I can decompose it down to not need the complexity of something like Temporal.
 
 ## How we evaluated these alternatives
 
