@@ -13,7 +13,7 @@ Give AI coding agents structured knowledge to generate Kestra flows and operate 
 
 Agent Skills are structured knowledge files (`SKILL.md`) that teach external AI coding agents how to work with Kestra. They provide the context, commands, and guardrails an agent needs to generate valid flow YAML or operate a Kestra environment via the CLI.
 
-Unlike [AI Copilot](../01.ai-copilot/index.md), which works inside the Kestra UI, Agent Skills bring Kestra expertise to the tools you already use in your editor or terminal — Claude Code, Cursor, Windsurf, OpenAI Codex, and others.
+Unlike [AI Copilot](../01.ai-copilot/index.md), which works inside the Kestra UI, Agent Skills bring Kestra expertise to the tools you already use in your editor or terminal: Claude Code, Cursor, Windsurf, OpenAI Codex, and others.
 
 Unlike [AI Agents](../05.ai-agents/index.md), which are autonomous tasks running inside Kestra flows, Agent Skills equip your external coding agent with Kestra-specific knowledge so it can help you build and operate flows from your development environment.
 
@@ -25,7 +25,7 @@ Kestra provides multiple skills in the [kestra-io/agent-skills](https://github.c
 
 ### kestra-flow
 
-Generate, modify, or debug Kestra Flow YAML grounded in the live flow schema — the same approach used by Kestra's AI Copilot.
+Generate, modify, or debug Kestra Flow YAML grounded in the live flow schema (the same approach used by Kestra's AI Copilot).
 
 **Use when:**
 - Generating a new flow from a description
@@ -46,7 +46,7 @@ Use kestra-flow to write a flow that polls a REST API every 30 minutes and store
 
 ### kestra-flow-hardening
 
-Audit existing flows and add production-hardening controls — the consulting counterpart to `kestra-flow`. It is **audit-first**: it produces a severity-ranked findings report (risk, caveat, and proposed fix per finding), then applies only the edits you confirm.
+Audit existing flows and add production-hardening controls, the consulting counterpart to `kestra-flow`. It is **audit-first**: it produces a severity-ranked findings report (risk, caveat, and proposed fix per finding), then applies only the edits you confirm.
 
 **Use when:**
 - Hardening one or more flows for production
@@ -119,7 +119,7 @@ Use migrate-airflow-kestra to migrate dags/ingest_pipeline.py from Airflow to Ke
 
 ## Setup
 
-The easiest way to install Kestra agent skills is with [skills.sh](https://skills.sh) — it auto-detects your AI coding agent and places the skill files in the right location:
+The easiest way to install Kestra agent skills is with [skills.sh](https://skills.sh); it auto-detects your AI coding agent and places the skill files in the right location:
 
 ```bash
 npx skills add kestra-io/agent-skills
@@ -139,7 +139,7 @@ curl -sL https://raw.githubusercontent.com/kestra-io/agent-skills/main/skills/ke
   -o .claude/skills/kestra-ops/SKILL.md
 ```
 
-Repeat for any other skill you need (e.g. `kestra-flow`). Adjust the target directory for your agent — `.cursor/rules/` for Cursor, `.agents/skills/` for OpenAI Codex, etc. Some skills ship supporting files alongside `SKILL.md` (for example, `kestra-flow-hardening` includes `references/hardening-patterns.md`) — copy the whole skill directory so those files are available. Using `skills.sh` handles this automatically.
+Repeat for any other skill you need (e.g. `kestra-flow`). Adjust the target directory for your agent: `.cursor/rules/` for Cursor, `.agents/skills/` for OpenAI Codex, etc. Some skills ship supporting files alongside `SKILL.md` (for example, `kestra-flow-hardening` includes `references/hardening-patterns.md`); copy the whole skill directory so those files are available. Using `skills.sh` handles this automatically.
 
 ## Example Workflows
 
@@ -164,7 +164,7 @@ Use kestra-flow-hardening to audit ./flows/extract.yaml and add retries,
 timeouts, and failure alerting where they're missing.
 ```
 
-The agent will produce a severity-ranked findings report — for example, flagging missing retries on external HTTP calls (Medium), a silent fallback masking a geocoding failure (data-correctness risk), and no failure alerting on a scheduled flow (High) — then apply only the fixes you confirm, validating each edit against the live schema.
+The agent will produce a severity-ranked findings report (for example, flagging missing retries on external HTTP calls (Medium), a silent fallback masking a geocoding failure (data-correctness risk), and no failure alerting on a scheduled flow (High)), then apply only the fixes you confirm, validating each edit against the live schema.
 
 ### Validate and deploy with kestra-ops
 

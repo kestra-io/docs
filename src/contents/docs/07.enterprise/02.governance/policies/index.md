@@ -13,7 +13,7 @@ A Policy bundles rules that inject property values, strip properties, restrict a
 
 ## Why Policies
 
-Without Policies, ensuring that flows across many namespaces use approved configurations requires manual coordination — authors must set values correctly on every task, and administrators have no way to enforce or verify compliance.
+Without Policies, ensuring that flows across many namespaces use approved configurations requires manual coordination; authors must set values correctly on every task, and administrators have no way to enforce or verify compliance.
 
 Policies address this with a model that supports:
 
@@ -123,7 +123,7 @@ Rules come in two families: mutate rules change the resolved configuration befor
 
 Mutate rules change the resolved configuration before execution. They do not alter the stored flow YAML — the injection or deletion happens at resolution time. Every mutation is visible to the author in the flow editor's merged preview.
 
-**`io.kestra.plugin.ee.rules.Add`** — inject values into flows or plugin instances. With `override: false` (the default), the author's explicit value wins and the policy injects only when the property is absent. With `override: true`, the policy value always wins.
+**`io.kestra.plugin.ee.rules.Add`**: inject values into flows or plugin instances. With `override: false` (the default), the author's explicit value wins and the policy injects only when the property is absent. With `override: true`, the policy value always wins.
 
 Add rules can target flow-level properties (like `retry`, `concurrency`, or `labels`) with `on: FLOW`, or individual plugin instances with `on: PLUGIN`.
 
@@ -170,7 +170,7 @@ Injected `values` may contain Pebble expressions such as `{{ secret('…') }}`. 
 When injecting a nested object, keys from the flow and the policy are merged. If both supply a list at the same path, the policy's list replaces the flow's list entirely — lists are not combined.
 :::
 
-**`io.kestra.plugin.ee.rules.Delete`** — remove specific properties from matching flows or plugin instances at resolution time. Delete always wins over an author-supplied value, and is always visible in the merged preview.
+**`io.kestra.plugin.ee.rules.Delete`**: remove specific properties from matching flows or plugin instances at resolution time. Delete always wins over an author-supplied value, and is always visible in the merged preview.
 
 ```yaml
 # Strip hardcoded credentials — a central injection policy supplies them
@@ -197,7 +197,7 @@ Validate rules check flow or plugin properties at save time and before execution
 Validation runs after all `Add` and `Delete` rules have been applied. An `Add` rule can satisfy a `Require` rule, and a `Restrict` rule catches a bad value regardless of whether the author or a Policy supplied it.
 :::
 
-**`io.kestra.plugin.ee.rules.Deny`** — reject a plugin type wholesale. Requires `on: PLUGIN`. Matches every instance of the plugin wherever it appears — tasks, error handlers, triggers, and task runners.
+**`io.kestra.plugin.ee.rules.Deny`**: reject a plugin type wholesale. Requires `on: PLUGIN`. Matches every instance of the plugin wherever it appears — tasks, error handlers, triggers, and task runners.
 
 ```yaml
 - type: io.kestra.plugin.ee.rules.Deny
@@ -209,7 +209,7 @@ Validation runs after all `Add` and `Delete` rules have been applied. An `Add` r
   errorMessage: "BigQuery plugins are disabled — contact the data platform team."
 ```
 
-**`io.kestra.plugin.ee.rules.Restrict`** — constrain a property to an allowed range or set of values. Requires at least one of: `min`, `max`, `enum`, `regex`, `equals`. If the property is absent, no violation is raised — pair with a `Require` or `Add` rule for guaranteed presence.
+**`io.kestra.plugin.ee.rules.Restrict`**: constrain a property to an allowed range or set of values. Requires at least one of: `min`, `max`, `enum`, `regex`, `equals`. If the property is absent, no violation is raised — pair with a `Require` or `Add` rule for guaranteed presence.
 
 ```yaml
 # Cap concurrency on flow-level properties
@@ -237,7 +237,7 @@ Validation runs after all `Add` and `Delete` rules have been applied. An `Add` r
   errorMessage: "Flow ids should be kebab-case (e.g. daily-orders-sync)."
 ```
 
-**`io.kestra.plugin.ee.rules.Require`** — mandate that one or more properties are set and non-empty. Empty string, whitespace-only, `[]`, and `{}` do not satisfy the rule; `0` and `false` do.
+**`io.kestra.plugin.ee.rules.Require`**: mandate that one or more properties are set and non-empty. Empty string, whitespace-only, `[]`, and `{}` do not satisfy the rule; `0` and `false` do.
 
 ```yaml
 # Every flow must carry a team label

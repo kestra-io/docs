@@ -65,7 +65,7 @@ The new [`subflow()`](./expressions/04.functions/04.workflow/index.mdx) Pebble f
 
 ### Draft flows
 
-The flow editor now supports [saving flows as drafts](./06.concepts/03.revision/index.md#draft-revisions). Use **Save as draft** to stage changes without affecting running executions — any trigger or manual run continues to use the last published revision until you explicitly publish. This lets you iterate on a flow that is already in production without disrupting live executions. When you're ready, click **Publish** in the run panel's draft warning banner to make the draft active.
+The flow editor now supports [saving flows as drafts](./06.concepts/03.revision/index.md#draft-revisions). Use **Save as draft** to stage changes without affecting running executions; any trigger or manual run continues to use the last published revision until you explicitly publish. This lets you iterate on a flow that is already in production without disrupting live executions. When you're ready, click **Publish** in the run panel's draft warning banner to make the draft active.
 
 ### Execution labels from triggers
 
@@ -95,15 +95,15 @@ New controls for what flows can access and how they are governed.
 
 ### RBAC: action-based permissions (EE)
 
-The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource exposes only the actions that make sense for it — for example, `EXECUTION: ACCESS_LOGS`, `EXECUTION: FOLLOW`, and `TRIGGER: BACKFILL`. New resources in 2.0 include `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`. Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings migrate automatically on upgrade. See the [RBAC reference](./07.enterprise/01.auth/rbac/index.md) and [migration guide](./11.migration-guide/v2.0.0/rbac-action-model/index.md).
+The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource exposes only the actions that make sense for it, for example `EXECUTION: ACCESS_LOGS`, `EXECUTION: FOLLOW`, and `TRIGGER: BACKFILL`. New resources in 2.0 include `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`. Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings migrate automatically on upgrade. See the [RBAC reference](./07.enterprise/01.auth/rbac/index.md) and [migration guide](./11.migration-guide/v2.0.0/rbac-action-model/index.md).
 
 ### Instance Owner (formerly Super Admin)
 
-The Super Admin privilege is renamed to [Instance Owner](./07.enterprise/05.instance/00.instance-owner/index.md). The privilege itself is unchanged — Instance Owners retain the same instance-wide authority over tenants, IAM, infrastructure, and governance. Deprecated aliases are retained for the CLI, config, and HTTP request bodies. HTTP API responses now emit `instanceOwner` instead of `superAdmin`.
+The Super Admin privilege is renamed to [Instance Owner](./07.enterprise/05.instance/00.instance-owner/index.md). The privilege itself is unchanged. Instance Owners retain the same instance-wide authority over tenants, IAM, infrastructure, and governance. Deprecated aliases are retained for the CLI, config, and HTTP request bodies. HTTP API responses now emit `instanceOwner` instead of `superAdmin`.
 
 ### Policies (EE)
 
-[Policies](./07.enterprise/02.governance/policies/index.md) enforce governance rules on flows at save time and execution time. Rules can require specific task types, block others, or validate property values — applied per namespace.
+[Policies](./07.enterprise/02.governance/policies/index.md) enforce governance rules on flows at save time and execution time. Rules can require specific task types, block others, or validate property values, applied per namespace.
 
 ### HTTP task URL filtering
 
@@ -119,11 +119,11 @@ New capabilities available in Enterprise Edition.
 
 [Cases](./07.enterprise/02.governance/cases/index.md) is a full incident management system built into Kestra. When an execution fails, it becomes an incident you can track without leaving the platform.
 
-The `CreateCase` task opens a case automatically from your flow's `errors`, `finally`, or `afterExecution` block. With `linkMatchingExecutions: true`, repeated failures of the same flow and task attach to the already-open case rather than creating a new one — keeping alert volume under control when a single outage generates dozens of executions. Cases track severity, status (`Open`, `Acknowledged`, `Investigating`, `Resolved`), SLA targets with live countdowns, assignees and watchers, linked executions and assets, and one-click remediation actions. A kanban board and list view surface all open incidents across the tenant.
+The `CreateCase` task opens a case automatically from your flow's `errors`, `finally`, or `afterExecution` block. With `linkMatchingExecutions: true`, repeated failures of the same flow and task attach to the already-open case rather than creating a new one, keeping alert volume under control when a single outage generates dozens of executions. Cases track severity, status (`Open`, `Acknowledged`, `Investigating`, `Resolved`), SLA targets with live countdowns, assignees and watchers, linked executions and assets, and one-click remediation actions. A kanban board and list view surface all open incidents across the tenant.
 
 ### Promote (EE)
 
-[Promote](./07.enterprise/02.governance/promote/index.md) copies a flow from one Kestra instance to another directly from the UI — no Git pipeline required.
+[Promote](./07.enterprise/02.governance/promote/index.md) copies a flow from one Kestra instance to another directly from the UI, with no Git pipeline required.
 
 From the **Promote** tab on any flow, select a target environment, review a source-to-target diff, and confirm. A **Deploy** column in the flows list shows the drift state of every flow (`IN_SYNC`, `OUT_OF_SYNC`, `NOT_PROMOTED`) so you can see at a glance what needs to be deployed. Production targets can require an explicit confirmation gate before any promotion lands. Promotion history is recorded per flow and surfaced in the audit log.
 
@@ -155,7 +155,7 @@ The [VS Code extension](./version-control-cicd/05.vscode/index.md) now supports 
 
 The flow editor gains a No-code view alongside the YAML editor. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as a list of blocks. Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel of the form lists every upstream task output and execution context variable available at that point in the flow.
 
-All three views — YAML editor, No-code editor, and AI Copilot — stay in sync. Changes made in any view reflect immediately in the others.
+All three views (YAML editor, No-code editor, and AI Copilot) stay in sync. Changes made in any view reflect immediately in the others.
 
 A new `FORM` input type groups related inputs into a labeled multi-step wizard in the Execute modal.
 
@@ -191,11 +191,11 @@ Tasks declare routing requirements with `workerSelector.tags` instead of the rem
 - `match: ALL` requires all tags to be present; `match: ANY` requires at least one
 - `fallback` controls behavior when a matching queue exists but has no live workers: `FAIL` (new default), `WAIT`, `CANCEL`, or `IGNORE`
 
-**Capacity reservation** — each Worker Group subscription supports a `reservedPercent` floor on its thread pool. Two modes control idle slot behavior: `STRICT` keeps reserved capacity exclusive; `ELASTIC` lends idle slots to other queues and reclaims them on demand. Reservations update live without restarting workers.
+**Capacity reservation**: each Worker Group subscription supports a `reservedPercent` floor on its thread pool. Two modes control idle slot behavior: `STRICT` keeps reserved capacity exclusive; `ELASTIC` lends idle slots to other queues and reclaims them on demand. Reservations update live without restarting workers.
 
-**Worker authentication** — workers authenticate via JWT. A registration token is created in the UI or via `kestractl`; the worker exchanges it on first connect for a short-lived access token and rotating refresh token. Revoking a token cuts off that worker at the next refresh.
+**Worker authentication**: workers authenticate via JWT. A registration token is created in the UI or via `kestractl`; the worker exchanges it on first connect for a short-lived access token and rotating refresh token. Revoking a token cuts off that worker at the next refresh.
 
-**Declarative topology bootstrap** — `kestra.ee.setup` in `application.yml` lets you declare the full topology (queues, groups, subscriptions, registration tokens) at startup. Provisioning uses create-if-not-exists semantics, so restarts are safe and the database remains the source of truth once an entity exists.
+**Declarative topology bootstrap**: `kestra.ee.setup` in `application.yml` lets you declare the full topology (queues, groups, subscriptions, registration tokens) at startup. Provisioning uses create-if-not-exists semantics, so restarts are safe and the database remains the source of truth once an entity exists.
 
 See the [Worker Groups reference](./07.enterprise/04.scalability/worker-group/index.md) and [migration guide](./11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md).
 
@@ -247,4 +247,4 @@ All breaking changes have migration guides:
 | SDK auth required for internal tasks | [Guide](./11.migration-guide/v2.0.0/sdk-authentication/index.md) |
 | `workerGroup.key` removed | [Guide](./11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md) |
 | `CANCELED` enum alias removed | Replace with `CANCELLED` in expressions, API consumers, and tooling |
-| Four core tasks removed | `Count`, `Resume`, `trigger.Toggle`, `log.Fetch` — use `plugin-kestra` equivalents |
+| Four core tasks removed | `Count`, `Resume`, `trigger.Toggle`, `log.Fetch`: use `plugin-kestra` equivalents |

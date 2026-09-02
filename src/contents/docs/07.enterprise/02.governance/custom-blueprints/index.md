@@ -251,7 +251,7 @@ The task outputs a `commitId`, a `commitURL`, and a `blueprints` URI pointing to
 
 ### Sync blueprints from Git
 
-Use `SyncBlueprints` to pull blueprints from Git into Kestra. This is the recommended pattern when Git is your single source of truth — for example, when platform teams manage approved blueprint libraries centrally and deploy them across multiple Kestra instances.
+Use `SyncBlueprints` to pull blueprints from Git into Kestra. This is the recommended pattern when Git is your single source of truth, for example when platform teams manage approved blueprint libraries centrally and deploy them across multiple Kestra instances.
 
 By default, `SyncBlueprints` only adds and updates blueprints. Set `delete: true` to also remove any blueprints present in Kestra but absent in Git.
 
@@ -277,7 +277,7 @@ triggers:
 
 Set `dryRun: true` to preview what would change without applying it. The `blueprints` output URI contains a row-per-blueprint report showing each blueprint's `syncState`: `ADDED`, `UPDATED`, `UNCHANGED`, or `DELETED`.
 
-Use caution with `delete: true` — it removes all blueprints not present in Git, not just those that differ.
+Use caution with `delete: true`: it removes all blueprints not present in Git, not just those that differ.
 
 ### Blueprint YAML file format
 

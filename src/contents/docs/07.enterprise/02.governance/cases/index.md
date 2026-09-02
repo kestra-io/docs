@@ -12,7 +12,7 @@ Track and resolve incidents directly in Kestra, next to the executions that caus
 
 When an execution fails, it is often an incident. Cases lets you track and resolve those incidents directly in Kestra, without a separate tool.
 
-Cases are not limited to failures — you can open one for executions that need approvals, or for successful executions that produced unexpected outputs.
+Cases are not limited to failures; you can open one for executions that need approvals, or for successful executions that produced unexpected outputs.
 
 The `CreateCase` task lets you open cases automatically from your flow YAML:
 
@@ -277,7 +277,7 @@ curl -X POST "https://{host}/api/v1/{tenant}/cases/by-executions" \
   -d '["execution-id-1", "execution-id-2"]'
 ```
 
-Returns `{ "executionId": [caseSummary, ...] }` — useful for annotating an execution list with its linked cases.
+Returns `{ "executionId": [caseSummary, ...] }`, useful for annotating an execution list with its linked cases.
 
 **Add a comment**
 

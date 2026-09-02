@@ -20,7 +20,7 @@ If you are upgrading directly from 1.0, the [LTS migration guide (1.0 → 1.3)](
 
 ### Back up your database
 
-Take a full database backup before upgrading. Several 2.0 migrations are irreversible — in particular, the BasicAuth password rehash prevents rollback to 1.x.
+Take a full database backup before upgrading. Several 2.0 migrations are irreversible: in particular, the BasicAuth password rehash prevents rollback to 1.x.
 
 ### Run database migrations (EE)
 
@@ -31,7 +31,7 @@ kestra migrate plan   # preview what will run
 kestra migrate run    # apply migrations
 ```
 
-Open-source users do not need to do this manually — migrations run automatically on startup.
+Open-source users do not need to do this manually; migrations run automatically on startup.
 
 See [Database Migrations](./database-migrations) for the full upgrade sequence, Docker Compose and Kubernetes examples, and configuration options.
 
@@ -54,7 +54,7 @@ Two tools are available to reduce manual effort during the upgrade.
 
 ### kestra-migrate CLI
 
-[`kestra-migrate`](https://github.com/kestra-io/kestra2-flow-migration) is a command-line tool that automatically rewrites v1.3 flow YAML to the v2.0 format. It covers 16 migration rules — type renames, property renames, auth restructuring, and more — and flags flows that use removed types requiring manual rewriting.
+[`kestra-migrate`](https://github.com/kestra-io/kestra2-flow-migration) is a command-line tool that automatically rewrites v1.3 flow YAML to the v2.0 format. It covers 16 migration rules (type renames, property renames, auth restructuring, and more) and flags flows that use removed types requiring manual rewriting.
 
 **Install on macOS or Linux:**
 
@@ -91,7 +91,7 @@ Then open any Claude Code session and say: "migrate my Kestra instance to 2.0".
 
 ## What changed in 2.0.0
 
-The changes below are grouped by the area they affect. Work through the categories relevant to your setup — not every change applies to every installation.
+The changes below are grouped by the area they affect. Work through the categories relevant to your setup; not every change applies to every installation.
 
 ### Flows
 
@@ -99,10 +99,10 @@ Changes that affect how flows are written or behave at runtime. Review all of th
 
 | Guide | Editions | What changed |
 |---|---|---|
-| [ForEach replaced by Loop](./foreach-loop) | OSS, EE | `ForEach` and `ForEachItem` are removed. Migrate all uses to the `Loop` task before upgrading — flows that reference either task fail to parse in 2.0. |
+| [ForEach replaced by Loop](./foreach-loop) | OSS, EE | `ForEach` and `ForEachItem` are removed. Migrate all uses to the `Loop` task before upgrading; flows that reference either task fail to parse in 2.0. |
 | [Trigger conditions redesign](./trigger-conditions-redesign) | OSS, EE | The `conditions` list and `preconditions` block on triggers are removed. All trigger types now use a top-level `when` Pebble expression. |
 | [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. |
-| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function is removed. Replace all calls with `fromJson()` — the signature is identical. |
+| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function is removed. Replace all calls with `fromJson()`; the signature is identical. |
 | [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
 
 ### Governance and plugins
@@ -123,7 +123,7 @@ Changes to execution data formats, API responses, and storage configuration.
 | Guide | Editions | What changed |
 |---|---|---|
 | [Execution API response](./execution-api-response) | OSS, EE | The execution endpoint response no longer includes task run outputs. Update any API consumers that read `taskRunList[*].outputs`. |
-| [ION binary format](./ion-binary-format) | OSS, EE | ION task output files are now written in binary format. Expressions that call `read()` on ION output and then perform string operations will fail — wrap with `fromIon()`. |
+| [ION binary format](./ion-binary-format) | OSS, EE | ION task output files are now written in binary format. Expressions that call `read()` on ION output and then perform string operations will fail; wrap with `fromIon()`. |
 | [Execution data in internal storage removed](./execution-data-internal-storage) | EE | The configuration option that stored task run outputs in internal storage is removed. Remove the affected keys from your configuration. |
 
 ### Infrastructure
@@ -143,7 +143,7 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 | Guide | Editions | What changed |
 |---|---|---|
 | [Terraform provider](./terraform-provider) | EE, Cloud | The `permissions` block on `kestra_role` is renamed to `resources` with `actions` instead of CRUD verbs; `plugin_defaults` and `worker_group` are removed from `kestra_namespace`; `kestra_template` resources must be deleted. Pin to `~> 2.0`. |
-| [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin` — update API consumers that read this field. |
+| [Super Admin renamed to Instance Owner](./superadmin-renamed-instance-owner) | EE, Cloud | The Super Admin privilege is renamed to Instance Owner. Deprecated CLI, config, and request-body aliases are retained. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update API consumers that read this field. |
 
 ## Completing the migration
 
@@ -158,7 +158,7 @@ Migrate flows incrementally. For each flow:
    - **Secrets** — confirm secrets are available in the 2.0 secret backend.
 2. **Validate on 2.0.** Trigger at least one test execution on the 2.0 instance and confirm it completes successfully.
 3. **Drain before removing.** Wait for any active executions of the flow on 1.3 to finish before deleting it. Removing a flow with running executions leaves those executions in an unresolvable state.
-4. **Activate triggers on 2.0 first.** If the flow has a schedule or polling trigger, confirm the trigger is active on 2.0 before removing the flow from 1.3 — otherwise scheduled runs are silently dropped during the gap.
+4. **Activate triggers on 2.0 first.** If the flow has a schedule or polling trigger, confirm the trigger is active on 2.0 before removing the flow from 1.3; otherwise scheduled runs are silently dropped during the gap.
 5. **Delete from 1.3.** Once validated, drained, and triggers are live, delete the flow from the 1.3 instance.
 
 When the 1.3 flow count reaches zero, all flows have been migrated and validated.

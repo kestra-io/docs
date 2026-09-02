@@ -25,7 +25,7 @@ This page covers Kestra as an MCP server. For using external MCP servers from wi
 
 ## Default server
 
-A `default` MCP server is automatically provisioned for every tenant on startup. You can use it immediately — no setup needed. The `McpToolTrigger`'s `mcpServer` property defaults to `"default"`, so a minimal trigger requires no explicit server reference.
+A `default` MCP server is automatically provisioned for every tenant on startup. You can use it immediately with no setup needed. The `McpToolTrigger`'s `mcpServer` property defaults to `"default"`, so a minimal trigger requires no explicit server reference.
 
 ## Managing MCP servers
 
@@ -37,7 +37,7 @@ Each server has the following fields:
 |---|---|
 | `name` | Display name for the server. |
 | `description` | Optional description shown in the UI. |
-| `systemPrompt` | Instructions prepended to every AI agent session connected to this server. Use this to guide agent behavior — for example, to restrict which tools to call or define the agent's persona. |
+| `systemPrompt` | Instructions prepended to every AI agent session connected to this server. Use this to guide agent behavior, for example to restrict which tools to call or define the agent's persona. |
 | `serverType` | `PRIVATE` (default) or `PUBLIC`. A private server requires authentication; a public server accepts unauthenticated connections. |
 | `authType` | `BASIC` (username/password, available in OSS and EE), `API_TOKEN` (EE and Cloud only), or `OAUTH` (EE and Cloud only). |
 
@@ -53,7 +53,7 @@ Keep servers private unless you have a specific reason to expose them publicly. 
 
 ### Configuring OAuth authentication
 
-`OAUTH` auth requires an OIDC provider configured in your Kestra instance — the same configuration used for SSO. See [SSO configuration](../../07.enterprise/03.auth/sso/index.md) for how to set up an OIDC provider under `micronaut.security.oauth2.clients`.
+`OAUTH` auth requires an OIDC provider configured in your Kestra instance (the same configuration used for SSO). See [SSO configuration](../../07.enterprise/03.auth/sso/index.md) for how to set up an OIDC provider under `micronaut.security.oauth2.clients`.
 
 Once a provider is configured, set `authType` to `OAUTH` on the MCP server. The `oauthProvider` field specifies which provider to use by its configured name:
 
@@ -70,7 +70,7 @@ micronaut:
             issuer: https://accounts.example.com
 ```
 
-When a client connects to an `OAUTH`-protected MCP server and presents no token, the server responds with a `WWW-Authenticate` header pointing to the OAuth Protected Resource Metadata endpoint (RFC 9728). MCP-compliant clients such as Claude web discover the OIDC provider from this automatically and initiate the authorization code + PKCE flow — no manual client configuration is needed beyond the MCP server URL.
+When a client connects to an `OAUTH`-protected MCP server and presents no token, the server responds with a `WWW-Authenticate` header pointing to the OAuth Protected Resource Metadata endpoint (RFC 9728). MCP-compliant clients such as Claude web discover the OIDC provider from this automatically and initiate the authorization code + PKCE flow; no manual client configuration is needed beyond the MCP server URL.
 
 :::alert{type="info"}
 The authenticating user must already have a Kestra account. The OAuth token's `email` or `preferred_username` claim is matched against existing Kestra users. If no matching user is found, the connection is rejected.
@@ -87,7 +87,7 @@ Open a server in the UI and click the **Connect** tab. It shows the server URL a
 - **Cursor** — server URL to paste into Cursor Settings → MCP → Add new MCP server
 - **Codex** — connection configuration
 
-For Basic Auth, the snippet references `${KESTRA_BASIC_AUTH}` as a placeholder. Replace it with the actual base64-encoded `username:password` value inline — the variable reference does not expand at connection time:
+For Basic Auth, the snippet references `${KESTRA_BASIC_AUTH}` as a placeholder. Replace it with the actual base64-encoded `username:password` value inline; the variable reference does not expand at connection time:
 
 ```bash
 claude mcp add <server-id> <server-url> \
