@@ -42,7 +42,9 @@
     &.is-invalid,
     &.is-invalid:focus {
         border-color: var(--ks-border-alert-danger);
+        // Suppress Bootstrap's validation icon and the padding it reserves.
         background-image: none;
+        padding-right: 12px;
     }
 }
 

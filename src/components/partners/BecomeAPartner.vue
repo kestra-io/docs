@@ -217,7 +217,7 @@
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { $fetch } from "~/utils/fetch"
-    import { getFormErrors } from "~/utils/formValidation"
+    import { useFormErrors } from "~/composables/useFormErrors"
 
     const props = defineProps<{ routePath: string }>()
 
@@ -236,11 +236,6 @@
     const valid = ref(false)
     const validMessage = ref("")
     const message = ref("")
-    const errors = ref<Record<string, string>>({})
-
-    function clearError(id: string) {
-        delete errors.value[id]
-    }
 
     const fields = [
         {
@@ -281,17 +276,16 @@
         },
     ]
 
+    const { errors, clearError, validate } = useFormErrors(
+        Object.fromEntries(fields.map((f) => [f.id, f.label])),
+    )
+
     async function onSubmit() {
         const form = formRef.value as HTMLFormElement
         message.value = ""
 
-        errors.value = getFormErrors(
-            form,
-            Object.fromEntries(fields.map((f) => [f.id, f.label])),
-        )
-        if (Object.keys(errors.value).length > 0) {
+        if (!validate(form)) {
             message.value = "Please correct the highlighted fields below."
-            ;(form.querySelector(":invalid") as HTMLElement | null)?.focus()
             return
         }
 

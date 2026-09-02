@@ -141,7 +141,7 @@
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { $fetch } from "~/utils/fetch"
-    import { getFormErrors } from "~/utils/formValidation"
+    import { useFormErrors } from "~/composables/useFormErrors"
     import calendarMonthImage from "./images/calendar_month.png"
     import smallCloudImage from "./images/small_cloud.png"
     import hammerWrenchImage from "./images/hammer_wrench.png"
@@ -156,11 +156,12 @@
     const valid = ref(false)
     const validMessage = ref("")
     const message = ref("")
-    const errors = ref<Record<string, string>>({})
 
-    function clearError(id: string) {
-        delete errors.value[id]
-    }
+    const { errors, clearError, validate } = useFormErrors({
+        firstname: "first name",
+        lastname: "last name",
+        email: "company email",
+    })
 
     const hubSpotFormId = "230d0ed2-2484-4e9e-86c6-135a6398fac5"
 
@@ -169,15 +170,9 @@
         e.stopPropagation()
         const form = formRef.value as HTMLFormElement
         const hsq = ((window as any)._hsq = (window as any)._hsq || [])
-        errors.value = getFormErrors(form, {
-            firstname: "first name",
-            lastname: "last name",
-            email: "company email",
-        })
-        if (Object.keys(errors.value).length > 0) {
+        if (!validate(form)) {
             valid.value = false
             message.value = "Please correct the highlighted fields below."
-            ;(form.querySelector(":invalid") as HTMLElement | null)?.focus()
         } else {
             hsq.push([
                 "identify",
@@ -258,6 +253,9 @@
     .form-control.is-invalid,
     .form-control.is-invalid:focus {
         border-color: var(--ks-border-alert-danger);
+        // Suppress Bootstrap's validation icon and the padding it reserves.
+        background-image: none;
+        padding-right: $input-padding-x;
     }
 
     .field-error {
