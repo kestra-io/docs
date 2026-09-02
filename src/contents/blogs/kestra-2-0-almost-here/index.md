@@ -8,7 +8,7 @@ author:
   image: ldehon
   linkedin: https://www.linkedin.com/in/ludovic-dehon/
   role: CTO & Co-founder
-image: ./main.png
+image: ./main.jpg
 ---
 
 Kestra 2.0 marks the biggest update in the project's history with a complete overhaul of the execution engine, a redesigned UI, and the most substantial set of changes we've ever released. Importantly, **Kestra 2.0 remains open source under the Apache 2.0 license**, the same as from the start. Unlike many projects that use major versions to change licenses, we are leveraging ours to open up earlier.
