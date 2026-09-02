@@ -159,8 +159,8 @@
     }
 
     .modal-content {
-        background-color: var(--ks-background-box);
-        border: 1px solid var(--ks-dialog-border);
+        background-color: var(--ks-background-body);
+        border: 1px solid var(--ks-border-primary);
         color: var(--ks-content-primary);
         .modal-header {
             padding: 10px 16px;
