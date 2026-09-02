@@ -671,20 +671,37 @@ if (file('ui').exists()) {
     tasks.register('npmInstallUI', com.github.gradle.node.npm.task.NpmTask) {
         args = ['install']
         workingDir = file('ui')
+        // Lets Gradle mark this UP-TO-DATE across separate ./gradlew invocations in the
+        // same CI job (e.g. `check`, then `publish`); without this, npm install reruns from
+        // scratch on every invocation, doubling peak memory on memory-constrained runners.
+        inputs.files('ui/package.json', 'ui/package-lock.json')
+        outputs.dir('ui/node_modules')
     }
 
     tasks.register('buildUI', com.github.gradle.node.npm.task.NpmTask) {
         dependsOn 'npmInstallUI'
         args = ['run', 'build', '--', '--outDir', '../src/main/resources/plugin-ui']
         workingDir = file('ui')
+        // Same reasoning as npmInstallUI: avoids rebuilding the whole UI bundle a second time.
+        inputs.dir('ui/src')
+        inputs.files('ui/package.json', 'ui/vite.config.ts')
+        outputs.dir('src/main/resources/plugin-ui')
     }
 
     processResources.dependsOn 'buildUI'
     shadowJar.dependsOn 'buildUI'
+    // buildUI's output dir overlaps sourcesJar's implicit input (src/main/resources); without
+    // this, Gradle's task validation fails the build once buildUI declares that directory as
+    // an output above, since sourcesJar would consume it without a declared dependency.
+    sourcesJar.dependsOn 'buildUI'
 }
 ```
 
 The `if (file('ui').exists())` guard keeps the build working for other developers and CI pipelines that haven't set up Node.js, without failing the Java build.
+
+:::alert{type="warning"}
+Declare `inputs`/`outputs` on `npmInstallUI` and `buildUI` as shown above, and add the `sourcesJar.dependsOn 'buildUI'` line. Omitting them let Gradle treat the UI build as never up-to-date, so a CI job running `check` and then `publish` in the same invocation rebuilt the whole UI bundle twice — doubling peak memory and OOM-killing the job on memory-constrained runners.
+:::
 
 Add the build output to `.gitignore` so the compiled assets are not committed:
 
