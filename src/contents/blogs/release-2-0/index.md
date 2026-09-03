@@ -144,7 +144,7 @@ The MCP server also works in the other direction. Connect Claude, Cursor, or any
 
 All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
 
-See the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger) for full setup.
+Full setup in the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger).
 
 <div style="position: relative; padding-bottom: calc(49.0084% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/T50B5gunEbBXP5caS8yl?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Flow as an MCP Tool in Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -168,19 +168,15 @@ Actions that modify resources require explicit confirmation before the AI Copilo
 
 The `COPILOT` resource in the RBAC model controls who can use the feature. Assign `USE` at tenant or namespace scope via the Roles UI.
 
-See the [AI Copilot reference](/docs/ai-tools/ai-copilot).
+The [AI Copilot docs](/docs/ai-tools/ai-copilot) cover mode details, context tags, and RBAC config.
 
 ## No-code Editor
 
-The No-code editor is redesigned in 2.0. The most useful addition is the contextual data panel: every flow input, upstream task output, and execution context variable available at that point in the flow is listed alongside the configuration form, organized by category and filterable. No switching to the YAML editor to look up variable names.
+For teams who prefer building flows through forms rather than YAML, the No-code editor has been polished significantly in 2.0. A contextual data panel now sits alongside every configuration form, listing every input, upstream task output, and execution context variable available at that point in the flow, organized by category and filterable. Check it out below, and as always, all three views (YAML editor, No-code editor, and AI Copilot) stay in sync throughout the editing process.
 
-Each flow section (Triggers, Tasks, Errors, Finally, After Execution) is displayed as a group of blocks. Clicking a block opens its configuration form with two tabs: **Form** (guided fields with inline documentation) and **Source** (raw YAML for that block). Tasks can be opened in a focused centered view for editing, or in separate tabs when you're working across multiple flow components at once.
+<div style="position: relative; padding-bottom: calc(48.8542% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/GTFXessaiDkaI6hw0mof?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="2.0 No-code Editor - Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Add blocks with **+ Add task** or **+ Add trigger**, or press `/` to search and insert a plugin at the cursor position. All three views (YAML editor, No-code editor, and AI Copilot) stay in sync. Start in any mode and switch freely; every change reflects instantly across all three.
-
-A new `FORM` input type groups related inputs as a multi-step wizard in the Execute modal. Each step is a labeled section in the inputs list, making complex trigger forms easier to fill out without presenting every field at once.
-
-See the [flow editor reference](/docs/ui/flows).
+The [flow editor docs](/docs/ui/flows) cover both No-code and YAML editing in full.
 
 ## RBAC: Action-Based Permissions
 
@@ -194,7 +190,7 @@ New resources in 2.0 include `TRIGGER` (previously part of `FLOW`), `SYSTEM_SETT
 
 Setting every permission by hand isn't the expected path. Five managed roles come with 2.0, available as presets when a role is created: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings are migrated automatically on upgrade.
 
-See the [RBAC reference](/docs/enterprise/auth/rbac) and the [migration guide for the RBAC action model](/docs/migration-guide/v2.0.0/rbac-action-model).
+The [RBAC reference](/docs/enterprise/auth/rbac) has the full action list per resource, and the [action model migration guide](/docs/migration-guide/v2.0.0/rbac-action-model) covers what changes on upgrade.
 
 ## Policies
 
@@ -234,7 +230,7 @@ rules:
 
 Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but violations are only reported: nothing is blocked, and `Add`/`Delete` mutate rules are skipped. When the violation report looks right, flip to `ACTIVE`.
 
-`pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. See the [Policies reference](/docs/enterprise/governance/policies) for the full rule DSL.
+`pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. The [Policies docs](/docs/enterprise/governance/policies) have the full rule DSL, including `where` clause syntax and the `EVALUATE` vs `ACTIVE` enforcement modes.
 
 ## Cases
 
@@ -260,7 +256,7 @@ Each case tracks status, severity, assignees, SLA timers, and linked executions,
 
 The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required.
 
-See the [Cases reference](/docs/enterprise/governance/cases).
+The [Cases docs](/docs/enterprise/governance/cases) cover SLA configuration, case actions, and the auto-attach trigger setup.
 
 ## Promote
 
@@ -274,7 +270,7 @@ The flows table gains a Deploy column showing drift at a glance. If production i
 
 ![Promote tab showing a source-to-target diff with the target selector and Promote button](./promote-deploy-tab.png)
 
-See the [Promote reference](/docs/enterprise/governance/promote).
+The [Promote docs](/docs/enterprise/governance/promote) cover the confirmation process, drift detection, and promotion history.
 
 <div style="position: relative; padding-bottom: calc(49.0084% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/5bsRGVNXSLuSoWETF8vM?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Promote a Flow to a Different Environment - Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -286,7 +282,7 @@ The pattern mirrors the [`PushFlows`/`SyncFlows` GitOps model](/docs/version-con
 
 This complements Templated Blueprints (also new in 2.0), which let platform teams author blueprints with Pebble-based form templates. Users fill a form; Kestra generates the flow YAML. Combined with version control, the governance loop closes: templates are authored in code, reviewed in Git, and distributed as a self-service library.
 
-See the [Custom Blueprints reference](/docs/enterprise/governance/custom-blueprints).
+The [Custom Blueprints docs](/docs/enterprise/governance/custom-blueprints) have the Pebble template syntax and supported form field types.
 
 ## kestractl IAM Commands
 
@@ -299,7 +295,7 @@ kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. If you
 
 The `--output json` flag applies across all commands, so kestractl output can pipe directly into `jq` or other tooling in CI scripts.
 
-See the [kestractl reference](/docs/kestra-cli/kestractl) for all commands and authentication configuration.
+The [kestractl reference](/docs/kestra-cli/kestractl) has every command with flags and authentication configuration.
 
 ## Worker Groups 2.0
 
@@ -325,7 +321,7 @@ One important default changed: `fallback` now defaults to `FAIL` instead of `WAI
 
 Workers also now authenticate via JWT rather than connecting without credentials. Each group subscription supports capacity reservation, which sets a thread pool floor dedicated to that queue. Without it, a high-volume flow can exhaust all worker threads and starve latency-sensitive tasks even when a dedicated worker exists for them. For platform admins, a `kestra.ee.setup` block in `application.yml` lets you declare the full topology at startup without a manual provisioning step.
 
-See the [Worker Groups reference](/docs/enterprise/scalability/worker-group) for migration steps and the `workerGroup.key` to `workerSelector.tags` mapping.
+The [Worker Groups docs](/docs/enterprise/scalability/worker-group) have migration steps, the full `workerGroup.key` to `workerSelector.tags` mapping, and the `kestra.ee.setup` topology config reference.
 
 ## New Task Runners
 
@@ -432,7 +428,7 @@ The existing `PurgeExecutions` task deletes execution records and their associat
 
 Running PurgeStorage on a specific worker group via `workerSelector.tags` targets that worker's isolated storage directly.
 
-See the [purge guide](/docs/administrator-guide/purge) for setup and the two-step orphan-file remediation pattern.
+The [purge guide](/docs/administrator-guide/purge) covers setup and the two-step orphan-file remediation pattern.
 
 ## External Log Data Store
 
@@ -440,7 +436,7 @@ Execution logs are the highest-volume data Kestra writes. In most production ins
 
 In 2.0, logs can be routed to a separate store using `kestra.logs.type`. JDBC backends (H2, PostgreSQL, MySQL) are available in OSS; Elasticsearch is EE-only. When configured, the main database handles only flows, executions, and state. Existing installations see no change on upgrade; historical logs written before the switch remain in the main database.
 
-See the [External Log Data Store guide](/docs/administrator-guide/log-data-store) for the Elasticsearch config, the capability reference (aggregation, pagination type, purge), and the plugin developer guide for custom log backends.
+The [External Log Data Store docs](/docs/administrator-guide/log-data-store) cover Elasticsearch config, aggregation and pagination behavior, and the plugin developer guide for custom backends.
 
 ## Slim Image and Plugin Auto-Install
 
@@ -452,7 +448,7 @@ Auto-install requires outbound access to Maven Central and pulls the current ver
 
 The suffix was renamed from `-no-plugins` to `-slim` in 2.0. Update any Dockerfiles or compose files that reference the old tag.
 
-See the [Docker installation guide](/docs/installation/docker) for tag conventions and the [selected plugin installation guide](/docs/how-to-guides/selected-plugin-installation) for build patterns.
+Tag conventions are in the [Docker installation guide](/docs/installation/docker); build patterns for pinned plugin sets are in the [selected plugin installation guide](/docs/how-to-guides/selected-plugin-installation).
 
 ## Plugin Artifacts
 
@@ -464,7 +460,7 @@ Components call the Kestra API through `@kestra-io/kestra-sdk`, which provides t
 
 A concrete example: a task runner that breaks execution into distinct infrastructure phases (scheduling, image pull, file transfer, task code) can render a `topology-details` component showing per-phase timing directly in the execution view, so slow executions have an identifiable owner. Without a plugin artifact, that timing data lives in raw log output.
 
-Plugin artifacts are available to all plugin authors starting in 2.0. See the [plugin artifact developer guide](/docs/plugin-developer-guide/develop-plugin-artifacts) for setup.
+Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifact developer guide](/docs/plugin-developer-guide/develop-plugin-artifacts) covers the SDK, slot registration, and bundling setup.
 
 ## Additional Improvements
 
