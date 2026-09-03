@@ -164,6 +164,13 @@ blockquote.blockquote {
     padding: 0.375rem 1rem;
 }
 
+.copy .icon svg,
+.copy .material-design-icon svg,
+.copy-btn svg,
+.code-copy svg {
+    pointer-events: none;
+}
+
 .modal-full {
     .modal-dialog {
         width: 95%;

@@ -171,6 +171,6 @@ Whatever you pick, evaluate against the failure modes that made you leave cron: 
 
 ## From Cron to Kestra in Practice
 
-Migrating doesn't mean rewriting everything at once. The typical path: inventory your crontabs, port schedules one-to-one into Kestra Schedule triggers (the cron syntax carries over unchanged), then progressively add what cron never gave you — retries, dependencies, alerting, backfill. Our step-by-step guide covers the full process: [migrate from cron to Kestra](/resources/infrastructure/migrate-from-cron-to-kestra).
+Migrating doesn't mean rewriting everything at once. The typical path: inventory your crontabs, port schedules one-to-one into Kestra Schedule triggers (the cron syntax carries over unchanged), then progressively add what cron never gave you — retries, dependencies, alerting, backfill. Our step-by-step guide covers the full process: [migrate from cron to Kestra](/resources/infrastructure/migrate-from-cron).
 
 Ready to see it on your own jobs? [Get started with Kestra](/get-started) or [book a demo](/demo).

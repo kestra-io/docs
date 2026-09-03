@@ -1044,20 +1044,18 @@ const FAQ = [
         }
 
         &__row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            justify-items: center;
-            column-gap: 0.5rem;
+            justify-content: center;
+            column-gap: 3.5rem;
             row-gap: 1.25rem;
             width: 100%;
             max-width: 44rem;
             margin: 0 auto;
 
             @include media-breakpoint-down(md) {
-                grid-template-columns: repeat(2, 1fr);
-                column-gap: 1rem;
-                row-gap: 1.25rem;
+                column-gap: 2rem;
             }
         }
 

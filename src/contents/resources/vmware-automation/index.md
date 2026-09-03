@@ -18,7 +18,6 @@ faq:
   - question: "Is VMware Chinese owned?"
     answer: "No, VMware is not Chinese owned. It was acquired by Broadcom Inc., an American multinational semiconductor and infrastructure software company, in November 2023."
 ---
-```
 The landscape of IT infrastructure is constantly evolving, and VMware has long been a cornerstone for virtualization and private cloud. Yet, as enterprises navigate increasing complexity and cost pressures, the need for efficient and adaptable VMware automation has never been more critical. Whether you're managing hundreds of virtual machines, orchestrating complex deployments, or looking to integrate VMware with modern DevOps practices, effective automation is key to operational excellence.
 
 This guide explores the essentials of VMware automation, from native platforms like Aria Automation and VCF to powerful SDKs and integrations with tools like Ansible and Puppet. We'll delve into common challenges, discuss the future of VMware in a multi-cloud world, and show how Kestra's declarative, event-driven orchestration platform can unify and enhance your VMware automation strategy, providing a flexible control plane across your entire hybrid infrastructure.

@@ -20,6 +20,53 @@ faq:
   - question: "How does Kestra fit into the Microsoft Fabric alternative landscape?"
     answer: "Kestra acts as an open-source, declarative orchestration control plane that can sit above or alongside Microsoft Fabric and its alternatives. It unifies workflows across data, AI, and infrastructure, allowing teams to orchestrate tasks in any language, on any cloud. This provides flexibility and vendor neutrality, preventing lock-in while integrating existing tools like Databricks, Snowflake, or even specific Fabric components."
 author: "elliot"
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top Microsoft Fabric Alternatives"
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      item:
+        "@type": "Thing"
+        name: "Kestra"
+        description: "The Declarative Orchestration Control Plane"
+    - "@type": "ListItem"
+      position: 2
+      item:
+        "@type": "Thing"
+        name: "Databricks"
+        description: "Unified Analytics Platform for Lakehouse"
+    - "@type": "ListItem"
+      position: 3
+      item:
+        "@type": "Thing"
+        name: "Snowflake"
+        description: "Cloud Data Platform for SQL-first Analytics"
+    - "@type": "ListItem"
+      position: 4
+      item:
+        "@type": "Thing"
+        name: "AWS Data & Analytics Services"
+        description: "Modular, Cloud-Native Ecosystem"
+    - "@type": "ListItem"
+      position: 5
+      item:
+        "@type": "Thing"
+        name: "Google Cloud Platform Data Tools"
+        description: "Scalable and Specialized Services"
+    - "@type": "ListItem"
+      position: 6
+      item:
+        "@type": "Thing"
+        name: "Peliqan"
+        description: "All-in-One Data Platform for Growing Teams"
+    - "@type": "ListItem"
+      position: 7
+      item:
+        "@type": "Thing"
+        name: "Oracle Cloud Infrastructure (OCI) Data Services"
+        description: "Enterprise-Grade Solutions"
 ---
 
 Microsoft Fabric emerged in 2023 as Microsoft's ambitious play to unify data, analytics, and AI under a single SaaS umbrella. While promising a streamlined experience, many organizations quickly encounter familiar challenges: vendor lock-in, complex pricing, and limitations for specific, highly customized workloads. As discussions on platforms like Reddit highlight, the desire for greater control and flexibility often drives the search for alternatives.
@@ -143,169 +190,3 @@ Selecting the right platform depends entirely on your specific context. Key fact
 The data landscape evolves rapidly. To future-proof your strategy, prioritize flexibility, open standards, and the ability to integrate new tools without being locked into a single vendor's ecosystem. This is where an orchestration control plane like Kestra provides significant value. By decoupling your workflow logic from your data platform, you can adapt your stack as new technologies emerge, ensuring your data strategy remains agile and resilient. Whether you need to manage [data workflows](/resources/data), [AI pipelines](/resources/ai), or [infrastructure automation](/resources/infrastructure), a universal orchestrator provides the foundation for a scalable and adaptable future.
 
 Ready to see how a declarative, vendor-neutral orchestration layer can unify your entire data stack? [Get started with Kestra today](/get-started).
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What are the core capabilities of Microsoft Fabric and its closest alternatives?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Microsoft Fabric unifies data integration, engineering, warehousing, analytics, and business intelligence within the Microsoft ecosystem, leveraging OneLake for storage. Alternatives like Databricks offer a unified lakehouse for large-scale data and ML, while Snowflake provides a cloud data platform with a SQL-first approach. Kestra offers a declarative, polyglot orchestration layer that integrates with all these tools and extends beyond data."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Fabric replacing ADF?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Fabric Data Factory is not merely ADF rebranded. It represents a SaaS-native evolution, moving beyond the PaaS model of Azure Data Factory. It is deeply integrated with OneLake, Lakehouse, Warehouse, and the broader Fabric analytics fabric, offering a more unified experience within the Microsoft ecosystem. Existing ADF users will find migration paths and similar functionalities within Fabric's Data Factory component."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Microsoft Fabric better than Databricks?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The 'better' choice depends on specific priorities. If rapid deployment, tight integration with Microsoft tools, and streamlined governance are paramount, Microsoft Fabric is a strong contender. However, if use cases demand large-scale data processing, advanced ML pipelines, or architectural flexibility across different clouds and languages, Databricks often presents a stronger, more specialized solution."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does Google have something like Microsoft Fabric?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "While Google Cloud Platform offers a rich suite of data and analytics services, it takes a modular approach rather than a single unified platform like Microsoft Fabric. Key components include BigQuery (serverless data warehouse), Dataflow (stream/batch processing), Dataproc (managed Spark/Hadoop), and Vertex AI (ML platform), and Looker (BI). These services can be combined to achieve similar functionalities but require more integration effort."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does Microsoft have an ETL tool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, Microsoft offers several ETL tools. Historically, SQL Server Integration Services (SSIS) was a prominent on-premise solution. In the cloud, Azure Data Factory (ADF) has been its primary managed ETL/ELT service. With the introduction of Microsoft Fabric, the Data Factory component within Fabric now serves as the modern, SaaS-native ETL/ELT capability, deeply integrated into the broader analytics platform."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does Kestra fit into the Microsoft Fabric alternative landscape?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Kestra acts as an open-source, declarative orchestration control plane that can sit above or alongside Microsoft Fabric and its alternatives. It unifies workflows across data, AI, and infrastructure, allowing teams to orchestrate tasks in any language, on any cloud. This provides flexibility and vendor neutrality, preventing lock-in while integrating existing tools like Databricks, Snowflake, or even specific Fabric components."
-      }
-    }
-  ]
-}
-```
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top Microsoft Fabric Alternatives",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "Thing",
-        "name": "Kestra",
-        "description": "The Declarative Orchestration Control Plane"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "Thing",
-        "name": "Databricks",
-        "description": "Unified Analytics Platform for Lakehouse"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "item": {
-        "@type": "Thing",
-        "name": "Snowflake",
-        "description": "Cloud Data Platform for SQL-first Analytics"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "item": {
-        "@type": "Thing",
-        "name": "AWS Data & Analytics Services",
-        "description": "Modular, Cloud-Native Ecosystem"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "Thing",
-        "name": "Google Cloud Platform Data Tools",
-        "description": "Scalable and Specialized Services"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "item": {
-        "@type": "Thing",
-        "name": "Peliqan",
-        "description": "All-in-One Data Platform for Growing Teams"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 7,
-      "item": {
-        "@type": "Thing",
-        "name": "Oracle Cloud Infrastructure (OCI) Data Services",
-        "description": "Enterprise-Grade Solutions"
-      }
-    }
-  ]
-}
-```
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Data",
-      "item": "https://kestra.io/resources/data"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Microsoft Fabric Alternatives: Top Competitors & More",
-      "item": "https://kestra.io/resources/data/microsoft-fabric-alternatives"
-    }
-  ]
-}
-```
-```

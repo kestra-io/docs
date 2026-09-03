@@ -56,6 +56,11 @@ Taking our flow from earlier stages, we can add a Slack alert on an execution er
 id: getting_started_category_check
 namespace: company.team
 
+triggers:
+  - id: every_monday_at_10_am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * 1
+
 inputs:
   - id: category
     type: SELECT
@@ -76,7 +81,7 @@ tasks:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
         message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
-      - id: python
+      - id: transform
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
         dependencies:
@@ -89,10 +94,10 @@ tasks:
           df = pl.from_dicts(data)
           df.glimpse()
           df.select(["title", "brand", "price", "rating"]).write_csv("products.csv")
-      - id: sqlQuery
+      - id: sql_query
         type: io.kestra.plugin.jdbc.duckdb.Queries
         inputFiles:
-          in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+          in.csv: "{{ outputs.transform.outputFiles['products.csv'] }}"
         sql: |
           SELECT brand, round(avg(price), 2) AS avg_price, count(*) AS cnt
           FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
@@ -109,11 +114,6 @@ errors:
     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
     url: "{{ secret('SLACK_WEBHOOK') }}"
     messageText: "Failure alert for flow {{ flow.namespace }}.{{ flow.id }} with ID {{ execution.id }}"
-
-triggers:
-  - id: every_monday_at_10_am
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: 0 10 * * 1
 ```
 
 Now if there is an error, say our API endpoint is unreachable, we'll get a Slack alert notifying a team to investigate. For more, check the [error handling](../../05.workflow-components/11.errors/index.md) page.

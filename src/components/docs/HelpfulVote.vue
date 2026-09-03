@@ -14,10 +14,6 @@
             </div>
         </div>
 
-        <div v-if="showThankYou" class="thank-you text-center mt-3">
-            <p>Thank you for your feedback! 👍</p>
-        </div>
-
         <div
             ref="modalRef"
             class="modal fade"
@@ -89,7 +85,6 @@
     const modalRef = ref(null)
     const feedbackText = ref("")
     const isSubmitted = ref(false)
-    const showThankYou = ref(false)
     const currentRating = ref(null)
 
     let bootstrapModal = null
@@ -112,17 +107,12 @@
             : "Sorry to hear that. How can we improve?"
         comment.value = ""
         isSubmitted.value = false
-        showThankYou.value = false
         posthog.capture("helpful", { positive: currentRating.value })
         bootstrapModal?.show()
     }
 
     const closeModal = () => {
         bootstrapModal?.hide()
-        showThankYou.value = true
-        setTimeout(() => {
-            showThankYou.value = false
-        }, 2000)
     }
 
     const submitFeedback = () => {
@@ -169,8 +159,8 @@
     }
 
     .modal-content {
-        background-color: var(--ks-background-box);
-        border: 1px solid var(--ks-dialog-border);
+        background-color: var(--ks-background-body);
+        border: 1px solid var(--ks-border-primary);
         color: var(--ks-content-primary);
         .modal-header {
             padding: 10px 16px;
@@ -204,11 +194,6 @@
             color: #21ce9c;
             font-weight: 600;
         }
-    }
-
-    .thank-you p {
-        color: #21ce9c;
-        font-weight: 600;
     }
 
     .form-control {

@@ -26,6 +26,11 @@ The `check_products` If task has a `condition` of `"{{ json(outputs.api.body).pr
 id: getting_started
 namespace: company.team
 
+triggers:
+  - id: every_monday_at_10_am
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: 0 10 * * 1
+
 inputs:
   - id: category
     type: SELECT
@@ -46,7 +51,7 @@ tasks:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
         message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
-      - id: python
+      - id: transform
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
         dependencies:
@@ -60,10 +65,10 @@ tasks:
           df.glimpse()
           # Keep a simple view for this category
           df.select(["title", "brand", "price"]).write_csv("products.csv")
-      - id: sqlQuery
+      - id: sql_query
         type: io.kestra.plugin.jdbc.duckdb.Query
         inputFiles:
-          in.csv: "{{ outputs.python.outputFiles['products.csv'] }}"
+          in.csv: "{{ outputs.transform.outputFiles['products.csv'] }}"
         sql: |
           SELECT brand, round(avg(price), 2) AS avg_price, count(*) AS cnt
           FROM read_csv_auto('{{ workingDir }}/in.csv', header=True)
@@ -74,11 +79,6 @@ tasks:
       - id: when_false
         type: io.kestra.plugin.core.log.Log
         message: "No products found for category {{ inputs.category }}."
-
-triggers:
-  - id: every_monday_at_10_am
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: 0 10 * * 1
 ```
 
 Execute the flow twice, once with `beauty` and once with `notebooks` to examine the results.
@@ -160,7 +160,7 @@ namespace: company.team
 description: Process partitions in parallel
 
 tasks:
-  - id: getPartitions
+  - id: get_partitions
     type: io.kestra.plugin.scripts.python.Script
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
@@ -170,10 +170,10 @@ tasks:
       partitions = [f"file_{nr}.parquet" for nr in range(1, 10)]
       Kestra.outputs({'partitions': partitions})
 
-  - id: processPartitions
+  - id: process_partitions
     type: io.kestra.plugin.core.flow.ForEach
     concurrencyLimit: 0
-    values: '{{ outputs.getPartitions.vars.partitions }}'
+    values: '{{ outputs.get_partitions.vars.partitions }}'
     tasks:
       - id: partition
         type: io.kestra.plugin.scripts.python.Script

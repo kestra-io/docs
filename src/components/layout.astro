@@ -32,10 +32,17 @@ interface Props {
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
-    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/all). */
     canonical?: string
     /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
     noindex?: boolean
+    /**
+     * Set to true to render the page without the site chrome — no nav, search
+     * overlay, footer, or floating action buttons. Campaign landing pages under
+     * `/lp/*` use this so they can supply their own minimal header and footer
+     * and keep exit paths off the page.
+     */
+    bareChrome?: boolean
 }
 
 const props = Astro.props
@@ -271,25 +278,48 @@ const organizationSchema = {
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
     >
-        <Header client:load transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:load />
         {
-            hasAnnounce ? (
-                <Announce client:load transition:persist content={annonces} />
-            ) : (
-                ""
+            !props.bareChrome && (
+                <>
+                    <Header client:load transition:persist />
+                    <Search randomAiQuestions={randomAiQuestions} client:load />
+                    {hasAnnounce ? (
+                        <Announce
+                            client:load
+                            transition:persist
+                            content={annonces}
+                        />
+                    ) : (
+                        ""
+                    )}
+                </>
             )
         }
-        <main>
+        <main class:list={{ "bare-chrome": props.bareChrome }}>
             <slot />
         </main>
 
-        <LayoutFooter transition:persist>
-            <ThemeSwitcher slot="theme-switcher" />
-        </LayoutFooter>
-        <LayoutFixed client:load transition:persist />
+        {
+            !props.bareChrome && (
+                <>
+                    <LayoutFooter transition:persist>
+                        <ThemeSwitcher slot="theme-switcher" />
+                    </LayoutFooter>
+                    <LayoutFixed client:load transition:persist />
+                </>
+            )
+        }
         <script is:inline define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>
     </body>
 </html>
+
+<style lang="scss">
+    /* app.scss gives `main` a 67px top offset to clear the fixed site header.
+     * With `bareChrome` there is no fixed header, so that space would render as
+     * a blank band above the page's own content. */
+    main.bare-chrome {
+        padding-top: 0;
+    }
+</style>

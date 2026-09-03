@@ -1,0 +1,173 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+
+import dashboard from "./assets/dashboard.png"
+
+const features = [
+    {
+        icon: "mdi:shield-lock-outline",
+        title: "Security & Compliance",
+        body: "SSO and SCIM, role-based access control, internal or external secrets managers, and full audit logs, on infrastructure you control, air-gapped included.",
+    },
+    {
+        icon: "mdi:hexagon-outline",
+        title: "Governance & Productivity",
+        body: "Namespaces and multi-tenancy, Git integration and versioning with revision history, human-in-the-loop approvals, custom blueprints, and built-in observability across every run.",
+    },
+    {
+        icon: "mdi:view-grid-outline",
+        title: "Scalability & Infrastructure",
+        body: "Worker groups, high availability, and unlimited executions, deployed with Docker, Kubernetes, a single VM, or managed Cloud, with backup, restore, and cluster health monitoring.",
+    },
+]
+---
+
+<section class="features">
+    <h2 data-usal="fade-u delay-50 duration-500 ease-out">
+        Powerful features for reliable workflows
+    </h2>
+
+    <div class="split">
+        <div
+            class="illustration"
+            data-usal="slide-r delay-0 duration-600 ease-out"
+        >
+            <Image
+                src={dashboard}
+                alt="The Kestra dashboard showing execution success ratios, an executions bar chart, and a status breakdown"
+                width={619}
+                densities={[1, 2]}
+                loading="lazy"
+            />
+        </div>
+
+        <div class="control-pane">
+            {
+                features.map((feature, index) => (
+                    <div
+                        class="feature"
+                        data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                    >
+                        <h3>
+                            <Icon name={feature.icon} class="icon" />
+                            {feature.title}
+                        </h3>
+                        <p>{feature.body}</p>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .features {
+        padding: 5rem 1rem 2.5rem;
+        background-color: #ffffff;
+    }
+
+    h2 {
+        max-width: 1140px;
+        margin: 0 auto 2.5rem;
+        color: var(--lp-content-primary);
+        font-size: 1.875rem;
+        font-weight: 600;
+        line-height: 1.0417;
+        letter-spacing: -0.045rem;
+        text-align: center;
+        @include media-breakpoint-up(lg) {
+            font-size: 3rem;
+        }
+    }
+
+    .split {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        max-width: 1140px;
+        margin-inline: auto;
+        @include media-breakpoint-up(lg) {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 3rem;
+        }
+    }
+
+    .illustration {
+        min-width: 0;
+        /* The export is trimmed to its ink, so its natural CSS size is the
+         * 561px card plus the design's drop-shadow spread. Rendering at that
+         * size keeps the card 1:1 with the design at 2x density. */
+        img {
+            width: 100%;
+            max-width: 619px;
+            height: auto;
+
+            /* The export bakes the design's big soft drop shadow onto an opaque
+             * near-white plate, and the file bounds cut straight through it —
+             * every edge steps from #fafafb to the section's #fff with no
+             * falloff, which reads as the shadow being clipped. Scaling the
+             * image cannot help, since the clip is in the raster. Dissolving the
+             * plate's outer edge hides the seam. The stops are percentages, not
+             * pixels, so they keep clear of the card as the image scales down —
+             * the plate's margins are 2.9/4.9/6.3/23.1% of the export on the
+             * top/left/right/bottom, and each fade stays inside its own. */
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    transparent,
+                    $black 2%,
+                    $black 88%,
+                    transparent
+                ),
+                linear-gradient(
+                    to right,
+                    transparent,
+                    $black 3%,
+                    $black 96%,
+                    transparent
+                );
+            mask-composite: intersect;
+        }
+    }
+
+    .control-pane {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        @include media-breakpoint-up(lg) {
+            flex-shrink: 0;
+            width: 400px;
+            padding-top: 1rem;
+        }
+    }
+
+    .feature {
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0 0 0.5rem;
+            color: var(--lp-content-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.167;
+            letter-spacing: -0.0075rem;
+        }
+
+        .icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            color: var(--lp-purple);
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: $font-size-md;
+            line-height: 1.5;
+        }
+    }
+</style>

@@ -25,7 +25,9 @@ import HandshakeOutline from "vue-material-design-icons/HandshakeOutline.vue"
 import EmailOutline from "vue-material-design-icons/EmailOutline.vue"
 import ChartTimelineVariantShimmer from "vue-material-design-icons/ChartTimelineVariantShimmer.vue"
 import HubOutline from "vue-material-design-icons/HubOutline.vue"
+import NewspaperVariantOutline from "vue-material-design-icons/NewspaperVariantOutline.vue"
 import School from "vue-material-design-icons/School.vue"
+import PresentationPlay from "vue-material-design-icons/PresentationPlay.vue"
 
 interface MenuItem {
     icon: Component
@@ -33,6 +35,7 @@ interface MenuItem {
     description?: string
     link: string
     tag?: string
+    target?: string
 }
 
 interface MenuItems {
@@ -170,7 +173,14 @@ export const menuItems: MenuItems = {
             {
                 icon: School,
                 title: "Courses",
-                link: "https://academy.kestra.io"
+                link: "https://academy.kestra.io",
+                target: "_blank"
+            },
+            {
+                icon: PresentationPlay,
+                title: "Events",
+                link: "https://luma.com/kestra",
+                target: "_blank"
             },
         ],
     },
@@ -180,6 +190,11 @@ export const menuItems: MenuItems = {
                 icon: KestraIcon,
                 title: "About Us",
                 link: "/about-us"
+            },
+            {
+                icon: NewspaperVariantOutline,
+                title: "Newsroom",
+                link: "/newsroom"
             },
             {
                 icon: BriefcaseOutline,
