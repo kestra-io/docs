@@ -307,6 +307,7 @@ Every page in the Kestra documentation. Use this section to enumerate all availa
 - [Maintenance Mode in Kestra Enterprise: Safe Upgrades](https://kestra.io/docs/enterprise/instance/maintenance-mode.md)
 - [Versioned Plugins in Kestra Enterprise: Multi-Version](https://kestra.io/docs/enterprise/instance/versioned-plugins.md)
 - [Instance Owner Console in Kestra Enterprise](https://kestra.io/docs/enterprise/instance/instance-owner.md)
+- [Kestra Cloud: Getting Started](https://kestra.io/docs/enterprise/cloud-getting-started.md): Set up your Kestra Cloud instance, run your first flow, add secrets, invite your team, and connect to production.
 - [Enterprise Edition in Kestra: Architecture and Setup](https://kestra.io/docs/enterprise/overview.md)
 - [Enterprise Features in Kestra: High-Availability](https://kestra.io/docs/enterprise/overview/enterprise-edition.md)
 - [Migrate from OSS to Kestra Enterprise Edition](https://kestra.io/docs/enterprise/overview/migrate-from-oss.md)
