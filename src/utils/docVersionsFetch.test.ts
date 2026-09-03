@@ -70,6 +70,24 @@ describe("getLatestDocVersion", () => {
     })
 })
 
+describe("getDocsLatestVersion", () => {
+    it("reports the GA release while no override is pinned", async () => {
+        // The pin itself is a source edit (DOCS_LATEST_OVERRIDE); this guards the
+        // default path, so shipping with nothing pinned changes nothing.
+        fetchMock.mockResolvedValue({ version: "1.3.34" })
+        const { getDocsLatestVersion } = await import("./docVersionsFetch")
+
+        expect(await getDocsLatestVersion()).toBe("1.3")
+    })
+
+    it("passes an unavailable version through rather than inventing one", async () => {
+        fetchMock.mockRejectedValue(new Error("down"))
+        const { getDocsLatestVersion } = await import("./docVersionsFetch")
+
+        expect(await getDocsLatestVersion()).toBeUndefined()
+    })
+})
+
 describe("getKnownDocVersions", () => {
     it("fetches and memoizes the known versions on success", async () => {
         fetchMock.mockResolvedValue([{ version: "1.3.0" }, { version: "1.2.0" }])

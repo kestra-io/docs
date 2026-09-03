@@ -1,5 +1,5 @@
 import { $fetchApiCached } from "~/utils/fetch"
-import { docVersionLabels, versionMajorMinor } from "~/utils/versionedDocs"
+import { docsLatestVersion, docVersionLabels, versionMajorMinor } from "~/utils/versionedDocs"
 
 // Memoized per worker isolate; changes only a few times a year so it must not be fetched per render.
 const TTL_MS = 10 * 60 * 1000
@@ -26,6 +26,11 @@ export async function getLatestDocVersion(): Promise<string | undefined> {
         latestCache = { at: now, data: latestCache?.data, ok: false }
     }
     return latestCache.data
+}
+
+/** What /docs itself serves — the pinned override when there is one, else the GA release. Read this, not getLatestDocVersion, for anything user-facing. */
+export async function getDocsLatestVersion(): Promise<string | undefined> {
+    return docsLatestVersion(await getLatestDocVersion())
 }
 
 export interface KnownDocVersionsResult {
