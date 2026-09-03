@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
+import { DOCS_LATEST_OVERRIDE } from "~/utils/versionedDocs"
 
 const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }))
 vi.mock("~/utils/fetch", () => ({ $fetchApiCached: fetchMock }))
@@ -71,20 +72,21 @@ describe("getLatestDocVersion", () => {
 })
 
 describe("getDocsLatestVersion", () => {
-    it("reports the GA release while no override is pinned", async () => {
-        // The pin itself is a source edit (DOCS_LATEST_OVERRIDE); this guards the
-        // default path, so shipping with nothing pinned changes nothing.
+    // Asserted against DOCS_LATEST_OVERRIDE rather than a literal so these hold
+    // whether or not a version is pinned: the invariant is `override ?? api`.
+    it("prefers the pinned docs-latest over the GA release the API reports", async () => {
         fetchMock.mockResolvedValue({ version: "1.3.34" })
         const { getDocsLatestVersion } = await import("./docVersionsFetch")
 
-        expect(await getDocsLatestVersion()).toBe("1.3")
+        expect(await getDocsLatestVersion()).toBe(DOCS_LATEST_OVERRIDE ?? "1.3")
     })
 
-    it("passes an unavailable version through rather than inventing one", async () => {
+    it("needs no API call to answer while a version is pinned", async () => {
         fetchMock.mockRejectedValue(new Error("down"))
         const { getDocsLatestVersion } = await import("./docVersionsFetch")
 
-        expect(await getDocsLatestVersion()).toBeUndefined()
+        // Unpinned this is undefined; pinned, an outage can't blank docs-latest.
+        expect(await getDocsLatestVersion()).toBe(DOCS_LATEST_OVERRIDE)
     })
 })
 

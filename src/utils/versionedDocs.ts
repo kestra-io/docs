@@ -27,12 +27,17 @@ function compareVersionLabels(a: string, b: string): number {
  * released version to a normal versioned doc. Back to undefined once the
  * release is GA and the API agrees.
  */
-export const DOCS_LATEST_OVERRIDE: string | undefined = undefined
+export const DOCS_LATEST_OVERRIDE: string | undefined = "2.0"
 
-/** The version this site's own /docs content is: the override while one is pinned, else what the API reports. */
+/**
+ * The version this site's own /docs content is: the pin while one is set, else
+ * what the API reports. Takes the pin as an argument rather than defaulting to
+ * DOCS_LATEST_OVERRIDE — a default parameter is also applied to an explicit
+ * `undefined`, which would make "nothing pinned" untestable.
+ */
 export function docsLatestVersion(
     apiLatest: string | undefined,
-    override: string | undefined = DOCS_LATEST_OVERRIDE,
+    override: string | undefined,
 ): string | undefined {
     return override ?? apiLatest
 }
