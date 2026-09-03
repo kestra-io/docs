@@ -315,7 +315,7 @@ The [Worker Groups docs](/docs/enterprise/scalability/worker-group) have migrati
 
 ## New Task Runners
 
-Four new EE task runners arrived in this release cycle, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters. Check out their full docs below or also in the [plugin catalog](/plugins).
+Four new EE task runners arrived in this release cycle, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters. Full docs are linked below and in the [plugin catalog](/plugins).
 
 - [AWS EC2 Task Runner](/docs/task-runners/types/aws-ec2-task-runner): runs commands directly on an EC2 instance via AWS Systems Manager Run Command, with no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
 - [Azure Virtual Machine Task Runner](/docs/task-runners/types/azure-virtualmachine-task-runner): runs commands on Azure VMs via the Azure Run Command API, with no SSH and no public IP required.
@@ -378,7 +378,7 @@ The [ForEach to Loop migration guide](/docs/migration-guide/v2.0.0/foreach-loop)
 
 The old `conditions` list required chaining specific condition types, each with its own syntax, nested inside each other for anything beyond a single check. The firing logic was spread across multiple blocks and hard to read at a glance. A `when` Pebble expression puts it all in one place, uses the same syntax authors already know from tasks, and keeps the trigger self-contained.
 
-All triggers now accept a top-level `when` Pebble expression in place of the `conditions` list:
+All triggers now accept a top-level `when` Pebble expression in place of the `conditions` list. Here's the same schedule trigger written both ways:
 
 The old model:
 
