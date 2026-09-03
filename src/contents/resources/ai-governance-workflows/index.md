@@ -191,7 +191,7 @@ These are traditional, deterministic workflows common in MLOps, such as [ETL for
 
 ### Agentic AI workflows for execution
 
-These workflows involve [AI agents](https://kestra.io/resources/ai/ai-agent) that can use tools and make basic decisions to complete tasks. Governance here must also cover the agent's autonomy, ensuring its actions are constrained, auditable, and aligned with predefined rules. Kestra's platform allows you to build and manage these [AI agents](https://kestra.io/docs/ai-tools/ai-agents) within a controlled environment.
+These workflows involve [AI agents](https://kestra.io/resources/ai/ai-agent) that can use tools and make basic decisions to complete tasks. Governance here must also cover the agent's autonomy, ensuring its actions are constrained, auditable, and aligned with predefined rules. Kestra's platform allows you to build and manage these [AI agents](https://kestra.io/docs/ai-tools/ai-agents) within a controlled environment. When the workflow itself is written by a model rather than by a person, the control surface shifts again — see [governing AI-generated workflows](/resources/ai/governing-ai-generated-workflows).
 
 ### Agentic AI with strong governance for scale
 
