@@ -1,6 +1,6 @@
 ---
 title: "Execution Context in Scripts: Read Metadata as Data"
-h1: Read the Execution Context from Python Scripts
+h1: Read the Execution Context from Your Scripts
 sidebarTitle: Execution Context
 icon: /src/contents/docs/icons/dev.svg
 description: Read inputs, outputs, labels and variables inside a script from a JSON file instead of interpolating Pebble expressions into your code.
