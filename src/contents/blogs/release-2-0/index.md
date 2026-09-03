@@ -293,7 +293,7 @@ kestractl gained more commands in the 2.0 cycle than fit in a release post; the 
 
 ## Worker Groups 2.0
 
-With workers deployable across regions and clouds, you need a routing and access model to match. Tag-based routing means a single worker can serve multiple queues at once, so you no longer need a separate group for every task type. Combined with capacity reservation and JWT authentication, you can dedicate thread capacity to latency-sensitive workloads and lock down who can connect, without any manual provisioning step.
+With workers now deployable across regions and clouds, you need a routing and access model to match. Worker Groups and Queues in 2.0 add tag-based task routing, per-group capacity allocation, and JWT authentication for worker connections.
 
 Worker Groups now route tasks by tags instead of a single group name. Replace `workerGroup.key` with `workerSelector.tags`:
 
@@ -313,7 +313,7 @@ A task is routed to the first available Worker Group that covers all required ta
 
 One important default changed: `fallback` now defaults to `FAIL` instead of `WAIT`. Tasks that previously waited silently for a matching worker will fail immediately after upgrading. Set `fallback: WAIT` explicitly on any task where the old behavior was intentional.
 
-Workers also now authenticate via JWT rather than connecting without credentials. Each group subscription supports capacity reservation, which sets a thread pool floor dedicated to that queue. Without it, a high-volume flow can exhaust all worker threads and starve latency-sensitive tasks even when a dedicated worker exists for them. For platform admins, a `kestra.ee.setup` block in `application.yml` lets you declare the full topology at startup without a manual provisioning step.
+Beyond routing, each group subscription supports capacity reservation, which sets a thread pool floor dedicated to that queue, keeping reserved capacity from sitting idle and preventing high-volume flows from exhausting worker threads. For platform admins, a `kestra.ee.setup` block in `application.yml` lets you declare the full topology at startup without a manual provisioning step.
 
 The [Worker Groups docs](/docs/enterprise/scalability/worker-group) have migration steps, the full `workerGroup.key` to `workerSelector.tags` mapping, and the `kestra.ee.setup` topology config reference.
 
