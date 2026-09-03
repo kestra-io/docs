@@ -15,7 +15,7 @@ Kestra 2.0 is available today with a collection of exciting new features, a new 
 
 Now, each worker is connected to the control plane over a single outbound gRPC stream, so it can be deployed in another region, in a different cloud, or in a network that only allows outbound connections. The queue is independent of the database, so there is a single implementation for both backends and users can plug and play the architecture of their choice.
 
-Everything else in 2.0 is built on those two changes. A lot has been introduced in this release, so let's talk about new features! We'll cover what's new and what has to be changed when upgrading. The table below lists features we introduced in each edition.
+Everything else in 2.0 is built on those two changes. There's a lot to cover, so here's what's new and what needs to change on upgrade. The table below breaks it down by edition.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -166,7 +166,7 @@ The [AI Copilot docs](/docs/ai-tools/ai-copilot) cover mode details, context tag
 
 ## No-code Editor
 
-For teams who prefer building flows through forms rather than YAML, the No-code editor has been polished significantly in 2.0. A contextual data panel now sits alongside every configuration form, listing every input, upstream task output, and execution context variable available at that point in the flow, organized by category and filterable. Check it out below as a short demo is worth one hundred words, and as always, all three views (YAML editor, No-code editor, and AI Copilot) stay in sync throughout the editing process.
+For teams who prefer building flows through forms rather than YAML, the No-code editor has been polished significantly in 2.0. A contextual data panel now sits alongside every configuration form, listing every input, upstream task output, and execution context variable available at that point in the flow, organized by category and filterable. A demo below says more than a thousand words, and all three views (YAML editor, No-code editor, and AI Copilot) stay in sync throughout the editing process.
 
 <div style="position: relative; padding-bottom: calc(48.8542% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/GTFXessaiDkaI6hw0mof?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="2.0 No-code Editor - Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -254,7 +254,7 @@ The [Cases docs](/docs/enterprise/governance/cases) cover SLA configuration, cas
 
 ## Promote
 
-Before Promote, moving a flow between environments meant a CI/CD pipeline outside Kestra, a manual copy-paste of YAML, or both, with no drift visibility and no audit trail inside the platform. Similar to Cases, we wanted to provide a way for you to stay in Kestra for CI/CD.
+Before Promote, moving a flow between environments meant a CI/CD pipeline outside Kestra, a manual copy-paste of YAML, or both, with no drift visibility and no audit trail inside the platform. The goal, same as Cases, is to keep you in Kestra rather than context-switching to a separate CI/CD tool.
 
 Promote gives you a built-in path for moving flows between environments. Each flow gains a Promote tab alongside the editor: select a target, review a diff of exactly what changes in that revision, and confirm. Protected targets require explicit confirmation before anything lands in production. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when. No Git pipeline required.
 
@@ -289,7 +289,7 @@ kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. If you
 
 The `--output json` flag applies across all commands, so kestractl output can pipe directly into `jq` or other tooling in CI scripts.
 
-kestractl has had more scopes added to it over the last months than makes sense to list entirely here. Check out the [kestractl reference](/docs/kestra-cli/kestractl) where every command with flags and authentication configuration is listed.
+kestractl gained more commands in the 2.0 cycle than fit in a release post; the [kestractl reference](/docs/kestra-cli/kestractl) has every command with flags and authentication configuration.
 
 ## Worker Groups 2.0
 
