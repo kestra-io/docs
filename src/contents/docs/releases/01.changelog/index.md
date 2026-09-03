@@ -40,7 +40,7 @@ Core primitives for building flows have been updated and extended.
 
 New controls for locking down what flows can do and how they are governed.
 
-- **RBAC action model (EE)** — CRUD replaced by resource-plus-action permissions (`EXECUTION: ACCESS_LOGS`, `TRIGGER: BACKFILL`, etc.). New resources: `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, `MCP_SERVER`. Five managed roles ship with 2.0; existing roles migrate automatically. [Docs](../../07.enterprise/01.auth/rbac/index.md) [Migration guide](../../11.migration-guide/v2.0.0/rbac-action-model/index.md)
+- **RBAC action model (EE)** — CRUD replaced by resource-plus-action permissions (`EXECUTION: ACCESS_LOGS`, `TRIGGER: BACKFILL`, etc.). New resources: `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, `MCP_SERVER`. Five managed roles ship with 2.0; existing roles migrate automatically. [Docs](../../07.enterprise/03.auth/rbac/index.md) [Migration guide](../../11.migration-guide/v2.0.0/rbac-action-model/index.md)
 - **Policies (EE)** — enforce governance rules on flows at save and execution time, per namespace. [Docs](../../07.enterprise/02.governance/policies/index.md)
 - **Management endpoint hardening** — `/env` disabled by default, health details require authentication, logger writes protected, `/worker` and `/scheduler` now sensitive, docker-compose no longer exposes port `8081`. [Migration guide](../../11.migration-guide/v2.0.0/management-endpoint-hardening/index.md)
 - **HTTP task URL filtering** — allow-list and deny-list for URLs reachable by HTTP plugin tasks. [Docs](../../10.administrator-guide/security-hardening/index.md#http-task-url-filtering)
@@ -85,7 +85,7 @@ Changes to deployment, storage, and runtime behavior.
 - **TRACEPARENT propagation** — pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable in script tasks to parent OpenTelemetry spans under the Kestra task span.
 - **mTLS on the worker channel** — worker-to-controller communication supports mutual TLS with per-worker client certificates. [Docs](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only)
 - **Syslog CEF log exporter (EE)** — Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS for SIEM integration.
-- **LDAP group-sync-only mode (EE)** — `mode: GROUP_SYNC_ONLY` uses LDAP exclusively for group membership resolution while keeping an existing SSO provider for login. [Docs](../../07.enterprise/01.auth/sso/ldap/index.md)
+- **LDAP group-sync-only mode (EE)** — `mode: GROUP_SYNC_ONLY` uses LDAP exclusively for group membership resolution while keeping an existing SSO provider for login. [Docs](../../07.enterprise/03.auth/sso/ldap/index.md)
 - **Unit test `expectedState`** — flow unit tests can assert that a test case ends in `FAILED`, `WARNING`, or `KILLED`. [Docs](../../07.enterprise/02.governance/unit-tests/index.md)
 
 ### Breaking changes

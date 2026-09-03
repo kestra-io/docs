@@ -95,7 +95,7 @@ New controls for what flows can access and how they are governed.
 
 ### RBAC: action-based permissions (EE)
 
-The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource exposes only the actions that make sense for it, for example `EXECUTION: ACCESS_LOGS`, `EXECUTION: FOLLOW`, and `TRIGGER: BACKFILL`. New resources in 2.0 include `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`. Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings migrate automatically on upgrade. See the [RBAC reference](./07.enterprise/01.auth/rbac/index.md) and [migration guide](./11.migration-guide/v2.0.0/rbac-action-model/index.md).
+The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource exposes only the actions that make sense for it, for example `EXECUTION: ACCESS_LOGS`, `EXECUTION: FOLLOW`, and `TRIGGER: BACKFILL`. New resources in 2.0 include `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`. Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings migrate automatically on upgrade. See the [RBAC reference](./07.enterprise/03.auth/rbac/index.md) and [migration guide](./11.migration-guide/v2.0.0/rbac-action-model/index.md).
 
 ### Instance Owner (formerly Super Admin)
 
