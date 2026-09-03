@@ -33,7 +33,7 @@ Everything else in 2.0 is built on those two changes. In this post, we cover wha
 | Loop task | In place of ForEach and ForEachItem, with isolated sub-executions | OSS, EE, Cloud |
 | Trigger `when` expression | Pebble expression in place of chained condition syntax on all trigger types | OSS, EE, Cloud |
 | PurgeStorage | Storage-driven cleanup for orphaned execution files | OSS, EE, Cloud |
-| External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | OSS (JDBC), EE (Elasticsearch) |
+| External Log Data Store | Route execution logs to a separate JDBC database or Elasticsearch | EE |
 | Reusable Inputs | Shared input groups defined once at namespace level | EE, Cloud |
 | Slim image + plugin auto-install | `kestra/kestra:*-slim` has no bundled plugins; with `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`, whatever a flow references is installed on first use | OSS |
 | Plugin artifacts | Vue.js UI components bundled in a plugin and loaded into the execution topology at runtime | OSS, EE, Cloud |
@@ -434,7 +434,7 @@ The [purge guide](/docs/administrator-guide/purge) covers setup and the two-step
 
 Execution logs are the highest-volume data Kestra writes. In most production installations they dwarf flows and executions combined, yet they share the same database. Schema migrations pay a per-row cost across every table including logs. Backup and retention schedules apply uniformly when the operational reality is that logs and executions have different lifecycles.
 
-In 2.0, logs can be routed to a separate store using `kestra.logs.type`. JDBC backends (H2, PostgreSQL, MySQL) are available in OSS; Elasticsearch is EE-only. When configured, the main database handles only flows, executions, and state. Existing installations see no change on upgrade; historical logs written before the switch remain in the main database.
+In 2.0 (EE), logs can be routed to a separate store using `kestra.logs.type`. Both JDBC (H2, PostgreSQL, MySQL) and Elasticsearch backends are supported. When configured, the main database handles only flows, executions, and state. Existing installations see no change on upgrade; historical logs written before the switch remain in the main database.
 
 The [External Log Data Store docs](/docs/administrator-guide/log-data-store) cover Elasticsearch config, aggregation and pagination behavior, and the plugin developer guide for custom backends.
 
