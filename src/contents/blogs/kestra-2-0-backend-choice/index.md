@@ -22,9 +22,9 @@ This post covers the architectures we recommend, what each one actually gives yo
 
 You had two options. JDBC, where your Postgres or MySQL served as both the queue and the repository. Or Kafka plus Elasticsearch, where Kafka carried the messages and Elasticsearch held the data.
 
-You picked a bundle, not two components. And behind those two bundles sat two engine implementations: a JDBC one and a Kafka Streams one. Two codebases doing the same job meant every fix and feature landed twice.
+You picked a bundle. And behind those two bundles sat two engine implementations: a JDBC one and a Kafka Streams one. Two codebases doing the same job meant every fix and feature landed twice.
 
-2.0 removes the Kafka Streams engine entirely. Now there is one executor, one scheduler, and one indexer, whichever backend runs underneath. Behavior is consistent instead of subtly different between paths, and a fix lands once.
+2.0 removes the Kafka Streams engine entirely. Now there is one executor, one scheduler, and one indexer, whichever backend runs underneath. Behavior is consistent instead of subtly different between paths.
 
 Kafka Streams was the heaviest thing we asked operators to run, and running it well meant understanding its state stores, its rebalancing, and its failure modes. Taking it out lightens the operational burden and cuts the infrastructure cost of a Kafka deployment.
 
