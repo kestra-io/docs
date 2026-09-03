@@ -509,4 +509,6 @@ The breaking changes that require action:
 
 2.0 is the foundation the next phase of Kestra is built on. It's an LTS release, with bug and security fixes backported for one year. Anyone upgrading now won't face another major migration in that window.
 
-The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0. For questions or anything unexpected during the upgrade, find us on [GitHub](https://github.com/kestra-io/kestra/issues) or [Slack](https://kestra.io/slack).
+The [Kestra 2.0 migration guide](/docs/migration-guide/v2.0.0) covers every breaking change with before/after examples. The [quickstart](/docs/quickstart) and [Docker Compose setup](/docs/installation/docker-compose) are updated for 2.0.
+
+There's more to come, so stay tuned for more 2.0 release content on the feed, and as always, find us on [GitHub](https://github.com/kestra-io/kestra/issues) or [Slack](https://kestra.io/slack) for questions, migration issues, feature requests, and sharing with the community what you're orchestrating.
