@@ -126,14 +126,16 @@ const navigation = [
     // element-bound handler), while dev never fires astro:page-load — document
     // delegation survives both. `.astro-code` scopes it to this renderer's
     // buttons (SchemaToCode's `.copy` lives under `.code-block`).
+    // The copy itself is the site-wide helper, so this affordance keeps the
+    // same feedback duration and screen-reader announcement as the others.
+    import { copyWithFeedback } from "~/utils/code-copy"
+
     document.addEventListener("click", ({ target }) => {
         const button = (target as HTMLElement).closest<HTMLButtonElement>(".astro-code .copy")
         const code = button?.parentElement?.querySelector("code")
-        if (!button || !code || !navigator.clipboard) return
+        if (!button || !code) return
 
-        void navigator.clipboard.writeText(code.textContent?.trimEnd() ?? "")
-        button.classList.add("copied")
-        setTimeout(() => button.classList.remove("copied"), 2000)
+        void copyWithFeedback(button, code.textContent?.trimEnd() ?? "")
     })
 </script>
 

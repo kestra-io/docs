@@ -46,7 +46,7 @@
                 <label for="docs-version" class="version-label">Version</label>
                 <select
                     id="docs-version"
-                    class="version-select"
+                    class="version-select form-select"
                     @change="onVersionChange"
                 >
                     <option
@@ -240,9 +240,13 @@
                 color: var(--ks-content-tertiary);
                 font-size: $font-size-sm;
             }
+            // .form-select for the caret: the native one is drawn hard against
+            // the border, and Bootstrap's background-image version is inset,
+            // like every other styled select on the site. Only the block padding
+            // is ours, to keep the sidebar control compact.
             .version-select {
                 flex: 1;
-                padding: calc($spacer * 0.25) calc($spacer * 0.5);
+                padding-block: calc($spacer * 0.25);
                 font-size: $font-size-sm;
                 color: var(--ks-content-primary);
                 background-color: var(--ks-background-secondary);
