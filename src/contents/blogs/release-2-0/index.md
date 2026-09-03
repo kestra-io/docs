@@ -11,22 +11,22 @@ authors:
 image: ./main.jpg
 ---
 
-Kestra 2.0 is available today. Until now, network access to the Kestra database was required for every worker, so workers could only be deployed on the same network as the control plane. The queue was coupled to the database as well, so every feature had to be built twice, once for JDBC and once for Kafka.
+Kestra 2.0 is available today with a collection of exciting new features, a new engine, and conscious rework of the architecture built to scale. Until now, network access to the Kestra database was required for every worker, so workers could only be deployed on the same network as the control plane. The queue was coupled to the database as well, so every feature had to be built twice, once for JDBC and once for Kafka. We saw 2.0 as an opportunity to ease this pain for both ourselves and our users.
 
-In 2.0, each worker is connected to the control plane over a single outbound gRPC stream, so it can be deployed in another region, in a different cloud, or in a network that only allows outbound connections. The queue is independent of the database now, so there is a single implementation for both backends.
+Now, each worker is connected to the control plane over a single outbound gRPC stream, so it can be deployed in another region, in a different cloud, or in a network that only allows outbound connections. The queue is independent of the database, so there is a single implementation for both backends and users can plug and play the architecture of their choice.
 
-Everything else in 2.0 is built on those two changes. In this post, we cover what's new and what has to be changed when upgrading. The table below lists features we introduced in each edition.
+Everything else in 2.0 is built on those two changes. A lot has been introduced in this release, so let's talk about new features! We'll cover what's new and what has to be changed when upgrading. The table below lists features we introduced in each edition.
 
 | Feature | What | Edition |
 |---|---|---|
-| MCP Tool Trigger + MCP Server | Flows exposed as tools callable by AI agents | EE, Cloud |
+| MCP Tool Trigger + MCP Server | Flows exposed as tools callable by AI agents | OSS, EE, Cloud |
 | AI Copilot agentic loop | Three-mode chat sidebar (Edit, Plan, Ask) with multi-turn memory and a confirmation step | EE, Cloud |
 | No-code editor | Guided form editor with a contextual data panel showing available inputs and outputs at each step; in sync with YAML and AI Copilot | OSS, EE, Cloud |
-| RBAC action-based permissions | Resource plus action model in place of CRUD | EE |
-| Policies | Namespace-scoped governance rules in place of `pluginDefaults` | EE |
+| RBAC action-based permissions | Resource plus action model in place of CRUD | EE, Cloud |
+| Policies | Namespace-scoped governance rules in place of `pluginDefaults` | EE, Cloud |
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
-| Promote | Move flows across environments from the UI, with drift detection and a review step | EE |
-| Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE |
+| Promote | Move flows across environments from the UI, with drift detection and a review step | EE, Cloud |
+| Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE, Cloud |
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
 | New task runners | AWS EC2, Azure VM, Google Compute Engine, Huawei CCI | EE, Cloud |
@@ -46,9 +46,9 @@ Everything else in 2.0 is built on those two changes. In this post, we cover wha
 
 The hardest part of connecting an AI agent to real infrastructure is the glue. The MCP Tool Trigger skips it: any flow you've already built (a data pipeline, a provisioning sequence, an incident response) is callable by an AI agent as a named tool. No custom API, no polling loop.
 
-Any Kestra flow can now register as a named tool on an MCP server. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs.
+A `default` MCP server is provisioned for every tenant on startup, and the `McpToolTrigger` handles registration. Additional servers (separate servers per team, or one per environment) can be created from the UI. Each server generates ready-to-paste connection configuration for Claude Desktop, Claude Code, Cursor, and Codex. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs.
 
-The `McpToolTrigger` handles registration. This flow returns a pipeline health summary for any namespace, the kind of question an AI agent can answer on demand and then chain into a remediation tool if failures are found:
+This example flow returns a pipeline health summary for any namespace, the kind of question an AI agent can answer on demand and then chain into a remediation tool if failures are found:
 
 :::collapse{title="Example: Get pipeline status as an MCP tool"}
 
@@ -138,10 +138,6 @@ The `toolDescription` field is the most important property to get right. Agents 
 
 Flow inputs map automatically to the tool's JSON schema parameter spec. Outputs become the tool's response payload. If a flow has a `JSON` input with a `jsonSchema` property, the schema propagates to the tool spec.
 
-A `default` MCP server is provisioned for every tenant on startup. Additional servers (separate servers per team, or one per environment) can be created from the UI. Each server generates ready-to-paste connection configuration for Claude Desktop, Claude Code, Cursor, and Codex on its Connect tab.
-
-The MCP server also works in the other direction. Connect Claude, Cursor, or any MCP-compatible client to the Kestra MCP server and you can interact with flows as tools directly from your editor or AI assistant, no UI required.
-
 All executions created via MCP are tagged with `system.from: mcp`, `system.mcpServerId`, and `system.mcpSessionId`, so you can filter by agent origin in the execution list.
 
 Full setup in the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigger reference](/docs/workflow-components/triggers/mcp-tool-trigger).
@@ -152,7 +148,7 @@ Full setup in the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigg
 
 The AI Copilot is now a persistent right-sidebar chat panel that stays open while you work. Conversations are multi-turn: say "add retry logic" and it refines what's already in the flow rather than generating from scratch. Open it with the **AI** button in the top toolbar. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
 
-A mode selector at the bottom of the panel switches between three behaviors:
+Additionally, a new mode selector at the bottom of the panel switches between three behaviors:
 
 | Mode | What it does |
 |---|---|
@@ -164,15 +160,13 @@ A mode selector at the bottom of the panel switches between three behaviors:
 
 When you open the sidebar while viewing a resource, that resource attaches automatically as a context tag above the input. Context tags are independently dismissible. Every addition and removal is recorded in the transcript so you can always see what the agent is looking at. Attachable resources include flows, namespaces, executions, dashboards, apps, test suites, blueprints, and plugins. The AI Copilot also reads namespace metadata (Policies, Variables, Secrets, Key-Value pairs) to ground authoring suggestions against your actual configuration, so prompts like "create a task that reads from our MongoDB" can reuse configured credentials without extra hints.
 
-Actions that modify resources require explicit confirmation before the AI Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode.
-
-The `COPILOT` resource in the RBAC model controls who can use the feature. Assign `USE` at tenant or namespace scope via the Roles UI.
+Actions that modify resources require explicit confirmation before the AI Copilot executes them. A prompt appears in the chat with an optional field to steer the next attempt. Approving applies the change; rejecting resumes the conversation in Edit mode, or cancels the current plan in Plan mode, keeping you in full control while you iterate.
 
 The [AI Copilot docs](/docs/ai-tools/ai-copilot) cover mode details, context tags, and RBAC config.
 
 ## No-code Editor
 
-For teams who prefer building flows through forms rather than YAML, the No-code editor has been polished significantly in 2.0. A contextual data panel now sits alongside every configuration form, listing every input, upstream task output, and execution context variable available at that point in the flow, organized by category and filterable. Check it out below, and as always, all three views (YAML editor, No-code editor, and AI Copilot) stay in sync throughout the editing process.
+For teams who prefer building flows through forms rather than YAML, the No-code editor has been polished significantly in 2.0. A contextual data panel now sits alongside every configuration form, listing every input, upstream task output, and execution context variable available at that point in the flow, organized by category and filterable. Check it out below as a short demo is worth one hundred words, and as always, all three views (YAML editor, No-code editor, and AI Copilot) stay in sync throughout the editing process.
 
 <div style="position: relative; padding-bottom: calc(48.8542% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/GTFXessaiDkaI6hw0mof?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="2.0 No-code Editor - Kestra" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -230,11 +224,11 @@ rules:
 
 Before enabling enforcement, set `enforcement: EVALUATE`. The policy checks every flow in scope and surfaces violations in the Governance UI, but violations are only reported: nothing is blocked, and `Add`/`Delete` mutate rules are skipped. When the violation report looks right, flip to `ACTIVE`.
 
-`pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. The [Policies docs](/docs/enterprise/governance/policies) have the full rule DSL, including `where` clause syntax and the `EVALUATE` vs `ACTIVE` enforcement modes.
+`pluginDefaults` is removed in 2.0 for both OSS and EE. The [migration guide](/docs/migration-guide/v2.0.0/plugin-defaults-removed) covers all three scopes (flow-level, namespace-level, and global server config) with before-and-after examples. The [Policies docs](/docs/enterprise/governance/policies) have the full rule details, including `where` clause syntax and the `EVALUATE` vs `ACTIVE` enforcement modes.
 
 ## Cases
 
-Failed executions are incidents, and they usually get tracked outside Kestra. Cases bring incident management in so you can create, assign, and resolve incidents next to the executions that caused them.
+Failed executions are incidents, and they usually get tracked outside Kestra. Cases bring incident management into Kestra itself so you can create, assign, and resolve incidents next to the executions that caused them; no need to switch between tools.
 
 The `CreateCase` task opens a case from any block in a flow: `errors`, `finally`, `afterExecution`, or a regular task combined with `runIf`. It calls the Kestra API, so it needs an endpoint and credentials: `kestraUrl` defaults to the current instance, and `auth` accepts an API token or username/password. Namespace or tenant-level default credentials work as a fallback so you don't have to repeat auth config on every task.
 
@@ -254,17 +248,17 @@ The `linkMatchingExecutions` property is the most useful option for high-frequen
 
 Each case tracks status, severity, assignees, SLA timers, and linked executions, with a full activity timeline. Cases can also have case actions: flows attached as one-click remediation buttons on the case detail page.
 
-The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required.
+The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card similar to a kanban view in GitHub or JIRA. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required and a case can be closed.
 
 The [Cases docs](/docs/enterprise/governance/cases) cover SLA configuration, case actions, and the auto-attach trigger setup.
 
 ## Promote
 
-Before Promote, moving a flow between environments meant a CI/CD pipeline outside Kestra, a manual copy-paste of YAML, or both, with no drift visibility and no audit trail inside the platform.
+Before Promote, moving a flow between environments meant a CI/CD pipeline outside Kestra, a manual copy-paste of YAML, or both, with no drift visibility and no audit trail inside the platform. Similar to Cases, we wanted to provide a way for you to stay in Kestra for CI/CD.
 
 Promote gives you a built-in path for moving flows between environments. Each flow gains a Promote tab alongside the editor: select a target, review a diff of exactly what changes in that revision, and confirm. Protected targets require explicit confirmation before anything lands in production. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when. No Git pipeline required.
 
-The flows table gains a Deploy column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
+The flows table gains a column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check and a flow's status is observable at a glance.
 
 ![Flows list with the Deploy column showing Not promoted, In sync, and Out of sync states](./promote-flows-list.png)
 
@@ -280,7 +274,7 @@ Custom Blueprints can now be version-controlled with Git using two new EE tasks:
 
 The pattern mirrors the [`PushFlows`/`SyncFlows` GitOps model](/docs/version-control-cicd/git). Platform teams can manage the approved blueprint library centrally, review changes via pull requests, and deploy consistently across multiple Kestra instances or environments.
 
-This complements Templated Blueprints (also new in 2.0), which let platform teams author blueprints with Pebble-based form templates. Users fill a form; Kestra generates the flow YAML. Combined with version control, the governance loop closes: templates are authored in code, reviewed in Git, and distributed as a self-service library.
+This complements Templated Blueprints, which let platform teams author blueprints with Pebble-based form templates. Users fill a form; Kestra generates the flow YAML. Combined with version control, the governance loop closes: templates are authored in code, reviewed in Git, and distributed as a self-service library.
 
 The [Custom Blueprints docs](/docs/enterprise/governance/custom-blueprints) have the Pebble template syntax and supported form field types.
 
@@ -295,7 +289,7 @@ kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. If you
 
 The `--output json` flag applies across all commands, so kestractl output can pipe directly into `jq` or other tooling in CI scripts.
 
-The [kestractl reference](/docs/kestra-cli/kestractl) has every command with flags and authentication configuration.
+kestractl has had more scopes added to it over the last months than makes sense to list entirely here. Check out the [kestractl reference](/docs/kestra-cli/kestractl) where every command with flags and authentication configuration is listed.
 
 ## Worker Groups 2.0
 
@@ -325,7 +319,7 @@ The [Worker Groups docs](/docs/enterprise/scalability/worker-group) have migrati
 
 ## New Task Runners
 
-Four new EE task runners arrive in 2.0, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters.
+Four new EE task runners arrived in this release cycle, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters. Check out their full docs below or also in the [plugin catalog](/plugins).
 
 - [AWS EC2 Task Runner](/docs/task-runners/types/aws-ec2-task-runner): runs commands directly on an EC2 instance via AWS Systems Manager Run Command, with no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
 - [Azure Virtual Machine Task Runner](/docs/task-runners/types/azure-virtualmachine-task-runner): runs commands on Azure VMs via the Azure Run Command API, with no SSH and no public IP required.
