@@ -20,6 +20,48 @@ faq:
   - question: "Which orchestration tool is best for combining Databricks with other cloud services?"
     answer: "For orchestrating Databricks alongside a diverse set of other cloud services and on-premises systems, Kestra stands out. Its vendor-agnostic and declarative YAML approach allows seamless coordination of tasks across AWS, GCP, Azure, and your Databricks environment. This unified control plane reduces complexity and provides end-to-end visibility, making it ideal for multi-cloud or hybrid data strategies that include Databricks."
 author: "elliot"
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top Databricks Workflows Alternatives"
+  description: "A curated list of the best alternatives to Databricks Workflows for data, AI, and infrastructure orchestration."
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      item:
+        "@type": "SoftwareApplication"
+        name: "Kestra"
+        url: "https://kestra.io"
+    - "@type": "ListItem"
+      position: 2
+      item:
+        "@type": "SoftwareApplication"
+        name: "Apache Airflow"
+        url: "https://airflow.apache.org/"
+    - "@type": "ListItem"
+      position: 3
+      item:
+        "@type": "SoftwareApplication"
+        name: "Prefect"
+        url: "https://www.prefect.io/"
+    - "@type": "ListItem"
+      position: 4
+      item:
+        "@type": "SoftwareApplication"
+        name: "Matillion"
+        url: "https://www.matillion.com/"
+    - "@type": "ListItem"
+      position: 5
+      item:
+        "@type": "SoftwareApplication"
+        name: "Prophecy"
+        url: "https://www.prophecy.io/"
+    - "@type": "ListItem"
+      position: 6
+      item:
+        "@type": "SoftwareApplication"
+        name: "Pixeltable"
+        url: "https://pixeltable.com/"
 ---
 
 Databricks Workflows offers powerful, native orchestration for jobs within the Databricks Lakehouse Platform. It provides a streamlined experience for data and AI workloads, tightly integrated with the Databricks ecosystem. Yet, as organizations scale and diversify their technology stacks, the very strength of platform-native tools—deep integration—can become a limitation. Teams increasingly face challenges related to vendor lock-in, escalating costs, or the need to orchestrate workflows that span beyond a single cloud platform or domain.
@@ -133,157 +175,3 @@ For smaller teams, ease of use, a low barrier to entry, and strong community sup
 While Databricks Workflows is an effective tool for jobs contained within the Lakehouse, the modern data landscape often requires more. The shift is toward universal orchestration platforms that can manage diverse workloads across any cloud, system, or language. Solutions like Kestra offer a path away from vendor lock-in and toward a more flexible, scalable, and future-proof automation strategy. By choosing a declarative and extensible orchestrator, you empower your teams to build reliable workflows that unify your entire technology stack.
 
 Explore how Kestra can unify your data, AI, and infrastructure workflows. [Book a demo today](/demo) or [get started for free](/get-started).
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is Databricks Workflows still worth using in 2026?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Databricks Workflows remains a strong choice for workloads that are entirely contained within the Databricks Lakehouse platform. Its native integration with Databricks services offers a streamlined experience for existing users. However, if your orchestration needs extend beyond the Databricks ecosystem, or if you're seeking to reduce vendor lock-in and optimize costs, exploring alternatives becomes essential to avoid fragmented automation."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What are the main limitations of Databricks Workflows?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Key limitations include platform lock-in, as it's primarily designed for Databricks-native workloads, making cross-cloud or hybrid orchestration challenging. It may also present cost considerations for larger scale or diverse workloads. Furthermore, its focus on data and AI workflows means it's less suited for broader infrastructure or business process orchestration, which might necessitate additional tools."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Kestra replace Databricks Workflows for data orchestration?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, Kestra can replace or complement Databricks Workflows, especially for teams seeking a universal orchestration control plane. Kestra excels at coordinating heterogeneous workloads across various platforms, including Databricks, other clouds, and on-premises systems. It allows you to run Databricks jobs as tasks within a broader, declarative YAML-defined workflow, offering greater flexibility, polyglot execution, and reduced vendor lock-in."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the best open-source alternative to Databricks Workflows?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For open-source alternatives, Apache Airflow is a long-standing option, especially for Python-centric data teams. However, Kestra provides a more modern, declarative, and language-agnostic approach that extends beyond just data workflows to cover AI, infrastructure, and business processes. Kestra's open-source core offers high extensibility and deploy-anywhere flexibility without the operational overhead often associated with Airflow at scale."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does Databricks Workflows compare to Apache Airflow?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Databricks Workflows is tightly integrated with the Databricks Lakehouse, ideal for jobs running exclusively on that platform. Apache Airflow, in contrast, is a more generalized, Python-centric data orchestrator with a vast ecosystem. While Airflow offers flexibility, it comes with higher operational complexity. Kestra combines the best of both: the declarative simplicity and extensibility of a modern orchestrator, with the ability to integrate seamlessly with Databricks and other tools."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which orchestration tool is best for combining Databricks with other cloud services?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For orchestrating Databricks alongside a diverse set of other cloud services and on-premises systems, Kestra stands out. Its vendor-agnostic and declarative YAML approach allows seamless coordination of tasks across AWS, GCP, Azure, and your Databricks environment. This unified control plane reduces complexity and provides end-to-end visibility, making it ideal for multi-cloud or hybrid data strategies that include Databricks."
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top Databricks Workflows Alternatives",
-  "description": "A curated list of the best alternatives to Databricks Workflows for data, AI, and infrastructure orchestration.",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Kestra",
-        "url": "https://kestra.io"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Apache Airflow",
-        "url": "https://airflow.apache.org/"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Prefect",
-        "url": "https://www.prefect.io/"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Matillion",
-        "url": "https://www.matillion.com/"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Prophecy",
-        "url": "https://www.prophecy.io/"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Pixeltable",
-        "url": "https://pixeltable.com/"
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Data",
-      "item": "https://kestra.io/resources/data"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Databricks Workflows Alternatives: Unify Your Data Orchestration"
-    }
-  ]
-}
-```

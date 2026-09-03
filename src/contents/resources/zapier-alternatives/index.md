@@ -21,6 +21,51 @@ faq:
     answer: "The best free alternative depends on your needs. For visual building, Make offers a generous free plan with 1,000 operations per month. For technical users, open-source platforms like n8n and Activepieces offer powerful free, self-hosted versions with no task limits, providing maximum flexibility for those comfortable with managing their own instance."
   - question: "Can Kestra replace Zapier?"
     answer: "Kestra can replace Zapier, especially for technical and enterprise use cases. While Zapier is ideal for simple, no-code SaaS integrations, Kestra provides a more powerful, declarative (YAML-based) platform for orchestrating complex workflows across data, AI, and infrastructure. It's a better fit for engineers who need version control, scalability, and cost-effective automation beyond simple app connections."
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top 10 Zapier Alternatives"
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      name: "Kestra"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#1-kestra-open-source-declarative-and-cross-domain-orchestration"
+    - "@type": "ListItem"
+      position: 2
+      name: "Make"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#2-make-formerly-integromat-a-powerful-visual-builder"
+    - "@type": "ListItem"
+      position: 3
+      name: "n8n"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#3-n8n-open-source-flexibility-and-self-hosting-options"
+    - "@type": "ListItem"
+      position: 4
+      name: "Pabbly Connect"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#4-pabbly-connect-comprehensive-integration-suite"
+    - "@type": "ListItem"
+      position: 5
+      name: "Activepieces"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#5-activepieces-open-source-with-a-growing-community"
+    - "@type": "ListItem"
+      position: 6
+      name: "Workato"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#6-workato-advanced-integration-and-automation-for-enterprises"
+    - "@type": "ListItem"
+      position: 7
+      name: "Microsoft Power Automate"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#7-microsoft-power-automate-for-businesses-in-the-microsoft-ecosystem"
+    - "@type": "ListItem"
+      position: 8
+      name: "IFTTT"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#8-ifttt-simple-applets-for-personal-use"
+    - "@type": "ListItem"
+      position: 9
+      name: "HubSpot's Operations Hub"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#9-hubspots-operations-hub-crm-focused-automation"
+    - "@type": "ListItem"
+      position: 10
+      name: "Lindy AI"
+      url: "https://kestra.io/resources/ai/zapier-alternatives#10-lindy-ai-intelligent-automation-workflows"
 ---
 
 Zapier has long been the go-to platform for connecting web applications and automating simple workflows. Its intuitive interface and vast integration library make it a powerful tool for many. However, as teams scale, workflows grow in complexity, or budgets tighten, many users find themselves asking: "Is there anything better than Zapier?" The answer often lies in alternatives that offer greater control, more flexible pricing, or deeper technical capabilities.
@@ -187,171 +232,3 @@ The automation market has matured far beyond simple app-to-app connections. Whil
 For teams moving beyond basic SaaS integrations, the choice is no longer just about which platform has the most connectors. It's about finding a solution that aligns with your technical practices, budget, and long-term vision. Open-source, declarative platforms like Kestra represent a significant step forward, providing an engineering-centric approach to automation that offers unparalleled flexibility, scalability, and cost control. By evaluating your specific requirements against the options presented here, you can select an automation platform that not only solves today's problems but also grows with you.
 
 Ready to explore a more powerful, declarative approach to orchestration? [Check out our pricing](https://kestra.io/pricing) or [book a demo](https://kestra.io/demo) to see how Kestra can unify your workflows.
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is there anything better than Zapier?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, several platforms may be better than Zapier depending on your needs. For visual workflow building, Make is a strong contender. For open-source flexibility, n8n is a popular choice. For technical teams needing to orchestrate complex data, AI, and infrastructure workflows, a declarative platform like Kestra offers more power, control, and cost-efficiency at scale."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why is Zapier so expensive?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Zapier's pricing is based on task volume. Every single action in a multi-step workflow (a 'Zap') counts as a task. This means complex or frequently-run automations can consume your task allowance quickly, pushing you into more expensive pricing tiers even if your core use case remains simple. This model becomes costly for users with high-frequency or intricate workflows."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is n8n cheaper than Zapier?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, n8n is generally cheaper than Zapier, especially for technical users who can leverage its self-hosted open-source version, which has no task limits. Even its cloud-hosted plans offer more generous allowances than Zapier's entry-level tiers, making it a more cost-effective option for users with a high volume of tasks."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What's cheaper, Make or Zapier?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Make is typically cheaper than Zapier. Make's pricing is based on 'operations,' and it offers a larger number of operations in its free and paid plans compared to Zapier's task-based limits. For multi-step automations, Make's model is often more economical as complex workflows consume fewer billable units than on Zapier."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does Microsoft have anything similar to Zapier?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, Microsoft's alternative to Zapier is Power Automate. It is deeply integrated with the Microsoft 365, Dynamics 365, and Azure ecosystems. While Zapier excels at connecting a wide variety of third-party web apps, Power Automate is the stronger choice for organizations that primarily rely on Microsoft's suite of tools and services."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the best free alternative to Zapier?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The best free alternative depends on your needs. For visual building, Make offers a generous free plan with 1,000 operations per month. For technical users, open-source platforms like n8n and Activepieces offer powerful free, self-hosted versions with no task limits, providing maximum flexibility for those comfortable with managing their own instance."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Kestra replace Zapier?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Kestra can replace Zapier, especially for technical and enterprise use cases. While Zapier is ideal for simple, no-code SaaS integrations, Kestra provides a more powerful, declarative (YAML-based) platform for orchestrating complex workflows across data, AI, and infrastructure. It's a better fit for engineers who need version control, scalability, and cost-effective automation beyond simple app connections."
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top 10 Zapier Alternatives",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Kestra",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#1-kestra-open-source-declarative-and-cross-domain-orchestration"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Make",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#2-make-formerly-integromat-a-powerful-visual-builder"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "n8n",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#3-n8n-open-source-flexibility-and-self-hosting-options"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Pabbly Connect",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#4-pabbly-connect-comprehensive-integration-suite"
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "name": "Activepieces",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#5-activepieces-open-source-with-a-growing-community"
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "name": "Workato",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#6-workato-advanced-integration-and-automation-for-enterprises"
-    },
-    {
-      "@type": "ListItem",
-      "position": 7,
-      "name": "Microsoft Power Automate",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#7-microsoft-power-automate-for-businesses-in-the-microsoft-ecosystem"
-    },
-    {
-      "@type": "ListItem",
-      "position": 8,
-      "name": "IFTTT",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#8-ifttt-simple-applets-for-personal-use"
-    },
-    {
-      "@type": "ListItem",
-      "position": 9,
-      "name": "HubSpot's Operations Hub",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#9-hubspots-operations-hub-crm-focused-automation"
-    },
-    {
-      "@type": "ListItem",
-      "position": 10,
-      "name": "Lindy AI",
-      "url": "https://kestra.io/resources/ai/zapier-alternatives#10-lindy-ai-intelligent-automation-workflows"
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "AI",
-      "item": "https://kestra.io/resources/ai"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "10 Best Zapier Alternatives & Competitors in 2026",
-      "item": "https://kestra.io/resources/ai/zapier-alternatives"
-    }
-  ]
-}
-```
