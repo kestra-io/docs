@@ -504,6 +504,7 @@ The breaking changes that require action:
 | `CANCELED` enum alias removed | Replace the single-L spelling with `CANCELLED` in flow expressions, API consumers, and any tooling that checks execution state. |
 | SDK auth required for internal tasks | Tasks that call the Kestra API internally (git sync tasks and others) now require explicit credentials. See the [migration guide](/docs/migration-guide/v2.0.0/sdk-authentication). |
 | Super Admin renamed to Instance Owner | The Super Admin role is renamed to Instance Owner across the UI, CLI, config, and API. HTTP API responses emit `instanceOwner` instead of `superAdmin`; update any consumers that read this field. See the [migration guide](/docs/migration-guide/v2.0.0/superadmin-renamed-instance-owner). |
+| Terraform provider `~> 2.0` | `permissions` → `resources`/`actions` on `kestra_role`; `plugin_defaults` and `worker_group` removed from `kestra_namespace`; `kestra_template` removed. New resources: `kestra_policy`, `kestra_worker_queue`, `kestra_worker_group`. See the [Terraform migration guide](/docs/migration-guide/v2.0.0/terraform-provider). |
 
 ## Get Started
 
