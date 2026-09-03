@@ -44,6 +44,8 @@ grep -rl "pluginDefaults:" flows/
 grep -rl "ForEach\|ForEachItem" flows/
 grep -rl "conditions:" flows/
 grep -rl "preconditions:" flows/
+grep -rl "json(" flows/
+grep -rl "workerGroup.key" flows/
 ```
 
 Fix each match using the guides below before restarting Kestra.
@@ -105,9 +107,11 @@ Changes that affect how flows are written or behave at runtime. Review all of th
 | [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function is removed. Replace all calls with `fromJson()`; the signature is identical. |
 | [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
 
+Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. The `CANCELED` execution state alias is also removed; replace with `CANCELLED` (double-L) in flow expressions, API clients, and any tooling that reads execution state.
+
 ### Governance and plugins
 
-Changes to Enterprise Edition configuration, permissions, and plugin defaults.
+Changes to flow configuration, permissions, and plugin defaults. The SDK auth and `pluginDefaults` changes apply to all editions; RBAC is EE only.
 
 | Guide | Editions | What changed |
 |---|---|---|
@@ -133,7 +137,7 @@ Changes to deployment, Helm charts, and server configuration. Relevant primarily
 | Guide | Editions | What changed |
 |---|---|---|
 | [Database migrations](./database-migrations) | OSS, EE | How to run the 2.0 schema migrations, including the upgrade sequence, Docker Compose and Kubernetes examples, and key scripts. |
-| [Helm gRPC worker-controller](./helm-grpc-worker-controller) | EE | Port 50051 is now exposed by default on all pods, and a dedicated controller deployment is added to the Helm chart. Review before upgrading. |
+| [Helm gRPC worker-controller](./helm-grpc-worker-controller) | EE | Port 50051 is now exposed by default on all pods, and a dedicated controller deployment is added to the Helm chart. The `workerGroup.key` property is removed; migrate to `workerSelector.tags`. The `fallback` default changes from `WAIT` to `FAIL`. Review before upgrading. |
 | [Management endpoint hardening](./management-endpoint-hardening) | OSS, EE | Several management endpoints that were open without authentication in 1.x now require explicit opt-in. Review before upgrading in production. |
 
 ### Terraform provider
@@ -147,9 +151,7 @@ Changes to the official Terraform provider. Relevant for teams managing Kestra r
 
 ## Completing the migration
 
-A practical completion criterion: the 1.3 instance reaches zero flows.
-
-Migrate flows incrementally. For each flow:
+Migration is complete when the 1.3 instance has no flows remaining. Migrate them one at a time using this sequence:
 
 1. **Migrate dependencies first.** A flow will break at runtime if any of its dependencies are missing on the 2.0 instance. Before migrating a flow, ensure the following are in place:
    - **Subflows** — migrate and validate any subflows the flow calls before migrating the parent. Removing a subflow from 1.3 while a parent flow still runs there will break in-flight executions.
@@ -160,5 +162,3 @@ Migrate flows incrementally. For each flow:
 3. **Drain before removing.** Wait for any active executions of the flow on 1.3 to finish before deleting it. Removing a flow with running executions leaves those executions in an unresolvable state.
 4. **Activate triggers on 2.0 first.** If the flow has a schedule or polling trigger, confirm the trigger is active on 2.0 before removing the flow from 1.3; otherwise scheduled runs are silently dropped during the gap.
 5. **Delete from 1.3.** Once validated, drained, and triggers are live, delete the flow from the 1.3 instance.
-
-When the 1.3 flow count reaches zero, all flows have been migrated and validated.
