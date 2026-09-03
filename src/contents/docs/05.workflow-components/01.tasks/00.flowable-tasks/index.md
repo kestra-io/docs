@@ -69,8 +69,6 @@ tasks:
 
 Nest `Sequential` inside `Parallel` branches to run multi-step sequences concurrently:
 
-```yaml
-tasks:
   - id: parallel
     type: io.kestra.plugin.core.flow.Parallel
     tasks:
@@ -191,6 +189,9 @@ For more details on `item`, see [loop iteration context](../../../expressions/01
 When `values` contains a list of objects, each `item.value` is a JSON string. Use `fromJson(item.value).field` to read fields — `item.value.field` does not work.
 
 ```yaml
+id: parallel_tasks_example
+namespace: company.team
+
 tasks:
   - id: loop
     type: io.kestra.plugin.core.flow.Loop
