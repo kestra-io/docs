@@ -11,11 +11,7 @@ authors:
 image: ./main.jpg
 ---
 
-Kestra 2.0 is available today with a collection of exciting new features, a new engine, and conscious rework of the architecture built to scale. Until now, network access to the Kestra database was required for every worker, so workers could only be deployed on the same network as the control plane. The queue was coupled to the database as well, so every feature had to be built twice, once for JDBC and once for Kafka. We saw 2.0 as an opportunity to ease this pain for both ourselves and our users.
-
-Now, each worker is connected to the control plane over a single outbound gRPC stream, so it can be deployed in another region, in a different cloud, or in a network that only allows outbound connections. The queue is independent of the database, so there is a single implementation for both backends and users can plug and play the architecture of their choice.
-
-Everything else in 2.0 is built on those two changes. There's a lot to cover, so here's what's new and what needs to change on upgrade. The table below breaks it down by edition.
+Kestra 2.0 is out today. This release ships a new gRPC-based engine, resolves architectural constraints around worker deployments and backend coupling, and introduces new features across AI tooling, governance, infrastructure, and developer experience. If you haven't already, [Ludo's post on the 2.0 architecture](/blogs/kestra-2-0-engineering) goes deep on the engineering decisions that made this possible. We've put a lot into this one and can't wait to see what the community builds on it. In this post, we cover everything that's new and make sure you have what you need to migrate confidently. Here's what's new, broken down by edition.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -44,7 +40,7 @@ Everything else in 2.0 is built on those two changes. There's a lot to cover, so
 
 ## MCP Tool Trigger and MCP Server
 
-The hardest part of connecting an AI agent to real infrastructure is the glue. The MCP Tool Trigger skips it: any flow you've already built (a data pipeline, a provisioning sequence, an incident response) is callable by an AI agent as a named tool. No custom API, no polling loop.
+Connecting an AI agent to real infrastructure usually means writing a custom integration layer. The MCP Tool Trigger skips it: any flow you've already built (a data pipeline, a provisioning sequence, an incident response) is callable by an AI agent as a named tool. No custom API, no polling loop.
 
 A `default` MCP server is provisioned for every tenant on startup, and the `McpToolTrigger` handles registration. Additional servers (separate servers per team, or one per environment) can be created from the UI. Each server generates ready-to-paste connection configuration for Claude Desktop, Claude Code, Cursor, and Codex. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs.
 
@@ -148,7 +144,7 @@ Full setup in the [MCP server docs](/docs/ai-tools/mcp-server) and [McpToolTrigg
 
 The AI Copilot is now a persistent right-sidebar chat panel that stays open while you work. Conversations are multi-turn: say "add retry logic" and it refines what's already in the flow rather than generating from scratch. Open it with the **AI** button in the top toolbar. Click **New chat +** to start fresh; use **Recents** to return to a prior conversation.
 
-Additionally, a new mode selector at the bottom of the panel switches between three behaviors:
+A new mode selector at the bottom of the panel switches between three behaviors:
 
 | Mode | What it does |
 |---|---|
@@ -258,7 +254,7 @@ Before Promote, moving a flow between environments meant a CI/CD pipeline outsid
 
 Promote gives you a built-in path for moving flows between environments. Each flow gains a Promote tab alongside the editor: select a target, review a diff of exactly what changes in that revision, and confirm. Protected targets require explicit confirmation before anything lands in production. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when. No Git pipeline required.
 
-The flows table gains a column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check and a flow's status is observable at a glance.
+The flows table gains a column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
 
 ![Flows list with the Deploy column showing Not promoted, In sync, and Out of sync states](./promote-flows-list.png)
 
