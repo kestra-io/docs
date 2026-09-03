@@ -76,7 +76,7 @@ Changes to deployment, storage, and runtime behavior.
 - **Worker Groups 2.0 (EE)** — tag-based routing via `workerSelector.tags` replaces `workerGroup.key`; Worker Queues as routing lanes; per-subscription capacity reservation (STRICT/ELASTIC modes); JWT worker authentication; declarative topology bootstrap via `kestra.ee.setup`. [Docs](../../07.enterprise/04.scalability/worker-group/index.md)
 - **PurgeStorage** — storage-driven file cleanup by last-modified date, independent of execution records. Defaults to `dryRun: true`. [Docs](../../10.administrator-guide/purge/index.md)
 - **Slim image + plugin auto-install** — `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to auto-fetch from Maven Central. Renamed from `-no-plugins`. [Docs](../../02.installation/02.docker/index.md)
-- **External Log Data Store** — route execution logs to a separate JDBC database or Elasticsearch. [Docs](../../10.administrator-guide/log-data-store/index.md)
+- **External Log Data Store (EE)** — route execution logs to a separate JDBC database or Elasticsearch, keeping the main database lean and reducing schema migration time. [Docs](../../10.administrator-guide/log-data-store/index.md)
 - **ION binary format** — task output files in ION format stored as binary (~20–40% smaller). [Migration guide](../../11.migration-guide/v2.0.0/ion-binary-format/index.md)
 
 ### Additional

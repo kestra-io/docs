@@ -199,7 +199,7 @@ Tasks declare routing requirements with `workerSelector.tags` instead of the rem
 
 See the [Worker Groups reference](./07.enterprise/04.scalability/worker-group/index.md) and [migration guide](./11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md).
 
-### External Log Data Store
+### External Log Data Store (EE)
 
 [External Log Data Store](./10.administrator-guide/log-data-store/index.md) routes execution logs to a dedicated JDBC database or Elasticsearch, separate from the main backend, to reduce database size and speed up migrations.
 
