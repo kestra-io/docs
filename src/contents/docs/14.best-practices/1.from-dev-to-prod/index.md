@@ -42,7 +42,6 @@ For open-source users, it’s recommended to run a **restricted production insta
 
 Kestra supports several deployment strategies:
 - [Via the UI](../../09.ui/01.flows/index.md)
-- [Promote](../../07.enterprise/02.governance/promote/index.md) (Enterprise Edition) — move flows between environments directly from the UI with a diff review and confirmation gate, no Git or pipeline required
 - [Git synchronization](../../version-control-cicd/04.git/index.md)
 - [CI/CD pipelines](../../version-control-cicd/cicd/index.md)
 - [Terraform](../../13.terraform/index.mdx)

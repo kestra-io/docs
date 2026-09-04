@@ -32,8 +32,10 @@ tasks:
     message: first {{task.id}}
     level: TRACE
 
-labels:
-  team: data
+pluginDefaults:
+  - type: io.kestra.core.tasks.log.Log
+    values:
+      message: third {{flow.id}}
 EOT
 }
 ```

@@ -5,633 +5,240 @@ description: Manage workloads with Kestra Worker Groups. Target specific workers
 sidebarTitle: Worker Group
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
-version: ">= 2.0.0"
+version: ">= 0.10.0"
 ---
 
-Worker Groups route tasks to the right machines in your fleet. A Worker Group is a named, token-authenticated pool of workers that subscribes to one or more Worker Queues — tag-based routing lanes that tasks declare requirements against. The result is flexible many-to-many routing: GPU machines and spot instances can serve the same queue, or a single group can cover multiple queues with per-queue capacity guarantees.
+How to configure Worker Groups in Kestra Enterprise Edition.
 
-Worker Groups are an Enterprise Edition feature. In the open-source edition, all work runs in a single implicit default pool.
+## Worker groups – configure targeted workers
 
-## Getting started
+A Worker Group is a set of workers that can be explicitly targeted for task execution or polling trigger evaluation. For example, tasks that require heavy resources can be isolated to a Worker Group designed to handle that load, and tasks that perform best on a specific Operating System can be optimized to run on a Worker Group designed for them.
 
-To set up Worker Groups end-to-end:
-
-1. [Create a Worker Queue](#worker-queues) — define a routing lane with tags
-2. [Create a Worker Group](#creating-and-managing-worker-groups) — create a pool and subscribe it to queues
-3. [Generate a registration token](#generating-a-registration-token) — authenticate workers to the group
-4. [Start a worker](#starting-a-worker-for-a-group) — connect with the token and controller endpoint
-5. [Route tasks](#using-workerselector-in-tasks) — add `workerSelector` to any task
-
-For IaC and Helm deployments, see [Declarative configuration](#declarative-configuration) to provision the full topology at startup without runtime API calls.
-
-## How Worker Groups work
-
-Three building blocks define the routing model:
-
-| Building block | Role |
-|---|---|
-| **Worker** | A process that runs tasks; joins a group by presenting a registration token and locally enforces its capacity allocation |
-| **Worker Group** | A named pool of workers that subscribes to queues and holds capacity reservation settings |
-| **Worker Queue** | A routing lane identified by a tag set; tasks declare `workerSelector.tags` to target a queue |
-
-The routing path flows from task requirements down to infrastructure:
-
-1. A task declares `workerSelector.tags: [gpu, eu]`
-2. Kestra finds the Worker Queue whose tags match
-3. Kestra checks which Worker Groups subscribe to that queue
-4. A worker from one of those groups picks up the task
-
-**Developer perspective**: declare what a task needs using tags. No machine names, no group names.
-
-**Operator perspective**: create queues with meaningful tags, subscribe groups to those queues, and set capacity guarantees per subscription.
-
-## Using workerSelector in tasks
-
-Add `workerSelector` to any task to route it to a matching Worker Queue. The `workerSelector` object has three properties:
-
-| Property | Description | Default |
-|---|---|---|
-| `tags` | List of RFC 1123 labels (max 20) identifying the required Worker Queue | — |
-| `match` | `ALL`: queue tags must include all selector tags. `ANY`: queue tags must include at least one selector tag | `ALL` |
-| `fallback` | Behavior when no worker is available for the matched queue: `FAIL`, `WAIT`, `CANCEL`, or `IGNORE` | `FAIL` |
-
-:::alert{type="warning"}
-The default `fallback` in 2.0 is `FAIL`. If you upgraded from an earlier version where tasks waited by default, set `fallback: WAIT` directly on each task, or use a [Policy](../../02.governance/policies/index.md) with an `Add` rule to apply it across a namespace.
+:::alert{type="info"}
+Please note that Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
 :::
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/C-539c3UVJM?si=3USIb1F7OiW9AQVp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+## Creating Worker Groups from the UI
+
+:::badge{version=">=0.19" editions="EE"}
+:::
+
+To create a new Worker Group, navigate to the **Instance** page, go to the **Worker Groups** tab, and click on the `+ Add Worker Group` button. Then, set a **Key**, a **Description**, and optionally **Allowed Tenants** for that worker group. You can also accomplish this via API, CLI, or Terraform.
+
+![Create Worker Group UI](./create-worker-group.png)
+
+## Starting workers for a Worker Group
+
+Once a worker group key is created, you can start a worker with the `kestra server worker --worker-group {workerGroupKey}` flag to assign it to that worker group. You can also assign a default worker group at the namespace and tenant level.
+
+![Worker Group UI](./worker-group-ui.png)
+
+The Worker Groups UI tracks the health of worker groups, showing how many workers are polling for tasks within each worker group. This gives you visibility into which worker groups are active and the number of active workers.
+
+![Worker Group UI Details](./worker-group-details.png)
+
+:::alert{type="info"}
+In order to run the command at startup, you need to run each component independently and use the command for the worker component startup. To set this up, read more about running [Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
+:::
+
+## Using Worker Groups
+
+To assign a worker group, add the `workerGroup.key` property to the task or the polling trigger. A default worker group can also be configured at the `namespace` or `tenant` level.
+
+Worker groups can be defined at the flow level, and the flow editor validates worker group keys when creating flows from the UI. If the provided key doesn’t exist, the syntax validation will prevent the flow from being saved.
+
+Below is an example flow configuration with a worker group:
+
 ```yaml
-id: process_sensitive_data
+id: worker_group
 namespace: company.team
 
 tasks:
-  - id: process
-    type: io.kestra.plugin.scripts.python.Commands
-    workerSelector:
-      tags: [sensitive, eu]
-      fallback: WAIT
+  - id: wait
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
-      - python process.py
+      - sleep 10
+    workerGroup:
+      key: gpu
 ```
 
-Kestra routes the task to a Worker Queue whose tag set includes all declared tags (or any, when `match: ANY`). Any Worker Group subscribed to that queue may execute the task.
+If the `workerGroup.key` property is not provided, all tasks and polling triggers are executed on the default worker group. That default worker group doesn't have a dedicated key.
 
-If `workerSelector` is absent or all tags resolve to null, the task routes to the default queue.
-
-### Fallback options
-
-| Value | Behavior |
-|---|---|
-| `FAIL` | Fail the task run immediately if no worker is available (default) |
-| `WAIT` | Hold the task in `CREATED` state until a worker becomes available |
-| `CANCEL` | Cancel the task gracefully; the execution is marked `KILLED` |
-| `IGNORE` | Drop the tag requirement and route to the default Worker Queue instead |
-
-`IGNORE` is useful when the target infrastructure is optional — the task proceeds on any available worker rather than failing when the specialized pool is unavailable.
-
-`fallback` can only be set when `tags` is non-empty.
-
-:::alert{type="warning"}
-`fallback` only applies when a matching Worker Queue exists but has no live worker right now. If no queue matches the tags at all, the task fails immediately regardless of the `fallback` value — that is a configuration error, not a capacity gap.
-:::
-
-### Dynamic routing
-
-Use Pebble expressions to set tags at runtime:
+A `workerGroup.key` can also be assigned dynamically using `inputs` like in the following example:
 
 ```yaml
+id: worker_group_dynamic
+namespace: company.team
+
 inputs:
-  - id: region
+  - id: my_worker_group
     type: STRING
-    defaults: eu
 
 tasks:
-  - id: process
-    type: io.kestra.plugin.scripts.python.Commands
-    workerSelector:
-      tags:
-        - "{{ inputs.region }}"
-        - sensitive
-      fallback: WAIT
-    commands:
-      - python process.py
+  - id: workerGroup
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ taskrun.startDate }}"
+    workerGroup:
+      key: "{{ inputs.my_worker_group }}"
 ```
 
-When an expression resolves to null or a blank string, that tag is omitted from the selector. If all tags resolve to null, the task routes to the default queue.
-
-### Namespace and tenant-level routing defaults
-
-Instead of adding `workerSelector` to every task, set a default selector at the namespace or tenant level. Kestra resolves the selector most-specific-first — task, then flow, then the nearest namespace ancestor, then the tenant — and stops at the first level that declares one.
-
-Set a namespace-level default in the namespace settings:
+If the expression resolves to `null` or a blank string, the task is routed to the default worker group — the same behavior as omitting `workerGroup` entirely. This makes `null` a useful sentinel for conditional routing:
 
 ```yaml
-workerSelector:
-  tags: [eu]
-  fallback: WAIT
-```
-
-Every task in that namespace (and its child namespaces, unless overridden closer) inherits this selector automatically. Any selector closer to the task — on the task itself or the flow — wins over the namespace or tenant default.
-
-This is the recommended approach when an entire namespace or team should always run on a specific fleet — it keeps flow YAML clean and makes routing changes a single admin update rather than a find-and-replace across all flows.
-
-### Applying workerSelector with Policies
-
-Use a [Policy](../../02.governance/policies/index.md) to route all tasks of a given plugin type to a specific Worker Queue without modifying each task individually:
-
-```yaml
-id: gpu-worker-routing
-description: "Route all Python tasks to GPU workers."
-enforcement: ACTIVE
-rules:
-  - type: io.kestra.plugin.ee.rules.Add
-    on: PLUGIN
-    where:
-      - field: type
-        operator: STARTS_WITH
-        value: io.kestra.plugin.scripts.python
-    values:
-      workerSelector:
-        tags: [gpu]
-        fallback: WAIT
-```
-
-With this Policy applied to the namespace, flows need no per-task configuration:
-
-```yaml
-id: ml_pipeline
+id: worker_group_conditional
 namespace: company.team
+
+inputs:
+  - id: use_gpu
+    type: BOOLEAN
+    defaults: false
 
 tasks:
   - id: train
-    type: io.kestra.plugin.scripts.python.Commands
+    type: io.kestra.plugin.core.debug.Return
+    format: "{{ taskrun.startDate }}"
+    workerGroup:
+      key: "{{ inputs.use_gpu ? 'gpu' : null }}"
+```
+
+When `inputs.use_gpu` is `false`, the key resolves to `null` and the task runs on the default worker group. When `true`, it targets the `gpu` worker group.
+
+## Worker Group fallback behavior
+
+:::badge{version=">=0.20" editions="EE"}
+:::
+
+By default, a task configured to run on a given worker will wait for the worker to be available (i.e., `workerGroup.fallback: WAIT`). If you prefer to fail the task when the worker is not available, set `workerGroup.fallback: FAIL`.
+
+```yaml
+id: worker_group
+namespace: company.team
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.core.flow.Sleep
+    duration: PT0S
+    workerGroup:
+      key: gpu
+      fallback: FAIL
+```
+
+Possible values for `workerGroup.fallback` are `WAIT` (default), `FAIL`, or `CANCEL`:
+- `WAIT`: The task will wait for the worker to be available and will remain in a `CREATED` state until the worker picks it up.
+- `FAIL`: The task run will be terminated immediately if the worker is not available, and the execution will be marked as `FAILED`.
+- `CANCEL`: The task run will be gracefully terminated, and the execution will be marked as `KILLED` without an error.
+
+You can set a custom `workerGroup.key` and `workerGroup.fallback` per plugin type and/or per namespace using `pluginDefaults`.
+
+When Fallback behavior is set in multiple places, Kestra resolves which action to take by following this priority order:
+1. **Flow-Level**: Uses the behavior specified in the `fallback` property of the Flow task.
+2. **Namespace-Level**: Uses the behavior set in the the Namespace settings.
+3. **Tenant-Level**: Uses the behavior set in the the Tenant settings.
+
+### Fallback behavior at the namespace level
+
+Namespaces can be configured to have a default `fallback` behavior. It can be configured by creating a namespace manaully or modifying in the **Edit** tab of the namespace.
+
+![Configure Worker Group for a Namespace](./worker-group-namespace.png)
+
+### Fallback behavior at the tenant level
+
+Tenants can be configured to have a default `fallback` behavior. It can be configured when creating a tenant on in the tenant's properties.
+
+![Configure Worker Group for a Tenant](./worker-group-tenant.png)
+
+## When to use Worker Groups
+
+Here are common use cases in which Worker Groups can be beneficial:
+- Execute tasks and polling triggers on specific compute instances (e.g., a VM with a GPU and preconfigured CUDA drivers).
+- Execute tasks and polling triggers on a worker with a specific Operating System (e.g., a Windows server).
+- Restrict backend access to a set of workers (firewall rules, private networks, etc.).
+- Execute tasks and polling triggers close to a remote backend (region selection).
+
+You can configure plugin groups to use a specific worker group. In this example, all [script tasks](../../../16.scripts/index.mdx) are set to run on the `gpu` worker group:
+
+```yaml
+id: worker_group
+namespace: company.team
+
+tasks:
+  - id: wait
+    type: io.kestra.plugin.scripts.shell.Commands
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     commands:
-      - python train.py
+      - sleep 10
 
-  - id: evaluate
+  - id: python_gpu
     type: io.kestra.plugin.scripts.python.Commands
+    namespaceFiles:
+      enabled: true
     commands:
-      - python eval.py
+      - python ml_on_gpu.py
+
+pluginDefaults:
+  - forced: false
+    type: io.kestra.plugin.scripts
+    values:
+      workerGroup:
+        key: gpu
 ```
 
-## Worker Queues
+### Distant workers
 
-A Worker Queue is a routing lane with a stable id and a set of tags. Multiple Worker Groups may subscribe to the same queue. Removing a group's subscription never deletes the queue — queues exist independently.
+You can use a Worker Group to designate a worker to execute **any** task on a remote resource. Additionally, you may want to have an **always-on** worker that stays available for execution-intensive workloads.
 
-Two ids are reserved and never created manually:
-- `default` — the global default queue; receives tasks with no `workerSelector`
-- `system` — the in-process system worker
+The Distant Worker use case requires a connection to the Kestra metastore, and it solves for scenarios of always-on, intensive workloads and workloads that need to execute workloads on an external environment.
 
-Worker Queue ids must follow RFC 1123 label format: lowercase alphanumerics and hyphens, starting and ending with an alphanumeric character, max 63 characters.
+![Distant Worker Architecture](./distant-worker.png)
 
-### Creating Worker Queues
+### Task runners
 
-Navigate to **Instance Owner → Infrastructure → Worker Queues** and click **Create**. You can also create Worker Queues via the API or Terraform.
+If you are using scripting tasks, you can set up Worker Group of Task Runners to leverage **on-demand** cloud resources to execute intensive workloads. For example, you can have a Worker Group dedicated to executing on AWS Batch or Kubernetes.
 
-**Tenant scoping**: a Worker Queue can restrict which tenants may route tasks through it. An empty tenant list means unrestricted.
+This is particularly useful for script task workloads that have bursts in resource demand.
 
-## Creating and managing Worker Groups
+![Task Runner Architecture](./task-runners.png)
 
-A Worker Group is identified by a stable id (RFC 1123 label), has a display name, and holds a list of queue subscriptions and registration tokens.
+### Data isolation
 
-### Creating a Worker Group
+Worker Groups strongly fits **Data Isolation** use cases. Multi-tenancy requirements may demand that you have strict isolation of remote resources such as key vaults. Worker groups enable you to split out dedicated workers per tenant.
 
-Navigate to **Instance Owner → Infrastructure → Worker Groups** and click **Add Worker Group**. Set an id, display name, and optional description. You can add queue subscriptions and generate registration tokens immediately, or configure them after creation.
+In the below architecture, it is not possible to execute tasks on worker 1 from tenant 3.
 
-Worker Group ids must follow RFC 1123 label format.
-
-### The default group
-
-One group always exists and cannot be deleted: the `default` group. It subscribes to the `default` queue and receives all tasks that have no `workerSelector`. Workers that start without a registration token join the default group automatically.
+![Data Isolation Architecture](./data-isolation.png)
 
 :::alert{type="warning"}
-Keep at least one worker running in the default group to ensure tasks without a `workerSelector` always have somewhere to execute.
+Even if you are using worker groups, we strongly recommend having at least one worker in the default worker group.
 :::
 
-### Queue subscriptions
+## Load balancing
 
-A subscription connects a Worker Group to a Worker Queue. Each subscription specifies:
+Whether you leverage worker groups or not, Kestra will balance the load across all available workers. The primary difference is that with worker groups, you can target **specific** workers for task execution or polling trigger evaluation.
 
-- **Target queue id** — which Worker Queue this group's workers will serve
-- **Reserved capacity percentage** (optional) — a per-worker floor guarantee, 1–100
-- **Interaction mode** — `STRICT` or `ELASTIC` (see [Capacity reservation](#capacity-reservation))
+A worker is part of a worker group if it is started with the `--worker-group workerGroupKey` argument.
 
-A group may subscribe to multiple queues. The sum of reserved percentages across a worker's subscriptions must not exceed 100.
+There's a slight difference between Kafka and JDBC architectures in terms of load balancing:
+- The Kafka architecture relies on Kafka consumer group protocol — each worker group will use a different consumer group protocol, therefore each worker group will balance the load independently.
+- For JDBC, each worker within a group will poll the `queues` database table using the same poll query. All workers within the same worker group will poll for task runs and polling triggers in a FIFO manner.
 
-Manage subscriptions through the UI or the subscriptions API:
+### Central queue to distribute task runs and polling triggers
 
-| Operation | Endpoint |
-|---|---|
-| Add subscription | `POST /api/v1/instance/worker-groups/{id}/subscriptions` |
-| Update reservation | `PATCH /api/v1/instance/worker-groups/{id}/subscriptions/{workerQueueId}` |
-| Remove subscription | `DELETE /api/v1/instance/worker-groups/{id}/subscriptions/{workerQueueId}` |
+In both JDBC and Kafka architectures, we leverage a Central Queue to ensure that tasks and polling triggers are executed only once and in the right order.
 
-## Capacity reservation
+Here's how it works:
+- Jobs (task runs and polling triggers) are submitted to a centralized queue. The queue acts as a holding area for all incoming jobs.
+- Workers periodically poll the central queue to check for available jobs. When a worker becomes free, it requests the next job from the queue.
+- Kestra backend keeps track of assignment of jobs to workers to ensure reliable execution and prevent duplicate processing.
 
-Reserved capacity is a per-worker floor guarantee, not a fleet-wide quota. Remaining slots beyond reserved percentages form a shared pool available to all of that worker's subscriptions.
+### What if multiple workers from the same Worker Group poll for jobs from the central queue?
 
-**Example**: a worker with 16 slots subscribing to two queues at 50% and 25% reserves 8 slots for queue A and 4 slots for queue B, with 4 slots in the shared pool.
-
-### Interaction modes
-
-- **STRICT** — idle reserved slots remain exclusive to this subscription and are never lent to other work
-- **ELASTIC** — idle reserved slots may be lent to other `ELASTIC` subscriptions on the same worker when the subscription has spare capacity
-
-In both modes, tasks also draw from the shared pool once reserved slots are busy. Lent slots are not preempted — a busy lender may temporarily dip below its floor until borrowed work completes.
-
-Capacity reservations are live-configurable: updating a subscription's reserved percentage takes effect within seconds with no worker restarts required.
-
-## Worker authentication
-
-:::alert{type="info"}
-Worker authentication must be enabled server-side before registration tokens have any effect. A worker configured with a token but connecting to an instance where auth is disabled will join the default group instead.
-:::
-
-Workers join a group by presenting a registration token generated for that group. The token is stored as a hash and shown only once at creation — copy it immediately.
-
-On first connect, the worker exchanges the registration token for a short-lived access token and a rotating refresh token. The access token is refreshed automatically before it expires. Revoking or deleting a token immediately invalidates credentials for any workers that registered with it; those workers fail closed once their current access token expires.
-
-### Generating a registration token
-
-In the Worker Groups UI, select a group and generate a token from the **Tokens** tab. Alternatively, use the API:
-
-| Operation | Endpoint |
-|---|---|
-| Generate token | `POST /api/v1/instance/worker-groups/{id}/tokens` |
-| Revoke token | `POST /api/v1/instance/worker-groups/{id}/tokens/{tokenId}/revoke` |
-| Delete token | `DELETE /api/v1/instance/worker-groups/{id}/tokens/{tokenId}` |
-
-### Server-side configuration
-
-Enable worker authentication on your webserver or standalone Kestra instance:
-
-```yaml
-kestra:
-  ee:
-    worker:
-      auth:
-        enabled: true
-        jwt-signing-key: "{{ a strong shared secret, >= 32 bytes }}"
-        access-token-lifetime: PT5M    # optional, default PT5M
-        refresh-token-lifetime: P7D    # optional, default P7D
-```
-
-### Worker-side configuration
-
-Each worker needs two things to join a group: a registration token that identifies the group, and a controller endpoint that tells the worker where to connect. Both are required — a worker started with only the token will try `localhost` and fail.
-
-```yaml
-kestra:
-  worker:
-    name: gpu-pool-1                       # optional display name
-    auth:
-      registration-token: "{{ token generated for the target group }}"
-      credentials-path: /var/kestra/worker/.auth/worker-credentials.json  # default: /tmp/kestra/worker/.auth/...
-      refresh-buffer: PT60S               # how early to refresh the access token before it expires
-    controllers:
-      type: STATIC
-      static:
-        endpoints:
-          - host: kestra-controller.internal
-            port: 50051
-```
-
-:::alert{type="warning"}
-The endpoint `host` and `port` must be separate YAML keys. A single `host:port` string fails with `Static configuration requires at least one endpoint`.
-:::
-
-#### Controller discovery strategies
-
-`type: STATIC` is the default and suitable for most bare-metal and Docker deployments. Two other strategies are available:
-
-| Type | When to use |
-|---|---|
-| `STATIC` | Fixed controller addresses — explicit `host`/`port` list |
-| `DNS` | Kubernetes or any environment where controllers are reachable by a stable DNS name; resolves SRV or A records on an interval |
-| `STORAGE` | Dynamic, cross-cloud deployments; controllers self-register in internal storage and workers list the registry |
-
-For Kubernetes, use `type: DNS` with a service hostname:
-
-```yaml
-kestra:
-  worker:
-    controllers:
-      type: DNS
-      dns:
-        hostname: kestra-controller.kestra.svc.cluster.local
-        record-type: SRV      # or A if no SRV records
-        default-port: 50051   # used with A records only
-        refresh-interval: PT30S
-```
-
-For Helm deployments, controller discovery is preconfigured — see the [Helm gRPC and Worker-Controller migration guide](../../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md). For bare-metal or Docker with components on separate hosts, see [running Kestra with separated server components](../../../kestra-cli/kestra-server/index.md#kestra-with-server-components-in-different-services).
-
-### Starting a worker for a group
-
-With both the registration token and controller endpoint configured, start the worker normally:
-
-```bash
-kestra server worker
-```
-
-No additional CLI flags are needed. The registration token in `kestra.worker.auth.registration-token` identifies which group the worker joins at connection time.
-
-:::alert{type="info"}
-Workers do not connect to the database. Any `datasources` or `kestra.repository.type` keys in the config are ignored; a startup warning lists which keys were skipped.
-:::
-
-## Declarative configuration
-
-You can declare the entire worker topology — queues, groups, subscriptions, and registration tokens — in `application.yml` under `kestra.ee.setup`. Kestra applies this configuration at startup, which enables a fully automated single-pass deployment with no runtime API calls.
-
-```yaml
-kestra:
-  ee:
-    setup:
-      enabled: true
-
-      worker-queues:
-        - id: gpu
-          tags: [gpu, linux]
-          allowed-tenants: [acme]   # optional; empty = unrestricted
-        - id: etl
-          tags: [etl]
-
-      worker-groups:
-        - id: gpu-workers
-          name: GPU workers
-          registration-tokens:
-            - name: bootstrap
-              token-file: /var/run/secrets/kestra/gpu-workers-token
-          subscriptions:
-            - worker-queue-id: gpu
-              reserved-percent: 70
-            - worker-queue-id: etl
-```
-
-Workers already retry registration until their token is known to the controller, so all services can start concurrently. Workers converge as soon as the webserver has applied the configuration.
-
-### Secret handling
-
-Registration tokens must not appear as plaintext in a committed configuration file. Two options are available per token entry:
-
-- **`token-file`** — path to a file containing the pre-generated token. Preferred in Kubernetes environments where Secrets mount as files. The file must exist and be non-empty at startup.
-- **`token: "${ENV_VAR}"`** — environment variable placeholder resolved at startup. Simpler outside Kubernetes, but environment variables are readable from `/proc/<pid>/environ` and may appear in crash dumps.
-
-Exactly one of the two is required. Use `kestra workers registration-tokens generate` to mint a token offline before deployment.
-
-### The default group
-
-The default group can be declared under its reserved id `default`:
-
-```yaml
-worker-groups:
-  - id: default
-    name: Shared workers
-    registration-tokens:
-      - name: bootstrap
-        token-file: /var/run/secrets/kestra/default-workers-token
-```
-
-The default group always subscribes to the default queue — Kestra adds that subscription automatically even when `subscriptions` is omitted or does not include the default queue. Any subscriptions you declare are added alongside it.
-
-### Semantics
-
-`kestra.ee.setup` is a seed, not a desired state:
-
-- Each declared entity is created only when no entity with the same id already exists in the database.
-- An existing entity is skipped as a whole — no subscriptions are changed, no tokens are added or revoked.
-- Re-applying a changed configuration against an existing entity is a no-op. The database remains the source of truth once an entity exists; editing a live topology stays an API or UI operation.
-
-A rogue instance cannot self-authorize by changing configuration: declarative setup can only add what is absent, never replace or revoke what the authenticated API created.
-
-### Which server roles apply it
-
-Only the webserver and standalone server roles apply `kestra.ee.setup` at startup. Worker processes never apply it — a worker must not be able to create the group or the token it authenticates against.
-
-### Validation
-
-The entire declaration is validated before anything is written. An invalid configuration fails startup with an actionable message identifying the offending path:
-
-```
-The subscription declared at 'kestra.ee.setup.worker-groups[0].subscriptions[1]'
-references the unknown Worker Queue 'etl'. Declare it under
-'kestra.ee.setup.worker-queues' or create it first.
-```
-
-Validation rejects: missing or duplicate ids, non-RFC-1123 ids, the reserved worker queue ids `default` and `system`, empty tag sets, tag collisions with existing queues, unknown `worker-queue-id` references, `reserved-percent` out of range or summing above 100, unreadable or empty token files, tokens already registered on another group, and malformed registration tokens.
-
-Validation is all-or-nothing, but writes are not atomic. A failure mid-apply leaves already-created entities in place. The next startup resumes from where it stopped because existing entities are skipped.
-
-### Observability
-
-Kestra logs one line per created entity and one line per skipped entity. A summary line follows after the setup phase completes. Each created entity also produces a regular audit log entry. Token values are never logged.
-
-## Transport security (TLS)
-
-By default, gRPC traffic between workers and the controller is unencrypted. For production deployments, enable TLS on both sides.
-
-### Server-side TLS
-
-Add TLS config to the controller (or standalone) instance:
-
-```yaml
-kestra:
-  grpc:
-    tls:
-      enabled: true
-      key-store:
-        path: /etc/kestra/tls/controller-keystore.p12
-        password: "{{ secret('TLS_KEYSTORE_PASSWORD') }}"
-      # Required when client-auth is OPTIONAL or REQUIRE
-      trust-store:
-        path: /etc/kestra/tls/ca-truststore.p12
-        password: "{{ secret('TLS_TRUSTSTORE_PASSWORD') }}"
-      client-auth: NONE    # NONE | OPTIONAL | REQUIRE (mTLS)
-```
-
-### Worker-side TLS
-
-Add matching TLS config to each worker:
-
-```yaml
-kestra:
-  grpc:
-    tls:
-      enabled: true
-      # Required only for mTLS (client-auth: REQUIRE on the server)
-      key-store:
-        path: /etc/kestra/tls/worker-keystore.p12
-        password: "{{ secret('TLS_KEYSTORE_PASSWORD') }}"
-      # Optional — falls back to the system trust store
-      trust-store:
-        path: /etc/kestra/tls/ca-truststore.p12
-        password: "{{ secret('TLS_TRUSTSTORE_PASSWORD') }}"
-```
-
-:::alert{type="info"}
-When using `type: STATIC` discovery with TLS, the synthetic gRPC authority derived from the endpoint list may not match the certificate's SANs. Add `authority-override` to the worker config to specify the hostname the certificate was issued for:
-
-```yaml
-kestra:
-  grpc:
-    tls:
-      enabled: true
-      authority-override: kestra-controller
-```
-
-Under `type: DNS` discovery, the authority is derived from the DNS hostname automatically and no override is needed.
-:::
-
-## Use cases
-
-### Hardware affinity
-
-Dedicate workers with GPUs, high-memory configurations, or OS-specific environments to tasks that need them. Developers declare the requirement via tags; operators manage the physical mapping independently.
-
-```yaml
-workerSelector:
-  tags: [gpu, cuda-12]
-```
-
-### Multi-tenant isolation
-
-Give each tenant a dedicated Worker Queue with a reserved capacity percentage to prevent noisy-neighbor effects. An additional ELASTIC subscription to a shared burst queue lets idle capacity absorb traffic spikes while the per-tenant floor stays guaranteed.
-
-### Regulated and air-gapped environments
-
-Workers in restricted networks connect outbound-only, presenting a registration token to authenticate. No inbound firewall rules are required. Revoking a token immediately stops those workers from receiving new work, giving operators a fast, clean isolation path.
-
-### Spiky workloads
-
-Use a fixed worker pool with STRICT reservations to handle baseline load, and a spot pool with ELASTIC subscriptions that claims shared-pool capacity during spikes. The ELASTIC pool scales out and in without changing the baseline pool's guarantees.
-
-### Priority lanes
-
-Split capacity across multiple queues with reserved percentages to guarantee throughput for high-priority work:
-
-```yaml
-# Three priority queues — critical: 50%, standard: 25%, batch: 25%
-workerSelector:
-  tags: [critical]    # or [standard], or [batch]
-```
-
-Critical work always has guaranteed slots regardless of the volume of batch jobs in the queue.
-
-### Day/night capacity shifting
-
-Reserved percentages are live-configurable via the API. Changes propagate to all workers within seconds, with no restarts required. Shift capacity toward batch workloads during off-peak hours and back to interactive workloads during business hours without touching any worker process.
-
-### Zero-downtime worker upgrades
-
-Run two Worker Groups subscribed to the same queues simultaneously. Reduce the old group's reservation to 0% to drain it of new work, bring up the new group, verify it is healthy, then delete the old group. At no point does the queue go unserved.
-
-For guidance on when to use Worker Groups versus Task Runners for compute-intensive scripting workloads, see [Task Runners vs Worker Groups](../../../task-runners/03.task-runners-vs-worker-groups/index.md).
-
-## Worker shutdown and task continuity
-
-When a worker process stops — whether from a deployment, a crash, or a manual restart — any tasks it was running may be interrupted. The `worker-task-restart-strategy` setting controls what happens to those tasks cluster-wide:
-
-| Strategy | Behavior |
-|---|---|
-| `AFTER_TERMINATION_GRACE_PERIOD` | The worker stops accepting new work and waits up to the grace period for in-flight tasks to finish; any tasks still running at that point are re-dispatched to another worker (default) |
-| `IMMEDIATELY` | Interrupted tasks are re-dispatched immediately to another worker without waiting |
-| `NEVER` | Interrupted tasks fail permanently and are not re-dispatched |
-
-Configure these in `application.yml` on each worker:
-
-```yaml
-kestra:
-  server:
-    termination-grace-period: 5m
-    worker-task-restart-strategy: AFTER_TERMINATION_GRACE_PERIOD
-```
-
-During the grace period, the worker stops accepting new jobs but lets running tasks finish. If the grace period elapses before all tasks complete, the worker force-terminates and the restart strategy decides the outcome for the remaining tasks.
-
-:::alert{type="info"}
-`AFTER_TERMINATION_GRACE_PERIOD` is the recommended setting for production deployments. It gives tasks time to finish cleanly while still guaranteeing that a stalled worker does not block the cluster indefinitely.
-:::
-
-## Monitoring
-
-Metrics scoped to a group carry a `worker_group` tag; metrics scoped to a queue also carry a `worker_queue` tag. The configurable metrics prefix (default `kestra`) is prepended before export.
-
-### Controller metrics
-
-Published by the controller process — the server-side view of fleet capacity and dispatch activity:
-
-| Metric | Type | Tags | Description |
-|---|---|---|---|
-| `controller.worker.active` | gauge | `worker_group`, `worker_queue` | Workers currently subscribed to a queue |
-| `controller.worker.active.all` | gauge | — | Total workers connected to this controller |
-| `controller.permits.available` | gauge | `worker_group`, `worker_queue` | Remaining advertised capacity across subscribed workers |
-| `controller.permits.available.all` | gauge | — | Remaining capacity across all connected workers |
-| `controller.job.inflight` | gauge | `worker_queue` | In-flight jobs for a queue |
-| `controller.worker.group.job.inflight` | gauge | `worker_group` | In-flight jobs across workers in a group |
-| `controller.capacity.subscription.allocated` | gauge | `worker_group`, `worker_queue` | Reserved slots allocated to a queue subscription |
-| `controller.capacity.subscription.used` | gauge | `worker_group`, `worker_queue` | Reserved slots currently in use |
-| `controller.capacity.shared.allocated` | gauge | `worker_group` | Shared (unreserved) slots allocated |
-| `controller.capacity.shared.used` | gauge | `worker_group` | Shared slots currently in use |
-| `controller.job.dispatched.total` | counter | `worker_queue` | Total jobs dispatched to workers |
-| `controller.job.requeued.total` | counter | `worker_queue` | Jobs re-queued because no worker had capacity |
-| `controller.job.killed.total` | counter | `worker_queue` | Jobs short-circuited by the pre-dispatch kill check |
-| `controller.job.dispatch.failed.total` | counter | `worker_queue` | Dispatch attempts that failed on send |
-| `controller.worker.registered.total` | counter | — | Worker-queue subscription registrations |
-| `controller.worker.unregistered.total` | counter | — | Worker-queue subscription removals |
-| `controller.subscription.paused.total` | counter | — | Queue subscription pause transitions |
-| `controller.subscription.resumed.total` | counter | — | Queue subscription resume transitions |
-
-### Worker metrics
-
-Published by each worker process — the worker-side view of capacity and throughput:
-
-| Metric | Type | Description |
-|---|---|---|
-| `worker.job.thread` | gauge | Configured thread count (maximum concurrent jobs) |
-| `worker.max.concurrency` | gauge | Maximum in-flight capacity: threads + buffered jobs |
-| `worker.running.count` | gauge | Tasks currently executing |
-| `worker.pending.count` | gauge | Tasks waiting for a free thread slot |
-| `worker.queue.size` | gauge | Items currently held in a buffer (job, result, log, or metric) |
-| `worker.queue.remaining.capacity` | gauge | Free slots in the inbound job buffer — equals the worker's advertised permit count |
-| `worker.queued.duration` | timer | Time a task spent waiting before a thread was available |
-| `worker.started.count` | counter | Total tasks started |
-| `worker.ended.count` | counter | Total tasks completed (any terminal state) |
-| `worker.ended.duration` | timer | Task run duration as measured by the worker |
-| `worker.timeout.count` | counter | Tasks that exceeded their configured timeout |
-| `worker.killed.count` | counter | Kill events received from the controller |
-| `worker.queue.enqueued` | counter | Total items put into a buffer |
-| `worker.queue.dequeued` | counter | Total items drained from a buffer |
-| `worker.trigger.running.count` | gauge | Trigger evaluations currently in progress |
-| `worker.trigger.started.count` | counter | Total trigger evaluations started |
-| `worker.trigger.ended.count` | counter | Total trigger evaluations completed |
-| `worker.trigger.error.count` | counter | Trigger evaluations that failed |
-| `worker.trigger.execution.count` | counter | Executions produced by triggers on this worker |
-| `worker.trigger.duration` | timer | Trigger evaluation duration |
-
-When `worker.running.count` consistently equals `worker.job.thread` and `worker.pending.count` is non-zero, that worker is fully saturated — scale by adding more workers to the group or increasing the thread count. When `worker.queue.remaining.capacity` on the `job` buffer approaches zero, the worker's local inbound buffer is full.
-
-The live capacity snapshot is also available via the API:
-
-```
-GET /api/v1/instance/worker-groups/{id}/capacity
-GET /api/v1/instance/worker-groups/{id}/workers
-```
-
-## Migrating from earlier versions
-
-In Kestra 2.0, the task-level routing property changed from targeting a group by name to declaring requirements via tags:
-
-| Before 2.0 | 2.0+ |
-|---|---|
-| `workerGroup.key: gpu` | `workerSelector.tags: [gpu]` |
-| Routes directly to a named group | Routes to a Worker Queue by tags; any subscribed group may serve the task |
-| `workerGroup.fallback` (defaults to `WAIT`) | `workerSelector.fallback` (defaults to `FAIL`) |
-| No `match` strategy | `workerSelector.match: ALL` or `ANY` |
-| No capacity control per queue | Reserved percentage per subscription, STRICT or ELASTIC mode |
-| No worker authentication | Registration token-based authentication with rotating credentials |
-
-`workerGroup` is not recognized in 2.0. Flows using it will fail validation and cannot be saved. Update your flows to replace `workerGroup.key` with `workerSelector.tags`. The group name in the old property corresponds to a tag on a Worker Queue in the new model.
-
-:::alert{type="warning"}
-The fallback default changed from `WAIT` to `FAIL`. Tasks that previously waited for an unavailable worker will now fail immediately unless you explicitly set `workerSelector.fallback: WAIT`.
-:::
+Whether the jobs (task runs and polling triggers) are evenly distributed among workers depends on several factors:
+1. The order in which workers poll the queue will affect distribution — workers that poll the queue first will get jobs first (FIFO).
+2. Variations in worker compute capabilities (and their processing speeds) can cause uneven job distribution. Faster workers will complete jobs and return to poll the queue more quickly than slower workers.
