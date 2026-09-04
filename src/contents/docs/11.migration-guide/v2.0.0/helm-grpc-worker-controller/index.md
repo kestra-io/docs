@@ -31,9 +31,9 @@ A new `deployments.controller` key is available in `values.yaml`. When enabled, 
 
 The controller deployment is **disabled by default**. Existing standalone deployments require no change to this key.
 
-### `workerGroups` Helm key removed
+### Using the `workerGroups` Helm key
 
-The old `workerGroups` map in `values.yaml`, which created multiple worker deployments each pinned to a named group, is no longer supported in 2.0. Worker Groups are now managed server-side — created and configured via the Kestra UI, API, or declarative configuration — and workers join a group at runtime by presenting a registration token (see [Worker authentication](#worker-authentication) below).
+The old `workerGroups` map in `values.yaml` is still supported in 2.0. Worker Groups are now managed server-side — created and configured via the Kestra UI, API, or declarative configuration — and workers join a group at runtime by presenting a registration token (see [Worker authentication](#worker-authentication) below).
 
 :::alert{type="info"}
 For automated and IaC deployments, use `kestra.ee.setup` to declare the full worker topology in `application.yml`. Kestra applies it at startup, so all services can start concurrently in a single Helm pass. See [Declarative configuration](../../../07.enterprise/04.scalability/worker-group/index.md#declarative-configuration) on the Worker Groups page.

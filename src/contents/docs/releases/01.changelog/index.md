@@ -62,7 +62,7 @@ Improvements to the tools and workflows used to build and manage flows.
 
 - **No-code Editor** — canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard.
 - **VS Code namespace files** — Open namespace (VFS mount), Upload file, and Sync folder commands; `kestra.namespaceFiles.exclude` setting. [Docs](../../version-control-cicd/05.vscode/index.md)
-- **Plugin Artifacts** — plugins can ship Vue.js frontend components (Module Federation) that load into named slots in the execution topology view, task side drawer, or task detail modal without changes to the core application. [Docs](../../plugin-developer-guide/develop-plugin-artifacts/index.md)
+- **Plugin Artifacts** — plugins can ship Vue.js frontend components (Module Federation) that load into named slots in the execution topology view, task side drawer, or task detail modal without changes to the core application. [Docs](../../plugin-developer-guide/10.plugin-ui/index.md)
 - **Plugin file renderers** — plugins can register format-specific renderers for inline output file preview. [Docs](../../plugin-developer-guide/09.file-renderer/index.md)
 - **Dynamic Apps content blocks** — Apps support content blocks that update based on execution state. [Docs](../../07.enterprise/04.scalability/apps/index.md)
 - **`kestractl` IAM commands** — roles, role bindings, service accounts, and invitations via CLI. [Docs](../../kestra-cli/kestractl/index.md)
@@ -72,7 +72,7 @@ Improvements to the tools and workflows used to build and manage flows.
 Changes to deployment, storage, and runtime behavior.
 
 - **gRPC worker-controller** — JDBC queue replaced by gRPC; separates control plane (executor, scheduler, webserver) from data plane (workers). Workers connect to the controller rather than the database directly, enabling cross-region and restricted-network deployments. Task run outputs stored in dedicated storage rather than inline in the execution record.
-- **New VM task runners** — AWS EC2 (SSM Run Command, no SSH, Spot support), Azure Virtual Machine (Run Command API, no SSH or public IP), Google Compute Engine (startup script, no SSH), Huawei Cloud CCI (bare Pods, OBS staging, AK/SK or temp credentials). [Docs](../../task-runners/04.types/index.md)
+- **New VM task runners** — AWS EC2 (SSM Run Command, no SSH, Spot support), Azure Virtual Machine (Run Command API, no SSH or public IP), Google Compute Engine (startup script, no SSH), Huawei Cloud CCI (bare Pods, OBS staging, AK/SK or temp credentials). [Docs](../../task-runners/04.types/index.mdx)
 - **Worker Groups 2.0 (EE)** — tag-based routing via `workerSelector.tags` replaces `workerGroup.key`; Worker Queues as routing lanes; per-subscription capacity reservation (STRICT/ELASTIC modes); JWT worker authentication; declarative topology bootstrap via `kestra.ee.setup`. [Docs](../../07.enterprise/04.scalability/worker-group/index.md)
 - **PurgeStorage** — storage-driven file cleanup by last-modified date, independent of execution records. Defaults to `dryRun: true`. [Docs](../../10.administrator-guide/purge/index.md)
 - **Slim image + plugin auto-install** — `kestra/kestra:*-slim` ships without bundled plugins; set `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` to auto-fetch from Maven Central. Renamed from `-no-plugins`. [Docs](../../02.installation/02.docker/index.md)

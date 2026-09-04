@@ -165,7 +165,7 @@ The `kestractl` CLI now supports IAM management: roles, role bindings, service a
 
 ### Plugin Artifacts
 
-Plugins can ship Vue.js frontend components that load into the Kestra UI at runtime without changes to the core application. Components target named slots in the execution topology view, task side drawer, or task detail modal. They are compiled as Module Federation micro-frontends using `@kestra-io/artifact-sdk` and bundled into the plugin JAR. See the [plugin artifact developer guide](./plugin-developer-guide/develop-plugin-artifacts/index.md).
+Plugins can ship Vue.js frontend components that load into the Kestra UI at runtime without changes to the core application. Components target named slots in the execution topology view, task side drawer, or task detail modal. They are compiled as Module Federation micro-frontends using `@kestra-io/artifact-sdk` and bundled into the plugin JAR. See the [plugin artifact developer guide](./plugin-developer-guide/10.plugin-ui/index.md).
 
 ---
 
