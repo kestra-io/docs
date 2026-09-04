@@ -1131,16 +1131,17 @@ const FAQ = [
         }
 
         &__row {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
+            display: flex;
+            flex-wrap: wrap;
             align-items: center;
-            justify-items: center;
-            column-gap: 0.5rem;
+            justify-content: center;
+            column-gap: 2rem;
             row-gap: 1.5rem;
             width: 100%;
+            max-width: 48rem;
+            margin: 0 auto;
 
             @include media-breakpoint-down(md) {
-                grid-template-columns: repeat(2, 1fr);
                 column-gap: 1.5rem;
                 row-gap: 1.5rem;
             }
@@ -1158,15 +1159,7 @@ const FAQ = [
 
             &:hover { opacity: 1; }
 
-            // Row 1: 4 logos, each spans 3 of 12 cols
-            &:nth-child(-n+4) { grid-column: span 3; }
-            // Row 2: 3 logos, each spans 4 of 12 cols
-            &:nth-child(n+5)  { grid-column: span 4; }
 
-            @include media-breakpoint-down(md) {
-                &:nth-child(-n+4),
-                &:nth-child(n+5) { grid-column: auto; }
-            }
 
             // Unified optical sizing across all industry pages:
             // text wordmarks 36px, small text 32px, compact icon+text
