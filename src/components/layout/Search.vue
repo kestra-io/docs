@@ -233,6 +233,7 @@
                 <div class="modal-body row">
                     <Suspense>
                         <AiChatDialog
+                            ref="aiChatDialog"
                             :randomAiQuestions
                             @close="closeAiDialog"
                             @backToSearch="backToSearch"
@@ -313,9 +314,13 @@
                 this.selectedIndex = null
                 this.selectedItem = null
             },
-            focusSearchAi() {
-                document.querySelector("#ai-chat-input").value = ""
-                document.querySelector("#ai-chat-input").focus()
+            focusSearchAi(event) {
+                const openedFromSearch =
+                    event?.relatedTarget?.closest("#search-modal")
+                const prefill = openedFromSearch
+                    ? this.searchValue?.trim() || ""
+                    : ""
+                this.$refs.aiChatDialog?.setUserInput(prefill)
             },
             onHiddenAi() {},
             search(value) {
