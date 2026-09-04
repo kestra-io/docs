@@ -34,7 +34,7 @@ businessValue:
       - "Data pipelines, infrastructure automation, business processes, and AI workflows"
       - "Any engineer ships workflows in YAML through Git and CI/CD"
       - "Event-driven at core: react to real events, not just cron schedules"
-      - "Open source with 1400+ plugins, no per-job licensing, and a thriving community of contributors"
+      - "Open source with {totalPlugins}+ plugins, no per-job licensing, and a thriving community of contributors"
       - "Self-service for non-engineers via Kestra Apps"
   competitor:
     title: Centralized Workload Automation
@@ -160,7 +160,7 @@ easeOfUse:
 visualPreview:
   mainTitle: Open Platform vs. Proprietary Lock-In
   kestra:
-    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. 1200+ open-source plugins."
+    description: "Orchestrate data pipelines, infrastructure operations, business processes, and AI workflows from a single open-source platform. Event-driven at its core, with native triggers for S3, webhooks, Kafka, database changes, and API events. {totalPlugins}+ plugins."
   competitor:
     description: "Enterprise workload automation across mainframe, SAP, and hybrid cloud environments. Strong legacy system coverage with Universal Connectors for SAP, PeopleSoft, and managed file transfer. Proprietary platform with agent-based architecture and capacity-based licensing."
     shadowColor: "#156de0"
@@ -220,7 +220,7 @@ platformStrengths:
     - title: No agents, no ops tickets
       description: "Stonebranch requires installing and maintaining Universal Agents on every target host, with changes routed through a central operations team. Kestra runs tasks in isolated Docker containers. Engineers deploy through Git and CI/CD, the same way they deploy application code."
     - title: Open source, transparent pricing
-      description: "Kestra's open-source core is free with 1400+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-agent metering. Stonebranch's proprietary licensing uses capacity-based pricing with per-agent costs that scale with your infrastructure footprint."
+      description: "Kestra's open-source core is free with most of Kestra's {totalPlugins}+ plugins. Enterprise features (RBAC, SSO, audit logs) are available without per-agent metering. Stonebranch's proprietary licensing uses capacity-based pricing with per-agent costs that scale with your infrastructure footprint."
     - title: Event-driven from day one
       description: "Kestra was built event-driven from the start: webhooks, S3 uploads, Kafka messages, database changes, and API events are first-class YAML triggers. Unlimited event-driven workflows in open source. Stonebranch offers event-driven triggers for file arrivals and system events, but the core architecture centers on the Universal Controller as a centralized scheduling engine."
 
@@ -253,9 +253,9 @@ commonQuestions:
   - question: Stonebranch has native mainframe support. Does Kestra?
     answer: "Kestra is not designed for mainframe job scheduling. If you have significant z/OS or AS/400 workloads, Stonebranch or a dedicated mainframe scheduler is the right tool for that layer. However, many organizations use Kestra for everything except mainframe, reducing their Stonebranch footprint and licensing costs to only where it's truly needed."
   - question: How does Kestra's pricing compare to Stonebranch UAC?
-    answer: "Kestra's open-source edition is free with 1400+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-agent metering. Stonebranch UAC uses proprietary licensing with capacity-based pricing that includes per-agent costs, scaling with the number of target hosts in your infrastructure."
+    answer: "Kestra's open-source edition is free with most of Kestra's {totalPlugins}+ plugins and unlimited event-driven workflows. Enterprise features (RBAC, SSO, audit logs, multi-tenancy) are available on Kestra Enterprise and Kestra Cloud without per-agent metering. Stonebranch UAC uses proprietary licensing with capacity-based pricing that includes per-agent costs, scaling with the number of target hosts in your infrastructure."
   - question: Does Kestra support the same integrations as Stonebranch?
-    answer: "Kestra's 1200+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. Stonebranch has native Universal Connectors for SAP, PeopleSoft, mainframe systems, and managed file transfer that Kestra doesn't replicate directly. For cloud-native and data platform integrations, both tools cover similar ground."
+    answer: "Kestra's {totalPlugins}+ plugin library covers cloud providers (AWS, Azure, GCP), data warehouses (Snowflake, BigQuery, Databricks), databases, message queues (Kafka, RabbitMQ, Pulsar), and CI/CD tools. Stonebranch has native Universal Connectors for SAP, PeopleSoft, mainframe systems, and managed file transfer that Kestra doesn't replicate directly. For cloud-native and data platform integrations, both tools cover similar ground."
   - question: Stonebranch offers a Self-Service Portal. How does Kestra compare?
     answer: "Stonebranch's Self-Service Portal allows business users to trigger predefined jobs and view their status without accessing the full UAC interface. Kestra Apps provide similar self-service capability but go further: any workflow can be exposed as a form-based application with custom inputs, approvals, and outputs. Non-engineers can trigger, monitor, and interact with workflows without any training on the underlying orchestration platform."
   - question: How does Kestra handle file transfers compared to Stonebranch's MFT?

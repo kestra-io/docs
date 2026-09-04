@@ -22,6 +22,10 @@ import UseCaseFlow from "~/components/orchestrate/UseCaseFlow.astro"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
 import { optimizeSvgIcon } from "~/utils/svgo"
 import { $fetchApiCached } from "~/utils/fetch"
+import {
+    fetchTotalPluginsCount,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
 
 import GorgiasLogo from "~/contents/customer-stories/gorgias-using-declarative-data-engineering-orchestration-with-kestra/logo.svg?raw"
 import GraviteeLogo from "~/contents/customer-stories/when-your-api-writes-its-own-docs-with-kestra/logo.svg?raw"
@@ -87,6 +91,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
+const totalPlugins = await fetchTotalPluginsCount()
 const {
     title,
     description,
@@ -102,7 +107,7 @@ const {
     faq,
     seeHow,
     resources,
-} = entry.data
+} = replaceTotalPluginsPlaceholder(entry.data, totalPlugins)
 
 const blueprintItems = await Promise.all(
     blueprints.items.map(async (item) => {

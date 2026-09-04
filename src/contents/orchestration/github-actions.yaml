@@ -257,7 +257,7 @@ comparison:
         - "Self-hosted"
         - "GHE or hosted"
     - feature: "Beyond GitHub: orchestrate the rest of the stack"
-      kestra: "✓ 1400+ plugins, cross-stack"
+      kestra: "✓ {totalPlugins}+ plugins, cross-stack"
       values:
         - "GitHub ecosystem only"
         - "Whatever you write"

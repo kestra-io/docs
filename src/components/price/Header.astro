@@ -1,6 +1,7 @@
 ---
 import Squared from "~/components/layout/Squared.vue"
 import LogoCarousel from "~/components/common/LogoCarousel.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 import Plus from "vue-material-design-icons/Plus.vue"
 import CheckBold from "vue-material-design-icons/CheckBold.vue"
@@ -47,9 +48,11 @@ const ENTERPRISE_EXTRAS = [
     },
 ]
 
+const totalPlugins = await fetchTotalPluginsCount()
+
 const OS_FEATURES = [
     "Declarative Workflows",
-    "1,200+ Plugins",
+    `${totalPlugins}+ Plugins`,
     "Event-Driven Scheduling",
     "Business Logic in Any Language",
     "Everything as Code & From the UI",
