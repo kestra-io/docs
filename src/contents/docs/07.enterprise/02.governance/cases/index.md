@@ -183,7 +183,7 @@ Every change to a case is recorded as a timeline event: creation, field updates,
 
 ## Case actions
 
-A case action is a flow attached to the case as a one-click button, intended for remediation or diagnostics (e.g. "Restart service"). Running one starts an execution that is automatically linked back to the case and labeled with `system.case: <caseId>`, and the run is recorded in the timeline. Attaching or running an action requires the `EXECUTE` action on the `FLOW` permission in the target flow's namespace.
+A case action is a flow attached to the case as a one-click button, intended for remediation or diagnostics (e.g. "Restart service"). Clicking an action opens the Execute flow modal so you can review and fill the flow's inputs, and optionally set labels, a schedule date, or breakpoints before running. The resulting execution is automatically linked back to the case and labeled `system.caseId: <caseId>` and `system.from: case`, and the run is recorded in the timeline. Attaching or running an action requires the `EXECUTE` action on the `FLOW` permission in the target flow's namespace.
 
 ## Linked executions and assets
 
