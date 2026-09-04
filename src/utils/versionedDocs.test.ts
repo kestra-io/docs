@@ -16,6 +16,7 @@ import {
     resolveVersionedDocLink,
     versionedAssetUrl,
     decideVersionedRoute,
+    docsLatestVersion,
     isAssetShapedDocPath,
     missingDocFallbackHref,
     resolveVersionSwitchHref,
@@ -333,6 +334,73 @@ describe("shouldInterceptCtaClick", () => {
 
     it("leaves middle-click alone", () => {
         expect(shouldInterceptCtaClick(click({ button: 1 }))).toBe(false)
+    })
+})
+
+describe("docsLatestVersion", () => {
+    it("prefers a pinned override over what the API reports", () => {
+        expect(docsLatestVersion("1.3", "2.0")).toBe("2.0")
+    })
+
+    it("falls through to the API version when nothing is pinned", () => {
+        expect(docsLatestVersion("1.3", undefined)).toBe("1.3")
+        expect(docsLatestVersion(undefined, undefined)).toBeUndefined()
+    })
+})
+
+describe("decideVersionedRoute with a pinned docs-latest", () => {
+    // The 2.0 docs are live at /docs while the API still reports 1.3 as latest.
+    const base = {
+        path: "installation/docker-compose",
+        isMarkdownRequest: false,
+        search: "",
+        latest: "2.0",
+        productLatest: "1.3",
+        known: ["1.3", "1.2"],
+        knownOk: true,
+    }
+
+    it("serves the demoted release from the versioned endpoint instead of redirecting it to /docs", () => {
+        expect(decideVersionedRoute({ ...base, version: "1.3" })).toEqual({ kind: "fetch" })
+    })
+
+    it("redirects the pinned version itself to the unversioned docs", () => {
+        expect(decideVersionedRoute({ ...base, version: "2.0" })).toEqual({
+            kind: "redirect",
+            location: "/docs/installation/docker-compose",
+        })
+    })
+
+    it("keeps the demoted release readable during an API outage, as it was before the pin", () => {
+        // Its pre-pin behaviour was a redirect to the static /docs, which needs
+        // no API at all; 503-ing the release most readers are on is a regression.
+        expect(
+            decideVersionedRoute({
+                ...base,
+                version: "1.3",
+                known: [],
+                knownOk: false,
+                isMarkdownRequest: true,
+                search: "?q=x",
+            }),
+        ).toEqual({
+            kind: "redirect",
+            location: "/docs/installation/docker-compose.md?q=x",
+        })
+    })
+
+    it("still reports older versions unavailable during an outage", () => {
+        expect(
+            decideVersionedRoute({ ...base, version: "1.2", known: [], knownOk: false }),
+        ).toEqual({ kind: "unavailable" })
+    })
+
+    it("offers the pinned version as Latest and keeps the demoted release selectable", () => {
+        expect(versionSelectOptions("2.0", ["1.3", "1.2"], null)).toEqual([
+            { version: "", label: "Latest (2.0)", selected: true },
+            { version: "1.3", label: "1.3", selected: false },
+            { version: "1.2", label: "1.2", selected: false },
+        ])
     })
 })
 
