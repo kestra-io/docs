@@ -5,7 +5,8 @@ import {
     buildDocTree,
     currentDocKey,
     docChildHref,
-    docVersions,
+    docVersionLabels,
+    versionMajorMinor,
     directDocChildren,
     docLinkBaseDir,
     frontmatterField,
@@ -22,7 +23,6 @@ import {
     switchVersionHref,
     versionSelectOptions,
     type DocChildren,
-    type DocVersion,
 } from "./versionedDocs"
 
 describe("VERSIONED_DOCS_PATH", () => {
@@ -179,74 +179,94 @@ describe("resolveVersionedDocLink", () => {
     })
 })
 
-describe("docVersions", () => {
+describe("versionMajorMinor", () => {
+    it("extracts MAJOR.MINOR from a full version", () => {
+        expect(versionMajorMinor("1.3.34")).toBe("1.3")
+    })
+
+    it("extracts MAJOR.MINOR from a pre-release tag", () => {
+        expect(versionMajorMinor("2.0.0-rc10")).toBe("2.0")
+    })
+
+    it("parses major/minor as integers, not a float", () => {
+        expect(versionMajorMinor("1.10.0")).toBe("1.10")
+    })
+
+    it("returns undefined for a non-version string", () => {
+        expect(versionMajorMinor("not-a-version")).toBeUndefined()
+    })
+})
+
+describe("docVersionLabels", () => {
     const raw = [
         { version: "1.3.0" },
         { version: "1.3.1" }, // dedup to 1.3
         { version: "1.2.0" },
-        { version: "0.20.0" },
-        { version: "0.19.0" },
-        { version: "0.18.0" }, // dropped: before versioned docs
-        { version: "0.2.0" }, // float-trap: 0.2 looks > 0.19 but is OLDER
+        { version: "1.1.0" },
+        { version: "1.0.0" },
+        { version: "0.24.0" }, // dropped: below the 1.0 floor
+        { version: "2.0.0-rc10" }, // pre-release tags still count
         { version: "not-a-version" },
     ]
 
-    it("keeps only >= 0.19, deduped to MAJOR.MINOR, newest first", () => {
-        expect(docVersions(raw).map((v) => v.label)).toEqual([
-            "1.3",
+    it("keeps only >= 1.0, deduped to MAJOR.MINOR, newest first", () => {
+        expect(docVersionLabels(raw)).toEqual(["2.0", "1.3", "1.2", "1.1", "1.0"])
+    })
+
+    it("excludes everything below the 1.0 floor", () => {
+        expect(docVersionLabels([{ version: "0.24.0" }])).toEqual([])
+    })
+
+    it("sorts minor versions numerically, not as strings", () => {
+        expect(docVersionLabels([{ version: "1.10.0" }, { version: "1.2.0" }])).toEqual([
+            "1.10",
             "1.2",
-            "0.20",
-            "0.19",
         ])
-    })
-
-    it("excludes the 0.2.x float trap", () => {
-        expect(docVersions([{ version: "0.2.0" }])).toEqual([])
-    })
-
-    it("includes the 0.19 boundary", () => {
-        expect(docVersions([{ version: "0.19.5" }]).map((v) => v.label)).toEqual(
-            ["0.19"],
-        )
-    })
-
-    it("parses major/minor as integers", () => {
-        expect(docVersions([{ version: "1.10.0" }])[0]).toEqual({
-            label: "1.10",
-            major: 1,
-            minor: 10,
-        })
     })
 })
 
 describe("versionSelectOptions", () => {
-    const versions: DocVersion[] = [
-        { label: "1.3", major: 1, minor: 3 },
-        { label: "1.2", major: 1, minor: 2 },
-    ]
+    const known = ["1.3", "1.2", "1.1", "1.0"]
 
-    it("folds the newest version into Latest (X) and lists older ones", () => {
-        expect(versionSelectOptions(versions, null)).toEqual([
+    it("folds the newest version into Latest (X) and lists the others", () => {
+        expect(versionSelectOptions("1.3", known, null)).toEqual([
             { version: "", label: "Latest (1.3)", selected: true },
             { version: "1.2", label: "1.2", selected: false },
+            { version: "1.1", label: "1.1", selected: false },
+            { version: "1.0", label: "1.0", selected: false },
         ])
     })
 
     it("marks an older current version selected (not Latest)", () => {
-        const opts = versionSelectOptions(versions, "1.2")
+        const opts = versionSelectOptions("1.3", known, "1.2")
         expect(opts.find((o) => o.selected)?.label).toBe("1.2")
         expect(opts[0].selected).toBe(false)
     })
 
-    it("selects Latest when viewing the newest version", () => {
-        const opts = versionSelectOptions(versions, "1.3")
+    it("selects Latest when viewing the newest version, without listing it twice", () => {
+        const opts = versionSelectOptions("1.3", known, "1.3")
         expect(opts[0]).toEqual({ version: "", label: "Latest (1.3)", selected: true })
         expect(opts.some((o) => o.label === "1.3")).toBe(false)
     })
 
-    it("returns only Latest when there are no versions", () => {
-        expect(versionSelectOptions([], null)).toEqual([
-            { version: "", label: "Latest", selected: true },
+    it("falls back to a bare Latest label when the latest fetch failed", () => {
+        expect(versionSelectOptions(undefined, known, null)[0]).toEqual({
+            version: "",
+            label: "Latest",
+            selected: true,
+        })
+    })
+
+    it("returns only Latest when there are no other known versions", () => {
+        expect(versionSelectOptions("1.3", [], null)).toEqual([
+            { version: "", label: "Latest (1.3)", selected: true },
+        ])
+    })
+
+    it("discards a pre-release version ahead of GA latest (e.g. a 2.0 RC while 1.3 is still current)", () => {
+        expect(versionSelectOptions("1.3", ["2.0", "1.3", "1.2"], null)).toEqual([
+            { version: "", label: "Latest (1.3)", selected: true },
+            { version: "1.2", label: "1.2", selected: false },
         ])
     })
 })
@@ -341,52 +361,56 @@ describe("resolveVersionSwitchHref", () => {
 })
 
 describe("decideVersionedRoute", () => {
-    const versions: DocVersion[] = [
-        { label: "1.3", major: 1, minor: 3 },
-        { label: "1.2", major: 1, minor: 2 },
-    ]
-    const base = { path: "tutorial", isMarkdownRequest: false, search: "", versionsOk: true }
+    const known = ["1.3", "1.2", "1.1", "1.0"]
+    const base = { path: "tutorial", isMarkdownRequest: false, search: "", known, knownOk: true }
 
     it("passes an unknown version through to the natural 404", () => {
-        expect(decideVersionedRoute({ ...base, version: "9.9", versions })).toEqual({
+        expect(decideVersionedRoute({ ...base, version: "0.19", latest: "1.3" })).toEqual({
             kind: "pass",
         })
     })
 
     it("reports unavailable when the version list itself could not be fetched", () => {
         expect(
-            decideVersionedRoute({ ...base, version: "1.2", versions: [], versionsOk: false }),
+            decideVersionedRoute({ ...base, version: "1.2", known: [], knownOk: false, latest: undefined }),
         ).toEqual({ kind: "unavailable" })
     })
 
     it("still passes an unknown version through when a stale list is available", () => {
         expect(
-            decideVersionedRoute({ ...base, version: "9.9", versions, versionsOk: false }),
+            decideVersionedRoute({ ...base, version: "0.19", knownOk: false, latest: "1.3" }),
         ).toEqual({ kind: "pass" })
     })
 
-    it("redirects the newest version to the canonical latest page, keeping the query", () => {
+    it("redirects the GA latest to the canonical latest page, keeping the query", () => {
         expect(
-            decideVersionedRoute({ ...base, version: "1.3", versions, search: "?ref=changelog" }),
+            decideVersionedRoute({ ...base, version: "1.3", latest: "1.3", search: "?ref=changelog" }),
         ).toEqual({ kind: "redirect", location: "/docs/tutorial?ref=changelog" })
     })
 
-    it("redirects the newest version home to the docs home, honoring the .md contract", () => {
+    it("redirects the GA latest home to the docs home, honoring the .md contract", () => {
         expect(
             decideVersionedRoute({
                 ...base,
                 version: "1.3",
+                latest: "1.3",
                 path: "",
                 isMarkdownRequest: true,
-                versions,
             }),
         ).toEqual({ kind: "redirect", location: "/docs.md" })
     })
 
     it("fetches the archived copy for an older known version", () => {
-        expect(decideVersionedRoute({ ...base, version: "1.2", versions })).toEqual({
+        expect(decideVersionedRoute({ ...base, version: "1.2", latest: "1.3" })).toEqual({
             kind: "fetch",
         })
+    })
+
+    it("passes a pre-release version ahead of GA latest through to the natural 404", () => {
+        // e.g. a "2.0" RC sitting in /v1/versions while 1.3 is still current GA.
+        expect(
+            decideVersionedRoute({ ...base, version: "2.0", known: [...known, "2.0"], latest: "1.3" }),
+        ).toEqual({ kind: "pass" })
     })
 })
 

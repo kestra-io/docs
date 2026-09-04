@@ -12,7 +12,7 @@ import {
     stripFrontmatter,
     VERSIONED_DOCS_PATH,
 } from "~/utils/versionedDocs"
-import { getDocVersionsResult } from "~/utils/docVersionsFetch"
+import { getLatestDocVersion, getKnownDocVersions } from "~/utils/docVersionsFetch"
 import { getDocChildren } from "~/utils/docChildrenFetch"
 
 const redirectFileCollection = import.meta.glob("./contents/redirects/*.yml", {
@@ -203,17 +203,19 @@ const versionedDocs = defineMiddleware(async (context, next) => {
             },
         })
 
-    // Routing policy (unknown version → 404, list outage → 503, newest
-    // version → canonical latest, older → archived copy) lives in the pure,
-    // tested decideVersionedRoute — this middleware only executes it.
-    const { versions: knownVersions, ok: versionsOk } = await getDocVersionsResult()
+    // Routing policy lives in the pure, tested decideVersionedRoute.
+    const [latest, { versions: known, ok: knownOk }] = await Promise.all([
+        getLatestDocVersion(),
+        getKnownDocVersions(),
+    ])
     const decision = decideVersionedRoute({
         version,
         path,
         isMarkdownRequest,
         search: context.url.search,
-        versions: knownVersions,
-        versionsOk,
+        latest,
+        known,
+        knownOk,
     })
     if (decision.kind === "pass") return next()
     if (decision.kind === "unavailable") return unavailable()
@@ -275,7 +277,7 @@ const versionedDocs = defineMiddleware(async (context, next) => {
     }
 
     // Children feed the nav sidebar; memoized, not fetched per request. The
-    // version list is fetched independently by DocsLayout via getDocVersions().
+    // latest version is fetched independently by DocsLayout via getLatestDocVersion().
     const children = await getDocChildren(version)
 
     context.locals.versionedDoc = { version, path, markdown, children }

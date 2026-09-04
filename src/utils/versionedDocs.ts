@@ -5,11 +5,32 @@
 // Matches a versioned docs URL: /docs/{major.minor}(/rest...)?
 export const VERSIONED_DOCS_PATH = /^\/docs\/(\d+\.\d+)(\/.*)?$/
 
-export interface DocVersion {
-    /** "1.3" */
-    label: string
-    major: number
-    minor: number
+/** "1.3.34" -> "1.3", "2.0.0-rc10" -> "2.0"; undefined if not MAJOR.MINOR-shaped. */
+export function versionMajorMinor(version: string): string | undefined {
+    const m = /^(\d+)\.(\d+)/.exec(version)
+    return m ? `${m[1]}.${m[2]}` : undefined
+}
+
+/** Numeric compare of two MAJOR.MINOR labels (not string compare — "1.10" > "1.2"). */
+function compareVersionLabels(a: string, b: string): number {
+    const [aMaj, aMin] = a.split(".").map(Number)
+    const [bMaj, bMin] = b.split(".").map(Number)
+    return aMaj !== bMaj ? aMaj - bMaj : aMin - bMin
+}
+
+/** True if `version` is <= `latest` (or `latest` is unknown). Guards against a pre-release tag (e.g. a "2.0" RC) outranking the real GA latest in the raw /v1/versions list. */
+function isAtMostLatest(version: string, latest: string | undefined): boolean {
+    return !latest || compareVersionLabels(version, latest) <= 0
+}
+
+/** Deduped MAJOR.MINOR labels from the raw /v1/versions payload, >= 1.0, sorted newest first. */
+export function docVersionLabels(versions: { version: string }[]): string[] {
+    const seen = new Set<string>()
+    for (const { version } of versions) {
+        const label = versionMajorMinor(version)
+        if (label && Number(label.split(".")[0]) >= 1) seen.add(label)
+    }
+    return [...seen].sort((a, b) => compareVersionLabels(b, a))
 }
 
 /**
@@ -46,39 +67,30 @@ export type VersionedRouteDecision =
     | { kind: "redirect"; location: string }
     | { kind: "fetch" }
 
-/**
- * Pre-fetch routing decision for a matched /docs/{version}/... URL, pure so
- * the middleware's branches are unit-testable:
- * - unknown version → "pass" (natural 404), except when the version list
- *   itself is unavailable (fetch failed, nothing stale) → "unavailable" (503),
- *   so an API outage isn't misreported as a missing page;
- * - the NEWEST version → "redirect" to the canonical latest page: it IS the
- *   latest docs, and the selector folds it into the already-selected "Latest"
- *   option, leaving no way off a degraded duplicate. Assumes the API's newest
- *   release has shipped its site pages (a pre-release in /versions, or an
- *   API-only page, would redirect onto latest content early/to a 404 — same
- *   assumption versionSelectOptions already makes for the dropdown);
- * - any other known version → "fetch" (serve the archived copy).
- */
+/** Pre-fetch routing decision for a matched /docs/{version}/... URL: GA latest redirects to canonical, a known older version fetches the archived copy, unknown 404s (or 503s if the version list itself is down). */
 export function decideVersionedRoute(input: {
     version: string
     path: string
     isMarkdownRequest: boolean
     /** URL query string incl. "?", or "" — preserved on redirects */
     search: string
-    versions: DocVersion[]
-    versionsOk: boolean
+    /** MAJOR.MINOR of the current GA release, or undefined when /versions/latest couldn't be fetched. */
+    latest: string | undefined
+    /** MAJOR.MINOR labels the API reports; may include latest's own label or a pre-release ahead of it — both filtered out below. */
+    known: string[]
+    /** false when the version list itself couldn't be fetched and there's no stale fallback. */
+    knownOk: boolean
 }): VersionedRouteDecision {
-    const { version, path, isMarkdownRequest, search, versions, versionsOk } = input
-    if (!versions.some((v) => v.label === version)) {
-        if (!versionsOk && !versions.length) return { kind: "unavailable" }
-        return { kind: "pass" }
-    }
-    if (version === versions[0]?.label) {
+    const { version, path, isMarkdownRequest, search, latest, known, knownOk } = input
+    if (version === latest) {
         const bare = path ? `/docs/${path}` : "/docs"
         return { kind: "redirect", location: `${isMarkdownRequest ? `${bare}.md` : bare}${search}` }
     }
-    return { kind: "fetch" }
+    if (known.includes(version) && isAtMostLatest(version, latest)) {
+        return { kind: "fetch" }
+    }
+    if (!knownOk && !known.length) return { kind: "unavailable" }
+    return { kind: "pass" }
 }
 
 /**
@@ -187,27 +199,6 @@ export function resolveVersionedDocLink(
 }
 
 /**
- * Parse the raw /v1/versions payload into deduped MAJOR.MINOR doc versions,
- * keeping only >= 0.19 (versions before that have no versioned docs), sorted
- * newest first. Integer compare on major/minor (NOT parseFloat — 0.2 < 0.19).
- */
-export function docVersions(versions: { version: string }[]): DocVersion[] {
-    const seen = new Map<string, DocVersion>()
-    for (const { version } of versions) {
-        const m = /^(\d+)\.(\d+)/.exec(version)
-        if (!m) continue
-        const major = Number(m[1])
-        const minor = Number(m[2])
-        if (!(major > 0 || (major === 0 && minor >= 19))) continue
-        const label = `${major}.${minor}`
-        if (!seen.has(label)) seen.set(label, { label, major, minor })
-    }
-    return [...seen.values()].sort((a, b) =>
-        b.major !== a.major ? b.major - a.major : b.minor - a.minor,
-    )
-}
-
-/**
  * Target URL when switching to `version` (empty string = latest) from
  * `pathname`, which may itself be a latest-docs path or already versioned
  * (`/docs/{otherVersion}/...`). Re-roots the bare sub-path under the new
@@ -263,26 +254,22 @@ export interface VersionOption {
     selected: boolean
 }
 
-/**
- * Options for the version <select>. The newest version IS the latest docs, so
- * it's folded into a single "Latest (X)" entry rather than appearing twice;
- * the remaining MAJOR.MINOR versions follow. `current` is the version of the
- * page being viewed, or null on a latest-docs page (Latest selected).
- */
+/** Options for the version <select>: Latest, then each other known version (latest's own label excluded — already folded into Latest). */
 export function versionSelectOptions(
-    versions: DocVersion[],
+    latest: string | undefined,
+    known: string[],
     current: string | null,
 ): VersionOption[] {
-    const latest = versions[0]
     const options: VersionOption[] = [
         {
             version: "",
-            label: latest ? `Latest (${latest.label})` : "Latest",
-            selected: !current || current === latest?.label,
+            label: latest ? `Latest (${latest})` : "Latest",
+            selected: !current || current === latest,
         },
     ]
-    for (const v of versions.slice(1)) {
-        options.push({ version: v.label, label: v.label, selected: v.label === current })
+    for (const v of known) {
+        if (v === latest || !isAtMostLatest(v, latest)) continue
+        options.push({ version: v, label: v, selected: v === current })
     }
     return options
 }
