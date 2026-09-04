@@ -34,7 +34,7 @@
                         <span class="input-group-text">
                             <Magnify />
                         </span>
-                        <p>{{ currentVersion ? "Search (Latest)" : "Search" }}</p>
+                        <p>{{ currentVersion ? `Search (${currentVersion})` : "Search" }}</p>
                     </div>
                     <div class="align-items-center d-flex input-group-append">
                         <Keyboard />
