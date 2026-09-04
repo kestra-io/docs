@@ -1,0 +1,150 @@
+---
+import BentoCard from "./BentoCard.astro"
+import type { CardContent } from "./BentoCard.astro"
+import QuoteCard from "./QuoteCard.astro"
+import Cta from "./Cta.astro"
+
+export interface QuoteContent {
+    quote: string
+    company: string
+    meta?: string
+    logoSvg?: string
+    logoColor?: string
+    surface?: string
+    spaced?: boolean
+}
+
+export type Row =
+    | {
+          type: "cards"
+          /** Grid fractions, one per card. Defaults to equal columns. */
+          columns?: number[]
+          cards: CardContent[]
+      }
+    | ({ type: "quote" } & QuoteContent)
+
+interface Props {
+    /** Anchor id, also used as the heading id. */
+    id: string
+    /** Heading markup. Wrap the highlighted word in `<span class="highlight">`. */
+    heading: string
+    standfirst: string
+    rows: Row[]
+    /** `white` page with tinted cards, or `tinted` page with white cards. */
+    tone?: "white" | "tinted"
+}
+
+const { id, heading, standfirst, rows, tone = "white" } = Astro.props
+
+const template = (columns: number[]) =>
+    columns.map((fraction) => `minmax(0, ${fraction}fr)`).join(" ")
+---
+
+<section class:list={["feature-section", tone]} aria-labelledby={id}>
+    <div class="tz-container">
+        <header class="head">
+            <h2 {id} data-usal="fade-r"><Fragment set:html={heading} /></h2>
+            <p class="standfirst" data-usal="fade-l">{standfirst}</p>
+        </header>
+
+        <div class="rows">
+            {
+                rows.map((row) =>
+                    row.type === "quote" ? (
+                        <QuoteCard
+                            quote={row.quote}
+                            company={row.company}
+                            meta={row.meta}
+                            logoSvg={row.logoSvg}
+                            logoColor={row.logoColor}
+                            surface={row.surface}
+                            spaced={row.spaced}
+                        />
+                    ) : (
+                        <div
+                            class="card-row"
+                            data-count={row.cards.length}
+                            style={`--tz-cols: ${template(row.columns ?? row.cards.map(() => 1))}`}
+                        >
+                            {row.cards.map((card, index) => (
+                                <BentoCard {...card} {index} />
+                            ))}
+                        </div>
+                    ),
+                )
+            }
+
+            <Cta />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .feature-section {
+        --tz-card: #f6f6fd;
+        padding-block: 7.5rem 5rem;
+        background: var(--ks-background-primary);
+
+        &.tinted {
+            --tz-card: #ffffff;
+            background: #f6f6fd url("~/assets/header-grid.svg") no-repeat top
+                center / 1720px auto;
+        }
+
+        @include media-breakpoint-down(lg) {
+            padding-block: 4rem 3rem;
+        }
+    }
+
+    .head {
+        /* Figma: a centred 1140px heading block, 16px under the standfirst
+         * plus the 32px row gap before the first card row. */
+        max-width: 1140px;
+        margin: 0 auto 2rem;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+    /* Type scale comes from the shared `.twozero-page h2` rule in index.astro. */
+    .head h2 {
+        margin-bottom: 0.5rem;
+
+        /* The 2.0 headings highlight in blue rather than the site purple. */
+        :global(.highlight) {
+            color: #4f6df7;
+        }
+    }
+
+    .standfirst {
+        margin: 0;
+        color: var(--ks-content-primary);
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .card-row {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: var(--tz-cols);
+        }
+    }
+
+    /* Three-up rows get too narrow on tablets, so pair them up instead.
+     * Declared after the `lg` rule at matching specificity so the designed
+     * template still wins on desktop. */
+    @include media-breakpoint-between(md, lg) {
+        .card-row[data-count="3"] {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

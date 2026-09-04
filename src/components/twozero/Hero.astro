@@ -1,0 +1,344 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import Cta from "./Cta.astro"
+import VideoDialog from "~/components/home/SixtySeconds.astro"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import heroScreen from "./assets/hero-screen.webp"
+import heroBg from "./assets/hero-bg.svg?url"
+
+/**
+ * YouTube id of the 2.0 launch video. Deliberately unset: the play button is
+ * not rendered at all until marketing supplies the real id, so the still never
+ * advertises a video it cannot play. The existing "Kestra 2.0 is almost here"
+ * teaser is intentionally not wired up here.
+ */
+const LAUNCH_VIDEO_ID: string | undefined = undefined
+
+/* The helper returns the rounded count as a string; Figma writes it as "2,000+". */
+const totalPlugins = Number(await fetchTotalPluginsCount()).toLocaleString(
+    "en-US",
+)
+
+/** Figma "key-numbers": three facts under the video, on the hero itself. */
+const KEY_NUMBERS = [
+    { value: `${totalPlugins}+`, label: "Plugins, installed at runtime" },
+    { value: "LTS", label: "One year of fixes, no forced upgrade" },
+    { value: "Apache 2.0", label: "Engine, UI, editor and plugins" },
+]
+---
+
+{
+    /* Deliberately not `.hero`: app.scss owns that class as a site component
+    and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
+}
+<section class="tz-hero" aria-labelledby="hero-title">
+    <div class="tz-container">
+        <div class="intro">
+            <div class="title">
+                <p
+                    class="eyebrow"
+                    data-usal="fade-u delay-0 duration-500 ease-out"
+                >
+                    Kestra 2.0 - Now Available
+                </p>
+                <h1
+                    id="hero-title"
+                    data-usal="fade-u delay-50 duration-500 ease-out"
+                >
+                    Orchestration Rebuilt<br />
+                    for the AI Era
+                </h1>
+            </div>
+            <div class="subtitle">
+                <p
+                    class="lead"
+                    data-usal="fade-u delay-100 duration-500 ease-out"
+                >
+                    Any workload. Any network. Zero boundary compromises.
+                </p>
+                <p
+                    class="support"
+                    data-usal="fade-u delay-150 duration-500 ease-out"
+                >
+                    Govern AI agents and deterministic workflows at scale with a
+                    rewritten engine that enforces a strict separation between
+                    your control plane and your data plane.
+                </p>
+            </div>
+            <Cta theme="hero" />
+        </div>
+
+        <figure class="media">
+            <Image
+                src={heroScreen}
+                alt="Introducing Kestra 2.0, the open-source declarative orchestration platform"
+                widths={[640, 1024, 2048]}
+                sizes="(max-width: 991px) 100vw, 68vw"
+                loading="eager"
+                fetchpriority="high"
+            />
+            {
+                LAUNCH_VIDEO_ID && (
+                    <VideoDialog
+                        id="hero-video"
+                        videoId={LAUNCH_VIDEO_ID}
+                        title="Introducing Kestra 2.0"
+                        class="play"
+                        aria-label="Play the Kestra 2.0 launch video"
+                    >
+                        <Icon name="mdi:play" />
+                    </VideoDialog>
+                )
+            }
+        </figure>
+
+        <dl class="key-numbers" aria-label="Kestra 2.0 at a glance">
+            {
+                KEY_NUMBERS.map((fact, index) => (
+                    <div class="fact" data-usal={`zoomin delay-${index * 50}`}>
+                        <dt>{fact.value}</dt>
+                        <dd>{fact.label}</dd>
+                    </div>
+                ))
+            }
+        </dl>
+
+        <a href="https://github.com/kestra-io/kestra/releases" class="notes">
+            Read the full release notes
+            <Icon name="mdi:arrow-right" />
+        </a>
+    </div>
+</section>
+
+<style lang="scss" define:vars={{ heroBg: `url(${heroBg})` }}>
+    .tz-hero {
+        position: relative;
+        /* Sit underneath the transparent site header so the dark hero runs up
+         * behind it. Only the header height is cancelled: `body` already
+         * reserves the announcement bar with its own padding-top. */
+        margin-top: calc(-1 * var(--top-bar-height, 67px));
+        padding-block: 13.75rem 5.625rem;
+        /* Figma's `bg-hero` component (radial planet gradient, noise and the
+         * outlined squares) exported as one 1900×1564 SVG. Its two square
+         * clusters sit at the far left and top-right edges, outside the copy
+         * column, so `cover` can recrop it freely. */
+        background: #000000 var(--heroBg) center top / cover no-repeat;
+        color: $white;
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            padding-block: 9rem 3rem;
+        }
+    }
+
+    .tz-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.75rem;
+        width: 100%;
+        max-width: 880px;
+        padding-bottom: 4rem;
+        text-align: center;
+
+        @include media-breakpoint-down(lg) {
+            gap: 1.75rem;
+            padding-bottom: 2.5rem;
+        }
+    }
+
+    .title,
+    .subtitle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .title {
+        gap: 0.5rem;
+    }
+
+    .subtitle {
+        gap: 1rem;
+    }
+
+    .eyebrow {
+        position: relative;
+        margin: 0;
+        padding-bottom: 0.625rem;
+        font-size: clamp(1.375rem, 2.4vw, 2.125rem);
+        font-weight: 600;
+        line-height: 1;
+
+        /* Figma: a 1px bottom stroke fading in from transparent to #b1e4ff. */
+        &::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                rgba(137, 103, 206, 0) 0%,
+                #b1e4ff 49%,
+                rgba(69, 52, 104, 0) 100%
+            );
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 600;
+        font-feature-settings: "ss01", "ss06", "ss07";
+        letter-spacing: -0.02em;
+        line-height: 1;
+    }
+
+    .lead {
+        margin: 0;
+        font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+        font-weight: 700;
+        line-height: 1.1667;
+    }
+
+    .support {
+        margin: 0;
+        color: #d0d0da;
+        font-size: clamp(1rem, 1.4vw, 1.25rem);
+        line-height: 1.4;
+    }
+
+    .media {
+        position: relative;
+        /* Figma: 1024px of the 1500px content column. Keeping the share
+         * rather than the pixel width stops the video outgrowing the design
+         * on laptop viewports. */
+        width: 68%;
+        max-width: 1024px;
+        margin: 0;
+        /* Figma: a 0.68px blue-to-white gradient stroke and two soft glows. */
+        border: 1px solid transparent;
+        border-radius: 1rem;
+        background:
+            linear-gradient(#000000, #000000) padding-box,
+            linear-gradient(180deg, #3c7fec, #ffffff) border-box;
+        box-shadow:
+            0 -6px 50px 0 rgba(94, 174, 240, 0.45),
+            0 0 40px 0 rgba(94, 110, 212, 0.16);
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1024 / 574;
+            border-radius: calc(1rem - 1px);
+            object-fit: cover;
+        }
+    }
+
+    /* `:global` because the trigger button is rendered by VideoDialog, outside
+     * this component's scope. Only present once `LAUNCH_VIDEO_ID` is set. */
+    .media :global(.play) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 6rem;
+        height: 6rem;
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.25);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        color: $white;
+        font-size: 2rem;
+        transform: translate(-50%, -50%);
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+
+        @include media-breakpoint-down(md) {
+            width: 4rem;
+            height: 4rem;
+            font-size: 1.5rem;
+        }
+    }
+
+    .key-numbers {
+        display: grid;
+        gap: 1rem;
+        width: 100%;
+        /* Figma: three cards in a 900px band centred under the video. */
+        max-width: 900px;
+        margin: 0;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+    }
+
+    .fact {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+
+    dt {
+        font-size: clamp(1.75rem, 2.3vw, 2.25rem);
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.2222;
+        text-shadow: 0 0 20px rgba(198, 192, 255, 0.48);
+    }
+
+    dd {
+        margin: 0;
+        color: #cccbce;
+        font-size: $font-size-sm;
+        line-height: 1.4286;
+    }
+
+    .notes {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3125rem;
+        padding: 0.75rem 1.875rem;
+        border-radius: 75px;
+        background: rgba(255, 255, 255, 0.1);
+        color: $white;
+        font-size: $font-size-md;
+        line-height: 1.25;
+        text-decoration: none;
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        transition: background-color 0.2s ease;
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: rgba(255, 255, 255, 0.18);
+            color: $white;
+        }
+    }
+</style>

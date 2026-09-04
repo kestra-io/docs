@@ -1,16 +1,40 @@
-<button
-    class="btn btn-lg btn-primary"
-    command="show-modal"
-    commandfor="sixty-seconds-modal"
->
-    See Kestra in 60 seconds
+---
+interface Props {
+    /** YouTube video id, e.g. "1DMXb98nTik". */
+    videoId?: string
+    /** Accessible name for the dialog and the iframe. */
+    title?: string
+    /** Unique dialog id; needed when several dialogs share a page. */
+    id?: string
+    /** Classes for the trigger button. Defaults to the site's primary button. */
+    class?: string
+    [x: string]: any
+}
+
+const {
+    videoId = "1DMXb98nTik",
+    title = "Kestra in 60 seconds",
+    id = "sixty-seconds-modal",
+    class: className = "btn btn-lg btn-primary",
+    ...rest
+} = Astro.props
+---
+
+<button class={className} command="show-modal" commandfor={id} {...rest}>
+    <slot>See Kestra in 60 seconds</slot>
 </button>
-<dialog id="sixty-seconds-modal" closedby="any">
+<dialog
+    {id}
+    closedby="any"
+    aria-label={title}
+    data-video-id={videoId}
+    data-video-title={title}
+>
     <div class="modal-header">
         <button
             type="button"
             class="btn-close"
-            commandfor="sixty-seconds-modal"
+            commandfor={id}
             command="close"
             aria-label="Close">X</button
         >
@@ -21,47 +45,62 @@
 </dialog>
 
 <script>
-    const dialog = document.getElementById("sixty-seconds-modal")
-    const videoContainer = dialog?.querySelector(".video-container")
-    const buttonTrigger = document.querySelector(
-        'button[command="show-modal"][commandfor="sixty-seconds-modal"]',
-    )
+    function initVideoDialogs() {
+        const dialogs = document.querySelectorAll<HTMLDialogElement>(
+            "dialog[data-video-id]",
+        )
 
-    buttonTrigger?.addEventListener("click", () => {
-        if (!videoContainer) return
-        const iframeOrig = videoContainer.querySelector("iframe")
-        if (!iframeOrig) {
-            const iframe = document.createElement("iframe")
-            iframe.width = "100%"
-            iframe.height = "100%"
-            iframe.src =
-                "https://www.youtube.com/embed/1DMXb98nTik?autoplay=1&enablejsapi=1"
-            iframe.title = "Kestra in 60 seconds"
-            iframe.allow =
-                "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            iframe.allowFullscreen = true
-            videoContainer.appendChild(iframe)
-        } else {
-            controlVideo("playVideo", iframeOrig)
+        for (const dialog of dialogs) {
+            if (dialog.dataset.armed === "true") continue
+            dialog.dataset.armed = "true"
+
+            const container =
+                dialog.querySelector<HTMLElement>(".video-container")
+            const trigger = document.querySelector<HTMLElement>(
+                `[command="show-modal"][commandfor="${dialog.id}"]`,
+            )
+            const closer =
+                dialog.querySelector<HTMLElement>('[command="close"]')
+            if (!container || !trigger) continue
+
+            trigger.addEventListener("click", () => {
+                if (!dialog.open) dialog.showModal()
+
+                const existing = container.querySelector("iframe")
+                if (existing) {
+                    controlVideo("playVideo", existing)
+                    return
+                }
+
+                const iframe = document.createElement("iframe")
+                iframe.width = "100%"
+                iframe.height = "100%"
+                iframe.src = `https://www.youtube.com/embed/${dialog.dataset.videoId}?autoplay=1&enablejsapi=1`
+                iframe.title = dialog.dataset.videoTitle ?? ""
+                iframe.allow =
+                    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                iframe.allowFullscreen = true
+                container.appendChild(iframe)
+            })
+
+            closer?.addEventListener("click", () => dialog.close())
+
+            dialog.addEventListener("close", () => {
+                const iframe = container.querySelector("iframe")
+                if (iframe) controlVideo("stopVideo", iframe)
+            })
         }
-    })
+    }
 
-    dialog?.addEventListener("close", () => {
-        const iframe = videoContainer?.querySelector("iframe")
-        if (iframe) {
-            controlVideo("stopVideo", iframe)
-        }
-    })
-
-    function controlVideo(
-        vidFunc: string,
-        iframe: HTMLIFrameElement | null = null,
-    ) {
-        iframe?.contentWindow?.postMessage(
-            '{"event":"command","func":"' + vidFunc + '","args":""}',
+    function controlVideo(func: string, iframe: HTMLIFrameElement) {
+        iframe.contentWindow?.postMessage(
+            JSON.stringify({ event: "command", func, args: "" }),
             "*",
         )
     }
+
+    initVideoDialogs()
+    document.addEventListener("astro:page-load", initVideoDialogs)
 </script>
 
 <style lang="scss">

@@ -1,0 +1,164 @@
+---
+interface Props {
+    quote: string
+    /** Company or team name, rendered bold in the attribution line. */
+    company: string
+    /** Everything after the company name, e.g. "Deutsche Telekom". */
+    meta?: string
+    /** Raw SVG markup, imported with `?raw` by the caller. */
+    logoSvg?: string
+    /** The shared logos are white; recolour them per brand here. */
+    logoColor?: string
+    dark?: boolean
+    /** Surface colour override; Figma varies it per section. */
+    surface?: string
+    /** Extra 32px above and below, as on the Build section's quote. */
+    spaced?: boolean
+}
+
+const {
+    quote,
+    company,
+    meta,
+    logoSvg,
+    logoColor,
+    dark = false,
+    surface,
+    spaced = false,
+} = Astro.props
+---
+
+<figure
+    class:list={["quote-card", { dark, spaced }]}
+    style={surface ? `--qc-surface: ${surface}` : undefined}
+    data-usal="fade"
+>
+    <div class="emblem" style={logoColor ? `color: ${logoColor}` : undefined}>
+        {
+            logoSvg ? (
+                <span class="logo" set:html={logoSvg} />
+            ) : (
+                <svg
+                    viewBox="0 0 46 40"
+                    width="46"
+                    height="40"
+                    fill="currentColor"
+                    aria-hidden="true"
+                >
+                    <path d="M0 0v20.742h11.843c-.161 2.37-.822 6.365-3.33 9.113C6.543 32.01 3.757 33.06 0 33.06V40c5.683 0 10.228-1.823 13.513-5.417 4.062-4.446 5.244-10.484 5.422-13.835V0H0Z" />
+                    <path d="M27.06 0v20.742h11.842c-.161 2.37-.821 6.365-3.33 9.113-1.97 2.155-4.756 3.205-8.512 3.205V40c5.682 0 10.227-1.823 13.512-5.417 4.063-4.446 5.245-10.484 5.422-13.835V0H27.06Z" />
+                </svg>
+            )
+        }
+    </div>
+    <div class="body">
+        <blockquote>{quote}</blockquote>
+        <figcaption>
+            <strong>{company}</strong>
+            {meta && <span> - {meta}</span>}
+        </figcaption>
+    </div>
+</figure>
+
+<style lang="scss">
+    .quote-card {
+        --qc-surface: #f0f0fd;
+        --qc-quote: #000000;
+        --qc-company: #08090a;
+        --qc-meta: #535353;
+        --qc-glyph: #4f6df7;
+
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        margin: 0;
+        padding: 2rem;
+        border-radius: 1rem;
+        background: var(--qc-surface);
+        overflow: clip;
+
+        &.dark {
+            --qc-surface: #131316;
+            --qc-quote: #ffffff;
+            --qc-company: #ffffff;
+            --qc-meta: #cccbce;
+            --qc-glyph: #a796ff;
+        }
+
+        &.spaced {
+            margin-block: 2rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+            padding: 1.5rem;
+        }
+    }
+
+    .emblem {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* Figma: a 297px logo column, or a 242px column for the glyph. */
+        width: 297px;
+        color: var(--qc-company);
+
+        > svg {
+            color: var(--qc-glyph);
+        }
+
+        @include media-breakpoint-down(md) {
+            width: auto;
+        }
+    }
+
+    .logo {
+        display: block;
+        width: 100%;
+
+        :global(svg) {
+            display: block;
+            width: 100%;
+            max-width: 220px;
+            max-height: 77px;
+            margin: 0 auto;
+        }
+
+        /* The shared company logos are authored white; recolour only those
+         * fills so brand-coloured artwork (gradients, brand marks) survives. */
+        :global([fill="white"]),
+        :global([fill="#fff"]) {
+            fill: currentColor;
+        }
+    }
+
+    .body {
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: column;
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    blockquote {
+        margin: 0;
+        color: var(--qc-quote);
+        font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+        font-weight: 500;
+        line-height: 1.5455;
+    }
+
+    figcaption {
+        color: var(--qc-meta);
+        font-size: $font-size-md;
+        line-height: 1.5;
+
+        strong {
+            color: var(--qc-company);
+            font-weight: 600;
+        }
+    }
+</style>
