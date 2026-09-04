@@ -4,7 +4,7 @@ title: kestra_tenant
 editLink: false
 description: |-
   Use this data source to access information about an existing Kestra Tenant.
-  -> This data source is only available on the Enterprise Edition https://kestra.io/enterprise
+  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_tenant (Data Source)
@@ -12,7 +12,7 @@ description: |-
 Use this data source to access information about an existing Kestra Tenant.
 
 ::alert{type="info"}
-This data source is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 ::
 
 ## Example Usage
@@ -32,56 +32,25 @@ data "kestra_tenant" "example" {
 
 ### Read-Only
 
-- `concurrency` (List of Object) The concurrency limit applied to the executions of every flow of the tenant: `limit` and `behavior`. (see [below for nested schema](#nestedatt--concurrency))
-- `default_worker_selector` (List of Object) The default routing applied to every task of the tenant that does not define its own: `tags`, `match` and `fallback`. (see [below for nested schema](#nestedatt--default_worker_selector))
-- `id` (String) The tenant id.
+- `id` (String) The ID of this resource.
 - `name` (String) The tenant name.
 - `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
-- `quotas` (List of Object) The quotas evaluated before an execution starts: `duration`, `limit` and `behavior`. (see [below for nested schema](#nestedatt--quotas))
-- `require_existing_namespace` (Boolean) Whether tenant requires an existing namespace.
+- `require_existing_namespace` (Boolean) Whether the tenant requires existing namespaces.
 - `secret_configuration` (Map of String) The secret configuration.
-- `secret_isolation` (List of Object) Secret isolation configuration: `enabled` and `denied_services`. (see [below for nested schema](#nestedatt--secret_isolation))
+- `secret_isolation` (List of Object) Secret isolation configuration (same shape as storage_isolation). (see [below for nested schema](#nestedatt--secret_isolation))
 - `secret_read_only` (Boolean) Whether secrets are read-only in this tenant.
 - `secret_type` (String) The secret type.
 - `storage_configuration` (Map of String) The storage configuration.
-- `storage_isolation` (List of Object) Storage isolation configuration: `enabled` and `denied_services`. (see [below for nested schema](#nestedatt--storage_isolation))
+- `storage_isolation` (List of Object) Storage isolation configuration. (see [below for nested schema](#nestedatt--storage_isolation))
 - `storage_type` (String) The storage type.
-
-<a id="nestedatt--concurrency"></a>
-### Nested Schema for `concurrency`
-
-Read-Only:
-
-- `behavior` (String)
-- `limit` (Number)
-
-
-<a id="nestedatt--default_worker_selector"></a>
-### Nested Schema for `default_worker_selector`
-
-Read-Only:
-
-- `fallback` (String)
-- `match` (String)
-- `tags` (Set of String)
-
-
-<a id="nestedatt--quotas"></a>
-### Nested Schema for `quotas`
-
-Read-Only:
-
-- `behavior` (String)
-- `duration` (String)
-- `limit` (Number)
-
+- `worker_group` (List of Object) The worker group. (see [below for nested schema](#nestedatt--worker_group))
 
 <a id="nestedatt--secret_isolation"></a>
 ### Nested Schema for `secret_isolation`
 
 Read-Only:
 
-- `denied_services` (Set of String)
+- `denied_services` (List of String)
 - `enabled` (Boolean)
 
 
@@ -90,5 +59,14 @@ Read-Only:
 
 Read-Only:
 
-- `denied_services` (Set of String)
+- `denied_services` (List of String)
 - `enabled` (Boolean)
+
+
+<a id="nestedatt--worker_group"></a>
+### Nested Schema for `worker_group`
+
+Read-Only:
+
+- `fallback` (String)
+- `key` (String)

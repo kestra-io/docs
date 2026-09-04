@@ -6,22 +6,25 @@ sidebarTitle: authentik SSO
 icon: /src/contents/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
+Set up authentik SSO to manage authentication for users.
 
-Set up authentik as an OIDC provider for Kestra authentication. In conjunction with SSO, see the [authentik SCIM provisioning guide](../../scim/authentik/index.md).
+## Configure authentik SSO
 
-## Install authentik
+In conjunction with SSO, check out the [authentik SCIM provisioning guide](../../scim/authentik/index.md).
 
-authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
+### Install authentik
+
+Authentik provides a simple docker-compose installer for testing purposes. Follow [the instructions](https://docs.goauthentik.io/docs/installation/docker-compose) and click on the [initial setup URL](http://docker.for.mac.localhost:9000/if/flow/initial-setup/) to create your first user.
 
 ![scim-for-authentik-user](./authentik1.png)
 
-## Create application and SSO provider in authentik
+### Create Application and SSO Provider in authentik
 
 On the left-hand side, select **Applications → Applications**. For simplicity, we’ll use the **Create with Wizard** button, as this will create both an application and a provider.
 
 ![scim-for-authentik-2](./authentik2.png)
 
-On the **Application Details** screen, fill in the application **Name** and **Slug**. Set both to `kestra` and click **Next**.
+On the **Application Details** screen, fill in the application `name` and `slug`. Set both here to `kestra` and click `Next`.
 
 ![scim-for-authentik-3](./authentik3.png)
 
@@ -33,14 +36,14 @@ On the **Provider Configuration** screen:
 1. In the **Authentication flow** field, select “default-authentication-flow (Welcome to authentik!)”.
 2. In the **Authorization flow** field, select “default-provider-authorization-explicit-consent (Authorize Application)”.
 ![scim-for-authentik-5](./authentik5.png)
-3. Keep the Client type as **Confidential**. Under the **Redirect URIs/Origins (RegEx)**, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and click **Submit**.
+3. Keep the Client type as **Confidential**. Under the **Redirect URIs/Origins (RegEx)**, enter your Kestra host's `/oauth/callback/authentik` endpoint in the format `http://<kestra_host>:<kestra_port>/oauth/callback/authentik` (e.g., http://localhost:8080/oauth/callback/authentik) and then `Submit` the Application.
 ![scim-for-authentik-6](./authentik6.png)
 
-Note the `Client ID` and `Client Secret` for the next step.
+Note the `Client ID` and `Client Secret` as you will need these to configure Kestra in the next step.
 
-## Configure authentik SSO in Kestra
+### Configure Authentik SSO in Kestra Settings
 
-Add the following to your `micronaut` configuration:
+With the above Client ID and Secret, add the following in the `micronaut` configuration section:
 
 ```yaml
         micronaut:
@@ -55,11 +58,11 @@ Add the following to your `micronaut` configuration:
                     issuer: "http://localhost:9000/application/o/kestra/"
 ```
 
-You may need to adjust the above `issuer` URL if you named your application something other than `kestra`. Update that URL to match your application name: `http://localhost:9000/application/o/<application_name>/`.
+You may need to adjust the above `issuer` URL if you named your application something other than `kestra`. Make sure to update that URL to match your application name `http://localhost:9000/application/o/<application_name>/`.
 
-## Configure a default role for SSO users
+### Configure a Default Role for your SSO users in Kestra Settings
 
-SSO users need a default role for initial access in Kestra. Add the following to `kestra.security`:
+To ensure that your SSO users have initial permissions within the Kestra UI, set up a default role for them. Achieve this by adding the following configuration under the `kestra.security` section:
 
 ```yaml
 kestra:
@@ -68,53 +71,17 @@ kestra:
       name: default_admin_role
       description: "Default Admin Role"
       permissions:
-        FLOW:
-          - VIEW
-          - LIST
-          - CREATE
-          - UPDATE
-          - DELETE
-          - EXECUTE
-          - DISABLE
-          - ENABLE
-          - VALIDATE
-          - EXPORT
-          - IMPORT
-        EXECUTION:
-          - VIEW
-          - LIST
-          - UPDATE
-          - DELETE
-          - RESTART
-          - KILL
-          - REPLAY
-          - PAUSE
-          - RESUME
-          - CHANGE_LABELS
-          - ACCESS_LOGS
-          - ACCESS_OUTPUTS
-          - ACCESS_FILES
-          - EXPORT
-          - UNQUEUE
-          - FORCE_RUN
-          - FOLLOW
-        NAMESPACE:
-          - VIEW
-          - LIST
-          - CREATE
-          - UPDATE
-          - DELETE
-          - MANAGE_FILES
-          - EXPORT_PLUGIN_DEFAULTS
-          - IMPORT_PLUGIN_DEFAULTS
-        SECRET: ["VIEW", "LIST", "UPDATE", "DELETE"]
-        KVSTORE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
-        BLUEPRINT: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
-        ROLE: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE"]
-        GROUP: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_MEMBERS"]
-        USER: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "MANAGE_GROUP_MEMBERSHIP"]
-        BINDING: ["VIEW", "LIST", "CREATE", "DELETE"]
-        AUDITLOG: ["VIEW", "LIST", "EXPORT"]
+        NAMESPACE: ["CREATE", "READ", "UPDATE", "DELETE"]
+        ROLE: ["CREATE", "READ", "UPDATE", "DELETE"]
+        GROUP: ["CREATE", "READ", "UPDATE", "DELETE"]
+        EXECUTION: ["CREATE", "READ", "UPDATE", "DELETE"]
+        AUDITLOG: ["CREATE", "READ", "UPDATE", "DELETE"]
+        USER: ["CREATE", "READ", "UPDATE", "DELETE"]
+        BINDING: ["CREATE", "READ", "UPDATE", "DELETE"]
+        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+        SECRET: ["CREATE", "READ", "UPDATE", "DELETE"]
+        BLUEPRINT: ["CREATE", "READ", "UPDATE", "DELETE"]
+        KVSTORE: ["CREATE", "READ", "UPDATE", "DELETE"]
   ee:
     tenants:
       enabled: true
@@ -122,5 +89,5 @@ kestra:
 ```
 
 :::alert{type="info"}
-Place `defaultRole` under `kestra.security`, not under `micronaut.security`. The example above grants broad access — adjust the action lists to match the permissions your users actually need in production.
+⚠️ Make sure that your `defaultRole` is added under the `kestra.security` section, not under `micronaut.security`. Also, ensure that the `defaultRole` has the necessary permissions for your users to interact with Kestra. The above configuration is just an example and you might want to restrict the permissions boundaries for production use.
 :::

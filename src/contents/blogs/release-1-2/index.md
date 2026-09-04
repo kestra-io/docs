@@ -360,7 +360,7 @@ id: vm_provisioning
 namespace: company.team
 
 checks:
-  - when: "{{ kv('VMs') | length < 2 }}"
+  - condition: "{{ kv('VMs') | length < 2 }}"
     message: "You have provisioned too many VMs"
     style: ERROR
     behavior: BLOCK_EXECUTION

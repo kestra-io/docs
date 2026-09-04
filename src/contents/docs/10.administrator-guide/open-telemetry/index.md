@@ -3,6 +3,7 @@ title: "OpenTelemetry for Kestra: Traces, Metrics, and Logs"
 h1: Collect traces, metrics, and logs with OpenTelemetry
 sidebarTitle: OpenTelemetry
 icon: /src/contents/docs/icons/admin.svg
+version: ">= 0.21.0"
 editions: ["OSS", "EE"]
 description: Implement observability in Kestra with OpenTelemetry to export traces, metrics, and logs to your preferred monitoring tools.
 ---
@@ -20,6 +21,10 @@ OpenTelemetry defines three different kinds of telemetry data:
 Kestra supports all three kinds of telemetry data via OpenTelemetry-compatible exporters. For more details, see the [OpenTelemetry official documentation](https://opentelemetry.io/docs/).
 
 ## Traces
+
+:::alert{type="info"}
+Exporting trace data in Kestra is currently a Beta feature.
+:::
 
 The first step is to enable distributed traces inside the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) file:
 
@@ -46,37 +51,8 @@ When enabled, Kestra instruments:
 ### Trace correlation
 Kestra propagates the trace context so that traces are correlated:
 - The API call trace correlates with the execution it creates.
-- Flow execution traces correlate with parent flows when the `Subflow` or `Loop` task is used.
+- Flow execution traces correlate with parent flows when the `Subflow` or `ForEachItem` task is used.
 - External HTTP calls include the standard propagation header for downstream correlation.
-
-### Propagate trace context to scripts
-
-Scripts run in isolated containers, so OTel spans they generate start a new root trace by default. Pass `{{ trace.parent }}` as the `TRACEPARENT` environment variable to parent those spans under the Kestra task span.
-
-`{{ trace.parent }}` holds the W3C [traceparent](https://www.w3.org/TR/trace-context/) header; it is empty when tracing is disabled.
-
-```yaml
-id: traced_script
-namespace: company.team
-
-tasks:
-  - id: run_python
-    type: io.kestra.plugin.scripts.python.Script
-    env:
-      TRACEPARENT: "{{ trace.parent }}"
-    script: |
-      from opentelemetry.propagate import extract
-      from opentelemetry.sdk.trace import TracerProvider
-      import os
-
-      ctx = extract({"traceparent": os.environ.get("TRACEPARENT", "")})
-      tracer = TracerProvider().get_tracer(__name__)
-
-      with tracer.start_as_current_span("my-span", context=ctx):
-          pass  # spans here appear as children of the Kestra task span
-```
-
-`TRACEPARENT` is recognized by all major OTel SDKs and works the same way for Node.js, Bash, and any other script type. The variable is also usable in HTTP task headers and any other [expression-capable property](../../expressions/index.md#default-execution-context-variables).
 
 ### Example: Jaeger with Docker Compose
 
@@ -143,7 +119,7 @@ kestra:
 | `io.kestra.core.runners.Executor`      | Spans for each message in the execution queue     |
 | `io.kestra.core.runners.Worker`        | Spans for each runnable task execution            |
 | `io.kestra.plugin.core.flow.Subflow`   | Spans for each `Subflow` task execution           |
-| `io.kestra.plugin.core.flow.Loop` | Spans for each `Loop` sub-execution     |
+| `io.kestra.plugin.core.flow.ForEachItem` | Spans for each `ForEachItem` task execution     |
 
 ## Metrics
 

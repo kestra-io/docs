@@ -7,10 +7,9 @@ import generateId from "~/utils/generateId"
 interface Props {
     title?: string
     directory?: string
-    reverse?: boolean
 }
 
-const { title, directory, reverse = false } = Astro.props
+const { title, directory } = Astro.props
 
 const currentPage =
     directory ??
@@ -30,10 +29,10 @@ const children = await Promise.all(
                 !doc.id.slice(contentPath.length + 1).includes("/"),
         )
         .sort((a, b) => {
-            const cmp = a.filePath && b.filePath
-                ? a.filePath.localeCompare(b.filePath)
-                : a.id.localeCompare(b.id)
-            return reverse ? -cmp : cmp
+            if (a.filePath && b.filePath) {
+                return a.filePath.localeCompare(b.filePath)
+            }
+            return a.id.localeCompare(b.id)
         })
         .map(async (doc) => {
             const firstLine = doc.body

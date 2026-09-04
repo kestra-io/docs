@@ -195,5 +195,4 @@
     .show .chevron-icon :deep(svg) {
         transform: rotate(180deg);
     }
-
 </style>

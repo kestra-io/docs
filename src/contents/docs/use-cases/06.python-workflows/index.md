@@ -88,21 +88,22 @@ triggers:
     cron: "0 9 * * *" # Run every day at 9 AM
 ```
 
-Add a `taskRunner` property to the Python task to scale it to AWS ECS Fargate:
+Adding the following `pluginDefaults` to that flow (or your namespace) will scale the Python task to run on AWS ECS Fargate:
 
 ```yaml
-- id: python_task
-  type: io.kestra.plugin.scripts.python.Script
-  taskRunner:
-    type: io.kestra.plugin.ee.aws.runner.Batch
-    region: us-east-1
-    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-    computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
-    jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
-    executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
-    taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
-    bucket: kestra-us
+pluginDefaults:
+  - type: io.kestra.plugin.scripts.python
+    values:
+       taskRunner:
+         type: io.kestra.plugin.ee.aws.runner.Batch
+         region: us-east-1
+         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+         computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
+         jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
+         executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
+         taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
+         bucket: kestra-us
 ```
 
 You can set plugin defaults at the flow, namespace, or global level to apply to all tasks of that type, ensuring that all Python tasks run on AWS ECS Fargate in a given environment.

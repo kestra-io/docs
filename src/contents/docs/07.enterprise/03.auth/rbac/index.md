@@ -8,20 +8,28 @@ editions: ["EE", "Cloud"]
 docId: iam
 ---
 
-Kestra Enterprise supports Role-Based Access Control (RBAC) to manage access to tenants, namespaces, flows, and resources.
+How to manage access and permissions to your instance.
 
-Kestra has three types of entities:
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/9I87QZJPl1Y?si=n0Izt0lK6BQ20Wfy" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
-- Users: Represent a **person**. To add users to your Kestra instance, you can do one of the following:
+## RBAC – manage roles and permissions
+
+Kestra Enterprise supports Role-Based Access Control (RBAC), allowing you to manage access to Tenants, Namespaces, Flows and resources.
+
+In Kestra you will find three types of entities:
+
+* Users: Represents a **person**. To add users to your Kestra instance, you can do one of the following:
   - [Invite users](../invitations/index.md) to your instance or tenant from the UI
   - Sync users from an external identity provider using [SCIM](../scim/index.mdx)
   - Create users directly using [Terraform](../../../13.terraform/index.mdx)
   - Automate user onboarding, offboarding, and group management from inside a flow using [IAM tasks](../../../15.how-to-guides/iam-automation/index.md)
 
-- Groups: Represent a collection of **Users** and **Service Accounts**. Groups are a useful mechanism for providing the same roles to multiple users or service accounts at once by binding a role to a group.
-- Service Accounts: Represent an **application**. They are treated as users when binding role assignments.
+* Groups: Represent a collection of **Users** and **Service Accounts**. Groups are a useful mechanism for providing the same roles to multiple Users or Service Accounts at once by binding a role to a Group.
+* Service Accounts: Represents an **application**. They are considered Users when binding Role assignments.
 
-All these entities can be assigned to a role, which defines what resources the user, group, or service account can access. These entities do not belong to namespaces, but their permissions can be limited to specific namespaces via bindings on the **IAM** page.
+All theses entities can be assigned to a Role, which define what resources the User, Group, or Service Account can access. Note that these entities don’t belong to Namespaces, but their permissions can be limited to specific namespaces via Bindings (**IAM** page).
 
 The image below shows the relationship between Users, Groups, Service Accounts, Roles, and Bindings:
 
@@ -29,178 +37,197 @@ The image below shows the relationship between Users, Groups, Service Accounts, 
 
 ## Roles and Bindings
 
-A role is a collection of permissions that can be assigned to users, service accounts, or groups. Each permission is a combination of a **resource** (e.g., `FLOW`, `EXECUTION`, `SECRET`) and one or more **actions** (e.g., `EXECUTE`, `VIEW`, `DELETE`). A role alone grants nothing — it must be attached to a user, service account, or group via a **binding** on the **IAM** page.
+A Role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. These permissions are defined by a combination of a **Permission** (e.g., `FLOWS`, `NAMESPACE`, `SECRET`, etc.) and an **Action** (
+e.g., `CREATE`). The **Role** itself does not grant any permissions. Through the **IAM** page, you are able to assign a Role to a User, Service Account, or Group, which creates a **Binding**.
 
-Users, service accounts, and groups can hold any number of roles simultaneously. Bindings can be scoped to one or more namespaces — scoped access automatically extends to all child namespaces (for example, binding to `prod` also grants access to `prod.engineering`). You can [configure a default role](../../../configuration/05.security-and-secrets/index.md) to assign it automatically to new users joining via [SSO](../sso/index.md). Use [Impersonate](#impersonate) to verify a user's effective permissions after assigning roles.
+This Binding grants the permissions defined by that Role to the User, Service Account, or Group. Select any IAM entity (User, Group, etc.), and assign the desired Role. There is no limit to the number of Roles that can be bound to an entity. They can have zero, one, or more Roles attached, giving specific permissions, optionally tied to one or more namespaces; make sure to test their access with the [Impersonate](../rbac/index.md#impersonate) feature.
+
+Once a Role has been created, you can assign that Role to Users and Groups. Optionally, when you assign the Role to an entity (User, Group, or Service Account), you can specify the Binding to a specific Namespace(s). A Binding can be optionally limited to specific namespaces. When a Binding is tied to a namespace, it automatically grants permissions to all child namespaces. For example, a User assigned to a Role specifying the `prod` namespace automatically grants access to the `prod.engineering` namespace as well. Note that you can [configure a default role](../../../configuration/05.security-and-secrets/index.md) so that all new Users are automatically assigned that Role. This is especially useful to grant a default set of permissions to all new Users who join your Kestra instance via [SSO](../sso/index.md).
 
 ## Impersonate
 
-After assigning permissions to a user, Instance Owners can impersonate users to verify their access is correct. Impersonation switches your view to that user's perspective and can be closed back to the Instance Owner view at any time.
+After assigning permissions to a User, Superadmins can impersonate Users to ensure their access is as intended. Impersonation switches your view immediately to that User's perspective and can be easily closed back to Superadmin view – a seamless way to test RBAC in one context.
 
 ![Impersonate](./impersonate-user.png)
 
 ![Stop Impersonating User](./stop-impersonate-user.png)
 
-### Resources
+### Permissions
 
-A resource is a category of product entity or capability that can be controlled through RBAC. Each resource has its own set of allowed actions.
+A Permission is a resource that can be accessed by a User or Group. Open the following to view all supported permissions:
 
-**Core resources** (namespace-scoped — bindings can restrict access to specific namespaces):
+:::collapse{title="Permissions"}
+- `FLOW`
+- `EXECUTION`
+- `TEMPLATE`
+- `NAMESPACE`
+- `KVSTORE`
+- `DASHBOARD`
+- `SECRET`
+- `CREDENTIAL`
+- `GROUP`
+- `ROLE`
+- `BINDING`
+- `AUDITLOG`
+- `BLUEPRINT`
+- `IMPERSONATE`
+- `SETTING`
+- `APP`
+- `AI_COPILOT`
+- `APPEXECUTION`
+- `TEST`
+- `ASSET`
+- `USER`
+- `SERVICE_ACCOUNT`
+- `TENANT_ACCESS`
+- `INVITATION`
+- `GROUP_MEMBERSHIP`
+- `CREDENTIALS`
+- `AI_COPILOT`
 
-| Resource | Description |
-|---|---|
-| `FLOW` | Flows, their revisions, graphs, and dependencies |
-| `EXECUTION` | Executions, their state, logs, outputs, and files |
-| `TRIGGER` | Triggers attached to flows |
-| `NAMESPACE` | Namespaces and their files |
-| `KVSTORE` | Key-value store entries |
-| `SECRET` | Secrets stored in the namespace |
-| `CREDENTIAL` | Credentials for external integrations (namespace-level and tenant-level) |
-
-**Apps and features** (tenant-scoped):
-
-| Resource | Description |
-|---|---|
-| `DASHBOARD` | Custom dashboards |
-| `BLUEPRINT` | Custom blueprints |
-| `APP` | Apps and their executions |
-| `TESTSUITE` | Unit tests |
-| `ASSET` | Data assets and lineage |
-| `MCP_SERVER` | MCP servers exposing flows as AI tools |
-| `COPILOT` | AI Copilot flow generation |
-
-**Administration** (tenant-scoped):
-
-| Resource | Description |
-|---|---|
-| `USER` | Users in the tenant |
-| `GROUP` | Groups and their members |
-| `ROLE` | RBAC roles |
-| `BINDING` | Role-to-entity bindings |
-| `SERVICE_ACCOUNT` | Service accounts |
-| `INVITATION` | User invitations |
-| `AUDITLOG` | Audit log entries |
-| `POLICY` | Governance policies controlling flow and task behavior (namespace-scope and tenant-scope) |
-| `SYSTEM_SETTINGS` | Instance-level settings |
-| `TENANT_SETTINGS` | Tenant-level settings |
+:::alert{type="warning"}
+The `ME` and `APITOKEN` are removed in [Kestra 0.24](../../../11.migration-guide/v0.24.0/endpoint-changes/index.md#rbac-updates)
+:::
 
 ### Actions
 
-Each resource defines its own set of allowed actions. Not every action applies to every resource.
+An Action is the CRUD verb allowed on a given resource (Flow, Execution, Secret, KV, Namespace, etc.). Supported Actions map directly to HTTP operations:
 
-**Common actions** (available on most resources):
+- `CREATE` → typically `POST` the resource (e.g., create a flow, secret, KV entry).
+- `READ`   → `GET` to list or view the resource; no writes.
+- `UPDATE` → `PUT`/`PATCH` to modify an existing resource; cannot create new ones.
+- `DELETE` → `DELETE` to remove the resource.
 
-| Action | Meaning |
-|---|---|
-| `VIEW` | Read a single item's details |
-| `LIST` | Search or browse items |
-| `CREATE` | Create a new item |
-| `UPDATE` | Modify an existing item |
-| `DELETE` | Remove an item |
-
-**Resource-specific actions:**
-
-| Resource | Additional actions |
-|---|---|
-| `FLOW` | `EXECUTE` (trigger an execution), `DISABLE`, `ENABLE`, `VALIDATE`, `EXPORT`, `IMPORT` |
-| `EXECUTION` | `RESTART`, `KILL`, `REPLAY`, `PAUSE`, `RESUME`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW` (live SSE stream), `EXPORT`, `UNQUEUE`, `FORCE_RUN` |
-| `TRIGGER` | `UNLOCK`, `RESTART`, `DISABLE`, `ENABLE`, `EXPORT`, `BACKFILL` |
-| `NAMESPACE` | `MANAGE_FILES` (all namespace file operations) |
-| `POLICY` | `EXECUTE` (dry-run evaluate a policy against its scope), `EXPORT`, `IMPORT` |
-| `APP` | `EXECUTE`, `ACCESS_FILES`, `ACCESS_LOGS` |
-| `TESTSUITE` | `EXECUTE` |
-| `AUDITLOG` | `EXPORT` |
-| `USER` | `MANAGE_GROUP_MEMBERSHIP`, `IMPERSONATE` |
-| `GROUP` | `MANAGE_MEMBERS` |
-| `COPILOT` | `USE` (only action) |
-| `SYSTEM_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
-| `TENANT_SETTINGS` | — (`VIEW` and `UPDATE` only; no `CREATE`, `DELETE`, or `LIST`) |
+Example (Flows):
+- `CREATE` lets you `POST /api/v1/{tenant}/flows`
+- `READ` lets you `GET /api/v1/{tenant}/flows/*`
+- `UPDATE` lets you `PUT /api/v1/{tenant}/flows/{flowId}`
+- `DELETE` lets you `DELETE /api/v1/{tenant}/flows/delete/by-ids`
 
 :::alert{type="info"}
-For a complete resource-to-endpoint mapping, see the [Permissions reference](./permissions-reference/index.md).
-
-If you are upgrading from Kestra 1.x, see the [RBAC action model migration guide](../../../11.migration-guide/v2.0.0/rbac-action-model/index.md) for how old CRUD permissions map to the new actions and what was dropped.
+For a complete CRUD-to-endpoint mapping for every permission, see the [Permissions Reference](./permissions-reference/index.md).
 :::
 
-### MCP server permissions
+### Currently supported roles
 
-`MCP_SERVER` is a first-class RBAC resource that controls access to [Kestra MCP servers](../../../ai-tools/03.mcp-server/index.md). Supported actions are `VIEW`, `LIST`, `CREATE`, `UPDATE`, and `DELETE`.
+Currently, Kestra only creates an **Admin** role by default. That role grants full access to **all resources**.
 
-Default role assignments:
+Apart from **Admin**, Kestra has the managed Roles: Developer, Editor, Launcher, and Viewer. Each Role's permissions can be viewed from **IAM - Roles**. Superadmins can create additional Roles with custom permission combinations in addition to Kestra-managed roles. Users can be assigned multiple Roles.
 
-| Role | Actions granted |
-|---|---|
-| Admin | All (`VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`) |
-| Developer / Editor | All (`VIEW`, `LIST`, `CREATE`, `UPDATE`, `DELETE`) |
-| Launcher | — (not included) |
-| Viewer | `VIEW`, `LIST` |
+## Superadmin and Admin
 
-In addition to these permissions, access to a **private** MCP server is also flow-scoped: a user can connect to a private server only if they have `FLOW: EXECUTE` on at least one namespace that contains a flow with an `McpToolTrigger` pointing at that server.
+Kestra provides two roles for managing your instance: Superadmin and Admin.
 
-### Managed roles
-
-Kestra ships five managed roles. Each role's full permission set is visible under **IAM → Roles**. Instance Owners can create additional custom roles on top of these. Users can hold multiple roles.
-
-| Role | Description |
-|---|---|
-| **Admin** | All actions on all resources. |
-| **Developer** | Everything Editor has, plus: full namespace management (including file management and plugin default import), secrets, credentials, and full blueprint CRUD. For engineers who also need platform-level access. |
-| **Editor** | Full flow and execution management (create, update, delete, execute, restart, kill, etc.), triggers, KV, dashboards, apps, test suites, assets, MCP servers, settings, and Copilot. No namespace file management, no secrets or credentials, blueprint read-only. No IAM resources. |
-| **Launcher** | Execute flows and monitor executions (`EXECUTE`, `REPLAY`, `RESTART`, `CHANGE_LABELS`, `ACCESS_LOGS`, `ACCESS_OUTPUTS`, `ACCESS_FILES`, `FOLLOW`, `EXPORT`). Read-only on triggers, KV, dashboards, and assets. No flow write access, no namespace management. |
-| **Viewer** | `VIEW`, `LIST`, and `EXPORT` on flows, executions, triggers, and namespaces. Can access execution logs, outputs, files, and live-follow executions. No execution state changes (no restart, kill, replay, etc.). No write access anywhere. |
-
-## Instance Owner and Admin
-
-Kestra provides two roles for managing your instance: Instance Owner and Admin.
-
-- Instance Owner is a user type with elevated privileges for global control.
+- Superadmin is a user type with elevated privileges for global control
 - Admin is a customizable role that grants full access to all resources (scoped to a tenant if multi-tenancy is enabled).
 
 :::collapse{title="Summary"}
-Key differences between Admin and Instance Owner:
+Here's a table summarizing the key differences between an Admin and a Super Admin:
 
-| Feature                             | Admin (scoped to a tenant if enabled)              | Instance Owner                                       |
+| Feature                             | Admin (scoped to a tenant if enabled)              | Super Admin                                          |
 |-------------------------------------|----------------------------------------------------|------------------------------------------------------|
 | Access Level                        | By default as all permissions, depends on the Role | Manages tenants and IAM across all tenants           |
-| Tenant Management                   | No                                                 | View, create, update, delete tenants across all tenants |
-| User/Role/Group/Bindings Management | Has the permission by default                      | View, create, update, delete across all tenants         |
+| Tenant Management                   | No                                                 | Create/Update/Read/Delete tenants across all tenants |
+| User/Role/Group/Bindings Management | Has the permission by default                      | Create/Update/Read/Delete across all tenants         |
 | Flow/Execution Management           | Has the permission by default                      | No                                                   |
-| Set Instance Owner privilege        | No                                                 | Yes                                                  |
+| Set Super Admin privilege           | No                                                 | Yes                                                  |
 :::
 
-## Instance Owner
+## Super Admin
 
-Instance Owner is a powerful user type with instance-wide privileges. Use it sparingly — only for tasks that require it, such as creating tenants, troubleshooting, or helping a user.
+Super Admin is a powerful type of user. Use the role sparingly and only for use cases that require it, such as creating a new tenant, troubleshooting tenant issues, or helping a user with a problem.
 
-Unlike tenant-scoped roles, Instance Owner operates across all tenants and does not require any Role or Binding. Instance Owners access instance-wide controls through the [Instance Owner console](../../05.instance/00.instance-owner/index.md), which covers tenant management, instance IAM, infrastructure, and governance.
+Without any Role or Binding, Super Admin has access to manage tenants, users, roles, and groups within a Kestra Enterprise instance. There are multiple methods to create a Superadmin user.
 
-For how to create Instance Owner users and manage the privilege, see [Instance Owner](../../05.instance/00.instance-owner/index.md).
+### Through the UI
+
+When you launch Kestra for the first time, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../../01.overview/02.setup/index.md).
+
+This interface invites you to create your first User which will be automatically assigned the `Superadmin` privilege.
+
+### Through the CLI
+
+To create a User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the `--superadmin` option:
+
+```bash
+kestra auths users create admin@kestra.io TopSecret42 --superadmin
+
+## schema:
+kestra auths users create <username> <password> \
+--tenant=<tenant-id> --superadmin
+```
+
+To set or revoke Superadmin privileges, use the following in the CLI:
+
+```bash
+kestra auths users set-superadmin user@email.com true # (use false to revoke)
+```
+
+### Configuration
+
+A Super Admin can also be created from the configuration file using the configuration below:
+
+```yaml
+kestra:
+  security:
+    superAdmin:
+      username: <username>
+      password: <password>
+      tenantAdminAccess:
+        - <optional>
+```
+
+For more details, check the [Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) page.
+
+## Grant/Revoke Super Admin permissions
+
+:::alert{type="info"}
+Note that you need to be a Superadmin yourself.
+:::
+
+### Through the UI
+
+You can grant or revoke the Superadmin privilege using the switch in the User Edit page.
+
+![superadmin switch](./superadmin_switch.png)
+
+### Through the CLI
+
+To set an existing User with a Superadmin privilege from the [CLI](../../../kestra-cli/kestra-server/index.md), use the dedicated command:
+
+```bash
+## Set a user as Super Admin
+kestra auths users set-superadmin admin@kestra.io true
+
+## Revoke Super Admin privilege
+kestra auths users set-superadmin admin@kestra.io false
+```
 
 ## Admin
 
-Kestra has no Admin user type; Admin is a role with full permissions.
+In Kestra, the notion of Admin user does not exist; instead we create an **Admin** Role with all permissions.
 
-This role can be assigned to any user, service account, or group. This allows you to have different types of admins, grant admin permissions to a whole group, and revoke those permissions at any time without deleting any group or user.
+This role can be assigned to any User, Service Account, or Group. This allows you to have different types of admins, to grant admin permissions to a whole group, and to revoke those admin permissions at any time without having to delete any group or user.
 
-When using multi-tenancy, Kestra assigns the Admin role to the user who created the tenant by default.
+When using multi-tenancy, Kestra assigns the Admin Role to the user who created the tenant by default.
 
 :::alert{type="info"}
 If you see an error when creating a new User or Service Account, it might be caused by a limit on your license. In that case, [reach out to us](/contact-us) to validate and optionally upgrade your license.
 :::
 
-## Creating a user with an Admin role
+## Creating a User with an Admin Role
 
 ### Through the UI
 
-When launching Kestra for the first time with no prior CLI setup, you are prompted to set up Kestra through the [Setup Page](../../01.overview/02.setup/index.md).
+When launching Kestra for the first time, if no prior action has been made through the CLI, you will be invited to setup Kestra through the [Setup Page](../../01.overview/02.setup/index.md).
 
-This creates the first user, automatically assigns the Admin role, and binds it.
+This interface invites you to create the first User which will automatically create the role Admin and bind the User to the role.
 
-Later, create a new user or select an existing user and assign the Admin role from the **Access** tab in IAM.
+Later, you can create a new User or pick an existing User and assign the Admin role to it from the Access page.
 
 ### Through the CLI
 
-To create a user with the Admin role from the CLI, use the `--admin` option:
+To create a User with an Admin Role from the CLI, use the `--admin` option:
 
 ```bash
 kestra auths users create prod.admin@kestra.io TopSecret42 --admin
@@ -208,10 +235,9 @@ kestra auths users create prod.admin@kestra.io TopSecret42 --admin
 ## schema:
 kestra auths users create <username> <password> --admin
 ```
-
 ## User lockout
 
-Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra locks the user for the `lock-duration` period after a `threshold` number of failed attempts within the `monitoring-window` duration. The snippet below lists the default values — adjust them based on your preferences:
+Use the following configuration to change the lockout behavior after too many failed login attempts. By default, Kestra >= 0.22 will lock the user for the `lock-duration` period after a `threshold` number of failed attempts performed within the `monitoring-window` duration. The snippet below lists the default values for those properties — you can adjust them based on your preferences:
 
 ```yaml
 kestra:
@@ -226,14 +252,14 @@ kestra:
 The key attributes are:
 
 - `threshold`: Sets the number of allowed failed attempts before a user is locked out.
-- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock.
+- `monitoring-window`: Defines the period during which failed login attempts are counted before triggering a lock. Super Admin can unlock the user manually by resetting their password from the user's detail page.
 - `lock-duration`: Defines how long the account remains locked.
 
-With the configuration above, a user gets 10 failed login attempts in a 5-minute window before lockout. They must wait 30 minutes, be unlocked by an Admin, or reset their password using the Forgot Password link. An Instance Owner can also unlock a user manually from the user's detail page.
+In the above configuration, a user is allotted 10 failed login attempts in a 5-minute window before they are locked out. They must wait 30 minutes to try again, be unlocked by an Admin, or reset their password by clicking on the "Forgot password" link and following the instructions in the email.
 
 ## Change password
 
-Users can change their password from their profile, accessible via the user avatar in the bottom-left corner of the UI. "Forgot Password" settings can be configured in your Kestra configuration under `basic-auth.password-reset`. Settings to consider are the cooldown time between reset requests and how many requests can be made in a given time window.
+If a user wants to change their password, they can do it on their profile. This page can be accessed through the profile in the bottom left corner of the UI. "Forgot Password" settings can be configured in your Kestra configuration under `basic-auth.password-reset`. Settings to consider are the cooldown time between reset requests and how many requests can be made in a given time window.
 
 ```yaml
 kestra:
@@ -246,32 +272,39 @@ kestra:
           window: PT1H         # Time window during which password reset requests are counted for rate limiting
 ```
 
-### Reset a password as an Instance Owner
+### Reset password (by a Super Admin)
 
-Users can reset their password via the Forgot Password link on the login page. An Instance Owner can also reset a user's password from the User Edit page at **Instance Owner → Instance IAM → Users**.
+Kestra provides a "forgot password" functionality that your users can leverage to reset their password. This functionality is available on the login page, where users can click on the "Forgot password?" link. On top of that, a Super Admin can reset a user's password from the User Edit page by going to **Instance** - **IAM - Users**.
 
 ![Reset Password](./forgot-password.png)
 
-![Instance Owner Change Password](./create-user-password.png)
+![Superadmin Change Password](./create-user-password.png)
 
 ## RBAC FAQ
 
 :::collapse{title="Why is Admin a Role rather than User type?"}
 
-The Admin role is a collection of permissions that can be assigned to users, service accounts, or groups. This lets you grant admin permissions to multiple users or groups, and revoke them at any time without deleting anything.
+The Admin role is a collection of permissions that can be assigned to Users, Service Accounts, or Groups. This allows you to
+grant multiple users with admin permissions if needed, and you can revoke only specific admin permissions at any time
+without having to delete the user.
 
-A user can start as Admin and later have that permission narrowed or removed. Multiple users can share the Admin role, or the same user can hold multiple roles with different scopes.
+Admin roles can be assumed by multiple users or groups, and some user may later be granted a lower or a higher
+permission boundary. In the same way, some users may initially be Admins but then their permission may be revoked. The
+Admin role enables all these patterns in a flexible way.
 
-Users represent authentication (who you are); roles represent authorization (what you can do). Decoupling the two lets you grant permissions to multiple users or groups at once by attaching a single role to a group.
+You can think of Users as **authentication** mechanism (who you are), and Roles as **authorization** mechanism (what you
+are allowed to do). Decoupling authentication from authorization allows you to grant permissions to multiple users or
+groups at once by attaching a single Role to a Group.
 :::
 
 :::collapse{title="Why can't I edit an existing Binding?"}
 
-A binding is immutable. If a binding no longer reflects the desired permissions, delete it and create a new one for the same user, service account, or group with different roles and/or namespaces.
-This prevents accidental changes to existing permissions.
+A Binding is an immutable object. If a Binding no longer reflects the desired permissions, you can delete the existing
+Binding and create a new one for the same User, Service Account, or Group but with different Roles and/or namespaces.
+This is a safety feature to prevent accidental changes to existing permissions.
 :::
 
 :::collapse{title="What happens if you delete a Group?"}
 
-All users and service accounts in that group lose the permissions granted by bindings attached to it. The users and service accounts themselves still exist.
+All Users and Service Accounts assigned to that Group will lose permissions that were binds to the groups. However, Users and Services Accounts will still exist.
 :::

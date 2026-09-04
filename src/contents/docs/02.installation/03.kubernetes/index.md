@@ -117,7 +117,7 @@ The `kestra` chart does not include PostgreSQL or object storage. Configure thes
 
 ## Access the Kestra UI
 
-To list all pods, run:
+To list all pods run:
 
 ```bash
 kubectl get pods -n default -l app.kubernetes.io/name=kestra
@@ -214,17 +214,14 @@ Omit the `tls` block if TLS is terminated upstream (e.g., at a load balancer). T
 
 ## Scaling Kestra on Kubernetes
 
-For production deployments, run each Kestra component in its own pod with a dedicated controller. Workers connect to the controller over gRPC on port 50051, so ensure any cluster network policies allow that traffic between pods before applying this configuration.
+For production deployments, run each Kestra component in its own pod.
+
+Example `values.yaml`:
 
 ```yaml
 deployments:
-  standalone:
-    enabled: false
   webserver:
     enabled: true
-    extraArgs:
-      - --no-controller  # optional; see note below
-      - --no-indexer     # disable embedded indexer when running a dedicated indexer pod
   executor:
     enabled: true
   indexer:
@@ -233,29 +230,9 @@ deployments:
     enabled: true
   worker:
     enabled: true
-  controller:
-    enabled: true
-
-configurations:
-  application:
-    kestra:
-      worker:
-        controllers:
-          type: STATIC
-          static:
-            endpoints:
-              - host: my-kestra-controller  # <release-name>-controller Service; replace my-kestra with your Helm release name
-                port: 50051
+  standalone:
+    enabled: false
 ```
-
-`--no-controller` disables the embedded controller that the webserver starts by default. It is optional — Kestra supports multiple simultaneous controllers, so the embedded one is harmless if left running. Disable it to recover resources when the dedicated `controller` deployment handles all controller duties.
-
-`--no-indexer` disables the indexer embedded in the webserver. Without it, enabling a dedicated `indexer` pod results in two indexers running simultaneously. The example above uses the dedicated pattern. The embedded pattern skips the `--no-indexer` flag and disables the separate pod instead:
-
-| Pattern | Webserver `extraArgs` | `indexer.enabled` |
-|---|---|---|
-| Dedicated indexer pod | `--no-indexer` | `true` |
-| Embedded indexer | — | `false` |
 
 Apply changes:
 
@@ -463,7 +440,6 @@ dind:
             - SETGID
       args:
         - '--log-level=fatal'
-        - '--group=1000'
 ```
 
 ### Troubleshooting DinD
@@ -494,23 +470,14 @@ dind:
   enabled: false
 ```
 
-Use the Kubernetes task runner as the default method for running [script tasks](../../16.scripts/index.mdx). In Enterprise Edition, apply it across a namespace with a [Policy](../../07.enterprise/02.governance/policies/index.md):
+Use the Kubernetes task runner as the default method for running [script tasks](../../16.scripts/index.mdx):
 
 ```yaml
-kestra:
-  policies:
-    - id: k8s-task-runner
-      description: "Use Kubernetes runner for all script tasks."
-      rules:
-        - type: io.kestra.plugin.ee.rules.Add
-          on: PLUGIN
-          override: true
-          where:
-            - field: type
-              operator: STARTS_WITH
-              value: io.kestra.plugin.scripts
-          values:
-            taskRunner:
-              type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-              # ... your Kubernetes runner configuration
+pluginDefaults:
+  - type: io.kestra.plugin.scripts
+    forced: true
+    values:
+      taskRunner:
+        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+        # ... your Kubernetes runner configuration
 ```

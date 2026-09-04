@@ -18,19 +18,20 @@ Kestra can trigger flows on a defined schedule. If you need to wait for another 
 
 Kestra can automatically handle [backfills](../../../06.concepts/08.backfill/index.md) to recover missed executions.
 
-Check the [Schedule trigger](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) documentation for the list of properties and outputs.
+Check the [Schedule task](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule) documentation for the list of the task properties and outputs.
 
 :::alert{type="warning"}
 To avoid unexpected differences, keep your Kestra server and database timezones aligned. If this isn’t possible, account for timezone implications such as Daylight Saving Time or regional variations.
 :::
 
-## Cron shortcuts
+## Cron extension
 
 Kestra supports the following cron extensions instead of writing a cron expression:
 - `@yearly` and `@annually` - runs yearly on 1st January at `00:00`
 - `@monthly` - runs monthly on the 1st at `00:00`
 - `@weekly` - runs weekly on Sunday at `00:00`
 - `@daily` and `@midnight` - runs at `00:00` every day
+- `@midnight` - runs at `00:00` every day
 - `@hourly` - runs every hour, on the hour
 
 ## Examples
@@ -51,7 +52,11 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 11 * * 1"
-    when: "{{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}"
+    conditions:
+      - type: io.kestra.plugin.core.condition.DayWeekInMonth
+        date: "{{ trigger.date }}"
+        dayOfWeek: "MONDAY"
+        dayInMonth: "FIRST"
 ```
 
 A schedule that runs daily at midnight US Eastern time:
@@ -64,7 +69,11 @@ triggers:
     timezone: America/New_York
 ```
 
-Schedule that runs on the last day of every month. The `L` symbol in the day-of-month field represents the last day:
+Schedule that runs on the last day of month:
+
+The Schedule trigger also supports `L` in the day-of-month field to represent the last day of the month.
+
+For example:
 
 ```yaml
 triggers:
@@ -86,15 +95,26 @@ You can use this expression to make your **manual execution work**: `{{ trigger.
 :::
 
 
-## Refining schedules with `when`
+## Schedule conditions
 
-When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using a `when` Pebble expression.
+When a `cron` expression alone is not sufficient (e.g., only first Monday of the month, only weekends), you can refine schedules using `conditions`.
 
-You can use the `{{ trigger.date }}` expression to access the current schedule date within the `when` expression. The [date and calendar helper functions](../../../expressions/04.functions/06.dates/index.mdx) in the expressions reference cover all available date functions such as `isDayWeekInMonth()`, `dayOfWeek()`, `isWeekend()`, `isPublicHoliday()`, and `isLastWorkingDay()`.
+You **must** use the `{{ trigger.date }}` expression on the property `date` of the current schedule.
 
-The `when` expression is evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` reflect the date **with** the condition applied.
+This condition will be evaluated and `{{ trigger.previous }}` and `{{ trigger.next }}` will reflect the date **with** the conditions applied.
 
-Here's an example using a day-of-week check:
+The list of core conditions that can be used are:
+
+ - [DateTimeBetween](/plugins/core/condition/io.kestra.plugin.core.condition.datetimebetween)
+ - [DayWeek](/plugins/core/condition/io.kestra.plugin.core.condition.dayweek)
+ - [DayWeekInMonth](/plugins/core/condition/io.kestra.plugin.core.condition.dayweekinmonth)
+ - [Not](/plugins/core/condition/io.kestra.plugin.core.condition.not)
+ - [Or](/plugins/core/condition/io.kestra.plugin.core.condition.or)
+ - [Weekend](/plugins/core/condition/io.kestra.plugin.core.condition.weekend)
+ - [PublicHoliday](/plugins/core/condition/io.kestra.plugin.core.condition.publicholiday)
+ - [TimeBetween](/plugins/core/condition/io.kestra.plugin.core.condition.timebetween)
+
+Here's an example using the `DayWeek` condition:
 
 ```yaml
 id: conditions
@@ -109,7 +129,9 @@ triggers:
   - id: schedule
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "@hourly"
-    when: "{{ dayOfWeek(trigger.date) == 'THURSDAY' }}"
+    conditions:
+      - type: io.kestra.plugin.core.condition.DayWeek
+        dayOfWeek: "THURSDAY"
 ```
 
 ## Recover missed schedules
@@ -151,17 +173,29 @@ In this example, the `recoverMissedSchedules` is set to `NONE`, which means that
 
 Backfills are replays of missed schedule intervals between a defined start and end date.
 
-To backfill the missed executions, use **Backfill executions** on the flow's **Triggers** tab. Ensure the date range spans every missed schedule so the trigger can replay each execution. See the [Backfill documentation](../../../06.concepts/08.backfill/index.md) for details.
+To backfill the missed executions, go to the `Triggers` tab on the flow's detail page and click on the `Backfill executions` button.
+
+![backfill1](../../../06.concepts/08.backfill/backfill1.png)
+
+:::alert{type="info"}
+Note: Ensure the backfill date range spans every missed schedule so the trigger can replay each execution.
+:::
+
+For more information on Backfill, check out the [dedicated documentation](../../../06.concepts/08.backfill/index.md).
 
 #### Disabling the trigger
 
-To pause the schedule while you decide what to do next, set `disabled: true` in the YAML or use the **Enabled** toggle in the UI. See [Disabled](../../16.disabled/index.md) for details.
+If you are unsure how to proceed, you can temporarily disable the trigger by setting `disabled: true` in the YAML or toggling it in the UI.
 
-## Passing inputs to the Schedule trigger
+This is useful if you are figuring out what to do before the next schedule is due to run.
 
-Use the `inputs` property to set input values before execution:
+For more information on Disabled, check out the [dedicated documentation](../../16.disabled/index.md).
 
-In this example, the `user` input is set to "John Smith" by the `schedule` trigger:
+## Setting inputs inside of the schedule trigger
+
+You can easily pass inputs to the Schedule Trigger by using the `inputs` property and passing them as a key-value pair.
+
+In this example, the `user` input is set to "John Smith" inside of the `schedule` trigger:
 
 ```yaml
 id: myflow
@@ -187,7 +221,9 @@ triggers:
 
 ## Disable a schedule trigger after a specified execution state
 
-The `stopAfter` property disables the trigger when the execution reaches one of the specified states — for example, `FAILED` or `KILLED` — preventing repeated runs of a broken flow until you manually re-enable it.
+Schedule triggers have an optional property, `stopAfter`, that disables a trigger after a specified execution state has been reached: for example, `SUCCESS`, `FAILED`, `KILLED`, `SKIPPED`, etc. Refer to the [Schedule Trigger documentation](/plugins/core/trigger/io.kestra.plugin.core.trigger.schedule#properties_stopAfter-body) for more property details.
+
+For example, you may want to disable a trigger for a `FAILED` or `KILLED` flow to avoid multiple runs of that flow that is misconfigured and needs attention. The property is added to the trigger definition like below:
 
 ```yaml
 id: myflow
@@ -235,8 +271,8 @@ triggers:
   - id: stuck_schedules
     type: io.kestra.plugin.kestra.triggers.ScheduleMonitor
     auth:
-      username: "{{ secret('KESTRA_USERNAME') }}"
-      password: "{{ secret('KESTRA_PASSWORD') }}"
+      username: admin@kestra.io # pass your Kestra username as secret
+      password: Admin1234       # pass your Kestra password as secret
     namespace: company.team
     flowId: daily_sync
     interval: PT1H              # poll for stuck schedules every 1h

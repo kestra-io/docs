@@ -6,8 +6,11 @@ sidebarTitle: Keycloak SSO
 icon: /src/contents/docs/icons/tutorial.svg
 editions: ["EE", "Cloud"]
 ---
+Set up Keycloak SSO to manage authentication for users.
 
-Set up Keycloak as an OIDC provider for Kestra authentication. In conjunction with SSO, see the [Keycloak SCIM provisioning guide](../../scim/keycloak/index.md).
+## Configure Keycloak SSO
+
+In conjunction with SSO, check out the [Keycloak SCIM provisioning guide](../../scim/keycloak/index.md).
 
 ## Start a Keycloak service
 
@@ -19,12 +22,12 @@ You can follow the steps described in the [Keycloak tutorial documentation](http
 
 Once in Keycloak, create a new client:
 
-![Create Client](./client1.png)
-![Client Settings](./client2.png)
+![Create Client](../../../../15.how-to-guides/keycloak/client1.png)
+![Client Settings](../../../../15.how-to-guides/keycloak/client2.png)
 
 Set `https://{{ yourKestraInstanceURL }}/oauth/callback/keycloak` as the valid redirect URI and `https://{{ yourKestraInstanceURL }}/logout` as the valid post-logout redirect URI.
 
-![Redirect URI](./redirect-uri.png)
+![Redirect URI](../../../../15.how-to-guides/keycloak/redirect-uri.png)
 
 ## Kestra Configuration
 
@@ -44,12 +47,12 @@ micronaut:
         get-allowed: true
 ```
 
-You can retrieve the `clientId` and `clientSecret` via the Keycloak user interface.
+You can retrieve the `clientId` and `clientSecret` via Keycloak user interface
 
-![Client ID](./clientId.png)
-![Client Secret](./clientSecret.png)
+![Client ID](../../../../15.how-to-guides/keycloak/clientId.png)
+![Client Secret](../../../../15.how-to-guides/keycloak/clientSecret.png)
 
-Set a default role in your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md) to assign initial permissions to new SSO users.
+Don't forget to set a default role in your [Kestra Security and Secrets configuration](../../../../configuration/05.security-and-secrets/index.md) to streamline the process of onboarding new users.
 
 ```yaml
 kestra:
@@ -58,40 +61,16 @@ kestra:
       name: Editor
       description: Default Editor role
       permissions:
-        FLOW:
-          - VIEW
-          - LIST
-          - CREATE
-          - UPDATE
-          - DELETE
-          - EXECUTE
-          - DISABLE
-          - ENABLE
-          - VALIDATE
-          - EXPORT
-          - IMPORT
+        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
         EXECUTION:
-          - VIEW
-          - LIST
+          - CREATE
+          - READ
           - UPDATE
           - DELETE
-          - RESTART
-          - KILL
-          - REPLAY
-          - PAUSE
-          - RESUME
-          - CHANGE_LABELS
-          - ACCESS_LOGS
-          - ACCESS_OUTPUTS
-          - ACCESS_FILES
-          - EXPORT
-          - UNQUEUE
-          - FORCE_RUN
-          - FOLLOW
 ```
 
 :::alert{type="info"}
-Depending on your Keycloak configuration, you may need to adjust the issuer URL.
+Note: depending on the Keycloak configuration, you might want to tune the issuer URL.
 :::
 
 For more configuration details, refer to the [Keycloak OIDC configuration guide](https://guides.micronaut.io/latest/micronaut-oauth2-keycloak-gradle-java.html).
@@ -136,25 +115,25 @@ micronaut:
 
 These two settings are independent: `end-session` controls what happens on logout, while `prompt=login` controls what happens on the next login attempt.
 
-## Manage groups via OIDC claims
+## Manage Groups via OIDC Claims
 
 If you are unable to use [SCIM with Keycloak](../../scim/keycloak/index.md), you can configure Kestra to source user groups from OIDC claims. In this setup, Keycloak acts as the single source of truth for user group membership. This method requires creating a `groups` client scope that exposes group membership via a claim in the ID Token.
 
-### Create a groups client scope
+### Create a Groups Client Scope
 
 In Keycloak, go to **Client Scopes** and click **Create Client Scope**. Name it `groups`, set Type to **Default**, and keep Protocol as **OpenID Connect**.
 
-![Create Client Scope](./01-groups_create_client_scope.png)
+![Create Client Scope](../../../../15.how-to-guides/keycloak/01-groups_create_client_scope.png)
 
-### Add a group membership mapper
+### Add a Group Membership Mapper
 
 In the newly created `groups` scope, go to the **Mappers** tab and click **Configure a new mapper**.
 
-![Add Mappers](./02-add-mappers.png)
+![Add Mappers](../../../../15.how-to-guides/keycloak/02-add-mappers.png)
 
 Select **Group Membership** from the list of available mapper types.
 
-![Configure Mapper](./03-configure-mappers.png)
+![Configure Mapper](../../../../15.how-to-guides/keycloak/03-configure-mappers.png)
 
 Configure the mapper with the following settings:
 - **Name**: `groups`
@@ -162,13 +141,13 @@ Configure the mapper with the following settings:
 - **Full group path**: Off
 - **Add to ID token**: On
 
-![Mapper Details](./04-mapper-details.png)
+![Mapper Details](../../../../15.how-to-guides/keycloak/04-mapper-details.png)
 
-### Add the client scope to your client
+### Add the Client Scope to Your Client
 
 Go to **Clients**, select your Kestra client, and add the `groups` client scope.
 
-![Add Client Scope](./05-add_client_scope.png)
+![Add Client Scope](../../../../15.how-to-guides/keycloak/05-add_client_scope.png)
 
 ### Configure Kestra
 

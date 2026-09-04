@@ -6,10 +6,6 @@ icon: /src/contents/docs/icons/admin.svg
 description: Tips and best practices for tuning Kestra performance, covering Worker configuration, JDBC backend, and Kafka settings.
 ---
 
-:::alert{type="info"}
-This guide covers Kestra 1.3. Some configuration options reference the JDBC queue and Kafka backend, which were replaced by the gRPC worker-controller in Kestra 2.0. An updated guide for 2.0 will be published after release.
-:::
-
 Not all workloads are the same, so Kestra is configured to balance throughput (the ability to process a lot of executions in parallel) and latency (the ability to process executions quickly) without using too many resources.
 
 ## Tune Kestra for throughput and latency
