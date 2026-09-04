@@ -7,7 +7,7 @@ author:
   name: Robert Walters
   linkedin: https://www.linkedin.com/in/robwaltersprofile/
   image: "rwalters"
-image: ./main.png
+image: ./main.jpg
 ---
 
 # We rebuilt the Kestra engine. Here is what changed and what it brought you.
