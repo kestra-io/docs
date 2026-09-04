@@ -41,13 +41,13 @@ data "kestra_role" "by_name" {
 
 - `description` (String) The role description.
 - `id` (String) The ID of this resource.
-- `permissions` (Set of Object) The role permissions. (see [below for nested schema](#nestedatt--permissions))
+- `resources` (Set of Object) The role resource permissions. (see [below for nested schema](#nestedatt--resources))
 - `tenant_id` (String) The tenant id.
 
-<a id="nestedatt--permissions"></a>
-### Nested Schema for `permissions`
+<a id="nestedatt--resources"></a>
+### Nested Schema for `resources`
 
 Read-Only:
 
-- `permissions` (List of String)
+- `actions` (List of String)
 - `type` (String)

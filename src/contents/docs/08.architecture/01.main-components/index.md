@@ -6,13 +6,11 @@ sidebarTitle: Main components
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
-Technical overview of Kestra’s main components: internal storage, queue, repository, and plugins.
-
 Kestra relies on the following internal components:
 
 - **Internal storage**: stores flow data such as task outputs and flow inputs.
 - **Queue**: enables internal communication between Kestra server components.
-- **Repository**: persists flows, templates, executions, logs, and all other internal objects.
+- **Repository**: persists flows, executions, logs, and all other internal objects.
 - **Plugins**: extend Kestra’s core with additional task and trigger types, storage implementations, and data transformations.
 
 Each component has multiple implementations depending on deployment architecture. Some require additional plugins.
@@ -28,22 +26,22 @@ Internal storage is used to:
 - Automatically persist [flow inputs](../../05.workflow-components/05.inputs/index.md) of type `FILE`.
 - Provide download links for stored files in the **Outputs** tab of an execution.
 
-Files can be retrieved in the execution context using `{{ outputs.task_id.output_attribute }}` (often the `uri` property). Kestra fetches the file automatically when referenced.
+Files are addressed by stable `kestra://` URIs that the engine resolves on demand. A worker on one host and the Webserver on another can both reach the same artifact through the same URI. Files can be retrieved in the execution context using `{{ outputs.task_id.output_attribute }}` (often the `uri` property). Kestra fetches the file automatically when referenced.
 
 Execution metadata — including storage file paths — is recorded in the **repository**.
 
 ### Storage types
 
-By default, Kestra uses **local storage**, which stores files on the host filesystem. This option is simple but not scalable and is usually not recommended for production (unless for standalone deployments).
+By default, Kestra uses **local storage**, which stores files on the host filesystem. Local storage is not recommended for production distributed deployments — use cloud object storage or a self-hosted alternative instead.
 
 :::alert{type="warning"}
 Local storage behavior differs between standalone and distributed deployments:
 - ✅ **Standalone**: Local storage with persistent volumes is OK
-- ❌ **Distributed with ReadWriteOnce**: NOT recommended for distributed services
-- ✅ **Distributed with ReadWriteMany**: OK for distributed services (rarely available)
+- ❌ **Distributed on single-writer storage**: NOT recommended — storage that only one instance can mount read-write at a time (in Kubernetes, `ReadWriteOnce`) cannot back a distributed service
+- ✅ **Distributed on shared storage**: OK when all instances can mount it read-write at once (in Kubernetes, `ReadWriteMany`), though this is rarely available
 - ❌ **Host storage sharing**: NOT recommended — difficult to achieve reliably
 
-When `ReadWriteMany` is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
+When shared read-write storage (`ReadWriteMany`) is unavailable, use cloud storage (S3, GCS, Azure) or self-hosted S3-compatible object storage (Ceph, SeaweedFS, Garage, MinIO).
 :::
 
 Scalable alternatives are available as plugins:
@@ -58,21 +56,31 @@ For details, see [Runtime and Storage](../../configuration/02.runtime-and-storag
 
 ## Queue
 
-The **queue** is used internally for communication between Kestra’s server components. Each repository type has a matching queue implementation:
+The **queue** is the internal communication channel between Kestra’s server components. Server roles emit typed messages onto named queues and subscribe to the queues they consume — no role calls another directly. The full queue surface is defined once as an abstract contract, satisfied by one chosen backend:
 
-- **In-memory queue** — must be used with the in-memory repository.
-- **Database queue** — must be used with the database repository.
-- **Kafka queue** — must be used with the Elasticsearch repository.
-  **Only available in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).**
+- **Database queue** (default) — backed by PostgreSQL or MySQL. Available in all editions.
+- **In-memory queue** — for testing and ephemeral use only.
+- **Kafka queue** — Enterprise Edition. Higher throughput; pairs with the Elasticsearch repository.
+- **Redis queue** — Enterprise Edition.
+- **AMQP queue** — Enterprise Edition.
+- **GCP Pub/Sub queue** — Enterprise Edition.
+
+The queue surface covers four delivery families:
+
+- **Dispatch** — point-to-point; exactly one subscriber processes each message. Used for executions, execution events and commands, worker task results, logs, and metrics.
+- **Keyed dispatch** — point-to-point partitioned by a routing key so a subscriber receives only messages for its key. Used for worker job routing: each Worker Queue is a key, and a worker subscribes only to the queues its group covers.
+- **VNode dispatch** — sharded across a fixed set of virtual nodes so a scaled component can divide a single logical stream deterministically. Used for trigger evaluation across a Scheduler fleet.
+- **Broadcast** — fan-out; every active subscriber receives every message. Used for kill signals, flow and metadata change notifications, follow-execution streams, and cluster-wide events.
+
+Messages above a configurable size limit are rejected before reaching the backend, protecting it from oversized payloads. Terminal execution states are always allowed through regardless of size. Message protection is enabled by default with a 1 MB limit and can be adjusted under `kestra.queue.message-protection`.
 
 ## Repository
 
-The **repository** persists all internal objects, including flows, executions, logs, and templates. Each repository type must be paired with its corresponding queue:
+The **repository** persists all domain entities, including flows, executions, logs, and triggers. The backend is chosen alongside the queue:
 
-- **In-memory repository** — must be used with the in-memory queue.
-- **Database repository** — must be used with the database queue.
-- **Elasticsearch repository** — must be used with the Kafka queue.
-  **Only available in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md).**
+- **Database repository** (default) — backed by PostgreSQL, MySQL, or H2. Available in all editions.
+- **In-memory repository** — for testing only.
+- **Elasticsearch repository** — Enterprise Edition. Backs the high-volume search and read model; requires the Kafka queue and the Indexer server role to keep it in sync.
 
 ## Plugins
 

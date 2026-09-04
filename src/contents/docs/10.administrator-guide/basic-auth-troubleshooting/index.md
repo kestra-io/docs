@@ -22,6 +22,8 @@ Since Basic Authentication is now required, the `enabled` flag is ignored and sh
 
 For production deployments, set a valid email address and a strong password in the configuration file.
 
+If you use the Setup page to create credentials, the password must satisfy the password policy configured under `kestra.security.basic-auth`. See [Security and Secrets configuration](../../configuration/05.security-and-secrets/index.md) for the available password policy settings.
+
 There are four possible scenarios for existing users.
 
 ### Scenario 1: The `enabled` flag is set to `true`
