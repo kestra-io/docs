@@ -35,9 +35,17 @@
                                     :id="f.id"
                                     type="text"
                                     class="form-control"
+                                    :class="{ 'is-invalid': errors[f.id] }"
                                     :name="f.id"
                                     required
+                                    @input="clearError(f.id)"
                                 />
+                                <div
+                                    v-if="errors[f.id]"
+                                    class="field-error"
+                                >
+                                    {{ errors[f.id] }}
+                                </div>
                             </div>
                         </div>
 
@@ -54,18 +62,25 @@
                                 v-if="f.type === 'textarea'"
                                 :id="f.id"
                                 class="form-control"
+                                :class="{ 'is-invalid': errors[f.id] }"
                                 :name="f.id"
                                 rows="4"
                                 required
+                                @input="clearError(f.id)"
                             />
                             <input
                                 v-else
                                 :id="f.id"
                                 :type="f.type"
                                 class="form-control"
+                                :class="{ 'is-invalid': errors[f.id] }"
                                 :name="f.id"
                                 required
+                                @input="clearError(f.id)"
                             />
+                            <div v-if="errors[f.id]" class="field-error">
+                                {{ errors[f.id] }}
+                            </div>
                         </div>
                         <button
                             type="submit"
@@ -87,6 +102,7 @@
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { $fetch } from "~/utils/fetch"
+    import { useFormErrors } from "~/composables/useFormErrors"
     import Squared from "~/components/layout/Squared.vue"
 
     const props = defineProps<{ routePath: string }>()
@@ -127,13 +143,16 @@
         },
     ]
 
+    const { errors, clearError, validate } = useFormErrors(
+        Object.fromEntries(fields.map((f) => [f.id, f.label])),
+    )
+
     async function onSubmit() {
         const form = formRef.value as HTMLFormElement
         message.value = ""
 
-        if (!form.checkValidity()) {
-            form.reportValidity()
-            message.value = "Invalid form: Please review the fields."
+        if (!validate(form)) {
+            message.value = "Please correct the highlighted fields below."
             return
         }
 
