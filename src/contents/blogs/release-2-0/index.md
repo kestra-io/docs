@@ -11,7 +11,7 @@ authors:
 image: ./main.jpg
 ---
 
-Kestra 2.0 is out today. This release ships a new gRPC-based engine, resolves architectural constraints around worker deployments and backend coupling, and introduces new features across AI tooling, governance, infrastructure, and developer experience. If you haven't already, [Ludo's post on the 2.0 architecture](/blogs/kestra-2-0-engineering) goes deep on the engineering decisions that made this possible. We've put a lot into this one and can't wait to see what the community builds on it. In this post, we cover everything that's new and make sure you have what you need to migrate confidently. Here's what's new, broken down by edition.
+Kestra 2.0 is available today. This release resolves architectural constraints around worker deployments and backend coupling, and introduces new features across AI tooling and governance. If you haven't already, check [Ludo's post on the 2.0 architecture](/blogs/kestra-2-0-engineering), which goes deep on the engineering decisions that made this possible. We've put a lot into this release and can't wait to see what the community builds on it. In this post, we cover everything that's new and make sure you have what you need to migrate confidently. Here's what's new, broken down by edition.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -254,7 +254,7 @@ Before Promote, moving a flow between environments meant a CI/CD pipeline outsid
 
 Promote gives you a built-in path for moving flows between environments. Each flow gains a Promote tab alongside the editor: select a target, review a diff of exactly what changes in that revision, and confirm. Protected targets require explicit confirmation before anything lands in production. Every promotion is recorded in full: what moved, which revision, where it went, who confirmed it, and when. No Git pipeline required.
 
-The flows table gains a column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
+The flows table includes a column showing drift at a glance. If production is running an older revision, the column shows out of sync. If a flow has never been promoted to that environment, it shows not promoted, so you never need to open each instance separately to check.
 
 ![Flows list with the Deploy column showing Not promoted, In sync, and Out of sync states](./promote-flows-list.png)
 
@@ -266,7 +266,9 @@ The [Promote docs](/docs/enterprise/governance/promote) cover the confirmation p
 
 ## Blueprint Version Control
 
-Custom Blueprints can now be version-controlled with Git using two new EE tasks: `PushBlueprints` commits and pushes blueprints from Kestra to a Git repository, and `SyncBlueprints` pulls blueprints from Git into Kestra, treating Git as the single source of truth.
+Custom Blueprints can now be version-controlled with Git using two new EE tasks: 
+1. `PushBlueprints` commits and pushes blueprints from Kestra to a Git repository, 
+2. `SyncBlueprints` pulls blueprints from Git into Kestra, treating Git as the single source of truth.
 
 The pattern mirrors the [`PushFlows`/`SyncFlows` GitOps model](/docs/version-control-cicd/git). Platform teams can manage the approved blueprint library centrally, review changes via pull requests, and deploy consistently across multiple Kestra instances or environments.
 
@@ -285,7 +287,7 @@ kestractl, introduced in Kestra 1.3, gains full EE IAM management in 2.0. If you
 
 The `--output json` flag applies across all commands, so kestractl output can pipe directly into `jq` or other tooling in CI scripts.
 
-kestractl gained more commands in the 2.0 cycle than fit in a release post; the [kestractl reference](/docs/kestra-cli/kestractl) has every command with flags and authentication configuration.
+kestractl contains more commands in the 2.0 cycle than fit in a release post; the [kestractl reference](/docs/kestra-cli/kestractl) has every command with flags and authentication configuration.
 
 ## Worker Groups 2.0
 
