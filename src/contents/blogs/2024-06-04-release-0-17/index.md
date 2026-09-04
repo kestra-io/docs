@@ -487,11 +487,7 @@ Here is how it looks like on the Cluster Dashboard page:
 
 We've added a new feature that allows you to explicitly declare which namespaces are allowed to trigger flows and other resources for any given namespace.
 
-When you navigate to any Namespace and go to the `Edit` tab, you can explicitly configure which namespaces are allowed to access it. By default, all namespaces are allowed.
-
-![allowed-namespaces](../../docs/07.enterprise/02.governance/07.namespace-management/allowed-namespaces.png)
-
-However, you can restrict that access if you want only specific namespaces (or no namespace at all) to trigger its corresponding resources.
+When you navigate to any Namespace and go to the `Edit` tab, you can explicitly configure which namespaces are allowed to access it. By default, all namespaces are allowed. However, you can restrict that access if you want only specific namespaces (or no namespace at all) to trigger its corresponding resources.
 
 :::alert{type="info"}
 Check the [Allowed Namespaces](../../docs/07.enterprise/02.governance/07.namespace-management/index.md#allowed-namespaces) documentation for more details.

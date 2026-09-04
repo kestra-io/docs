@@ -49,10 +49,10 @@ Kestra provides these three Actions for CI/CD pipelines:
 |-------------|----------|----------|-------------|
 | `directory` | ❌       | `'./'`   | Folder containing your flows (YAMLs). |
 | `server`    | ✅       | —        | URL of your Kestra server. |
-| `apiToken`  | ❌       | —        | API Token for authentication (Enterprise Edition only). |
+| `apiToken`  | ❌       | —        | API Token for authentication (EE and Cloud only). |
 | `user`      | ❌       | —        | Basic auth username. |
 | `password`  | ❌       | —        | Basic auth password. |
-| `tenant`    | ✅       | `"main"` | Tenant identifier (Enterprise Edition only, for multi-tenancy). |
+| `tenant`    | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
 
 [(See action.yml)](https://github.com/kestra-io/github-actions/blob/main/validate-flows/action.yml)
 
@@ -66,10 +66,10 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `namespace` | ❌       | —        | Namespace to deploy flows to (optional). If omitted, each flow uses the namespace defined in its YAML. |
 | `override`  | ❌       | `'false'`| If `true`, override existing flows. |
 | `server`    | ✅       | —        | URL of your Kestra server. |
-| `apiToken`  | ❌       | —        | API Token for authentication (EE only). |
+| `apiToken`  | ❌       | —        | API Token for authentication (EE and Cloud only). |
 | `user`      | ❌       | —        | Basic auth username. |
 | `password`  | ❌       | —        | Basic auth password. |
-| `tenant`    | ✅       | `"main"` | Tenant identifier (Enterprise Edition only, for multi-tenancy). |
+| `tenant`    | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
 
 [(See action.yml)](https://github.com/kestra-io/github-actions/blob/main/deploy-flows/action.yml)
 
@@ -84,10 +84,10 @@ Kestra provides these three Actions for CI/CD pipelines:
 | `namespace`    | ✅       | —        | Namespace to deploy files to. |
 | `override`     | ❌       | `'false'`| If `true`, override existing files. |
 | `server`       | ✅       | —        | URL of your Kestra server. |
-| `apiToken`     | ❌       | —        | API Token for authentication (EE only). |
+| `apiToken`     | ❌       | —        | API Token for authentication (EE and Cloud only). |
 | `user`         | ❌       | —        | Basic auth username. |
 | `password`     | ❌       | —        | Basic auth password. |
-| `tenant`       | ✅       | `"main"` | Tenant identifier (Enterprise Edition only, for multi-tenancy). |
+| `tenant`       | ✅       | `"main"` | Tenant identifier (EE and Cloud only, for multi-tenancy). |
 
 [(See action.yml)](https://github.com/kestra-io/github-actions/blob/main/deploy-namespace-files/action.yml)
 

@@ -24,7 +24,7 @@ For an end-to-end architecture walkthrough with diagrams, see [Assets for infras
 
 Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`; you can also add them manually from the **Assets** tab. Once created, you can view asset details, check which workflow runs created or modified them, and see how assets connect to each other across your workflows.
 
-Assets enables:
+Assets enable:
 
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
@@ -57,7 +57,7 @@ Asset types fall into two categories:
 
 - **Kestra-defined asset types**: These predefined types use the `io.kestra.core.models.assets` model and provide structured metadata fields specific to each asset type. Plugins that support auto-generation populate these fields automatically during task execution — for example, a JDBC plugin creates a `Table` asset with `system`, `database`, and `schema` filled in from the connection details.
 
-The current Kestra-defined asset types are the following:
+Kestra provides these built-in asset types:
 
 - `io.kestra.plugin.ee.assets.Dataset`
   - Represents a dataset asset managed by Kestra.
@@ -373,6 +373,67 @@ tasks:
 
 :::
 
+## Locking assets
+
+A lock prevents concurrent writes to a shared asset while a flow operates on it. Locks are TTL-bounded: they expire automatically when their duration elapses and can also be released explicitly. Reads are always open — only writes (edit, delete) are blocked while a lock is held.
+
+Two owner types exist:
+
+| Owner type | Acquired by | Behavior while held |
+|---|---|---|
+| `EXECUTION` | `Acquire` task | Blocks other executions' writes. The lock-holding execution can still write to the asset, and each write extends the lease. |
+| `USER` | UI or REST API | Blocks all execution writes. Use for manual maintenance windows. |
+
+### Locking from a flow
+
+The `Acquire` and `Release` tasks wrap the work that needs exclusive write access. Both require the `LOCK` permission on the `ASSET` resource (`UNLOCK` for `Release`).
+
+If another execution already holds the lock when `Acquire` runs, the task fails with a 423 error. Add a `Retry` to the `Acquire` task to wait for the lock to become available.
+
+```yaml
+id: update_customer_asset
+namespace: company.team
+
+tasks:
+  - id: acquire
+    type: io.kestra.plugin.kestra.ee.locks.Acquire
+    assetId: customers_by_country
+    ttl: PT1H
+
+  - id: write
+    type: io.kestra.plugin.core.log.Log
+    message: Writing to the locked asset
+
+  - id: release
+    type: io.kestra.plugin.kestra.ee.locks.Release
+    assetId: customers_by_country
+```
+
+**`Acquire`** properties:
+
+| Property | Required | Description |
+|---|---|---|
+| `assetId` | Yes | ID of the asset to lock. |
+| `ttl` | No | How long to hold the lock before it expires automatically. ISO-8601 duration (e.g. `PT1H`). Defaults to 5 minutes when unset. |
+
+**`Acquire`** outputs:
+
+| Output | Description |
+|---|---|
+| `lockedUntil` | When the lock expires. |
+| `ownerType` | Always `EXECUTION` for a task-acquired lock. |
+| `executionId` | ID of the execution holding the lock. |
+
+`Release` is owner-checked: it removes the lock only if the current execution holds it. If the lock has already expired or belongs to a different owner, `Release` is a no-op — safe to call unconditionally.
+
+### Locking from the UI
+
+From any asset's detail page, users with the `LOCK` permission can lock the asset manually. Choose from preset durations (5 minutes to 24 hours) or enter a custom ISO-8601 duration. The page shows who holds the lock and when it expires. Users with the `UNLOCK` permission can release any lock regardless of owner.
+
+When an asset is locked, the detail page shows a banner: *You might be seeing outdated metadata as this asset is currently locked for writing.*
+
+The asset list supports filtering by lock status.
+
 ## Data pipeline use cases
 
 :::collapse{title="Advanced: data pipeline examples"}
@@ -430,6 +491,8 @@ namespace: kestra.company.data
 tasks:
   - id: create_staging_layer_asset
     type: io.kestra.plugin.jdbc.duckdb.Query
+    url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+    fetchType: STORE
     sql: |
       CREATE TABLE IF NOT EXISTS trips AS
       select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
@@ -444,28 +507,25 @@ tasks:
               model_layer: staging
 
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - passenger_count
       - trip_distance
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
-        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
+        url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+        fetchType: STORE
+        sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;
         assets:
           inputs:
               - id: trips
           outputs:
-              - id: avg_{{taskrun.value}}
+              - id: avg_{{item.value}}
                 type: io.kestra.plugin.ee.assets.Table
                 namespace: "{{flow.namespace}}"
                 metadata:
                   model_layer: mart
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.duckdb
-    values:
-      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
-      fetchType: STORE
 ```
 
 **What's happening in this pipeline**:
@@ -474,7 +534,7 @@ pluginDefaults:
 
 2. **Staging Layer**: The `trips` table is created and registered with `model_layer: staging` metadata. This becomes an intermediate asset that mart layers will consume.
 
-3. **Dynamic Mart Creation**: The `ForEach` task generates two mart tables:
+3. **Dynamic Mart Creation**: The `Loop` task generates two mart tables:
    - `avg_passenger_count`
    - `avg_trip_distance`
 
@@ -488,9 +548,6 @@ pluginDefaults:
 - **Dependency Tracking**: Know exactly which tables depend on others before making schema changes
 - **Audit Trail**: Track which workflows created each table and when
 
-See the flow in action in this interactive demo:
-
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/MXR1KD6by4izutxRMMNK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Data Pipeline Assets | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 :::
 
@@ -520,28 +577,24 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ inputs.teams }}"
     tasks:
       - id: create_bucket
         type: io.kestra.plugin.aws.cli.AwsCLI
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_REGION') }}"
+        allowFailure: true
         commands:
-          - aws s3 mb s3://kestra-{{ taskrun.value | slugify }}-bucket
+          - aws s3 mb s3://kestra-{{ item.value | slugify }}-bucket
         assets:
           outputs:
-            - id: kestra-{{ taskrun.value | slugify }}-bucket
+            - id: kestra-{{ item.value | slugify }}-bucket
               type: AWS_BUCKET
               metadata:
                 provider: s3
-                address: s3://kestra-{{ taskrun.value | slugify }}-bucket
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
-      allowFailure: true
+                address: s3://kestra-{{ item.value | slugify }}-bucket
 ```
 
 This flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata.
@@ -559,6 +612,9 @@ tasks:
 
   - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_REGION') }}"
     bucket: kestra-data-bucket
     from: '{{ outputs.download.uri }}'
     key: raw_customer.csv
@@ -570,13 +626,6 @@ tasks:
           type: io.kestra.plugin.ee.assets.File
           metadata:
             owner: data
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
 ```
 
 In this workflow:
@@ -656,12 +705,12 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{inputs.assets}}"
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "{{taskrun.value}}"
+        message: "{{item.value}}"
 ```
 
 **Filter assets by namespace:**
@@ -780,3 +829,9 @@ tasks:
       - io.kestra.plugin.ee.assets.VM
     endDate: "{{ now() | dateAdd(-180, 'DAYS') }}"
 ```
+
+## Visualizing assets in dashboards
+
+Use the `io.kestra.plugin.ee.dashboard.data.Assets` data source to build charts over your asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range — they always reflect the current state of your inventory.
+
+See [Assets (EE and Cloud only)](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.
