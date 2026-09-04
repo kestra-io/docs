@@ -1,0 +1,94 @@
+---
+import { Icon } from "astro-icon/components"
+
+interface Button {
+    text: string
+    href: string
+    variant?: "primary" | "secondary"
+    /** Trailing arrow, used by the closing panel's secondary button. */
+    arrow?: boolean
+}
+
+interface Props {
+    /**
+     * `light` — white page, dark outline on the secondary button.
+     * `hero` — solid white secondary button on the dark hero.
+     * `dark` — translucent dark secondary button for the dark panels.
+     */
+    theme?: "light" | "hero" | "dark"
+    buttons?: Button[]
+}
+
+const {
+    theme = "light",
+    buttons = [
+        { text: "Get started", href: "/get-started", variant: "primary" },
+        { text: "Book a 2.0 demo", href: "/demo" },
+    ],
+} = Astro.props
+---
+
+<div class:list={["cta", `theme-${theme}`]}>
+    {
+        buttons.map((button, index) => (
+            <a
+                href={button.href}
+                class:list={[
+                    "btn",
+                    "btn-lg",
+                    `btn-${button.variant ?? "secondary"}`,
+                ]}
+                data-usal={`zoomin delay-${index * 50}`}
+            >
+                {button.text}
+                {button.arrow && <Icon name="mdi:arrow-right" />}
+            </a>
+        ))
+    }
+</div>
+
+<style lang="scss">
+    .cta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            min-width: 160px;
+
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 2px;
+            }
+        }
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+
+    /* The secondary button variants re-point the tokens the global
+     * `.btn-secondary` rule already reads, so no declaration has to outrank
+     * its `!important` colours. */
+    .theme-hero {
+        --ks-border-button-secondary: transparent;
+    }
+
+    .theme-dark {
+        --ks-background-button-secondary: #23252e;
+        --ks-background-button-secondary-hover: #2e3040;
+        --ks-border-button-secondary: #5f5f7c;
+        --ks-content-primary: #f7f7f8;
+        --ks-content-btn-secondary-hover: #f7f7f8;
+    }
+</style>

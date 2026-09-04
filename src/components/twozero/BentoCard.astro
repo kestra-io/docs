@@ -1,0 +1,208 @@
+---
+import type { ImageMetadata } from "astro"
+import { Image } from "astro:assets"
+import Snippets from "~/components/common/Snippets.astro"
+import Link from "~/components/common/Link.astro"
+
+
+export interface CardContent {
+    title: string
+    /** Body copy. Accepts inline HTML so links, bold runs and code survive. */
+    body: string
+    /**
+     * `stack` = artwork under the copy, `split` = artwork beside it,
+     * `band` = copy only, tight padding.
+     */
+    layout?: "stack" | "split" | "band"
+    image?: ImageMetadata
+    imageAlt?: string
+    /** Artwork column width for `split` cards. Figma uses 654px or 866px. */
+    imageWidth?: number
+    /** Artwork wider than the card in Figma, bleeding off the right edge. */
+    bleed?: boolean
+    /** Optional code sample rendered under the copy. */
+    code?: { code: string; lang?: string }
+    link?: { text: string; href: string }
+}
+
+type Props = CardContent & {
+    /** Position within the row; staggers the scroll reveal. */
+    index?: number
+}
+
+const {
+    title,
+    body,
+    layout = "stack",
+    image,
+    imageAlt = "",
+    imageWidth = 654,
+    bleed = false,
+    code,
+    link,
+    index = 0,
+} = Astro.props
+---
+
+<article
+    class:list={["bento", layout, { bleed }]}
+    style={layout === "split" ? `--tz-media-width: ${imageWidth}px` : undefined}
+    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+>
+    <div class="copy">
+        <h3 set:html={title} />
+        <p set:html={body} />
+        {
+            code && (
+                <div class="code">
+                    <Snippets
+                        code={code.code}
+                        lang={code.lang ?? "yaml"}
+                        noCollapse
+                    />
+                </div>
+            )
+        }
+        {link && <Link href={link.href} text={link.text} class="more" />}
+    </div>
+    {
+        image && (
+            <div class="media">
+                <Image src={image} alt={imageAlt} loading="lazy" />
+            </div>
+        )
+    }
+</article>
+
+<style lang="scss">
+    .bento {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        height: 100%;
+        padding: 4rem 2rem 5rem;
+        border-radius: 1rem;
+        background: var(--tz-card);
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            gap: 2.5rem;
+            padding: 2rem 1.5rem 0;
+        }
+    }
+
+    .bento.band {
+        gap: 1rem;
+        padding: 2rem;
+        /* Figma keeps the copy-only bands on the lighter grey surface. */
+        background: #f9f9fb;
+    }
+
+    /* The split card needs the full 1500px column to seat its 654–866px
+     * artwork beside the copy, so it stacks below the `xl` breakpoint. */
+    .bento.split {
+        flex-direction: row;
+        align-items: center;
+        gap: 4rem;
+        padding: 4rem;
+
+        @include media-breakpoint-down(xl) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 2.5rem;
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 0;
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--ks-content-primary);
+        font-size: $font-size-xl;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        line-height: 1.1667;
+
+        .split & {
+            font-size: clamp(1.5rem, 2.3vw, 2.25rem);
+            letter-spacing: -0.01em;
+            line-height: 1.2222;
+            margin-bottom: 1rem;
+        }
+    }
+
+    p {
+        margin: 0;
+        /* Figma's card body colour, a blue-tinted grey with no site token. */
+        color: #464878;
+        font-size: $font-size-md;
+        line-height: 1.5;
+
+        :global(a) {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
+
+        :global(strong) {
+            font-weight: 600;
+        }
+
+        :global(code) {
+            padding: 0 0.25rem;
+            border-radius: $border-radius;
+            background: var(--ks-background-function);
+            color: var(--ks-content-secondary);
+            font-size: 0.9em;
+        }
+    }
+
+    .code {
+        margin-top: 1.5rem;
+    }
+
+    :global(.more) {
+        margin-top: 1.5rem;
+    }
+
+    /* Stacked artwork sits flush with the card's left, right and bottom
+     * edges, so cancel the side and bottom padding around it. */
+    .stack .media {
+        margin: auto -2rem -5rem;
+
+        @include media-breakpoint-down(lg) {
+            margin: auto -1.5rem 0;
+        }
+    }
+
+    .split .copy {
+        flex: 1 1 22rem;
+    }
+
+    .split .media {
+        flex: 0 1 var(--tz-media-width);
+        min-width: 0;
+
+        @include media-breakpoint-down(xl) {
+            flex: 0 0 auto;
+        }
+    }
+
+    .media img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .bleed .media img {
+        /* Figma draws a 979px artwork inside an 839px card. */
+        width: 116.7%;
+        max-width: none;
+    }
+</style>

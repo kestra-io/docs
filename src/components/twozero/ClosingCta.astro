@@ -1,0 +1,147 @@
+---
+import Cta from "./Cta.astro"
+import twoZero from "./assets/two-zero.svg?no-inline"
+import squares from "./assets/hero-squares.svg?url"
+
+const BUTTONS = [
+    { text: "Get started", href: "/get-started", variant: "primary" as const },
+    { text: "Book a 2.0 demo", href: "/demo", arrow: true },
+]
+---
+
+<section class="closing" aria-labelledby="closing">
+    <div class="inner">
+        <span
+            class="wordmark"
+            aria-hidden="true"
+            data-usal="zoomin duration-500 ease-out"></span>
+
+        <div class="copy">
+            <h2 id="closing" data-usal="fade-u delay-50 duration-500 ease-out">
+                The Foundation for<br />
+                What Comes Next
+            </h2>
+            <p data-usal="fade-u delay-100 duration-500 ease-out">
+                Kestra 2.0 is where the platform stops carrying 1.x constraints
+                and starts building on a clean architecture. First LTS release.
+                Bug and security fixes backported for a year. Upgrade once, then
+                build.
+            </p>
+        </div>
+
+        <Cta theme="dark" buttons={BUTTONS} />
+    </div>
+</section>
+
+<style
+    lang="scss"
+    define:vars={{ squares: `url(${squares})`, twoZero: `url("${twoZero}")` }}
+>
+    .closing {
+        position: relative;
+        padding-block: 5rem 11.875rem;
+        /* Figma: a 1px top hairline that fades in and out of #808fed. */
+        border-top: 1px solid transparent;
+        border-image: linear-gradient(
+                90deg,
+                rgba(128, 143, 237, 0),
+                #808fed 51%,
+                rgba(128, 143, 237, 0)
+            )
+            1;
+        background:
+            radial-gradient(
+                    45% 40% at 50% 8%,
+                    rgba(99, 27, 255, 0.45) 0%,
+                    rgba(99, 27, 255, 0) 100%
+                )
+                no-repeat,
+            linear-gradient(180deg, #000000 36.8%, #1a1c22 100%);
+        color: $white;
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            padding-block: 3rem 5rem;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                var(--squares) no-repeat left -120px bottom -40px / 520px auto,
+                var(--squares) no-repeat right -160px top 45% / 520px auto;
+            mix-blend-mode: plus-lighter;
+            opacity: 0.8;
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+    }
+
+    .inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        padding-inline: 1.5rem;
+        text-align: center;
+    }
+
+    /* Figma's big "2.0" (node 29364:25369) in the Electrolize face: the shared
+     * `two-zero.svg` outline masks a dark body offset downwards and a gradient
+     * face; the drop-shadows around both give the glow. */
+    .wordmark {
+        position: relative;
+        display: block;
+        width: 264px;
+        max-width: 80%;
+        aspect-ratio: 261 / 146;
+        filter: drop-shadow(0 0 24px rgba(103, 182, 251, 0.5))
+            drop-shadow(-3px -3px 12px rgba(117, 39, 215, 0.6))
+            drop-shadow(0 60px 28px rgba(79, 46, 185, 0.45));
+
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            -webkit-mask: var(--twoZero) center / contain no-repeat;
+            mask: var(--twoZero) center / contain no-repeat;
+        }
+
+        &::before {
+            background: #010003;
+            translate: 0 5px;
+        }
+
+        &::after {
+            background: linear-gradient(
+                180deg,
+                #b996ff 28%,
+                #ba98fc 75%,
+                #5500ff 84%
+            );
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 816px;
+    }
+
+    /* The h2 type scale comes from the shared `.twozero-page h2` rule. */
+
+    .copy p {
+        margin: 0;
+        color: #cfd3d6;
+        font-size: clamp(1rem, 1.4vw, 1.25rem);
+        line-height: 1.4;
+    }
+</style>

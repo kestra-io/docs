@@ -1,117 +1,468 @@
 ---
 import Layout from "~/components/layout.astro"
 import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
-import Hero from "~/components/home/Hero.astro"
-import Comparison from "~/components/home/Comparison.astro"
-import Stacked from "~/components/common/Stacked.astro"
-import PlatformOverview from "~/components/home/PlatformOverview.astro"
-import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
-import Testimonial from "~/components/home/Testimonial.astro"
-import Blueprints from "~/components/home/Blueprints.astro"
-import ClosingCTA from "~/components/home/ClosingCTA.astro"
-import EarlyAdopterBanner from "~/components/early-adopter-program/EarlyAdopterBanner.astro"
-import GetStarted from "~/components/common/GetStarted.astro"
-import PluginsBlock from "~/components/common/PluginsBlock.astro"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import mobileHeroBgUrl from "~/components/home/assets/hero/bg-mobile.webp?url"
+import Hero from "~/components/twozero/Hero.astro"
+import FeatureSection from "~/components/twozero/FeatureSection.astro"
+import type { Row } from "~/components/twozero/FeatureSection.astro"
+import UpgradeSection from "~/components/twozero/UpgradeSection.astro"
+import ClosingCta from "~/components/twozero/ClosingCta.astro"
+import tSystemsLogo from "~/components/home/assets/companies/t-system.svg?raw"
+import jpMorganLogo from "~/components/home/assets/companies/jpmorgan.svg?raw"
+import agenticTool from "~/components/twozero/assets/agentic-tool.png"
+import agenticMcpServers from "~/components/twozero/assets/agentic-mcp-servers.png"
+import agenticCopilot from "~/components/twozero/assets/agentic-copilot.png"
+import buildEditor from "~/components/twozero/assets/build-editor.png"
+import buildDraft from "~/components/twozero/assets/build-draft.png"
+import buildTriggers from "~/components/twozero/assets/build-triggers.png"
+import buildLoop from "~/components/twozero/assets/build-loop.png"
+import buildInterface from "~/components/twozero/assets/build-interface.png"
+import buildArtifacts from "~/components/twozero/assets/build-artifacts.png"
+import buildInputs from "~/components/twozero/assets/build-inputs.png"
+import buildVscode from "~/components/twozero/assets/build-vscode.png"
+import govPolicies from "~/components/twozero/assets/gov-policies.png"
+import govPromote from "~/components/twozero/assets/gov-promote.svg"
+import govQuotas from "~/components/twozero/assets/gov-quotas.svg"
+import govCases from "~/components/twozero/assets/gov-cases.png"
+import runTopology from "~/components/twozero/assets/run-topology.png"
+import runWorkerGroups from "~/components/twozero/assets/run-worker-groups.png"
+import runVms from "~/components/twozero/assets/run-vms.png"
+import runLogs from "~/components/twozero/assets/run-logs.png"
+import runPerformance from "~/components/twozero/assets/run-performance.png"
+import runDayTwo from "~/components/twozero/assets/run-day-two.png"
+import runSlim from "~/components/twozero/assets/run-slim.png"
+import securityWorkers from "~/components/twozero/assets/security-workers.png"
 
-const totalPlugins = await fetchTotalPluginsCount()
+/**
+ * Home page — the Kestra 2.0 launch design ("DESIGN V 8" in Figma).
+ *
+ * Section order, grid ratios, artwork and copy come straight from the Figma
+ * frame; the artwork is exported from Figma as PNGs under
+ * `components/twozero/assets`.
+ */
+
+const MCP_TRIGGER = `triggers:
+  - id: mcp
+    type: io.kestra.plugin.core.trigger.McpToolTrigger
+    toolName: run-dbt-model
+    toolDescription: Runs a dbt model in production. Use when a user
+      asks to refresh a table.`
+
+const AGENTIC_ROWS: Row[] = [
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Any Flow Is Now a Tool",
+                body: "Add one trigger and any Kestra flow registers as a named tool on an MCP server. An agent sends a tool call, Kestra runs the flow with the matched inputs and returns the outputs. No custom API wrapper, no polling loop. Inputs map to the tool's JSON schema automatically, and every agent-initiated execution is tagged by origin and session, so you can audit exactly what your AI touched.",
+                layout: "split",
+                code: { code: MCP_TRIGGER, lang: "yaml" },
+                image: agenticTool,
+                imageAlt:
+                    "A schedule, a webhook and an agent tool call all start the same flow and land in one execution list",
+            },
+        ],
+    },
+    {
+        type: "quote",
+        logoSvg: tSystemsLogo,
+        logoColor: "#e20074",
+        quote: "T-Systems used to integrate its systems with custom code and no role-based governance. Those integrations now run as Kestra flows exposed over MCP: an agent can only call what its role allows, and every call is an execution the team can filter, monitor and audit.",
+        company: "T-Systems",
+        meta: "Deutsche Telekom",
+    },
+    {
+        type: "cards",
+        columns: [1, 2],
+        cards: [
+            {
+                title: "Your Editor Is Now a Kestra Client",
+                body: "Connect Claude, Cursor, Codex or any MCP-compatible client to the Kestra MCP server without opening the UI. Each server ships ready-to-paste connection config, and a default server is provisioned per tenant on startup.",
+                image: agenticMcpServers,
+                imageAlt:
+                    "Claude, Cursor and Codex connected to a list of Kestra MCP servers",
+            },
+            {
+                title: "A Copilot That Remembers, Plans, and Asks Before Acting",
+                body: "The new Copilot is a persistent sidebar with multi-turn memory and three modes: <strong>Edit</strong> proposes YAML changes for approval, <strong>Plan</strong> sequences complex tasks step by step, <strong>Ask</strong> answers grounded in official docs and can read execution logs to diagnose a failed run. It reads your Policies, Variables, Secrets, and KV store to ground suggestions in your real configuration. Nothing changes without an explicit confirmation gate.",
+                image: agenticCopilot,
+                imageAlt:
+                    "The Copilot sidebar proposing an error-handling change to a flow, with Accept and Reject buttons",
+            },
+        ],
+    },
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Put Agent Work Under Operational Control",
+                body: "AI Agent tasks can enforce input and output guardrails, stopping work that falls outside your rules. Prometheus metrics expose every tool, model provider, and embedding-store call, so teams can monitor how agents behave and what they cost. New MCP client tasks also let agents use approved external MCP servers as tools, extending their reach without giving up orchestration.",
+                layout: "band",
+            },
+        ],
+    },
+]
+
+const BUILD_ROWS: Row[] = [
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "No Code Editor,<br />With Zero Compromise",
+                body: `A <strong>visual editor</strong> sits alongside the <a href="/docs/ui/flows">YAML editor</a>. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as blocks; click one to configure it through a guided form with inline docs, or drop into raw YAML for that block. Every upstream output and context variable is listed right there for Pebble references. No code, YAML, and Copilot stay in sync: start anywhere, switch freely.`,
+                layout: "split",
+                image: buildEditor,
+                imageWidth: 866,
+                imageAlt:
+                    "The no-code editor: an inputs panel, a guided form for a webhook trigger and the declared outputs",
+            },
+        ],
+    },
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Draft Without Fear",
+                body: "Prepare, review, and refine flow changes as drafts without touching production. A draft is never executed: both scheduled triggers and manual runs continue using the last published revision, so live operations stay protected while work is in progress. When the change is ready, the editor makes the next step clear: review it, then publish with confidence.",
+                image: buildDraft,
+                imageAlt:
+                    "A flow list with draft revisions and a Save as Draft menu",
+            },
+            {
+                title: "Trigger Conditions in One Line",
+                body: "Define trigger rules with a single when expression, using the familiar conditional syntax of modern CI/CD pipelines. Every trigger type supports it, turning multi-step configuration into one readable rule. Schedule around business calendars, public holidays, and working days, then coordinate dependent flows within a defined time window.",
+                image: buildTriggers,
+                imageAlt:
+                    "A trigger condition skipping public holidays next to a calendar",
+            },
+            {
+                title: "Loop: Iteration That Can't Take Down Your Instance",
+                body: "<code>Loop</code> replaces <code>ForEach</code> and <code>ForEachItem</code>. Each iteration runs as an isolated sub-execution, so a runaway loop over a huge list can no longer exhaust executor memory and impact every other flow on the instance. Define the output you need once, then gather that result across every iteration in a single step.",
+                image: buildLoop,
+                imageAlt:
+                    "An execution with a Loop task showing six successful iterations",
+            },
+        ],
+    },
+    {
+        type: "quote",
+        logoSvg: jpMorganLogo,
+        logoColor: "#131316",
+        quote: "JPMorgan Chase's cybersecurity department brought the workflows of its security teams, from telemetry ingestion to control assessments, onto one Kestra platform instead of one orchestrator per team. Billions of rows and thousands of API pulls a week, and the analysts who need a workflow write it themselves. One place to ask what ran, and whether it finished.",
+        company: "JPMorgan Chase",
+        meta: "Cybersecurity department",
+        surface: "#ffffff",
+        spaced: true,
+    },
+    {
+        type: "cards",
+        columns: [1, 0.75],
+        cards: [
+            {
+                title: "A Cleaner Interface, Built for Work",
+                body: "The new Kestra interface gives developers and platform teams a polished experience building workflows. Essential context stays within reach, with less visual noise between authoring, monitoring, and troubleshooting. Move from a flow change to a live execution with confidence, while keeping the information needed to make the next decision in view.",
+                image: buildInterface,
+                imageAlt:
+                    "The execution view with a change-state dialog and the task list",
+            },
+            {
+                title: "Plugin Artifacts: See What Happens Inside",
+                body: "Plugin Artifacts bring the details behind an execution into the Kestra experience. Plugins can surface their own progress, metrics, and technology-specific stages directly in the execution view, task drawer, or detail panel. See where time is spent, identify the source of a slowdown, and understand the work happening beyond the orchestration layer, without digging through raw logs.",
+                image: buildArtifacts,
+                imageAlt:
+                    "A Kubernetes task run showing its own stages and timings",
+            },
+        ],
+    },
+    {
+        type: "cards",
+        columns: [0.75, 1],
+        cards: [
+            {
+                title: "Inputs That Scale With Your Teams",
+                body: "Define an input group once at namespace level and reference it across flows with a single line. SELECT inputs now carry human-readable labels with technical values underneath, JSON inputs validate against a JSON Schema before any task runs, and a new FORM type turns complex trigger forms into a multi-step wizard.",
+                image: buildInputs,
+                imageAlt:
+                    "A three-step input wizard with a cluster select and a validated JSON payload",
+            },
+            {
+                title: "VS Code, Connected to Your Instance",
+                body: "The extension now pulls the flow schema from your connected instance, so completion reflects the plugins you actually have. Live validation, Pebble autocompletion, topology preview with live task states, and run-from-editor are all included.",
+                image: buildVscode,
+                bleed: true,
+                imageAlt:
+                    "The Kestra VS Code extension editing a flow with live validation",
+            },
+        ],
+    },
+]
+
+const GOVERNANCE_ROWS: Row[] = [
+    {
+        type: "cards",
+        columns: [1, 0.75],
+        cards: [
+            {
+                title: "Policies: Standards That Enforce Themselves",
+                body: "Set your operating standards once and apply them across every team, environment, and workflow. Policies can fill in required settings, flag exceptions, or stop work that does not meet your rules, from workflow-wide safeguards to approved infrastructure choices. Start by seeing where standards are missed, then enforce when ready. Authors always see the standards applied to their work.",
+                image: govPolicies,
+                imageAlt:
+                    "A policy with mutate, block and warn rules and the violations it flags in the editor",
+            },
+            {
+                title: "Promote: Dev to Prod Is a Button, With a Diff",
+                body: "Moving a flow across environments is now a first-class action. A Promote tab on every flow lets you pick a target, review exactly what changes, and confirm. Gated targets require explicit sign-off. The flows list shows drift at a glance: in sync, out of sync, or not promoted. Every promotion is recorded: what, which revision, where, who, when.",
+                image: govPromote,
+                imageAlt:
+                    "The Promote tab comparing a dev flow with its prod target",
+            },
+        ],
+    },
+    {
+        type: "quote",
+        quote: "Policies assign the worker queue and the task runner by namespace, so their developers never configure compute. Quotas mean one team's spike cannot degrade everyone else's instance. Airflow, Sidekiq and years of scripts, consolidated under one set of rules.",
+        company: "Alternative-investments fintech",
+        meta: "1,500+ employees · New York, NY, USA",
+    },
+    {
+        type: "cards",
+        columns: [0.75, 1],
+        cards: [
+            {
+                title: "Quotas: Keep Execution Volume in Check",
+                body: "Set clear limits on how many executions a workflow can create over time, protecting shared infrastructure from runaway schedules and unexpected demand. Apply quotas to a single workflow, an entire team namespace, or the whole tenant, and choose whether excess work should fail or be cancelled. Control volume where it matters, before it becomes an operational problem.",
+                image: govQuotas,
+                imageAlt:
+                    "A quota usage table per user and a new quota limit form",
+            },
+            {
+                title: "Cases: Incidents Live Next to the Executions That Caused Them",
+                body: "Turn workflow failures into managed incidents without leaving Kestra. Group repeated failures from the same issue into one case instead of an endless stream of alerts, then give it an owner, priority, response target, and shared activity history. Teams can track work on live boards and launch approved remediation flows directly from the incident, bringing recovery and accountability together.",
+                image: govCases,
+                imageAlt:
+                    "A case board next to the CreateCase task that opens an incident",
+            },
+        ],
+    },
+]
+
+const RUN_ANYWHERE_ROWS: Row[] = [
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Your Orchestrator Shouldn't Dictate Your Network Topology",
+                body: "In 1.x, every worker needed a direct route to the database, limiting where work could run and complicating security reviews. Kestra 2.0 removes that dependency. Workers connect to the platform instead, so you can place them inside private networks, isolated environments, and regions where the data and infrastructure already live.",
+                layout: "split",
+                link: {
+                    text: "See how we rebuilt the engine",
+                    href: "/docs/architecture",
+                },
+                image: runTopology,
+                imageAlt:
+                    "Workers in eu-west, an on-prem VPC and an air-gapped site connecting to the platform over HTTPS with mTLS",
+            },
+        ],
+    },
+    {
+        type: "quote",
+        quote: "Running GPU workloads on Kubernetes was the hardest part of the pipeline, and the orchestrator HeartFlow had built in-house was getting heavier to maintain. With Kestra, GPU tasks run as Kubernetes pods, routed through worker groups with per-region isolation. The team cut orchestration overhead by close to 90 percent.",
+        company: "AI-powered medical diagnostics",
+        meta: "1000+ employees · CA, USA",
+        surface: "#e3e3fc",
+    },
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Worker Groups 2.0:<br />Routing by Intent",
+                body: "Use tag-based routing to send every workload to the compute it needs, whether that is GPU capacity, a secure network, or a regional team. Reserve capacity for critical work so competing demand cannot crowd it out, while allowing unused resources to serve other teams when appropriate. Adjust allocations live as priorities shift and define your worker topology once for consistent deployment.",
+                image: runWorkerGroups,
+                imageAlt:
+                    "A workerSelector with gpu and a100 tags matching a reserved A100 cluster",
+            },
+            {
+                title: "Run on Bare VMs, Not Just Containers",
+                body: "Four new task runners target workloads that shouldn't be containerized: GPU training on a custom AMI, licensed software bound to a machine image, anything needing direct VM control. AWS EC2 via Systems Manager, Azure VM via Run Command, Google Compute Engine as startup scripts, Huawei Cloud CCI as serverless pods. No SSH, no public IPs.",
+                image: runVms,
+                imageAlt:
+                    "Kestra dispatching to AWS EC2, Azure VM, Google Compute and Huawei Cloud task runners",
+            },
+            {
+                title: "Logs Out of the Critical Path",
+                body: "Execution logs are your highest-volume data, and they no longer have to share a database with flows and state. Route them to a separate JDBC store or Elasticsearch. Lighter migrations, independent retention, faster operational queries.",
+                image: runLogs,
+                imageAlt:
+                    "Flows and executions in the main database, logs routed to a separate JDBC or Elasticsearch store",
+            },
+        ],
+    },
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Performance That Holds<br />as You Grow",
+                body: "Task run outputs move to dedicated storage instead of living inside execution records, keeping bulky data out of your core database. Outputs also switch to a binary format, cutting storage consumption up to 40%.<br />That means lower database load, less storage overhead, and orchestration that stays responsive as execution volume grows to millions of runs.",
+                image: runPerformance,
+                imageAlt:
+                    "A throughput chart comparing legacy orchestrators, Kestra 1.x and Kestra 2.0",
+            },
+            {
+                title: "Day-Two Operations for Your Infrastructure",
+                body: "NetApp ONTAP, Veeam, Pure Storage, Dell PowerStore, Ceph, Huawei Cloud, F5, and SolarWinds IPAM join VMware, Nutanix, Proxmox, Infoblox, and Netbox. Snapshot before patching, clone volumes for dev/test, provision and register infrastructure in a single flow.",
+                image: runDayTwo,
+                imageAlt:
+                    "A Patch-VMs-on-Prod flow snapshotting a volume, patching a host and registering the IP",
+            },
+            {
+                title: "Start Slim, Grow on Demand",
+                body: "<code>kestra/kestra:*-slim</code> ships with no bundled plugins. Enable auto-install and Kestra fetches what your flows reference on first use, caches it, and keeps editor autocomplete current. Fast first pull, nothing you don't need.",
+                image: runSlim,
+                imageAlt:
+                    "An execution installing the plugins its flow references on first use",
+            },
+        ],
+    },
+]
+
+const SECURITY_ROWS: Row[] = [
+    {
+        type: "cards",
+        columns: [1, 0.75],
+        cards: [
+            {
+                title: "Workers That Prove Who They Are",
+                body: "Workers no longer connect directly to your database. They connect to the platform over a secure, TLS-encrypted channel, allowing you to place compute across regions, private networks, and restricted environments without exposing database access. Every worker authenticates with short-lived credentials that can be revoked, and mutual TLS can reject unknown workers before they reach the platform.",
+                image: securityWorkers,
+                imageAlt:
+                    "Two workers with valid certificates accepted by the mTLS check and an unknown worker refused at the handshake",
+            },
+            {
+                title: "Straight Into Your SIEM",
+                body: "Log Shipper and Audit Log Shipper gain a Syslog CEF destination over TCP, UDP, or TLS. Kestra events route directly into Graylog, Splunk, or QRadar without a custom adapter.",
+            },
+        ],
+    },
+    {
+        type: "cards",
+        cards: [
+            {
+                title: "Audited End to End",
+                body: "A systematic security audit in the 2.0 cycle hardened secret encryption, password hashing, management endpoint exposure, and injection vectors.",
+                layout: "band",
+            },
+        ],
+    },
+]
 ---
 
-<Layout headerTheme="darkHeader">
+{
+    /* No `title`/`description`: the home page keeps Layout's brand-level
+    defaults, and the `WebSite` structured data plus the announcement bar are
+    switched on by Layout's own `isHomepage` check. */
+}
+<Layout headerTheme="lightText">
     <Fragment slot="head">
-        <SchemaSoftwareApplication
-            url="https://kestra.io"
-        />
-        {/* The mobile hero background is the LCP element but lives in CSS
-            (Hero.astro .mobile-bg), so the browser only discovers it after
-            the stylesheets load. Preload it so it starts downloading with
-            the document instead. */}
-        <link
-            rel="preload"
-            as="image"
-            href={mobileHeroBgUrl}
-            media="(max-width: 767.98px)"
-            fetchpriority="high"
-        />
+        <SchemaSoftwareApplication url="https://kestra.io" />
     </Fragment>
-    <div class="home-page">
+    <div class="twozero-page">
         <Hero />
-        <Comparison />
-        <Stacked>
-            <h2 slot="title" id="adopt">
-                Adopt Once.<br />
-                <span>Standardize Everywhere.</span>
-            </h2>
 
-            <div slot="description"></div>
-        </Stacked>
-        <PlatformOverview />
-        <UseCaseGrid />
-        <PluginsBlock>
-            <span slot="title">
-                Work With Your Stack, <br />
-                Not the Other Way Around.
-            </span>
-            <span slot="description">
-                Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With {totalPlugins}+ plugins, you
-                can orchestrate everything without building custom glue code.
-            </span>
-        </PluginsBlock>
-        <Testimonial />
-        <GetStarted>
-            <h2 slot="heading" id="get-started">
-                Deploy Anywhere. Keep Everything Governed.
-            </h2>
-        </GetStarted>
-        <Blueprints />
-        <ClosingCTA />
-        <EarlyAdopterBanner />
+        <FeatureSection
+            id="agentic"
+            heading={`Kestra Orchestrates Your <span class="highlight">AI</span> Stack.<br />Not the Other Way Around.`}
+            standfirst="Agents call flows. Flows govern agents. You keep control."
+            rows={AGENTIC_ROWS}
+        />
+
+        <FeatureSection
+            id="build"
+            heading={`<span class="highlight">Build</span> Flows the Way You Think`}
+            standfirst="No code, YAML, or natural language. Always in sync."
+            rows={BUILD_ROWS}
+            tone="tinted"
+        />
+
+        <FeatureSection
+            id="governance"
+            heading={`Enterprise <span class="highlight">Governance</span>,<br />Finally in the Platform`}
+            standfirst="Enforce standards, manage incidents, promote to production. Without leaving Kestra."
+            rows={GOVERNANCE_ROWS}
+        />
+
+        <FeatureSection
+            id="run-anywhere"
+            heading={`Run <span class="highlight">Anywhere</span>.<br /><span class="highlight">Scale</span> Without Compromise.`}
+            standfirst="Workers go where the work is. The platform stays in control."
+            rows={RUN_ANYWHERE_ROWS}
+            tone="tinted"
+        />
+
+        <FeatureSection
+            id="security"
+            heading={`Enforced <span class="highlight">Security</span> by Default`}
+            standfirst="Every worker authenticated. Every log where your SIEM expects it."
+            rows={SECURITY_ROWS}
+        />
+
+        <UpgradeSection />
+        <ClosingCta />
     </div>
 </Layout>
 
-<style lang="scss">
-    /* since the home page will mostly follow its own theme,
-     * we need to define some of the colors here. */
-    .home-page {
-        --hp-background-dark: #0a0b0d;
-        --hp-content-dark: #ffffff;
-        --hp-content-primary: #131316;
-        --hp-background-secondary: #f7f7f7;
-        --hp-content-secondary: #3b3a41;
-        --hp-content-secondary-inverse: #cccbce;
-        --hp-background-tertiary: #7f7f86;
-        --hp-content-tertiary: #94a3b8;
-        --hp-border-primary: #f1f1f1;
-        --hp-border-secondary: #cccbce;
-        --hp-content-color-highlight: #631bff;
-        --hp-background-purple-light: #f1efff;
-        --hp-grid-size: 68px;
-        background-color: var(--hp-background-dark);
-        color: var(--hp-content-dark);
-        overflow: clip;
-    }
+<style is:global lang="scss">
+    /**
+     * The 2.0 landing page is white-mode only, so the `--ks-*` tokens it
+     * relies on are pinned to their light-theme values here. The section
+     * components stay on the shared tokens while rendering identically under
+     * `html.dark`; deleting this block opts the page back into the theme
+     * switcher.
+     */
+    .twozero-page {
+        /* The global `main > div { overflow-x: hidden }` would force
+         * `overflow-y: auto` and clip the hero where it runs up under the
+         * fixed header. `clip` keeps the horizontal guard without that. */
+        overflow-x: clip;
+        --ks-content-primary: #131316;
+        --ks-content-secondary: #3b3a41;
+        --ks-content-link: #631bff;
+        --ks-content-color-highlight: #631bff;
+        --ks-border-primary: #f1f1f1;
+        --ks-border-button-secondary: #131316;
+        --ks-background-body: #ffffff;
+        --ks-background-primary: #ffffff;
+        --ks-background-function: #f1efff;
+        --ks-background-button-primary: #631bff;
+        --ks-background-button-primary-hover: #8465ff;
+        --ks-background-button-secondary: #ffffff;
+        --ks-background-button-secondary-hover: #131316;
+        --ks-content-btn-secondary-hover: #ffffff;
 
-    h2 {
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 2rem;
-        margin-inline: auto;
-        @include media-breakpoint-up(md) {
-            width: 700px;
-        }
-    }
-
-    h2#adopt {
+        background: var(--ks-background-body);
         color: var(--ks-content-primary);
-        span {
-            color: var(--ks-content-color-highlight);
-        }
-    }
 
-    h2#get-started {
-        color: var(--ks-content-primary-inverse);
+        /* Figma "Titles/H2": 48px semibold, -1.5% tracking, 50px leading.
+         * Shared by every section heading; colour is inherited so the dark
+         * panels stay white. */
+        h2 {
+            margin: 0;
+            font-size: clamp(2rem, 3.4vw, 3rem);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            line-height: 1.0417;
+        }
+
+        /* Section shell: the Figma artboard is 1900px wide with 200px gutters,
+         * so the content column is 1500px. */
+        .tz-container {
+            width: 100%;
+            /* Padding is added on top so the content itself reaches 1500px. */
+            max-width: calc(1500px + 5rem);
+            margin-inline: auto;
+            padding-inline: 1.5rem;
+
+            @include media-breakpoint-up(lg) {
+                padding-inline: 2.5rem;
+            }
+        }
     }
 </style>
-
