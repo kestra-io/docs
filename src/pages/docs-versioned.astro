@@ -9,6 +9,7 @@ import PrevNext from "~/components/layout/PrevNext.vue"
 import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
 import { renderVersionedDocBody, type VersionedDocBody } from "~/utils/renderVersionedDoc"
 import { buildVersionedNavigation, versionedBreadcrumbItems } from "~/utils/versionedNavigation"
+import { getDocSections } from "~/utils/docSectionsFetch"
 import * as versionedDocs from "~/utils/versionedDocs"
 
 export const prerender = false
@@ -44,8 +45,9 @@ if (body.unknownComponents.length) {
 
 const pageKey = versionedDocs.currentDocKey(path)
 const activeStem = versionedDocs.docChildHref(version, pageKey)
+const sections = await getDocSections(version)
 const navigation = [
-    { title: "Documentation", children: buildVersionedNavigation(children, version) },
+    { title: "Documentation", children: buildVersionedNavigation(children, version, sections) },
 ]
 ---
 
