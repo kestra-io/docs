@@ -225,6 +225,27 @@ export function switchVersionHref(version: string, pathname: string): string {
  * error still attempts the direct navigation, mirroring the middleware's
  * 404-vs-transient split.
  */
+/**
+ * Whether a click on the banner's "View latest" CTA should be intercepted for
+ * the HEAD probe below. Modified clicks (new tab, new window, save, middle
+ * button) must keep the browser's own behaviour.
+ */
+export function shouldInterceptCtaClick(event: {
+    button: number
+    metaKey: boolean
+    ctrlKey: boolean
+    shiftKey: boolean
+    altKey: boolean
+}): boolean {
+    return (
+        event.button === 0 &&
+        !event.metaKey &&
+        !event.ctrlKey &&
+        !event.shiftKey &&
+        !event.altKey
+    )
+}
+
 export async function resolveVersionSwitchHref(
     version: string,
     pathname: string,

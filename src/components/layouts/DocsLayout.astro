@@ -111,6 +111,7 @@ const techArticleSchema = {
             ]}
         >
             <div class="bd-title">
+                <slot name="banner" />
                 <Breadcrumb
                     slug={props.activeStem}
                     pageList={pageList}
