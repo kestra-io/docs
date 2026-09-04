@@ -40,9 +40,9 @@ Previously, every resource shared the same four CRUD actions. Kestra 2.0 removes
 Existing role permissions in the database are migrated automatically when you upgrade. You do not need to manually recreate roles. The database migration (`V2_1RolePermissionMigration`) runs on startup and expands each old `(resource, CRUD action)` pair into the equivalent new actions.
 
 :::alert{type="warning"}
-`TEMPLATE` permissions are silently dropped during migration — there is no equivalent resource in 2.0. If any of your roles had `TEMPLATE` permissions, review those roles after upgrading.
+`TEMPLATE` permissions are silently dropped during migration; there is no equivalent resource in 2.0. If any of your roles had `TEMPLATE` permissions, review those roles after upgrading.
 
-`IMPERSONATE` permissions are also dropped — there is no direct migration path. Grant `USER: IMPERSONATE` explicitly on affected roles after upgrading.
+`IMPERSONATE` permissions are also dropped; there is no direct migration path. Grant `USER: IMPERSONATE` explicitly on affected roles after upgrading.
 :::
 
 ## CRUD → action migration mapping
@@ -93,7 +93,7 @@ The table below shows exactly how the migration expands each old CRUD action. Ac
 The `kestractl roles create` and `kestractl roles update` commands use `--permission RESOURCE:ACTION[,ACTION]` syntax. The action values are now specific names like `VIEW`, `EXECUTE`, and `ACCESS_LOGS`, not CRUD verbs.
 
 :::alert{type="warning"}
-`READ` is still accepted as a legacy alias and maps to `VIEW` only — it does **not** expand to `VIEW` + `LIST` + `ACCESS_LOGS` + other actions the way the automatic database migration does. Using old CRUD values in new role definitions will silently under-grant permissions.
+`READ` is still accepted as a legacy alias and maps to `VIEW` only; it does **not** expand to `VIEW` + `LIST` + `ACCESS_LOGS` + other actions the way the automatic database migration does. Using old CRUD values in new role definitions will silently under-grant permissions.
 :::
 
 Update your `kestractl` scripts to use the new action names:

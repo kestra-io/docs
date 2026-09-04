@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/flow.svg
 editions: ["EE", "Cloud"]
 ---
 
-Cap the number of executions created within a time window — at the flow, namespace, or tenant level. This is different from [`concurrency`](../14.concurrency/index.md), which limits how many executions **run simultaneously**.
+Cap the number of executions created within a time window, at the flow, namespace, or tenant level. This is different from [`concurrency`](../14.concurrency/index.md), which limits how many executions **run simultaneously**.
 
 Each quota specifies a `duration` (the time window and the unique identifier for that quota entry), a `limit` (the maximum executions allowed in that window), and a `behavior` (what happens when the limit is exceeded).
 
@@ -21,12 +21,12 @@ Each entry in the `quotas` list has three required properties:
 
 | Property | Type | Required | Description |
 | --- | --- | --- | --- |
-| `duration` | string | Yes | ISO 8601 duration defining the time window, e.g. `PT1H` (one hour) or `P1D` (one day). Minimum: `PT1M`. Maximum: `P1D` — durations above one day are not supported. Acts as the unique identifier — each duration value must appear at most once in the list. |
+| `duration` | string | Yes | ISO 8601 duration defining the time window, e.g. `PT1H` (one hour) or `P1D` (one day). Minimum: `PT1M`. Maximum: `P1D`; durations above one day are not supported. Acts as the unique identifier; each duration value must appear at most once in the list. |
 | `limit` | integer | Yes | Maximum number of executions allowed within the window. Must be `>= 1`. |
 | `behavior` | enum | Yes | Action taken when the limit is reached. One of `CANCEL` or `FAIL`. |
 
 :::alert{type="info"}
-Windows are **fixed and UTC-aligned**, not rolling. `PT1H` covers the current UTC clock-hour (e.g. 14:00–15:00 UTC), not the preceding 60 minutes. The maximum duration is `P1D` (one day) — durations above one day are not supported. Prefer durations that divide evenly into 24 hours (`PT1M`, `PT5M`, `PT15M`, `PT30M`, `PT1H`, `PT2H`, `PT3H`, `PT4H`, `PT6H`, `PT8H`, `PT12H`, `PT24H`). Durations that don't divide evenly (e.g. `PT7H`) produce a shorter final window each day.
+Windows are **fixed and UTC-aligned**, not rolling. `PT1H` covers the current UTC clock-hour (e.g. 14:00–15:00 UTC), not the preceding 60 minutes. The maximum duration is `P1D` (one day); durations above one day are not supported. Prefer durations that divide evenly into 24 hours (`PT1M`, `PT5M`, `PT15M`, `PT30M`, `PT1H`, `PT2H`, `PT3H`, `PT4H`, `PT6H`, `PT8H`, `PT12H`, `PT24H`). Durations that don't divide evenly (e.g. `PT7H`) produce a shorter final window each day.
 :::
 
 ## Behavior options
@@ -97,7 +97,7 @@ tasks:
     message: Hello World!
 ```
 
-You can mix behaviors across quotas in the same flow — for example, cancel executions that exceed the hourly limit but fail those that exceed the daily limit:
+You can mix behaviors across quotas in the same flow, for example cancel executions that exceed the hourly limit but fail those that exceed the daily limit:
 
 ```yaml
 quotas:

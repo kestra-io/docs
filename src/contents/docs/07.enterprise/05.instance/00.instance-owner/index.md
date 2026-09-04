@@ -15,9 +15,7 @@ Instance Owner operations are instance-wide. Changes to tenants, users, worker g
 
 ## Entering Instance Owner
 
-In the sidebar footer, click **Instance Owner** (directly above **Settings**). The entry is only visible to users with the Instance Owner privilege.
-
-<!-- TODO: replace super-admin-settings.png with a screenshot of the new sidebar footer showing the Super Admin entry (PR kestra-io/kestra-ee#10059) -->
+In the sidebar, click **Instance Owner**. The entry is only visible to users with the Instance Owner privilege.
 
 The UI switches to the Instance Owner console and shows a banner confirming you are administering the whole instance. Your regular tenant workspace is unaffected — you can return to it at any time.
 
@@ -56,7 +54,7 @@ To create a new user with the Instance Owner privilege:
 ```bash
 kestra auths users create admin@kestra.io TopSecret42 --instance-owner
 
-## with tenant scoping:
+# with tenant scoping:
 kestra auths users create <username> <password> \
 --tenant=<tenant-id> --instance-owner
 ```

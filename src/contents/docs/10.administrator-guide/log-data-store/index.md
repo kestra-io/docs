@@ -4,7 +4,7 @@ h1: Store Execution Logs Outside Your Main Database
 description: Route Kestra execution logs to a dedicated JDBC database or Elasticsearch, separate from your main backend, to reduce database size and speed up schema migrations.
 sidebarTitle: External Log Data Store
 icon: /src/contents/docs/icons/admin.svg
-editions: ["OSS", "EE"]
+editions: ["EE"]
 version: ">= 2.0.0"
 ---
 
@@ -44,7 +44,7 @@ The full resolution order is:
 
 Configuring an external log store applies to **new executions only**. Historical logs remain in the main database.
 
-## Configure the JDBC log store (OSS + EE)
+## Configure the JDBC log store
 
 Select a JDBC store by setting `kestra.logs.type` to `h2`, `postgres`, or `mysql`. The store can connect to a dedicated log database or reuse the main datasource.
 
@@ -123,11 +123,13 @@ volumes:
 
 The main backend keeps using `datasources.postgres`. The log store opens its own connection pool against `postgres-logs`, runs log-table migrations there, and routes all log reads and writes to that database.
 
-## Configure the Elasticsearch log store (EE and Cloud)
+## Configure the Elasticsearch log store
 
-The Elasticsearch log store is an Enterprise Edition and Cloud feature. It reuses the existing `kestra.elasticsearch.*` connection config; you add a `kestra.logs` block naming the index.
+The Elasticsearch log store reuses the existing `kestra.elasticsearch.*` connection config; you add a `kestra.logs` block naming the index.
 
+:::alert{type="warning"}
 Kestra fails at startup if no Elasticsearch client is configured or if the required index declaration (with `cls: io.kestra.core.models.executions.LogEntry`) is missing.
+:::
 
 ### Config reference
 

@@ -103,7 +103,7 @@ tasks:
 
 ### Inputs
 
-The flow uses three inputs — `summary_length`, `language`, and `text` — to control the summary length, language, and source text.
+The flow uses three inputs (`summary_length`, `language`, and `text`) to control the summary length, language, and source text.
 
 All inputs have a default value. Any of them can be referenced in downstream tasks with [expressions](../../expressions/index.mdx). When executing the flow, any input can be selected or modified from its default.
 

@@ -142,7 +142,7 @@ kestra:
       password: k3str4
 ```
 
-The JDBC log store (H2, Postgres, MySQL) is available in OSS. The Elasticsearch log store is available in Enterprise Edition and Cloud only. For full configuration examples and the capability reference, see the [External Log Data Store](../../10.administrator-guide/log-data-store/index.md) guide.
+The External Log Data Store is an Enterprise Edition feature. Both JDBC (H2, Postgres, MySQL) and Elasticsearch backends require EE. For full configuration examples and the capability reference, see the [External Log Data Store](../../10.administrator-guide/log-data-store/index.md) guide.
 
 ## Connection pooling and JDBC queue tuning
 

@@ -12,7 +12,7 @@ Track and resolve incidents directly in Kestra, next to the executions that caus
 
 When an execution fails, it is often an incident. Cases lets you track and resolve those incidents directly in Kestra, without a separate tool.
 
-Cases are not limited to failures — you can open one for executions that need approvals, or for successful executions that produced unexpected outputs.
+Cases are not limited to failures; you can open one for executions that need approvals, or for successful executions that produced unexpected outputs.
 
 The `CreateCase` task lets you open cases automatically from your flow YAML:
 
@@ -183,7 +183,7 @@ Every change to a case is recorded as a timeline event: creation, field updates,
 
 ## Case actions
 
-A case action is a flow attached to the case as a one-click button, intended for remediation or diagnostics (e.g. "Restart service"). Running one starts an execution that is automatically linked back to the case and labeled with `system.case: <caseId>`, and the run is recorded in the timeline. Attaching or running an action requires the `EXECUTE` action on the `FLOW` permission in the target flow's namespace.
+A case action is a flow attached to the case as a one-click button, intended for remediation or diagnostics (e.g. "Restart service"). Clicking an action opens the Execute flow modal so you can review and fill the flow's inputs, and optionally set labels, a schedule date, or breakpoints before running. The resulting execution is automatically linked back to the case and labeled `system.caseId: <caseId>` and `system.from: case`, and the run is recorded in the timeline. Attaching or running an action requires the `EXECUTE` action on the `FLOW` permission in the target flow's namespace.
 
 ## Linked executions and assets
 
@@ -277,7 +277,7 @@ curl -X POST "https://{host}/api/v1/{tenant}/cases/by-executions" \
   -d '["execution-id-1", "execution-id-2"]'
 ```
 
-Returns `{ "executionId": [caseSummary, ...] }` — useful for annotating an execution list with its linked cases.
+Returns `{ "executionId": [caseSummary, ...] }`, useful for annotating an execution list with its linked cases.
 
 **Add a comment**
 

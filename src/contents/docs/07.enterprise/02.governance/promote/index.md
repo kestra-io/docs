@@ -27,11 +27,11 @@ A promotion target is a remote Kestra instance that flows are promoted into. Eac
 
 Each target uses one of two connection modes that control how the promote action reaches the remote instance.
 
-**SERVER mode** — the Kestra backend holds an encrypted API token for the remote instance. When a user promotes a flow, the source Kestra server makes the API call to the target on their behalf. Users never see or handle the token.
+**SERVER mode**: the Kestra backend holds an encrypted API token for the remote instance. When a user promotes a flow, the source Kestra server makes the API call to the target on their behalf. Users never see or handle the token.
 
 Use SERVER mode when you want to centralize credential management and prevent users from needing direct access to the target instance.
 
-**CLIENT mode** — no token is stored on the source instance. When a user promotes a flow, they supply their own API token for the target at promote time. The browser calls the target instance directly, then reports the result back to the source for history and audit purposes. Tokens are stored in the user's browser for convenience and are never sent to the source server.
+**CLIENT mode**: no token is stored on the source instance. When a user promotes a flow, they supply their own API token for the target at promote time. The browser calls the target instance directly, then reports the result back to the source for history and audit purposes. Tokens are stored in the user's browser for convenience and are never sent to the source server.
 
 Use CLIENT mode when users already have personal API tokens on the target, or when you want each promotion to be attributable to the individual user's identity on the target.
 
@@ -47,7 +47,7 @@ Use gated targets for production environments where you want a deliberate review
 
 ### Disabling a target
 
-Targets can be disabled without being deleted. A disabled target is hidden from the promote UI — users cannot select it when promoting flows — but its configuration is preserved.
+Targets can be disabled without being deleted. A disabled target is hidden from the promote UI (users cannot select it when promoting flows) but its configuration is preserved.
 
 ---
 
@@ -67,7 +67,7 @@ You can also promote a flow by clicking the **Promote** tab directly from the fl
 
 ### Bulk promote
 
-From the flows list, select up to 100 flows and choose **Promote** from the action bar. The bulk promote dialog shows a drift summary per target (how many are out of sync, how many have never been promoted) and requires gate confirmation if any selected target has a gate enabled. Results are reported per flow — a failure on one flow does not block the others.
+From the flows list, select up to 100 flows and choose **Promote** from the action bar. The bulk promote dialog shows a drift summary per target (how many are out of sync, how many have never been promoted) and requires gate confirmation if any selected target has a gate enabled. Results are reported per flow; a failure on one flow does not block the others.
 
 ![Bulk promote dialog showing 9 flows selected, drift summary per target, and the gate confirmation checkbox](./promote-bulk-dialog.png)
 
@@ -95,7 +95,7 @@ Drift is computed by comparing each flow's source YAML between the local instanc
 
 ## Promotion history
 
-Every promotion — including who initiated it, which revision was promoted, which target it went to, and whether a gate was confirmed — is recorded as an auditable event. The history for a specific flow is visible on its Deploy tab. For tenant-wide audit purposes, promotions are also available in [Audit Logs](../06.audit-logs/index.md), filtered by resource type `FLOW` and action `PROMOTE`.
+Every promotion (including who initiated it, which revision was promoted, which target it went to, and whether a gate was confirmed) is recorded as an auditable event. The history for a specific flow is visible on its Deploy tab. For tenant-wide audit purposes, promotions are also available in [Audit Logs](../06.audit-logs/index.md), filtered by resource type `FLOW` and action `PROMOTE`.
 
 From the history, you can recompute the diff of any past promotion to see exactly what changed at the time it was deployed.
 
@@ -115,7 +115,7 @@ Promote uses two distinct RBAC resources.
 
 **Promoting flows** requires the `FLOW: PROMOTE` permission on the source flow's namespace. This permission is namespace-scoped: a user with `FLOW: PROMOTE` on `company.dev` can promote flows in that namespace, but not flows in other namespaces unless they also have the permission there.
 
-**Managing promotion targets** (creating, editing, deleting, viewing targets) requires `PROMOTION_TARGET` permissions. Unlike flow permissions, `PROMOTION_TARGET` is not namespace-scoped — it applies at the tenant level.
+**Managing promotion targets** (creating, editing, deleting, viewing targets) requires `PROMOTION_TARGET` permissions. Unlike flow permissions, `PROMOTION_TARGET` is not namespace-scoped; it applies at the tenant level.
 
 | Action | Required permission |
 |---|---|
@@ -133,7 +133,7 @@ See [RBAC](../../03.auth/rbac/index.md) for how to assign permissions to roles a
 
 ### Allow insecure target URLs
 
-By default, promotion target URLs must use HTTPS. To allow HTTP URLs — for example, when targets are on a private network without TLS — set the following in your Kestra configuration:
+By default, promotion target URLs must use HTTPS. To allow HTTP URLs, for example when targets are on a private network without TLS, set the following in your Kestra configuration:
 
 ```yaml
 kestra:

@@ -351,7 +351,7 @@ kestra:
 
 ### Google Vertex AI
 
-Authenticates via Application Default Credentials — no `api-key` field. Ensure the Kestra runtime has ADC configured (e.g. `GOOGLE_APPLICATION_CREDENTIALS` env var or Workload Identity).
+Authenticates via Application Default Credentials; no `api-key` field is needed. Ensure the Kestra runtime has ADC configured (e.g. `GOOGLE_APPLICATION_CREDENTIALS` env var or Workload Identity).
 
 ```yaml
 kestra:
@@ -396,7 +396,7 @@ kestra:
 ```
 
 :::alert{type="info"}
-If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead — for example, set the base URL to `http://host.docker.internal:11434`.
+If Ollama is running locally on your host machine while Kestra is running inside a container, connection errors may occur when using `localhost`. In this case, use the Docker internal network URL instead. For example, set the base URL to `http://host.docker.internal:11434`.
 :::
 
 ### OpenAI

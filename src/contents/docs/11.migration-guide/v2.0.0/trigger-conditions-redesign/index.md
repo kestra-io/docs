@@ -31,7 +31,7 @@ The variables available in a `when` expression depend on the trigger type:
 | Flow | `namespace`, `flowId`, `state`, `labels`, `outputs`, `hasRetryAttempt` |
 
 :::alert{type="info"}
-**Schedule date skipping:** When a Schedule trigger has a `when` expression, the scheduler evaluates it against each candidate date. If `when` evaluates to `false`, the scheduler skips that date and advances to the next cron-matching date. This is the same behavior as the previous `conditions` on Schedule triggers — `when` controls which scheduled dates fire, not just whether a single date fires.
+**Schedule date skipping:** When a Schedule trigger has a `when` expression, the scheduler evaluates it against each candidate date. If `when` evaluates to `false`, the scheduler skips that date and advances to the next cron-matching date. This is the same behavior as the previous `conditions` on Schedule triggers; `when` controls which scheduled dates fire, not just whether a single date fires.
 :::
 
 ### New Pebble helper functions
@@ -517,7 +517,7 @@ triggers:
       every: P1D
 ```
 
-The arbitrary string keys (`flow_a`, `flow_b`) are dropped — `dependsOn` is always a list. The `windowAdvance` property is removed with no direct equivalent.
+The arbitrary string keys (`flow_a`, `flow_b`) are dropped; `dependsOn` is always a list. The `windowAdvance` property is removed with no direct equivalent.
 
 ### Namespace-wide alerting (prefix matching)
 
@@ -680,7 +680,7 @@ triggers:
             in: [SUCCESS]
 ```
 
-**After (option 1 — explicit states)**
+**After (option 1: explicit states)**
 
 ```yaml
 triggers:
@@ -692,7 +692,7 @@ triggers:
         states: [FAILED, WARNING, KILLED, CANCELLED]
 ```
 
-**After (option 2 — `when` expression)**
+**After (option 2: `when` expression)**
 
 ```yaml
 triggers:
@@ -752,7 +752,7 @@ Same `dependsOn` syntax regardless of whether the original used `conditions` or 
 
 Flow trigger outputs are now scoped by flow ID. The path format is `trigger.outputs.<flowId>.<outputKey>`.
 
-**Before** (flat map — all upstream outputs merged together)
+**Before** (flat map, all upstream outputs merged together)
 
 ```yaml
 triggers:
@@ -794,7 +794,7 @@ dependsOn:
 Access as `{{ trigger.outputs.stg_sales.row_count }}` and `{{ trigger.outputs.stg_marketing.row_count }}`.
 
 :::alert{type="warning"}
-**Breaking change for multi-flow triggers.** Update all `trigger.outputs.<key>` references to `trigger.outputs.<flowId>.<key>`. For triggers with a single `dependsOn` entry, the unscoped form `{{ trigger.outputs.<key> }}` still works as a shorthand — no update required.
+**Breaking change for multi-flow triggers.** Update all `trigger.outputs.<key>` references to `trigger.outputs.<flowId>.<key>`. For triggers with a single `dependsOn` entry, the unscoped form `{{ trigger.outputs.<key> }}` still works as a shorthand; no update required.
 :::
 
 #### ForEachItem chain
@@ -1014,7 +1014,7 @@ No migration action is required. Review your Flow trigger `inputs` expressions t
 
 Previously, auto-generated condition keys (`condition_1`, `condition_2`, …) meant that reordering entries could reset accumulated window state. In Kestra 2.0, `dependsOn` entry keys are derived from each entry's `namespace` and `flowId`, making them order-independent.
 
-The trigger-level state store key also changes: the old scheme used `preconditions.id`; the new scheme uses `{flowId}/{triggerId}`. Existing accumulated state from `preconditions` will not be found after upgrading — in-flight multi-flow triggers re-evaluate from scratch. For most deployments this means at most one missed trigger cycle.
+The trigger-level state store key also changes: the old scheme used `preconditions.id`; the new scheme uses `{flowId}/{triggerId}`. Existing accumulated state from `preconditions` will not be found after upgrading; in-flight multi-flow triggers re-evaluate from scratch. For most deployments this means at most one missed trigger cycle.
 
 Old-format events in the async queue are discarded gracefully (logged as a warning). No user action is required.
 

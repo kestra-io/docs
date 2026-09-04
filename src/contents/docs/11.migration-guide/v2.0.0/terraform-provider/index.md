@@ -125,11 +125,34 @@ resource "kestra_namespace" "company_team" {
 }
 ```
 
-A `kestra_policy` resource is the replacement for managing plugin defaults as code. The exact Terraform syntax for `kestra_policy` is not yet available — it will be documented once the resource is released in the 2.x provider.
+Use a `kestra_policy` resource to apply plugin defaults as a namespace-scoped `Add` rule:
+
+```hcl
+resource "kestra_policy" "log_defaults" {
+  scope     = "NAMESPACE"
+  policy_id = "log-defaults"
+  namespace = "company.team"
+
+  content = <<EOT
+id: log-defaults
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: EQUAL_TO
+        value: io.kestra.plugin.core.log.Log
+    values:
+      level: INFO
+EOT
+}
+```
+
+See [Policies](../../../07.enterprise/02.governance/policies/index.md) for the full rule syntax and available rule types.
 
 ### `worker_group` block removed
 
-The `worker_group` block on `kestra_namespace` is dropped. Worker groups and worker queues are now managed separately with tag-based routing. Remove the block from your namespace resources:
+The `worker_group` block on `kestra_namespace` is replaced by `default_worker_selector`. Instead of routing by worker group key, the namespace now declares a tag set matched against Worker Queues. Note that `fallback` defaults to `FAIL` instead of `WAIT`.
 
 ```hcl
 # Before
@@ -145,10 +168,13 @@ resource "kestra_namespace" "company_team" {
 # After
 resource "kestra_namespace" "company_team" {
   namespace_id = "company.team"
+
+  default_worker_selector {
+    tags     = ["gpu"]        # must match the tag set of the target Worker Queue
+    fallback = "WAIT"         # set explicitly if you relied on the old default
+  }
 }
 ```
-
-New Terraform resources for worker groups and worker queues will be documented once they are available in the 2.x provider. For now, manage worker group assignments through the Kestra UI or API.
 
 ## `kestra_flow` — pluginDefaults in flow content
 
@@ -206,18 +232,87 @@ resource "kestra_template" "my_template" { ... }
 data "kestra_template" "my_template" { ... }
 ```
 
+## New resources: `kestra_worker_queue` and `kestra_worker_group`
+
+Worker Queues and Worker Groups are now first-class Terraform resources. Define queues with a tag set, then subscribe worker groups to them with optional capacity reservation.
+
+```hcl
+resource "kestra_worker_queue" "gpu" {
+  queue_id    = "gpu-queue"
+  name        = "GPU Queue"
+  tags        = ["gpu", "high-memory"]
+}
+
+resource "kestra_worker_group" "gpu_workers" {
+  group_id    = "gpu-workers"
+  name        = "GPU Workers"
+
+  # Subscribe to the default queue with no reservation
+  subscriptions {
+    worker_queue_id = "default"
+  }
+
+  # Reserve 50% of slots for GPU workloads; lend idle slots to other queues
+  subscriptions {
+    worker_queue_id  = kestra_worker_queue.gpu.queue_id
+    reserved_percent = 50
+    mode             = "ELASTIC"
+  }
+}
+```
+
+`mode` is `STRICT` (reserved slots are exclusive) or `ELASTIC` (idle reserved slots may be lent to other subscriptions). `reserved_percent` accepts `-1` (no reservation, the default) or a value from 1 to 100; the sum across all subscriptions on a group must not exceed 100.
+
+See the [Worker Groups reference](../../../07.enterprise/04.scalability/worker-group/index.md) for the full routing model.
+
+## New resource: `kestra_policy`
+
+Policies are now a first-class Terraform resource at `INSTANCE`, `TENANT`, or `NAMESPACE` scope. The `content` attribute takes the raw policy YAML:
+
+```hcl
+resource "kestra_policy" "deny_shell" {
+  scope     = "TENANT"
+  policy_id = "deny-shell-commands"
+
+  content = <<EOT
+id: deny-shell-commands
+displayName: Deny shell commands
+enforcement: ACTIVE
+target:
+  namespaces:
+    - company.team
+rules:
+  - type: io.kestra.plugin.ee.rules.Deny
+    on: PLUGIN
+    action: BLOCK
+    errorMessage: Shell commands are not allowed
+    where:
+      - field: type
+        operator: EQUAL_TO
+        value: io.kestra.plugin.scripts.shell.Commands
+EOT
+}
+```
+
+Import syntax: `INSTANCE/<id>`, `TENANT/<tenant_id>/<id>`, or `NAMESPACE/<tenant_id>/<namespace>/<id>`.
+
+See [Policies](../../../07.enterprise/02.governance/policies/index.md) for available rule types and enforcement options.
+
 ## Migration steps
 
 1. **Pin the provider** to `~> 2.0` in `required_providers`.
 2. **Update `kestra_role` resources** — rename `permissions` blocks to `resources`, rename the inner `permissions` list to `actions`, replace CRUD verbs with new action names, and update any renamed or removed resource types.
-3. **Remove `plugin_defaults`** from `kestra_namespace` resources.
-4. **Remove `worker_group`** from `kestra_namespace` resources.
-5. **Remove `pluginDefaults`** from flow content strings in `kestra_flow` resources.
-6. **Delete `kestra_template` resources** and data sources.
-7. **Run `terraform plan`** against the upgraded 2.0 server to review changes before applying.
+3. **Remove `plugin_defaults`** from `kestra_namespace` resources. Add `kestra_policy` resources with `Add` rules as the replacement (EE).
+4. **Replace `worker_group`** on `kestra_namespace` with `default_worker_selector` using tags. Set `fallback` explicitly if you relied on the old `WAIT` default (the new default is `FAIL`).
+5. **Add `kestra_worker_queue` and `kestra_worker_group` resources** for any worker routing topology you previously managed through the UI.
+6. **Remove `pluginDefaults`** from flow content strings in `kestra_flow` resources.
+7. **Delete `kestra_template` resources** and data sources.
+8. **Run `terraform plan`** against the upgraded 2.0 server to review changes before applying.
 
 ## Related
 
 - [RBAC action model](../rbac-action-model) — full CRUD-to-action mapping table
 - [pluginDefaults removed](../plugin-defaults-removed) — migration options for flow and namespace plugin defaults
 - [Policies](../../../07.enterprise/02.governance/policies/index.md) — the replacement for plugin defaults in EE
+- [Worker Groups](../../../07.enterprise/04.scalability/worker-group/index.md) — tag-based routing, capacity reservation, and JWT auth
+- [Helm gRPC worker-controller](../helm-grpc-worker-controller) — `workerGroup.key` removal and `fallback` default change

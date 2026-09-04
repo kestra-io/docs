@@ -104,7 +104,7 @@ To access a file's revision history, right-click on the file.
 
 From the history, view, compare, and restore prior versions.
 
-![Restore namespace file revision placeholder](./namespace-file-restore-2-0.png)
+![Restore a namespace file to a prior revision](./namespace-file-restore-2-0.png)
 
 From the **Revisions** list, you can delete a given revision or all revisions older than the selected one. You will be prompted to confirm this choice, as there is no possible way to restore a revision once is has been deleted. 
 

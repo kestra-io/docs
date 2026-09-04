@@ -414,7 +414,7 @@ tasks:
 | Property | Required | Description |
 |---|---|---|
 | `assetId` | Yes | ID of the asset to lock. |
-| `ttl` | No | How long to hold the lock before it expires automatically. ISO-8601 duration (e.g. `PT1H`). Uses the server default when unset. |
+| `ttl` | No | How long to hold the lock before it expires automatically. ISO-8601 duration (e.g. `PT1H`). Defaults to 5 minutes when unset. |
 
 **`Acquire`** outputs:
 

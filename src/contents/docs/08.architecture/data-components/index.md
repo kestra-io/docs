@@ -81,8 +81,7 @@ For full details, see [internal storage configuration](../../configuration/02.ru
 
 ### Logs
 
-- By default, logs are stored in the repository. In Kestra 2.0+, you can route them to a separate database or Elasticsearch using the [external log data store](../../10.administrator-guide/log-data-store/index.md).
-  - JDBC log stores (H2, PostgreSQL, MySQL) are available in OSS. Elasticsearch is available in Enterprise Edition and Cloud only.
+- By default, logs are stored in the repository. In Kestra 2.0+ (EE), you can route them to a separate JDBC database or Elasticsearch using the [external log data store](../../10.administrator-guide/log-data-store/index.md).
   - Audit logs are always stored in the repository.
 - Logs can be accessed through the API, UI, or external logging integrations such as the [Log Shipper](../../07.enterprise/02.governance/logshipper/index.md).
 

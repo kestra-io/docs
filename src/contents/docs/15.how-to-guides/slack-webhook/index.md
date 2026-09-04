@@ -121,7 +121,7 @@ tasks:
         logger = logging.getLogger(__name__)
 
         def process_event(event):
-            # TODO adjust the URL below to your Kestra Webhook URL
+            # Replace with your Kestra Webhook URL
             url = "http://your_kestra_host:8080/api/v1/main/executions/webhook/prod/slack_events/superStrongSecretKey42"
             headers = {"Content-Type": "application/json"}
             response = requests.post(url, headers=headers, json=event)
