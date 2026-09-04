@@ -3,7 +3,7 @@ import NavSideBar from "~/components/docs/NavSideBar.vue"
 import Layout from "~/components/layout.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
-import { getLatestDocVersion, getKnownDocVersions } from "~/utils/docVersionsFetch"
+import { getDocsLatestVersion, getKnownDocVersions } from "~/utils/docVersionsFetch"
 import squaredGrid from "~/assets/squared-grid.svg"
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
@@ -36,7 +36,7 @@ const pageNames = generatePageNames(navigation[0])
 // Version selector data. Fetched once per build (memoized); lets readers jump
 // from the latest docs to any known version (served by the middleware).
 const [latestDocVersion, knownDocVersions] = await Promise.all([
-    getLatestDocVersion(),
+    getDocsLatestVersion(),
     getKnownDocVersions(),
 ])
 
