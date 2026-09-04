@@ -153,7 +153,7 @@ The [VS Code extension](./version-control-cicd/05.vscode/index.md) now supports 
 
 ### No-code Editor
 
-Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel of the form lists every upstream task output and execution context variable available at that point in the flow and are easily copiable into the property you need it.
+The [No-code editor](./09.ui/01.flows/index.md) is a visual flow builder that sits alongside the YAML editor. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as a list of blocks. Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel lists every upstream task output and execution context variable available at that point in the flow.
 
 All three views (YAML editor, No-code editor, and AI Copilot) stay in sync. Changes made in any view reflect immediately in the others.
 
@@ -250,3 +250,4 @@ All breaking changes have migration guides:
 | `condition` → `when` on flow checks | [Guide](./11.migration-guide/v2.0.0/checks-condition-renamed-when/index.md) |
 | `CANCELED` enum alias removed | Replace with `CANCELLED` in expressions, API consumers, and tooling |
 | Four core tasks removed | `Count`, `Resume`, `trigger.Toggle`, `log.Fetch`: use `plugin-kestra` equivalents |
+| Terraform provider `~> 2.0` | [Guide](./11.migration-guide/v2.0.0/terraform-provider/index.md) |

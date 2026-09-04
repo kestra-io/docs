@@ -60,7 +60,7 @@ New features available in the Enterprise Edition.
 
 Improvements to the tools and workflows used to build and manage flows.
 
-- **No-code Editor** — canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard.
+- **No-code Editor** — canvas-based flow editor alongside the YAML editor; Form and Source tabs per block; upstream output browser in the form panel; synced with the AI Copilot in real time. New `FORM` input type groups inputs into a multi-step wizard. [Docs](../../09.ui/01.flows/index.md)
 - **VS Code namespace files** — Open namespace (VFS mount), Upload file, and Sync folder commands; `kestra.namespaceFiles.exclude` setting. [Docs](../../version-control-cicd/05.vscode/index.md)
 - **Plugin Artifacts** — plugins can ship Vue.js frontend components (Module Federation) that load into named slots in the execution topology view, task side drawer, or task detail modal without changes to the core application. [Docs](../../plugin-developer-guide/10.plugin-ui/index.md)
 - **Plugin file renderers** — plugins can register format-specific renderers for inline output file preview. [Docs](../../plugin-developer-guide/09.file-renderer/index.md)
@@ -110,5 +110,7 @@ Each breaking change has a dedicated migration guide. See the [2.0 migration gui
 | Super Admin renamed to Instance Owner (EE, Cloud) | [Guide](../../11.migration-guide/v2.0.0/superadmin-renamed-instance-owner/index.md) |
 | SDK auth required for internal tasks | [Guide](../../11.migration-guide/v2.0.0/sdk-authentication/index.md) |
 | `workerGroup.key` removed | Migrate to `workerSelector.tags`. Check `fallback` default change (WAIT → FAIL). [Guide](../../11.migration-guide/v2.0.0/helm-grpc-worker-controller/index.md) |
+| `condition` → `when` on flow checks | [Guide](../../11.migration-guide/v2.0.0/checks-condition-renamed-when/index.md) |
 | `CANCELED` enum alias removed | Replace with `CANCELLED` in flow expressions, API consumers, and tooling. |
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, `log.Fetch` — replace with equivalents in `plugin-kestra`. |
+| Terraform provider `~> 2.0` | [Guide](../../11.migration-guide/v2.0.0/terraform-provider/index.md) |
