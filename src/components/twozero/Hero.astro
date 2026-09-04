@@ -5,12 +5,13 @@ import Cta from "./Cta.astro"
 import VideoDialog from "~/components/home/SixtySeconds.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import heroScreen from "./assets/hero-screen.webp"
-import heroBg from "./assets/hero-bg.webp?url"
+import heroBg from "./assets/hero-bg.svg?url"
 
 /**
- * YouTube id of the 2.0 launch video. Deliberately unset: the play badge stays
- * decorative until marketing supplies the real id. The existing "Kestra 2.0 is
- * almost here" teaser is intentionally not wired up here.
+ * YouTube id of the 2.0 launch video. Deliberately unset: the play button is
+ * not rendered at all until marketing supplies the real id, so the still never
+ * advertises a video it cannot play. The existing "Kestra 2.0 is almost here"
+ * teaser is intentionally not wired up here.
  */
 const LAUNCH_VIDEO_ID: string | undefined = undefined
 
@@ -78,7 +79,7 @@ const KEY_NUMBERS = [
                 fetchpriority="high"
             />
             {
-                LAUNCH_VIDEO_ID ? (
+                LAUNCH_VIDEO_ID && (
                     <VideoDialog
                         id="hero-video"
                         videoId={LAUNCH_VIDEO_ID}
@@ -88,10 +89,6 @@ const KEY_NUMBERS = [
                     >
                         <Icon name="mdi:play" />
                     </VideoDialog>
-                ) : (
-                    <span class="play" aria-hidden="true">
-                        <Icon name="mdi:play" />
-                    </span>
                 )
             }
         </figure>
@@ -123,7 +120,9 @@ const KEY_NUMBERS = [
         margin-top: calc(-1 * var(--top-bar-height, 67px));
         padding-block: 13.75rem 5.625rem;
         /* Figma's `bg-hero` component (radial planet gradient, noise and the
-         * outlined squares) exported as one image. */
+         * outlined squares) exported as one 1900×1564 SVG. Its two square
+         * clusters sit at the far left and top-right edges, outside the copy
+         * column, so `cover` can recrop it freely. */
         background: #000000 var(--heroBg) center top / cover no-repeat;
         color: $white;
         overflow: clip;
@@ -250,7 +249,7 @@ const KEY_NUMBERS = [
     }
 
     /* `:global` because the trigger button is rendered by VideoDialog, outside
-     * this component's scope, and shares the look of the decorative badge. */
+     * this component's scope. Only present once `LAUNCH_VIDEO_ID` is set. */
     .media :global(.play) {
         position: absolute;
         top: 50%;

@@ -57,11 +57,14 @@ const {
         {
             code && (
                 <div class="code">
+                    {/* The page pins its surfaces to the light palette, so pin
+                        the snippet to Expressive Code's light theme too: the
+                        `.expressive-code.light` selector wins over `html.dark`. */}
                     <Snippets
                         code={code.code}
                         lang={code.lang ?? "yaml"}
                         noCollapse
-                        class="two-zero"
+                        class="light"
                     />
                 </div>
             )
