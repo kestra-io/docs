@@ -73,7 +73,7 @@ const KEY_NUMBERS = [
                 src={heroScreen}
                 alt="Introducing Kestra 2.0, the open-source declarative orchestration platform"
                 widths={[640, 1024, 2048]}
-                sizes="(max-width: 1100px) 100vw, 1024px"
+                sizes="(max-width: 991px) 100vw, 68vw"
                 loading="eager"
                 fetchpriority="high"
             />
@@ -218,7 +218,10 @@ const KEY_NUMBERS = [
 
     .media {
         position: relative;
-        width: 100%;
+        /* Figma: 1024px of the 1500px content column. Keeping the share
+         * rather than the pixel width stops the video outgrowing the design
+         * on laptop viewports. */
+        width: 68%;
         max-width: 1024px;
         margin: 0;
         /* Figma: a 0.68px blue-to-white gradient stroke and two soft glows. */
@@ -231,6 +234,10 @@ const KEY_NUMBERS = [
             0 -6px 50px 0 rgba(94, 174, 240, 0.45),
             0 0 40px 0 rgba(94, 110, 212, 0.16);
         overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
 
         img {
             display: block;
@@ -255,7 +262,7 @@ const KEY_NUMBERS = [
         height: 6rem;
         padding: 0;
         border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 2rem;
+        border-radius: 50%;
         background: rgba(0, 0, 0, 0.25);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
         color: $white;
@@ -267,7 +274,6 @@ const KEY_NUMBERS = [
         @include media-breakpoint-down(md) {
             width: 4rem;
             height: 4rem;
-            border-radius: 1.25rem;
             font-size: 1.5rem;
         }
     }

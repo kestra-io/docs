@@ -4,7 +4,6 @@ import { Image } from "astro:assets"
 import Snippets from "~/components/common/Snippets.astro"
 import Link from "~/components/common/Link.astro"
 
-
 export interface CardContent {
     title: string
     /** Body copy. Accepts inline HTML so links, bold runs and code survive. */
@@ -20,6 +19,8 @@ export interface CardContent {
     imageWidth?: number
     /** Artwork wider than the card in Figma, bleeding off the right edge. */
     bleed?: boolean
+    /** `split` artwork that meets the card's bottom edge instead of centring. */
+    flush?: boolean
     /** Optional code sample rendered under the copy. */
     code?: { code: string; lang?: string }
     link?: { text: string; href: string }
@@ -38,6 +39,7 @@ const {
     imageAlt = "",
     imageWidth = 654,
     bleed = false,
+    flush = false,
     code,
     link,
     index = 0,
@@ -45,7 +47,7 @@ const {
 ---
 
 <article
-    class:list={["bento", layout, { bleed }]}
+    class:list={["bento", layout, { bleed, flush }]}
     style={layout === "split" ? `--tz-media-width: ${imageWidth}px` : undefined}
     data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
 >
@@ -59,6 +61,7 @@ const {
                         code={code.code}
                         lang={code.lang ?? "yaml"}
                         noCollapse
+                        class="two-zero"
                     />
                 </div>
             )
@@ -165,6 +168,12 @@ const {
 
     .code {
         margin-top: 1.5rem;
+
+        /* Figma "KsSelect": 16px radius and a 0 1px 2px shadow-element. */
+        :global(.code-card) {
+            border-radius: 1rem;
+            box-shadow: 0 1px 2px rgba(58, 29, 109, 0.04);
+        }
     }
 
     :global(.more) {
@@ -191,6 +200,18 @@ const {
 
         @include media-breakpoint-down(xl) {
             flex: 0 0 auto;
+        }
+    }
+
+    /* Figma crops the No Code editor at the card's bottom edge, so drop the
+     * artwork onto that edge rather than centring it with padding below. */
+    .split.flush .media {
+        align-self: flex-end;
+        margin-bottom: -4rem;
+
+        @include media-breakpoint-down(xl) {
+            align-self: auto;
+            margin-bottom: -2rem;
         }
     }
 
