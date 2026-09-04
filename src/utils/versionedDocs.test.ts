@@ -17,6 +17,9 @@ import {
     versionedAssetUrl,
     decideVersionedRoute,
     docsLatestVersion,
+    docsVersionFromPath,
+    searchResultHref,
+    searchScope,
     isAssetShapedDocPath,
     missingDocFallbackHref,
     resolveVersionSwitchHref,
@@ -401,6 +404,84 @@ describe("decideVersionedRoute with a pinned docs-latest", () => {
             { version: "1.3", label: "1.3", selected: false },
             { version: "1.2", label: "1.2", selected: false },
         ])
+    })
+})
+
+describe("searchScope", () => {
+    it("scopes search to the version being read, and prefixes its docs hits", () => {
+        expect(searchScope("/docs/1.0/installation/docker-compose", "2.0")).toEqual({
+            version: "1.0",
+            hrefVersion: "1.0",
+        })
+    })
+
+    it("scopes to docs-latest elsewhere on the site, with no prefix needed", () => {
+        // Those hits are already live URLs under /docs.
+        expect(searchScope("/docs/installation/docker-compose", "2.0")).toEqual({
+            version: "2.0",
+            hrefVersion: undefined,
+        })
+        expect(searchScope("/plugins/tasks/io.kestra.plugin.core.log.Log", "2.0")).toEqual({
+            version: "2.0",
+            hrefVersion: undefined,
+        })
+    })
+
+    it("does not prefix the demoted release's own docs when it is what /docs serves", () => {
+        // No pin: /docs/1.3/... redirects to /docs, so 1.3 hits are unversioned.
+        expect(searchScope("/docs/1.3/tutorial", "1.3")).toEqual({
+            version: "1.3",
+            hrefVersion: undefined,
+        })
+    })
+
+    it("leaves search unscoped when docs-latest is unknown", () => {
+        expect(searchScope("/blogs/some-post", undefined)).toEqual({
+            version: undefined,
+            hrefVersion: undefined,
+        })
+    })
+})
+
+describe("searchResultHref", () => {
+    const docsHit = { url: "docs/installation/docker-compose", type: "DOCS" }
+
+    it("puts the version segment back on an archived docs hit", () => {
+        expect(searchResultHref(docsHit, "1.0")).toBe(
+            "/docs/1.0/installation/docker-compose",
+        )
+    })
+
+    it("leaves docs hits alone when they belong to the version /docs serves", () => {
+        expect(searchResultHref(docsHit, undefined)).toBe(
+            "/docs/installation/docker-compose",
+        )
+    })
+
+    it("never versions a non-docs hit, even while reading an archived version", () => {
+        expect(searchResultHref({ url: "blogs/release-1-0", type: "BLOGS" }, "1.0")).toBe(
+            "/blogs/release-1-0",
+        )
+        expect(
+            searchResultHref({ url: "plugins/tasks/x", type: "PLUGINS" }, "1.0"),
+        ).toBe("/plugins/tasks/x")
+    })
+
+    it("maps a version home hit to that version's docs home", () => {
+        expect(searchResultHref({ url: "docs", type: "DOCS" }, "1.0")).toBe("/docs/1.0")
+    })
+})
+
+describe("docsVersionFromPath", () => {
+    it("reads the version off a versioned docs path", () => {
+        expect(docsVersionFromPath("/docs/1.2/tutorial")).toBe("1.2")
+        expect(docsVersionFromPath("/docs/1.2")).toBe("1.2")
+    })
+
+    it("returns undefined for the latest docs and non-docs paths", () => {
+        expect(docsVersionFromPath("/docs/tutorial")).toBeUndefined()
+        expect(docsVersionFromPath("/plugins")).toBeUndefined()
+        expect(docsVersionFromPath("/")).toBeUndefined()
     })
 })
 
