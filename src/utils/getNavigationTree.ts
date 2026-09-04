@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
-const navigationTree = {
+export const navigationTree = {
     "Get Started with Kestra": [
         "Quickstart",
         "Installation Guide",
