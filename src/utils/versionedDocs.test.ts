@@ -20,6 +20,7 @@ import {
     missingDocFallbackHref,
     resolveVersionSwitchHref,
     stripFrontmatter,
+    shouldInterceptCtaClick,
     switchVersionHref,
     versionSelectOptions,
     type DocChildren,
@@ -306,6 +307,32 @@ describe("switchVersionHref", () => {
         expect(switchVersionHref("javascript:alert(1)", "/docs/1.2/tutorial/inputs")).toBe(
             "/docs/tutorial/inputs",
         )
+    })
+})
+
+describe("shouldInterceptCtaClick", () => {
+    const click = (over: Partial<Parameters<typeof shouldInterceptCtaClick>[0]> = {}) => ({
+        button: 0,
+        metaKey: false,
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        ...over,
+    })
+
+    it("intercepts a plain left click", () => {
+        expect(shouldInterceptCtaClick(click())).toBe(true)
+    })
+
+    it("leaves modified clicks to the browser so they still open a new tab/window", () => {
+        expect(shouldInterceptCtaClick(click({ metaKey: true }))).toBe(false)
+        expect(shouldInterceptCtaClick(click({ ctrlKey: true }))).toBe(false)
+        expect(shouldInterceptCtaClick(click({ shiftKey: true }))).toBe(false)
+        expect(shouldInterceptCtaClick(click({ altKey: true }))).toBe(false)
+    })
+
+    it("leaves middle-click alone", () => {
+        expect(shouldInterceptCtaClick(click({ button: 1 }))).toBe(false)
     })
 })
 
