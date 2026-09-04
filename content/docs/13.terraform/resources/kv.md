@@ -3,12 +3,12 @@
 title: kestra_kv
 editLink: false
 description: |-
-  Manages a Kestra Namespace File.
+  Manages a Kestra Key-Value pair.
 ---
 
 # kestra_kv (Resource)
 
-Manages a Kestra Namespace File.
+Manages a Kestra Key-Value pair.
 
 
 

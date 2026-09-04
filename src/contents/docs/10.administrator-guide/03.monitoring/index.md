@@ -6,7 +6,7 @@ sidebarTitle: Alerting & Monitoring
 icon: /src/contents/docs/icons/admin.svg
 ---
 
-This page provides best practices for setting up alerting and monitoring in your Kestra instance.
+Set up failure alerting and Prometheus-based monitoring for your Kestra instance.
 
 Failure alerts are essential. When a production workflow fails, you should be notified immediately. To implement failure alerting, you can use Kestra’s built-in notification tasks, such as:
 
@@ -50,22 +50,17 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.analytics
-        prefix: true
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.analytics') }}"
 ```
 
 Adding this single flow will ensure that you receive a Slack alert on any flow failure in the `company.analytics` namespace. Here is an example alert notification:
 
 ![alert notification](../../03.tutorial/06.errors/alert-notification.png)
 
-:::alert{type="warning"}
-To send this alert on failure across multiple namespaces, add an `OrCondition` to the `conditions` list. See the example below:
+:::alert{type="info"}
+To alert on failures across multiple namespaces or specific flows, use `mode: ANY` with multiple `dependsOn` entries. The trigger fires when any entry is satisfied:
 ```yaml
 id: alert
 namespace: company.system
@@ -80,53 +75,17 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.Or
-        conditions:
-          - type: io.kestra.plugin.core.condition.ExecutionNamespace
-            namespace: company.product
-            prefix: true
-          - type: io.kestra.plugin.core.condition.ExecutionFlow
-            flowId: cleanup
-            namespace: company.system
+    mode: ANY
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.product') }}"
+      - flowId: cleanup
+        namespace: company.system
+        states: [FAILED, WARNING]
 ```
 :::
 
-The example above works correctly. However, if you list the conditions without using `OrCondition`, no alerts will be sent because Kestra will try to match all conditions simultaneously. Since there’s no overlap between them, the conditions cancel each other out. See the example below:
-
-```yaml
-id: bad_example
-namespace: company.monitoring
-description: This example will not work
-
-tasks:
-  - id: send
-    type: io.kestra.plugin.slack.notifications.SlackExecution
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-    channel: "#general"
-    executionId: "{{trigger.executionId}}"
-
-triggers:
-  - id: listen
-    type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.product
-        prefix: true
-      - type: io.kestra.plugin.core.condition.ExecutionFlow
-        flowId: cleanup
-        namespace: company.system
-```
-
-Here, there's no overlap between the two conditions. The first condition will only match executions in the `company.product` namespace, while the second condition will only match executions from the `cleanup` flow in the `company.system` namespace. To match executions from the `cleanup` flow in the `company.system` namespace **or** any execution in the `product` namespace, use `OrCondition`.
+The example above fires when either any `company.product` flow fails or the specific `cleanup` flow in `company.system` fails. `mode: ANY` means the trigger fires as soon as one entry is satisfied — you do not need to combine everything into a single expression.
 
 ## Monitoring
 
@@ -191,7 +150,7 @@ For a complete list of available metrics, refer to the [Prometheus metrics page]
 
 ### Kestra's metrics
 
-Use Kestra's internal metrics to configure custom alerts. Each metric provides multiple time series with tags allowing to track at least namespace & flow but also other tags depending on available tasks.
+Use Kestra's internal metrics to configure custom alerts. Each metric exposes time-series data tagged by at least `namespace` and `flow_id`, with additional tags depending on the task type.
 
 Kestra metrics use the prefix `kestra`. This prefix can be changed using the `kestra.metrics.prefix` property in the [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md).
 
@@ -267,7 +226,7 @@ See the [Micronaut documentation](https://micronaut-projects.github.io/micronaut
 
 ## Grafana and Kibana
 
-Kestra uses Elasticsearch to store all executions and metrics. You can create a dashboard with [Grafana](https://grafana.com/) or [Kibana](https://www.elastic.co/kibana) to monitor the health of your Kestra instance.
+You can create a Grafana dashboard backed by Prometheus metrics to monitor the health of your Kestra instance. If you use the Elasticsearch backend (Enterprise Edition), Kibana is another option.
 
 Share your dashboard with [the community](/slack). Below is an example Grafana dashboard you can use as a starting point:
 

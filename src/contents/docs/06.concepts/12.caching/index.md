@@ -6,23 +6,14 @@ sidebarTitle: Caching
 icon: /src/contents/docs/icons/concepts.svg
 ---
 
-Manage file caching inside Kestra.
+Kestra supports two complementary caching strategies: file caching via `WorkingDirectory` and output caching via `taskCache`.
 
-Kestra provides file caching, which is especially useful when you work with sizable package dependencies that don't change often.
+- **File caching** stores files (dependencies, build artifacts) in internal storage and restores them at the start of the next run.
+- **Output caching** stores a task's status and outputs in the database and skips re-execution entirely when inputs have not changed. See [Task Cache](../../05.workflow-components/task-cache/index.md).
 
 ## Cache files in a `WorkingDirectory` task
 
-The file caching functionality on the `WorkingDirectory` task allows you to cache a subset of files to speed up your workflow execution. This is especially useful when you work with sizable package dependencies that don't change often.
-
-:::alert{type="info"}
-Kestra can only cache files installed or created as part of the script tasks if the script uses a `PROCESS` runner. If the script uses a `DOCKER` runner, the files will not be cached and the `WorkingDirectory` task will [throw an error](https://github.com/kestra-io/kestra/issues/2233): `Unable to execute WorkingDirectory post actions`.
-:::
-
-### Use cases for file caching
-
-The file caching is useful if you want to install some `pip` or `npm` packages before running your script. You can cache the `node_modules` or Python `venv` folder to avoid re-installing the dependencies on each run.
-
-To do that, add a `cache` to your `WorkingDirectory` task. The `cache` property accepts a list of glob `patterns` to match files to cache. The cache will be automatically invalidated after a specified time-to-live using the `ttl` property accepting a duration.
+Add a `cache` block to a `WorkingDirectory` task to persist files across executions.
 
 ```yaml
 id: caching_files
@@ -37,13 +28,46 @@ tasks:
       ttl: PT1H
 ```
 
-### How does it work under the hood
+The `cache` property accepts a list of glob `patterns` and a `ttl` duration after which the cached files are invalidated.
 
-Kestra packages the files that need to be cached and stores them in the internal storage. When the task is executed again, the cached files are retrieved, initializing the working directory with their contents.
+### How caching works
+
+Kestra packages the matched files and stores them in internal storage at the end of each run. On the next run, those files are restored before any task executes.
+
+### Runner compatibility
+
+File caching works when the script runs in a `PROCESS` runner. If you use a `DOCKER` runner, Kestra cannot cache files that exist only inside the container — attempting to do so [throws an error](https://github.com/kestra-io/kestra/issues/2233): `Unable to execute WorkingDirectory post actions`.
+
+To cache pip packages with a Docker runner, install into a subdirectory of the working directory using `--cache-dir` and cache that directory instead:
+
+```yaml
+id: python_cached_pip
+namespace: company.team
+
+tasks:
+  - id: working_dir
+    type: io.kestra.plugin.core.flow.WorkingDirectory
+    cache:
+      patterns:
+        - cache/pip/**
+      ttl: PT24H
+    tasks:
+      - id: python_script
+        type: io.kestra.plugin.scripts.python.Script
+        taskRunner:
+          type: io.kestra.plugin.scripts.runner.docker.Docker
+        beforeCommands:
+          - pip install --cache-dir cache/pip pandas
+        script: |
+          import pandas as pd
+          print(pd.__version__)
+```
+
+Because `cache/pip` lives inside the working directory (not inside the container), Kestra can read and restore it between runs.
 
 ### Node.js example
 
-Below is an example of a flow that installs the `colors` package before running a Node.js script. The `node_modules` folder is cached for one hour.
+This flow installs the `colors` package and caches `node_modules` for one hour. Use a `PROCESS` runner when caching `node_modules` directly.
 
 ```yaml
 id: node_cached_dependencies
@@ -66,9 +90,9 @@ tasks:
         console.log(colors.red("Hello"));
 ```
 
-### Python example
+### Python example (Process runner)
 
-Below is an example of a flow that installs the `pandas` package before running a Python script. The `deps` folder is cached for one day.
+This flow installs `pandas` into a `deps` folder and caches it for one day.
 
 ```yaml
 id: python_cached_dependencies
@@ -97,13 +121,8 @@ tasks:
 
 ### How to invalidate the cache
 
-Below are the details how to invalidate the cache:
-- After the first run, the files are cached
-- The next time the task is executed:
-  - If the `ttl` didn't pass, then the files are retrieved from cache.
-  - If the `ttl` passed, then the cache is invalidated and no files will be retrieved from cache; because cache is no longer present, the `npm install` command from the `beforeCommands` property will take a bit longer to execute.
-- If you edit the task and change the `ttl` to:
-  - a longer duration e.g., `PT5H` — the files will be cached for five hours using the new `ttl` duration
-  - a shorter duration e.g., `PT5M` — the cache will be invalidated after five minutes using the new `ttl` duration.
+- After the first run, files are cached.
+- On subsequent runs, if the `ttl` has not elapsed, the cached files are restored. If it has elapsed, the cache is cleared and `beforeCommands` (e.g. `npm install`) runs in full.
+- Changing the `ttl` takes effect on the next run.
 
-The `ttl` is evaluated at runtime. If the most recently set `ttl` duration has passed as compared to the last task run execution date, the cache is invalidated and the files are no longer retrieved from cache.
+The `ttl` is evaluated at runtime against the last task execution date.
