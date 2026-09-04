@@ -157,9 +157,19 @@
             right: 1.25rem;
         }
 
+        // Hidden until hover, when it replaces the language label — mirrors the
+        // real docs' expressive-code frame's copy button.
         .copy {
-            border: none;
-            background: none;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            padding: 0;
+            border: 1px solid var(--ks-border-secondary);
+            border-radius: 0.2rem;
+            background: var(--ks-background-primary);
+            cursor: pointer;
 
             & .material-design-icon {
                 &,
@@ -167,6 +177,30 @@
                     height: 1.125rem !important;
                     width: 1.125rem !important;
                 }
+            }
+
+            .icon-check {
+                display: none;
+            }
+
+            &.copied {
+                .icon-copy {
+                    display: none;
+                }
+
+                .icon-check {
+                    display: block;
+                }
+            }
+        }
+
+        &:hover {
+            .language {
+                display: none;
+            }
+
+            .copy {
+                display: flex;
             }
         }
 
@@ -382,6 +416,95 @@
         }
     }
 
+    // Child-page card grid (versioned docs only — the latest docs' equivalent,
+    // GuidesChildCard.vue's .card-grid/.card, is Vue-scoped so these values are
+    // duplicated here rather than shared)
+    .ks-card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .ks-card {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        background: var(--ks-background-body);
+        border: $block-border;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        color: var(--ks-content-link);
+    }
+
+    .ks-card-icon {
+        width: 48px;
+        height: 48px;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border: $block-border;
+        margin-bottom: 1rem;
+        object-fit: fill;
+    }
+
+    .ks-card-title {
+        font-size: $font-size-base;
+        line-height: calc($font-size-base * 1.5);
+        font-weight: 600;
+        margin: 0 0 1rem;
+        color: var(--ks-content-primary);
+    }
+
+    .ks-card-text {
+        font-size: $font-size-base;
+        color: var(--ks-content-primary);
+        margin: 0;
+    }
+
+    // Support links row (versioned docs only — no live equivalent exists to
+    // mirror, so this reuses the card-grid's own visual language)
+    .support-links-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .support-link {
+        display: block;
+        padding: 1rem;
+        background: var(--ks-background-body);
+        border: $block-border;
+        border-radius: 0.5rem;
+        text-decoration: none;
+
+        h3 {
+            font-size: $font-size-base;
+            line-height: calc($font-size-base * 1.5);
+            font-weight: 600;
+            margin: 0 0 0.5rem;
+            color: var(--ks-content-primary);
+        }
+
+        p {
+            font-size: $font-size-sm;
+            color: var(--ks-content-secondary);
+            margin: 0;
+        }
+    }
+
+    // Homepage CTA button row (versioned docs only — HomePageButtons.astro's
+    // own scoped layout rules, duplicated here since they don't ship to
+    // versioned pages; button appearance itself comes from the global .btn
+    // classes and needs no duplication)
+    .docs-button-row {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+    }
+
     // Expressive code collapse (overrides for expressive-code-collapsible plugin)
     .ec-collapse {
         overflow: hidden;
@@ -540,9 +663,15 @@
             text-transform: lowercase;
             z-index: 1;
         }
-        &:hover:before {
-            display: none;
-        }
+    }
+
+    // The copy button (expressive-code's `.copy`) is a sibling of `pre`, not a
+    // descendant, so it overlaps the frame's top-right corner without ever
+    // triggering `pre:hover` — leaving the language label visible underneath
+    // it. Key the hide off the whole frame instead, matching how
+    // expressive-code's own CSS reveals the copy button (`.frame:hover .copy`).
+    .frame:hover pre[data-language]:before {
+        display: none;
     }
 }
 
