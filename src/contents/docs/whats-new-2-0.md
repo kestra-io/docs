@@ -93,6 +93,16 @@ New [Pebble date functions](./expressions/04.functions/06.dates/index.mdx) make 
 
 New controls for what flows can access and how they are governed.
 
+### HTTP task URL filtering
+
+[HTTP task filtering](./10.administrator-guide/security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
+
+---
+
+## Enterprise
+
+New capabilities available in Enterprise Edition.
+
 ### RBAC: action-based permissions (EE)
 
 The CRUD permission model (READ, CREATE, UPDATE, DELETE on generic resources) is replaced by a resource-plus-action model. Each resource exposes only the actions that make sense for it, for example `EXECUTION: ACCESS_LOGS`, `EXECUTION: FOLLOW`, and `TRIGGER: BACKFILL`. New resources in 2.0 include `TRIGGER`, `SYSTEM_SETTINGS`, `TENANT_SETTINGS`, `COPILOT`, and `MCP_SERVER`. Five managed roles ship with 2.0: Viewer, Launcher, Editor, Developer, and Admin. Existing custom roles and bindings migrate automatically on upgrade. See the [RBAC reference](./07.enterprise/03.auth/rbac/index.md) and [migration guide](./11.migration-guide/v2.0.0/rbac-action-model/index.md).
@@ -104,16 +114,6 @@ The Super Admin privilege is renamed to [Instance Owner](./07.enterprise/05.inst
 ### Policies (EE)
 
 [Policies](./07.enterprise/02.governance/policies/index.md) enforce governance rules on flows at save time and execution time. Rules can require specific task types, block others, or validate property values, applied per namespace.
-
-### HTTP task URL filtering
-
-[HTTP task filtering](./10.administrator-guide/security-hardening/index.md#http-task-url-filtering) lets operators configure allow-lists and deny-lists for URLs reachable by HTTP plugin tasks, blocking access to metadata endpoints and internal services.
-
----
-
-## Enterprise
-
-New capabilities available in Enterprise Edition.
 
 ### Cases (EE)
 
@@ -153,7 +153,7 @@ The [VS Code extension](./version-control-cicd/05.vscode/index.md) now supports 
 
 ### No-code Editor
 
-The flow editor gains a No-code view alongside the YAML editor. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as a list of blocks. Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel of the form lists every upstream task output and execution context variable available at that point in the flow.
+Clicking a block opens a side panel with a **Form** tab (guided fields with inline documentation) and a **Source** tab (raw YAML for that block). The left panel of the form lists every upstream task output and execution context variable available at that point in the flow and are easily copiable into the property you need it.
 
 All three views (YAML editor, No-code editor, and AI Copilot) stay in sync. Changes made in any view reflect immediately in the others.
 
