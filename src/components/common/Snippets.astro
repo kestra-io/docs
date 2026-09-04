@@ -10,6 +10,8 @@ interface Props {
      * the card's own height + fade mask handle the preview .
      */
     noCollapse?: boolean
+    /** Extra class for the `.expressive-code` wrapper, e.g. a theme selector. */
+    class?: string
 }
 
 const {
@@ -17,6 +19,7 @@ const {
     lang = "bash",
     expandThreshold = 12,
     noCollapse = false,
+    class: className,
 } = Astro.props as Props
 
 const lineCount = code.trim().split("\n").length
@@ -33,6 +36,7 @@ const isExpandable = lineCount > expandThreshold
                         lang={lang}
                         frame="none"
                         meta={noCollapse ? "nocollapse" : ""}
+                        class={className}
                     />
                 </div>
             </div>
