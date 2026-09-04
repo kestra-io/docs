@@ -4,6 +4,7 @@
 // on its own path only with empty locals, so guard and bounce to /docs.
 import { API_URL } from "astro:env/client"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
+import ArchivedBanner from "~/components/layout/ArchivedBanner.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
 import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
@@ -64,6 +65,13 @@ const navigation = [
     noindex
     isHomePage={pageKey === "docs"}
 >
+    <div class="version-banner" slot="banner">
+        <ArchivedBanner version={version} latestHref={versionedDocs.switchVersionHref("", activeStem)}>
+            <Fragment slot="message">
+                You are viewing the docs for <strong>v{version}</strong>, which is not the latest release.
+            </Fragment>
+        </ArchivedBanner>
+    </div>
     <h1 class="title" slot="title">{body.h1}</h1>
     <Fragment slot="headings">
         <NavToc
@@ -87,6 +95,32 @@ const navigation = [
 </LayoutDocs>
 
 <script>
+    // The banner's href points at this page in latest, which may be gone there
+    // (renamed with no redirect rule, or dropped). Probe it exactly as the
+    // version <select> does — bounded HEAD, /docs on 404 — so both controls
+    // behave the same, keeping the plain href as the no-JS path. Delegated on
+    // `document` for the same ClientRouter reason as below.
+    import { resolveVersionSwitchHref, shouldInterceptCtaClick } from "~/utils/versionedDocs"
+
+    document.addEventListener("click", (event) => {
+        const cta = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+            ".version-banner a.cta",
+        )
+        if (!cta || !shouldInterceptCtaClick(event)) return
+
+        event.preventDefault()
+        const banner = cta.closest<HTMLElement>(".archived-banner")
+        banner?.setAttribute("data-pending", "true")
+        cta.setAttribute("aria-busy", "true")
+
+        // Never leave the CTA dead once the default is prevented.
+        void resolveVersionSwitchHref("", window.location.pathname)
+            .then((href) => window.location.assign(href))
+            .catch(() => window.location.assign(cta.href))
+    })
+</script>
+
+<script>
     // Delegated on `document`, not `.mdc-renderer`: the PROD-only ClientRouter
     // swaps the page's elements without re-running this module (killing an
     // element-bound handler), while dev never fires astro:page-load — document
@@ -106,6 +140,15 @@ const navigation = [
 </script>
 
 <style lang="scss">
+    // The banner's own margins are tuned for the plugins article, which has no
+    // breadcrumb above it. Inside .bd-title it inherits that block's top margin,
+    // and must stay a plain child: a direct .bd-main child would take a grid row
+    // of its own, dropping the content out of the .bd-toc row span and inflating
+    // the title row by the ToC's height.
+    .version-banner :global(.archived-banner) {
+        margin: 0 0 1.5rem;
+    }
+
     .title {
         line-height: 3.25rem;
         margin: 0 auto;
