@@ -8,36 +8,75 @@ icon: /src/contents/docs/icons/ui.svg
 
 Inspect and manage flow executions.
 
-The **Executions** page lists all flow executions. Select one or more to perform bulk actions (Restart, Kill, Pause, Force Run), or click an execution ID to open it.
+On the **Executions** page, you see a list of all your completed flow executions.
+
+You can select multiple checkboxes to choose executions for bulk actions, such as Restart, Kill, Pause, or Force Run. Alternatively, you can click an execution ID or the magnifying glass icon to open an execution for further examination.
 
 ![Kestra User Interface Executions Page](./executions-overview.png)
 
 ## Overview
 
-The **Overview** tab displays the details of a flow execution.
+An **Execution's Overview** page displays the details of a flow execution, organized into the following sections. For reference, below is an example flow and its **Execution Overview**.
+
+```yaml
+id: conditionallyReturnOutputs
+namespace: company.team
+
+labels:
+  - key: environment
+    value: dev
+  - key: owner
+    value: data-team
+variables:
+  description: This is a demo flow
+  version: 1.0.0
+
+inputs:
+  - id: runTask
+    type: BOOL
+    defaults: true
+
+tasks:
+  - id: taskA
+    runIf: "{{ inputs.runTask }}"
+    type: io.kestra.plugin.core.debug.Return
+    format: Hello World!
+
+  - id: taskB
+    type: io.kestra.plugin.core.debug.Return
+    format: Fallback output
+
+outputs:
+  - id: flowOutput
+    type: STRING
+    value: "{{ tasks.taskA.state != 'SKIPPED' ? outputs.taskA.value : outputs.taskB.value }}"
+
+triggers:
+  - id: every_minute_schedule
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "* * * * *"
+```
 
 ![Kestra User Interface Execution Page](./execution-results-overview.png)
 
 From the **Overview** tab, you can:
-- **Set Labels** — add a label to the execution for tracking or filtering.
-- **Change State** — manually update the execution state.
-- **Force Run** — force the execution to run; may create duplicate task executions, so use with caution.
+- Set Labels: give a label to the execution for tracking or filtering.
+- Change State: change the execution state.
+- Force Run: forces the execution to run. This may create duplicate task executions — use with caution.
 
-The **Previous** and **Next Execution** buttons step through past and scheduled future executions.
+The **Previous and Next Execution** buttons navigate you through past and future (if there's a trigger) flow executions.
 
 - Execution **state** is displayed along with a timestamped state history from `CREATED` to `RUNNING` to `SUCCESS` (or any other possible state).
 - Flow [Variables](../../05.workflow-components/04.variables/index.md) and [Inputs](../../05.workflow-components/05.inputs/index.md) are clearly listed along with execution details including dates and the corresponding namespace and flow.
 - Flow outputs and trigger data are captured with expression rendering.
 
-From the **Overview** tab, you can also take actions such as [**Replay**](../../06.concepts/10.replay/index.md) or **Pause**, and view executions over time to compare previous runs.
-
-The Overview tab also embeds a **topology diagram** showing each task's state in the execution graph — green for `SUCCESS`, red for `FAILED`. Click any task node to access its logs, replay it, or change its status.
+From the **Overview** page, you can also take actions such as [**Replay**](../../06.concepts/10.replay/index.md) or **Pause**, and view executions over time to compare previous runs.
 
 ## Filters
 
-Filter executions by namespace, flow ID, labels, state, start date, or free text. Save applied filters or export results. The following video demonstrates the filters in action:
+From the main Executions page, you can filter the displayed executions on fields like namespace, flowId, labels, state, startDate, open text, and more. You can save applied filters and export the data all from the UI. The following video demonstrates the filters in action:
 
-<div style="position: relative; padding-bottom: calc(54.828% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/1zqBYvR7JifFkwNSa7Qh?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions | Kestra EE" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/RwazDJghgx81hvQqOt5e?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Executions Filters | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Gantt
 
@@ -45,7 +84,9 @@ The **Gantt** tab visualizes each task's duration. From this interface, you can 
 
 ![Kestra User Interface Execution Gantt](./execution-gantt-view.png)
 
-The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/01.ai-copilot/index.md) pre-loaded with the error context.
+The **Gantt** view displays all successful and failed tasks in the execution. For failed tasks, you can open the task and click the three dots to **"Fix with AI"**. This option reopens the flow editor with the [AI Copilot](../../ai-tools/ai-copilot/index.md) prompted to help resolve any issues with the task.
+
+![Fix with AI](../../ai-tools/ai-copilot/fix-with-ai-gantt.png)
 
 ## Logs
 
@@ -53,13 +94,21 @@ The **Logs** tab gives access to a task's logs. You can filter by log level, cop
 
 ![Kestra User Interface Execution Log](./execution-logs-view.png)
 
-For failed tasks, use **Fix with AI** from the task menu to open the flow editor with [AI Copilot](../../ai-tools/01.ai-copilot/index.md) pre-loaded with the error context.
+For failed tasks, click the three dots to **"Fix with AI"**. This option reopens the flow editor with the [AI Copilot](../../ai-tools/ai-copilot/index.md) prompted to help resolve any issues with the task.
 
 ![Fix with AI](./fix-with-ai-logs.png)
 
-## Input/Output
+## Topology
 
-The **Input/Output** tab shows execution inputs and all task outputs — variables to pass downstream or files to download and inspect. The example below downloads a file generated from a SQL query.
+Similar to the Editor view, you can see your execution's topology. **Topology** provides a graphical view to access specific task logs, replay certain tasks, or change task status. Tasks' state progression is shown and updated as the status changes. For example, green indicates a task has reached **SUCCESS** while red indicates **FAILED**.
+
+![Kestra User Interface Execution Topology](./execution-topology-view.png)
+
+From a **FAILED** task, click the magnifying glass icon to open the logs and read the error message, investigate, and **"Fix with AI"** if you have [AI Copilot](../../ai-tools/ai-copilot/index.md) configured.
+
+## Outputs
+
+The **Outputs** tab presents the execution's generated outputs. All tasks and their corresponding outputs are accessible from this page for examination and debugging. Outputs could be results or variables to pass onto downstream tasks, or files to download or pass downstream as a URI for processing. The example below downloads an outputted file generated from a SQL query.
 
 <div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/BTW4jefHMCoxw5VgY9mB?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Execution Outputs | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
@@ -67,14 +116,18 @@ The **Debug Expression** button lets you evaluate [expressions](../../expression
 
 ![Kestra User Interface Execution Debug Expression](./execution-debug-expression.png)
 
+Use **Debug Expression** to inspect task outputs and test expressions interactively.
+
 ## Metrics
 
-The **Metrics** tab shows every metric exposed by tasks after execution. For example, an HTTP Request task emits `request.bytes`, `response.bytes`, and `response.length` per request. A BigQuery load task might expose rows inserted and bytes processed. An AI plugin task might show token usage.
+The Metrics tab shows every metric exposed by tasks after execution. For example, a [BigQuery load task](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.load) might show the amount of files inputted, rows inserted, and how long the operation took to complete. Another example, a flow using an AI plugin shows token usage as a metric for the task.
 
 ![Kestra User Interface Execution Metric](./execution-metrics-view.png)
 
 ## Dependencies
 
-The **Dependencies** tab shows the relationship between other flows and the selected execution, including extra execution metadata such as state.
+<div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/k3WASzX7Oi0F1kRHOBKj?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Dependencies | Kestra" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
+The Dependencies tab shows the relationship dependencies between other flows and the selected execution. It also displays extra execution metadata such as state.
 
 ![Execution Dependencies](./executions-dependencies-1-0.png)

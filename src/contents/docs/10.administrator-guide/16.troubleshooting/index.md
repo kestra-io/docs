@@ -177,7 +177,7 @@ In your `docker-compose.yml`, ensure the `tmpDir` path matches the mounted volum
 ```yaml
 kestra:
   tasks:
-    tmp-dir:
+    tmpDir:
       path: /home/kestra/tmp
 ```
 

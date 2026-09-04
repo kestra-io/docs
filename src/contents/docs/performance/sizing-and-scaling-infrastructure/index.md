@@ -6,10 +6,6 @@ icon: /src/contents/docs/icons/admin.svg
 description: Guidance on sizing and scaling your Kestra infrastructure, including Executors, Workers, and Schedulers, for optimal performance.
 ---
 
-:::alert{type="info"}
-This guide covers Kestra 1.3. Updated sizing guidance for Kestra 2.0 will be published after release.
-:::
-
 Kestra is designed to scale from lightweight workflows to enterprise-scale orchestration with thousands of task runs per minute. Choosing the right infrastructure depends on your workload patterns, execution volume, and latency requirements. This page provides practical guidance on how to size your Kestra deployment, how many Executors and Workers you need, and how to scale and tune performance over time.
 
 ## Size and scale your Kestra deployment
@@ -17,10 +13,10 @@ Kestra is designed to scale from lightweight workflows to enterprise-scale orche
 ## Core concepts
 
 Before diving into numbers, it helps to understand how Kestra executes work:
-1. **Executors** drive the execution state machine: they process flowable tasks, manage concurrency, retries, and pauses, and dispatch runnable tasks to Workers via the Worker Controller.
+1. **Executors** orchestrate workflows: they orchestrate workflow logic via flowable tasks, delegate tasks to the right worker nodes, and manage execution state and concurrency.
 2. **Workers** run the tasks themselves: from lightweight logging to long-running scripts or container workloads.
-3. **Schedulers** handle time-based, polling, and realtime triggers. Flow Triggers are evaluated by the Executor; Webhook triggers are handled by the Webserver.
-4. **Webservers** provide the API and UI and handle inbound webhook triggers.
+3. **Schedulers** handle triggers such as scheduled events, webhook calls, or polling external resources.
+4. **Webservers** provide the API and UI, they handle user interactions incl. processing execution inputs.
 
 Performance depends on balancing **throughput** (task runs per minute) and **latency** (how quickly executions start and complete) given your infrastructure.
 
@@ -110,7 +106,7 @@ To improve executor throughput:
 
 ## Backend considerations
 
-- **JDBC/Postgres backend (Enterprise and OSS)**: simpler to operate with low latency for up to ~1,000 task runs/min. [Performance tuning](../../performance/performance-tuning/index.md) involves adjusting JDBC queue polling intervals and executor threads beyond scaling the infrastructure.
+- **JDBC/Postgres backend (Enterprise and OSS)**: simpler to operate with low latency for up to ~1,000 task runs/min. [Performance tunin](../../performance/performance-tuning/index.md)g involves adjusting JDBC queue polling intervals and executor threads beyond scaling the infrastructure.
 - **Kafka backend (Enterprise)**: required for higher throughput, real-time triggers, and scaling beyond ~2,000 task runs/min. Ensure enough partitions are allocated (≥ number of Executors/Workers) for full parallelism.
 
 ---

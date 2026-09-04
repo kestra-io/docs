@@ -9,13 +9,17 @@ version: "0.24.0"
 
 Cache the status and outputs of computationally expensive operations.
 
-The `taskCache` property stores a task’s status and outputs in Kestra’s database. When the same execution runs again with identical inputs, Kestra skips the task and reuses the cached outputs. It is most effective for heavy operations such as large data extractions or long-running scripts.
+The `taskCache` property stores a task’s status and outputs in Kestra’s database. When the same execution runs again with identical inputs, Kestra skips the task and reuses the cached outputs. You can enable caching on any task, but it is most effective for heavy operations such as large data extractions or long-running scripts.
+
+Using task caching can significantly speed up workflows and reduce resource consumption.
 
 :::alert{type="info"}
 Task caching is only supported for [Runnable Tasks](../01.tasks/01.runnable-tasks/index.md).
 :::
 
 ## `taskCache` syntax
+
+The syntax of the `taskCache` property is as follows:
 
 ```yaml
 taskCache:
@@ -27,7 +31,7 @@ The `ttl` (time-to-live) property defines how long cached outputs are kept befor
 
 ## `taskCache` example
 
-This flow downloads product data once per day, caches it for 24 hours, and reuses it in joins with frequently updated transaction data.
+In the example below, the flow caches the outputs of a computationally expensive task, extracting a large dataset from a production database. This flow downloads product data once per day, caches it for 24 hours, and reuses it in joins with frequently updated transaction data.
 
 ```yaml
 id: caching

@@ -5,14 +5,14 @@ icon: /src/contents/docs/icons/tutorial.svg
 stage: Getting Started
 topics:
   - Kestra Concepts
-description: Learn how to install specific Kestra plugins in the open-source version for a lightweight build and faster startup using the -slim Docker image.
+description: Learn how to install specific Kestra plugins in the open-source version for a lightweight build and faster startup using the -no-plugins Docker image.
 ---
 
 Install a selection of Kestra plugins in the open-source version.
 
 Pick and choose Kestra plugins to create lightweight builds and achieve a faster startup. This guide explains how to:
 
-- Install specific plugins when using the `-slim` Docker image (formerly `-no-plugins`)
+- Install specific plugins when using the `-no-plugins` Docker image
 - Understand plugin versioning across Open Source and [Enterprise](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 - Automate plugin installation using Docker Compose
 - Link to plugin documentation and versioning support
@@ -23,7 +23,7 @@ To download plugins for a standalone worker or local development environment, us
 
 ## Plugin basics in Kestra Open Source
 
-Kestra plugins are distributed as individual JAR files and loaded at runtime. Plugins are not embedded by default in `-slim` Docker images (formerly published as `-no-plugins`). You can:
+Kestra plugins are distributed as individual JAR files and loaded at runtime. Plugins are not embedded by default in `-no-plugins` Docker images. You can:
 
 - Download specific [plugin JARs](https://repo.maven.apache.org/maven2/io/kestra/plugin/) manually or via `kestra plugins install`.
 - Mount them into `/app/plugins/` in your [Docker Compose](../../02.installation/03.docker-compose/index.md) setup.
@@ -42,14 +42,14 @@ You can run this inside a container (interactively or as part of Dockerfile) to 
 
 ## Automate plugin selection with Docker Compose
 
-If you're using the `kestra/kestra:*-slim` image and want to add only selected plugins:
+If you're using the `kestra/kestra:*-no-plugins` image and want to add only selected plugins:
 
 ### Option 1: Use `kestra plugins install` inside the container
 
 ```yaml
 services:
   kestra:
-    image: kestra/kestra:latest-slim
+    image: kestra/kestra:latest-no-plugins
     entrypoint: /bin/sh -c "
       kestra plugins install io.kestra.plugin:plugin-dbt:LATEST && \
       kestra plugins install io.kestra.plugin:plugin-scripts:LATEST && \
@@ -104,7 +104,7 @@ Learn more about versioned plugins in Enterprise:
 
 | Use Case                   | Recommendation                                       |
 | -------------------------- | ---------------------------------------------------- |
-| Minimal runtime image      | Use `kestra/kestra:*-slim` with mounted JARs         |
+| Minimal runtime image      | Use `kestra/kestra:*-no-plugins` with mounted JARs   |
 | Dynamic plugin setup       | Use `kestra plugins install` in entrypoint           |
 | Controlled plugin versions | Use Enterprise with versioned plugins                |
 | Custom plugin development  | Build and copy plugins into `/app/plugins/` manually |

@@ -7,11 +7,17 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-When you launch Kestra Enterprise Edition for the first time, Kestra walks you through configuring your instance: setting up your first tenant, creating your first user, and starting the Kestra UI.
+How to set up Kestra Enterprise Edition.
+
+## Set up Kestra Enterprise – license and first tenant
+
+These setup instructions guide you through the initial configuration of your instance.
+
+When you launch Kestra Enterprise Edition for the first time, Kestra will prompt you to configure your instance. This includes setting up your first tenant, creating your first user, and starting the Kestra UI.
 
 ## Prerequisites
 
-Kestra Enterprise Edition requires a valid license under `kestra.ee.license`. Contact [sales@kestra.io](mailto:sales@kestra.io) to obtain one.
+To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kestra.io).
 
 The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
 
@@ -47,7 +53,9 @@ This step asks you to confirm whether your configuration is valid. If not, you c
 
 ## Step 2: Create your first tenant
 
-If `multitenancy` is enabled, Kestra will prompt you to create your first tenant. Enter a Tenant ID and Tenant Name, for example:
+If `multitenancy` is enabled, Kestra, will prompt you to create your first tenant.
+
+If you choose to create a tenant, you will be asked to input the Tenant ID and Tenant Name, for example:
 - tenant id: `stage`
 - tenant name: `Staging Environment`
 
@@ -58,9 +66,9 @@ If you enabled a default tenant, you can skip this step.
 
 ## Step 3: Create your first user
 
-Create the first user. This user receives the [Instance Owner](../../03.auth/rbac/index.md#instance-owner) privilege and can manage tenants, users, and roles across the instance.
+Now that you have your instance configured, you will create your first user. This user will have a [Superadmin](../../03.auth/rbac/index.md#super-admin) role for the instance and will be able to manage tenants, users, and roles.
 
-![Create first Instance Owner user form](./setup_page3.png)
+![Create first Superadmin user form](./setup_page3.png)
 
 ## Step 4: Start Kestra UI
 

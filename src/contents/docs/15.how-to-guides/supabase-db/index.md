@@ -8,13 +8,17 @@ topics:
 description: Learn how to connect your Supabase Database to Kestra workflows using the PostgreSQL plugin to query, copy, and manage your data.
 ---
 
-Use the native [Supabase plugin](/plugins/plugin-supabase) for new integrations. This guide documents the PostgreSQL plugin approach for direct database access.
+Connect your Supabase Database to your workflows using the PostgreSQL plugin.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/DZcOlumKrtc?si=48PCtEOZwSgehiZ6" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Supabase is an open-source Backend-as-a-service (BaaS) platform that provides hosted PostgreSQL databases you can query directly from Kestra flows.
+:::alert{type="info"}
+There is a dedicated [Supabase plugin](/plugins/plugin-supabase) to replace these steps.
+:::
+
+Supabase is an open-source Backend-as-a-service (BaaS) platform that helps developers build applications faster and more efficiently. They provide a number of services, including hosted PostgreSQL databases, which can be used within Flows in Kestra.
 
 Before you begin, ensure you have a [Supabase account](https://supabase.com/) set up and a [Kestra installation](../../02.installation/index.mdx) running.
 
@@ -40,22 +44,34 @@ Inside of Supabase, select the **Connect** button at the top to get information 
 
 ![supabase-4](./supabase-4.png)
 
-Copy the URL provided for the Transaction pooler and replace `[YOUR-PASSWORD]` with the password set earlier. Store the password as a [secret](../../06.concepts/04.secret/index.md) and add the `url` property directly to each PostgreSQL task:
+To connect, we can copy the URL provided for the Transaction pooler and replace `[YOUR-PASSWORD]` with the password set earlier. To prevent exposing the password in our flow, store it as a [secret](../../06.concepts/04.secret/index.md).
+
+By using [Plugin Defaults](../../05.workflow-components/09.plugin-defaults/index.md), we can configure our connection to Supabase once for all tasks in our flow rather than individually for each task.
+
+Once configured, our connection in Kestra will look like the example below:
 
 ```yaml
-url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
+pluginDefaults:
+  - forced: true
+    type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
+
 ```
 
 :::alert{type="info"}
-You can also split the connection string into separate properties:
+You can also use the `username` and `password` properties rather than combining it all into the `url` property:
 
 ```yaml
-url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres"
-username: "postgres.nqxaafovehwkjapsqqlk"
-password: "{{ secret('SUPABASE_PASSWORD') }}"
+pluginDefaults:
+  - forced: true
+    type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres"
+      username: "postgres.nqxaafovehwkjapsqqlk"
+      password: "{{ secret('SUPABASE_PASSWORD') }}"
 ```
 
-In Enterprise Edition, you can centralize connection properties across flows using a [Policy](../../07.enterprise/02.governance/policies/index.md) with an `Add` rule targeting `io.kestra.plugin.jdbc.postgresql`.
 :::
 
 ## Copying a CSV File into Supabase DB in a Flow
@@ -69,7 +85,6 @@ namespace: company.team
 tasks:
   - id: create_columns
     type: io.kestra.plugin.jdbc.postgresql.Queries
-    url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
     sql: |
       ALTER TABLE kestra_example
       ADD COLUMN order_id int,
@@ -79,9 +94,15 @@ tasks:
       ADD COLUMN price double precision,
       ADD COLUMN quantity int,
       ADD COLUMN total double precision;
+
+pluginDefaults:
+  - forced: true
+    type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
 ```
 
-Once your columns are configured, use the [CopyIn](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.copyin) task combined with the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task to download the CSV file and copy it directly into the database.
+Once your columns are configured, you can use the [CopyIn](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.copyin) task combined with the [HTTP Download](/plugins/core/http/io.kestra.plugin.core.http.download) task to download the CSV file and copy it directly into our database. As we set up the database connection with our [Plugin Defaults](#connecting-supabase-to-kestra), the CopyIn task will connect directly and copy the CSV file into the database.
 
 ```yaml
 id: supabase_db_copyin
@@ -94,12 +115,17 @@ tasks:
 
   - id: copy_in
     type: io.kestra.plugin.jdbc.postgresql.CopyIn
-    url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
     table: "kestra_example"
     from: "{{ outputs.download.uri }}"
     header: true
     columns: [order_id,customer_name,customer_email,product_id,price,quantity,total]
     delimiter: ","
+
+pluginDefaults:
+  - forced: true
+    type: io.kestra.plugin.jdbc.postgresql
+    values:
+      url: "jdbc:postgresql://aws-0-eu-west-2.pooler.supabase.com:6543/postgres?user=postgres.nqxaafovehwkjapsqqlk&password={{ secret('SUPABASE_PASSWORD') }}"
 ```
 
 Once this flow completes, we can view the contents of our database in Supabase:
