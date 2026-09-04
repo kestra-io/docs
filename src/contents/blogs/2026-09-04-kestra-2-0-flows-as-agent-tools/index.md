@@ -135,6 +135,8 @@ Open it while viewing a flow, namespace, execution, dashboard, app, or test, and
 
 **Nothing is applied without an explicit confirmation.** Reject a change and the conversation continues so you can redirect, instead of starting over. Plan mode cancels the remaining steps. There is also a "Fix with AI" action on a failed task that opens the editor with the error already in context.
 
+![A Copilot plan held at Pending approval, with Reply to revise and Approve & execute as the only ways forward](./copilot-plan-approval.png)
+
 ## When the agent runs inside the flow
 
 Sometimes you do want the autonomy inside your flows. The AI Agent task takes a system message, a prompt, a provider, optional memory that persists across executions, and tools including web search, task execution, and calling other flows. It decides what to do and in what order, loops until a condition is met, and stays a declarative task with a normal execution record.
