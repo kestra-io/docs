@@ -121,7 +121,7 @@
                                     "
                                 >
                                     <a
-                                        :href="'/' + result.url"
+                                        :href="resultHref(result)"
                                         :class="{
                                             active: index === selectedIndex,
                                         }"
@@ -260,12 +260,18 @@
     import posthog from "posthog-js"
     import { $fetchApi } from "~/utils/fetch"
     import { prepareSearchResults } from "~/utils/searchResults"
+    import { searchResultHref, searchScope } from "~/utils/versionedDocs"
 
     export default {
         props: {
             randomAiQuestions: {
                 type: Array,
                 required: true,
+            },
+            /** MAJOR.MINOR the unversioned /docs serves, so search can be scoped to it. */
+            docsLatest: {
+                type: String,
+                default: undefined,
             },
         },
         data() {
@@ -280,6 +286,9 @@
                 showAiDialog: false,
                 initialLoad: false,
                 abortController: undefined,
+                // Version whose segment the current results' docs hits need
+                // back; unset for docs-latest hits and for latest fallbacks.
+                hrefVersion: undefined,
             }
         },
         mounted() {
@@ -332,9 +341,26 @@
                 if (this.selectedFacet) {
                     params.append("type", this.selectedFacet)
                 }
-                return $fetchApi(`/search?${params.toString()}`, {
-                    signal: this.abortController.signal,
-                })
+                const scope = searchScope(
+                    window.location.pathname,
+                    this.docsLatest,
+                )
+                return this.fetchSearch(params, scope.version)
+                    .then((response) => {
+                        // A version indexed before this content existed (or not
+                        // indexed at all) answers empty rather than 404 — fall
+                        // back to unscoped search instead of showing nothing.
+                        if (scope.version && !response?.results?.length) {
+                            return this.fetchSearch(params, undefined).then(
+                                (fallback) => {
+                                    this.hrefVersion = undefined
+                                    return fallback
+                                },
+                            )
+                        }
+                        this.hrefVersion = scope.hrefVersion
+                        return response
+                    })
                     .then((response) => {
                         this.initialLoad = true
                         const results = prepareSearchResults(
@@ -370,6 +396,17 @@
                         this.abortController = undefined
                         this.loading = false
                     })
+            },
+            fetchSearch(params, version) {
+                const path = version
+                    ? `/search/versions/${version}?${params.toString()}`
+                    : `/search?${params.toString()}`
+                return $fetchApi(path, {
+                    signal: this.abortController.signal,
+                })
+            },
+            resultHref(result) {
+                return searchResultHref(result, this.hrefVersion)
             },
             sortFacet(facets) {
                 const result = new Map(

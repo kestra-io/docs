@@ -1,0 +1,847 @@
+import { describe, it, expect, vi } from "vitest"
+import {
+    VERSIONED_DOCS_PATH,
+    apiDocPath,
+    buildDocTree,
+    currentDocKey,
+    docChildHref,
+    docVersionLabels,
+    versionMajorMinor,
+    directDocChildren,
+    docLinkBaseDir,
+    frontmatterField,
+    plainDocText,
+    isRelativeDocHref,
+    isVersionedAssetRef,
+    resolveVersionedDocLink,
+    versionedAssetUrl,
+    decideVersionedRoute,
+    docsLatestVersion,
+    docsVersionFromPath,
+    searchResultHref,
+    searchScope,
+    isAssetShapedDocPath,
+    missingDocFallbackHref,
+    resolveVersionSwitchHref,
+    stripFrontmatter,
+    shouldInterceptCtaClick,
+    switchVersionHref,
+    versionSelectOptions,
+    type DocChildren,
+} from "./versionedDocs"
+
+describe("VERSIONED_DOCS_PATH", () => {
+    it("matches a bare version home", () => {
+        const m = VERSIONED_DOCS_PATH.exec("/docs/1.3")
+        expect(m?.[1]).toBe("1.3")
+        expect(m?.[2]).toBeUndefined()
+    })
+
+    it("matches a version with a sub-path", () => {
+        const m = VERSIONED_DOCS_PATH.exec("/docs/1.3/tutorial/inputs")
+        expect(m?.[1]).toBe("1.3")
+        expect(m?.[2]).toBe("/tutorial/inputs")
+    })
+
+    it("does NOT match a latest docs path (so it isn't shadowed)", () => {
+        expect(VERSIONED_DOCS_PATH.test("/docs/tutorial")).toBe(false)
+        expect(VERSIONED_DOCS_PATH.test("/docs/tutorial/inputs")).toBe(false)
+        expect(VERSIONED_DOCS_PATH.test("/docs")).toBe(false)
+    })
+
+    it("does NOT match a partial version", () => {
+        expect(VERSIONED_DOCS_PATH.test("/docs/1")).toBe(false)
+    })
+})
+
+describe("apiDocPath", () => {
+    it("builds the home URL with patch .0", () => {
+        expect(apiDocPath("1.3", "")).toBe("/docs/docs/versions/1.3.0")
+    })
+
+    it("builds a sub-path URL", () => {
+        expect(apiDocPath("1.3", "tutorial/inputs")).toBe(
+            "/docs/docs/tutorial/inputs/versions/1.3.0",
+        )
+    })
+
+    it("trims surrounding slashes from the path", () => {
+        expect(apiDocPath("0.19", "/tutorial/inputs/")).toBe(
+            "/docs/docs/tutorial/inputs/versions/0.19.0",
+        )
+    })
+})
+
+describe("isVersionedAssetRef", () => {
+    it("matches a root-absolute path with a file extension", () => {
+        expect(isVersionedAssetRef("/docs/tutorial/x.png")).toBe(true)
+        expect(isVersionedAssetRef("/autocompletion.gif")).toBe(true)
+        expect(isVersionedAssetRef("/docs/a/b.c.svg")).toBe(true)
+    })
+
+    it("strips a query/hash before checking the extension", () => {
+        expect(isVersionedAssetRef("/docs/x.png?v=2")).toBe(true)
+        expect(isVersionedAssetRef("/docs/x.png#frag")).toBe(true)
+    })
+
+    it("leaves external and protocol-relative refs alone", () => {
+        expect(isVersionedAssetRef("https://cdn.example/x.png")).toBe(false)
+        expect(isVersionedAssetRef("//cdn.example/x.png")).toBe(false)
+        expect(isVersionedAssetRef("data:image/png;base64,AAAA")).toBe(false)
+    })
+
+    it("leaves relative refs and extension-less paths alone", () => {
+        expect(isVersionedAssetRef("./x.png")).toBe(false)
+        expect(isVersionedAssetRef("../x.png")).toBe(false)
+        expect(isVersionedAssetRef("/docs/tutorial/inputs")).toBe(false)
+        expect(isVersionedAssetRef("")).toBe(false)
+    })
+})
+
+describe("versionedAssetUrl", () => {
+    const api = "https://api.kestra.io/v1"
+
+    it("doubles 'docs' for a /docs-rooted asset (in-app domain prepend)", () => {
+        expect(versionedAssetUrl(api, "1.0", "/docs/tutorial/x.png")).toBe(
+            "https://api.kestra.io/v1/docs/docs/tutorial/x.png/versions/1.0.0",
+        )
+    })
+
+    it("keeps a single 'docs' for a bare-root asset", () => {
+        expect(versionedAssetUrl(api, "0.19", "/autocompletion.gif")).toBe(
+            "https://api.kestra.io/v1/docs/autocompletion.gif/versions/0.19.0",
+        )
+    })
+})
+
+describe("isRelativeDocHref", () => {
+    it("matches source-relative doc links", () => {
+        expect(isRelativeDocHref("./01.fundamentals.md")).toBe(true)
+        expect(isRelativeDocHref("../07.architecture/09.internal-storage.md")).toBe(true)
+        expect(isRelativeDocHref("plugins/plugin-script-python/foo.md")).toBe(true)
+    })
+
+    it("leaves absolute, anchor and scheme'd hrefs alone", () => {
+        expect(isRelativeDocHref("/docs/getting-started/quickstart")).toBe(false)
+        expect(isRelativeDocHref("#start-kestra")).toBe(false)
+        expect(isRelativeDocHref("https://kestra.io")).toBe(false)
+        expect(isRelativeDocHref("mailto:hello@kestra.io")).toBe(false)
+        expect(isRelativeDocHref("")).toBe(false)
+    })
+})
+
+describe("docLinkBaseDir", () => {
+    const children: DocChildren = {
+        docs: { title: "Docs" },
+        "docs/tutorial": { title: "Tutorial" },
+        "docs/tutorial/fundamentals": { title: "Fundamentals" },
+    }
+
+    it("is the page itself for a directory index (has children)", () => {
+        expect(docLinkBaseDir("tutorial", children)).toBe("tutorial")
+    })
+
+    it("is the parent for a leaf page", () => {
+        expect(docLinkBaseDir("tutorial/fundamentals", children)).toBe("tutorial")
+        expect(docLinkBaseDir("why-kestra", children)).toBe("")
+    })
+
+    it("is the root for the version home", () => {
+        expect(docLinkBaseDir("", children)).toBe("")
+    })
+})
+
+describe("resolveVersionedDocLink", () => {
+    it("strips ordering prefixes and .md, resolving against the base dir", () => {
+        expect(
+            resolveVersionedDocLink("1.0", "tutorial", "../07.architecture/09.internal-storage.md"),
+        ).toBe("/docs/1.0/architecture/internal-storage")
+        expect(resolveVersionedDocLink("1.0", "tutorial", "./01.fundamentals.md")).toBe(
+            "/docs/1.0/tutorial/fundamentals",
+        )
+    })
+
+    it("resolves version-home links without dropping the version segment", () => {
+        expect(
+            resolveVersionedDocLink("0.19", "", "./01.getting-started/01.quickstart.md"),
+        ).toBe("/docs/0.19/getting-started/quickstart")
+    })
+
+    it("drops index segments and keeps the anchor", () => {
+        expect(
+            resolveVersionedDocLink("1.0", "tutorial", "../expressions/index.md#syntax"),
+        ).toBe("/docs/1.0/expressions#syntax")
+    })
+
+    it("clamps .. at the docs root", () => {
+        expect(resolveVersionedDocLink("1.0", "", "../../foo.md")).toBe("/docs/1.0/foo")
+    })
+
+    it("maps a link to a directory index onto the version home", () => {
+        expect(resolveVersionedDocLink("1.0", "getting-started", "../index.md")).toBe(
+            "/docs/1.0",
+        )
+    })
+})
+
+describe("versionMajorMinor", () => {
+    it("extracts MAJOR.MINOR from a full version", () => {
+        expect(versionMajorMinor("1.3.34")).toBe("1.3")
+    })
+
+    it("extracts MAJOR.MINOR from a pre-release tag", () => {
+        expect(versionMajorMinor("2.0.0-rc10")).toBe("2.0")
+    })
+
+    it("parses major/minor as integers, not a float", () => {
+        expect(versionMajorMinor("1.10.0")).toBe("1.10")
+    })
+
+    it("returns undefined for a non-version string", () => {
+        expect(versionMajorMinor("not-a-version")).toBeUndefined()
+    })
+})
+
+describe("docVersionLabels", () => {
+    const raw = [
+        { version: "1.3.0" },
+        { version: "1.3.1" }, // dedup to 1.3
+        { version: "1.2.0" },
+        { version: "1.1.0" },
+        { version: "1.0.0" },
+        { version: "0.24.0" }, // dropped: below the 1.0 floor
+        { version: "2.0.0-rc10" }, // pre-release tags still count
+        { version: "not-a-version" },
+    ]
+
+    it("keeps only >= 1.0, deduped to MAJOR.MINOR, newest first", () => {
+        expect(docVersionLabels(raw)).toEqual(["2.0", "1.3", "1.2", "1.1", "1.0"])
+    })
+
+    it("excludes everything below the 1.0 floor", () => {
+        expect(docVersionLabels([{ version: "0.24.0" }])).toEqual([])
+    })
+
+    it("sorts minor versions numerically, not as strings", () => {
+        expect(docVersionLabels([{ version: "1.10.0" }, { version: "1.2.0" }])).toEqual([
+            "1.10",
+            "1.2",
+        ])
+    })
+})
+
+describe("versionSelectOptions", () => {
+    const known = ["1.3", "1.2", "1.1", "1.0"]
+
+    it("folds the newest version into Latest (X) and lists the others", () => {
+        expect(versionSelectOptions("1.3", known, null)).toEqual([
+            { version: "", label: "Latest (1.3)", selected: true },
+            { version: "1.2", label: "1.2", selected: false },
+            { version: "1.1", label: "1.1", selected: false },
+            { version: "1.0", label: "1.0", selected: false },
+        ])
+    })
+
+    it("marks an older current version selected (not Latest)", () => {
+        const opts = versionSelectOptions("1.3", known, "1.2")
+        expect(opts.find((o) => o.selected)?.label).toBe("1.2")
+        expect(opts[0].selected).toBe(false)
+    })
+
+    it("selects Latest when viewing the newest version, without listing it twice", () => {
+        const opts = versionSelectOptions("1.3", known, "1.3")
+        expect(opts[0]).toEqual({ version: "", label: "Latest (1.3)", selected: true })
+        expect(opts.some((o) => o.label === "1.3")).toBe(false)
+    })
+
+    it("falls back to a bare Latest label when the latest fetch failed", () => {
+        expect(versionSelectOptions(undefined, known, null)[0]).toEqual({
+            version: "",
+            label: "Latest",
+            selected: true,
+        })
+    })
+
+    it("returns only Latest when there are no other known versions", () => {
+        expect(versionSelectOptions("1.3", [], null)).toEqual([
+            { version: "", label: "Latest (1.3)", selected: true },
+        ])
+    })
+
+    it("discards a pre-release version ahead of GA latest (e.g. a 2.0 RC while 1.3 is still current)", () => {
+        expect(versionSelectOptions("1.3", ["2.0", "1.3", "1.2"], null)).toEqual([
+            { version: "", label: "Latest (1.3)", selected: true },
+            { version: "1.2", label: "1.2", selected: false },
+        ])
+    })
+})
+
+describe("switchVersionHref", () => {
+    it("re-roots a latest sub-path under the version", () => {
+        expect(switchVersionHref("1.3", "/docs/tutorial/inputs")).toBe(
+            "/docs/1.3/tutorial/inputs",
+        )
+    })
+
+    it("maps the docs home to the version home", () => {
+        expect(switchVersionHref("1.3", "/docs")).toBe("/docs/1.3")
+    })
+
+    it("re-roots a sub-path from one version directly to another", () => {
+        expect(switchVersionHref("1.3", "/docs/1.2/tutorial/inputs")).toBe(
+            "/docs/1.3/tutorial/inputs",
+        )
+    })
+
+    it("switches from a version home to another version home", () => {
+        expect(switchVersionHref("1.3", "/docs/1.2")).toBe("/docs/1.3")
+    })
+
+    it("switches from a version back to latest", () => {
+        expect(switchVersionHref("", "/docs/1.2/tutorial/inputs")).toBe(
+            "/docs/tutorial/inputs",
+        )
+    })
+
+    it("switches from a version home back to the latest home", () => {
+        expect(switchVersionHref("", "/docs/1.2")).toBe("/docs")
+    })
+
+    it("falls back to the bare path for a malformed version instead of embedding it", () => {
+        expect(switchVersionHref("javascript:alert(1)", "/docs/1.2/tutorial/inputs")).toBe(
+            "/docs/tutorial/inputs",
+        )
+    })
+})
+
+describe("shouldInterceptCtaClick", () => {
+    const click = (over: Partial<Parameters<typeof shouldInterceptCtaClick>[0]> = {}) => ({
+        button: 0,
+        metaKey: false,
+        ctrlKey: false,
+        shiftKey: false,
+        altKey: false,
+        ...over,
+    })
+
+    it("intercepts a plain left click", () => {
+        expect(shouldInterceptCtaClick(click())).toBe(true)
+    })
+
+    it("leaves modified clicks to the browser so they still open a new tab/window", () => {
+        expect(shouldInterceptCtaClick(click({ metaKey: true }))).toBe(false)
+        expect(shouldInterceptCtaClick(click({ ctrlKey: true }))).toBe(false)
+        expect(shouldInterceptCtaClick(click({ shiftKey: true }))).toBe(false)
+        expect(shouldInterceptCtaClick(click({ altKey: true }))).toBe(false)
+    })
+
+    it("leaves middle-click alone", () => {
+        expect(shouldInterceptCtaClick(click({ button: 1 }))).toBe(false)
+    })
+})
+
+describe("docsLatestVersion", () => {
+    it("prefers a pinned override over what the API reports", () => {
+        expect(docsLatestVersion("1.3", "2.0")).toBe("2.0")
+    })
+
+    it("falls through to the API version when nothing is pinned", () => {
+        expect(docsLatestVersion("1.3", undefined)).toBe("1.3")
+        expect(docsLatestVersion(undefined, undefined)).toBeUndefined()
+    })
+})
+
+describe("decideVersionedRoute with a pinned docs-latest", () => {
+    // The 2.0 docs are live at /docs while the API still reports 1.3 as latest.
+    const base = {
+        path: "installation/docker-compose",
+        isMarkdownRequest: false,
+        search: "",
+        latest: "2.0",
+        productLatest: "1.3",
+        known: ["1.3", "1.2"],
+        knownOk: true,
+    }
+
+    it("serves the demoted release from the versioned endpoint instead of redirecting it to /docs", () => {
+        expect(decideVersionedRoute({ ...base, version: "1.3" })).toEqual({ kind: "fetch" })
+    })
+
+    it("redirects the pinned version itself to the unversioned docs", () => {
+        expect(decideVersionedRoute({ ...base, version: "2.0" })).toEqual({
+            kind: "redirect",
+            location: "/docs/installation/docker-compose",
+        })
+    })
+
+    it("keeps the demoted release readable during an API outage, as it was before the pin", () => {
+        // Its pre-pin behaviour was a redirect to the static /docs, which needs
+        // no API at all; 503-ing the release most readers are on is a regression.
+        expect(
+            decideVersionedRoute({
+                ...base,
+                version: "1.3",
+                known: [],
+                knownOk: false,
+                isMarkdownRequest: true,
+                search: "?q=x",
+            }),
+        ).toEqual({
+            kind: "redirect",
+            location: "/docs/installation/docker-compose.md?q=x",
+        })
+    })
+
+    it("still reports older versions unavailable during an outage", () => {
+        expect(
+            decideVersionedRoute({ ...base, version: "1.2", known: [], knownOk: false }),
+        ).toEqual({ kind: "unavailable" })
+    })
+
+    it("offers the pinned version as Latest and keeps the demoted release selectable", () => {
+        expect(versionSelectOptions("2.0", ["1.3", "1.2"], null)).toEqual([
+            { version: "", label: "Latest (2.0)", selected: true },
+            { version: "1.3", label: "1.3", selected: false },
+            { version: "1.2", label: "1.2", selected: false },
+        ])
+    })
+})
+
+describe("searchScope", () => {
+    it("scopes search to the version being read, and prefixes its docs hits", () => {
+        expect(searchScope("/docs/1.0/installation/docker-compose", "2.0")).toEqual({
+            version: "1.0",
+            hrefVersion: "1.0",
+        })
+    })
+
+    it("scopes to docs-latest elsewhere on the site, with no prefix needed", () => {
+        // Those hits are already live URLs under /docs.
+        expect(searchScope("/docs/installation/docker-compose", "2.0")).toEqual({
+            version: "2.0",
+            hrefVersion: undefined,
+        })
+        expect(searchScope("/plugins/tasks/io.kestra.plugin.core.log.Log", "2.0")).toEqual({
+            version: "2.0",
+            hrefVersion: undefined,
+        })
+    })
+
+    it("does not prefix the demoted release's own docs when it is what /docs serves", () => {
+        // No pin: /docs/1.3/... redirects to /docs, so 1.3 hits are unversioned.
+        expect(searchScope("/docs/1.3/tutorial", "1.3")).toEqual({
+            version: "1.3",
+            hrefVersion: undefined,
+        })
+    })
+
+    it("leaves search unscoped when docs-latest is unknown", () => {
+        expect(searchScope("/blogs/some-post", undefined)).toEqual({
+            version: undefined,
+            hrefVersion: undefined,
+        })
+    })
+})
+
+describe("searchResultHref", () => {
+    const docsHit = { url: "docs/installation/docker-compose", type: "DOCS" }
+
+    it("puts the version segment back on an archived docs hit", () => {
+        expect(searchResultHref(docsHit, "1.0")).toBe(
+            "/docs/1.0/installation/docker-compose",
+        )
+    })
+
+    it("leaves docs hits alone when they belong to the version /docs serves", () => {
+        expect(searchResultHref(docsHit, undefined)).toBe(
+            "/docs/installation/docker-compose",
+        )
+    })
+
+    it("never versions a non-docs hit, even while reading an archived version", () => {
+        expect(searchResultHref({ url: "blogs/release-1-0", type: "BLOGS" }, "1.0")).toBe(
+            "/blogs/release-1-0",
+        )
+        expect(
+            searchResultHref({ url: "plugins/tasks/x", type: "PLUGINS" }, "1.0"),
+        ).toBe("/plugins/tasks/x")
+    })
+
+    it("maps a version home hit to that version's docs home", () => {
+        expect(searchResultHref({ url: "docs", type: "DOCS" }, "1.0")).toBe("/docs/1.0")
+    })
+})
+
+describe("docsVersionFromPath", () => {
+    it("reads the version off a versioned docs path", () => {
+        expect(docsVersionFromPath("/docs/1.2/tutorial")).toBe("1.2")
+        expect(docsVersionFromPath("/docs/1.2")).toBe("1.2")
+    })
+
+    it("returns undefined for the latest docs and non-docs paths", () => {
+        expect(docsVersionFromPath("/docs/tutorial")).toBeUndefined()
+        expect(docsVersionFromPath("/plugins")).toBeUndefined()
+        expect(docsVersionFromPath("/")).toBeUndefined()
+    })
+})
+
+describe("resolveVersionSwitchHref", () => {
+    const probeWith = (status: number) =>
+        vi.fn(async () => ({ status })) as unknown as typeof fetch & ReturnType<typeof vi.fn>
+
+    it("returns a versioned target without probing", async () => {
+        const probe = probeWith(404)
+        expect(await resolveVersionSwitchHref("1.3", "/docs/1.2/tutorial", probe)).toBe(
+            "/docs/1.3/tutorial",
+        )
+        expect(probe).not.toHaveBeenCalled()
+    })
+
+    it("HEAD-probes the latest target and keeps it when it exists", async () => {
+        const probe = probeWith(200)
+        expect(await resolveVersionSwitchHref("", "/docs/1.2/tutorial", probe)).toBe(
+            "/docs/tutorial",
+        )
+        expect(probe).toHaveBeenCalledWith(
+            "/docs/tutorial",
+            expect.objectContaining({ method: "HEAD" }),
+        )
+    })
+
+    it("falls back to the docs home when the latest target 404s", async () => {
+        expect(
+            await resolveVersionSwitchHref("", "/docs/1.2/removed-page", probeWith(404)),
+        ).toBe("/docs")
+    })
+
+    it("keeps the direct target on a non-404 probe status, like the middleware's 404-vs-transient split", async () => {
+        expect(await resolveVersionSwitchHref("", "/docs/1.2/tutorial", probeWith(503))).toBe(
+            "/docs/tutorial",
+        )
+    })
+
+    it("still attempts direct navigation when the probe itself fails", async () => {
+        const fetchThrows = (async () => {
+            throw new Error("network down")
+        }) as unknown as typeof fetch
+        expect(await resolveVersionSwitchHref("", "/docs/1.2/tutorial", fetchThrows)).toBe(
+            "/docs/tutorial",
+        )
+    })
+
+    it("skips the probe when the target is already the docs home", async () => {
+        const probe = probeWith(404)
+        expect(await resolveVersionSwitchHref("", "/docs/1.2", probe)).toBe("/docs")
+        expect(probe).not.toHaveBeenCalled()
+    })
+})
+
+describe("decideVersionedRoute", () => {
+    const known = ["1.3", "1.2", "1.1", "1.0"]
+    const base = { path: "tutorial", isMarkdownRequest: false, search: "", known, knownOk: true }
+
+    it("passes an unknown version through to the natural 404", () => {
+        expect(decideVersionedRoute({ ...base, version: "0.19", latest: "1.3" })).toEqual({
+            kind: "pass",
+        })
+    })
+
+    it("reports unavailable when the version list itself could not be fetched", () => {
+        expect(
+            decideVersionedRoute({ ...base, version: "1.2", known: [], knownOk: false, latest: undefined }),
+        ).toEqual({ kind: "unavailable" })
+    })
+
+    it("still passes an unknown version through when a stale list is available", () => {
+        expect(
+            decideVersionedRoute({ ...base, version: "0.19", knownOk: false, latest: "1.3" }),
+        ).toEqual({ kind: "pass" })
+    })
+
+    it("redirects the GA latest to the canonical latest page, keeping the query", () => {
+        expect(
+            decideVersionedRoute({ ...base, version: "1.3", latest: "1.3", search: "?ref=changelog" }),
+        ).toEqual({ kind: "redirect", location: "/docs/tutorial?ref=changelog" })
+    })
+
+    it("redirects the GA latest home to the docs home, honoring the .md contract", () => {
+        expect(
+            decideVersionedRoute({
+                ...base,
+                version: "1.3",
+                latest: "1.3",
+                path: "",
+                isMarkdownRequest: true,
+            }),
+        ).toEqual({ kind: "redirect", location: "/docs.md" })
+    })
+
+    it("fetches the archived copy for an older known version", () => {
+        expect(decideVersionedRoute({ ...base, version: "1.2", latest: "1.3" })).toEqual({
+            kind: "fetch",
+        })
+    })
+
+    it("passes a pre-release version ahead of GA latest through to the natural 404", () => {
+        // e.g. a "2.0" RC sitting in /v1/versions while 1.3 is still current GA.
+        expect(
+            decideVersionedRoute({ ...base, version: "2.0", known: [...known, "2.0"], latest: "1.3" }),
+        ).toEqual({ kind: "pass" })
+    })
+})
+
+describe("missingDocFallbackHref", () => {
+    it("falls back to the version home", () => {
+        expect(missingDocFallbackHref("1.2", false, "")).toBe("/docs/1.2")
+    })
+
+    it("stays on the .md contract and keeps the query string", () => {
+        expect(missingDocFallbackHref("1.2", true, "?ref=x")).toBe("/docs/1.2.md?ref=x")
+    })
+})
+
+describe("isAssetShapedDocPath", () => {
+    it("matches stale asset hotlinks", () => {
+        expect(isAssetShapedDocPath("tutorial/x.png")).toBe(true)
+        expect(isAssetShapedDocPath("x.mp4")).toBe(true)
+        expect(isAssetShapedDocPath("fonts/a.woff2")).toBe(true)
+    })
+
+    it("does not match real pages, including digit-named migration guides", () => {
+        expect(isAssetShapedDocPath("tutorial")).toBe(false)
+        expect(isAssetShapedDocPath("migration-guide/0.19.0")).toBe(false)
+        expect(isAssetShapedDocPath("migration-guide/1.10")).toBe(false)
+        expect(isAssetShapedDocPath("")).toBe(false)
+    })
+})
+
+describe("frontmatterField", () => {
+    const md = `---
+title: "Add Inputs to Kestra Workflows"
+h1: Make Flows Dynamic
+description: 'Single quoted'
+---
+# Body`
+
+    it("reads a double-quoted value, unwrapping quotes", () => {
+        expect(frontmatterField(md, "title")).toBe(
+            "Add Inputs to Kestra Workflows",
+        )
+    })
+
+    it("reads an unquoted value", () => {
+        expect(frontmatterField(md, "h1")).toBe("Make Flows Dynamic")
+    })
+
+    it("unwraps single quotes", () => {
+        expect(frontmatterField(md, "description")).toBe("Single quoted")
+    })
+
+    it("returns undefined for a missing field", () => {
+        expect(frontmatterField(md, "missing")).toBeUndefined()
+    })
+
+    it("ignores a body-level key: line inside a fenced YAML flow sample", () => {
+        const withFlowSample = `---
+title: Only Title
+---
+# Body
+
+\`\`\`yaml
+id: my-flow
+namespace: company.team
+description: This is a demo flow
+\`\`\``
+        expect(frontmatterField(withFlowSample, "description")).toBeUndefined()
+    })
+
+    it("prefers the real frontmatter value over a same-key body match", () => {
+        const withFlowSample = `---
+title: Only Title
+description: Real description
+---
+# Body
+
+\`\`\`yaml
+description: This is a demo flow
+\`\`\``
+        expect(frontmatterField(withFlowSample, "description")).toBe(
+            "Real description",
+        )
+    })
+
+    it("handles CRLF frontmatter", () => {
+        const crlf = "---\r\ntitle: CRLF Title\r\n---\r\n# Body"
+        expect(frontmatterField(crlf, "title")).toBe("CRLF Title")
+    })
+})
+
+describe("stripFrontmatter", () => {
+    it("removes a leading frontmatter block", () => {
+        expect(stripFrontmatter("---\ntitle: x\n---\n# Body")).toBe("# Body")
+    })
+
+    it("leaves body-only markdown untouched", () => {
+        expect(stripFrontmatter("# Body\ntext")).toBe("# Body\ntext")
+    })
+
+    it("handles CRLF frontmatter", () => {
+        expect(stripFrontmatter("---\r\ntitle: x\r\n---\r\n# Body")).toBe(
+            "# Body",
+        )
+    })
+})
+
+describe("buildDocTree", () => {
+    it("nests children under parents from the flat, full-path keys", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/getting-started": { title: "Getting Started" },
+            "docs/getting-started/quickstart": { title: "Quickstart" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots.map((n) => n.path)).toEqual(["docs"])
+        const docs = roots[0]
+        expect(docs.children.map((n) => n.path)).toEqual([
+            "docs/getting-started",
+        ])
+        expect(docs.children[0].children.map((n) => n.title)).toEqual([
+            "Quickstart",
+        ])
+    })
+
+    it("handles a child listed BEFORE its parent (lazy parent build)", () => {
+        // The endpoint sometimes emits a child ahead of its parent. The parent
+        // must still get its real title (not a humanized placeholder) and the
+        // child must nest under it exactly once.
+        const children: DocChildren = {
+            "docs/ui/dashboard": { title: "Dashboard" },
+            "docs/ui": { title: "User Interface" },
+            docs: { title: "Documentation" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots.map((n) => n.path)).toEqual(["docs"])
+        const ui = roots[0].children.find((n) => n.path === "docs/ui")
+        expect(ui?.title).toBe("User Interface") // real title, not "Ui"
+        expect(ui?.children.map((n) => n.path)).toEqual(["docs/ui/dashboard"])
+    })
+
+    it("prefers sidebarTitle over the long SEO title, when present", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/quickstart": {
+                title: "Kestra Quickstart Guide – Run Your First Workflow",
+                sidebarTitle: "Quickstart",
+            },
+        }
+        const roots = buildDocTree(children)
+        expect(roots[0].children[0].title).toBe("Quickstart")
+    })
+
+    it("falls back to title when sidebarTitle is absent (older versions)", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/quickstart": { title: "Quickstart" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots[0].children[0].title).toBe("Quickstart")
+    })
+
+    it("humanizes a node whose entry carries no title", () => {
+        const children = {
+            docs: { title: "Documentation" },
+            "docs/work-flow": { title: "" },
+            "docs/work-flow/tasks": { title: "Tasks" },
+        } as DocChildren
+        const roots = buildDocTree(children)
+        const parent = roots[0].children[0]
+        expect(parent.path).toBe("docs/work-flow")
+        expect(parent.title).toBe("Work Flow") // derived from the slug
+        expect(parent.children.map((n) => n.title)).toEqual(["Tasks"])
+    })
+
+    it("preserves the input (nav) order among siblings", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/b": { title: "B" },
+            "docs/a": { title: "A" },
+            "docs/c": { title: "C" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots[0].children.map((n) => n.title)).toEqual(["B", "A", "C"])
+    })
+
+    it("drops hideSidebar pages and their subtree (matches the latest sidebar)", () => {
+        const children: DocChildren = {
+            docs: { title: "Documentation" },
+            "docs/brand-assets": { title: "Brand Assets", hideSidebar: true },
+            "docs/why-kestra": { title: "Why Kestra", hideSidebar: true },
+            "docs/why-kestra/details": { title: "Details" },
+            "docs/getting-started": { title: "Getting Started" },
+        }
+        const roots = buildDocTree(children)
+        expect(roots[0].children.map((n) => n.path)).toEqual([
+            "docs/getting-started",
+        ])
+    })
+
+    it("returns [] for an empty map", () => {
+        expect(buildDocTree({})).toEqual([])
+    })
+})
+
+describe("directDocChildren", () => {
+    const children: DocChildren = {
+        docs: { title: "Docs" },
+        "docs/a": { title: "A" },
+        "docs/a/one": { title: "One" },
+        "docs/a/two": { title: "Two", hideSidebar: true },
+        "docs/a/one/deep": { title: "Deep" },
+        "docs/b": { title: "B" },
+    }
+
+    it("lists only one-segment-deeper children in map order", () => {
+        expect(directDocChildren(children, "docs/a").map((c) => c.key)).toEqual([
+            "docs/a/one",
+        ])
+        expect(directDocChildren(children, "docs").map((c) => c.key)).toEqual([
+            "docs/a",
+            "docs/b",
+        ])
+    })
+
+    it("returns empty for a leaf or unknown key", () => {
+        expect(directDocChildren(children, "docs/b")).toEqual([])
+        expect(directDocChildren(children, "docs/nope")).toEqual([])
+    })
+})
+
+describe("plainDocText", () => {
+    it("unwraps markdown links and strips inline markers", () => {
+        expect(
+            plainDocText("Follow the [Quickstart Guide](./01.quickstart.md) to install `kestra` **now**."),
+        ).toBe("Follow the Quickstart Guide to install kestra now.")
+    })
+})
+
+describe("docChildHref", () => {
+    it("maps the docs root to the version home", () => {
+        expect(docChildHref("1.3", "docs")).toBe("/docs/1.3")
+    })
+
+    it("maps a nested key to its versioned URL", () => {
+        expect(docChildHref("0.19", "docs/ui/dashboard")).toBe(
+            "/docs/0.19/ui/dashboard",
+        )
+    })
+})
+
+describe("currentDocKey", () => {
+    it("maps the version home (empty path) to the docs root key", () => {
+        expect(currentDocKey("")).toBe("docs")
+    })
+
+    it("prefixes a sub-path with docs/ and trims slashes", () => {
+        expect(currentDocKey("/ui/dashboard/")).toBe("docs/ui/dashboard")
+    })
+})

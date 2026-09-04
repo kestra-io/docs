@@ -13,7 +13,7 @@
         </button>
 
         <ul class="dropdown-menu markdown-actions-menu">
-            <li v-for="action in actions" :key="action.id">
+            <li v-for="action in visibleActions" :key="action.id">
                 <button
                     class="dropdown-item markdown-actions-item"
                     type="button"
@@ -46,6 +46,8 @@
         editUrl?: string
         stem?: string
         extension?: string
+        /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
+        excludeActions?: MarkdownActionId[]
     }>()
 
     const context = computed(() => ({
@@ -59,6 +61,12 @@
     }))
 
     const { actions, copied, executeAction } = useMarkdownActions(context)
+
+    const visibleActions = computed(() =>
+        props.excludeActions?.length
+            ? actions.filter((action) => !props.excludeActions!.includes(action.id))
+            : actions,
+    )
 
     const actionIcons: Record<MarkdownActionId, typeof ContentCopy> = {
         edit: Github,

@@ -13,6 +13,7 @@ import Announce from "~/components/layout/Announce.vue"
 import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
+import { getDocsLatestVersion } from "~/utils/docVersionsFetch"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
 import { DISABLE_USAL, PREVIEW } from "astro:env/server"
@@ -34,6 +35,8 @@ interface Props {
     headerBg?: string
     /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/all). */
     canonical?: string
+    /** Override the analytics content-view-name (window.astroClientConfig.slug); kept separate from `canonical`, which some pages use for syndicated-content URLs. */
+    analyticsSlug?: string
     /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
     noindex?: boolean
     /**
@@ -53,7 +56,7 @@ currentUrl.pathname = currentUrl.pathname.endsWith("/")
     : currentUrl.pathname
 
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
-const slug = Astro.routePattern
+const slug = props.analyticsSlug ?? Astro.routePattern
 
 // Strip any existing " | Kestra" suffix before re-appending, so the template
 // is the single owner of the suffix. Guards against double " | Kestra | Kestra"
@@ -101,6 +104,10 @@ const canonicalUrl = props.canonical
               (query.size > 0 ? "?" + query.toString() : ""),
           Astro.site,
       )
+
+// Search is scoped to the version /docs serves (see searchScope), which the
+// pinned docs-latest can put ahead of the API's own latest.
+const docsLatest = await getDocsLatestVersion()
 
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
@@ -282,7 +289,11 @@ const organizationSchema = {
             !props.bareChrome && (
                 <>
                     <Header client:load transition:persist />
-                    <Search randomAiQuestions={randomAiQuestions} client:load />
+                    <Search
+                        randomAiQuestions={randomAiQuestions}
+                        docsLatest={docsLatest}
+                        client:load
+                    />
                     {hasAnnounce ? (
                         <Announce
                             client:load

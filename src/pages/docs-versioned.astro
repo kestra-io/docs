@@ -1,0 +1,156 @@
+---
+// SSR-only shell for /docs/{major.minor}/... pages, rewritten to by the
+// `versionedDocs` middleware (never linked or sitemapped directly). Reachable
+// on its own path only with empty locals, so guard and bounce to /docs.
+import { API_URL } from "astro:env/client"
+import LayoutDocs from "~/components/layouts/DocsLayout.astro"
+import ArchivedBanner from "~/components/layout/ArchivedBanner.astro"
+import NavToc from "~/components/docs/NavToc.vue"
+import PrevNext from "~/components/layout/PrevNext.vue"
+import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
+import { renderVersionedDocBody, type VersionedDocBody } from "~/utils/renderVersionedDoc"
+import { buildVersionedNavigation, versionedBreadcrumbItems } from "~/utils/versionedNavigation"
+import { getDocSections } from "~/utils/docSectionsFetch"
+import * as versionedDocs from "~/utils/versionedDocs"
+
+export const prerender = false
+
+const { versionedDoc } = Astro.locals
+if (!versionedDoc) {
+    return Astro.redirect("/docs", 302)
+}
+const { version, path, markdown, children } = versionedDoc
+
+let body: VersionedDocBody
+try {
+    body = await renderVersionedDocBody({ version, path, markdown, children, apiUrl: API_URL })
+} catch (error) {
+    // A malformed relic MDC directive on an old page can throw mid-render;
+    // degrade the same way the middleware does for a missing page.
+    console.error(`Failed to render versioned doc ${version}/${path}:`, error)
+    if (!path) {
+        Astro.response.status = 404
+        return Astro.rewrite("/404")
+    }
+    return Astro.redirect(versionedDocs.versionHomeHref(version), 302)
+}
+
+if (body.unknownComponents.length) {
+    // Drift signal: a component entered the corpus that componentHtml doesn't
+    // style yet. The page still renders (children only) — grep the request
+    // logs for this line to know the renderer needs a new case.
+    console.warn(
+        `Unknown MDC component(s) in versioned doc ${version}/${path}: ${body.unknownComponents.join(", ")}`,
+    )
+}
+
+const pageKey = versionedDocs.currentDocKey(path)
+const activeStem = versionedDocs.docChildHref(version, pageKey)
+const sections = await getDocSections(version)
+const navigation = [
+    { title: "Documentation", children: buildVersionedNavigation(children, version, sections) },
+]
+---
+
+<LayoutDocs
+    activeStem={activeStem}
+    title={body.title}
+    description={body.description}
+    pageTitle={body.title}
+    navigation={navigation}
+    currentVersion={version}
+    canonical={activeStem}
+    analyticsSlug={activeStem}
+    breadcrumbItems={versionedBreadcrumbItems(version, path, children)}
+    noindex
+    isHomePage={pageKey === "docs"}
+>
+    <div class="version-banner" slot="banner">
+        <ArchivedBanner version={version} latestHref={versionedDocs.switchVersionHref("", activeStem)}>
+            <Fragment slot="message">
+                You are viewing the docs for <strong>v{version}</strong>, which is not the latest release.
+            </Fragment>
+        </ArchivedBanner>
+    </div>
+    <h1 class="title" slot="title">{body.h1}</h1>
+    <Fragment slot="headings">
+        <NavToc
+            links={body.headings.map((h) => ({ id: h.id, text: h.text, depth: h.level }))}
+            client:visible
+            markdownBody={`# ${body.title}\n\n${versionedDocs.stripFrontmatter(markdown)}`}
+            pagePath={activeStem}
+            pageTitle={body.title}
+            excludeActions={["edit"]}
+        />
+    </Fragment>
+    <div class="mdc-renderer" set:html={body.html} />
+    {body.guidesChildCard && (
+        <GuidesChildCardRender
+            navigation={body.guidesChildCard}
+            pageUrl={new URL(activeStem, Astro.url).href}
+            client:load
+        />
+    )}
+    <PrevNext {navigation} currentPath={activeStem} rootPath={`/docs/${version}`} client:idle />
+</LayoutDocs>
+
+<script>
+    // The banner's href points at this page in latest, which may be gone there
+    // (renamed with no redirect rule, or dropped). Probe it exactly as the
+    // version <select> does — bounded HEAD, /docs on 404 — so both controls
+    // behave the same, keeping the plain href as the no-JS path. Delegated on
+    // `document` for the same ClientRouter reason as below.
+    import { resolveVersionSwitchHref, shouldInterceptCtaClick } from "~/utils/versionedDocs"
+
+    document.addEventListener("click", (event) => {
+        const cta = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+            ".version-banner a.cta",
+        )
+        if (!cta || !shouldInterceptCtaClick(event)) return
+
+        event.preventDefault()
+        const banner = cta.closest<HTMLElement>(".archived-banner")
+        banner?.setAttribute("data-pending", "true")
+        cta.setAttribute("aria-busy", "true")
+
+        // Never leave the CTA dead once the default is prevented.
+        void resolveVersionSwitchHref("", window.location.pathname)
+            .then((href) => window.location.assign(href))
+            .catch(() => window.location.assign(cta.href))
+    })
+</script>
+
+<script>
+    // Delegated on `document`, not `.mdc-renderer`: the PROD-only ClientRouter
+    // swaps the page's elements without re-running this module (killing an
+    // element-bound handler), while dev never fires astro:page-load — document
+    // delegation survives both. `.astro-code` scopes it to this renderer's
+    // buttons (SchemaToCode's `.copy` lives under `.code-block`).
+    // The copy itself is the site-wide helper, so this affordance keeps the
+    // same feedback duration and screen-reader announcement as the others.
+    import { copyWithFeedback } from "~/utils/code-copy"
+
+    document.addEventListener("click", ({ target }) => {
+        const button = (target as HTMLElement).closest<HTMLButtonElement>(".astro-code .copy")
+        const code = button?.parentElement?.querySelector("code")
+        if (!button || !code) return
+
+        void copyWithFeedback(button, code.textContent?.trimEnd() ?? "")
+    })
+</script>
+
+<style lang="scss">
+    // The banner's own margins are tuned for the plugins article, which has no
+    // breadcrumb above it. Inside .bd-title it inherits that block's top margin,
+    // and must stay a plain child: a direct .bd-main child would take a grid row
+    // of its own, dropping the content out of the .bd-toc row span and inflating
+    // the title row by the ToC's height.
+    .version-banner :global(.archived-banner) {
+        margin: 0 0 1.5rem;
+    }
+
+    .title {
+        line-height: 3.25rem;
+        margin: 0 auto;
+    }
+</style>
