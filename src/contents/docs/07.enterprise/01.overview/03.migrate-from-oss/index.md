@@ -7,11 +7,7 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 ---
 
-How to migrate your flows and data from Kestra Open Source to Enterprise Edition.
-
-## Migrate from Open Source to Enterprise Edition
-
-When you start **Kestra Enterprise Edition**, you can bring your existing flows from the open-source version. This guide covers how to export and import flows, and what to keep in mind for other resources.
+When you move to Kestra Enterprise Edition, you can bring your existing flows from the open-source version. This guide covers how to export and import flows, and what to migrate separately.
 
 ## Export and import flows
 

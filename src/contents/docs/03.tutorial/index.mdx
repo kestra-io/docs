@@ -14,21 +14,24 @@ Use this tutorial to learn Kestra’s core concepts and build flows step by step
 **Before you start:** Complete the [Quickstart](../01.quickstart/index.md) so you have Kestra running locally. This tutorial assumes you can open the Kestra UI at `http://localhost:8080`.
 :::
 
-:::alert{type="info"}
-**Using an AI coding agent?** Add the [Kestra MCP server](../ai-tools/kestra-mcp-resources/index.md) to Claude Code, Cursor, or any MCP-compatible tool. It gives your agent live access to plugin docs, blueprints, and Kestra documentation — useful throughout this tutorial and beyond.
-:::
-
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/videoseries?si=hYpJnpp_lqtaFz-S&amp;list=PLEK3H8YwZn1o2KaCQqFeX4k7Yv2DPtuE1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/videoseries?si=LxGViB-slY0Kt5qB&amp;list=PLay5Ko57Tf5s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## What you can do with Kestra
 
 You can use Kestra to:
 
-- Run workflows on demand, event-driven, or on a schedule.
-- Interact with any system or language through plugins and tasks.
-- Orchestrate microservices, batch jobs, scripts, SQL queries, data syncs, dbt or Spark jobs, and other processes.
+- Run workflows on a schedule, on demand, or triggered by events such as webhooks, file arrivals, or messages on a queue.
+- Execute scripts in any language — Python, Node.js, R, Go, Bash — inside isolated containers.
+- Query databases, call APIs, read and write files in cloud storage, and send notifications.
+- Orchestrate microservices, batch jobs, data pipelines, dbt or Spark jobs, and ETL processes.
+- Provision and manage infrastructure — run Terraform plans, deploy to Kubernetes, and automate cloud resource lifecycle.
+- Build AI pipelines — call LLM APIs, run model training and evaluation jobs, and orchestrate multi-step agent workflows.
+- Pass data between tasks and flows, branch on conditions, run steps in parallel, and loop over dynamic item lists.
+- Handle failures with automatic retries, fallback tasks, and alerts.
+
+If you prefer to generate and deploy flows from an AI coding agent, see [AI tools](../ai-tools/index.mdx) to connect Claude Code, Cursor, or similar tools to Kestra’s MCP server.
 
 This tutorial is a sequence of six modules. Work through them in order — each one builds on the flow you created in the previous module:
 

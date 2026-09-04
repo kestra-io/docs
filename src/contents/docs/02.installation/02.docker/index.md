@@ -23,10 +23,15 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
-  kestra/kestra:latest server local
+  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
+  kestra/kestra:latest-slim server local
 ```
 
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
+
+:::alert{type="info"}
+The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. With `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`, Kestra installs any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
+:::
 
 :::alert{type="info"}
 The above command starts Kestra with an embedded H2 database. Storage files are stored on the `kestra_data` Docker volume, and the H2 database is persisted on the `kestra_db` Docker volume. For production-ready persistence with a PostgreSQL database and more configurability, follow the [Docker Compose installation](../03.docker-compose/index.md).
@@ -148,15 +153,19 @@ The official Kestra Docker images are available on [DockerHub](https://hub.docke
 
 Two image variants are available:
 - `kestra/kestra:*`
-- `kestra/kestra:*-no-plugins`
+- `kestra/kestra:*-slim`
 
 Both variants are based on the [`eclipse-temurin:21-jre`](https://hub.docker.com/_/eclipse-temurin) Docker image.
 
-The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-no-plugins` images do not contain any plugins. Use the `kestra/kestra:*` version to access all available plugins.
+The `kestra/kestra:*` images include all Kestra [plugins](/plugins) in their **latest versions**. The `kestra/kestra:*-slim` images do not bundle any plugins, which keeps them much smaller to download. When plugin auto-install is enabled (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`), Kestra downloads and installs any missing plugin automatically the first time a flow uses it — so the `-slim` image stays fully usable.
+
+:::alert{type="info"}
+The `*-slim` images were previously published under the `*-no-plugins` suffix. The `-no-plugins` tags are deprecated aliases of `-slim` and will be removed in a future release.
+:::
 
 ## Docker image tags
 
-The following tags are available for each Docker image (append `-no-plugins` to any image to exclude all but Kestra core plugins):
+The following tags are available for each Docker image (append `-slim` to any image to exclude all but Kestra core plugins):
 
 - `latest`: The most recent stable release (rolling tag). Intended for trying new features; not an LTS. Support ends when the next stable release (~ 2 months) becomes available.
 - `latest-lts`: The current Long-Term Support (rolling tag). Tracks the active LTS line (updates roughly every 6 months to the new LTS) and receives fixes for ~1 year.
@@ -164,7 +173,7 @@ The following tags are available for each Docker image (append `-no-plugins` to 
 - `v<X.X.X>`: Immutable tag for an exact version (e.g., `v1.0.1`). Never changes; **best for locked-down production.**
 - `develop`: Nightly/continuous build from the `develop` branch. Unstable and not recommended for production, only for testing.
 
-The **default Kestra image** `kestra/kestra:latest` already includes **all plugins**. To use a lightweight version of Kestra without plugins, add the suffix `*-no-plugins`.
+The **default Kestra image** `kestra/kestra:latest` already includes **all plugins**. To use a lightweight version of Kestra without bundled plugins, add the suffix `-slim`. These images ship without plugins on purpose — they are a fraction of the size of the full image, and combined with plugin auto-install (`KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`), missing plugins are fetched on demand when a flow needs them.
 
 ### Recommended images for production
 
@@ -173,25 +182,25 @@ For production deployments, choose one of the following:
 **Latest stable version** for staying most up to date while also stable (make note that this is a rolling tag that changes quite frequently):
 
 - `kestra/kestra:latest` — latest stable with all plugins
-- `kestra/kestra:latest-no-plugins` — latest stable without plugins
+- `kestra/kestra:latest-slim` — latest stable without plugins
 
 **Pinned versions** for maximum stability:
 
 - `kestra/kestra:v<X.X.X>` — all plugins included
-- `kestra/kestra:v<X.X.X>-no-plugins` — no bundled plugins, only core to Kestra
+- `kestra/kestra:v<X.X.X>-slim` — no bundled plugins, only core to Kestra
 
 **LTS rolling tag** if you want automatic updates within the LTS line:
 
 - `kestra/kestra:latest-lts`
-- `kestra/kestra:latest-lts-no-plugins`
+- `kestra/kestra:latest-lts-slim`
 
 ### Recommended images for development
 
 For development or testing new features:
 
 - `kestra/kestra:latest` — latest stable with all plugins
-- `kestra/kestra:latest-no-plugins` — latest stable without plugins
-- `kestra/kestra:develop` / `kestra/kestra:develop-no-plugins` — daily builds with unreleased features, unstable
+- `kestra/kestra:latest-slim` — latest stable without plugins
+- `kestra/kestra:develop` / `kestra/kestra:develop-slim` — daily builds with unreleased features, unstable
 
 ## Build a custom Docker image
 
@@ -215,12 +224,12 @@ RUN mkdir -p /app/plugins && \
 
 ### Add plugins to a Docker image
 
-By default, the base Docker image `kestra/kestra:latest` contains all plugins (unless you use the `kestra/kestra:latest-no-plugins` version). You can add specific plugins to the base image and build a custom image.
+By default, the base Docker image `kestra/kestra:latest` contains all plugins (unless you use the `kestra/kestra:latest-slim` version). You can add specific plugins to the base image and build a custom image.
 
 The following `Dockerfile` creates an image from the base image and adds the `plugin-aws`, `storage-gcs` and `plugin-gcp` binaries using the command `kestra plugins install`:
 
 ```dockerfile
-ARG IMAGE_TAG=latest-no-plugins
+ARG IMAGE_TAG=latest-slim
 FROM kestra/kestra:$IMAGE_TAG
 
 RUN /app/kestra plugins install \

@@ -169,7 +169,7 @@ triggers:
 -- 4. data_pipeline_assets (acme.company.data)
 INSERT INTO flows (key, value, source_code) VALUES (
   'acme.company.data_data_pipeline_assets_1',
-  '{"id":"data_pipeline_assets","namespace":"acme.company.data","tenantId":"main","revision":1,"deleted":false,"tasks":[{"id":"create_staging_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"CREATE TABLE IF NOT EXISTS trips AS select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;"},{"id":"for_each","type":"io.kestra.plugin.core.flow.ForEach","values":["passenger_count","trip_distance"],"tasks":[{"id":"create_mart_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;"}]}]}'::jsonb,
+  '{"id":"data_pipeline_assets","namespace":"acme.company.data","tenantId":"main","revision":1,"deleted":false,"tasks":[{"id":"create_staging_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"CREATE TABLE IF NOT EXISTS trips AS select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;"},{"id":"for_each","type":"io.kestra.plugin.core.flow.Loop","values":["passenger_count","trip_distance"],"tasks":[{"id":"create_mart_layer_asset","type":"io.kestra.plugin.jdbc.duckdb.Query","sql":"SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;"}]}]}'::jsonb,
   'id: data_pipeline_assets
 namespace: acme.company.data
 
@@ -181,14 +181,14 @@ tasks:
       select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
 
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - passenger_count
       - trip_distance
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
-        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;'
+        sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;'
 ) ON CONFLICT (key) DO NOTHING;
 
 -- 5. system_health_check (acme.operations)

@@ -57,7 +57,6 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
     "startDate": "2024-07-12T05:07:28.447110427Z"
   },
   "originalId": "1KWLxLeaXEXNDaXWP7YSKA",
-  "deleted": false,
   "metadata": {
     "attemptNumber": 1,
     "originalCreatedDate": "2024-07-12T05:07:28.447113302Z"
@@ -70,7 +69,7 @@ By default, the Executions API is asynchronous. It will invoke the execution of 
 To wait for an execution to finish and return the flow outputs in the response, call the Executions API with the `wait=true` query parameter. This would make the API call synchronous, and you will receive all outputs in the response that are explicitly exposed in the flow. You can invoke the Executions API in a synchronous fashion as follows:
 
 ```bash
-curl -X POST 'http://localhost:8080e/api/v1/main/xecutions/company.team/myflow?wait=true'
+curl -X POST 'http://localhost:8080/api/v1/main/executions/company.team/myflow?wait=true'
 ```
 
 Here is the output of this API invocation:
@@ -84,9 +83,6 @@ Here is the output of this API invocation:
   "taskRunList": [
     {
       "id": "4536yghIDGwqeRWZEE7AEE",
-      "executionId": "24znmto07B2ZGrI9IQoSSH",
-      "namespace": "company.team",
-      "flowId": "myflow",
       "taskId": "mytask",
       "attempts": [
         {
@@ -112,9 +108,6 @@ Here is the output of this API invocation:
           }
         }
       ],
-      "outputs": {
-        "value": "hello from kestra"
-      },
       "state": {
         "current": "SUCCESS",
         "histories": [
@@ -161,7 +154,6 @@ Here is the output of this API invocation:
     "startDate": "2024-07-12T05:13:41.789Z"
   },
   "originalId": "24znmto07B2ZGrI9IQoSSH",
-  "deleted": false,
   "metadata": {
     "attemptNumber": 1,
     "originalCreatedDate": "2024-07-12T05:13:41.789Z"
@@ -169,7 +161,7 @@ Here is the output of this API invocation:
 }
 ```
 
-As expected, the API response returned the outputs from the flow. It also contains all execution states.
+The API response includes the flow-level `outputs` (the values explicitly declared in the flow's `outputs:` block) and the execution state. Task run outputs are not included in the execution response — use `GET /api/v1/{tenant}/outputs/{executionId}/{taskRunId}` to retrieve per-task outputs.
 
 ## Authentication
 

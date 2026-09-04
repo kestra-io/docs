@@ -1,45 +1,34 @@
 ---
 title: Checks in Kestra – Pre-Execution Validations
 h1: Validate Inputs Before Any Task Runs with Checks
-description: Implement Checks in Kestra for pre-execution validation. Guard your workflows by enforcing conditions on inputs before any task begins execution.
+description: Use checks to enforce conditions on inputs before any task runs, blocking or failing executions that don't meet your criteria.
 sidebarTitle: Checks
 icon: /src/contents/docs/icons/flow.svg
 version: ">= 1.2.0"
 ---
 
-Add pre-execution validations that can block or fail an execution before any tasks run.
-
-## Add checks to validate inputs before execution
-
-`checks` are flow-level assertions evaluated when validating inputs and before creating a new execution. Each check defines a boolean `condition` and a `message` shown when the condition is false. You can choose how Kestra reacts (block, fail, or still create the execution) and how the message is styled in the UI.
-
-Checks are useful to enforce business rules on inputs (e.g., allowed values, date windows, required flags) or to nudge users with warnings before they launch a run.
+Checks are flow-level assertions evaluated against inputs before an execution is created. Each check defines a boolean `when` expression and a `message` to display when the expression evaluates to false.
 
 ## Properties
 
-Each item in `checks` supports the following properties:
+| Property | Required | Default | Description |
+|---|---|---|---|
+| `when` | Yes | — | Pebble expression that must evaluate to a boolean. Can reference inputs, KV pairs, and other [expression](../../expressions/index.mdx) variables. |
+| `message` | Yes | — | Text displayed in the Execute modal when the condition is false. |
+| `style` | No | `INFO` | Visual style for the message: `ERROR`, `SUCCESS`, `WARNING`, or `INFO`. |
+| `behavior` | No | `BLOCK_EXECUTION` | How the flow reacts when the condition is false: `BLOCK_EXECUTION` (do not create), `FAIL_EXECUTION` (create in failed state), or `CREATE_EXECUTION` (create anyway). |
 
-- `condition` *(required)*: Pebble expression that must evaluate to a boolean `true`. For example, you can design checks against inputs, key-value pairs, or other [expression](../../expressions/index.mdx) accessible workflow components.
-- `message` *(required)*: Text displayed when the condition is false.
-- `style` *(optional, default `INFO`)*: Visual style for the message. One of `ERROR`, `SUCCESS`, `WARNING`, `INFO`.
-- `behavior` *(optional, default `BLOCK_EXECUTION`)*: How the flow should react when the condition is false. One of:
-  - `BLOCK_EXECUTION`: Do not create the execution.
-  - `FAIL_EXECUTION`: Create the execution immediately in a failed state.
-  - `CREATE_EXECUTION`: Allow execution creation even if the check fails.
-
-When clicking **Execute**, with an `ERROR` message display set in the flow code, the modal will display the `message` as soon as an input is set that doesn't satisfy the check like below:
+When you click **Execute**, the modal displays the `message` as soon as an input fails a check:
 
 ![Failed Check](./checks-fail.png)
 
----
-
-### Multiple checks
+## Multiple checks
 
 If several checks fail, the most restrictive behavior wins in this priority order: `BLOCK_EXECUTION` → `FAIL_EXECUTION` → `CREATE_EXECUTION`. This lets you mix hard stops with softer warnings in the same flow.
 
-### Evaluation behavior
+## Evaluation behavior
 
-Keep these rules in mind when writing `condition` expressions:
+Keep these rules in mind when writing `when` expressions:
 
 - **The condition must evaluate to a boolean `true`.** Only a real boolean passes — not the string `"true"`, `"yes"`, a number, or any other truthy value. Use comparisons and boolean operators (e.g. `{{ inputs.age >= 18 }}`) rather than returning a string.
 - **An unevaluatable condition always blocks.** If the condition cannot be evaluated (for example, an undefined variable or a syntax error), the check fails safe: the execution is hard-blocked with `BLOCK_EXECUTION` and an `ERROR` style, regardless of the `behavior` and `style` you declared. Fix the expression and reference only variables that exist at validation time to restore your declared behavior.
@@ -60,7 +49,7 @@ inputs:
 
 checks:
   - message: "Sorry, this flow can only be executed with 'Kestra'"
-    condition: "{{ (inputs.name | upper) == 'KESTRA' }}"
+    when: "{{ (inputs.name | upper) == 'KESTRA' }}"
     style: ERROR
     behavior: BLOCK_EXECUTION
 
@@ -93,13 +82,13 @@ inputs:
 checks:
   # Block risky prod runs outside the allowed window
   - message: "Prod runs are only allowed between 06:00 and 22:00 UTC"
-    condition: "{{ inputs.environment != 'prod' or (inputs.run_date | date('HH') | number >= 6 and inputs.run_date | date('HH') | number < 22) }}"
+    when: "{{ inputs.environment != 'prod' or (inputs.run_date | date('HH') | number >= 6 and inputs.run_date | date('HH') | number < 22) }}"
     style: ERROR
     behavior: BLOCK_EXECUTION
 
   # Warn if the payload is not the approved source
   - message: "Non-approved source detected. Use https://dummyjson.com when possible."
-    condition: "{{ inputs.payload_url | startsWith('https://dummyjson.com') }}"
+    when: "{{ inputs.payload_url | startsWith('https://dummyjson.com') }}"
     style: WARNING
     behavior: CREATE_EXECUTION
 

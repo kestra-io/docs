@@ -32,7 +32,7 @@ description: |
 tasks:
   - id: out
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | json }}"
+    format: "{{ trigger | toJson }}"
 
 
 triggers:
@@ -85,7 +85,7 @@ description: |
 tasks:
   - id: out
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ trigger | json }}"
+    format: "{{ trigger | toJson }}"
 
 triggers:
   - id: webhook_trigger
@@ -109,5 +109,5 @@ where:
 With this information, you can test your flow by running the following command in the terminal to trigger the flow:
 
 ```bash
-curl http://my.kestra.clod/api/v1/my_tenant/executions/webhook/company.team/webhook_eE_example/1KERKzRQZSMtLdMdNI7Nkr
+curl http://localhost:8080/api/v1/my_tenant/executions/webhook/company.team/webhook_ee_example/1KERKzRQZSMtLdMdNI7Nkr
 ```
