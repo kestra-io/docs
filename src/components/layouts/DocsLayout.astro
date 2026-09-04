@@ -3,7 +3,7 @@ import NavSideBar from "~/components/docs/NavSideBar.vue"
 import Layout from "~/components/layout.astro"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
-import { getDocVersions } from "~/utils/docVersionsFetch"
+import { getLatestDocVersion, getKnownDocVersions } from "~/utils/docVersionsFetch"
 import squaredGrid from "~/assets/squared-grid.svg"
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
@@ -34,8 +34,11 @@ const pageList = recursivePages(navigation[0])
 const pageNames = generatePageNames(navigation[0])
 
 // Version selector data. Fetched once per build (memoized); lets readers jump
-// from the latest docs to a pinned version (served by the middleware).
-const docVersionList = await getDocVersions()
+// from the latest docs to any known version (served by the middleware).
+const [latestDocVersion, knownDocVersions] = await Promise.all([
+    getLatestDocVersion(),
+    getKnownDocVersions(),
+])
 
 const canonicalHref = props.canonical
     ? new URL(props.canonical, Astro.url).href
@@ -93,7 +96,8 @@ const techArticleSchema = {
             type="docs"
             navigation={navigation}
             slug={props.activeStem}
-            versions={docVersionList}
+            latestVersion={latestDocVersion}
+            knownVersions={knownDocVersions.versions}
             currentVersion={props.currentVersion}
             client:idle
             transition:persist

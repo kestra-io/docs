@@ -42,11 +42,11 @@
                     </div>
                 </div>
             </div>
-            <div v-if="versions?.length" class="version-select-wrapper mb-2">
+            <div v-if="versionOptions.length > 1" class="version-select-wrapper mb-2">
                 <label for="docs-version" class="version-label">Version</label>
                 <select
                     id="docs-version"
-                    class="version-select"
+                    class="version-select form-select"
                     @change="onVersionChange"
                 >
                     <option
@@ -89,7 +89,7 @@
     } from "~/components/docs/RecursiveNavSidebar.vue"
     import KSAIImg from "./assets/ks-ai.svg"
     import { activeSlug } from "~/utils/store"
-    import { versionSelectOptions, resolveVersionSwitchHref, type DocVersion } from "~/utils/versionedDocs"
+    import { versionSelectOptions, resolveVersionSwitchHref } from "~/utils/versionedDocs"
 
     const props = defineProps({
         type: {
@@ -102,12 +102,17 @@
         slug: {
             type: String,
         },
+        /** MAJOR.MINOR of the current GA release (e.g. "1.3"), unset if unavailable. */
+        latestVersion: {
+            type: String,
+            default: undefined,
+        },
         // No `default: () => []` here: combining a factory default with an
-        // array-of-object PropType breaks this component's inferred type for
-        // TS consumers (astro check reports the whole module as having "no
-        // default export"). Default to [] at each read site instead.
-        versions: {
-            type: Array as PropType<DocVersion[]>,
+        // array PropType breaks this component's inferred type for TS
+        // consumers (astro check reports the whole module as having "no
+        // default export"). Default to [] at the read site instead.
+        knownVersions: {
+            type: Array as PropType<string[]>,
         },
         /** Version label of the page being viewed (e.g. "1.2"), unset on the latest docs. */
         currentVersion: {
@@ -117,7 +122,7 @@
     })
 
     const versionOptions = computed(() =>
-        versionSelectOptions(props.versions ?? [], props.currentVersion ?? null),
+        versionSelectOptions(props.latestVersion, props.knownVersions ?? [], props.currentVersion ?? null),
     )
 
     // Though `transition:persist`ed, this island's props DO refresh on
@@ -235,9 +240,13 @@
                 color: var(--ks-content-tertiary);
                 font-size: $font-size-sm;
             }
+            // .form-select for the caret: the native one is drawn hard against
+            // the border, and Bootstrap's background-image version is inset,
+            // like every other styled select on the site. Only the block padding
+            // is ours, to keep the sidebar control compact.
             .version-select {
                 flex: 1;
-                padding: calc($spacer * 0.25) calc($spacer * 0.5);
+                padding-block: calc($spacer * 0.25);
                 font-size: $font-size-sm;
                 color: var(--ks-content-primary);
                 background-color: var(--ks-background-secondary);
