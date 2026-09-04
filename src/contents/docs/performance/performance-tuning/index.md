@@ -73,7 +73,7 @@ By default, it's 0, which means the number of available CPUs. Two thread pools a
 
 ## The Kafka backend
 
-First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from Elasticsearch if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.
+First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from the database if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.
 
 This is the default topic configuration:
 
@@ -87,9 +87,9 @@ kestra:
 ```
 
 You can configure any Kafka producer and consumer properties recommended in standard Kafka application tuning to improve performance.
-They are configurable via `kestra.kafka.defaults.consumer.properties` and `kestra.kafka.defaults.producer.properties` for the standard consumer and producer properties, and `kestra.kafka.defaults.stream.properties` for Kafka Streams.
+They are configurable via `kestra.kafka.defaults.consumer.properties` and `kestra.kafka.defaults.producer.properties` for the standard consumer and producer properties.
 
-The most impactful properties are `poll.ms` and `commit.interval.ms`, which are reduced by default from 100 ms to 25 ms. You can decrease them further at the cost of more resources used by the broker.
+The most impactful property is `linger.ms: 0`, which are reduced by default from 5 ms to 0 ms as Kestra send small messages individually, so waiting for a batch of messages would increase latency. You can increase it to reduce resource usage on the Kafka broker at the cost of higher latency.
 
 This is the default properties configuration:
 
@@ -97,23 +97,7 @@ This is the default properties configuration:
 kestra:
   kafka:
     defaults:
-      stream:
+      producer:
         properties:
-          poll.ms: 25 # Kafka default 100
-          commit.interval.ms: 25 # Kafka default 100
-```
-
-You can also set those properties on a topic basis.
-
-You can also configure the number of threads used by Kafka Stream (`num.stream.threads`) which is one by default.
-You can increase it for better resource utilization if you process a high number of small executions.
-However, if you process a lot of big executions, increasing it can incur an increase in memory usage; careful benchmarking should be done before increasing it.
-
-```yaml
-kestra:
-  kafka:
-    defaults:
-      stream:
-        properties:
-          num.stream.threads: 4 # Default to 1
+          linger.ms: 0
 ```
