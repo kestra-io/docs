@@ -142,10 +142,10 @@ function isEdgeCacheablePage(url: URL): boolean {
         path.startsWith("/plugins/") ||
         path === "/blueprints" ||
         path.startsWith("/blueprints/") ||
-        // Versioned docs, SSR-rendered from immutable per-release markdown —
-        // the MDC parse + Shiki pass make every miss expensive. Their .md
-        // variants bypass this cache via the extension short-circuit below;
-        // that's fine, they're a cheap fetch + string reshape, no rendering.
+        // Versioned docs, SSR-rendered from per-release markdown fetched at
+        // request time — the MDC parse + Shiki pass make every miss expensive.
+        // Their .md variants bypass this cache via the extension short-circuit
+        // below; that's fine, they're a cheap fetch + string reshape, no rendering.
         VERSIONED_DOCS_PATH.test(path)
     )
 }
