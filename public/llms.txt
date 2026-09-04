@@ -3,6 +3,8 @@
 > Kestra is an open-source workflow orchestration platform. Workflows are defined declaratively in YAML as **flows**. Each flow has an `id`, a `namespace`, a list of `tasks`, and optionally `inputs`, `outputs`, `triggers`, and `variables`. Tasks reference plugins via a fully-qualified `type` such as `io.kestra.plugin.core.log.Log`. Dynamic values use `{{ ... }}` Pebble expressions referencing `inputs`, `outputs`, `trigger`, `vars`, `execution`, and other context variables. Kestra is API-first: every action available in the UI is also available via REST API.
 >
 > **For agents and LLMs:** Append `.md` to any `kestra.io/docs/*` URL to retrieve that page as plain Markdown, or set `Accept: text/markdown` on the request. For a full content snapshot of all pages, see [/llms-full.txt](/llms-full.txt). For the complete documentation index, see [/llms.txt](/llms.txt).
+>
+> **Versioned docs:** Documentation for previous releases is available at versioned paths — for example, `kestra.io/docs/1.3/quickstart` for the 1.3 release. Append `.md` to any versioned URL to retrieve it as plain Markdown.
 
 ## Tools & Capability Discovery
 
