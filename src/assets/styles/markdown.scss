@@ -546,3 +546,13 @@
     }
 }
 
+/**
+ * Theme-specific markdown images: `![alt](./img.png#light)` / `#dark`
+ * (classes added by src/markdown/remark/theme-image.ts).
+ * The hidden variant is never downloaded: lazy images with `display: none`
+ * have no box, so the browser never requests them (eager images would load both).
+ */
+html.dark img.only-light,
+html.light img.only-dark {
+    display: none;
+}
