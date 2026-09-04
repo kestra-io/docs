@@ -312,6 +312,46 @@ export interface VersionOption {
     selected: boolean
 }
 
+/** MAJOR.MINOR the path is pinned to, or undefined on the latest docs and anywhere else on the site. */
+export function docsVersionFromPath(pathname: string): string | undefined {
+    return VERSIONED_DOCS_PATH.exec(pathname)?.[1] ?? undefined
+}
+
+/**
+ * What the search modal should query from a given page, and which version its
+ * docs hits must be prefixed with. Search is always scoped to one indexed
+ * version — the one being read — so results describe the docs in front of the
+ * reader. `hrefVersion` is unset when that version is what /docs itself serves,
+ * since those hits are already live URLs; only a demoted or archived version
+ * needs the segment back, as the index stores paths without it.
+ */
+export function searchScope(
+    pathname: string,
+    docsLatest: string | undefined,
+): { version: string | undefined; hrefVersion: string | undefined } {
+    const version = docsVersionFromPath(pathname) ?? docsLatest
+    return {
+        version,
+        hrefVersion: version && version !== docsLatest ? version : undefined,
+    }
+}
+
+/**
+ * Where a search hit points. The index stores docs paths without their version
+ * segment, so a hit from an archived version needs it put back; everything else
+ * (blogs, plugins, blueprints, and docs hits from the version /docs serves) is
+ * already a live URL.
+ */
+export function searchResultHref(
+    result: { url: string; type?: string },
+    hrefVersion: string | undefined,
+): string {
+    if (hrefVersion && result.type === "DOCS") {
+        return docChildHref(hrefVersion, result.url)
+    }
+    return `/${result.url}`
+}
+
 /** Options for the version <select>: Latest, then each other known version (latest's own label excluded — already folded into Latest). */
 export function versionSelectOptions(
     latest: string | undefined,
