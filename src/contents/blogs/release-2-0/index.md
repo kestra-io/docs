@@ -40,7 +40,7 @@ Kestra 2.0 is out today. This release ships a new gRPC-based engine, resolves ar
 
 ## MCP Tool Trigger and MCP Server
 
-Connecting an AI agent to real infrastructure usually means writing a custom integration layer. The MCP Tool Trigger skips it: any flow you've already built (a data pipeline, a provisioning sequence, an incident response) is callable by an AI agent as a named tool. No custom API, no polling loop.
+Connecting an AI agent to real infrastructure usually means writing a custom integration layer. The MCP Tool Trigger skips it: any flow you've already built (a data pipeline, a provisioning sequence, an incident response) is callable by an AI agent as a named tool.
 
 A `default` MCP server is provisioned for every tenant on startup, and the `McpToolTrigger` handles registration. Additional servers (separate servers per team, or one per environment) can be created from the UI. Each server generates ready-to-paste connection configuration for Claude Desktop, Claude Code, Cursor, and Codex. An AI agent sends a tool call; Kestra creates an execution with the matched inputs, runs the flow, and returns the outputs.
 
