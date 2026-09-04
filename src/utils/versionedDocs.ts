@@ -19,6 +19,29 @@ function compareVersionLabels(a: string, b: string): number {
 }
 
 /** True if `version` is <= `latest` (or `latest` is unknown). Guards against a pre-release tag (e.g. a "2.0" RC) outranking the real GA latest in the raw /v1/versions list. */
+/**
+ * Docs-latest, pinned ahead of product-latest. A major's docs can land before
+ * its release, and /v1/versions/latest then still answers the previous release
+ * while this site's own content is already the new one: set this to the new
+ * MAJOR.MINOR ("2.0") to serve it as the unversioned /docs and demote the
+ * released version to a normal versioned doc. Back to undefined once the
+ * release is GA and the API agrees.
+ */
+export const DOCS_LATEST_OVERRIDE: string | undefined = "2.0"
+
+/**
+ * The version this site's own /docs content is: the pin while one is set, else
+ * what the API reports. Takes the pin as an argument rather than defaulting to
+ * DOCS_LATEST_OVERRIDE — a default parameter is also applied to an explicit
+ * `undefined`, which would make "nothing pinned" untestable.
+ */
+export function docsLatestVersion(
+    apiLatest: string | undefined,
+    override: string | undefined,
+): string | undefined {
+    return override ?? apiLatest
+}
+
 function isAtMostLatest(version: string, latest: string | undefined): boolean {
     return !latest || compareVersionLabels(version, latest) <= 0
 }
@@ -80,16 +103,30 @@ export function decideVersionedRoute(input: {
     known: string[]
     /** false when the version list itself couldn't be fetched and there's no stale fallback. */
     knownOk: boolean
+    /** What the API still calls latest. Differs from `latest` only while DOCS_LATEST_OVERRIDE pins docs-latest ahead of it. */
+    productLatest?: string
 }): VersionedRouteDecision {
-    const { version, path, isMarkdownRequest, search, latest, known, knownOk } = input
+    const { version, path, isMarkdownRequest, search, latest, known, knownOk, productLatest } = input
+    const bare = path ? `/docs/${path}` : "/docs"
+    const toLatest = (): VersionedRouteDecision => ({
+        kind: "redirect",
+        location: `${isMarkdownRequest ? `${bare}.md` : bare}${search}`,
+    })
     if (version === latest) {
-        const bare = path ? `/docs/${path}` : "/docs"
-        return { kind: "redirect", location: `${isMarkdownRequest ? `${bare}.md` : bare}${search}` }
+        return toLatest()
     }
     if (known.includes(version) && isAtMostLatest(version, latest)) {
         return { kind: "fetch" }
     }
-    if (!knownOk && !known.length) return { kind: "unavailable" }
+    if (!knownOk && !known.length) {
+        // The demoted version is what most readers are on, and before the
+        // override it redirected here, which needs no API at all — keep that
+        // rather than 503-ing the current release along with the archives.
+        if (productLatest && productLatest !== latest && version === productLatest) {
+            return toLatest()
+        }
+        return { kind: "unavailable" }
+    }
     return { kind: "pass" }
 }
 
