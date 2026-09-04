@@ -27,6 +27,7 @@ There are multiple ways to combine Kestra with Git:
 - [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) (Enterprise Edition) commits and pushes custom blueprints from Kestra to Git.
 - [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) (Enterprise Edition) syncs custom blueprints from Git into Kestra.
 - A custom [CI/CD](../cicd/index.md) pipeline lets you manage deployments yourself (GitHub Actions, Terraform, etc.) while keeping Git authoritative.
+- [Promote](../06.promote/index.md) (Enterprise Edition) moves flows between environments directly from the Kestra UI, with a diff review and confirmation gate — no Git setup required.
 
 The image below shows how to choose the right pattern based on your needs:
 
@@ -308,7 +309,7 @@ tasks:
 
 ## Git PushBlueprints and SyncBlueprints
 
-These tasks are available in the Enterprise Edition only.
+These tasks are available in Enterprise Edition and Cloud only.
 
 [PushBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.pushblueprints) and [SyncBlueprints](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncblueprints) bring Git version control to custom blueprints, following the same push/sync pattern as flows and namespace files. Because blueprints are tenant-scoped rather than namespace-scoped, both tasks operate across all blueprints in the tenant regardless of the flow's own namespace.
 
@@ -349,7 +350,7 @@ triggers:
 
 ## Git SyncApps and SyncUnitTests
 
-These tasks are available in the Enterprise Edition only.
+These tasks are available in Enterprise Edition and Cloud only.
 
 [SyncApps](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncapps) and [SyncUnitTests](/plugins/plugin-ee-git/io.kestra.plugin.ee.git.syncunittests) treat Git as the source of truth for apps and unit tests, following the same sync pattern as flows and namespace files.
 

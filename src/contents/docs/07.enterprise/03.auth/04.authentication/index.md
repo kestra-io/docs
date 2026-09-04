@@ -7,20 +7,13 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-How to configure authentication for your Kestra instance.
-
-## Authentication – configure login and OIDC
+Kestra supports two authentication methods: Basic Auth (enabled by default) and OpenID Connect (OIDC).
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/MNXewBufBw0?si=CGjEVa-KEDN5N5ii" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Kestra provides two authentication methods:
-
-- Basic Auth – enabled by default
-- OpenID Connect (OIDC)
-
-By default, JWT token security is configured to use the default Kestra encryption key. If you haven't already configured it, generate a secret that is at least 256 bits and add it to your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md) as follows:
+Kestra uses the default encryption key for JWT sessions. Generate a secret of at least 256 bits and add it to your [Kestra Security and Secrets configuration](../../../configuration/05.security-and-secrets/index.md):
 
 ```yaml
 kestra:
@@ -30,7 +23,7 @@ kestra:
 
 This secret must be the same across all your webserver instances and will be used to sign the JWT cookie and encode the refresh token.
 
-If you want to use different keys, you can configure the key using the following configuration:
+To use separate keys for the signature and refresh token:
 
 ```yaml
 micronaut:
@@ -48,9 +41,7 @@ micronaut:
 
 
 :::alert{type="info"}
-**JWT configuration**
-
-It is possible to change the JWT cookie behavior using [Micronaut Cookie Token Reader](https://micronaut-projects.github.io/micronaut-security/latest/guide/#cookieToken) configuration. For example, you can define the cookie's maximum lifetime using `micronaut.security.token.cookie.cookie-max-age: P2D`.
+You can change the JWT cookie behavior using [Micronaut Cookie Token Reader](https://micronaut-projects.github.io/micronaut-security/latest/guide/#cookieToken) configuration. For example, define the cookie's maximum lifetime with `micronaut.security.token.cookie.cookie-max-age: P2D`.
 :::
 
 ## Basic authentication
@@ -61,17 +52,17 @@ The default installation comes with no users defined. To create an administrator
 ./kestra auths users create --admin --username=<admin-username> --password=<admin-password> --tenant=<tenant-id>
 ```
 
-If you do not have multi-tenancy enabled, you can omit the `--tenant` parameter.
+Without multi-tenancy, omit the `--tenant` parameter.
 
 :::alert{type="info"}
-Multi-tenancy is enabled by default, so make sure to include the `--tenant` parameter.
+Multi-tenancy is enabled by default. Include the `--tenant` parameter.
 :::
 
 ## Single sign-on (SSO)
 
 Single Sign-On (SSO) is an authentication process that allows users to access multiple applications with one set of login credentials (e.g., Sign in with Google). Kestra supports SSO using the OpenID Connect (OIDC) protocol, which is a simple identity layer built on top of the OAuth 2.0 protocol.
 
-To enable OIDC in the application, make sure to enable OIDC in Micronaut:
+Enable OIDC in your Micronaut configuration:
 
 ```yaml
 micronaut:
@@ -86,6 +77,4 @@ micronaut:
             issuer: "{{ issuerUrl }}"
 ```
 
-More information can be found in the [Micronaut OIDC configuration](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration).
-
-Check the [Single Sign-On documentation](../sso/index.md) for more details on how to configure SSO with Google, Microsoft, and other providers.
+See the [Micronaut OIDC configuration guide](https://micronaut-projects.github.io/micronaut-security/latest/guide/#openid-configuration) for full details. See [Single Sign-On](../sso/index.md) to configure SSO with Google, Microsoft, and other providers.

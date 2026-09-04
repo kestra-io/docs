@@ -283,25 +283,25 @@ If needed, you can orchestrate multiple dbt projects from a single flow:
 
 ### Scale dbt Workflows in the Cloud
 
-Adding the following `pluginDefaults` to that flow (or your namespace) will scale the dbt task so that the (_computationally heavy_) dbt parsing process runs on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes job by leveraging [Kestra's task runners](../../07.enterprise/04.scalability/task-runners/index.md):
+Add a `taskRunner` property to the dbt task to run it on AWS ECS Fargate, Google Batch, Azure Batch, or Kubernetes, leveraging [Kestra's task runners](../../07.enterprise/04.scalability/task-runners/index.md):
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.dbt.cli.DbtCLI
-    values:
-       taskRunner:
-         type: io.kestra.plugin.ee.aws.runner.Batch
-         region: us-east-1
-         accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
-         secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
-         computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
-         jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
-         executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
-         taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
-         bucket: kestra-us
+- id: dbt
+  type: io.kestra.plugin.dbt.cli.DbtCLI
+  projectDir: dbt-marts
+  taskRunner:
+    type: io.kestra.plugin.ee.aws.runner.Batch
+    region: us-east-1
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
+    computeEnvironmentArn: "arn:aws:batch:us-east-1:123456789:compute-environment/kestra"
+    jobQueueArn: "arn:aws:batch:us-east-1:123456789:job-queue/kestra"
+    executionRoleArn: "arn:aws:iam::123456789:role/ecsTaskExecutionRole"
+    taskRoleArn: "arn:aws:iam::123456789:role/ecsTaskRole"
+    bucket: kestra-us
 ```
 
-You can set plugin defaults at the flow, namespace, or global level to apply to all tasks of that type, ensuring that all dbt tasks run on AWS ECS Fargate in a given environment.
+In Enterprise Edition, use a namespace-scoped [Policy](../../07.enterprise/02.governance/policies/index.md) to apply the task runner to all dbt tasks in a namespace without modifying each flow.
 
 ---
 

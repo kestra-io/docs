@@ -6,39 +6,32 @@ sidebarTitle: Task Timeout
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-A timeout defines the maximum duration a [runnable task](../01.tasks/01.runnable-tasks/index.md) is allowed to run.
+A timeout defines the maximum duration a [runnable task](../01.tasks/01.runnable-tasks/index.md) is allowed to run. If a task run exceeds that duration, Kestra stops it and marks it as failed — preventing hangs and bounding costs for long-running cloud jobs like Snowflake queries or AWS Batch tasks.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/vvD3Jg5huiE?si=M7BX8vwp7JsdUrL1" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What is a timeout
-
-If a task run exceeds the specified duration, Kestra automatically stops it and marks it as failed. This is useful for tasks that may hang and run indefinitely.
-
-Timeouts are often used as a cost-control mechanism in cloud-based workflows. Imagine a Snowflake query or an AWS Batch job that runs for hours leading to unexpected costs. By setting a timeout, you can ensure that the task run will not exceed a certain duration.
-
 ## Format
 
-Similar to [retries](../../05.workflow-components/12.retries/index.md), timeouts use the [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format, but week, month, and year designators are not supported. Below are some examples:
+Timeouts use the [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) format. Week, month, and year designators are not supported. See also: [retries](../12.retries/index.md).
 
-| name     | description              |
-|----------|--------------------------|
-| PT0.250S | 250 milliseconds delay   |
-| PT2S     | 2 seconds delay          |
-| PT1M     | 1 minute delay           |
-| PT3.5H   | 3 hours and a half delay |
-| P6DT4H   | 6 days and 4 hours delay |
+| Value    | Duration              |
+|----------|-----------------------|
+| PT0.250S | 250 milliseconds      |
+| PT2S     | 2 seconds             |
+| PT1M     | 1 minute              |
+| PT3.5H   | 3 hours, 30 minutes   |
+| P6DT4H   | 6 days, 4 hours       |
 
 
 ## Example
 
-In this example, the `costly_query` task sleeps for 10 seconds, but the timeout is set to 5 seconds, causing the task to fail.
+The `costly_query` task sleeps for 10 seconds, but the timeout is set to 5 seconds, causing the task to fail.
 
 ```yaml
 id: timeout
 namespace: company.team
-description: This flow will always fail because of a timeout.
 
 tasks:
   - id: costly_query
