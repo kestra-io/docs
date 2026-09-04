@@ -8,6 +8,7 @@ import {
     buildDocTree,
     docChildHref,
     type DocChildren,
+    type DocSection,
     type DocTreeNode,
 } from "~/utils/versionedDocs"
 
@@ -15,26 +16,39 @@ import {
 // line up with the current curated map closely enough to group meaningfully
 // (older releases renamed/dropped pages the map references) — fall back to
 // the flat, nav-ordered tree rather than a mostly-empty set of sections.
+// Only relevant for the latest-map fallback: a version's own sections always
+// describe its own pages, so a low match count there is real, not drift.
 const MIN_MATCHED_SECTION_TITLES = 5
 
-function toNavigationItem(node: DocTreeNode, version: string): NavigationItem {
+const LATEST_SECTIONS: DocSection[] = Object.entries(SECTION_TITLES).map(
+    ([title, pages]) => ({ title, pages }),
+)
+
+function toNavigationItem(
+    node: DocTreeNode,
+    version: string,
+    children: DocChildren,
+): NavigationItem {
     return {
         title: node.title,
         path: docChildHref(version, node.path),
+        hideSubMenus: children[node.path]?.hideSubMenus,
         children: node.children.length
-            ? node.children.map((c) => toNavigationItem(c, version))
+            ? node.children.map((c) => toNavigationItem(c, version, children))
             : undefined,
     }
 }
 
 /**
- * Build the versioned sidebar's NavigationItem[] tree, grouped into the same
- * curated sections as the latest docs when enough of their titles are present
- * in this version, otherwise the raw flat-but-nested tree.
+ * Build the versioned sidebar's NavigationItem[] tree, grouped into that
+ * version's own published sections when the indexer has them, else into the
+ * latest docs' curated sections when enough of their titles match, else the
+ * raw flat-but-nested tree.
  */
 export function buildVersionedNavigation(
     children: DocChildren,
     version: string,
+    sections?: DocSection[],
 ): NavigationItem[] {
     const tree = buildDocTree(children)
     const docsRoot = tree.find((n) => n.path === "docs")
@@ -49,36 +63,42 @@ export function buildVersionedNavigation(
         if (rawTitle && rawTitle !== n.title) byTitle.set(rawTitle, n)
     }
 
-    const sections: NavigationItem[] = []
+    const curated = sections ?? LATEST_SECTIONS
+    const grouped: NavigationItem[] = []
     // Tracks which topNodes a section already claimed, by path rather than
     // title — a node can match its section via either title form (see
     // byTitle above), so a title-string comparison here would miss it and
     // duplicate the node into the ungrouped tail below.
     const claimedPaths = new Set<string>()
     let matched = 0
-    for (const [section, titles] of Object.entries(SECTION_TITLES)) {
+    for (const { title: section, pages: titles } of curated) {
         const sectionChildren = titles
             .map((t) => byTitle.get(t))
             .filter((n): n is DocTreeNode => Boolean(n))
         matched += sectionChildren.length
         if (!sectionChildren.length) continue
         sectionChildren.forEach((n) => claimedPaths.add(n.path))
-        sections.push({
+        grouped.push({
             title: section,
             isSection: true,
             path: "#",
-            children: sectionChildren.map((n) => toNavigationItem(n, version)),
+            children: sectionChildren.map((n) =>
+                toNavigationItem(n, version, children),
+            ),
         })
     }
 
-    if (matched < MIN_MATCHED_SECTION_TITLES) {
-        return topNodes.map((n) => toNavigationItem(n, version))
+    if (!sections && matched < MIN_MATCHED_SECTION_TITLES) {
+        return topNodes.map((n) => toNavigationItem(n, version, children))
     }
 
     // A top-level node the curated map doesn't mention (a page added since the
     // map was last updated) is appended after the last section, ungrouped.
     const unclaimed = topNodes.filter((n) => !claimedPaths.has(n.path))
-    return [...sections, ...unclaimed.map((n) => toNavigationItem(n, version))]
+    return [
+        ...grouped,
+        ...unclaimed.map((n) => toNavigationItem(n, version, children)),
+    ]
 }
 
 /**

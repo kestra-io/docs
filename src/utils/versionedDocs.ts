@@ -312,6 +312,8 @@ export interface DocChildMeta {
     // Pages flagged hideSidebar (brand-assets, why-kestra) are omitted from the
     // tree, mirroring the latest-docs sidebar (RecursiveNavSidebar.vue).
     hideSidebar?: boolean
+    /** keeps the page in the sidebar but collapses its subtree (how-to-guides renders its own card grid instead) */
+    hideSubMenus?: boolean
     /** short markdown-flavored summary, feeds the ChildCard grids */
     description?: string
     /** root-absolute icon ref ("/docs/icons/x.svg"), versioned like any asset */
@@ -327,6 +329,13 @@ export interface DocChildMeta {
 }
 /** Flat children-endpoint payload, keyed by full path ("docs", "docs/x", ...). */
 export type DocChildren = Record<string, DocChildMeta>
+
+/** One curated sidebar section as published per version in docs/_sections.json. */
+export interface DocSection {
+    title: string
+    /** page titles, in sidebar order */
+    pages: string[]
+}
 
 /** Data the versionedDocs middleware hands off to the `docs-versioned` SSR page via `Astro.locals`. */
 export interface VersionedDocLocals {
