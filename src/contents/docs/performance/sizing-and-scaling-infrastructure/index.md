@@ -155,7 +155,7 @@ If you are using a managed Postgres instance (e.g. Cloud SQL on GCP), ensure tha
 ### Tuning options
 
 - **JDBC backend**: adjust `minPollInterval`, `maxPollInterval`, and `pollSize` to trade off latency vs. DB load.
-- **Executor threads**: increase beyond default (0.5 × CPU cores) to raise concurrency.
+- **Executor threads**: increase beyond default (nb CPU cores) to raise concurrency.
 - **Kafka backend**: tune `poll.ms` and `commit.interval.ms` for lower latency at cost of broker load.
 - **Worker threads**: set based on workload (4–16 threads per core).
 

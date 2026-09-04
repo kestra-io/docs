@@ -19,13 +19,15 @@ To isolate orchestration performance, we use workflows with fast tasks, such as:
 
 ## Test environment
 
-Benchmarks were run on a Google Cloud **e2-standard-4** VM (4 vCPUs, 16 GB RAM) with two setups:
+Benchmarks were run on a Google Cloud **n2-standard-4** VM (4 vCPUs, 16 GB RAM) with three setups:
 
 1. **Kestra Open Source (OSS)** — Postgres 16 backend (4 vCPUs, 16 GB RAM). Database runs remotely to simulate production.
-2. **Kestra Enterprise Edition (EE)** — Kafka backend (4 vCPUs, 16 GB RAM). Kafka and Elasticsearch run on separate VMs.
+2. **Kestra Enterprise Edition (EE)** — RabbitMQ and Postgres 16 (4 vCPUs, 16 GB RAM). Both run on separate VMs. Target low-latency use cases.
+3. **Kestra Enterprise Edition (EE)** — Kafka and OpenSearch (4 vCPUs, 16 GB RAM). Both run on separate VMs. Target high-throughout use cases.
 
 :::alert{type="info"}
-Benchmark results are for Kestra 1.2.0.
+Benchmark results are for Kestra 2.0.0.
+Compared to previous benchmarks, we now run with `n2-standard-4` instead of `e2-standard-4`.
 :::
 
 ---
@@ -63,32 +65,20 @@ tasks:
 
 **Results for Kestra OSS**
 
-![Kestra OSS - Benchmark01](./bench01-OSS.png "Kestra OSS Benchmark01 results")
-
-| Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
-|:--|:--|:--------------------------------|
-| 250 |	500 | 	0,17                           |
-| 500	| 1000	| 0,17                            |
-| 1000	| 2000	| 0,19                            |
-| 1500	| 3000	| 0,26                            |
-| 2000	| 4000	| 2.5                             |
+| step | rate | avg ms | p99 | kestra cpu | infra cpu |
+|--:|--:|--:|--:|--:|--:|
+| 1 | 1000 | 126 | 174 | 22.3% | 30.6% |
+| 2 | 1500 | 121 | 169 | 26.2% | 38.7% |
+| 3 | 2000 | 113 | 159 | 34.7% | 42.1% |
+| 4 | 2500 | 118 | 171 | 37.1% | 51.2% |
+| 5 | 3000 | 130 | 205 | 45.9% | 56.8% |
+| 6 | 3500 | 148 | 297 | 48% | 58.1% |
+| 7 | 4000 | 181 | 474 | 51.2% | 68.9% |
+| 8 | 4500 | 1113 | 2079 | 57.9% | 68.8% |
+| 9 | 5000 | 53540 | 145112 | 33.1% | 58% |
 
 **Results for Kestra EE**
 
-![Kestra EE - Benchmark01](./bench01-EE.png "Kestra EE Benchmark01 results")
-
-| Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
-|:-------------------------|:--------------------|:--------------------------------|
-| 250	                     | 500	                | 0,24                            |
-| 500	                     | 1000	               | 0,25                            |
-| 1000	                    | 2000	               | 0,26                            |
-| 1500	                    | 3000	               | 0,29                            |
-| 2000	                    | 4000	               | 0,28                            |
-| 2500	                    | 5000	               | 0,29                            |
-| 3000	                    | 6000	               | 0,32                            |
-| 3500	                    | 7000	               | 1.17                            |
-| 4000	                    | 8000	               | 1.3                             |
-| 4500	                    | 9000	               | 1.9                             |
 
 **Key takeaways**
 - At 250 executions/min (500 tasks/min), execution latency is approximately 170ms — similar to single execution time.
@@ -176,30 +166,17 @@ tasks:
 
 **Results for Kestra OSS**
 
-![Kestra OSS - Benchmark02](./bench02-OSS.png "Kestra OSS Benchmark02 results")
-
-| Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
-|:--|:--|:--------------------------------|
-| 100 |	1000	| 0,7                             |
-| 200	| 2000	| 0,7                             |
-| 300	| 3000	| 0,8                             |
-| 400	| 4000	| 1.5                             |
-| 500	| 5000	| 15                              |
+| step | rate | avg ms | p99 ms | failed | kestra cpu | kestra mem | infra cpu | infra mem | heap |
+|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| 1 | 100 | 461 | 541 | 0 | 11.5% | 2.4 GiB | 15.4% | 1 GiB | 525.9 MiB |
+| 2 | 200 | 445 | 527 | 0 | 15.3% | 2.5 GiB | 23.7% | 1 GiB | 670.2 MiB |
+| 3 | 300 | 454 | 544 | 0 | 20.1% | 2.5 GiB | 28.9% | 1 GiB | 514.3 MiB |
+| 4 | 400 | 467 | 583 | 0 | 24.1% | 2.5 GiB | 38.3% | 1 GiB | 510.5 MiB |
+| 5 | 500 | 617 | 1010 | 0 | 29.1% | 2.5 GiB | 46.5% | 1 GiB | 466.1 MiB |
+| 6 | 600 | 730 | 1461 | 0 | 11.5% | 2.5 GiB | 17.2% | 1 GiB | 758 MiB |
+| 7 | 700 | 1253 | 3441 | 0 | 39.7% | 2.5 GiB | 53.5% | 1 GiB | 644.1 MiB |
 
 **Results for Kestra EE**
-
-![Kestra EE - Benchmark02](./bench02-OSS.png "Kestra OSS Benchmark02 results")
-
-| Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
-|:-------------------------|:--------------------|:--------------------------------|
-| 100                      | 	1000               | 1,3                             |
-| 200	                     | 2000                | 1,4                             |
-| 300	                     | 3000	               | 1,4                             |
-| 400	                     | 4000	               | 1,5                             |
-| 500	                     | 5000	               | 1,7                             |
-| 600	                     | 6000	               | 1.8                             |
-| 700	                     | 7000	               | 2,3                             |
-| 800	                     | 8000	               | 5.3                             |
 
 **Key takeaways**
 - At 250 executions/min (500 tasks/min), execution latency is approximately 700ms — similar to single execution time.
@@ -207,10 +184,10 @@ tasks:
 - Kestra EE (Kafka backend) sustains up to 700 executions/min (7000 tasks/min).
 - The Kestra Executor processing capability is independent of the type of tasks to process; the number of tasks per minute sustained in this benchmark is the same as in the first benchmark.
 
-## Benchmark 3 -- large `ForEach` loop
+## Benchmark 3 -- large `Loop` task
 
 **Description**
-Executes 100 iterations of a ForEach loop with unbounded concurrency.
+Executes 100 iterations of a Loop task with unbounded concurrency.
 
 ```yaml
 id: benchmark03
@@ -218,7 +195,7 @@ namespace: benchmarks
 
 tasks:
   - id: foreach
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{range(1, 100)}}"
     concurrencyLimit: 0
     tasks:
@@ -229,7 +206,7 @@ tasks:
 ```
 
 **Observations**
-The `ForEach` task is executed on each iteration, resulting in 200 task executions.
+The `Loop` task is executed on each iteration, resulting in 200 task executions.
 
 On average, the execution time for the OSS JDBC backend is 5s, that is about 40 tasks/s or 3600 tasks/mn which is on par with the throughput of the previous benchmarks.
 
@@ -279,8 +256,6 @@ Benchmarked with:
 
 With 1.6 KB small-sized messages:
 
-![Kestra OSS - Benchmark04 - Small messages](./bench04-OSS-small.png "Kestra OSS Benchmark04 with small messages results")
-
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
 | 500 |	1000 | 	0,19                           |
@@ -290,8 +265,6 @@ With 1.6 KB small-sized messages:
 
 
 With 16 KB medium-sized messages:
-
-![Kestra OSS - Benchmark04 - Medium messages](./bench04-OSS-medium.png "Kestra OSS Benchmark04 with medium messages results")
 
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
@@ -303,8 +276,6 @@ With 16 KB medium-sized messages:
 
 With 160 KB large-sized messages:
 
-![Kestra OSS - Benchmark04 - Big messages](./bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
-
 | Executions(per minutes)	| Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:--|:--|:--------------------------------|
 | 250	| 500 | 0,48                            |
@@ -315,8 +286,6 @@ With 160 KB large-sized messages:
 **Results for Kestra EE**
 
 With 1.6 KB small-sized messages:
-
-![Kestra EE - Benchmark04 - Small messages](./bench04-EE-small.png "Kestra EE Benchmark04 with small messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
@@ -331,8 +300,6 @@ With 1.6 KB small-sized messages:
 
 With 16 KB medium-sized messages:
 
-![Kestra EE - Benchmark04 - Meidum messages](./bench04-EE-medium.png "Kestra OSS Benchmark04 with medium messages results")
-
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
 | 500	                     | 1000	               | 0,26                            |
@@ -346,8 +313,6 @@ With 16 KB medium-sized messages:
 | 2500	                    | 5000	               | 0.61                            |
 
 With 160 KB large-sized messages:
-
-![Kestra EE - Benchmark04 - Big messages](./bench04-OSS-big.png "Kestra OSS Benchmark04 with big messages results")
 
 | Executions(per minutes)	 | Tasks (per minutes) | 	Execution Latency (in seconds) |
 |:-------------------------|:--------------------|:--------------------------------|
