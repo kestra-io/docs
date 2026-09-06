@@ -99,8 +99,15 @@ const {
         width: 297px;
         color: var(--qc-company);
 
+        @include media-breakpoint-up(md) {
+            &:has(> svg) {
+                width: 242px;
+            }
+        }
+
         > svg {
             color: var(--qc-glyph);
+            transform: scaleX(-1);
         }
 
         @include media-breakpoint-down(md) {
