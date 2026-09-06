@@ -1,19 +1,8 @@
 ---
-/**
- * A YouTube modal behind a trigger button. The trigger is an invoker-command
- * button (with a `showModal()` fallback), the iframe is only created on first
- * open, and the YouTube player is told to play/stop as the dialog opens and
- * closes. Several instances can share a page as long as their `id`s differ.
- * `home/SixtySeconds.astro` is a preset of this component.
- */
 interface Props {
-    /** YouTube video id. */
     videoId: string
-    /** Accessible name for the dialog and the iframe. */
     title: string
-    /** Unique dialog id, needed when several dialogs share a page. */
     id: string
-    /** Classes for the trigger button. */
     class?: string
     [x: string]: any
 }
@@ -136,7 +125,6 @@ const { videoId, title, id, class: className, ...rest } = Astro.props
         }
     }
 
-    /* Open state of the dialog */
     dialog:open {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -148,7 +136,6 @@ const { videoId, title, id, class: className, ...rest } = Astro.props
         }
     }
 
-    /* Closed state of the dialog */
     dialog {
         opacity: 0;
         transform: scale(0.5) translateY(-15%);
@@ -168,7 +155,6 @@ const { videoId, title, id, class: className, ...rest } = Astro.props
         }
     }
 
-    /* Transition the ::backdrop when the dialog is promoted to the top layer */
     dialog::backdrop {
         background-color: transparent;
         transition:

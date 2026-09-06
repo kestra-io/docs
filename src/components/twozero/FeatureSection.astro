@@ -17,20 +17,16 @@ export interface QuoteContent {
 export type Row =
     | {
           type: "cards"
-          /** Grid fractions, one per card. Defaults to equal columns. */
           columns?: number[]
           cards: CardContent[]
       }
     | ({ type: "quote" } & QuoteContent)
 
 interface Props {
-    /** Anchor id, also used as the heading id. */
     id: string
-    /** Heading markup. Wrap the highlighted word in `<span class="highlight">`. */
     heading: string
     standfirst: string
     rows: Row[]
-    /** `white` page with tinted cards, or `tinted` page with white cards. */
     tone?: "white" | "tinted"
 }
 
@@ -97,19 +93,15 @@ const template = (columns: number[]) =>
     }
 
     .head {
-        /* Figma: a centred 1140px heading block, 16px under the standfirst
-         * plus the 32px row gap before the first card row. */
         max-width: 1140px;
         margin: 0 auto 2rem;
         padding-bottom: 1rem;
         text-align: center;
     }
 
-    /* Type scale comes from the shared `.twozero-page h2` rule in index.astro. */
     .head h2 {
         margin-bottom: 0.5rem;
 
-        /* The 2.0 headings highlight in blue rather than the site purple. */
         :global(.highlight) {
             color: #4f6df7;
         }

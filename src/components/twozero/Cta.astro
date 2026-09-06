@@ -5,16 +5,10 @@ interface Button {
     text: string
     href: string
     variant?: "primary" | "secondary"
-    /** Trailing arrow, used by the closing panel's secondary button. */
     arrow?: boolean
 }
 
 interface Props {
-    /**
-     * `light` — white page, dark outline on the secondary button.
-     * `hero` — solid white secondary button on the dark hero.
-     * `dark` — translucent dark secondary button for the dark panels.
-     */
     theme?: "light" | "hero" | "dark"
     buttons?: Button[]
 }

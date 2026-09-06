@@ -1,18 +1,12 @@
 ---
 interface Props {
     quote: string
-    /** Company or team name, rendered bold in the attribution line. */
     company: string
-    /** Everything after the company name, e.g. "Deutsche Telekom". */
     meta?: string
-    /** Raw SVG markup, imported with `?raw` by the caller. */
     logoSvg?: string
-    /** The shared logos are white; recolour them per brand here. */
     logoColor?: string
     dark?: boolean
-    /** Surface colour override; Figma varies it per section. */
     surface?: string
-    /** Extra 32px above and below, as on the Build section's quote. */
     spaced?: boolean
 }
 
@@ -102,7 +96,6 @@ const {
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Figma: a 297px logo column, or a 242px column for the glyph. */
         width: 297px;
         color: var(--qc-company);
 

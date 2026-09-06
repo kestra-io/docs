@@ -49,7 +49,6 @@ const BUTTONS = [
     .closing {
         position: relative;
         padding-block: 5rem 11.875rem;
-        /* Figma: a 1px top hairline that fades in and out of #808fed. */
         border-top: 1px solid transparent;
         border-image: linear-gradient(
                 90deg,
@@ -77,14 +76,7 @@ const BUTTONS = [
             content: "";
             position: absolute;
             inset: 0;
-            /* Figma places the ring-of-squares asset twice on the 1900px
-             * artboard. Left ring: hangs off the bottom-left corner, its
-             * top row of three squares is the visible part. Right ring:
-             * clipped by the right edge, its left half level with the
-             * paragraph and buttons. Both are anchored to the bottom so
-             * they keep that relation to the CTAs whatever the copy height.
-             *
-             * The asset was drawn for the hero: 50% black squares with a
+            /* The asset was drawn for the hero: 50% black squares with a
              * thin dark-blue stroke, which vanish on this near-black panel.
              * Using it as a mask and painting a pale tint through it turns
              * the fill into the soft grey boxes and the stroke into the
@@ -115,9 +107,6 @@ const BUTTONS = [
         text-align: center;
     }
 
-    /* Figma's big "2.0" (node 29364:25369) in the Electrolize face: the shared
-     * `two-zero.svg` outline masks a dark body offset downwards and a gradient
-     * face; the drop-shadows around both give the glow. */
     .wordmark {
         position: relative;
         display: block;
@@ -158,8 +147,6 @@ const BUTTONS = [
         gap: 1.5rem;
         max-width: 816px;
     }
-
-    /* The h2 type scale comes from the shared `.twozero-page h2` rule. */
 
     .copy p {
         margin: 0;

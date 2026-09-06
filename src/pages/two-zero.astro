@@ -32,14 +32,6 @@ import runSlim from "~/components/twozero/assets/run-slim.png"
 import securityWorkers from "~/components/twozero/assets/security-workers.png"
 import securitySiem from "~/components/twozero/assets/security-siem.svg"
 
-/**
- * `/two-zero` — the Kestra 2.0 launch landing page ("DESIGN V 8" in Figma).
- *
- * Section order, grid ratios, artwork and copy come straight from the Figma
- * frame; the artwork is exported from Figma at 2x under
- * `components/twozero/assets`.
- */
-
 const title = "Kestra 2.0: Orchestration Rebuilt for the AI Era"
 const description =
     "Govern AI agents and deterministic workflows at scale with a rewritten engine that separates your control plane from your data plane. Any workload, any network, first LTS release."
@@ -439,9 +431,6 @@ const SECURITY_ROWS: Row[] = [
         background: var(--ks-background-body);
         color: var(--ks-content-primary);
 
-        /* Figma "Titles/H2": 48px semibold, -1.5% tracking, 50px leading.
-         * Shared by every section heading; colour is inherited so the dark
-         * panels stay white. */
         h2 {
             margin: 0;
             font-size: clamp(2rem, 3.4vw, 3rem);
@@ -450,11 +439,8 @@ const SECURITY_ROWS: Row[] = [
             line-height: 1.0417;
         }
 
-        /* Section shell: the Figma artboard is 1900px wide with 200px gutters,
-         * so the content column is 1500px. */
         .tz-container {
             width: 100%;
-            /* Padding is added on top so the content itself reaches 1500px. */
             max-width: calc(1500px + 5rem);
             margin-inline: auto;
             padding-inline: 1.5rem;
