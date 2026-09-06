@@ -2,9 +2,17 @@
 import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
+import VideoDialog from "~/components/common/VideoDialog.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import heroScreen from "./assets/hero-screen.webp"
 import heroBg from "./assets/hero-bg.svg?url"
+
+/**
+ * YouTube id of the 2.0 launch video. Left empty until marketing supplies it:
+ * the play button is not rendered at all while unset, so the still never
+ * advertises a video it cannot play.
+ */
+const LAUNCH_VIDEO_ID: string | undefined = "1DMXb98nTik"
 
 /* The helper returns the rounded count as a string; Figma writes it as "2,000+". */
 const totalPlugins = Number(await fetchTotalPluginsCount()).toLocaleString(
@@ -69,6 +77,25 @@ const KEY_NUMBERS = [
                 loading="eager"
                 fetchpriority="high"
             />
+            {
+                LAUNCH_VIDEO_ID && (
+                    <VideoDialog
+                        id="hero-video"
+                        videoId={LAUNCH_VIDEO_ID}
+                        title="Introducing Kestra 2.0"
+                        class="play"
+                        aria-label="Play the Kestra 2.0 launch video"
+                    >
+                        {/* Figma "Mobile / Main Controller": the play glyph, as drawn. */}
+                        <svg viewBox="49 43 34 38" aria-hidden="true">
+                            <path
+                                d="M50 46.9997C50.0007 44.6916 52.4993 43.248 54.499 44.4011L80.4961 59.3962C82.4974 60.5506 82.4971 63.4389 80.4961 64.5935L54.499 79.5886C52.499 80.7422 50 79.2988 50 76.99V46.9997Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </VideoDialog>
+                )
+            }
         </figure>
 
         <dl class="key-numbers" aria-label="Kestra 2.0 at a glance">
@@ -223,6 +250,81 @@ const KEY_NUMBERS = [
             aspect-ratio: 1024 / 574;
             border-radius: calc(1rem - 1px);
             object-fit: cover;
+        }
+    }
+
+    /* Figma "Mobile / Main Controller": a 96px glass disc (black at 25% over a
+     * 20px backdrop blur), a 1px white stroke fading out towards the bottom
+     * left, a soft 2/3px drop shadow and a faint white inner highlight.
+     * `:global` because the button is rendered by VideoDialog, outside this
+     * component's scope. Only present once `LAUNCH_VIDEO_ID` is set. */
+    .media :global(.play) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 6rem;
+        height: 6rem;
+        padding: 0;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25))
+                padding-box,
+            linear-gradient(
+                    200deg,
+                    rgba(255, 255, 255, 0.2),
+                    rgba(255, 255, 255, 0)
+                )
+                border-box;
+        box-shadow:
+            2px 3px 16px rgba(34, 34, 47, 1),
+            inset 0.75px -0.75px 0.75px rgba(255, 255, 255, 0.35);
+        color: $white;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+
+        &:hover,
+        &:focus-visible {
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))
+                    padding-box,
+                linear-gradient(
+                        200deg,
+                        rgba(255, 255, 255, 0.35),
+                        rgba(255, 255, 255, 0)
+                    )
+                    border-box;
+            transform: translate(-50%, -50%) scale(1.04);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $white;
+            outline-offset: 2px;
+        }
+
+        svg {
+            width: 2.125rem;
+            height: 2.375rem;
+            /* Optical centring: the triangle's visual centre sits left of its box. */
+            margin-left: 0.25rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 4rem;
+            height: 4rem;
+
+            svg {
+                width: 1.375rem;
+                height: 1.5rem;
+            }
         }
     }
 
