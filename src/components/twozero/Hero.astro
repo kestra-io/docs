@@ -2,18 +2,9 @@
 import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
-import VideoDialog from "~/components/home/SixtySeconds.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import heroScreen from "./assets/hero-screen.webp"
 import heroBg from "./assets/hero-bg.svg?url"
-
-/**
- * YouTube id of the 2.0 launch video. Deliberately unset: the play button is
- * not rendered at all until marketing supplies the real id, so the still never
- * advertises a video it cannot play. The existing "Kestra 2.0 is almost here"
- * teaser is intentionally not wired up here.
- */
-const LAUNCH_VIDEO_ID: string | undefined = undefined
 
 /* The helper returns the rounded count as a string; Figma writes it as "2,000+". */
 const totalPlugins = Number(await fetchTotalPluginsCount()).toLocaleString(
@@ -78,19 +69,6 @@ const KEY_NUMBERS = [
                 loading="eager"
                 fetchpriority="high"
             />
-            {
-                LAUNCH_VIDEO_ID && (
-                    <VideoDialog
-                        id="hero-video"
-                        videoId={LAUNCH_VIDEO_ID}
-                        title="Introducing Kestra 2.0"
-                        class="play"
-                        aria-label="Play the Kestra 2.0 launch video"
-                    >
-                        <Icon name="mdi:play" />
-                    </VideoDialog>
-                )
-            }
         </figure>
 
         <dl class="key-numbers" aria-label="Kestra 2.0 at a glance">
@@ -245,35 +223,6 @@ const KEY_NUMBERS = [
             aspect-ratio: 1024 / 574;
             border-radius: calc(1rem - 1px);
             object-fit: cover;
-        }
-    }
-
-    /* `:global` because the trigger button is rendered by VideoDialog, outside
-     * this component's scope. Only present once `LAUNCH_VIDEO_ID` is set. */
-    .media :global(.play) {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 6rem;
-        height: 6rem;
-        padding: 0;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.25);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-        color: $white;
-        font-size: 2rem;
-        transform: translate(-50%, -50%);
-        -webkit-backdrop-filter: blur(20px);
-        backdrop-filter: blur(20px);
-
-        @include media-breakpoint-down(md) {
-            width: 4rem;
-            height: 4rem;
-            font-size: 1.5rem;
         }
     }
 
