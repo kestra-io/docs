@@ -77,11 +77,25 @@ const BUTTONS = [
             content: "";
             position: absolute;
             inset: 0;
-            background:
-                var(--squares) no-repeat left -120px bottom -40px / 520px auto,
-                var(--squares) no-repeat right -160px top 45% / 520px auto;
-            mix-blend-mode: plus-lighter;
-            opacity: 0.8;
+            /* Figma places the ring-of-squares asset twice on the 1900px
+             * artboard. Left ring: hangs off the bottom-left corner, its
+             * top row of three squares is the visible part. Right ring:
+             * clipped by the right edge, its left half level with the
+             * paragraph and buttons. Both are anchored to the bottom so
+             * they keep that relation to the CTAs whatever the copy height.
+             *
+             * The asset was drawn for the hero: 50% black squares with a
+             * thin dark-blue stroke, which vanish on this near-black panel.
+             * Using it as a mask and painting a pale tint through it turns
+             * the fill into the soft grey boxes and the stroke into the
+             * lighter outline the design shows. */
+            -webkit-mask:
+                var(--squares) no-repeat left -100px bottom -96px / 520px auto,
+                var(--squares) no-repeat right -260px bottom 140px / 520px auto;
+            mask:
+                var(--squares) no-repeat left -100px bottom -96px / 520px auto,
+                var(--squares) no-repeat right -260px bottom 140px / 520px auto;
+            background: rgba(196, 200, 255, 0.22);
             pointer-events: none;
 
             @include media-breakpoint-down(lg) {

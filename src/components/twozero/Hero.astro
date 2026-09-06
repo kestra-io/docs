@@ -6,6 +6,7 @@ import VideoDialog from "~/components/common/VideoDialog.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import heroScreen from "./assets/hero-screen.webp"
 import heroBg from "./assets/hero-bg.svg?url"
+import squares from "./assets/hero-squares.svg?url"
 
 /**
  * YouTube id of the 2.0 launch video. Left empty until marketing supplies it:
@@ -116,7 +117,10 @@ const KEY_NUMBERS = [
     </div>
 </section>
 
-<style lang="scss" define:vars={{ heroBg: `url(${heroBg})` }}>
+<style
+    lang="scss"
+    define:vars={{ heroBg: `url(${heroBg})`, squares: `url(${squares})` }}
+>
     .tz-hero {
         position: relative;
         /* Sit underneath the transparent site header so the dark hero runs up
@@ -124,13 +128,53 @@ const KEY_NUMBERS = [
          * reserves the announcement bar with its own padding-top. */
         margin-top: calc(-1 * var(--top-bar-height, 67px));
         padding-block: 13.75rem 5.625rem;
-        /* Figma's `bg-hero` component (radial planet gradient, noise and the
-         * outlined squares) exported as one 1900×1564 SVG. Its two square
-         * clusters sit at the far left and top-right edges, outside the copy
-         * column, so `cover` can recrop it freely. */
+        /* Figma's `bg-hero` component (radial planet gradient and noise)
+         * exported as one 1900×1564 SVG. The export also carries the two
+         * outlined square rings, but they are 50% black on black and never
+         * show, so they are redrawn below as tinted masks. */
         background: #000000 var(--heroBg) center top / cover no-repeat;
         color: $white;
         overflow: clip;
+        /* Own stacking context so the ring pseudo-elements can sit above the
+         * background yet under the copy with a negative z-index. */
+        isolation: isolate;
+
+        /* The two square rings of Figma's `bg-hero`, placed where the export
+         * draws them on the 1900px artboard: one hanging off the left edge
+         * beside the video, one rotated 90° hanging off the top-right corner.
+         * The asset is 50% black squares with a dark stroke, so it is used as
+         * a mask and painted with a pale tint, as in the closing section. */
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            width: 520px;
+            height: 373px;
+            -webkit-mask: var(--squares) center / contain no-repeat;
+            mask: var(--squares) center / contain no-repeat;
+            background: rgba(196, 200, 255, 0.22);
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+
+        /* Left ring: export bounds x −327…193, y 480…853. */
+        &::before {
+            top: 480px;
+            left: -327px;
+        }
+
+        /* Right ring: export bounds x 1643…2016, y −392…128 once rotated.
+         * The unrotated box is placed so that rotating it about its centre
+         * lands on those bounds. */
+        &::after {
+            top: -318px;
+            right: -190px;
+            transform: rotate(90deg);
+        }
 
         @include media-breakpoint-down(lg) {
             padding-block: 9rem 3rem;
