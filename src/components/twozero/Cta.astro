@@ -19,11 +19,19 @@ interface Props {
     buttons?: Button[]
 }
 
+/* Default CTAs carry the lp2_0 campaign tags requested by marketing. */
 const {
     theme = "light",
     buttons = [
-        { text: "Get started", href: "/get-started", variant: "primary" },
-        { text: "Book a 2.0 demo", href: "/demo" },
+        {
+            text: "Get started",
+            href: "/get-started?utm_source=landing&utm_medium=cta&utm_campaign=lp2_0",
+            variant: "primary",
+        },
+        {
+            text: "Book a 2.0 demo",
+            href: "/demo?utm_source=landing&utm_medium=cta&utm_campaign=lp2_0",
+        },
     ],
 } = Astro.props
 ---
