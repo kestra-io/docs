@@ -44,8 +44,7 @@ const KEY_NUMBERS = [
                     id="hero-title"
                     data-usal="fade-u delay-50 duration-500 ease-out"
                 >
-                    Orchestration Rebuilt<br />
-                    for the AI Era
+                    Orchestration Rebuilt<br />{" "}for the AI Era
                 </h1>
             </div>
             <div class="subtitle">
@@ -155,6 +154,14 @@ const KEY_NUMBERS = [
         &::before {
             top: 480px;
             left: -327px;
+
+            @include media-breakpoint-down(md) {
+                display: block;
+                top: -33px;
+                left: -216px;
+                width: 307px;
+                height: 220px;
+            }
         }
 
         &::after {
@@ -166,12 +173,27 @@ const KEY_NUMBERS = [
         @include media-breakpoint-down(lg) {
             padding-block: 9rem 3rem;
         }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 10.6875rem 2.5rem;
+            background: #060411
+                radial-gradient(
+                    circle 560px at 95% 94%,
+                    #465ab1 0%,
+                    rgba(70, 90, 177, 0) 100%
+                );
+        }
     }
 
     .tz-container {
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+            padding-inline: 2rem;
+        }
     }
 
     .intro {
@@ -188,6 +210,13 @@ const KEY_NUMBERS = [
             gap: 1.75rem;
             padding-bottom: 2.5rem;
         }
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            text-align: left;
+        }
     }
 
     .title,
@@ -195,6 +224,10 @@ const KEY_NUMBERS = [
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+        }
     }
 
     .title {
@@ -203,6 +236,23 @@ const KEY_NUMBERS = [
 
     .subtitle {
         gap: 1rem;
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+        }
+    }
+
+    .intro :global(.cta) {
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+        }
+    }
+
+    .intro :global(.cta .btn) {
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            min-height: 3.125rem;
+        }
     }
 
     .eyebrow {
@@ -225,6 +275,15 @@ const KEY_NUMBERS = [
                 rgba(69, 52, 104, 0) 100%
             );
         }
+
+        @include media-breakpoint-down(md) {
+            color: #b1e4ff;
+            font-size: 1.5625rem;
+
+            &::after {
+                background: #b1e4ff;
+            }
+        }
     }
 
     h1 {
@@ -234,6 +293,16 @@ const KEY_NUMBERS = [
         font-feature-settings: "ss01", "ss06", "ss07";
         letter-spacing: -0.02em;
         line-height: 1;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2.8125rem;
+            line-height: 1.0667;
+            text-wrap: balance;
+
+            br {
+                display: none;
+            }
+        }
     }
 
     .lead {
@@ -241,6 +310,11 @@ const KEY_NUMBERS = [
         font-size: clamp(1.125rem, 1.7vw, 1.5rem);
         font-weight: 700;
         line-height: 1.1667;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
     }
 
     .support {
@@ -248,6 +322,11 @@ const KEY_NUMBERS = [
         color: #d0d0da;
         font-size: clamp(1rem, 1.4vw, 1.25rem);
         line-height: 1.4;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.875rem;
+            line-height: 1.7143;
+        }
     }
 
     .media {
@@ -267,6 +346,21 @@ const KEY_NUMBERS = [
 
         @include media-breakpoint-down(lg) {
             width: 100%;
+        }
+
+        @include media-breakpoint-down(md) {
+            background:
+                linear-gradient(#000000, #000000) padding-box,
+                #d663e3 border-box;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                box-shadow: inset 0 0 14px rgba(66, 111, 173, 0.85);
+                pointer-events: none;
+            }
         }
 
         img {
@@ -340,12 +434,14 @@ const KEY_NUMBERS = [
         }
 
         @include media-breakpoint-down(md) {
-            width: 4rem;
-            height: 4rem;
+            z-index: 1;
+            width: 2rem;
+            height: 2rem;
 
             svg {
-                width: 1.375rem;
-                height: 1.5rem;
+                width: 0.75rem;
+                height: 0.8125rem;
+                margin-left: 0.125rem;
             }
         }
     }
@@ -359,8 +455,7 @@ const KEY_NUMBERS = [
         grid-template-columns: repeat(3, minmax(0, 1fr));
 
         @include media-breakpoint-down(md) {
-            grid-template-columns: 1fr;
-            gap: 0;
+            gap: 0.5rem;
         }
     }
 
@@ -370,6 +465,11 @@ const KEY_NUMBERS = [
         gap: 0.5rem;
         padding: 2rem 1rem;
         text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 1rem 0.5rem;
+            text-align: left;
+        }
     }
 
     dt {
@@ -378,6 +478,13 @@ const KEY_NUMBERS = [
         letter-spacing: -0.01em;
         line-height: 1.2222;
         text-shadow: 0 0 20px rgba(198, 192, 255, 0.48);
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            line-height: 1;
+        }
     }
 
     dd {
@@ -385,6 +492,11 @@ const KEY_NUMBERS = [
         color: #cccbce;
         font-size: $font-size-sm;
         line-height: 1.4286;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.625rem;
+            line-height: 1.6;
+        }
     }
 
     .notes {
