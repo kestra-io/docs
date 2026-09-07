@@ -3,7 +3,6 @@ import { Image } from "astro:assets"
 import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 import heroScreen from "./assets/hero-screen.webp"
 import heroBg from "./assets/hero-bg.svg?url"
 import squares from "./assets/hero-squares.svg?url"
@@ -15,12 +14,8 @@ import squares from "./assets/hero-squares.svg?url"
  */
 const LAUNCH_VIDEO_ID: string | undefined = "1DMXb98nTik"
 
-const totalPlugins = Number(await fetchTotalPluginsCount()).toLocaleString(
-    "en-US",
-)
-
 const KEY_NUMBERS = [
-    { value: `${totalPlugins}+`, label: "Plugins, installed at runtime" },
+    { value: "2,000+", label: "Plugins, installed at runtime" },
     { value: "LTS", label: "One year of fixes, no forced upgrade" },
     { value: "Apache 2.0", label: "Engine, UI, editor and plugins" },
 ]
@@ -59,8 +54,10 @@ const KEY_NUMBERS = [
                     data-usal="fade-u delay-150 duration-500 ease-out"
                 >
                     Govern AI agents and deterministic workflows at scale with a
-                    rewritten engine that enforces a strict separation between
-                    your control plane and your data plane.
+                    rewritten engine that enforces a <strong
+                        >strict separation between your control plane and your
+                        data plane</strong
+                    >.
                 </p>
             </div>
             <Cta theme="hero" />
@@ -106,7 +103,7 @@ const KEY_NUMBERS = [
             }
         </dl>
 
-        <a href="https://github.com/kestra-io/kestra/releases" class="notes">
+        <a href="/blogs/release-2-0" class="notes">
             Read the full release notes
             <Icon name="mdi:arrow-right" />
         </a>

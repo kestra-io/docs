@@ -32,9 +32,10 @@ const BUTTONS = [
             </h2>
             <p data-usal="fade-u delay-100 duration-500 ease-out">
                 Kestra 2.0 is where the platform stops carrying 1.x constraints
-                and starts building on a clean architecture. First LTS release.
-                Bug and security fixes backported for a year. Upgrade once, then
-                build.
+                and starts building on a clean architecture.
+                <strong>First LTS release.</strong>
+                <strong>Bug and security fixes backported for a year.</strong>
+                Upgrade once, then build.
             </p>
         </div>
 
@@ -153,5 +154,20 @@ const BUTTONS = [
         color: #cfd3d6;
         font-size: clamp(1rem, 1.4vw, 1.25rem);
         line-height: 1.4;
+
+        strong {
+            color: $white;
+            font-weight: 600;
+        }
+
+        a {
+            color: #a796ff;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+
+            &:hover {
+                color: $white;
+            }
+        }
     }
 </style>

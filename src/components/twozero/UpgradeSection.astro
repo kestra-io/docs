@@ -10,16 +10,16 @@ const STATS = [
     { value: "0", label: "Major upgrades in that window" },
 ]
 
+const STORY =
+    "<strong>2.0 requires Kestra 1.3.x.</strong> <strong>kestra-migrate rewrites most flows automatically</strong>; ForEach and pluginDefaults are flagged for review because they need a judgment call. <strong>Every breaking change has a dedicated before/after guide</strong> in the v2.0.0 migration hub, and the LTS policy spells out what one year of support covers."
+
 const LINKS = [
     {
         text: "Migration Guide",
-        href: "/docs/migration-guide",
+        href: "/docs/migration-guide/v2.0.0",
         variant: "primary" as const,
     },
-    {
-        text: "Releases Notes",
-        href: "https://github.com/kestra-io/kestra/releases",
-    },
+    { text: "Release Notes", href: "/blogs/release-2-0" },
     { text: "Join us on Slack", href: "https://kestra.io/slack" },
 ]
 ---
@@ -49,13 +49,10 @@ const LINKS = [
 
         <div class="columns">
             <div class="story">
-                <p data-usal="fade-u delay-50 duration-500 ease-out">
-                    2.0 requires Kestra 1.3.x. kestra-migrate rewrites most
-                    flows automatically; ForEach and pluginDefaults are flagged
-                    for review because they need a judgment call. Every breaking
-                    change has a dedicated before/after guide in the v2.0.0
-                    migration hub.
-                </p>
+                <p
+                    data-usal="fade-u delay-50 duration-500 ease-out"
+                    set:html={STORY}
+                />
                 <dl class="stats">
                     {
                         STATS.map((stat, index) => (
@@ -84,9 +81,9 @@ const LINKS = [
         <QuoteCard
             dark
             logoSvg={amdocsLogo}
-            quote="Half a gigabyte of heart imaging per patient, twelve ML services on GPU, three regions. HeartFlow set out to cut orchestration overhead by 85%, and did. Putting GPU workloads into production on Kestra is what unlocked their international expansion."
-            company="HeartFlow"
-            meta="Clinical imaging ML platform"
+            quote="For Amdocs, the upgrade to 2.0 was the project. Their provisioning workers now run inside the network segments they build environments in, with no database route required. That deployment did not exist before."
+            company="Amdocs"
+            meta="Software and services for communications providers"
         />
 
         <Cta theme="dark" buttons={LINKS} />
@@ -242,6 +239,20 @@ const LINKS = [
             margin: 0;
             font-size: $font-size-lg;
             line-height: 1.5556;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        a {
+            color: #a796ff;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+
+            &:hover {
+                color: $white;
+            }
         }
     }
 
