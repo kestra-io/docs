@@ -101,12 +101,46 @@ const BUTTONS = [
             mask:
                 var(--squares) no-repeat left -100px bottom -96px / 520px auto,
                 var(--squares) no-repeat right -260px bottom 140px / 520px auto;
-            background: rgba(196, 200, 255, 0.22);
+            /* Matches the hero: a pale band drifts across the tint painted
+             * through the mask so the squares light up in a wave. The two
+             * clusters sit at opposite ends, so they catch it in turn. */
+            background-color: rgba(196, 200, 255, 0.16);
+            background-image: linear-gradient(
+                100deg,
+                rgba(196, 200, 255, 0) 0%,
+                rgba(196, 200, 255, 0) 32%,
+                rgba(222, 225, 255, 0.3) 50%,
+                rgba(196, 200, 255, 0) 68%,
+                rgba(196, 200, 255, 0) 100%
+            );
+            background-repeat: no-repeat;
+            background-size: 300% 100%;
+            animation: squares-sheen 11s ease-in-out infinite;
             pointer-events: none;
 
             @include media-breakpoint-down(lg) {
                 display: none;
             }
+        }
+    }
+
+    /* Both ends share a value so the sweep reverses instead of snapping. */
+    @keyframes squares-sheen {
+        0%,
+        100% {
+            background-position: 100% 0;
+        }
+
+        50% {
+            background-position: 0 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .closing::after {
+            animation: none;
+            background-image: none;
+            background-color: rgba(196, 200, 255, 0.22);
         }
     }
 

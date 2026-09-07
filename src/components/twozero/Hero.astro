@@ -92,6 +92,7 @@ const KEY_NUMBERS = [
     and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
 }
 <section class="tz-hero" aria-labelledby="hero-title">
+    <div class="backdrop" aria-hidden="true"></div>
     <svg
         class="sky"
         viewBox="0 0 1900 1564"
@@ -218,7 +219,11 @@ const KEY_NUMBERS = [
         /* The export also carries the two outlined square rings, but they are
          * 50% black on black and never show, so they are redrawn below as
          * tinted masks. */
-        background: #000000 var(--heroBg) center top / cover no-repeat;
+        background: #000000;
+        /* The backdrop drift and the video's glow share one cycle so the
+         * background is at full zoom exactly as the glow peaks. Change it here
+         * and both stay locked; they read as one ambient beat, not two. */
+        --ambient-cycle: 8s;
         color: $white;
         overflow: clip;
         /* Own stacking context so the ring pseudo-elements can sit above the
@@ -234,7 +239,22 @@ const KEY_NUMBERS = [
             height: 373px;
             -webkit-mask: var(--squares) center / contain no-repeat;
             mask: var(--squares) center / contain no-repeat;
-            background: rgba(196, 200, 255, 0.22);
+            /* A pale band drifts across the tint painted through the mask, so
+             * the squares light up in a wave instead of sitting at one flat
+             * opacity. Only `background-position` moves: no layout, no mask
+             * recalculation. */
+            background-color: rgba(196, 200, 255, 0.16);
+            background-image: linear-gradient(
+                100deg,
+                rgba(196, 200, 255, 0) 0%,
+                rgba(196, 200, 255, 0) 32%,
+                rgba(222, 225, 255, 0.3) 50%,
+                rgba(196, 200, 255, 0) 68%,
+                rgba(196, 200, 255, 0) 100%
+            );
+            background-repeat: no-repeat;
+            background-size: 300% 100%;
+            animation: squares-sheen 11s ease-in-out infinite;
             pointer-events: none;
 
             @include media-breakpoint-down(lg) {
@@ -259,6 +279,7 @@ const KEY_NUMBERS = [
             top: -318px;
             right: -190px;
             transform: rotate(90deg);
+            animation-delay: -5.5s;
         }
 
         @include media-breakpoint-down(lg) {
@@ -273,6 +294,31 @@ const KEY_NUMBERS = [
                     #465ab1 0%,
                     rgba(70, 90, 177, 0) 100%
                 );
+        }
+    }
+
+    /* The hero image lives on its own layer purely so the planet can drift:
+     * transforming a layer is compositor work, whereas nudging
+     * `background-position` on the section would repaint it every frame. */
+    .backdrop {
+        position: absolute;
+        inset: 0;
+        /* Below the squares and the comets, above the section's black base. */
+        z-index: -2;
+        background: var(--heroBg) center top / cover no-repeat;
+        /* The image is a near-featureless gradient, so sliding it sideways is
+         * invisible; what actually reads on a gradient is the zoom and the
+         * rotation, which is where `backdrop-drift` puts most of its motion.
+         * The resting 10% overscan is the margin the drift moves within, so
+         * the image edge stays out of view at every viewport width. */
+        transform: scale(1.1);
+        will-change: transform;
+        animation: backdrop-drift var(--ambient-cycle) ease-in-out infinite;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            /* Below md the section paints its own flat gradient instead. */
+            display: none;
         }
     }
 
@@ -434,6 +480,10 @@ const KEY_NUMBERS = [
             0 -6px 50px 0 rgba(94, 174, 240, 0.45),
             0 0 40px 0 rgba(94, 110, 212, 0.16);
         overflow: clip;
+        /* Shares `--ambient-cycle` with the backdrop drift, so the glow peaks
+         * on the same beat. The static rule above is the reduced-motion
+         * fallback. */
+        animation: media-glow var(--ambient-cycle) ease-in-out infinite;
 
         @include media-breakpoint-down(lg) {
             width: 100%;
@@ -637,6 +687,50 @@ const KEY_NUMBERS = [
         }
     }
 
+    /* Translate is a percentage so it stays proportional to the overscan at
+     * every width. All three components peak together at 50%, which means the
+     * zoom is always growing the covered area while the shift and rotation are
+     * eating into it -- the resting frame is therefore the tightest one. */
+    @keyframes backdrop-drift {
+        0%,
+        100% {
+            transform: translate(0, 0) rotate(0deg) scale(1.1);
+        }
+
+        50% {
+            transform: translate(-1.5%, 1%) rotate(1.2deg) scale(1.24);
+        }
+    }
+
+    /* Both ends share a value so the sweep reverses instead of snapping. */
+    @keyframes squares-sheen {
+        0%,
+        100% {
+            background-position: 100% 0;
+        }
+
+        50% {
+            background-position: 0 0;
+        }
+    }
+
+    /* The trough is exactly the static `.media` shadow, so the pulse only ever
+     * adds to the designed glow and never dims below it. */
+    @keyframes media-glow {
+        0%,
+        100% {
+            box-shadow:
+                0 -6px 50px 0 rgba(94, 174, 240, 0.45),
+                0 0 40px 0 rgba(94, 110, 212, 0.16);
+        }
+
+        50% {
+            box-shadow:
+                0 -9px 78px 0 rgba(94, 174, 240, 0.68),
+                0 0 62px 0 rgba(94, 110, 212, 0.3);
+        }
+    }
+
     @keyframes sky-comet {
         0% {
             opacity: 0;
@@ -659,8 +753,18 @@ const KEY_NUMBERS = [
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .sky .comet {
+        .sky .comet,
+        .media,
+        .backdrop,
+        .tz-hero::before,
+        .tz-hero::after {
             animation: none;
+        }
+
+        .tz-hero::before,
+        .tz-hero::after {
+            background-image: none;
+            background-color: rgba(196, 200, 255, 0.22);
         }
 
         .sky .comet {
