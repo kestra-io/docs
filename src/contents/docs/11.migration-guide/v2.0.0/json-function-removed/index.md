@@ -1,5 +1,6 @@
 ---
 title: json() Function Removed
+h1: Replace json() with fromJson()
 sidebarTitle: json() → fromJson()
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

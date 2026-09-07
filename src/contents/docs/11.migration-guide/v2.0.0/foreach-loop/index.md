@@ -1,5 +1,6 @@
 ---
 title: ForEach and ForEachItem Replaced by Loop
+h1: Migrate ForEach and ForEachItem to Loop
 sidebarTitle: ForEach Replaced by Loop
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

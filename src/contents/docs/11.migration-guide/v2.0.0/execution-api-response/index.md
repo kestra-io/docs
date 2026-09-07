@@ -1,5 +1,6 @@
 ---
 title: Execution API Response Shape Changed
+h1: Update API Consumers for the New Response Shape
 sidebarTitle: Execution API Response
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

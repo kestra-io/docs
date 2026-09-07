@@ -1,5 +1,6 @@
 ---
 title: Super Admin Renamed to Instance Owner
+h1: Update Super Admin References to Instance Owner
 sidebarTitle: Super Admin → Instance Owner
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

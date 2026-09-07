@@ -1,5 +1,6 @@
 ---
 title: Management Endpoint Hardening
+h1: Review Management Endpoint Access
 sidebarTitle: Management Endpoint Hardening
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

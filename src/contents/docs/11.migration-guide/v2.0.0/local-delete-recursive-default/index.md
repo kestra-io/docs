@@ -1,5 +1,6 @@
 ---
 title: local.Delete recursive Default Changed to false
+h1: Set recursive Explicitly on local.Delete
 sidebarTitle: local.Delete recursive Default
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

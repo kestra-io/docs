@@ -1,5 +1,6 @@
 ---
 title: Database Migrations
+h1: Run the 2.0 Database Migrations
 sidebarTitle: Database Migrations
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

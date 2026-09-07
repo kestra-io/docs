@@ -1,5 +1,6 @@
 ---
 title: SDK Authentication Required for Internal Tasks
+h1: Configure SDK Authentication for Internal Tasks
 sidebarTitle: SDK Auth Required
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0
