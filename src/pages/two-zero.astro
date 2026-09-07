@@ -356,16 +356,17 @@ const RUN_ANYWHERE_ROWS: Row[] = [
                     "Kestra dispatching to AWS EC2, Azure VM, Google Compute and Huawei Cloud task runners",
             },
             {
-                title: "Logs Out of the Critical Path",
-                body: "Execution logs are your highest-volume data, and <strong>they no longer have to share a database with flows and state</strong>. Route them to a separate JDBC store or Elasticsearch. <strong>Lighter migrations, independent retention, faster operational queries.</strong>",
+                title: "Choose the Queue That Fits Your Platform",
+                body: "Kestra 2.0 breaks the old rule that queue and database must be one. <strong>One execution model, pluggable queue backends</strong>, and a thin adapter layer for each system. Choose JDBC, Kafka, Redis, or AMQP to match your infrastructure and <strong>scale needs without rewriting the platform</strong>. We also send only the minimal message state over the queue and keep the database as the source of truth, reducing load and simplifying operations. <strong>More flexibility. Better scale.</strong>",
                 link: {
-                    text: "Move logs to a dedicated store",
-                    href: "/docs/administrator-guide/log-data-store",
+                    text: "Design your deployment",
+                    href: "/docs/architecture/main-components#queue",
                 },
                 image: runLogs,
                 imageAlt:
-                    "Flows and executions in the main database, logs routed to a separate JDBC or Elasticsearch store",
+                    "Platform diagram illustrating a pluggable queue layer enabling flexible deployment and scalable orchestration.",
             },
+
         ],
     },
     {
@@ -411,7 +412,6 @@ const RUN_ANYWHERE_ROWS: Row[] = [
 const SECURITY_ROWS: Row[] = [
     {
         type: "cards",
-        columns: [1, 0.75],
         cards: [
             {
                 title: "Workers That Prove Who They Are",
@@ -434,6 +434,17 @@ const SECURITY_ROWS: Row[] = [
                 image: securitySiem,
                 imageAlt:
                     "Kestra shipping logs over TCP, UDP or TLS into Graylog, Splunk and QRadar",
+            },
+            {
+                title: "Logs Out of the Critical Path",
+                body: "Execution logs are your highest-volume data, and <strong>they no longer have to share a database with flows and state</strong>. Route them to a separate JDBC store or Elasticsearch. <strong>Lighter migrations, independent retention, faster operational queries.</strong>",
+                link: {
+                    text: "Move logs to a dedicated store",
+                    href: "/docs/administrator-guide/log-data-store",
+                },
+                image: runLogs,
+                imageAlt:
+                    "Flows and executions in the main database, logs routed to a separate JDBC or Elasticsearch store",
             },
         ],
     },
