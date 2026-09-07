@@ -3,6 +3,7 @@ import type { ImageMetadata } from "astro"
 import { Image } from "astro:assets"
 import Snippets from "~/components/common/SnippetsIsland.astro"
 import Link from "~/components/common/Link.astro"
+import { Icon } from "astro-icon/components"
 
 export interface CardContent {
     title: string
@@ -41,6 +42,20 @@ const {
     style={layout === "split" ? `--tz-media-width: ${imageWidth}px` : undefined}
     data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
 >
+    {
+        layout === "stack" && link && (
+            <a
+                class="jump"
+                href={link.href}
+                target="_blank"
+                rel="noopener"
+                title={link.text}
+                aria-label={link.text}
+            >
+                <Icon name="mdi:arrow-top-right" />
+            </a>
+        )
+    }
     <div class="copy">
         <h3 set:html={title} />
         <p set:html={body} />
@@ -52,7 +67,7 @@ const {
             )
         }
         {
-            link && (
+            layout !== "stack" && link && (
                 <Link
                     href={link.href}
                     text={link.text}
@@ -74,6 +89,7 @@ const {
 
 <style lang="scss">
     .bento {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: 4rem;
@@ -180,6 +196,40 @@ const {
 
     :global(.more) {
         margin-top: 1.5rem;
+    }
+
+    .jump {
+        position: absolute;
+        top: 1.25rem;
+        right: 1.25rem;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--ks-background-function);
+        color: var(--ks-content-link);
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+
+        @include media-breakpoint-down(lg) {
+            top: 0.75rem;
+            right: 0.75rem;
+        }
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: var(--ks-content-link);
+            color: #ffffff;
+        }
     }
 
     .bento.stack {

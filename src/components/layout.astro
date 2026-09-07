@@ -46,6 +46,7 @@ interface Props {
      * and keep exit paths off the page.
      */
     bareChrome?: boolean
+    hideFloatingActions?: boolean
 }
 
 const props = Astro.props
@@ -316,7 +317,9 @@ const organizationSchema = {
                     <LayoutFooter transition:persist>
                         <ThemeSwitcher slot="theme-switcher" />
                     </LayoutFooter>
-                    <LayoutFixed client:load transition:persist />
+                    {!props.hideFloatingActions && (
+                        <LayoutFixed client:load transition:persist />
+                    )}
                 </>
             )
         }

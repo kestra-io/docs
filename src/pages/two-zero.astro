@@ -26,6 +26,7 @@ import runTopology from "~/components/twozero/assets/run-topology.png"
 import runWorkerGroups from "~/components/twozero/assets/run-worker-groups.png"
 import runVms from "~/components/twozero/assets/run-vms.png"
 import runLogs from "~/components/twozero/assets/run-logs.png"
+import runQueue from "~/components/twozero/assets/run-queue.png"
 import runPerformance from "~/components/twozero/assets/run-performance.png"
 import runDayTwo from "~/components/twozero/assets/run-day-two.png"
 import runSlim from "~/components/twozero/assets/run-slim.png"
@@ -362,11 +363,10 @@ const RUN_ANYWHERE_ROWS: Row[] = [
                     text: "Design your deployment",
                     href: "/docs/architecture/main-components#queue",
                 },
-                image: runLogs,
+                image: runQueue,
                 imageAlt:
-                    "Platform diagram illustrating a pluggable queue layer enabling flexible deployment and scalable orchestration.",
+                    "Queue and repository options: JDBC for both in open source, and in Enterprise a JDBC or Elasticsearch repository with a JDBC, Redis, Kafka or Google Pub/Sub queue",
             },
-
         ],
     },
     {
@@ -381,7 +381,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
                 },
                 image: runPerformance,
                 imageAlt:
-                    "Throughput on a 5,000 task workload: legacy orchestrators at 0.5 and 6 executions per second, Kestra 1.x at 33, Kestra 2.0 at 66 on Postgres and 83+ with Postgres and Redis",
+                    "Throughput on a 5,000 task workload in executions per second: Airflow at 0.5 and 6, Kestra OSS 1.x at 33, Kestra OSS 2.0 at 66 and Kestra EE 2.0 at 83+",
             },
             {
                 title: "Day-Two Operations for Your Infrastructure",
@@ -465,7 +465,7 @@ const SECURITY_ROWS: Row[] = [
 ]
 ---
 
-<Layout {title} {description} headerTheme="lightText">
+<Layout {title} {description} headerTheme="lightText" hideFloatingActions>
     <div class="twozero-page">
         <Hero />
 
