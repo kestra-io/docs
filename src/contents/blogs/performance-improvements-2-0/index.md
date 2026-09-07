@@ -1,7 +1,7 @@
 ---
 title: "Performance Upgrades in Kestra 2.0"
 description: "Kestra 2.0 doubles sustained throughput to 4000 executions per minute on the same Postgres, with lower latency and a flat p99. Here is what changed in the engine."
-date: 2026-07-09T13:00:00
+date: 2026-09-07T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
@@ -27,6 +27,8 @@ We switched from `e2-standard-4` to `n2-standard-4` VMs for our [reference bench
 Triggered by a Webhook. Contains two tasks:
 1. Outputs a variable.
 2. Logs that variable.
+
+![Average latency by rate for the simple flow: Kestra 1.3 crosses the one-second sustained-throughput line at 2500 executions per minute, Kestra 2.0 at 4500](./bench1-latency.png)
 
 ### Kestra 1.3
 
@@ -72,6 +74,8 @@ The number to look at first as an operator is the p99, though. At 2000 exec/min,
 Triggered by a Webhook. Contains 5 `If` tasks with 2 subtasks each (only one executes per run).
 This creates 10 task runs per execution and stresses the Executor.
 
+![Average latency by rate for the complex flow: Kestra 1.3 crosses the one-second line at 500 executions per minute, Kestra 2.0 at 700](./bench2-latency.png)
+
 ### Kestra 1.3
 
 | step | rate | avg ms | p99 ms | kestra cpu | infra cpu |
@@ -109,6 +113,8 @@ The gain is smaller than on the simple flow, and that is expected. This benchmar
 **Description**
 Executes 100 iterations of a `Loop` task, or `ForEach` task in 1.3, with unbounded concurrency.
 
+![Minimum execution time for 100 loop iterations: 4.54 seconds on Kestra 1.3 with ForEach, 1.42 seconds on Kestra 2.0 with Loop as sub-executions](./bench3-loop.png)
+
 ### Kestra 1.3
 
 Minimum execution time of 5 runs: 4.54s
@@ -137,6 +143,8 @@ None of the numbers above came from a single optimization. They came from changi
 In 2.0, our queuing mechanism is simpler and more efficient. We support only a single consumer group per queue, so we can delete a message the moment it is consumed.
 
 On JDBC, that means the delete happens in the same transaction as the consume. In 1.3 we had to update the message and then delete it, two round trips instead of one. It also means fewer and smaller indices on the queue table, which lowers the load on the database.
+
+![Average latency by rate on Kestra 2.0 with three queue backends and Postgres as repository: the Postgres queue climbs and collapses past 4000 executions per minute, RabbitMQ and Redis stay flat under 120 milliseconds to 5000](./queue-backends.png)
 
 The single consumer group is also what opens the door to brokers that do not support multiple consumer groups natively, RabbitMQ among them. Here is the same simple flow with Postgres as the repository and RabbitMQ as the queue:
 
