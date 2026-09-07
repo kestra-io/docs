@@ -102,6 +102,8 @@ Use this section when interacting with Kestra programmatically — deploying flo
 
 - [REST API reference — OSS](https://kestra.io/docs/api-reference/open-source.md): All endpoints for flows, executions, logs, triggers, namespaces, storage, and more
 - [REST API reference — Enterprise](https://kestra.io/docs/api-reference/enterprise.md): Additional endpoints for tenants, users, roles, audit logs, and worker groups
+- [REST API reference — OSS (full Markdown from OpenAPI)](https://kestra.io/api-reference/kestra.md): Complete machine-readable API reference for all Kestra Open Source endpoints — all paths, methods, parameters, request bodies, response schemas, and descriptions generated from the OpenAPI spec
+- [REST API reference — Enterprise (full Markdown from OpenAPI)](https://kestra.io/api-reference/kestra-ee.md): Complete machine-readable API reference for all Kestra Enterprise endpoints — includes tenants, RBAC, audit logs, and all OSS endpoints
 - [kestractl CLI](https://kestra.io/docs/kestra-cli/kestractl.md): CLI for flow deployment, execution management, and namespace operations
 - [Terraform provider](https://kestra.io/docs/terraform.md): Manage flows, namespaces, users, roles, and secrets as code using the official Kestra Terraform provider
 - [Kestra SDK](https://kestra.io/docs/api-reference/kestra-sdk.md): Java, Python, and Node.js API clients
