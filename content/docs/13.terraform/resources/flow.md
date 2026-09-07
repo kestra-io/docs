@@ -20,7 +20,7 @@ resource "kestra_flow" "example" {
 id: my-flow
 namespace: company.team
 inputs:
-  - name: my-value
+  - id: my-value
     type: STRING
 
 variables:
@@ -28,12 +28,12 @@ variables:
 
 tasks:
   - id: t2
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first {{task.id}}
     level: TRACE
 
 pluginDefaults:
-  - type: io.kestra.core.tasks.log.Log
+  - type: io.kestra.plugin.core.log.Log
     values:
       message: third {{flow.id}}
 EOT

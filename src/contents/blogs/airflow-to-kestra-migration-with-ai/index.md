@@ -46,7 +46,7 @@ The migration uses three tools working together:
 2. **`kestra-flow` agent skill**, which gives Claude Code live knowledge of Kestra's flow schema so it never generates invalid YAML
 3. **`kestra-ops` agent skill**, which gives Claude Code the ability to operate `kestractl` for deployment, validation, and namespace file management
 
-Install both skills by following the instructions at [kestra.io/docs/ai-tools/agent-skills](../../docs/ai-tools/agent-skills/index.md). Once installed, Claude Code automatically invokes the right skill based on what you ask.
+Install both skills by following the instructions at [kestra.io/docs/ai-tools/agent-skills](../../docs/ai-tools/04.agent-skills/index.md). Once installed, Claude Code automatically invokes the right skill based on what you ask.
 
 You also need `kestractl` installed and pointed at a running Kestra instance:
 
@@ -592,7 +592,7 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
 
 Then:
 
-1. Install Kestra agent skills: [kestra.io/docs/ai-tools/agent-skills](../../docs/ai-tools/agent-skills/index.md)
+1. Install Kestra agent skills: [kestra.io/docs/ai-tools/agent-skills](../../docs/ai-tools/04.agent-skills/index.md)
 2. Install `kestractl`: [kestra.io/docs/kestra-cli/kestractl](../../docs/kestra-cli/kestractl/index.md)
 3. Pick a simple DAG to start (a 3-5 task sequential pipeline works well) and run it through the migration workflow described above
 

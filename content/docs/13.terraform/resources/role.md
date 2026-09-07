@@ -22,14 +22,14 @@ resource "kestra_role" "example" {
   name        = "Friendly name"
   description = "Friendly description"
 
-  permissions {
-    type        = "FLOW"
-    permissions = ["READ", "UPDATE"]
+  resources {
+    type    = "FLOW"
+    actions = ["VIEW", "LIST", "UPDATE", "EXECUTE"]
   }
 
-  permissions {
-    type        = "EXECUTION"
-    permissions = ["READ", "UPDATE"]
+  resources {
+    type    = "EXECUTION"
+    actions = ["VIEW", "LIST", "ACCESS_LOGS"]
   }
 }
 ```
@@ -46,20 +46,20 @@ resource "kestra_role" "example" {
 - `description` (String) The role description.
 - `is_default` (Boolean) The role is the default one at user creation. Only one role can be default. Latest create/update to true will be keep as default. Defaults to `false`.
 - `namespace` (String) The linked namespace.
-- `permissions` (Block Set) The role permissions. (see [below for nested schema](#nestedblock--permissions))
+- `resources` (Block Set) The role resource permissions. (see [below for nested schema](#nestedblock--resources))
 
 ### Read-Only
 
 - `id` (String) The ID of this resource.
 - `tenant_id` (String) The tenant id.
 
-<a id="nestedblock--permissions"></a>
-### Nested Schema for `permissions`
+<a id="nestedblock--resources"></a>
+### Nested Schema for `resources`
 
 Required:
 
-- `permissions` (List of String) The permissions for this type.
-- `type` (String) The type of permission.
+- `actions` (List of String) The allowed actions for this resource type (e.g., VIEW, LIST, CREATE, UPDATE, DELETE).
+- `type` (String) The resource type (e.g., FLOW, EXECUTION, NAMESPACE).
 
 ## Import
 
