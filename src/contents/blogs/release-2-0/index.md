@@ -24,7 +24,7 @@ Kestra 2.0 is available today. This release resolves architectural constraints a
 | Promote | Move flows across environments from the UI, with drift detection and a review step | EE, Cloud |
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE, Cloud |
 | kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
-| Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE |
+| Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE, Cloud |
 | New task runners | AWS EC2, Azure VM, Google Compute Engine, Huawei CCI | EE, Cloud |
 | Loop task | In place of ForEach and ForEachItem, with isolated sub-executions | OSS, EE, Cloud |
 | Trigger `when` expression | Pebble expression in place of chained condition syntax on all trigger types | OSS, EE, Cloud |
@@ -250,9 +250,11 @@ errors:
 
 The `linkMatchingExecutions` property is the most useful option for high-frequency flows. A single external API going down can generate dozens of failed executions per hour. With `linkMatchingExecutions: true`, each subsequent failure attaches to the already-open case rather than creating a new one. The same behavior is available from the UI on any existing case via auto-attach, which generates a Flow trigger behind the scenes and removes it when the case resolves.
 
-Each case tracks status, severity, assignees, SLA timers, and linked executions, with a full activity timeline. Cases can also have case actions: flows attached as one-click remediation buttons on the case detail page.
+Each case tracks status, severity, assignees, SLA timers, affected assets, and linked executions, with a full activity timeline. Cases can also have case actions: flows attached as one-click remediation buttons on the case detail page.
 
 The Cases board view and list view sit in the left menu. The board groups cards by status, severity, or assignee with a live SLA countdown per card similar to a kanban view in GitHub or JIRA. Dragging a card to Resolved opens the resolve modal, where a resolution reason is required and a case can be closed.
+
+![Cases detail page showing a failed execution linked to a case, SLA countdowns, a case action, and assignee](./cases-detail.png)
 
 The [Cases docs](/docs/enterprise/governance/cases) cover SLA configuration, case actions, and the auto-attach trigger setup.
 
