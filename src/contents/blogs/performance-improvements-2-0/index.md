@@ -1,6 +1,6 @@
 ---
 title: "Performance Upgrades in Kestra 2.0"
-description: "TODO"
+description: "Kestra 2.0 doubles sustained throughput to 4000 executions per minute on the same Postgres, with lower latency and a flat p99. Here is what changed in the engine."
 date: 2026-09-09T13:00:00
 category: Solutions
 author:
@@ -8,18 +8,20 @@ author:
   linkedin: https://www.linkedin.com/in/lo%C3%AFc-mathieu-475b144/
   image: lmathieu
   role: Lead Developer
-image: ./main.jpg
+image: ./main.png
 ---
 
-It's been a long time since I didn't talk to you about Kestra performance improvements; this is because I was very busy re-architecting kestra for 2.0! Read the blog post if you want to know more. TODO link to the 2.0 architecture
+Kestra 2.0 rebuilds the execution engine. The architecture side of that change is covered in [what changed in the engine](/blogs/2026-09-01-kestra20-rebuild-engine). This post covers the performance side.
 
-Kestra 2.0 brings so many performance improvements that I don't really know how to introduce them, so the first thing is to compare it against 1.3, I'll then dig into the details of some interesting improvements for those always curious about how we achieve the level of performance our orchestrator meets.
+Previous posts in this series were about tuning individual hot paths. 2.0 is different: it changes what the engine has to do for each execution, and the benchmarks move accordingly.
+
+The post starts with the numbers, 1.3 against 2.0 on identical hardware, then goes through the changes that produced them, and ends with where the ceiling sits now, because it is no longer where it used to be.
 
 :::alert{type="info"}
-We now switch to from `e2-standard-4` to `n2-standard-4` VMs for our [reference benchmarks](../../docs/performance/benchmark).
+We switched from `e2-standard-4` to `n2-standard-4` VMs for our [reference benchmarks](../../docs/performance/benchmark). Both versions below ran on the new VMs, so the comparison is like for like.
 :::
 
-## Kestra 1.3 vs. 2.0 -- Benchmark 1 -- simple flow
+## Kestra 1.3 vs. 2.0: Benchmark 1, simple flow
 
 **Description**
 Triggered by a Webhook. Contains two tasks:
@@ -56,15 +58,15 @@ Triggered by a Webhook. Contains two tasks:
 
 ### 1.3 vs. 2.0
 
-In 1.3, Kestra supports up to 2000 exec/min, 4000 task/min, with latency under 1s.
-Executions launched individually execute two tasks in around 150ms.
+We define sustained throughput as the highest rate where execution latency stays under one second.
 
-In 2.0, Kestra supports up to 4000 exec/min, 8000 task/min, with a latency under 1s which is a **2x throughput improvement!**
-Executions launched individually execute two tasks in around 120ms which is a **20% latency improvement**!
+In 1.3, Kestra sustains 2000 exec/min, 4000 tasks/min. An execution launched on its own runs its two tasks in around 150ms.
 
-We can also notice that p99 latency improves a lot and that resource consumption improves a little at high throughput.
+In 2.0, Kestra sustains 4000 exec/min, 8000 tasks/min. That is a **2x throughput improvement** on the same database and the same VM. An execution launched on its own runs its two tasks in around 120ms, a **20% latency improvement**.
 
-## Kestra 1.3 vs. 2.0 -- Benchmark 2 -- complex flow
+The number to look at first as an operator is the p99, though. At 2000 exec/min, which is where 1.3 tops out, the p99 was 694ms. In 2.0 at the same rate it is 159ms. The tail did not shrink by a little, it collapsed, and it stays flat right up to the knee. Resource consumption at high throughput is also a bit lower.
+
+## Kestra 1.3 vs. 2.0: Benchmark 2, complex flow
 
 **Description**
 Triggered by a Webhook. Contains 5 `If` tasks with 2 subtasks each (only one executes per run).
@@ -82,7 +84,6 @@ This creates 10 task runs per execution and stresses the Executor.
 | 6 | 600 | 10069 | 19253 | 44.2% | 65.5% |
 | 7 | 700 | 24501 | 46018 | 45.1% | 66.9% |
 
-
 ### Kestra 2.0
 
 | step | rate | avg ms | p99 ms | kestra cpu | infra cpu |
@@ -97,15 +98,13 @@ This creates 10 task runs per execution and stresses the Executor.
 
 ### 1.3 vs. 2.0
 
-In 1.3, Kestra supports up to 400 exec/min, 4000 task/min, with latency under 1s.
-An execution launched individually executes 10 tasks in around 570ms.
+In 1.3, Kestra sustains 400 exec/min, 4000 tasks/min. An execution launched on its own runs its 10 tasks in around 570ms.
 
-In 2.0, Kestra supports up to 600 exec/min, 6000 task/min, with latency under 1s which is a **50% throughput improvement!**
-An execution launched individually executes 10 tasks in around 450ms which is a **25% latency improvement**!
+In 2.0, Kestra sustains 600 exec/min, 6000 tasks/min, a **50% throughput improvement**. An execution launched on its own runs its 10 tasks in around 450ms, a **25% latency improvement**.
 
-We can also notice that p99 latency improves a lot and that resource consumption improves noticeably at all throughput.
+The gain is smaller than on the simple flow, and that is expected. This benchmark is Executor-bound: ten task runs per execution means ten trips through the execution state machine, and that is the part of the engine that changed least. What did change is visible in the resource columns, where 2.0 does the same work at noticeably lower CPU on both Kestra and the database, at every rate.
 
-## Kestra 1.3 vs. 2.0 -- Benchmark 3 -- large `Loop` task
+## Kestra 1.3 vs. 2.0: Benchmark 3, large `Loop` task
 
 **Description**
 Executes 100 iterations of a `Loop` task, or `ForEach` task in 1.3, with unbounded concurrency.
@@ -118,29 +117,28 @@ Minimum execution time of 5 runs: 4.54s
 
 Minimum execution time of 5 runs: 1.42s
 
-## Kestra 1.3 vs. 2.0
+### 1.3 vs. 2.0
 
-In 1.3, 100 taskruns are executed in 4.54s which is 45ms per task run.
-In 2.0, 100 taskruns are executed in 1.42s which is 15ms per task run.
+In 1.3, 100 task runs execute in 4.54s, which is 45ms per task run.
+In 2.0, 100 task runs execute in 1.42s, which is 15ms per task run.
 
-This is a **3x latency improvement!**
+This is a **3x latency improvement**, and it is the one people find counter-intuitive.
 
-In 2.0, loop tasks are run as sub-executions, which means 100 executions have been created and run concurrently for this benchmark.
-This new loop architecture might be thought as sub-performant, but it proves to be the opposite. Execution overhead is small in Kestra, and using sub-executions lowers the work to do on the Executor to process each loop iteration, providing a nice performance boost.
-In 1.3 each for each iteration creates a taskrun added inside the execution context. In 2.0 we only track iteration counters (one per state), so the execution context is smaller, putting less load on the executor and our queuing system.
+In 2.0, loop tasks run as sub-executions, so this benchmark created 100 executions and ran them concurrently. You might expect that to be slower than iterating inside one execution. It is the opposite. Execution overhead is small in Kestra, and moving each iteration into its own execution takes work off the Executor. In 1.3, every `ForEach` iteration added a task run to the parent execution context, so the context grew with each pass and every update carried all of it. In 2.0 the parent only tracks iteration counters, one per state, so the context stays small and both the Executor and the queue carry far less per message.
 
-On the executor side, the way we process iterations is also very different. In 1.3 the `ForEach` task itself was being invoked for each iteration, so 200 taskruns were executed. In 2.0, we send a small message when a sub-execution is ended which only re-computes the iteration count without re-executing the `Loop` task itself. So only 101 taskruns were executed.
+The way the Executor processes iterations is also very different. In 1.3 the `ForEach` task itself was invoked for each iteration, so 200 task runs were executed. In 2.0, a small message is sent when a sub-execution ends, and it only recomputes the iteration count without re-executing the `Loop` task itself. So only 101 task runs were executed.
 
-## Simpler queuing mechanism
+## How we got there
 
-In 2.0, our queuing mechanism is simpler and more efficient.
-We support only a single consumer group, so we can remove the message when it's consumed.
+None of the numbers above came from a single optimization. They came from changing what an execution costs the engine, in four places.
 
-In JDBC, it allows deleting the message on the same transaction, which reduces the number of database calls as before that we had to update then delete the message. It also implies other improvements like fewer and smaller indices needed, which reduces the resource usage on the database.
+### Simpler queuing mechanism
 
-It also opens to message broker that didn't support multiple consumer groups natively like RabbitMQ.
+In 2.0, our queuing mechanism is simpler and more efficient. We support only a single consumer group per queue, so we can delete a message the moment it is consumed.
 
-For example, this is the benchmark results on using Postgres with a RabbitMQ broker
+On JDBC, that means the delete happens in the same transaction as the consume. In 1.3 we had to update the message and then delete it, two round trips instead of one. It also means fewer and smaller indices on the queue table, which lowers the load on the database.
+
+The single consumer group is also what opens the door to brokers that do not support multiple consumer groups natively, RabbitMQ among them. Here is the same simple flow with Postgres as the repository and RabbitMQ as the queue:
 
 | step | rate | avg ms | p99 ms | kestra cpu | rabbitmq cpu | postgres cpu |
 |--:|--:|--:|--:|--:|--:|--:|
@@ -154,12 +152,12 @@ For example, this is the benchmark results on using Postgres with a RabbitMQ bro
 | 8 | 4500 | 71 | 104 | 48.4% | 43.7% | 44.8% |
 | 9 | 5000 | 71 | 105 | 49.3% | 46% | 45.8% |
 
-As you can see, at low throughput, RabbitMQ allows for a **50% latency improvements** compared to using a Postgres queue, and compared with 1.3 it brings an amazing **60% latency improvements**.
+At low throughput, RabbitMQ brings a **50% latency improvement** over the Postgres queue in 2.0, and a **60% latency improvement** over 1.3. More telling is the shape of the table: average latency sits between 52 and 74ms from 1000 to 5000 exec/min, the p99 never leaves the 69 to 109ms band, and no node passes 50% CPU. There is no knee in this range.
 
-And Redis offers the same level of latency:
+Redis offers the same average latency:
 
 | step | rate | avg ms | p99 ms | kestra cpu | redis cpu | postgres cpu |
-| --- | --- | --- | --- | --- | --- | --- |
+|--:|--:|--:|--:|--:|--:|--:|
 | 1 | 1000 | 48 | 179 | 18.7% | 5% | 17.1% |
 | 2 | 1500 | 45 | 189 | 24.6% | 6.2% | 23.3% |
 | 3 | 2000 | 65 | 282 | 31.6% | 6.9% | 28.4% |
@@ -170,41 +168,49 @@ And Redis offers the same level of latency:
 | 8 | 4500 | 86 | 146 | 53.7% | 10% | 52.7% |
 | 9 | 5000 | 86 | 185 | 59.9% | 11.2% | 57.3% |
 
-## Lightweight messages
+Redis itself barely works, staying near 10% CPU across the whole run, and Kestra holds 5000 exec/min at 86ms average. Step 6 is a transient stall, not a load effect: CPU dips on every node at once and recovers on the next step.
 
-All queue messages are now designed to be lightweight: we didn't include the execution inside them anymore.
+### Lightweight messages
 
-Where applicable, we use a **Command** pattern. For example, restarting an execution was done by sending the whole execution message inside the queue in 1.3, now only a **Restart** command is sent.
-Thanks to that, we implement a single writer principle: only the executor writes the execution and only the scheduler writes the trigger. This closes races and subtle issues on both the Executor and the Scheduler.
+All queue messages are now designed to be lightweight. The execution itself no longer travels inside them.
 
-Another important change is that outputs are now stored outside the execution.
-In Kestra, a task that computes outputs stores them inside the execution.
+Where applicable, we use a **Command** pattern. Restarting an execution in 1.3 meant sending the whole execution through the queue. In 2.0 only a **Restart** command is sent. That let us implement a single-writer principle: only the Executor writes the execution, and only the Scheduler writes the trigger. It closes a class of races and subtle ordering issues on both.
 
-In 2.0, we decided to store those outputs in a separate table, these relieve the executor memory and allows loading the outputs when actually needed (this is still a work in progress, more optimizations will follow).
+The other big change is that task outputs now live outside the execution. In Kestra, a task that computes outputs used to store them inside the execution. In 2.0 those outputs go to a separate table. That relieves the Executor's memory and lets us load outputs only when something actually needs them. This is still a work in progress, and there is more to gain here.
 
+### Less work per message in the Executor
 
-## Various improvements
+It is hard to list everything, and each item on its own is small. They add up.
 
-It's hard to list all improvements we did, and they all add up one on top of the others allowing us to reach a new level of performance.
+- We removed some indices on the `logs` table, which is the table receiving the highest number of inserts.
+- Inside the Executor, we now update the execution with a plain `UPDATE`. We previously used `INSERT ON CONFLICT UPDATE`, which raises the cost of each execution write. The Executor already knows whether an execution needs creating or updating, so it can issue the right query directly and skip the key-presence check.
+- We raised the default database pool size from 10 to 20. Most customers already configured a bigger pool, and this raises the maximum throughput out of the box.
+- We cache flows after resolving their plugin defaults and policies (policies now replace plugin defaults). For complex flows this was a costly step that ran every time the Executor processed a message.
+- We optimized `Instant` deserialization. Since we own the serialization format, we added a fast path for it. This one only became visible when running on our low-latency AMQP setup: once the queue stops being the most expensive thing in the pipeline, smaller costs that used to hide under the JDBC noise show up and can be fixed.
 
-Some I remember and are worth listing:
-- We remove some indices on the `logs` table which is the table that receives the highest number of inserts.
-- Inside the Executor, we now update the execution via an UPDATE query, we previously use an `INSERT ON CONFLICT UPDATE` which increase the cost for each execution update, but as inside the Executor we know whether the execution must be created (INSERT) or updated (UPDATE) we can use directly the correct query which saves database resources as it avoids the cost of checking for the presence of the key.
-- We increase the default size of the database pool from 10 to 20, which allows us to increase the maximum supported throughput (it now defaults to 20 if not configured). This is based on the feedback of most of our customers that already configure a bigger pool size.
-- We cache flow after resolving their plugin default / policies (which now replaces plugin defaults) which for complex flows was a costly operation done each time the Executor processes a message.
-- We optimize Instant deserialization, as we own the serialization format, we add a quick path for that format which shows a nice performance improvement. Such low-level improvement was discovered when running with our low-latency infrastructure with an AMQP queue. Having a low-latency queue allows us to find new areas of improvements previously hidden under the noise of the more costly JDBC queue.
+### gRPC worker
 
-## gRPC worker
+The Worker is now built on a SEDA architecture.
 
-The Worker is now based on a SEDA architecture.
+It polls the new Controller for jobs over gRPC and places them on an in-memory queue. An event loop prefetches jobs and hands them to platform threads for processing. Prefetching and batching job reception keeps worker threads busier and raises overall throughput.
 
-The Worker pulls the new Controller for jobs to execute via gRPC, then sends them in an in-memory queue, an event loop prefetches jobs and sends them to platform threads for processing. Using a prefetcher and batching job reception allow for better worker thread utilization and overall throughput improvements.
+Logs and metrics are now sent in batches as well, which noticeably lowers resource usage and latency for executions that produce a lot of them.
 
-We now also send logs and metrics in batches which can greatly improve resource usage and latency for executions that generate a lot of them.
+## Where the ceiling is now
+
+Look at the CPU columns in Benchmark 1 again. In 1.3, latency falls off a cliff at 2500 exec/min while Kestra sits at 43% CPU and Postgres at 64%. In 2.0 the same thing happens at 4500 exec/min with Kestra at 58% and Postgres at 69%. In both versions, the hardware is not saturated when latency goes vertical.
+
+The wall is row-level lock contention in Postgres, not compute. The `executions` row lock (the `select ... for update` and the update that follows it) dominates database time at every rate, and at saturation the queue poll (`select ... skip locked`) becomes the single largest consumer. 2.0 moved that wall from 2000 to 4000 exec/min by doing less work per execution, but past the knee it is Postgres holding the line, and Kestra CPU actually drops because the engine is waiting on the database.
+
+That is the point of separating the queue from the repository in 2.0. When Postgres stops being the queue, the contention on the queue table disappears, which is exactly what the RabbitMQ and Redis tables above show: same flow, same VMs, same Postgres repository, and latency stays flat to 5000 exec/min with every node under 60% CPU. The remaining database cost is the `executions` row lock on the repository, and it grows with load but never becomes the limit inside this range.
 
 ## Conclusion
 
-TODO
+On the same flows, the same VMs, and the same Postgres, Kestra 2.0 sustains twice the throughput of 1.3, cuts single-execution latency by 20 to 25%, runs a 100-iteration `Loop` 3x faster, and keeps the p99 flat all the way to the knee instead of degrading from the first step. None of that required a change to a single flow.
+
+The improvements came from making each execution cheaper for the engine: a queue that deletes on consume, messages that carry commands instead of executions, outputs stored outside the execution, and a Worker that batches. The reference benchmarks are on the [benchmark page](../../docs/performance/benchmark) and will be updated with each release.
+
+If you need more than 4000 exec/min, the answer in 2.0 is no longer a bigger Kestra node. It is a queue that is not also your repository. The [backend guide](/blogs/kestra-2-0-backend-choice) walks through how to pick one.
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).
