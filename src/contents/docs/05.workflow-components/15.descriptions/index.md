@@ -6,22 +6,13 @@ sidebarTitle: Descriptions
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-You can document flows, inputs, outputs, tasks, and triggers by adding a `description` property.
-
-The `description` property is a string field that supports [Markdown](https://en.wikipedia.org/wiki/Markdown) syntax.
+The `description` property accepts [Markdown](https://en.wikipedia.org/wiki/Markdown) and is available on flows, inputs, outputs, tasks, and triggers. Descriptions are rendered in the UI wherever the component appears.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/coxJhDSRqvg?si=9vX7yl7iD5-R-pFz" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-You can add a `description` property on:
-- Flows
-- Inputs
-- Outputs
-- Tasks
-- Triggers
-
-All Markdown descriptions are rendered directly in the UI. You can get as detailed as you'd like. Take the following example:
+Flow descriptions support full Markdown — headings, lists, bold, code spans, and more:
 
 ```yaml
 id: data-engineering-pipeline-demo
@@ -65,11 +56,62 @@ description: |
       -   `INSTALL json; LOAD json;`: Installs and loads the JSON extension for DuckDB to handle JSON files.
       -   `SELECT brand, round(avg(price), 2) as avg_price FROM read_json_auto('{{ workingDir }}/products.json') GROUP BY brand ORDER BY avg_price DESC;`: Reads the `products.json` file, calculates the average price for each brand, and orders the results by average price in descending order.
   -   **Fetch Type**: `STORE` ensures that the results of the SQL query are stored as an output file in Kestra's internal storage, making them accessible for further use or inspection.
+
+inputs:
+  - id: columns_to_keep
+    type: ARRAY
+    itemType: STRING
+    defaults:
+      - brand
+      - price
+
+tasks:
+  - id: extract
+    type: io.kestra.plugin.core.http.Download
+    uri: https://dummyjson.com/products
+
+  - id: transform
+    type: io.kestra.plugin.scripts.python.Script
+    taskRunner:
+      type: io.kestra.plugin.scripts.runner.docker.Docker
+    containerImage: python:3.11-alpine
+    inputFiles:
+      data.json: "{{ outputs.extract.uri }}"
+    script: |
+      import json
+
+      columns_to_keep = {{ inputs.columns_to_keep | toJson }}
+
+      with open("data.json") as f:
+          data = json.load(f)
+
+      products = [
+          {col: p[col] for col in columns_to_keep if col in p}
+          for p in data["products"]
+      ]
+
+      with open("products.json", "w") as f:
+          json.dump(products, f)
+    outputFiles:
+      - products.json
+
+  - id: query
+    type: io.kestra.plugin.jdbc.duckdb.Query
+    inputFiles:
+      products.json: "{{ outputs.transform.outputFiles['products.json'] }}"
+    sql: |
+      INSTALL json;
+      LOAD json;
+      SELECT brand, round(avg(price), 2) AS avg_price
+      FROM read_json_auto('products.json')
+      GROUP BY brand
+      ORDER BY avg_price DESC;
+    store: true
 ```
 
-![description](./description.png)
+![Flow overview tab showing a Markdown description rendered with headings, lists, and code spans](./description.png)
 
-Here is an example flow with descriptions in different components:
+The `description` property works on all supported components in the same flow:
 
 ```yaml
 id: myflow

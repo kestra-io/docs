@@ -69,7 +69,7 @@ The Airflow team provides Ruff linter rules to identify breaking changes automat
 
 Practically speaking, the Airflow 3 upgrade makes sense for a narrow subset of teams: those who are Python-native, have significant existing investment, and aren't hitting architectural walls.
 
-But even teams that fit this profile should pause to consider where their orchestration needs are heading. If you're building [AI agent workflows](../../docs/ai-tools/ai-workflows/index.md), for example, a YAML-based declarative DSL often works better than Python code. Many teams are integrating AI capabilities into their data stacks, and the orchestrator you choose today will either enable or constrain that roadmap.
+But even teams that fit this profile should pause to consider where their orchestration needs are heading. If you're building [AI agent workflows](../../docs/ai-tools/06.ai-workflows/index.md), for example, a YAML-based declarative DSL often works better than Python code. Many teams are integrating AI capabilities into their data stacks, and the orchestrator you choose today will either enable or constrain that roadmap.
 
 ## Who should reconsider
 

@@ -33,6 +33,17 @@ Returns `true` if the date is the Nth occurrence of the given weekday in its mon
 {{ isDayWeekInMonth(trigger.date, 'MONDAY', 'FIRST') }}
 ```
 
+## `isLastWorkingDay()`
+
+Returns `true` if the date is the last working day of its month. Working days default to Monday–Friday. An optional second argument overrides which days count as working days using a comma-separated list of uppercase day names:
+
+```twig
+{{ isLastWorkingDay(trigger.date) }}
+{{ isLastWorkingDay(trigger.date, 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY') }}
+```
+
+The `date` argument accepts any ISO 8601 date or datetime string. Combine with `isPublicHoliday()` if you also need to exclude public holidays.
+
 ## `dayOfWeek()`
 
 Returns the uppercase day name such as `MONDAY`:
