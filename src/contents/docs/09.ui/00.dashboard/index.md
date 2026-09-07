@@ -29,6 +29,10 @@ Dashboards display the following data:
 
 ## Custom dashboards
 
+:::alert{type="warning"}
+Custom dashboards require the Enterprise Edition since Kestra 2.0.0. On the Open-Source Edition only the default dashboard is available, and the `SyncDashboards` and `PushDashboards` tasks were removed from the Git plugin.
+:::
+
 Dashboards let you define custom queries and charts to visualize data on your executions, logs, and metrics. Rather than relying only on the default dashboard on Kestra's home screen, you can create a custom dashboard with charts that answer specific questions and track key metrics. Each chart's configuration can be modified individually using the pencil icon in the dashboard view.
 
 You can build custom dashboards using the **No Code editor** (form-based, no YAML required) or by **writing YAML directly**. Both produce the same schema-validated output.
