@@ -8,9 +8,13 @@ icon: /src/contents/docs/icons/dev.svg
 
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.
 
+:::alert{type="info"}
+If you are on Kestra Enterprise and want to move flows between environments without building a pipeline, see [Promote](../06.promote/index.md) — a UI-first alternative that requires no Git or automation setup.
+:::
+
 ## Automate validation and deployment with CI/CD
 
-Continous integration and deliver (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.
+Continuous integration and delivery (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.
 This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
 
 :::alert{type="info"}
@@ -52,7 +56,7 @@ The [Kestra CLI](/docs/version-control-cicd/cicd/helpers) includes built-in comm
 ```
 
 :::alert{type="info"}
-The `--api-token` flag is available in the [Enterprise Edition](/docs/enterprise/auth/api-tokens).
+The `--api-token` flag is available in the [Enterprise Edition and Cloud](/docs/enterprise/auth/api-tokens).
 In the open-source edition, use basic authentication with the `--user` flag:
 
 ```bash
@@ -240,7 +244,7 @@ terraform {
 
 provider "kestra" {
   url = "http://localhost:8080" # Kestra webserver/standalone server URL
-  api_token = "<your-api-token>" # Only available in the Enterprise Edition
+  api_token = "<your-api-token>" # EE and Cloud only
 }
 
 resource "kestra_flow" "flows" {
