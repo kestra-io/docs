@@ -67,13 +67,15 @@ const {
             )
         }
         {
-            layout !== "stack" && link && (
+            link && (
                 <Link
                     href={link.href}
-                    text={link.text}
+                    text={layout === "stack" ? "Read more" : link.text}
                     class="more"
                     target="_blank"
                     rel="noopener"
+                    title={link.text}
+                    aria-label={link.text}
                 />
             )
         }
@@ -92,6 +94,7 @@ const {
         position: relative;
         display: flex;
         flex-direction: column;
+        min-width: 0;
         gap: 4rem;
         height: 100%;
         padding: 4rem 2rem 5rem;
@@ -185,6 +188,10 @@ const {
             padding: 1.25rem 1.5rem;
         }
 
+        :global(.mdc-renderer pre code .line) {
+            overflow-wrap: anywhere;
+        }
+
         :global(.mdc-renderer pre code span[style*="116329" i]) {
             color: var(--ks-content-link) !important;
         }
@@ -234,12 +241,42 @@ const {
 
     .bento.stack {
         gap: 2.5rem;
+
+        @include media-breakpoint-up(lg) {
+            display: grid;
+            grid-row: span 4;
+            grid-template-rows: subgrid;
+            row-gap: 0.5rem;
+        }
+
+        @include media-breakpoint-down(lg) {
+            h3 {
+                padding-right: 2.75rem;
+            }
+        }
+    }
+
+    .stack .copy {
+        @include media-breakpoint-up(lg) {
+            display: contents;
+        }
+    }
+
+    .stack :global(.more) {
+        @include media-breakpoint-up(lg) {
+            align-self: start;
+            justify-self: start;
+        }
     }
 
     .stack .media {
         flex: 1 1 auto;
         min-height: 0;
         margin: 0 -2rem -5rem;
+
+        @include media-breakpoint-up(lg) {
+            margin-top: 2rem;
+        }
 
         @include media-breakpoint-down(lg) {
             flex: 0 0 auto;
