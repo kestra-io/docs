@@ -452,6 +452,8 @@ The suffix was renamed from `-no-plugins` to `-slim` in 2.0. Update any Dockerfi
 
 Tag conventions are in the [Docker installation guide](/docs/installation/docker); build patterns for pinned plugin sets are in the [selected plugin installation guide](/docs/how-to-guides/selected-plugin-installation).
 
+<div style="position: relative; padding-bottom: calc(54.8643% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/8xE47n6bLlDfIcIQrHyj?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Auto Install - Kestra Slim" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+
 ## Plugin Artifacts
 
 Plugins can now ship Vue.js frontend components that load into the Kestra UI at runtime, without any changes to the core application. Three named slots let components render in the execution topology view, the task side drawer, or the task detail modal; when a plugin's task types appear in an execution, the matching component renders in place.
