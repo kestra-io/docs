@@ -4,7 +4,7 @@ title: kestra_namespace
 editLink: false
 description: |-
   Use this data source to access information about an existing Kestra Namespace.
-  -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
+  -> Some attributes are only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_namespace (Data Source)
@@ -12,7 +12,7 @@ description: |-
 Use this data source to access information about an existing Kestra Namespace.
 
 ::alert{type="info"}
-This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
+Some attributes are only available on the [Enterprise Edition](https://kestra.io/enterprise)
 ::
 
 ## Example Usage
@@ -28,25 +28,26 @@ data "kestra_namespace" "example" {
 
 ### Required
 
-- `namespace_id` (String) The namespace.
+- `namespace_id` (String) The namespace id.
 
 ### Read-Only
 
 - `allowed_namespaces` (List of Object) The allowed namespaces. (see [below for nested schema](#nestedatt--allowed_namespaces))
-- `description` (String) The namespace friendly description.
-- `id` (String) The ID of this resource.
-- `outputs_in_internal_storage` (Boolean) Whether outputs are stored in internal storage.
-- `plugin_defaults` (String) The namespace plugin defaults.
-- `secret_configuration` (Map of String) The secret configuration.
-- `secret_isolation` (List of Object) Secret isolation configuration (same shape as storage_isolation). (see [below for nested schema](#nestedatt--secret_isolation))
-- `secret_read_only` (Boolean) Whether secrets are read-only in this namespace.
-- `secret_type` (String) The secret type.
-- `storage_configuration` (Map of String) The storage configuration.
-- `storage_isolation` (List of Object) Storage isolation configuration. (see [below for nested schema](#nestedatt--storage_isolation))
-- `storage_type` (String) The storage type.
+- `concurrency` (List of Object) The concurrency limit applied to the executions of every flow of the namespace and its descendants: `limit` and `behavior`. (see [below for nested schema](#nestedatt--concurrency))
+- `default_worker_selector` (List of Object) The default routing applied to every task of the namespace that does not define its own: `tags`, `match` and `fallback`. (see [below for nested schema](#nestedatt--default_worker_selector))
+- `description` (String) The namespace description.
+- `id` (String) The namespace id.
+- `outputs_in_internal_storage` (Boolean) Whether the task outputs are stored in the internal storage.
+- `quotas` (List of Object) The quotas evaluated before an execution starts: `duration`, `limit` and `behavior`. (see [below for nested schema](#nestedatt--quotas))
+- `secret_configuration` (Dynamic) The namespace secret configuration.
+- `secret_isolation` (List of Object) Secret isolation configuration: `enabled` and `denied_services`. (see [below for nested schema](#nestedatt--secret_isolation))
+- `secret_read_only` (Boolean) Whether the namespace secret manager is read only.
+- `secret_type` (String) The namespace secret type.
+- `storage_configuration` (Map of String) The namespace storage configuration.
+- `storage_isolation` (List of Object) Storage isolation configuration: `enabled` and `denied_services`. (see [below for nested schema](#nestedatt--storage_isolation))
+- `storage_type` (String) The namespace storage type.
 - `tenant_id` (String) The tenant id.
-- `variables` (String) The namespace variables.
-- `worker_group` (List of Object) The worker group. (see [below for nested schema](#nestedatt--worker_group))
+- `variables` (String) The namespace variables, as YAML.
 
 <a id="nestedatt--allowed_namespaces"></a>
 ### Nested Schema for `allowed_namespaces`
@@ -56,12 +57,41 @@ Read-Only:
 - `namespace` (String)
 
 
+<a id="nestedatt--concurrency"></a>
+### Nested Schema for `concurrency`
+
+Read-Only:
+
+- `behavior` (String)
+- `limit` (Number)
+
+
+<a id="nestedatt--default_worker_selector"></a>
+### Nested Schema for `default_worker_selector`
+
+Read-Only:
+
+- `fallback` (String)
+- `match` (String)
+- `tags` (Set of String)
+
+
+<a id="nestedatt--quotas"></a>
+### Nested Schema for `quotas`
+
+Read-Only:
+
+- `behavior` (String)
+- `duration` (String)
+- `limit` (Number)
+
+
 <a id="nestedatt--secret_isolation"></a>
 ### Nested Schema for `secret_isolation`
 
 Read-Only:
 
-- `denied_services` (List of String)
+- `denied_services` (Set of String)
 - `enabled` (Boolean)
 
 
@@ -70,14 +100,5 @@ Read-Only:
 
 Read-Only:
 
-- `denied_services` (List of String)
+- `denied_services` (Set of String)
 - `enabled` (Boolean)
-
-
-<a id="nestedatt--worker_group"></a>
-### Nested Schema for `worker_group`
-
-Read-Only:
-
-- `fallback` (String)
-- `key` (String)

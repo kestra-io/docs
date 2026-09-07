@@ -4,12 +4,17 @@ title: kestra_user_group_membership
 editLink: false
 description: |-
   Manages a single membership of a user in a group. Use this resource when different Terraform configurations need to manage different group memberships for the same user, without overwriting each other's assignments. Each resource owns exactly one user-group pair.
+  ~> On Kestra 2.0 and above the user must already have access to the tenant: this resource resolves the user through a tenant access check and fails with a 404 otherwise. Declare a kestra_user_tenant_access for the user and make this resource depend on it. Deleting this resource does not revoke that access.
   -> This resource is only available on the Enterprise Edition https://kestra.io/enterprise
 ---
 
 # kestra_user_group_membership (Resource)
 
 Manages a single membership of a user in a group. Use this resource when different Terraform configurations need to manage different group memberships for the same user, without overwriting each other's assignments. Each resource owns exactly one user-group pair.
+
+::alert{type="warning"}
+On Kestra 2.0 and above the user must already have access to the tenant: this resource resolves the user through a tenant access check and fails with a 404 otherwise. Declare a `kestra_user_tenant_access` for the user and make this resource depend on it. Deleting this resource does not revoke that access.
+::
 
 ::alert{type="info"}
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
