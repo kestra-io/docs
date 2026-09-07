@@ -1,7 +1,11 @@
 ---
+import { Image } from "astro:assets"
 import Cta from "./Cta.astro"
-import twoZero from "./assets/two-zero.svg?no-inline"
+import twoZeroMark from "./assets/two-zero.png"
 import squares from "./assets/hero-squares.svg?url"
+
+const COPY =
+    "Kestra 2.0 is where the platform stops carrying 1.x constraints and starts building on a clean architecture. <strong>First LTS release.</strong> <strong>Bug and security fixes backported for a year.</strong> Upgrade once, then build."
 
 /* Both CTAs carry the lp2_0 campaign tags requested by marketing. */
 const BUTTONS = [
@@ -23,30 +27,27 @@ const BUTTONS = [
         <span
             class="wordmark"
             aria-hidden="true"
-            data-usal="zoomin duration-500 ease-out"></span>
+            data-usal="zoomin duration-500 ease-out"
+        >
+            <Image src={twoZeroMark} alt="" width={440} densities={[1, 2]} />
+        </span>
 
         <div class="copy">
             <h2 id="closing" data-usal="fade-u delay-50 duration-500 ease-out">
                 The Foundation for<br />
                 What Comes Next
             </h2>
-            <p data-usal="fade-u delay-100 duration-500 ease-out">
-                Kestra 2.0 is where the platform stops carrying 1.x constraints
-                and starts building on a clean architecture.
-                <strong>First LTS release.</strong>
-                <strong>Bug and security fixes backported for a year.</strong>
-                Upgrade once, then build.
-            </p>
+            <p
+                data-usal="fade-u delay-100 duration-500 ease-out"
+                set:html={COPY}
+            />
         </div>
 
         <Cta theme="dark" buttons={BUTTONS} />
     </div>
 </section>
 
-<style
-    lang="scss"
-    define:vars={{ squares: `url(${squares})`, twoZero: `url("${twoZero}")` }}
->
+<style lang="scss" define:vars={{ squares: `url(${squares})` }}>
     .closing {
         position: relative;
         padding-block: 5rem 11.875rem;
@@ -58,19 +59,31 @@ const BUTTONS = [
                 rgba(128, 143, 237, 0)
             )
             1;
-        background:
-            radial-gradient(
-                    45% 40% at 50% 8%,
-                    rgba(99, 27, 255, 0.45) 0%,
-                    rgba(99, 27, 255, 0) 100%
-                )
-                no-repeat,
-            linear-gradient(180deg, #000000 36.8%, #1a1c22 100%);
+        background: linear-gradient(180deg, #000000 36.8%, #1a1c22 100%);
         color: $white;
         overflow: clip;
 
         @include media-breakpoint-down(lg) {
             padding-block: 3rem 5rem;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -340px;
+            left: 50%;
+            width: min(1400px, 90vw);
+            height: 440px;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                rgba(124, 108, 255, 0.5),
+                rgba(84, 62, 230, 0.22) 55%,
+                rgba(84, 62, 230, 0) 100%
+            );
+            translate: -50% 0;
+            filter: blur(36px);
+            pointer-events: none;
         }
 
         &::after {
@@ -111,38 +124,23 @@ const BUTTONS = [
     .wordmark {
         position: relative;
         display: block;
-        width: 264px;
+        width: 440px;
         max-width: 80%;
-        aspect-ratio: 261 / 146;
-        filter: drop-shadow(0 0 24px rgba(103, 182, 251, 0.5))
-            drop-shadow(-3px -3px 12px rgba(117, 39, 215, 0.6))
-            drop-shadow(0 60px 28px rgba(79, 46, 185, 0.45));
+        aspect-ratio: 881 / 400;
 
-        &::before,
-        &::after {
-            content: "";
+        img {
             position: absolute;
-            inset: 0;
-            -webkit-mask: var(--twoZero) center / contain no-repeat;
-            mask: var(--twoZero) center / contain no-repeat;
-        }
-
-        &::before {
-            background: #010003;
-            translate: 0 5px;
-        }
-
-        &::after {
-            background: linear-gradient(
-                180deg,
-                #b996ff 28%,
-                #ba98fc 75%,
-                #5500ff 84%
-            );
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: auto;
         }
     }
 
     .copy {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;

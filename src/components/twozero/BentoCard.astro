@@ -55,7 +55,17 @@ const {
                 </div>
             )
         }
-        {link && <Link href={link.href} text={link.text} class="more" />}
+        {
+            link && (
+                <Link
+                    href={link.href}
+                    text={link.text}
+                    class="more"
+                    target="_blank"
+                    rel="noopener"
+                />
+            )
+        }
     </div>
     {
         image && (
@@ -164,11 +174,28 @@ const {
         margin-top: 1.5rem;
     }
 
+    .bento.stack {
+        gap: 2.5rem;
+    }
+
     .stack .media {
-        margin: auto -2rem -5rem;
+        flex: 1 1 auto;
+        min-height: 0;
+        margin: 0 -2rem -5rem;
 
         @include media-breakpoint-down(lg) {
-            margin: auto -1.5rem 0;
+            flex: 0 0 auto;
+            margin: 0 -1.5rem 0;
+        }
+
+        img {
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+
+            @include media-breakpoint-down(lg) {
+                height: auto;
+            }
         }
     }
 

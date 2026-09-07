@@ -6,6 +6,7 @@ interface Button {
     href: string
     variant?: "primary" | "secondary"
     arrow?: boolean
+    newTab?: boolean
 }
 
 interface Props {
@@ -35,6 +36,8 @@ const {
         buttons.map((button, index) => (
             <a
                 href={button.href}
+                target={button.newTab ? "_blank" : undefined}
+                rel={button.newTab ? "noopener" : undefined}
                 class:list={[
                     "btn",
                     "btn-lg",

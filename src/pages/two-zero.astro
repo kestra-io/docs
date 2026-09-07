@@ -49,7 +49,7 @@ const AGENTIC_ROWS: Row[] = [
         cards: [
             {
                 title: "Any Flow Is Now a Tool",
-                body: '<a href="/docs/workflow-components/triggers/mcp-tool-trigger">Add one trigger</a> and <strong>any Kestra flow registers as a named tool on an MCP server</strong>. An agent sends a tool call, Kestra runs the flow with the matched inputs and returns the outputs. <strong>No custom API wrapper, no polling loop.</strong> Inputs map to the tool\'s JSON schema automatically, and <strong>every agent-initiated execution is <a href="/docs/concepts/system-labels">tagged by origin and session</a></strong>, so you can audit exactly what your AI touched.',
+                body: "Add one trigger and <strong>any Kestra flow registers as a named tool on an MCP server</strong>. An agent sends a tool call, Kestra runs the flow with the matched inputs and returns the outputs. <strong>No custom API wrapper, no polling loop.</strong> Inputs map to the tool's JSON schema automatically, and <strong>every agent-initiated execution is tagged by origin and session</strong>, so you can audit exactly what your AI touched.",
                 layout: "split",
                 link: {
                     text: "See how any flow becomes an agent tool",
@@ -87,7 +87,7 @@ const AGENTIC_ROWS: Row[] = [
             },
             {
                 title: "A Copilot That Remembers, Plans, and Asks Before Acting",
-                body: 'The new Copilot is a <strong>persistent sidebar with multi-turn memory</strong> and three modes: <strong>Edit</strong> proposes YAML changes for approval, <strong>Plan</strong> sequences complex tasks step by step, <strong>Ask</strong> answers grounded in official docs and can read execution logs to diagnose a failed run. It reads your <a href="/docs/enterprise/governance/policies">Policies</a>, Variables, Secrets, and <a href="/docs/concepts/kv-store">KV store</a> to ground suggestions in your real configuration. <strong>Nothing changes without an explicit confirmation gate.</strong>',
+                body: "The new Copilot is a <strong>persistent sidebar with multi-turn memory</strong> and three modes: <strong>Edit</strong> proposes YAML changes for approval, <strong>Plan</strong> sequences complex tasks step by step, <strong>Ask</strong> answers grounded in official docs and can read execution logs to diagnose a failed run. It reads your Policies, Variables, Secrets, and KV store to ground suggestions in your real configuration. <strong>Nothing changes without an explicit confirmation gate.</strong>",
                 link: {
                     text: "Meet the new Copilot",
                     href: "/docs/ai-tools/ai-copilot",
@@ -103,7 +103,7 @@ const AGENTIC_ROWS: Row[] = [
         cards: [
             {
                 title: "Put Agent Work Under Operational Control",
-                body: 'AI Agent tasks can enforce <strong>input and output guardrails</strong>, stopping work that falls outside your rules. <strong><a href="/docs/administrator-guide/prometheus-metrics">Prometheus metrics</a> expose every tool, model provider, and embedding-store call</strong>, so teams can <strong>monitor how agents behave and what they cost</strong>. New MCP client tasks also let agents use approved external MCP servers as tools, <strong>extending their reach without giving up orchestration</strong>.',
+                body: "AI Agent tasks can enforce <strong>input and output guardrails</strong>, stopping work that falls outside your rules. <strong>Prometheus metrics expose every tool, model provider, and embedding-store call</strong>, so teams can <strong>monitor how agents behave and what they cost</strong>. New MCP client tasks also let agents use approved external MCP servers as tools, <strong>extending their reach without giving up orchestration</strong>.",
                 layout: "band",
                 link: {
                     text: "Run AI Agents under guardrails",
@@ -120,8 +120,12 @@ const BUILD_ROWS: Row[] = [
         cards: [
             {
                 title: "No Code Editor,<br />With Zero Compromise",
-                body: 'A <strong>visual editor</strong> sits alongside the <a href="/docs/ui/flows">YAML editor</a>. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as blocks; click one to configure it through a <strong>guided form with inline docs</strong>, or drop into raw YAML for that block. Every upstream output and context variable is listed right there for <a href="/docs/concepts/pebble">Pebble references</a>. <strong>No code, YAML, and Copilot stay in sync</strong>: start anywhere, switch freely.',
+                body: "A <strong>visual editor</strong> sits alongside the YAML editor. Each flow section (Triggers, Tasks, Errors, Finally, After Execution) renders as blocks; click one to configure it through a <strong>guided form with inline docs</strong>, or drop into raw YAML for that block. Every upstream output and context variable is listed right there for Pebble references. <strong>No code, YAML, and Copilot stay in sync</strong>: start anywhere, switch freely.",
                 layout: "split",
+                link: {
+                    text: "Explore the No Code editor",
+                    href: "/docs/ui/flows",
+                },
                 image: buildEditor,
                 imageWidth: 866,
                 flush: true,
@@ -146,7 +150,7 @@ const BUILD_ROWS: Row[] = [
             },
             {
                 title: "Trigger Conditions in One Line",
-                body: 'Define trigger rules with <strong>a single <code>when</code> expression</strong>, using the familiar conditional syntax of modern CI/CD pipelines. <strong>Every trigger type supports it</strong>, turning multi-step configuration into <strong>one readable rule</strong>. <a href="/docs/workflow-components/triggers/schedule-trigger">Schedule around business calendars, public holidays, and working days</a>, then coordinate dependent flows within a defined time window.',
+                body: "Define trigger rules with <strong>a single <code>when</code> expression</strong>, using the familiar conditional syntax of modern CI/CD pipelines. <strong>Every trigger type supports it</strong>, turning multi-step configuration into <strong>one readable rule</strong>. Schedule around business calendars, public holidays, and working days, then coordinate dependent flows within a defined time window.",
                 link: {
                     text: "Explore trigger conditions",
                     href: "/docs/workflow-components/triggers",
@@ -157,7 +161,7 @@ const BUILD_ROWS: Row[] = [
             },
             {
                 title: "Loop: Iteration That Can't Take Down Your Instance",
-                body: '<code>Loop</code> replaces <code>ForEach</code> and <code>ForEachItem</code>. <strong>Each iteration runs as an isolated sub-execution</strong>, so a runaway loop over a huge list <strong>can no longer exhaust executor memory</strong> and impact every other flow on the instance. Define the output you need once, then <a href="/docs/best-practices/loop">gather that result across every iteration</a> in a single step.',
+                body: "<code>Loop</code> replaces <code>ForEach</code> and <code>ForEachItem</code>. <strong>Each iteration runs as an isolated sub-execution</strong>, so a runaway loop over a huge list <strong>can no longer exhaust executor memory</strong> and impact every other flow on the instance. Define the output you need once, then gather that result across every iteration in a single step.",
                 link: {
                     text: "Master the Loop task",
                     href: "/docs/workflow-components/tasks/flowable-tasks",
@@ -184,7 +188,7 @@ const BUILD_ROWS: Row[] = [
         cards: [
             {
                 title: "A Cleaner Interface, Built for Work",
-                body: 'The new Kestra interface gives developers and platform teams a <strong>polished experience building workflows</strong>. Essential context stays within reach, with <strong>less visual noise between authoring, monitoring, and troubleshooting</strong>. Move from a flow change to a <a href="/docs/ui/executions">live execution</a> with confidence, while keeping the information needed to make the next decision in view.',
+                body: "The new Kestra interface gives developers and platform teams a <strong>polished experience building workflows</strong>. Essential context stays within reach, with <strong>less visual noise between authoring, monitoring, and troubleshooting</strong>. Move from a flow change to a live execution with confidence, while keeping the information needed to make the next decision in view.",
                 link: {
                     text: "Tour the new interface",
                     href: "/docs/ui",
@@ -195,7 +199,7 @@ const BUILD_ROWS: Row[] = [
             },
             {
                 title: "Plugin Artifacts: See What Happens Inside",
-                body: '<strong>Plugin Artifacts</strong> bring the details behind an execution into the Kestra experience. Plugins can surface <strong>their own progress, metrics, and technology-specific stages directly in the <a href="/docs/ui/executions">execution view</a></strong>, task drawer, or detail panel. See where time is spent, identify the source of a slowdown, and understand the work happening beyond the orchestration layer, <strong>without digging through raw logs</strong>.',
+                body: "<strong>Plugin Artifacts</strong> bring the details behind an execution into the Kestra experience. Plugins can surface <strong>their own progress, metrics, and technology-specific stages directly in the execution view</strong>, task drawer, or detail panel. See where time is spent, identify the source of a slowdown, and understand the work happening beyond the orchestration layer, <strong>without digging through raw logs</strong>.",
                 link: {
                     text: "Build your own Plugin Artifacts",
                     href: "/docs/plugin-developer-guide/plugin-ui",
@@ -212,7 +216,7 @@ const BUILD_ROWS: Row[] = [
         cards: [
             {
                 title: "Inputs That Scale With Your Teams",
-                body: '<strong>Define an input group once at namespace level</strong> and reference it across flows with a single line. <a href="/docs/workflow-components/inputs">SELECT inputs</a> now carry human-readable labels with technical values underneath, <strong>JSON inputs validate against a JSON Schema before any task runs</strong>, and <strong>a new FORM type turns complex trigger forms into a multi-step wizard</strong>.',
+                body: "<strong>Define an input group once at namespace level</strong> and reference it across flows with a single line. SELECT inputs now carry human-readable labels with technical values underneath, <strong>JSON inputs validate against a JSON Schema before any task runs</strong>, and <strong>a new FORM type turns complex trigger forms into a multi-step wizard</strong>.",
                 link: {
                     text: "Share inputs across flows",
                     href: "/docs/workflow-components/reusable-inputs",
@@ -243,7 +247,7 @@ const GOVERNANCE_ROWS: Row[] = [
         cards: [
             {
                 title: "Policies: Standards That Enforce Themselves",
-                body: 'Set your operating standards once and apply them across every team, environment, and workflow. Policies can <strong>fill in required settings, flag exceptions, or stop work that does not meet your rules</strong>, from workflow-wide safeguards to <a href="/docs/enterprise/governance/allowed-plugins">approved infrastructure choices</a>. <strong>Start by seeing where standards are missed, then enforce when ready.</strong> Authors always see the standards applied to their work.',
+                body: "Set your operating standards once and apply them across every team, environment, and workflow. Policies can <strong>fill in required settings, flag exceptions, or stop work that does not meet your rules</strong>, from workflow-wide safeguards to approved infrastructure choices. <strong>Start by seeing where standards are missed, then enforce when ready.</strong> Authors always see the standards applied to their work.",
                 link: {
                     text: "Enforce standards with Policies",
                     href: "/docs/enterprise/governance/policies",
@@ -254,7 +258,7 @@ const GOVERNANCE_ROWS: Row[] = [
             },
             {
                 title: "Promote: Dev to Prod Is a Button, With a Diff",
-                body: 'Moving a flow across environments is now a <strong>first-class action</strong>. A Promote tab on every flow lets you <strong>pick a target, review exactly what changes, and confirm</strong>. <strong>Gated targets require explicit sign-off.</strong> The flows list shows drift at a glance: in sync, out of sync, or not promoted. Every promotion is recorded: what, which <a href="/docs/concepts/revision">revision</a>, where, who, when.',
+                body: "Moving a flow across environments is now a <strong>first-class action</strong>. A Promote tab on every flow lets you <strong>pick a target, review exactly what changes, and confirm</strong>. <strong>Gated targets require explicit sign-off.</strong> The flows list shows drift at a glance: in sync, out of sync, or not promoted. Every promotion is recorded: what, which revision, where, who, when.",
                 link: {
                     text: "Promote flows across environments",
                     href: "/docs/enterprise/governance/promote",
@@ -277,7 +281,7 @@ const GOVERNANCE_ROWS: Row[] = [
         cards: [
             {
                 title: "Quotas: Keep Execution Volume in Check",
-                body: 'Set clear limits on how many executions a workflow can create over time, <strong>protecting shared infrastructure from runaway schedules and unexpected demand</strong>. Apply quotas to a single workflow, an entire team namespace, or the whole <a href="/docs/enterprise/governance/tenants">tenant</a>, and <strong>choose whether excess work should fail or be cancelled</strong>. Control volume where it matters, before it becomes an operational problem.',
+                body: "Set clear limits on how many executions a workflow can create over time, <strong>protecting shared infrastructure from runaway schedules and unexpected demand</strong>. Apply quotas to a single workflow, an entire team namespace, or the whole tenant, and <strong>choose whether excess work should fail or be cancelled</strong>. Control volume where it matters, before it becomes an operational problem.",
                 link: {
                     text: "Cap execution volume with Quotas",
                     href: "/docs/workflow-components/quotas",
@@ -307,7 +311,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
         cards: [
             {
                 title: "Your Orchestrator Shouldn't Dictate Your Network Topology",
-                body: 'In 1.x, <strong>every worker needed a direct route to the database</strong>, limiting where work could run and complicating security reviews. <strong>Kestra 2.0 removes that dependency.</strong> <a href="/docs/architecture">Workers connect to the platform instead</a>, so you can place them <strong>inside private networks, isolated environments, and regions where the data and infrastructure already live</strong>.',
+                body: "In 1.x, <strong>every worker needed a direct route to the database</strong>, limiting where work could run and complicating security reviews. <strong>Kestra 2.0 removes that dependency.</strong> Workers connect to the platform instead, so you can place them <strong>inside private networks, isolated environments, and regions where the data and infrastructure already live</strong>.",
                 layout: "split",
                 link: {
                     text: "See how we reworked the architecture",
@@ -331,7 +335,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
         cards: [
             {
                 title: "Worker Groups 2.0:<br />Routing by Intent",
-                body: 'Use <strong>tag-based routing</strong> to send every workload to the <a href="/docs/task-runners/task-runners-vs-worker-groups">compute it needs</a>, whether that is GPU capacity, a secure network, or a regional team. <strong>Reserve capacity for critical work</strong> so competing demand cannot crowd it out, while allowing unused resources to serve other teams when appropriate. <strong>Adjust allocations live as priorities shift</strong> and define your worker topology once for consistent deployment.',
+                body: "Use <strong>tag-based routing</strong> to send every workload to the compute it needs, whether that is GPU capacity, a secure network, or a regional team. <strong>Reserve capacity for critical work</strong> so competing demand cannot crowd it out, while allowing unused resources to serve other teams when appropriate. <strong>Adjust allocations live as priorities shift</strong> and define your worker topology once for consistent deployment.",
                 link: {
                     text: "Route workloads with Worker Groups",
                     href: "/docs/enterprise/scalability/worker-group",
@@ -342,7 +346,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
             },
             {
                 title: "Run on Bare VMs, Not Just Containers",
-                body: '<strong>Four new task runners</strong> target workloads that shouldn\'t be containerized: GPU training on a custom AMI, licensed software bound to a machine image, <strong>anything needing direct VM control</strong>. <a href="/docs/task-runners/types/aws-ec2-task-runner">AWS EC2</a> via Systems Manager, <a href="/docs/task-runners/types/azure-virtualmachine-task-runner">Azure VM</a> via Run Command, <a href="/docs/task-runners/types/google-computeengine-task-runner">Google Compute Engine</a> as startup scripts, <a href="/docs/task-runners/types/huawei-cci-task-runner">Huawei Cloud CCI</a> as serverless pods. <strong>No SSH, no public IPs.</strong>',
+                body: "<strong>Four new task runners</strong> target workloads that shouldn't be containerized: GPU training on a custom AMI, licensed software bound to a machine image, <strong>anything needing direct VM control</strong>. AWS EC2 via Systems Manager, Azure VM via Run Command, Google Compute Engine as startup scripts, Huawei Cloud CCI as serverless pods. <strong>No SSH, no public IPs.</strong>",
                 link: {
                     text: "Explore every task runner",
                     href: "/docs/task-runners/types",
@@ -353,7 +357,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
             },
             {
                 title: "Logs Out of the Critical Path",
-                body: 'Execution logs are your highest-volume data, and <strong>they no longer have to <a href="/blogs/kestra-2-0-backend-choice">share a database with flows and state</a></strong>. Route them to a separate JDBC store or Elasticsearch. <strong>Lighter migrations, independent retention, faster operational queries.</strong>',
+                body: "Execution logs are your highest-volume data, and <strong>they no longer have to share a database with flows and state</strong>. Route them to a separate JDBC store or Elasticsearch. <strong>Lighter migrations, independent retention, faster operational queries.</strong>",
                 link: {
                     text: "Move logs to a dedicated store",
                     href: "/docs/administrator-guide/log-data-store",
@@ -391,7 +395,7 @@ const RUN_ANYWHERE_ROWS: Row[] = [
             },
             {
                 title: "Start Slim, Grow on Demand",
-                body: '<code>kestra/kestra:*-slim</code> <strong>ships with no bundled <a href="/docs/workflow-components/plugins">plugins</a></strong>. Enable auto-install and Kestra <strong>fetches what your flows reference on first use</strong>, caches it, and keeps editor autocomplete current. <strong>Fast first pull, nothing you don\'t need.</strong>',
+                body: "<code>kestra/kestra:*-slim</code> <strong>ships with no bundled plugins</strong>. Enable auto-install and Kestra <strong>fetches what your flows reference on first use</strong>, caches it, and keeps editor autocomplete current. <strong>Fast first pull, nothing you don't need.</strong>",
                 link: {
                     text: "Start with the slim image",
                     href: "/docs/installation/docker",
@@ -411,7 +415,7 @@ const SECURITY_ROWS: Row[] = [
         cards: [
             {
                 title: "Workers That Prove Who They Are",
-                body: '<strong>Workers no longer connect directly to your database.</strong> They connect to the platform over a secure, TLS-encrypted channel, allowing you to place compute across regions, private networks, and restricted environments <strong>without exposing database access</strong>. <strong>Every worker authenticates with short-lived credentials that can be revoked</strong>, and <a href="/docs/administrator-guide/security-hardening">mutual TLS</a> can reject unknown workers before they reach the platform.',
+                body: "<strong>Workers no longer connect directly to your database.</strong> They connect to the platform over a secure, TLS-encrypted channel, allowing you to place compute across regions, private networks, and restricted environments <strong>without exposing database access</strong>. <strong>Every worker authenticates with short-lived credentials that can be revoked</strong>, and mutual TLS can reject unknown workers before they reach the platform.",
                 link: {
                     text: "How workers connect in 2.0",
                     href: "/docs/architecture",
@@ -422,7 +426,7 @@ const SECURITY_ROWS: Row[] = [
             },
             {
                 title: "Straight Into Your SIEM",
-                body: 'Log Shipper and <a href="/docs/enterprise/governance/audit-logs">Audit Log Shipper</a> gain a <strong>Syslog CEF destination over TCP, UDP, or TLS</strong>. Kestra events route directly into Graylog, Splunk, or QRadar <strong>without a custom adapter</strong>.',
+                body: "Log Shipper and Audit Log Shipper gain a <strong>Syslog CEF destination over TCP, UDP, or TLS</strong>. Kestra events route directly into Graylog, Splunk, or QRadar <strong>without a custom adapter</strong>.",
                 link: {
                     text: "Ship logs to your SIEM",
                     href: "/docs/enterprise/governance/logshipper",
@@ -438,7 +442,7 @@ const SECURITY_ROWS: Row[] = [
         cards: [
             {
                 title: "Audited End to End",
-                body: 'A <strong>systematic security audit</strong> in the 2.0 cycle hardened <strong><a href="/docs/concepts/secret">secret encryption</a>, password hashing, management endpoint exposure, and injection vectors</strong>.',
+                body: "A <strong>systematic security audit</strong> in the 2.0 cycle hardened <strong>secret encryption, password hashing, management endpoint exposure, and injection vectors</strong>.",
                 layout: "band",
                 link: {
                     text: "Harden your deployment",

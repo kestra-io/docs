@@ -1,8 +1,9 @@
 ---
+import { Image } from "astro:assets"
 import QuoteCard from "./QuoteCard.astro"
 import Cta from "./Cta.astro"
 import amdocsLogo from "~/components/home/assets/companies/amdocs-color.svg?raw"
-import twoZero from "./assets/two-zero.svg?no-inline"
+import twoZeroMark from "./assets/two-zero.png"
 
 const STATS = [
     { value: "LTS", label: "First long-term support release" },
@@ -18,9 +19,10 @@ const LINKS = [
         text: "Migration Guide",
         href: "/docs/migration-guide/v2.0.0",
         variant: "primary" as const,
+        newTab: true,
     },
-    { text: "Release Notes", href: "/blogs/release-2-0" },
-    { text: "Join us on Slack", href: "https://kestra.io/slack" },
+    { text: "Release Notes", href: "/blogs/release-2-0", newTab: true },
+    { text: "Join us on Slack", href: "https://kestra.io/slack", newTab: true },
 ]
 ---
 
@@ -43,7 +45,14 @@ const LINKS = [
             >
                 <span class="from">1.x</span>
                 <span class="visually-hidden">to 2.0</span>
-                <span class="to" aria-hidden="true"></span>
+                <span class="to" aria-hidden="true">
+                    <Image
+                        src={twoZeroMark}
+                        alt=""
+                        width={200}
+                        densities={[1, 2]}
+                    />
+                </span>
             </p>
         </header>
 
@@ -90,7 +99,7 @@ const LINKS = [
     </div>
 </section>
 
-<style lang="scss" define:vars={{ twoZero: `url("${twoZero}")` }}>
+<style lang="scss">
     .upgrade {
         padding-block: 10.625rem 7.5rem;
         background: #000000 url("~/assets/header-grid.svg") no-repeat top
@@ -189,34 +198,17 @@ const LINKS = [
     .to {
         position: relative;
         flex: 0 0 auto;
-        width: 100px;
-        aspect-ratio: 261 / 146;
-        margin-left: 56px;
-        filter: drop-shadow(0 0 14px rgba(103, 182, 251, 0.55))
-            drop-shadow(-2px -2px 8px rgba(117, 39, 215, 0.7))
-            drop-shadow(0 22px 10px rgba(79, 46, 185, 0.45));
+        width: 200px;
+        aspect-ratio: 881 / 400;
+        margin-left: 32px;
 
-        &::before,
-        &::after {
-            content: "";
+        img {
             position: absolute;
-            inset: 0;
-            -webkit-mask: var(--twoZero) center / contain no-repeat;
-            mask: var(--twoZero) center / contain no-repeat;
-        }
-
-        &::before {
-            background: #010003;
-            translate: 0 3px;
-        }
-
-        &::after {
-            background: linear-gradient(
-                180deg,
-                #b996ff 28%,
-                #ba98fc 75%,
-                #5500ff 84%
-            );
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: auto;
         }
     }
 
