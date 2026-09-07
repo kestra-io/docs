@@ -23,7 +23,7 @@ Kestra 2.0 is available today. This release resolves architectural constraints a
 | Cases | Incident management for executions: create, deduplicate, and track to resolution without leaving Kestra | EE, Cloud |
 | Promote | Move flows across environments from the UI, with drift detection and a review step | EE, Cloud |
 | Blueprint version control | PushBlueprints and SyncBlueprints tasks for Git-based governance | EE, Cloud |
-| kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE |
+| kestractl IAM commands | Full IAM management (users, groups, roles, service accounts) from CLI | EE, Cloud |
 | Worker Groups 2.0 | Tag-based routing, capacity reservation, JWT auth | EE, Cloud |
 | New task runners | AWS EC2, Azure VM, Google Compute Engine, Huawei CCI | EE, Cloud |
 | Loop task | In place of ForEach and ForEachItem, with isolated sub-executions | OSS, EE, Cloud |
