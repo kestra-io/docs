@@ -14,6 +14,72 @@ import squares from "./assets/hero-squares.svg?url"
  */
 const LAUNCH_VIDEO_ID: string | undefined = "1DMXb98nTik"
 
+const COMET_SPRITES = import.meta.glob("./assets/comets/*.png", {
+    eager: true,
+    query: "?url",
+    import: "default",
+}) as Record<string, string>
+
+const COMETS = [
+    {
+        file: "comet-1.png",
+        u: 26.19,
+        v: 105.41,
+        w: 105.94,
+        h: 107.75,
+        dur: 9,
+        delay: 0,
+    },
+    {
+        file: "comet-2.png",
+        u: 34.92,
+        v: 14.05,
+        w: 44.24,
+        h: 45.09,
+        dur: 8,
+        delay: -3.1,
+    },
+    {
+        file: "comet-3.png",
+        u: 11.06,
+        v: 128.84,
+        w: 20.37,
+        h: 20.5,
+        dur: 7,
+        delay: -5.2,
+    },
+    {
+        file: "comet-4.png",
+        u: 169.97,
+        v: 91.94,
+        w: 20.37,
+        h: 21.08,
+        dur: 10,
+        delay: -1.6,
+    },
+    {
+        file: "comet-5.png",
+        u: 152.5,
+        v: 7.03,
+        w: 18.63,
+        h: 19.33,
+        dur: 8.5,
+        delay: -6.4,
+    },
+    {
+        file: "comet-6.png",
+        u: 152.5,
+        v: 190.91,
+        w: 13.39,
+        h: 13.47,
+        dur: 7.5,
+        delay: -2.3,
+    },
+].map((comet) => ({
+    ...comet,
+    src: COMET_SPRITES[`./assets/comets/${comet.file}`],
+}))
+
 const KEY_NUMBERS = [
     { value: "2,000+", label: "Plugins, installed at runtime" },
     { value: "LTS", label: "One year of fixes, no forced upgrade" },
@@ -26,6 +92,51 @@ const KEY_NUMBERS = [
     and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
 }
 <section class="tz-hero" aria-labelledby="hero-title">
+    <svg
+        class="sky"
+        viewBox="0 0 1900 1564"
+        preserveAspectRatio="xMidYMin slice"
+        aria-hidden="true"
+        focusable="false"
+    >
+        <defs>
+            <radialGradient
+                id="sky-rim"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(2004.47 2100.55) rotate(-132.311) scale(2789.71 3389.04)"
+            >
+                <stop offset="0.34" stop-color="#166fd6" stop-opacity="0"
+                ></stop>
+                <stop offset="0.376" stop-color="#2188ff" stop-opacity="0.4"
+                ></stop>
+                <stop offset="0.401" stop-color="#daebff" stop-opacity="0.65"
+                ></stop>
+                <stop offset="0.418" stop-color="#beb9ff" stop-opacity="0.4"
+                ></stop>
+                <stop offset="0.5" stop-color="#2075d7" stop-opacity="0"></stop>
+            </radialGradient>
+        </defs>
+        <rect class="rim" width="1900" height="1564" fill="url(#sky-rim)"
+        ></rect>
+        <g transform="translate(1515.58 934.565) rotate(-162.374)">
+            {
+                COMETS.map((comet) => (
+                    <image
+                        class="comet"
+                        href={comet.src}
+                        x={comet.u}
+                        y={comet.v}
+                        width={comet.w}
+                        height={comet.h}
+                        style={`--dur: ${comet.dur}s; --delay: ${comet.delay}s`}
+                    />
+                ))
+            }
+        </g>
+    </svg>
     <div class="tz-container">
         <div class="intro">
             <div class="title">
@@ -525,6 +636,77 @@ const KEY_NUMBERS = [
         &:focus-visible {
             background: rgba(255, 255, 255, 0.18);
             color: $white;
+        }
+    }
+
+    .sky {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+
+        .rim {
+            mix-blend-mode: screen;
+            animation: sky-rim 5s ease-in-out infinite;
+        }
+
+        .comet {
+            opacity: 0;
+            animation: sky-comet var(--dur) linear infinite;
+            animation-delay: var(--delay);
+        }
+    }
+
+    @keyframes sky-rim {
+        0%,
+        100% {
+            opacity: 0.05;
+        }
+
+        50% {
+            opacity: 0.4;
+        }
+    }
+
+    @keyframes sky-comet {
+        0% {
+            opacity: 0;
+            transform: translate(68px, -59px);
+        }
+
+        6% {
+            opacity: 1;
+        }
+
+        30% {
+            opacity: 0.9;
+        }
+
+        40%,
+        100% {
+            opacity: 0;
+            transform: translate(-197px, 170px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .sky .rim,
+        .sky .comet {
+            animation: none;
+        }
+
+        .sky .rim {
+            opacity: 0.25;
+        }
+
+        .sky .comet {
+            opacity: 1;
         }
     }
 </style>
