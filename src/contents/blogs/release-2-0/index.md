@@ -168,6 +168,14 @@ For teams who prefer building flows through forms rather than YAML, the No-code 
 
 The [flow editor docs](/docs/ui/flows) cover both No-code and YAML editing in full.
 
+## Execution and Monitoring
+
+Navigation between authoring, execution history, and execution detail has been simplified across the board. The paths between the editor and a failed run have fewer steps, with less visual noise at each stop.
+
+The topology view is redesigned. Task states animate as executions progress, so you can watch a run advance in real time. Each node also surfaces inline plugin details (documentation and configured properties) alongside the graph, so debugging an unfamiliar task no longer requires a separate docs tab. Plugins can extend this view further with custom UI components; check out the [Plugin Artifacts](#plugin-artifacts) section which covers that in more detail.
+
+The execution view adds per-phase timing, so a slow run has an identifiable culprit rather than an opaque total duration. The outputs panel now handles purged files correctly: files cleaned up by `PurgeExecutions` or `PurgeStorage` display as purged rather than appearing to error.
+
 ## RBAC: Action-Based Permissions
 
 In 2.0, RBAC permissions have been redesigned to give fine-grained control over what each user is allowed to do. Every resource used to have the same four permissions (CREATE, READ, UPDATE, DELETE) regardless of what could actually be done with them. There are now 159 permissions across the product, one per action.
