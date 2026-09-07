@@ -375,12 +375,12 @@ const RUN_ANYWHERE_ROWS: Row[] = [
                 title: "Performance That Holds<br />as You Grow",
                 body: "Task run outputs move to dedicated storage instead of living inside execution records, <strong>keeping bulky data out of your core database</strong>. Outputs also switch to a binary format, <strong>cutting storage consumption up to 40%</strong>.<br />That means lower database load, less storage overhead, and <strong>orchestration that stays responsive as execution volume grows to millions of runs</strong>.",
                 link: {
-                    text: "How internal storage works",
-                    href: "/docs/concepts/storage",
+                    text: "Read the 2.0 performance benchmarks",
+                    href: "/blogs/performance-improvements-2-0",
                 },
                 image: runPerformance,
                 imageAlt:
-                    "A throughput chart comparing legacy orchestrators, Kestra 1.x and Kestra 2.0",
+                    "Throughput on a 5,000 task workload: legacy orchestrators at 0.5 and 6 executions per second, Kestra 1.x at 33, Kestra 2.0 at 66 on Postgres and 83+ with Postgres and Redis",
             },
             {
                 title: "Day-Two Operations for Your Infrastructure",
