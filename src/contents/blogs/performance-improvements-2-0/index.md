@@ -1,7 +1,7 @@
 ---
 title: "Performance Upgrades in Kestra 2.0"
 description: "Kestra 2.0 doubles sustained throughput to 4000 executions per minute on the same Postgres, with lower latency and a flat p99. Here is what changed in the engine."
-date: 2026-09-09T13:00:00
+date: 2026-07-09T13:00:00
 category: Solutions
 author:
   name: Loïc Mathieu
