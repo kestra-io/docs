@@ -1,5 +1,6 @@
 ---
 title: Terraform Provider Changes in Kestra 2.0
+h1: Migrate the Kestra Terraform Provider to 2.0
 sidebarTitle: Terraform provider
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

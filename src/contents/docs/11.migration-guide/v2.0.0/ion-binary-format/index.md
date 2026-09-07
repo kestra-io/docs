@@ -1,5 +1,6 @@
 ---
 title: ION Output Files Are Now Binary
+h1: Update Expressions for Binary ION Output
 sidebarTitle: ION Binary Format
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

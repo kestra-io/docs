@@ -1,5 +1,6 @@
 ---
 title: RBAC Permissions Replaced by Resource and Action Model
+h1: Migrate to Action-Based RBAC
 sidebarTitle: RBAC Action Model
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

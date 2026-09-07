@@ -1,5 +1,6 @@
 ---
 title: pluginDefaults.forced Removed from Flows
+h1: Move pluginDefaults.forced to Namespace or Global Scope
 sidebarTitle: pluginDefaults.forced Removed from Flows
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

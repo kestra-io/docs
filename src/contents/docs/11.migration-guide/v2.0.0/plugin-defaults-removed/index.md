@@ -1,5 +1,6 @@
 ---
 title: pluginDefaults Removed
+h1: Replace pluginDefaults with Policies
 sidebarTitle: pluginDefaults Removed
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0

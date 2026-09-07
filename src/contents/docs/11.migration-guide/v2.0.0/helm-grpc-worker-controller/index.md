@@ -1,5 +1,6 @@
 ---
 title: Helm Chart gRPC Worker-Controller Changes in Kestra 2.0.0
+h1: Update Helm Chart for gRPC Worker-Controller
 sidebarTitle: Helm gRPC Worker-Controller
 icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0
