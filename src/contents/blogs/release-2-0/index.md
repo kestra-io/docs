@@ -11,7 +11,11 @@ authors:
 image: ./main.jpg
 ---
 
-Kestra 2.0 is available today. This release resolves architectural constraints around worker deployments and backend coupling, and introduces new features across AI tooling and governance. If you haven't already, check [Ludo's post on the 2.0 architecture](/blogs/kestra-2-0-engineering), which goes deep on the engineering decisions that made this possible. We've put a lot into this release and can't wait to see what the community builds on it. In this post, we cover everything that's new and make sure you have what you need to migrate confidently. Here's what's new, broken down by edition.
+Kestra 2.0 is available today. Until now, network access to the Kestra database was required for every worker, so workers could only be deployed on the same network as the control plane. The queue was coupled to the database as well, so every feature had to be built twice, once for JDBC and once for Kafka.
+
+In 2.0, each worker is connected to the control plane over a single outbound gRPC stream, so it can be deployed in another region, in a different cloud, or in a network that only allows outbound connections. The queue is independent of the database now, so there is a single implementation for both backends.
+
+Everything else in 2.0 is built on those two changes. In this post, we cover what's new and what has to be changed when upgrading. The table below lists features we introduced in each edition.
 
 | Feature | What | Edition |
 |---|---|---|
@@ -37,6 +41,16 @@ Kestra 2.0 is available today. This release resolves architectural constraints a
 :::alert{type="info"}
 **Upgrading from 1.x?** You must be on Kestra 1.3.x before upgrading. Several constructs are removed in 2.0 (ForEach, trigger conditions, `workerGroup.key`, `pluginDefaults`), but most flow rewrites are handled automatically by `kestra-migrate`. The full checklist is in [Upgrade and Migration](#upgrade-and-migration), and every breaking change has a dedicated guide in the [v2.0.0 migration hub](/docs/migration-guide/v2.0.0).
 :::
+
+## Architecture
+
+In 2.0, Kestra is split into a control plane and a data plane. The Executor, Worker Controller, Scheduler, Webserver and Indexer are part of the control plane, where work is coordinated and no user code is run. Runnable tasks and polling triggers are executed in the data plane by the Workers, which are the only ones with access to your infrastructure. Each plane can be scaled independently, so a control plane can be run with no workers at all, and worker capacity can be added later to match the workload.
+
+Workers no longer need a database connection. Instead, a single persistent gRPC stream is opened to the Worker Controller, always by the worker and never in the other direction. Since it is outbound only, no inbound port has to be opened where a worker is deployed. Jobs are sent to the worker over that stream, and results, logs and metrics are returned the same way. A worker can therefore be run on premises, next to data that is not allowed to leave your network. The channel can be encrypted with TLS, and each worker can be required to present a certificate (mTLS) or a JWT before any job is dispatched to it. Any proxy or load balancer between a worker and the control plane has to allow gRPC, which needs HTTP/2 and a connection that stays open for the life of the worker.
+
+Until 2.0, the queue and the repository had to be chosen together, either Postgres or MySQL for both or Kafka with Elasticsearch, and each option had its own engine implementation. In 2.0 they are configured separately, with one implementation of the Executor, Scheduler and Indexer underneath whichever combination is chosen. The Kafka Streams engine was removed, and only minimal information is sent over the queue now, with the repository as the source of truth. We benchmark against a single Postgres used as both queue and repository, and that is where most deployments should start. If you need lower latency or higher throughput, the queue can be moved to Kafka, Redis or AMQP.
+
+Every component, and each step of an execution across them, is described in the [architecture docs](/docs/architecture). Which combination of queue and repository to pick, and what each one is good for, is covered in [In Kestra 2.0 your backend is a choice](/blogs/kestra-2-0-backend-choice), and the engineering decisions behind the rewrite in [Ludo's post on the 2.0 architecture](/blogs/kestra-2-0-engineering).
 
 ## MCP Tool Trigger and MCP Server
 
@@ -479,7 +493,6 @@ Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifac
 - [LDAP](/docs/enterprise/auth/sso/ldap) group-sync-only mode (EE): `mode: GROUP_SYNC_ONLY` lets teams keep their existing SSO provider for login while using LDAP exclusively to resolve group memberships.
 - [AI Agent](/docs/ai-tools/ai-agents): `guardrails` attach input/output expressions that fail the task when violated, giving you deterministic filtering around a non-deterministic component. Prometheus metrics now cover tool calls, provider calls, and embedding store calls. New MCP client tasks let Agent tasks call external MCP servers as tools.
 - [VS Code extension](/docs/version-control-cicd/vscode): the extension now downloads the flow schema from your connected instance rather than bundling a generic one, so completion reflects the plugins actually installed. Live validation, Pebble autocompletion, topology preview with live task states during a run, and run-from-editor are all in.
-- [mTLS on the worker channel](/docs/configuration/enterprise-and-advanced#grpc-tlsmtls-ee-only) (EE): Worker-to-controller communication can be secured with mutual TLS. Configure a certificate authority, a server certificate for the Kestra server, and a client certificate for each worker. Workers that cannot present a valid client certificate are rejected at the TLS handshake before reaching the application layer.
 - [Draft revisions](/docs/concepts/revision): save any flow change as a draft from the flow editor without affecting live executions. A draft revision is never executed; any trigger or manual run falls back to the last published revision. A warning banner in the run panel shows a Publish button when the latest revision is a draft.
 - Execution API performance: task run outputs now live in dedicated storage rather than inline in the execution record. `GET /executions/search` responses are significantly lighter, which directly improves execution list load time on large instances. Integrations that read `taskRunList[*].outputs` from the execution endpoint should switch to `GET /outputs/{executionId}/{taskRunId}`. See the [execution API response migration guide](/docs/migration-guide/v2.0.0/execution-api-response).
 - Infrastructure plugins (EE): NetApp ONTAP, Veeam Backup, Pure Storage, Dell EMC PowerStore, Ceph, Huawei Cloud, F5, and SolarWinds IPAM plugins join the existing VMware, Nutanix, Proxmox, Infoblox, and Netbox family, covering day-two operations: snapshot before patching, clone volumes for dev/test, provision and register infrastructure in a single flow.
