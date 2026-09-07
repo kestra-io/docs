@@ -13,7 +13,7 @@ Triggers automatically start your flow based on events or a schedule.
 A trigger can be a scheduled date, the arrival of a new file, a new message in a queue, the completion of another flow's execution and much more.
 
 <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/UkQ1TmwUuHU?si=DC3utDzMs-BcbBfh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/Zz6yoGm3u7M?si=adFMQY4kn0LCyzHR" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Defining triggers
@@ -22,7 +22,7 @@ Like `inputs` and `tasks`, use the `triggers` keyword in the flow to define a li
 
 To get started, take a look at the flow below. The `schedule_trigger` defines a `cron` expression to run every day at 10 AM. The [Schedule trigger](../../05.workflow-components/07.triggers/01.schedule-trigger/index.md) is great for nightly jobs and other static schedule-oriented workflows. However, Kestra does not limit you to schedule-based orchestration.
 
-The workflow below also includes a `flow_trigger` that automatically starts the `getting_started` flow whenever the `first_flow` listed in `dependsOn` finishes executing. In other words, a flow can be triggered by time-based schedules, by events, or by several triggers at once. For example, you can react to a change in a [Google Sheet](/plugins/plugin-googleworkspace/google-sheets/io.kestra.plugin.googleworkspace.sheets.sheetmodifiedtrigger), a new file in an [S3 bucket](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger), a [PostgreSQL database](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) query result, or even when an [email is received](/plugins/plugin-email/io.kestra.plugin.email.realtimetrigger) in real time.
+The workflow below also includes a `flow_trigger` that automatically starts the `getting_started` flow whenever the `first_flow` defined in the conditions finishes executing. In other words, a flow can be triggered by time-based schedules, by events, or by several triggers at once. For example, you can react to a change in a [Google Sheet](/plugins/plugin-googleworkspace/google-sheets/io.kestra.plugin.googleworkspace.sheets.sheetmodifiedtrigger), a new file in an [S3 bucket](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger), a [PostgreSQL database](/plugins/plugin-jdbc-postgres/io.kestra.plugin.jdbc.postgresql.trigger) query result, or even when an [email is received](/plugins/plugin-email/io.kestra.plugin.email.realtimetrigger) in real time.
 
 ```yaml
 id: getting_started
@@ -40,9 +40,10 @@ triggers:
 
   - id: flow_trigger
     type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - flowId: first_flow
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionFlow
         namespace: company.team
+        flowId: first_flow
 ```
 
 :::alert{type="info"}
@@ -108,6 +109,6 @@ tasks:
 
 With a trigger added to a flow, you can now see the trigger's details in the flow's **Triggers** tab.
 
-![Flow Triggers Tab](./flow-triggers-2-0.png)
+![Flow Triggers Tab](./flow-triggers.png)
 
 To learn more about Triggers, check out the full [Triggers documentation](../../05.workflow-components/07.triggers/index.mdx). Next up, we'll check out Flowable tasks – ways to loop, condition, and parallelize tasks.

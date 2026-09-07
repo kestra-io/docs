@@ -172,8 +172,8 @@ tasks:
       enabled: true
     commands:
       - python main.py
-    workerSelector:
-      tags: [gpu]
+    workerGroup:
+      key: gpu
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
 ```

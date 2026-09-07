@@ -12,7 +12,7 @@ These components are called **server components** or just **servers**.
 
 See the [server components](../../08.architecture/02.server-components/index.md) and [deployment](../../08.architecture/03.deployment-architecture/index.md) sections for more information.
 
-Kestra has a built-in liveness mechanism. Each server sends a periodic heartbeat stored inside the database. The Executor runs the cluster-wide liveness coordinator: it reviews every registered service instance on a scheduled tick and drives state transitions when heartbeats are missed.
+Kestra has a built-in liveness mechanism. Each server sends a periodic heartbeat stored inside the database, and other servers check whether the server is still alive.
 
 When a server is not alive, Kestra runs maintenance routines such as [worker job resubmission](#worker-job-resubmission).
 
@@ -62,4 +62,4 @@ In the timeline, one of the states will be `RESUBMITTED`.
 
 ## Instance view (EE only)
 
-Kestra Enterprise exposes an instance dashboard accessible via the [Instance Owner console](../../07.enterprise/05.instance/00.instance-owner/index.md) that summarizes heartbeats, liveness status, and maintenance activity across clusters. See the [instance dashboard documentation](../../07.enterprise/05.instance/index.mdx) for a walkthrough.
+Kestra Enterprise exposes an instance dashboard (**Administration → Instance**) that summarizes heartbeats, liveness status, and maintenance activity across clusters. See the [instance dashboard documentation](../../07.enterprise/05.instance/index.mdx) for a walkthrough.

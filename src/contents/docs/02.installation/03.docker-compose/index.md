@@ -90,9 +90,7 @@ Next, update the `kestra` service in the `docker-compose.yml` file to mount this
       - $PWD/application.yaml:/etc/config/application.yaml
     ports:
       - "8080:8080"
-      # The management port (8081) is not exposed by default. It is unauthenticated
-      # and intended for internal use only. Only expose it within a trusted network.
-      # - "8081:8081"
+      - "8081:8081"
     depends_on:
       postgres:
         condition: service_started
@@ -235,9 +233,7 @@ services:
             url: http://localhost:8080/
       ports:
         - "8080:8080"
-        # The management port (8081) is not exposed by default. It is unauthenticated
-        # and intended for internal use only. Only expose it within a trusted network.
-        # - "8081:8081"
+        - "8081:8081"
       depends_on:
         postgres:
           condition: service_started
@@ -293,9 +289,11 @@ services:
             scripts:
               docker:
                 volume-enabled: true
-            # Global plugin defaults removed in Kestra 2.0.
-            # Use kestra.policies for installation-wide defaults.
-            # See: https://kestra.io/docs/enterprise/governance/policies
+            defaults: # Example demonstrating global pluginDefaults
+              - type: io.kestra.plugin.airbyte.connections.Sync
+                url: http://host.docker.internal:8000/
+                username: airbyte
+                password: password
           url: http://localhost:8080/
           variables:
             env-vars-prefix: "" # To avoid requiring KESTRA_ prefix on env vars
@@ -349,7 +347,7 @@ Server components can run independently from each other. Each of them communicat
 
 For more details on Kestra server commands, check out the [Server CLI documentation](../../kestra-cli/kestra-server/index.md).
 
-Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgres database backend. Each service maps a unique host port range to its internal management port (`8081`) so you can monitor individual replicas. The management port is unauthenticated by default — only expose these mappings within a trusted internal network.
+Here is an example Docker Compose configuration file running Kestra services with replicas on the Postgres database backend.
 
 ```yaml
 volumes:

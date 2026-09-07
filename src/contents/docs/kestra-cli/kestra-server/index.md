@@ -63,8 +63,8 @@ Available for commands that talk to the server API.
 - `--server` — Kestra server URL (default: `http://localhost:8080`).
 - `--headers` — Add custom headers (`<name=value>`).
 - `--user` — Basic auth (`user:password`).
-- `--tenant` — Tenant identifier (**EE and Cloud only**).
-- `--api-token` — API token (**EE and Cloud only**).
+- `--tenant` — Tenant identifier (**EE only**).
+- `--api-token` — API token (**EE only**).
 
 **Examples**
 
@@ -88,13 +88,16 @@ Commands:
   plugins    handle plugins
   server     handle servers
   flow       handle flows
+  template   handle templates
   sys        handle systems maintenance
   configs    handle configs
   namespace  handle namespaces
   auths      handle auths
+  sys-ee     handle kestra ee systems maintenance
   tenants    handle tenants
   migrate    handle migrations
   backups    (EE) handle metadata backups and restore
+  server     start Kestra servers (see `--flow-path` below for preloading flows)
 ```
 
 ### Preload flows at startup
@@ -213,50 +216,9 @@ kestra flow delete my-namespace my-flow-id
 
 ## Migration commands
 
-### `kestra migrate plan`
-
-Lists all pending database migrations without applying them. Read-only: acquires no lock, writes nothing.
-
-**Options**: `--sql` (print the raw SQL for each SQL-based migration)
-
-```bash
-kestra migrate plan
-kestra migrate plan --sql
-```
-
----
-
-### `kestra migrate run`
-
-Applies all pending migrations in lexicographic order. Acquires a distributed lock so only one process migrates at a time. Makes a single non-blocking lock attempt; if the lock is already held, exits immediately with code `1`.
-
-```bash
-kestra migrate run
-```
-
-:::alert{type="info"}
-Enterprise Edition users must run this command manually before starting Kestra 2.0 for the first time. By default (`kestra.migration.auto=false`), Kestra EE refuses to start if any pending migrations exist. Open-source Kestra runs migrations automatically on startup.
-:::
-
----
-
-### `kestra migrate unlock`
-
-Force-releases the migration lock. Use only when `kestra migrate run` exited abnormally and left the lock held.
-
-```bash
-kestra migrate unlock
-```
-
-:::alert{type="warning"}
-On **PostgreSQL, MySQL, and H2**, the lock is session-scoped. `kestra migrate unlock` always exits `0` but does nothing on these backends. The lock releases when the holding process terminates. Kill the hung process instead. On **Elasticsearch**, the command works as expected.
-:::
-
----
-
 ### `kestra migrate default-tenant`
 
-Migrate all resources without a tenant to a new tenant (multi-tenant setups).
+Migrate all resources without tenant to a new tenant (multi-tenant setups).
 
 **Options**: `--tenant-id`, `--tenant-name`, `--dry-run`
 
@@ -392,7 +354,7 @@ kestra server webserver --no-tutorials
 
 Start a worker.
 
-**Options**: `-t, --thread` (max threads)
+**Options**: `-t, --thread` (max threads), `-g, --worker-group` (EE only)
 
 ```bash
 kestra server worker --thread 16
@@ -408,7 +370,7 @@ kestra server local
 
 ## Kestra with server components in different services
 
-Server components run independently from each other. Most communicate through the queue layer; Workers communicate with the Worker Controller over a bidirectional gRPC stream and never connect to the database directly.
+Server components can run independently from each other. Each of them communicate through the database.
 
 Below is an example Docker Compose configuration file running Kestra services with replicas on the PostgreSQL database backend.
 
@@ -590,14 +552,10 @@ kestra sys state-store migrate
 Create a user.
 
 **Inputs**: `username` (required), `password` (optional)
-**Options**: `--groups`, `--tenant`, `--admin`, `--instance-owner`, `--if-not-exists`
-
-:::alert{type="info"}
-`--superadmin` is a deprecated alias for `--instance-owner` and still works.
-:::
+**Options**: `--groups`, `--tenant`, `--admin`, `--superadmin`, `--if-not-exists`
 
 ```bash
-kestra auths users create --instance-owner --tenant=default admin Admin_password@123
+kestra auths users create --superadmin --tenant=default admin Admin_password@123
 ```
 
 ### `kestra auths users create-basic-auth`
@@ -616,19 +574,15 @@ Refresh users to update their properties.
 kestra auths users refresh
 ```
 
-### `kestra auths users set-instance-owner`
+### `kestra auths users set-superadmin`
 
-Set or remove Instance Owner status.
+Set or remove Superadmin status.
 
-**Inputs**: `user`, `instanceOwner` (true|false)
+**Inputs**: `user`, `isSuperAdmin` (true|false)
 
 ```bash
-kestra auths users set-instance-owner alice true
+kestra auths users set-superadmin alice true
 ```
-
-:::alert{type="info"}
-`set-superadmin` is a deprecated alias for `set-instance-owner` and still works.
-:::
 
 ### `kestra auths users email-replace-username`
 
@@ -655,7 +609,7 @@ kestra auths users sync-access
 Create a metadata backup.
 
 **Inputs**: `type` (`FULL` | `TENANT`)
-**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`, `--resources`
+**Options**: `--tenant`, `--encryption-key`, `--no-encryption`, `--include-data`
 
 ```bash
 kestra backups create FULL --no-encryption
@@ -666,10 +620,61 @@ kestra backups create FULL --no-encryption
 Restore a metadata backup.
 
 **Input**: `uri` (Kestra internal storage URI)
-**Options**: `--encryption-key`, `--to-tenant`, `--resources`
+**Options**: `--encryption-key`, `--to-tenant`
 
 ```bash
 kestra backups restore kestra:///backups/full/backup-20240917163312.kestra
+```
+
+---
+
+## Systems (EE)
+
+### kestra sys-ee restore-flow-listeners
+
+Restores the state-store for FlowListeners. Useful after restoring a flow queue.
+
+**Inputs**
+
+- `--timeout` (option): Timeout in seconds before quitting (default: 60).
+
+**Example Usage**
+
+```bash
+kestra-ee sys-ee restore-flow-listeners --timeout 120
+```
+
+---
+
+### kestra sys-ee restore-queue
+
+Sends all data from a repository to Kafka. Useful for restoring all resources after a backup.
+
+**Inputs**
+
+- `--no-recreate` (option): Don't drop and recreate the Kafka topic.
+- `--no-flows` (option): Don't send flows.
+- `--no-templates` (option): Don't send templates.
+
+**Example Usage**
+
+```bash
+kestra-ee sys-ee restore-queue --no-flows
+```
+
+---
+
+### kestra sys-ee reset-concurrency-limit
+
+Resets the concurrency limit stored on the Kafka runner.
+
+**Inputs**
+None
+
+**Example Usage**
+
+```bash
+kestra-ee sys-ee reset-concurrency-limit
 ```
 
 ## Tenants (EE)

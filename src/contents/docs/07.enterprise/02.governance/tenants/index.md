@@ -9,13 +9,13 @@ version: ">= 0.13.0"
 docId: tenants
 ---
 
-Multi-tenancy lets you run isolated environments for different teams, projects, or customers within a single Kestra instance.
+How to enable multi-tenancy in your Kestra instance.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/z4uzAyjKeoc?si=vy-CPQKNYXYZMwoo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Multi-tenancy — configure and manage tenants
+## Multi-tenancy – configure and manage tenants
 
 A tenant represents an **isolated environment within a single Kestra instance**.
 
@@ -29,11 +29,11 @@ All resources (such as [flows](../../../05.workflow-components/01.flow/index.md)
 
 Data stored inside the internal storage is also separated by tenants.
 
-Users switch between tenants using the tenant dropdown in the bottom-left corner of the UI. The dropdown shows every tenant the user has access to; the active tenant is indicated with a checkmark. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`).
+End-users can use the tenant selection dropdown menu from the [UI](../../../09.ui/index.mdx) to see tenants they have access to. It allows users to switch between tenants easily. Each UI page includes the tenant ID in the URL (e.g., `https://demo.kestra.io/ui/yourTenantId/executions/namespace/flow/executionId`.)
 
-![Tenant switcher dropdown showing Development, Production, North America, Europe, and Asia Pacific tenants](./tenant-switcher.png)
+![Tenants selection dropdown](./tenants.png)
 
-Most [API](../../../api-reference/index.mdx) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Instance Owner access.
+Most [API](../../../api-reference/index.mdx) endpoints also include the tenant identifier. The exception to that is instance-level endpoints such as `/configs`, `/license-info` or `/banners` that require Superadmin access.
 
 For example, the URL of the API operation to list flows of the `products` namespace is `/api/v1/{your_tenant_id}/flows/products`. You can check the [Enterprise Edition API Guide](../../../api-reference/01.enterprise/index.mdx) for more information.
 
@@ -47,17 +47,21 @@ Tenants must be created upfront, and a user needs to be granted access to use a 
 4. **Intuitive UI Navigation**: the UI provides a dropdown as well as tenant identifiers included in the URL to make switching between tenants seamless.
 
 
-## Creating and managing tenants
+## Creating and Managing Tenants
 
-Tenants are created and managed through the **Instance Owner console** — only users with the Instance Owner privilege can create, edit, or delete tenants. The console is accessible from **Instance Owner → Tenants** in the UI. Tenants can also be managed via the CLI, API, or Terraform.
+Tenants in Kestra can be managed in various ways: from the UI, CLI, API, or Terraform.
 
-### Creating a tenant from the UI
+### Creating a Tenant from the UI
 
-Go to **Instance Owner → Tenants**, click **Create**, fill in the form, and click **Save**.
+Tenants can be created and managed directly through Kestra's user interface. Go to **Instance -> Tenants**. Then, click on the **Create** button:
+![create tenant from the UI](./tenant-create.png)
+
+Fill in the form and click **Save**:
+![create tenant from the UI](./tenant-create-2.png)
 
 The user who creates a tenant is automatically granted the Admin Role for that tenant. You may need to refresh the UI to see updated Roles.
 
-### Creating a tenant from the CLI
+### Creating a Tenant from the CLI
 
 Kestra provides CLI commands for tenant creation. The following command creates a tenant with the identifier `stage` and the name `Staging`:
 
@@ -95,7 +99,7 @@ create a tenant and assign admin roles to an existing admin user
   -V, --version             Print version information and exit.
 ```
 
-### Creating a tenant from the API
+### Creating a Tenant from the API
 
 Tenants can be managed programmatically via Kestra's [API](../../../api-reference/01.enterprise/index.mdx#post-/api/v1/tenants). Here is an example of an API call for creating a tenant:
 
@@ -106,7 +110,7 @@ curl -X POST "https://demo.kestra.io/api/v1/tenants" \
   -d "{ \"id\": \"stage\", \"name\": \"staging\", \"deleted\": false}"
 ```
 
-### Creating a tenant from Terraform
+### Creating a Tenant from Terraform
 
 Tenants can be managed via Infrastructure as Code using [Kestra's Terraform provider](../../../13.terraform/resources/tenant/index.md).
 
@@ -137,15 +141,21 @@ Key-value pairs and namespace files will not be deleted as they are persisted in
 
 Regardless of which of the above methods you use to create a tenant, the User who creates the tenant automatically gets the Admin Role assigned. That role grants admin rights to that user on that tenant.
 
-Note that there is an exception to this rule if a tenant is created by an Instance Owner. In that case, the Instance Owner has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
+Note that there is an exception to this rule if a tenant is created by a Superadmin. In that case, the Superadmin has to explicitly assign the Admin Role for that tenant to themselves or any other User, Service Account, or Group.
 
 ### Dedicated storage and secrets backend per tenant
 
 By default, each tenant uses the same [runtime and storage configuration](../../../configuration/02.runtime-and-storage/index.md) and [secrets backend](../secrets-manager/index.md) configured for your Kestra instance. If you need more isolation, you can configure a dedicated storage and secrets backend per tenant. This can be useful if each of your tenants serves different customers and you need to ensure complete data isolation between them.
 
-To configure a dedicated storage and secrets backend per tenant, open the tenant's **Settings** page and scroll to the **Dedicated internal storage** and **Dedicated secrets manager** sections. Each section has a storage type selector and a YAML configuration editor.
+To configure a dedicated storage and secrets backend per tenant, navigate to the **Instance - Tenants** in the UI and click on the **Details** button of the tenant you'd like to configure. Then, select the storage and secrets backend you want to use for that tenant:
 
-For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md). For secrets backend options, refer to the [Secret Managers documentation](../secrets-manager/index.md).
+![tenants-dedicated-internal-storage](./tenants-dedicated-internal-storage.png)
+
+For storage configuration examples, refer to [Runtime and Storage](../../../configuration/02.runtime-and-storage/index.md) in the configuration guide.
+
+![tenants-dedicated-secrets-manager](./tenants-dedicated-secrets-manager.png)
+
+For the different secret managers' configurations, refer to the [Secret Managers documentation](../secrets-manager/index.md).
 
 :::alert{type="warning"}
 Make sure to use `camelCase` notation. For example, if you want to use the `GCS` storage backend, you should use `projectId` as the value rather than `project-id`.

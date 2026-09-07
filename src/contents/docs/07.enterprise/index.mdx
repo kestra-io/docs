@@ -14,7 +14,7 @@ How to configure Kestra Enterprise Edition and Kestra Cloud.
 
 [Enterprise Edition](/enterprise) is a self-hosted version of Kestra deployed to your private infrastructure. It offers security and governance features including Multi-tenancy, Authentication, SSO, RBAC, Namespace-level management, distributed Worker Groups, Worker isolation, Secrets Manager integrations, Audit Logs, and more.
 
-[Kestra Cloud](/cloud) is a fully managed version of Kestra Enterprise Edition, hosted and maintained by the Kestra team. It provides most of the features of the Enterprise Edition, plus the additional benefits of automatic updates, backups, and infrastructure monitoring. New to Kestra Cloud? See the [Cloud getting started guide](./07.cloud-getting-started/index.md).
+[Kestra Cloud](/cloud) is a fully managed version of Kestra Enterprise Edition, hosted and maintained by the Kestra team. It provides most of the features of the Enterprise Edition, plus the additional benefits of automatic updates, backups, and infrastructure monitoring.
 
 ## Key differences between Kestra Enterprise and Kestra Cloud
 
@@ -23,14 +23,14 @@ While Kestra Cloud is fully managed, it differs from Kestra Enterprise in severa
 | Feature / Area                        | Kestra Cloud                                                                                                   | Kestra Enterprise Edition                                                   |
 | ------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
 | **Infrastructure Control**            | Fully managed by Kestra for simplicity and reliability                                                         | Full control and customization                                              |
-| **Backend Technology**                | PostgreSQL JDBC only                                                                                           | Customizable: PostgreSQL, MySQL, Kafka, Redis, AMQP, GCP Pub/Sub, H2 (testing) |
+| **Backend Technology**                | PostgreSQL JDBC only                                                                                           | Customizable Kafka, PostgreSQL, MySQL, H2 (testing)                         |
 | **Workers**                           | Managed worker pools sized for stability                                                                       | Remote [Worker Groups](/docs/enterprise/scalability/worker-group), autoscaling |
 | **Custom Internal Storage & Secrets** | No instance-level control, **tenant/namespace-level only** backends                                            | Fully customizable backends                                                 |
 | **Network Configuration**             | Secure access over public Internet                                                                             | Private networking (self-hosted, VPC peering, etc.)                         |
 | **Backup Access**                     | Automatic backups handled by Kestra                                                                            | Customer-controlled backups                                                 |
 | **Plugins**                           | Curated plugin environment                                                                                     | Full plugin customization                                                   |
 | **Identity Providers (IdP)**          | Built-in Google, Microsoft, or Basic Authentication                                                            | Custom SSO/SCIM supported                                                   |
-| **Log Retention**                     | Automatic retention protocol managed by Kestra                                                                 | Unlimited (based on customer setup); route logs to a separate JDBC or Elasticsearch store with the [External Log Data Store](../10.administrator-guide/log-data-store/index.md) |
+| **Log Retention**                     | Automatic retention protocol managed by Kestra                                                                 | Unlimited (based on customer setup)                                         |
 | **Deployment Regions**                | US & EU (Belgium) on GCP                                                                                       | Any cloud, any region                                                       |
 | **Task Runners**                      | Compatible with most, [Process Task Runner](/docs/task-runners/types/process-task-runner) excluded | Compatible with all task runners                                            |
 

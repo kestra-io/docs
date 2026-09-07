@@ -79,7 +79,7 @@ errors:
 
 ## Flow trigger
 
-Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. The `when` expression lets you target specific states, such as `FAILED` or `WARNING`, and you can define separate triggers per status if needed.
+Subflows cut down on duplication, but you still need the `errors` block in every flow. For a fully centralized approach, use a **Flow trigger** that reacts to execution status. Trigger conditions let you target specific states, such as `FAILED` or `WARNING`, and you can define separate triggers per status if needed.
 
 ```yaml
 id: failure_alert_slack
@@ -95,8 +95,11 @@ tasks:
 triggers:
   - id: on_failure
     type: io.kestra.plugin.core.trigger.Flow
-    dependsOn:
-      - states: [FAILED, WARNING]
+    conditions:
+      - type: io.kestra.plugin.core.condition.ExecutionStatus
+        in:
+          - FAILED
+          - WARNING
 
 ```
 

@@ -6,11 +6,17 @@ sidebarTitle: Runnable Tasks
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Runnable tasks perform the actual work in a flow — file system operations, API calls, database queries, and scripts — executed by distributed workers.
+Data processing tasks handled by the workers.
 
-Each task requires an `id` and a `type`, defined by its fully qualified Java class name. Refer to each task’s plugin documentation for a full list of available properties.
+## Execute work with runnable tasks
 
-Most tasks are runnable. The exception is [Flowable tasks](../00.flowable-tasks/index.md), which control orchestration logic and run on the executor rather than workers.
+Runnable tasks handle data processing, such as file system operations, API calls, and database queries. They can be compute-intensive and are executed by workers.
+
+Each task requires an identifier (`id`) and a type, defined by its Java Fully Qualified Class Name (FQCN).
+
+Tasks include properties specific to their type. Refer to each task’s documentation for a full list of available properties.
+
+Most tasks are runnable, except for [Flowable tasks](../00.flowable-tasks/index.md), which control orchestration logic.
 
 By default, Kestra includes only a few runnable tasks. Many more are available as [plugins](/plugins), and the default Docker image comes preloaded with several of them.
 

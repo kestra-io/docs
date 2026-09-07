@@ -113,7 +113,7 @@ tasks:
     type: io.kestra.plugin.git.SyncNamespaceFiles
     username: git_username
     password: "{{ secret('GITHUB_ACCESS_TOKEN') }}"
-    url: https://github.com/git_username/scripts
+    url: https://github.com/git_username/scipts
     branch: main
     namespace: git
     gitDirectory: _files

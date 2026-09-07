@@ -6,13 +6,15 @@ sidebarTitle: Retries
 icon: /src/contents/docs/icons/flow.svg
 ---
 
-Retries automatically rerun failed tasks. Each retry creates a new task run attempt based on the retry configuration defined in the flow.
+Retries handle transient failures in your workflows.
+
+They are defined at the task level and can be configured to retry a task a certain number of times or with a delay between attempts.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/_MS14PNxtjg?si=-dqo21ljXdAw-C17" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Task-level retries
+Retries let you automatically rerun failed tasks. Each retry creates a new task run attempt, based on the retry configuration defined in the flow.
 
 ### Example
 
@@ -21,7 +23,7 @@ This task retries up to 5 times with a 15-minute interval between attempts:
 ```yaml
 - id: retry_sample
   type: io.kestra.plugin.core.log.Log
-  message: my output for task {{ task.id }}
+  message: my output for task {{task.id}}
   timeout: PT10M
   retry:
     type: constant
@@ -42,7 +44,7 @@ tasks:
   taskRunner:
     type: io.kestra.plugin.core.runner.Process
   commands:
-  - 'if [ "{{ taskrun.attemptsCount }}" -eq 4 ]; then exit 0; else exit 1; fi'
+  - 'if [ "{{taskrun.attemptsCount}}" -eq 4 ]; then exit 0; else exit 1; fi'
   retry:
     type: constant
     interval: PT0.25S
@@ -53,7 +55,7 @@ tasks:
 errors:
   - id: never_happen
     type: io.kestra.plugin.core.debug.Return
-    format: "Never happened {{ task.id }}"
+    format: Never happened {{task.id}}
 ```
 
 ### Timeout vs. Max Retry Duration
@@ -65,16 +67,14 @@ errors:
 - Each attempt can last up to 10 minutes.
 - The overall retries stop after 30 minutes in total.
 
-:::alert{type="warning"}
-Ensure `retry.interval` is smaller than `maxDuration`, or retries may never run.
-:::
+⚠️ Ensure `retry.interval` is smaller than `maxDuration`, or retries may not run.
 
 ### Retry options
 
 | Name             | Type       | Description |
 |------------------|------------|-------------|
 | `type`           | string     | Retry strategy: `constant`, `exponential`, or `random`. |
-| `maxAttempts`    | integer    | Maximum number of attempts, including the initial run. |
+| `maxAttempts`    | integer    | Number of retry attempts before stopping. |
 | `maxDuration`    | Duration   | Maximum total time for the task, across all attempts. |
 | `warningOnRetry` | Boolean    | Marks execution as `WARNING` if retries occurred (default: false). |
 
@@ -172,16 +172,31 @@ Flow-level retries also restart Subflows as new executions.
 
 ## Retry vs. Restart vs. Replay
 
-**Retry** is the only automatic mechanism. **Restart** and **Replay** are both manual, initiated from the UI.
+### Automatic vs. manual
 
-| Concept | Scope | Trigger | New execution? |
-|---|---|---|---|
-| Retry | Task level | Automatic | No |
-| Restart | Flow level | Manual | No |
-| Replay | Flow or task level | Manual | Yes |
+- **Retry**: Automatic rerun of failed tasks within the same execution.
+- **Restart**: Manual rerun of failed tasks within the same execution.
+- **Replay**: Manual rerun from any point, creating a new execution.
 
-**Restart** reruns only the failed tasks within the same execution, keeping the same execution ID. Use the **Restart** button at the top of the Execution overview page.
+![replay_restart.png](./replay_restart.png)
 
-**Replay** starts a new execution from any task — successful or failed — and assigns it a new execution ID. Previous task outputs are reused from cache when available. Trigger a replay from the **Actions** menu at the top of the Execution overview page, or directly from a task node in the **Topology**, **Gantt**, or **Logs** view. See the [Replay documentation](../../06.concepts/10.replay/index.md).
+### Restart vs. Replay
 
-After a replay, the new execution's Overview tab shows an **Original Execution** field linking back to the source run.
+- **Restart**: Retries only failed tasks in the same execution.
+- **Replay**: Starts a new execution from a chosen task, with a new execution ID. Outputs of previous tasks are reused from cache if needed. Check out the [Replay documentation](../../06.concepts/10.replay/index.md).
+
+![replay.png](./replay.png)
+
+Replays can start from successful or failed tasks but always create a new execution. Restarts keep the same execution ID.
+
+After a Replay, you can still track which Execution triggered this new run thanks to the `Original Execution` field:
+
+![original_execution.png](./original_execution.png)
+
+### Summary
+
+| Concept | Scope                  | Trigger  | New execution? |
+|---------|------------------------|----------|----------------|
+| Retry   | Task level             | Automatic| No |
+| Restart | Flow level             | Manual   | No |
+| Replay  | Flow or task level     | Manual   | Yes |

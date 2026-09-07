@@ -119,27 +119,9 @@ With this, we can add this to the `serviceAccount` property like so:
   serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
-## Centralize the service account with a Policy (Enterprise Edition)
+## Set the Service Account with `PluginDefaults`
 
-If you use multiple tasks that require the same service account, create a [Policy](../../07.enterprise/02.governance/policies/index.md) at the namespace level to inject it automatically:
-
-```yaml
-id: gcp-service-account
-description: "Inject GCP service account into all Google Workspace Drive tasks."
-enforcement: ACTIVE
-rules:
-  - type: io.kestra.plugin.ee.rules.Add
-    on: PLUGIN
-    where:
-      - field: type
-        operator: STARTS_WITH
-        value: io.kestra.plugin.googleworkspace.drive
-    values:
-      serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
-```
-
-With this Policy applied, tasks in the namespace need no `serviceAccount` property:
-
+If you're using multiple tasks that will require the service account secret, you can set up a Plugin Default to apply this property to all tasks of this type. For example:
 ```yaml
 tasks:
   - id: upload
@@ -150,15 +132,16 @@ tasks:
     name: "My awesome CSV"
     contentType: "text/csv"
     mimeType: "application/vnd.google-apps.spreadsheet"
+
+pluginDefaults:
+  - type: io.kestra.plugin.googleworkspace.drive.Upload
+    values:
+      serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
 ```
 
 ## Configuring Secrets in the Enterprise Edition
 
-In Kestra Enterprise Edition, secrets are managed directly from the UI — no base64 encoding required. Navigate to **Namespaces**, open the namespace where your flow runs, and go to the **Secrets** tab. Click **New secret**, set the key to `GCP_SERVICE_ACCOUNT`, and paste the service account JSON directly as the value.
-
-Reference it in your tasks with `{{ secret('GCP_SERVICE_ACCOUNT') }}`, exactly as shown in the examples above.
-
-To learn more about secret backends and enterprise secret managers, see the [secrets page](../../06.concepts/04.secret/index.md#enterprise-edition).
+In Kestra Enterprise Edition, secrets can be managed directly from the UI meaning there's no need to encode them in base64. To learn more about this, see the [secrets page](../../06.concepts/04.secret/index.md#enterprise-edition).
 
 ## `GOOGLE_APPLICATION_CREDENTIALS`
 

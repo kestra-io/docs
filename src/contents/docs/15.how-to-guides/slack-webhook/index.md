@@ -109,11 +109,11 @@ tasks:
         import logging
         from fastapi import FastAPI, Request, BackgroundTasks
         from fastapi.responses import JSONResponse
-        from modal import Image, App, asgi_app
+        from modal import Image, Stub, asgi_app
         import requests
 
         web_app = FastAPI()
-        app = App("slack_app")
+        stub = Stub("slack_app")
 
         image = Image.debian_slim().pip_install("requests")
 
@@ -121,7 +121,7 @@ tasks:
         logger = logging.getLogger(__name__)
 
         def process_event(event):
-            # Replace with your Kestra Webhook URL
+            # TODO adjust the URL below to your Kestra Webhook URL
             url = "http://your_kestra_host:8080/api/v1/main/executions/webhook/prod/slack_events/superStrongSecretKey42"
             headers = {"Content-Type": "application/json"}
             response = requests.post(url, headers=headers, json=event)
@@ -144,7 +144,7 @@ tasks:
             logger.info("Responding immediately to Slack")
             return JSONResponse(content={"status": "ok"})
 
-        @app.function(image=image)
+        @stub.function(image=image)
         @asgi_app()
         def fastapi_app():
             return web_app

@@ -8,25 +8,25 @@ editions: ["EE", "Cloud"]
 docId: auditlogs
 ---
 
-Audit Logs record every action taken in your Kestra instance by users and service accounts.
+How to use Audit Logs to govern activities in your Kestra instance.
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/Qz24gBPGZHs?si=RaI14lzO_zt3nL_T" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Audit logs
+## Audit logs – governance and compliance guide
 
-By reviewing Audit Logs, system administrators can track user activity, and security teams can investigate incidents and ensure compliance with regulatory requirements.
+Audit Logs record all activities performed in your Kestra instance by users and service accounts. By reviewing Audit Logs, system administrators can track user activity, and security teams can investigate incidents and ensure compliance with regulatory requirements.
 
-## Why audit logs matter
+## Why are Audit Logs important
 
-Audit logs are a historical record that developers and system administrators can use to track changes, monitor system usage, and verify system activity. They track the sequence of activities, ensuring accountability and providing data for troubleshooting and analysis. Because audit logs are immutable, they can also be used to detect and investigate security incidents. If you use the Elasticsearch backend, you can use Kibana to search and visualize your logs.
+The audit log table in Kestra serves as a historical record that developers and system administrators can use to track changes, monitor system usage, and verify system activity. It's a transparency tool that tracks the sequence of activities, ensuring accountability for actions taken and providing data for troubleshooting and analysis. Given that Audit Logs are immutable, they can also be used to detect and investigate security incidents. If you leverage Kestra edition with Elasticsearch backend, you can also use Kibana to search and visualize your logs.
 
 ## How to access Audit Logs
 
 You can access Audit Logs from the **Tenant** section in the UI. That UI page provides a detailed table of recorded events, capturing the actions taken within the system:
 
-![Audit Logs](./audit-logs-filter.png)
+![Audit Logs](./audit_logs.png)
 
 Each row in the table represents a distinct event with several columns providing specific details:
 
@@ -39,19 +39,21 @@ Each row in the table represents a distinct event with several columns providing
 
 ## How to see a full diff of a specific event
 
-To see a full diff of a specific event, click the icon in the **Changes** column. The expanded view shows the full diff of the event side-by-side, including the `before` and `after` states of a given resource:
+To see a full diff of a specific event, click on the icon in the **Changes** column. The expanded view shows the full diff of the event side-by-side, including the `before` and `after` states of a given resource:
 
 ![Changes Diff](./changes_diff.png)
 
-## How to filter audit logs
+## How to use the Details filter to search for specific Audit Log events
 
-Click **Add filters** to open the Advanced filter dialog. You can combine multiple conditions — for example, filter by Interval (Last 7 days) and Resource type (NAMESPACE) to narrow the table:
+The `Details` filter allows you to flexibly search for any Audit Log event using the `key:value` format. It's a tag-based system which works the same way as [Execution Labels](../../../05.workflow-components/08.labels/index.md).
 
-![Advanced filter dialog](./audit_logs.png)
+For example, you can filter for all events related to a specific namespace by typing `namespace:your_namespace`:
 
-To filter for a specific event, click any tag in the **Details** column to add it as a filter condition.
+![Filter by Namespace](./audit-logs-filter.png)
 
-## How to purge audit logs
+To further filter for a specific event, you can click on the relevant tag in the `Details` column, and it automatically adds the filter to the view.
+
+## How to Purge Audit Logs
 
 The Enterprise Edition of Kestra generates an audit log for _every action_ taken on the platform. While these logs are essential for tracking changes and ensuring compliance, they can accumulate over time and take up a significant amount of space in the database.
 
