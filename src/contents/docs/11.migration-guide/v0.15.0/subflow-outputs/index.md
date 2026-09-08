@@ -105,8 +105,6 @@ You can see that outputs are defined as a list of key-value pairs. The `id` is t
 
 You will see the output of the flow on the **Executions** page in the **Overview** tab.
 
-![subflow_output](../../../05.workflow-components/06.outputs/subflow_output.png)
-
 Here is how you can access the flow output in the parent flow:
 
 ```yaml
@@ -133,6 +131,4 @@ Note how the `outputs` are set twice within the `"{{outputs.subflow.outputs.fina
 2. once to access the outputs of the subflow itself — specifically, the `final` output.
 :::
 
-Here is what you will see in the Outputs tab of the **Executions** page in the parent flow:
-
-![subflow_output_parent](../../../05.workflow-components/06.outputs/subflow_output_parent.png)
+The parent flow's **Input/Output** tab shows the child flow's declared `final` output under the `subflow` task entry.

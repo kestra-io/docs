@@ -46,7 +46,7 @@ default:
     entrypoint: [""]
 
 variables:
-  KESTRA_HOST: https://kestra.io/
+  KESTRA_HOST: https://your-kestra-host
 
 validate:
   stage: validate # Validate flows server-side

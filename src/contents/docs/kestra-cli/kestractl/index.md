@@ -74,7 +74,7 @@ kestractl flows list my.namespace --output json
 - `executions`: run, inspect, control, and bulk-manage executions.
 - `triggers`: list, enable, disable, unlock, delete, manage backfills, and export triggers.
 - `namespaces`: list, get, create, update, delete namespaces and manage their plugin defaults.
-- `nsfiles`: list, get, upload, and delete namespace files.
+- `nsfiles`: list, get, upload, search, move, export, manage revisions, and delete namespace files.
 - `kv`: list, set (with optional TTL), update, get, and delete key-value pairs. Note: `kv list` requires token auth and returns 401 with basic auth.
 - `dashboards`: list, get, create, update, and delete dashboards. Requires Kestra EE.
 - `apps`: list, get, deploy, update, and delete apps. Requires Kestra EE.
@@ -403,6 +403,37 @@ kestractl namespaces import-plugin-defaults my.namespace --file defaults.yaml
 `--variable` and `--variables-file` replace the namespace's full variable set on each `create` or `update` call. To preserve existing variables, include them in the file or repeat them as `--variable` flags.
 :::
 
+## Namespace files
+
+```bash
+# List files in a namespace
+kestractl nsfiles list my.namespace
+kestractl nsfiles list my.namespace --output json
+
+# Get the content of a specific file
+kestractl nsfiles get my.namespace workflows/my-flow.yml
+
+# Upload files or directories
+kestractl nsfiles upload my.namespace ./assets --path resources --override --fail-fast
+
+# Search files in a namespace
+kestractl nsfiles search my.namespace
+kestractl nsfiles search my.namespace --query flow --output json
+
+# List revisions of a specific file (--path is required)
+kestractl nsfiles revisions my.namespace --path workflows/my-flow.yml
+
+# Move or rename a file or directory
+kestractl nsfiles move my.namespace workflows/old-name.yml workflows/new-name.yml
+kestractl nsfiles move my.namespace old-dir/ new-dir/
+
+# Export all namespace files as a ZIP archive
+kestractl nsfiles export my.namespace --output-file my-namespace.zip
+
+# Delete a file
+kestractl nsfiles delete my.namespace workflows/my-flow.yml
+```
+
 ## Key-value pairs
 
 ```bash
@@ -467,6 +498,9 @@ kestractl dashboards update <id> --file my-dashboard.yaml
 
 # Delete a dashboard
 kestractl dashboards delete <id>
+
+# Show which dashboards are configured as defaults for the home, flow overview, and namespace overview views
+kestractl dashboards defaults
 
 # Validate a dashboard or chart definition
 kestractl dashboards validate       --file my-dashboard.yaml
@@ -954,6 +988,34 @@ Use `--output json` for full plugin metadata (groupId, artifactId, license, vers
 | `--from-config` | — | Derive required core plugins from one or more config files (see below) |
 | `--output` | `table` | Output format: `table` (space-separated coordinates) or `json` |
 
+### `kestractl plugins get <coordinates>`
+
+Download a single plugin JAR by its Maven coordinates (`groupId:artifactId:version`) into `--plugins-dir`, without pulling the full compatibility set for a version.
+
+```bash
+kestractl plugins get io.kestra.plugin:plugin-kafka:1.6.0
+```
+
+| Flag | Default | Description |
+|---|---|---|
+| `--plugins-dir` | `./plugins` | Directory to write the downloaded JAR into |
+| `--force-redownload` | `false` | Re-download even if the JAR already exists |
+| `--global-timeout` | `5m` | Maximum time allowed for the download |
+| `--maven-repository` | Maven Central | Custom Maven repository base URL |
+| `--maven-username` | — | Username for Maven basic authentication |
+| `--maven-password` | — | Password for Maven basic authentication |
+
+If the JAR already exists on disk, the download is skipped unless `--force-redownload` is set. For new downloads, the JAR is verified against its published SHA-1 checksum when available. The version must be an exact version number — symbolic aliases like `latest` and `develop` are not supported and produce an error.
+
+Use `--maven-repository`, `--maven-username`, and `--maven-password` to pull from a private registry, or the global `--header` flag for bearer token authentication. For example, to install an Enterprise Edition plugin from a private registry:
+
+```bash
+kestractl plugins get io.kestra.ee:ee-plugin:2.0.0 \
+  --maven-repository https://registry.kestra.io/maven \
+  --maven-username myuser \
+  --maven-password mypassword
+```
+
 ### `kestractl plugins download [version]`
 
 Download plugins to a local directory. By default, all compatible plugins for the given version are downloaded from Maven Central.
@@ -1017,7 +1079,7 @@ Bundled backends produce no output. Only backends that ship as a separate plugin
 
 ```bash
 kestractl plugins list 2.0.0 --from-config /etc/kestra/application.yaml
-# → io.kestra.storage:storage-s3:1.4.1
+# → io.kestra.storage:storage-s3:1.4.1 io.kestra.secret:secret-aws-secret-manager:1.4.1
 ```
 
 If all configured backends are bundled, the command exits cleanly with:
@@ -1079,6 +1141,7 @@ When deploying a standalone worker, you also need to download the core infrastru
 - `--username` - Basic auth username (Open Source)
 - `--password` - Basic auth password (Open Source)
 - `--output` / `-o` - Output format (`table` or `json`)
+- `--header` - Extra HTTP header to include in all requests, in `Key:Value` format (repeatable). Use for bearer token authentication against a private registry: `--header "Authorization:Bearer <token>"`
 - `--config` - Custom config file path (default: `~/.kestractl/config.yaml`)
 - `--verbose` / `-v` - Verbose output (warning: prints credentials in HTTP requests)
 

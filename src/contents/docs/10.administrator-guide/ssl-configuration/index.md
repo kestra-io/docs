@@ -8,13 +8,6 @@ description: Configure SSL/TLS encryption for Kestra to secure the UI and API ac
 
 Configure secure access to the Kestra UI via HTTPS. The right approach depends on your deployment type:
 
-| Approach | Best for | Cert management |
-|---|---|---|
-| [Caddy reverse proxy](#using-caddy-as-a-reverse-proxy) | Docker/VM deployments, local dev | Automatic (Let's Encrypt or local CA) |
-| [Kubernetes Ingress + cert-manager](#using-ingress-with-tls-termination-recommended-for-production) | Kubernetes deployments | Automatic via cert-manager |
-| [Micronaut SSL config](#micronaut-ssl-configuration) | Air-gapped or no reverse proxy option | Manual (bring your own certs) |
-| [Self-signed certificates](#creating-self-signed-certificates) | Local testing only | Manual |
-
 ## Why use SSL/TLS encryption
 
 Adding TLS encryption to your environment provides the following benefits:
