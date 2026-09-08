@@ -126,3 +126,5 @@ As long as the [Queue](../01.main-components/index.md#queue) is operational, mos
 Every running server registers itself as a service and sends heartbeats at a fixed interval. The Executor runs the cluster-wide liveness coordinator: on a scheduled tick it reviews every registered service instance, drives state transitions when heartbeats are missed (`running → disconnected → not-running`), and releases any work orphaned by a vanished server — such as a worker's in-flight jobs — back onto the queue so a healthy server picks it up.
 
 The same model coordinates **maintenance mode**: on maintenance entry, every server pauses its queue subscribers while in-flight work drains, then resumes when maintenance exits. Old service rows are purged on a schedule to keep the registry bounded.
+
+To configure liveness thresholds and tune replica counts for a distributed cluster, see [High Availability](../../10.administrator-guide/high-availability/index.md).
