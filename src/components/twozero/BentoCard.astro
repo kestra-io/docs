@@ -35,6 +35,11 @@ const {
     link,
     index = 0,
 } = Astro.props
+
+const bodyHtml = body.replace(
+    /<a href=/g,
+    '<a target="_blank" rel="noopener" href=',
+)
 ---
 
 <article
@@ -62,7 +67,7 @@ const {
                 <h3 set:html={title} />
             )
         }
-        <p set:html={body} />
+        <p set:html={bodyHtml} />
         {
             code && (
                 <div class="code">
