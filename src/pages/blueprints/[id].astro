@@ -50,6 +50,7 @@ let categoryBlueprints: Blueprint[] = []
 let categoryTags: BlueprintTag[] = []
 let categoryTagId: string | undefined
 let categoryQ: string | undefined
+let categoryFetchFailed = false
 let heroSiblings: SiblingPill[] = []
 let subCategoryRows: { name: string; blueprints: Blueprint[] }[] = []
 const PAGE_SIZE = 24
@@ -69,18 +70,28 @@ const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 if (isCategoryPage && category) {
     categoryQ = Astro.url.searchParams.get("q") ?? undefined
 
-    categoryTags = await $fetchApiCached<BlueprintTag[]>(
-        `/blueprints/versions/latest/tags`,
-    )
+    // A category listing with no data is still a usable page (hero, siblings,
+    // FAQ), so an API hiccup empties the grid rather than 500ing.
+    categoryTags =
+        (await $fetchApiCachedOptional<BlueprintTag[]>(
+            `/blueprints/versions/latest/tags`,
+        )) ?? []
     const tag = categoryTags.find((t) => t.name === category.name)
     categoryTagId = tag?.id
 
-    const { results = [], total = 0 } = tag
-        ? ((await $fetchApiCached<{ results: Blueprint[]; total: number }>(
+    const listing = tag
+        ? await $fetchApiCachedOptional<{
+              results: Blueprint[]
+              total: number
+          }>(
               `/blueprints/versions/latest?size=${PAGE_SIZE}&page=1&tags=${tag.id}` +
                   (categoryQ ? `&q=${encodeURIComponent(categoryQ)}` : ""),
-          )) ?? { results: [], total: 0 })
+          )
         : { results: [], total: 0 }
+
+    // Tells the empty state apart from a genuinely empty category.
+    categoryFetchFailed = categoryTags.length === 0 || listing === undefined
+    const { results = [], total = 0 } = listing ?? { results: [], total: 0 }
 
     categoryBlueprints = results
     categoryTotal = total
@@ -96,7 +107,9 @@ if (isCategoryPage && category) {
     }))
 
     if (tag) {
-        const sample = await $fetchApiCached<{ results: Blueprint[] }>(
+        const sample = await $fetchApiCachedOptional<{
+            results: Blueprint[]
+        }>(
             `/blueprints/versions/latest?size=${SUBCATEGORY_SAMPLE_SIZE}&page=1&tags=${tag.id}`,
         )
 
@@ -303,9 +316,11 @@ if (isCategoryPage && category) {
                             ) : (
                                 <div class="col-12 text-center py-5">
                                     <p>
-                                        {categoryQ
-                                            ? `No ${category.name} blueprints found for "${categoryQ}".`
-                                            : "No blueprints tagged with this category yet."}
+                                        {categoryFetchFailed
+                                            ? "We could not load blueprints right now. Please try again in a moment."
+                                            : categoryQ
+                                              ? `No ${category.name} blueprints found for "${categoryQ}".`
+                                              : "No blueprints tagged with this category yet."}
                                     </p>
                                     <a
                                         href="/blueprints"
