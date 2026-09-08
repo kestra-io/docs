@@ -119,7 +119,7 @@ kestra:
 | `secret-key-id` | string | No | — | AWS secret access key. |
 | `session-token` | string | No | — | Temporary session token. |
 | `region` | string | No | — | AWS region (e.g. `us-east-1`). |
-| `prefix` | string | No | `kestra` | Prefix applied to all secret names. Use to share one backend across multiple Kestra instances. |
+| `prefix` | string | No | `kestra` | Prefix applied to all secret names. Use to share one backend across multiple Kestra instances. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
 | `endpoint-override` | string | No | — | Replace the default AWS endpoint with a compatible service (e.g. LocalStack). |
 | `sts-role-arn` | string | No | — | ARN of an IAM role to assume via STS before accessing secrets. |
 | `sts-role-external-id` | string | No | — | External ID passed with the STS AssumeRole call. |
@@ -221,7 +221,7 @@ kestra:
 | `session-token` | string | No | — | Temporary session token. |
 | `region` | string | No | — | AWS region. |
 | `kms-key-id` | string | No | — | Customer-managed KMS key ID for `SecureString` encryption. Defaults to `alias/aws/ssm`. |
-| `prefix` | string | No | `kestra` | Prefix applied to all parameter names. |
+| `prefix` | string | No | `kestra` | Prefix applied to all parameter names. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
 | `endpoint-override` | string | No | — | Replace the default SSM endpoint. |
 | `sts-role-arn` | string | No | — | IAM role to assume via STS. |
 | `sts-role-external-id` | string | No | — | External ID for STS AssumeRole. |
@@ -305,7 +305,7 @@ kestra:
 | Property | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `additionally-allowed-tenants` | string[] | No | — | Additional tenant IDs the credential may acquire tokens for. Use `"*"` to allow any tenant. |
-| `prefix` | string | No | — | Prefix applied to all secret names. |
+| `prefix` | string | No | — | Prefix applied to all secret names. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
 | `tags` | map | No | — | Default tags added to every new or updated secret. |
 | `filter-on-tags` | map | No | — | Read-only mode: filter visible secrets by matching tags. |
 | `filter-on-prefix` | object | No | — | Read-only mode: filter by secret name prefix. Fields: `prefix` (string), `keep-prefix` (boolean). |
@@ -402,7 +402,7 @@ kestra:
 |---|---|---|---|---|
 | `project` | string | No | — | GCP project ID. |
 | `service-account` | string | No | — | Service account JSON key file contents. |
-| `prefix` | string | No | `kestra` | Prefix applied to all secret names. |
+| `prefix` | string | No | `kestra` | Prefix applied to all secret names. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
 | `tags` | map | No | — | Default labels added to every new or updated secret. |
 | `filter-on-tags` | map | No | — | Read-only mode: filter visible secrets by matching labels. |
 | `filter-on-prefix` | object | No | — | Read-only mode: filter by secret name prefix. |
