@@ -88,16 +88,3 @@ export function prunePluginsForSidebar(plugins: Plugin[]): Plugin[] {
         return pruned as Plugin
     })
 }
-
-export function calculateTotalPluginCount(plugins: Plugin[]): string {
-    const classes = new Set<string>()
-    for (const plugin of plugins) {
-        for (const [k, v] of Object.entries(plugin)) {
-            if (isEntryAPluginElementPredicate(k, v)) {
-                v.forEach((el: PluginElement) => classes.add(el.cls))
-            }
-        }
-    }
-    const rounded = Math.floor(classes.size / 100) * 100
-    return `${rounded}+`
-}

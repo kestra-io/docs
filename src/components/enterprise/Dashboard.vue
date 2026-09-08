@@ -61,8 +61,9 @@
     import Plus from 'vue-material-design-icons/PlusThick.vue';
     import CheckBold from 'vue-material-design-icons/CheckBold.vue';
 
-    import { usePluginsCount } from '~/composables/usePluginsCount';
-    const { totalPlugins } = usePluginsCount();
+    const props = defineProps<{
+        totalPlugins: string
+    }>();
 
     const COLUMNS = [
         {
@@ -102,7 +103,7 @@
 
     const BOTTOM_FEATURES = computed(() => [
         "Declarative Workflow",
-        `${totalPlugins.value} Plugins`,
+        `${props.totalPlugins}+ Plugins`,
         "Event Driven & Scheduling",
         "Everything From the UI",
         "Business Logic In Any Language",

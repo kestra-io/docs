@@ -35,7 +35,7 @@ businessValue:
       - "Multi-language: Python, SQL, Bash, Go, Node.js, R (run scripts directly)"
       - "Event-driven at core: file arrivals, Kafka, webhooks, schedules"
       - "Self-service for non-engineers via Kestra Apps"
-      - "1400+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
+      - "{totalPlugins}+ plugins: dbt, Airbyte, Snowflake, Spark, Kafka, and more"
   competitor:
     title: Enterprise Business Process Management
     list:
@@ -46,7 +46,7 @@ businessValue:
       - "Primarily business process automation, not data pipeline orchestration"
     shadowColor: "#FFE5D0"
     bulletColor: "#FC5D0D"
-  footerText: "Camunda is the right choice for organizations already building in BPMN 2.0, for enterprise business process management, regulated workflows with strict audit requirements, and human-in-the-loop processes where business analysts design alongside developers. Kestra is the right choice for data engineering teams, infrastructure automation, and technical workflows that need fast setup, YAML definitions, and 1200+ pre-built integrations without a BPMN modeling step."
+  footerText: "Camunda is the right choice for organizations already building in BPMN 2.0, for enterprise business process management, regulated workflows with strict audit requirements, and human-in-the-loop processes where business analysts design alongside developers. Kestra is the right choice for data engineering teams, infrastructure automation, and technical workflows that need fast setup, YAML definitions, and {totalPlugins}+ pre-built integrations without a BPMN modeling step."
 
 setupSpeed:
   title: Time to First Workflow
@@ -161,7 +161,7 @@ featureGrid:
       kestra: "✓ Native task types for approvals and input steps"
       competitor: "✓ Camunda Tasklist (purpose-built for human workflows)"
     - feature: Data pipeline tooling
-      kestra: "✓ 1200+ pre-built plugins: dbt, Airbyte, Spark, Snowflake, and more"
+      kestra: "✓ {totalPlugins}+ pre-built plugins: dbt, Airbyte, Spark, Snowflake, and more"
       competitor: "Connectors available for common services; significantly smaller catalog than Kestra"
     - feature: Setup time
       kestra: "~5 minutes (Docker Compose)"
@@ -197,7 +197,7 @@ platformStrengths:
     - title: No modeling tool, no XML schema to learn
       description: "A Kestra workflow is a YAML file you open in any text editor, write tasks into, and commit to Git. There is no visual modeler to install, no schema to learn, and no gap between what you write and what runs. Engineers who know YAML can build and modify workflows without learning a new modeling standard."
     - title: Data pipeline tooling built in
-      description: "Kestra ships with 1200+ pre-built plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. Each is a YAML task type, not a custom worker you write and maintain. Add any data integration to your workflow in minutes without writing glue code."
+      description: "Kestra ships with {totalPlugins}+ pre-built plugins for dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, and the full modern data stack. Each is a YAML task type, not a custom worker you write and maintain. Add any data integration to your workflow in minutes without writing glue code."
     - title: Scheduling and event triggers as first-class primitives
       description: "Cron schedules, S3 file arrivals, Kafka message consumption, webhook callbacks, and database row changes are YAML trigger blocks defined alongside the workflow. No external scheduler to configure or manage. Triggers, tasks, and retries live in one file, version-controlled with your code."
 
@@ -208,7 +208,7 @@ decisionGuide:
     list:
       - "You're orchestrating data pipelines, ETL workflows, dbt models, or infrastructure automation."
       - "Your team wants to define workflows in YAML without learning BPMN or running a visual modeler."
-      - "You need 1200+ pre-built data and infrastructure integrations without writing job workers."
+      - "You need {totalPlugins}+ pre-built data and infrastructure integrations without writing job workers."
       - "Setup time matters: first workflow in 5 minutes with Docker Compose, no BPMN modeling required."
       - "Non-engineers need to trigger workflows via self-service forms, not participate in process design."
   competitor:
@@ -227,7 +227,7 @@ commonQuestions:
   - question: Does Kestra support human-in-the-loop workflows?
     answer: "Yes. Kestra includes native task types for human approval steps, pausing execution and waiting for input before continuing. Business users can interact through Kestra Apps without writing code. Camunda's Tasklist is more fully featured for structured human task management, with assignment rules, priorities, and forms purpose-built for approval-heavy processes in regulated industries."
   - question: How does Kestra connect to the data tools my team already uses?
-    answer: "Kestra ships with 1400+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, Redshift, PostgreSQL, and more—each a YAML task type that runs without any additional code. Camunda offers Connectors for common services, but the catalog is significantly smaller. For anything not covered by a pre-built connector, you write and deploy a job worker in Java, Node.js, or another supported SDK."
+    answer: "Kestra ships with {totalPlugins}+ plugins covering dbt, Airbyte, Spark, Snowflake, BigQuery, Kafka, Databricks, Redshift, PostgreSQL, and more—each a YAML task type that runs without any additional code. Camunda offers Connectors for common services, but the catalog is significantly smaller. For anything not covered by a pre-built connector, you write and deploy a job worker in Java, Node.js, or another supported SDK."
   - question: What does migration from Camunda to Kestra look like?
     answer: "Kestra workflows are YAML-native, so migration means translating BPMN service tasks into Kestra task definitions and replacing Camunda job workers with script tasks. Your existing Python, SQL, and Shell logic runs unchanged inside Kestra Script tasks. Teams typically run both platforms in parallel during transition, migrating process by process."
   - question: How does Kestra handle compliance and audit requirements?

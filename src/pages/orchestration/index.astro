@@ -6,7 +6,10 @@ import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
 import { fetchPluginIcon } from "~/utils/pluginIcon"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import {
+    fetchTotalPluginsCount,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
@@ -70,7 +73,10 @@ const entries = await Promise.all(
                 toolName: entry.data.tool.name,
                 category: CATEGORY_MAP[entry.id] ?? "Other",
                 icon,
-                shortDescription: entry.data.description,
+                shortDescription: replaceTotalPluginsPlaceholder(
+                    entry.data.description,
+                    totalPlugins,
+                ),
                 color: entry.data.tool.color ?? "#8465FF",
             }
         }),

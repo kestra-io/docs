@@ -1,5 +1,8 @@
 ---
 import { Icon } from "astro-icon/components"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const totalPlugins = await fetchTotalPluginsCount()
 
 const cards = [
     {
@@ -17,7 +20,7 @@ const cards = [
     {
         kicker: "Language-agnostic",
         title: "Any language. Every engineer builds.",
-        body: "Python, Java, Shell, Node, and 1,800+ plugins for your databases, clouds, and SaaS tools. No rewrites to adopt, so one platform actually replaces many.",
+        body: `Python, Java, Shell, Node, and ${totalPlugins}+ plugins for your databases, clouds, and SaaS tools. No rewrites to adopt, so one platform actually replaces many.`,
         icon: "mdi:cube-outline",
     },
 ]

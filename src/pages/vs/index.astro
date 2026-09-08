@@ -6,7 +6,10 @@ import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import kestraIcon from "~/components/versus/assets/ks-icon.svg?raw"
 import vsBadgeSvg from "~/components/versus/assets/vs-badge.svg?raw"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import {
+    fetchTotalPluginsCount,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
 
@@ -30,7 +33,10 @@ const entries = vsEntries
         competitorName: entry.data.competitorName,
         category: entry.data.category,
         monogram: monogramMap[entry.id] ?? "",
-        shortDescription: entry.data.shortDescription,
+        shortDescription: replaceTotalPluginsPlaceholder(
+            entry.data.shortDescription,
+            totalPlugins,
+        ),
         color: entry.data.brandColor.color,
         gradient: entry.data.brandColor.gradient ?? "",
     }))

@@ -18,7 +18,10 @@ import data1 from "~/components/versus/assets/data-1.svg"
 import data2 from "~/components/versus/assets/data-2.svg"
 import data3 from "~/components/versus/assets/data-3.svg"
 import kestraImg from "~/components/versus/assets/kestra-img.svg"
-import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+import {
+    fetchTotalPluginsCount,
+    replaceTotalPluginsPlaceholder,
+} from "~/utils/plugins/pluginCount"
 
 const rawSvgModules = import.meta.glob<string>(
     "../../components/versus/assets/*.svg",
@@ -52,6 +55,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props
+const totalPlugins = await fetchTotalPluginsCount()
 const {
     title,
     shortDescription,
@@ -72,7 +76,7 @@ const {
     secondaryCta,
     logoFile,
     imgFile,
-} = entry.data
+} = replaceTotalPluginsPlaceholder(entry.data, totalPlugins)
 
 const slug = entry.id
 const logoFilename = logoFile ?? slug
@@ -82,11 +86,6 @@ const competitorLogo = getRawSvg(logoFilename)
 const competitorMonogram = getRawSvg(`${slug}-monograme`)
 const competitorImg = getImgSvg(imgFilename)
 
-const totalPlugins = await fetchTotalPluginsCount()
-const seeHowBodyText = (seeHowBody ?? "").replace(
-    "{totalPlugins}",
-    totalPlugins,
-)
 ---
 
 <VsLayout {title} description={shortDescription} {commonQuestions}>
@@ -162,6 +161,6 @@ const seeHowBodyText = (seeHowBody ?? "").replace(
     <Faq items={commonQuestions} client:visible />
     <SeeHow>
         <Fragment slot="title">{seeHowTitle}</Fragment>
-        {seeHowBodyText}
+        {seeHowBody}
     </SeeHow>
 </VsLayout>

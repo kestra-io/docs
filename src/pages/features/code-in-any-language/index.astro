@@ -1,7 +1,5 @@
 ---
-import { $fetchApiCached } from "~/utils/fetch"
-import type { Plugin } from "~/utils/plugins/plugin"
-import { calculateTotalPlugins } from "~/composables/usePluginsCount"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 import Layout from "~/components/layout.astro"
 import TopHero from "~/components/layout/TopHero.astro"
@@ -21,8 +19,7 @@ import pythonImg from "~/assets/landing/features/code-in-any-lang/python.webp"
 import rImg from "~/assets/landing/features/code-in-any-lang/r.webp"
 import juliaImg from "~/assets/landing/features/code-in-any-lang/julia.webp"
 
-const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
-const totalPlugins = Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100
+const totalPlugins = await fetchTotalPluginsCount()
 
 const title = "Language Agnostic Orchestration"
 const description =
