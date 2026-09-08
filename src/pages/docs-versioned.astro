@@ -153,4 +153,11 @@ const navigation = [
         line-height: 3.25rem;
         margin: 0 auto;
     }
+
+    // Screenshots arrive at native size through set:html. Cap them here so the
+    // column holds whether or not medium-zoom's own reset has bound yet.
+    .mdc-renderer :global(img) {
+        max-width: 100%;
+        height: auto;
+    }
 </style>
