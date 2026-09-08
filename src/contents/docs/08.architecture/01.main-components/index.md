@@ -60,7 +60,7 @@ The **queue** is the internal communication channel between Kestra’s server co
 
 - **Database queue** (default) — backed by PostgreSQL or MySQL. Available in all editions.
 - **In-memory queue** — for testing and ephemeral use only.
-- **Kafka queue** — Enterprise Edition. Higher throughput; pairs with the Elasticsearch repository.
+- **Kafka queue** — Enterprise Edition. Higher throughput; pairs with the PostgreSQL or Elasticsearch repository.
 - **Redis queue** — Enterprise Edition.
 - **AMQP queue** — Enterprise Edition.
 - **GCP Pub/Sub queue** — Enterprise Edition.

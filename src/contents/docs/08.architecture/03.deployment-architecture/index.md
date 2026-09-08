@@ -1,7 +1,7 @@
 ---
-title: "Deployment Architectures in Kestra: JDBC and Kafka"
-h1: Compare Standalone, Medium, and High-Availability Deployments
-description: Choose your Kestra deployment architecture. Compare Standalone (JDBC), Medium (Database), and High-Availability (Kafka & Elasticsearch) models.
+title: "Kestra Deployment Architectures: Postgres, AMQP, and Kafka"
+h1: Choose a Deployment Architecture for Kestra
+description: Choose your Kestra deployment architecture. Compare Postgres, AMQP/Redis, and Kafka backends for standalone, distributed, and high-availability deployments.
 sidebarTitle: Deployment architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---
@@ -12,56 +12,60 @@ Kestra is a Java application distributed as an executable. It supports multiple 
 - [Kubernetes](../../02.installation/03.kubernetes/index.md)
 - Manual deployment
 
-Kestra's plugin system allows you to choose the dependency types that best match your requirements.
+The queue and repository are independent choices, so you can mix and match backends to match your latency, throughput, and operational requirements. The same executor, scheduler, and indexer run regardless of which backends you select.
 
-## Small-sized deployment
+**Open Source** deployments use a single JDBC database for queue, repository, and logs. **Enterprise** deployments can configure each independently, including AMQP, Redis, Kafka, and Elasticsearch.
 
-![Kestra Standalone Architecture](./archi-diagram-small.png "Kestra Standalone Architecture")
+## Postgres (recommended)
 
-For small-scale deployments, you can use the Kestra **standalone server**, which runs all server components as threads inside a single process. This architecture has no scaling capability but behaves identically to a distributed cluster — the same components run, collocated in one JVM.
+For most deployments, a single PostgreSQL or MySQL database acts as both the queue and the repository. This is the simplest architecture to operate and covers the majority of production use cases.
 
-For quick local experimentation, Kestra also offers a **local mode** (`server local`) that reduces the footprint further: it uses an embedded H2 database with no external dependencies, requiring no infrastructure setup.
+- **Dependencies**: PostgreSQL or MySQL
+- Workers connect to the Worker Controller via gRPC and never access the database directly
+- All server components can run as a single process (standalone) or as separate scaled processes
+- High availability through standard Postgres HA patterns
 
-In standalone mode, a database is the only dependency. Supported databases include:
+For quick local experimentation, `server local` mode uses an embedded H2 database with no external dependencies.
 
-- PostgreSQL
-- MySQL
-- H2
+::alert{type="info"}
+H2 is not recommended for distributed or production deployments.
+::
 
-## Medium-sized deployment
+## AMQP / Redis (Enterprise)
 
-![Kestra Architecture](./archi-diagram-medium-sized-deployement.png "Kestra Architecture")
+When queue latency matters, replace the database queue with an AMQP broker or Redis, while keeping PostgreSQL or MySQL as the repository.
 
-For medium-scale deployments where high availability is not required, Kestra can be run with a relational database (PostgreSQL or MySQL) as the only dependency. H2 is not recommended in distributed setups.
+- **Dependencies**: RabbitMQ (recommended) or Redis + PostgreSQL or MySQL
+- Can reduce queue latency significantly compared to a database queue, depending on workload
+- Does not raise the throughput ceiling; use Kafka if throughput is the bottleneck
+- RabbitMQ is recommended over Redis for simpler operation and fewer edge cases
 
-- Supported databases: PostgreSQL and MySQL
-- All server components communicate through the database queue
-- Each server role runs as its own process and can be scaled independently
-- Workers communicate with the Worker Controller via gRPC; they never access the queue or database directly
+## Kafka (Enterprise)
 
-If components are distributed across multiple hosts, use a shared [internal storage](../data-components/index.md#internal-storage) implementation such as [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md), [AWS S3](../../02.installation/08.aws-ec2/index.md), or [Azure Blob Storage](../../02.installation/10.azure-vm/index.md).
+For high throughput and full horizontal scaling, use Kafka as the queue backend. The Executor, Scheduler, Worker Controller, Webserver, and Indexer emit to and subscribe from named Kafka topics.
 
-## High-availability deployment
-
-![Kestra High Availability Architecture](./archi-diagram.png "Kestra High Availability Architecture")
-
-For high throughput and full horizontal and vertical scaling, replace the database queue with Kafka and Elasticsearch. This architecture removes single points of failure and enables scaling of all server components.
-
-- Dependencies: Kafka and Elasticsearch
+- **Dependencies**: Kafka + PostgreSQL, MySQL, or Elasticsearch as the repository
+- PostgreSQL is the recommended repository, as execution state now lives in the repository rather than Kafka state stores
+- Removes single points of failure and enables independent scaling of all server components
 - Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 
-As with medium deployments, a distributed [internal storage](../data-components/index.md#internal-storage) solution is required if components run on different hosts.
+Workers do not subscribe to Kafka topics. They connect to the Worker Controller via gRPC, enabling cross-region and air-gapped deployments with outbound-only connectivity.
 
-### Kafka
+### Elasticsearch as repository
 
-[Kafka](https://kafka.apache.org/) is the queue backbone of the high-availability deployment. The Executor, Scheduler, Worker Controller, Webserver, and Indexer emit to and subscribe from named Kafka topics — no two roles call each other directly.
+[Elasticsearch](https://www.elastic.co/elasticsearch) can replace PostgreSQL as the repository backend in Kafka deployments, providing fast search and aggregation of flows, executions, and logs for the API and UI. Because Elasticsearch uses asynchronous indexing, it trades insertion atomicity for analytical and search performance. Use it when query capabilities outweigh the consistency trade-off.
 
-Workers do not subscribe to Kafka topics. They connect to the Worker Controller via gRPC, and all job dispatch, result intake, and broadcast events travel over that stream.
+The Indexer subscribes to Kafka topics and writes to Elasticsearch, keeping the search index in sync. Executions continue processing even if Elasticsearch is temporarily unavailable.
 
-Executors scale horizontally — each instance subscribes to the queue and processes the executions assigned to it. Because the executor performs lightweight orchestration work (state transitions, dispatch decisions), it typically requires minimal resources.
+## Choosing a backend
 
-### Elasticsearch
+| | Postgres | AMQP / Redis | Kafka |
+|---|---|---|---|
+| Latency | Baseline | Lower | Moderate |
+| Throughput | Single-instance ceiling | Marginal gain | Highest |
+| Operational complexity | Lowest | Low | Highest |
+| Edition | OSS + Enterprise | Enterprise | Enterprise |
 
-[Elasticsearch](https://www.elastic.co/elasticsearch) acts as the search and read backend for Kestra's webserver, providing fast retrieval and aggregation of flows, executions, and logs. It is used exclusively by the API and UI.
+## Distributed deployments
 
-The Indexer subscribes to Kafka topics and writes to Elasticsearch, keeping the search index in sync. Because the queue and search index are separate, executions continue processing even if Elasticsearch is temporarily unavailable.
+When server components run on separate hosts, use a shared [internal storage](../data-components/index.md#internal-storage) implementation such as [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md), [AWS S3](../../02.installation/08.aws-ec2/index.md), or [Azure Blob Storage](../../02.installation/10.azure-vm/index.md).
