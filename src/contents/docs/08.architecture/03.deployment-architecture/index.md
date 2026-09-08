@@ -16,14 +16,14 @@ The queue and repository are independent choices, so you can mix and match backe
 
 **Open Source** deployments use a single JDBC database for queue, repository, and logs. **Enterprise** deployments can configure each independently, including AMQP, Redis, Kafka, and Elasticsearch.
 
-## Postgres (recommended)
+## PostgreSQL (recommended)
 
 For most deployments, a single PostgreSQL or MySQL database acts as both the queue and the repository. This is the simplest architecture to operate and covers the majority of production use cases.
 
 - **Dependencies**: PostgreSQL or MySQL
 - Workers connect to the Worker Controller via gRPC and never access the database directly
 - All server components can run as a single process (standalone) or as separate scaled processes
-- High availability through standard Postgres HA patterns
+- High availability through standard PostgreSQL HA patterns
 
 For quick local experimentation, `server local` mode uses an embedded H2 database with no external dependencies.
 
