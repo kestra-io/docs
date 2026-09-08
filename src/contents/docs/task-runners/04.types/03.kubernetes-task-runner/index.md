@@ -28,7 +28,7 @@ If your cluster is configured with [RBAC](https://kubernetes.io/docs/reference/a
 
 - `pods`: get, create, delete, watch, list
 - `pods/log`: get, watch
-- `pods/exec`: get, watch
+- `pods/exec`: create, get, watch
 
 The following role grants these authorizations:
 
@@ -43,7 +43,7 @@ rules:
   verbs: ["get", "create", "delete", "watch", "list"]
 - apiGroups: [""]
   resources: ["pods/exec"]
-  verbs: ["get", "watch"]
+  verbs: ["create", get", "watch"]
 - apiGroups: [""]
   resources: ["pods/log"]
   verbs: ["get", "watch"]
