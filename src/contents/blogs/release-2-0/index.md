@@ -478,7 +478,7 @@ Components call the Kestra API through `@kestra-io/kestra-sdk`, which provides t
 
 A concrete example: a task runner that breaks execution into distinct infrastructure phases (scheduling, image pull, file transfer, task code) can render a `topology-details` component showing per-phase timing directly in the execution view, so slow executions have an identifiable owner. Without a plugin artifact, that timing data lives in raw log output.
 
-Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifact developer guide](/docs/plugin-developer-guide/develop-plugin-artifacts) covers the SDK, slot registration, and bundling setup.
+Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifact developer guide](/docs/plugin-developer-guide/pluigin-ui) covers the SDK, slot registration, and bundling setup.
 
 ## Additional Improvements
 
