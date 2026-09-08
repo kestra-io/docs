@@ -167,6 +167,8 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
 
 That auto-install is scoped: it's an open source, `server local` behavior, gated by `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED` (or `kestra.plugins.auto-install.enabled` in configuration), true by default for that mode. Turn it off and the `-slim` image goes back to needing plugins pre-installed, which is the setting to reach for once you're past evaluating and want a fixed, reviewed plugin set.
 
+The editor doesn't lose autocompletion in the meantime, either. It works off the plugin bundle schema, which is available whether or not the plugin's JAR has actually been downloaded to that instance yet, so a task gets validation and suggestions before Kestra has ever fetched it.
+
 With auto-install on, you don't need to do anything else, or you can be explicit about it:
 
 ```yaml
