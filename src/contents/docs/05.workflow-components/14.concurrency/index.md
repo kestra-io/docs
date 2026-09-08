@@ -65,6 +65,10 @@ Navigate to **Namespaces**, open the target namespace, click **Edit**, and scrol
 
 A namespace concurrency limit applies to every flow whose namespace matches or is a child of the configured namespace. For example, a limit on `company` applies to flows in `company`, `company.team`, and `company.team.project`.
 
+### Tenant level
+
+Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
+
 ## `behavior` property
 
 By default, executions that exceed the limit are queued. Set `behavior` to control what happens instead:
