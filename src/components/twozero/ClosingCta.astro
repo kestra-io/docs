@@ -1,0 +1,205 @@
+---
+import { Image } from "astro:assets"
+import Cta from "./Cta.astro"
+import twoZeroMark from "./assets/two-zero.png"
+import squares from "./assets/hero-squares.svg?url"
+
+const COPY =
+    "Kestra 2.0 is where the platform stops carrying 1.x constraints and starts building on a clean architecture. <strong>First LTS release.</strong> <strong>Bug and security fixes backported for a year.</strong> Upgrade once, then build."
+
+/* Both CTAs carry the lp2_0 campaign tags requested by marketing. */
+const BUTTONS = [
+    {
+        text: "Get started",
+        href: "/get-started?utm_source=landing&utm_medium=cta&utm_campaign=lp2_0",
+        variant: "primary" as const,
+    },
+    {
+        text: "Book a 2.0 demo",
+        href: "/demo?utm_source=landing&utm_medium=cta&utm_campaign=lp2_0",
+        arrow: true,
+    },
+]
+---
+
+<section class="closing" aria-labelledby="closing">
+    <div class="inner">
+        <span
+            class="wordmark"
+            aria-hidden="true"
+            data-usal="zoomin duration-500 ease-out"
+        >
+            <Image src={twoZeroMark} alt="" width={440} densities={[1, 2]} />
+        </span>
+
+        <div class="copy">
+            <h2 id="closing" data-usal="fade-u delay-50 duration-500 ease-out">
+                The Foundation for<br />
+                What Comes Next
+            </h2>
+            <p
+                data-usal="fade-u delay-100 duration-500 ease-out"
+                set:html={COPY}
+            />
+        </div>
+
+        <Cta theme="dark" buttons={BUTTONS} />
+    </div>
+</section>
+
+<style lang="scss" define:vars={{ squares: `url(${squares})` }}>
+    .closing {
+        position: relative;
+        padding-block: 5rem 11.875rem;
+        border-top: 1px solid transparent;
+        border-image: linear-gradient(
+                90deg,
+                rgba(128, 143, 237, 0),
+                #808fed 51%,
+                rgba(128, 143, 237, 0)
+            )
+            1;
+        background: linear-gradient(180deg, #000000 36.8%, #1a1c22 100%);
+        color: $white;
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            padding-block: 3rem 5rem;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            top: -340px;
+            left: 50%;
+            width: min(1400px, 90vw);
+            height: 440px;
+            border-radius: 50%;
+            background: radial-gradient(
+                closest-side,
+                rgba(124, 108, 255, 0.5),
+                rgba(84, 62, 230, 0.22) 55%,
+                rgba(84, 62, 230, 0) 100%
+            );
+            translate: -50% 0;
+            filter: blur(36px);
+            pointer-events: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            /* The asset was drawn for the hero: 50% black squares with a
+             * thin dark-blue stroke, which vanish on this near-black panel.
+             * Using it as a mask and painting a pale tint through it turns
+             * the fill into the soft grey boxes and the stroke into the
+             * lighter outline the design shows. */
+            -webkit-mask:
+                var(--squares) no-repeat left -100px bottom -96px / 520px auto,
+                var(--squares) no-repeat right -260px bottom 140px / 520px auto;
+            mask:
+                var(--squares) no-repeat left -100px bottom -96px / 520px auto,
+                var(--squares) no-repeat right -260px bottom 140px / 520px auto;
+            /* Matches the hero: a pale band drifts across the tint painted
+             * through the mask so the squares light up in a wave. The two
+             * clusters sit at opposite ends, so they catch it in turn. */
+            background-color: rgba(196, 200, 255, 0.16);
+            background-image: linear-gradient(
+                100deg,
+                rgba(196, 200, 255, 0) 0%,
+                rgba(196, 200, 255, 0) 32%,
+                rgba(222, 225, 255, 0.3) 50%,
+                rgba(196, 200, 255, 0) 68%,
+                rgba(196, 200, 255, 0) 100%
+            );
+            background-repeat: no-repeat;
+            background-size: 300% 100%;
+            animation: squares-sheen 11s ease-in-out infinite;
+            pointer-events: none;
+
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+    }
+
+    /* Both ends share a value so the sweep reverses instead of snapping. */
+    @keyframes squares-sheen {
+        0%,
+        100% {
+            background-position: 100% 0;
+        }
+
+        50% {
+            background-position: 0 0;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .closing::after {
+            animation: none;
+            background-image: none;
+            background-color: rgba(196, 200, 255, 0.22);
+        }
+    }
+
+    .inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        padding-inline: 1.5rem;
+        text-align: center;
+    }
+
+    .wordmark {
+        position: relative;
+        display: block;
+        width: 440px;
+        max-width: 80%;
+        aspect-ratio: 881 / 400;
+
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .copy {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 816px;
+    }
+
+    .copy p {
+        margin: 0;
+        color: #cfd3d6;
+        font-size: clamp(1rem, 1.4vw, 1.25rem);
+        line-height: 1.4;
+
+        strong {
+            color: $white;
+            font-weight: 600;
+        }
+
+        a {
+            color: #a796ff;
+            text-decoration: underline;
+            text-underline-offset: 0.15em;
+
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+</style>
