@@ -1,10 +1,5 @@
 // @ts-check
-import {
-    defineConfig,
-    envField,
-    fontProviders,
-    svgoOptimizer,
-} from "astro/config"
+import { defineConfig, envField, fontProviders, svgoOptimizer } from "astro/config"
 import { unified } from "@astrojs/markdown-remark"
 
 import * as path from "path"
@@ -27,9 +22,7 @@ import generateId from "./src/utils/generateId"
 import rehypeImgPlugin from "./src/markdown/rehype/img-plugin.ts"
 import rehypeExternalLinks from "rehype-external-links"
 
-const __dirname = path.dirname(
-    new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"),
-)
+const __dirname = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"))
 
 // The Cloudflare adapter runs `astro dev` inside workerd, which breaks image
 // serving: the astro:assets endpoint (CJS picomatch) and /@fs assets both fail
@@ -46,10 +39,7 @@ export default defineConfig({
               sessionKVBindingName: "docs-session",
               prerenderEnvironment: "node",
               // only use cloudflare images in production
-              imageService:
-                  process.env.NO_IMAGE_OPTIM === "true"
-                      ? "passthrough"
-                      : "cloudflare",
+              imageService: process.env.NO_IMAGE_OPTIM === "true" ? "passthrough" : "cloudflare",
           }),
     trailingSlash: "never",
     integrations: [
@@ -96,17 +86,11 @@ export default defineConfig({
                                 }
 
                                 // if the file basename starts with index.
-                                if (
-                                    file.basename &&
-                                    file.basename.startsWith("index.")
-                                ) {
+                                if (file.basename && file.basename.startsWith("index.")) {
                                     // if the url start with ./
                                     if (url.startsWith("./") && file.dirname) {
                                         // we preprend to the path the last part of the dirname
-                                        url = path.join(
-                                            path.basename(file.dirname),
-                                            url.slice(2),
-                                        )
+                                        url = path.join(path.basename(file.dirname), url.slice(2))
                                     }
 
                                     // if the url starts with ../
@@ -155,6 +139,9 @@ export default defineConfig({
         },
     ],
     experimental: {
+        // Skips re-rendering static pages whose `cacheKey` and module graph are
+        // unchanged since the last build. See src/utils/incrementalCacheKey.ts.
+        incrementalBuild: true,
         svgOptimizer: svgoOptimizer({
             plugins: [
                 {
@@ -230,8 +217,7 @@ export default defineConfig({
     },
     redirects: {
         "/slack": "https://api.kestra.io/v1/communities/slack/redirect",
-        "/trust":
-            "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
+        "/trust": "https://app.drata.com/trust/0a8e867d-7c4c-4fc5-bdc7-217f9c839604",
         "/docs/migration-guide/v0.24.0/retries-maxAttempts":
             "/docs/migration-guide/v0.24.0/retries-maxattempts",
     },
@@ -251,10 +237,7 @@ export default defineConfig({
                 apply: "serve",
                 enforce: "pre",
                 transform(code, id) {
-                    if (
-                        /node_modules\/debug\/src\//.test(id) ||
-                        /node_modules\/ms\//.test(id)
-                    ) {
+                    if (/node_modules\/debug\/src\//.test(id) || /node_modules\/ms\//.test(id)) {
                         // Convert every require('x') call to a named ESM
                         // import so that `require` itself is never accessed
                         // at runtime (CJS globals are unavailable in the
@@ -271,10 +254,7 @@ export default defineConfig({
                             },
                         )
                         const imports = [...deps.entries()]
-                            .map(
-                                ([dep, name]) =>
-                                    `import ${name} from '${dep}';`,
-                            )
+                            .map(([dep, name]) => `import ${name} from '${dep}';`)
                             .join("\n")
                         return {
                             code: [
