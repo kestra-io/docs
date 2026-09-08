@@ -30,9 +30,11 @@
     const props = defineProps<{
         navigation: NavItem[]
         currentPath: string
+        /** Fallback "Previous" target when the current page is the tree's first leaf. */
+        rootPath?: string
     }>()
 
-    const { prev, next } = prevNext(props.navigation, props.currentPath)
+    const { prev, next } = prevNext(props.navigation, props.currentPath, props.rootPath)
 
     function directory(link?: string) {
         if (!link) return ""

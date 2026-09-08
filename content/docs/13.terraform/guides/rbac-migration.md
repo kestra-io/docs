@@ -10,6 +10,7 @@ This guide explains how to update your Terraform configurations.
 2. **Actions are now fine-grained**: `READ` has been replaced by `VIEW`, `LIST`, and resource-specific actions like `ACCESS_LOGS`, `EXPORT`, etc. `UPDATE` has been replaced by specific lifecycle actions like `EXECUTE`, `KILL`, `RESTART`, `DISABLE`, etc.
 3. **Some resource types were renamed**: `SETTING` was split into `SYSTEM_SETTINGS` and `TENANT_SETTINGS`, `AI_COPILOT` became `COPILOT`, `TEST` became `TESTSUITE`, etc.
 4. **Some resource types were merged or dropped**: `APPEXECUTION` merged into `APP`, `TEMPLATE` was removed entirely.
+5. **Tenant access is now a prerequisite**: adding a user to a group no longer grants that user access to the tenant as a side effect. See [Tenant Access Is Now a Prerequisite](#tenant-access-is-now-a-prerequisite).
 
 ## Migration Steps
 
@@ -34,6 +35,46 @@ terraform plan
 ```
 
 After updating your `.tf` files, `terraform plan` should show no changes.
+
+## Tenant Access Is Now a Prerequisite
+
+On Kestra 2.0 and above, a user must already have access to a tenant before any
+tenant-scoped resource can refer to them. Group membership resolves the user
+through a tenant access check and rejects it otherwise, so
+`kestra_user_group_membership` now fails with a 404 (`User does not exist for
+id ...`) for a user without access — where on 1.x the membership itself granted
+it implicitly.
+
+Declare a `kestra_user_tenant_access` for each such user and make the
+tenant-scoped resources depend on it:
+
+```hcl
+resource "kestra_user" "alice" {
+  email = "alice@example.com"
+}
+
+resource "kestra_user_tenant_access" "alice" {
+  user_id = kestra_user.alice.id
+}
+
+resource "kestra_user_group_membership" "alice_platform" {
+  user_id  = kestra_user.alice.id
+  group_id = kestra_group.platform.id
+
+  depends_on = [kestra_user_tenant_access.alice]
+}
+```
+
+For users that already have access, import the existing grant instead of
+creating it, so the first apply does not report a change:
+
+```bash
+terraform import kestra_user_tenant_access.alice 4by6NvSLcPXFhCj8nwbZOM
+```
+
+Destroying a `kestra_user_tenant_access` revokes the access. Removing a
+`kestra_user_group_membership` does not, since other memberships and API tokens
+may still rely on it.
 
 ## Resource Type Renames
 

@@ -48,7 +48,7 @@ And it’s why we shipped production-grade controls that matter specifically whe
 
 - [Credentials](https://kestra.io/docs/enterprise/auth/credentials): reusable server-to-server auth configured once and referenced everywhere via `credential()`, so tokens aren’t scattered across flows and rotations don’t become a scavenger hunt.
 
-- [Plugin Defaults UI](https://kestra.io/docs/workflow-components/plugin-defaults): manage shared plugin configuration at the namespace level through a guided UI while keeping it versionable.
+- [Policies](https://kestra.io/docs/enterprise/governance/policies): enforce configuration rules and shared plugin settings at the namespace or tenant level, with governance controls and an audit trail (Enterprise Edition).
 
 And because infrastructure automation is always part “process” (approvals, self-service, controlled access), Kestra’s Enterprise “Apps” matter deeply here: **Apps let you build a UI in front of flows**, forms for data entry, approval buttons, and controlled output views, while the flow remains the backend.
 
