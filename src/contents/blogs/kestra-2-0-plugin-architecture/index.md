@@ -11,13 +11,13 @@ author:
   role: Lead Software Engineer
 ---
 
-For most of Kestra's life, "plugin" meant one thing: a task that talks to something. Snowflake, dbt, S3, Slack. Almost 2000 of them.
+For most of Kestra's life, "plugin" meant one thing: a task that talks to something. Snowflake, dbt, S3, Slack. Kestra 2.0 just crossed 2000 of them.
 
 The interesting part is what else a plugin could *be*.
 
 The answer turned out to be: the governance rule that blocks a task. The renderer that draws your Parquet file. The store your logs live in. The queue underneath the whole engine. The interface you look at while a Kubernetes pod starts.
 
-None of that is a bigger catalogue. It is a different kind of product, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
+That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
 
 ## Three new extension points, and one that changes the product
 
@@ -118,7 +118,7 @@ So flow level `pluginDefaults` is removed, the service that implemented it was r
 
 What replaces it depends on your edition. In Enterprise, a `REFERENCE` policy that flows opt into through `policyRefs`, or an `Add` rule scoped to a namespace. Namespace level plugin defaults, which shipped in 1.3, are the surviving mechanism and migrate automatically. In open source there is no centralized replacement: inline the values or hoist them into flow variables.
 
-Two behaviors that follow, and both will bite quietly:
+Two behaviors follow, and neither is obvious until it bites:
 
 **Plugin aliases are not resolved in rule matching.** A `where` clause matches the type string literally, so a rule naming the canonical type will not catch a flow using a deprecated alias. Which matters more in 2.0 because core task aliases and trigger aliases were removed outright during the cycle.
 
@@ -143,7 +143,7 @@ If you have configured a plugin with forty properties, you know the problem: the
 
 2.0 added a property group taxonomy to `@PluginProperty`, with nine groups: `MAIN`, `CONNECTION`, `SOURCE`, `PROCESSING`, `EXECUTION`, `DESTINATION`, `RELIABILITY`, `ADVANCED` and `DEPRECATED`, plus an optional index for ordering inside a group. The generator threads it into the JSON schema and the task form renders the sections.
 
-The scale of the follow-up is the detail I find most telling about the size of this ecosystem: annotating roughly **8,800 properties across more than 150 plugin repositories**, with an optional fallback bucket kept in place until that migration finishes. So the mechanism shipped and the annotation lands progressively, which is why some plugins already group cleanly and others do not yet.
+The scale of the follow-up is the detail I find most telling about the size of the plugin catalogue: annotating roughly **8,800 properties across more than 150 plugin repositories**, with an optional fallback bucket kept in place until that migration finishes. So the mechanism shipped and the annotation lands progressively, which is why some plugins already group cleanly and others do not yet.
 
 Useful for plugin authors: the annotation is non-breaking and was made available to 1.x plugin builds, so you can adopt it without moving your plugin to a 2.0 dependency. The rendering is what is new.
 
@@ -191,7 +191,7 @@ kestractl plugins download 2.0.0 --plugins "$(kestractl plugins list 2.0.0 --fro
 
 ### The supply chain moved
 
-A quieter change with real availability consequences. Plugin JARs used to be fetched straight from Maven Central at API startup, during release CI and while indexing plugins. Maven Central rate limits and occasionally returns 403s, and the failures cascaded: a restart of the plugin API could take the plugin catalogue down with it.
+An unglamorous change with real availability consequences. Plugin JARs used to be fetched straight from Maven Central at API startup, during release CI and while indexing plugins. Maven Central rate limits and occasionally returns 403s, and the failures cascaded: a restart of the plugin API could take the plugin catalogue down with it.
 
 All of that now goes through a caching artifact registry proxy, with a public mirror for open source plugins. Not a feature you will notice, unless you were one of the people watching it break.
 
@@ -232,7 +232,7 @@ The stated strategy is that the winning position in private infrastructure is a 
 
 Alongside them, an **F5 load balancer** plugin, IPAM plugins for **Infoblox** and **SolarWinds**, and a whole new hyperscaler family in **Huawei Cloud**, built as the equivalent of the AWS plugin.
 
-The use cases those unlock are day two operations rather than analytics: snapshot before patching, clone a volume for a dev and test environment, check replication health on a schedule, provision a VM and register it in IPAM and put it behind a load balancer in one flow. Combine that with asset locking, which stops two executions mutating the same VM at once, and Kestra starts being the thing running your infrastructure changes rather than the thing reporting on them.
+The use cases those enable are day two operations rather than analytics: snapshot before patching, clone a volume for a dev and test environment, check replication health on a schedule, provision a VM and register it in IPAM and put it behind a load balancer in one flow. Combine that with asset locking, which stops two executions mutating the same VM at once, and Kestra starts being the thing running your infrastructure changes rather than the thing reporting on them.
 
 Two more worth naming. A **Syslog** exporter, which sends audit and execution logs in CEF over UDP, TCP or TCP with TLS, and exists because plenty of SIEMs ingest syslog and nothing else, where previously the log shipper only spoke HTTP to Splunk, Graylog and Datadog. And **Delinea Secret Server** as an external secret manager, covering the full secret lifecycle.
 
