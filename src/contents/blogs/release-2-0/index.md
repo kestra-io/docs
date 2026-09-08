@@ -474,11 +474,9 @@ Plugins can now ship Vue.js frontend components that load into the Kestra UI at 
 
 Each component is compiled as a Module Federation micro-frontend using `@kestra-io/artifact-sdk` and bundled into the plugin JAR. At startup, Kestra discovers these bundles and makes them available to the host UI without static linking.
 
-Components call the Kestra API through `@kestra-io/kestra-sdk`, which provides typed methods for executions, flows, metrics, logs, and live progress events.
-
 A concrete example: a task runner that breaks execution into distinct infrastructure phases (scheduling, image pull, file transfer, task code) can render a `topology-details` component showing per-phase timing directly in the execution view, so slow executions have an identifiable owner. Without a plugin artifact, that timing data lives in raw log output.
 
-Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifact developer guide](/docs/plugin-developer-guide/pluigin-ui) covers the SDK, slot registration, and bundling setup.
+Plugin artifacts are available to all plugin authors in 2.0. The [plugin artifact developer guide](/docs/plugin-developer-guide/plugin-ui) covers the SDK, slot registration, and bundling setup.
 
 ## Additional Improvements
 
@@ -524,7 +522,6 @@ The breaking changes that require action:
 | RBAC CRUD model replaced | Existing roles migrate automatically. Review custom roles against the new action model. |
 | `json()` Pebble function removed | Replace with `fromJson()` (same signature). |
 | Namespace and global `pluginDefaults` removed | Replace with Policies (EE) or remove them (OSS). |
-| `forced: true` on flow-level `pluginDefaults` removed | Remove the `forced` flag or migrate the default to Policies. |
 | `kestra.ee.execution-data.internal-storage` removed (EE) | Remove these keys from your configuration. Task run outputs are now stored separately from the execution record in 2.0. |
 | ION binary format | `read()` on ION outputs followed by string ops needs `fromIon()` wrapping. |
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed. Replace with their equivalents in the `plugin-kestra` SDK. |
