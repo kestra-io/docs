@@ -69,9 +69,9 @@ jobs:
         with:
           path: node_modules/.astro
           key: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-${{ github.sha }}
-          restore-keys: |
-            astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
-            astro-build-${{ env.BUILD_VARIANT }}-main-
+          # Only the same ref and variant: main builds production, PR builds
+          # preview, so a cross-ref fallback would never match anything.
+          restore-keys: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
 
       - name: Build
         run: npm run build
