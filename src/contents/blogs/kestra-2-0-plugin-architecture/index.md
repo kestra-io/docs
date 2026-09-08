@@ -190,7 +190,7 @@ RUN /app/kestra plugins install \
   io.kestra.plugin:plugin-gcp:LATEST
 ```
 
-## Getting plugins, and not getting 3GB
+## Knowing exactly which plugins a worker needs
 
 Behind the scenes, the build itself changed: plugin JARs are now pre-downloaded in CI through `kestractl` and copied into the image, instead of being installed by the Dockerfile, with a base image carrying the open source plugin set.
 
