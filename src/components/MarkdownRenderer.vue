@@ -2,12 +2,12 @@
     <div
         v-if="htmlContent"
         :key="content"
-        class="mdc-renderer"
+        class="markdown-renderer"
         v-html="htmlContent"
         @click="handleCopyClick"
     />
     <div v-else-if="parseError" class="parse-error">
-        <strong>MDC parse error:</strong> {{ parseError }}
+        <strong>Markdown parse error:</strong> {{ parseError }}
     </div>
     <div v-else class="skeleton"></div>
 </template>
@@ -26,7 +26,7 @@
 
     async function parseContent() {
         if (!props.content) {
-            throw new Error("No content provided to MDCParserAndRenderer.vue")
+            throw new Error("No content provided to MarkdownRenderer.vue")
         }
         const html = await getMarked().parse(props.content)
         htmlContent.value = props.copyable ? injectCopyButtons(html) : html
@@ -53,10 +53,10 @@
 </style>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/mdc-renderer" as mdc;
+    @use "/src/assets/styles/markdown-renderer" as markdown;
 
-    .mdc-renderer {
-        @include mdc.mdc-renderer;
+    .markdown-renderer {
+        @include markdown.markdown-renderer;
     }
 
     @keyframes pulse {

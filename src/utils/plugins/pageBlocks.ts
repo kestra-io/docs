@@ -2,7 +2,7 @@ import type { JSONProperty, JSONSchema } from "./schema"
 import type { Plugin } from "./plugin"
 import type { TocLink } from "./types"
 
-export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
+export function pageBlocksFromJsonSchema(jsonSchema: JSONSchema) {
     return {
         body: {
             jsonSchema,
@@ -15,7 +15,7 @@ export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {
     }
 }
 
-export function nuxtBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
+export function pageBlocksFromSubGroupsWrappers(subGroupsWrappers: Plugin[]) {
     const first = subGroupsWrappers[0]
     return {
         title: first?.title,
