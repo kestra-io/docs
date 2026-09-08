@@ -14,7 +14,7 @@ The queue and repository are independent choices. **Open Source** deployments us
 
 ### Standalone
 
-In standalone mode, all server roles (Executor, Scheduler, Worker Controller, Worker, Webserver, and Indexer) run as cooperating threads inside a single process. A single database is the only external dependency. Behavior is identical to a distributed cluster, so moving to distributed requires only deployment changes.
+In standalone mode, all server roles (Executor, Scheduler, Worker Controller, Worker, Webserver, and Indexer) run inside a single process. A single database is the only external dependency. Behavior is identical to a distributed cluster, so moving to distributed requires only deployment changes.
 
 Use standalone when:
 - You are running a single-node deployment
@@ -51,7 +51,7 @@ When queue latency matters, replace the database queue with an AMQP broker or Re
 
 - **Dependencies**: RabbitMQ or Redis
 - Can reduce queue latency significantly compared to a database queue, depending on workload
-- Does not raise the throughput ceiling; use Kafka if throughput is the bottleneck
+- Also raises the throughput ceiling; use Kafka for the highest throughput requirements
 - RabbitMQ is recommended for simpler operation and fewer edge cases
 
 ### Kafka (Enterprise)
@@ -74,6 +74,8 @@ A PostgreSQL or MySQL database is the default repository backend and works with 
 - **Dependencies**: PostgreSQL or MySQL
 - Available in Open Source and Enterprise
 
+In Enterprise Edition, execution logs can be routed to a dedicated [Log Data Store](../../10.administrator-guide/log-data-store/index.md), a separate backend from the main repository, supporting PostgreSQL, MySQL, H2, Elasticsearch, Splunk, and Datadog. This keeps the main database lean and reduces schema migration time.
+
 ### Elasticsearch (Enterprise)
 
 Elasticsearch can serve as the repository backend in Kafka deployments, providing fast search and aggregation of flows, executions, and logs for the API and UI.
@@ -90,6 +92,6 @@ Elasticsearch can serve as the repository backend in Kafka deployments, providin
 | | Database + Database | AMQP/Redis + Database | Kafka + Database | Kafka + Elasticsearch |
 |---|---|---|---|---|
 | Latency | Baseline | Lower | Moderate | Moderate |
-| Throughput | Single-instance ceiling | Marginal gain | Highest | Highest |
+| Throughput | Single-instance ceiling | Higher | Highest | Highest |
 | Operational complexity | Lowest | Low | High | Highest |
 | Edition | OSS + Enterprise | Enterprise | Enterprise | Enterprise |
