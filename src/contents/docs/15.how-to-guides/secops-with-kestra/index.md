@@ -223,13 +223,11 @@ triggers:
   - id: postVMCreation
     type: io.kestra.plugin.core.trigger.Flow
     inputs:
-      ipAddress: "{{ trigger.outputs.externalIPAddress }}"
-    preconditions:
-      id: vmCreationSuccess
-      flows:
-        - namespace: company.ops.it
-          flowId: createVMRevamped
-          states: [ SUCCESS, WARNING ]
+      ipAddress: "{{ trigger.outputs.createVMRevamped.externalIPAddress }}"
+    dependsOn:
+      - namespace: company.ops.it
+        flowId: createVMRevamped
+        states: [SUCCESS, WARNING]
 ```
 
 ## Step 7: Review the Topology

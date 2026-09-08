@@ -69,7 +69,7 @@ If there are files inside the `src/main/resources/doc/guides` directory, they ar
 
 ### Group Icon
 
-It is possible to provide an icon representing the whole plugin group. If there is a [SVG file](https://www.worg/Graphics/SVG/) `src/main/resources/icons/plugin-icon.svg`, it will be used as the group icon.
+It is possible to provide an icon representing the whole plugin group. If there is a [SVG file](https://www.w3.org/Graphics/SVG/) `src/main/resources/icons/plugin-icon.svg`, it will be used as the group icon.
 
 ## Document the plugin sub-groups
 
@@ -229,7 +229,7 @@ id: example_flow
 namespace: example_namespace
 tasks:
   - id: example_task
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: "Hello, World!"
 ```
 

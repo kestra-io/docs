@@ -12,32 +12,19 @@ Secrets let you store sensitive values (API keys, passwords, certificates) outsi
   <iframe src="https://www.youtube.com/embed/u0yuOYG-qMI?si=9T-mMYgs-_SOIPoG" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-How secrets are stored and managed depends on your edition. In **Enterprise Edition**, Kestra connects to a dedicated Secrets Manager (namespace-scoped, backed by AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, or Kestra's own store). In **Open-Source**, there is no secret store — `secret()` reads a base64-encoded environment variable instead.
+How secrets are stored depends on your edition. Enterprise Edition connects to a dedicated Secrets Manager backed by AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, or Kestra's own store. Open-Source has no secret store — `secret()` reads a base64-encoded environment variable instead.
 
 ## Enterprise Edition
 
-Use secrets for static sensitive values such as API keys, passwords, webhook URLs, certificates, and long-lived tokens. Use [Credentials](../../07.enterprise/03.auth/credentials/index.md) when Kestra needs to manage reusable server-to-server authentication for supported integrations — for example, minting or refreshing short-lived access tokens at runtime. Credentials can reference secrets for sensitive inputs such as client secrets and private keys.
+Secrets are the right choice for static sensitive values: API keys, passwords, webhook URLs, certificates, and long-lived tokens. For reusable server-to-server authentication — where Kestra needs to mint or refresh short-lived tokens at runtime — use [Credentials](../../07.enterprise/03.auth/credentials/index.md) instead. Credentials can reference secrets for sensitive inputs such as client secrets and private keys.
 
-For available backends (AWS Secrets Manager, Azure Key Vault, HashiCorp Vault, and Kestra's built-in store), see the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page. For best practices, see [Secrets management](../../14.best-practices/9.secrets-management/index.md) and [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
+Secrets are available under **Namespaces → [namespace] → Secrets** or under **Tenant → Secrets** in the sidebar. Click **New secret**, set a key name such as `MY_SECRET`, and optionally add a description and tags. From the same tab you can edit, delete, or copy a secret as a Pebble expression — for example, `"{{ secret('API_TOKEN') }}"` — ready to paste into a flow.
 
-From the **Secrets** tab, you can edit, delete, and copy your secret to your clipboard as a Pebble expression for use in a flow, such as `"{{ secret('API_TOKEN') }}"`.
+For available backends, see the [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) page. For best practices, see [Secrets management](../../14.best-practices/9.secrets-management/index.md) and [Choosing where to store sensitive and shared values](../../14.best-practices/10.credentials-vs-secrets-vs-kv-store/index.md).
 
-![Secrets EE](./secrets-ee-0.png)
+### Reading secrets from another namespace
 
-### Adding a new secret from the UI
-
-Go to **Namespaces** in the left navigation menu and select the namespace where you want to add a secret. Open the **Secrets** tab and add a new secret.
-
-![Secrets EE](./secrets-ee-1.png)
-
-Set a key name such as `MY_SECRET`. You can also include a short description and tags.
-
-![Secrets EE - new Secret](./secrets-ee-2.png)
-
-
-### Reading secrets from another namespace (EE)
-
-By default, `secret()` reads from the flow's own namespace. In Enterprise Edition, you can pass a `namespace` argument to read a secret stored in a different namespace:
+By default, `secret()` reads from the flow's own namespace. You can pass a `namespace` argument to read a secret stored in a different namespace:
 
 ```yaml
 tasks:
@@ -46,11 +33,11 @@ tasks:
     message: "{{ secret('SHARED_TOKEN', namespace='shared.secrets') }}"
 ```
 
-The secret is resolved using the target namespace's own secret backend, so a flow can read a value from a namespace backed by a different secrets manager. Cross-namespace reads stay within the same tenant. Access to another namespace's secrets is allowed by default; restrict it by configuring `allowedNamespaces` on the target namespace.
+The secret resolves using the target namespace's own backend, so a flow can read a value from a namespace backed by a different secrets manager. Cross-namespace reads stay within the same tenant. Access is allowed by default; restrict it by configuring `allowedNamespaces` on the target namespace.
 
-## Environment variables as secrets (OSS)
+## Secrets in Open-Source
 
-The Open-Source Edition has no dedicated secret store. As a workaround, Kestra reads base64-encoded environment variables prefixed with `SECRET_` and exposes them via the `secret()` function. This keeps sensitive values out of flow YAML, but it is not a secrets manager — there is no encryption at rest, no audit trail, and no access control beyond what your host environment provides.
+Open-Source has no dedicated secret store. Kestra reads base64-encoded environment variables prefixed with `SECRET_` and exposes them via the `secret()` function. This keeps sensitive values out of flow YAML, but offers no encryption at rest, no audit trail, and no access control beyond what your host environment provides.
 
 See [Configure secrets in Kestra (OSS)](../../15.how-to-guides/secrets/index.md) for step-by-step instructions on encoding values and wiring them into your Docker Compose file.
 
