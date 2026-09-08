@@ -21,10 +21,24 @@ Use `fromJson()` when a task output arrives as a serialized JSON string rather t
 
 ## `fromIon()`
 
-Use `fromIon()` when a previous task or serializer produces Ion rather than JSON:
+Use `fromIon()` when a previous task or serializer produces ION rather than JSON. `fromIon()` accepts both text ION strings and binary ION byte arrays, so it works correctly with `read()` regardless of the storage format.
+
+Access a field from the first row:
 
 ```twig
 {{ fromIon(read(outputs.serialize.uri)).someField }}
+```
+
+Return all rows as a list with `allRows=true`:
+
+```twig
+{{ fromIon(read(outputs.transform.uri), allRows=true) }}
+```
+
+Count rows:
+
+```twig
+{{ fromIon(read(outputs.query.uri), allRows=true) | length }}
 ```
 
 ## `yaml()`

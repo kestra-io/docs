@@ -1,0 +1,142 @@
+---
+import BentoCard from "./BentoCard.astro"
+import type { CardContent } from "./BentoCard.astro"
+import QuoteCard from "./QuoteCard.astro"
+import Cta from "./Cta.astro"
+
+export interface QuoteContent {
+    quote: string
+    company: string
+    meta?: string
+    logoSvg?: string
+    logoColor?: string
+    surface?: string
+    spaced?: boolean
+}
+
+export type Row =
+    | {
+          type: "cards"
+          columns?: number[]
+          cards: CardContent[]
+      }
+    | ({ type: "quote" } & QuoteContent)
+
+interface Props {
+    id: string
+    heading: string
+    standfirst: string
+    rows: Row[]
+    tone?: "white" | "tinted"
+}
+
+const { id, heading, standfirst, rows, tone = "white" } = Astro.props
+
+const template = (columns: number[]) =>
+    columns.map((fraction) => `minmax(0, ${fraction}fr)`).join(" ")
+---
+
+<section class:list={["feature-section", tone]} aria-labelledby={id}>
+    <div class="tz-container">
+        <header class="head">
+            <h2 {id} data-usal="fade-r"><Fragment set:html={heading} /></h2>
+            <p class="standfirst" data-usal="fade-l">{standfirst}</p>
+        </header>
+
+        <div class="rows">
+            {
+                rows.map((row) =>
+                    row.type === "quote" ? (
+                        <QuoteCard
+                            quote={row.quote}
+                            company={row.company}
+                            meta={row.meta}
+                            logoSvg={row.logoSvg}
+                            logoColor={row.logoColor}
+                            surface={row.surface}
+                            spaced={row.spaced}
+                        />
+                    ) : (
+                        <div
+                            class="card-row"
+                            data-count={row.cards.length}
+                            style={`--tz-cols: ${template(row.columns ?? row.cards.map(() => 1))}`}
+                        >
+                            {row.cards.map((card, index) => (
+                                <BentoCard {...card} {index} />
+                            ))}
+                        </div>
+                    ),
+                )
+            }
+
+            <Cta />
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .feature-section {
+        --tz-card: #f6f6fd;
+        padding-block: 7.5rem 5rem;
+        background: var(--ks-background-primary);
+
+        &.tinted {
+            --tz-card: #ffffff;
+            background: #f6f6fd url("~/assets/header-grid.svg") no-repeat top
+                center / 1720px auto;
+        }
+
+        @include media-breakpoint-down(lg) {
+            padding-block: 4rem 3rem;
+        }
+    }
+
+    .head {
+        max-width: 1140px;
+        margin: 0 auto 2rem;
+        padding-bottom: 1rem;
+        text-align: center;
+    }
+
+    .head h2 {
+        margin-bottom: 0.5rem;
+
+        :global(.highlight) {
+            color: #4f6df7;
+        }
+    }
+
+    .standfirst {
+        margin: 0;
+        color: var(--ks-content-primary);
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    .rows {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .card-row {
+        display: grid;
+        gap: 2rem;
+        grid-template-columns: 1fr;
+
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: var(--tz-cols);
+        }
+    }
+
+    /* Three-up rows get too narrow on tablets, so pair them up instead.
+     * Declared after the `lg` rule at matching specificity so the designed
+     * template still wins on desktop. */
+    @include media-breakpoint-between(md, lg) {
+        .card-row[data-count="3"] {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

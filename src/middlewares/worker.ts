@@ -2,6 +2,7 @@ import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
+import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -86,7 +87,38 @@ const noIndex = defineCFMiddleware(async (url, next) => {
 })
 
 
-const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex]
+// Force HTML documents to always revalidate. Content-hashed assets
+// (/_astro/* via public/_headers, /icons/* via the icon endpoint) are cached
+// "forever" with `immutable`, so the only thing that must stay fresh is the
+// HTML that references them. Without this, an edge/browser-cached page keeps
+// pointing at /_astro/*.js|css filenames from a previous deploy — those hashes
+// no longer exist post-deploy and 404 (~5k/week in Cloudflare logs), breaking
+// JS for users on stale pages and wasting bot crawl budget. `max-age=0,
+// must-revalidate` lets caches store the page but revalidate every time (cheap
+// 304s when unchanged), guaranteeing the referenced asset hashes are current.
+// Only text/html responses are touched, so JSON/feed/SVG endpoints keep their
+// own Cache-Control.
+const setupHtmlCacheControl = defineCFMiddleware(async (url, next) => {
+    // disable for tracking
+    if (url.pathname.startsWith("/t/")) {
+        return next()
+    }
+
+    const nextResponse = await next()
+
+    const contentType = nextResponse.headers.get("content-type") || ""
+    if (!contentType.includes("text/html")) {
+        return nextResponse
+    }
+
+    const response = new Response(nextResponse.body, nextResponse)
+    response.headers.set("cache-control", "public, max-age=0, must-revalidate")
+
+    return response
+})
+
+
+const middlewares: CFMiddleware[] = [setupContentSecurityPolicyHeaders, noIndex, setupHtmlCacheControl]
 
 // TTL (seconds) for edge-cached SSR HTML. Kept in sync with the 1h upstream
 // API cache in src/utils/fetch.ts so a page's HTML and its data expire
@@ -109,7 +141,12 @@ function isEdgeCacheablePage(url: URL): boolean {
         path === "/plugins" ||
         path.startsWith("/plugins/") ||
         path === "/blueprints" ||
-        path.startsWith("/blueprints/")
+        path.startsWith("/blueprints/") ||
+        // Versioned docs, SSR-rendered from per-release markdown fetched at
+        // request time — the MDC parse + Shiki pass make every miss expensive.
+        // Their .md variants bypass this cache via the extension short-circuit
+        // below; that's fine, they're a cheap fetch + string reshape, no rendering.
+        VERSIONED_DOCS_PATH.test(path)
     )
 }
 

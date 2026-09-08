@@ -122,7 +122,7 @@
         margin: 0;
         color: var(--lp-content-primary);
         font-size: 1.25rem;
-        font-weight: 700;
+        font-weight: 600;
         line-height: 1.167;
         letter-spacing: -0.0075rem;
         text-align: center;

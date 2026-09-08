@@ -4,6 +4,7 @@ import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
 import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
 import { prunePluginsForCards, calculateTotalPluginCount } from "~/utils/plugins/pruneForClient"
+import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
 
 import Layout from "~/components/layout.astro"
 import Faq from "~/components/common/Faq.vue"
@@ -28,6 +29,7 @@ const totalPluginCount = calculateTotalPluginCount(rawPlugins)
 const cardPlugins = prunePluginsForCards(
     filteredPlugins,
     rawPluginsData.byPlugin,
+    buildPluginUrlIndex(rawPlugins),
 )
 const categories = [
     ...new Set(cardPlugins.flatMap((p) => p.categories ?? [])),

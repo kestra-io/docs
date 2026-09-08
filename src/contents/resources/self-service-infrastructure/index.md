@@ -19,7 +19,6 @@ faq:
     answer: "The five core components of Infrastructure as a Service (IaaS) are Compute (virtual machines, CPUs for processing workloads), Networking (virtual networks, load balancers, firewalls for connectivity), Storage (block, file, and object storage for data persistence), Virtualization (the hypervisor layer that abstracts physical resources), and Management & Orchestration (the tools and APIs for provisioning and overseeing the infrastructure)."
 author: "elliot"
 ---
-```
 
 In modern engineering organizations, developer productivity often grinds to a halt when infrastructure provisioning and management require constant manual intervention from operations teams. The traditional "ticket-driven" model creates bottlenecks, slows down development cycles, and fosters friction between teams. This leads to frustrated developers waiting for resources and overworked ops teams struggling to keep up with demand.
 

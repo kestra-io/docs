@@ -1,7 +1,7 @@
 ---
 export const prerender = false
 import { Icon } from "astro-icon/components"
-import { $fetchApiCached } from "~/utils/fetch"
+import { $fetchApiCached, $fetchApiCachedOptional } from "~/utils/fetch"
 import Layout from "~/components/layout.astro"
 import Header from "~/components/blueprints/Header.astro"
 import BlueprintHero from "~/components/blueprints/BlueprintHero.astro"
@@ -16,6 +16,7 @@ import LoadMoreBlueprints from "~/components/blueprints/LoadMoreBlueprints.vue"
 import Faq from "~/components/common/Faq.vue"
 import { randomSortFunction } from "~/utils/random"
 import { findOrchestrationLinks } from "~/utils/orchestrationLink"
+import { buildTaskUrls } from "~/utils/plugins/taskUrls"
 import { isUseCaseTag } from "~/utils/blueprints/useCaseTags"
 import {
     fetchToolIndex,
@@ -49,6 +50,7 @@ let categoryBlueprints: Blueprint[] = []
 let categoryTags: BlueprintTag[] = []
 let categoryTagId: string | undefined
 let categoryQ: string | undefined
+let categoryFetchFailed = false
 let heroSiblings: SiblingPill[] = []
 let subCategoryRows: { name: string; blueprints: Blueprint[] }[] = []
 const PAGE_SIZE = 24
@@ -59,6 +61,7 @@ let graph: unknown
 let detailTags: BlueprintTag[] = []
 let relatedRows: { id: string; title: string; blueprints: Blueprint[] }[] = []
 let orchestrationLinks: ReturnType<typeof findOrchestrationLinks> = []
+let taskUrls: Record<string, string> = {}
 
 const fullCatalog = await fetchFullCatalog()
 const toolIndex = await fetchToolIndex(fullCatalog)
@@ -67,18 +70,28 @@ const coreToolIndex = await fetchCoreToolIndex(fullCatalog)
 if (isCategoryPage && category) {
     categoryQ = Astro.url.searchParams.get("q") ?? undefined
 
-    categoryTags = await $fetchApiCached<BlueprintTag[]>(
-        `/blueprints/versions/latest/tags`,
-    )
+    // A category listing with no data is still a usable page (hero, siblings,
+    // FAQ), so an API hiccup empties the grid rather than 500ing.
+    categoryTags =
+        (await $fetchApiCachedOptional<BlueprintTag[]>(
+            `/blueprints/versions/latest/tags`,
+        )) ?? []
     const tag = categoryTags.find((t) => t.name === category.name)
     categoryTagId = tag?.id
 
-    const { results = [], total = 0 } = tag
-        ? ((await $fetchApiCached<{ results: Blueprint[]; total: number }>(
+    const listing = tag
+        ? await $fetchApiCachedOptional<{
+              results: Blueprint[]
+              total: number
+          }>(
               `/blueprints/versions/latest?size=${PAGE_SIZE}&page=1&tags=${tag.id}` +
                   (categoryQ ? `&q=${encodeURIComponent(categoryQ)}` : ""),
-          )) ?? { results: [], total: 0 })
+          )
         : { results: [], total: 0 }
+
+    // Tells the empty state apart from a genuinely empty category.
+    categoryFetchFailed = categoryTags.length === 0 || listing === undefined
+    const { results = [], total = 0 } = listing ?? { results: [], total: 0 }
 
     categoryBlueprints = results
     categoryTotal = total
@@ -94,7 +107,9 @@ if (isCategoryPage && category) {
     }))
 
     if (tag) {
-        const sample = await $fetchApiCached<{ results: Blueprint[] }>(
+        const sample = await $fetchApiCachedOptional<{
+            results: Blueprint[]
+        }>(
             `/blueprints/versions/latest?size=${SUBCATEGORY_SAMPLE_SIZE}&page=1&tags=${tag.id}`,
         )
 
@@ -134,10 +149,17 @@ if (isCategoryPage && category) {
         return Astro.redirect("/404")
     }
 
-    graph = await $fetchApiCached(`/blueprints/${id}/versions/latest/graph`)
-    detailTags = await $fetchApiCached<BlueprintTag[]>(
-        `/blueprints/versions/latest/tags`,
+    // The graph endpoint 422s when the API can't deserialize a flow (e.g. a
+    // plugin field it doesn't know yet); render the page without the topology.
+    graph = await $fetchApiCachedOptional(
+        `/blueprints/${id}/versions/latest/graph`,
     )
+    // Tags and related rows are decorative: a failing tags endpoint degrades
+    // the header pills and drops the "More ..." rows, it must not 500 the page.
+    detailTags =
+        (await $fetchApiCachedOptional<BlueprintTag[]>(
+            `/blueprints/versions/latest/tags`,
+        )) ?? []
 
     if (pageData.tags && pageData.tags.length > 0) {
         const pageTags = pageData.tags
@@ -152,9 +174,9 @@ if (isCategoryPage && category) {
         ].slice(0, 2)
 
         for (const tag of orderedTags) {
-            const data = await $fetchApiCached<{ results: Blueprint[] }>(
-                `/blueprints/versions/latest?tags=${tag.id}&size=10`,
-            )
+            const data = await $fetchApiCachedOptional<{
+                results: Blueprint[]
+            }>(`/blueprints/versions/latest?tags=${tag.id}&size=10`)
 
             if (data && data.results.length > 0) {
                 const rowBlueprints = data.results
@@ -201,6 +223,13 @@ if (isCategoryPage && category) {
         pageData.includedTasks,
         orchestrationEntries,
     )
+
+    // The Tasks panel links one page per task. Resolve each class to its canonical
+    // plugin URL here so the link does not go through the lowercase and
+    // subgroup-stripping redirects. Only the classes this blueprint uses are handed
+    // to the island. A plugin API failure leaves the map empty and the panel falls
+    // back to the flat /plugins/<cls> form, which still redirects to the right page.
+    taskUrls = await buildTaskUrls(pageData.includedTasks)
 
     title = pageData.metaTitle || pageData.title
     description = pageData.metaDescription
@@ -287,9 +316,11 @@ if (isCategoryPage && category) {
                             ) : (
                                 <div class="col-12 text-center py-5">
                                     <p>
-                                        {categoryQ
-                                            ? `No ${category.name} blueprints found for "${categoryQ}".`
-                                            : "No blueprints tagged with this category yet."}
+                                        {categoryFetchFailed
+                                            ? "We could not load blueprints right now. Please try again in a moment."
+                                            : categoryQ
+                                              ? `No ${category.name} blueprints found for "${categoryQ}".`
+                                              : "No blueprints tagged with this category yet."}
                                     </p>
                                     <a
                                         href="/blueprints"
@@ -335,12 +366,30 @@ if (isCategoryPage && category) {
                                     />
                                 </div>
                                 <div class="topology">
-                                    <Detail
-                                        client:only
-                                        page={pageData}
-                                        flow={pageData.flow}
-                                        graph={graph}
-                                    />
+                                    {graph ? (
+                                        <Detail
+                                            client:only
+                                            page={pageData}
+                                            flow={pageData.flow}
+                                            graph={graph}
+                                        />
+                                    ) : (
+                                        <div class="topology-unavailable">
+                                            <Icon
+                                                name="mdi:alert-circle-outline"
+                                                class="topology-unavailable-icon"
+                                            />
+                                            <p class="topology-unavailable-title">
+                                                Diagram unavailable
+                                            </p>
+                                            <p class="topology-unavailable-body">
+                                                We could not build the topology
+                                                for this blueprint. The flow
+                                                itself is valid, use the YAML on
+                                                the left to run it.
+                                            </p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -354,6 +403,7 @@ if (isCategoryPage && category) {
                         page={pageData}
                         description={pageData.description}
                         orchestrationLinks={orchestrationLinks}
+                        taskUrls={taskUrls}
                     />
                     {relatedRows.map((row) => (
                         <Related
@@ -440,6 +490,41 @@ if (isCategoryPage && category) {
 
             :global(.mdc-renderer pre) {
                 padding-bottom: 1rem;
+            }
+
+            // Shown in place of the vue-flow topology when the API cannot
+            // build the graph (it 422s on flows it fails to deserialize).
+            .topology-unavailable {
+                flex: 1;
+                border-radius: 8px;
+                border: $block-border;
+                background-color: var(--ks-background-secondary);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: .5rem;
+                padding: $rem-2;
+                text-align: center;
+
+                .topology-unavailable-icon {
+                    width: 2rem;
+                    height: 2rem;
+                    color: var(--ks-content-secondary);
+                }
+
+                .topology-unavailable-title {
+                    margin: 0;
+                    font-weight: 600;
+                    color: var(--ks-content-primary);
+                }
+
+                .topology-unavailable-body {
+                    margin: 0;
+                    max-width: 32ch;
+                    font-size: $font-size-sm;
+                    color: var(--ks-content-secondary);
+                }
             }
 
             .topology {

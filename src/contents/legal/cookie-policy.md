@@ -5,7 +5,7 @@ description: Learn about our cookie policy, detailing how we use cookies to enha
 
 # Cookie Policy
 
-*Last updated: 4th of May 2023*
+*Last updated: 28th of August 2026*
 
 This page explains how Kestra uses cookies on [kestra.io](https://kestra.io) (i.e., the "Website"). By using the website, you consent to the use of cookies in accordance with this cookie policy.
 
@@ -43,7 +43,7 @@ For more information on how to manage cookies in your browser, please refer to t
 
 ## Changes to our Cookie Policy
 
-We may update our Cookie Policy from time to time. If we make any changes, we will notify you by revising the "Last updated" date at the top of this policy. Your continued use of our Website constitutes
+We may update our Cookie Policy from time to time. If we make any changes, we will notify you by revising the "Last updated" date at the top of this policy. Your continued use of our Website constitutes acceptance of any changes.
 
 
 ## Contact Us

@@ -24,7 +24,7 @@ faq:
   - question: "What are the benefits of using a declarative platform like Kestra for migration?"
     answer: "A declarative platform like Kestra offers several benefits for migration: improved readability and maintainability of workflows (YAML), easier version control and rollbacks (GitOps), enhanced collaboration between engineers and non-technical stakeholders, and greater portability across different environments (cloud, on-prem, air-gapped). It reduces cognitive load and operational complexity."
 ---
-```
+
 Legacy orchestration systems, while once foundational, often become bottlenecks in modern, fast-paced environments. High maintenance costs, limited scalability, and integration headaches with new cloud-native tools are common frustrations. Teams find themselves trapped in a cycle of managing technical debt instead of innovating.
 
 This guide provides a comprehensive roadmap for legacy orchestration migration. We'll explore the critical reasons for modernization, outline effective strategies, and detail how Kestra, a declarative and polyglot orchestration platform, can streamline your transition. Learn how to move beyond outdated systems to a flexible, future-proof architecture that unifies your data, AI, and infrastructure workflows.

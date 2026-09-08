@@ -16,6 +16,47 @@ faq:
     answer: "Yes. Salt (SaltStack) is licensed under Apache 2.0 and its source code remains publicly available on GitHub. SaltStack was acquired by VMware in 2020 and VMware was subsequently acquired by Broadcom in 2023, which now sponsors and manages the open-source Salt Project. Enterprise support and commercial add-ons are available through Broadcom."
   - question: "What is the difference between Chef, Ansible, and Puppet?"
     answer: "Chef uses a Ruby-based recipe DSL for agent-based configuration management, requiring a Chef Server and agents on each node. Ansible is agentless, communicating over SSH with YAML playbooks — the simplest to get started with. Puppet uses its own declarative Puppet language (manifests in .pp files) with an agent-based, model-driven approach that excels at enforcing desired state at scale. All three focus on configuration management, whereas a tool like Kestra adds higher-level, event-driven orchestration across infrastructure, data, and AI workflows."
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top Chef Alternatives for IT Automation"
+  description: "A list of the best alternatives to Chef for infrastructure automation and configuration management."
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      item:
+        "@type": "SoftwareApplication"
+        name: "Kestra"
+        url: "https://kestra.io/vs/chef"
+        description: "A universal orchestration control plane that unifies data, AI, and infrastructure workflows with declarative YAML."
+    - "@type": "ListItem"
+      position: 2
+      item:
+        "@type": "SoftwareApplication"
+        name: "Ansible"
+        url: "https://www.ansible.com/"
+        description: "An agentless IT automation tool that uses YAML playbooks for configuration management and application deployment."
+    - "@type": "ListItem"
+      position: 3
+      item:
+        "@type": "SoftwareApplication"
+        name: "Puppet"
+        url: "https://www.puppet.com/"
+        description: "An agent-based, declarative configuration management platform for large-scale enterprise environments."
+    - "@type": "ListItem"
+      position: 4
+      item:
+        "@type": "SoftwareApplication"
+        name: "SaltStack"
+        url: "https://saltproject.io/"
+        description: "A high-speed, event-driven infrastructure automation tool using a master-minion architecture."
+    - "@type": "ListItem"
+      position: 5
+      item:
+        "@type": "SoftwareApplication"
+        name: "GitLab CI/CD"
+        url: "https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/"
+        description: "An integrated DevOps platform with built-in CI/CD for building, testing, and deploying applications and infrastructure."
 ---
 Chef has long been a cornerstone of IT automation, empowering DevOps teams with its powerful agent-based configuration management and Ruby DSL. For over a decade, it has helped organizations define infrastructure as code, ensuring consistency and repeatability across complex environments. However, as infrastructure ecosystems evolve, many platform engineers and DevOps professionals are re-evaluating their orchestration stack. The shift towards agentless architectures, simpler declarative languages, and unified control planes for diverse workloads is driving a search for more agile and operationally lightweight alternatives.
 
@@ -111,98 +152,3 @@ Moving away from Chef is not just about replacing one tool with another; it's an
 For teams looking beyond traditional configuration management, a universal orchestration platform like Kestra provides a powerful control plane to unify all your workflows. By embracing a declarative, event-driven, and language-agnostic approach, you can build resilient, scalable, and auditable automation for your entire technology stack.
 
 Ready to modernize your IT automation and unify your workflows? Explore Kestra's [infrastructure automation capabilities](https://kestra.io/infra-automation) and see how declarative orchestration can streamline your operations.
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Infrastructure Automation Resources",
-      "item": "https://kestra.io/resources/infrastructure"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Chef Alternatives: Automate Your Workflow",
-      "item": "https://kestra.io/resources/infrastructure/chef-alternatives"
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top Chef Alternatives for IT Automation",
-  "description": "A list of the best alternatives to Chef for infrastructure automation and configuration management.",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Kestra",
-        "url": "https://kestra.io/vs/chef",
-        "description": "A universal orchestration control plane that unifies data, AI, and infrastructure workflows with declarative YAML."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Ansible",
-        "url": "https://www.ansible.com/",
-        "description": "An agentless IT automation tool that uses YAML playbooks for configuration management and application deployment."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Puppet",
-        "url": "https://www.puppet.com/",
-        "description": "An agent-based, declarative configuration management platform for large-scale enterprise environments."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "SaltStack",
-        "url": "https://saltproject.io/",
-        "description": "A high-speed, event-driven infrastructure automation tool using a master-minion architecture."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "GitLab CI/CD",
-        "url": "https://about.gitlab.com/stages-devops-lifecycle/continuous-integration/",
-        "description": "An integrated DevOps platform with built-in CI/CD for building, testing, and deploying applications and infrastructure."
-      }
-    }
-  ]
-}
-```

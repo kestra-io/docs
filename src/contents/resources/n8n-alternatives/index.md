@@ -174,4 +174,3 @@ n8n has democratized workflow automation with its open-source, self-hostable mod
 The best tool for your project is the one that aligns with your team's skills, operational model, and long-term goals. For teams looking to build a scalable, future-proof automation platform grounded in software engineering best practices, a declarative orchestrator like Kestra provides the foundation for success.
 
 Ready to see how a declarative, code-first approach can transform your workflows? [Get started with Kestra today](https://kestra.io/get-started).
-```

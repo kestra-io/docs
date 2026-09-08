@@ -136,4 +136,3 @@ The orchestration market offers a rich set of powerful and flexible alternatives
 The right choice depends on your specific requirements: Temporal for durable application code, Airflow for Python-based data pipelines, and n8n for business process automation. For teams seeking a single, unified control plane to orchestrate everything—from data pipelines and AI models to infrastructure and business processes—Kestra provides a declarative, language-agnostic, and truly cloud-agnostic solution. By breaking free from vendor lock-in, you can build more portable, scalable, and future-proof workflows.
 
 Explore Kestra's capabilities for your data, AI, and infrastructure workflows to see how a unified orchestration platform can streamline your operations. [Get started today](https://kestra.io/get-started) or [book a demo](https://kestra.io/demo) with our team.
-```

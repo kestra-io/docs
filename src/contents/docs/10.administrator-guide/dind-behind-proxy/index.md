@@ -5,9 +5,7 @@ sidebarTitle: MITM Proxy for DinD
 icon: /src/contents/docs/icons/padlock.svg
 description: Configure Docker-in-Docker (DinD) to run securely behind a corporate or MITM proxy within your Kestra deployment.
 ---
-Configure Docker-in-Docker (DinD) to run behind a Proxy in a Kubernetes-based Kestra deployment.
-
-This guide describes how to configure Docker-in-Docker (DinD) to work **behind a corporate or MITM (Man-in-the-Middle) proxy** in a **rootless** setup, within a Kestra deployment.
+Configure Docker-in-Docker (DinD) to work behind a corporate or MITM proxy in a rootless Kubernetes deployment.
 
 ## Why configure CA certs and proxies for DinD?
 
@@ -138,7 +136,7 @@ tasks:
       curl https://httpbin.org/get
 ```
 
-##  How it Works
+## How it works
 - `daemon.json`: tells Docker which proxy settings to use.
 - `certs.d`: directory where Docker looks for custom CA certificates to trust registries.
 - `SSL_CERT_FILE`: overrides the TLS stack used by the Docker daemon to trust the MITM CA.
