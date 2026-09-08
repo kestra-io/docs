@@ -1,217 +1,420 @@
 ---
-import DeclarativeIcon from "./assets/hero/declarative.svg"
-import AnyLangIcon from "./assets/hero/any-lang.svg"
-import ApiFirstIcon from "./assets/hero/api-first.svg"
-import PluginsIcon from "./assets/hero/plugin.svg"
-import LockInIcon from "./assets/hero/lock-in.svg"
-import SelfHostedIcon from "./assets/hero/self-hosted.svg"
-import CloudIcon from "./assets/hero/cloud.svg"
-import HeroAnimation from "./hero-animation.astro"
-import AnimatedWord from "./AnimatedWord.vue"
+import { Icon } from "astro-icon/components"
+import TwoZeroMark from "./assets/hero/two-zero-mark.svg"
+import beam from "./assets/hero/beam.svg?url"
+import LogoBar from "./LogoBar.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 
 const totalPlugins = await fetchTotalPluginsCount()
-import LogoBar from "./LogoBar.astro"
+
+const KEY_FACTS = [
+    "Declarative",
+    "Language-Agnostic",
+    `2000+ Plugins`,
+    "Cloud",
+    "Self-Hosted",
+    "API-First",
+]
+
+const FLARES = [
+    { x: 12, y: 6.5, w: 86.8, h: 31.1, kind: "haze", color: "#f524a5" },
+    { x: 15.2, y: 5.5, w: 75.9, h: 32.2, kind: "core", color: "#006cd8" },
+    { x: 11.25, y: 9.5, w: 82.7, h: 25, kind: "glow", color: "#e027f1" },
+    { x: 23.2, y: 58.3, w: 86.8, h: 31.1, kind: "haze", color: "#fc16d5" },
+    { x: 26.4, y: 57.2, w: 75.9, h: 32.2, kind: "core", color: "#008cd8" },
+    { x: 22.4, y: 61.3, w: 82.7, h: 25, kind: "glow", color: "#ff2cbc" },
+]
 ---
 
-<section aria-labelledby="hero">
-    <div class="mobile-bg"></div>
-    <div class="hero">
-        <h1 id="hero">
-            One Platform <br class="d-lg-none" /> to <AnimatedWord
-                words={["Run", "Control", "Govern"]}
-                client:load
-            />
-            <br />
-            <span class="gradient">All Your Workflows</span>
-        </h1>
-        <p>
-            Kestra is the open-source orchestration platform for data, AI, and
-            infrastructure workflows. Event-driven, language-agnostic, and built
-            for enterprise scale.
-        </p>
-        <div class="tags">
-            <span><DeclarativeIcon />Declarative</span>
-            <span><AnyLangIcon />Any Language</span>
-            <span><ApiFirstIcon />API-First</span>
-            <span><PluginsIcon />{totalPlugins}+ Plugins</span>
-            <span><LockInIcon />No Lock-in</span>
-            <span><SelfHostedIcon />Self-Hosted</span>
-            <span><CloudIcon />Cloud</span>
+{
+    /* Deliberately not `.hero`: app.scss owns that class as a site component
+    and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
+}
+<section class="home-hero" aria-labelledby="hero-title">
+    <div class="content">
+        <a href="/two-zero" class="release">
+            <span class="visually-hidden">Kestra 2.0</span>
+            <TwoZeroMark class="version" aria-hidden="true" />
+            <span class="label">Available now!</span>
+            <Icon name="mdi:arrow-right" />
+        </a>
+
+        <div class="copy">
+            <h1 id="hero-title">
+                <span>One orchestrator.</span>
+                <span class="highlight">Every workflow.</span>
+            </h1>
+
+            <div class="emblem" aria-hidden="true">
+                {
+                    FLARES.map((flare) => (
+                        <span
+                            class:list={["flare", flare.kind]}
+                            style={`left:${flare.x}px;top:${flare.y}px;width:${flare.w}px;height:${flare.h}px;--flare-color:${flare.color}`}
+                        />
+                    ))
+                }
+                <span class="tile">
+                    <img src="/icon-simple.svg" alt="" width="87" height="87" />
+                </span>
+            </div>
+
+            <p class="lead">
+                Build, run, and govern across your entire organization.
+            </p>
+            <p class="support">Agentic AI under the same controls.</p>
         </div>
+
         <div class="buttons">
-            <a href="/get-started" class="btn btn-lg btn-primary me-3 mb-2">
-                Get Started with Open Source
-            </a>
-            <a href="/demo" class="btn btn-lg btn-secondary mb-2">
-                Book a Demo
-            </a>
+            <a href="/get-started" class="btn btn-lg btn-primary">Get started</a
+            >
+            <a href="/demo" class="btn btn-lg btn-secondary">Book a Demo</a>
+        </div>
+
+        <ul class="key">
+            {KEY_FACTS.map((fact) => <li>{fact}</li>)}
+        </ul>
+
+        <div class="logos">
+            <LogoBar />
         </div>
     </div>
-    <div class="hero-animation">
-        <HeroAnimation />
-    </div>
-    <LogoBar />
 </section>
 
-<style lang="scss">
-    section {
-        padding-top: 0;
-        padding-bottom: 3rem;
-        padding-inline: 1rem;
+<style lang="scss" define:vars={{ beam: `url(${beam})` }}>
+    .home-hero {
+        --header-h: var(--top-bar-height, 67px);
+
         position: relative;
-        clip-path: inset(0);
-        margin-top: -2px;
-        @include media-breakpoint-up(md) {
-            padding-inline: 0;
-            padding-top: 2rem;
-            background:
-                url("./assets/hero/bg-grid.svg") no-repeat 50% -100px,
-                url("./assets/hero/bg-desktop.svg") no-repeat center center /
-                    cover;
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 5rem) 1rem 1.25rem;
+        isolation: isolate;
+        overflow: clip;
+        background: #120321 var(--beam) no-repeat 50% -13px / auto 886px;
+        color: $white;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            background-position: 50% -105px;
+            padding-top: calc(var(--header-h) + 3.5rem);
         }
     }
 
-    .hero {
+    .content {
+        position: relative;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        padding: 15rem 2rem 0;
-        margin-inline: auto;
-        max-width: 1400px;
-        overflow: hidden;
-        position: relative;
-        z-index: 2;
-        @include media-breakpoint-up(md) {
-            padding: 3rem 18rem 3rem 5rem;
-            margin-top: 0;
-        }
-        @include media-breakpoint-between(lg, xl) {
-            padding-right: 25rem;
-        }
-    }
-
-    .mobile-bg {
-        position: absolute;
-        top: 0;
-        @include media-breakpoint-down(sm) {
-            top: -5rem;
-        }
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 0;
-        /* scoped to the mobile breakpoint so desktop browsers never download
-         * this image (it is the mobile LCP element, preloaded in index.astro) */
-        @include media-breakpoint-down(md) {
-            background: url("./assets/hero/bg-mobile.webp") no-repeat center
-                center;
-            background-size: cover;
-        }
-        @include media-breakpoint-up(md) {
-            display: none;
-        }
-    }
-
-    .hero-animation {
-        position: absolute;
-        right: 2rem;
-        top: 50px;
-        z-index: 1;
-        display: none;
-
-        @include media-breakpoint-up(md) {
-            display: block;
-            left: 50%;
-            transform: scale(0.5) translateX(18%);
-            width: auto;
-        }
-        @include media-breakpoint-up(xl) {
-            left: 50%;
-            transform: scale(0.8);
-        }
-    }
-
-    .hero h1 {
-        grid-area: 1/1/2/2;
-        font-weight: 500;
-        font-size: 2rem;
-        line-height: 2.375rem;
-        @include media-breakpoint-up(md) {
-            font-size: 3.5rem;
-            line-height: 3.9375rem;
-            margin-bottom: 1.5rem;
-        }
-    }
-
-    .gradient {
-        background: linear-gradient(90deg, #718bfe, #c6d1ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-        grid-area: 2/1/3/2;
-        color: var(--hp-color-dark-secondary);
-        @include media-breakpoint-up(md) {
-            font-size: $font-size-lg;
-        }
-    }
-
-    .tags {
-        display: none;
-        @include media-breakpoint-up(md) {
-            grid-area: 3/1/4/2;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            max-width: 730px;
-        }
-    }
-
-    .tags span {
-        display: flex;
         align-items: center;
-        gap: 0.5rem;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0.5rem 0.7rem;
-        border-radius: 9999px;
-        color: var(--hp-color-dark-tertiary);
-        font-size: $font-size-xs;
-        svg {
-            color: #718bfe;
-            width: 18px;
-            height: 18px;
+        gap: 2rem;
+        max-width: 1246px;
+        margin-inline: auto;
+
+        @include media-breakpoint-down(md) {
+            gap: 1.5rem;
         }
+    }
+
+    .release {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.875rem;
+        padding: 0.375rem 1.875rem;
+        border-radius: 75px;
+        box-shadow:
+            3px 3px 0 0 rgba(173, 41, 250, 0.2),
+            inset 2px 2px 0 0 rgba(255, 255, 255, 0.4);
+        color: $white;
+        font-size: 0.875rem;
+        font-weight: 700;
+        line-height: 1.5rem;
+        text-decoration: none;
+        text-transform: uppercase;
+        text-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+        transition:
+            border-color 0.2s ease-in-out,
+            box-shadow 0.2s ease-in-out;
+
+        /* 1px purple-to-blue gradient ring on a transparent pill: the gradient
+         * is painted on a pseudo-element and masked down to its 1px padding. */
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #a77af6, #1f9bf3);
+            -webkit-mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask:
+                linear-gradient(#000 0 0) content-box,
+                linear-gradient(#000 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: $white;
+            box-shadow:
+                3px 3px 0 0 rgba(173, 41, 250, 0.35),
+                inset 2px 2px 0 0 rgba(255, 255, 255, 0.55);
+        }
+
+        .version {
+            flex: none;
+            width: 40px;
+            height: 20px;
+            filter: drop-shadow(0 1px 2px #9039fa)
+                drop-shadow(0 0 6px rgba(160, 100, 255, 0.75));
+        }
+
+        > :global(svg:last-child) {
+            flex: none;
+            width: 1rem;
+            height: 1rem;
+            margin-bottom: 3px;
+        }
+
+        @include media-breakpoint-down(md) {
+            gap: 0.625rem;
+            padding: 0.375rem 1.25rem;
+            font-size: 0.75rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+    }
+
+    h1 {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 600;
+        font-feature-settings: "ss01", "ss06", "ss07";
+        letter-spacing: -0.02em;
+        line-height: 1;
+        color: $white;
+
+        .highlight {
+            font-weight: 500;
+            color: #c37aff;
+            text-shadow:
+                0 4.5px 2.3px rgba(140, 30, 214, 0.19),
+                0 9.2px 5.2px rgba(140, 30, 214, 0.25),
+                0 17px 13.7px rgba(140, 30, 214, 0.31),
+                0 47px 56px rgba(140, 30, 214, 0.5);
+        }
+
+        @include media-breakpoint-down(md) {
+            text-wrap: balance;
+        }
+    }
+
+    .emblem {
+        position: relative;
+        width: 122px;
+        height: 90px;
+    }
+
+    .flare {
+        position: absolute;
+        border-radius: 82px;
+        background: var(--flare-color);
+
+        &.haze {
+            filter: blur(37.5px);
+            box-shadow: 0 0 41px #5c29dc;
+            mix-blend-mode: color-dodge;
+        }
+
+        &.core {
+            background: #f2fdfc;
+            filter: blur(3.4px);
+            box-shadow:
+                0 0 41px var(--flare-color),
+                0 0 41px #8405ff,
+                0 0 41px #a950ff;
+        }
+
+        &.glow {
+            filter: blur(12px);
+            mix-blend-mode: color-dodge;
+        }
+    }
+
+    .tile {
+        position: absolute;
+        left: calc(50% - 2.3px);
+        top: calc(50% + 2.2px);
+        width: 81px;
+        height: 81px;
+        translate: -50% -50%;
+        border: 1px solid transparent;
+        border-radius: 9.6px;
+        background:
+            linear-gradient(rgba(3, 2, 4, 0.91), rgba(3, 2, 4, 0.91))
+                padding-box,
+            conic-gradient(
+                    from 180deg,
+                    #da4077,
+                    #f62e76 60%,
+                    #fefaff 90%,
+                    #da4077
+                )
+                border-box;
+        box-shadow:
+            0 24px 54px rgba(255, 255, 255, 0.4),
+            inset 0 1.7px 14px #0036d8;
+        backdrop-filter: blur(1.7px);
+
+        /* The public monogram has more padding than the tile, so it is drawn
+         * slightly larger than the tile and centred over it. */
+        img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 87px;
+            height: 87px;
+            max-width: none;
+            translate: -50% -50%;
+        }
+    }
+
+    .lead,
+    .support {
+        margin: 0;
+        font-size: 1.25rem;
+        line-height: 1.2;
+        letter-spacing: -0.1px;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.0625rem;
+            line-height: 1.4;
+        }
+    }
+
+    .lead {
+        color: #dadafe;
+    }
+
+    .support {
+        font-weight: 700;
+        color: $white;
     }
 
     .buttons {
-        grid-area: 4/1/5/2;
-        a {
-            width: 100%;
+        /* Re-point the tokens the global `.btn-secondary` reads so the button
+         * stays white on the dark hero in both themes without out-ranking its
+         * `!important` colours. */
+        --ks-background-button-secondary: #{$white};
+        --ks-background-button-secondary-hover: #f1efff;
+        --ks-border-button-secondary: #adadbf;
+        --ks-content-primary: #14181f;
+        --ks-content-btn-secondary-hover: #14181f;
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1.125rem;
+        width: 100%;
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 180px;
+            min-height: 56px;
+            border-radius: 8px;
+            font-size: 1.125rem;
+            line-height: 1.5;
         }
-        @include media-breakpoint-up(md) {
-            margin-top: 3rem;
-            a {
-                width: auto;
+
+        @include media-breakpoint-down(md) {
+            gap: 0.75rem;
+
+            .btn {
+                width: 100%;
             }
         }
     }
 
-    .compare {
-        color: #cdc5ff;
-        text-decoration: none;
+    .key {
+        position: relative;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 0.25rem;
-        font-weight: 500;
-        :global(svg) {
-            transition: transform 0.2s ease-in-out;
+        justify-content: center;
+        gap: 0.5rem 1.125rem;
+        margin: 0;
+        padding: 0.625rem 1.875rem;
+        border-radius: 66px;
+        list-style: none;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: $white;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: inherit;
+            -webkit-mask: linear-gradient(
+                90deg,
+                #000 1%,
+                transparent 13%,
+                transparent 87%,
+                #000 99%
+            );
+            mask: linear-gradient(
+                90deg,
+                #000 1%,
+                transparent 13%,
+                transparent 87%,
+                #000 99%
+            );
+            pointer-events: none;
         }
-        &:hover {
-            :global(svg) {
-                transform: translateX(3px);
+
+        li {
+            display: flex;
+            align-items: center;
+            gap: 1.125rem;
+            white-space: nowrap;
+
+            &:not(:last-child)::after {
+                content: "";
+                width: 1px;
+                height: 1.25rem;
+                background: #3b3a41;
             }
         }
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem 1rem;
+            padding-inline: 1.25rem;
+
+            &::before {
+                display: none;
+            }
+
+            li::after {
+                display: none;
+            }
+        }
+    }
+
+    .logos {
+        width: 100%;
+        padding-top: 1.3rem;
     }
 </style>

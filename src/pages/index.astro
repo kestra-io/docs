@@ -13,27 +13,13 @@ import EarlyAdopterBanner from "~/components/early-adopter-program/EarlyAdopterB
 import GetStarted from "~/components/common/GetStarted.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import mobileHeroBgUrl from "~/components/home/assets/hero/bg-mobile.webp?url"
 
 const totalPlugins = await fetchTotalPluginsCount()
 ---
 
-<Layout headerTheme="darkHeader">
+<Layout headerTheme="lightText">
     <Fragment slot="head">
-        <SchemaSoftwareApplication
-            url="https://kestra.io"
-        />
-        {/* The mobile hero background is the LCP element but lives in CSS
-            (Hero.astro .mobile-bg), so the browser only discovers it after
-            the stylesheets load. Preload it so it starts downloading with
-            the document instead. */}
-        <link
-            rel="preload"
-            as="image"
-            href={mobileHeroBgUrl}
-            media="(max-width: 767.98px)"
-            fetchpriority="high"
-        />
+        <SchemaSoftwareApplication url="https://kestra.io" />
     </Fragment>
     <div class="home-page">
         <Hero />
@@ -55,8 +41,9 @@ const totalPlugins = await fetchTotalPluginsCount()
             </span>
             <span slot="description">
                 Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With {totalPlugins}+ plugins, you
-                can orchestrate everything without building custom glue code.
+                infrastructure, and SaaS tools. <br />With {totalPlugins}+
+                plugins, you can orchestrate everything without building custom
+                glue code.
             </span>
         </PluginsBlock>
         <Testimonial />
@@ -114,4 +101,3 @@ const totalPlugins = await fetchTotalPluginsCount()
         color: var(--ks-content-primary-inverse);
     }
 </style>
-
