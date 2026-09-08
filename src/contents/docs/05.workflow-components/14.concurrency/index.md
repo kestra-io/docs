@@ -65,12 +65,6 @@ Navigate to **Namespaces**, open the target namespace, click **Edit**, and scrol
 
 A namespace concurrency limit applies to every flow whose namespace matches or is a child of the configured namespace. For example, a limit on `company` applies to flows in `company`, `company.team`, and `company.team.project`.
 
-### Tenant level
-
-Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
-
-In **Instance Owner**, click **Concurrency Limits** in the sidebar, then **Administer** on the target tenant.
-
 ## `behavior` property
 
 By default, executions that exceed the limit are queued. Set `behavior` to control what happens instead:
@@ -153,15 +147,17 @@ Set `allowConcurrent: true` to allow multiple executions to run simultaneously f
 
 ## Troubleshooting concurrency issues
 
+Update a flow's concurrency limit when executions are backing up or hitting the limit unexpectedly. Avoid changing limits routinely; a stable limit is a deliberate resource protection decision that you should avoid changing unless there is an issue.
+
+**In Open Source and Enterprise Edition**, edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
+
+**In Enterprise Edition**, you can also update the limit from the **Concurrency Limits** page (under **Instance Owner**): click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
+
 ### Check the Concurrency tab
 
 Open the **Concurrency** tab on the Flow page to see which executions are running, queued, or failed. This shows which executions hold slots and which are waiting.
 
 ![Flow Concurrency tab for a FAIL-behavior flow showing 0 of 2 active slots with two failed executions](./concurrency-fail-tab.png)
-
-### Edit the concurrency limit
-
-You can change or remove the `concurrency` property in the flow editor and save. The executor always reads the latest flow revision, so the updated limit takes effect immediately for all in-progress executions.
 
 ### Reset a stuck running counter
 
