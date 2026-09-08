@@ -149,7 +149,7 @@ Useful for plugin authors: the annotation is non-breaking and was made available
 
 While in the same area, plugin icons became real SVG resources instead of data URIs, with lazy loading and content sanitization through a new sanitizer, and a monochrome flag derived from whether the SVG uses `currentColor`. The measurable result is **12MB removed from a JSON payload**, which is a page load rather than a feature but you will feel it on the plugins page.
 
-## Getting plugins, and not getting 3GB
+## Plugin Auto-download
 
 The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
@@ -187,6 +187,8 @@ RUN /app/kestra plugins install \
   io.kestra.storage:storage-gcs:LATEST \
   io.kestra.plugin:plugin-gcp:LATEST
 ```
+
+## Getting plugins, and not getting 3GB
 
 Behind the scenes, the build itself changed: plugin JARs are now pre-downloaded in CI through `kestractl` and copied into the image, instead of being installed by the Dockerfile, with a base image carrying the open source plugin set.
 
