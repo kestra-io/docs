@@ -8,7 +8,7 @@ authors:
     linkedin: https://www.linkedin.com/in/alex-emerich/
     image: aemerich
     role: Technical Writer
-image: ./main.jpg
+image: ./kestra-2-0-header.jpg
 ---
 
 Kestra 2.0 is available today. Until now, network access to the Kestra database was required for every worker, so workers could only be deployed on the same network as the control plane. The queue was coupled to the database as well, so every feature had to be built twice, once for JDBC and once for Kafka.
