@@ -1,6 +1,7 @@
 import posthog from "posthog-js"
 import identify from "~/utils/identify.js"
 import { submitHubspotForm } from "~/utils/hubspot"
+import { getFieldError } from "~/utils/formValidation"
 import { useGtm } from "@gtm-support/vue-gtm"
 
 const hubSpotFormId = "433b234f-f3c6-431c-898a-ef699e5525fa"
@@ -16,7 +17,7 @@ export default function ({ newsletter, valid, message }, e) {
 
     if (!form.checkValidity()) {
         valid.value = false
-        message.value = "Invalid form, please review the fields."
+        message.value = getFieldError(form.email, "email address")
     } else {
         valid.value = true
         form.classList.add("was-validated")
