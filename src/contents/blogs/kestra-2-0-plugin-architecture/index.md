@@ -153,12 +153,24 @@ While in the same area, plugin icons became real SVG resources instead of data U
 
 The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
-2.0 splits it. Every tag has a `-no-plugins` twin, both built on `eclipse-temurin:21-jre`, so `kestra/kestra:latest-no-plugins` is the lean core and you add what you need:
+2.0 splits it. Every tag has a `-slim` twin, both built on `eclipse-temurin:21-jre`, so `kestra/kestra:latest-slim` is the lean core and you add what you need. It's also what [kestra.io/get-started](https://kestra.io/get-started) hands you by default:
+
+```bash
+docker run --pull=always --rm -it -p 8080:8080 --user=root \
+  --name kestra \
+  -v kestra_data:/app/storage \
+  -v kestra_db:/app/data \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v /tmp:/tmp \
+  kestra/kestra:latest-slim server local
+```
+
+Plugins get installed automatically on demand from there, or you can be explicit about it:
 
 ```yaml
 services:
   kestra:
-    image: kestra/kestra:latest-no-plugins
+    image: kestra/kestra:latest-slim
     entrypoint: /bin/sh -c "
       kestra plugins install io.kestra.plugin:plugin-dbt:LATEST && \
       kestra plugins install io.kestra.plugin:plugin-scripts:LATEST && \
@@ -168,7 +180,7 @@ services:
 Or bake it, which is what you want for anything reproducible:
 
 ```dockerfile
-ARG IMAGE_TAG=latest-no-plugins
+ARG IMAGE_TAG=latest-slim
 FROM kestra/kestra:$IMAGE_TAG
 RUN /app/kestra plugins install \
   io.kestra.plugin:plugin-aws:LATEST \
