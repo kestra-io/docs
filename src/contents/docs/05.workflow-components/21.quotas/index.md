@@ -21,18 +21,18 @@ Each entry in the `quotas` list has three required properties:
 
 | Property | Type | Required | Description |
 | --- | --- | --- | --- |
-| `duration` | string | Yes | ISO 8601 duration defining the time window, e.g. `PT1H` (one hour) or `P1D` (one day). Minimum: `PT1M`. Maximum: `P1D`; durations above one day are not supported. Acts as the unique identifier; each duration value must appear at most once in the list. |
+| `duration` | string | Yes | ISO 8601 duration defining the time window, e.g. `PT1H` (one hour) or `P1D` (one day). Minimum: `PT1M`. Duration must be expressed in fixed time units; week-based notation (`P1W`) is not supported, use days instead (`P7D`). Acts as the unique identifier; each duration value must appear at most once in the list. |
 | `limit` | integer | Yes | Maximum number of executions allowed within the window. Must be `>= 1`. |
 | `behavior` | enum | Yes | Action taken when the limit is reached. One of `CANCEL` or `FAIL`. |
 
 :::alert{type="info"}
-Windows are **fixed and UTC-aligned**, not rolling. `PT1H` covers the current UTC clock-hour (e.g. 14:00–15:00 UTC), not the preceding 60 minutes. The maximum duration is `P1D` (one day); durations above one day are not supported. Prefer durations that divide evenly into 24 hours (`PT1M`, `PT5M`, `PT15M`, `PT30M`, `PT1H`, `PT2H`, `PT3H`, `PT4H`, `PT6H`, `PT8H`, `PT12H`, `PT24H`). Durations that don't divide evenly (e.g. `PT7H`) produce a shorter final window each day.
+Windows are **fixed and UTC-aligned**, not rolling. `PT1H` covers the current UTC clock-hour (e.g. 14:00–15:00 UTC), not the preceding 60 minutes. Prefer durations that divide evenly into 24 hours (`PT1M`, `PT5M`, `PT15M`, `PT30M`, `PT1H`, `PT2H`, `PT3H`, `PT4H`, `PT6H`, `PT8H`, `PT12H`, `PT24H`). Durations that don't divide evenly (e.g. `PT7H`) produce a shorter final window each day. For windows longer than a day, express them in days: use `P7D` for one week, not `P1W`.
 :::
 
 ## Behavior options
 
-- **`CANCEL`** — the execution is immediately marked as `CANCELLED` before any tasks run.
-- **`FAIL`** — the execution is immediately marked as `FAILED` before any tasks run.
+- **`CANCEL`**: the execution is immediately marked as `CANCELLED` before any tasks run.
+- **`FAIL`**: the execution is immediately marked as `FAILED` before any tasks run.
 
 :::alert{type="info"}
 `QUEUE` behavior is not supported for quotas. To hold executions until capacity is available rather than dropping them, use [`concurrency`](../14.concurrency/index.md) with `behavior: QUEUE`.
@@ -62,7 +62,7 @@ Namespace quotas apply to every flow whose namespace matches or is a child of th
 
 ### Tenant level
 
-Define quotas on a tenant to apply limits across all flows in the entire tenant. In **Instance Owner**, click **Quota Limits** in the sidebar, then **Administer** on the target tenant.
+Define quotas on a tenant to apply limits across all flows in the entire tenant.
 
 ## Evaluation order
 
@@ -120,9 +120,15 @@ For namespace-level quotas, the flow column shows `<namespace level quota>`; for
 
 Rows for expired windows are automatically hidden. Use the refresh button (top right of the page) to reload the current state. Columns are sortable by namespace and flow ID.
 
+## Managing quotas
+
+Update a quota limit when executions are being cancelled or failed at a rate that indicates the configured limit is too low for the current workload. Avoid adjusting quotas routinely; quotas are a deliberate rate-limiting decision.
+
+The **Quota Limits** page (under **Instance Owner** in the sidebar) lists all currently active quota limits across the tenant, including flow-level, namespace-level, and tenant-level entries. Click the edit icon next to any entry to update its limit and save. This takes effect immediately without modifying flow YAML.
+
 ## When to use quotas
 
-- **Flow level** — cap how often a specific flow can be triggered by external events or webhooks to prevent runaway execution chains, or enforce a cost policy on flows that call expensive external APIs.
-- **Namespace level** — apply a shared execution budget across all flows in a team or environment namespace, without configuring each flow individually.
-- **Tenant level** — enforce an organization-wide ceiling on execution creation, for example to stay within an infrastructure or cost constraint that applies across all namespaces.
-- **Complement concurrency** — quotas cap the creation rate; concurrency caps simultaneous parallelism.
+- **Flow level**: cap how often a specific flow can be triggered by external events or webhooks to prevent runaway execution chains, or enforce a cost policy on flows that call expensive external APIs.
+- **Namespace level**: apply a shared execution budget across all flows in a team or environment namespace, without configuring each flow individually.
+- **Tenant level**: enforce an organization-wide ceiling on execution creation, for example to stay within an infrastructure or cost constraint that applies across all namespaces.
+- **Complement concurrency**: quotas cap the creation rate; concurrency caps simultaneous parallelism.
