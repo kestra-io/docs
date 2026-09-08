@@ -155,7 +155,7 @@ Update a concurrency limit when executions are backing up or hitting the limit u
 
 **In Open Source and Enterprise Edition**, edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
 
-**In Enterprise Edition**, you can also update the limit from the **Concurrency Limits** page (under **Instance Owner** in the sidebar): click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
+You can also update the limit from the **Concurrency Limits** page (under **Instance Owner** in the sidebar) in the Enterprise Edition): click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
 
 ## Troubleshooting concurrency issues
 
