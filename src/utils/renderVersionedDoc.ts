@@ -7,9 +7,11 @@ import {
     directDocChildren,
     docLinkBaseDir,
     frontmatterField,
+    isRelativeAssetRef,
     isRelativeDocHref,
     isVersionedAssetRef,
     plainDocText,
+    resolveRelativeAssetRef,
     resolveVersionedDocLink,
     versionedAssetUrl,
     type DocChildren,
@@ -330,8 +332,9 @@ function repointAbsoluteDocHref(
 
 // Pre-pass over the parsed tree, mutating in place before serialize:
 // - asset refs re-pointed at the versioned asset API (mirrors the in-app
-//   ProseImg + doc store); only root-absolute refs with a file extension (see
-//   isVersionedAssetRef) — external and protocol-relative refs are left alone
+//   ProseImg + doc store): root-absolute refs (<=1.1) directly, colocated
+//   relative ones (1.2+) resolved against the page's own directory first —
+//   external and protocol-relative refs are left alone
 // - relative in-content links resolved to versioned pretty URLs (the raw
 //   source-relative "NN.foo.md" hrefs are all dead routes)
 // - heading ids assigned via a fresh GithubSlugger per render (the memoized
@@ -342,9 +345,21 @@ function transformTree(node: MdcNode | undefined, ctx: TransformCtx): void {
     if (node.type === "element" && node.tag && node.props) {
         for (const attr of ASSET_ATTRS[node.tag] ?? []) {
             const v = node.props[attr]
-            if (typeof v === "string" && isVersionedAssetRef(v)) {
-                node.props[attr] = versionedAssetUrl(ctx.apiUrl, ctx.version, v)
+            if (typeof v !== "string") continue
+            const ref = isRelativeAssetRef(v)
+                ? resolveRelativeAssetRef(ctx.baseDir, v)
+                : v
+            if (isVersionedAssetRef(ref)) {
+                node.props[attr] = versionedAssetUrl(ctx.apiUrl, ctx.version, ref)
             }
+        }
+        // Latest's rehype img-plugin tags every image `zoom`, what medium-zoom
+        // binds to for click-to-enlarge.
+        if (node.tag === "img") {
+            const existing = node.props.className
+            node.props.className = existing
+                ? [...(Array.isArray(existing) ? existing : [existing]), "zoom"]
+                : "zoom"
         }
         if (node.tag === "a") {
             const href = node.props.href

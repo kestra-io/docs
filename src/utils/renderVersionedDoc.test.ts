@@ -879,6 +879,46 @@ title: T
         expect(html).toContain('href="#here"')
     })
 
+    it("re-points a 1.2+ colocated relative image at the versioned asset API", async () => {
+        const { html } = await renderVersionedDocBody({
+            version: "1.3",
+            path: "tutorial/fundamentals",
+            markdown: `---\ntitle: T\n---\n![Create flow](./create_button.png)`,
+            children: {
+                docs: { title: "Docs" },
+                "docs/tutorial": { title: "Tutorial", isIndex: true },
+                "docs/tutorial/fundamentals": { title: "Fundamentals", isIndex: true },
+            },
+        })
+        expect(html).toContain(
+            'src="https://api.kestra.io/v1/docs/docs/tutorial/fundamentals/create_button.png/versions/1.3.0"',
+        )
+        expect(html).not.toContain('src="./create_button.png"')
+    })
+
+    it("re-points a relative image that walks up out of the page's directory", async () => {
+        const { html } = await renderVersionedDocBody({
+            version: "1.3",
+            path: "use-cases/dbt",
+            markdown: `---\ntitle: T\n---\n![editor](../../15.how-to-guides/dbt/dbt-code-editor.png)`,
+            children: {
+                docs: { title: "Docs" },
+                "docs/use-cases/dbt": { title: "dbt", isIndex: true },
+            },
+        })
+        expect(html).toContain(
+            'src="https://api.kestra.io/v1/docs/docs/how-to-guides/dbt/dbt-code-editor.png/versions/1.3.0"',
+        )
+    })
+
+    it("tags images `zoom`, like latest's rehype plugin", async () => {
+        const html = await render(`---
+title: T
+---
+![diagram](/docs/x.png)`)
+        expect(html).toContain('class="zoom"')
+    })
+
     it("re-points a raw-HTML video src and poster", async () => {
         const html = await render(`---
 title: T
