@@ -8,13 +8,13 @@ icon: /src/contents/docs/icons/architecture.svg
 
 Choosing a Kestra deployment architecture involves two decisions: how server roles are deployed (standalone vs distributed), and which queue and repository backends they use.
 
-**Open Source** deployments use a single JDBC database for queue, repository, and logs. **Enterprise** deployments can configure each independently, including AMQP, Redis, Kafka, and Elasticsearch.
+The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, Kafka, and Elasticsearch.
 
 ## Standalone vs distributed
 
 ### Standalone
 
-In standalone mode, all server roles — Executor, Scheduler, Worker Controller, Worker, Webserver, and Indexer — run as cooperating threads inside a single process. A single database is the only external dependency. Behavior is identical to a distributed cluster, so moving to distributed requires only deployment changes.
+In standalone mode, all server roles (Executor, Scheduler, Worker Controller, Worker, Webserver, and Indexer) run as cooperating threads inside a single process. A single database is the only external dependency. Behavior is identical to a distributed cluster, so moving to distributed requires only deployment changes.
 
 Use standalone when:
 - You are running a single-node deployment
@@ -34,47 +34,62 @@ Use distributed when:
 
 When components run on separate hosts, use a shared [internal storage](../data-components/index.md#internal-storage) implementation such as [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md), [AWS S3](../../02.installation/08.aws-ec2/index.md), or [Azure Blob Storage](../../02.installation/10.azure-vm/index.md).
 
-## Choosing a backend
+## Queue backend
 
-The queue and repository are independent choices, so you can mix and match backends to match your latency, throughput, and operational requirements. The same executor, scheduler, and indexer run regardless of which backends you select.
+The queue is the asynchronous message backbone between server roles. One backend satisfies the full set of queues for a deployment.
 
-### Postgres (recommended)
+### Database
 
-For most deployments, a single PostgreSQL or MySQL database acts as both the queue and the repository. This is the simplest architecture to operate and covers the majority of production use cases.
+A PostgreSQL or MySQL database drives the queue by default. This is the simplest option and covers the majority of production use cases.
 
 - **Dependencies**: PostgreSQL or MySQL
-- Works in both standalone and distributed deployments
-- High availability through standard Postgres HA patterns
+- Available in Open Source and Enterprise
 
 ### AMQP / Redis (Enterprise)
 
-When queue latency matters, replace the database queue with an AMQP broker or Redis, while keeping PostgreSQL or MySQL as the repository.
+When queue latency matters, replace the database queue with an AMQP broker or Redis.
 
-- **Dependencies**: RabbitMQ (recommended) or Redis + PostgreSQL or MySQL
+- **Dependencies**: RabbitMQ or Redis
 - Can reduce queue latency significantly compared to a database queue, depending on workload
 - Does not raise the throughput ceiling; use Kafka if throughput is the bottleneck
-- RabbitMQ is recommended over Redis for simpler operation and fewer edge cases
+- RabbitMQ is recommended for simpler operation and fewer edge cases
 
 ### Kafka (Enterprise)
 
 For high throughput and full horizontal scaling, use Kafka as the queue backend. The Executor, Scheduler, Worker Controller, Webserver, and Indexer emit to and subscribe from named Kafka topics.
 
-- **Dependencies**: Kafka + PostgreSQL, MySQL, or Elasticsearch as the repository
-- PostgreSQL is the recommended repository, as execution state now lives in the repository rather than Kafka state stores
+- **Dependencies**: Kafka
 - Each server role scales independently, removing single points of failure
+- PostgreSQL is the recommended repository pairing, as execution state now lives in the repository rather than Kafka state stores
 - Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 
-#### Elasticsearch as repository
+## Repository backend
 
-[Elasticsearch](https://www.elastic.co/elasticsearch) can replace PostgreSQL as the repository backend in Kafka deployments, providing fast search and aggregation of flows, executions, and logs for the API and UI. Because Elasticsearch uses asynchronous indexing, it trades insertion atomicity for analytical and search performance. Use it when query capabilities outweigh the consistency trade-off.
+The repository persists all domain entities: flows, executions, logs, triggers, and metrics. One backend satisfies all repository contracts for a deployment.
 
-The Indexer subscribes to Kafka topics and writes to Elasticsearch, keeping the search index in sync. Executions continue processing even if Elasticsearch is temporarily unavailable.
+### Database
+
+A PostgreSQL or MySQL database is the default repository backend and works with any queue backend.
+
+- **Dependencies**: PostgreSQL or MySQL
+- Available in Open Source and Enterprise
+
+### Elasticsearch (Enterprise)
+
+Elasticsearch can serve as the repository backend in Kafka deployments, providing fast search and aggregation of flows, executions, and logs for the API and UI.
+
+- **Dependencies**: Elasticsearch + Kafka queue
+- Uses asynchronous indexing, trading insertion atomicity for analytical and search performance
+- Suited for deployments where query capabilities outweigh consistency requirements
+- The Indexer subscribes to Kafka topics and writes to Elasticsearch, keeping the index in sync
+- Executions continue processing even if Elasticsearch is temporarily unavailable
+- Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 
 ## Comparison
 
-| | Postgres | AMQP / Redis | Kafka |
-|---|---|---|---|
-| Latency | Baseline | Lower | Moderate |
-| Throughput | Single-instance ceiling | Marginal gain | Highest |
-| Operational complexity | Lowest | Low | Highest |
-| Edition | OSS + Enterprise | Enterprise | Enterprise |
+| | Database + Database | AMQP/Redis + Database | Kafka + Database | Kafka + Elasticsearch |
+|---|---|---|---|---|
+| Latency | Baseline | Lower | Moderate | Moderate |
+| Throughput | Single-instance ceiling | Marginal gain | Highest | Highest |
+| Operational complexity | Lowest | Low | High | Highest |
+| Edition | OSS + Enterprise | Enterprise | Enterprise | Enterprise |
