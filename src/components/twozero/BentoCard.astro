@@ -42,22 +42,26 @@ const {
     style={layout === "split" ? `--tz-media-width: ${imageWidth}px` : undefined}
     data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
 >
-    {
-        layout === "stack" && link && (
-            <a
-                class="jump"
-                href={link.href}
-                target="_blank"
-                rel="noopener"
-                title={link.text}
-                aria-label={link.text}
-            >
-                <Icon name="mdi:arrow-top-right" />
-            </a>
-        )
-    }
     <div class="copy">
-        <h3 set:html={title} />
+        {
+            layout === "stack" && link ? (
+                <div class="head">
+                    <h3 set:html={title} />
+                    <a
+                        class="jump"
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener"
+                        title={link.text}
+                        aria-label={link.text}
+                    >
+                        <Icon name="mdi:arrow-top-right" />
+                    </a>
+                </div>
+            ) : (
+                <h3 set:html={title} />
+            )
+        }
         <p set:html={body} />
         {
             code && (
@@ -67,15 +71,13 @@ const {
             )
         }
         {
-            link && (
+            layout !== "stack" && link && (
                 <Link
                     href={link.href}
-                    text={layout === "stack" ? "Read more" : link.text}
+                    text={link.text}
                     class="more"
                     target="_blank"
                     rel="noopener"
-                    title={link.text}
-                    aria-label={link.text}
                 />
             )
         }
@@ -91,7 +93,6 @@ const {
 
 <style lang="scss">
     .bento {
-        position: relative;
         display: flex;
         flex-direction: column;
         min-width: 0;
@@ -205,11 +206,19 @@ const {
         margin-top: 1.5rem;
     }
 
+    .head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+
+        h3 {
+            flex: 1 1 auto;
+        }
+    }
+
     .jump {
-        position: absolute;
-        top: 1.25rem;
-        right: 1.25rem;
-        z-index: 1;
+        flex: 0 0 auto;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -221,11 +230,6 @@ const {
         transition:
             background-color 0.2s ease,
             color 0.2s ease;
-
-        @include media-breakpoint-down(lg) {
-            top: 0.75rem;
-            right: 0.75rem;
-        }
 
         :global(svg) {
             width: 1.125rem;
@@ -241,42 +245,12 @@ const {
 
     .bento.stack {
         gap: 2.5rem;
-
-        @include media-breakpoint-up(lg) {
-            display: grid;
-            grid-row: span 4;
-            grid-template-rows: subgrid;
-            row-gap: 0.5rem;
-        }
-
-        @include media-breakpoint-down(lg) {
-            h3 {
-                padding-right: 2.75rem;
-            }
-        }
-    }
-
-    .stack .copy {
-        @include media-breakpoint-up(lg) {
-            display: contents;
-        }
-    }
-
-    .stack :global(.more) {
-        @include media-breakpoint-up(lg) {
-            align-self: start;
-            justify-self: start;
-        }
     }
 
     .stack .media {
         flex: 1 1 auto;
         min-height: 0;
         margin: 0 -2rem -5rem;
-
-        @include media-breakpoint-up(lg) {
-            margin-top: 2rem;
-        }
 
         @include media-breakpoint-down(lg) {
             flex: 0 0 auto;

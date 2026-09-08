@@ -60,15 +60,6 @@ const template = (columns: number[]) =>
                         <div
                             class="card-row"
                             data-count={row.cards.length}
-                            data-align={
-                                row.cards.length > 1 &&
-                                row.cards.every(
-                                    (card) =>
-                                        (card.layout ?? "stack") === "stack",
-                                )
-                                    ? "rows"
-                                    : undefined
-                            }
                             style={`--tz-cols: ${template(row.columns ?? row.cards.map(() => 1))}`}
                         >
                             {row.cards.map((card, index) => (
@@ -137,12 +128,6 @@ const template = (columns: number[]) =>
 
         @include media-breakpoint-up(lg) {
             grid-template-columns: var(--tz-cols);
-        }
-    }
-
-    .card-row[data-align="rows"] {
-        @include media-breakpoint-up(lg) {
-            grid-template-rows: auto auto auto minmax(0, 1fr);
         }
     }
 
