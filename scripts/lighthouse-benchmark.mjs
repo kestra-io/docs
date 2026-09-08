@@ -36,7 +36,12 @@ if (!BASE_URL) {
     process.exit(1)
 }
 
-const LIGHTHOUSE_CATEGORIES = ["performance", "accessibility", "best-practices", "seo"]
+const LIGHTHOUSE_CATEGORIES = [
+    "performance",
+    "accessibility",
+    "best-practices",
+    "seo",
+]
 
 /** Metrics extracted from the Lighthouse audit results. */
 const METRIC_DEFS = [
@@ -178,7 +183,9 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
         } catch (err) {
             lastError = err
             if (attempt < maxRetries) {
-                console.log(`    Attempt ${attempt + 1} failed, retrying in 3 s…`)
+                console.log(
+                    `    Attempt ${attempt + 1} failed, retrying in 3 s…`,
+                )
                 await new Promise((r) => setTimeout(r, 3000))
             }
         }
@@ -212,9 +219,15 @@ function slugify(label) {
 function extractResults(lhr) {
     /** @type {Scores} */
     const scores = {
-        performance: Math.round((lhr.categories["performance"]?.score ?? 0) * 100),
-        accessibility: Math.round((lhr.categories["accessibility"]?.score ?? 0) * 100),
-        "best-practices": Math.round((lhr.categories["best-practices"]?.score ?? 0) * 100),
+        performance: Math.round(
+            (lhr.categories["performance"]?.score ?? 0) * 100,
+        ),
+        accessibility: Math.round(
+            (lhr.categories["accessibility"]?.score ?? 0) * 100,
+        ),
+        "best-practices": Math.round(
+            (lhr.categories["best-practices"]?.score ?? 0) * 100,
+        ),
         seo: Math.round((lhr.categories["seo"]?.score ?? 0) * 100),
     }
 
@@ -223,7 +236,9 @@ function extractResults(lhr) {
     for (const def of METRIC_DEFS) {
         const audit = lhr.audits[def.auditKey]
         const raw = audit?.numericValue ?? 0
-        metricsRaw[def.key] = parseFloat((raw / def.divisor).toFixed(def.decimals))
+        metricsRaw[def.key] = parseFloat(
+            (raw / def.divisor).toFixed(def.decimals),
+        )
     }
 
     return { scores, metrics: /** @type {Metrics} */ (metricsRaw) }
@@ -288,7 +303,10 @@ function fmtMetric(value, def) {
  */
 function buildMarkdown(output, baseline) {
     const testedAt =
-        new Date(output.timestamp).toISOString().replace("T", " ").slice(0, 16) + " UTC"
+        new Date(output.timestamp)
+            .toISOString()
+            .replace("T", " ")
+            .slice(0, 16) + " UTC"
     const baselineInfo = baseline
         ? `Compared against \`main\` baseline from ${new Date(baseline.timestamp).toISOString().slice(0, 10)}`
         : "No baseline available — scores will appear after the first merge to `main`"
@@ -342,7 +360,9 @@ function buildMarkdown(output, baseline) {
             const bval = base?.metrics[/** @type {keyof Metrics} */ (def.key)]
             return `${fmtMetric(val, def)}${metricDelta(val, bval)}`
         }).join(" | ")
-        lines.push(`| [${result.label}](${output.baseUrl}${result.path}) | ${cells} |`)
+        lines.push(
+            `| [${result.label}](${output.baseUrl}${result.path}) | ${cells} |`,
+        )
     }
 
     lines.push(
@@ -381,7 +401,11 @@ async function main() {
 
     // Launch Chrome once and reuse for all pages.
     const chrome = await chromeLauncher.launch({
-        chromeFlags: ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage"],
+        chromeFlags: [
+            "--headless=new",
+            "--no-sandbox",
+            "--disable-dev-shm-usage",
+        ],
     })
 
     console.log(`Chrome launched on port ${chrome.port}\n`)
