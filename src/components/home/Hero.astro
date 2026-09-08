@@ -87,13 +87,47 @@ const FLARES = [
         padding: calc(var(--header-h) + 5rem) 1rem 1.25rem;
         isolation: isolate;
         overflow: clip;
-        background: #120321 var(--beam) no-repeat 50% -13px / auto 886px;
+        background: #120321;
         color: $white;
         text-align: center;
 
         @include media-breakpoint-down(md) {
-            background-position: 50% -105px;
             padding-top: calc(var(--header-h) + 3.5rem);
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--beam) no-repeat 50% -13px / auto 886px;
+            will-change: opacity;
+            animation: beam-pulse 3.6s infinite;
+            pointer-events: none;
+
+            @include media-breakpoint-down(md) {
+                background-position: 50% -105px;
+            }
+        }
+    }
+
+    @keyframes beam-pulse {
+        0% {
+            opacity: 0.82;
+            animation-timing-function: steps(34, end);
+        }
+
+        38% {
+            opacity: 1;
+            animation-timing-function: steps(1, end);
+        }
+
+        52% {
+            opacity: 1;
+            animation-timing-function: steps(43, end);
+        }
+
+        100% {
+            opacity: 0.82;
         }
     }
 
@@ -226,6 +260,8 @@ const FLARES = [
         position: absolute;
         border-radius: 82px;
         background: var(--flare-color);
+        will-change: opacity, transform;
+        animation: flare-breathe 3.6s infinite;
 
         &.haze {
             filter: blur(37.5px);
@@ -240,11 +276,48 @@ const FLARES = [
                 0 0 41px var(--flare-color),
                 0 0 41px #8405ff,
                 0 0 41px #a950ff;
+            animation: none;
         }
 
         &.glow {
             filter: blur(12px);
             mix-blend-mode: color-dodge;
+        }
+
+        &:nth-child(n + 4) {
+            animation-delay: -1.8s;
+        }
+    }
+
+    @keyframes flare-breathe {
+        0% {
+            opacity: 0.62;
+            transform: scale(0.97);
+            animation-timing-function: steps(34, end);
+        }
+
+        38% {
+            opacity: 1;
+            transform: scale(1.04);
+            animation-timing-function: steps(1, end);
+        }
+
+        52% {
+            opacity: 1;
+            transform: scale(1.04);
+            animation-timing-function: steps(43, end);
+        }
+
+        100% {
+            opacity: 0.62;
+            transform: scale(0.97);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .flare,
+        .home-hero::before {
+            animation: none;
         }
     }
 
@@ -363,21 +436,21 @@ const FLARES = [
             content: "";
             position: absolute;
             inset: 0;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.55);
             border-radius: inherit;
             -webkit-mask: linear-gradient(
                 90deg,
-                #000 1%,
-                transparent 13%,
-                transparent 87%,
-                #000 99%
+                #000 0%,
+                rgba(0, 0, 0, 0.4) 18%,
+                rgba(0, 0, 0, 0.4) 82%,
+                #000 100%
             );
             mask: linear-gradient(
                 90deg,
-                #000 1%,
-                transparent 13%,
-                transparent 87%,
-                #000 99%
+                #000 0%,
+                rgba(0, 0, 0, 0.4) 18%,
+                rgba(0, 0, 0, 0.4) 82%,
+                #000 100%
             );
             pointer-events: none;
         }
@@ -391,8 +464,8 @@ const FLARES = [
             &:not(:last-child)::after {
                 content: "";
                 width: 1px;
-                height: 1.25rem;
-                background: #3b3a41;
+                height: 2rem;
+                background: rgba(255, 255, 255, 0.35);
             }
         }
 
