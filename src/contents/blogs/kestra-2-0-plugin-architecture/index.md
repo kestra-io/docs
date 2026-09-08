@@ -287,10 +287,10 @@ The plugin count kept moving after 1.3 shipped on March 3. Here is everything th
 #### Cloud
 
 - **HPE Morpheus (EE)**: HPE Morpheus cloud management
+- **Huawei (EE)**: Huawei Cloud CCI task runner and log exporter
 - **Netskope**: Netskope security cloud
 - **Proxmox**: Proxmox VE virtual machines
 - **Huawei**: Huawei Cloud, an AWS-plugin equivalent
-- **Huawei (EE)**: Huawei Cloud CCI task runner and log exporter
 - **Clever Cloud**: Clever Cloud apps and add-ons
 - **DigitalOcean**: droplets and other DigitalOcean resources
 
@@ -300,10 +300,10 @@ The plugin count kept moving after 1.3 shipped on March 3. Here is everything th
 
 #### Data
 
-- **Zapier**: trigger and manage Zaps
-- **Skopeo**: copy and inspect container images
 - **Dash0 (EE)**: ship logs to Dash0
 - **RunMyJobs (EE)**: Redwood RunMyJobs
+- **Zapier**: trigger and manage Zaps
+- **Skopeo**: copy and inspect container images
 - **Scrapy**: run Scrapy spiders
 - **Faktory**: Faktory job queue
 - **Timefold**: constraint-solving optimization
@@ -313,42 +313,51 @@ The plugin count kept moving after 1.3 shipped on March 3. Here is everything th
 
 #### Infrastructure
 
-- **OpenTofu**: OpenTofu resources
-- **Terragrunt**: Terragrunt orchestration
-- **Hpoo (EE)**: HP Operations Orchestration
-- **Fastly**: Fastly CDN configuration
+- **HPOO (EE)**: HP Operations Orchestration
 - **F5 (EE)**: F5 load balancer
-- **Temporal**: Temporal workflows
 - **Infoblox (EE)**: Infoblox IPAM and DNS
 - **SolarWinds (EE)**: SolarWinds IPAM
-- **PhpIPAM**: IP address management
 - **NetApp (EE)**: NetApp ONTAP storage
 - **Veeam (EE)**: backup and replication
-- **Ceph**: Ceph storage clusters
 - **Pure Storage FlashArray (EE)**: FlashArray snapshots
 - **Syslog (EE)**: audit logs over Syslog/CEF
 - **Dell EMC PowerStore (EE)**: PowerStore storage
 - **CrowdStrike (EE)**: CrowdStrike security
+- **Delinea Secret Server (EE)**: secret manager (`secret-delinea`)
+- **Bitwarden (EE)**: secret manager (`secret-bitwarden`)
+- **Datadog (EE)**: log data store (`log-data-store-datadog`)
+- **Splunk (EE)**: log data store (`log-data-store-splunk`)
+- **OpenTofu**: OpenTofu resources
+- **Terragrunt**: Terragrunt orchestration
+- **Fastly**: Fastly CDN configuration
+- **Temporal**: Temporal workflows
+- **PhpIPAM**: IP address management
+- **Ceph**: Ceph storage clusters
 - **Aikido**: Aikido security scanning
-- **Cloudflare R2** (storage backend, `storage-cloudflare`)
-- **Huawei OBS** (storage backend, `storage-obs`)
-- **Delinea Secret Server** (secret manager, `secret-delinea`)
-- **Bitwarden** (secret manager, `secret-bitwarden`)
-- **Datadog** (log data store, `log-data-store-datadog`)
-- **Splunk** (log data store, `log-data-store-splunk`)
+- **Cloudflare R2**: storage backend (`storage-cloudflare`)
+- **Huawei OBS**: storage backend (`storage-obs`)
 
 ## New sub-plugins since 1.3
 
-These are not new plugin repositories, they're new capabilities added to plugins that already existed: a new dialect, language or task family bolted onto a repo that already had a catalogue entry.
+These are not new plugin repositories, they're new capabilities added to plugins that already existed: a new catalogue entry, or a whole new task/trigger family bolted onto a plugin that already had one.
 
-#### Core
-
-- **Transform (Records)**: the base record-transform tasks that back the Transform plugin (`plugin-transform-records`)
-
-#### Data
+#### New catalogue entries
 
 - **Microsoft Access**: new JDBC dialect, via UCanAccess (`plugin-jdbc-access`)
 - **.NET (C#)**: new script language for the Scripts plugin (`plugin-script-dotnet`)
+- **Transform (Records)**: the base record-transform tasks that back the Transform plugin (`plugin-transform-records`)
+
+#### New task and trigger families inside existing plugins
+
+- **Kafka**: Admin tasks for ACLs, quotas, consumer groups, topics and SCRAM credentials; Kafka Connect tasks and a connector status trigger
+- **GCP**: RCS rich messaging, Compute instance lifecycle, Dataflow jobs, Spanner, Bigtable
+- **Azure**: AI Foundry (chat, embeddings, agents), HorizonDB with durable-function orchestration, Logic Apps, Stream Analytics
+- **AWS**: MSK (managed Kafka) cluster lifecycle, HealthLake, Bedrock model invocation, EFS file systems
+- **Microsoft 365**: Teams Adaptive Cards, Dynamics 365 Business Central, Dynamics 365 Dataverse
+- **Cloudflare**: D1 serverless SQL database, Workers deploy and run
+- **Microsoft Fabric**: Data Engineering (notebooks, pipelines, Spark jobs), OneLake, Warehouse queries
+- **AI**: MCP client tasks, input/output guardrails
+- **Scripts**: new realtime triggers for Python, Go, Ruby and Node
 
 ## Versioned plugins
 
