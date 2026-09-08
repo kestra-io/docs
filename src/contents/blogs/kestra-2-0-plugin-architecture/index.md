@@ -252,6 +252,17 @@ The use cases those enable are day two operations rather than analytics: snapsho
 
 Two more worth naming. A **Syslog** exporter, which sends audit and execution logs in CEF over UDP, TCP or TCP with TLS, and exists because plenty of SIEMs ingest syslog and nothing else, where previously the log shipper only spoke HTTP to Splunk, Graylog and Datadog. And **Delinea Secret Server** as an external secret manager, covering the full secret lifecycle.
 
+## New task runners
+
+Four new Enterprise task runners arrived in the same cycle, each targeting workloads that cannot or should not run in a container: GPU training tied to a custom AMI, licensed software bound to a specific machine image, or workloads where direct VM control matters.
+
+- [AWS EC2 Task Runner](/docs/task-runners/types/aws-ec2-task-runner): runs commands directly on an EC2 instance via AWS Systems Manager Run Command, with no SSH required. Supports Spot instances and reattaches mid-run if the Kestra Worker restarts.
+- [Azure Virtual Machine Task Runner](/docs/task-runners/types/azure-virtualmachine-task-runner): runs commands on Azure VMs via the Azure Run Command API, with no SSH and no public IP required.
+- [Google Compute Engine Task Runner](/docs/task-runners/types/google-computeengine-task-runner): runs commands directly on a Compute Engine VM as a startup script, with no SSH or IAP tunnel.
+- [Huawei Cloud CCI Task Runner](/docs/task-runners/types/huawei-cci-task-runner): runs tasks as bare Pods on Huawei Cloud CCI for serverless container execution.
+
+Same pattern as the storage and network plugins above: a task runner is a plugin too, so none of this required touching the engine, just adding four more implementations of an interface that already existed.
+
 ## Versioned plugins
 
 What it does, briefly, because it remains one of the most useful things in the plugin system: Kestra hosts several versions of the same plugin at once and any task or trigger names the one it wants.
