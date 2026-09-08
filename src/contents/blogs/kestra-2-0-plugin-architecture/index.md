@@ -266,7 +266,7 @@ What it does, briefly, because it remains one of the most useful things in the p
 
 Resolution walks four levels, most specific first: the task's version, the flow default, the namespace default, then `kestra.plugins.management.defaultVersion`, which is `LATEST` unless you change it. Setting that instance default to `NONE` means nothing resolves implicitly and every task must state its version, which is the setting to reach for on a regulated platform.
 
-What 2.0 added around it is smaller and useful: versioned plugin documentation addressable by version tag on the website, work toward the same inside the instance UI, and a clearer distinction between open source and Enterprise plugins in the catalogue, backed by artifact filtering on the distribution flag.
+What 2.0 added around it is smaller and useful: work toward the same version selection inside the instance UI, and a clearer distinction between open source and Enterprise plugins in the catalogue, backed by artifact filtering on the distribution flag.
 
 The instance level configuration, with the documented comments because they tell you what each switch actually gates:
 
@@ -286,6 +286,12 @@ kestra:
 `autoReload` is why installing does not mean restarting: each server rescans repositories periodically. With `remoteStorageEnabled`, plugins live in internal storage under `_plugins/repository` and a `plugins.meta` file lets synchronization transfer only what changed.
 
 And a scoping note, because the launch messaging is looser than the behavior. Installing plugins at runtime, on demand, is an open source and standalone capability. Enterprise and distributed deployments keep governed, pre-provisioned plugin management, which is the right default when installing a plugin is a cluster wide change a super admin owns.
+
+### Versioned plugin docs
+
+Version resolution needed a matching change on the [plugin catalogue](https://kestra.io/plugins). Task and trigger docs used to reflect whatever version happened to be latest at build time, which is a problem the moment a flow deliberately pins an older one: the documentation in front of you and the plugin actually running could disagree on what a property does.
+
+Plugin pages are now versioned. The [dbt plugin](https://kestra.io/plugins/plugin-dbt) is a good one to look at, since it has accumulated enough releases to make the version picker worth having: pick an older version from the dropdown and the page shows that version's tasks, properties and examples, not the latest one. If your flow pins `version: "0.21.0"` on a task, the docs for `0.21.0` are the ones you actually want, and now they are the ones you get.
 
 ## Deciding which plugins may run
 
