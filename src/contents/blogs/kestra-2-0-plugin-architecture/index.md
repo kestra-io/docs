@@ -39,6 +39,33 @@ rules:
 
 Read that again with an eye on the edition line: the rules are Enterprise, the extension point is open source. Which means the mechanism for enforcing what may run in your platform is part of the engine everyone gets, and the rules shipped on top of it are a product decision rather than an architectural one. Policies also brought a `POLICY` schema type and a `policyRefs` field on flows, tasks and triggers, so a rule is addressable from the thing it governs.
 
+#### pluginDefaults is gone
+
+The same work that gave us policy rules took away plugin defaults, and the symmetry is the point: one mechanism suggested values, the other enforces them, and keeping both would have meant two answers to the same question.
+
+So flow level `pluginDefaults` is removed, the service that implemented it was renamed to describe what it actually does now, and a flow containing that block will not parse. This is the change most likely to interrupt your upgrade, and it arrives without a deprecation window, so plan for it rather than discover it.
+
+What replaces it depends on your edition. In Enterprise, a `REFERENCE` policy that flows opt into through `policyRefs`, or an `Add` rule scoped to a namespace. Namespace level plugin defaults, which shipped in 1.3, are the surviving mechanism and migrate automatically. In open source there is no centralized replacement: inline the values or hoist them into flow variables.
+
+Two behaviors follow, and neither is obvious until it bites:
+
+**Plugin aliases are not resolved in rule matching.** A `where` clause matches the type string literally, so a rule naming the canonical type will not catch a flow using a deprecated alias. Which matters more in 2.0 because core task aliases and trigger aliases were removed outright during the cycle.
+
+**Lists are replaced, never merged.** A tenant policy setting three environment variables and a namespace policy setting one leaves you with one.
+
+Do not confuse any of this with `kestra.plugins.configurations`, which is unchanged and is for tuning plugin features a flow never expresses:
+
+```yaml
+kestra:
+  plugins:
+    configurations:
+      - type: io.kestra.plugin.scripts.runner.docker.Docker
+        values:
+          volumeEnabled: true
+```
+
+Defaults applied reusable task values. Configurations enable or tune plugin behavior. Only the first one was replaced.
+
 ### File preview renderers
 
 The preview panel in the execution view stopped being a list of formats we happened to support.
@@ -109,33 +136,6 @@ public class S3Storage implements S3Config, StorageInterface
 ```
 
 The repository, on the other hand, is still a compiled-in Gradle module. `QueueInterface` extends `Closeable` and `Pauseable`, and no repository interface extends `Plugin`. So "pluggable backend" means selected by configuration for all of them, and means a registry plugin for storage, secrets, logs and now queues.
-
-## pluginDefaults is gone
-
-The same work that gave us policy rules took away plugin defaults, and the symmetry is the point: one mechanism suggested values, the other enforces them, and keeping both would have meant two answers to the same question.
-
-So flow level `pluginDefaults` is removed, the service that implemented it was renamed to describe what it actually does now, and a flow containing that block will not parse. This is the change most likely to interrupt your upgrade, and it arrives without a deprecation window, so plan for it rather than discover it.
-
-What replaces it depends on your edition. In Enterprise, a `REFERENCE` policy that flows opt into through `policyRefs`, or an `Add` rule scoped to a namespace. Namespace level plugin defaults, which shipped in 1.3, are the surviving mechanism and migrate automatically. In open source there is no centralized replacement: inline the values or hoist them into flow variables.
-
-Two behaviors follow, and neither is obvious until it bites:
-
-**Plugin aliases are not resolved in rule matching.** A `where` clause matches the type string literally, so a rule naming the canonical type will not catch a flow using a deprecated alias. Which matters more in 2.0 because core task aliases and trigger aliases were removed outright during the cycle.
-
-**Lists are replaced, never merged.** A tenant policy setting three environment variables and a namespace policy setting one leaves you with one.
-
-Do not confuse any of this with `kestra.plugins.configurations`, which is unchanged and is for tuning plugin features a flow never expresses:
-
-```yaml
-kestra:
-  plugins:
-    configurations:
-      - type: io.kestra.plugin.scripts.runner.docker.Docker
-        values:
-          volumeEnabled: true
-```
-
-Defaults applied reusable task values. Configurations enable or tune plugin behavior. Only the first one was replaced.
 
 ## Task forms stopped being a wall of fields
 
