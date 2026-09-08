@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
 import heroScreen from "./assets/hero-screen.webp"
-import heroBg from "./assets/hero-bg.svg?url"
+import heroBg from "./assets/hero-bg.webp?url"
 import squares from "./assets/hero-squares.svg?url"
 
 /**
@@ -20,7 +20,7 @@ const COMET_SPRITES = import.meta.glob("./assets/comets/*.png", {
     import: "default",
 }) as Record<string, string>
 
-const COMETS = [
+const COMET_LAYOUT = [
     {
         file: "comet-1.png",
         u: 26.19,
@@ -75,9 +75,22 @@ const COMETS = [
         dur: 4.6,
         delay: -1.4,
     },
-].map((comet) => ({
+]
+
+/* The export nested the comets in a rotated group. Baking that group
+ * transform into each sprite here lets them be plain elements: Firefox never
+ * composites transform animations on SVG children, so inside an <svg> all six
+ * repaint the whole sky on the main thread every frame. */
+const SKY = { w: 1900, h: 1564, angle: -162.374, ox: 1515.58, oy: 934.565 }
+const SKY_RAD = (SKY.angle * Math.PI) / 180
+const SKY_COS = Math.cos(SKY_RAD)
+const SKY_SIN = Math.sin(SKY_RAD)
+
+const COMETS = COMET_LAYOUT.map((comet) => ({
     ...comet,
     src: COMET_SPRITES[`./assets/comets/${comet.file}`],
+    x: SKY.ox + SKY_COS * comet.u - SKY_SIN * comet.v,
+    y: SKY.oy + SKY_SIN * comet.u + SKY_COS * comet.v,
 }))
 
 const KEY_NUMBERS = [
@@ -93,29 +106,23 @@ const KEY_NUMBERS = [
 }
 <section class="tz-hero" aria-labelledby="hero-title">
     <div class="backdrop" aria-hidden="true"></div>
-    <svg
-        class="sky"
-        viewBox="0 0 1900 1564"
-        preserveAspectRatio="xMidYMin slice"
-        aria-hidden="true"
-        focusable="false"
-    >
-        <g transform="translate(1515.58 934.565) rotate(-162.374)">
+    <div class="squares left" aria-hidden="true"><span></span></div>
+    <div class="squares right" aria-hidden="true"><span></span></div>
+    <div class="sky" aria-hidden="true">
+        <div class="field">
             {
                 COMETS.map((comet) => (
-                    <image
+                    <img
                         class="comet"
-                        href={comet.src}
-                        x={comet.u}
-                        y={comet.v}
-                        width={comet.w}
-                        height={comet.h}
-                        style={`--dur: ${comet.dur}s; --delay: ${comet.delay}s`}
+                        src={comet.src}
+                        alt=""
+                        decoding="async"
+                        style={`--x: ${comet.x}; --y: ${comet.y}; --w: ${comet.w}; --h: ${comet.h}; --dur: ${comet.dur}s; --delay: ${comet.delay}s`}
                     />
                 ))
             }
-        </g>
-    </svg>
+        </div>
+    </div>
     <div class="tz-container">
         <div class="intro">
             <div class="title">
@@ -154,6 +161,12 @@ const KEY_NUMBERS = [
         </div>
 
         <figure class="media">
+            {
+                /* Two static shadows cross-fading. Interpolating `box-shadow`
+                itself re-blurred the whole spread on every frame. */
+            }
+            <span class="glow rest" aria-hidden="true"></span>
+            <span class="glow peak" aria-hidden="true"></span>
             <Image
                 src={heroScreen}
                 alt="Introducing Kestra 2.0, the open-source declarative orchestration platform"
@@ -207,7 +220,13 @@ const KEY_NUMBERS = [
 
 <style
     lang="scss"
-    define:vars={{ heroBg: `url(${heroBg})`, squares: `url(${squares})` }}
+    define:vars={{
+        heroBg: `url(${heroBg})`,
+        squares: `url(${squares})`,
+        skyW: SKY.w,
+        skyH: SKY.h,
+        skyAngle: `${SKY.angle}deg`,
+    }}
 >
     .tz-hero {
         position: relative;
@@ -226,61 +245,9 @@ const KEY_NUMBERS = [
         --ambient-cycle: 8s;
         color: $white;
         overflow: clip;
-        /* Own stacking context so the ring pseudo-elements can sit above the
+        /* Own stacking context so the ambient layers can sit above the
          * background yet under the copy with a negative z-index. */
         isolation: isolate;
-
-        &::before,
-        &::after {
-            content: "";
-            position: absolute;
-            z-index: -1;
-            width: 520px;
-            height: 373px;
-            -webkit-mask: var(--squares) center / contain no-repeat;
-            mask: var(--squares) center / contain no-repeat;
-            /* A pale band drifts across the tint painted through the mask, so
-             * the squares light up in a wave instead of sitting at one flat
-             * opacity. Only `background-position` moves: no layout, no mask
-             * recalculation. */
-            background-color: rgba(196, 200, 255, 0.16);
-            background-image: linear-gradient(
-                100deg,
-                rgba(196, 200, 255, 0) 0%,
-                rgba(196, 200, 255, 0) 32%,
-                rgba(222, 225, 255, 0.3) 50%,
-                rgba(196, 200, 255, 0) 68%,
-                rgba(196, 200, 255, 0) 100%
-            );
-            background-repeat: no-repeat;
-            background-size: 300% 100%;
-            animation: squares-sheen 11s ease-in-out infinite;
-            pointer-events: none;
-
-            @include media-breakpoint-down(lg) {
-                display: none;
-            }
-        }
-
-        &::before {
-            top: 480px;
-            left: -327px;
-
-            @include media-breakpoint-down(md) {
-                display: block;
-                top: -33px;
-                left: -216px;
-                width: 307px;
-                height: 220px;
-            }
-        }
-
-        &::after {
-            top: -318px;
-            right: -190px;
-            transform: rotate(90deg);
-            animation-delay: -5.5s;
-        }
 
         @include media-breakpoint-down(lg) {
             padding-block: 7rem 5.5rem;
@@ -319,6 +286,69 @@ const KEY_NUMBERS = [
         @include media-breakpoint-down(md) {
             /* Below md the section paints its own flat gradient instead. */
             display: none;
+        }
+    }
+
+    /* The two square rings. The mask asset is 50% black on black and never
+     * shows as-is, so a tint is painted through it instead. */
+    .squares {
+        position: absolute;
+        z-index: -1;
+        width: 520px;
+        height: 373px;
+        -webkit-mask: var(--squares) center / contain no-repeat;
+        mask: var(--squares) center / contain no-repeat;
+        background-color: rgba(196, 200, 255, 0.16);
+        overflow: clip;
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+
+        /* A pale band drifts across the tint so the squares light up in a wave
+         * instead of sitting at one flat opacity. It is its own layer moved by
+         * `transform`, so the masked fill under it never repaints. Sliding
+         * `background-position` on the mask itself repainted both rings, mask
+         * included, every frame. */
+        span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300%;
+            height: 100%;
+            background: linear-gradient(
+                100deg,
+                rgba(196, 200, 255, 0) 0%,
+                rgba(196, 200, 255, 0) 32%,
+                rgba(222, 225, 255, 0.3) 50%,
+                rgba(196, 200, 255, 0) 68%,
+                rgba(196, 200, 255, 0) 100%
+            );
+            animation: squares-sheen 11s ease-in-out infinite;
+        }
+
+        &.left {
+            top: 480px;
+            left: -327px;
+
+            @include media-breakpoint-down(md) {
+                display: block;
+                top: -33px;
+                left: -216px;
+                width: 307px;
+                height: 220px;
+            }
+        }
+
+        &.right {
+            top: -318px;
+            right: -190px;
+            transform: rotate(90deg);
+
+            span {
+                animation-delay: -5.5s;
+            }
         }
     }
 
@@ -476,14 +506,8 @@ const KEY_NUMBERS = [
         background:
             linear-gradient(#000000, #000000) padding-box,
             linear-gradient(180deg, #3c7fec, #ffffff) border-box;
-        box-shadow:
-            0 -6px 50px 0 rgba(94, 174, 240, 0.45),
-            0 0 40px 0 rgba(94, 110, 212, 0.16);
-        overflow: clip;
-        /* Shares `--ambient-cycle` with the backdrop drift, so the glow peaks
-         * on the same beat. The static rule above is the reduced-motion
-         * fallback. */
-        animation: media-glow var(--ambient-cycle) ease-in-out infinite;
+        /* No `overflow: clip`: the glow layers paint outside the box and the
+         * image carries its own radius, so nothing needs clipping. */
 
         @include media-breakpoint-down(lg) {
             width: 100%;
@@ -511,6 +535,32 @@ const KEY_NUMBERS = [
             aspect-ratio: 1024 / 574;
             border-radius: calc(1rem - 1px);
             object-fit: cover;
+        }
+    }
+
+    /* Only `opacity` moves between the two, which the compositor owns. Shares
+     * `--ambient-cycle` with the backdrop drift, so the glow peaks on the same
+     * beat; with the animation off, `rest` alone is the reduced-motion look. */
+    .glow {
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        animation: var(--ambient-cycle) ease-in-out infinite;
+        pointer-events: none;
+
+        &.rest {
+            box-shadow:
+                0 -6px 50px 0 rgba(94, 174, 240, 0.45),
+                0 0 40px 0 rgba(94, 110, 212, 0.16);
+            animation-name: media-rest;
+        }
+
+        &.peak {
+            box-shadow:
+                0 -9px 78px 0 rgba(94, 174, 240, 0.68),
+                0 0 62px 0 rgba(94, 110, 212, 0.3);
+            opacity: 0;
+            animation-name: media-peak;
         }
     }
 
@@ -669,22 +719,46 @@ const KEY_NUMBERS = [
 
     .sky {
         position: absolute;
-        top: 0;
-        left: 0;
+        inset: 0;
         z-index: -1;
-        width: 100%;
-        height: 100%;
+        /* Sized by the hero, not by its contents, so `.field` can query it. */
+        container-type: size;
+        overflow: clip;
         pointer-events: none;
 
         @include media-breakpoint-down(md) {
             display: none;
         }
+    }
 
-        .comet {
-            opacity: 0;
-            animation: sky-comet var(--dur) linear infinite;
-            animation-delay: var(--delay);
-        }
+    /* The comet coordinates are still the export's 1900x1564 user units, so
+     * this box reproduces what the old `<svg>` did with `xMidYMin slice`:
+     * cover the hero at that ratio, centred, pinned to the top. */
+    .field {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: max(100cqw, 100cqh * var(--skyW) / var(--skyH));
+        aspect-ratio: var(--skyW) / var(--skyH);
+        container-type: size;
+        translate: -50% 0;
+    }
+
+    .comet {
+        /* One user unit, so every value below stays the exported number. */
+        --u: calc(100cqw / var(--skyW));
+
+        position: absolute;
+        top: calc(var(--y) * var(--u));
+        left: calc(var(--x) * var(--u));
+        width: calc(var(--w) * var(--u));
+        height: calc(var(--h) * var(--u));
+        opacity: 0;
+        /* Rotated about its own corner, which is where the baked-in group
+         * transform put it, so the sprite and its drift keep the export's
+         * angle. */
+        transform-origin: 0 0;
+        animation: sky-comet var(--dur) linear infinite var(--delay);
     }
 
     /* Translate is a percentage so it stays proportional to the overscan at
@@ -702,39 +776,49 @@ const KEY_NUMBERS = [
         }
     }
 
-    /* Both ends share a value so the sweep reverses instead of snapping. */
+    /* The band is three times the ring's width, so travelling two thirds of
+     * itself sweeps it fully across. Both ends share a value so the sweep
+     * reverses instead of snapping. */
     @keyframes squares-sheen {
         0%,
         100% {
-            background-position: 100% 0;
+            transform: translateX(-66.6667%);
         }
 
         50% {
-            background-position: 0 0;
+            transform: translateX(0);
         }
     }
 
-    /* The trough is exactly the static `.media` shadow, so the pulse only ever
-     * adds to the designed glow and never dims below it. */
-    @keyframes media-glow {
+    @keyframes media-rest {
         0%,
         100% {
-            box-shadow:
-                0 -6px 50px 0 rgba(94, 174, 240, 0.45),
-                0 0 40px 0 rgba(94, 110, 212, 0.16);
+            opacity: 1;
         }
 
         50% {
-            box-shadow:
-                0 -9px 78px 0 rgba(94, 174, 240, 0.68),
-                0 0 62px 0 rgba(94, 110, 212, 0.3);
+            opacity: 0;
         }
     }
 
+    @keyframes media-peak {
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    /* The drift is the export's 68/-59 and -197/170 user units, expressed in
+     * the same unit as the positions above. */
     @keyframes sky-comet {
         0% {
             opacity: 0;
-            transform: translate(68px, -59px);
+            transform: rotate(var(--skyAngle))
+                translate(calc(68 * var(--u)), calc(-59 * var(--u)));
         }
 
         10% {
@@ -748,27 +832,30 @@ const KEY_NUMBERS = [
         65%,
         100% {
             opacity: 0;
-            transform: translate(-197px, 170px);
+            transform: rotate(var(--skyAngle))
+                translate(calc(-197 * var(--u)), calc(170 * var(--u)));
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .sky .comet,
-        .media,
+        .comet,
+        .glow,
         .backdrop,
-        .tz-hero::before,
-        .tz-hero::after {
+        .squares span {
             animation: none;
         }
 
-        .tz-hero::before,
-        .tz-hero::after {
-            background-image: none;
+        .squares {
             background-color: rgba(196, 200, 255, 0.22);
         }
 
-        .sky .comet {
+        .squares span {
+            display: none;
+        }
+
+        .comet {
             opacity: 1;
+            transform: rotate(var(--skyAngle));
         }
     }
 </style>
