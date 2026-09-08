@@ -1,14 +1,14 @@
 ---
 title: "External Log Data Store in Kestra"
 h1: Store Execution Logs Outside Your Main Database
-description: Route Kestra execution logs to a dedicated JDBC database or Elasticsearch, separate from your main backend, to reduce database size and speed up schema migrations.
+description: Route Kestra execution logs to a dedicated backend (JDBC, Elasticsearch, Splunk, or Datadog), separate from your main database, to reduce database size and speed up schema migrations.
 sidebarTitle: External Log Data Store
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 version: ">= 2.0.0"
 ---
 
-The external log data store routes Kestra execution logs to a dedicated JDBC database or Elasticsearch, separate from the main backend.
+The external log data store routes Kestra execution logs to a dedicated backend, separate from the main database. Supported backends are JDBC (PostgreSQL, MySQL, H2), Elasticsearch, Splunk, and Datadog.
 
 By default, Kestra stores execution logs in the same database as flows, executions, and state.
 
@@ -56,7 +56,7 @@ There is no `datasources.logs` block. The dedicated log database is configured e
 
 | Key | Description |
 |-----|-------------|
-| `kestra.logs.type` | Store type: `h2`, `postgres`, `mysql`, or `elasticsearch` |
+| `kestra.logs.type` | Store type: `h2`, `postgres`, or `mysql` |
 | `kestra.logs.<type>.url` | JDBC URL of the dedicated log database. When set, Kestra opens its own HikariCP connection pool and runs log-table migrations against this database. |
 | `kestra.logs.<type>.username` | Username for the dedicated log database |
 | `kestra.logs.<type>.password` | Password for the dedicated log database |
@@ -204,22 +204,100 @@ volumes:
   postgres-data: {}
 ```
 
-## Store capabilities
+## Configure the Splunk log store
 
-JDBC and Elasticsearch are complete implementations: they support offset pagination with exact totals, dashboard aggregation, and on-demand purge.
+The Splunk log store sends execution logs to a Splunk instance via HTTP Event Collector (HEC) for writes and the Splunk management API for reads, aggregation, and purge.
+
+### Config reference
+
+| Key | Description |
+|-----|-------------|
+| `kestra.logs.type` | `splunk` |
+| `kestra.logs.splunk.host` | Splunk host, without scheme or port (required) |
+| `kestra.logs.splunk.scheme` | URL scheme used to reach Splunk (default: `https`) |
+| `kestra.logs.splunk.hecPort` | HEC port used for writes (default: `8088`) |
+| `kestra.logs.splunk.hecToken` | HEC token used to authenticate writes (required, secret) |
+| `kestra.logs.splunk.managementPort` | Management API port used for reads and aggregation (default: `8089`) |
+| `kestra.logs.splunk.token` | Bearer token for the management API; takes precedence over username/password |
+| `kestra.logs.splunk.username` | Username for basic authentication against the management API |
+| `kestra.logs.splunk.password` | Password for basic authentication against the management API (secret) |
+| `kestra.logs.splunk.index` | Splunk index logs are written to and read from (default: `kestra`) |
+| `kestra.logs.splunk.sourcetype` | Splunk sourcetype used for log events (default: `kestra:log`) |
+| `kestra.logs.splunk.insecureTrustAllCertificates` | Trust all TLS certificates and skip hostname verification (default: `false`; enable only for local dev with self-signed certs) |
+| `kestra.logs.splunk.pageSize` | Page size used when streaming through Splunk search results (default: `1000`) |
+| `kestra.logs.splunk.maxWaitSeconds` | Maximum time in seconds to wait for a Splunk search job (default: `120`) |
+
+`host` and `hecToken` are required. For the management API, provide either `token` (bearer) or both `username` and `password` (basic auth).
+
+### Example: PostgreSQL backend with Splunk log store
+
+```yaml
+kestra:
+  repository:
+    type: postgres
+  queue:
+    type: postgres
+  logs:
+    type: splunk
+    splunk:
+      host: splunk.example.com
+      hecToken: "your-hec-token"
+      token: "your-management-api-bearer-token"
+      index: kestra
+```
+
+## Configure the Datadog log store
+
+The Datadog log store sends execution logs to the Datadog Log Intake API for writes and uses the Logs Search and Aggregate APIs for reads.
+
+:::alert{type="info"}
+Datadog drops any log at intake whose timestamp is more than 18 hours in the past. This store cannot back-fill historical logs.
+:::
+
+### Config reference
+
+| Key | Description |
+|-----|-------------|
+| `kestra.logs.type` | `datadog` |
+| `kestra.logs.datadog.apiKey` | Datadog API key used to authenticate ingest, search, and aggregation (required, secret) |
+| `kestra.logs.datadog.applicationKey` | Datadog application key used to authenticate search and aggregation (required, secret) |
+| `kestra.logs.datadog.site` | Datadog site (region host suffix). For example: `datadoghq.com` (default), `datadoghq.eu`, `us3.datadoghq.com`, `us5.datadoghq.com`, `ap1.datadoghq.com` |
+| `kestra.logs.datadog.indexes` | List of Datadog log indexes to search and aggregate. When unset, Datadog searches the default indexes for the account |
+| `kestra.logs.datadog.pageSize` | Page size for Datadog search results (default: `1000`; Datadog caps at 1000) |
+| `kestra.logs.datadog.maxWaitSeconds` | Maximum time in seconds to wait for a Datadog API request (default: `60`) |
+
+`apiKey` and `applicationKey` are required.
+
+### Example: PostgreSQL backend with Datadog log store
+
+```yaml
+kestra:
+  repository:
+    type: postgres
+  queue:
+    type: postgres
+  logs:
+    type: datadog
+    datadog:
+      apiKey: "your-datadog-api-key"
+      applicationKey: "your-datadog-application-key"
+      site: datadoghq.com
+```
+
+## Store capabilities
 
 Each store declares its capabilities, and Kestra adapts gracefully:
 
-| Capability | What it controls | JDBC | Elasticsearch |
-|---|---|---|---|
-| Aggregation | Whether log count charts and KPI tiles on dashboards query this store | ✓ | ✓ |
-| Pagination type | `OFFSET`: numbered pages with exact totals. `CURSOR`: forward-only, no total. | OFFSET | OFFSET |
-| Purge | Whether Kestra can delete logs on demand via [`PurgeLogs`](../purge/index.md) or the UI | ✓ | ✓ |
+| Capability | What it controls | JDBC | Elasticsearch | Splunk | Datadog |
+|---|---|---|---|---|---|
+| Aggregation | Whether log count charts and KPI tiles on dashboards query this store | ✓ | ✓ | ✓ | ✓ |
+| Pagination type | `OFFSET`: numbered pages with exact totals. `CURSOR`: forward-only, no total. | OFFSET | OFFSET | OFFSET | CURSOR |
+| Purge | Whether Kestra can delete logs on demand via [`PurgeLogs`](../purge/index.md) or the UI | ✓ | ✓ | ✓ | ✗ |
 
-When a store does not support aggregation, dashboard log charts display "No data" rather than erroring. When a store does not support purge, Kestra's `PurgeLogs` operations no-op for logs — the backend's own retention or TTL policy governs deletion.
+When a store does not support aggregation, dashboard log charts display "No data" rather than erroring. When a store does not support purge, Kestra's `PurgeLogs` operations no-op for logs; the backend's own retention or TTL policy governs deletion.
 
 :::alert{type="warning"}
-If you configure a store that cannot purge, set up a retention policy in that backend before switching. Kestra will not delete logs on your behalf.
+If you configure a store that cannot purge (such as Datadog), set up a retention policy in that backend before switching. Kestra will not delete logs on your behalf.
 :::
 
 ## Log Shipper vs External Log Data Store
@@ -233,54 +311,3 @@ If you configure a store that cannot purge, set up a retention policy in that ba
 
 Use the External Log Data Store when you want logs **out of the main database**. Use the [Log Shipper](../../07.enterprise/02.governance/logshipper/index.md) when you want logs **in a third-party observability platform** as well, regardless of where Kestra stores them internally.
 
-## Build a new log store plugin
-
-A new log store is a Kestra plugin that implements `LogDataStoreInterface`. Two reference implementations are available:
-
-- [log-data-store-splunk](https://github.com/kestra-io/log-data-store-splunk) — offset pagination, full aggregation support, `canPurge() == true`
-- [log-data-store-datadog](https://github.com/kestra-io/log-data-store-datadog) — cursor pagination, `canPurge() == false` (logs expire via index retention)
-
-### 1. Implement the interface
-
-Implement `io.kestra.core.repositories.LogDataStoreInterface`. For a new JDBC dialect, extend `AbstractJdbcLogDataStore` — it provides pagination, aggregation, and purge. Provide a no-arg constructor (the factory deserializes config onto the instance). If you need runtime Micronaut beans, implement `ApplicationContextInitializable` and wire dependencies in `init(ApplicationContext)`.
-
-### 2. Declare the plugin id
-
-```java
-@Plugin
-@Plugin.Id("mystore")     // the value operators set in kestra.logs.type
-public class MyLogDataStore implements LogDataStoreInterface, ApplicationContextInitializable {
-    @PluginProperty private String someOption;   // bound from kestra.logs.mystore.someOption
-    ...
-}
-```
-
-### 3. Declare capabilities
-
-The defaults are `canPurge() == true`, `canAggregate() == true`, and `paginationType() == OFFSET`. Override only what your store cannot support:
-
-```java
-@Override public boolean canPurge()              { return false; }  // backend handles TTL
-@Override public boolean canAggregate()          { return false; }  // no server-side aggregation
-@Override public PaginationType paginationType() { return PaginationType.CURSOR; }
-```
-
-A store declaring `canPurge() == false` must no-op all delete/purge methods: return `0` for integer-return methods and provide an empty body for void ones. A store declaring `CURSOR` must return a `CursoredPage` with a `nextPageable()` cursor token from paginated `find(...)` methods.
-
-When the backend has no further results, emit an end-of-results sentinel as the next cursor token. If a caller sends that sentinel back, return an empty page without hitting the backend. The exact sentinel value is an implementation detail; your store just needs to recognize it on inbound requests and short-circuit.
-
-### 4. Pass the contract test
-
-Every log store implementation must pass `io.kestra.core.repositories.AbstractLogDataStoreTest` from the `:tests` module. The base class exercises every interface method and asserts every capability branch. Extend it with an empty class:
-
-```java
-class MyLogDataStoreTest extends AbstractLogDataStoreTest {}
-```
-
-Wire your store as the injected `LogDataStoreInterface` bean via test config. The suite adapts to whatever your store declares, but your store must genuinely honor its declarations.
-
-:::alert{type="info"}
-Most external backends have an indexing delay — writes are not immediately queryable. Override `awaitIndexing(BooleanSupplier ready)` in your test class to poll until data is visible before assertions run. Polling until a probe write is visible is not always sufficient: different fixture groups can have slightly different indexing lag, so the first visible write does not guarantee all writes are queryable. Add a short settle period after the probe goes green to absorb that skew.
-:::
-
-Two testing strategies are viable: run the contract suite against a real backend via Testcontainers (the Splunk approach, using the same Docker Compose stack as local QA), or inject a mock client through a package-private test constructor and gate live backend testing in a separate integration test class (the Datadog approach). Testcontainers gives higher confidence in query assembly and wire behavior; mock injection keeps CI fast when a live account is not available.
