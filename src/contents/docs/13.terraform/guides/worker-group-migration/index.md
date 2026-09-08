@@ -1,4 +1,10 @@
-# Worker Group Migration Guide
+---
+title: "Kestra Terraform Provider: Worker Group Migration Guide"
+h1: Migrate Worker Groups to Worker Queues in Kestra 2.0
+description: Move kestra_worker_group to the Kestra 2.0 model, where routing is driven by Worker Queues and their tag sets.
+---
+
+## Worker Group Migration Guide
 
 The `kestra_worker_group` resource and data source have been reimplemented on the modern Terraform plugin framework for the worker groups of Kestra 2.0 Enterprise Edition.
 
@@ -29,7 +35,7 @@ Upgrade the provider when you upgrade the instance, not before: the 1.x and 2.0 
 2. **Resource attribute rename**: `kestra_worker_group.key` is now `kestra_worker_group.group_id`.
 3. **Data source attribute rename**: `data.kestra_worker_group` is now looked up by `group_id` instead of `id`. `id` is now a read-only attribute, and the former `key` attribute is gone.
 4. **The identifier is immutable**: changing `group_id` replaces the worker group, matching the API where the id is fixed at creation and used on the worker authentication path.
-5. **New `subscriptions` blocks**: a worker group can now subscribe to Worker Queues, with an optional slot reservation. See the [`kestra_worker_group`](../resources/worker_group.md) resource documentation.
+5. **New `subscriptions` blocks**: a worker group can now subscribe to Worker Queues, with an optional slot reservation. See the [`kestra_worker_group`](../../resources/worker_group/index.md) resource documentation.
 6. **New `kestra_worker_queue` resource and data source**: Worker Queues route tasks to worker groups through their tag set. A Worker Queue must have a unique id, and a unique combination of `tags` and `allowed_tenants`.
 7. **`allowed_tenants` is gone from `kestra_worker_group`** (it was published up to provider 1.3.2): tenant scoping now lives on `kestra_worker_queue.allowed_tenants`. The state upgrader drops the attribute, so no manual state edit is needed.
 
@@ -98,7 +104,7 @@ default_worker_selector {
 }
 ```
 
-There is no automatic translation for this one: a worker group key is not a tag set, so the state upgrader drops the old block and the refresh repopulates `default_worker_selector` from the instance. `match` accepts `ALL` (default — the queue tags must be a superset of yours) or `ANY`, and `fallback` gained `IGNORE` alongside `FAIL`, `WAIT` and `CANCEL`. See the [Namespace Migration Guide](namespace-migration.md) for the rest of the namespace changes.
+There is no automatic translation for this one: a worker group key is not a tag set, so the state upgrader drops the old block and the refresh repopulates `default_worker_selector` from the instance. `match` accepts `ALL` (default — the queue tags must be a superset of yours) or `ANY`, and `fallback` gained `IGNORE` alongside `FAIL`, `WAIT` and `CANCEL`. See the [Namespace Migration Guide](../namespace-migration/index.md) for the rest of the namespace changes.
 
 ### 4. Verify
 

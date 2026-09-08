@@ -10,9 +10,9 @@ description: The kestra_service_account_api_tokens data source allows you to rea
 
 Use this data source to access information about the API tokens of a Kestra Service Account.
 
-::alert{type="info"}
+:::alert{type="info"}
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
-::
+:::
 
 
 
@@ -29,7 +29,7 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 - `id` (String) The ID of this resource.
 
 <a id="nestedatt--api_tokens"></a>
-### Nested schema for `api_tokens`
+### Nested Schema for `api_tokens`
 
 Read-Only:
 

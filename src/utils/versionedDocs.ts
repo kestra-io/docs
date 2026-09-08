@@ -146,18 +146,45 @@ export function missingDocFallbackHref(
 }
 
 /**
- * True for an asset reference we should re-point at the versioned asset API: a
- * root-absolute path ending in a file extension (e.g. "/docs/tutorial/x.png",
- * "/autocompletion.gif"). The whole doc corpus authors assets this way — there
- * are no "./"/"../" relative refs — so a relative ref (which we'd need the page's
- * own path to resolve, like the in-app ProseImg's "/./" substitution) is left
- * untouched: it renders no worse than today and never occurs in practice.
- * External (http(s)/protocol-relative/data/mailto/tel) and anchor refs are also
- * left alone, so an external <iframe src> or //cdn asset is never rewritten.
+ * True for a root-absolute asset ref with a file extension ("/docs/tutorial/x.png"),
+ * how the corpus authored assets up to 1.1. Relative refs go through resolveRelativeAssetRef.
  */
 export function isVersionedAssetRef(src: string): boolean {
     if (!src || !src.startsWith("/") || src.startsWith("//")) return false
     return /\.[a-z0-9]+$/i.test(src.split(/[?#]/)[0])
+}
+
+/**
+ * True for a 1.2+ colocated asset ref ("./create-button.png", "../okta/sso.png").
+ * Extension test as in isAssetShapedDocPath, so "./01.fundamentals" isn't one.
+ */
+export function isRelativeAssetRef(src: string): boolean {
+    if (!src || src.startsWith("/") || src.startsWith("#")) return false
+    if (/^[a-z][a-z0-9+.-]*:/i.test(src)) return false
+    return isAssetShapedDocPath(src.split(/[?#]/)[0])
+}
+
+/**
+ * Relative asset ref -> the root-absolute form versionedAssetUrl expects, resolved against
+ * `baseDir`. Directory ordering prefixes drop (the served tree is the cleaned one), filenames keep theirs.
+ */
+export function resolveRelativeAssetRef(baseDir: string, src: string): string {
+    const cut = src.search(/[?#]/)
+    const path = cut === -1 ? src : src.slice(0, cut)
+    const suffix = cut === -1 ? "" : src.slice(cut)
+    const segments = path.split("/")
+    const file = segments.pop() ?? ""
+    const parts = baseDir ? baseDir.split("/") : []
+    for (const raw of segments) {
+        if (raw === "" || raw === ".") continue
+        if (raw === "..") {
+            parts.pop()
+            continue
+        }
+        parts.push(raw.replace(/^\d+\./, ""))
+    }
+    parts.push(file)
+    return `/docs/${parts.join("/")}${suffix}`
 }
 
 /**
@@ -188,15 +215,15 @@ export function isRelativeDocHref(href: string): boolean {
 }
 
 /**
- * The directory the page's own markdown lives in, which relative links resolve
- * against. A page that has children in the flat map is a directory index
- * (docs/06.tutorial/index.md) so its links resolve inside itself; a leaf page
- * (docs/06.tutorial/05.outputs.md) resolves against its parent. The version
- * home ("") is docs/index.md -> "".
+ * The directory the page's markdown lives in, which relative links and asset refs resolve
+ * against: itself for an index page, its parent for a leaf. Version home ("") -> "".
  */
 export function docLinkBaseDir(path: string, children: DocChildren): string {
     const cleaned = path.replace(/^\/+|\/+$/g, "")
     if (!cleaned) return ""
+    // Since 1.2 every page is its own directory's index.md, so one with no
+    // child PAGES (only colocated screenshots) is still a directory.
+    if (children[`docs/${cleaned}`]?.isIndex) return cleaned
     const prefix = `docs/${cleaned}/`
     if (Object.keys(children).some((k) => k.startsWith(prefix))) return cleaned
     const slash = cleaned.lastIndexOf("/")
