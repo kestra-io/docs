@@ -23,14 +23,13 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
-  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
   kestra/kestra:latest-slim server local
 ```
 
 Open http://localhost:8080 in your browser to launch the UI and start building your first flows.
 
 :::alert{type="info"}
-The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. With `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true`, Kestra installs any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
+The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. Plugin auto-install is on by default for `server local`, so Kestra installs any plugin automatically the first time a flow needs it — no need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
 :::
 
 :::alert{type="info"}
