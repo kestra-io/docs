@@ -41,10 +41,10 @@ Examples:
 {{ [1, 2, 3] | jq('.[0]') | first }}
 ```
 
-Example flow using `jq` inside a `ForEach`:
+Example flow using `jq` inside a `Loop`:
 
 ```yaml
-id: jq_with_foreach
+id: jq_with_loop
 namespace: company.team
 
 tasks:
@@ -56,15 +56,15 @@ tasks:
         {"name": "bravo", "value": 2}
       ]
 
-  - id: foreach
-    type: io.kestra.plugin.core.flow.ForEach
+  - id: loop
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ fromJson(outputs.generate.value) }}"
     tasks:
       - id: log_filtered
         type: io.kestra.plugin.core.log.Log
         message: |
-          Name: {{ fromJson(taskrun.value).name }}
-          Doubled value: {{ fromJson(taskrun.value) | jq('.value * 2') | first }}
+          Name: {{ fromJson(item.value).name }}
+          Doubled value: {{ fromJson(item.value) | jq('.value * 2') | first }}
 ```
 
 The practical rule with `jq` is that it is great for extracting or transforming a small part of a larger payload, but it is usually overkill when plain dot access already gets you the value you need.

@@ -43,6 +43,10 @@ kestra:
 Secrets metadata migration is only necessary for Enterprise users. Open-source users will see an exception error: `❌ Secrets Metadata migration failed: Secret migration is not needed in the OSS version`.
 :::
 
+:::alert{type="info"}
+The secrets metadata migration automatically **skips any tenant or namespace whose secret manager is in read-only mode** — read-only secret managers do not use the secrets metadata store, so nothing needs to be migrated for them, and each skipped namespace is logged. Writable tenants and namespaces are migrated as usual, so a setup that mixes read-only and writable secret managers still migrates correctly. Skipped read-only namespaces are unaffected: their secrets keep resolving at runtime and remain listed in the UI.
+:::
+
 Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
 
 ```yaml

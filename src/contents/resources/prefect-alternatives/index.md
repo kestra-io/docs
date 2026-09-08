@@ -22,6 +22,56 @@ faq:
   - question: "What are the main factors when choosing a Prefect alternative?"
     answer: "Key factors include deployment model (self-hosted vs. managed), language support (Python-only vs. polyglot), architectural philosophy (code-first vs. declarative), scalability needs, integration ecosystem, and cost considerations. Aligning these with your team's specific requirements is crucial."
 author: "elliot"
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top Prefect Alternatives"
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      item:
+        "@type": "SoftwareApplication"
+        name: "Kestra"
+        url: "https://kestra.io/vs/prefect"
+    - "@type": "ListItem"
+      position: 2
+      item:
+        "@type": "SoftwareApplication"
+        name: "Apache Airflow"
+        url: "https://kestra.io/vs/airflow"
+    - "@type": "ListItem"
+      position: 3
+      item:
+        "@type": "SoftwareApplication"
+        name: "Dagster"
+        url: "https://kestra.io/vs/dagster"
+    - "@type": "ListItem"
+      position: 4
+      item:
+        "@type": "SoftwareApplication"
+        name: "ZenML"
+    - "@type": "ListItem"
+      position: 5
+      item:
+        "@type": "SoftwareApplication"
+        name: "Metaflow"
+    - "@type": "ListItem"
+      position: 6
+      item:
+        "@type": "SoftwareApplication"
+        name: "Windmill"
+        url: "https://kestra.io/vs/windmill"
+    - "@type": "ListItem"
+      position: 7
+      item:
+        "@type": "SoftwareApplication"
+        name: "Apache NiFi"
+        url: "https://kestra.io/vs/apache-nifi"
+    - "@type": "ListItem"
+      position: 8
+      item:
+        "@type": "SoftwareApplication"
+        name: "Mage"
 ---
 
 Prefect has established itself as a robust, Python-native workflow orchestrator, particularly popular for its focus on developer experience and dynamic workflows. However, as data and AI pipelines grow in complexity and span diverse technology stacks, many engineering teams find themselves evaluating alternatives. The increasing demand for language-agnostic solutions, declarative configuration, and greater control over self-hosted environments—especially with broader trends like the Airflow 3.0 migration prompting re-evaluation of orchestration layers—highlights a shifting landscape. For the category fundamentals behind these tools, see [what is data orchestration](/resources/data/data-orchestration).
@@ -162,180 +212,3 @@ While Prefect offers a powerful, modern experience for Python-based workflows, t
 However, for teams looking to break free from language constraints and unify their automation efforts, a platform like Kestra offers a compelling path forward. By embracing a declarative, language-agnostic, and event-driven approach, Kestra acts as a universal control plane for your entire technology stack. It empowers data, platform, and AI teams to build reliable, scalable, and observable workflows without being locked into a single programming paradigm.
 
 Ready to see how a declarative approach can simplify your orchestration? [Get started with Kestra](https://kestra.io/get-started) or [book a demo](https://kestra.io/demo) to explore its capabilities.
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Why should I consider alternatives to Prefect?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "While Prefect excels in Python-native dynamic workflows, teams often seek alternatives due to its Python-centric nature, potential operational overhead at scale, or a desire for more declarative, language-agnostic, or self-hosted deployment options that integrate across broader IT and AI stacks."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Kestra a good alternative to Prefect for data pipelines?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, Kestra offers a strong alternative to Prefect, especially for teams needing polyglot task execution and declarative YAML workflows. It unifies data, AI, and infrastructure orchestration, providing flexibility beyond Python-only environments with robust event-driven capabilities and lower operational overhead."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How does Apache Airflow compare to Prefect as an alternative?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Apache Airflow, a mature Python-based orchestrator, offers a vast operator ecosystem. Compared to Prefect, Airflow has a longer history and extensive community, but can involve higher operational complexity. It's suitable for Python-heavy teams, though many now seek modern alternatives."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What are the key advantages of Dagster over Prefect?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Dagster's asset-centric design provides superior data lineage and observability, appealing to analytics engineering teams. While both are Python-first, Dagster's explicit asset model and strong typing offer a different paradigm for managing data pipelines, particularly with dbt integration."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are there self-hosted Prefect alternatives?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, many Prefect alternatives offer robust self-hosting capabilities. Kestra, Apache Airflow, Dagster, and Windmill are prominent examples, providing flexibility for on-premise, hybrid, or air-gapped environments, addressing common needs for data sovereignty and infrastructure control."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Which Prefect alternative is best for ML-focused workflows?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "For ML-focused workflows, alternatives like ZenML and Metaflow offer specialized features for model training, versioning, and deployment. Kestra also supports AI workflows with native agentic capabilities and integrations with various ML tools, providing a versatile platform for MLOps."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What are the main factors when choosing a Prefect alternative?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Key factors include deployment model (self-hosted vs. managed), language support (Python-only vs. polyglot), architectural philosophy (code-first vs. declarative), scalability needs, integration ecosystem, and cost considerations. Aligning these with your team's specific requirements is crucial."
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top Prefect Alternatives",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Kestra",
-        "url": "https://kestra.io/vs/prefect"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Apache Airflow",
-        "url": "https://kestra.io/vs/airflow"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Dagster",
-        "url": "https://kestra.io/vs/dagster"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "ZenML"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Metaflow"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Windmill",
-        "url": "https://kestra.io/vs/windmill"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 7,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Apache NiFi",
-        "url": "https://kestra.io/vs/apache-nifi"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 8,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Mage"
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Data Engineering Resources",
-      "item": "https://kestra.io/resources/data"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Prefect Alternatives: Orchestration Platforms for Data & AI Workflows",
-      "item": "https://kestra.io/resources/data/prefect-alternatives"
-    }
-  ]
-}
-```
