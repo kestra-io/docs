@@ -13,7 +13,7 @@ image: ./main.png
 
 Plugins are how Kestra talks to the outside world: databases, message queues, object stores, and APIs. They sit on the hot path of almost every execution, so a small inefficiency in a plugin quietly becomes a big one once you are moving millions of rows or thousands of messages.
 
-Kestra 2.0 [rebuilds the engine](/blogs/2026-09-01-kestra20-rebuild-engine) around the same idea, doing less work per execution. Plugins are the other half of that hot path, so we recently went through several of them looking for exactly that. Two patterns kept coming up. Work that was repeated on every row or every call when it only needed to happen once, and a handful of places that dropped data or errors without ever telling you. This post walks through the fixes, spread across seven plugins.
+We recently went through several plugins looking for exactly that. Two patterns kept coming up. Work that was repeated on every row or every call when it only needed to happen once, and a handful of places that dropped data or errors without ever telling you. This post walks through the fixes, spread across seven plugins.
 
 Here is what we cover:
 
