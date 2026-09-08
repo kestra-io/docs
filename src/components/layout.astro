@@ -28,7 +28,7 @@ interface Props {
      * @param headerTheme Controls the header appearance before scrolling.
      * - `"lightText"` — White nav links/logo; for dark/gradient hero backgrounds.
      * - `"darkText"` — Dark nav links/logo; for white hero backgrounds.
-     * - `"darkHeader"` — Opaque dark header background in both modes (currently only used on homepage for the riv black bg).
+     * - `"darkHeader"` — Opaque dark header background in both modes.
      * @param headerBg Override the dark header background color. Only applies when `headerTheme="darkHeader"`.
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
@@ -46,6 +46,7 @@ interface Props {
      * and keep exit paths off the page.
      */
     bareChrome?: boolean
+    hideFloatingActions?: boolean
 }
 
 const props = Astro.props
@@ -113,7 +114,8 @@ const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
 
 const isHomepage = Astro.url.pathname === "/"
-const hasAnnounce = isHomepage && annonces.length > 0
+const isTwoZero = Astro.url.pathname.replace(/\/$/, "") === "/two-zero"
+const hasAnnounce = (isHomepage || isTwoZero) && annonces.length > 0
 
 const websiteSchema = isHomepage
     ? {
@@ -316,7 +318,9 @@ const organizationSchema = {
                     <LayoutFooter transition:persist>
                         <ThemeSwitcher slot="theme-switcher" />
                     </LayoutFooter>
-                    <LayoutFixed client:load transition:persist />
+                    {!props.hideFloatingActions && (
+                        <LayoutFixed client:load transition:persist />
+                    )}
                 </>
             )
         }
