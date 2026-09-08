@@ -524,7 +524,6 @@ The breaking changes that require action:
 | RBAC CRUD model replaced | Existing roles migrate automatically. Review custom roles against the new action model. |
 | `json()` Pebble function removed | Replace with `fromJson()` (same signature). |
 | Namespace and global `pluginDefaults` removed | Replace with Policies (EE) or remove them (OSS). |
-| `forced: true` on flow-level `pluginDefaults` removed | Remove the `forced` flag or migrate the default to Policies. |
 | `kestra.ee.execution-data.internal-storage` removed (EE) | Remove these keys from your configuration. Task run outputs are now stored separately from the execution record in 2.0. |
 | ION binary format | `read()` on ION outputs followed by string ops needs `fromIon()` wrapping. |
 | Four core tasks removed | `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed. Replace with their equivalents in the `plugin-kestra` SDK. |
