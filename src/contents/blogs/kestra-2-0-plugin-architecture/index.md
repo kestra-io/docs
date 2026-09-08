@@ -263,6 +263,82 @@ Four new Enterprise task runners arrived in the same cycle, each targeting workl
 
 Same pattern as the storage and network plugins above: a task runner is a plugin too, so none of this required touching the engine, just adding four more implementations of an interface that already existed.
 
+## New plugins since 1.3
+
+The plugin count kept moving after 1.3 shipped on March 3. Here is everything that landed as a brand new plugin repository since then, grouped by catalogue category.
+
+#### AI
+
+- **Pinecone**: vector database operations
+
+#### Business
+
+- **Tencent**: Tencent Cloud APIs
+- **Bluesky**: post to Bluesky
+- **Monday**: monday.com boards
+- **Xquik**: X/Twitter public data
+- **Miro**: Miro boards
+- **Zoom**: Zoom meetings and recordings
+- **Pylon**: Pylon support tickets
+- **Figma**: Figma files and assets
+- **Matrix**: Matrix chat messaging
+- **Camunda**: Camunda 8 processes
+
+#### Cloud
+
+- **HPE Morpheus (EE)**: HPE Morpheus cloud management
+- **Netskope**: Netskope security cloud
+- **Proxmox**: Proxmox VE virtual machines
+- **Huawei**: Huawei Cloud, an AWS-plugin equivalent
+- **Huawei (EE)**: Huawei Cloud CCI task runner and log exporter
+- **Clever Cloud**: Clever Cloud apps and add-ons
+- **DigitalOcean**: droplets and other DigitalOcean resources
+
+#### Core
+
+- **Dagger**: containerized CI/CD pipelines
+
+#### Data
+
+- **Zapier**: trigger and manage Zaps
+- **Skopeo**: copy and inspect container images
+- **Dash0 (EE)**: ship logs to Dash0
+- **RunMyJobs (EE)**: Redwood RunMyJobs
+- **Scrapy**: run Scrapy spiders
+- **Faktory**: Faktory job queue
+- **Timefold**: constraint-solving optimization
+- **Metaplane**: data observability monitors
+- **Adanos**: market and asset sentiment
+- **Hex**: run Hex notebooks
+
+#### Infrastructure
+
+- **OpenTofu**: OpenTofu resources
+- **Terragrunt**: Terragrunt orchestration
+- **Hpoo (EE)**: HP Operations Orchestration
+- **Fastly**: Fastly CDN configuration
+- **F5 (EE)**: F5 load balancer
+- **Temporal**: Temporal workflows
+- **Infoblox (EE)**: Infoblox IPAM and DNS
+- **SolarWinds (EE)**: SolarWinds IPAM
+- **PhpIPAM**: IP address management
+- **NetApp (EE)**: NetApp ONTAP storage
+- **Veeam (EE)**: backup and replication
+- **Ceph**: Ceph storage clusters
+- **Pure Storage FlashArray (EE)**: FlashArray snapshots
+- **Syslog (EE)**: audit logs over Syslog/CEF
+- **Dell EMC PowerStore (EE)**: PowerStore storage
+- **CrowdStrike (EE)**: CrowdStrike security
+- **Aikido**: Aikido security scanning
+
+## New sub-plugins since 1.3
+
+Sub-plugins don't carry a catalogue category, they're grouped by what they plug into instead: a storage backend, a secret manager, or a log data store.
+
+- **Storage**: Cloudflare R2 (`storage-cloudflare`), Huawei OBS (`storage-obs`)
+- **Secret managers**: Delinea Secret Server (`secret-delinea`), Bitwarden (`secret-bitwarden`)
+- **Log data stores**: Datadog (`log-data-store-datadog`), Splunk (`log-data-store-splunk`)
+
 ## Versioned plugins
 
 What it does, briefly, because it remains one of the most useful things in the plugin system: Kestra hosts several versions of the same plugin at once and any task or trigger names the one it wants.
