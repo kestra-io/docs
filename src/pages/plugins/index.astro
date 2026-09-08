@@ -3,7 +3,8 @@ export const prerender = false
 import { $fetchApiCached } from "~/utils/fetch"
 import type { Plugin } from "~/utils/plugins/plugin"
 import { filterPluginsWithoutDeprecated } from "~/utils/plugins/plugin"
-import { prunePluginsForCards, calculateTotalPluginCount } from "~/utils/plugins/pruneForClient"
+import { prunePluginsForCards } from "~/utils/plugins/pruneForClient"
+import { calculateTotalPlugins, formatPluginCount } from "~/utils/plugins/pluginCount"
 import { buildPluginUrlIndex } from "~/utils/plugins/canonicalUrl"
 
 import Layout from "~/components/layout.astro"
@@ -25,7 +26,9 @@ const filteredPlugins = Object.values(pluginsByName).flatMap((group) => {
     return subgroups.length === 1 && parent ? subgroups : group
 })
 
-const totalPluginCount = calculateTotalPluginCount(rawPlugins)
+// Rendered per request, so the count is derived from the groups fetched above
+// rather than the build-time memo in fetchTotalPluginsCount.
+const totalPluginCount = `${formatPluginCount(calculateTotalPlugins(rawPlugins))}+`
 const cardPlugins = prunePluginsForCards(
     filteredPlugins,
     rawPluginsData.byPlugin,

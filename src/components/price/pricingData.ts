@@ -49,7 +49,7 @@ export const SHARED_FEATURES = [
     "Multi-cloud & air-gapped deployment",
 ]
 
-export const getSections = (totalPlugins: number): Section[] => [
+export const getSections = (totalPlugins: string): Section[] => [
     {
         title: "Core Platform",
         rows: [
@@ -57,7 +57,7 @@ export const getSections = (totalPlugins: number): Section[] => [
                 feature: `${totalPlugins}+ Plugins`,
                 values: ["check", "check"],
                 description: {
-                    text: `Connect Kestra to ${totalPlugins}+ plugins`,
+                    text: `Most of Kestra's ${totalPlugins}+ plugins are available in both editions`,
                     link: "/plugins",
                 },
             },
