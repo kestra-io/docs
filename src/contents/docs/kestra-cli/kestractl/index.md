@@ -16,7 +16,7 @@ For server components and system maintenance commands (starting standalone serve
 Source code and releases are available at [github.com/kestra-io/kestractl](https://github.com/kestra-io/kestractl).
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | VERSION=1 bash
 ```
 
 ## Quick Setup
