@@ -330,14 +330,25 @@ The plugin count kept moving after 1.3 shipped on March 3. Here is everything th
 - **Dell EMC PowerStore (EE)**: PowerStore storage
 - **CrowdStrike (EE)**: CrowdStrike security
 - **Aikido**: Aikido security scanning
+- **Cloudflare R2** (storage backend, `storage-cloudflare`)
+- **Huawei OBS** (storage backend, `storage-obs`)
+- **Delinea Secret Server** (secret manager, `secret-delinea`)
+- **Bitwarden** (secret manager, `secret-bitwarden`)
+- **Datadog** (log data store, `log-data-store-datadog`)
+- **Splunk** (log data store, `log-data-store-splunk`)
 
 ## New sub-plugins since 1.3
 
-Sub-plugins don't carry a catalogue category, they're grouped by what they plug into instead: a storage backend, a secret manager, or a log data store.
+These are not new plugin repositories, they're new capabilities added to plugins that already existed: a new dialect, language or task family bolted onto a repo that already had a catalogue entry.
 
-- **Storage**: Cloudflare R2 (`storage-cloudflare`), Huawei OBS (`storage-obs`)
-- **Secret managers**: Delinea Secret Server (`secret-delinea`), Bitwarden (`secret-bitwarden`)
-- **Log data stores**: Datadog (`log-data-store-datadog`), Splunk (`log-data-store-splunk`)
+#### Core
+
+- **Transform (Records)**: the base record-transform tasks that back the Transform plugin (`plugin-transform-records`)
+
+#### Data
+
+- **Microsoft Access**: new JDBC dialect, via UCanAccess (`plugin-jdbc-access`)
+- **.NET (C#)**: new script language for the Scripts plugin (`plugin-script-dotnet`)
 
 ## Versioned plugins
 
