@@ -67,20 +67,14 @@ function resolveImport(specifier, fromFile) {
         return null
     }
 
-    const base =
-        resolveAlias(specifier) ??
-        path.resolve(path.dirname(fromFile), specifier)
+    const base = resolveAlias(specifier) ?? path.resolve(path.dirname(fromFile), specifier)
 
     // Try the path as-is first, then with common extensions
     const candidates = [
         base,
-        ...["ts", "js", "mjs", "cjs", "astro", "vue", "tsx", "jsx"].map(
-            (ext) => `${base}.${ext}`,
-        ),
+        ...["ts", "js", "mjs", "cjs", "astro", "vue", "tsx", "jsx"].map((ext) => `${base}.${ext}`),
         // Also try index files for directory imports
-        ...["ts", "js", "mjs", "astro"].map((ext) =>
-            path.join(base, `index.${ext}`),
-        ),
+        ...["ts", "js", "mjs", "astro"].map((ext) => path.join(base, `index.${ext}`)),
     ]
 
     for (const candidate of candidates) {
@@ -216,9 +210,7 @@ function checkFile(filePath, chain) {
                 // Locate the statement in the raw file for line/column info.
                 const offset = raw.indexOf(statement)
                 const { line, column } =
-                    offset >= 0
-                        ? offsetToLineCol(raw, offset)
-                        : { line: 1, column: 1 }
+                    offset >= 0 ? offsetToLineCol(raw, offset) : { line: 1, column: 1 }
                 violations.push({
                     filePath,
                     line,
@@ -278,9 +270,7 @@ const pages = collectPages(pagesDir).filter(isNotPrerendered)
 // reviewdog input.
 const info = format === "rdjsonl" ? console.error : console.log
 
-info(
-    `Scanning ${pages.length} non-prerendered page(s) in src/pages and their dependencies…\n`,
-)
+info(`Scanning ${pages.length} non-prerendered page(s) in src/pages and their dependencies…\n`)
 
 for (const page of pages) {
     checkFile(page, [])
@@ -313,12 +303,8 @@ if (format === "rdjsonl") {
 if (violations.length > 0) {
     if (format !== "rdjsonl") {
         for (const v of violations) {
-            const fullChain = v.chain
-                .map((f) => path.relative(rootDir, f))
-                .join("\n      → ")
-            console.warn(
-                `WARNING: non-type import from "astro:content" detected`,
-            )
+            const fullChain = v.chain.map((f) => path.relative(rootDir, f)).join("\n      → ")
+            console.warn(`WARNING: non-type import from "astro:content" detected`)
             console.warn(`  via: ${fullChain}`)
             console.warn(`  import: ${v.statement.trim()}\n`)
         }
@@ -329,7 +315,5 @@ if (violations.length > 0) {
     }
     process.exit(1)
 } else {
-    info(
-        `OK: no non-type imports from "astro:content" found in src/pages or their dependencies.`,
-    )
+    info(`OK: no non-type imports from "astro:content" found in src/pages or their dependencies.`)
 }

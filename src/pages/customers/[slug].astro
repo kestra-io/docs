@@ -6,6 +6,11 @@ import StoryDetail from "~/components/stories/StoryDetail.vue"
 import SeeHow from "~/components/common/SeeHow.astro"
 import Layout from "~/components/layout.astro"
 import { randomSortFunction } from "~/utils/random"
+import {
+    collectionContentDigest,
+    entryCacheKey,
+    layoutDigest,
+} from "~/utils/incrementalCacheKey"
 
 interface Props {
     entry: CollectionEntry<"customerStories">
@@ -24,7 +29,11 @@ export const getStaticPaths = (async () => {
     const toSlug = (entry: CollectionEntry<"customerStories">) =>
         entry.data.companyName ? slugify(entry.data.companyName) : entry.id
 
+    // Related stories embed sibling bodies, so the whole collection keys a page.
+    const scope = [collectionContentDigest(allEntries), await layoutDigest()]
+
     return allEntries.map((entry) => ({
+        cacheKey: entryCacheKey(entry, ...scope),
         props: {
             entry,
             related: {
