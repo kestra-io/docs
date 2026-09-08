@@ -27,9 +27,9 @@ For most deployments, a single PostgreSQL or MySQL database acts as both the que
 
 For quick local experimentation, `server local` mode uses an embedded H2 database with no external dependencies.
 
-::alert{type="info"}
+:::alert{type="info"}
 H2 is not recommended for distributed or production deployments.
-::
+:::
 
 ## AMQP / Redis (Enterprise)
 
