@@ -1,4 +1,10 @@
-# Namespace Migration Guide
+---
+title: "Kestra Terraform Provider: Namespace Migration Guide"
+h1: Migrate Namespace and Tenant Resources for Kestra 2.0
+description: Update kestra_namespace and kestra_tenant for the settings Kestra 2.0 removed, including default_worker_selector.
+---
+
+## Namespace Migration Guide
 
 Kestra 2.0 removed two settings from the namespace and tenant APIs. This provider line drops them from `kestra_namespace` and `kestra_tenant` to match:
 
@@ -17,7 +23,7 @@ Removing the attributes turns that silence into a plan-time error, which is the 
 ## What Changed
 
 1. **`plugin_defaults` is gone from `kestra_namespace`.** Plugin defaults are now expressed as governance Policies. The 2.0 instance upgrade migrates them for you (see below) — you do not re-author them, but you do have to adopt the result into Terraform.
-2. **`worker_group` became `default_worker_selector`** on both `kestra_namespace` and `kestra_tenant`. Routing is now a tag set matched against Worker Queues rather than a reference to a single worker group. See the [Worker Group Migration Guide](worker-group-migration.md) for the block-level before/after and for the Worker Queue resources it depends on.
+2. **`worker_group` became `default_worker_selector`** on both `kestra_namespace` and `kestra_tenant`. Routing is now a tag set matched against Worker Queues rather than a reference to a single worker group. See the [Worker Group Migration Guide](../worker-group-migration/index.md) for the block-level before/after and for the Worker Queue resources it depends on.
 3. **The `kestra_namespace` schema version moved to 2.** The provider's state upgrader drops both attributes from your `.tfstate` on the next `terraform plan`; no `terraform state` surgery is required.
 4. **The data sources followed**: `data.kestra_namespace` no longer exposes `plugin_defaults`, and both `data.kestra_namespace` and `data.kestra_tenant` expose `default_worker_selector` instead of `worker_group`.
 

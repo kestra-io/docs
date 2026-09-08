@@ -1,4 +1,10 @@
-# RBAC Permission Migration Guide
+---
+title: "Kestra Terraform Provider: RBAC Permission Migration Guide"
+h1: Migrate RBAC Permissions to Fine-Grained Actions
+description: Move kestra_role from generic CRUD permissions to the fine-grained per-resource actions used by the current RBAC system.
+---
+
+## RBAC Permission Migration Guide
 
 Kestra has reworked its RBAC system to replace generic CRUD actions (`READ`, `CREATE`, `UPDATE`, `DELETE`) with fine-grained, per-resource actions (`VIEW`, `LIST`, `EXECUTE`, `KILL`, etc.). Some permission types have also been renamed or split.
 
