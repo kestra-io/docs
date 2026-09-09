@@ -149,7 +149,7 @@ Useful for plugin authors: the annotation is non-breaking and was made available
 
 While in the same area, plugin icons became real SVG resources instead of data URIs, with lazy loading and content sanitization through a new sanitizer, and a monochrome flag derived from whether the SVG uses `currentColor`. The measurable result is **12MB removed from a JSON payload**, which is a page load rather than a feature but you will feel it on the plugins page.
 
-## Plugin Auto-download
+## Plugin Auto Install - Kestra Slim
 
 The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
@@ -167,49 +167,9 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
 
 That auto-install is scoped: it's an open source, `server local` behavior, gated by `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED` (or `kestra.plugins.auto-install.enabled` in configuration), true by default for that mode. Turn it off and the `-slim` image goes back to needing plugins pre-installed, which is the setting to reach for once you're past evaluating and want a fixed, reviewed plugin set.
 
-The editor doesn't lose autocompletion in the meantime, either. It works off the plugin bundle schema, which is available whether or not the plugin's JAR has actually been downloaded to that instance yet, so a task gets validation and suggestions before Kestra has ever fetched it.
+None of that costs you the editor. For every release, CI compiles a plugin bundle schema, one JSON schema per registered plugin, task and trigger, and bakes it directly into the Kestra JAR. The editor loads that bundled schema at startup, so a task from a plugin you haven't installed yet still validates and autocompletes correctly. Auto-download only happens later, the moment a flow actually runs that task.
 
-With auto-install on, you don't need to do anything else, or you can be explicit about it:
-
-```yaml
-services:
-  kestra:
-    image: kestra/kestra:latest-slim
-    entrypoint: /bin/sh -c "
-      kestra plugins install io.kestra.plugin:plugin-dbt:LATEST && \
-      kestra plugins install io.kestra.plugin:plugin-scripts:LATEST && \
-      kestra server standalone"
-```
-
-Or bake it, which is what you want for anything reproducible:
-
-```dockerfile
-ARG IMAGE_TAG=latest-slim
-FROM kestra/kestra:$IMAGE_TAG
-RUN /app/kestra plugins install \
-  io.kestra.plugin:plugin-aws:LATEST \
-  io.kestra.storage:storage-gcs:LATEST \
-  io.kestra.plugin:plugin-gcp:LATEST
-```
-
-Behind the scenes, the build itself changed: plugin JARs are now pre-downloaded in CI through `kestractl` and copied into the image, instead of being installed by the Dockerfile, with a base image carrying the open source plugin set.
-
-For anyone running detached workers, and 2.0 gives you many more reasons to, there is a new pair of commands that answers "which JARs does this particular process actually need":
-
-```shell
-kestractl plugins list 2.0.0 --from-config /etc/kestra/application.yaml
-kestractl plugins download 2.0.0 --plugins "$(kestractl plugins list 2.0.0 --from-config /etc/kestra/application.yaml)"
-```
-
-`--from-config` reads exactly four keys, `kestra.storage.type`, `kestra.secret.type`, `kestra.queue.type` and `kestra.repository.type`, and emits only the backends that ship as separate artifacts. Local storage, the JDBC and Elasticsearch secret backends, the memory, H2, Postgres, MySQL and Kafka queues and the memory, H2, Postgres and MySQL repositories are bundled, so they never appear. Point it at an S3 configuration and you get `io.kestra.storage:storage-s3:1.4.1`.
-
-`download` takes `--plugins-dir`, `--edition` to filter open source or Enterprise, `--concurrency`, `--keep-only-last-version` which is on by default, `--force-redownload`, `--global-timeout` at five minutes, and `--maven-repository` with credentials, which you need for the external secret managers and the Elasticsearch and OpenSearch backends because those are not on Maven Central.
-
-### The supply chain moved
-
-An unglamorous change with real availability consequences. Plugin JARs used to be fetched straight from Maven Central at API startup, during release CI and while indexing plugins. Maven Central rate limits and occasionally returns 403s, and the failures cascaded: a restart of the plugin API could take the plugin catalogue down with it.
-
-All of that now goes through a caching artifact registry proxy, with a public mirror for open source plugins. Not a feature you will notice, unless you were one of the people watching it break.
+<div style="position: relative; padding-bottom: calc(54.8643% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/8xE47n6bLlDfIcIQrHyj?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Auto Install - Kestra Slim" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 ## Compatibility, and a deliberate decision not to break you
 
