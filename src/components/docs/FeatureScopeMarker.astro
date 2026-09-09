@@ -1,9 +1,4 @@
 ---
-/**
- * "Available on:" edition pills above a docs body, from the page's `editions`
- * frontmatter (see the `docs` collection schema in `src/content.config.ts`).
- * Rendered by DocsLayout for every docs page; renders nothing without editions.
- */
 import { editionLabelAndColorByPrefix } from "~/utils/badgeMaps.mjs"
 
 interface Props {
@@ -57,8 +52,6 @@ const editions = (Astro.props.editions ?? []).map((edition) => {
         font-size: $font-size-sm;
     }
 
-    // `&:hover` repeated so the pills outrank the markdown `.bd-content p a:hover`
-    // link color and keep their tag colors.
     .feature-scope-pill {
         &,
         &:hover {
