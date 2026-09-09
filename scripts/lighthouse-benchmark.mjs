@@ -12,6 +12,8 @@
  *   BASELINE_FILE – Path to baseline JSON (optional; omit to skip comparison)
  *   MARKDOWN_FILE – Path for Markdown report (default: lighthouse-report.md)
  *   LHR_DIR       – Directory for per-page LHR JSON dumps (default: lhr-reports)
+ *   MULTI_RUN_COUNT – Overrides the per-page run counts in MULTI_RUN_PATHS
+ *   WARMUP_PATH   – Page requested before measuring (default: /privacy-policy)
  *
  * Exits with code 0 on success, 1 on fatal error.
  * Score regressions never cause a non-zero exit — output is informational only.
@@ -30,6 +32,36 @@ const OUTPUT_FILE = process.env.OUTPUT_FILE ?? "lighthouse-results.json"
 const BASELINE_FILE = process.env.BASELINE_FILE ?? ""
 const MARKDOWN_FILE = process.env.MARKDOWN_FILE ?? "lighthouse-report.md"
 const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
+// Warm-up target: a prerendered page with almost no content of its own, so it
+// pulls the worker and the shared layout assets without touching the sample.
+const WARMUP_PATH = process.env.WARMUP_PATH ?? "/privacy-policy"
+const WARMUP_REQUESTS = 3
+
+// Overrides the per-page run counts below when set above 0.
+const MULTI_RUN_COUNT = Math.max(
+    0,
+    Math.trunc(Number(process.env.MULTI_RUN_COUNT ?? 0)) || 0,
+)
+
+// Pages whose score sits mid-curve with TBT dominating, so a single run swings
+// 20+ points between runners. Reported as the median of these many runs.
+const MULTI_RUN_PATHS = new Map([
+    ["/", 5],
+    ["/docs", 3],
+    ["/blueprints", 3],
+])
+
+/**
+ * Runs to measure for a page, 1 for anything not listed as noisy.
+ *
+ * @param {string} path
+ * @returns {number}
+ */
+function runsFor(path) {
+    const runs = MULTI_RUN_PATHS.get(path)
+    if (!runs) return 1
+    return MULTI_RUN_COUNT || runs
+}
 
 if (!BASE_URL) {
     console.error("ERROR: BASE_URL environment variable is required.")
@@ -91,6 +123,9 @@ const METRIC_DEFS = [
 const SCORE_THRESHOLD = 10
 // Metric delta significance threshold (fraction of baseline value).
 const METRIC_THRESHOLD = 0.3
+// Relative benchmarkIndex gap above which baseline deltas are suppressed:
+// Lighthouse does not normalise host CPU, so a slower runner fakes regressions.
+const BENCHMARK_INDEX_THRESHOLD = 0.1
 
 // ---------------------------------------------------------------------------
 // Types (JSDoc)
@@ -117,12 +152,16 @@ const METRIC_THRESHOLD = 0.3
  *   label: string;
  *   scores: Scores;
  *   metrics: Metrics;
+ *   benchmarkIndex: number;
+ *   runs: number;
+ *   perfScores?: number[];
  *   error?: string;
  * }} PageResult
  *
  * @typedef {{
  *   timestamp: string;
  *   baseUrl: string;
+ *   benchmarkIndex: number;
  *   results: PageResult[];
  * }} BenchmarkOutput
  */
@@ -194,6 +233,71 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
 }
 
 /**
+ * Requests the warm-up page a few times, discarding every response, so the
+ * workerd compile and the first shared-asset reads stay out of the traces.
+ *
+ * @param {string} url
+ */
+async function warmUp(url) {
+    for (let i = 0; i < WARMUP_REQUESTS; i++) {
+        try {
+            const response = await fetch(url, {
+                signal: AbortSignal.timeout(30000),
+            })
+            await response.arrayBuffer()
+        } catch (err) {
+            const message = err instanceof Error ? err.message : String(err)
+            console.log(`  warm-up failed for ${url}: ${message}`)
+        }
+    }
+}
+
+/**
+ * Performance score (0-100) of a Lighthouse result.
+ *
+ * @param {any} lhr
+ * @returns {number}
+ */
+function perfScore(lhr) {
+    return Math.round((lhr.categories["performance"]?.score ?? 0) * 100)
+}
+
+/**
+ * Median of a numeric list, lower-middle for even lengths.
+ *
+ * @param {number[]} values
+ * @returns {number}
+ */
+function median(values) {
+    if (values.length === 0) return 0
+    const sorted = [...values].sort((a, b) => a - b)
+    return sorted[Math.floor((sorted.length - 1) / 2)]
+}
+
+/**
+ * Runs Lighthouse `runs` times and returns the run whose performance score is
+ * the median, keeping every reported score and metric from one single trace.
+ *
+ * @param {string} url
+ * @param {number} chromePort
+ * @param {number} runs
+ * @returns {Promise<{ lhr: any; perfScores: number[] }>}
+ */
+async function runMedian(url, chromePort, runs) {
+    /** @type {any[]} */
+    const lhrs = []
+    for (let i = 0; i < runs; i++) {
+        lhrs.push(await runWithRetry(url, chromePort))
+    }
+
+    const perfScores = lhrs.map(perfScore)
+    const medianScore = median(perfScores)
+    const lhr = lhrs[perfScores.indexOf(medianScore)]
+
+    return { lhr, perfScores }
+}
+
+/**
  * Turns a page label into a filesystem-safe slug.
  *
  * @param {string} label
@@ -214,7 +318,7 @@ function slugify(label) {
  * Extracts scores and metrics from a Lighthouse result object.
  *
  * @param {any} lhr
- * @returns {{ scores: Scores; metrics: Metrics }}
+ * @returns {{ scores: Scores; metrics: Metrics; benchmarkIndex: number }}
  */
 function extractResults(lhr) {
     /** @type {Scores} */
@@ -241,7 +345,11 @@ function extractResults(lhr) {
         )
     }
 
-    return { scores, metrics: /** @type {Metrics} */ (metricsRaw) }
+    return {
+        scores,
+        metrics: /** @type {Metrics} */ (metricsRaw),
+        benchmarkIndex: Math.round(lhr.environment?.benchmarkIndex ?? 0),
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -278,6 +386,37 @@ function metricDelta(current, baseline) {
     return ""
 }
 
+/**
+ * Decides whether baseline deltas can be trusted. Lighthouse reports the host
+ * CPU as benchmarkIndex; a runner much slower than the baseline's fakes drops.
+ *
+ * @param {number} current
+ * @param {number | undefined} base
+ * @returns {{ comparable: boolean; note: string }}
+ */
+function compareBenchmarkIndex(current, base) {
+    if (!current || !base) {
+        return {
+            comparable: true,
+            note: "one side has no CPU index, deltas not CPU-checked",
+        }
+    }
+
+    const gap = Math.abs(current - base) / base
+    const pct = Math.round(gap * 100)
+    if (gap > BENCHMARK_INDEX_THRESHOLD) {
+        return {
+            comparable: false,
+            note: `runner CPU differs by ${pct}% from baseline, deltas hidden`,
+        }
+    }
+
+    return {
+        comparable: true,
+        note: `runner CPU within ${pct}% of baseline`,
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Markdown report generation
 // ---------------------------------------------------------------------------
@@ -307,13 +446,25 @@ function buildMarkdown(output, baseline) {
             .toISOString()
             .replace("T", " ")
             .slice(0, 16) + " UTC"
+    const cpu = baseline
+        ? compareBenchmarkIndex(output.benchmarkIndex, baseline.benchmarkIndex)
+        : null
+    // Deltas are dropped, not shown, when the runners differ too much.
+    const comparedBaseline = cpu && !cpu.comparable ? null : baseline
+
     const baselineInfo = baseline
         ? `Compared against \`main\` baseline from ${new Date(baseline.timestamp).toISOString().slice(0, 10)}`
         : "No baseline available — scores will appear after the first merge to `main`"
+    const cpuInfo =
+        `Runner CPU index: ${output.benchmarkIndex || "unknown"}` +
+        (baseline
+            ? ` (baseline: ${baseline.benchmarkIndex || "unknown"}, ${cpu?.note})`
+            : "")
 
     const lines = [
         `> Tested: \`${output.baseUrl}\` on ${testedAt}  `,
-        `> ${baselineInfo}`,
+        `> ${baselineInfo}  `,
+        `> ${cpuInfo}`,
         "",
         "### Scores (0–100, higher is better)",
         "",
@@ -328,7 +479,9 @@ function buildMarkdown(output, baseline) {
             )
             continue
         }
-        const base = baseline?.results.find((r) => r.path === result.path)
+        const base = comparedBaseline?.results.find(
+            (r) => r.path === result.path,
+        )
         const { scores } = result
         const bs = base?.scores
         lines.push(
@@ -354,7 +507,9 @@ function buildMarkdown(output, baseline) {
             lines.push(`| [${result.label}](${result.path}) | ${cells} |`)
             continue
         }
-        const base = baseline?.results.find((r) => r.path === result.path)
+        const base = comparedBaseline?.results.find(
+            (r) => r.path === result.path,
+        )
         const cells = METRIC_DEFS.map((def) => {
             const val = result.metrics[/** @type {keyof Metrics} */ (def.key)]
             const bval = base?.metrics[/** @type {keyof Metrics} */ (def.key)]
@@ -365,12 +520,21 @@ function buildMarkdown(output, baseline) {
         )
     }
 
+    const multiRun = output.results.filter((r) => r.runs > 1)
+
     lines.push(
         "",
         "<details><summary>Legend</summary>",
         "",
         "🟢 improved &nbsp;·&nbsp; 🔻 regressed &nbsp;·&nbsp; (blank) no significant change  ",
         `Score threshold: ±${SCORE_THRESHOLD} pts &nbsp;·&nbsp; Metric threshold: ±${METRIC_THRESHOLD * 100}% of baseline`,
+        "",
+        multiRun.length
+            ? `Median of repeated runs: ${multiRun
+                  .map((r) => `${r.label} x${r.runs}`)
+                  .join(", ")}. A single run of these swings 20+ points between runners.  `
+            : "",
+        `Runner CPU index is Lighthouse's \`benchmarkIndex\`. Lighthouse does not normalise for host CPU, so deltas are hidden when the two runners differ by more than ${BENCHMARK_INDEX_THRESHOLD * 100}%.`,
         "",
         "</details>",
         "",
@@ -395,6 +559,10 @@ async function main() {
     console.log(`\nLighthouse Benchmark`)
     console.log(`Base URL : ${BASE_URL}`)
     console.log(`Pages    : ${PAGES.length}`)
+    const runPlan = [...MULTI_RUN_PATHS.keys()]
+        .map((path) => `${path} x${runsFor(path)}`)
+        .join(", ")
+    console.log(`Runs     : 1 per page, except ${runPlan}`)
     console.log(
         `Baseline : ${BASELINE_FILE && existsSync(BASELINE_FILE) ? BASELINE_FILE : "none"}\n`,
     )
@@ -412,27 +580,41 @@ async function main() {
 
     mkdirSync(LHR_DIR, { recursive: true })
 
+    process.stdout.write(`Warming up on ${WARMUP_PATH}… `)
+    await warmUp(`${BASE_URL}${WARMUP_PATH}`)
+    console.log("done\n")
+
     /** @type {PageResult[]} */
     const results = []
 
     try {
         for (const page of PAGES) {
             const url = `${BASE_URL}${page.path}`
+            const runs = runsFor(page.path)
             process.stdout.write(`  ${page.label.padEnd(24)} ${url} … `)
 
             try {
-                const lhr = await runWithRetry(url, chrome.port)
+                const { lhr, perfScores } = await runMedian(
+                    url,
+                    chrome.port,
+                    runs,
+                )
                 const lhrPath = `${LHR_DIR}/${slugify(page.label)}-lhr.json`
                 writeFileSync(lhrPath, JSON.stringify(lhr))
-                const { scores, metrics } = extractResults(lhr)
+                const { scores, metrics, benchmarkIndex } = extractResults(lhr)
                 results.push({
                     path: page.path,
                     label: page.label,
                     scores,
                     metrics,
+                    benchmarkIndex,
+                    runs,
+                    perfScores,
                 })
+                const spread =
+                    runs > 1 ? ` (median of ${perfScores.join("/")})` : ""
                 console.log(
-                    `perf=${scores.performance} a11y=${scores.accessibility} bp=${scores["best-practices"]} seo=${scores.seo}`,
+                    `perf=${scores.performance}${spread} a11y=${scores.accessibility} bp=${scores["best-practices"]} seo=${scores.seo} cpu=${benchmarkIndex}`,
                 )
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err)
@@ -447,6 +629,8 @@ async function main() {
                         seo: 0,
                     },
                     metrics: { lcp: 0, fcp: 0, tbt: 0, cls: 0, si: 0 },
+                    benchmarkIndex: 0,
+                    runs,
                     error: message,
                 })
             }
@@ -456,12 +640,20 @@ async function main() {
         console.log("\nChrome closed.")
     }
 
+    // One index for the whole run: it is a property of the runner, not the page.
+    const benchmarkIndex = median(
+        results.map((r) => r.benchmarkIndex).filter(Boolean),
+    )
+
     /** @type {BenchmarkOutput} */
     const output = {
         timestamp: new Date().toISOString(),
         baseUrl: BASE_URL_OUTPUT,
+        benchmarkIndex,
         results,
     }
+
+    console.log(`\nRunner CPU index (median): ${benchmarkIndex || "unknown"}`)
 
     // Write JSON output.
     writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2))
