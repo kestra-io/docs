@@ -9,6 +9,7 @@ author:
   twitter: "@fdelbrayelle"
   image: fdelbrayelle
   role: Lead Software Engineer
+image: ./main.png
 ---
 
 For most of Kestra's life, "plugin" meant one thing: a task that talks to something. Snowflake, dbt, S3, Slack. Kestra 2.0 just crossed 2000 of them.
