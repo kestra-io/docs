@@ -1,0 +1,32 @@
+{
+  "path": "/v1/blueprints/versions/latest?tags=infrastructure&size=1",
+  "status": 200,
+  "contentType": "application/json",
+  "body": {
+    "results": [
+      {
+        "id": "ai-github-pr-review",
+        "title": "Automatically Review GitHub Pull Requests with OpenAI GPT-4o and Post Comments",
+        "description": "Automate first-pass GitHub pull request code review with OpenAI GPT-4o. This blueprint fetches the PR diff and metadata from the GitHub REST API, sends them to GPT-4o together with your custom coding guidelines, and posts a structured, severity-rated review back onto the pull request as a comment. It solves the bottleneck of slow, inconsistent, manual code review: every PR gets immediate, standards-aligned feedback before a human reviewer ever opens it, cutting review latency and enforcing the same rules on every change.\n\n## How it works\n\n1. The `github_webhook` trigger (`io.kestra.plugin.core.trigger.Webhook`) starts the flow on demand, secured by a webhook `key`, so GitHub Actions, an external CI step, or a manual call can launch a review.\n2. `fetch_pr_diff` (`io.kestra.plugin.core.http.Request`) calls the GitHub `pulls/{number}/files` endpoint to retrieve every changed file and its diff.\n3. `fetch_pr_metadata` (`io.kestra.plugin.core.http.Request`) pulls the PR title and description for additional context.\n4. `generate_review` (`io.kestra.plugin.openai.ChatCompletion`) sends the diff, metadata, and your `review_guidelines` input to GPT-4o (`model: gpt-4o`, `maxTokens: 2000`), which returns a Summary, severity-tagged Issues Found (CRITICAL, MAJOR, MINOR), Suggestions, and a final Verdict.\n5. `post_review_comment` (`io.kestra.plugin.core.http.Request`) POSTs the review to the GitHub Issues comments endpoint so it appears directly on the PR.\n\n## What you get\n\n- Consistent, guideline-driven review feedback on every pull request.\n- Severity-rated findings (CRITICAL, MAJOR, MINOR) plus a clear approve or changes-requested verdict.\n- Faster review cycles: AI feedback lands before a human reviewer starts.\n- A fully auditable run history of every review in the Kestra UI.\n\n## Who it's for\n\n- Engineering teams wanting consistent first-pass coverage across all PRs.\n- Open source maintainers facing high PR volume and limited bandwidth.\n- Solo developers who want an AI pair reviewer before human review.\n- Platform teams that must enforce custom security, style, or API-contract rules.\n\n## Why orchestrate this with Kestra\n\nGitHub and the OpenAI API have no shared scheduler that can chain diff retrieval, an LLM call, and a comment post into one observable, retryable pipeline. Kestra fills that gap: the event-driven `Webhook` trigger reacts to PR activity in real time, declarative YAML keeps the whole review logic version-controlled and reviewable, each HTTP and ChatCompletion task can carry independent retries against API rate limits or timeouts, and every execution is captured with inputs, outputs, and logs for full lineage and replay.\n\n## Prerequisites\n\n- A GitHub repository and a token with permission to read pull requests and post comments.\n- An OpenAI API key with access to GPT-4o.\n\n### Secrets\n\n- `GITHUB_TOKEN`: GitHub token used to read the PR diff and metadata and to post the review comment.\n- `OPENAI_API_KEY`: OpenAI API key for the GPT-4o ChatCompletion call.\n- `WEBHOOK_KEY`: secret value securing the webhook trigger URL.\n\n## Quick start\n\n1. Add `GITHUB_TOKEN`, `OPENAI_API_KEY`, and `WEBHOOK_KEY` as secrets in your Kestra instance.\n2. Set the `repo_owner`, `repo_name`, and `pull_number` inputs (or wire them into the webhook payload).\n3. Adjust the `review_guidelines` input to match your team's standards.\n4. Execute the flow manually, or call the webhook URL to trigger a review and check the comment on your PR.\n\n## How to extend\n\n- Load `review_guidelines` dynamically from a database, Git file, or Notion page.\n- Add a GitHub label such as \"AI-reviewed\" after the comment posts.\n- Escalate CRITICAL findings to a Slack channel or open a follow-up issue.\n- Swap the model or add a second pass that comments inline on specific lines.\n\n## Links\n\n- [OpenAI plugin docs](https://kestra.io/plugins/plugin-openai)\n",
+        "shortDescription": "Webhook-triggered AI code review that fetches a GitHub PR diff, scores it with OpenAI GPT-4o against your guidelines, and posts the verdict back as a comment.",
+        "includedTasks": [
+          "io.kestra.plugin.core.trigger.Webhook",
+          "io.kestra.plugin.core.http.Request",
+          "io.kestra.plugin.openai.ChatCompletion"
+        ],
+        "tags": [
+          "ai",
+          "infrastructure"
+        ],
+        "subTags": [
+          "ci/cd-&-deployment",
+          "content-generation"
+        ],
+        "kind": "FLOW",
+        "metaTitle": "AI GitHub PR Review with OpenAI GPT-4o and Kestra",
+        "metaDescription": "Automatically review GitHub pull requests with OpenAI GPT-4o on Kestra. Fetch the diff, generate a structured, severity-rated review, and post it as a PR comment."
+      }
+    ],
+    "total": 204
+  }
+}

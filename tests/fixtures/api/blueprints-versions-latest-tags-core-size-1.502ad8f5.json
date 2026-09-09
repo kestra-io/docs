@@ -1,0 +1,31 @@
+{
+  "path": "/v1/blueprints/versions/latest?tags=core&size=1",
+  "status": 200,
+  "contentType": "application/json",
+  "body": {
+    "results": [
+      {
+        "id": "advanced-scheduling",
+        "title": "Advanced Scheduling Automation, Run Tasks Only on Business Days by Country",
+        "description": "Most schedulers fire on a fixed cron and have no idea whether the date is a weekend or a national holiday. This blueprint adds a business-day gate to your schedule: a Python script checks the run date against a country-specific holiday calendar (using the `workalendar` library) and stops the flow cleanly when the date is not a working day. It is a practical pattern for billing runs, financial processing, reporting jobs, and data pipelines that must follow local business calendars rather than a naive every-day trigger.\n\n## How it works\n\n1. The `io.kestra.plugin.core.trigger.Schedule` trigger fires on the cron `0 14 25 12 *` and passes the execution date into the flow.\n2. The `check_if_business_date` task (`io.kestra.plugin.scripts.python.Commands`) runs `python schedule.py \"{{trigger.date ?? inputs.date}}\" {{inputs.country}}` on the `io.kestra.plugin.core.runner.Process` runner with `namespaceFiles` enabled, installing the `workalendar` dependency at runtime.\n3. The `{{ trigger.date ?? inputs.date }}` expression uses the scheduled date in production and falls back to the `date` input for manual testing.\n4. If the date is a working day, the script exits 0 and the `log` task (`io.kestra.plugin.core.log.Log`) confirms the flow continues. If it is a weekend or public holiday, the script exits with an error and downstream tasks never run.\n\n## What you get\n\n- A reusable business-day guard you can drop in front of any scheduled workflow.\n- Country-aware holiday handling driven by the `country` input (US and FR provided, easily extended).\n- A single cron schedule that behaves correctly across weekends and holidays without extra trigger logic.\n- Manual testability through the `date` input without changing production behavior.\n\n## Who it's for\n\n- Data engineers building pipelines that must respect business calendars.\n- Finance and operations teams running billing, settlement, or reporting jobs.\n- Platform teams standardizing scheduling patterns across many flows.\n\n## Why orchestrate this with Kestra\n\nA plain cron scheduler cannot answer \"is today actually a working day in this country?\" Kestra fills that gap by letting an event-driven `Schedule` trigger hand the date to a real Python check, then express the whole pipeline as declarative YAML. You also get automatic retries, full execution lineage and logs, and the ability to chain real downstream work after the gate, none of which a bare cron entry provides.\n\n## Prerequisites\n\n- A Kestra instance with the Python script plugin available.\n- The `workalendar` Python package (installed automatically via the task `dependencies`).\n- A `schedule.py` Namespace File (see Quick start).\n\n### Secrets\n\nThis blueprint uses no secrets. The flow runs entirely on the schedule date and the `country` input.\n\n## Quick start\n\n1. In the Kestra UI, open the built-in VS Code Editor and add `schedule.py` as a Namespace File:\n\n```python\nimport sys\nfrom datetime import datetime\nfrom workalendar.europe import France\nfrom workalendar.usa import UnitedStates\n\ndef is_business_day(date_str, country_calendar):\n    date = datetime.fromisoformat(date_str.replace(\"Z\", \"\"))\n    return country_calendar.is_working_day(date)\n\ndef main():\n    if len(sys.argv) != 3:\n        print(\"Usage: script.py <date> <country_code>\")\n        sys.exit(1)\n    date_str, country_code = sys.argv[1], sys.argv[2]\n    calendars = {\"FR\": France(), \"US\": UnitedStates()}\n    country_calendar = calendars.get(country_code.upper())\n    if not country_calendar:\n        print(f\"Calendar for '{country_code}' not supported or not found.\")\n        sys.exit(1)\n    try:\n        if not is_business_day(date_str, country_calendar):\n            print(f\"{date_str} is not a business day in {country_code}.\")\n            sys.exit(1)\n        print(f\"{date_str} is a business day in {country_code}.\")\n    except Exception as e:\n        print(f\"Error: {e}\")\n        sys.exit(1)\n\nif __name__ == \"__main__\":\n    main()\n```\n\n2. Set the `country` input (defaults to `US`) and optionally a `date` for manual runs.\n3. Execute the flow manually to verify the gate, then enable the schedule.\n\n## How to extend\n\n- Add more countries to the `calendars` dictionary in `schedule.py` using other `workalendar` regions.\n- Replace the `log` task with your real downstream work (a dbt run, a data load, a report).\n- Adjust the cron to your cadence (daily, weekday-only) and let the calendar check handle holidays.\n- Add a notification task in an `errors` branch to alert when a run is skipped.\n\n## Links\n\n- [Python scripts plugin](https://kestra.io/plugins/plugin-script-python)\n",
+        "shortDescription": "Run scheduled tasks only on business days using a Python calendar check that skips weekends and country-specific public holidays.",
+        "includedTasks": [
+          "io.kestra.plugin.core.trigger.Schedule",
+          "io.kestra.plugin.scripts.python.Commands",
+          "io.kestra.plugin.core.runner.Process",
+          "io.kestra.plugin.core.log.Log"
+        ],
+        "tags": [
+          "core"
+        ],
+        "subTags": [
+          "scheduling"
+        ],
+        "kind": "FLOW",
+        "metaTitle": "Business-Day Scheduling with Python and Kestra",
+        "metaDescription": "Schedule Kestra tasks to run only on business days using Python and country holiday calendars. An advanced scheduling pattern for enterprise and financial jobs."
+      }
+    ],
+    "total": 124
+  }
+}

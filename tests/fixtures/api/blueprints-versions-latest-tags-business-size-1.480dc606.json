@@ -1,0 +1,32 @@
+{
+  "path": "/v1/blueprints/versions/latest?tags=business&size=1",
+  "status": 200,
+  "contentType": "application/json",
+  "body": {
+    "results": [
+      {
+        "id": "ai-add-tasks-deepseek",
+        "title": "Convert Natural Language Prompts to Structured Todoist Tasks with Deepseek AI",
+        "description": "Convert messy, conversational to-do prompts into structured Todoist tasks automatically with DeepSeek AI and Kestra. This blueprint solves a common AI parsing problem: a person describes everything they need to get done in one free-text sentence, and you need clean, individual task records with titles, descriptions, and machine-readable due dates. DeepSeek's structured output (constrained JSON) does the natural language understanding, and Kestra orchestrates the loop that pushes every extracted task into the Todoist REST API. The result is a reliable text-to-tasks pipeline you can trigger on demand or wire into any upstream event.\n\n## How it works\n1. The flow takes a single `prompt` input (a STRING) describing what you need to get done.\n2. The `create_task_fields` task (`io.kestra.plugin.deepseek.ChatCompletion`) calls the `deepseek-chat` model with a SYSTEM message that injects the current time via `{{ now() }}` and a USER message carrying `{{ inputs.prompt }}`. A strict `jsonResponseSchema` forces DeepSeek to return a `tasks` array, each item holding a `title`, `description`, and an RFC 3339 `due_date`.\n3. The `create_tasks` task (`io.kestra.plugin.core.flow.Loop`) iterates over the parsed array using `{{ outputs.create_task_fields.response | jq('.tasks') | first }}`.\n4. For each item, the `create_task` task (`io.kestra.plugin.core.http.Request`) POSTs to `https://api.todoist.com/rest/v2/tasks` with a Bearer token, mapping `content`, `description`, and `due_datetime` from the current `item.value`.\n\n## What you get\n- One-shot conversion of free text into multiple structured tasks.\n- Reliable, schema-validated JSON instead of brittle prompt parsing.\n- Relative phrases like \"Friday afternoon\" resolved into RFC 3339 timestamps.\n- Each task created independently in Todoist via the REST API.\n\n## Who it's for\n- Builders prototyping AI assistants and natural-language intake.\n- Productivity and ops teams automating task capture.\n- Data engineers who need free text turned into structured records.\n\n## Why orchestrate this with Kestra\nDeepSeek returns JSON, but it cannot loop over an array, fan out HTTP calls, retry a failed Todoist POST, or run on a schedule. Kestra adds the orchestration layer: declarative YAML you can version, a `Loop` to iterate every extracted task, retries and error handling on each API call, full execution lineage and logs, and event or schedule triggers so the same flow can run on demand or react to upstream systems. That is the gap a model API alone cannot fill.\n\n## Prerequisites\n- A DeepSeek account with API access to the `deepseek-chat` model.\n- A Todoist account with a Personal API token.\n\n### Secrets\n- `DEEPSEEK_API_KEY`: your DeepSeek API key, used by the ChatCompletion task.\n- `TODOIST_API_TOKEN`: your Todoist Personal API token, sent as a Bearer header.\n\n## Quick start\n1. Add the `DEEPSEEK_API_KEY` and `TODOIST_API_TOKEN` secrets to your Kestra instance.\n2. Add this flow to a namespace and save it.\n3. Run it with the default `prompt`, or supply your own list of things to do.\n4. Check the execution logs, then confirm the new tasks appear in Todoist.\n\n## How to extend\n- Swap Todoist for another target (Jira issues, Linear, a database insert, a Slack message) by changing the `create_task` Request task.\n- Add a Schedule or webhook trigger to capture tasks from email, forms, or chat.\n- Enrich the `jsonResponseSchema` with priority, labels, or project fields.\n- Add a retry policy or error branch on the HTTP task for resilient delivery.\n\n## Links\n- [Kestra DeepSeek plugin](https://kestra.io/plugins/plugin-deepseek)\n",
+        "shortDescription": "Turn plain-English to-do prompts into structured Todoist tasks using DeepSeek AI structured output and a Loop HTTP loop.",
+        "includedTasks": [
+          "io.kestra.plugin.deepseek.ChatCompletion",
+          "io.kestra.plugin.core.flow.Loop",
+          "io.kestra.plugin.core.http.Request"
+        ],
+        "tags": [
+          "ai",
+          "core",
+          "business"
+        ],
+        "subTags": [
+          "agents-&-structured-output"
+        ],
+        "kind": "FLOW",
+        "metaTitle": "DeepSeek AI to Todoist Tasks with Kestra",
+        "metaDescription": "Convert natural language prompts into structured Todoist tasks with Kestra and DeepSeek AI. Parse to-do requests, extract RFC 3339 due dates, post each task."
+      }
+    ],
+    "total": 148
+  }
+}

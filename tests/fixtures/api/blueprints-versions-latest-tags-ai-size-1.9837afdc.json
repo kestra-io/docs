@@ -1,0 +1,29 @@
+{
+  "path": "/v1/blueprints/versions/latest?tags=ai&size=1",
+  "status": 200,
+  "contentType": "application/json",
+  "body": {
+    "results": [
+      {
+        "id": "agent-text-summarizer",
+        "title": "Summarize Text with an AI Agent, Generate Multilingual Summaries in Short, Medium, or Long Format",
+        "description": "Turn long, messy text into clean, factual summaries on demand using an AI agent. This blueprint automates multilingual text summarization with the Kestra AI plugin and Google Gemini, letting you pick the summary length and output language at runtime. It solves a common content problem: large volumes of documents, articles, tickets, and transcripts that need to be condensed quickly and consistently, without copy-pasting into a chat UI or writing custom glue code for every downstream system.\n\n## How it works\n\n1. Three inputs drive the run: `summary_length` (a `SELECT` of short, medium, long), `language` (a `SELECT` of ISO codes en, fr, de, es, it, ru, ja), and `text` (the `STRING` content to summarize, with a default example).\n2. The `multilingual_agent` task (`io.kestra.plugin.ai.agent.AIAgent`) summarizes the input. Its `systemMessage` enforces a precise, factual tone and maps each length choice to a strict format: 1-2 sentences for short, 2-5 for medium, up to 5 paragraphs for long.\n3. The `english_brevity` task (a second `io.kestra.plugin.ai.agent.AIAgent`) chains off the first, reading `{{ outputs.multilingual_agent.textOutput }}` to produce exactly one English sentence for previews or indexing.\n4. Both agents are configured with the `io.kestra.plugin.ai.provider.GoogleGemini` provider on `gemini-3.5-flash-lite`, with request and response logging enabled.\n\n## What you get\n\n- On-demand summaries in seven languages from a single declarative flow.\n- Length control (short, medium, long) selected per execution.\n- A guaranteed one-sentence English recap for cards, search indexes, or alerts.\n- Repeatable, low-noise output thanks to explicit system instructions.\n\n## Who it's for\n\n- Data and platform engineers building content pipelines.\n- Knowledge and support teams condensing tickets, docs, and transcripts.\n- Product teams generating previews, snippets, and search metadata.\n\n## Why orchestrate this with Kestra\n\nA model API call alone has no scheduler, no retries, and no record of what ran. With Kestra you can trigger summarization from events (a new file, a webhook, an upstream flow), add automatic retries when the provider throttles, and capture full execution lineage and outputs for audit and replay. Everything is declarative YAML, version controlled, and the chained `textOutput` passing makes multi-step agent logic explicit, something a bare LLM SDK or a model provider's own playground cannot orchestrate.\n\n## Prerequisites\n\n- A Kestra instance (open source or Enterprise).\n- A Google Gemini API key with access to `gemini-3.5-flash-lite`.\n\n### Secrets\n\n- `GEMINI_API_KEY`: Google Gemini API key used by both agent tasks.\n\n## Quick start\n\n1. Add the `GEMINI_API_KEY` secret to your Kestra instance.\n2. Add this blueprint to a namespace in your Kestra instance.\n3. Execute the flow, picking a `summary_length`, a `language`, and pasting your `text`.\n4. Inspect the outputs: the multilingual summary and the one-sentence English recap.\n\n## How to extend\n\n- Swap `io.kestra.plugin.ai.provider.GoogleGemini` for another supported provider or model.\n- Add a trigger (schedule, webhook, or flow trigger) to summarize incoming content automatically.\n- Persist results to storage, a database, or Slack by adding downstream tasks.\n- Add more languages to the `language` input or feed text from a file or API response.\n\n## Links\n\n- [Kestra AI plugin documentation](https://kestra.io/plugins/plugin-ai)\n",
+        "shortDescription": "Summarize any text with a chained AI agent that outputs short, medium, or long summaries in seven languages.",
+        "includedTasks": [
+          "io.kestra.plugin.ai.agent.AIAgent",
+          "io.kestra.plugin.ai.provider.GoogleGemini"
+        ],
+        "tags": [
+          "ai"
+        ],
+        "subTags": [
+          "agents-&-structured-output"
+        ],
+        "kind": "FLOW",
+        "metaTitle": "AI Agent Text Summarizer in Kestra with Gemini",
+        "metaDescription": "Build an AI agent text summarizer in Kestra. Generate short, medium, or long summaries in seven languages with Google Gemini, then chain a one-sentence English recap."
+      }
+    ],
+    "total": 69
+  }
+}

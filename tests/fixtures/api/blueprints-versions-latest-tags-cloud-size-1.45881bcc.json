@@ -1,0 +1,31 @@
+{
+  "path": "/v1/blueprints/versions/latest?tags=cloud&size=1",
+  "status": 200,
+  "contentType": "application/json",
+  "body": {
+    "results": [
+      {
+        "id": "ansible-deploy-configuration",
+        "title": "Ansible Scalability, Deploy Configuration Files to Multiple Servers at Scale",
+        "description": "Configuration drift starts the moment you SSH into servers one at a time. This blueprint provisions multiple AWS EC2 instances, builds an Ansible inventory from the live infrastructure, and pushes the same configuration file to every host in one declarative Kestra flow. It pairs Infrastructure as Code provisioning with Ansible configuration management so DevOps and platform teams can stand up fleets and keep them consistent without hand-editing hosts. Keywords: Ansible automation, AWS EC2 provisioning, configuration management, Infrastructure as Code, dynamic inventory, server orchestration.\n\n## How it works\n\n1. The `aws_setup` task (`io.kestra.plugin.aws.cli.AwsCLI`) runs the AWS CLI to create an SSH key pair, create a security group opening port 22, and launch two `t2.micro` EC2 instances. It exports `ssh-key.pem` via `outputFiles` and emits instance metadata as Kestra outputs.\n2. The `ansible` task (`io.kestra.plugin.ansible.cli.AnsibleCLI`) receives the SSH key plus two generated `inputFiles`: an `inventory.ini` built dynamically from the provisioned instance IPs, and a `playbook.yml` that copies a `.env` configuration file to `/home/app/.env` with `mode: '0600'` on every host in the `servers` group.\n3. The task runs `ansible-playbook -i inventory.ini playbook.yml --key-file ssh-key.pem`, applying identical configuration in parallel across all targets.\n\n## What you get\n\n- Repeatable provisioning of multiple EC2 instances from a single flow.\n- A dynamic Ansible inventory wired to the actual provisioned IPs.\n- Consistent configuration files and file permissions on every server.\n- Dynamically managed SSH credentials passed between tasks, no manual key handling.\n\n## Who it's for\n\n- DevOps engineers automating fleet configuration.\n- Platform teams enforcing consistency across environments.\n- Infrastructure teams adopting Infrastructure as Code with Ansible.\n\n## Why orchestrate this with Kestra\n\nAnsible runs playbooks but does not schedule, retry, or track lineage between a provisioning step and a configuration step. Kestra closes that gap: chain `AwsCLI` output (keys, IPs) directly into the Ansible task with templating, add event triggers (a new commit, a webhook, a schedule) to drive runs, attach retries and alerting, and keep everything as declarative, version-controlled YAML with full execution history. The whole provision-then-configure sequence becomes one auditable pipeline instead of two disconnected tools.\n\n## Prerequisites\n\n- A Kestra instance with the AWS and Ansible plugins available.\n- AWS credentials authorized to create key pairs, security groups, and EC2 instances.\n- The `ansible-playbook` CLI available to the Ansible task runner (for example via a Docker task runner image that bundles Ansible).\n\n### Secrets\n\nThis flow as written embeds AWS CLI calls and SSH key handling inline and does not reference any `{{ secret('NAME') }}` values. Before running in production, move AWS credentials and any sensitive playbook values (such as the database password and API secret in the `.env` content) into Kestra secrets and reference them with `{{ secret('AWS_ACCESS_KEY_ID') }}`, `{{ secret('AWS_SECRET_ACCESS_KEY') }}`, and similar.\n\n## Quick start\n\n1. Add the flow to a Kestra namespace.\n2. Configure AWS credentials for the `AwsCLI` task (env vars or task properties).\n3. Adjust the AMI, instance type, region, and subnet to match your account.\n4. Execute the flow and watch EC2 instances launch and the playbook apply.\n\n## How to extend\n\n- Replace the static `.env` copy with templated config rendered from inputs or secrets.\n- Scale the instance `--count` and let the inventory grow automatically.\n- Add roles, handlers, or package installs to the playbook for full server setup.\n- Swap AWS for another cloud and reuse the same Ansible deployment pattern.\n\n## Links\n\n- [Ansible plugin documentation](https://kestra.io/plugins/plugin-ansible)\n- [AWS plugin documentation](https://kestra.io/plugins/plugin-aws)\n- [Orchestrate Ansible with Kestra](https://kestra.io/orchestration/ansible)\n",
+        "shortDescription": "Provision AWS EC2 servers and deploy configuration files across all of them at scale with Ansible.",
+        "includedTasks": [
+          "io.kestra.plugin.aws.cli.AwsCLI",
+          "io.kestra.plugin.ansible.cli.AnsibleCLI"
+        ],
+        "tags": [
+          "infrastructure",
+          "cloud"
+        ],
+        "subTags": [
+          "infrastructure-automation",
+          "aws-services"
+        ],
+        "kind": "FLOW",
+        "metaTitle": "Ansible Config Deployment at Scale with Kestra",
+        "metaDescription": "Provision AWS EC2 instances, build a dynamic inventory, and deploy config files to multiple servers at scale with Ansible, orchestrated by Kestra."
+      }
+    ],
+    "total": 57
+  }
+}
