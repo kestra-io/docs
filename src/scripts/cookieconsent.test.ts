@@ -138,6 +138,16 @@ describe("cookieconsent — Europe", () => {
         expect(def?.[2].wait_for_update).toBe(500)
     })
 
+    // GTM only treats a dataLayer entry as a gtag command when it is an
+    // Arguments object; a real Array indexes the same but never registers.
+    // Asserting the type here, not just def[0]/def[1]/def[2], is what stops a
+    // regression to `push([...])` from silently disabling Consent Mode.
+    it("pushes consent commands as an Arguments object, not an array", () => {
+        const def = consentEntries().find((e) => e[1] === "default")
+        expect(Object.prototype.toString.call(def)).toBe("[object Arguments]")
+        expect(Array.isArray(def)).toBe(false)
+    })
+
     it("loads the GTM script tag before any consent decision", () => {
         expect(gtmScriptTags()).toHaveLength(1)
         expect(gtmScriptTags()[0].src).toContain("id=GTM-TEST")

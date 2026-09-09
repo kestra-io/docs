@@ -32,10 +32,20 @@ let marketingEnabled = false
 let consentInitialized = false
 let gtmLoaded = false
 
-// Thin wrapper so gtag() calls read like Google's canonical snippet.
-export const gtag = (..._args: unknown[]) => {
+// Google's canonical snippet: push the `arguments` object, not an array.
+// gtag commands and ordinary data pushes share the same dataLayer, and GTM
+// tells them apart by the *type* of what was pushed, not just its shape: it
+// treats an entry as a command only when it is an Arguments object. A real
+// Array indexes identically but fails that check, so `consent`/`default`
+// would never register and the ad_* signals would stay unset — which, for a
+// non-consenting EU visitor, blocks the Google Ads tags outright instead of
+// letting them send the cookieless pings this whole module exists to enable.
+//
+// Typed as a variadic signature for call sites, but implemented as a
+// `function` expression so `arguments` exists (an arrow has none).
+export const gtag: (...args: unknown[]) => void = function () {
     window.dataLayer = window.dataLayer || []
-    window.dataLayer.push(_args)
+    window.dataLayer.push(arguments)
 }
 
 // GTM must load for everyone, signals denied by default in Europe, so
