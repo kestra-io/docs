@@ -548,7 +548,7 @@ kestra:
 | `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
 
 
-For OSS users, you can provide your Gemini API key to use the AI Copilot.
+For OSS users, only Gemini is currently available; you can provide your Gemini API key to use the AI Copilot.
 
 ```yaml
 kestra:
