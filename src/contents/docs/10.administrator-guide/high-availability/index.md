@@ -91,6 +91,6 @@ All queue backends support high availability in a distributed deployment. Choose
 - **AMQP / Redis**: lower queue latency than a database queue; also raises the throughput ceiling
 - **Kafka**: highest throughput; each server role scales independently
 
-For Kafka deployments, PostgreSQL is the recommended repository pairing. Elasticsearch can serve as the repository for the highest search and aggregation throughput, paired with the Indexer role.
+For Kafka deployments, PostgreSQL is the recommended repository pairing. Elasticsearch can serve as the repository for the highest search and aggregation throughput.
 
 See [Deployment Architecture](../../08.architecture/03.deployment-architecture/index.md) for a full comparison.
