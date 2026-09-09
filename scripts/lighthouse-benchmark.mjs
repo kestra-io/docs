@@ -47,8 +47,10 @@ const MULTI_RUN_COUNT = Math.max(
 // 20+ points between runners. Reported as the median of these many runs.
 const MULTI_RUN_PATHS = new Map([
     ["/", 5],
-    ["/docs", 3],
+    ["/docs", 5],
     ["/blueprints", 3],
+    ["/about-us", 3],
+    ["/docs/workflow-components/flow", 3],
 ])
 
 /**
