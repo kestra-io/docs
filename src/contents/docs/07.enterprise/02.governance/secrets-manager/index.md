@@ -119,7 +119,7 @@ kestra:
 | `secret-key-id` | string | No | — | AWS secret access key. |
 | `session-token` | string | No | — | Temporary session token. |
 | `region` | string | No | — | AWS region (e.g. `us-east-1`). |
-| `prefix` | string | No | `kestra` | Prefix applied to all secret names. Use to share one backend across multiple Kestra instances. Lowercase letters, digits, `_` and `-` only, up to 233 characters. |
+| `prefix` | string | No | `kestra` | Prefix applied to all secret names. Use to share one backend across multiple Kestra instances. ASCII letters, digits, `/`, `_`, `+`, `=`, `.`, `@` and `-`, up to 489 characters. Leading and trailing slashes are stripped, so `/pipeline/dev/` is stored as `pipeline/dev`. |
 | `endpoint-override` | string | No | — | Replace the default AWS endpoint with a compatible service (e.g. LocalStack). |
 | `sts-role-arn` | string | No | — | ARN of an IAM role to assume via STS before accessing secrets. |
 | `sts-role-external-id` | string | No | — | External ID passed with the STS AssumeRole call. |
