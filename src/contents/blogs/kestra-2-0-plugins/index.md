@@ -382,7 +382,7 @@ The version pin in `gradle.properties` still governs compatibility, and it doesn
 
 ```properties
 version=1.0.0-SNAPSHOT
-kestraVersion=1.3.19
+kestraVersion=1.3.38
 ```
 
 Build against a library older than your instance expects and flow creation returns a 422 with an Invalid bean error.
