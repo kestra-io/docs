@@ -31,10 +31,28 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Serves the recorded /blueprints API responses. That page is SSR and
+      # fans out ~15 live calls per request, so its LCP tracked WAN latency
+      # instead of the code. Anything not recorded is proxied to the real API.
+      - name: Start API fixture server
+        run: node scripts/api-fixture-server.mjs &
+
+      - name: Wait for the fixture server
+        run: |
+          for i in $(seq 1 10); do
+            curl -sf http://127.0.0.1:9001/__fixtures/stats > /dev/null && exit 0
+            sleep 1
+          done
+          echo "Fixture server did not come up on port 9001."
+          exit 1
+
       - name: Build site
         run: npm run build
         env:
           NO_IMAGE_OPTIM: "true"
+          # Inlined into the server and client bundles, so both the build and
+          # the SSR pages read the API through the fixture server.
+          API_URL: http://127.0.0.1:9001/v1
 
       - name: Install Lighthouse
         # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
@@ -43,7 +61,11 @@ jobs:
       - name: Start local dev server
         # wrangler dev serves the built Workers bundle locally via Miniflare —
         # no Cloudflare credentials required, no network access needed.
-        run: npx wrangler dev --local &
+        # global_fetch_strictly_public is dropped here (the flag list replaces
+        # the one in wrangler.jsonc): it blocks the worker from reaching the
+        # fixture server on loopback, and it only affects same-zone routing,
+        # which does not exist locally.
+        run: npx wrangler dev --local --compatibility-flags nodejs_compat &
 
       - name: Wait for dev server to be ready
         run: |
@@ -130,3 +152,23 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}
+
+      # First run records what /blueprints asks for; commit these to freeze it.
+      - name: Upload API fixtures artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: api-fixtures
+          path: tests/fixtures/api/
+          retention-days: 30
+
+      # Zero means the SSR blueprints page never reached the fixture server, so
+      # the page under measurement is not the page we think it is.
+      - name: Check the fixture server was used
+        run: |
+          STATS=$(curl -s http://127.0.0.1:9001/__fixtures/stats)
+          echo "$STATS"
+          if [ "$(echo "$STATS" | jq '.hits + .records')" -eq 0 ]; then
+            echo "::error::No blueprint API calls reached the fixture server."
+            exit 1
+          fi
