@@ -475,11 +475,11 @@ If indexing falls behind, tune indexer batch settings before changing flow defin
 
 ## Redis, AMQP, and GCP Pub/Sub queue backends
 
-Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) for the repository backend unless you are also deploying Elasticsearch.
+Redis, AMQP (RabbitMQ), and GCP Pub/Sub are Enterprise Edition queue backends, alongside Kafka which is covered above. All three use the same internal queue contracts as the JDBC and Kafka backends. You switch the backend with a single configuration value; no producer or consumer code changes. All three require a JDBC repository (PostgreSQL or MySQL) unless you are also deploying Elasticsearch.
 
 ### Queue prefix and message protection
 
-Two properties apply to every backend, JDBC and EE alike:
+These properties apply to all queue backends:
 
 | Property | Description | Default |
 |---|---|---|
@@ -496,7 +496,7 @@ kestra:
       limit: 1048576   # 1 MiB
 ```
 
-Set `prefix` when multiple Kestra clusters share one broker (for example, staging and production on the same Redis instance). Each cluster's queues are namespaced independently.
+Set `prefix` when multiple Kestra clusters share one backend (for example, staging and production on the same Redis instance). Each cluster's queues are namespaced independently.
 
 ### Redis
 
