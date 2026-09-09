@@ -105,7 +105,7 @@ The reason this is more than a convenience: the moment somebody has to download 
 
 ## Artifacts: plugins can ship their own UI
 
-This is the biggest of the four and it has a name of its own: **Artifacts**.
+This is one of the biggest plugin features for 2.0, and it has a name of its own: **Artifacts**.
 
 Until 2.0 a plugin could contribute a form generated from its schema, and that was the whole of its UI surface. A task in the execution view was configuration, logs and a list of output files, so understanding what a task did often meant leaving Kestra: download the Parquet somewhere else, open dbt Cloud for the model graph, read Kubernetes events to find out why a pod took four minutes.
 
