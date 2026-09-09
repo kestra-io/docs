@@ -354,7 +354,7 @@ Plugin pages are now versioned. The [dbt plugin](https://kestra.io/plugins/plugi
 
 Two mechanisms, both worth setting up before you hand out an instance.
 
-Instance wide, an Enterprise allow list in configuration, matching by trailing wildcard, regex or plain prefix:
+Instance wide, in Enterprise Edition, there is an allow list in the configuration, matching by trailing wildcard, regex or plain prefix:
 
 ```yaml
 kestra:
