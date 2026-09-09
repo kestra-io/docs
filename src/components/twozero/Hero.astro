@@ -4,7 +4,8 @@ import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
 import heroScreen from "./assets/hero-screen.webp"
-import heroBg from "./assets/hero-bg.webp?url"
+import heroBgSvg from "./assets/hero-bg.svg?url"
+import heroBgFlat from "./assets/hero-bg.webp?url"
 import grain from "./assets/hero-grain.png?url"
 import squares from "./assets/hero-squares.webp?url"
 
@@ -223,7 +224,8 @@ const KEY_NUMBERS = [
 <style
     lang="scss"
     define:vars={{
-        heroBg: `url(${heroBg})`,
+        heroBgSvg: `url(${heroBgSvg})`,
+        heroBgFlat: `url(${heroBgFlat})`,
         grain: `url(${grain})`,
         squares: `url(${squares})`,
         skyW: SKY.w,
@@ -275,7 +277,7 @@ const KEY_NUMBERS = [
         inset: 0;
         /* Below the squares and the comets, above the section's black base. */
         z-index: -2;
-        background: var(--heroBg) center top / cover no-repeat;
+        background: var(--heroBgSvg) center top / cover no-repeat;
         /* The image is a near-featureless gradient, so sliding it sideways is
          * invisible; what actually reads on a gradient is the zoom and the
          * rotation, which is where `backdrop-drift` puts most of its motion.
@@ -292,8 +294,8 @@ const KEY_NUMBERS = [
         }
     }
 
-    /* The ramp spans ~47 code values over 1900px, so any undithered 8-bit
-     * raster bands. Lossy WebP dropped the dither; this puts it back. */
+    /* The flat ramp spans ~47 code values over 1900px and lossy VP8 dropped
+     * the dither a vector rasterizer adds. Only the WebP path needs it. */
     .grain {
         position: absolute;
         /* The backdrop's layer, later in the DOM: dithers the gradient
@@ -306,6 +308,7 @@ const KEY_NUMBERS = [
         background-size: 64px;
         /* ~3/255 of amplitude, and under 1/255 of mean shift. */
         opacity: 0.012;
+        display: none;
         pointer-events: none;
 
         @media (min-resolution: 2dppx) {
@@ -315,11 +318,19 @@ const KEY_NUMBERS = [
         @media (min-resolution: 3dppx) {
             background-size: calc(64px / 3);
         }
+    }
 
-        @include media-breakpoint-down(md) {
-            /* Below md the section paints a CSS gradient, which the browser
-             * dithers itself. */
-            display: none;
+    /* Only Gecko re-rasterizes SVG-as-image with filters on every raster-scale
+     * change, so Firefox alone pays for the WebP and its VP8 terracing. */
+    @supports (-moz-orient: inline) or (-moz-appearance: none) {
+        .backdrop {
+            background-image: var(--heroBgFlat);
+        }
+
+        .grain {
+            @include media-breakpoint-up(md) {
+                display: block;
+            }
         }
     }
 
