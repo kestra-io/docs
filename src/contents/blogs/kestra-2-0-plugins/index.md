@@ -115,7 +115,7 @@ The architecture is worth knowing because it is more considered than a typical p
 
 In the plugin model this surfaces as a UI manifest on the registered plugin, carrying the module, its styles and a flag for whether it belongs to open source or Enterprise, with a source hash so browsers pick up new versions.
 
-There is an `artifact-sdk` repository that acts as a development studio for building and publishing them, and `plugin-gcp` is the reference implementation. That's a different SDK from `client-sdk`, the one that talks to the Kestra API: the Artifact SDK is what actually renders a plugin's UI, and the [plugin artifact developer guide](/docs/plugin-developer-guide/plugin-ui) covers it, plus slot registration and bundling setup. The roadmap targets the places the payoff is largest: AI tasks, task runners starting with Kubernetes, dbt, Ansible and Terraform.
+There is an `artifact-sdk` repository that acts as a development studio for building and publishing them, and `plugin-gcp` is the reference implementation. That's a different SDK from `client-sdk`, the one that talks to the Kestra API: the Artifact SDK is what actually renders a plugin's UI, and the [plugin artifact developer guide](/docs/plugin-developer-guide/plugin-ui) covers it, plus slot registration and bundling setup. Artifacts already cover the `Query` task in the GCP plugin's BigQuery module, every AI plugin task, and every task runner. The roadmap targets data orchestration next: dbt, JDBC, Fivetran and similar plugins.
 
 If you maintain a plugin, this is the most interesting thing 2.0 gives you. It is the difference between extending Kestra and improving it.
 
