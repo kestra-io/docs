@@ -321,8 +321,11 @@ const KEY_NUMBERS = [
     }
 
     /* Only Gecko re-rasterizes SVG-as-image with filters on every raster-scale
-     * change, so Firefox alone pays for the WebP and its VP8 terracing. */
-    @supports (-moz-orient: inline) or (-moz-appearance: none) {
+     * change, so Firefox alone pays for the WebP and its VP8 terracing.
+     * `-moz-orient` has no unprefixed name, which is what keeps this
+     * Gecko-only: the build rewrites `-moz-appearance` to `appearance`, and
+     * every engine supports that, so ORing the two handed the WebP to all. */
+    @supports (-moz-orient: inline) {
         .backdrop {
             background-image: var(--heroBgFlat);
         }
