@@ -198,19 +198,9 @@ That IAM family is a 2.0 addition worth pausing on. Until now IAM was only manag
 
 The 2.0 cycle also produced a category of Enterprise plugins that has nothing to do with data pipelines, and it is the clearest signal of where Kestra is being taken.
 
-The stated strategy is that the winning position in private infrastructure is a tightly integrated orchestration layer across compute, network, storage and management. Compute existed already, with VMware, Nutanix and Proxmox. Network existed, with Infoblox, Netbox and phpIPAM. Storage was the missing pillar, and 2.0 closed it:
-
-- **NetApp ONTAP**, covering snapshot create, delete and restore, volume cloning, SnapMirror replication, SVM management and QoS policies over the ONTAP REST API
-- **Veeam Backup and Replication**, because almost every VMware or Nutanix customer runs it
-- **Pure Storage FlashArray**
-- **Dell EMC PowerStore**
-- **Ceph**
-
-Alongside them, an **F5 load balancer** plugin, IPAM plugins for **Infoblox** and **SolarWinds**, and a whole new hyperscaler family in **Huawei Cloud**, built as the equivalent of the AWS plugin.
+The stated strategy is that the winning position in private infrastructure is a tightly integrated orchestration layer across compute, network, storage and management. Compute existed already, with VMware, Nutanix and Proxmox. Network existed, with Infoblox, Netbox and phpIPAM. Storage, load balancing, a new hyperscaler family, and log and secret backends are the pieces 2.0 added, all named individually under [New plugins since 1.3](#new-plugins-since-13) below.
 
 The use cases those enable are day two operations rather than analytics: snapshot before patching, clone a volume for a dev and test environment, check replication health on a schedule, provision a VM and register it in IPAM and put it behind a load balancer in one flow. Combine that with asset locking, which stops two executions mutating the same VM at once, and Kestra starts being the thing running your infrastructure changes rather than the thing reporting on them.
-
-Two more worth naming. A **Syslog** exporter, which sends audit and execution logs in CEF over UDP, TCP or TCP with TLS, and exists because plenty of SIEMs ingest syslog and nothing else, where previously the log shipper only spoke HTTP to Splunk, Graylog and Datadog. And **Delinea Secret Server** as an external secret manager, covering the full secret lifecycle.
 
 ## New task runners
 
@@ -277,10 +267,10 @@ The plugin count kept moving after 1.3 shipped on March 3. Here is everything th
 - **[F5 (EE)](https://kestra.io/plugins/plugin-ee-f5)**: F5 load balancer
 - **[Infoblox (EE)](https://kestra.io/plugins/plugin-ee-infoblox)**: Infoblox IPAM and DNS
 - **[SolarWinds (EE)](https://kestra.io/plugins/plugin-ee-solarwinds)**: SolarWinds IPAM
-- **[NetApp (EE)](https://kestra.io/plugins/plugin-ee-netapp)**: NetApp ONTAP storage
-- **[Veeam (EE)](https://kestra.io/plugins/plugin-ee-veeam)**: backup and replication
+- **[NetApp (EE)](https://kestra.io/plugins/plugin-ee-netapp)**: NetApp ONTAP snapshots, cloning and SnapMirror replication
+- **[Veeam (EE)](https://kestra.io/plugins/plugin-ee-veeam)**: backup and replication, because almost every VMware or Nutanix customer runs it
 - **[Pure Storage FlashArray (EE)](https://kestra.io/plugins/plugin-ee-purestorage)**: FlashArray snapshots
-- **[Syslog (EE)](https://kestra.io/plugins/plugin-ee-syslog)**: audit logs over Syslog/CEF
+- **[Syslog (EE)](https://kestra.io/plugins/plugin-ee-syslog)**: audit logs over Syslog/CEF, the format SIEMs that don't speak HTTP expect
 - **[Dell EMC PowerStore (EE)](https://kestra.io/plugins/plugin-ee-dellemc)**: PowerStore storage
 - **[CrowdStrike (EE)](https://kestra.io/plugins/plugin-ee-crowdstrike)**: CrowdStrike security
 - **Delinea Secret Server (EE)**: secret manager
