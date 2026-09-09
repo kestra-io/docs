@@ -66,6 +66,7 @@ const editUrl = doc.filePath
     pageTitle={doc.data?.sidebarTitle ?? doc.data?.title}
     image={image.toString()}
     navigation={navigation}
+    editions={doc.data?.editions}
 >
     <h1 class="title" slot="title">
         {doc.data?.h1 ?? doc.data?.title}
