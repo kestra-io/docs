@@ -476,6 +476,21 @@ function compareBenchmarkIndex(current, base) {
 // Markdown report generation
 // ---------------------------------------------------------------------------
 
+const PAGE_ORDER = new Map(PAGES.map((page, index) => [page.path, index]))
+
+/**
+ * Results back in page-sample order. Measurement runs the SSR pages first, but
+ * the report should keep its rows where readers expect them run to run.
+ *
+ * @param {PageResult[]} results
+ * @returns {PageResult[]}
+ */
+function reportOrder(results) {
+    return [...results].sort(
+        (a, b) => (PAGE_ORDER.get(a.path) ?? 0) - (PAGE_ORDER.get(b.path) ?? 0),
+    )
+}
+
 /**
  * Formats a metric value for display.
  *
@@ -527,7 +542,7 @@ function buildMarkdown(output, baseline) {
         "|------|-------------|---------------|----------------|-----|",
     ]
 
-    for (const result of output.results) {
+    for (const result of reportOrder(output.results)) {
         if (result.error) {
             lines.push(
                 `| [${result.label}](${result.path}) | ❌ error | ❌ error | ❌ error | ❌ error |`,
@@ -556,7 +571,7 @@ function buildMarkdown(output, baseline) {
     lines.push(`| Page | ${metricHeaders} |`)
     lines.push(`|------|${metricSep}|`)
 
-    for (const result of output.results) {
+    for (const result of reportOrder(output.results)) {
         if (result.error) {
             const cells = METRIC_DEFS.map(() => "❌").join(" | ")
             lines.push(`| [${result.label}](${result.path}) | ${cells} |`)
@@ -575,7 +590,7 @@ function buildMarkdown(output, baseline) {
         )
     }
 
-    const multiRun = output.results.filter((r) => r.runs > 1)
+    const multiRun = reportOrder(output.results).filter((r) => r.runs > 1)
 
     lines.push(
         "",
