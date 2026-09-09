@@ -153,7 +153,7 @@ While in the same area, plugin icons became real SVG resources instead of data U
 
 The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
-2.0 splits it. Every tag has a `-slim` twin, both built on `eclipse-temurin:21-jre`, so `kestra/kestra:latest-slim` is the lean core and you add what you need. It's also what [kestra.io/get-started](https://kestra.io/get-started) hands you by default:
+2.0 splits it. Every tag has a `-slim` twin, so `kestra/kestra:latest-slim` is the lean core and you add what you need. It's also what [kestra.io/get-started](https://kestra.io/get-started) hands you by default:
 
 ```bash
 docker run --pull=always --rm -it -p 8080:8080 --user=root \
@@ -175,9 +175,9 @@ None of that costs you the editor. For every release, CI compiles a plugin bundl
 
 If you maintain a plugin, here is the sentence that matters: **your 1.x plugin runs on 2.0, on purpose.**
 
-Of the roughly 230 plugin Maven artifacts compatible with 2.0, 217 are still published at a 1.x version. Only 13 have their own 2.x line: `plugin-aws`, `plugin-azure`, `plugin-dbt`, `plugin-ee-git`, `plugin-ee-nutanix`, `plugin-fs`, `plugin-gcp`, `plugin-git`, `plugin-googleworkspace`, `plugin-jdbc`, `plugin-kestra`, `plugin-kvm` and `plugin-serdes`. There is no plugin API migration guide because there was no plugin API break.
+Of the roughly 230 plugin Maven artifacts compatible with 2.0, 217 are still published at a 1.x version. Some, like `plugin-aws`, `plugin-fs`, `plugin-gcp`, `plugin-googleworkspace`, `plugin-kvm` and `plugin-ee-nutanix`, have bumped their own major version for reasons that have nothing to do with Kestra, and still declare `kestraVersion=1.3.x`: proof they didn't need to change for 2.0 at all. Only nine plugins declare a hard `kestraVersion=2.0.0` requirement: `plugin-azure`, `plugin-dbt`, `plugin-ee-git`, `plugin-git`, `plugin-graalvm`, `plugin-jdbc`, `plugin-kestra`, `plugin-serdes` and `plugin-slack`. There is no plugin API migration guide because there was no plugin API break.
 
-That took work to keep true. A nightly compatibility check runs against the development branch, and most of what it caught was a Java version gap, with plugins on 21 while core moved to 25. We decided against forcing every plugin onto a 2.0 build, so older plugin versions stay usable. Ludovic put the tradeoff plainly internally: keeping 1.x compatibility means holding some dependency upgrades until 1.x support ends. Concretely, Micronaut 5 and Jackson 3 are not in 2.0 for exactly this reason.
+That took work to keep true. A nightly compatibility check runs against the development branch, and most of what it caught was a Java version gap, with plugins on 21 while core moved to 25. We decided against forcing every plugin onto a 2.0 build, so older plugin versions stay usable. The CTO put the tradeoff plainly internally: keeping 1.x compatibility means holding some dependency upgrades until 1.x support ends. Concretely, Micronaut 5 and Jackson 3 are not in 2.0 for exactly this reason.
 
 What changed for plugin authors is not the API but what plugin code may touch. Workers in 2.0 never reach the database, and some core tasks did, so those were removed and replaced with tasks that call the Kestra API through the `plugin-kestra` SDK:
 
@@ -354,7 +354,7 @@ Plugin pages are now versioned. The [dbt plugin](https://kestra.io/plugins/plugi
 
 Two mechanisms, both worth setting up before you hand out an instance.
 
-Instance wide, an allow list in configuration, matching by trailing wildcard, regex or plain prefix:
+Instance wide, an Enterprise allow list in configuration, matching by trailing wildcard, regex or plain prefix:
 
 ```yaml
 kestra:
@@ -381,8 +381,8 @@ Nothing urgent, which is the point. But three things are worth doing.
 The version pin in `gradle.properties` still governs compatibility:
 
 ```properties
-version=0.20.0-SNAPSHOT
-kestraVersion=[0.20,)
+version=1.0.0-SNAPSHOT
+kestraVersion=2.0.0
 ```
 
 Build against a library older than your instance expects and flow creation returns a 422 with an Invalid bean error.
