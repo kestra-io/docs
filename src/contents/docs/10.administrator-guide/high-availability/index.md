@@ -20,7 +20,7 @@ In a distributed deployment, each server role runs as its own process and scales
 - **Worker Controller**: brokers worker availability, routes jobs to worker pools via gRPC
 - **Worker**: runs task code in an isolated working directory; scales horizontally
 - **Webserver**: the only network-facing surface; hosts the REST API and UI
-- **Indexer**: projects the read model for dashboards and search (Kafka deployments only)
+- **Indexer**: records execution data (except the execution itself) that is sent asynchronously (logs, metrics, statistics, ...)
 
 Workers connect to the Worker Controller over a single outbound gRPC stream. They never access the queue or the database directly. This means workers can run in an isolated network, a different region, or behind a firewall that allows only outbound connections, and still participate in the cluster.
 
@@ -41,7 +41,7 @@ Scale each role independently by increasing the number of replicas in your Helm 
 
 Workers are the primary horizontal scaling target. Add replicas to increase task throughput. The Worker Controller routes jobs across all connected workers automatically.
 
-The Executor and Scheduler are coordinating roles; two or three replicas provide redundancy. The liveness model ensures that if one fails, its in-flight work is reassigned to a healthy instance. Multiple Scheduler replicas are safe: the trigger space is partitioned into virtual nodes and each trigger is owned by exactly one Scheduler at a time, so concurrent Schedulers cannot double-fire a trigger.
+The Executor and Scheduler are coordinating roles; two or three replicas provide redundancy. Both are idempotent: if one fails, queue messages are redelivered and picked up by a healthy instance automatically.
 
 Run at least two Webserver replicas behind a load balancer so the API and UI remain available if one instance fails.
 
@@ -53,7 +53,7 @@ Ensure the underlying host system is tuned for high availability. For example, a
 
 Every running server registers itself with the cluster and emits a heartbeat on a fixed interval (default: every 3 seconds). The Executor reviews all registered instances on a scheduled tick (default: every 10 seconds). See [Server lifecycle](../server-lifecycle/index.md) for the full state machine and recovery behavior.
 
-When a server misses its heartbeats beyond the configured timeout (default: 1 minute), the Executor marks it as failed and releases any work it held back onto the queue. A healthy instance picks it up automatically. This applies to all server roles, including Workers and Schedulers.
+When a Worker misses its heartbeats beyond the configured timeout (default: 1 minute), the Executor marks it as failed and releases its in-flight jobs back onto the queue for a healthy Worker to pick up. For other server roles (Executor, Scheduler, Webserver), recovery works differently: these components are idempotent, so queue messages are redelivered and reprocessed by a healthy instance without explicit orphan recovery.
 
 To tune the liveness model:
 
@@ -77,6 +77,8 @@ In a distributed deployment, all server roles must have access to the same inter
 
 Without shared storage, task outputs written by a Worker on one host are not reachable by the Executor or Webserver on another.
 
+For a full list of supported backends (including Cloudflare R2, Huawei OBS, Ceph, MinIO, and others), see [Internal Storage](../../08.architecture/data-components/index.md).
+
 ## Load balancing
 
 Deploy a load balancer in front of multiple Webserver replicas. The Webserver is the only network-facing role; the Executor, Scheduler, Worker Controller, and Workers are never reachable from outside the cluster.
@@ -87,7 +89,7 @@ Configure your load balancer's health checks against the Webserver's [`/health` 
 
 All queue backends support high availability in a distributed deployment. Choose based on throughput and latency requirements:
 
-- **Database** (PostgreSQL or MySQL): simplest option; covers most production use cases
+- **Database** (PostgreSQL or MySQL): simplest option; covers most production use cases. Deploy PostgreSQL in HA mode (PGPool or a managed cloud service) so the database itself does not become a single point of failure.
 - **AMQP / Redis**: lower queue latency than a database queue; also raises the throughput ceiling
 - **Kafka**: highest throughput; each server role scales independently
 
