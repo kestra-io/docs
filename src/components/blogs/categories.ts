@@ -1,10 +1,10 @@
-export const ALL_NEWS = "$all"
+export const ALL_NEWS = "all"
 
 export const allBlogCategories = new Map([
     [ALL_NEWS, "All news"],
-    ["$company-news", "Company news"],
-    ["$news-products-updates", "News & Products Updates"],
-    ["$solutions", "Solutions"],
+    ["company-news", "Company news"],
+    ["news-products-updates", "News & Products Updates"],
+    ["solutions", "Solutions"],
 ])
 
 export const categoryMap: Record<string, string> = {

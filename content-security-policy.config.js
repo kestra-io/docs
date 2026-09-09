@@ -48,6 +48,8 @@ export default {
         "'self'",
         "data:",
         "blob:",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
         "https://*.google.fr",
         "https://*.google.com",
         "https://*.linkedin.com",
@@ -59,6 +61,15 @@ export default {
         "https://*.ytimg.com",
         "https://*.googletagmanager.com",
         "https://*.githubusercontent.com/",
+    ],
+    // audio/video
+    "media-src": [
+        "'self'",
+        "https://*.cr-relay.com",
+        "https://*.kestra-io.pages.dev",
+        "https://kestra.io",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
     ],
     // forms
     "form-action": ["'self'", "https://*.hsforms.com", "https://*.hsforms.net"],

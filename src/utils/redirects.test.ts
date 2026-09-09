@@ -12,6 +12,7 @@ const loadRules = (file: string): RedirectRule[] =>
     YAML.parse(readFileSync(`${redirectsDir}/${file}.yml`, "utf8")) ?? []
 
 const docsRules = loadRules("docs")
+const blogsRules = loadRules("blogs")
 
 describe("docs redirects", () => {
     // Every case below was a live 404 or a multi-hop chain ending in one.
@@ -87,5 +88,22 @@ describe("docs redirect rule set", () => {
             .filter((entry) => entry.next !== null && entry.next !== entry.to)
 
         expect(chains).toEqual([])
+    })
+})
+
+describe("blogs redirects", () => {
+    // Category tabs used to route under a "$" prefix (kestra-io/docs#5380).
+    it.each([
+        ["/blogs/$all", "/blogs"],
+        ["/blogs/$company-news", "/blogs/company-news"],
+        ["/blogs/$news-products-updates", "/blogs/news-products-updates"],
+        ["/blogs/$solutions", "/blogs/solutions"],
+    ])("%s resolves to %s", (from, to) => {
+        expect(resolveRedirect(from, blogsRules)).toBe(to)
+    })
+
+    it("leaves the clean category paths alone", () => {
+        expect(resolveRedirect("/blogs/company-news", blogsRules)).toBeNull()
+        expect(resolveRedirect("/blogs/solutions", blogsRules)).toBeNull()
     })
 })

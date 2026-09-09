@@ -22,6 +22,47 @@ faq:
 author: "elliot"
 hub: "data"
 alternatives_count: 7
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top Amazon MWAA Alternatives"
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      item:
+        "@type": "SoftwareApplication"
+        name: "Kestra"
+        url: "https://kestra.io"
+    - "@type": "ListItem"
+      position: 2
+      item:
+        "@type": "SoftwareApplication"
+        name: "Apache Airflow (Self-Hosted)"
+    - "@type": "ListItem"
+      position: 3
+      item:
+        "@type": "SoftwareApplication"
+        name: "Astronomer Astro"
+    - "@type": "ListItem"
+      position: 4
+      item:
+        "@type": "SoftwareApplication"
+        name: "Prefect"
+    - "@type": "ListItem"
+      position: 5
+      item:
+        "@type": "SoftwareApplication"
+        name: "Dagster"
+    - "@type": "ListItem"
+      position: 6
+      item:
+        "@type": "SoftwareApplication"
+        name: "Argo Workflows"
+    - "@type": "ListItem"
+      position: 7
+      item:
+        "@type": "SoftwareApplication"
+        name: "Apache NiFi"
 ---
 
 Amazon Managed Workflows for Apache Airflow (MWAA) offers data teams a managed service for Apache Airflow, abstracting away some of the operational burden. However, as organizations scale their data pipelines, many encounter challenges such as escalating costs, vendor lock-in to the AWS ecosystem, and the inherent complexities of Airflow's Python-centric DAG-as-code model. These factors often prompt a search for more flexible, cost-effective, or broader orchestration alternatives. The leading alternatives to Amazon MWAA in 2026 include Kestra, self-hosted Apache Airflow, Astronomer Astro, Prefect, Dagster, Argo Workflows, and Apache NiFi—each suited to different workloads such as multi-cloud data orchestration, infrastructure automation, or asset-centric data lineage. This article will compare these options to help you identify the ideal solution for your specific data and operational needs.
@@ -133,160 +174,3 @@ The best alternative depends entirely on your team's needs, skills, and strategi
 Moving away from Amazon MWAA opens up a diverse landscape of powerful orchestration tools. While managed Airflow provides a convenient entry point, its limitations in cost, flexibility, and operational scope lead many to seek alternatives. The right choice depends on your primary workload: Python-native teams may prefer Prefect, analytics engineers might lean towards Dagster's asset model, and Kubernetes-native shops will find Argo Workflows a natural fit.
 
 However, for organizations looking to break down silos and establish a single, auditable control plane across all technical domains, Kestra offers a compelling solution. By embracing a declarative, language-agnostic approach, it provides the flexibility to orchestrate any workflow, anywhere. To see how this works in practice, explore our library of [workflow blueprints](https://kestra.io/blueprints).
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is MWAA expensive?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "MWAA's pricing can accumulate quickly, especially with numerous DAGs and high resource usage. The base hourly cost (around $0.50/hour) combines with charges for metadata storage, logging, and network traffic, making cost optimization a common challenge for users."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the difference between MWAA and Astro?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Astro provides a multi-cloud managed Airflow experience, deployable across AWS, Azure, and GCP. MWAA is a fully AWS-native service, limiting deployments to the AWS ecosystem. Organizations with multi-cloud strategies often prefer Astro for its broader deployment flexibility."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the difference between Airflow and MWAA?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Apache Airflow is the open-source workflow orchestration framework. MWAA is Amazon's managed service offering of Apache Airflow, handling infrastructure, scaling, and patching. While MWAA simplifies operations, it introduces AWS vendor lock-in and still inherits Airflow's Python-centric DAG-as-code model."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is Kestra better than Airflow?",
-      "acceptedAnswer": {
-        "@type":": "Answer",
-        "text": "Kestra offers a declarative, YAML-based approach to workflow definition, which can simplify versioning and rollbacks compared to Airflow's Python DAGs. It also provides native polyglot execution and is designed as a universal control plane for data, AI, and infrastructure workflows, offering broader applicability than Airflow's data-centric focus."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is the AWS equivalent of Airflow?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Amazon Managed Workflows for Apache Airflow (MWAA) is the direct AWS equivalent, offering a fully managed service for Apache Airflow environments. Other AWS services like AWS Step Functions or AWS Glue can also orchestrate workflows but serve different architectural patterns and use cases."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does Airbnb still use Airflow?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, Airbnb, the creator of Apache Airflow, continues to use it extensively for orchestrating its data pipelines. However, like many large organizations, they also employ other specialized tools alongside Airflow for various aspects of their data and infrastructure management."
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top Amazon MWAA Alternatives",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Kestra",
-        "url": "https://kestra.io"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Apache Airflow (Self-Hosted)"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Astronomer Astro"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Prefect"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Dagster"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Argo Workflows"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 7,
-      "item": {
-        "@type": "SoftwareApplication",
-        "name": "Apache NiFi"
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Data Engineering Resources",
-      "item": "https://kestra.io/resources/data"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Top Amazon MWAA alternatives for data pipelines",
-      "item": "https://kestra.io/resources/data/top-amazon-mwaa-alternatives"
-    }
-  ]
-}
-```

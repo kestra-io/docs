@@ -32,9 +32,9 @@ tasks:
 
 The `Pause` task will pause the execution and the `Log` task will run only once the workflow has been resumed.
 
-## Pausing and resuming a workflow from the UI
+## Pause and resume a workflow from the UI
 
-You can either use the Pause task or manually Pause from the Execution overview page. Once the execution is paused, you can inspect the current logs and outputs. Then, you can resume it from the UI by clicking on the `Resume` button in the `Overview` tab:
+You can either use the Pause task or manually pause from the Execution overview page. Once the execution is paused, inspect the logs and outputs, then resume using the **Resume** button in the **Overview** tab:
 
 ![pause_resume](./pause_resume.png)
 

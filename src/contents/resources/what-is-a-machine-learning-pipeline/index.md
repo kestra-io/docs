@@ -20,7 +20,6 @@ faq:
   - question: "What are the 4 pillars of ML?"
     answer: "Some perspectives categorize the four pillars of ML as predictions, decisions, discovery, and generation. These represent the core capabilities and applications of machine learning, from forecasting future outcomes to creating new data or insights."
 ---
-```
 
 Building and deploying machine learning models in production is rarely a straightforward task. From raw data to a deployed model, the journey involves numerous complex, interconnected steps that demand precision, reproducibility, and efficient management. Without a structured approach, teams often grapple with inconsistent results, slow deployments, and operational overhead.
 
@@ -173,6 +172,8 @@ As data volumes and model complexity grow, pipelines must scale. This requires t
 ## Unifying and Governing ML Pipelines with Kestra
 
 Machine learning pipelines are fundamental to modern AI, but their complexity demands a powerful and flexible orchestration layer. Kestra provides a unified control plane that addresses the core challenges of building, deploying, and managing ML workflows at scale.
+
+The same unification argument applies well beyond training. It is the basis of [what it takes to run AI workloads reliably in production](/resources/ai/ai-orchestration).
 
 With its declarative YAML interface, Kestra ensures that every pipeline is reproducible, versionable, and auditable. Its polyglot nature allows teams to use the best tool for each task—whether it's Python for model training, SQL for data transformation, or Bash for infrastructure setup—all within a single, cohesive workflow. This versatility is backed by an ecosystem of over 1,400 plugins, enabling seamless integration across your entire stack.
 

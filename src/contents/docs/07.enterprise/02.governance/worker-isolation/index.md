@@ -7,9 +7,9 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 ---
 
-How to configure worker isolation in Kestra.
+Configure worker isolation to separate file systems, restrict thread creation, and enforce script task isolation in multi-tenant Kestra instances.
 
-## Worker isolation – enforce separation
+## Worker isolation — enforce separation
 
 When dealing with multiple teams, you can add extra security measures to your Kestra instance to isolate access so that there is no shared file system, only certain plugins can create worker threads, and script tasks are isolated.
 
@@ -61,35 +61,29 @@ Currently, all the official Kestra plugins are safe to be authorized **except** 
 
 ## Scripting isolation
 
-You can provide global plugin defaults using the `kestra.plugins.defaults` configuration. Those will be applied to each task on your cluster **if a property is not defined** on flows or tasks. Plugin defaults ensure a property is defined at a default value for these tasks.
+Use a [Policy](../policies/index.md) to enforce Docker isolation for script tasks. For installation-wide enforcement, declare a static policy in server configuration (Enterprise Edition):
 
 ```yaml
 kestra:
-  plugins:
-    defaults:
-    - type: io.kestra.plugin.core.log.Log
-      values:
-        level: ERROR
+  policies:
+    - id: enforce-docker-isolation
+      description: "Force Docker isolation for all shell script tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: PLUGIN
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.scripts.shell
+          values:
+            containerImage: ubuntu:latest
+            taskRunner:
+              type: io.kestra.plugin.scripts.runner.docker.Docker
 ```
 
-For [Bash tasks](/plugins/plugin-script-shell/io.kestra.plugin.scripts.shell.script) and other script tasks in the core, we advise you to force `io.kestra.plugin.scripts.runner.docker.Docker` isolation and to configure global cluster `pluginDefaults`:
-
-```yaml
-kestra:
-  tasks:
-    defaults:
-      - type: io.kestra.plugin.scripts.shell.Commands
-        forced: true
-        values:
-          containerImage: ubuntu:latest
-          taskRunner:
-            type: io.kestra.plugin.scripts.runner.docker.Docker
-```
-
-Forced plugin defaults:
-- Ensure a property is set globally for a task, and no task can override it.
-- Are critical for security and governance — for example, to enforce Shell tasks to run as Docker containers.
+Static policies apply across all tenants and cannot be overridden by namespace-level policies, making them suitable for cluster-wide security requirements.
 
 :::alert{type="warning"}
-You will need to add all script plugins tasks (like Python and Node) to be sure that no tasks can bypass the docker isolation.
+Add rules for all script plugin types (Python, Node, and others) to ensure no tasks can bypass Docker isolation.
 :::

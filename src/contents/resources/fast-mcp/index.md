@@ -117,6 +117,8 @@ Choosing FastMCP over FastAPI for MCP servers means you're using a specialized t
 
 Building an MCP server with FastMCP is a crucial first step, but in a production environment, that server is just one component in a larger system. You need a way to deploy, manage, monitor, and integrate these AI capabilities into broader business processes. This is the role of an orchestration platform like Kestra.
 
+FastMCP exposes the tools; something still has to decide when they run and under what constraints. That is the job of [governing the whole AI stack, not just the agent](/resources/ai/ai-orchestration).
+
 ### Unifying FastMCP Servers within Broader AI Workflows
 
 Kestra acts as a control plane for your entire technical stack, including your FastMCP-powered agents. You can create Kestra workflows that:

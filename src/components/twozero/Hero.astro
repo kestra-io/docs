@@ -1,0 +1,861 @@
+---
+import { Image } from "astro:assets"
+import { Icon } from "astro-icon/components"
+import Cta from "./Cta.astro"
+import VideoDialog from "~/components/common/VideoDialog.astro"
+import heroScreen from "./assets/hero-screen.webp"
+import heroBg from "./assets/hero-bg.webp?url"
+import squares from "./assets/hero-squares.webp?url"
+
+/**
+ * YouTube id of the 2.0 launch video. Left empty until marketing supplies it:
+ * the play button is not rendered at all while unset, so the still never
+ * advertises a video it cannot play.
+ */
+const LAUNCH_VIDEO_ID: string | undefined = "QyAlUDWTYDo"
+
+const COMET_SPRITES = import.meta.glob("./assets/comets/*.png", {
+    eager: true,
+    query: "?url",
+    import: "default",
+}) as Record<string, string>
+
+const COMET_LAYOUT = [
+    {
+        file: "comet-1.png",
+        u: 26.19,
+        v: 105.41,
+        w: 105.94,
+        h: 107.75,
+        dur: 5.5,
+        delay: 0,
+    },
+    {
+        file: "comet-2.png",
+        u: 34.92,
+        v: 14.05,
+        w: 44.24,
+        h: 45.09,
+        dur: 4.9,
+        delay: -1.9,
+    },
+    {
+        file: "comet-3.png",
+        u: 11.06,
+        v: 128.84,
+        w: 20.37,
+        h: 20.5,
+        dur: 4.3,
+        delay: -3.2,
+    },
+    {
+        file: "comet-4.png",
+        u: 169.97,
+        v: 91.94,
+        w: 20.37,
+        h: 21.08,
+        dur: 6.2,
+        delay: -1,
+    },
+    {
+        file: "comet-5.png",
+        u: 152.5,
+        v: 7.03,
+        w: 18.63,
+        h: 19.33,
+        dur: 5.2,
+        delay: -3.9,
+    },
+    {
+        file: "comet-6.png",
+        u: 152.5,
+        v: 190.91,
+        w: 13.39,
+        h: 13.47,
+        dur: 4.6,
+        delay: -1.4,
+    },
+]
+
+/* The export nested the comets in a rotated group. Baking that group
+ * transform into each sprite here lets them be plain elements: Firefox never
+ * composites transform animations on SVG children, so inside an <svg> all six
+ * repaint the whole sky on the main thread every frame. */
+const SKY = { w: 1900, h: 1564, angle: -162.374, ox: 1515.58, oy: 934.565 }
+const SKY_RAD = (SKY.angle * Math.PI) / 180
+const SKY_COS = Math.cos(SKY_RAD)
+const SKY_SIN = Math.sin(SKY_RAD)
+
+const COMETS = COMET_LAYOUT.map((comet) => ({
+    ...comet,
+    src: COMET_SPRITES[`./assets/comets/${comet.file}`],
+    x: SKY.ox + SKY_COS * comet.u - SKY_SIN * comet.v,
+    y: SKY.oy + SKY_SIN * comet.u + SKY_COS * comet.v,
+}))
+
+const KEY_NUMBERS = [
+    { value: "2,000+", label: "Plugins, installed at runtime" },
+    { value: "LTS", label: "One year of fixes, no forced upgrade" },
+    { value: "Apache 2.0", label: "Engine, UI, editor and plugins" },
+]
+---
+
+{
+    /* Deliberately not `.hero`: app.scss owns that class as a site component
+    and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
+}
+<section class="tz-hero" aria-labelledby="hero-title">
+    <div class="backdrop" aria-hidden="true"></div>
+    <div class="squares left" aria-hidden="true"><span></span></div>
+    <div class="squares right" aria-hidden="true"><span></span></div>
+    <div class="sky" aria-hidden="true">
+        <div class="field">
+            {
+                COMETS.map((comet) => (
+                    <img
+                        class="comet"
+                        src={comet.src}
+                        alt=""
+                        decoding="async"
+                        style={`--x: ${comet.x}; --y: ${comet.y}; --w: ${comet.w}; --h: ${comet.h}; --dur: ${comet.dur}s; --delay: ${comet.delay}s`}
+                    />
+                ))
+            }
+        </div>
+    </div>
+    <div class="tz-container">
+        <div class="intro">
+            <div class="title">
+                <p
+                    class="eyebrow"
+                    data-usal="fade-u delay-0 duration-500 ease-out"
+                >
+                    Kestra 2.0 - Now Available
+                </p>
+                <h1
+                    id="hero-title"
+                    data-usal="fade-u delay-50 duration-500 ease-out"
+                >
+                    Orchestration Rebuilt<br />{" "}for the AI Era
+                </h1>
+            </div>
+            <div class="subtitle">
+                <p
+                    class="lead"
+                    data-usal="fade-u delay-100 duration-500 ease-out"
+                >
+                    Any workload. Any network. Zero boundary compromises.
+                </p>
+                <p
+                    class="support"
+                    data-usal="fade-u delay-150 duration-500 ease-out"
+                >
+                    Govern AI agents and deterministic workflows at scale with a
+                    rewritten engine that enforces a <strong
+                        >strict separation between your control plane and your
+                        data plane</strong
+                    >.
+                </p>
+            </div>
+            <Cta theme="hero" />
+        </div>
+
+        <figure class="media">
+            {
+                /* Two static shadows cross-fading. Interpolating `box-shadow`
+                itself re-blurred the whole spread on every frame. */
+            }
+            <span class="glow rest" aria-hidden="true"></span>
+            <span class="glow peak" aria-hidden="true"></span>
+            <Image
+                src={heroScreen}
+                alt="Introducing Kestra 2.0, the open-source declarative orchestration platform"
+                widths={[640, 1024, 2048]}
+                sizes="(max-width: 991px) 100vw, 68vw"
+                loading="eager"
+                fetchpriority="high"
+            />
+            {
+                LAUNCH_VIDEO_ID && (
+                    <VideoDialog
+                        id="hero-video"
+                        videoId={LAUNCH_VIDEO_ID}
+                        title="Introducing Kestra 2.0"
+                        class="play"
+                        aria-label="Play the Kestra 2.0 launch video"
+                    >
+                        <svg viewBox="49 43 34 38" aria-hidden="true">
+                            <path
+                                d="M50 46.9997C50.0007 44.6916 52.4993 43.248 54.499 44.4011L80.4961 59.3962C82.4974 60.5506 82.4971 63.4389 80.4961 64.5935L54.499 79.5886C52.499 80.7422 50 79.2988 50 76.99V46.9997Z"
+                                fill="currentColor"
+                            />
+                        </svg>
+                    </VideoDialog>
+                )
+            }
+        </figure>
+
+        <dl class="key-numbers" aria-label="Kestra 2.0 at a glance">
+            {
+                KEY_NUMBERS.map((fact, index) => (
+                    <div class="fact" data-usal={`zoomin delay-${index * 50}`}>
+                        <dt>{fact.value}</dt>
+                        <dd>{fact.label}</dd>
+                    </div>
+                ))
+            }
+        </dl>
+
+        <a
+            href="/blogs/release-2-0"
+            class="notes"
+            target="_blank"
+            rel="noopener"
+        >
+            Read the full release notes
+            <Icon name="mdi:arrow-right" />
+        </a>
+    </div>
+</section>
+
+<style
+    lang="scss"
+    define:vars={{
+        heroBg: `url(${heroBg})`,
+        squares: `url(${squares})`,
+        skyW: SKY.w,
+        skyH: SKY.h,
+        skyAngle: `${SKY.angle}deg`,
+    }}
+>
+    .tz-hero {
+        position: relative;
+        /* Sit underneath the transparent site header so the dark hero runs up
+         * behind it. Only the header height is cancelled: `body` already
+         * reserves the announcement bar with its own padding-top. */
+        margin-top: calc(-1 * var(--top-bar-height, 67px));
+        padding-block: 9.25rem 11.125rem;
+        /* The export also carries the two outlined square rings, but they are
+         * 50% black on black and never show, so they are redrawn below as
+         * tinted masks. */
+        background: #000000;
+        /* The backdrop drift and the video's glow share one cycle so the
+         * background is at full zoom exactly as the glow peaks. Change it here
+         * and both stay locked; they read as one ambient beat, not two. */
+        --ambient-cycle: 8s;
+        color: $white;
+        overflow: clip;
+        /* Own stacking context so the ambient layers can sit above the
+         * background yet under the copy with a negative z-index. */
+        isolation: isolate;
+
+        @include media-breakpoint-down(lg) {
+            padding-block: 7rem 5.5rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            padding-block: 10.6875rem 2.5rem;
+            background: #060411
+                radial-gradient(
+                    circle 560px at 95% 94%,
+                    #465ab1 0%,
+                    rgba(70, 90, 177, 0) 100%
+                );
+        }
+    }
+
+    /* The hero image lives on its own layer purely so the planet can drift:
+     * transforming a layer is compositor work, whereas nudging
+     * `background-position` on the section would repaint it every frame. */
+    .backdrop {
+        position: absolute;
+        inset: 0;
+        /* Below the squares and the comets, above the section's black base. */
+        z-index: -2;
+        background: var(--heroBg) center top / cover no-repeat;
+        /* The image is a near-featureless gradient, so sliding it sideways is
+         * invisible; what actually reads on a gradient is the zoom and the
+         * rotation, which is where `backdrop-drift` puts most of its motion.
+         * The resting 10% overscan is the margin the drift moves within, so
+         * the image edge stays out of view at every viewport width. */
+        transform: scale(1.1);
+        will-change: transform;
+        animation: backdrop-drift var(--ambient-cycle) ease-in-out infinite;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            /* Below md the section paints its own flat gradient instead. */
+            display: none;
+        }
+    }
+
+    /* The two square rings. The mask asset is 50% black on black and never
+     * shows as-is, so a tint is painted through it instead. */
+    .squares {
+        position: absolute;
+        z-index: -1;
+        width: 520px;
+        height: 373px;
+        -webkit-mask: var(--squares) center / contain no-repeat;
+        mask: var(--squares) center / contain no-repeat;
+        background-color: rgba(196, 200, 255, 0.16);
+        overflow: clip;
+        pointer-events: none;
+
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+
+        /* A pale band drifts across the tint so the squares light up in a wave
+         * instead of sitting at one flat opacity. It is its own layer moved by
+         * `transform`, so the masked fill under it never repaints. Sliding
+         * `background-position` on the mask itself repainted both rings, mask
+         * included, every frame. */
+        span {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 300%;
+            height: 100%;
+            background: linear-gradient(
+                100deg,
+                rgba(196, 200, 255, 0) 0%,
+                rgba(196, 200, 255, 0) 32%,
+                rgba(222, 225, 255, 0.3) 50%,
+                rgba(196, 200, 255, 0) 68%,
+                rgba(196, 200, 255, 0) 100%
+            );
+            animation: squares-sheen 11s ease-in-out infinite;
+        }
+
+        &.left {
+            top: 480px;
+            left: -327px;
+
+            @include media-breakpoint-down(md) {
+                display: block;
+                top: -33px;
+                left: -216px;
+                width: 307px;
+                height: 220px;
+            }
+        }
+
+        &.right {
+            top: -318px;
+            right: -190px;
+            transform: rotate(90deg);
+
+            span {
+                animation-delay: -5.5s;
+            }
+        }
+    }
+
+    .tz-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+            padding-inline: 2rem;
+        }
+    }
+
+    .intro {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.75rem;
+        width: 100%;
+        max-width: 880px;
+        padding-bottom: 3rem;
+        text-align: center;
+
+        @include media-breakpoint-down(lg) {
+            gap: 1.75rem;
+            padding-bottom: 2rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+            gap: 2rem;
+            padding-bottom: 2rem;
+            text-align: left;
+        }
+    }
+
+    .title,
+    .subtitle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+        }
+    }
+
+    .title {
+        gap: 0.5rem;
+    }
+
+    .subtitle {
+        gap: 1rem;
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+        }
+    }
+
+    .intro :global(.cta) {
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+        }
+    }
+
+    .intro :global(.cta .btn) {
+        @include media-breakpoint-down(md) {
+            width: 100%;
+            min-height: 3.125rem;
+        }
+    }
+
+    .eyebrow {
+        position: relative;
+        margin: 0;
+        padding-bottom: 0.625rem;
+        font-size: clamp(1.375rem, 2.4vw, 2.125rem);
+        font-weight: 600;
+        line-height: 1;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                rgba(137, 103, 206, 0) 0%,
+                #b1e4ff 49%,
+                rgba(69, 52, 104, 0) 100%
+            );
+        }
+
+        @include media-breakpoint-down(md) {
+            color: #b1e4ff;
+            font-size: 1.5625rem;
+
+            &::after {
+                background: #b1e4ff;
+            }
+        }
+    }
+
+    h1 {
+        margin: 0;
+        font-size: clamp(2.5rem, 5vw, 4.5rem);
+        font-weight: 600;
+        font-feature-settings: "ss01", "ss06", "ss07";
+        letter-spacing: -0.02em;
+        line-height: 1;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2.8125rem;
+            line-height: 1.0667;
+            text-wrap: balance;
+
+            br {
+                display: none;
+            }
+        }
+    }
+
+    .lead {
+        margin: 0;
+        font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+        font-weight: 700;
+        line-height: 1.1667;
+
+        @include media-breakpoint-down(md) {
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+    }
+
+    .support {
+        margin: 0;
+        color: #d0d0da;
+        font-size: clamp(1rem, 1.4vw, 1.25rem);
+        line-height: 1.4;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.875rem;
+            line-height: 1.7143;
+        }
+    }
+
+    .media {
+        position: relative;
+        width: 68%;
+        max-width: 1024px;
+        margin: 0;
+        border: 1px solid transparent;
+        border-radius: 1rem;
+        background:
+            linear-gradient(#000000, #000000) padding-box,
+            linear-gradient(180deg, #3c7fec, #ffffff) border-box;
+        /* No `overflow: clip`: the glow layers paint outside the box and the
+         * image carries its own radius, so nothing needs clipping. */
+
+        @include media-breakpoint-down(lg) {
+            width: 100%;
+        }
+
+        @include media-breakpoint-down(md) {
+            background:
+                linear-gradient(#000000, #000000) padding-box,
+                #d663e3 border-box;
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                box-shadow: inset 0 0 14px rgba(66, 111, 173, 0.85);
+                pointer-events: none;
+            }
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1024 / 574;
+            border-radius: calc(1rem - 1px);
+            object-fit: cover;
+        }
+    }
+
+    /* Only `opacity` moves between the two, which the compositor owns. Shares
+     * `--ambient-cycle` with the backdrop drift, so the glow peaks on the same
+     * beat; with the animation off, `rest` alone is the reduced-motion look. */
+    .glow {
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        animation: var(--ambient-cycle) ease-in-out infinite;
+        pointer-events: none;
+
+        &.rest {
+            box-shadow:
+                0 -6px 50px 0 rgba(94, 174, 240, 0.45),
+                0 0 40px 0 rgba(94, 110, 212, 0.16);
+            animation-name: media-rest;
+        }
+
+        &.peak {
+            box-shadow:
+                0 -9px 78px 0 rgba(94, 174, 240, 0.68),
+                0 0 62px 0 rgba(94, 110, 212, 0.3);
+            opacity: 0;
+            animation-name: media-peak;
+        }
+    }
+
+    /* `:global` because the button is rendered by VideoDialog, outside this
+     * component's scope. Only present once `LAUNCH_VIDEO_ID` is set. */
+    .media :global(.play) {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 6rem;
+        height: 6rem;
+        padding: 0;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        background:
+            linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25))
+                padding-box,
+            linear-gradient(
+                    200deg,
+                    rgba(255, 255, 255, 0.2),
+                    rgba(255, 255, 255, 0)
+                )
+                border-box;
+        box-shadow:
+            2px 3px 16px rgba(34, 34, 47, 1),
+            inset 0.75px -0.75px 0.75px rgba(255, 255, 255, 0.35);
+        color: $white;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        transition:
+            background-color 0.2s ease,
+            transform 0.2s ease;
+        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(20px);
+
+        &:hover,
+        &:focus-visible {
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4))
+                    padding-box,
+                linear-gradient(
+                        200deg,
+                        rgba(255, 255, 255, 0.35),
+                        rgba(255, 255, 255, 0)
+                    )
+                    border-box;
+            transform: translate(-50%, -50%) scale(1.04);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $white;
+            outline-offset: 2px;
+        }
+
+        svg {
+            width: 2.125rem;
+            height: 2.375rem;
+            margin-left: 0.25rem;
+        }
+
+        @include media-breakpoint-down(md) {
+            z-index: 1;
+            width: 2rem;
+            height: 2rem;
+
+            svg {
+                width: 0.75rem;
+                height: 0.8125rem;
+                margin-left: 0.125rem;
+            }
+        }
+    }
+
+    .key-numbers {
+        display: grid;
+        gap: 1rem;
+        width: 100%;
+        max-width: 900px;
+        margin: 0;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+
+        @include media-breakpoint-down(md) {
+            gap: 0.5rem;
+        }
+    }
+
+    .fact {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 2rem 1rem;
+        text-align: center;
+
+        @include media-breakpoint-down(md) {
+            padding: 1rem 0.5rem;
+            text-align: left;
+        }
+    }
+
+    dt {
+        font-size: clamp(1.75rem, 2.3vw, 2.25rem);
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.2222;
+        text-shadow: 0 0 20px rgba(198, 192, 255, 0.48);
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.875rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+    }
+
+    dd {
+        margin: 0;
+        color: #cccbce;
+        font-size: $font-size-sm;
+        line-height: 1.4286;
+
+        @include media-breakpoint-down(md) {
+            font-size: 0.625rem;
+            line-height: 1.6;
+        }
+    }
+
+    .notes {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3125rem;
+        padding: 0.75rem 1.875rem;
+        border-radius: 75px;
+        background: rgba(255, 255, 255, 0.1);
+        color: $white;
+        font-size: $font-size-md;
+        line-height: 1.25;
+        text-decoration: none;
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        transition: background-color 0.2s ease;
+
+        svg {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: rgba(255, 255, 255, 0.18);
+            color: $white;
+        }
+    }
+
+    .sky {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        /* Sized by the hero, not by its contents, so `.field` can query it. */
+        container-type: size;
+        overflow: clip;
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+
+    /* The comet coordinates are still the export's 1900x1564 user units, so
+     * this box reproduces what the old `<svg>` did with `xMidYMin slice`:
+     * cover the hero at that ratio, centred, pinned to the top. */
+    .field {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: max(100cqw, 100cqh * var(--skyW) / var(--skyH));
+        aspect-ratio: var(--skyW) / var(--skyH);
+        container-type: size;
+        translate: -50% 0;
+    }
+
+    .comet {
+        /* One user unit, so every value below stays the exported number. */
+        --u: calc(100cqw / var(--skyW));
+
+        position: absolute;
+        top: calc(var(--y) * var(--u));
+        left: calc(var(--x) * var(--u));
+        width: calc(var(--w) * var(--u));
+        height: calc(var(--h) * var(--u));
+        opacity: 0;
+        /* Rotated about its own corner, which is where the baked-in group
+         * transform put it, so the sprite and its drift keep the export's
+         * angle. */
+        transform-origin: 0 0;
+        animation: sky-comet var(--dur) linear infinite var(--delay);
+    }
+
+    /* Translate is a percentage so it stays proportional to the overscan at
+     * every width. All three components peak together at 50%, which means the
+     * zoom is always growing the covered area while the shift and rotation are
+     * eating into it -- the resting frame is therefore the tightest one. */
+    @keyframes backdrop-drift {
+        0%,
+        100% {
+            transform: translate(0, 0) rotate(0deg) scale(1.1);
+        }
+
+        50% {
+            transform: translate(-1.5%, 1%) rotate(1.2deg) scale(1.24);
+        }
+    }
+
+    /* The band is three times the ring's width, so travelling two thirds of
+     * itself sweeps it fully across. Both ends share a value so the sweep
+     * reverses instead of snapping. */
+    @keyframes squares-sheen {
+        0%,
+        100% {
+            transform: translateX(-66.6667%);
+        }
+
+        50% {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes media-rest {
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes media-peak {
+        0%,
+        100% {
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+    }
+
+    /* The drift is the export's 68/-59 and -197/170 user units, expressed in
+     * the same unit as the positions above. */
+    @keyframes sky-comet {
+        0% {
+            opacity: 0;
+            transform: rotate(var(--skyAngle))
+                translate(calc(68 * var(--u)), calc(-59 * var(--u)));
+        }
+
+        10% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.9;
+        }
+
+        65%,
+        100% {
+            opacity: 0;
+            transform: rotate(var(--skyAngle))
+                translate(calc(-197 * var(--u)), calc(170 * var(--u)));
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .comet,
+        .glow,
+        .backdrop,
+        .squares span {
+            animation: none;
+        }
+
+        .squares {
+            background-color: rgba(196, 200, 255, 0.22);
+        }
+
+        .squares span {
+            display: none;
+        }
+
+        .comet {
+            opacity: 1;
+            transform: rotate(var(--skyAngle));
+        }
+    }
+</style>

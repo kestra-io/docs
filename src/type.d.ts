@@ -83,6 +83,7 @@ interface PluginInformation {
     icon?: string
     subGroup?: string
     isEnterprise?: boolean
+    href?: string
 }
 
 type KVNamespace = import("@cloudflare/workers-types").KVNamespace

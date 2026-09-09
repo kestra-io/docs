@@ -27,6 +27,8 @@ This is where evolving orchestration steps in. Far beyond simple task sequencing
 
 ## Understanding multi-agent collaboration and evolving orchestration
 
+Agent collaboration is the visible layer of a deeper question: [how enterprises coordinate models, data pipelines and agents in one place](/resources/ai/ai-orchestration) rather than in a dozen disconnected tools.
+
 ### What does multi-agent orchestration mean?
 
 Multi-agent orchestration is the practice of coordinating multiple, often specialized, [AI agents](https://kestra.io/resources/ai/ai-agent) to achieve a common goal. Unlike single-agent systems that handle a task from start to finish, a [multi-agent system](https://kestra.io/resources/ai/multi-agent-system) breaks down a complex problem into sub-tasks, each handled by an agent best suited for the job.

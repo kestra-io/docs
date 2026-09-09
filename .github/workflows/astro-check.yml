@@ -1,8 +1,8 @@
 name: Lint & Astro Check
 
-# Runs `astro check` (TypeScript / Astro diagnostics), oxlint, and the SSR
-# collection-import check on every pull request, reporting findings as inline
-# review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
+# Runs the vitest unit tests, `astro check` (TypeScript / Astro diagnostics),
+# oxlint, and the SSR collection-import check on every pull request, reporting
+# lint/check findings as inline review comments via reviewdog. Comments are prefixed by tool: [astro], [lint],
 # and [imported content]. The job fails if any tool reports anything, keeping
 # the tree clean.
 on:
@@ -34,6 +34,9 @@ jobs:
       # must be regenerated here before `astro check` runs.
       - name: Generate Cloudflare Worker types
         run: npm run cf-typegen
+
+      - name: Run unit tests
+        run: npm run test:unit
 
       - name: Set up reviewdog
         uses: reviewdog/action-setup@v1
@@ -108,3 +111,10 @@ jobs:
               -fail-level=any < content-imports.jsonl || status=1
 
           exit $status
+
+      # Hard gate (pre-existing scripts, previously run by no workflow). Runs
+      # after the reviewdog report so a test failure can't suppress the inline
+      # lint feedback.
+      - name: Run unit tests
+        if: ${{ !cancelled() }}
+        run: npm run test:unit

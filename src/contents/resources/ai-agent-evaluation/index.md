@@ -75,6 +75,8 @@ Several methodologies have emerged to structure the evaluation process:
 
 As evaluation scenarios become more sophisticated, running them manually becomes untenable. Orchestration is the key to building a scalable, repeatable, and reliable evaluation system. It addresses several critical challenges:
 
+Evaluation runs are themselves workflows, with dependencies, retries and cost ceilings. That places them squarely inside the practice of [orchestrating evaluation across an AI stack](/resources/ai/ai-orchestration).
+
 *   **Automation:** Evaluation often involves a sequence of steps: setting up an environment, running the agent against a dataset, executing an evaluation script, and storing the results. An orchestrator automates this entire pipeline.
 *   **Integration:** A typical evaluation pipeline involves multiple components: the agent itself, LLM providers, evaluation frameworks (like DeepEval or LangChain), data sources, and notification systems. Orchestration unifies these disparate tools into a single, cohesive workflow.
 *   **Lifecycle Management:** It manages the entire lifecycle of an evaluation run, including versioning of agents, datasets, and evaluation logic. This ensures that results are reproducible and comparable over time.

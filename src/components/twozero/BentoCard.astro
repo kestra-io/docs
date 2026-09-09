@@ -1,0 +1,309 @@
+---
+import type { ImageMetadata } from "astro"
+import { Image } from "astro:assets"
+import Snippets from "~/components/common/SnippetsIsland.astro"
+import Link from "~/components/common/Link.astro"
+import { Icon } from "astro-icon/components"
+
+export interface CardContent {
+    title: string
+    body: string
+    layout?: "stack" | "split" | "band"
+    image?: ImageMetadata
+    imageAlt?: string
+    imageWidth?: number
+    bleed?: boolean
+    flush?: boolean
+    code?: { code: string; lang?: string }
+    link?: { text: string; href: string }
+}
+
+type Props = CardContent & {
+    index?: number
+}
+
+const {
+    title,
+    body,
+    layout = "stack",
+    image,
+    imageAlt = "",
+    imageWidth = 654,
+    bleed = false,
+    flush = false,
+    code,
+    link,
+    index = 0,
+} = Astro.props
+
+const bodyHtml = body.replace(
+    /<a href=/g,
+    '<a target="_blank" rel="noopener" href=',
+)
+---
+
+<article
+    class:list={["bento", layout, { bleed, flush }]}
+    style={layout === "split" ? `--tz-media-width: ${imageWidth}px` : undefined}
+    data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+>
+    <div class="copy">
+        {
+            layout === "stack" && link ? (
+                <div class="head">
+                    <h3 set:html={title} />
+                    <a
+                        class="jump"
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener"
+                        title={link.text}
+                        aria-label={link.text}
+                    >
+                        <Icon name="mdi:arrow-top-right" />
+                    </a>
+                </div>
+            ) : (
+                <h3 set:html={title} />
+            )
+        }
+        <p set:html={bodyHtml} />
+        {
+            code && (
+                <div class="code">
+                    <Snippets code={code.code} lang={code.lang ?? "yaml"} />
+                </div>
+            )
+        }
+        {
+            layout !== "stack" && link && (
+                <Link
+                    href={link.href}
+                    text={link.text}
+                    class="more"
+                    target="_blank"
+                    rel="noopener"
+                />
+            )
+        }
+    </div>
+    {
+        image && (
+            <div class="media">
+                <Image src={image} alt={imageAlt} loading="lazy" />
+            </div>
+        )
+    }
+</article>
+
+<style lang="scss">
+    .bento {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        gap: 4rem;
+        height: 100%;
+        padding: 4rem 2rem 5rem;
+        border-radius: 1rem;
+        background: var(--tz-card);
+        overflow: clip;
+
+        @include media-breakpoint-down(lg) {
+            gap: 2.5rem;
+            padding: 2rem 1.5rem 0;
+        }
+    }
+
+    .bento.band {
+        gap: 1rem;
+        padding: 2rem;
+        background: #f9f9fb;
+    }
+
+    .bento.split {
+        flex-direction: row;
+        align-items: center;
+        gap: 4rem;
+        padding: 4rem;
+
+        @include media-breakpoint-down(xl) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 2.5rem;
+            padding: 2rem 1.5rem;
+        }
+    }
+
+    .copy {
+        display: flex;
+        flex: 1 1 auto;
+        flex-direction: column;
+        gap: 0.5rem;
+        min-width: 0;
+    }
+
+    h3 {
+        margin: 0;
+        color: var(--ks-content-primary);
+        font-size: $font-size-xl;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        line-height: 1.1667;
+
+        .split & {
+            font-size: clamp(1.5rem, 2.3vw, 2.25rem);
+            letter-spacing: -0.01em;
+            line-height: 1.2222;
+            margin-bottom: 1rem;
+        }
+    }
+
+    p {
+        margin: 0;
+        color: #464878;
+        font-size: $font-size-md;
+        line-height: 1.5;
+
+        :global(a) {
+            color: var(--ks-content-link);
+            text-decoration: underline;
+        }
+
+        :global(strong) {
+            font-weight: 600;
+        }
+
+        :global(code) {
+            padding: 0 0.25rem;
+            border-radius: $border-radius;
+            background: var(--ks-background-function);
+            color: var(--ks-content-secondary);
+            font-size: 0.9em;
+        }
+    }
+
+    .code {
+        margin-top: 1.5rem;
+
+        :global(.code-card) {
+            border-radius: 1rem;
+            box-shadow: 0 1px 2px rgba(58, 29, 109, 0.04);
+        }
+
+        :global(.mdc-renderer pre) {
+            padding: 1.25rem 1.5rem;
+        }
+
+        :global(.mdc-renderer pre code .line) {
+            overflow-wrap: anywhere;
+        }
+
+        :global(.mdc-renderer pre code span[style*="116329" i]) {
+            color: var(--ks-content-link) !important;
+        }
+
+        :global(.mdc-renderer pre code span[style*="0a3069" i]) {
+            color: var(--ks-content-primary) !important;
+        }
+    }
+
+    :global(.more) {
+        margin-top: 1.5rem;
+    }
+
+    .head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+
+        h3 {
+            flex: 1 1 auto;
+        }
+    }
+
+    .jump {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        background: var(--ks-background-function);
+        color: var(--ks-content-link);
+        transition:
+            background-color 0.2s ease,
+            color 0.2s ease;
+
+        :global(svg) {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+
+        &:hover,
+        &:focus-visible {
+            background: var(--ks-content-link);
+            color: #ffffff;
+        }
+    }
+
+    .bento.stack {
+        gap: 2.5rem;
+    }
+
+    .stack .media {
+        flex: 1 1 auto;
+        min-height: 0;
+        margin: 0 -2rem -5rem;
+
+        @include media-breakpoint-down(lg) {
+            flex: 0 0 auto;
+            margin: 0 -1.5rem 0;
+        }
+
+        img {
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+
+            @include media-breakpoint-down(lg) {
+                height: auto;
+            }
+        }
+    }
+
+    .split .copy {
+        flex: 1 1 22rem;
+    }
+
+    .split .media {
+        flex: 0 1 var(--tz-media-width);
+        min-width: 0;
+
+        @include media-breakpoint-down(xl) {
+            flex: 0 0 auto;
+        }
+    }
+
+    .split.flush .media {
+        align-self: flex-end;
+        margin-bottom: -4rem;
+
+        @include media-breakpoint-down(xl) {
+            align-self: auto;
+            margin-bottom: -2rem;
+        }
+    }
+
+    .media img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .bleed .media img {
+        width: 116.7%;
+        max-width: none;
+    }
+</style>

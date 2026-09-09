@@ -21,7 +21,6 @@ faq:
     answer: "When choosing a cloud orchestration tool, consider your deployment model (cloud-native, hybrid, multi-cloud), the types of workflows you need to orchestrate (data, infrastructure, AI, business logic), ease of use, extensibility (plugins, APIs), community support, and governance features like RBAC and audit logs."
 author: "elliot"
 ---
-```
 
 Modern cloud environments are a mosaic of services, APIs, and ever-shifting infrastructure. While cloud automation excels at handling individual tasks, the real challenge lies in coordinating these disparate pieces into cohesive, resilient workflows. This is where cloud orchestration becomes indispensable, transforming a collection of automated scripts into an intelligent, unified control plane.
 

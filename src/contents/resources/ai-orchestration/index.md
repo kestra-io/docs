@@ -45,6 +45,8 @@ An effective [orchestrator for data, AI, and infrastructure](/resources/data/orc
 
 The term "AI orchestration" is often used broadly, but it's useful to distinguish between the general practice and the more specific discipline of agent orchestration.
 
+The subset that deals specifically with autonomous, goal-driven components is covered in depth in [AI agent orchestration](/resources/ai/ai-agent-orchestration).
+
 ### What is AI orchestration?
 
 AI orchestration is the end-to-end coordination and management of all components in an AI system. This includes the entire lifecycle:
@@ -65,6 +67,8 @@ AI agent orchestration manages how these agents collaborate, share information, 
 ## How AI orchestration works in practice
 
 At its core, an AI orchestration platform acts as the central nervous system for your AI applications, connecting various tools and processes into a cohesive workflow.
+
+Two adjacent disciplines sit inside this picture: [orchestrating the ML lifecycle](/resources/ai/ml-orchestration) on the training side, and [managing what the model actually sees](/resources/ai/context-engineering) on the inference side.
 
 ### Key components of an AI orchestration system
 
@@ -141,6 +145,8 @@ tasks:
 
 When evaluating AI orchestration platforms, several key features are essential for building scalable and maintainable systems.
 
+Tool access deserves its own mention: standardising it through a protocol, as covered in [exposing tools through MCP](/resources/ai/mcp-orchestration), keeps integrations out of individual prompts.
+
 - **Declarative Workflow Definition:** Defining workflows as code, typically in YAML, allows for version control, code reviews, and GitOps-style management. This [YAML-first orchestration](/blogs/yaml-for-workflow-orchestration) approach separates workflow logic from business logic.
 - **Polyglot Execution:** The ability to run tasks written in any language (Python, R, SQL, Bash, etc.) is crucial for heterogeneous AI teams. [Language-agnostic orchestration](/features/code-in-any-language) ensures that the platform doesn't force a specific programming language on your team.
 - **Event-Driven Triggers:** Modern AI applications need to react to real-time events. [Event-driven orchestration](/resources/infrastructure/event-driven-orchestration) enables workflows to be triggered by message queues, webhooks, or file system events.
@@ -152,6 +158,8 @@ When evaluating AI orchestration platforms, several key features are essential f
 ## Comparing top AI orchestration tools and platforms
 
 The market for [AI and data orchestration platforms](/blogs/top-data-orchestration-platforms) is diverse, with tools ranging from general-purpose orchestrators to specialized ML platforms and cloud-native services. Choosing the right one depends on your team's skills, existing infrastructure, and specific use cases.
+
+If your workload is dominated by model calls and retrieval rather than autonomous decision-making, the narrower comparison of [LLM orchestration frameworks](/resources/ai/ai-native-orchestration-platform) is the more useful starting point.
 
 Here is a comparison of some popular [ETL and AI orchestration tools](/resources/data/etl-orchestration-tool-alternatives):
 
@@ -169,6 +177,8 @@ While many platforms exist, a key differentiator is whether the tool is a specia
 
 Kestra is an open-source platform designed to be the [orchestration control plane of the AI era](/blogs/kestra-series-a). It provides a unified solution for orchestrating data, AI, and infrastructure workflows through a simple, declarative YAML interface.
 
+For any step that is irreversible or customer-facing, add [human approval gates](/resources/ai/human-in-the-loop-orchestration) before the action executes rather than after.
+
 With Kestra, you can:
 - **Unify Your Stack:** Use a single platform to coordinate everything from data ingestion and transformation with tools like dbt and Snowflake, to model training with Python scripts, to deploying applications on Kubernetes.
 - **Empower All Teams:** The declarative nature of YAML makes workflows accessible to a broader audience, enabling [AI orchestration for non-technical teams](/resources/ai/ai-orchestration-for-non-technical-teams) to collaborate with engineers.
@@ -180,6 +190,8 @@ Kestra's approach is to provide a flexible, language-agnostic control plane that
 ## The future of AI orchestration: Agents, LLMs, and beyond
 
 The field of AI is evolving rapidly, and orchestration platforms must evolve with it. The rise of [autonomous AI agents](/blogs/introducing-ai-agents) and complex LLM-powered applications is placing new demands on orchestration. The future will require platforms that can manage dynamic, decision-driven workflows and provide robust governance for increasingly autonomous systems.
+
+Two directions are worth following closely: [agentic workflows](/resources/ai/agentic-workflows) as the execution model, and [multi-agent systems](/resources/ai/multi-agent-system) as the coordination problem that follows from it.
 
 Orchestration is no longer just about scheduling static tasks; it's about providing the guardrails, observability, and human oversight for intelligent systems. Platforms that embrace this new reality by integrating features like AI Copilots for workflow generation and native support for agentic patterns will be essential for building the next generation of AI applications.
 

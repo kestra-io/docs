@@ -1,0 +1,341 @@
+---
+import { Icon } from "astro-icon/components"
+
+import QuoteCarousel from "./QuoteCarousel.vue"
+
+import LeroyMerlinLogo from "~/assets/quotes-companies/LeroyMerlin.svg?raw"
+import QuadisLogo from "~/assets/quotes-companies/quadis.svg?raw"
+import UsccaLogo from "~/assets/quotes-companies/USCCA.svg?raw"
+
+const stats = [
+    {
+        kicker: "Engineering productivity",
+        trend: "mdi:arrow-up-thin",
+        value: "Up to 40%",
+        body: "Reusable blueprints, plugins, and guided authoring reduce rework and review cycles.",
+    },
+    {
+        kicker: "Operational effort",
+        trend: "mdi:arrow-down-thin",
+        value: "60% less",
+        body: "Targeted reruns, built-in observability, and deterministic execution reduce incidents and time-to-recovery.",
+    },
+    {
+        kicker: "Infra waste",
+        trend: "mdi:arrow-down-thin",
+        value: "30% less",
+        body: "Targeted reruns avoid unnecessary reprocessing across compute, storage, and network.",
+    },
+    {
+        kicker: "Tool spend",
+        trend: "mdi:arrow-down-thin",
+        value: "35% less",
+        body: "Consolidate overlapping orchestration tools to reduce licenses, infrastructure, and operating costs.",
+    },
+]
+
+/* Only the digits animate, so each figure is split from the words around it.
+ * Returns null when a value carries no number, which renders it whole. */
+const splitFigure = (value: string) => {
+    const match = value.match(/^(\D*)(\d+)(\D*)$/)
+    if (!match) return null
+    const [, pre, num, post] = match
+    return { pre, num, post }
+}
+
+const quotes = [
+    {
+        quote: "Kestra allowed us to move from fragmented automation to a unified control plane — secure, scalable, and manageable by all our teams.",
+        author: "Data Platform Engineering",
+        company: "Leroy Merlin",
+        logoSvg: LeroyMerlinLogo,
+    },
+    {
+        quote: "We're convinced to have chosen the right tool. The support and communication are great, it's easy to adapt to any tool, and easy for any team to understand.",
+        author: "Rubén Boniz Martinez, Senior Engineering Manager",
+        company: "Quadis",
+        logoSvg: QuadisLogo,
+    },
+    {
+        quote: "We didn't have centralized orchestration. That's where Kestra plays the most important role: all the fragmented production pipelines orchestrated through it.",
+        author: "Shilpa Pauly, Data Engineer",
+        company: "USCCA",
+        logoSvg: UsccaLogo,
+    },
+]
+---
+
+<section class="roi">
+    <div class="head" data-usal="fade-u delay-50 duration-500 ease-out">
+        <h2>The ROI of standardizing orchestration</h2>
+        <p>
+            Typical impact once the schedulers, cron jobs, and point tools run
+            on one platform.
+        </p>
+    </div>
+
+    <div class="cards">
+        {
+            stats.map((stat, index) => {
+                const figure = splitFigure(stat.value)
+                return (
+                    <article
+                        class="card-fancy"
+                        data-usal={`fade-u duration-350 delay-${100 + index * 50} ease-out`}
+                    >
+                        <p class="kicker">{stat.kicker}</p>
+                        <p class="value">
+                            {stat.trend && (
+                                <Icon name={stat.trend} class="trend" />
+                            )}
+                            <span>
+                                {/* An array, not sibling markup: whitespace
+                                    between template elements would render as a
+                                    stray space inside the figure. */}
+                                {figure
+                                    ? [
+                                          figure.pre,
+                                          <span class="figure">
+                                              {figure.num}
+                                          </span>,
+                                          figure.post,
+                                      ]
+                                    : stat.value}
+                            </span>
+                        </p>
+                        <p class="body">{stat.body}</p>
+                    </article>
+                )
+            })
+        }
+    </div>
+
+    <QuoteCarousel {quotes} client:visible />
+</section>
+
+<style lang="scss">
+    .roi {
+        padding: 5rem 1rem;
+        /* The one light section the design does NOT leave flat white: a soft
+         * lavender wash sits over it, densest across the top and down the left,
+         * clearing to white before the bottom edge. (In Figma this is a raster
+         * texture at 10% opacity; sampling its render gives #f3edff at peak.) */
+        background-color: #ffffff;
+        background-image:
+            radial-gradient(
+                90% 70% at 50% -10%,
+                #f0e8ff 0%,
+                rgba(243, 237, 255, 0.55) 45%,
+                rgba(255, 255, 255, 0) 85%
+            ),
+            radial-gradient(
+                55% 60% at -5% 45%,
+                rgba(243, 237, 255, 0.9) 0%,
+                rgba(255, 255, 255, 0) 100%
+            ),
+            radial-gradient(
+                40% 50% at 100% 5%,
+                rgba(240, 240, 254, 0.9) 0%,
+                rgba(255, 255, 255, 0) 100%
+            );
+    }
+
+    .head {
+        max-width: 900px;
+        margin: 0 auto 2.5rem;
+        text-align: center;
+
+        h2 {
+            margin: 0 0 2rem;
+            color: var(--lp-content-primary);
+            font-size: 1.875rem;
+            font-weight: 600;
+            line-height: 1.0417;
+            letter-spacing: -0.045rem;
+            @include media-breakpoint-up(lg) {
+                font-size: 3rem;
+            }
+        }
+
+        p {
+            margin: 0;
+            color: var(--lp-content-secondary);
+            font-size: 1.25rem;
+            line-height: 1.4;
+        }
+    }
+
+    .cards {
+        display: grid;
+        gap: 1rem;
+        max-width: 1212px;
+        margin-inline: auto;
+        /* minmax(0, …) so a nowrap figure cannot raise one track's min-content
+         * floor and leave that card wider than its neighbours. */
+        @include media-breakpoint-up(sm) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        @include media-breakpoint-up(lg) {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+    }
+
+    .card-fancy {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 1.5rem 1rem 2rem;
+        border: 1.2px solid #8c56ff;
+        border-radius: 8px;
+        background-color: #ffffff;
+        box-shadow:
+            0 -0.515px 1.328px 0 rgba(109, 14, 175, 0.08),
+            0 -7.771px 20.053px 0 rgba(109, 14, 175, 0.2);
+        text-align: center;
+    }
+
+    .kicker {
+        margin: 0;
+        color: var(--lp-purple);
+        font-size: $font-size-md;
+        font-weight: 600;
+        line-height: 1.5;
+    }
+
+    .value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        /* The design keeps arrow and figure on one line inside a 291px card. */
+        white-space: nowrap;
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.0375rem;
+
+        span {
+            /* Near-vertical, not horizontal: the design lights the numbers from
+             * the top, so the light purple is at the cap height and the navy at
+             * the baseline. The stops past 100% are the design's own — they fall
+             * outside the gradient box, so only the first three are visible. */
+            background-image: linear-gradient(
+                -7.365deg,
+                #2f136a 34.34%,
+                #7737fe 71.21%,
+                #d2a4ff 138.64%
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+        }
+    }
+
+    .figure {
+        display: inline-block;
+        /* Tabular digits in a two-digit box — every figure here is 0-99 — so
+         * counting up from 0 cannot shift the centred line as a digit is
+         * gained. A wider figure would still fit, just re-centre slightly. */
+        min-width: 2ch;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .trend {
+        flex-shrink: 0;
+        /* The design's glyph is 48px against a 40px figure, but mdi carries more
+         * sidebearing than Material Symbols, so 1em matches it optically and
+         * still leaves "Up to 40%" room on one line. */
+        width: 1em;
+        height: 1em;
+        color: #7737fe;
+    }
+
+    .body {
+        margin: 0.25rem 0 0;
+        color: var(--lp-content-secondary);
+        font-size: $font-size-sm;
+        line-height: 1.43;
+    }
+</style>
+
+<script>
+    /* Rolls the ROI figures up from zero the first time the cards come into
+     * view. Deliberately not USAL — that library reveals elements but does not
+     * count. The site turns scroll animation off wholesale via .no-animation or
+     * reduced-motion, so honour both and simply leave the final figures.
+     *
+     * Run directly as well as on astro:page-load: layout.astro only mounts
+     * <ClientRouter /> in PROD, so the event never fires in dev — and the
+     * listener still re-arms this after a view-transition navigation. */
+    function initRoiFigureRoll() {
+        const cards = document.querySelector<HTMLElement>(".roi .cards")
+        const figures = document.querySelectorAll<HTMLElement>(".roi .figure")
+        if (!cards || figures.length === 0) return
+        if (cards.dataset.rollArmed === "true") return
+
+        if (
+            document.documentElement.classList.contains("no-animation") ||
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+            !("IntersectionObserver" in window)
+        ) {
+            return
+        }
+
+        const DURATION = 1200
+        const STAGGER = 90
+
+        /* Captured before the figures are zeroed below. */
+        const targets = new Map<HTMLElement, number>()
+        for (const figure of figures) {
+            const target = Number(figure.textContent)
+            if (Number.isFinite(target)) targets.set(figure, target)
+        }
+
+        /* target is passed in rather than looked up here: narrowing an optional
+         * does not survive into the nested requestAnimationFrame closure, which
+         * astro check flags as ts(18048). */
+        function roll(figure: HTMLElement, target: number, index: number) {
+            const startAt = performance.now() + index * STAGGER
+
+            function frame(now: number) {
+                const elapsed = now - startAt
+                if (elapsed < 0) {
+                    requestAnimationFrame(frame)
+                    return
+                }
+                const progress = Math.min(elapsed / DURATION, 1)
+                /* Ease-out cubic: quick off the mark, settling onto the figure. */
+                const eased = 1 - Math.pow(1 - progress, 3)
+                figure.textContent = String(Math.round(target * eased))
+                if (progress < 1) requestAnimationFrame(frame)
+            }
+
+            requestAnimationFrame(frame)
+        }
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (!entry.isIntersecting) continue
+                    observer.disconnect()
+                    /* Zeroed here rather than up front: the figures keep their
+                     * real values until the moment the roll begins, so nothing
+                     * can strand them at nought, and the reset is hidden behind
+                     * the USAL fade the cards are still playing. */
+                    for (const figure of targets.keys())
+                        figure.textContent = "0"
+                    let index = 0
+                    for (const [figure, target] of targets)
+                        roll(figure, target, index++)
+                }
+            },
+            { threshold: 0.35 },
+        )
+        observer.observe(cards)
+        cards.dataset.rollArmed = "true"
+    }
+
+    initRoiFigureRoll()
+    document.addEventListener("astro:page-load", initRoiFigureRoll)
+</script>

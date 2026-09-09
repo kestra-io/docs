@@ -28,6 +28,8 @@ Deploying and governing truly autonomous AI agents in production raises its own 
 
 Agentic AI marks a shift from passive, responsive systems to proactive, goal-driven actors. Instead of only processing inputs and producing outputs, an agentic system plans and executes a sequence of actions to reach a specific objective, adapting its strategy based on feedback from its environment.
 
+Autonomy is what makes agentic AI useful and what makes it hard to operate. Both concerns land on the same foundation: [AI orchestration in production](/resources/ai/ai-orchestration).
+
 ### What makes an AI system "agentic"?
 
 Several characteristics distinguish an agentic AI system. At its core, an agent runs a perception-action loop: it perceives its environment, makes a decision, and takes an action. What makes it "agentic" is the addition of autonomy, memory, and learning.

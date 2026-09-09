@@ -25,6 +25,8 @@ The landscape of artificial intelligence is rapidly evolving, with AI agents and
 
 Model Context Protocol (MCP) orchestration refers to the use of MCP to enable and manage the interactions between AI agents and a wide array of external tools and services. It solves a fundamental problem in the AI ecosystem: the lack of a common language for different systems to communicate. Without a standard like MCP, integrating a new tool with an AI agent requires custom glue code, making the system brittle and difficult to scale. MCP provides a standardized contract, an "API for AI," that allows any compliant tool to be discoverable and usable by any MCP-aware agent.
 
+MCP standardises how a model reaches a tool. It does not decide when that call runs, what happens when it fails, or who approves it — those belong to [the AI orchestration layer](/resources/ai/ai-orchestration) underneath.
+
 ### What does MCP stand for?
 
 MCP stands for **Model Context Protocol**. The name highlights its core function: providing AI models with the necessary *context* to interact with the outside world. This context includes information about what a tool does, what inputs it requires, and what outputs it produces, all in a format that a language model can understand and act upon.

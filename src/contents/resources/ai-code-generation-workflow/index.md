@@ -119,6 +119,8 @@ The workflow extends beyond simple code generation. Advanced tools and concepts 
 
 To move from ad-hoc AI usage to a systematic, enterprise-grade process, you need to architect a workflow that prioritizes reliability, quality, and maintainability. This involves establishing clear principles and leveraging the right structural patterns.
 
+Reliability here is not a property of the model but of the system around it — which is [why AI projects stall between the model and production](/resources/ai/ai-orchestration) more often than at the modelling stage.
+
 ### The importance of separating planning from execution
 
 One of the most effective strategies for getting reliable results from AI is to separate the "planning" phase from the "execution" (code generation) phase.

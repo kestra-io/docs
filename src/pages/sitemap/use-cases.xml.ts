@@ -3,6 +3,13 @@ import { getCollection } from "astro:content"
 import { slugify } from "~/utils/slugify"
 import { sitemapResponse, formatLastMod, gitLastModified } from "~/utils/sitemap.ts"
 
+/**
+ * Routes under /use-cases that only 301 elsewhere, so they must not be submitted.
+ *
+ * - /use-cases/stories redirects to /customers (the stories now live there).
+ */
+const REDIRECTING_ROUTES = new Set(["/use-cases/stories"])
+
 export const GET: APIRoute = async () => {
     const pageEntries = Object.entries(
         import.meta.glob<{ url?: string }>("../use-cases/**/*.astro", { eager: true }),
@@ -10,6 +17,7 @@ export const GET: APIRoute = async () => {
 
     const pageUrls = pageEntries
         .filter(([_, mod]) => mod.url && mod.url.indexOf("[") === -1)
+        .filter(([_, mod]) => !REDIRECTING_ROUTES.has(mod.url!))
         .map(([globPath, mod]) => {
             const filePath = globPath.replace(/^\.\.\//, "src/pages/")
             return {

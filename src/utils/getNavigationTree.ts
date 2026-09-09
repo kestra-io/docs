@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 export type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
 
-const navigationTree = {
+export const navigationTree = {
     "Get Started with Kestra": [
         "Quickstart",
         "Installation Guide",
@@ -91,8 +91,8 @@ function recursivelyBuildChildren(
     parentId: string,
     docsPages: CollectionEntry<"docs">[],
 ): NavigationItem[] | undefined {
+    const parentPath = parentId.endsWith("/") ? parentId : parentId + "/"
     const children = docsPages.filter((page) => {
-        const parentPath = parentId.endsWith("/") ? parentId : parentId + "/"
         return (
             page.id.startsWith(parentPath) &&
             page.id !== parentId &&
@@ -102,6 +102,10 @@ function recursivelyBuildChildren(
 
     if (children.length === 0) {
         return undefined
+    }
+
+    if (parentId.includes("migration-guide")) {
+        children.reverse()
     }
 
     return children.map((child) => ({

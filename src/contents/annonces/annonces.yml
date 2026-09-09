@@ -1,4 +1,5 @@
 - id: 1
-  text: "Kestra 2.0 is coming — join the Early Adopter Program and be among the first to run it."
-  href: "https://kestra.io/early-adopter-program"
-  linkText: "Be an Early Adopter"
+  tag: "Kestra 2.0 is out"
+  linkText: "Watch our 2.0 launch replay:"
+  tail: "what has changed and what you get"
+  href: "https://www.youtube.com/watch?v=kh82zScPTN0"

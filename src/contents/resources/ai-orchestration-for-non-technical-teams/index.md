@@ -29,6 +29,8 @@ This guide cuts through that complexity, showing how non-technical users can lev
 
 AI orchestration is no longer confined to the domain of data scientists and developers. For non-technical teams, it represents a powerful way to automate processes, make smarter decisions, and boost productivity by coordinating various AI-powered tasks into a cohesive workflow.
 
+The underlying discipline is the same one engineering teams practise: read the full guide to [AI orchestration software](/resources/ai/ai-orchestration) for how models, data and tools are coordinated once a workflow leaves the prototype stage.
+
 ### Defining AI orchestration: a straightforward approach
 
 At its core, AI orchestration is the process of managing and automating a sequence of tasks that involve one or more AI models or agents. Think of it as a conductor leading an orchestra. Each musician (an AI tool) is skilled at a specific task, such as summarizing text, analyzing customer sentiment, or generating images. The conductor (the orchestration platform) ensures they all work together in the right order to produce a final piece—a complete business process.

@@ -11,7 +11,7 @@ Handle errors with automatic retries and notifications.
 Failure is inevitable. Kestra offers automatic retries and error handling to help you build resilient workflows.
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/1XzHGwkSrsI?si=r9NWv4e6Dk-VMXZ0" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/zfGI5whJ1UQ?si=mFhXTWYSIT6avPNO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Handle errors with retries and alerts
@@ -71,11 +71,11 @@ tasks:
 
   - id: check_products
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.api.body).products | length > 0 }}"
+    condition: "{{ fromJson(outputs.api.body).products | length > 0 }}"
     then:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
-        message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
+        message: "Found {{ fromJson(outputs.api.body).products | length }} products for category {{ inputs.category }}"
       - id: python
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim
@@ -141,14 +141,9 @@ tasks:
 triggers:
   - id: listen
     type: io.kestra.plugin.core.trigger.Flow
-    conditions:
-      - type: io.kestra.plugin.core.condition.ExecutionStatus
-        in:
-          - FAILED
-          - WARNING
-      - type: io.kestra.plugin.core.condition.ExecutionNamespace
-        namespace: company.team
-        prefix: true
+    dependsOn:
+      - states: [FAILED, WARNING]
+        when: "{{ namespace | startsWith('company.team') }}"
 ```
 
 Adding this flow ensures you receive a Slack alert for any flow failure in the `company.team` namespace.
@@ -242,11 +237,11 @@ tasks:
 
   - id: check_products
     type: io.kestra.plugin.core.flow.If
-    condition: "{{ json(outputs.api.body).products | length > 0 }}"
+    condition: "{{ fromJson(outputs.api.body).products | length > 0 }}"
     then:
       - id: log_status
         type: io.kestra.plugin.core.log.Log
-        message: "Found {{ json(outputs.api.body).products | length }} products for category {{ inputs.category }}"
+        message: "Found {{ fromJson(outputs.api.body).products | length }} products for category {{ inputs.category }}"
       - id: python
         type: io.kestra.plugin.scripts.python.Script
         containerImage: python:slim

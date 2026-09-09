@@ -25,7 +25,7 @@ namespace: company.team
 tasks:
   - id: shell
     type: io.kestra.plugin.scripts.shell.Commands
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       cpu:
