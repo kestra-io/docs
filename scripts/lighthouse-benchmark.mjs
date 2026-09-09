@@ -171,6 +171,26 @@ const BENCHMARK_INDEX_THRESHOLD = 0.1
 // ---------------------------------------------------------------------------
 
 /**
+ * Throws when a result carries no usable performance data: a page-level
+ * runtime error, or a trace with no paint metrics in it.
+ *
+ * @param {any} lhr
+ */
+function assertUsableLhr(lhr) {
+    const code = lhr.runtimeError?.code
+    if (code && code !== "NO_ERROR") {
+        throw new Error(`${code}: ${lhr.runtimeError?.message ?? ""}`)
+    }
+
+    // The non-perf categories audit without the trace, so a run can look fine
+    // while every metric is missing. Reported as 0, that reads as a real drop.
+    const fcp = lhr.audits?.["first-contentful-paint"]
+    if (fcp?.numericValue == null) {
+        throw new Error(fcp?.errorMessage ?? "no paint metrics in the trace")
+    }
+}
+
+/**
  * Runs Lighthouse on a single URL and returns the LHR (Lighthouse Result).
  *
  * @param {string} url
@@ -204,6 +224,8 @@ async function runLighthouse(url, chromePort) {
     })
 
     if (!result?.lhr) throw new Error("Lighthouse returned no result")
+
+    assertUsableLhr(result.lhr)
     return result.lhr
 }
 
