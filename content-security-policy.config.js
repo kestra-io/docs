@@ -109,6 +109,13 @@ export default {
         "https://*.hsforms.net",
         "https://*.hsforms.com",
         "https://*.s3.amazonaws.com",
+        // GTM/gtag XHR-fetches its own resources here (and Tag Assistant's
+        // preview mode connects to it to attach a debug session). The domain
+        // is already trusted in script-src/img-src/frame-src, so allowing it
+        // to be fetched grants strictly less than it already has — without it,
+        // the container can't be debugged on any environment serving this CSP,
+        // which is how the Consent Mode signals went unverified for so long.
+        "https://*.googletagmanager.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
         // Google Ads conversion pings + Enhanced Conversions. The wildcard
