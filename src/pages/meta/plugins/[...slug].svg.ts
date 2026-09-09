@@ -1,6 +1,6 @@
 import { generate } from "~/utils/ogImage.ts"
 import { $fetchApiCached } from "~/utils/fetch.ts"
-import type { JSONSchema } from "@kestra-io/ui-libs"
+import type { JSONSchema } from "~/utils/plugins/schema"
 import { formatElementName } from "~/utils/plugins/pluginUtils"
 
 export const prerender = false

@@ -1,5 +1,5 @@
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs"
+import type { Plugin, PluginElement } from "~/utils/plugins/plugin"
+import { isEntryAPluginElementPredicate } from "~/utils/plugins/plugin"
 import { computed, ref, type Ref } from "vue"
 import { $fetchApiCached } from "~/utils/fetch.ts"
 

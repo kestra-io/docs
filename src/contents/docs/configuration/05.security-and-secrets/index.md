@@ -57,16 +57,9 @@ Choose the backend based on where your organization already stores secrets. In p
 
 Kestra can be configured to use a secrets backend through `kestra.secret.*`.
 
-This page covers:
-
-- AWS Secrets Manager
-- Azure Key Vault
-- Google Secret Manager
-- HashiCorp Vault
-- JDBC
-- secret tags
-- secret cache
-- isolation options
+:::alert{type="info"}
+For the full backend reference — including all supported backends, complete property tables, permissions, credential resolution order, and read-only mode — see [Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md).
+:::
 
 Base structure:
 
@@ -218,7 +211,7 @@ This section is about hardening the running platform rather than managing secret
 
 This group includes:
 
-- super-admin behavior
+- instance owner behavior
 - default roles
 - invitation expiration
 - password rules
@@ -245,19 +238,23 @@ endpoints:
       password: your-password
 ```
 
-### Super-admin
+### Instance Owner
 
-The super-admin account has the highest level of platform access and should be reserved for break-glass administration:
+The instance owner account has the highest level of platform access and should be reserved for break-glass administration:
 
 ```yaml
 kestra:
   security:
-    super-admin:
+    instance-owner:
       username: your_username
-      password: ${KESTRA_SUPERADMIN_PASSWORD}
+      password: ${KESTRA_INSTANCE_OWNER_PASSWORD}
       tenant-admin-access:
         - <optional>
 ```
+
+:::alert{type="info"}
+`kestra.security.super-admin` is a deprecated alias for `kestra.security.instance-owner` and still works.
+:::
 
 :::alert{type="warning"}
 Never store clear-text passwords in config. Use environment variables or your platform secret mechanism.
@@ -274,7 +271,7 @@ kestra:
       name: default
       description: "Default role"
       permissions:
-        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+        FLOW: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "EXECUTE"]
 ```
 
 In multi-tenant environments, scope that role to one tenant:
@@ -286,7 +283,7 @@ kestra:
       name: default
       description: "Default role"
       permissions:
-        FLOW: ["CREATE", "READ", "UPDATE", "DELETE"]
+        FLOW: ["VIEW", "LIST", "CREATE", "UPDATE", "DELETE", "EXECUTE"]
       tenant-id: staging
 ```
 
@@ -305,14 +302,21 @@ kestra:
       expire-after: P30D
 ```
 
-For username/password auth, enforce password complexity explicitly:
+For username/password auth, configure password complexity explicitly:
 
 ```yaml
 kestra:
   security:
     basic-auth:
-      password-regexp: "<regexp-rule>"
+      password-min-length: 8
+      password-require-special: true
+      password-min-digits: 1
+      password-min-lower-case: 1
+      password-min-upper-case: 1
+      password-allowed-special-characters: "!@#$%^&*"
 ```
+
+These rules apply anywhere Kestra asks a user to set or reset a password, including the initial setup flow, invitation acceptance, and user management screens.
 
 ### Delete configuration files after startup
 
@@ -387,7 +391,7 @@ Keep the external process manager timeout longer than Kestra's own termination g
 
 ## Regex timeout
 
-Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs.
+Kestra protects worker threads from ReDoS (catastrophic backtracking) by enforcing a timeout on all regex operations. This applies to [Pebble expression filters](../../expressions/index.mdx) (`regexMatch`, `regexReplace`, `regexExtract`, `replace` with `regexp=true`) and to `validator` patterns on `STRING` and `SECRET` inputs. When a pattern exceeds the limit, the task fails immediately with a timeout error rather than hanging indefinitely.
 
 The default timeout is **10 seconds**. To change it, set `kestra.regex.timeout` in your configuration:
 
@@ -397,7 +401,7 @@ kestra:
     timeout: 30s
 ```
 
-Accepts any [ISO 8601 duration](https://en.wikipedia.org/wiki/ISO_8601#Durations) string (e.g., `5s`, `PT30S`, `1m`).
+Accepts ISO 8601 duration strings (e.g., `PT30S`, `PT1M`) or Micronaut shorthand (e.g., `5s`, `1m`).
 
 :::alert{type="info"}
 The timeout is set once at startup and cannot be changed at runtime without restarting the server.

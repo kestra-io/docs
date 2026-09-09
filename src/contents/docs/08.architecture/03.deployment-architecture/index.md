@@ -1,82 +1,97 @@
 ---
-title: "Deployment Architectures in Kestra: JDBC and Kafka"
-h1: Compare Standalone, Medium, and High-Availability Deployments
-description: Choose your Kestra deployment architecture. Compare Standalone (JDBC), Medium (Database), and High-Availability (Kafka & Elasticsearch) models.
+title: "Kestra Deployment Architectures: Postgres, AMQP, and Kafka"
+h1: Choose a Deployment Architecture for Kestra
+description: Choose your Kestra deployment architecture. Compare standalone vs distributed deployments and Postgres, AMQP/Redis, and Kafka backends.
 sidebarTitle: Deployment architecture
 icon: /src/contents/docs/icons/architecture.svg
 ---
 
-Examples of deployment architectures, depending on your needs.
+Choosing a Kestra deployment architecture involves two decisions: how server roles are deployed (standalone vs distributed), and which queue and repository backends they use.
 
-Kestra is a Java application distributed as an executable. It supports multiple deployment options:
+The queue and repository are independent choices. **Open Source** deployments use a single JDBC database for both. **Enterprise** deployments can configure each independently, including AMQP, Redis, Kafka, and Elasticsearch.
 
-- [Docker](../../02.installation/02.docker/index.md)
-- [Kubernetes](../../02.installation/03.kubernetes/index.md)
-- Manual deployment
+## Standalone vs distributed
 
-Kestra’s plugin system allows you to choose the dependency types that best match your requirements.
-Below are three common deployment architectures.
+### Standalone
 
-## Small-sized deployment
+In standalone mode, all server roles (Executor, Scheduler, Worker Controller, Worker, Webserver, and Indexer) run inside a single process. A single database is the only external dependency. Behavior is identical to a distributed cluster, so moving to distributed requires only deployment changes.
 
-![Kestra Standalone Architecture](./archi-diagram-small.png "Kestra Standalone Architecture")
+Use standalone when:
+- You are running a single-node deployment
+- High availability is not required
+- Operational simplicity is the priority
 
-For small-scale deployments, you can use the Kestra **standalone server**, which runs all server components in a single process. This architecture has no scaling capability.
+For local experimentation, `server local` mode uses an embedded H2 database with no external dependencies (not compatible with production or distributed architecture).
 
-In this setup, a database is the only dependency, minimizing the stack to maintain. Supported databases include:
+### Distributed
 
-- PostgreSQL
-- MySQL
-- H2
+In distributed mode, each server role runs as its own process and scales independently. Workers connect to the Worker Controller over a single outbound gRPC stream and never access the queue or database directly. This enables workers to be deployed in another region, a different cloud, or a network that only allows outbound connections.
 
-## Medium-sized deployment
+Use distributed when:
+- You need to scale roles independently
+- Workers must run in isolated or remote networks
+- High availability is required
 
-![Kestra Architecture](./archi-diagram-medium-sized-deployement.png "Kestra Architecture")
+When components run on separate hosts, use a shared [internal storage](../data-components/index.md#internal-storage) implementation such as [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md), [AWS S3](../../02.installation/08.aws-ec2/index.md), or [Azure Blob Storage](../../02.installation/10.azure-vm/index.md).
 
-For medium-scale deployments, where high availability is not required, Kestra can be run with a relational database (Postgres or MySQL) as the only dependency. H2 is not recommended in distributed setups.
+## Queue backend
 
-- Supported databases: PostgreSQL and MySQL
-- All server components communicate through the database
+The queue is the asynchronous message backbone between server roles. One backend satisfies the full set of queues for a deployment.
 
-In this mode, if components are distributed across multiple hosts, you must use a shared [internal storage](../data-components/index.md#internal-storage) implementation such as [Google Cloud Storage](../../02.installation/09.gcp-vm/index.md), [AWS S3](../../02.installation/08.aws-ec2/index.md), or [Azure Blob Storage](../../02.installation/10.azure-vm/index.md).
+### Database
 
-## High-availability deployment
+A PostgreSQL or MySQL database drives the queue by default. This is the simplest option and covers the majority of production use cases.
 
-![Kestra High Availability Architecture](./archi-diagram.png "Kestra High Availability Architecture")
+- **Dependencies**: PostgreSQL or MySQL
+- Available in Open Source and Enterprise
 
-For high throughput and full horizontal and vertical scaling, the database is replaced with Kafka and Elasticsearch. This architecture removes single points of failure and enables scaling of all server components.
+### AMQP / Redis (Enterprise)
 
-- Dependencies: Kafka and Elasticsearch
+When queue latency matters, replace the database queue with an AMQP broker or Redis.
+
+- **Dependencies**: RabbitMQ or Redis
+- Can reduce queue latency significantly compared to a database queue, depending on workload
+- Also raises the throughput ceiling; use Kafka for the highest throughput requirements
+- RabbitMQ is recommended for simpler operation and fewer edge cases
+
+### Kafka (Enterprise)
+
+For high throughput and full horizontal scaling, use Kafka as the queue backend. The Executor, Scheduler, Worker Controller, Webserver, and Indexer emit to and subscribe from named Kafka topics.
+
+- **Dependencies**: Kafka
+- Each server role scales independently, removing single points of failure
+- PostgreSQL is the recommended repository pairing, as execution state now lives in the repository rather than Kafka state stores
 - Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 
-As with medium deployments, a distributed [internal storage](../data-components/index.md#internal-storage) solution is required if components run on different hosts.
+## Repository backend
 
-### Kafka
+The repository persists all domain entities: flows, executions, logs, triggers, and metrics. One backend satisfies all repository contracts for a deployment.
 
-[Kafka](https://kafka.apache.org/) is the backbone of high availability mode, powering communication and scalability.
+### Database
 
-#### Kafka executor
+A PostgreSQL or MySQL database is the default repository backend and works with any queue backend.
 
-The [executor](../02.server-components/index.md#executor) runs as a [Kafka Streams](https://kafka.apache.org/documentation/streams/) application. It:
+- **Dependencies**: PostgreSQL or MySQL
+- Available in Open Source and Enterprise
 
-- Processes all events from Kafka in order
-- Maintains the internal state of executions
-- Merges task run results from [workers](../02.server-components/index.md#worker)
-- Detects failed workers and resubmits their tasks
+In Enterprise Edition, execution logs can be routed to a dedicated [Log Data Store](../../10.administrator-guide/log-data-store/index.md), a separate backend from the main repository, supporting PostgreSQL, MySQL, H2, Elasticsearch, Splunk, and Datadog. This keeps the main database lean and reduces schema migration time.
 
-Executors scale horizontally within the limits of Kafka partitions. Since executors perform lightweight operations, they typically require minimal resources unless handling very high execution volumes.
+### Elasticsearch (Enterprise)
 
-#### Kafka worker
+Elasticsearch can serve as the repository backend in Kafka deployments, providing fast search and aggregation of flows, executions, and logs for the API and UI.
 
-The [worker](../02.server-components/index.md#worker) runs as a [Kafka consumer](https://kafka.apache.org/documentation/#consumerapi). It:
+- **Dependencies**: Elasticsearch + Kafka queue
+- Uses asynchronous indexing, trading insertion atomicity for analytical and search performance
+- Suited for deployments where query capabilities outweigh consistency requirements
+- The Indexer subscribes to Kafka topics and writes to Elasticsearch, keeping the index in sync
+- Executions continue processing even if Elasticsearch is temporarily unavailable
+- Available only in the [Enterprise Edition](../../07.enterprise/01.overview/01.enterprise-edition/index.md)
 
-- Processes tasks assigned by executors
-- Runs tasks in an internal thread pool
-- Scales horizontally, with multiple instances across servers
+## Comparison
 
-If a worker fails, the executor detects it and resubmits the tasks to another available worker.
-
-### Elasticsearch
-
-[Elasticsearch](https://www.elastic.co/elasticsearch) acts as the database for Kestra’s [webserver](../02.server-components/index.md#webserver), providing fast search, aggregation, and retrieval of flows, executions, and logs.
-It is only required in high availability mode and is used exclusively by the [API and UI](../../09.ui/index.mdx).
+| | Database + Database | AMQP/Redis + Database | Kafka + Database | Kafka + Elasticsearch |
+|---|---|---|---|---|
+| Latency | Baseline | Lower | Moderate | Moderate |
+| Throughput | Single-instance ceiling | Higher | Highest | Highest |
+| Operational complexity | Lowest | Low | High | Highest |
+| Edition | OSS + Enterprise | Enterprise | Enterprise | Enterprise |

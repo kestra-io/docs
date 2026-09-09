@@ -1,6 +1,7 @@
 ---
 import SeeHow from "~/components/common/SeeHow.astro"
 import Faq from "~/components/common/Faq.vue"
+import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
 
 const SELF_HOSTED_FAQ = [
     {
@@ -38,6 +39,8 @@ const CLOUD_HOSTED_FAQ = [
     },
 ]
 ---
+
+<SchemaFAQ items={[...SELF_HOSTED_FAQ, ...CLOUD_HOSTED_FAQ]} />
 
 <div data-host="self-hosted" data-usal="fade-u">
     <SeeHow cta={{ text: "Contact Sales", href: "/demo" }}>

@@ -5,7 +5,7 @@ sidebarTitle: Process Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
 editions: ["OSS", "EE"]
-description: Run Kestra tasks as local processes on the worker node for fast execution without container overhead.
+description: Run tasks as local processes on the worker node for fast execution without container overhead.
 ---
 
 Run tasks as local processes.
@@ -172,8 +172,8 @@ tasks:
       enabled: true
     commands:
       - python main.py
-    workerGroup:
-      key: gpu
+    workerSelector:
+      tags: [gpu]
     taskRunner:
       type: io.kestra.plugin.core.runner.Process
 ```

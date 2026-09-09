@@ -3,16 +3,13 @@ title: Task Runner Capabilities & Supported Plugins in Kestra
 h1: Understand Task Runner Capabilities and Plugin Support
 sidebarTitle: Task Runner Overview
 icon: /src/contents/docs/icons/concepts.svg
-version: ">= 0.18.0"
 editions: ["OSS", "EE"]
 description: Learn about Kestra Task Runners capabilities and supported plugins for executing tasks in diverse environments.
 ---
 
-Understand the capabilities of Task Runners and the plugins that support them.
+Task Runners control where and how Kestra executes script tasks — locally, on Kubernetes, or on cloud platforms like AWS, Azure, and Google Cloud.
 
-## Understand task runner capabilities
-
-Task Runners provide a flexible and efficient way to execute compute-intensive workloads across different environments. Whether you’re running scripts locally, on Kubernetes, or on cloud platforms like AWS, Azure, or Google Cloud, Task Runners ensure consistent, isolated, and configurable task execution.
+## Capabilities
 
 The table below outlines the main capabilities of Task Runners in Kestra.
 
@@ -23,7 +20,7 @@ The table below outlines the main capabilities of Task Runners in Kestra.
 | **No vendor lock-in**                    | Built on a modular plugin system, Task Runners let you run workloads on any cloud or on-prem infrastructure — without being tied to a specific provider.                                                                   |
 | **Task isolation**                       | Each task runs in a fully isolated container environment, preventing conflicts and ensuring consistent performance.                                                                  |
 | **Development-to-production consistency**| Develop locally using Docker containers and seamlessly deploy the same code to production in Kubernetes or cloud environments — just by changing one property.                        |
-| **Centralized configuration management** | Define and manage runner configurations globally using `pluginDefaults`. This allows you to govern credentials and environment settings at the namespace or organization level.                                             |
+| **Centralized configuration management** | In Enterprise Edition, define and manage runner configurations globally using [Policies](../../07.enterprise/02.governance/policies/index.md). This allows you to govern credentials and environment settings at the namespace or organization level.                                             |
 | **Built-in documentation and validation**| Each Task Runner plugin includes a schema. The Kestra code editor offers inline documentation, autocompletion, and syntax validation for every property, ensuring correctness and standardization.                          |
 | **No code changes required**             | Move between environments — from local to cloud — without altering your business logic or code.                                                                                                                             |
 | **Fully customizable**                   | Extend functionality by developing your own Task Runner plugin tailored to your infrastructure and deployment requirements.                                                                                                |
@@ -53,8 +50,8 @@ Task Runners are primarily used in tasks from the [Script Plugin](https://github
 - [Ansible](/plugins/plugin-ansible)
 - [Terraform](/plugins/plugin-terraform)
 - [Modal](/plugins/plugin-modal)
-- [AWS CLI](/plugins/plugin-aws/cli/io.kestra.plugin.aws.cli.awscli)
-- [GCloud CLI](/plugins/plugin-gcp/cli/io.kestra.plugin.gcp.cli.gcloudcli)
-- [Azure CLI](/plugins/plugin-azure/cli/io.kestra.plugin.azure.cli.azcli)
+- [AWS CLI](/plugins/plugin-aws/aws-cli/io.kestra.plugin.aws.cli.awscli)
+- [GCloud CLI](/plugins/plugin-gcp/google-cloud-cli/io.kestra.plugin.gcp.cli.gcloudcli)
+- [Azure CLI](/plugins/plugin-azure/azure-cli/io.kestra.plugin.azure.cli.azcli)
 
 Whenever you see a task capable of executing a `script` or a series of `commands`, it’s a script-based task that can leverage a `taskRunner` to define where and how that task runs.

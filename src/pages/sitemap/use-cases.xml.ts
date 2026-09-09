@@ -1,12 +1,38 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
-import { slugify } from "@kestra-io/ui-libs"
+import { slugify } from "~/utils/slugify"
 import { sitemapResponse, formatLastMod, gitLastModified } from "~/utils/sitemap.ts"
 
+/**
+ * Routes under /use-cases that only 301 elsewhere, so they must not be submitted.
+ *
+ * - /use-cases/stories redirects to /customers (the stories now live there).
+ */
+const REDIRECTING_ROUTES = new Set(["/use-cases/stories"])
+
 export const GET: APIRoute = async () => {
+    const pageEntries = Object.entries(
+        import.meta.glob<{ url?: string }>("../use-cases/**/*.astro", { eager: true }),
+    )
+
+    const pageUrls = pageEntries
+        .filter(([_, mod]) => mod.url && mod.url.indexOf("[") === -1)
+        .filter(([_, mod]) => !REDIRECTING_ROUTES.has(mod.url!))
+        .map(([globPath, mod]) => {
+            const filePath = globPath.replace(/^\.\.\//, "src/pages/")
+            return {
+                loc: `https://kestra.io${mod.url}`,
+                lastmod: formatLastMod(gitLastModified(filePath)),
+            }
+        })
+
     const allUseCases = await getCollection("customerStories")
 
-    const urls = allUseCases.map((story) => {
+    // Mirror the canonical slug logic from src/pages/customers/[slug].astro
+    const toSlug = (story: (typeof allUseCases)[number]) =>
+        story.data.companyName ? slugify(story.data.companyName) : story.id
+
+    const storyUrls = allUseCases.map((story) => {
         const updatedField = (story.data as any).updated ?? (story.data as any).updatedAt ?? null
         let lastmod = formatLastMod(updatedField)
         if (!lastmod && (story as any).filePath) {
@@ -14,10 +40,10 @@ export const GET: APIRoute = async () => {
         }
 
         return {
-            loc: `https://kestra.io/use-cases/stories/${story.id}-${slugify(story.data.title ?? "--")}`,
+            loc: `https://kestra.io/customers/${toSlug(story)}`,
             lastmod,
         }
     })
 
-    return sitemapResponse(urls)
+    return sitemapResponse([...pageUrls, ...storyUrls])
 }

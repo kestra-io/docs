@@ -240,11 +240,63 @@ Kestra.timer('duration', end - start);
 Once this has executed, `duration` will be viewable under **Metrics**.
 ![metrics](./metrics.png)
 
+## Automate JavaScript with triggers
+
+You can also use JavaScript itself as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Node.js code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline Node.js code:
+
+```yaml
+id: node_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.node.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      throw new Error("boom");
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Node.js commands instead:
+
+```yaml
+id: node_commands_trigger
+namespace: company.team
+
+triggers:
+  - id: on_fail
+    type: io.kestra.plugin.scripts.node.CommandsTrigger
+    interval: PT5S
+    exitCondition: "exit 1"
+    edge: true
+    commands:
+      - node -e "throw new Error('boom')"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These trigger types support:
+
+- `interval` to control how often the script or commands run
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only on a transition from not matching to matching
+
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute JavaScript code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.eval)
-- [FileTransform](/plugins/plugin-graalvm/javascript-tasks-on-graalvm/io.kestra.plugin.graalvm.js.filetransform)
+- [Eval](/plugins/plugin-graalvm/js-graalvm/io.kestra.plugin.graalvm.js.eval)
+- [FileTransform](/plugins/plugin-graalvm/js-graalvm/io.kestra.plugin.graalvm.js.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. As GraalVM can polyfill from Java, we can use the `int()` function to convert the string into an integer. Additionally, using the `outputs` property simplifies the process of fetching variables from JavaScript and accessing them inside Kestra. It is useful if you want to manipulate data and pass the new format to another task.
 
@@ -258,7 +310,7 @@ tasks:
     uri: http://xkcd.com/info.0.json
 
   - id: graal
-    type: io.kestra.plugin.graalvm.python.Eval
+    type: io.kestra.plugin.graalvm.js.Eval
     outputs:
       - data
     script: |

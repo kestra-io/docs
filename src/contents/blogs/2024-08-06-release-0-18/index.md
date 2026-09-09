@@ -5,7 +5,7 @@ date: 2024-08-07T11:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
   medium: https://annageller.medium.com/
   image: ageller
 image: ./main.png
@@ -25,7 +25,7 @@ The table below summarizes the highlights of this release.
 | **SCIM Directory Sync**          | Enterprise customers can automate the **sync of users and groups** from their Identity Provider to Kestra using the SCIM v2.0 protocol.                                                                                                | Enterprise Edition                  | [Link](../../docs/07.enterprise/03.auth/scim/index.mdx)                              |
 | **SQL Server Backend (Preview)** | SQL Server is available in preview as a Kestra EE backend database.                                                                                                                                                                    | Enterprise Edition                  | [Link](../../docs/configuration/02.runtime-and-storage/index.md#database-and-datasources)                             |
 | **Audit Logs**                   | Audit Logs have undergone a major overhaul, now including a diff-based display of changes and enabling new use cases such as filtering for executions created by specific users.                                                       | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/06.audit-logs/index.md)                       |
-| **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets/index.md)                          |
+| **Secrets Handling**             | The **Secrets** handling has been improved, allowing for description and tagging of secrets, and more cost-effective API calls to external secrets managers.                                                                           | Enterprise Edition                  | [Link](../../docs/07.enterprise/02.governance/secrets-manager/index.md)                          |
 
 If you'd like to see a 2-minute overview of the release highlights, check out the video below:
 

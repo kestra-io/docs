@@ -14,18 +14,15 @@ Install Kestra in a Kubernetes cluster using a Helm chart.
 
 ## Prerequisites
 
-- **kubectl** — to interact with your cluster
-- **Helm** — to install and manage charts
+- **[kubectl](https://kubernetes.io/docs/tasks/tools/)** — to interact with your cluster
+- **[Helm](https://helm.sh/docs/intro/install/)** — to install and manage charts
 
-Refer to the respective documentation if these tools are not yet installed.
+## Helm charts
 
-## Helm chart repository
+Kestra maintains two Helm charts:
 
-Kestra maintains three Helm charts:
-
-1. **`kestra`** — production-ready chart. No dependencies included. Best suited for production deployments with customizable database and storage.
-2. **`kestra-starter`** — includes PostgreSQL and Versity (S3-like storage) for evaluation only. Great for getting started quickly and experimenting with Kestra.
-3. **`kestra-operator`** — installs the Enterprise Edition Kubernetes Operator.
+1. **`kestra`** — production-ready chart with no bundled dependencies. Requires an external database and object storage.
+2. **`kestra-starter`** — bundles PostgreSQL and Versity (S3-compatible storage) for evaluation only. Not suitable for production.
 
 Chart sources:
 - Repository: [helm.kestra.io](https://helm.kestra.io/)
@@ -45,31 +42,48 @@ To understand available configuration options and compare versions:
 
 ### Starter chart dependencies
 
-The `kestra-starter` chart installs:
+The `kestra-starter` chart installs Versity (object storage) and PostgreSQL (database). These bundled dependencies are not suitable for production.
 
-- Versity (object storage)
-- PostgreSQL (database)
+### Enterprise edition
 
-These are not suitable for production.
+To deploy the Enterprise Edition, Kubernetes needs its own credentials to pull images from the private registry — authenticating with Docker CLI on your local machine does not propagate to the cluster nodes.
 
-### Enterprise Edition
-
-To deploy the Enterprise Edition, authenticate before pulling images:
+Create a Kubernetes secret with your license credentials:
 
 ```bash
-docker login registry.kestra.io --username $LICENSEID --password $FINGERPRINT
+kubectl create secret docker-registry kestra-ee-pull-secret \
+  --docker-server=registry.kestra.io \
+  --docker-username=$LICENSEID \
+  --docker-password=$FINGERPRINT
 ```
 
-Use:
+Reference the secret through `imagePullSecrets`, and point `image` at the Enterprise Edition repository:
 
-- `registry.kestra.io/docker/kestra-ee:latest`
-- or a pinned version such as `registry.kestra.io/docker/kestra-ee:v1.0`
+```yaml
+imagePullSecrets:
+  - name: kestra-ee-pull-secret
+
+image:
+  repository: registry.kestra.io/docker/kestra-ee
+  tag: latest # or a pinned version such as v1.3
+```
+
+For the `kestra-starter` chart, nest these under `kestra:` — like the [ingress configuration](#kestra-starter-chart) below:
+
+```yaml
+kestra:
+  imagePullSecrets:
+    - name: kestra-ee-pull-secret
+  image:
+    repository: registry.kestra.io/docker/kestra-ee
+    tag: latest # or a pinned version such as v1.3
+```
 
 Review [Enterprise requirements](../../07.enterprise/05.instance/index.mdx) before deploying.
 Compare editions in [Open Source vs Enterprise](../../oss-vs-paid/index.md) if you are deciding between versions.
 
 :::alert{type="info"}
-To manage flows declaratively using CRDs, install the [Kestra Kubernetes Operator](../../version-control-cicd/cicd/07.kubernetes-operator/index.md) (Enterprise Edition).
+If you use ArgoCD, see [Deploy Kestra with ArgoCD using a Wrapper Chart](../../15.how-to-guides/argocd/index.md) for the recommended GitOps deployment pattern.
 :::
 
 ## Install Kestra
@@ -103,7 +117,7 @@ The `kestra` chart does not include PostgreSQL or object storage. Configure thes
 
 ## Access the Kestra UI
 
-To list all pods run:
+To list all pods, run:
 
 ```bash
 kubectl get pods -n default -l app.kubernetes.io/name=kestra
@@ -117,14 +131,13 @@ my-kestra-postgresql-0                       Running
 my-kestra-versity-0                          Running
 ```
 
-The pod you want to port-forward is the **Kestra standalone pod**, usually named:
+The Kestra standalone pod is usually named:
 
 ```perl
 my-kestra-kestra-starter-xxxxx
 ```
-If your release is `my-kestra`, the label selector will reliably find it.
 
-Export the pod name:
+Export the pod name using the label selector for release `my-kestra`:
 
 ```bash
 export POD_NAME=$(kubectl get pods \
@@ -132,7 +145,7 @@ export POD_NAME=$(kubectl get pods \
   -o jsonpath="{.items[0].metadata.name}")
 ```
 
-Check it with:
+Verify:
 
 ```bash
 echo $POD_NAME
@@ -146,16 +159,72 @@ kubectl port-forward $POD_NAME 8080:8080
 
 Open **http://localhost:8080** in your browser and create your user.
 
+## Ingress
+
+To expose Kestra outside the cluster, enable the built-in Ingress resource. Both charts support the same ingress properties — the only difference is where they are placed in `values.yaml`.
+
+### kestra chart
+
+```yaml
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  hosts:
+    - host: kestra.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - kestra.example.com
+      secretName: kestra-tls
+```
+
+### kestra-starter chart
+
+The `kestra-starter` chart passes all values under `kestra:` through to the main kestra chart, so nest the ingress block accordingly:
+
+```yaml
+kestra:
+  ingress:
+    enabled: true
+    className: nginx
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    hosts:
+      - host: kestra.example.com
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - kestra.example.com
+        secretName: kestra-tls
+```
+
+Apply with:
+
+```bash
+helm upgrade my-kestra kestra/kestra-starter -f values.yaml
+```
+
+Omit the `tls` block if TLS is terminated upstream (e.g., at a load balancer). The `className` and `annotations` values depend on your ingress controller — replace `nginx` with the appropriate class for your cluster. For TLS certificate management, see [SSL configuration](../../10.administrator-guide/ssl-configuration/index.md).
+
 ## Scaling Kestra on Kubernetes
 
-For production deployments, run each Kestra component in its own pod for improved scalability and resource isolation.
-
-Example `values.yaml`:
+For production deployments, run each Kestra component in its own pod with a dedicated controller. Workers connect to the controller over gRPC on port 50051, so ensure any cluster network policies allow that traffic between pods before applying this configuration.
 
 ```yaml
 deployments:
+  standalone:
+    enabled: false
   webserver:
     enabled: true
+    extraArgs:
+      - --no-controller  # optional; see note below
+      - --no-indexer     # disable embedded indexer when running a dedicated indexer pod
   executor:
     enabled: true
   indexer:
@@ -164,9 +233,29 @@ deployments:
     enabled: true
   worker:
     enabled: true
-  standalone:
-    enabled: false
+  controller:
+    enabled: true
+
+configurations:
+  application:
+    kestra:
+      worker:
+        controllers:
+          type: STATIC
+          static:
+            endpoints:
+              - host: my-kestra-controller  # <release-name>-controller Service; replace my-kestra with your Helm release name
+                port: 50051
 ```
+
+`--no-controller` disables the embedded controller that the webserver starts by default. It is optional — Kestra supports multiple simultaneous controllers, so the embedded one is harmless if left running. Disable it to recover resources when the dedicated `controller` deployment handles all controller duties.
+
+`--no-indexer` disables the indexer embedded in the webserver. Without it, enabling a dedicated `indexer` pod results in two indexers running simultaneously. The example above uses the dedicated pattern. The embedded pattern skips the `--no-indexer` flag and disables the separate pod instead:
+
+| Pattern | Webserver `extraArgs` | `indexer.enabled` |
+|---|---|---|
+| Dedicated indexer pod | `--no-indexer` | `true` |
+| Embedded indexer | — | `false` |
 
 Apply changes:
 
@@ -184,6 +273,53 @@ kubectl get pods -l app.kubernetes.io/name=kestra
 
 Kestra configuration is provided through Helm values and rendered into ConfigMaps and Secrets.
 
+All Kestra-specific options live under `configurations.application`. The content of this block is identical to what you would put in a standalone `application.yml` — the Helm chart passes it through as-is. Every property documented in the [configuration section](../../configuration/index.mdx) is valid here.
+
+### Production example
+
+A typical production `values.yaml` configures the database, storage backend, and secrets manager together:
+
+```yaml
+configurations:
+  application:
+    kestra:
+      storage:
+        type: s3
+        s3:
+          bucket: my-kestra-bucket
+          region: us-east-1
+      secret:
+        type: aws-secret-manager
+        aws-secret-manager:
+          region: us-east-1
+      queue:
+        type: postgres
+      repository:
+        type: postgres
+
+    datasources:
+      postgres:
+        url: jdbc:postgresql://postgres:5432/kestra
+        driverClassName: org.postgresql.Driver
+        username: kestra
+        password: ${POSTGRES_PASSWORD}
+```
+
+Inject credentials from a Kubernetes Secret using `common.extraEnvFrom`:
+
+```yaml
+common:
+  extraEnvFrom:
+    - secretRef:
+        name: postgres-credentials  # Secret must contain POSTGRES_PASSWORD
+```
+
+For the full property reference for each area, see:
+
+- [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md) — storage backends (S3, GCS, Azure, and more) and datasource configuration
+- [Security and Secrets](../../configuration/05.security-and-secrets/index.md) — secrets backends
+- [Configuration basics](../../configuration/01.configuration-basics/index.md) — queue and repository type selection, environment variables, property naming, and override patterns
+
 ### Minimal example (H2 database for testing only)
 
 ```yaml
@@ -197,7 +333,7 @@ configurations:
       storage:
         type: local
         local:
-          basePath: "/app/storage"
+          base-path: "/app/storage"
 
     datasources:
       h2:
@@ -327,6 +463,7 @@ dind:
             - SETGID
       args:
         - '--log-level=fatal'
+        - '--group=1000'
 ```
 
 ### Troubleshooting DinD
@@ -357,14 +494,23 @@ dind:
   enabled: false
 ```
 
-Use the Kubernetes task runner as the default method for running [script tasks](../../16.scripts/index.mdx):
+Use the Kubernetes task runner as the default method for running [script tasks](../../16.scripts/index.mdx). In Enterprise Edition, apply it across a namespace with a [Policy](../../07.enterprise/02.governance/policies/index.md):
 
 ```yaml
-pluginDefaults:
-  - type: io.kestra.plugin.scripts
-    forced: true
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-        # ... your Kubernetes runner configuration
+kestra:
+  policies:
+    - id: k8s-task-runner
+      description: "Use Kubernetes runner for all script tasks."
+      rules:
+        - type: io.kestra.plugin.ee.rules.Add
+          on: PLUGIN
+          override: true
+          where:
+            - field: type
+              operator: STARTS_WITH
+              value: io.kestra.plugin.scripts
+          values:
+            taskRunner:
+              type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+              # ... your Kubernetes runner configuration
 ```

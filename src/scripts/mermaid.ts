@@ -1,8 +1,8 @@
-import mermaid from "mermaid"
-
 document.addEventListener("astro:page-load", async () => {
     const diagrams = document.querySelectorAll<HTMLElement>(".mermaid:not([data-processed])")
     if (!diagrams.length) return
+
+    const { default: mermaid } = await import("mermaid")
 
     const dark = document.documentElement.classList.contains("dark")
     mermaid.initialize({

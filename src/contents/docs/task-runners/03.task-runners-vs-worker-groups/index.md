@@ -3,7 +3,6 @@ title: Task Runners vs Worker Groups – When to Use Each
 h1: Choosing Between Task Runners and Worker Groups in Kestra
 sidebarTitle: Task Runner vs. Worker Group
 icon: /src/contents/docs/icons/concepts.svg
-version: ">= 0.18.0"
 editions: ["EE", "Cloud"]
 description: Learn when to use Task Runners versus Worker Groups in Kestra for optimal compute resource management and isolation.
 ---
@@ -22,7 +21,9 @@ For instance, if you need to query an on-premise SQL Server database running on 
 
 ## Key differences
 Worker groups are always-on servers that can run any task in Kestra, while task runners are ephemeral containers that are spun up only when a task is executed. This has implications with respect to latency and cost:
-- Worker groups are running on dedicated servers, so they can start executing tasks immediately with millisecond latency. Task runners, on the other hand, need to be spun up before they can execute a task, which can introduce latency up to minutes. For example, the AWS Batch task runner can take up to 50 seconds to register a task definition and start a container on AWS ECS Fargate. With the Google Batch task runner, it can take up to 90 seconds if you don't use a compute reservation because GCP spins up a new compute instance for each task run.
+- Worker groups start executing tasks immediately — latency is milliseconds. Task runners must provision compute before execution, which can take seconds to over a minute. For example:
+  - **AWS Batch** (ECS Fargate): up to 50 seconds to register a job definition and start the container.
+  - **Google Batch** without a reservation: up to 90 seconds because GCP provisions a new compute instance per task.
 - Task runners can be more cost-effective for infrequent short-lived tasks, while worker groups are more cost-effective for frequent and long-running tasks.
 - Worker Groups work at the task level, whereas Task Runners are only available for some task types, such as Scripts, Commands, and CLI tasks.
 
@@ -38,7 +39,7 @@ The table below summarizes the differences between task runners and worker group
 | **Cost Efficiency**   | Suitable for infrequent tasks         | Suitable for frequent or long-running tasks |
 
 :::alert{type="info"}
-Worker Groups are not yet available in Kestra Cloud, only in Kestra Enterprise Edition.
+Worker Groups are available in Kestra Enterprise Edition only.
 :::
 
 ## Use cases
@@ -57,13 +58,13 @@ Here are common use cases in which **Task Runners** can be beneficial:
 
 ### Worker Groups usage
 
-First, start the worker with the `--worker-group myWorkerGroupKey` flag. It's important for the new worker to have a configuration similar to that of your principal Kestra server and to have access to the same backend database and internal storage. The configuration file will be passed via the `--config` flag, as shown in the example below.
+Start the worker with a registration token configured in the worker's auth settings — the group is determined by the token. Workers connect to the Worker Controller over gRPC and never access the backend database directly. The worker host needs access to the same internal storage as the rest of the cluster. Pass the configuration file via `--config`:
 
 ```shell
-kestra server worker --worker-group=myWorkerGroupKey --config=/path/to/kestra-config.yaml
+kestra server worker --config=/path/to/kestra-config.yaml
 ```
 
-To assign a task to the desired worker group, add a `workerGroup.key` property. This will ensure that the task or polling trigger is executed on a worker in the specified worker group.
+To route a task to a Worker Group, add `workerSelector.tags` to the task definition with tags matching the target Worker Queue. Any Worker Group subscribed to that queue may execute the task.
 
 ```yaml
 id: myflow
@@ -76,11 +77,11 @@ tasks:
       enabled: true
     commands:
       - python ml_on_gpu.py
-    workerGroup:
-      key: myWorkerGroupKey
+    workerSelector:
+      tags: [myWorkerGroupKey]
 ```
 
-A default worker group can also be configured at the namespace level so that all tasks and polling triggers in that namespace are executed on workers in that worker group by default.
+A default worker selector can also be configured at the namespace level so that all tasks and polling triggers in that namespace route to the appropriate Worker Group by default.
 
 ![default_worker_group](./default_worker_group.png)
 

@@ -22,23 +22,28 @@ tasks:
   - io.kestra.plugin.jdbc.mysql.Query
 kpi1: |-
   ##### 2.5 Million
-  Monthly Executions
+  monthly executions
 kpi2: |-
   ##### 2000+
-  Workflows
+  workflows
 kpi3: |-
   ##### 25+
-  Engineers working with Kestra
+  engineers working with Kestra
 quote: Kestra has changed how we handle data orchestration. Instead of spending
   days fixing issues, we now have full visibility and control. As we scale,
   having a system that grows with us is invaluable
 quotePerson: John Kim
 quotePersonTitle: IT Lead
-industry: Retail & Manufacturing
+industry: Retail
+industry2: Manufacturing
 headquarter: Seoul, South Korea
-solution: Fila has evolved into a global sportswear brand, known for its
-  high-quality and stylish clothing and accessories.
+region: Asia Pacific
+companySize: "5,000+"
+solution: Fila has evolved into a global sportswear brand, known for its high-quality and stylish clothing and accessories.
+tagline: Global sportswear brand with a century-long legacy
 companyName: Fila
+useCase: Orchestrating ERP and supply chain workflows across 70+ countries during a global IT transformation
+useCaseShort: Business Automation
 cta: "What would change if your ERP processes were fully automated—transforming months of manual work into streamlined, end-to-end flows?"
 ---
 

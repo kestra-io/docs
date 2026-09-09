@@ -34,7 +34,7 @@ services:
     image: kestra-python:latest
 ```
 
-Once you start Kestra containers using `docker compose up -d`, you can create a flow that directly runs Python tasks with your custom dependencies using the `PROCESS` runner:
+Once you start Kestra containers using `docker compose up -d`, you can create a flow that directly runs Python tasks with your custom dependencies using the Process task runner:
 
 ```yaml
 id: python_process
@@ -42,7 +42,8 @@ namespace: company.team
 tasks:
   - id: custom_dependencies
     type: io.kestra.plugin.scripts.python.Script
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     script: |
       import pandas as pd
       import requests
@@ -191,4 +192,4 @@ tasks:
 
 The `pullPolicy: NEVER` property ensures that Kestra uses the local image instead of trying to pull it from DockerHub.
 
-If you want to run languages other than Python using a custom Docker image, here is an example with [Go](../00.languages/index.md#run-any-language-using-a-custom-docker-image).
+If you want to run languages other than Python using a custom Docker image, here is an example with [Go](../00.languages/index.md#use-a-custom-docker-image-for-extra-dependencies).

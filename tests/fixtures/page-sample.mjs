@@ -1,5 +1,6 @@
 export const PAGES = [
     { path: "/", label: "Home" },
+    { path: "/get-started", label: "Get Started" },
     { path: "/pricing", label: "Pricing" },
     { path: "/enterprise", label: "Enterprise" },
     { path: "/cloud", label: "Cloud" },

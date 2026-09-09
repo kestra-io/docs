@@ -2,7 +2,7 @@
 import { Icon } from "astro-icon/components"
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import { $fetchApiCached } from "~/utils/fetch"
-import { type Plugin } from "@kestra-io/ui-libs"
+import { type Plugin } from "~/utils/plugins/plugin"
 import { PLANS, getSections, SHARED_FEATURES, SUPPORT_PLANS, SUPPORT_ROWS } from "./pricingData"
 
 const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")

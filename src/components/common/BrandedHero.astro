@@ -1,0 +1,299 @@
+---
+import Link from "~/components/common/Link.astro"
+import ksIconDefault from "~/components/versus/assets/ks-icon.svg?raw"
+
+interface Cta {
+    label: string
+    href: string
+}
+
+interface Props {
+    title: string
+    description: string
+    cta: Cta
+    secondaryCta?: Cta
+    primaryIcon?: string
+    primaryLabel?: string
+    secondaryIcon?: string
+    secondaryLabel?: string
+    themeColor?: string
+    highlightTerm?: string
+    animatePictos?: boolean
+    highlightKestraOnlyAtStart?: boolean
+}
+
+const {
+    title,
+    description,
+    cta,
+    secondaryCta = { label: "Book a Demo", href: "/demo" },
+    primaryIcon = ksIconDefault,
+    primaryLabel = "Kestra",
+    secondaryIcon,
+    secondaryLabel,
+    themeColor,
+    highlightTerm,
+    animatePictos = false,
+    highlightKestraOnlyAtStart = false,
+} = Astro.props as Props
+
+const kestraRegex = highlightKestraOnlyAtStart
+    ? /^Kestra\b/
+    : /\b(Kestra|kestra)\b/
+let renderedTitle = title.replace(
+    kestraRegex,
+    '<span class="highlight">$&</span>',
+)
+if (highlightTerm) {
+    const escaped = highlightTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+    renderedTitle = renderedTitle.replace(
+        new RegExp(`\\b${escaped}\\b`, "i"),
+        '<span class="tool-name">$&</span>',
+    )
+}
+
+const heroStyle = themeColor ? `--tool-color: ${themeColor};` : undefined
+const heroClass = [
+    "branded-hero",
+    themeColor ? "has-theme" : null,
+    animatePictos ? "animate-pictos" : null,
+]
+---
+
+<section class:list={heroClass} style={heroStyle}>
+    <div class="container">
+        <div class="content">
+            <h1 set:html={renderedTitle} />
+            <p>{description}</p>
+            <div class="ctas">
+                <Link href={cta.href} class="btn btn-primary text-white">
+                    {cta.label}
+                </Link>
+                <Link href={secondaryCta.href} class="btn btn-secondary">
+                    {secondaryCta.label}
+                </Link>
+            </div>
+        </div>
+        <div class="pictos">
+            <div
+                class="picto ks"
+                set:html={primaryIcon}
+                aria-label={primaryLabel}
+            />
+            <slot name="between" />
+            {
+                secondaryIcon && (
+                    <div
+                        class="picto tool"
+                        set:html={secondaryIcon}
+                        aria-label={secondaryLabel}
+                    />
+                )
+            }
+        </div>
+    </div>
+</section>
+
+<style lang="scss">
+    .branded-hero {
+        position: relative;
+        background:
+            var(--ks-background-secondary)
+            url("~/assets/header-grid.svg") no-repeat center / cover;
+        border-bottom: 1px solid var(--ks-border-secondary);
+        padding-inline: 1rem;
+        overflow: hidden;
+
+        &.has-theme::before {
+            content: "";
+            position: absolute;
+            top: -200px;
+            right: -120px;
+            width: 720px;
+            height: 720px;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle,
+                color-mix(in srgb, var(--tool-color, transparent) 22%, transparent) 0%,
+                transparent 65%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding-block: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 3rem;
+
+            @include media-breakpoint-down(lg) {
+                padding-block: 2.5rem;
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 2rem;
+            }
+        }
+
+        .content {
+            flex: 1 1 0;
+            min-width: 0;
+            max-width: 600px;
+
+            h1 {
+                color: var(--ks-content-primary);
+                font-weight: 600;
+                margin-bottom: 1rem;
+                font-size: 2.5rem;
+                line-height: 1.15;
+
+                @include media-breakpoint-down(md) {
+                    font-size: 2rem;
+                }
+
+                :global(.highlight) {
+                    color: var(--ks-content-color-highlight);
+                }
+
+                :global(.tool-name) {
+                    color: color-mix(
+                        in srgb,
+                        var(--tool-color, var(--ks-content-primary)) 80%,
+                        var(--ks-content-primary)
+                    );
+                }
+            }
+
+            p {
+                color: var(--ks-content-secondary);
+                margin-bottom: 1.5rem;
+            }
+
+            .ctas {
+                display: flex;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+
+                :global(.btn-secondary) {
+                    background-color: transparent !important;
+                    color: var(--ks-content-primary) !important;
+                    border-color: var(--ks-border-button-secondary) !important;
+                }
+            }
+        }
+
+        .pictos {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+
+            .picto {
+                width: 170px;
+                height: 170px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid var(--ks-border-secondary);
+                border-radius: 12px;
+                padding: 38px;
+                background: $white;
+                box-shadow: inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1));
+
+                :global(svg) {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+
+                &.ks {
+                    overflow: hidden;
+                    padding: 24px;
+                }
+
+                &.tool {
+                    border-color: color-mix(
+                        in srgb,
+                        var(--tool-color, var(--ks-border-secondary)) 55%,
+                        var(--ks-border-secondary)
+                    );
+                }
+            }
+
+            @include media-breakpoint-down(md) {
+                gap: 0.5rem;
+
+                .picto {
+                    width: 110px;
+                    height: 110px;
+                    padding: 22px;
+
+                    &.ks {
+                        padding: 14px;
+                    }
+                }
+            }
+        }
+
+        &.animate-pictos {
+            .pictos .picto.tool {
+                animation: glow-tool 4.5s ease-in-out infinite;
+            }
+
+            .pictos .picto.ks {
+                animation: glow-ks 4.5s ease-in-out infinite;
+            }
+        }
+    }
+
+    @keyframes glow-ks {
+        0%, 20% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 14px 44px -8px rgba(139, 92, 246, 0.75);
+        }
+        38%, 88% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 18px 48px -16px rgba(139, 92, 246, 0.08);
+        }
+        94%, 100% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 14px 44px -8px rgba(139, 92, 246, 0.75);
+        }
+    }
+
+    @keyframes glow-tool {
+        0%, 38% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 18px 48px -16px
+                    color-mix(in srgb, var(--tool-color, transparent) 10%, transparent);
+        }
+        44%, 70% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 14px 44px -8px
+                    color-mix(in srgb, var(--tool-color, transparent) 80%, transparent);
+        }
+        88%, 100% {
+            box-shadow:
+                inset 2px 3px 16px 0
+                    var(--ks-shadows-light, rgba(57, 82, 242, 0.1)),
+                0 18px 48px -16px
+                    color-mix(in srgb, var(--tool-color, transparent) 10%, transparent);
+        }
+    }
+</style>

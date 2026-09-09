@@ -1,5 +1,6 @@
 ---
 import Layout from "~/components/layout.astro"
+import SchemaSoftwareApplication from "~/components/common/SchemaSoftwareApplication.astro"
 import Hero from "~/components/home/Hero.astro"
 import Comparison from "~/components/home/Comparison.astro"
 import Stacked from "~/components/common/Stacked.astro"
@@ -15,7 +16,10 @@ import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
 const totalPlugins = await fetchTotalPluginsCount()
 ---
 
-<Layout headerTheme="darkHeader">
+<Layout headerTheme="lightText">
+    <Fragment slot="head">
+        <SchemaSoftwareApplication url="https://kestra.io" />
+    </Fragment>
     <div class="home-page">
         <Hero />
         <Comparison />
@@ -36,8 +40,9 @@ const totalPlugins = await fetchTotalPluginsCount()
             </span>
             <span slot="description">
                 Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With {totalPlugins}+ plugins, you
-                can orchestrate everything without building custom glue code.
+                infrastructure, and SaaS tools. <br />With {totalPlugins}+
+                plugins, you can orchestrate everything without building custom
+                glue code.
             </span>
         </PluginsBlock>
         <Testimonial />
@@ -58,14 +63,12 @@ const totalPlugins = await fetchTotalPluginsCount()
         --hp-background-dark: #0a0b0d;
         --hp-content-dark: #ffffff;
         --hp-content-primary: #131316;
-        --hp-background-secondary: #f7f7f7;
         --hp-content-secondary: #3b3a41;
         --hp-content-secondary-inverse: #cccbce;
         --hp-background-tertiary: #7f7f86;
         --hp-content-tertiary: #94a3b8;
         --hp-border-primary: #f1f1f1;
         --hp-border-secondary: #cccbce;
-        --hp-content-color-highlight: #631bff;
         --hp-background-purple-light: #f1efff;
         --hp-grid-size: 68px;
         background-color: var(--hp-background-dark);
@@ -94,4 +97,3 @@ const totalPlugins = await fetchTotalPluginsCount()
         color: var(--ks-content-primary-inverse);
     }
 </style>
-

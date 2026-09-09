@@ -23,11 +23,7 @@
         "binding": "ASSETS",
         "directory": "./dist",
         "html_handling": "drop-trailing-slash",
-        "run_worker_first": [
-            "/*.html", // Run worker for HTML pages only
-            "/", // And the root
-        ],
-        // JS/CSS/images still served directly — fast and free
+        "run_worker_first": true,
     },
     "observability": {
         "enabled": true,

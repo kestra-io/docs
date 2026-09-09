@@ -3,6 +3,8 @@ description: "Compare Kestra vs AWS Step Functions: multi-cloud workflow orchest
 competitorName: AWS Step Functions
 category: Data Orchestration
 shortDescription: "AWS-native state machine automation vs. multi-cloud workflow orchestration in any language."
+seeHowTitle: "Getting Started with Multi-Cloud Orchestration"
+seeHowBody: "See how Kestra can orchestrate workflows across any cloud, any language, and your entire stack."
 
 brandColor:
   color: "#FF4F8B"
@@ -201,7 +203,7 @@ testimonials:
         name: "Customers on multi-tenant platform"
       - value: "0"
         name: "Pipeline rewrites required"
-    storyLink: "/use-cases/stories/scaling-big-data-operations"
+    storyLink: "/customers/acxiom"
 
 platformStrengths:
   title: Kestra Is Built for How Modern Engineering Teams Work

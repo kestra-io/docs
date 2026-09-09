@@ -39,7 +39,7 @@ The new [Log Shipper feature](../../docs/07.enterprise/02.governance/logshipper/
 Built on plugin architecture, the Log Shipper can forward logs to Elasticsearch, Datadog, New Relic, Azure Monitor, Google Operational Suite, AWS CloudWatch, and OpenTelemetry.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/iV6JtAwtuBg?si=AgiIWVZUKmaT1Mrn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 The examples below show how to configure Log Shipper with Datadog and AWS CloudWatch.
@@ -107,7 +107,7 @@ Kestra's interface has always bridged the gap between code and no-code. In this 
 Monitoring workflow execution states is a critical aspect of orchestration. This release adds the ability to [create custom dashboards](../../docs/09.ui/00.dashboard/index.md), so you can track the executions, logs and metrics in a way that matches your needs. You can declare these dashboards as code in the UI's editor, defining both chart types and data sources.
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/Ag4ICYbE2YE?si=GOUc6r4RCb0If88M" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 As with everything in Kestra, you can manage dashboards as code (and you can create them via Terraform or API). Clicking **+ Create new dashboard** opens a code editor where you can define the dashboard layout and data sources.

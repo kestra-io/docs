@@ -116,26 +116,54 @@ KESTRA_STORAGE_TYPE=s3
 KESTRA_URL=https://kestra.example.com
 ```
 
-## SDK default authentication
+:::alert{type="warning"}
+For storage backend properties such as `kestra.storage.s3.access-key` and `kestra.storage.gcs.project-id`, prefer either the YAML form or the double-underscore env-var form. A single underscore between the last two segments can be read as a path separator by Micronaut and produce a nested object that the storage plugin's Jackson mapper rejects with `UnrecognizedPropertyException`. The two forms below are equivalent and both avoid that issue:
 
-SDK-based plugins can use default authentication if configured. Kestra resolves credentials in this order:
-
-1. namespace-level default service account
-2. tenant-level default service account
-3. global SDK defaults
-
-Example:
-
-```yaml
-tasks:
-  sdk:
-    authentication:
-      username: ${kestra.server.basic-auth.username}
-      password: ${kestra.server.basic-auth.password}
-      # token: ${KESTRA_API_TOKEN}
+```bash
+# double underscore preserves the literal kebab/snake separator
+KESTRA_STORAGE_S3_ACCESS__KEY=<aws-access-key-id>
+KESTRA_STORAGE_S3_SECRET__KEY=<aws-secret-access-key>
 ```
 
-If no namespace, tenant, or global default is configured, SDK-based tasks that use `DEFAULT` or `AUTO` authentication fail because no API credentials are available.
+```yaml
+# or keep credentials in YAML and reference an env var
+kestra:
+  storage:
+    s3:
+      access-key: "${S3_ACCESS_KEY}"
+      secret-key: "${S3_SECRET_KEY}"
+```
+
+The same applies to `kestra.storage.gcs.project-id`, `kestra.storage.gcs.service-account`, and other multi-word storage properties.
+:::
+
+## SDK default authentication
+
+SDK-based plugins resolve authentication in this order:
+
+1. Namespace-level default service account
+2. Tenant-level default service account
+3. Global SDK defaults (`kestra.tasks.sdk.authentication`)
+
+**In OSS,** when `kestra.server.basic-auth` is configured, Kestra automatically derives the global SDK credentials from it — no additional configuration is needed. SDK-based tasks using `DEFAULT` or `AUTO` authentication work without further setup.
+
+If you need to use different credentials from those in `kestra.server.basic-auth`, or to authenticate with an API token, override the global default explicitly:
+
+```yaml
+kestra:
+  tasks:
+    sdk:
+      authentication:
+        username: my-user        # overrides basic-auth username
+        password: my-password    # overrides basic-auth password
+        # api-token: ${KESTRA_API_TOKEN}  # use an API token instead
+```
+
+:::alert{type="warning"}
+If only one of `username` or `password` is set — either explicitly or resolved from `basic-auth` — Kestra throws an error when a task first attempts to use the SDK. Both must be provided together or neither.
+:::
+
+If no credential is available at any level, SDK-based tasks using `DEFAULT` or `AUTO` authentication fail. This applies to OSS instances without basic auth configured, and to EE/Cloud instances without a namespace or tenant-level service account.
 
 ## What belongs on the other configuration pages
 

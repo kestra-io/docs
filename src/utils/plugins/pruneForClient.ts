@@ -1,5 +1,6 @@
-import { isEntryAPluginElementPredicate } from "@kestra-io/ui-libs"
-import type { Plugin, PluginElement } from "@kestra-io/ui-libs"
+import { isEntryAPluginElementPredicate } from "./plugin"
+import type { Plugin, PluginElement } from "./plugin"
+import { canonicalPluginPath, type PluginUrlIndex } from "./canonicalUrl"
 
 export type CardPlugin = {
     name: string
@@ -14,15 +15,25 @@ export type CardPlugin = {
     blueprints?: number
     isEnterprise?: boolean
     classes?: string
+    lastReleasedAt?: string
+    usageCount?: number
+    /** Canonical pathname, set when an url index is supplied. */
+    href?: string
 }
 
 export function prunePluginsForCards(
     plugins: Plugin[],
-    pluginsData: Record<string, any>
+    pluginsData: Record<string, any>,
+    urlIndex?: Pick<PluginUrlIndex, "multiSubGroupPlugins">,
 ): CardPlugin[] {
     return plugins.map(p => {
         const key = p.subGroup ?? p.group ?? p.name
-        const info = pluginsData[key] ?? {}
+
+        /** A foreign-package subgroup (e.g. plugin-ee-git's io.kestra.plugin.git) collides with another
+         *  plugin's group key, so fall back to the plugin's own group info. */
+        const isForeignSubgroup = p.subGroup !== undefined && !p.subGroup.startsWith(p.group)
+        const info = (isForeignSubgroup ? pluginsData[p.group] : pluginsData[key]) ?? {}
+
         const groupInfo = pluginsData[p.group]
 
         const classes = Object.entries(p)
@@ -44,6 +55,9 @@ export function prunePluginsForCards(
             blueprints: info.blueprints,
             isEnterprise: p.group?.includes('.ee.') ?? false,
             classes,
+            lastReleasedAt: info.lastReleasedAt as string | undefined,
+            usageCount: info.usageCount as number | undefined,
+            href: urlIndex ? canonicalPluginPath(p, urlIndex) : undefined,
         }
     })
 }

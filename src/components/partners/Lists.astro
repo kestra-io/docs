@@ -14,8 +14,20 @@ import terraform from "./assets/terraform.svg"
 import databricks from "./assets/databricks.svg"
 import hanalytics from "./assets/hanalytics.svg"
 import motherduck from "./assets/motherduck.svg"
+import bitovi from "./assets/bitovi.svg"
+import jlcp from "./assets/jlcp.svg"
+import landeranalytics from "./assets/landeranalytics.avif"
+import digitalocean from "./assets/digitalocean.svg"
 
 const PARTNERS = [
+    {
+        name: "DigitalOcean",
+        logo: digitalocean,
+        type: "Technology",
+        description:
+            "DigitalOcean is the developer cloud, offering droplets, managed databases, and Kubernetes. With Kestra's dedicated plugin, teams orchestrate the whole account with event-driven flows.",
+        href: "/partners/digitalocean",
+    },
     {
         name: "Conapi",
         logo: conapi,
@@ -120,6 +132,30 @@ const PARTNERS = [
             "Ashisuto is a leading Japanese bridge partner connecting enterprises with Kestra for strategic adoption and local support.",
         href: "/partners/ashisuto",
     },
+    {
+        name: "Bitovi",
+        logo: bitovi,
+        type: "Consulting",
+        description:
+            "Bitovi is a digital product consultancy helping teams design, build, and scale web apps, DevOps, and data infrastructure.",
+        href: "https://www.bitovi.com/",
+    },
+    {
+        name: "JLCP",
+        logo: jlcp,
+        type: "Consulting",
+        description:
+            "JLCP is a Brazilian systems integration consultancy delivering data engineering and automation solutions for enterprises.",
+        href: "https://jlcp.com.br/",
+    },
+    {
+        name: "Lander Analytics",
+        logo: landeranalytics,
+        type: "Consulting",
+        description:
+            "Lander Analytics is a systems integration and data consultancy specializing in analytics, machine learning, and data engineering.",
+        href: "https://www.landeranalytics.com/",
+    },
 ]
 ---
 
@@ -128,7 +164,7 @@ const PARTNERS = [
         <div class="row g-3">
             {
                 PARTNERS.map((partner) => {
-                    const isExternal = partner.href.startsWith("http");
+                    const isExternal = partner.href.startsWith("http")
                     return (
                         <div class="col-12 col-md-6 col-lg-4 col-xl-3">
                             <div class="card">
@@ -171,7 +207,7 @@ const PARTNERS = [
                                 </a>
                             </div>
                         </div>
-                    );
+                    )
                 })
             }
         </div>
@@ -188,6 +224,7 @@ const PARTNERS = [
             width: 100%;
             max-width: 273px;
             min-height: 356px;
+            height: 100%;
             border-radius: 8px;
             padding: 16px;
             border: 1px solid var(--ks-border-secondary);

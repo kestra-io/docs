@@ -9,6 +9,7 @@ import ResourceHero from "~/components/resources/ResourceHero.astro"
 import SimilarResources from "~/components/resources/SimilarResources.astro"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Faq from "~/components/common/Faq.vue"
+import ResourceCtaPair from "~/components/resources/ResourceCtaPair.vue"
 
 interface Props {
     post: CollectionEntry<"resources">
@@ -27,6 +28,7 @@ const links = headings.map((h) => ({
 const editUrl = `https://github.com/kestra-io/docs/edit/main/src/contents/resources/${post.id}/index.md`
 
 const { image, date } = page
+const lastUpdated = page.lastUpdated ?? date
 const metaTitle = page.metaTitle ?? page.title
 const metaDescription =
     page.metaDescription ??
@@ -37,6 +39,17 @@ const staticImage = image
     ? await getImage({ src: image, format: "webp" })
     : null
 
+// Author: a named Person if set in front-matter, otherwise the Kestra
+// Organization node emitted site-wide (referenced by @id).
+const author = page.author
+    ? { "@type": "Person", name: page.author }
+    : { "@id": "https://kestra.io/#organization" }
+
+// Always emit an image: the per-page hero when present, else the site OG default.
+const articleImage = staticImage
+    ? `${Astro.url.origin}${staticImage.src}`
+    : `${Astro.url.origin}/og-image.png`
+
 const jsonLinkedData = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -45,10 +58,13 @@ const jsonLinkedData = {
         "@id": Astro.url.href,
     },
     headline: metaTitle,
-    image: staticImage ? [`${Astro.url.origin}${staticImage.src}`] : undefined,
+    image: [articleImage],
+    author,
     ...(date ? { datePublished: date } : {}),
+    ...(lastUpdated ? { dateModified: lastUpdated } : {}),
     publisher: {
         "@type": "Organization",
+        "@id": "https://kestra.io/#organization",
         name: "Kestra",
         logo: { "@type": "ImageObject", url: "https://kestra.io/logo.svg" },
     },
@@ -85,17 +101,20 @@ const faqSchema =
                 />
             )}
             <script
+                is:inline
                 type="application/ld+json"
                 set:html={JSON.stringify(jsonLinkedData)}
             />
             {page.schema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(page.schema)}
                 />
             )}
             {faqSchema && (
                 <script
+                    is:inline
                     type="application/ld+json"
                     set:html={JSON.stringify(faqSchema)}
                 />
@@ -108,7 +127,7 @@ const faqSchema =
         />
         <TwoColumnStickyLayout>
             <div slot="sidebar" class="resource-sidebar">
-                <ResourceDetails resource={post} />
+                <ResourceDetails resource={post as any} />
                 <BlogToc client:load links={links} />
                 <div class="socials-desktop">
                     <BlogSocials
@@ -119,6 +138,18 @@ const faqSchema =
             </div>
             <div class="bd-content">
                 <Content />
+                {page.cta && (
+                    <ResourceCtaPair
+                        client:load
+                        heading={page.cta.heading}
+                        text={page.cta.text}
+                        eventPrefix={page.cta.eventPrefix}
+                        formLabel={page.cta.formLabel}
+                        assetLabel={page.cta.assetLabel}
+                        hubspotFormId={page.cta.hubspotFormId}
+                        pageUri={`resources/${post.id}`}
+                    />
+                )}
             </div>
             <div class="socials-mobile">
                 <BlogSocials

@@ -1,4 +1,5 @@
-import { slugify, subGroupName, type Plugin } from "@kestra-io/ui-libs"
+import { subGroupName, type Plugin } from "./plugin"
+import { slugify } from "../slugify"
 
 export const matchesSubGroup = (plugin: Plugin | any, subGroup?: string): boolean => {
     if (!subGroup) return true

@@ -1,4 +1,4 @@
-import type { Plugin } from "@kestra-io/ui-libs"
+import type { Plugin } from "./plugin"
 
 // "storageVolumes" -> "Storage Volumes"
 export const formatElementType = (type: string): string =>

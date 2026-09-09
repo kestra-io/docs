@@ -5,6 +5,7 @@ $font-family-sans-serif: var(--font-family-mona-sans);
 $font-family-monospace: var(--font-family-jetbrains-mono);
 
 $font-size-base: 1rem;
+$font-size-xxs: $font-size-base * 0.625;
 $font-size-xs: $font-size-base * 0.75;
 $font-size-sm: $font-size-base * 0.875;
 $font-size-md: $font-size-base * 1;

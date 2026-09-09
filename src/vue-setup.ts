@@ -27,13 +27,15 @@ export default (app: App) => {
         }),
     )
 
-    app.use(USALPlugin, {
-        defaults: {
-            duration: 200,
-            threshold: 0.1,
-        },
-        once: true,
-    })
+    if (typeof document === "undefined" || !document.documentElement.classList.contains("no-animation")) {
+        app.use(USALPlugin, {
+            defaults: {
+                duration: 200,
+                threshold: 0.3,
+            },
+            once: true,
+        })
+    }
 
     app.component(
         "NuxtImg",

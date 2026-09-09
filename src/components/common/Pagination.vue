@@ -1,10 +1,38 @@
 <template>
     <nav aria-label="Page navigation">
-        <ul class="pagination mb-0">
+        <ul v-if="compact" class="pagination pagination-compact mb-0">
+            <li class="page-item" role="button">
+                <a
+                    class="page-link fw-bold arrow-button"
+                    :class="{ disabled: currentPage <= 1 }"
+                    :href="getPageUrl(currentPage - 1)"
+                    :rel="relAttr"
+                    @click.prevent="changePage({ direction: 'previous' })"
+                >
+                    <ChevronLeft />
+                </a>
+            </li>
+            <li class="page-item page-indicator">
+                Page {{ currentPage }} of {{ totalPages }}
+            </li>
+            <li class="page-item" role="button">
+                <a
+                    class="page-link fw-bold arrow-button"
+                    :class="{ disabled: currentPage >= totalPages }"
+                    :href="getPageUrl(currentPage + 1)"
+                    :rel="relAttr"
+                    @click.prevent="changePage({ direction: 'next' })"
+                >
+                    <ChevronRight />
+                </a>
+            </li>
+        </ul>
+        <ul v-else class="pagination mb-0">
             <li class="page-item" role="button">
                 <a
                     class="page-link fw-bold arrow-button"
                     :href="getPageUrl(currentPage - 1)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ direction: 'previous' })"
                 >
                     <ChevronLeft />
@@ -29,6 +57,7 @@
                     v-else
                     class="page-list-item page-link fw-bold"
                     :href="getPageUrl(n)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ pageNo: n })"
                     >{{ n }}</a
                 >
@@ -37,6 +66,7 @@
                 <a
                     class="page-link fw-bold arrow-button"
                     :href="getPageUrl(currentPage + 1)"
+                    :rel="relAttr"
                     @click.prevent="changePage({ direction: 'next' })"
                 >
                     <ChevronRight />
@@ -58,10 +88,22 @@
         default: 1,
     })
 
-    const props = defineProps<{
-        totalPages: number
-        currentUrl: string
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            totalPages: number
+            currentUrl: string
+            compact?: boolean
+            /**
+             * Emit rel="nofollow" on the page links. Used on faceted listings
+             * (e.g. blueprints) where paginated + filtered URLs would otherwise
+             * form a crawler trap.
+             */
+            nofollow?: boolean
+        }>(),
+        { compact: false, nofollow: false },
+    )
+
+    const relAttr = computed(() => (props.nofollow ? "nofollow" : undefined))
 
     function getPageUrl(page?: number) {
         if (page === undefined || page < 1 || page > props.totalPages) {
@@ -168,6 +210,27 @@
                 box-shadow: none;
                 background-color: var(--ks-background-button-primary);
             }
+            &.disabled {
+                opacity: 0.4;
+                pointer-events: none;
+            }
+        }
+    }
+
+    .pagination-compact {
+        display: flex;
+        align-items: center;
+
+        li {
+            margin-right: 0;
+        }
+
+        .page-indicator {
+            padding: 0 1rem;
+            font-size: $font-size-sm;
+            font-weight: 700;
+            color: var(--ks-content-primary);
+            white-space: nowrap;
         }
     }
 </style>

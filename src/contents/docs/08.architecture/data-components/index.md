@@ -10,7 +10,7 @@ Understand where different data components ([inputs](../../05.workflow-component
 
 Kestra processes and stores a variety of data, including [flow definitions](../../05.workflow-components/01.flow/index.md), workflow inputs, outputs, logs, execution metadata, and more. Understanding how these components are stored helps optimize performance, configure persistence, and integrate with external storage systems.
 
-Kestra data is stored in either the [repository](../01.main-components/index.md#repository), such as PostgreSQL, or in [internal storage](../data-components/index.md#internal-storage). By default, internal storage is local, but you can configure it to use services like [AWS S3](https://aws.amazon.com/s3/) or [MinIO](https://min.io/).
+Kestra data is stored in either the [repository](../01.main-components/index.md#repository), such as PostgreSQL, or in [internal storage](../data-components/index.md#internal-storage). By default, internal storage is local, but you can configure it to use cloud or S3-compatible object storage such as [AWS S3](https://aws.amazon.com/s3/), [Google Cloud Storage](https://cloud.google.com/storage), or [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/).
 
 :::alert{type="info"}
 See [Kestra architecture](../../08.architecture/03.deployment-architecture/index.md) and [internal storage](../data-components/index.md#internal-storage) for more details.
@@ -23,18 +23,18 @@ The table below outlines key data components, where they are stored, and their p
 | Data component                                                                                         | Storage location                                                                                    | Description |
 |--------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------| --- |
 | **Flows & definitions**                                                                                | Repository                                                                                          | Stores flows, tasks, and their configurations. |
-| **Namespaces**                                                                                         | Repository                                                                                          | Organizes workflows and manages secrets, plugin defaults, and variables. |
+| **Namespaces**                                                                                         | Repository                                                                                          | Organizes workflows and manages secrets, variables, and KV store entries. |
 | **Namespace files**                                                                                    | Internal storage                                                                                    | Stores code and configuration files in Kestra’s storage backend. |
 | **Executions & metadata**                                                                              | Repository                                                                                          | Stores execution details including status, timestamps, and metadata. |
-| **Inputs**                                                                                             | Internal storage                                                                                    | Stores files provided as inputs to a flow execution. |
-| **Input files**                                                                                        | Internal storage                                                                                    | Stores additional files for script or CLI tasks. |
-| **Outputs**                                                                                            | Internal storage                                                                                    | Stores outputs from tasks, separate from the database. |
-| **Output files**                                                                                       | Internal storage                                                                                    | Stores generated files for download and reuse in downstream tasks. |
+| **Input values** (non-FILE types)                                                                      | Repository (executions table)                                                                       | Scalar input values stored in the executions table. Non-sensitive types (STRING, INTEGER, etc.) are stored as plaintext; `SECRET` type inputs are stored encrypted. |
+| **Input files** (FILE type)                                                                            | Internal storage                                                                                    | FILE-type inputs and files passed to script or CLI tasks, stored at `/{namespace}/{flow-id}/executions/{execution-id}/inputs/{input-name}/{file-name}`. |
+| **Output values**                                                                                      | Repository (task_outputs table)                                                                     | Scalar task outputs stored in a dedicated task_outputs table. In Enterprise Edition, values emitted via `encryptedOutputs` are stored as encrypted strings rather than plaintext. |
+| **Output files**                                                                                       | Internal storage                                                                                    | Generated files available for download and reuse in downstream tasks. |
 | **Key-value pairs**                                                                                    | Internal storage & repository (metadata only)                                                       | KV store holds data in key-value format. Metadata is recorded in the repository. |
-| **Logs & [audit logs](../../07.enterprise/02.governance/06.audit-logs/index.md) (Enterprise Edition)** | Repository                                                                                          | Stores logs generated by tasks. |
+| **Logs & [audit logs](../../07.enterprise/02.governance/06.audit-logs/index.md) (Enterprise Edition)** | Repository or [external log data store](../../10.administrator-guide/log-data-store/index.md)       | Stores logs generated by tasks. Audit logs always use the repository. |
 | **Task state & variables**                                                                             | Repository                                                                                          | Stores dynamic variables and task states during executions. |
 | **Secrets**                                                                                            | Repository or external [secret manager](../../07.enterprise/02.governance/secrets-manager/index.md) | Stores secrets internally or integrates with services like AWS Secrets Manager, Vault, or Google Secret Manager. |
-| **Queues**                                                                                             | Repository or Kafka                                                                                 | Handles internal communication between Kestra components. |
+| **Queues**                                                                                             | Database (default), or Kafka / Redis / AMQP / GCP Pub/Sub (Enterprise Edition)                     | Handles internal communication between Kestra components. |
 | **Triggers**                                                                                           | Repository                                                                                          | Stores definitions of event-based triggers. |
 | **User administration**                                                                                | Repository                                                                                          | Stores RBAC, user management, and related metadata. |
 
@@ -44,26 +44,28 @@ The table below outlines key data components, where they are stored, and their p
 
 - **Purpose**: Handles inputs, outputs, temporary execution data, and artifacts such as [namespace files](../../06.concepts/02.namespace-files/index.md).
 - **KV store**: Stores key-value pairs in internal storage, with metadata in the repository. Metadata includes the key, URI, TTL, and timestamps.
-- **Backends**: By default, Kestra uses local storage, but for production you can configure cloud storage such as:
+- **Backends**: By default, Kestra uses local storage, but for production you can configure cloud or S3-compatible object storage:
   - [AWS S3](https://aws.amazon.com/s3/)
   - [Google Cloud Storage](https://cloud.google.com/storage)
   - [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
-  - [MinIO](https://min.io/)
-  - Any S3-compatible service
+  - [Cloudflare R2](https://www.cloudflare.com/products/r2/)
+  - [Huawei OBS](https://www.huaweicloud.com/en-us/product/obs.html)
+  - Any S3-compatible service (Ceph, SeaweedFS, Garage, MinIO)
 
 ### Configuring internal storage
 
-Example `docker-compose.yaml` configuration for AWS S3:
+Example configuration for AWS S3:
 
 ```yaml
 kestra:
   storage:
     type: s3
-    bucket: "kestra-internal-storage"
-    region: "us-east-1"
+    s3:
+      bucket: "kestra-internal-storage"
+      region: "us-east-1"
 ```
 
-For full details, see [internal storage configuration](../../08.architecture/data-components/index.md#internal-storage).
+For full details, see [internal storage configuration](../../configuration/02.runtime-and-storage/index.md#internal-storage).
 
 ## Additional information
 
@@ -79,15 +81,14 @@ For full details, see [internal storage configuration](../../08.architecture/dat
 
 ### Logs
 
-- **Open source**: Logs are stored in the database.
-- **Enterprise Edition**: Supports Elasticsearch as a log backend, in addition to the database.
-  - Audit logs are stored in the repository.
-- Logs can be accessed through the API, UI, or external logging integrations such as the [log shipper](../../07.enterprise/02.governance/logshipper/index.md).
+- By default, logs are stored in the repository. In Kestra 2.0+ (EE), you can route them to a separate JDBC database or Elasticsearch using the [external log data store](../../10.administrator-guide/log-data-store/index.md).
+  - Audit logs are always stored in the repository.
+- Logs can be accessed through the API, UI, or external logging integrations such as the [Log Shipper](../../07.enterprise/02.governance/logshipper/index.md).
 
 ### Queues
 
-- **Open source**: Stored in the database.
-- **Enterprise Edition**: Can use Kafka for inter-component messaging.
+- **Open source**: Backed by the relational database (PostgreSQL or MySQL).
+- **Enterprise Edition**: Can use Kafka, Redis, AMQP, or GCP Pub/Sub for higher-throughput inter-component messaging.
 
 ### Secrets management
 
@@ -107,6 +108,57 @@ kestra:
 ```
 
 See [secret managers](../../07.enterprise/02.governance/secrets-manager/index.md) for more.
+
+### Handling sensitive data and PII
+
+Understanding where data is persisted is critical when flows process personally identifiable information (PII) or other sensitive values.
+
+**Stored as plaintext in the database:**
+- Non-sensitive scalar inputs (STRING, INTEGER, etc.) — stored in the executions table
+- Task output values emitted via `outputs` in the script output protocol — stored in the task_outputs table
+- Log messages — stored in the logs table
+
+**Stored encrypted in the database:**
+- `SECRET` type inputs — stored in the executions table as an encrypted value (requires encryption to be configured); the value is also automatically masked in logs
+- `encryptedOutputs` values (Enterprise Edition) — stored in the task_outputs table
+
+**Not stored in the database:**
+- FILE-type inputs and output files — these go to internal storage (your configured S3, GCS, Azure Blob, etc.).
+
+#### Encrypting sensitive task outputs
+
+:::alert{type="info"}
+`encryptedOutputs` is an Enterprise Edition and Cloud feature.
+:::
+
+In Enterprise Edition and Cloud, script tasks support an `encryptedOutputs` key in the `::{}::` output protocol. Values written this way are wrapped in an `EncryptedString` and stored encrypted in the task_outputs table rather than as plaintext. They are merged into the same outputs map as regular outputs and are decrypted by Kestra at evaluation time.
+
+```yaml
+id: sensitive_data_flow
+namespace: company.team
+
+inputs:
+  - id: ssn
+    type: SECRET
+
+tasks:
+  - id: process_pii
+    type: io.kestra.plugin.scripts.shell.Script
+    script: |
+      echo '::{"encryptedOutputs":{"ssn":"{{ inputs.ssn }}"}}::'
+      echo '::{"outputs":{"status":"processed"}}::'
+```
+
+Both plaintext and encrypted outputs are accessible in downstream tasks via `{{ outputs.process_pii.ssn }}` — Kestra decrypts the value at expression evaluation time.
+
+Lines matching the `::{}::` protocol are consumed by the output processor and never written to the logs table, so the plaintext value is not exposed in log storage.
+
+#### Best practices for PII-sensitive flows
+
+- **Use `type: SECRET` for sensitive inputs.** `SECRET` inputs are encrypted at rest in the executions table and automatically masked in log output. Requires [`kestra.encryption.secret-key`](../../configuration/05.security-and-secrets/index.md) to be configured — without it, `SECRET` inputs fail at runtime.
+- **Use `encryptedOutputs` for sensitive task outputs** (Enterprise Edition). Values are stored encrypted in the task_outputs table and decrypted transparently when referenced in downstream tasks.
+- **Use [Secrets](../../07.enterprise/02.governance/secrets-manager/index.md)** for credentials and configuration values that should never appear in execution records.
+- **Log carefully.** Only `SECRET` inputs are automatically masked in logs. Any sensitive value logged directly — via `print`, `echo`, or a logging statement — is stored as plaintext in the logs table.
 
 ### Database maintenance
 

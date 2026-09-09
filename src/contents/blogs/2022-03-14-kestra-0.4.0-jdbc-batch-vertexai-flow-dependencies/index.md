@@ -116,11 +116,11 @@ This is just the beginning for this plugin but we plan to support JSON and the P
 
 
 ## Singer plugins (Deprecated)
-We have made an evolutionary improvement on our [Singer plugins](/plugins/plugin-singer) (deprecated). Singer operates based on 2 concepts: taps (data source) and targets (destination, where you load the data). This model is smart, since you can work with many different sources, and each can be loaded to as many destinations as you need thanks to [Singer specifications](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
+We have made an evolutionary improvement on our [Singer plugins](/plugins) (deprecated). Singer operates based on 2 concepts: taps (data source) and targets (destination, where you load the data). This model is smart, since you can work with many different sources, and each can be loaded to as many destinations as you need thanks to [Singer specifications](https://github.com/singer-io/getting-started/blob/master/docs/SPEC.md).
 
 Previously, plugins had a single target task that incorporated a tap to load from one source to a single destination. Now we have 2 different tasks that allow you to download one time from a tap and send the same result to multiple destinations.
 
-Here is an example of loading [GitHub](/plugins/plugin-singer) from a repository to a [BigQuery Dataset](/plugins/plugin-singer):
+Here is an example of loading [GitHub](/plugins) from a repository to a [BigQuery Dataset](/plugins):
 
 ```yaml
 tasks:
@@ -173,7 +173,7 @@ You can still use Kestra's internal storage with any singer taps and use the dat
 
 ```
 
-We also added another singer destination [Oracle](/plugins/plugin-singer).
+We also added another singer destination [Oracle](/plugins).
 
 
 ## GCP
@@ -182,7 +182,7 @@ We also added another singer destination [Oracle](/plugins/plugin-singer).
 
 [VertexAI](https://cloud.google.com/vertex-ai) is a complete suite for machine learning that allows you to build, deploy and scale ML models faster.
 
-We've added a [CustomJob](/plugins/plugin-gcp/vertex-ai/io.kestra.plugin.gcp.vertexai.customjob) that starts a [Vertex AI Custom Job](https://cloud.google.com/vertex-ai/docs/training/create-custom-job). This one is based on a docker image that you can launch on any type of instance, with or without a GPU. It allows you to deploy any kind of custom code to be run in ephemeral clusters and will be stopped when the job is finished. This is perfect for large-scale machine learning, but it can be used for any Docker image that requires a large compute engine without having to create a Kubernetes cluster or compute engine.
+We've added a [CustomJob](/plugins/plugin-gcp/google-cloud-vertex-ai/io.kestra.plugin.gcp.vertexai.customjob) that starts a [Vertex AI Custom Job](https://cloud.google.com/vertex-ai/docs/training/create-custom-job). This one is based on a docker image that you can launch on any type of instance, with or without a GPU. It allows you to deploy any kind of custom code to be run in ephemeral clusters and will be stopped when the job is finished. This is perfect for large-scale machine learning, but it can be used for any Docker image that requires a large compute engine without having to create a Kubernetes cluster or compute engine.
 
 The integration will start the vertex job and wait for the job to finish before passing the job status to Kestra. We have done a deep integration, so you will also receive real-time logs for your running jobs.
 
@@ -212,7 +212,7 @@ tasks:
 ```
 
 ### BigQuery retry
-We also improved the retry of all BigQuery tasks. By default, we retry all operations with an internal error for Google servers, but also [some errors](/plugins/plugin-gcp/bigquery/io.kestra.plugin.gcp.bigquery.query#retrymessages) that could happen in real life, including: `rateLimitExceeded`, `due to concurrent update`, and more... These are many cases in which a simple retry will make the task successful. So we enable it by default. For a large use of BigQuery, such as our implementation at Leroy Merlin, this avoids unexpected failures that a simple retry could solve.
+We also improved the retry of all BigQuery tasks. By default, we retry all operations with an internal error for Google servers, but also [some errors](/plugins/plugin-gcp/google-cloud-bigquery/io.kestra.plugin.gcp.bigquery.query#retrymessages) that could happen in real life, including: `rateLimitExceeded`, `due to concurrent update`, and more... These are many cases in which a simple retry will make the task successful. So we enable it by default. For a large use of BigQuery, such as our implementation at Leroy Merlin, this avoids unexpected failures that a simple retry could solve.
 
 Now we catch many errors automatically on BigQuery that can be retried.
 

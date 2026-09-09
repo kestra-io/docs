@@ -39,11 +39,11 @@
 <script setup lang="ts">
     import { computed, ref } from "vue"
     import {
-        slugify,
         subGroupName,
         type Plugin,
         type PluginElement,
-    } from "@kestra-io/ui-libs"
+    } from "~/utils/plugins/plugin"
+    import { slugify } from "~/utils/slugify"
     import { formatElementName } from "~/utils/plugins/pluginUtils"
 
     const {

@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Task Runner – Run Tasks as K8s Pods
 h1: Run Kestra Tasks as Kubernetes Pods
-description: Run Kestra tasks as Kubernetes pods with the K8s Task Runner. Configure pod templates, namespaces, and resource limits for scalable container-based execution.
+description: Run tasks as Kubernetes pods. Configure pod templates, namespaces, and resource limits for container-based execution.
 sidebarTitle: Kubernetes Task Runner
 icon: /src/contents/docs/icons/concepts.svg
 version: ">= 0.18.0"
@@ -9,6 +9,10 @@ editions: ["EE", "Cloud"]
 ---
 
 Run tasks as Kubernetes pods.
+
+:::tip
+This page covers running Kestra **tasks** as Kubernetes pods. To deploy applications **to** a Kubernetes or OpenShift cluster from a flow, see the [Deploy to OpenShift how-to guide](../../../15.how-to-guides/openshift/index.md).
+:::
 
 ## Overview
 
@@ -24,7 +28,8 @@ If your cluster is configured with [RBAC](https://kubernetes.io/docs/reference/a
 
 - `pods`: get, create, delete, watch, list
 - `pods/log`: get, watch
-- `pods/exec`: get, watch
+- `pods/exec`: create, get, watch
+- `secrets`: create, delete (required only when `credentials` is set for private registry access)
 
 The following role grants these authorizations:
 
@@ -39,10 +44,27 @@ rules:
   verbs: ["get", "create", "delete", "watch", "list"]
 - apiGroups: [""]
   resources: ["pods/exec"]
-  verbs: ["get", "watch"]
+  verbs: ["create", "get", "watch"]
 - apiGroups: [""]
   resources: ["pods/log"]
   verbs: ["get", "watch"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create", "delete"]
+```
+
+When `job.enabled: true` (see [Job mode](#job-mode) below), the service account additionally needs:
+
+- `jobs`: get, create, delete, list
+- `jobs/status`: get
+
+```yaml
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "create", "delete", "list"]
+- apiGroups: ["batch"]
+  resources: ["jobs/status"]
+  verbs: ["get"]
 ```
 
 Use the `serviceAccountName` property to assign a custom service account to the pod. When omitted, the namespace default service account is used, which must carry the required RBAC permissions above.
@@ -76,7 +98,7 @@ tasks:
       data.txt: "{{ inputs.file }}"
     outputFiles:
       - "*.txt"
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       config:
@@ -189,6 +211,50 @@ taskRunner:
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
 ```
 
+## Private registry credentials
+
+Use the `credentials` block to pull the task image from a private container registry. The runner creates an ephemeral `kubernetes.io/dockerconfigjson` imagePullSecret in the pod namespace, references it from the task pod, and deletes it when the pod is deleted.
+
+| Property | Required | Description |
+|---|---|---|
+| `registry` | No | Registry URL. If omitted, extracted from the `containerImage` name. |
+| `username` | No | Registry username. |
+| `password` | No | Registry password. |
+| `auth` | No | Base64-encoded `username:password` string. When set, used as-is; otherwise computed from `username` and `password`. |
+
+:::alert{type="warning"}
+Ensure the runner service account has `create` and `delete` permissions on `secrets` in the pod namespace. Without this, the runner cannot create the imagePullSecret and the pod will fail to start. See the [RBAC role](#overview) above.
+:::
+
+:::alert{type="info"}
+The `credentials` field names mirror those of the Docker task runner, so a flow switching from the Docker runner to the Kubernetes runner can reuse its credentials block unchanged.
+:::
+
+The following example pulls from a private Amazon ECR registry:
+
+```yaml
+id: private_registry_task
+namespace: company.team
+
+tasks:
+  - id: run
+    type: io.kestra.plugin.scripts.python.Script
+    containerImage: 123456789.dkr.ecr.eu-west-1.amazonaws.com/my-image:latest
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      namespace: default
+      config:
+        masterUrl: https://eks-cluster.eu-west-1.eks.amazonaws.com
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+        oauthToken: "{{ secret('K8S_OAUTH_TOKEN') }}"
+      credentials:
+        registry: 123456789.dkr.ecr.eu-west-1.amazonaws.com
+        username: AWS
+        password: "{{ secret('ECR_PASSWORD') }}"
+    script: |
+      print("Running from a private registry image")
+```
+
 ## Specifying resource requests
 
 Use the `resources` property to set CPU and memory requests and limits on the main task container. Both `cpu` and `memory` accept static values or Pebble expressions, so you can drive them from flow inputs at runtime.
@@ -275,7 +341,7 @@ Three properties control how long the runner waits at different stages of pod ex
 | Property | Default | Description |
 |---|---|---|
 | `waitUntilRunning` | `PT10M` | Maximum time to wait for the pod to be scheduled, the image to be pulled, and containers to start. |
-| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. |
+| `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. In Job mode, this budget is shared across all pod attempts — size it relative to `job.backoffLimit` so per-attempt eviction-detection overhead does not exhaust it before the task completes. |
 | `waitForLogs` | `PT30S` | Extra time after containers exit to allow the log stream to flush completely. |
 
 Increase `waitUntilRunning` for clusters that pull large images or have slow scheduling. Increase `waitUntilCompletion` for long-running tasks. Decrease `waitForLogs` when you know logs are always flushed quickly and want to reduce idle time at the end of each task.
@@ -290,6 +356,102 @@ taskRunner:
     masterUrl: https://docker-for-desktop:6443
     caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
 ```
+
+## Connection and concurrency settings
+
+At high concurrency, each task opens multiple WebSocket connections against the API server — one for the pod watch, one for the log stream, and one or two for file upload and sidecar signaling. On clusters that enforce API rate limits (such as GKE), this can cause transient failures and slow API server responses, compounding timeout issues.
+
+Three properties on the `config:` block let you cap concurrent connections and tune reconnect backoff:
+
+| Property | Default | Description |
+|---|---|---|
+| `maxConcurrentRequests` | `64` | Maximum total concurrent HTTP requests per client. |
+| `maxConcurrentRequestsPerHost` | `5` | Maximum concurrent HTTP requests to the API server host. |
+| `watchReconnectInterval` | `PT1S` | Backoff between watch reconnects. Increase to prevent reconnect storms under API pressure. |
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+    maxConcurrentRequests: 32
+    maxConcurrentRequestsPerHost: 3
+    watchReconnectInterval: PT5S
+```
+
+## Job mode
+
+By default, the runner submits a raw pod. When a pod is evicted — for example, because of node pressure on a spot or preemptible instance — the task fails immediately, even though the task itself did nothing wrong.
+
+Set `job.enabled: true` to wrap the pod in a `batch/v1` Kubernetes Job instead. The Job controller then restarts a failed or evicted pod, up to `job.backoffLimit` times, before failing the task. Log streaming and file transfer automatically reattach to whichever pod attempt is currently running.
+
+```yaml
+tasks:
+  - id: shell
+    type: io.kestra.plugin.scripts.shell.Commands
+    containerImage: ubuntu
+    taskRunner:
+      type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+      config:
+        masterUrl: https://docker-for-desktop:6443
+        caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+      job:
+        enabled: true
+        backoffLimit: 3
+    commands:
+      - echo "Hello from a Kubernetes Job"
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `job.enabled` | `false` | When true, the pod runs inside a `batch/v1` Job. |
+| `job.backoffLimit` | `6` | Maximum pod restarts before the Job (and task) is marked failed. Must be 0 or greater. |
+| `job.podFailurePolicy` | — | A [Kubernetes PodFailurePolicy](https://kubernetes.io/docs/concepts/workloads/controllers/job/#pod-failure-policy) spec passed directly to the Job. See below. |
+
+:::alert{type="warning"}
+**`waitUntilCompletion` is a shared budget across all pod attempts.** Detecting a force-deleted or evicted pod can take several minutes per attempt. Set `waitUntilCompletion` generously relative to `job.backoffLimit` — for example, if each attempt can take up to 30 minutes and `backoffLimit` is 3, set `waitUntilCompletion` to at least `PT2H`.
+:::
+
+### Distinguishing infrastructure failures from application failures
+
+Without `podFailurePolicy`, the Job controller retries on **any** pod failure, including a task script exiting with a non-zero code. A Python script that raises an exception is retried the same number of times as an evicted pod.
+
+Use `podFailurePolicy` to tell the Job controller which exit codes or pod conditions indicate an infrastructure event (and should be retried) versus an application error (and should fail immediately):
+
+```yaml
+taskRunner:
+  type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+  config:
+    masterUrl: https://docker-for-desktop:6443
+    caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+  job:
+    enabled: true
+    backoffLimit: 6
+    podFailurePolicy:
+      rules:
+        - action: Ignore
+          onPodConditions:
+            - type: DisruptionTarget
+        - action: FailJob
+          onExitCodes:
+            containerName: main
+            operator: NotIn
+            values: [0]
+```
+
+Rules are evaluated top to bottom and stop at the first match. This example puts the `Ignore` rule for pod disruptions (evictions, preemptions) first, so an evicted pod — which also has a non-zero exit code — is retried rather than failing the Job. The `FailJob` rule then catches any remaining non-zero exit codes from the main container (genuine script failures) and fails the Job immediately. `containerName: main` scopes the exit-code rule to the Kestra task container, which is always named `main`.
+
+:::alert{type="info"}
+`job.podFailurePolicy` requires the `JobPodFailurePolicy` feature gate, which is enabled by default since Kubernetes 1.31. On older clusters, the Job is rejected at creation time with a clear error.
+:::
+
+### Resume and delete behavior in Job mode
+
+`resume: true` (the default) reattaches to an existing Job for the current task run rather than creating a new one — the same semantics as pod mode, applied at the Job level.
+
+`delete: true` (the default) deletes the Job after the task completes. Job deletion cascades to its pods automatically. Set `delete: false` to keep the Job and its pods after completion — useful when debugging a failed attempt, since you can then inspect pods with `kubectl exec` or `kubectl logs`.
+
 
 ## Pod and container customization
 
@@ -420,6 +582,8 @@ taskRunner:
         memory: "64Mi"
 ```
 
+A custom `fileSidecar.image` must provide, on its `PATH`, a POSIX shell (`sh`), `test`/`[`, and `sleep` — required by the polling script that waits for the file transfer to complete before the container exits. `find` and `wc` are also used, on a best-effort basis, to verify that uploaded files were fully transferred; if they're missing, verification is skipped rather than failing the task.
+
 `fileSidecar.defaultSpec` applies additional container spec fields to the file transfer containers only, and takes precedence over `containerDefaultSpec` for those containers:
 
 ```yaml
@@ -459,9 +623,35 @@ taskRunner:
 | `output` | — | A Pebble expression evaluated against the task's output map to extract the token string. |
 | `cache` | `PT5M` | How long the fetched token is reused before the provider runs the task again. Set to `PT0S` to disable caching. |
 
-## Using plugin defaults to avoid repetition
+## Centralizing runner configuration with Policies
 
-You can use `pluginDefaults` to avoid repeating configuration across multiple tasks. For example, you can set the `pullPolicy` to `ALWAYS` for all tasks in a namespace:
+In Enterprise Edition, use a [Policy](../../../07.enterprise/02.governance/policies/index.md) to apply the Kubernetes runner to all Python script tasks in a namespace without repeating the configuration in each flow:
+
+```yaml
+id: k8s-runner-defaults
+description: "Kubernetes task runner for all Python script tasks."
+enforcement: ACTIVE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    override: true
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.scripts.python
+    values:
+      taskRunner:
+        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
+        namespace: default
+        pullPolicy: ALWAYS
+        config:
+          masterUrl: https://docker-for-desktop:6443
+          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
+          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
+          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
+```
+
+With this Policy applied to the namespace, individual flows need only declare their tasks:
 
 ```yaml
 id: k8s_taskrunner
@@ -486,20 +676,6 @@ tasks:
           ip_address = socket.gethostbyname(socket.gethostname())
           print("Hello from Kubernetes and Kestra!")
           print(f"Host IP Address: {ip_address}")
-
-pluginDefaults:
-  - type: io.kestra.plugin.scripts.python
-    forced: true
-    values:
-      taskRunner:
-        type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
-        namespace: default
-        pullPolicy: ALWAYS
-        config:
-          masterUrl: https://docker-for-desktop:6443
-          caCertData: "{{ secret('K8S_CA_CERT_DATA') }}"
-          clientCertData: "{{ secret('K8S_CLIENT_CERT_DATA') }}"
-          clientKeyData: "{{ secret('K8S_CLIENT_KEY_DATA') }}"
 ```
 
 ## Guides
@@ -580,6 +756,34 @@ Update the following arguments with your own values:
 
 After running the command, access your config with `kubectl config view --minify --flatten` to replace `caCertData`, `masterUrl`, and `username`.
 
+## Execution details
+
+When you open an execution in the topology view, each Kubernetes task runner task shows a visual step tracker that displays progress through the pod lifecycle in real time. Each step shows its status and elapsed duration as it completes.
+
+| Step | Completes when |
+|---|---|
+| `pod.created` | Always |
+| `pod.scheduled` | Always |
+| `files.uploaded` | `inputFiles` or `namespaceFiles` are set |
+| `task.running` | Always |
+| `files.retrieved` | `outputFiles` or `outputDir` are set |
+| `pod.deleted` | Always |
+
+All six steps are always shown in the tracker; steps that do not apply (no input or output files configured) remain in a waiting state. A long `files.uploaded` step suggests large or numerous input files; a long `files.retrieved` step suggests large outputs.
+
+**Show Details modal — Configuration:**
+- Namespace
+- Pull policy (when set)
+- Service account name (when set)
+- CPU and memory requests and limits (when set)
+- Node selector labels (when set)
+
+**Show Details modal — Pod details (post-execution):**
+- Pod name and node it ran on — useful for `kubectl logs` and `kubectl exec` debugging
+- Pod phase badge (Succeeded / Failed)
+- Scheduling wait — time between pod creation and the pod entering `Running` state; a long value indicates cluster pressure, a slow image pull, or insufficient node capacity
+- Per-container exit codes
+
 ### Amazon Elastic Kubernetes Service (EKS)
 
 The following flow authenticates with EKS using an OAuth token:
@@ -591,7 +795,7 @@ namespace: company.team
 tasks:
   - id: shell
     type: io.kestra.plugin.scripts.shell.Commands
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.ee.kubernetes.runner.Kubernetes
       config:

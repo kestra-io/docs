@@ -8,12 +8,19 @@
             <aside class="plugin-layout__sidebar">
                 <slot name="sidebar" />
             </aside>
-            <div class="plugin-layout__content">
-                <slot />
-            </div>
+            {/* On mobile the aside (version panel / ToC toggle) is displayed
+                above the content. Keep it before the content in DOM order too:
+                the page streams in source order, so an element that displays
+                above the content but arrives after it pushes everything down
+                when its HTML lands — the plugin-layout__content layout shift
+                PageSpeed flags on slow connections. Desktop restores the
+                sidebar | content | aside arrangement with flex order. */}
             <aside class="plugin-layout__aside">
                 <slot name="aside" />
             </aside>
+            <div class="plugin-layout__content">
+                <slot />
+            </div>
         </div>
     </div>
 </section>
@@ -78,10 +85,17 @@
                 top: calc(6rem + var(--announce-height));
                 align-self: flex-start;
 
+                // The aside sits before the content in DOM order (mobile
+                // shows it first, and streaming in display order avoids a
+                // layout shift); on desktop move it visually after the
+                // content to keep sidebar | content | aside.
+                @include media-breakpoint-up(xl) {
+                    order: 1;
+                }
+
                 @include media-breakpoint-down(xl) {
                     max-width: 100%;
                     position: static;
-                    order: -1;
                 }
             }
         }

@@ -43,6 +43,10 @@ kestra:
 Secrets metadata migration is only necessary for Enterprise users. Open-source users will see an exception error: `❌ Secrets Metadata migration failed: Secret migration is not needed in the OSS version`.
 :::
 
+:::alert{type="info"}
+The secrets metadata migration automatically **skips any tenant or namespace whose secret manager is in read-only mode** — read-only secret managers do not use the secrets metadata store, so nothing needs to be migrated for them, and each skipped namespace is logged. Writable tenants and namespaces are migrated as usual, so a setup that mixes read-only and writable secret managers still migrates correctly. Skipped read-only namespaces are unaffected: their secrets keep resolving at runtime and remain listed in the UI.
+:::
+
 Once the migration is complete, the container will stop automatically. You can then move back to the usual command to run the server:
 
 ```yaml
@@ -56,7 +60,7 @@ Similarly, for Kubernetes installations, run a pod with the migration script (`-
 
 :::alert{type="warning"}
 If you upgrade to **1.1.0** without running the migration script, the **Key-Value Store** and **Secrets** pages in the UI will appear empty.
-This is only a **UI issue** — your flows and tasks will continue to run normally and access their values as expected.
+Flows and tasks will continue to run normally. However, there is an additional impact: KV items and secrets stored in namespaces that contain no flows will be **silently excluded from metadata backups** — they will not appear in the backup archive and will be absent after restore.
 
 To fix the UI display, run the migration command above.
 It’s safe to execute this migration **retroactively** after the upgrade if needed.

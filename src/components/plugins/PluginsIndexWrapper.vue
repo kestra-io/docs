@@ -2,10 +2,10 @@
     import { onMounted, onUnmounted, ref } from "vue"
     import { navigate } from "astro:transitions/client"
 
-    import { type Plugin, type PluginMetadata } from "@kestra-io/ui-libs"
-    import PluginIndex from "@kestra-io/ui-libs/src/components/plugins/PluginIndex.vue"
+    import { type Plugin, type PluginMetadata } from "~/utils/plugins/plugin"
+    import PluginIndex from "~/components/plugins/PluginIndex.vue"
 
-    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
+    import MDCParserAndRendererSSR from "../MDCParserAndRendererSSR.vue"
 
     const activeId = ref("")
 
@@ -49,27 +49,34 @@
         subgroupBlueprintCounts?: Record<string, number>
         metadataMap?: Record<string, PluginMetadata>
         schemas?: Record<string, { title?: string }>
+        showLongDescription?: boolean
     }>()
 </script>
 
 <template>
-    <PluginIndex
-        v-if="pluginType === undefined"
-        :icons
-        :plugins
-        :plugin-name
-        :sub-group
-        :route-path
-        :subgroup-blueprint-counts
-        :metadata-map
-        :schemas
-        :active-id="activeId"
-        @navigate="navigate"
-    >
-        <template #markdown="{ content }">
-            <MDCParserAndRenderer :content />
-        </template>
-    </PluginIndex>
+    <!-- Suspense so the async SSR markdown renderer in the #markdown slot can
+         resolve during server rendering (and before the hydration render)
+         instead of leaving skeletons in the HTML. -->
+    <Suspense>
+        <PluginIndex
+            v-if="pluginType === undefined"
+            :icons
+            :plugins
+            :plugin-name
+            :sub-group
+            :route-path
+            :subgroup-blueprint-counts
+            :metadata-map
+            :schemas
+            :show-long-description
+            :active-id="activeId"
+            @navigate="navigate"
+        >
+            <template #markdown="{ content }">
+                <MDCParserAndRendererSSR :content />
+            </template>
+        </PluginIndex>
+    </Suspense>
 </template>
 
 <style lang="scss" scoped>

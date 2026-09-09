@@ -1,22 +1,26 @@
 ---
-title: "Versioned Plugins in Kestra Enterprise: Multi-Version"
-h1: Install Multiple Plugin Versions to Support Legacy Flows
-description: Manage plugin versions in Kestra Enterprise. Install multiple versions of the same plugin to support legacy flows while upgrading others safely.
+title: "Versioned Plugins in Kestra Enterprise: Install and Test Any Version"
+h1: Install and Run Multiple Plugin Versions Simultaneously
+description: Run multiple versions of any plugin side-by-side across your Kestra instance. Build, test, and ship plugin updates from a jar file without disrupting existing flows — and upgrade on your own timeline.
 sidebarTitle: Versioned Plugins
 icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 version: "0.22.0"
 ---
 
-Use multiple versions of a plugin depending on your instance requirements and upgrade path.
+Install multiple versions of any plugin and run them simultaneously across all your flows — assigned at the task, flow, namespace, or instance level.
 
-## Versioned plugins – manage plugin upgrades
+## Use cases
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/h-vmMGlTGM8?si=BC_157leuRzfC0yt" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Versioned plugins simplify the upgrade process. They allow you to pin older plugin versions to your production and legacy flows while using the latest version for newer flows, enabling granular version management in your Kestra instance.
+Versioned plugins give you fine-grained control over which plugin version runs in each flow, namespace, or across your entire instance. Common use cases include:
+
+- **Build and iterate on plugins**: Upload a custom plugin directly from a `.jar` file and test it immediately in any flow — no instance restart required.
+- **Ship fixes to production fast**: When Kestra ships a new or patched plugin, install it via the UI or API and point specific flows to the new version within minutes.
+- **Upgrade on your own timeline**: Run the latest plugin version in new flows while existing flows stay pinned to a stable version until you're ready to migrate.
 
 ## Configuration
 
@@ -27,8 +31,6 @@ Versioned plugins support several properties that can be modified in your Kestra
 - `autoReloadEnabled`: Whether the server should periodically rescan repositories for new or removed plugins.
 - `autoReloadInterval`: How often to rescan (duration, e.g., `60s`).
 - `defaultVersion`: The version to use when none is specified in a flow. Accepted values: `LATEST`, `CURRENT`, `OLDEST`, `NONE`, or an explicit version (e.g., `0.20.0`).
-
-An example configuration looks as follows:
 
 ```yaml
 kestra:
@@ -45,13 +47,11 @@ kestra:
 
 ### Allow-list URLs
 
-In order to properly use Versioned Plugins, the following 3 URLs need to be allowed through your configuration:
+The following URLs must be reachable from your Kestra instance:
 
 - https://repo.maven.apache.org/maven2/
 - https://registry.kestra.io/maven/
 - https://api.kestra.io/
-
-A default configuration looks like:
 
 ```yaml
 kestra:
@@ -100,32 +100,20 @@ Below is a video demonstration walking through each step from installation to ap
 
 <div style="position: relative; padding-bottom: calc(48.95833333333333% + 41px); height: 0; width: 100%;"><iframe src="https://demo.arcade.software/xPS6BoFZhJkDgU9hQoCA?embed&embed_mobile=inline&embed_desktop=inline&show_copy_link=true" title="Versioned Plugins | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
-Here are the steps again, listed one by one. Both Kestra official plugins and custom plugins can be installed from the UI. Navigate to the **Instance > Versioned Plugins** section. You can click **+ Install** and open up the full library of available plugins.
+Both official and custom plugins can be installed from the UI. Go to **Instance Owner → Infrastructure → Versioned Plugins** and click **+ Install** to browse the full plugin library. Search for the plugin, select the version, and confirm.
 
-![versioned-plugins-1](./versioned-plugins-1.png)
+After installing, the full list of versioned plugins is displayed. Kestra alerts you when a newer version is available. Upgrading installs the new version separately — the previous version stays active in existing flows.
 
-From the list, search and select the plugin to install and select the version.
+For a custom plugin, click **+ Install**, switch to **Custom plugin**, and provide:
 
-![versioned-plugins-2](./versioned-plugins-2.png)
+- **Group ID**: The group identifier of the plugin.
+- **Artifact ID**: The artifact identifier of the plugin.
 
-After installing plugins, the full list of versioned plugins is displayed. Kestra alerts you that a newer version of your plugin is available and allows you to upgrade by installing the latest version. When upgrading, the previous version of the plugin is preserved, and a separate, fresh installation of the latest version is added.
-
-![versioned-plugins-3](./versioned-plugins-3.png)
-
-For a custom plugin, after clicking **+ Install**, switch from Official plugin to Custom plugin. You need to specify two identifiers for each custom plugin installation:
-
-- Group ID: The group identifier of the plugin to be installed.
-- Artifact ID: The artifact identifier of the plugin to be installed.
-
-![versioned-plugins-5](./versioned-plugins-4.png)
-
-Instead of installing a new plugin, you can **Upload** a plugin by choosing a valid Java archive file (`.jar`).
-
-![versioned-plugins-4](./versioned-plugins-5.png)
+To upload a custom build, click **Upload** and select a valid `.jar` file.
 
 ### From the API
 
-Only Super Admin users can install versioned plugins with the API. To install a versioned plugin, you can use the API POST request with your username and password with `-u` or an [API token](../../03.auth/api-tokens/index.md).
+Only Instance Owner users can install versioned plugins with the API. To install a versioned plugin, you can use the API POST request with your username and password with `-u` or an [API token](../../03.auth/api-tokens/index.md).
 
 With Kestra username and password:
 
@@ -187,7 +175,7 @@ The `--locally` flag specifies whether the plugin should be installed locally or
 
 ## `version` property in a Flow
 
-In Flow tasks or triggers, you can specify the version of the plugin to use with the `version` property. For example, if the instance has both 0.22.0 and 0.21.0 versions installed of the Shell script plugin, the version to use can be specified in the flow as follows:
+Specify the plugin version on any task or trigger using the `version` property. The following flow pins the Shell Script plugin to `0.21.0` while a newer version is also installed on the instance:
 
 ```yaml
 id: shell_script_example
@@ -221,8 +209,9 @@ When there are multiple versions of a plugin available, Kestra resolves the vers
 4. **Instance-Level**: Using the value set in `kestra.plugins.management.defaultVersion` (default: `LATEST`).
     - This property can be configured to `NONE` to enforce that a version is always explicitly defined.
 
-**Note**: By default, Kestra defaults to `LATEST` for core plugins if no version can be resolved. For other plugins, if no version can be resolved, the Flow will be considered invalid.
+By default, Kestra uses `LATEST` for core plugins when no version can be resolved. For other plugins, an unresolvable version renders the flow invalid.
 
 :::alert{type="info"}
 The version is resolved both at flow creation time and execution time to ensure the correct plugin version is used during both stages. This means that a Task/Trigger can only be deserialized after ensuring that all default versions are properly resolved.
 :::
+

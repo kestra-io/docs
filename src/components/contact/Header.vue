@@ -35,9 +35,17 @@
                                     :id="f.id"
                                     type="text"
                                     class="form-control"
+                                    :class="{ 'is-invalid': errors[f.id] }"
                                     :name="f.id"
                                     required
+                                    @input="clearError(f.id)"
                                 />
+                                <div
+                                    v-if="errors[f.id]"
+                                    class="field-error"
+                                >
+                                    {{ errors[f.id] }}
+                                </div>
                             </div>
                         </div>
 
@@ -54,18 +62,25 @@
                                 v-if="f.type === 'textarea'"
                                 :id="f.id"
                                 class="form-control"
+                                :class="{ 'is-invalid': errors[f.id] }"
                                 :name="f.id"
                                 rows="4"
                                 required
+                                @input="clearError(f.id)"
                             />
                             <input
                                 v-else
                                 :id="f.id"
                                 :type="f.type"
                                 class="form-control"
+                                :class="{ 'is-invalid': errors[f.id] }"
                                 :name="f.id"
                                 required
+                                @input="clearError(f.id)"
                             />
+                            <div v-if="errors[f.id]" class="field-error">
+                                {{ errors[f.id] }}
+                            </div>
                         </div>
                         <button
                             type="submit"
@@ -82,17 +97,17 @@
 
 <script setup lang="ts">
     import { ref, useTemplateRef } from "vue"
-    import { getHubspotTracking } from "~/utils/hubspot"
+    import { getHubspotTracking, submitHubspotForm } from "~/utils/hubspot"
     import posthog from "posthog-js"
     import identify from "~/utils/identify"
     import { useGtm } from "@gtm-support/vue-gtm"
     import { $fetch } from "~/utils/fetch"
+    import { useFormErrors } from "~/composables/useFormErrors"
     import Squared from "~/components/layout/Squared.vue"
 
     const props = defineProps<{ routePath: string }>()
 
-    const HUBSPOT_URL =
-        "https://api.hsforms.com/submissions/v3/integration/submit/27220195/77f32ae3-0f49-404a-a28d-6dfe92c8bc78"
+    const HUBSPOT_FORM_ID = "77f32ae3-0f49-404a-a28d-6dfe92c8bc78"
 
     const gtm = useGtm()
     const formRef = useTemplateRef("contact-form")
@@ -128,13 +143,16 @@
         },
     ]
 
+    const { errors, clearError, validate } = useFormErrors(
+        Object.fromEntries(fields.map((f) => [f.id, f.label])),
+    )
+
     async function onSubmit() {
         const form = formRef.value as HTMLFormElement
         message.value = ""
 
-        if (!form.checkValidity()) {
-            form.reportValidity()
-            message.value = "Invalid form: Please review the fields."
+        if (!validate(form)) {
+            message.value = "Please correct the highlighted fields below."
             return
         }
 
@@ -143,7 +161,7 @@
             string,
             string
         >
-        const kuid = localStorage.getItem("KUID")
+        const kuid = localStorage.getItem("KUID") || ""
 
         const hsq = ((window as any)._hsq ??= [])
         hsq.push([
@@ -184,7 +202,7 @@
                 },
             ],
             context: {
-                hutk: getHubspotTracking(),
+                hutk: getHubspotTracking() || undefined,
                 ipAddress: ipData.ip,
                 pageUri: props.routePath || window.location.pathname,
                 pageName: document.title,
@@ -199,13 +217,7 @@
         identify(data.email)
 
         try {
-            await $fetch(HUBSPOT_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(hubspotData),
-            })
+            await submitHubspotForm(HUBSPOT_FORM_ID, hubspotData)
             valid.value = true
             validMessage.value =
                 "Thanks for reaching out! We will get back to you as soon as possible! \ud83d\udc4d"

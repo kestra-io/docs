@@ -4,18 +4,17 @@ h1: React Instantly to Kafka, SQS, and MQTT Events
 description: Achieve low-latency automation with Kestra's Realtime Triggers. React instantly to events from Kafka, SQS, MQTT, and other streaming systems.
 sidebarTitle: Realtime Trigger
 icon: /src/contents/docs/icons/flow.svg
-version: ">= 0.17.0"
 ---
 
 Trigger workflows instantly as events occur, with millisecond latency.
 
-[Triggers](./index.md) in Kestra can listen to external events and start a workflow execution when the event occurs. Most triggers in Kestra **poll** external systems at regular intervals (e.g., every second) to detect new events. This is effective for batch-style data processing. However, business-critical workflows often demand immediate reactions — within milliseconds. **Realtime Triggers** address this need by listening directly for events and starting workflows as soon as they occur.
+Most Kestra [triggers](./index.md) poll external systems at a fixed interval, which works well for batch processing. Realtime Triggers listen directly for events and start a flow the moment one arrives — with millisecond latency.
 
 <div class="video-container">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/bLzk4dKc95g?si=To23PJ0Ags7Mtb7f" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## What are Realtime Triggers
+## Supported event sources
 
 Realtime Triggers continuously listen for events and launch a new workflow execution the moment an event occurs, such as:
 
@@ -23,9 +22,9 @@ Realtime Triggers continuously listen for events and launch a new workflow execu
 - a message is published to a [Pulsar topic](/plugins/plugin-pulsar/io.kestra.plugin.pulsar.realtimetrigger)
 - a message is published to an [AMQP queue](/plugins/plugin-amqp/io.kestra.plugin.amqp.realtimetrigger)
 - a message is published to an [MQTT queue](/plugins/plugin-mqtt/io.kestra.plugin.mqtt.realtimetrigger)
-- a message is published to an [AWS SQS queue](/plugins/plugin-aws/sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
-- a message is published to [Google Pub/Sub](/plugins/plugin-gcp/pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
-- a message is published to [Azure Event Hubs](/plugins/plugin-azure/eventhubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
+- a message is published to an [AWS SQS queue](/plugins/plugin-aws/aws-sqs/io.kestra.plugin.aws.sqs.realtimetrigger)
+- a message is published to [Google Pub/Sub](/plugins/plugin-gcp/google-cloud-pubsub/io.kestra.plugin.gcp.pubsub.realtimetrigger)
+- a message is published to [Azure Event Hubs](/plugins/plugin-azure/azure-event-hubs/io.kestra.plugin.azure.eventhubs.realtimetrigger)
 - a message is published to a [NATS subject](/plugins/plugin-nats/nats-core/io.kestra.plugin.nats.core.realtimetrigger)
 - an item is added to a [Redis list](/plugins/plugin-redis)
 - a row is added, modified or deleted in [Postgres](/plugins/plugin-debezium-postgres/io.kestra.plugin.debezium.postgres.realtimetrigger), [MySQL](/plugins/plugin-debezium-mysql/io.kestra.plugin.debezium.mysql.realtimetrigger), or [SQL Server](/plugins/plugin-debezium-sqlserver/io.kestra.plugin.debezium.sqlserver.realtimetrigger).
@@ -102,9 +101,9 @@ kestra:
     terminationGracePeriod: PT1M  # default is PT5M
 ```
 
-::alert{type="info"}
+:::alert{type="info"}
 Events are not lost during the failover window. They remain in the source system (Kafka topic, SQS queue, etc.) and will be consumed once the trigger listener is restarted on another worker.
-::
+:::
 
 ## Comparison with real-time data processing engines
 

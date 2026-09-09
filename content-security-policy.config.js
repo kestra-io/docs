@@ -34,6 +34,8 @@ export default {
         "https://www.google.com/recaptcha/",
         "https://www.gstatic.com/recaptcha/",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
+        "https://*.vector.co",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -43,6 +45,8 @@ export default {
         "'self'",
         "data:",
         "blob:",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
         "https://*.google.fr",
         "https://*.google.com",
         "https://*.linkedin.com",
@@ -54,6 +58,15 @@ export default {
         "https://*.ytimg.com",
         "https://*.googletagmanager.com",
         "https://*.githubusercontent.com/",
+    ],
+    // audio/video
+    "media-src": [
+        "'self'",
+        "https://*.cr-relay.com",
+        "https://*.kestra-io.pages.dev",
+        "https://kestra.io",
+        // versioned docs reference assets served from api.kestra.io
+        "https://*.kestra.io",
     ],
     // forms
     "form-action": ["'self'", "https://*.hsforms.com", "https://*.hsforms.net"],
@@ -71,6 +84,7 @@ export default {
         "https://*.hsforms.net",
         "http://*.hsforms.net",
         "https://jobs.ashbyhq.com/",
+        "https://*.vector.co",
     ],
     "connect-src": [
         "'self'",
@@ -94,9 +108,16 @@ export default {
         "https://*.s3.amazonaws.com",
         "https://*.g.doubleclick.net",
         "https://*.g.doubleclick.com",
+        // Google Ads conversion pings + Enhanced Conversions. The wildcard
+        // above only matches *.g.doubleclick.net, so ad.doubleclick.net (the
+        // conversion collect endpoint) was blocked and conversions failed.
+        "https://*.doubleclick.net",
+        "https://www.googleadservices.com",
         "https://*.ipify.org",
         "https://*.github.com",
         "https://jobs.ashbyhq.com/",
+        "https://*.claydar.com",
+        "https://*.vector.co",
     ],
     // workers
     "worker-src": ["'self'", "blob:"],

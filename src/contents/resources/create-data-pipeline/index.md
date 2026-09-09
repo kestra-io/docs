@@ -1,8 +1,8 @@
 ---
 title: "How to Create a Data Pipeline: A Step-by-Step Guide"
 description: "Creating a data pipeline takes more than stitching scripts together. Learn the five-step process, the three core stages (ingestion, transformation, loading), the main tools, and how to build a pipeline that survives production."
-metaTitle: "How to Create a Data Pipeline: Complete Guide"
-metaDescription: "Learn how to create a data pipeline from scratch: sources, stages, tools, and a production-ready blueprint with real YAML examples."
+metaTitle: "How to Create a Data Pipeline: Complete Guide | Kestra"
+metaDescription: "Learn how to create a data pipeline step by step: ingestion, transformation, loading, orchestration, and real YAML examples for production-ready pipelines."
 tag: data
 date: 2026-04-22
 faq:
@@ -34,14 +34,14 @@ For a deeper look at pipeline architecture and patterns, see [What Is a Data Pip
 
 ## The Three Main Stages of a Data Pipeline
 
-The three main stages are ingestion (extracting from sources), transformation (cleaning, joining, applying business logic), and loading (writing to the destination). ELT pipelines reverse the last two — load raw data first, transform inside the warehouse. ETL transforms before loading. Both are valid depending on compliance and cost constraints.
+The three main stages are ingestion (extracting from sources), transformation (cleaning, joining, applying business logic), and loading (writing to the destination). ELT pipelines reverse the last two — load raw data first, transform inside the warehouse. ETL transforms before loading. Both are valid depending on compliance and cost constraints. See [ETL vs ELT: key differences and when to use each](/resources/data/etl-vs-elt) for a side-by-side comparison.
 
 ### Ingestion — Getting Data In
 
 Ingestion pulls data out of source systems. The method depends on how fresh downstream consumers need the data:
 
 - **Batch** — pull data on a schedule (hourly, daily). Good enough for most analytics, easy to reason about.
-- **Change Data Capture (CDC)** — replicate database changes continuously using tools like Debezium or native connectors.
+- **Change Data Capture (CDC)** — replicate database changes continuously using tools like Debezium or native connectors. See the [change data capture guide](/resources/data/change-data-capture) for a deeper look at log-based CDC patterns.
 - **Event streaming** — consume from Kafka, Kinesis, or Pub/Sub when latency matters in seconds, not hours.
 - **API polling** — pull from SaaS APIs on a schedule, handling pagination and rate limits.
 
@@ -81,7 +81,7 @@ Match the destination to the consumer. BI dashboards → warehouse. ML models �
 
 ### Step 5 — Orchestrate the Flow
 
-This is where most first pipelines fail. Without orchestration, the pipeline is a collection of scripts glued together with cron. Orchestration handles triggers (schedule, event, webhook, file-drop), dependencies between tasks, retry logic on failure, alerting, and execution history. It's the difference between a pipeline that runs in production and a pipeline that breaks in production.
+This is where most first pipelines fail. Without orchestration, the pipeline is a collection of scripts glued together with cron. Orchestration handles triggers (schedule, event, webhook, file-drop), dependencies between tasks, retry logic on failure, alerting, and execution history. It's the difference between a pipeline that runs in production and a pipeline that breaks in production. See [how to schedule data workflows](/resources/data/schedule-data-workflows) for practical scheduling patterns.
 
 ## A Concrete Example — Building a Pipeline End to End
 
@@ -177,4 +177,4 @@ Six practices separate pipelines that scale from pipelines that rot:
 
 Creating a data pipeline is less about the specific tools and more about the system around them. The orchestrator you pick, the way you structure storage, and the observability you bake in from day one shape whether the pipeline is still running reliably a year later.
 
-For teams evaluating orchestration, Kestra is open-source, self-hostable, and ships with ready-to-use blueprints for the most common pipeline patterns. Start with a [ready-made data pipeline blueprint](/blueprints), explore the [data orchestration guide](/resources/data/data-orchestration), or read about the broader [declarative orchestration approach](/data).
+For teams evaluating orchestration, Kestra is open-source, self-hostable, and ships with ready-to-use blueprints for the most common pipeline patterns. Start with a [ready-made data pipeline blueprint](/blueprints), explore the [data orchestration guide](/resources/data/data-orchestration), learn how to [automate your data pipelines end to end](/resources/data/automate-data-pipeline), or read about the broader [declarative orchestration approach](/data).

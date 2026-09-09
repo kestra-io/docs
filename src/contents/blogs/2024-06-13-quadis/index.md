@@ -82,7 +82,7 @@ The [installation](../../docs/02.installation/08.aws-ec2/index.md) was quite eas
 
 Once the installation and setup of the [secret configuration](../../docs/06.concepts/04.secret/index.md) had been made, they moved fast on the different blocks needed for their orchestration:
 
-- **Access files**: Quadis business relies a lot on different file protocols associated with the different services they have. They often use the [FTP](/plugins/plugin-fs), [CSV Writer/Reader](/plugins/plugin-serdes/csv), [Excel](/plugins/plugin-serdes/excel/io.kestra.plugin.serdes.excel.exceltoion), and [S3](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.download) tasks to gather files and move them from one place to another.
+- **Access files**: Quadis business relies a lot on different file protocols associated with the different services they have. They often use the [FTP](/plugins/plugin-fs), [CSV Writer/Reader](/plugins/plugin-serdes/csv), [Excel](/plugins/plugin-serdes/excel/io.kestra.plugin.serdes.excel.exceltoion), and [S3](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.download) tasks to gather files and move them from one place to another.
 
 - **Query relational database**: Like in many applications, data are stored within [Oracle](https://oracle.com/) or [SQL Server databases](https://www.microsoft.com/fr-fr/sql-server/sql-server-downloads). Thanks to the [Oracle Batch](/plugins/plugin-jdbc-oracle/io.kestra.plugin.jdbc.oracle.batch) or [SQLServer Query](/plugins/plugin-jdbc-sqlserver) tasks, the engineering team at Quadis easily processes data coming from different sources.
 

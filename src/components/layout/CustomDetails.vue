@@ -1,6 +1,6 @@
 <template>
     <div class="accordion-item custom-details">
-        <h2 class="accordion-header" :class="{ 'bg-head': isOpen }" data-usal="fade-r delay-10">
+        <component :is="`h${headingLevel}`" class="accordion-header" :class="{ 'bg-head': isOpen }" data-usal="fade-r delay-10">
             <button
                 class="accordion-button"
                 :class="{ collapsed: !isOpen }"
@@ -11,7 +11,7 @@
                 <span>{{ title }}</span>
                 <ChevronDown class="icon" />
             </button>
-        </h2>
+        </component>
         <Transition
             name="expand"
             @enter="enter"
@@ -31,10 +31,14 @@
     import { ref } from "vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue";
 
-    const props = defineProps<{
+    const props = withDefaults(defineProps<{
         title: string
         defaultOpen?: boolean
-    }>()
+        /** Heading level (2-6) for the accordion header. Defaults to 2. */
+        headingLevel?: number
+    }>(), {
+        headingLevel: 2,
+    })
 
     const isOpen = ref(props.defaultOpen)
 

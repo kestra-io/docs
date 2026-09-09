@@ -8,7 +8,7 @@ import FeatureSections from "~/components/overview/FeatureSections.astro"
 
 import { calculateTotalPlugins } from "~/composables/usePluginsCount"
 import { $fetchApiCached } from "~/utils/fetch"
-import type { Plugin } from "@kestra-io/ui-libs"
+import type { Plugin } from "~/utils/plugins/plugin"
 
 const pluginGroups = await $fetchApiCached<Plugin[]>("/plugins/subgroups")
 const totalPlugins = `${Math.floor(calculateTotalPlugins(pluginGroups) / 100) * 100}+`

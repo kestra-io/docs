@@ -73,11 +73,11 @@
     import { computed } from "vue"
     import {
         subGroupName,
-        slugify,
         isEntryAPluginElementPredicate,
         type PluginElement,
         type Plugin,
-    } from "@kestra-io/ui-libs"
+    } from "~/utils/plugins/plugin"
+    import { slugify } from "~/utils/slugify"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
     import OpenInNew from "vue-material-design-icons/OpenInNew.vue"

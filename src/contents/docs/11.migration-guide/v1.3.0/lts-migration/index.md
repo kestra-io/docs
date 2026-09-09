@@ -28,6 +28,10 @@ Three migration commands must be run — **all three are required** for a comple
 The `secrets` migration applies only to **Enterprise Edition** users. Open-source users can skip it — running it on OSS will produce an exception that can be safely ignored.
 :::
 
+:::alert{type="info"}
+The `secrets` migration automatically **skips any tenant or namespace whose secret manager is in read-only mode** — read-only secret managers do not use the secrets metadata store, so nothing needs to be migrated for them, and each skipped namespace is logged. Writable tenants and namespaces are migrated as usual, so a setup that mixes read-only and writable secret managers still migrates correctly. Skipped read-only namespaces are unaffected: their secrets keep resolving at runtime and remain listed in the UI.
+:::
+
 ## Order of operations
 
 1. **Stop Kestra** — shut down all running Kestra server components to avoid inconsistent reads/writes during migration.
@@ -81,11 +85,11 @@ Once the Job completes successfully, roll out your updated Kestra server Pods as
 
 ## What happens if you skip these migrations
 
-| Skipped migration | Impact |
-|---|---|
-| `kv` | The **Key-Value Store** page in the UI appears empty. Flows continue to work — this is a UI-only issue. |
-| `secrets` | The **Secrets** page in the UI appears empty (EE only). Flows continue to work — this is a UI-only issue. |
-| `nsfiles` | **Namespace Files are inaccessible** both in flows/tasks (e.g., `namespaceFiles`, `read()`) and in the UI. |
+| Skipped migration | UI / runtime impact | Backup impact |
+|---|---|---|
+| `kv` | Key-Value Store page appears empty. Flows continue to work. | KV items in namespaces without flows are silently excluded from backups. |
+| `secrets` | Secrets page appears empty (EE only). Flows continue to work. | Secrets in namespaces without flows are silently excluded from backups. |
+| `nsfiles` | Namespace Files are inaccessible in flows/tasks and the UI. | Namespace files in namespaces without flows are silently excluded from backups. |
 
 :::alert{type="warning"}
 Unlike the KV and Secrets migrations (which only affect UI display), the Namespace Files migration affects **runtime execution**. Skipping it can break flows that depend on Namespace Files.

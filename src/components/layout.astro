@@ -2,7 +2,6 @@
 import { ClientRouter } from "astro:transitions"
 import LoadingIndicator from "astro-loading-indicator/component"
 import { Font } from "astro:assets"
-import "@kestra-io/ui-libs/style.css"
 import "~/assets/styles/vendor.scss"
 import "~/assets/styles/app.scss"
 import "~/assets/styles/theme.scss"
@@ -14,6 +13,7 @@ import Announce from "~/components/layout/Announce.vue"
 import ThemeSwitcher from "~/components/layout/ThemeSwitcher.astro"
 import BreadcrumbList from "~/components/common/BreadcrumbList.astro"
 import { getRandomAiQuestions } from "~/utils/aiQuestions"
+import { getDocsLatestVersion } from "~/utils/docVersionsFetch"
 import annoncesData from "~/contents/annonces/annonces.yml?raw"
 import YAML from "yaml"
 import { DISABLE_USAL, PREVIEW } from "astro:env/server"
@@ -28,15 +28,25 @@ interface Props {
      * @param headerTheme Controls the header appearance before scrolling.
      * - `"lightText"` — White nav links/logo; for dark/gradient hero backgrounds.
      * - `"darkText"` — Dark nav links/logo; for white hero backgrounds.
-     * - `"darkHeader"` — Opaque dark header background in both modes (currently only used on homepage for the riv black bg).
+     * - `"darkHeader"` — Opaque dark header background in both modes.
      * @param headerBg Override the dark header background color. Only applies when `headerTheme="darkHeader"`.
      */
     headerTheme?: "lightText" | "darkText" | "darkHeader"
     headerBg?: string
-    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/$all). */
+    /** Override the canonical URL path (e.g. "/blogs" when rewritten from /blogs/all). */
     canonical?: string
+    /** Override the analytics content-view-name (window.astroClientConfig.slug); kept separate from `canonical`, which some pages use for syndicated-content URLs. */
+    analyticsSlug?: string
     /** Set to true to emit `<meta name="robots" content="noindex, follow">` instead of the default index directive. */
     noindex?: boolean
+    /**
+     * Set to true to render the page without the site chrome — no nav, search
+     * overlay, footer, or floating action buttons. Campaign landing pages under
+     * `/lp/*` use this so they can supply their own minimal header and footer
+     * and keep exit paths off the page.
+     */
+    bareChrome?: boolean
+    hideFloatingActions?: boolean
 }
 
 const props = Astro.props
@@ -47,15 +57,30 @@ currentUrl.pathname = currentUrl.pathname.endsWith("/")
     : currentUrl.pathname
 
 const currentOrigin = currentUrl.origin ?? "https://kestra.io"
-const slug = Astro.routePattern
+const slug = props.analyticsSlug ?? Astro.routePattern
 
-const title = props.title
-    ? props.title + " | Kestra"
+// Strip any existing " | Kestra" suffix before re-appending, so the template
+// is the single owner of the suffix. Guards against double " | Kestra | Kestra"
+// when metaTitle front-matter already includes it.
+const baseTitle = props.title?.replace(/\s*\|\s*Kestra\s*$/i, "").trim()
+const title = baseTitle
+    ? `${baseTitle} | Kestra`
     : "Kestra, Open Source Declarative Orchestration Platform"
 const description =
     props.description ??
     "Use declarative language to build simpler, faster, scalable and flexible workflows"
 const image = `${props.image && props.image.startsWith("http") ? "" : currentOrigin}${props.image ? props.image : "/og-image.png"}`
+// Derive og:image:type from the actual served file. The site default is a
+// .png, so the previous hard-coded "image/svg+xml" was always a mismatch.
+const imageType = /\.png($|\?)/i.test(image)
+    ? "image/png"
+    : /\.webp($|\?)/i.test(image)
+      ? "image/webp"
+      : /\.jpe?g($|\?)/i.test(image)
+        ? "image/jpeg"
+        : /\.svg($|\?)/i.test(image)
+          ? "image/svg+xml"
+          : "image/png"
 
 const query = new URLSearchParams(
     currentUrl.searchParams
@@ -80,6 +105,10 @@ const canonicalUrl = props.canonical
               (query.size > 0 ? "?" + query.toString() : ""),
           Astro.site,
       )
+
+// Search is scoped to the version /docs serves (see searchScope), which the
+// pinned docs-latest can put ahead of the API's own latest.
+const docsLatest = await getDocsLatestVersion()
 
 const randomAiQuestions = getRandomAiQuestions()
 const annonces = parsedAnnonces.filter((a: { id: number }) => a.id !== 0)
@@ -200,13 +229,7 @@ const organizationSchema = {
 
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
-        {
-            !props.image ? (
-                <meta property="og:image:type" content="image/svg+xml" />
-            ) : (
-                ""
-            )
-        }
+        <meta property="og:image:type" content={imageType} />
         <meta property="og:image:alt" content={title} />
         <meta property="og:url" content={canonicalUrl.toString()} />
         <meta property="og:image" content={image} />
@@ -227,12 +250,12 @@ const organizationSchema = {
         <link rel="dns-prefetch" href="https://cdn.cr-relay.com" />
         <link rel="dns-prefetch" href="https://api.cr-relay.com" />
 
-        <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
-        {websiteSchema && <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+        {websiteSchema && <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>}
 
         <slot name="head" />
 
-        <ClientRouter />
+       {import.meta.env.PROD && <ClientRouter />}
         <LoadingIndicator color="#a796ff" threshold={0} />
 
         {
@@ -240,11 +263,13 @@ const organizationSchema = {
                 <>
                     <!-- @prettier-ignore -->
                     <script src="../scripts/analytics.js"></script>
+                    <script src="../scripts/outbound.js"></script>
                     <script src="../scripts/cookieconsent.ts"></script>
                 </>
             )
         }
         <script src="../scripts/bootstrap.js"></script>
+        <script src="../scripts/gclid.ts"></script>
         <script src="../scripts/zoom.js"></script>
         <script src="../scripts/theme.ts"></script>
         <script src="../scripts/ec-collapsible.ts"></script>
@@ -261,25 +286,54 @@ const organizationSchema = {
             : undefined}
         class={hasAnnounce ? "has-annonces" : ""}
     >
-        <Header client:load transition:persist />
-        <Search randomAiQuestions={randomAiQuestions} client:load />
         {
-            hasAnnounce ? (
-                <Announce client:load transition:persist content={annonces} />
-            ) : (
-                ""
+            !props.bareChrome && (
+                <>
+                    <Header client:load transition:persist />
+                    <Search
+                        randomAiQuestions={randomAiQuestions}
+                        docsLatest={docsLatest}
+                        client:load
+                    />
+                    {hasAnnounce ? (
+                        <Announce
+                            client:load
+                            transition:persist
+                            content={annonces}
+                        />
+                    ) : (
+                        ""
+                    )}
+                </>
             )
         }
-        <main>
+        <main class:list={{ "bare-chrome": props.bareChrome }}>
             <slot />
         </main>
 
-        <LayoutFooter transition:persist>
-            <ThemeSwitcher slot="theme-switcher" />
-        </LayoutFooter>
-        <LayoutFixed client:load transition:persist />
-        <script define:vars={{ slug }}>
+        {
+            !props.bareChrome && (
+                <>
+                    <LayoutFooter transition:persist>
+                        <ThemeSwitcher slot="theme-switcher" />
+                    </LayoutFooter>
+                    {!props.hideFloatingActions && (
+                        <LayoutFixed client:load transition:persist />
+                    )}
+                </>
+            )
+        }
+        <script is:inline define:vars={{ slug }}>
             window.astroClientConfig = { slug: slug }
         </script>
     </body>
 </html>
+
+<style lang="scss">
+    /* app.scss gives `main` a 67px top offset to clear the fixed site header.
+     * With `bareChrome` there is no fixed header, so that space would render as
+     * a blank band above the page's own content. */
+    main.bare-chrome {
+        padding-top: 0;
+    }
+</style>

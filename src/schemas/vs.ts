@@ -28,7 +28,6 @@ const timedSide = z.object({
 })
 
 const qaItem = z.object({ question: z.string(), answer: z.string() })
-const _metric = z.object({ value: z.string(), label: z.string() })
 const featureRow = z.object({ feature: z.string(), kestra: z.string(), competitor: z.string() })
 const strengthItem = z.object({ title: z.string(), description: z.string() })
 
@@ -64,4 +63,9 @@ export const vsSchema = z.object({
     platformStrengths: z.object({ title: z.string(), features: z.array(strengthItem) }),
     decisionGuide: z.object({ mainTitle: z.string(), kestra: textSide, competitor: textSide }),
     commonQuestions: z.array(qaItem),
+    seeHowTitle: z.string().optional(),
+    seeHowBody: z.string().optional(),
+    secondaryCta: z.object({ label: z.string(), href: z.string() }).optional(),
+    logoFile: z.string().optional(),
+    imgFile: z.string().optional(),
 })

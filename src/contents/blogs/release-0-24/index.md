@@ -5,7 +5,7 @@ date: 2025-08-05T17:00:00
 category: News & Product Updates
 authors:
   - name: Anna Geller
-    linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+    linkedin: https://www.linkedin.com/in/geller-anna/
     medium: https://annageller.medium.com/
     image: ageller
     role: Product Lead
@@ -643,5 +643,5 @@ If you like the project, give us a [GitHub star](https://github.com/kestra-io/ke
 Lastly, if you'd like to listen to a podcast episode discussing the new features, check out this episode of the Kestra Podcast:
 
 <div class="video-container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/ZxrLNCgygBE?si=9oltgsOuMaFMRnLp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/ZxrLNCgygBE?si=9oltgsOuMaFMRnLp" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

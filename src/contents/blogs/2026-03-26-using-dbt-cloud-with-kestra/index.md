@@ -153,6 +153,6 @@ As a bonus, Kestra doesn't meter by workflow or execution, so the cost doesn't s
 
 ## Getting started
 
-If you're already running dbt Cloud and want to stop building glue code, the fastest path is using one of Kestra's [dbt Blueprints](/blueprints?tags=dbt): pick one, swap in your dbt Cloud credentials, add your upstream and downstream steps. For profiles management, multi-environment configuration, and namespace isolation across teams, Kestra's [dbt orchestration docs](../../docs/use-cases/02.dbt/index.md) cover the full setup.
+If you're already running dbt Cloud and want to stop building glue code, the fastest path is the [dbt Cloud orchestration page](/orchestration/dbt-cloud): use cases, production blueprints, and a comparison against Prefect, GitHub Actions, and Airflow. Or go straight to [dbt Blueprints](/blueprints?tags=dbt): pick one, swap in your dbt Cloud credentials, add your upstream and downstream steps. For profiles management, multi-environment configuration, and namespace isolation across teams, Kestra's [dbt orchestration docs](../../docs/use-cases/02.dbt/index.md) cover the full setup.
 
 Running dbt Cloud alongside ingestion and activation tools across multiple teams? [Book a demo](/demo) to see how [namespace isolation](../../docs/07.enterprise/02.governance/07.namespace-management/index.md), [RBAC](../../docs/07.enterprise/03.auth/rbac/index.md), and cross-stack lineage work in practice.

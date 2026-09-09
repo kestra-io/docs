@@ -1,5 +1,5 @@
 import { $fetchApiCached } from "~/utils/fetch";
-import type { Plugin } from "@kestra-io/ui-libs";
+import type { Plugin } from "./plugin";
 import { calculateTotalPlugins } from "~/composables/usePluginsCount";
 
 export async function fetchTotalPluginsCount(): Promise<string> {

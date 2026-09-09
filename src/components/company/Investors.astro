@@ -4,6 +4,11 @@ import rtpGlobal from "~/assets/teams/rtpglobal.svg?raw"
 import alven from "~/assets/teams/alven-new.svg?raw"
 import isai from "~/assets/teams/isai-new.svg?raw"
 import axeleo from "~/assets/teams/axeleo-new.svg?raw"
+import bpifrance from "~/assets/teams/bpifrance.svg?raw"
+import hautsDefrance from "~/assets/teams/hauts-de-france.svg?raw"
+import bnpParibas from "~/assets/teams/bnp-paribas.svg?raw"
+import cic from "~/assets/teams/cic.svg?raw"
+import caisseEpargne from "~/assets/teams/caisse-epargne.svg?raw"
 import TeamsImages from "~/utils/teamsImages"
 
 const investorsLogos = [
@@ -26,6 +31,34 @@ const investorsLogos = [
         name: "Axeleo Capital",
         src: axeleo,
         link: "https://www.axc.vc",
+    },
+]
+
+const bankingLogos = [
+    {
+        name: "Bpifrance",
+        src: bpifrance,
+        link: "https://www.bpifrance.fr",
+    },
+    {
+        name: "Région Hauts-de-France",
+        src: hautsDefrance,
+        link: "https://www.hautsdefrance.fr",
+    },
+    {
+        name: "BNP Paribas",
+        src: bnpParibas,
+        link: "https://www.bnpparibas.com",
+    },
+    {
+        name: "CIC",
+        src: cic,
+        link: "https://www.cic.fr",
+    },
+    {
+        name: "Caisse d'Épargne",
+        src: caisseEpargne,
+        link: "https://www.caisse-epargne.fr",
     },
 ]
 
@@ -137,6 +170,31 @@ const investorsProfiles = [
             ))
         }
     </div>
+
+    <div class="banking-partners" data-usal="fade-u delay-400">
+        <h3 class="banking-title">Banking &amp; Public Partners</h3>
+        <div class="banking-logos">
+            {
+                bankingLogos.map((logo) => (
+                    <div class="banking-item">
+                        <a
+                            href={logo.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="logo-link"
+                        >
+                            <div
+                                class="banking-logo-image"
+                                set:html={logo.src}
+                                role="img"
+                                aria-label={logo.name}
+                            />
+                        </a>
+                    </div>
+                ))
+            }
+        </div>
+    </div>
 </div>
 
 <style lang="scss">
@@ -225,6 +283,83 @@ const investorsProfiles = [
 
                 &:hover {
                     transform: scale(1.05);
+                }
+            }
+        }
+    }
+
+    .banking-partners {
+        width: 1140px;
+        max-width: 100%;
+        margin: 4rem auto 0;
+
+        .banking-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--ks-content-secondary);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .banking-logos {
+            width: 100%;
+            min-height: 100px;
+            border-radius: 8px;
+            background: var(--ks-border-primary);
+            border: 1px solid var(--ks-border-primary);
+            box-shadow: 2px 3px 16px 0px var(--ks-shadows-light);
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1px;
+            overflow: hidden;
+
+            @include media-breakpoint-up(sm) {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @include media-breakpoint-up(lg) {
+                grid-template-columns: repeat(5, 1fr);
+            }
+
+            .banking-item {
+                background: var(--ks-background-primary);
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 1.5rem 2rem;
+
+                .banking-logo-image {
+                    width: 120px;
+                    height: 60px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    object-fit: contain;
+                    color: #1a1a1a;
+
+                    :global(svg) {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+
+                    :global(.dark) & {
+                        color: #ffffff;
+                    }
+                }
+
+                .logo-link {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: transform 0.3s ease-in-out;
+
+                    &:hover {
+                        transform: scale(1.05);
+                    }
                 }
             }
         }

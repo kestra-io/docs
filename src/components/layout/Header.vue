@@ -6,7 +6,8 @@
         aria-label="Menu"
         :class="{
             open: isOpen,
-            scrolled: isScrolled || props.scrolled,
+            // Keep the background state tied to the actual window scroll only.
+            scrolled: isScrolled,
         }"
     >
         <div class="container-xl">
@@ -69,8 +70,7 @@
                     <span
                         class="slack-icon"
                         :class="{
-                            'slack-icon--dark':
-                                isScrolled || props.scrolled || isOpen,
+                            'slack-icon--dark': isScrolled || isOpen,
                         }"
                         v-html="SlackIcon"
                     />
@@ -305,11 +305,18 @@
                                     <a
                                         class="dropdown-item"
                                         :href="item.link"
+                                        :target="item.target"
+                                        :rel="
+                                            item.target === '_blank'
+                                                ? 'noopener'
+                                                : undefined
+                                        "
                                         @click="globalClick(true)"
                                     >
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
+                                            <OpenInNew v-if="item.target === '_blank'" class="external-link-icon" />
                                         </div>
                                     </a>
                                 </li>
@@ -426,6 +433,7 @@
                         height: headerMenuSize.height,
                         pointerEvents: headerMenuPointerEvents,
                     }"
+                    ref="headerMenu"
                     class="header-menu"
                     @mouseover="mouseOverMenu"
                     @mouseleave="mouseLeaveMenu"
@@ -607,6 +615,12 @@
                                             <a
                                                 class="dropdown-item"
                                                 :href="item.link"
+                                                :target="item.target"
+                                                :rel="
+                                                    item.target === '_blank'
+                                                        ? 'noopener'
+                                                        : undefined
+                                                "
                                                 @click="globalClick(true)"
                                                 @keydown="
                                                     onMenuKeydown(
@@ -623,6 +637,7 @@
                                                         <span>{{
                                                             item.title
                                                         }}</span>
+                                                        <OpenInNew v-if="item.target === '_blank'" class="external-link-icon" />
                                                         <strong
                                                             v-if="item.tag"
                                                             class="tag"
@@ -700,12 +715,14 @@
 
 <script setup lang="ts">
     import { ref, onMounted, watch, nextTick } from "vue"
+    import { useEventListener } from "@vueuse/core"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
+    import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
-    import { menuSize } from "~/utils/menu-sizes"
+    import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
     import LogoBlack from "~/assets/logo-black.svg?raw"
     import LogoWhite from "~/assets/logo-white.svg?raw"
@@ -727,6 +744,8 @@
         height: "0px",
     })
     const headerMenuPointerEvents = ref<"none" | "auto">("none")
+    const headerMenu = ref<HTMLElement | null>(null)
+    const menuHeights = ref<Record<string, string>>({})
     const navbar = ref<HTMLElement | null>(null)
     const isMobile = ref(false)
     const isScrolled = ref(false)
@@ -739,6 +758,29 @@
     }
 
     let collapse: Collapse | undefined = undefined
+
+    function isEditable(target: EventTarget | null): boolean {
+        const el = target instanceof HTMLElement ? target : null
+        if (!el) return false
+        return (
+            el.tagName === "INPUT" ||
+            el.tagName === "TEXTAREA" ||
+            el.tagName === "SELECT" ||
+            el.isContentEditable
+        )
+    }
+
+    function handleShortcut(e: KeyboardEvent) {
+        if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+        if (isEditable(e.target)) return
+        if (e.key.toLowerCase() === "a") {
+            e.preventDefault()
+            const modal = document.getElementById("search-ai-modal")
+            if (modal && window.$bootstrap) {
+                window.$bootstrap.Modal.getOrCreateInstance(modal).show()
+            }
+        }
+    }
 
     function getCollapseInstance(): Collapse | undefined {
         if (!collapse) {
@@ -758,21 +800,25 @@
     onMounted(() => {
         nextTick(() => {
             getCollapseInstance()
+            measureAllMenuHeights()
         })
 
-        isMobile.value = window.innerWidth <= 1199
-        window.addEventListener("resize", () => {
+        document.fonts?.ready.then(() => measureAllMenuHeights())
+
+        const syncMobileState = () => {
             isMobile.value = window.innerWidth <= 1199
-        })
+        }
 
-        isScrolled.value = window.scrollY > 0
-        window.addEventListener("scroll", () => {
+        const syncScrollState = () => {
             isScrolled.value = window.scrollY > 0
-            const header = navbar.value
-            if (header) {
-                header.classList.toggle("scrolled", isScrolled.value)
-            }
-        })
+        }
+
+        syncMobileState()
+        syncScrollState()
+
+        useEventListener(window, "resize", syncMobileState)
+        useEventListener(window, "scroll", syncScrollState, { passive: true })
+        useEventListener(window, "keydown", handleShortcut)
 
         document.documentElement.style.setProperty(
             "--top-bar-height",
@@ -806,6 +852,51 @@
         }, 100)
     }
 
+    function measureMenuHeight(id: string, width: string): string | null {
+        const menu = headerMenu.value
+        const card = menu?.querySelector<HTMLElement>(".header-menu-card")
+        const section = document.getElementById(id)
+        if (!menu || !card || !section) return null
+
+        const fill = [
+            section.querySelector<HTMLElement>(".header-menu-content"),
+            ...section.querySelectorAll<HTMLElement>(".h-100"),
+        ].filter((el): el is HTMLElement => el !== null)
+
+        const touched = [menu, card, section, ...fill]
+        const saved = touched.map((el) => el.style.cssText)
+
+        menu.style.transition = "none"
+        menu.style.width = width
+        menu.style.height = card.style.height = "auto"
+        section.style.position = "static"
+        section.style.height = "auto"
+        fill.forEach((el) => (el.style.height = "auto"))
+
+        const height = `${menu.offsetHeight}px`
+
+        touched.forEach((el, i) => (el.style.cssText = saved[i]))
+        void menu.offsetHeight
+
+        return height
+    }
+
+    function measureAllMenuHeights() {
+        if (window.innerWidth <= 1199) return
+        for (const id in menuWidths) {
+            const height = measureMenuHeight(id, menuWidths[id])
+            if (height) menuHeights.value[id] = height
+        }
+    }
+
+    function menuHeight(id: string): string {
+        if (!menuHeights.value[id]) {
+            const measured = measureMenuHeight(id, menuWidths[id])
+            if (measured) menuHeights.value[id] = measured
+        }
+        return menuHeights.value[id] ?? "0px"
+    }
+
     function mouseOver(id: string, event: MouseEvent) {
         if (window.innerWidth <= 1199) return
 
@@ -830,9 +921,12 @@
         showMenuId.value = id
         mouseoverMenu.value = false
         headerMenuPointerEvents.value = "auto"
-        headerMenuSize.value = menuSize(id)
+        headerMenuSize.value = {
+            width: menuWidths[id],
+            height: menuHeight(id),
+        }
 
-        const { left, width } = (
+        const { left } = (
             event.currentTarget as HTMLElement
         ).getBoundingClientRect()
         const menuWidth = parseInt(headerMenuSize.value.width)
@@ -1051,8 +1145,8 @@
         &.open {
             @supports (backdrop-filter: none) {
                 background-color: var(--ks-background-header);
-                backdrop-filter: $menu-backdrop-filter;
                 -webkit-backdrop-filter: $menu-backdrop-filter;
+                backdrop-filter: $menu-backdrop-filter;
                 transition: background-color 250ms ease-in-out;
             }
 
@@ -1246,7 +1340,7 @@
                 padding: 0.25rem;
             }
 
-            @include media-breakpoint-between(xl, xxl) {
+@include media-breakpoint-between(xl, xxl) {
                 .btn:not(.icon-button) {
                     padding-inline: 0.5rem;
                     font-size: $font-size-sm;
@@ -1578,6 +1672,29 @@
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
                 }
+
+                .nav-footer .btn-outline-dark {
+                    color: $white;
+                    border-color: $white;
+
+                    &:hover,
+                    &:focus,
+                    &:active {
+                        color: $black;
+                        background-color: $white;
+                        border-color: $white;
+                    }
+
+                    .slack-icon :deep(svg) {
+                        filter: brightness(0) invert(1);
+                    }
+
+                    &:hover .slack-icon :deep(svg),
+                    &:focus .slack-icon :deep(svg),
+                    &:active .slack-icon :deep(svg) {
+                        filter: brightness(0);
+                    }
+                }
             }
         }
 
@@ -1627,7 +1744,7 @@
                             position: absolute;
                             top: 0;
                             bottom: 0;
-                            padding: $rem-1;
+                            padding: 20px $rem-1;
 
                             &.opacity-100 {
                                 transition: opacity 700ms ease;
@@ -1707,6 +1824,10 @@
                                         align-self: unset;
                                         color: var(--ks-icon-color);
                                         transition: color 0.2s ease;
+
+                                        &.external-link-icon {
+                                            margin: 0;
+                                        }
                                     }
 
                                     &:hover {
@@ -1741,6 +1862,15 @@
             width: 16px;
             height: 16px;
             filter: brightness(0);
+        }
+    }
+
+    .external-link-icon.material-design-icon {
+        margin: 0;
+
+        :deep(svg) {
+            width: 14px;
+            height: 14px;
         }
     }
 </style>

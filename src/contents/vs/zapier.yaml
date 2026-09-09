@@ -3,6 +3,8 @@ description: "Compare Kestra vs Zapier: Open-source workflow orchestration for e
 competitorName: Zapier
 category: Business Automation
 shortDescription: "No-code app-to-app automation with per-task billing vs. production-grade orchestration with no execution ceiling."
+seeHowTitle: "Getting Started with Declarative Orchestration"
+seeHowBody: "See how Kestra can simplify your workflows—and scale beyond per-task billing."
 
 brandColor:
   color: "#FF4A00"
@@ -191,7 +193,7 @@ testimonials:
         name: Active users
       - value: "+5000"
         name: Workflows created
-    storyLink: /use-cases/stories/datamesh-at-scale-increased-its-data-production-by-900percent
+    storyLink: /customers/leroy-merlin-france
 
 platformStrengths:
   title: Kestra Is Built for Production-Scale Automation

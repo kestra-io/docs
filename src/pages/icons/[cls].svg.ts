@@ -13,7 +13,7 @@ export async function GET({ params }: { params: { cls: string } }) {
         throw new Error("Failed to fetch icon")
     }
 
-    const svg = await optimizeSvgIcon(await response.text(), "cls")
+    const svg = optimizeSvgIcon(await response.text(), "cls")
 
     // replace all currentColor with the specified modifier if provided
     const modifiedSvg = modifier ? svg.replace(/currentColor/g, modifier) : svg
@@ -21,7 +21,11 @@ export async function GET({ params }: { params: { cls: string } }) {
     return new Response(modifiedSvg, {
         headers: {
             "Content-Type": "image/svg+xml",
-            "Cache-Control": "public, max-age=86400",
+            // Icons are keyed by a stable, per-plugin-class URL (a new plugin
+            // gets a new URL, it never mutates an existing one), so they can be
+            // cached "forever". This stops Googlebot from re-crawling the plugin
+            // SVGs on every visit — they were ~40% of the crawl budget at 24h.
+            "Cache-Control": "public, max-age=31536000, immutable",
         },
     })
 }

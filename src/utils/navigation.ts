@@ -8,9 +8,23 @@ export interface NavItem {
     group?: string
 }
 
+/** First real (non-section) page in document order, recursing into sections. */
+function firstRealPage(items: NavItem[] | undefined): NavItem | undefined {
+    for (const item of items ?? []) {
+        if (item.isSection) {
+            const found = firstRealPage(item.children)
+            if (found) return found
+        } else {
+            return item
+        }
+    }
+    return undefined
+}
+
 export function prevNext(
     navigation: NavItem[],
     path: string,
+    rootPath: string = "/docs",
 ): { prev: NavItem | null | undefined; next: NavItem | null | undefined } {
     let prev: NavItem | undefined
     let next: NavItem | undefined
@@ -45,13 +59,13 @@ export function prevNext(
     if (!found) {
         // we're at a section's root
         prev = undefined
-        next = navigation[0].children?.[1]
+        next = firstRealPage(navigation[0].children)
     } else if (prev === undefined) {
         prev = navigation[0]
     }
 
     if (prev && !prev.path && prev === navigation[0]) {
-        prev = { ...prev, path: "/docs", title: prev.title ?? "Docs" }
+        prev = { ...prev, path: rootPath, title: prev.title ?? "Docs" }
     }
 
     return { prev, next }

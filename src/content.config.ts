@@ -3,6 +3,7 @@ import { z } from "astro/zod"
 import { file, glob } from "astro/loaders"
 import generateId from "~/utils/generateId"
 import { vsSchema } from "./schemas/vs"
+import { orchestrationSchema } from "./schemas/orchestration"
 
 export const collections = {
     docs: defineCollection({
@@ -36,7 +37,7 @@ export const collections = {
     }),
     blogs: defineCollection({
         loader: glob({
-            pattern: "./**/*.md{,x}",
+            pattern: ["./**/*.md{,x}", "!./CLAUDE.md"],
             base: "./src/contents/blogs",
             generateId: (opts) => generateId(opts).toLowerCase(),
         }),
@@ -73,6 +74,9 @@ export const collections = {
                 rightBar: z.boolean().optional(),
                 plugins: z.array(z.string()).optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
+                // Override the canonical URL, e.g. for content syndicated from
+                // another site. Rendered in <head> by the layout.
+                canonical: z.string().optional(),
             }),
     }),
     legal: defineCollection({
@@ -93,6 +97,13 @@ export const collections = {
             base: "./src/contents/vs",
         }),
         schema: vsSchema,
+    }),
+    orchestration: defineCollection({
+        loader: glob({
+            pattern: "./*.{yaml,yml}",
+            base: "./src/contents/orchestration",
+        }),
+        schema: orchestrationSchema,
     }),
     externalBlogs: defineCollection({
         loader: glob({
@@ -127,18 +138,29 @@ export const collections = {
                 featuredImage: image(),
                 logo: image().optional(),
                 logoDark: image().optional(),
+                logoIcon: image().optional(),
                 rank: z.number(),
                 tasks: z.array(z.string()),
                 kpi1: z.string(),
                 kpi2: z.string(),
                 kpi3: z.string(),
+                kpi4: z.string().optional(),
                 quote: z.string(),
                 quotePerson: z.string(),
                 quotePersonTitle: z.string(),
                 industry: z.string(),
+                industry2: z.string().optional(),
+                region: z.string(),
                 headquarter: z.string(),
                 solution: z.string(),
+                tagline: z.string().optional(),
+                excerpt: z.string().optional(),
                 companyName: z.string(),
+                intro: z.string().optional(),
+                deployment: z.string().optional(),
+                useCase: z.string().optional(),
+                useCaseShort: z.string().optional(),
+                companySize: z.string().optional(),
                 cta: z.string().optional(),
             }),
     }),
@@ -162,9 +184,11 @@ export const collections = {
         loader: file("src/contents/annonces/annonces.yml"),
         schema: z.object({
             id: z.number(),
-            text: z.string(),
+            tag: z.string().optional(),
+            linkText: z.string().optional(),
+            text: z.string().optional(),
+            tail: z.string().optional(),
             href: z.string(),
-            linkText: z.string(),
         }),
     }),
     redirects: defineCollection({
@@ -191,8 +215,16 @@ export const collections = {
                 description: z.string().optional(),
                 metaTitle: z.string().optional(),
                 metaDescription: z.string().optional(),
-                tag: z.enum(["infrastructure", "data", "ai", "whitepapers"]),
+                tag: z.enum([
+                    "infrastructure",
+                    "data",
+                    "ai",
+                    "business",
+                    "whitepapers",
+                ]),
                 date: z.coerce.date().optional(),
+                lastUpdated: z.coerce.date().optional(),
+                author: z.string().optional(),
                 image: image().optional(),
                 href: z.string().optional(),
                 faq: z
@@ -204,6 +236,21 @@ export const collections = {
                     )
                     .optional(),
                 schema: z.record(z.string(), z.unknown()).optional(),
+                // Optional end-of-article demo / gated-asset CTA pair.
+                // Set only on pages where we want to measure asset demand.
+                cta: z
+                    .object({
+                        heading: z.string(),
+                        text: z.string(),
+                        // Prefix for the PostHog / GTM / HubSpot event names.
+                        eventPrefix: z.string(),
+                        // HubSpot `form_submission_identifier` value — this is
+                        // what you filter on to count requests.
+                        formLabel: z.string(),
+                        assetLabel: z.string().optional(),
+                        hubspotFormId: z.string().optional(),
+                    })
+                    .optional(),
             }),
     }),
     feeds: defineCollection({
@@ -223,4 +270,3 @@ export const collections = {
             }),
     }),
 }
-

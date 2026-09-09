@@ -10,17 +10,21 @@ version: ">= 1.2.0"
 
 Track and manage the resources your workflows create and use.
 
+An **asset** is any named resource a workflow reads from or writes to — a database table, a file, a virtual machine. Declaring assets on tasks builds a lineage graph: which workflows touch which resources, in what order, and how they depend on each other. Kestra can ship that graph to external lineage platforms such as DataHub, Marquez, or Atlan via OpenLineage, so orchestration lineage appears alongside warehouse and pipeline lineage in one place.
+
+:::alert{type="info"}
+For an end-to-end architecture walkthrough with diagrams, see [Assets for infrastructure automation](https://kestra.io/blogs/assets-for-infra-automation).
+:::
+
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/XhICXP_GXic?si=jUBFcCv7vqSqqvKn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Track workflow assets and lineage
-
-Assets keeps a live inventory of resources that your workflows interact with. These resources can be database tables, virtual machines, files, or any external system you work with.
+## Declare and capture assets
 
 Assets are captured automatically when tasks declare `assets.inputs` or `assets.outputs`; you can also add them manually from the **Assets** tab. Once created, you can view asset details, check which workflow runs created or modified them, and see how assets connect to each other across your workflows.
 
-This feature enables:
+Assets enable:
 
 - Shipping metadata to lineage providers (e.g., OpenLineage).
 - Populating dropdowns or Pebble inputs with live assets (e.g., available VMs).
@@ -41,17 +45,19 @@ Every asset includes these fields:
 | `description` | markdown-supported documentation |
 | `metadata` | map of key-value for adding custom metadata to the given asset |
 
-## Asset Identifier
+## Asset identifier
 
-An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it. You can attach a namespace to an asset to improve filtering and to restrict visibility so only users or groups with the appropriate RBAC can access the asset.
+An asset is uniquely identified by its `id` and the tenant (`tenantId`) where you create it - the `id` must be unique per tenant. Neither the namespace nor the type is part of that identity: two assets with the same `id` and different namespaces or types cannot exist in the same tenant. Creating an asset with an `id` that is already taken is rejected.
 
-## Asset Type
+You can attach a namespace to an asset to improve filtering and to restrict visibility so only users or groups with the appropriate RBAC can access the asset.
+
+## Asset type
 
 Asset types fall into two categories:
 
-- **Kestra-defined asset types**: These predefined types use the `io.kestra.core.models.assets` model and provide structured metadata fields specific to each asset type. In future iterations of the Assets feature, Kestra plugins will allow to automatically generate assets with these types and populate their metadata fields during task execution. For example, a database plugin could automatically create a `Table` asset with the system, database, and schema fields filled in based on the connection details.
+- **Kestra-defined asset types**: These predefined types use the `io.kestra.core.models.assets` model and provide structured metadata fields specific to each asset type. Plugins that support auto-generation populate these fields automatically during task execution — for example, a JDBC plugin creates a `Table` asset with `system`, `database`, and `schema` filled in from the connection details.
 
-The current Kestra-defined asset types are the following:
+Kestra provides these built-in asset types:
 
 - `io.kestra.plugin.ee.assets.Dataset`
   - Represents a dataset asset managed by Kestra.
@@ -144,8 +150,7 @@ tasks:
       inventory.ini: |
         localhost ansible_connection=local
       myplaybook.yml: |
-        
----
+        ---
         - hosts: localhost
           tasks:
             - name: Print Hello World
@@ -201,23 +206,19 @@ tasks:
 
 ## Operational automation
 
-Assets go beyond lineage: you can manage lifecycle, react to events, and automate remediation directly from flows:
-- Imperative lifecycle tasks to create/update, list, and delete assets (`Set`, `List`, `Delete`).
+Assets also support lifecycle management, event-driven triggers, and freshness monitoring directly from flows:
+- Lifecycle tasks to create, update, list, and delete assets (`Set`, `List`, `Delete`).
 - Event-based triggers with `EventTrigger` that react to asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`).
-- Freshness monitoring with `FreshnessTrigger` to detect stale assets and launch workflows automatically.
-- Flexible scoping by asset ID, namespace, type, and metadata filters.
-- Actionable trigger context (`event`, `eventTime`, `lastUpdated`, `staleDuration`, `checkTime`) to drive alerts, routing, and recovery.
+- Freshness monitoring with `FreshnessTrigger` to detect stale assets and launch flows automatically.
+- Scope triggers by asset ID, namespace, type, and metadata filters.
+- Trigger context variables (`event`, `eventTime`, `lastUpdated`, `staleDuration`, `checkTime`) available for routing, alerting, and recovery logic.
 
-**Trigger use mapping**
+### Trigger use mapping
 
 | Trigger | Primary use |
 | --- | --- |
 | `EventTrigger` | React instantly to asset lifecycle events (`CREATED`, `UPDATED`, `DELETED`, `USED`). |
 | `FreshnessTrigger` | Poll assets on an interval to detect staleness and launch remediation. |
-
-### Operational controls and triggers
-
-Use asset tasks and triggers to automate lifecycle, governance, and freshness checks directly from flows.
 
 :::collapse{title="Advanced: event-driven automation"}
 
@@ -372,13 +373,74 @@ tasks:
 
 :::
 
-## Data Pipeline Use Cases
+## Locking assets
+
+A lock prevents concurrent writes to a shared asset while a flow operates on it. Locks are TTL-bounded: they expire automatically when their duration elapses and can also be released explicitly. Reads are always open — only writes (edit, delete) are blocked while a lock is held.
+
+Two owner types exist:
+
+| Owner type | Acquired by | Behavior while held |
+|---|---|---|
+| `EXECUTION` | `Acquire` task | Blocks other executions' writes. The lock-holding execution can still write to the asset, and each write extends the lease. |
+| `USER` | UI or REST API | Blocks all execution writes. Use for manual maintenance windows. |
+
+### Locking from a flow
+
+The `Acquire` and `Release` tasks wrap the work that needs exclusive write access. Both require the `LOCK` permission on the `ASSET` resource (`UNLOCK` for `Release`).
+
+If another execution already holds the lock when `Acquire` runs, the task fails with a 423 error. Add a `Retry` to the `Acquire` task to wait for the lock to become available.
+
+```yaml
+id: update_customer_asset
+namespace: company.team
+
+tasks:
+  - id: acquire
+    type: io.kestra.plugin.kestra.ee.locks.Acquire
+    assetId: customers_by_country
+    ttl: PT1H
+
+  - id: write
+    type: io.kestra.plugin.core.log.Log
+    message: Writing to the locked asset
+
+  - id: release
+    type: io.kestra.plugin.kestra.ee.locks.Release
+    assetId: customers_by_country
+```
+
+**`Acquire`** properties:
+
+| Property | Required | Description |
+|---|---|---|
+| `assetId` | Yes | ID of the asset to lock. |
+| `ttl` | No | How long to hold the lock before it expires automatically. ISO-8601 duration (e.g. `PT1H`). Defaults to 5 minutes when unset. |
+
+**`Acquire`** outputs:
+
+| Output | Description |
+|---|---|
+| `lockedUntil` | When the lock expires. |
+| `ownerType` | Always `EXECUTION` for a task-acquired lock. |
+| `executionId` | ID of the execution holding the lock. |
+
+`Release` is owner-checked: it removes the lock only if the current execution holds it. If the lock has already expired or belongs to a different owner, `Release` is a no-op — safe to call unconditionally.
+
+### Locking from the UI
+
+From any asset's detail page, users with the `LOCK` permission can lock the asset manually. Choose from preset durations (5 minutes to 24 hours) or enter a custom ISO-8601 duration. The page shows who holds the lock and when it expires. Users with the `UNLOCK` permission can release any lock regardless of owner.
+
+When an asset is locked, the detail page shows a banner: *You might be seeing outdated metadata as this asset is currently locked for writing.*
+
+The asset list supports filtering by lock status.
+
+## Data pipeline use cases
 
 :::collapse{title="Advanced: data pipeline examples"}
 
 Assets are essential for tracking data lineage in analytics and data engineering workflows. The following examples demonstrate how to use assets for simple table creation and complex multi-layer data pipelines.
 
-### Example 1: Simple Table Creation
+### Example 1: Simple table creation
 
 **Scenario**: You're creating a new database table from scratch. This is a foundational asset with no upstream dependencies.
 
@@ -418,7 +480,7 @@ tasks:
 - The `trips` table is registered as an output asset that downstream workflows can reference
 - Metadata captures the database type and table name for easier discovery
 
-### Example 2: Multi-Layer Data Pipeline
+### Example 2: Multi-layer data pipeline
 
 **Scenario**: You're building a modern data stack with staging and mart layers. The staging layer reads from an external source, and the mart layer creates aggregated analytics tables.
 
@@ -429,6 +491,8 @@ namespace: kestra.company.data
 tasks:
   - id: create_staging_layer_asset
     type: io.kestra.plugin.jdbc.duckdb.Query
+    url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+    fetchType: STORE
     sql: |
       CREATE TABLE IF NOT EXISTS trips AS
       select VendorID, passenger_count, trip_distance from sample_data.nyc.taxi limit 10;
@@ -443,28 +507,25 @@ tasks:
               model_layer: staging
 
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values:
       - passenger_count
       - trip_distance
     tasks:
       - id: create_mart_layer_asset
         type: io.kestra.plugin.jdbc.duckdb.Query
-        sql: SELECT AVG({{taskrun.value}}) AS avg_{{taskrun.value}} FROM trips;
+        url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
+        fetchType: STORE
+        sql: SELECT AVG({{item.value}}) AS avg_{{item.value}} FROM trips;
         assets:
           inputs:
               - id: trips
           outputs:
-              - id: avg_{{taskrun.value}}
+              - id: avg_{{item.value}}
                 type: io.kestra.plugin.ee.assets.Table
                 namespace: "{{flow.namespace}}"
                 metadata:
                   model_layer: mart
-pluginDefaults:
-  - type: io.kestra.plugin.jdbc.duckdb
-    values:
-      url: "jdbc:duckdb:md:my_db?motherduck_token={{ secret('MOTHERDUCK_TOKEN') }}"
-      fetchType: STORE
 ```
 
 **What's happening in this pipeline**:
@@ -473,7 +534,7 @@ pluginDefaults:
 
 2. **Staging Layer**: The `trips` table is created and registered with `model_layer: staging` metadata. This becomes an intermediate asset that mart layers will consume.
 
-3. **Dynamic Mart Creation**: The `ForEach` task generates two mart tables:
+3. **Dynamic Mart Creation**: The `Loop` task generates two mart tables:
    - `avg_passenger_count`
    - `avg_trip_distance`
 
@@ -487,15 +548,10 @@ pluginDefaults:
 - **Dependency Tracking**: Know exactly which tables depend on others before making schema changes
 - **Audit Trail**: Track which workflows created each table and when
 
-Check out an interactive demo to see the Flow in action:
-
-<div style="position: relative; padding-bottom: calc(48.9583% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/MXR1KD6by4izutxRMMNK?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Data Pipeline Assets | Kestra EE" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
 
 :::
 
----
-
-## Infrastructure Use Case: Team Bucket Provisioning
+## Infrastructure use case: team bucket provisioning
 
 :::collapse{title="Advanced: infrastructure provisioning"}
 
@@ -521,28 +577,24 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{ inputs.teams }}"
     tasks:
       - id: create_bucket
         type: io.kestra.plugin.aws.cli.AwsCLI
+        accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+        secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+        region: "{{ secret('AWS_REGION') }}"
+        allowFailure: true
         commands:
-          - aws s3 mb s3://kestra-{{ taskrun.value | slugify }}-bucket
+          - aws s3 mb s3://kestra-{{ item.value | slugify }}-bucket
         assets:
           outputs:
-            - id: kestra-{{ taskrun.value | slugify }}-bucket
+            - id: kestra-{{ item.value | slugify }}-bucket
               type: AWS_BUCKET
               metadata:
                 provider: s3
-                address: s3://kestra-{{ taskrun.value | slugify }}-bucket
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
-      allowFailure: true
+                address: s3://kestra-{{ item.value | slugify }}-bucket
 ```
 
 This flow dynamically creates buckets (e.g., `kestra-data-bucket`, `kestra-finance-bucket`) and registers each as an `AWS_BUCKET` asset with relevant metadata.
@@ -560,6 +612,9 @@ tasks:
 
   - id: aws_upload
     type: io.kestra.plugin.aws.s3.Upload
+    accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
+    secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
+    region: "{{ secret('AWS_REGION') }}"
     bucket: kestra-data-bucket
     from: '{{ outputs.download.uri }}'
     key: raw_customer.csv
@@ -571,13 +626,6 @@ tasks:
           type: io.kestra.plugin.ee.assets.File
           metadata:
             owner: data
-
-pluginDefaults:
-  - type: io.kestra.plugin.aws
-    values:
-      accessKeyId: "{{ secret('AWS_ACCESS_KEY') }}"
-      secretKeyId: "{{ secret('AWS_SECRET_ACCESS_KEY') }}"
-      region: "{{ secret('AWS_REGION') }}"
 ```
 
 In this workflow:
@@ -596,37 +644,53 @@ In this workflow:
 
 ## Populate dropdowns and app inputs
 
-The `assets()` Pebble function allows you to query and retrieve assets dynamically in your workflows. This is particularly useful for populating dropdown inputs or dynamically selecting resources based on filters.
+Use the `assets()` Pebble function to query assets at runtime — for example, to populate dropdown inputs or select resources based on type, namespace, or metadata.
 
 ### Function signature
 
 ```plaintext
-assets(type: string, namespace: string, metadata: map)
+assets(id: string, type: string, namespace: string, metadata: map)
 ```
 
 ### Parameters
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `type` | string | No | Filter assets by type (e.g., `"io.kestra.core.models.assets.Table"`). If omitted, returns all assets. |
-| `namespace` | string | No | Filter assets by namespace. |
-| `metadata` | map | No | Filter assets by metadata key-value pairs (e.g., `{"key": "value"}`). |
+| `id` | string | No | Filter by asset ID. Because IDs are unique per tenant, this returns at most one result. |
+| `type` | string | No | Filter by asset type (e.g., `"io.kestra.plugin.ee.assets.Table"`). If omitted, returns all types. |
+| `namespace` | string | No | Filter by namespace. Defaults to the flow's namespace. |
+| `metadata` | map | No | Filter by metadata key-value pairs (e.g., `{"model_layer": "mart"}`). |
 
 
 ### Return value
 
-Returns an array of asset objects. Each asset object contains the following properties:
-- `tenantId` - The tenant ID where the asset is created
-- `namespace` - The namespace the asset belongs to
-- `id` - The asset identifier
-- `type` - The asset type
-- `metadata` - Map of custom metadata key-value pairs
-- `created` - ISO 8601 timestamp when the asset was created
-- `updated` - ISO 8601 timestamp when the asset was last updated
-- `deleted` - Boolean indicating if the asset has been deleted
+Returns an array of asset objects. Each object contains:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `id` | string | Asset identifier |
+| `namespace` | string | Namespace the asset belongs to |
+| `type` | string | Asset type |
+| `metadata` | map | Custom metadata key-value pairs |
+| `tenantId` | string | Tenant ID where the asset was created |
+| `created` | string | ISO 8601 timestamp of creation |
+| `updated` | string | ISO 8601 timestamp of last update |
+| `deleted` | boolean | Whether the asset has been deleted |
 
 
 ### Examples
+
+**Fetch a specific asset by ID:**
+
+```yaml
+id: check_asset
+namespace: company.team
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "{{ assets(id='report.csv') | jq('.[0].metadata.path') }}"
+```
 
 **Populate a multiselect dropdown with table assets:**
 
@@ -641,12 +705,12 @@ inputs:
 
 tasks:
   - id: for_each
-    type: io.kestra.plugin.core.flow.ForEach
+    type: io.kestra.plugin.core.flow.Loop
     values: "{{inputs.assets}}"
     tasks:
       - id: log
         type: io.kestra.plugin.core.log.Log
-        message: "{{taskrun.value}}"
+        message: "{{item.value}}"
 ```
 
 **Filter assets by namespace:**
@@ -680,7 +744,7 @@ tasks:
 
 ## Export assets with AssetShipper
 
-The `AssetShipper` task allows you to export asset metadata to external systems for lineage tracking, monitoring, or integration with data catalogs. You can ship assets to files or to lineage providers like OpenLineage.
+Use the `AssetShipper` task to export asset metadata to external systems for lineage tracking, monitoring, or integration with data catalogs. Supported destinations include files and OpenLineage-compatible providers.
 
 ### Export assets to file
 
@@ -723,7 +787,7 @@ tasks:
 
 The `mappings` property defines how Kestra asset metadata fields map to OpenLineage dataset facets. Each asset type can have its own mapping configuration. For more information about OpenLineage dataset facets and available fields, see the [OpenLineage Dataset Facets documentation](https://openlineage.io/docs/spec/facets/dataset-facets/).
 
-## Purge assets and lineage (retention)
+## Purge assets and lineage data
 
 Use the `io.kestra.plugin.ee.assets.PurgeAssets` task to enforce asset retention without touching executions or logs. By default, this task purges assets, asset usage events (execution view), and asset lineage events (for asset exporters) matching the filters. You can configure it to only purge specific types of records.
 
@@ -765,3 +829,9 @@ tasks:
       - io.kestra.plugin.ee.assets.VM
     endDate: "{{ now() | dateAdd(-180, 'DAYS') }}"
 ```
+
+## Visualizing assets in dashboards
+
+Use the `io.kestra.plugin.ee.dashboard.data.Assets` data source to build charts over your asset inventory directly in a custom dashboard. Asset charts are not filtered by the dashboard time range — they always reflect the current state of your inventory.
+
+See [Assets (EE and Cloud only)](../../../09.ui/00.dashboard/index.md#assets-ee-and-cloud-only) in the Dashboards documentation for available fields, chart type compatibility, and configuration examples.

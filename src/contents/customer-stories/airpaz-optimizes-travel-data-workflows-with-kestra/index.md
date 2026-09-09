@@ -17,21 +17,26 @@ tasks:
   - io.kestra.plugin.jdbc.clickhouse.Query
 kpi1: |-
   ##### 70%
-  Reduction in manual data processing
+  reduction in manual data processing
 kpi2: |-
   ##### Improved
   data pipeline reliability
 kpi3: |-
   ##### 10
-  Connected Sources
+  connected sources
 quote: Thank you for your hard work in creating this good software. It is
   beginner-friendly and easy to customize.
 quotePerson: Daniel Theodorus
 quotePersonTitle: ""
 industry: Travel Industry
 headquarter: Jakarta, Indonesia
+region: Asia Pacific
+companySize: "51–500"
 solution: Flights and Hotels booking solution
-companyName: ""
+tagline: Online travel platform for flight and hotel bookings
+companyName: Airpaz
+useCase: Cutting manual data processing by 70% while connecting 10 sources for a Southeast Asia flight and hotel booking platform
+useCaseShort: Data Orchestration
 cta: "What would change if your travel data workflows ran smarter—automating the complex pipelines that power bookings, pricing, and experiences?"
 ---
 

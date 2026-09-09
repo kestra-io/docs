@@ -19,21 +19,25 @@
                 :release-versions="releaseVersions"
                 :releases-url="releasesUrl"
                 :kestra-core="kestraCore"
+                :plugin-name="pluginName"
+                :plugin-type="pluginType"
+                :current-tail="currentTail"
+                :current-version="currentVersion"
             />
 
             <div class="managed">
-                <div>
-                    <p>Created by</p>
+                <div v-if="repoUrl">
+                    <p>Maintained by</p>
                     <div class="meta-info">
-                        <img :src="createdByIcon" v-if="createdByIcon" alt="author icon" class="author-icon" />
-                        <span>{{ createdBy }}</span>
+                        <a :href="`${repoUrl}/graphs/contributors`" target="_blank" rel="noopener noreferrer">
+                            Contributors
+                        </a>
                     </div>
                 </div>
-                <div>
-                    <p>Managed by</p>
+                <div v-if="partner">
+                    <p>Partnered with</p>
                     <div class="meta-info">
-                        <img :src="managedByIcon" v-if="managedByIcon" alt="author icon" class="author-icon" />
-                        <span>{{ managedBy }}</span>
+                        <span>{{ partner }}</span>
                     </div>
                 </div>
             </div>
@@ -72,14 +76,12 @@
 
 <script setup lang="ts">
     import { computed } from "vue"
-    import type { PluginMetadata } from "@kestra-io/ui-libs"
+    import type { PluginMetadata } from "~/utils/plugins/plugin"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import Github from "vue-material-design-icons/Github.vue"
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
     import Versions from "./Versions.vue"
-    import type { ReleaseInfo } from "../../../pages/api/github-releases"
-    import kestraIcon from "../assets/kestra.svg"
-    import conapiIcon from "../assets/conapi.svg"
+    import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
 
     const props = withDefaults(
         defineProps<{
@@ -87,12 +89,20 @@
             releasesUrl?: string | null
             categories?: string[]
             metadata?: PluginMetadata[]
+            pluginName?: string
+            pluginType?: string
+            currentTail?: string
+            currentVersion?: string
         }>(),
         {
             version: null,
             releasesUrl: null,
             categories: () => [],
             metadata: () => [],
+            pluginName: undefined,
+            pluginType: undefined,
+            currentTail: undefined,
+            currentVersion: undefined,
         },
     )
 
@@ -113,22 +123,7 @@
             : null,
     )
 
-    const createdBy = computed(() => metadataItem.value?.createdBy ?? "Kestra Core Team")
-    const managedBy = computed(() => metadataItem.value?.managedBy ?? "Kestra Core Team")
-
-    // Hardcoded branding logic for primary contributors. This should be refactored into 
-    // a more scalable API as external contributions expand.
-    const createdByIcon = computed(() => {
-        if (createdBy.value.includes("Kestra Core Team")) return kestraIcon.src
-        if (createdBy.value.includes("Conapi GmbH")) return conapiIcon.src
-        return null
-    })
-
-    const managedByIcon = computed(() => {
-        if (managedBy.value.includes("Kestra Core Team")) return kestraIcon.src
-        if (managedBy.value.includes("Conapi GmbH")) return conapiIcon.src
-        return null
-    })
+    const partner = computed(() => metadataItem.value?.partner)
 
     const kestraCore = computed(
         () => props.releasesUrl === "https://github.com/kestra-io/kestra/releases",
@@ -136,8 +131,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
     .overview-title,
     .type {
         font-size: $font-size-sm;
@@ -214,9 +207,19 @@
                         object-fit: contain;
                     }
 
-                    span {
+                    span,
+                    a {
                         color: var(--ks-content-secondary);
                         font-size: $font-size-xs;
+                    }
+
+                    a {
+                        text-decoration: none;
+
+                        &:hover {
+                            text-decoration: underline;
+                            text-decoration-skip-ink: none;
+                        }
                     }
                 }
             }

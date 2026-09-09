@@ -14,7 +14,7 @@ Manages a Kestra User Api Token.
 This resource is only available on the [Enterprise Edition](https://kestra.io/enterprise)
 :::
 
-## Example Usage
+## Example usage
 
 ```hcl
 resource "kestra_user_api_token" "example" {
@@ -49,6 +49,8 @@ resource "kestra_user_api_token" "example" {
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_user_api_token.example {{user_id}}

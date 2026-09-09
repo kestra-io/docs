@@ -3,9 +3,6 @@ title: "Task Runners in Scripts: Control Execution Environment"
 h1: Manage Docker and Process Runners for Script Execution
 sidebarTitle: Task Runners
 icon: /src/contents/docs/icons/dev.svg
-deprecated:
-  since: "0.18.0"
-  migrationGuide: /docs/migration-guide/0.18.0/runners
 description: Manage execution environments for your scripts using Kestra's Task Runners, including Docker and Process runners.
 ---
 
@@ -21,7 +18,7 @@ Each `taskRunner` is identified by its `type`. The [Process](../../task-runners/
   <iframe src="https://www.youtube.com/embed/89ywEU9hXjI?si=pVnk4GZbVQOGIxfU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-Here's an example of the Docker Task Runner configured to use the `centos` container image:
+Here's an example of the Docker Task Runner configured to use the `ubuntu` container image:
 
 ```yaml
 id: docker_task_runner
@@ -30,7 +27,7 @@ namespace: company.team
 tasks:
   - id: shell
     type: io.kestra.plugin.scripts.shell.Commands
-    containerImage: centos
+    containerImage: ubuntu
     taskRunner:
       type: io.kestra.plugin.scripts.runner.docker.Docker
       cpu:

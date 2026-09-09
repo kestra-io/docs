@@ -5,7 +5,7 @@ date: 2024-12-03T17:00:00
 category: News & Product Updates
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
   medium: https://annageller.medium.com/
   image: ageller
   role: Product Lead
@@ -31,7 +31,7 @@ The table below highlights the key features of this release.
 | Flow Trigger enhancements                        | Configure complex dependencies, e.g., when a flow relies on multiple other flows to finish by a certain deadline.                                                                         | All editions |
 | New `errorLogs()` function                       | [Provide context](https://youtu.be/LlA9PSTbmT4) about why workflow has failed in alert notifications.                                                                                     | All editions |
 | New sidebar                                      | See the latest product news and docs from the right sidebar.                                                                                                                              | All editions |
-| Bookmarks                                        | [Bookmark any page](../../docs/09.ui/09.bookmarks/index.md) with your selected UI filters.                                                                                                   | All editions |
+| Bookmarks                                        | [Bookmark any page](../../docs/09.ui/index.mdx) with your selected UI filters.                                                                                                   | All editions |
 | Transactional Queries                            | Execute multiple SQL Queries in a single task as an atomic database transaction.                                                                                                          | All editions |
 | Improved filter & search bar                     | Adjust filters on any UI page simply by typing your filter criteria.                                                                                                                      | All editions |
 | Enhancements to dbt                              | Persist the dbt manifest in the KV Store to rebuild only dbt models that changed since the last run.                                                                                      | All editions |
@@ -281,7 +281,7 @@ The new sidebar on the right side of the Kestra UI provides quick access to the 
 
 ## Bookmarks
 
-You can now [bookmark any Kestra UI page](../../docs/09.ui/09.bookmarks/index.md) with your selected filters which is particularly handy when you need quick access to specific filtered views, such as _"Failed Executions within the last 2 days"_. This new feature makes frequently-used pages available at a fingertip.
+You can now [bookmark any Kestra UI page](../../docs/09.ui/index.mdx) with your selected filters which is particularly handy when you need quick access to specific filtered views, such as _"Failed Executions within the last 2 days"_. This new feature makes frequently-used pages available at a fingertip.
 
 ![bookmarks](./bookmarks.png)
 

@@ -337,12 +337,13 @@ flow.execute('example', 'python_scripts', {'greeting': 'hello from Python'})
 
 Read more about it on the [execution page](../../05.workflow-components/03.execution/index.md).
 
-## Automate Python with Triggers
+## Automate Python with triggers
 
 You can combine your Python code with a trigger to automatically execute your code. There's a few key ways you can automate it:
 - Run on a schedule
 - Run when a webhook is called
 - Run when a file is available in a data lake or storage bucket
+- Run Python code on a polling interval and emit only when a condition matches
 
 <div class="video-container">
   <iframe src="https://www.youtube.com/embed/FIOIvNwtKM8?si=l8NCFNKgE4cuY-Hn" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -397,7 +398,7 @@ triggers:
 
 ### Run when a file is available in a data lake or storage bucket
 
-You can use a [Polling Trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), such as the [S3 Trigger](/plugins/plugin-aws/s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
+You can use a [Polling Trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), such as the [S3 Trigger](/plugins/plugin-aws/aws-s3/io.kestra.plugin.aws.s3.trigger) to run your flow when a new file arrives in an S3 bucket. This is useful if you have a data pipeline that can start once the data is available and begin transforming it with Python:
 
 ```yaml
 id: s3_trigger
@@ -436,12 +437,67 @@ triggers:
     maxKeys: 1
 ```
 
+### Run Python code as a polling trigger
+
+You can also use Python itself as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run Python code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline Python code:
+
+```yaml
+id: python_script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.python.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    script: |
+      raise Exception("boom")
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run Python commands instead:
+
+```yaml
+id: python_commands_trigger
+namespace: company.team
+
+triggers:
+  - id: on_fail
+    type: io.kestra.plugin.scripts.python.CommandsTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: python:3.13-slim
+    commands:
+      - python3 -c "raise Exception('boom')"
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These triggers support:
+
+- `interval` to control how often the Python code runs
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only when the condition changes from not matching to matching
+
+Use these trigger types when you want Python itself to decide whether a polling condition has been met, rather than relying on a separate external-system trigger.
+
 
 ## Execute GraalVM Task
 
 Kestra also supports GraalVM integration, allowing you to execute Python code directly on the JVM, with the potential for performance improvements. There are currently two tasks:
-- [Eval](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.eval)
-- [FileTransform](/plugins/plugin-graalvm/python-graalvm-tasks-on-graalvm/io.kestra.plugin.graalvm.python.filetransform)
+- [Eval](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.eval)
+- [FileTransform](/plugins/plugin-graalvm/python-graalvm/io.kestra.plugin.graalvm.python.filetransform)
 
 In this example, the `Eval` task is used to manipulate data from a previous task. GraalVM makes it easy to generate outputs from variables in Python using the `outputs` property. This is useful if you want to manipulate data and pass the new format to another task.
 

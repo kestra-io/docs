@@ -4,6 +4,7 @@
             v-model="activeTag"
             :categories="resourceTabs"
             root-href="/resources"
+            navigate
             class="m-0 mb-4"
         />
 
@@ -80,14 +81,6 @@
             activeTag.value = newSlug || ALL_RESOURCES
         },
     )
-
-    watch(activeTag, () => {
-        const target =
-            activeTag.value === ALL_RESOURCES
-                ? "/resources"
-                : `/resources/${activeTag.value}`
-        window.history.pushState(null, "", target)
-    })
 
     const showMore = () => {
         visibleCount.value += 9

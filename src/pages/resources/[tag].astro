@@ -33,7 +33,11 @@ const section = getResourceSection(tag)
     description={section.metaDescription}
 >
     <Mesh>
-        <ResourceSearchHero client:load />
+        <ResourceSearchHero
+            heading={section.heading}
+            subtitle={section.subtitle}
+            client:load
+        />
     </Mesh>
     <ResourceList resources={resources} tag={tag} />
     <SeeHow cta={{ text: "Get Started", href: "/get-started" }}>

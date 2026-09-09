@@ -64,7 +64,7 @@ The UI clearly distinguishes externally managed secrets with a lock icon, provid
     <iframe src="https://www.youtube.com/embed/uxFyE1nsMlU?si=X3nUxXwfAu4jCElc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../../docs/07.enterprise/02.governance/read-only-secrets/index.md).
+For detailed instructions on how to configure and use this feature, visit the [Read-Only Secrets Backends documentation](../../docs/07.enterprise/02.governance/secrets-manager/index.md).
 
 ![read only secret manager](./read-only-secret-manager.png)
 

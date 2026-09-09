@@ -1,23 +1,105 @@
 ---
-import LegacyApproachIcon from "./assets/comparison/legacy-approach.svg"
-import KestraWayAnimation from "./assets/comparison/kestra-way-animated.astro"
+import { Image } from "astro:assets"
 import SixtySeconds from "./SixtySeconds.astro"
+import dataVisual from "./assets/comparison/tab-data.svg"
+import dataVisualDark from "./assets/comparison/tab-data-dark.svg"
+import infrastructureVisual from "./assets/comparison/tab-infrastructure.svg"
+import infrastructureVisualDark from "./assets/comparison/tab-infrastructure-dark.svg"
+import aiAgentsVisual from "./assets/comparison/tab-ai-agents.svg"
+import aiAgentsVisualDark from "./assets/comparison/tab-ai-agents-dark.svg"
+import businessAppVisual from "./assets/comparison/tab-business-app.svg"
+import businessAppVisualDark from "./assets/comparison/tab-business-app-dark.svg"
+
+const TABS = [
+    {
+        id: "data",
+        label: "Data",
+        title: "Cross-Cloud ETL That Starts Itself",
+        image: dataVisual,
+        imageDark: dataVisualDark,
+        alt: "Kestra flow editor showing an Azure Blob to BigQuery flow with its topology",
+    },
+    {
+        id: "infrastructure",
+        label: "Infrastructure",
+        title: "Every VM Configured, Every Run Traceable",
+        image: infrastructureVisual,
+        imageDark: infrastructureVisualDark,
+        alt: "Kestra execution logs of an Ansible playbook run against a NetBox dynamic inventory",
+    },
+    {
+        id: "ai-agents",
+        label: "AI Agents",
+        title: "Triage every issue from GitHub with AI, start each day with a plan",
+        image: aiAgentsVisual,
+        imageDark: aiAgentsVisualDark,
+        alt: "Kestra execution outputs of an AI daily repo brief, with the expression debugger preview",
+    },
+    {
+        id: "business-app",
+        label: "Business Apps",
+        title: "Self-service Business automation, fully recorded",
+        image: businessAppVisual,
+        imageDark: businessAppVisualDark,
+        alt: "Kestra app editor showing a Weekly recap form next to its YAML definition",
+    },
+]
 ---
 
-<section aria-labelledby="comparison">
-    <h2 id="comparison">
-        Most Orchestrators Are Built for One Team.
-        <span>Kestra is Built for the Whole Organization.</span>
-    </h2>
-    <div role="region" aria-label="Comparison table" class="comparison">
-        <div class="legacy-approach" aria-label="Legacy approach">
-            <h3>The Legacy approach</h3>
-            <LegacyApproachIcon class="legacy-approach-image" />
-            <span>Fragile Glue Code</span>
-        </div>
+<section class="use-cases" aria-label="Kestra across teams" data-use-case-tabs>
+    <div class="grid-bg" aria-hidden="true"></div>
 
-        <KestraWayAnimation class="kestra-way-image" />
+    <div class="tabs" role="tablist" aria-label="Team">
+        {
+            TABS.map((tab, idx) => (
+                <button
+                    type="button"
+                    id={`use-case-tab-${tab.id}`}
+                    class:list={["tab", { active: idx === 0 }]}
+                    role="tab"
+                    aria-selected={idx === 0}
+                    aria-controls={`use-case-panel-${tab.id}`}
+                    tabindex={idx === 0 ? 0 : -1}
+                    data-tab-target={tab.id}
+                >
+                    {tab.label}
+                </button>
+            ))
+        }
     </div>
+
+    {
+        TABS.map((tab, idx) => (
+            <div
+                id={`use-case-panel-${tab.id}`}
+                class:list={["panel", { active: idx === 0 }]}
+                role="tabpanel"
+                aria-labelledby={`use-case-tab-${tab.id}`}
+                data-tab-content={tab.id}
+            >
+                <h3>{tab.title}</h3>
+                {/* Light/dark mockups are swapped by CSS on html.dark (same
+                    pattern as the header logo). The dark one is always lazy so
+                    a hidden image is never downloaded: only the visible first
+                    visual is eager, as before. */}
+                <Image
+                    src={tab.image}
+                    alt={tab.alt}
+                    layout="none"
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    class="visual visual-light"
+                />
+                <Image
+                    src={tab.imageDark}
+                    alt={tab.alt}
+                    layout="none"
+                    loading="lazy"
+                    class="visual visual-dark"
+                />
+            </div>
+        ))
+    }
+
     <p class="caption">
         Kestra scales because it is designed for cross-team orchestration from
         day one.
@@ -25,88 +107,251 @@ import SixtySeconds from "./SixtySeconds.astro"
     <SixtySeconds />
 </section>
 
+<script>
+    function wireUseCaseTabs() {
+        for (const root of document.querySelectorAll<HTMLElement>(
+            "[data-use-case-tabs]",
+        )) {
+            if (root.dataset.wired === "true") continue
+            root.dataset.wired = "true"
+
+            const tabs = [...root.querySelectorAll<HTMLElement>(".tab")]
+
+            const activate = (btn: HTMLElement) => {
+                const target = btn.dataset.tabTarget
+                if (target == null) return
+                for (const el of root.querySelectorAll(".tab, .panel")) {
+                    el.classList.remove("active")
+                    if (el.matches(".tab")) {
+                        el.setAttribute("aria-selected", "false")
+                        el.setAttribute("tabindex", "-1")
+                    }
+                }
+                btn.classList.add("active")
+                btn.setAttribute("aria-selected", "true")
+                btn.setAttribute("tabindex", "0")
+                root.querySelector(
+                    `.panel[data-tab-content="${target}"]`,
+                )?.classList.add("active")
+            }
+
+            root.addEventListener("click", (e) => {
+                const btn = (e.target as Element).closest(
+                    ".tab",
+                ) as HTMLElement | null
+                if (btn) activate(btn)
+            })
+
+            root.addEventListener("keydown", (e) => {
+                const current = (e.target as Element).closest(
+                    ".tab",
+                ) as HTMLElement | null
+                if (!current) return
+                const idx = tabs.indexOf(current)
+                let next: number | null = null
+                if (e.key === "ArrowRight") next = (idx + 1) % tabs.length
+                else if (e.key === "ArrowLeft")
+                    next = (idx - 1 + tabs.length) % tabs.length
+                else if (e.key === "Home") next = 0
+                else if (e.key === "End") next = tabs.length - 1
+                if (next == null) return
+                e.preventDefault()
+                activate(tabs[next])
+                tabs[next].focus()
+            })
+        }
+    }
+
+    document.addEventListener("astro:page-load", wireUseCaseTabs)
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", wireUseCaseTabs)
+    } else {
+        wireUseCaseTabs()
+    }
+</script>
+
 <style lang="scss">
-    section {
-        padding: 5rem 1rem;
-        background-color: var(--ks-background-body);
-        color: var(--ks-content-primary);
-        text-align: center;
-    }
-
-    h2 {
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 2rem;
-        color: var(--ks-content-primary);
-        margin-inline: auto;
-        span {
-            color: var(--ks-content-color-highlight);
-        }
-        @include media-breakpoint-up(md) {
-            width: 700px;
-        }
-    }
-
-    .comparison {
+    .use-cases {
+        position: relative;
         display: flex;
         flex-direction: column;
-        align-items: stretch;
-        gap: 2rem;
-        margin-inline: auto;
+        align-items: center;
+        padding: 2.5rem 1rem 5rem;
+        background-color: var(--ks-background-secondary);
+        color: var(--ks-content-primary);
+        text-align: center;
+        overflow: clip;
+    }
+
+    .grid-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        /* The Figma grid asset (shared by both themes) is white lines masked
+         * over a blurred #b987ff glow, so only glow-tinted lines are visible:
+         * pale on the light surface, deep on the dark one. Same colour here. */
+        background:
+            linear-gradient(
+                to right,
+                rgba(185, 135, 255, 0.15) 1px,
+                transparent 1px
+            ),
+            linear-gradient(
+                to bottom,
+                rgba(185, 135, 255, 0.15) 1px,
+                transparent 1px
+            );
+        background-size: var(--hp-grid-size) var(--hp-grid-size);
+        -webkit-mask: radial-gradient(
+            ellipse 75% 90% at 95% 5%,
+            #000 25%,
+            transparent 100%
+        );
+        mask: radial-gradient(
+            ellipse 75% 90% at 95% 5%,
+            #000 25%,
+            transparent 100%
+        );
+        pointer-events: none;
+
+        @include media-breakpoint-down(md) {
+            -webkit-mask: radial-gradient(
+                ellipse 90% 40% at 100% 0,
+                #000 10%,
+                transparent 100%
+            );
+            mask: radial-gradient(
+                ellipse 90% 40% at 100% 0,
+                #000 10%,
+                transparent 100%
+            );
+        }
+    }
+
+    .tabs,
+    .panel,
+    .caption {
+        position: relative;
+        z-index: 1;
+    }
+
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        width: 100%;
+        max-width: 1320px;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .tab {
+        flex: 1 1 calc(50% - 0.625rem);
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--ks-border-secondary);
+        border-radius: 6px;
+        background: var(--ks-background-button-secondary);
+        color: var(--ks-content-secondary);
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.75rem;
+        cursor: pointer;
+        transition:
+            background-color 0.2s ease-in-out,
+            border-color 0.2s ease-in-out,
+            box-shadow 0.2s ease-in-out;
+
+        &:hover {
+            background: var(--ks-background-tertiary);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--ks-border-active);
+            outline-offset: 2px;
+        }
+
+        &.active {
+            background: var(--ks-background-button-secondary-active);
+            border-color: var(--ks-border-active);
+            color: var(--ks-content-primary);
+            box-shadow: 2px 3px 16px 0 var(--ks-shadows-light);
+        }
 
         @include media-breakpoint-up(md) {
-            display: grid;
-            max-width: 1200px;
-            grid-template-columns: 1fr 1fr;
+            flex: 1 1 0;
+            font-size: 1.25rem;
+        }
+    }
+
+    .panel {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.875rem;
+        width: 100%;
+        max-width: 1364px;
+        padding: 2rem;
+        border-radius: 16px;
+        background: linear-gradient(
+            180deg,
+            var(--ks-background-secondary) 18.5%,
+            var(--ks-background-secondary) 36.3%,
+            var(--ks-background-tertiary) 91.6%
+        );
+
+        &.active {
+            display: flex;
         }
 
         h3 {
-            color: var(--hp-content-primary);
-            font-size: 1.25rem;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
+            margin: 0;
+            color: var(--ks-content-primary);
+            font-size: 1.5rem;
+            font-weight: 600;
+            line-height: 1.75rem;
+            letter-spacing: -0.12px;
+            text-wrap: balance;
         }
 
-        span {
-            font-size: 0.825rem;
-            color: var(--hp-content-tertiary);
-            margin-bottom: 3rem;
-        }
+        @include media-breakpoint-down(md) {
+            gap: 1.25rem;
+            padding: 1.25rem 0.75rem;
 
-        .legacy-approach {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--hp-background-secondary);
-            border: 1px solid var(--hp-border-secondary);
-            border-radius: 0.5rem;
-            height: 396px;
-        }
-
-        .legacy-approach-image {
-            height: 210px;
-            width: auto;
-        }
-        .kestra-way {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .kestra-way-image {
-            width: auto;
-            height: 396px;
-            border-radius: 0.5rem;
+            h3 {
+                font-size: 1.25rem;
+            }
         }
     }
 
+    .visual {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 2px solid var(--ks-background-purple-light);
+        border-radius: 16px;
+        overflow: clip;
+
+        &.visual-dark {
+            display: none;
+        }
+
+        :global(html.dark) &.visual-light {
+            display: none;
+        }
+
+        :global(html.dark) &.visual-dark {
+            display: block;
+        }
+
+        @include media-breakpoint-down(md) {
+            border-radius: 8px;
+        }
+    }
+
+    /* The dialog button is rendered by VideoDialog, outside this scope, so the
+     * gap above it is carried by the caption. */
     .caption {
         font-size: 1rem;
-        margin-top: 1.5rem;
-    }
-
-    .btn-primary {
-        margin-top: 1.5rem;
+        margin: 3.5rem 0 1.5rem;
     }
 </style>
-

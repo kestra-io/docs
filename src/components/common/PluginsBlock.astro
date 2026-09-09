@@ -1,6 +1,6 @@
 ---
 import { $fetchApiCached } from "~/utils/fetch"
-import { type PluginMetadata } from "@kestra-io/ui-libs"
+import { type PluginMetadata } from "~/utils/plugins/plugin"
 
 import Link from "~/components/common/Link.astro"
 import TaskIcon from "~/components/common/TaskIcon.astro"
@@ -21,7 +21,10 @@ const plugins = metadata
     .map((p) => {
         return {
             ...p,
-            link: `/plugins/${p.artifactId}${p.artifactId === `plugin-${p.name}` ? "" : `/${p.name}`}`,
+            // Logo links to the plugin group page (always 200). The previous
+            // `/${p.name}` suffix produced subgroup URLs that 404 for ~82 plugins
+            // and 301-redirect to this same group page, so we skip the hop.
+            link: `/plugins/${p.artifactId}`,
         }
     })
 

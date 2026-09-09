@@ -8,13 +8,17 @@ icon: /src/contents/docs/icons/dev.svg
 
 Automate the validation and deployment of your Kestra flows using CI/CD pipelines.
 
+:::alert{type="info"}
+If you are on Kestra Enterprise and want to move flows between environments without building a pipeline, see [Promote](../06.promote/index.md) — a UI-first alternative that requires no Git or automation setup.
+:::
+
 ## Automate validation and deployment with CI/CD
 
-Continous integration and deliver (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.
+Continuous integration and delivery (CI/CD) pipelines enable teams to deploy updates automatically and consistently as soon as they are reviewed and merged into a version control system (VCS) like Git.
 This section covers multiple approaches to building a CI/CD pipeline for Kestra — from using the CLI and GitHub Actions to integrating with Terraform.
 
 :::alert{type="info"}
-When flows are deployed through CI/CD, add the [`system.readOnly`](../../06.concepts/system-labels/index.md#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
+When flows are deployed through CI/CD, add the [`system.readOnly`](/docs/concepts/system-labels#systemreadonly) label set to `"true"` so the UI editor is disabled and production configurations stay immutable. This is especially recommended for critical production flows:
 
 ```yaml
 labels:
@@ -39,7 +43,7 @@ Kestra supports several approaches for automating flow validation and deployment
 
 ### Kestra CLI
 
-The [Kestra CLI](./04.helpers/index.md) includes built-in commands for validating and deploying your flows.
+The [Kestra CLI](/docs/version-control-cicd/cicd/helpers) includes built-in commands for validating and deploying your flows.
 
 #### Validate and deploy a single flow
 
@@ -52,7 +56,7 @@ The [Kestra CLI](./04.helpers/index.md) includes built-in commands for validatin
 ```
 
 :::alert{type="info"}
-The `--api-token` flag is available in the [Enterprise Edition](../../07.enterprise/03.auth/api-tokens/index.md).
+The `--api-token` flag is available in the [Enterprise Edition and Cloud](/docs/enterprise/auth/api-tokens).
 In the open-source edition, use basic authentication with the `--user` flag:
 
 ```bash
@@ -158,10 +162,11 @@ https://kestra_host_url/api/v1/main/executions/webhook/namespace/flow_id/webhook
 
 ### Deploy flows with GitHub Actions
 
-Kestra provides [official GitHub Actions](./01.github-action/index.md) to validate and deploy flows.
+Kestra provides [official GitHub Actions](https://github.com/kestra-io/github-actions) to validate and deploy flows:
 
-1. **Validate** flows and templates — [Validate Action](https://github.com/marketplace/actions/kestra-validate-action)
-2. **Deploy** flows and templates — [Deploy Action](https://github.com/marketplace/actions/kestra-deploy-action)
+- [`validate-flows`](https://github.com/kestra-io/github-actions/tree/main/validate-flows) — validate flows in a directory against a Kestra server
+- [`deploy-flows`](https://github.com/kestra-io/github-actions/tree/main/deploy-flows) — create or update flows from a directory
+- [`deploy-namespace-files`](https://github.com/kestra-io/github-actions/tree/main/deploy-namespace-files) — deploy namespace files from a local path
 
 #### Example GitHub Actions workflow
 
@@ -177,37 +182,32 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Validate flows
-        uses: kestra-io/validate-action@master
+        uses: kestra-io/github-actions/validate-flows@main
         with:
           directory: ./flows/prod
-          resource: flow
           server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
       - name: Deploy prod
-        uses: kestra-io/deploy-action@develop
+        uses: kestra-io/github-actions/deploy-flows@main
         with:
           namespace: prod
           directory: ./flows/prod
-          resource: flow
           server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
-          delete: false
       - name: Deploy prod-marketing
-        uses: kestra-io/deploy-action@develop
+        uses: kestra-io/github-actions/deploy-flows@main
         with:
           namespace: prod.marketing
           directory: ./flows/prod.marketing
-          resource: flow
           server: ${{secrets.KESTRA_HOSTNAME}}
           user: ${{secrets.KESTRA_USER}}
           password: ${{secrets.KESTRA_PASSWORD}}
-          delete: false
 ```
 
 :::alert{type="info"}
-You can also authenticate using an [API token](../../07.enterprise/03.auth/api-tokens/index.md) instead of username and password:
+You can also authenticate using an [API token](/docs/enterprise/auth/api-tokens) instead of username and password:
 
 ```yaml
 with:
@@ -221,7 +221,7 @@ with:
 ### Deploy flows with GitLab CI/CD
 
 GitLab CI/CD uses a similar approach to GitHub Actions.
-See the [GitLab guide](./02.gitlab/index.md) for examples and configuration details.
+See the [GitLab guide](/docs/version-control-cicd/cicd/gitlab) for examples and configuration details.
 
 ---
 
@@ -244,7 +244,7 @@ terraform {
 
 provider "kestra" {
   url = "http://localhost:8080" # Kestra webserver/standalone server URL
-  api_token = "<your-api-token>" # Only available in the Enterprise Edition
+  api_token = "<your-api-token>" # EE and Cloud only
 }
 
 resource "kestra_flow" "flows" {

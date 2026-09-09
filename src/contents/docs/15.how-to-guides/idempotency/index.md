@@ -2,7 +2,7 @@
 title: Prevent Duplicate Executions with Correlation IDs
 icon: /src/contents/docs/icons/tutorial.svg
 stage: Intermediate
-editions: ["EE"]
+editions: ["EE", "Cloud"]
 topics:
   - Kestra Concepts
 ---
@@ -90,7 +90,7 @@ Store your tenant ID and API token as a [KV pair](../../06.concepts/05.kv-store/
 
 ## Webhook-triggered flows
 
-`system.correlationId` is assigned automatically when the execution is created and cannot be changed afterwards. For webhook-triggered flows, the provider's idempotency key is only available once the execution has started. Store it in a **custom label** using the [Labels task](/plugins/core/tasks/executions/io.kestra.plugin.core.execution.Labels), then use that label for the duplicate check.
+`system.correlationId` is assigned automatically when the execution is created and cannot be changed afterwards. For webhook-triggered flows, the provider's idempotency key is only available once the execution has started. Store it in a **custom label** using the [Labels task](/plugins/core/execution/io.kestra.plugin.core.execution.labels), then use that label for the duplicate check.
 
 ```yaml
 id: payment_webhook

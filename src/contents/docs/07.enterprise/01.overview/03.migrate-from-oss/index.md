@@ -7,11 +7,7 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE"]
 ---
 
-How to migrate your flows and data from Kestra Open Source to Enterprise Edition.
-
-## Migrate from Open Source to Enterprise Edition
-
-When you start **Kestra Enterprise Edition**, you can bring your existing flows from the open-source version. This guide covers how to export and import flows, and what to keep in mind for other resources.
+When you move to Kestra Enterprise Edition, you can bring your existing flows from the open-source version. This guide covers how to export and import flows, and what to migrate separately.
 
 ## Export and import flows
 
@@ -32,4 +28,4 @@ For **Namespace Files**, re-upload the files through the Enterprise Edition UI o
 
 ## What's next
 
-Once your flows are imported, you can start using enterprise features such as [RBAC](../../03.auth/rbac/index.md), [Secrets Management](../../02.governance/secrets/index.md), [Worker Groups](../../04.scalability/worker-group/index.md), and more.
+Once your flows are imported, you can start using enterprise features such as [RBAC](../../03.auth/rbac/index.md), [Secrets Management](../../02.governance/secrets-manager/index.md), [Worker Groups](../../04.scalability/worker-group/index.md), and more.

@@ -1,8 +1,9 @@
-title: "Triage Vulnerabilities with Kestra, Gemini, and Notion"
-description: "Learn how to use Kestra's Notion plugins to automate vulnerability tracking
-  and documentation in this enterprise-like demo with Developer Advocate Amara Graham."
-category: "Deep Dive Tutorials"
+title: "DAGs vs Workflows: Are They the Same Thing?"
+description: "Developer Advocate Will Russell explains the differences between a DAG
+  and a Workflow in data engineering through practical examples to clarify how these
+  commonly confused terms actually differ."
+category: "Data"
 author: "Kestra"
-url: "https://www.youtube.com/watch?v=eUo9Q5aFRkU"
-publicationDate: "2026-04-10T00:00:00.000"
-contentType: "Deep Dive Tutorials"
+url: "https://www.youtube.com/watch?v=DE5eDl6YNGM"
+publicationDate: "2026-05-12T00:00:00.000"
+contentType: "Data"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { computed } from "vue"
-    import { slugify } from "@kestra-io/ui-libs"
+    import { slugify } from "~/utils/slugify"
     import { formatCategoryName } from "~/utils/plugins/pluginUtils"
     import ChevronRight from "vue-material-design-icons/ChevronRight.vue"
 
@@ -16,6 +16,11 @@
     })
 
     const href = computed(() => {
+        // Resolved by the page when it has the whole plugin list: a subgroup segment only
+        // belongs in the URL when the plugin exposes more than one, otherwise it redirects.
+        if (props.plugin.href) {
+            return props.plugin.href
+        }
         const base = `/plugins/${props.plugin.name}`
         if (props.plugin.subGroup === undefined || !props.plugin.subGroupTitle) {
             return base
@@ -29,7 +34,7 @@
         <div class="plugin">
             <div class="top-row">
                 <div class="icon-content">
-                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" />
+                    <img :src="iconSrc" :alt="props.plugin.title" loading="lazy" width="45" height="45" />
                 </div>
                 <div class="content">
                     <div class="title-row">
@@ -77,8 +82,6 @@
 </template>
 
 <style scoped lang="scss">
-    @use "@kestra-io/ui-libs/src/scss/_color-palette.scss" as color-palette;
-
     .plugin {
         height: 188px;
         border-radius: 12px;

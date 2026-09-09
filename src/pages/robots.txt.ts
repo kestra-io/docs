@@ -9,9 +9,14 @@ const disabled = import.meta.env.DEV || envField.PREVIEW
 
 User-agent: *
 Disallow: ${disabled ? "*" : "/slack"}
-${disabled ? "" : `# Block the /blueprints pagination bug (critical - 501 errors)
-Disallow: /blueprints?*clid=*
-Disallow: /blueprints?*size=*
+${disabled ? "" : `Disallow: /t/
+Disallow: /flags/
+# Block faceted /blueprints navigation (crawler trap: combinatorial
+# ?tags=/?tools=/?page=/?size=/?sort= permutations, incl. the old ?clid= bug).
+# The clean /blueprints listing and /blueprints/<slug> detail pages have no
+# query string, so they stay crawlable and indexable.
+Disallow: /blueprints?*
+Disallow: /*?tags=
 # Build assets — CSS, JS, fonts accessible for robots rendering
 Allow: /_astro/
 Disallow: /_nuxt/

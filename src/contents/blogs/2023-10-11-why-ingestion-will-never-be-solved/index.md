@@ -5,7 +5,7 @@ date: 2023-10-11T11:30:00
 category: Solutions
 author:
   name: Anna Geller
-  linkedin: https://www.linkedin.com/in/anna-geller-12a86811a/
+  linkedin: https://www.linkedin.com/in/geller-anna/
   medium: https://annageller.medium.com/
   image: "ageller"
 image: ./main.png
@@ -13,7 +13,7 @@ image: ./main.png
 
 If you ask a data engineer what is the most frustrating and error-prone part of their job, chances are they'll say _data ingestion_. Moving data from A to B is one of the most mundane and time-consuming tasks of any platform team.
 
-This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/), and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make the ingestion process more reliable, maintainable, and cost-effective. We'll link to relevant [blueprint](../../docs/09.ui/05.blueprints/index.md) examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra) — an event-driven open-source orchestrator. First, let's start by defining the problem.
+This post covers how [Fivetran](https://www.fivetran.com/), [Airbyte](https://airbyte.com/), [Singer](https://www.singer.io/), [dltHub](https://dlthub.com/), and [CloudQuery](https://www.cloudquery.io/) approached data integration. Even though we'd argue that this problem will never be fully solved by an integration vendor, there is a lot we can do to make the ingestion process more reliable, maintainable, and cost-effective. We'll link to relevant [blueprint](../../docs/06.concepts/07.blueprints/index.md) examples showing how you can orchestrate the ingestion process with [kestra](https://github.com/kestra-io/kestra) — an event-driven open-source orchestrator. First, let's start by defining the problem.
 
 ---
 

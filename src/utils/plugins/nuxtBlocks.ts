@@ -1,4 +1,5 @@
-import type { JSONProperty, JSONSchema, Plugin } from "@kestra-io/ui-libs"
+import type { JSONProperty, JSONSchema } from "./schema"
+import type { Plugin } from "./plugin"
 import type { TocLink } from "./types"
 
 export function nuxtBlocksFromJsonSchema(jsonSchema: JSONSchema) {

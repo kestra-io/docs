@@ -1,18 +1,20 @@
 <template>
     <div
         v-if="code"
-        :class="['code-card', { 'is-expandable': isExpandable, 'is-expanded': isExpanded }]"
+        :class="[
+            'code-card',
+            { 'is-expandable': isExpandable, 'is-expanded': isExpanded },
+        ]"
     >
         <div class="code-inner">
             <div class="code-container">
-                <MDCParserAndRenderer
-                    :content="markdownCode"
-                />
+                <!-- When the parent already parsed the snippet (SnippetsSSR
+                     does it server-side), render it directly; otherwise fall
+                     back to the client-side markdown renderer. -->
+                <div v-if="html" class="mdc-renderer" v-html="html" />
+                <MDCParserAndRenderer v-else :content="markdownCode" />
             </div>
-            <Copy
-                :code="props.code"
-                class="snippet-copy"
-            />
+            <Copy :code="props.code" class="snippet-copy" />
         </div>
 
         <button
@@ -36,16 +38,21 @@
         code: string
         lang?: string
         expandThreshold?: number
+        /** Pre-rendered snippet HTML (from SnippetsSSR); skips client parsing. */
+        html?: string
     }
 
     const props = withDefaults(defineProps<Props>(), {
         lang: "bash",
         expandThreshold: 12,
+        html: undefined,
     })
 
     const isExpanded = ref(false)
 
-    const lineCount = computed(() => (props.code ? props.code.trim().split("\n").length : 0))
+    const lineCount = computed(() =>
+        props.code ? props.code.trim().split("\n").length : 0,
+    )
     const isExpandable = computed(() => lineCount.value > props.expandThreshold)
 
     const markdownCode = computed(() => {
@@ -53,7 +60,9 @@
     })
 
     const expandText = computed(() => {
-        return isExpanded.value ? "See less" : `See all ${lineCount.value} lines`
+        return isExpanded.value
+            ? "See less"
+            : `See all ${lineCount.value} lines`
     })
 
     const toggleExpand = () => {
@@ -62,6 +71,14 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "/src/assets/styles/mdc-renderer" as mdc;
+
+    // The v-html branch renders the .mdc-renderer div itself, so it needs the
+    // same base styles the MDCParserAndRenderer component ships with.
+    .mdc-renderer {
+        @include mdc.mdc-renderer;
+    }
+
     .code-card {
         position: relative;
         border: 1px solid var(--ks-border-primary);
@@ -90,14 +107,14 @@
             :deep(.mdc-renderer) {
                 margin-bottom: 0;
 
-                :deep(pre) {
+                pre {
                     background: var(--ks-background-primary) !important;
                     margin: 0;
                     overflow: hidden !important;
                     border: none;
                 }
 
-                :deep(code) {
+                code {
                     font-size: $font-size-sm;
                     line-height: 1.6;
                 }
@@ -107,7 +124,11 @@
         &.is-expandable {
             .code-inner {
                 max-height: 350px;
-                mask-image: linear-gradient(to bottom, var(--ks-background-primary) 70%, transparent 100%);
+                mask-image: linear-gradient(
+                    to bottom,
+                    var(--ks-background-primary) 70%,
+                    transparent 100%
+                );
             }
         }
 

@@ -121,7 +121,7 @@
                                     "
                                 >
                                     <a
-                                        :href="'/' + result.url"
+                                        :href="resultHref(result)"
                                         :class="{
                                             active: index === selectedIndex,
                                         }"
@@ -233,6 +233,7 @@
                 <div class="modal-body row">
                     <Suspense>
                         <AiChatDialog
+                            ref="aiChatDialog"
                             :randomAiQuestions
                             @close="closeAiDialog"
                             @backToSearch="backToSearch"
@@ -259,12 +260,19 @@
     import ContentCopy from "vue-material-design-icons/ContentCopy.vue"
     import posthog from "posthog-js"
     import { $fetchApi } from "~/utils/fetch"
+    import { prepareSearchResults } from "~/utils/searchResults"
+    import { searchResultHref, searchScope } from "~/utils/versionedDocs"
 
     export default {
         props: {
             randomAiQuestions: {
                 type: Array,
                 required: true,
+            },
+            /** MAJOR.MINOR the unversioned /docs serves, so search can be scoped to it. */
+            docsLatest: {
+                type: String,
+                default: undefined,
             },
         },
         data() {
@@ -279,6 +287,9 @@
                 showAiDialog: false,
                 initialLoad: false,
                 abortController: undefined,
+                // Version whose segment the current results' docs hits need
+                // back; unset for docs-latest hits and for latest fallbacks.
+                hrefVersion: undefined,
             }
         },
         mounted() {
@@ -312,9 +323,13 @@
                 this.selectedIndex = null
                 this.selectedItem = null
             },
-            focusSearchAi() {
-                document.querySelector("#ai-chat-input").value = ""
-                document.querySelector("#ai-chat-input").focus()
+            focusSearchAi(event) {
+                const openedFromSearch =
+                    event?.relatedTarget?.closest("#search-modal")
+                const prefill = openedFromSearch
+                    ? this.searchValue?.trim() || ""
+                    : ""
+                this.$refs.aiChatDialog?.setUserInput(prefill)
             },
             onHiddenAi() {},
             search(value) {
@@ -331,28 +346,34 @@
                 if (this.selectedFacet) {
                     params.append("type", this.selectedFacet)
                 }
-                return $fetchApi(`/search?${params.toString()}`, {
-                    signal: this.abortController.signal,
-                })
+                const scope = searchScope(
+                    window.location.pathname,
+                    this.docsLatest,
+                )
+                return this.fetchSearch(params, scope.version)
                     .then((response) => {
-                        this.initialLoad = true
-                        if (response?.results?.length) {
-                            this.searchResults = response.results.map(
-                                (result) => {
-                                    const searchTerm = value
-                                        ?.trim()
-                                        ?.toLowerCase()
-                                    if (searchTerm) {
-                                        const index = result.title
-                                            .toLowerCase()
-                                            .indexOf(searchTerm)
-                                        if (index !== -1) {
-                                            result.highlightTitle = `${result.title.slice(0, index)}<mark>${result.title.slice(index, index + searchTerm.length)}</mark>${result.title.slice(index + searchTerm.length)}`
-                                        }
-                                    }
-                                    return result
+                        // A version indexed before this content existed (or not
+                        // indexed at all) answers empty rather than 404 — fall
+                        // back to unscoped search instead of showing nothing.
+                        if (scope.version && !response?.results?.length) {
+                            return this.fetchSearch(params, undefined).then(
+                                (fallback) => {
+                                    this.hrefVersion = undefined
+                                    return fallback
                                 },
                             )
+                        }
+                        this.hrefVersion = scope.hrefVersion
+                        return response
+                    })
+                    .then((response) => {
+                        this.initialLoad = true
+                        const results = prepareSearchResults(
+                            response?.results,
+                            value,
+                        )
+                        if (results.length) {
+                            this.searchResults = results
 
                             this.selectedIndex = 0
                             this.selectedItem = this.searchResults[0]
@@ -380,6 +401,17 @@
                         this.abortController = undefined
                         this.loading = false
                     })
+            },
+            fetchSearch(params, version) {
+                const path = version
+                    ? `/search/versions/${version}?${params.toString()}`
+                    : `/search?${params.toString()}`
+                return $fetchApi(path, {
+                    signal: this.abortController.signal,
+                })
+            },
+            resultHref(result) {
+                return searchResultHref(result, this.hrefVersion)
             },
             sortFacet(facets) {
                 const result = new Map(

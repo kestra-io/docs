@@ -25,6 +25,7 @@ Kestra provides dedicated script plugins for these languages:
 - [Node.js](/plugins/plugin-script-node)
 - [Shell](/plugins/plugin-script-shell)
 - [PowerShell](/plugins/plugin-script-powershell)
+- [.NET (C#)](/plugins/plugin-script-dotnet)
 - [Julia](/plugins/plugin-script-julia)
 - [Ruby](/plugins/plugin-script-ruby)
 - [Go](/plugins/plugin-script-go)
@@ -39,6 +40,8 @@ Each of these plugins provides two task types:
 
 - `Script` for short inline code in your flow definition.
 - `Commands` for code stored in files or split across multiple commands.
+
+Some plugins also provide `ScriptTrigger` and `CommandsTrigger` variants, which run code on a polling interval and start a flow execution only when an exit condition matches. See [Polling trigger](../../05.workflow-components/07.triggers/04.polling-trigger/index.md) for the concept, and the language-specific guides below for working examples (Python, Shell, Ruby, Go, and JavaScript).
 
 Here is a minimal example that uses the Python `Script` task:
 
@@ -75,14 +78,10 @@ tasks:
 Use these guides for complete examples, outputs, metrics, and dependency management:
 
 - [Run Python inside your flows](../../15.how-to-guides/python/index.md)
-- [Run R inside your flows](../../15.how-to-guides/r/index.md)
 - [Run JavaScript inside your flows](../../15.how-to-guides/javascript/index.md)
 - [Run Shell scripts inside your flows](../../15.how-to-guides/shell/index.md)
 - [Run PowerShell inside your flows](../../15.how-to-guides/powershell/index.md)
-- [Run Julia inside your flows](../../15.how-to-guides/julia/index.md)
-- [Run Go inside your flows](../../15.how-to-guides/golang/index.md)
-- [Run Perl inside your flows](../../15.how-to-guides/perl/index.md)
-- [Run Rust inside your flows](../../15.how-to-guides/rust/index.md)
+- [Run C# inside your flows](../../15.how-to-guides/dotnet/index.md)
 
 ## Run other languages with the Shell plugin
 
@@ -125,7 +124,7 @@ fn main() {
 }
 ```
 
-See the full [Rust guide](../../15.how-to-guides/rust/index.md) for outputs and file handling.
+For outputs and file handling from compiled languages, see [Shell outputs and metrics](../06.outputs-metrics/index.md#shell).
 
 ### Java example
 

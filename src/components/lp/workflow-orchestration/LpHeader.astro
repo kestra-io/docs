@@ -1,0 +1,87 @@
+---
+// Campaign header per the design: logo, the GitHub star widget, and a single
+// sales CTA — and none of the site nav, since a paid landing page keeps exit
+// paths off the page.
+import LogoWhite from "~/assets/logo-white.svg"
+import GithubButton from "~/components/layout/GithubButton.vue"
+---
+
+<header class="lp-header">
+    <a href="/" class="logo" aria-label="Kestra home">
+        <LogoWhite />
+    </a>
+    <div class="actions">
+        <GithubButton linked={false} client:idle />
+        <a href="#contact-sales" class="btn-solid">Contact Sales</a>
+    </div>
+</header>
+
+<style lang="scss">
+    .lp-header {
+        position: sticky;
+        top: 0;
+        z-index: $zindex-fixed;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: var(--top-bar-height, 80px);
+        background-color: var(--lp-bg-dark);
+        padding: 1rem;
+        @include media-breakpoint-up(lg) {
+            /* A 100px inset, per the design's nav band. */
+            padding: 1rem 6.25rem;
+        }
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        :global(svg) {
+            width: auto;
+            height: 26px;
+            @include media-breakpoint-up(lg) {
+                height: 30px;
+            }
+        }
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* The shared star widget carries Bootstrap spacing utilities for the site
+     * header; the design centres it on this row instead, and Bootstrap's own
+     * !important is the only thing that will yield. */
+    .actions :global(.github-button-wrapper) {
+        margin: 0 !important;
+        display: none;
+        @include media-breakpoint-up(sm) {
+            display: inline-block;
+        }
+    }
+
+    .btn-solid {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 32px;
+        padding: 0.5rem 1rem;
+        border: 1px solid #9f82bf;
+        border-radius: 4px;
+        background-color: var(--lp-purple);
+        color: #ffffff;
+        font-size: $font-size-xs;
+        font-weight: 600;
+        line-height: 1.33;
+        text-align: center;
+        text-decoration: none;
+        white-space: nowrap;
+        &:hover {
+            background-color: #7737fe;
+        }
+    }
+</style>

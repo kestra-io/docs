@@ -1,0 +1,167 @@
+---
+import type { ImageMetadata } from "astro"
+import { getCollection } from "astro:content"
+import VsLayout from "~/components/versus/VsLayout.astro"
+import Intro from "~/components/versus/Intro.astro"
+import Philosophy from "~/components/versus/Philosophy.astro"
+import BusinessValue from "~/components/versus/BusinessValue.astro"
+import SetupSpeed from "~/components/versus/SetupSpeed.astro"
+import EaseOfUse from "~/components/versus/EaseOfUse.astro"
+import VisualPreview from "~/components/versus/VisualPreview.astro"
+import FeatureGrid from "~/components/versus/FeatureGrid.astro"
+import VsTestimonial from "~/components/versus/VsTestimonial.astro"
+import PlatformStrengths from "~/components/common/PlatformStrengths.astro"
+import DecisionGuide from "~/components/versus/DecisionGuide.astro"
+import SeeHow from "~/components/common/SeeHow.astro"
+import Faq from "~/components/common/Faq.vue"
+import data1 from "~/components/versus/assets/data-1.svg"
+import data2 from "~/components/versus/assets/data-2.svg"
+import data3 from "~/components/versus/assets/data-3.svg"
+import kestraImg from "~/components/versus/assets/kestra-img.svg"
+import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
+
+const rawSvgModules = import.meta.glob<string>(
+    "../../components/versus/assets/*.svg",
+    { query: "?raw", import: "default", eager: true },
+)
+const imgSvgModules = import.meta.glob<ImageMetadata>(
+    "../../components/versus/assets/*-img.svg",
+    { import: "default", eager: true },
+)
+
+function getRawSvg(filename: string): string {
+    const key = Object.keys(rawSvgModules).find((k) =>
+        k.endsWith(`/${filename}.svg`),
+    )
+    return key ? rawSvgModules[key] : ""
+}
+
+function getImgSvg(filename: string): ImageMetadata {
+    const key = Object.keys(imgSvgModules).find((k) =>
+        k.endsWith(`/${filename}-img.svg`),
+    )
+    return key ? imgSvgModules[key] : (kestraImg as ImageMetadata)
+}
+
+export async function getStaticPaths() {
+    const vsEntries = await getCollection("vs")
+    return vsEntries.map((entry) => ({
+        params: { slug: entry.id },
+        props: { entry },
+    }))
+}
+
+const { entry } = Astro.props
+const {
+    title,
+    shortDescription,
+    competitorName,
+    intro,
+    philosophy,
+    businessValue,
+    setupSpeed,
+    easeOfUse,
+    visualPreview,
+    featureGrid,
+    testimonials,
+    platformStrengths,
+    decisionGuide,
+    commonQuestions,
+    seeHowTitle,
+    seeHowBody,
+    secondaryCta,
+    logoFile,
+    imgFile,
+} = entry.data
+
+const slug = entry.id
+const logoFilename = logoFile ?? slug
+const imgFilename = imgFile ?? slug
+
+const competitorLogo = getRawSvg(logoFilename)
+const competitorMonogram = getRawSvg(`${slug}-monograme`)
+const competitorImg = getImgSvg(imgFilename)
+
+const totalPlugins = await fetchTotalPluginsCount()
+const seeHowBodyText = (seeHowBody ?? "").replace(
+    "{totalPlugins}",
+    totalPlugins,
+)
+---
+
+<VsLayout {title} description={shortDescription} {commonQuestions}>
+    <Intro
+        {...intro}
+        competitor={{
+            name: competitorName,
+            monogram: competitorMonogram,
+        }}
+        secondaryCta={secondaryCta}
+    />
+    <Philosophy
+        {...philosophy}
+        competitor={{
+            ...philosophy.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <BusinessValue
+        {...businessValue}
+        competitor={{
+            ...businessValue.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <SetupSpeed
+        {...setupSpeed}
+        competitor={{
+            ...setupSpeed.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <EaseOfUse
+        {...easeOfUse}
+        competitor={{
+            ...easeOfUse.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <VisualPreview
+        {...visualPreview}
+        kestra={{
+            ...visualPreview.kestra,
+            linkImg: kestraImg,
+        }}
+        competitor={{
+            ...visualPreview.competitor,
+            logo: competitorLogo,
+            linkImg: competitorImg,
+        }}
+    />
+    <FeatureGrid
+        featureGrid={{
+            ...featureGrid,
+            competitorLogo,
+        }}
+    />
+    <VsTestimonial quotes={testimonials} />
+    <PlatformStrengths
+        {...platformStrengths}
+        features={platformStrengths.features?.map((f: any, i: number) => ({
+            ...f,
+            image: { src: [data1, data2, data3][i] },
+        }))}
+    />
+    <DecisionGuide
+        {...decisionGuide}
+        competitor={{
+            ...decisionGuide.competitor,
+            logo: competitorLogo,
+        }}
+    />
+    <Faq items={commonQuestions} client:visible />
+    <SeeHow>
+        <Fragment slot="title">{seeHowTitle}</Fragment>
+        {seeHowBodyText}
+    </SeeHow>
+</VsLayout>

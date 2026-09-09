@@ -13,7 +13,7 @@
             </div>
 
             <div class="items">
-                <CustomDetails v-for="(item, index) in items" :key="index" class="que" :title="item.question">
+                <CustomDetails v-for="(item, index) in items" :key="index" class="que" :title="item.question" :heading-level="3">
                     <div class="ans" v-html="item.answer"></div>
                 </CustomDetails>
             </div>
@@ -84,6 +84,14 @@ section {
 
     .items {
         width: 100%;
+    }
+
+    .ans :deep(code:not(pre code)) {
+        border: none;
+        border-radius: var(--bs-border-radius);
+        color: var(--ks-content-secondary);
+        padding: 0 0.25rem;
+        background-color: var(--ks-background-function);
     }
 }
 </style>

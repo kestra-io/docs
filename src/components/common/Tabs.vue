@@ -8,11 +8,9 @@
                 <a
                     class="tab"
                     :class="{ active: modelValue === slug }"
-                    @click.prevent="
-                        $emit('update:modelValue', slug);
-                    "
+                    @click="select($event, slug)"
                     :href="`${rootHref}/${slug}`"
-                    role="presentation"
+                    :role="navigate ? undefined : 'presentation'"
                 >
                     {{ category }}
                 </a>
@@ -22,15 +20,28 @@
 </template>
 
 <script setup lang="ts">
-    defineProps<{
-        modelValue: string
-        categories: Map<string, string>
-        rootHref: string
+    const props = withDefaults(
+        defineProps<{
+            modelValue: string
+            categories: Map<string, string>
+            rootHref: string
+            // Follow the tab's href instead of filtering in place. Needed when the
+            // target page ships its own copy (h1, subtitle, title, canonical):
+            // a client-side swap would leave those pointing at the current tab.
+            navigate?: boolean
+        }>(),
+        { navigate: false },
+    )
+
+    const emit = defineEmits<{
+        (e: "update:modelValue", value: string): void
     }>()
 
-    defineEmits<{
-        (e: 'update:modelValue', value: string): void
-    }>()
+    const select = (event: MouseEvent, slug: string) => {
+        if (props.navigate) return
+        event.preventDefault()
+        emit("update:modelValue", slug)
+    }
 </script>
 
 <style lang="scss" scoped>

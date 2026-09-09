@@ -1,8 +1,8 @@
 ---
 title: "ETL vs ELT — Key Differences, Use Cases, and When to Choose Each"
 description: "ETL transforms data before loading; ELT loads raw data and transforms inside the warehouse. A side-by-side comparison with YAML examples and concrete guidance on which to pick."
-metaTitle: "ETL vs ELT: Key Differences & When to Choose"
-metaDescription: "ETL transforms data before loading; ELT loads raw data and transforms inside the warehouse. Compare the two approaches, see YAML examples, and pick the right one."
+metaTitle: "ETL vs ELT: Key Differences & When to Use Each | Kestra"
+metaDescription: "ETL transforms before loading; ELT loads raw data first and transforms inside the warehouse. Compare approaches, see YAML examples, and pick the right pattern."
 tag: data
 date: 2026-04-21
 faq:
@@ -10,7 +10,7 @@ faq:
     answer: "The main difference is the order of operations and where transformation happens. ETL transforms data on a separate processing server before loading it into the warehouse. ELT loads raw data directly into the warehouse and transforms it there using the warehouse's compute."
   - question: "Is ETL the same as ELT?"
     answer: "No. ETL and ELT serve the same purpose — integrating data from multiple sources into a destination — but they differ in execution. The difference affects compute cost, storage, compliance handling, and the skills required to maintain the pipeline."
-  - question: "Is ETL obsolete?"
+  - question: "Is ETL obsolete in 2026?"
     answer: "No. The shift toward ELT doesn't make ETL obsolete. Certain scenarios still call for pre-warehouse transforms — particularly compliance-driven PII masking, pre-load data quality testing, and legacy warehouses with limited compute. Most modern stacks use both patterns depending on the domain."
   - question: "Will ETL be replaced by AI?"
     answer: "No. AI will not replace ETL entirely — but it is transforming how ETL workflows are built and maintained. Extracting, transforming, and loading data remain necessary. What AI changes is the authoring experience: generating pipeline code, debugging transformations, and suggesting optimizations. The core process stays."
@@ -18,6 +18,8 @@ faq:
     answer: "Kafka is not a traditional ETL tool, but it can function as a streaming ETL platform through Kafka Streams and Kafka Connect. Kafka Streams processes and transforms data event-by-event; Kafka Connect handles source and sink connectors. Together they enable real-time ETL for use cases where batch processing is too slow."
   - question: "What's the difference between ELT and Reverse ETL?"
     answer: "ELT moves data into the warehouse (Extract → Load → Transform). Reverse ETL moves curated data out of the warehouse back into operational tools (CRMs, marketing platforms, support systems). They're complementary: ELT builds the warehouse models; Reverse ETL makes those models actionable."
+  - question: "What orchestration tool works with both ETL and ELT?"
+    answer: "Any orchestrator that is pattern-agnostic works for both. Kestra, for example, runs Python/Spark-based ETL transforms and dbt-based ELT transforms from the same YAML workflow engine, under the same scheduler, secrets manager, and observability layer — without forcing you to pick one paradigm."
 ---
 
 Every data team eventually faces the same question: should we transform data before loading it into the warehouse, or after? That's the core difference between **ETL** (Extract, Transform, Load) and **ELT** (Extract, Load, Transform) — the order of operations, and where the transformation work happens.
@@ -182,10 +184,10 @@ What both patterns share is the need for an orchestration layer. Schedules, even
 
 Concretely: the same Kestra platform can run the ETL version of the pipeline above for the finance domain (with PII masking) and the ELT version for the marketing domain (with dbt transforms), under different namespaces, with different RBAC policies, sharing the same observability. The orchestration layer is neutral on the pattern; that neutrality is exactly what makes hybrid architectures practical.
 
-For teams currently evaluating orchestrators specifically, see [Kestra vs Prefect](/vs/prefect) and [Kestra vs Astronomer](/vs/astronomer) for detailed comparisons, or [Declarative Orchestration for Modern Data Engineers](/data) for the broader positioning.
+For teams currently evaluating orchestrators specifically, see the [Prefect alternatives](/resources/data/prefect-alternatives) and [Astronomer alternatives](/resources/data/astronomer-alternatives) comparison guides, or the [data orchestration overview](/resources/data/data-orchestration) for broader positioning.
 
 ## Getting Started
 
 The ETL vs ELT choice is less binary than vendor marketing suggests. For most modern organizations with cloud warehouses and SQL-first teams, ELT is the default. But compliance-heavy domains and legacy infrastructure still make ETL the right answer in specific cases. And the real decision — what orchestrator sits underneath and runs whichever pattern you pick — is bigger than either.
 
-For teams evaluating orchestration, Kestra is open-source, self-hostable, and runs ETL and ELT patterns from the same YAML-based engine. Browse the [blueprints library](/blueprints), or read the [data pipeline guide](/resources/data/data-pipeline) for the broader context.
+For teams evaluating orchestration, Kestra is open-source, self-hostable, and runs ETL and ELT patterns from the same YAML-based engine. Browse the [blueprints library](/blueprints), read the [data pipeline guide](/resources/data/data-pipeline) for the broader context, or explore [ETL pipeline tools](/resources/data/etl-pipeline-tools) for a side-by-side comparison of the leading options. Teams moving data out of the warehouse should also review [reverse ETL](/resources/data/reverse-etl), and those concerned about pipeline health should see [data observability](/resources/data/data-observability).

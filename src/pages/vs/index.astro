@@ -253,13 +253,16 @@ const faqItems = [
                     var gradient = item.getAttribute("data-gradient") || ""
                     if (gradient) {
                         heroName.style.background = gradient
-                        heroName.style.webkitBackgroundClip = "text"
+                        heroName.style.setProperty(
+                            "-webkit-background-clip",
+                            "text",
+                        )
                         heroName.style.webkitTextFillColor = "transparent"
                         heroName.style.backgroundClip = "text"
                         heroName.style.color = ""
                     } else {
                         heroName.style.background = ""
-                        heroName.style.webkitBackgroundClip = ""
+                        heroName.style.setProperty("-webkit-background-clip", "")
                         heroName.style.webkitTextFillColor = ""
                         heroName.style.backgroundClip = ""
                         heroName.style.color = color
@@ -436,6 +439,14 @@ const faqItems = [
         margin-bottom: 1.5rem;
         border-bottom: 1px solid var(--ks-border-secondary);
         width: fit-content;
+        max-width: 100%;
+        overflow-x: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .toggle-btn {

@@ -14,7 +14,7 @@ function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
     const splitIndex = body.indexOf(marker)
 
     if (splitIndex === -1) {
-        return body.replace(/^-\s([a-f0-9]{7})/gm, (match, commitId) => {
+        return body.replace(/^-\s([a-f0-9]{7})/gm, (_match, commitId) => {
             const url = `https://github.com/${repo}/commit/${commitId}`
             return `- [\`${commitId}\`](${url})`
         })
@@ -24,7 +24,7 @@ function modifyCommitLink(body: string, repo = "kestra-io/kestra") {
 
     const transformedBefore = before.replace(
         /^-\s([a-f0-9]{7})/gm,
-        (match, commitId) => {
+        (_match, commitId) => {
             const url = `https://github.com/${repo}/commit/${commitId}`
             return `- [\`${commitId}\`](${url})`
         },
