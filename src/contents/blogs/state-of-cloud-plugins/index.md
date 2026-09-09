@@ -8,7 +8,7 @@ authors:
     linkedin: https://www.linkedin.com/in/jeremymaire/
     image: jmaire
     role: Plugins and Ecosystem Engineer
-image: ./main.png
+image: ./main.jpg
 schema:
   "@context": "https://schema.org"
   "@type": "FAQPage"
