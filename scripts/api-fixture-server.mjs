@@ -122,8 +122,8 @@ function readFixture(path) {
 }
 
 /**
- * Writes a response to disk. JSON bodies are stored parsed so the fixtures
- * stay reviewable in a diff.
+ * Writes a response to disk, compact: the set runs to hundreds of machine-read
+ * files, so pretty-printing only adds whitespace nobody looks at.
  *
  * @param {string} path
  * @param {{ status: number; contentType: string; body: string }} response
@@ -147,7 +147,7 @@ function writeFixture(path, response) {
         contentType: response.contentType,
         body,
     }
-    writeFileSync(file, JSON.stringify(fixture, null, 2))
+    writeFileSync(file, JSON.stringify(fixture))
 }
 
 /**
