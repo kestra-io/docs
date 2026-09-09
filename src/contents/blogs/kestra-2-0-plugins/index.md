@@ -142,7 +142,7 @@ The repository, on the other hand, is still a compiled-in Gradle module. `QueueI
 
 If you have configured a plugin with forty properties, you know the problem: the form lists them in schema order, required and obscure side by side, and finding `timeout` means scrolling past six authentication fields.
 
-2.0 added a property group taxonomy to `@PluginProperty`, with nine groups: `MAIN`, `CONNECTION`, `SOURCE`, `PROCESSING`, `EXECUTION`, `DESTINATION`, `RELIABILITY`, `ADVANCED` and `DEPRECATED`, plus an optional index for ordering inside a group. The generator threads it into the JSON schema and the task form renders the sections.
+2.0 added a property group taxonomy to `@PluginProperty`, with nine groups: `main`, `connection`, `source`, `processing`, `execution`, `destination`, `reliability`, `advanced` and `deprecated`, plus an optional index for ordering inside a group. The generator threads it into the JSON schema and the task form renders the sections.
 
 The scale of the follow-up is the detail I find most telling about the size of the plugin catalogue: annotating roughly **8,800 properties across more than 150 plugin repositories**, with an optional fallback bucket kept in place until that migration finishes. So the mechanism shipped and the annotation lands progressively, which is why some plugins already group cleanly and others do not yet.
 
