@@ -16,3 +16,14 @@ export function compareVersionsDesc(a: string, b: string): number {
     }
     return 0
 }
+
+/**
+ * True for a release version, false for a pre-release ("2.0.0-rc9", "0.5.0-BETA").
+ *
+ * The version lists we build feed both the dropdown and "what is latest?", and pre-releases must be
+ * in neither: compareVersionsDesc parses "0-rc9" as 0, so "2.0.0-rc9" ties with "2.0.0" and a stable
+ * sort can leave the RC first, marking the real release archived.
+ */
+export function isStableVersion(version: string): boolean {
+    return !version.includes("-")
+}
