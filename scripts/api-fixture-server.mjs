@@ -15,7 +15,9 @@
  *   PORT            – Port to listen on (default: 9001)
  *   UPSTREAM        – Real API origin (default: https://api.kestra.io)
  *   FIXTURE_DIR     – Fixture directory (default: tests/fixtures/api)
- *   FIXTURE_PREFIX  – Prefix to record and replay (default: /v1/blueprints)
+ *   FIXTURE_PATHS   – Comma-separated paths to record; a trailing * is a
+ *                     prefix (default: /v1/blueprints*,/v1/plugins,
+ *                     /v1/plugins/subgroups)
  *   RECORD          – "false" to never write new fixtures (default: record)
  *
  * GET /__fixtures/stats returns the hit/record/passthrough counters as JSON.
@@ -33,11 +35,36 @@ const UPSTREAM = (process.env.UPSTREAM ?? "https://api.kestra.io").replace(
 )
 const FIXTURE_DIR = process.env.FIXTURE_DIR ?? "tests/fixtures/api"
 const FIXTURE_ROOT = resolve(FIXTURE_DIR)
-const FIXTURE_PREFIX = process.env.FIXTURE_PREFIX ?? "/v1/blueprints"
+// The two exact plugin paths are what the blueprints page's tool index asks
+// for. The rest of /v1/plugins stays live: it is hundreds of build-time
+// schema fetches for the prerendered plugin docs, not this page's latency.
+const FIXTURE_PATHS = (
+    process.env.FIXTURE_PATHS ??
+    "/v1/blueprints*,/v1/plugins,/v1/plugins/subgroups"
+)
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter(Boolean)
 const RECORD = process.env.RECORD !== "false"
 const UPSTREAM_TIMEOUT_MS = 30000
 
 const stats = { hits: 0, records: 0, passthrough: 0, errors: 0 }
+
+/**
+ * Whether a request path is recorded. Exact matchers ignore the query string,
+ * so /v1/plugins does not swallow /v1/plugins/core.
+ *
+ * @param {string} path
+ * @returns {boolean}
+ */
+function isRecorded(path) {
+    const pathname = path.split("?")[0]
+    return FIXTURE_PATHS.some((matcher) =>
+        matcher.endsWith("*")
+            ? path.startsWith(matcher.slice(0, -1))
+            : pathname === matcher,
+    )
+}
 
 /**
  * Absolute fixture path for a request path: a readable slug plus a hash of the
@@ -150,7 +177,7 @@ const server = createServer(async (req, res) => {
         return
     }
 
-    const recorded = path.startsWith(FIXTURE_PREFIX)
+    const recorded = isRecorded(path)
 
     if (recorded) {
         const fixture = readFixture(path)
@@ -202,6 +229,7 @@ const server = createServer(async (req, res) => {
 server.listen(PORT, "127.0.0.1", () => {
     console.log(`API fixtures on http://127.0.0.1:${PORT}`)
     console.log(`  upstream : ${UPSTREAM}`)
-    console.log(`  fixtures : ${FIXTURE_ROOT} (prefix ${FIXTURE_PREFIX})`)
+    console.log(`  fixtures : ${FIXTURE_ROOT}`)
+    console.log(`  recorded : ${FIXTURE_PATHS.join(" ")}`)
     console.log(`  recording: ${RECORD ? "on" : "off"}`)
 })
