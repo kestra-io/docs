@@ -22,14 +22,14 @@ Running workflows in isolated environments reduces the impact of potentially mal
 - Ephemeral compute: use Kestra's native [Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
 - Minimum host permissions: grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
-## Transport security (EE only)
+## Transport security
 
-In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. Enterprise Edition supports TLS encryption and mutual TLS (mTLS) to authenticate both sides of the connection:
+In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. TLS and mTLS are available in all editions; JWT-based worker authentication is an Enterprise Edition feature.
 
 - **One-way TLS** — the controller presents a certificate; workers verify it. Encrypts the channel without requiring worker certificates.
 - **Mutual TLS (mTLS)** — both controller and worker present certificates. Use this when you need strong identity verification between components, not just encryption.
 
-See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls-ee-only) for setup instructions and a full property reference.
+See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls) for setup instructions and a full property reference.
 
 ## HTTP task URL filtering
 
@@ -70,18 +70,41 @@ The URI http://169.254.169.254/... is in the configured denied list (kestra.task
 ```
 
 :::alert{type="info"}
-This filter applies to HTTP plugin tasks only. The `http()` Pebble expression function makes independent server-side HTTP calls and is not covered by this configuration.
+This filter applies to HTTP plugin tasks and the `http()` Pebble expression function.
 :::
+
+## Encryption key
+
+Configure an encryption key so that `SECRET` inputs and outputs can be stored safely at rest. Without it, any flow that uses `SECRET`-typed inputs or outputs fails at runtime.
+
+```yaml
+kestra:
+  encryption:
+    secret-key: BASE64_ENCODED_STRING_OF_32_CHARACTERS
+```
+
+Generate a key with:
+
+```bash
+openssl rand -base64 32
+```
+
+See [Encryption configuration](../../configuration/05.security-and-secrets/index.md#encryption) for full details.
+
+## Plugin restrictions (EE)
+
+Restrict which task runners and plugins flow authors can use. At minimum, restrict access to the Process task runner in multi-tenant or untrusted environments — the Process runner executes directly on the worker host with no container isolation.
+
+Configure plugin restrictions and worker isolation under [Worker Isolation](../../07.enterprise/02.governance/worker-isolation/index.md). For finer-grained policy enforcement across namespaces and tenants, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject, validate, or reject plugin and flow configuration at save or execution time.
 
 ## Plugin and code validation
 
 - Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../../07.enterprise/02.governance/worker-isolation/index.md).
 - CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
-- Java Security (EE): Enterprise Edition users can define security policies to restrict access to untrusted files, plugins, or network resources.
 
 ## Credential initialization
 
-On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials.
+On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) is also supported, though it provides less protection than SSO with MFA.
 
 If you use Basic Authentication on OSS or EE:
 
@@ -142,7 +165,8 @@ The protection applies only to user-uploaded ZIPs (flow import and namespace fil
 :::
 
 
-## Documentation and audit
+## Related configuration
 
-- User guidance: update onboarding materials and runbooks to highlight metadata-blocking best practices when deploying a new Kestra environment.
-- Periodic review: include network and host configuration checks in your security audit cycle to verify link-local ranges remain blocked.
+- [Encryption and secrets configuration](../../configuration/05.security-and-secrets/index.md) — encryption key setup, secret backend configuration, and auth security settings.
+- [External Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) — integrate with AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault, and others to avoid storing credentials in Kestra directly.
+- [Policies](../../07.enterprise/02.governance/policies/index.md) — enforce governance rules that inject, validate, or reject plugin and flow configuration across namespaces and tenants.
