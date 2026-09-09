@@ -523,7 +523,7 @@ kestra:
         type: gemini
         configuration:
           api-key: YOUR_GEMINI_API_KEY
-          model-name: gemini-2.5-flash
+          model-name: gemini-3.5-flash-lite
       - id: openai-gpt
         display-name: OpenAI GPT
         type: openai
@@ -546,6 +546,20 @@ kestra:
 | `system-prompt.ask` | ❌ | Custom system prompt for Ask mode. |
 | `system-prompt.plan` | ❌ | Custom system prompt for Plan mode. |
 | `system-prompt.edit` | ❌ | Custom system prompt for Edit mode. |
+
+
+For OSS users, you can provide your Gemini API key to use the AI Copilot.
+
+```yaml
+kestra:
+  ai:
+    - id: gemini
+      display-name: Gemini
+      type: gemini
+      configuration:
+        api-key: YOUR_GEMINI_API_KEY
+        model-name: gemini-3.5-flash-lite
+```
 
 #### Configuration property reference
 

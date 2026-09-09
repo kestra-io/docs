@@ -65,7 +65,20 @@ To remove the limit, configure your own LLM provider in the `kestra.ai.providers
 
 ## Configuration
 
-To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). The `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
+To add Copilot to your flow editor, add the following to your [Enterprise and Advanced configuration](../../configuration/06.enterprise-and-advanced/index.md). For OSS users, you can provide your Gemini API key to use the AI Copilot.
+
+```yaml
+kestra:
+  ai:
+    - id: gemini
+      display-name: Gemini
+      type: gemini
+      configuration:
+        api-key: YOUR_GEMINI_API_KEY
+        model-name: gemini-3.5-flash-lite
+```
+
+For Enterprise, the `providers` array lets you register multiple LLMs and pick a default (`is-default: true`):
 
 ```yaml
 kestra:
