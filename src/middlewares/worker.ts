@@ -13,17 +13,23 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     const nextResponse = await next()
     const response = new Response(nextResponse.body, nextResponse)
 
+    // wrangler dev serves the production build, so import.meta.env.DEV is false
+    // there: key these off the request scheme, which is what actually matters.
+    const isInsecureOrigin = url.protocol === "http:"
+
     const localhost: string[] = []
-    if (import.meta.env.DEV) {
+    if (isInsecureOrigin) {
         localhost.push(url.protocol + "//" + url.host)
     }
 
     const contentSecurityPolicy: string = Object.entries(
         contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
     )
+        // upgrade-insecure-requests over http rewrites every subresource to https
+        // and nothing serves TLS on localhost, so the whole page stalls.
         .filter(
             ([key]) =>
-                !import.meta.env.DEV || key !== "upgrade-insecure-requests",
+                !isInsecureOrigin || key !== "upgrade-insecure-requests",
         )
         .map(([key, value]) => {
             let line = key
