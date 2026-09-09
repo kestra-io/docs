@@ -378,11 +378,11 @@ Nothing urgent, which is the point. But three things are worth doing.
 
 **Consider whether your plugin should render something.** Artifacts and file renderers are both new, and both turn a plugin from something that extends Kestra into something that improves it. Start with the `artifact-sdk` repository and read `plugin-gcp`. If your plugin produces a graph, a table or a multi-step process, there is a view worth building.
 
-The version pin in `gradle.properties` still governs compatibility:
+The version pin in `gradle.properties` still governs compatibility, and it doesn't have to target 2.0.0. Pinning to the latest 1.3.x is fine too, and keeps your plugin working on both 1.3 and 2.0 instances:
 
 ```properties
 version=1.0.0-SNAPSHOT
-kestraVersion=2.0.0
+kestraVersion=1.3.19
 ```
 
 Build against a library older than your instance expects and flow creation returns a 422 with an Invalid bean error.
