@@ -21,7 +21,7 @@ That is a different kind of product than a bigger catalogue, one where the surfa
 
 ## Three new plugin categories
 
-Three new plugin categories arrived this cycle, out of seventeen total: policy rules (Enterprise Edition), file preview renderers, and log storage (Enterprise Edition). Each one turns something that used to be ours into something that can be yours.
+Three new plugin categories arrived this cycle, out of seventeen total: policy rules (Enterprise Edition), log data stores (Enterprise Edition), and file preview renderers. Each one turns something that used to be ours into something that can be yours.
 
 ### Policy rules
 
