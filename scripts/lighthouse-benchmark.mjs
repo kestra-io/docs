@@ -167,7 +167,30 @@ async function runLighthouse(url, chromePort) {
     })
 
     if (!result?.lhr) throw new Error("Lighthouse returned no result")
+    assertScored(result.lhr)
     return result.lhr
+}
+
+/**
+ * Throws when a page failed to load: Lighthouse still returns an LHR, with
+ * null category scores that would otherwise be reported as a genuine 0.
+ *
+ * @param {any} lhr
+ */
+function assertScored(lhr) {
+    const runtimeError = lhr.runtimeError?.code
+    if (runtimeError && runtimeError !== "NO_ERROR") {
+        throw new Error(
+            `${runtimeError}: ${lhr.runtimeError?.message ?? "page did not load"}`,
+        )
+    }
+
+    const unscored = LIGHTHOUSE_CATEGORIES.filter(
+        (id) => lhr.categories?.[id]?.score == null,
+    )
+    if (unscored.length > 0) {
+        throw new Error(`No score returned for: ${unscored.join(", ")}`)
+    }
 }
 
 /**
@@ -184,9 +207,10 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
             return await runLighthouse(url, chromePort)
         } catch (err) {
             lastError = err
+            const message = err instanceof Error ? err.message : String(err)
             if (attempt < maxRetries) {
                 console.log(
-                    `    Attempt ${attempt + 1} failed, retrying in 3 s…`,
+                    `    Attempt ${attempt + 1} failed (${message}), retrying in 3 s…`,
                 )
                 await new Promise((r) => setTimeout(r, 3000))
             }
@@ -330,7 +354,9 @@ function buildMarkdown(output, baseline) {
             )
             continue
         }
-        const base = baseline?.results.find((r) => r.path === result.path)
+        const base = baseline?.results.find(
+            (r) => r.path === result.path && !r.error,
+        )
         const { scores } = result
         const bs = base?.scores
         lines.push(
@@ -340,6 +366,14 @@ function buildMarkdown(output, baseline) {
                 `| ${scores["best-practices"]}${scoreDelta(scores["best-practices"], bs?.["best-practices"])} ` +
                 `| ${scores.seo}${scoreDelta(scores.seo, bs?.seo)} |`,
         )
+    }
+
+    const failed = output.results.filter((r) => r.error)
+    if (failed.length > 0) {
+        lines.push("")
+        for (const result of failed) {
+            lines.push(`❌ \`${result.path}\` — ${result.error}  `)
+        }
     }
 
     lines.push("", "### Core Web Vitals (lower is better)", "")
@@ -358,7 +392,9 @@ function buildMarkdown(output, baseline) {
             )
             continue
         }
-        const base = baseline?.results.find((r) => r.path === result.path)
+        const base = baseline?.results.find(
+            (r) => r.path === result.path && !r.error,
+        )
         const cells = METRIC_DEFS.map((def) => {
             const val = result.metrics[/** @type {keyof Metrics} */ (def.key)]
             const bval = base?.metrics[/** @type {keyof Metrics} */ (def.key)]
