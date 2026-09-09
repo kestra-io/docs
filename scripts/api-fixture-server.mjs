@@ -24,7 +24,7 @@
 import { createServer } from "node:http"
 import { createHash } from "node:crypto"
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs"
-import { join } from "node:path"
+import { resolve, sep } from "node:path"
 
 const PORT = Number(process.env.PORT ?? 9001)
 const UPSTREAM = (process.env.UPSTREAM ?? "https://api.kestra.io").replace(
@@ -32,6 +32,7 @@ const UPSTREAM = (process.env.UPSTREAM ?? "https://api.kestra.io").replace(
     "",
 )
 const FIXTURE_DIR = process.env.FIXTURE_DIR ?? "tests/fixtures/api"
+const FIXTURE_ROOT = resolve(FIXTURE_DIR)
 const FIXTURE_PREFIX = process.env.FIXTURE_PREFIX ?? "/v1/blueprints"
 const RECORD = process.env.RECORD !== "false"
 const UPSTREAM_TIMEOUT_MS = 30000
@@ -39,20 +40,32 @@ const UPSTREAM_TIMEOUT_MS = 30000
 const stats = { hits: 0, records: 0, passthrough: 0, errors: 0 }
 
 /**
- * Fixture file name for a request path: a readable slug plus a hash of the
+ * Absolute fixture path for a request path: a readable slug plus a hash of the
  * full path, since query strings collide once the slug is truncated.
  *
  * @param {string} path
  * @returns {string}
  */
-function fixtureName(path) {
+function fixtureFile(path) {
     const hash = createHash("sha1").update(path).digest("hex").slice(0, 8)
     const slug = path
         .replace(/^\/v1\//, "")
         .replace(/[^a-zA-Z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "")
         .slice(0, 80)
-    return `${slug}.${hash}.json`
+
+    // The slug is request-derived, so the name is checked rather than trusted,
+    // and the result has to land inside the fixture directory.
+    const name = `${slug}.${hash}.json`
+    const file = resolve(
+        FIXTURE_ROOT,
+        /^[a-zA-Z0-9][a-zA-Z0-9.-]*$/.test(name) ? name : `${hash}.json`,
+    )
+    if (!file.startsWith(`${FIXTURE_ROOT}${sep}`)) {
+        throw new Error(`fixture path escapes ${FIXTURE_ROOT}: ${file}`)
+    }
+
+    return file
 }
 
 /**
@@ -62,10 +75,10 @@ function fixtureName(path) {
  * @returns {{ status: number; contentType: string; body: string } | null}
  */
 function readFixture(path) {
-    const file = join(FIXTURE_DIR, fixtureName(path))
-    if (!existsSync(file)) return null
-
     try {
+        const file = fixtureFile(path)
+        if (!existsSync(file)) return null
+
         const fixture = JSON.parse(readFileSync(file, "utf8"))
         return {
             status: fixture.status ?? 200,
@@ -89,7 +102,7 @@ function readFixture(path) {
  * @param {{ status: number; contentType: string; body: string }} response
  */
 function writeFixture(path, response) {
-    mkdirSync(FIXTURE_DIR, { recursive: true })
+    mkdirSync(FIXTURE_ROOT, { recursive: true })
 
     let body = /** @type {unknown} */ (response.body)
     if (response.contentType.includes("json")) {
@@ -100,7 +113,7 @@ function writeFixture(path, response) {
         }
     }
 
-    const file = join(FIXTURE_DIR, fixtureName(path))
+    const file = fixtureFile(path)
     const fixture = {
         path,
         status: response.status,
@@ -155,9 +168,15 @@ const server = createServer(async (req, res) => {
     try {
         const response = await fetchUpstream(path)
         if (recorded && RECORD && response.status === 200) {
-            writeFixture(path, response)
-            stats.records++
-            console.log(`  recorded ${path}`)
+            // A fixture that cannot be written still serves the live response.
+            try {
+                writeFixture(path, response)
+                stats.records++
+                console.log(`  recorded ${path}`)
+            } catch (err) {
+                stats.errors++
+                console.log(`  could not record ${path}: ${err}`)
+            }
         } else if (recorded) {
             stats.errors++
             console.log(`  upstream ${response.status} for ${path}`)
@@ -174,14 +193,15 @@ const server = createServer(async (req, res) => {
         stats.errors++
         const message = err instanceof Error ? err.message : String(err)
         console.log(`  upstream failed for ${path}: ${message}`)
+        // The detail stays in the log: the body reaches the page under test.
         res.writeHead(502, { "content-type": "application/json" })
-        res.end(JSON.stringify({ error: message }))
+        res.end(JSON.stringify({ error: "upstream fetch failed" }))
     }
 })
 
 server.listen(PORT, "127.0.0.1", () => {
     console.log(`API fixtures on http://127.0.0.1:${PORT}`)
     console.log(`  upstream : ${UPSTREAM}`)
-    console.log(`  fixtures : ${FIXTURE_DIR} (prefix ${FIXTURE_PREFIX})`)
+    console.log(`  fixtures : ${FIXTURE_ROOT} (prefix ${FIXTURE_PREFIX})`)
     console.log(`  recording: ${RECORD ? "on" : "off"}`)
 })
