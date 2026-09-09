@@ -23,7 +23,7 @@ That is a different kind of product than a bigger catalogue, one where the surfa
 
 Three new plugin types arrived this cycle, out of seventeen total (tasks, triggers, storages, secrets, task runners, apps, charts, etc.): policy rules (Enterprise Edition), log data stores (Enterprise Edition), and file preview renderers. Each one turns something that used to be ours into something that can be yours.
 
-### Policy rules
+### Policy rules (Enterprise Edition)
 
 A governance rule is now a plugin. Typed by fully qualified class name in YAML, discovered by the same scan that finds tasks, registered in the same registry, generating the same JSON schema so the editor validates and autocompletes it.
 
@@ -66,24 +66,7 @@ kestra:
 
 Defaults applied reusable task values. Configurations enable or tune plugin behavior. Only the first one was replaced.
 
-### File preview renderers
-
-The preview panel in the execution view stopped being a list of formats we happened to support.
-
-Two methods is the whole contract:
-
-```java
-boolean supports(String extension);
-FilePreview render(String extension, InputStream in, Optional<Charset> charset, int maxRows);
-```
-
-`FilePreview` carries a type of `TEXT`, `MARKDOWN`, `LIST`, `IMAGE` or `PDF`, where `LIST` becomes an interactive table and images and PDFs render inline from base64. We ship text, ION, images and PDF.
-
-If your team lives in Parquet, or Avro, or some binary format that exists in exactly one industry, the preview panel is now yours. Write the renderer, drop it on the classpath, and the scanner finds it at startup: no YAML, no service loader entry, no configuration. Respect `maxRows`, which the Row count control drives and which defaults to 100, and set `truncated` when you cut rows. That is it.
-
-The reason this is more than a convenience: the moment somebody has to download a file to understand a run, they have left the platform, and everything the platform knew about that run stays behind.
-
-### Somewhere else to put your logs
+### Log Data Stores (Enterprise Edition)
 
 This one arrived as a category with the Enterprise log shipper. What is new in 2.0 is that open source can choose one, with a config key:
 
@@ -102,6 +85,23 @@ Three things convinced us this had to exist. One customer's database held 500GB 
 When people fork your product to solve a problem, the problem is yours. There is also a payoff beyond that: logs are the single biggest reason a database migration runs long, so moving that table out makes every upgrade after this one less frightening.
 
 The Enterprise version of this goes further with an external log repository that needs no shipper installed at all, connecting CloudWatch or Elastic directly. Because `kestra.logs.type` applies to new executions only, there is a deliberate opt-in CLI to migrate historical logs across, since copying them can take hours or days and nobody wants that inside a startup sequence.
+
+### File preview renderers
+
+The preview panel in the execution view stopped being a list of formats we happened to support.
+
+Two methods is the whole contract:
+
+```java
+boolean supports(String extension);
+FilePreview render(String extension, InputStream in, Optional<Charset> charset, int maxRows);
+```
+
+`FilePreview` carries a type of `TEXT`, `MARKDOWN`, `LIST`, `IMAGE` or `PDF`, where `LIST` becomes an interactive table and images and PDFs render inline from base64. We ship text, ION, images and PDF.
+
+If your team lives in Parquet, or Avro, or some binary format that exists in exactly one industry, the preview panel is now yours. Write the renderer, drop it on the classpath, and the scanner finds it at startup: no YAML, no service loader entry, no configuration. Respect `maxRows`, which the Row count control drives and which defaults to 100, and set `truncated` when you cut rows. That is it.
+
+The reason this is more than a convenience: the moment somebody has to download a file to understand a run, they have left the platform, and everything the platform knew about that run stays behind.
 
 ## Artifacts: plugins can ship their own UI
 
