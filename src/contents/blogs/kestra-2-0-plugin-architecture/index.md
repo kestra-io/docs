@@ -17,20 +17,7 @@ The interesting part is what else a plugin could *be*.
 
 The answer turned out to be: the governance rule that blocks a task. The renderer that draws your Parquet file. The store your logs live in. The queue underneath the whole engine. The interface you look at while a Kubernetes pod starts.
 
-That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it. Here's what it covers, in order:
-
-1. [Three new extension points, and one that changes the product](#three-new-extension-points-and-one-that-changes-the-product): policy rules, file preview renderers, pluggable log storage, and plugin-rendered UI (Artifacts)
-2. [The queue is a plugin now](#the-queue-is-a-plugin-now)
-3. [Task forms stopped being a wall of fields](#task-forms-stopped-being-a-wall-of-fields): property groups and lighter plugin icons
-4. [Plugin Auto-download](#plugin-auto-download): the `-slim` image and getting plugins without the 3GB default
-5. [Compatibility, and a deliberate decision not to break you](#compatibility-and-a-deliberate-decision-not-to-break-you): why your 1.x plugin still runs on 2.0
-6. [The plugins you did not know shipped](#the-plugins-you-did-not-know-shipped): storage, network and backup plugins for private infrastructure
-7. [New task runners](#new-task-runners)
-8. [New plugins since 1.3](#new-plugins-since-13)
-9. [New sub-plugins since 1.3](#new-sub-plugins-since-13)
-10. [Versioned plugins](#versioned-plugins): running several versions side by side, and versioned docs for them
-11. [Deciding which plugins may run](#deciding-which-plugins-may-run): allow lists and Enterprise policies
-12. [What plugin authors should do about all this](#what-plugin-authors-should-do-about-all-this)
+That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
 
 ## Three new extension points, and one that changes the product
 
