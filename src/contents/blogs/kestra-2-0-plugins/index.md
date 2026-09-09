@@ -175,7 +175,7 @@ None of that costs you the editor. For every release, CI compiles a plugin bundl
 
 If you maintain a plugin, here is the sentence that matters: **your 1.x plugin runs on 2.0, on purpose.**
 
-Of the 246 plugin Maven artifacts compatible with 2.0, 235 are still published at a 1.x version. Only a handful, including `plugin-aws`, `plugin-gcp`, `plugin-azure`, `plugin-fs` and `plugin-kestra`, have their own 2.x line. There is no plugin API migration guide because there was no plugin API break.
+Of the roughly 230 plugin Maven artifacts compatible with 2.0, 217 are still published at a 1.x version. Only 13 have their own 2.x line: `plugin-aws`, `plugin-azure`, `plugin-dbt`, `plugin-ee-git`, `plugin-ee-nutanix`, `plugin-fs`, `plugin-gcp`, `plugin-git`, `plugin-googleworkspace`, `plugin-jdbc`, `plugin-kestra`, `plugin-kvm` and `plugin-serdes`. There is no plugin API migration guide because there was no plugin API break.
 
 That took work to keep true. A nightly compatibility check runs against the development branch, and most of what it caught was a Java version gap, with plugins on 21 while core moved to 25. We decided against forcing every plugin onto a 2.0 build, so older plugin versions stay usable. Ludovic put the tradeoff plainly internally: keeping 1.x compatibility means holding some dependency upgrades until 1.x support ends. Concretely, Micronaut 5 and Jackson 3 are not in 2.0 for exactly this reason.
 
@@ -229,73 +229,73 @@ The plugin count kept moving after 1.3 shipped on March 3. Here is everything th
 
 #### AI
 
-- **Pinecone**: vector database operations
+- **[Pinecone](https://kestra.io/plugins/plugin-pinecone)**: vector database operations
 
 #### Business
 
-- **Tencent**: Tencent Cloud APIs
-- **Bluesky**: post to Bluesky
-- **Monday**: monday.com boards
-- **Xquik**: X/Twitter public data
-- **Miro**: Miro boards
-- **Zoom**: Zoom meetings and recordings
-- **Pylon**: Pylon support tickets
-- **Figma**: Figma files and assets
-- **Matrix**: Matrix chat messaging
-- **Camunda**: Camunda 8 processes
+- **[Tencent](https://kestra.io/plugins/plugin-tencent)**: Tencent Cloud APIs
+- **[Bluesky](https://kestra.io/plugins/plugin-bluesky)**: post to Bluesky
+- **[Monday](https://kestra.io/plugins/plugin-monday)**: monday.com boards
+- **[Xquik](https://kestra.io/plugins/plugin-xquik)**: X/Twitter public data
+- **[Miro](https://kestra.io/plugins/plugin-miro)**: Miro boards
+- **[Zoom](https://kestra.io/plugins/plugin-zoom)**: Zoom meetings and recordings
+- **[Pylon](https://kestra.io/plugins/plugin-pylon)**: Pylon support tickets
+- **[Figma](https://kestra.io/plugins/plugin-figma)**: Figma files and assets
+- **[Matrix](https://kestra.io/plugins/plugin-matrix)**: Matrix chat messaging
+- **[Camunda](https://kestra.io/plugins/plugin-camunda)**: Camunda 8 processes
 
 #### Cloud
 
-- **HPE Morpheus (EE)**: HPE Morpheus cloud management
-- **Huawei (EE)**: Huawei Cloud CCI task runner and log exporter
-- **Netskope**: Netskope security cloud
-- **Proxmox**: Proxmox VE virtual machines
-- **Huawei**: Huawei Cloud, an AWS-plugin equivalent
-- **Clever Cloud**: Clever Cloud apps and add-ons
-- **DigitalOcean**: droplets and other DigitalOcean resources
+- **[HPE Morpheus (EE)](https://kestra.io/plugins/plugin-ee-hpe)**: HPE Morpheus cloud management
+- **[Huawei (EE)](https://kestra.io/plugins/plugin-ee-huawei)**: Huawei Cloud CCI task runner and log exporter
+- **[Netskope](https://kestra.io/plugins/plugin-netskope)**: Netskope security cloud
+- **[Proxmox](https://kestra.io/plugins/plugin-proxmox)**: Proxmox VE virtual machines
+- **[Huawei](https://kestra.io/plugins/plugin-huawei)**: Huawei Cloud, an AWS-plugin equivalent
+- **[Clever Cloud](https://kestra.io/plugins/plugin-clevercloud)**: Clever Cloud apps and add-ons
+- **[DigitalOcean](https://kestra.io/plugins/plugin-digitalocean)**: droplets and other DigitalOcean resources
 
 #### Core
 
-- **Dagger**: containerized CI/CD pipelines
+- **[Dagger](https://kestra.io/plugins/plugin-dagger)**: containerized CI/CD pipelines
 
 #### Data
 
-- **Dash0 (EE)**: ship logs to Dash0
-- **RunMyJobs (EE)**: Redwood RunMyJobs
-- **Zapier**: trigger and manage Zaps
-- **Skopeo**: copy and inspect container images
-- **Scrapy**: run Scrapy spiders
-- **Faktory**: Faktory job queue
-- **Timefold**: constraint-solving optimization
-- **Metaplane**: data observability monitors
-- **Adanos**: market and asset sentiment
-- **Hex**: run Hex notebooks
+- **[Dash0 (EE)](https://kestra.io/plugins/plugin-ee-dash0)**: ship logs to Dash0
+- **[RunMyJobs (EE)](https://kestra.io/plugins/plugin-ee-runmyjobs)**: Redwood RunMyJobs
+- **[Zapier](https://kestra.io/plugins/plugin-zapier)**: trigger and manage Zaps
+- **[Skopeo](https://kestra.io/plugins/plugin-skopeo)**: copy and inspect container images
+- **[Scrapy](https://kestra.io/plugins/plugin-scrapy)**: run Scrapy spiders
+- **[Faktory](https://kestra.io/plugins/plugin-faktory)**: Faktory job queue
+- **[Timefold](https://kestra.io/plugins/plugin-timefold)**: constraint-solving optimization
+- **[Metaplane](https://kestra.io/plugins/plugin-metaplane)**: data observability monitors
+- **[Adanos](https://kestra.io/plugins/plugin-adanos)**: market and asset sentiment
+- **[Hex](https://kestra.io/plugins/plugin-hex)**: run Hex notebooks
 
 #### Infrastructure
 
-- **HPOO (EE)**: HP Operations Orchestration
-- **F5 (EE)**: F5 load balancer
-- **Infoblox (EE)**: Infoblox IPAM and DNS
-- **SolarWinds (EE)**: SolarWinds IPAM
-- **NetApp (EE)**: NetApp ONTAP storage
-- **Veeam (EE)**: backup and replication
-- **Pure Storage FlashArray (EE)**: FlashArray snapshots
-- **Syslog (EE)**: audit logs over Syslog/CEF
-- **Dell EMC PowerStore (EE)**: PowerStore storage
-- **CrowdStrike (EE)**: CrowdStrike security
-- **Delinea Secret Server (EE)**: secret manager (`secret-delinea`)
-- **Bitwarden (EE)**: secret manager (`secret-bitwarden`)
-- **Datadog (EE)**: log data store (`log-data-store-datadog`)
-- **Splunk (EE)**: log data store (`log-data-store-splunk`)
-- **OpenTofu**: OpenTofu resources
-- **Terragrunt**: Terragrunt orchestration
-- **Fastly**: Fastly CDN configuration
-- **Temporal**: Temporal workflows
-- **PhpIPAM**: IP address management
-- **Ceph**: Ceph storage clusters
-- **Aikido**: Aikido security scanning
-- **Cloudflare R2**: storage backend (`storage-cloudflare`)
-- **Huawei OBS**: storage backend (`storage-obs`)
+- **[HPOO (EE)](https://kestra.io/plugins/plugin-ee-hpoo)**: HP Operations Orchestration
+- **[F5 (EE)](https://kestra.io/plugins/plugin-ee-f5)**: F5 load balancer
+- **[Infoblox (EE)](https://kestra.io/plugins/plugin-ee-infoblox)**: Infoblox IPAM and DNS
+- **[SolarWinds (EE)](https://kestra.io/plugins/plugin-ee-solarwinds)**: SolarWinds IPAM
+- **[NetApp (EE)](https://kestra.io/plugins/plugin-ee-netapp)**: NetApp ONTAP storage
+- **[Veeam (EE)](https://kestra.io/plugins/plugin-ee-veeam)**: backup and replication
+- **[Pure Storage FlashArray (EE)](https://kestra.io/plugins/plugin-ee-purestorage)**: FlashArray snapshots
+- **[Syslog (EE)](https://kestra.io/plugins/plugin-ee-syslog)**: audit logs over Syslog/CEF
+- **[Dell EMC PowerStore (EE)](https://kestra.io/plugins/plugin-ee-dellemc)**: PowerStore storage
+- **[CrowdStrike (EE)](https://kestra.io/plugins/plugin-ee-crowdstrike)**: CrowdStrike security
+- **Delinea Secret Server (EE)**: secret manager
+- **Bitwarden (EE)**: secret manager
+- **Datadog (EE)**: log data store
+- **Splunk (EE)**: log data store
+- **[OpenTofu](https://kestra.io/plugins/plugin-opentofu)**: OpenTofu resources
+- **[Terragrunt](https://kestra.io/plugins/plugin-terragrunt)**: Terragrunt orchestration
+- **[Fastly](https://kestra.io/plugins/plugin-fastly)**: Fastly CDN configuration
+- **[Temporal](https://kestra.io/plugins/plugin-temporal)**: Temporal workflows
+- **[PhpIPAM](https://kestra.io/plugins/plugin-phpipam)**: IP address management
+- **[Ceph](https://kestra.io/plugins/plugin-ceph)**: Ceph storage clusters
+- **[Aikido](https://kestra.io/plugins/plugin-aikido)**: Aikido security scanning
+- **Cloudflare R2**: storage backend
+- **Huawei OBS**: storage backend
 
 ## New sub-plugins since 1.3
 
@@ -303,21 +303,21 @@ These are not new plugin repositories, they're new capabilities added to plugins
 
 #### New catalogue entries
 
-- **Microsoft Access**: new JDBC dialect, via UCanAccess (`plugin-jdbc-access`)
-- **.NET (C#)**: new script language for the Scripts plugin (`plugin-script-dotnet`)
-- **Transform (Records)**: the base record-transform tasks that back the Transform plugin (`plugin-transform-records`)
+- **[Microsoft Access](https://kestra.io/plugins/plugin-jdbc-access)**: new JDBC dialect, via UCanAccess
+- **[.NET (C#)](https://kestra.io/plugins/plugin-script-dotnet)**: new script language for the Scripts plugin
+- **[Transform (Records)](https://kestra.io/plugins/plugin-transform-records)**: the base record-transform tasks that back the Transform plugin
 
 #### New task and trigger families inside existing plugins
 
-- **Kafka**: Admin tasks for ACLs, quotas, consumer groups, topics and SCRAM credentials; Kafka Connect tasks and a connector status trigger
-- **GCP**: RCS rich messaging, Compute instance lifecycle, Dataflow jobs, Spanner, Bigtable
-- **Azure**: AI Foundry (chat, embeddings, agents), HorizonDB with durable-function orchestration, Logic Apps, Stream Analytics
-- **AWS**: MSK (managed Kafka) cluster lifecycle, HealthLake, Bedrock model invocation, EFS file systems
-- **Microsoft 365**: Teams Adaptive Cards, Dynamics 365 Business Central, Dynamics 365 Dataverse
-- **Cloudflare**: D1 serverless SQL database, Workers deploy and run
-- **Microsoft Fabric**: Data Engineering (notebooks, pipelines, Spark jobs), OneLake, Warehouse queries
-- **AI**: MCP client tasks, input/output guardrails
-- **Scripts**: new realtime triggers for Python, Go, Ruby and Node
+- **[Kafka](https://kestra.io/plugins/plugin-kafka)**: Admin tasks for ACLs, quotas, consumer groups, topics and SCRAM credentials; Kafka Connect tasks and a connector status trigger
+- **[GCP](https://kestra.io/plugins/plugin-gcp)**: RCS rich messaging, Compute instance lifecycle, Dataflow jobs, Spanner, Bigtable
+- **[Azure](https://kestra.io/plugins/plugin-azure)**: AI Foundry (chat, embeddings, agents), HorizonDB with durable-function orchestration, Logic Apps, Stream Analytics
+- **[AWS](https://kestra.io/plugins/plugin-aws)**: MSK (managed Kafka) cluster lifecycle, HealthLake, Bedrock model invocation, EFS file systems
+- **[Microsoft 365](https://kestra.io/plugins/plugin-microsoft365)**: Teams Adaptive Cards, Dynamics 365 Business Central, Dynamics 365 Dataverse
+- **[Cloudflare](https://kestra.io/plugins/plugin-cloudflare)**: D1 serverless SQL database, Workers deploy and run
+- **[Microsoft Fabric](https://kestra.io/plugins/plugin-microsoft-fabric)**: Data Engineering (notebooks, pipelines, Spark jobs), OneLake, Warehouse queries
+- **[AI](https://kestra.io/plugins/plugin-ai)**: MCP client tasks, input/output guardrails
+- **Scripts**: new realtime triggers for [Python](https://kestra.io/plugins/plugin-script-python), [Go](https://kestra.io/plugins/plugin-script-go), [Ruby](https://kestra.io/plugins/plugin-script-ruby) and [Node](https://kestra.io/plugins/plugin-script-node)
 
 ## Versioned plugins
 
