@@ -5,6 +5,7 @@ import Cta from "./Cta.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
 import heroScreen from "./assets/hero-screen.webp"
 import heroBg from "./assets/hero-bg.webp?url"
+import grain from "./assets/hero-grain.png?url"
 import squares from "./assets/hero-squares.webp?url"
 
 /**
@@ -106,6 +107,7 @@ const KEY_NUMBERS = [
 }
 <section class="tz-hero" aria-labelledby="hero-title">
     <div class="backdrop" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
     <div class="squares left" aria-hidden="true"><span></span></div>
     <div class="squares right" aria-hidden="true"><span></span></div>
     <div class="sky" aria-hidden="true">
@@ -222,6 +224,7 @@ const KEY_NUMBERS = [
     lang="scss"
     define:vars={{
         heroBg: `url(${heroBg})`,
+        grain: `url(${grain})`,
         squares: `url(${squares})`,
         skyW: SKY.w,
         skyH: SKY.h,
@@ -285,6 +288,37 @@ const KEY_NUMBERS = [
 
         @include media-breakpoint-down(md) {
             /* Below md the section paints its own flat gradient instead. */
+            display: none;
+        }
+    }
+
+    /* The ramp spans ~47 code values over 1900px, so any undithered 8-bit
+     * raster bands. Lossy WebP dropped the dither; this puts it back. */
+    .grain {
+        position: absolute;
+        /* The backdrop's layer, later in the DOM: dithers the gradient
+         * without texturing the rings and comets above it. */
+        inset: 0;
+        z-index: -2;
+        background: var(--grain) repeat;
+        /* One tile pixel per device pixel. Any upscale resamples the noise
+         * back into the ramp it is there to break up. */
+        background-size: 64px;
+        /* ~3/255 of amplitude, and under 1/255 of mean shift. */
+        opacity: 0.012;
+        pointer-events: none;
+
+        @media (min-resolution: 2dppx) {
+            background-size: 32px;
+        }
+
+        @media (min-resolution: 3dppx) {
+            background-size: calc(64px / 3);
+        }
+
+        @include media-breakpoint-down(md) {
+            /* Below md the section paints a CSS gradient, which the browser
+             * dithers itself. */
             display: none;
         }
     }
