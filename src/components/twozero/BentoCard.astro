@@ -36,6 +36,15 @@ const {
     index = 0,
 } = Astro.props
 
+/* An imported `.svg` is an Astro component that also carries ImageMetadata, so
+ * it can be inlined instead of going through <Image>. Safari rasterises SVGs
+ * loaded via <img> and bitmap-scales the result, which looks blurry on Retina
+ * displays; inline <svg> is painted as vectors in every browser. */
+const Illustration =
+    typeof image === "function"
+        ? (image as unknown as (props: astroHTML.JSX.SVGAttributes) => any)
+        : null
+
 const bodyHtml = body.replace(
     /<a href=/g,
     '<a target="_blank" rel="noopener" href=',
@@ -90,7 +99,18 @@ const bodyHtml = body.replace(
     {
         image && (
             <div class="media">
-                <Image src={image} alt={imageAlt} loading="lazy" />
+                {Illustration ? (
+                    <Illustration
+                        width={image.width}
+                        height={image.height}
+                        preserveAspectRatio="xMidYMin slice"
+                        role={imageAlt ? "img" : undefined}
+                        aria-label={imageAlt || undefined}
+                        aria-hidden={imageAlt ? undefined : "true"}
+                    />
+                ) : (
+                    <Image src={image} alt={imageAlt} loading="lazy" />
+                )}
             </div>
         )
     }
@@ -262,14 +282,19 @@ const bodyHtml = body.replace(
             margin: 0 -1.5rem 0;
         }
 
-        img {
+        img,
+        svg {
             height: 100%;
-            object-fit: cover;
-            object-position: top center;
 
             @include media-breakpoint-down(lg) {
                 height: auto;
             }
+        }
+
+        /* Inline SVGs get the same crop via preserveAspectRatio="xMidYMin slice". */
+        img {
+            object-fit: cover;
+            object-position: top center;
         }
     }
 
@@ -296,13 +321,15 @@ const bodyHtml = body.replace(
         }
     }
 
-    .media img {
+    .media img,
+    .media svg {
         display: block;
         width: 100%;
         height: auto;
     }
 
-    .bleed .media img {
+    .bleed .media img,
+    .bleed .media svg {
         width: 116.7%;
         max-width: none;
     }
