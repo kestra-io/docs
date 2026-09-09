@@ -72,10 +72,23 @@ jobs:
           name: lighthouse-baseline
           path: baseline/
 
+      # Report links must point at a URL a reviewer can actually open: the
+      # Cloudflare Workers preview for PRs (same slug as deploy.yml), prod for main.
+      - name: Resolve public URL for report links
+        id: public-url
+        run: |
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "url=https://kestra.io" >> "$GITHUB_OUTPUT"
+          else
+            SLUG="ks-$(echo "$GITHUB_HEAD_REF" | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')"
+            echo "url=https://${SLUG}-docs.kestra-io.workers.dev" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run Lighthouse benchmark
         run: node scripts/lighthouse-benchmark.mjs
         env:
           BASE_URL: http://localhost:8787
+          BASE_URL_OUTPUT: ${{ steps.public-url.outputs.url }}
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
           MARKDOWN_FILE: lighthouse-report.md
