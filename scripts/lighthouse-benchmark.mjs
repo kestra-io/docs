@@ -53,6 +53,37 @@ const MULTI_RUN_PATHS = new Map([
     ["/docs/workflow-components/flow", 3],
 ])
 
+// The prerender = false pages, measured first while workerd is freshest. Their
+// TTFB drifts up over a job: from the tail, Blueprints lost 7 points and 0.36 s
+// of FCP, and the plugin pages' Speed Index rose with it.
+const SSR_FIRST_PATHS = [
+    "/blueprints",
+    "/blueprints/audit-logs-csv-export",
+    "/plugins",
+    "/plugins/core",
+    "/plugins/core/debug",
+    "/plugins/core/debug/io.kestra.plugin.core.debug.return",
+]
+
+/**
+ * PAGES with the server-rendered ones hoisted to the front, order otherwise
+ * preserved. A path that no longer exists warns rather than reordering nothing.
+ *
+ * @returns {typeof PAGES}
+ */
+function orderedPages() {
+    const ssr = []
+    for (const path of SSR_FIRST_PATHS) {
+        const page = PAGES.find((entry) => entry.path === path)
+        if (page) ssr.push(page)
+        else console.warn(`Warning: ${path} is not in the page sample.`)
+    }
+
+    const rest = PAGES.filter((page) => !SSR_FIRST_PATHS.includes(page.path))
+
+    return [...ssr, ...rest]
+}
+
 /**
  * Runs to measure for a page, 1 for anything not listed as noisy.
  *
@@ -612,7 +643,7 @@ async function main() {
     const results = []
 
     try {
-        for (const page of PAGES) {
+        for (const page of orderedPages()) {
             const url = `${BASE_URL}${page.path}`
             const runs = runsFor(page.path)
             process.stdout.write(`  ${page.label.padEnd(24)} ${url} … `)
