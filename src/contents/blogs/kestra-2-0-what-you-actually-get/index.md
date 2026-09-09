@@ -4,13 +4,14 @@ description: "One control plane across data, infrastructure, applications and bu
 date: 2026-09-09T10:00:00
 category: News & Product Updates
 author:
-  name: Martin-Pierre Roset
-  linkedin: https://www.linkedin.com/in/martin-pierre-roset/
-  image: mproset
+  name: Kai Waehner
+  linkedin: https://www.linkedin.com/in/kaiwaehner/
+  image: kwaehner
+  role: Global Field CTO
 image: ./main.png
 ---
 
-*Kestra 2.0 launched on September 8, presented by our Global Field CTO [Kai Waehner](https://www.linkedin.com/in/kaiwaehner/). Here is everything that happened during our launch event, from the problem it solves to what changes on the day you upgrade.*
+*Kestra 2.0 launched on September 8. Here is everything that happened during our launch event, from the problem it solves to what changes on the day you upgrade.*
 
 Prefer to watch? The full replay is below. The article continues underneath.
 
