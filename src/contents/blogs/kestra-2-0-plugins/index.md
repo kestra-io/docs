@@ -19,9 +19,9 @@ The answer turned out to be: the governance rule that blocks a task. The rendere
 
 That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
 
-## Three new plugin categories
+## Three new plugin types
 
-Three new plugin categories arrived this cycle, out of seventeen total: policy rules (Enterprise Edition), log data stores (Enterprise Edition), and file preview renderers. Each one turns something that used to be ours into something that can be yours.
+Three new plugin types arrived this cycle, out of seventeen total (tasks, triggers, storages, secrets, task runners, apps, charts, etc.): policy rules (Enterprise Edition), log data stores (Enterprise Edition), and file preview renderers. Each one turns something that used to be ours into something that can be yours.
 
 ### Policy rules
 
