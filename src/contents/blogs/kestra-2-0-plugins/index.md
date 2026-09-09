@@ -1,7 +1,7 @@
 ---
 title: "Plugins Aren't Just Integrations Anymore"
 description: "Kestra 2.0 turns the plugin system from an integration catalogue into an extension point for the platform itself: policies, file previews, log storage, the queue, and now the UI."
-date: 2026-09-08T09:00:00
+date: 2026-09-14T09:00:00
 category: Engineering
 author:
   name: François Delbrayelle
