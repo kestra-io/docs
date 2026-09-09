@@ -215,7 +215,7 @@ All of that now goes through a caching artifact registry proxy, with a public mi
 
 If you maintain a plugin, here is the sentence that matters: **your 1.x plugin runs on 2.0, on purpose.**
 
-Of the 246 plugin artifacts compatible with 2.0, 235 are still published at a 1.x version. Only a handful, including `plugin-aws`, `plugin-gcp`, `plugin-azure`, `plugin-fs` and `plugin-kestra`, have their own 2.x line. There is no plugin API migration guide because there was no plugin API break.
+Of the 246 plugin Maven artifacts compatible with 2.0, 235 are still published at a 1.x version. Only a handful, including `plugin-aws`, `plugin-gcp`, `plugin-azure`, `plugin-fs` and `plugin-kestra`, have their own 2.x line. There is no plugin API migration guide because there was no plugin API break.
 
 That took work to keep true. A nightly compatibility check runs against the development branch, and most of what it caught was a Java version gap, with plugins on 21 while core moved to 25. We decided against forcing every plugin onto a 2.0 build, so older plugin versions stay usable. Ludovic put the tradeoff plainly internally: keeping 1.x compatibility means holding some dependency upgrades until 1.x support ends. Concretely, Micronaut 5 and Jackson 3 are not in 2.0 for exactly this reason.
 
