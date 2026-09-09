@@ -19,9 +19,9 @@ The answer turned out to be: the governance rule that blocks a task. The rendere
 
 That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
 
-## Three new extension points, and one that changes the product
+## Three new plugin categories
 
-Of seventeen plugin categories, three arrived this cycle. Each one turns something that used to be ours into something that can be yours.
+Three new plugin categories arrived this cycle, out of seventeen total: policy rules, file preview renderers, and log storage. Each one turns something that used to be ours into something that can be yours.
 
 ### Policy rules
 
@@ -103,7 +103,7 @@ When people fork your product to solve a problem, the problem is yours. There is
 
 The Enterprise version of this goes further with an external log repository that needs no shipper installed at all, connecting CloudWatch or Elastic directly. Because `kestra.logs.type` applies to new executions only, there is a deliberate opt-in CLI to migrate historical logs across, since copying them can take hours or days and nobody wants that inside a startup sequence.
 
-### Artifacts: plugins can ship their own UI
+## Artifacts: plugins can ship their own UI
 
 This is the biggest of the four and it has a name of its own: **Artifacts**.
 
