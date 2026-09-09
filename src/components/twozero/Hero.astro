@@ -4,7 +4,6 @@ import { Icon } from "astro-icon/components"
 import Cta from "./Cta.astro"
 import VideoDialog from "~/components/common/VideoDialog.astro"
 import heroScreen from "./assets/hero-screen.webp"
-import heroBg from "./assets/hero-bg.webp?url"
 import squares from "./assets/hero-squares.webp?url"
 
 /**
@@ -77,6 +76,10 @@ const COMET_LAYOUT = [
     },
 ]
 
+/* The background export's frame. Every gradient layer below is positioned in
+ * these user units, so the numbers stay the ones the design file carries. */
+const BG = { w: 1900, h: 1564 }
+
 /* The export nested the comets in a rotated group. Baking that group
  * transform into each sprite here lets them be plain elements: Firefox never
  * composites transform animations on SVG children, so inside an <svg> all six
@@ -105,7 +108,14 @@ const KEY_NUMBERS = [
     and its `.hero h1, .hero p { max-width }` would clamp the copy here. */
 }
 <section class="tz-hero" aria-labelledby="hero-title">
-    <div class="backdrop" aria-hidden="true"></div>
+    <div class="backdrop" aria-hidden="true">
+        <div class="planet">
+            <span class="limb"></span>
+            <span class="haze"></span>
+            <span class="umbra"></span>
+            <span class="flare"></span>
+        </div>
+    </div>
     <div class="squares left" aria-hidden="true"><span></span></div>
     <div class="squares right" aria-hidden="true"><span></span></div>
     <div class="sky" aria-hidden="true">
@@ -221,7 +231,8 @@ const KEY_NUMBERS = [
 <style
     lang="scss"
     define:vars={{
-        heroBg: `url(${heroBg})`,
+        bgW: BG.w,
+        bgH: BG.h,
         squares: `url(${squares})`,
         skyW: SKY.w,
         skyH: SKY.h,
@@ -264,7 +275,7 @@ const KEY_NUMBERS = [
         }
     }
 
-    /* The hero image lives on its own layer purely so the planet can drift:
+    /* The gradients live on their own layer purely so the planet can drift:
      * transforming a layer is compositor work, whereas nudging
      * `background-position` on the section would repaint it every frame. */
     .backdrop {
@@ -272,12 +283,15 @@ const KEY_NUMBERS = [
         inset: 0;
         /* Below the squares and the comets, above the section's black base. */
         z-index: -2;
-        background: var(--heroBg) center top / cover no-repeat;
-        /* The image is a near-featureless gradient, so sliding it sideways is
-         * invisible; what actually reads on a gradient is the zoom and the
-         * rotation, which is where `backdrop-drift` puts most of its motion.
-         * The resting 10% overscan is the margin the drift moves within, so
-         * the image edge stays out of view at every viewport width. */
+        /* Sized by the hero, not by its contents, so `.planet` can query it. */
+        container-type: size;
+        /* The frame overscans on whichever axis `cover` did not drive. */
+        overflow: clip;
+        /* Nothing here has detail to slide sideways past; what reads on a
+         * gradient is the zoom and the rotation, which is where
+         * `backdrop-drift` puts most of its motion. The resting 10% overscan
+         * is the margin the drift moves within, so no layer edge comes into
+         * view at any viewport width. */
         transform: scale(1.1);
         will-change: transform;
         animation: backdrop-drift var(--ambient-cycle) ease-in-out infinite;
@@ -287,6 +301,122 @@ const KEY_NUMBERS = [
             /* Below md the section paints its own flat gradient instead. */
             display: none;
         }
+    }
+
+    /* The export's 1900x1564 frame, mapped the way `cover` with `center top`
+     * mapped the flattened image: widest side wins, centred, pinned to the top. */
+    .planet {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: max(100cqw, 100cqh * var(--bgW) / var(--bgH));
+        aspect-ratio: var(--bgW) / var(--bgH);
+        container-type: size;
+        overflow: clip;
+        translate: -50% 0;
+    }
+
+    /* Each layer keeps the export's own numbers, so `--u` is one of its user
+     * units and every value below is the exported one. */
+    .planet span {
+        --u: calc(100cqw / var(--bgW));
+
+        position: absolute;
+        left: calc(var(--cx) * var(--u));
+        top: calc(var(--cy) * var(--u));
+        width: calc(var(--w) * var(--u));
+        height: calc(var(--h) * var(--u));
+        translate: -50% -50%;
+        rotate: var(--a, 0deg);
+    }
+
+    /* The planet's limb. A rotated ellipse, which no gradient function can
+     * express, hence the rotated box: the radii are given, so its size is
+     * free and it only has to cover the frame once turned. */
+    .limb {
+        --cx: 950;
+        --cy: 782;
+        --w: 2480;
+        --h: 2480;
+        --a: -132.311deg;
+
+        background: radial-gradient(
+            calc(2789.71 * var(--u)) calc(3389.04 * var(--u)) ellipse at
+                calc(50% - 1684.89 * var(--u)) calc(50% - 107.81 * var(--u)),
+            #000000 15.626%,
+            #166fd6 36.9206%,
+            #2188ff 37.8924%,
+            #daebff 40.1267%,
+            #beb9ff 41.3284%,
+            #2075d7 51.9368%,
+            #000000 62.6362%,
+            #1b1a1a 97.5962%
+        );
+    }
+
+    /* The purple the frame sinks into. Nine stops rather than the export's
+     * two: SVG interpolates its stops unpremultiplied, CSS premultiplied, so
+     * a straight port drifts up to 26/255 through the middle of the ramp. */
+    .haze {
+        --cx: 950;
+        --cy: 782;
+        --w: 1900;
+        --h: 1564;
+
+        background: linear-gradient(
+            180deg,
+            rgba(102, 102, 102, 0) 72.5818%,
+            rgba(96, 89, 106, 0.125) 75.589%,
+            rgba(90, 76, 109, 0.25) 78.5962%,
+            rgba(84, 64, 112, 0.375) 81.6034%,
+            rgba(78, 51, 116, 0.5) 84.6106%,
+            rgba(72, 38, 120, 0.625) 87.6178%,
+            rgba(66, 26, 123, 0.75) 90.625%,
+            rgba(60, 13, 126, 0.875) 93.6322%,
+            rgba(54, 0, 130, 1) 96.6394%
+        );
+    }
+
+    /* Both of these were shapes behind a 230px and a 22px Gaussian in the
+     * export. Blurred that hard they are radial ramps, fitted here to the
+     * rasterized alpha: within-bin scatter 0.002 and 0.8/255. */
+    .umbra {
+        --cx: 58.8212;
+        --cy: 1741.43;
+        --w: 2520;
+        --h: 1800;
+        --a: 41.9616deg;
+
+        background: radial-gradient(
+            closest-side ellipse at center,
+            rgba(0, 0, 0, 0.664) 16.667%,
+            rgba(0, 0, 0, 0.532) 27.778%,
+            rgba(0, 0, 0, 0.367) 38.889%,
+            rgba(0, 0, 0, 0.219) 50%,
+            rgba(0, 0, 0, 0.11) 61.111%,
+            rgba(0, 0, 0, 0.046) 72.222%,
+            rgba(0, 0, 0, 0.016) 83.333%,
+            rgba(0, 0, 0, 0) 100%
+        );
+    }
+
+    .flare {
+        --cx: 1528;
+        --cy: 1072;
+        --w: 1400;
+        --h: 400;
+        --a: -28deg;
+
+        background: radial-gradient(
+            closest-side ellipse at center,
+            rgba(255, 255, 255, 0.6078) 0%,
+            rgba(255, 255, 255, 0.3676) 12.5%,
+            rgba(255, 255, 255, 0.1754) 25%,
+            rgba(255, 255, 255, 0.0952) 37.5%,
+            rgba(255, 255, 255, 0.0609) 50%,
+            rgba(255, 255, 255, 0.0247) 75%,
+            rgba(255, 255, 255, 0) 100%
+        );
     }
 
     /* The two square rings. The mask asset is 50% black on black and never
