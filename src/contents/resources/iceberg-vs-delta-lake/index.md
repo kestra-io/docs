@@ -110,7 +110,7 @@ The ability to access historical versions of a table is a transformative feature
 
 ### Change Data Capture (CDC) support and merge operations
 
-Both formats support `MERGE` operations, which are essential for handling upserts and slowly changing dimensions in ETL/ELT workflows. Delta Lake has a mature Change Data Feed feature that explicitly records row-level changes (inserts, updates, deletes) in the transaction log, making it easier to build streaming applications or incremental data pipelines. Iceberg also supports CDC, with implementations varying slightly across different query engines.
+Both formats support `MERGE` operations, which are essential for handling [upserts](/resources/data/upsert) and slowly changing dimensions in ETL/ELT workflows. Delta Lake has a mature Change Data Feed feature that explicitly records row-level changes (inserts, updates, deletes) in the transaction log, making it easier to build streaming applications or incremental data pipelines. Iceberg also supports CDC, with implementations varying slightly across different query engines.
 
 ### Data compaction and file optimization strategies
 

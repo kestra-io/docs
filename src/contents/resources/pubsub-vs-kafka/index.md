@@ -71,7 +71,7 @@ This design prioritizes reliable, decoupled delivery over long-term storage. It 
 
 ### Is Kafka just another publish-subscribe system?
 
-While Kafka employs a publish-subscribe pattern, calling it "just a pub-sub system" overlooks its fundamental nature. A traditional [message queue](/resources/infrastructure/message-queue) typically removes a message once it's consumed and acknowledged. Kafka, as a distributed log, retains messages based on configured policies, regardless of consumption. This log-based architecture makes it a powerful platform for both messaging and stream processing, setting it apart from simpler pub-sub services.
+While Kafka employs a publish-subscribe pattern, calling it "just a [pub-sub](/resources/data/pub-sub-pattern) system" overlooks its fundamental nature. A traditional [message queue](/resources/infrastructure/message-queue) typically removes a message once it's consumed and acknowledged. Kafka, as a distributed log, retains messages based on configured policies, regardless of consumption. This log-based architecture makes it a powerful platform for both messaging and stream processing, setting it apart from simpler pub-sub services.
 
 ## Operational Realities: Management, Scalability, and Ecosystem Integration
 

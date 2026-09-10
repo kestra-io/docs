@@ -23,7 +23,7 @@ faq:
     answer: "Yes, modern SFTP automation solutions, especially those built on orchestration platforms, are designed to integrate seamlessly with a wide array of other systems. This includes cloud storage, databases, APIs, message queues, and enterprise applications. This allows SFTP transfers to be part of larger, more complex end-to-end workflows."
 ---
 
-> **TL;DR** — **SFTP automation** refers to the process of streamlining and scheduling secure file transfers between systems without manual intervention. It leverages the SSH File Transfer Protocol to ensure data is exchanged efficiently, securely, and with robust error handling, often as part of larger automated workflows.
+> **TL;DR** — **SFTP automation** refers to the process of streamlining and scheduling secure [file transfers](/resources/infrastructure/file-transfer-automation) between systems without manual intervention. It leverages the SSH File Transfer Protocol to ensure data is exchanged efficiently, securely, and with robust error handling, often as part of larger automated workflows.
 
 Manual SFTP transfers are a bottleneck in many organizations, consuming valuable time and introducing security risks. Whether you're exchanging critical financial data, sensitive healthcare records, or daily retail inventory, relying on manual processes for secure file transfers can lead to errors, delays, and compliance headaches.
 
