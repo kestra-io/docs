@@ -4,16 +4,25 @@ export const prerender = false
 import { $fetchApiRawCached } from "~/utils/fetch.ts"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
-// Path from DEFAULT_ICON in api.kestra.io PluginController, the blank sheet it serves for any type
-// it cannot resolve. Icons resolve against the running Kestra, so anything renamed or removed since
-// the current release gets it, which on an archived page is a real task with no icon. The response
-// carries no other signal that it is a fallback, so matching the path is the only way to spot one.
-// If DEFAULT_ICON ever changes there, this stops matching and blanks come back.
-const PLACEHOLDER_PATH = "M288 32H0v448h384V128l-96-96z"
+// The API answers with a blank sheet for any type it cannot resolve, and gives no other signal that
+// it did. Icons resolve against the running Kestra, so anything renamed or removed since the current
+// release gets it, which on an archived page is a real task with no icon. Ask for a type that can
+// never exist to learn what that blank sheet is, rather than keeping a copy of it here.
+const UNRESOLVABLE_TYPE = "io.kestra.plugin.unresolvable"
 
 async function fetchIcon(type: string): Promise<string | null> {
     const response = await $fetchApiRawCached(`/plugins/icons/${type}`)
     return response.ok ? await response.text() : null
+}
+
+/** Memoised per isolate: the answer only changes when the API is redeployed. */
+let blankIcon: string | null | undefined
+
+async function fetchBlankIcon(): Promise<string | null> {
+    if (blankIcon === undefined) {
+        blankIcon = await fetchIcon(UNRESOLVABLE_TYPE)
+    }
+    return blankIcon
 }
 
 /** "io.kestra.plugin.core.flow.ForEach" -> "io.kestra.plugin.core.flow", the subgroup. */
@@ -34,11 +43,14 @@ export async function GET({ params }: { params: { cls: string } }) {
     }
 
     // Fall back to the subgroup so an archived page shows the Flow icon rather than a blank sheet.
-    if (icon.includes(PLACEHOLDER_PATH)) {
-        const pkg = packageOf(cls)
-        const subGroupIcon = pkg ? await fetchIcon(pkg) : null
-        if (subGroupIcon && !subGroupIcon.includes(PLACEHOLDER_PATH)) {
-            icon = subGroupIcon
+    const pkg = packageOf(cls)
+    if (pkg) {
+        const blank = await fetchBlankIcon()
+        if (blank !== null && icon === blank) {
+            const subGroupIcon = await fetchIcon(pkg)
+            if (subGroupIcon !== null && subGroupIcon !== blank) {
+                icon = subGroupIcon
+            }
         }
     }
 
