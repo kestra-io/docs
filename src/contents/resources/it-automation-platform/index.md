@@ -112,7 +112,7 @@ UiPath is a leader in the Robotic Process Automation (RPA) space. Its strength l
 **Key Strengths:**
 
 *   **Visual Workflow Builder:** UiPath offers a low-code, drag-and-drop interface that empowers business users and citizen developers to build automations.
-*   **AI Integration:** The platform heavily incorporates AI for tasks like document understanding, process mining, and building agentic automations for customer service and back-office operations.
+*   **AI Integration:** The platform heavily incorporates AI for tasks like document understanding, [process mining](/resources/business/process-mining), and building agentic automations for customer service and back-office operations.
 *   **Strong for Business Processes:** UiPath excels at automating repetitive, rule-based business tasks like data entry, invoice processing, and CRM updates.
 
 UiPath is best suited for large enterprises looking to automate manual business processes, especially those involving desktop applications and legacy systems.

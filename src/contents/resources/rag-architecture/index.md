@@ -120,6 +120,7 @@ You should choose RAG when your application requires:
 - **Domain-specific context:** RAG excels at providing answers based on proprietary documents or specialized knowledge.
 - **Verifiability:** When users need to know the source of the information, RAG can provide citations.
 - **Cost-efficiency and speed:** Updating a vector database is much faster and cheaper than fine-tuning an LLM.
+- **Enterprise search:** RAG over internal documents is precisely the pattern behind enterprise search assistants, which package retrieval, permissions, and citation into a product — see [Glean alternatives](/resources/ai/glean-alternatives).
 
 ### Future Trends in RAG Development
 

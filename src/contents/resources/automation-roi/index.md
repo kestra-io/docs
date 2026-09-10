@@ -65,6 +65,7 @@ A result of 50% means that for every dollar invested, you gained back your dolla
     *   **Direct Savings:** Calculate the hours of manual labor saved and multiply by the fully-loaded employee cost. Quantify the financial impact of reduced errors.
     *   **Indirect Gains:** Estimate the value of faster delivery, improved quality (e.g., fewer customer support tickets), and increased capacity. This may involve making reasonable assumptions based on business data.
 4.  **Calculate the ROI:** Plug your quantified costs and benefits into the formula to determine your ROI over a chosen timeframe, typically 12, 24, or 36 months.
+4.  **Present the Case:** Numbers alone rarely secure a budget; they have to be framed against strategic priorities and risk. See [building the business case for automation](/resources/business/business-case-for-automation) for that framing.
 
 ### Key Metrics for Measuring Success
 

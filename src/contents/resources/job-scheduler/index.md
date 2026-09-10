@@ -51,6 +51,7 @@ Automating job execution provides significant operational advantages. It moves t
 - **Improved Efficiency:** By automating repetitive tasks, teams can focus on higher-value work. Schedulers optimize resource usage and execute tasks in parallel where possible, reducing overall processing time.
 - **Enhanced Visibility and Control:** A centralized scheduler provides a single pane of glass to monitor all automated tasks, making it easier to troubleshoot issues, audit activity, and understand system behavior.
 - **Scalability:** As the number of automated tasks grows, a dedicated scheduler can handle the complexity of managing thousands of jobs and their interdependencies, a task that is unmanageable with simple tools like cron.
+- **Enterprise Readiness:** At organisational scale these benefits stop being conveniences and become procurement requirements; see [enterprise job scheduler](/resources/infrastructure/enterprise-job-scheduler) for how workload automation is evaluated at that level.
 
 These advanced [scheduling and automation features](/features/scheduling-and-automation) are foundational to building resilient and scalable systems.
 
