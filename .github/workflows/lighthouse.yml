@@ -18,6 +18,7 @@ jobs:
     name: Build site
     if: startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
 
@@ -92,6 +93,7 @@ jobs:
     name: Lighthouse shard ${{ matrix.shard }}
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
     strategy:
@@ -149,13 +151,19 @@ jobs:
         # the one in wrangler.jsonc): it blocks the worker from reaching the
         # fixture server on loopback, and it only affects same-zone routing,
         # which does not exist locally.
-        run: npx wrangler dev --local --compatibility-flags nodejs_compat &
+        # Output is captured: the process outlives this step, so whatever it
+        # prints while the next one waits is otherwise lost.
+        run: npx wrangler dev --local --compatibility-flags nodejs_compat > wrangler-dev.log 2>&1 &
 
       - name: Wait for dev server to be ready
+        # The dev proxy accepts connections while the worker is still compiling
+        # and holds the request until it is ready, so an unbounded curl blocks
+        # instead of retrying: without --max-time one hung probe is the job.
         run: |
           echo "Waiting for http://localhost:8787…"
           for i in $(seq 1 24); do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8787 || true)
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              --connect-timeout 2 --max-time 10 http://localhost:8787 || true)
             if [ "$STATUS" = "200" ]; then
               echo "Server is ready (HTTP 200)."
               exit 0
@@ -163,7 +171,11 @@ jobs:
             echo "  Attempt $i/24: HTTP $STATUS — retrying in 5 s…"
             sleep 5
           done
-          echo "Warning: server did not return 200 after 2 min; running Lighthouse anyway."
+          echo "::error::Dev server never returned 200. Measuring anyway would"
+          echo "::error::score a dead server, so this shard stops here."
+          echo "--- wrangler dev output ---"
+          cat wrangler-dev.log || echo "(no output captured)"
+          exit 1
 
       - name: Run Lighthouse benchmark
         run: node scripts/lighthouse-benchmark.mjs
@@ -233,6 +245,7 @@ jobs:
     needs: [build, lighthouse]
     if: ${{ !cancelled() && needs.build.result == 'success' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
       pull-requests: write
