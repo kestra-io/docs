@@ -342,7 +342,7 @@ const pluginSchema = pluginType
       }
 ---
 
-<Layout title={headingTitle} description={headingDescription} image={ogImage}>
+<Layout title={headingTitle} description={headingDescription} image={ogImage} noindex={versionState.isArchived}>
     <Fragment slot="head">
         {/* This decorative background on .plugin-details is the page's LCP
             image, but as a CSS background it is only discovered once the
