@@ -56,7 +56,7 @@ Version control, typically using Git, is the backbone of EaC. By storing all def
 - **Traceability:** Every modification is linked to a commit, author, and timestamp.
 - **Collaboration:** Teams can use pull requests and code reviews to discuss and validate changes before they are applied.
 - **Rollbacks:** If a change introduces an issue, reverting to a previous known-good state is as simple as reverting a commit.
-Kestra embraces this by allowing you to manage all [workflows and resources through Git](https://kestra.io/docs/version-control-cicd/git), ensuring that your orchestration layer is fully version-controlled.
+Kestra embraces this by allowing you to manage all [workflows and resources through Git](https://kestra.io/docs/version-control-cicd/git), ensuring that your orchestration layer is fully version-controlled. Applied specifically to build and deployment workflows, this principle is known as [pipeline as code](/resources/infrastructure/pipeline-as-code).
 
 ### Automated testing and continuous integration
 

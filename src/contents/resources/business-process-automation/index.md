@@ -101,6 +101,7 @@ BPM provides a structured methodology for applying BPA effectively. The lifecycl
 3.  **Execute:** Implement the process using a BPA tool. This involves configuring integrations, building the workflow logic, and testing it thoroughly.
 4.  **Monitor:** Track the performance of the automated process in real-time. Collect data on key metrics like cycle time, error rates, and cost per transaction.
 5.  **Optimize:** Analyze the performance data to identify bottlenecks or areas for improvement. Use these insights to refine the workflow, and then repeat the cycle.
+5.  **Justify:** Before the first cycle runs, the programme needs funding. See [building the business case for automation](/resources/business/business-case-for-automation) for how to quantify and present it.
 
 ### Choosing the right BPA tools and solutions
 
@@ -166,4 +167,4 @@ RPA is not disappearing; it's being augmented by AI to create "Intelligent Autom
 
 ### Continuous improvement and adaptive workflows
 
-The future of BPA is adaptive. Modern orchestration platforms can use machine learning to analyze workflow performance and suggest optimizations automatically. Human-in-the-loop patterns are becoming more sophisticated, ensuring that automation assists human experts rather than replacing them. This creates a powerful synergy where automated systems handle the repetitive work, while humans provide strategic oversight and manage exceptions, leading to more resilient and intelligent business operations.
+The future of BPA is adaptive. Modern orchestration platforms can use machine learning to analyze workflow performance and suggest optimizations automatically. Human-in-the-loop patterns are becoming more sophisticated, ensuring that automation assists human experts rather than replacing them. This creates a powerful synergy where automated systems handle the repetitive work, while humans provide strategic oversight and manage exceptions, leading to more resilient and intelligent business operations. When the automated side is handled by autonomous agents rather than fixed rules, the pattern becomes [agentic business process automation](/resources/business/agentic-business-process-automation).

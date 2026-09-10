@@ -175,7 +175,13 @@ function componentHtml(
     }
 }
 
-/** The `.ks-card-grid` for a node's direct children, mirroring the real GuidesChildCard.vue's card markup. */
+/**
+ * The `.ks-child-card-grid` for a node's direct children, mirroring the real
+ * GuidesChildCard.vue's card markup. Styled by the global markdown mixin, so
+ * the classes are deliberately NOT the real ChildCard.astro's `.ks-card-*`:
+ * that component is Astro-scoped and its chevron would otherwise inherit the
+ * icon box below (kestra-io/docs#5558).
+ */
 function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
     const cards = directDocChildren(ctx.children, parentKey)
     if (!cards.length) return ""
@@ -190,19 +196,19 @@ function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
             const iconRef = meta.icon?.replace(/^\/src\/contents/, "")
             const icon =
                 iconRef && isVersionedAssetRef(iconRef)
-                    ? `<img class="ks-card-icon" src="${escapeHtml(
+                    ? `<img class="ks-child-card-icon" src="${escapeHtml(
                           versionedAssetUrl(ctx.apiUrl, ctx.version, iconRef),
                       )}" alt="" width="48" height="48" />`
                     : ""
             const desc = meta.description
-                ? `<p class="ks-card-text">${escapeHtml(plainDocText(meta.description))}</p>`
+                ? `<p class="ks-child-card-text">${escapeHtml(plainDocText(meta.description))}</p>`
                 : ""
-            return `<a class="ks-card" href="${escapeHtml(
+            return `<a class="ks-child-card" href="${escapeHtml(
                 docChildHref(ctx.version, key),
-            )}">${icon}<h4 class="ks-card-title">${escapeHtml(title)}</h4>${desc}</a>`
+            )}">${icon}<h4 class="ks-child-card-title">${escapeHtml(title)}</h4>${desc}</a>`
         })
         .join("")
-    return `<div class="ks-card-grid">${items}</div>`
+    return `<div class="ks-child-card-grid">${items}</div>`
 }
 
 const SUPPORT_LINKS_HTML = `<div class="support-links-row"><a class="support-link" href="https://kestra.io/slack"><h3>Community Slack</h3><p>Discuss topics with other users and kestra Team</p></a><a class="support-link" href="https://github.com/kestra-io/kestra"><h3>GitHub</h3><p>Give our open-source project a star</p></a><a class="support-link" href="https://kestra.io/demo"><h3>Help Center</h3><p>Contact support for help with your Enterprise account</p></a></div>`
