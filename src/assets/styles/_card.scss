@@ -1,0 +1,76 @@
+// Cards — replaces Bootstrap card.scss.
+// Project-specific card overrides remain in app.scss.
+// This file provides the base structure Bootstrap previously supplied.
+
+.card {
+    --card-spacer-y: 1rem;
+    --card-spacer-x: 1rem;
+    --card-border-width: 1px;
+    --card-border-color: var(--ks-border-primary);
+    --card-border-radius: #{$border-radius-lg};
+    --card-bg: var(--ks-background-primary);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    height: var(--card-height);
+    color: var(--ks-content-primary);
+    word-wrap: break-word;
+    background-color: var(--card-bg);
+    background-clip: border-box;
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-border-radius);
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: var(--card-spacer-y) var(--card-spacer-x);
+}
+
+.card-title {
+    margin-bottom: 0.5rem;
+}
+
+.card-text:last-child {
+    margin-bottom: 0;
+}
+
+.card-header {
+    padding: var(--card-spacer-y) var(--card-spacer-x);
+    margin-bottom: 0;
+    background-color: var(--ks-background-secondary);
+    border-bottom: var(--card-border-width) solid var(--card-border-color);
+
+    &:first-child {
+        border-radius: calc(var(--card-border-radius) - var(--card-border-width))
+            calc(var(--card-border-radius) - var(--card-border-width)) 0 0;
+    }
+}
+
+.card-footer {
+    padding: var(--card-spacer-y) var(--card-spacer-x);
+    background-color: var(--ks-background-secondary);
+    border-top: var(--card-border-width) solid var(--card-border-color);
+
+    &:last-child {
+        border-radius: 0 0 calc(var(--card-border-radius) - var(--card-border-width))
+            calc(var(--card-border-radius) - var(--card-border-width));
+    }
+}
+
+.card-img-top {
+    width: 100%;
+    border-top-left-radius: calc(var(--card-border-radius) - var(--card-border-width));
+    border-top-right-radius: calc(var(--card-border-radius) - var(--card-border-width));
+}
+
+.card-link-wrapper {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+}
