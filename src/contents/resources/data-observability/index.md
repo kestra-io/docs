@@ -163,7 +163,7 @@ While concepts like the **5 C's of data** (Consent, Clarity, Consistency, Contro
 A data observability platform cannot exist in a vacuum. It must integrate deeply with the existing data stack. This includes connecting to:
 
 -   **Data warehouses and lakes:** Snowflake, BigQuery, Redshift, Databricks.
--   **ETL/ELT tools:** dbt, Fivetran, Airbyte.
+-   **ETL/ELT tools:** dbt, [Fivetran](/resources/data/fivetran-dbt-merger-fusion-engine), Airbyte.
 -   **BI platforms:** Tableau, Looker, Power BI.
 -   **Orchestration platforms:** Kestra, Airflow.
 

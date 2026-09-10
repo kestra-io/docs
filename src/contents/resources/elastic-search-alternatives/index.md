@@ -21,7 +21,7 @@ faq:
     answer: "For real-time analytics, ClickHouse is a strong contender, offering high-performance column-oriented database capabilities for analytical queries. Other solutions like Typesense or Meilisearch can provide fast search experiences that complement real-time data processing."
 ---
 
-Elasticsearch has long been a cornerstone for search and analytics, powering everything from application search to log analysis. Its distributed architecture and powerful querying capabilities are undeniable strengths. Yet, as data volumes grow and operational costs mount, many organizations find themselves exploring alternatives.
+[Elasticsearch](/resources/data/elastic-search) has long been a cornerstone for search and analytics, powering everything from application search to log analysis. Its distributed architecture and powerful querying capabilities are undeniable strengths. Yet, as data volumes grow and operational costs mount, many organizations find themselves exploring alternatives.
 
 Whether driven by licensing changes, the desire for simplified operations, or a need for specialized features, the market for search and analytics platforms is rich with compelling options. This article will guide you through the leading Elasticsearch alternatives, helping you identify the right solution for your specific requirements.
 
@@ -98,7 +98,7 @@ Solr excels at full-text search and offers powerful features like faceted search
 
 ### 4. ClickHouse: Analytics with a Search Twist
 
-ClickHouse is not a traditional full-text search engine. It's an open-source, column-oriented database management system designed for Online Analytical Processing (OLAP). However, its incredible speed for analytical queries on massive datasets makes it a compelling alternative for specific use cases often handled by Elasticsearch, such as log analytics and real-time dashboards.
+[ClickHouse](/resources/data/postgres-vs-clickhouse) is not a traditional full-text search engine. It's an open-source, column-oriented database management system designed for Online Analytical Processing (OLAP). However, its incredible speed for analytical queries on massive datasets makes it a compelling alternative for specific use cases often handled by Elasticsearch, such as log analytics and real-time dashboards.
 
 Where Elasticsearch uses an inverted index for fast text search, ClickHouse uses its columnar storage and vectorized query processing to scan billions of rows in milliseconds. If your "search" problem involves filtering and aggregating large volumes of structured or semi-structured data, ClickHouse can be significantly faster and more resource-efficient.
 

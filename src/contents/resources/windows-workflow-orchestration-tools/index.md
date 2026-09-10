@@ -29,7 +29,7 @@ This guide explores the landscape of Windows workflow orchestration, from defini
 
 ## What is Windows Workflow Orchestration?
 
-Windows workflow orchestration is the process of automating, managing, and coordinating multi-step tasks and processes within a Windows environment. It goes beyond simple task scheduling by handling complex dependencies, managing error conditions, and providing a centralized platform for visibility and control. Instead of relying on a patchwork of PowerShell scripts, batch files, and the Windows Task Scheduler, orchestration provides a structured framework to define, execute, and monitor end-to-end [workflows](https://kestra.io/docs/workflow-components/flow).
+Windows workflow orchestration is the process of automating, managing, and coordinating multi-step tasks and processes within a Windows environment. It goes beyond simple task scheduling by handling complex dependencies, managing error conditions, and providing a centralized platform for visibility and control. Instead of relying on a patchwork of [PowerShell](/resources/infrastructure/powershell-automation-alternatives) scripts, batch files, and the Windows Task Scheduler, orchestration provides a structured framework to define, execute, and monitor end-to-end [workflows](https://kestra.io/docs/workflow-components/flow).
 
 In a Windows context, this means seamlessly connecting actions across various systems, such as:
 - Executing a PowerShell script to configure a server.
