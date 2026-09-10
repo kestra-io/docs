@@ -110,6 +110,7 @@ Orchestrating Azure Batch unlocks efficiencies in a wide range of compute-intens
 -   **Genomic Sequencing:** Automate bioinformatics pipelines, where large datasets are processed through a series of computationally demanding tools.
 -   **AI and Machine Learning:** Orchestrate distributed model training, hyperparameter tuning, or large-scale batch inference jobs. You can see examples in our [batch enrichment with Vertex AI](/blueprints/vertex-ai-batch-row-enrichment) blueprint.
 -   **Large-Scale Data Transformation:** For ETL/ELT processes that are too large for a single machine, Batch can run transformation logic in parallel, orchestrated as part of a larger [data pipeline like a Spark Batch on Dataproc](/blueprints/dataproc-serverless-spark-batch).
+-   **Scientific and Engineering Simulation:** Batch is often the compute tier behind an [HPC workflow](/resources/infrastructure/hpc-workflow), running the tightly coupled jobs a single machine cannot hold.
 
 ## Related Concepts for Cloud Orchestration
 
