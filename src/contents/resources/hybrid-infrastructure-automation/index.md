@@ -94,7 +94,7 @@ Automation is critical for migrating applications and data between different env
 
 ### Disaster recovery and business continuity
 
-Hybrid environments provide an ideal foundation for robust disaster recovery (DR) strategies. Automation can continuously replicate critical data from an on-premises data center to a public cloud region. In the event of an outage, an orchestrated workflow can automatically fail over services to the cloud, bringing applications back online with minimal manual intervention. Read more about building a [disaster recovery plan](https://kestra.io/resources/infrastructure/disaster-recovery).
+Hybrid environments provide an ideal foundation for robust disaster recovery (DR) strategies. Automation can continuously replicate critical data from an on-premises data center to a public cloud region. In the event of an outage, an orchestrated workflow can automatically fail over services to the cloud, bringing applications back online with minimal manual intervention. Read more about building a [disaster recovery plan](https://kestra.io/resources/infrastructure/disaster-recovery). On Windows estates that failover is usually built on a failover cluster — see [Windows cluster](/resources/infrastructure/windows-cluster).
 
 ### The 4 types of automation in practice
 

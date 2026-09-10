@@ -122,6 +122,7 @@ Understanding data dependencies is critical for effective incident management. K
 -   **End-to-end mapping:** Visualizing how data flows from source systems, through tables and pipelines, to BI dashboards and downstream applications.
 -   **Column-level lineage:** Tracing the journey of individual data fields to understand their origin and transformations.
 -   **Impact analysis:** When an issue is detected in an upstream table, the platform can immediately identify all downstream assets and stakeholders that will be affected.
+-   **Catalog integration:** Lineage is most actionable when it sits next to the schemas and ownership metadata already held in the catalog, as described in [data catalog lineage](/resources/data/data-catalog-lineage).
 
 ### Tracking Data Freshness, Volume, and Schema Changes
 
