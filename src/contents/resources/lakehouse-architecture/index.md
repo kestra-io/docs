@@ -46,6 +46,7 @@ A typical lakehouse architecture is built on several key components working in c
 - **Metadata Layer:** A centralized catalog (like AWS Glue Data Catalog or Hive Metastore) that stores information about the data, including schemas, table locations, and partitions.
 - **Processing Engines:** A variety of engines can access the data directly. Apache Spark is the most common for large-scale data processing, while query engines like [DuckDB](/blogs/2024-03-14-duck-db) and Trino enable high-performance SQL analytics.
 - **Governance and Access Control:** Tools for managing security, access control, data quality, and lineage are integrated across the platform.
+- **Catalog Layer:** A single catalog exposes those governed assets to every engine that queries the lakehouse. On Databricks this role is played by [Unity Catalog](/resources/data/databricks-unity-catalog), which centralises schemas, access policies, and lineage across workspaces.
 
 This unified structure directly addresses the limitations of maintaining separate data lakes and data warehouses, and increasingly sits at the heart of the [modern data stack](/use-cases/modern-data-stack) Kestra customers operate.
 

@@ -139,6 +139,8 @@ A typical automated purging flow includes these steps:
 5.  **Notify:** Send a confirmation to a Slack channel or monitoring system with metrics on the data reclaimed.
 6.  **Log:** The orchestration platform's own execution logs provide a permanent, auditable record of the purge operation.
 
+Retention policy and storage backend are difficult to separate in practice: the cost of keeping logs longer depends on the engine holding them. Teams reassessing that choice can compare options in our guide to [Elasticsearch alternatives](/resources/data/elastic-search-alternatives).
+
 Here is a conceptual example of a Kestra flow that purges old execution data, which can be adapted for any data source:
 
 ```yaml

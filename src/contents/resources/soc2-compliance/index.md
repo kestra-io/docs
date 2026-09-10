@@ -47,6 +47,8 @@ The SOC 2 framework is built upon five TSCs. While Security is a mandatory crite
 4.  **Confidentiality:** This criterion ensures that data designated as confidential is protected as agreed upon. It applies to personally identifiable information (PII), protected health information (PHI), and other sensitive data. Controls include encryption, access controls, and network firewalls to prevent unauthorized disclosure.
 5.  **Privacy:** While similar to Confidentiality, the Privacy criterion focuses specifically on the collection, use, retention, disclosure, and disposal of personal information in conformity with an organization's privacy notice and with criteria set forth in the AICPA's Generally Accepted Privacy Principles (GAPP).
 
+These criteria overlap substantially with federal control baselines. Organizations selling into the public sector typically map their existing SOC 2 controls onto [FedRAMP compliance](/resources/infrastructure/fedramp-compliance) requirements rather than building a second programme from scratch.
+
 ### SOC 1 vs. SOC 2 vs. SOC 3: Key Differences for Service Organizations
 
 The AICPA offers three types of SOC reports, each serving a different purpose. Understanding the distinction is crucial for selecting the right audit.
