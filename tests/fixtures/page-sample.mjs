@@ -22,7 +22,7 @@ export const PAGES = [
     { path: "/blogs", label: "Blog Index" },
     { path: "/blogs/2022-04-27-etl-vs-elt", label: "Blog Post (sample)" },
     { path: "/vs/aws-step-functions", label: "VS Page (sample)" },
-    { path: "/plugins", label: "Plugins Landing", ssr: true },
+    { path: "/plugins", label: "Plugins Landing", runs: 3, ssr: true },
     { path: "/plugins/core", label: "Plugin Page (sample)", ssr: true },
     {
         path: "/plugins/core/debug",
