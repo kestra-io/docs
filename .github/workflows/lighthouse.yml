@@ -11,13 +11,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lighthouse:
-    name: Lighthouse Benchmark
+  # The site is built once and handed to the shards as a tarball. Building in
+  # each of them instead would cost four times the runner minutes, and the
+  # measured pages have to come from one identical build to be comparable.
+  build:
+    name: Build site
     if: startsWith(github.repository, 'kestra-io/')
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -54,14 +56,91 @@ jobs:
           # the SSR pages read the API through the fixture server.
           API_URL: http://127.0.0.1:9001/v1
 
-      # The build itself calls the blueprint API, so the counters have to be
-      # snapshotted here for the check at the end to mean anything.
-      - name: Snapshot fixture server counters
-        run: curl -s http://127.0.0.1:9001/__fixtures/stats > fixtures-before.json
+      # dist is thousands of files, most of them images. One tarball moves in a
+      # fraction of the time the artifact actions take over the tree itself.
+      - name: Pack the build
+        run: tar -I 'zstd -1 -T0' -cf dist.tar.zst dist
+
+      - name: Upload the build
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-dist
+          path: dist.tar.zst
+          retention-days: 1
+          compression-level: 0
+
+      - name: Count fixtures recorded during the build
+        id: fixtures
+        run: |
+          RECORDS=$(curl -s http://127.0.0.1:9001/__fixtures/stats | jq '.records')
+          echo "records=$RECORDS" >> "$GITHUB_OUTPUT"
+          echo "fixtures recorded during the build: $RECORDS"
+
+      # Only when the build asked for something not committed yet; commit these
+      # to freeze it. The shards read the committed set, not this artifact.
+      - name: Upload API fixtures artifact
+        if: ${{ !cancelled() && steps.fixtures.outputs.records != '0' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: api-fixtures-build
+          path: tests/fixtures/api/
+          retention-days: 30
+
+  # scripts/lighthouse-shared.mjs splits the page sample into SHARD_TOTAL slices
+  # of roughly equal measuring time, so the matrix length is the only knob.
+  lighthouse:
+    name: Lighthouse shard ${{ matrix.shard }}
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    env:
+      SHARD_TOTAL: ${{ strategy.job-total }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      # wrangler compiles the worker from src/ at dev time, so the shards need
+      # the dependencies even though they never run the Astro build.
+      - name: Install dependencies
+        run: npm install
 
       - name: Install Lighthouse
         # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
         run: npm install --no-save lighthouse chrome-launcher
+
+      - name: Download the build
+        uses: actions/download-artifact@v7
+        with:
+          name: lighthouse-dist
+
+      - name: Unpack the build
+        run: tar -I zstd -xf dist.tar.zst && rm dist.tar.zst
+
+      - name: Start API fixture server
+        run: node scripts/api-fixture-server.mjs &
+
+      - name: Wait for the fixture server
+        run: |
+          for i in $(seq 1 10); do
+            curl -sf http://127.0.0.1:9001/__fixtures/stats > /dev/null && exit 0
+            sleep 1
+          done
+          echo "Fixture server did not come up on port 9001."
+          exit 1
+
+      - name: Snapshot fixture server counters
+        run: curl -s http://127.0.0.1:9001/__fixtures/stats > fixtures-before.json
 
       - name: Start local dev server
         # wrangler dev serves the built Workers bundle locally via Miniflare —
@@ -86,6 +165,102 @@ jobs:
           done
           echo "Warning: server did not return 200 after 2 min; running Lighthouse anyway."
 
+      - name: Run Lighthouse benchmark
+        run: node scripts/lighthouse-benchmark.mjs
+        env:
+          BASE_URL: http://localhost:8787
+          OUTPUT_FILE: lighthouse-results-shard-${{ matrix.shard }}.json
+          LHR_DIR: lhr-reports
+          SHARD_INDEX: ${{ matrix.shard }}
+
+      # The results are named per shard: the report job merges every shard
+      # artifact into one directory, so equal filenames would overwrite.
+      - name: Upload shard results
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-results-shard-${{ matrix.shard }}
+          path: lighthouse-results-shard-${{ matrix.shard }}.json
+          retention-days: 30
+
+      # Per-page LHR JSONs — view any at https://googlechrome.github.io/lighthouse/viewer/.
+      - name: Upload LHR reports artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: lhr-reports-shard-${{ matrix.shard }}
+          path: lhr-reports/
+          retention-days: 30
+
+      # Only the shards holding a /blueprints page reach the fixture server, so
+      # the checks below run on those and are a no-op on the rest.
+      - name: Check what this shard measured
+        id: measured
+        run: |
+          BLUEPRINTS=$(jq '[.results[] | select(.path | startswith("/blueprints"))] | length' \
+            "lighthouse-results-shard-${{ matrix.shard }}.json")
+          RECORDS=$(curl -s http://127.0.0.1:9001/__fixtures/stats | jq '.records')
+          echo "blueprints=$BLUEPRINTS" >> "$GITHUB_OUTPUT"
+          echo "records=$RECORDS" >> "$GITHUB_OUTPUT"
+
+      - name: Upload API fixtures artifact
+        if: ${{ !cancelled() && steps.measured.outputs.records != '0' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: api-fixtures-shard-${{ matrix.shard }}
+          path: tests/fixtures/api/
+          retention-days: 30
+
+      # No new calls during the benchmark means the SSR blueprints page never
+      # reached the fixture server, so the page measured is not the page we
+      # think it is. Compared against the snapshot taken before the benchmark,
+      # since the warm-up requests hit the same API.
+      - name: Check the fixture server was used
+        if: steps.measured.outputs.blueprints != '0'
+        run: |
+          BEFORE=$(jq '.hits + .records' fixtures-before.json)
+          STATS=$(curl -s http://127.0.0.1:9001/__fixtures/stats)
+          AFTER=$(echo "$STATS" | jq '.hits + .records')
+          echo "$STATS"
+          echo "blueprint API calls during the benchmark: $((AFTER - BEFORE))"
+          if [ "$AFTER" -le "$BEFORE" ]; then
+            echo "::error::No blueprint API calls reached the fixture server during the benchmark."
+            exit 1
+          fi
+
+  # Runs even when a shard failed: the report marks the pages nobody measured
+  # rather than dropping the comment altogether.
+  report:
+    name: Lighthouse Benchmark
+    needs: [build, lighthouse]
+    if: ${{ !cancelled() && needs.build.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      # The report scripts have no dependencies beyond the page sample, so the
+      # 800 MB of content in the tree is dead weight here.
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            .github/actions
+            scripts
+            tests/fixtures/page-sample.mjs
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Download shard results
+        uses: actions/download-artifact@v7
+        with:
+          pattern: lighthouse-results-shard-*
+          merge-multiple: true
+          path: shard-results/
+
       # Only on PRs: fetch the latest baseline saved from main so the report
       # can show ▲/▼ deltas. Silently skipped if no baseline exists yet.
       - name: Download main branch baseline
@@ -105,10 +280,10 @@ jobs:
         id: public-url
         uses: ./.github/actions/preview-url
 
-      - name: Run Lighthouse benchmark
-        run: node scripts/lighthouse-benchmark.mjs
+      - name: Merge shards and build the report
+        run: node scripts/lighthouse-report.mjs
         env:
-          BASE_URL: http://localhost:8787
+          RESULTS_DIR: shard-results
           BASE_URL_OUTPUT: ${{ steps.public-url.outputs.url }}
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
@@ -140,21 +315,13 @@ jobs:
           body-path: lighthouse-report.md
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # PRs: post scores as a PR comment and keep results for inspection.
+      # PRs: post scores as a PR comment and keep the merged results.
       - name: Upload PR results artifact
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v7
         with:
           name: lighthouse-results
           path: lighthouse-results.json
-          retention-days: 30
-
-      # Per-page LHR JSONs — view any at https://googlechrome.github.io/lighthouse/viewer/.
-      - name: Upload LHR reports artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: lhr-reports
-          path: lhr-reports/
           retention-days: 30
 
       - name: Comment on PR
@@ -164,28 +331,3 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}
-
-      # First run records what /blueprints asks for; commit these to freeze it.
-      - name: Upload API fixtures artifact
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: api-fixtures
-          path: tests/fixtures/api/
-          retention-days: 30
-
-      # No new calls during the benchmark means the SSR blueprints page never
-      # reached the fixture server, so the page measured is not the page we
-      # think it is. Compared against the post-build snapshot, since the build
-      # calls the same API and would otherwise satisfy any absolute threshold.
-      - name: Check the fixture server was used
-        run: |
-          BEFORE=$(jq '.hits + .records' fixtures-before.json)
-          STATS=$(curl -s http://127.0.0.1:9001/__fixtures/stats)
-          AFTER=$(echo "$STATS" | jq '.hits + .records')
-          echo "$STATS"
-          echo "blueprint API calls during the benchmark: $((AFTER - BEFORE))"
-          if [ "$AFTER" -le "$BEFORE" ]; then
-            echo "::error::No blueprint API calls reached the fixture server during the benchmark."
-            exit 1
-          fi
