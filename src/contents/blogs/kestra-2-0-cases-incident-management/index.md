@@ -11,7 +11,7 @@ author:
 image: ./main.png
 ---
 
-Every orchestrator can tell you that something failed. Almost none of them can tell you who is dealing with it.
+Every orchestrator can tell you that something failed, but almost none of them can tell you who is dealing with it.
 
 
 Kestra 2.0 takes a position on that. **A failed execution is usually an incident, and the platform that ran it is the right place to manage it.** Cases is the result.
@@ -30,9 +30,9 @@ Kestra 2.0 takes a position on that. **A failed execution is usually an incident
 
 ## What changes when incidents live in the orchestrator
 
-**One incident instead of a hundred alerts.** The first failure opens a case and the next ninety-nine attach to it. One notification.
+**One incident instead of a hundred alerts.** The first failure opens a case and the next ninety-nine attach to it with only one notification.
 
-**Someone owns it.** Assignee, watchers, and two SLAs: time to acknowledge, time to resolve. Both count down on the board. A missed deadline is an event on the timeline and a notification to the people who need to know.
+**Someone owns it.** Assignee, watchers, and two SLAs: time to acknowledge and time to resolve both count down on the board. A missed deadline is an event on the timeline and a notification to the people who need to know.
 
 **The fix is next to the evidence.** Remediation flows attach to a case as buttons. Press one and it runs as a normal Kestra execution, linked back to the case, labelled with its id, governed by the same RBAC as everything else. The runbook step became a button, and pressing it left a trail.
 
@@ -44,11 +44,11 @@ None of this needed a second tool, a sync job, or another permissions model. The
 
 ## How cases work in Kestra
 
-A GitHub issue is opened: *Payment service returning 500 on checkout*. A webhook flow receives it and opens a case. High severity, assigned, thirty minutes to acknowledge, four hours to resolve.
+A GitHub issue is opened: *Payment service returning 500 on checkout*. A webhook flow receives it and opens a case. High severity, assigned, thirty minutes to acknowledge and four hours to resolve.
 
 ![The flow: a webhook trigger and a CreateCase task with title, description, severity, deduplication, assignee and SLA](./01-flow.png)
 
-A second report arrives with a different title, *Payment service 500 — second alert. 47 users affected in the last 10 minutes.* No second case. The existing one now shows two linked executions. The person assigned got exactly one notification.
+A second report arrives with a different title, *Payment service 500 — second alert. 47 users affected in the last 10 minutes.* No second case as the existing one now shows two linked executions. The person assigned got only one notification.
 
 ![The case detail: two linked executions, both SLA clocks running](./05-case-two-executions.png)
 
@@ -58,17 +58,17 @@ They attach `restart-payment-service` as a case action and run it with a reason.
 
 ![Case Acknowledged, action attached, execution started, acknowledgement SLA on time](./08-acknowledged.png)
 
-Then Resolve, reason Fixed, note "Restarted payment service within SLA."
+Then Resolve, reason Fixed with note "Restarted payment service within SLA."
 
 ![Resolved: resolution card, both SLAs on time](./10-resolved.png)
 
-Two reports, one case, one remediation, one resolution. Every step of it is either an execution or an event on one. And back on the Executions page there is now a **Cases column**: every execution shows which incident it belongs to.
+Two reports, one case, one remediation and one resolution. Every step of it is either an execution or an event on one. And back on the Executions page there is now a **Cases column**: every execution shows which incident it belongs to.
 
 ![Executions list with the new Cases column](./02-executions-cases-column.png)
 
 ## Five ways to use it
 
-Cases are opened by a task, `io.kestra.plugin.kestra.ee.cases.CreateCase`, and the task goes wherever a task goes: `errors`, `finally`, `afterExecution`, or inline with `runIf`. That one design choice is what makes everything below possible.
+Cases are opened by a task, `io.kestra.plugin.kestra.ee.cases.CreateCase`, and the task goes wherever a task goes: `errors`, `finally`, `afterExecution`, or inline with `runIf`. That choice is what makes everything below possible.
 
 ### 1. The failure that repeats
 
@@ -115,7 +115,7 @@ tasks:
         - Finance Ops
 ```
 
-The execution stays SUCCESS. The case is open. **Success and incident are not mutually exclusive**, and the orchestrator finally has a way to say so. The same shape covers a health check returning 200 with an empty body, a scrape that returns suspiciously few rows, or an AI agent's output that a human should see before anything acts on it.
+The execution finishes with a SUCCESS state and the case is opened. **Success and incident are not mutually exclusive**, and the orchestrator finally has a way to say so. The same shape covers a health check returning 200 with an empty body, a scrape that returns suspiciously few rows, or an AI agent's output that a human should see before anything acts on it.
 
 ### 3. The signal that comes from outside
 
@@ -179,7 +179,7 @@ Auto-link generates a flow named `attach_executions_<caseId>` in the `system` na
 
 **Decide your grouping before your first outage.** The dedup key is flow plus task. One `CreateCase` in `errors` groups every failure of that flow as one incident. Several inline with `runIf` group per failing step. Pick the one that answers your on-call's question.
 
-**Start from the built-in template.** Every tenant ships with *Execution failure incident*: High, one hour to acknowledge, eight to resolve. Templates set defaults for cases created from the UI or API. From YAML you declare everything explicitly, so the flow file stays the whole truth. Add one template per team with its own SLAs, allowed resolution reasons and default actions.
+**Start from the built-in template.** Every tenant ships with *Execution failure incident*: High, one hour to acknowledge, eight to resolve. Templates set defaults for cases created from the UI or API. Using YAML, you declare everything explicitly, so the flow file stays as the whole truth. Add one template per team with its own SLAs, allowed resolution reasons and default actions.
 
 **Pick SLAs you will meet.** Both clocks start at creation. Acknowledgement is met the first time a case leaves Open, and that timestamp survives a reopen, so reopening does not launder response time. SLA states are computed at read time. Breaches notify once, from a check every five minutes.
 
@@ -187,13 +187,13 @@ Auto-link generates a flow named `attach_executions_<caseId>` in the `system` na
 
 **Scope permissions to the job.** `CASE` is its own RBAC resource, scopable to a namespace. Creating needs `CREATE`, transitions and linking need `UPDATE`, commenting needs only `VIEW`, which is how you get context from people who aren't incident owners without giving them the keys.
 
-**Get the notification out of the building.** Case notifications are in-app, on the bell. For Slack or email, put a notification task beside `CreateCase`, or make the notification a case action so it is itself an audited execution.
+**Get the notification out of the building.** Case notifications are in-app, on the bell icon. For Slack or email, put a notification task beside `CreateCase`, or make the notification a case action so it is itself an audited execution.
 
 **Know what it isn't.** Cases is an incident record with remediation attached, living where the failures live. It is not a paging product: no on-call rotations, no escalation policies, no external ticket sync yet. And the deduplication check is not atomic, so two executions of the same task failing in the same instant can each open a case. In practice failures arrive milliseconds apart and group.
 
 ## Get started
 
-1. **Get started to 2.0** on Enterprise or Cloud. `CreateCase` ships in `plugin-kestra`, included in the default image; with self-managed plugins, install it through Versioned Plugins.
+1. **Get started with 2.0** on Enterprise or Cloud. `CreateCase` ships in `plugin-kestra`, included in the default image; with self-managed plugins, install it through Versioned Plugins.
 2. **Pick one flow that fails noisily.** Add the pattern-1 block to its `errors`. Set the group that already gets paged.
 3. **Break it on purpose.** Point it at a dead URL, run it three times. You should see one case with three linked executions and one notification.
 4. **Attach the fix.** Whatever you'd normally run to recover, add it as a case action. Run it from the case.
