@@ -51,6 +51,7 @@ Key challenges that demand orchestration include:
 *   **Error Handling and Retries**: Ingestion pipelines can fail due to network issues, malformed data, or downstream system unavailability. A dedicated orchestrator provides built-in retry mechanisms, dead-letter queues, and alerting to handle these failures gracefully without manual intervention.
 *   **Reindexing and Schema Management**: As application needs evolve, you may need to change mappings or reindex existing data into a new structure. These are complex, resource-intensive operations that must be carefully managed to avoid downtime. Orchestration allows you to schedule and monitor these tasks safely.
 *   **Integration with the Broader Stack**: Elasticsearch is rarely used in isolation. Orchestration connects it to the rest of your data ecosystem, enabling complex, [event-driven workflows](/resources/infrastructure/event-driven-orchestration) that trigger actions in other systems based on search results or data anomalies. This is foundational to building a modern [data platform](/data).
+*   **Bulk Ingestion Format**: The Bulk API expects each action and its source document on separate lines rather than a single JSON array, so pipelines usually stage documents as [NDJSON](/resources/data/ndjson) before pushing them to the index.
 
 ## Orchestrate Elasticsearch with Kestra: Event-Driven Data Ingestion
 

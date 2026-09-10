@@ -158,6 +158,7 @@ Automation is key to building reliable data products.
 Treat your dbt project like any other critical software application.
 - **GitOps:** Use Git as the single source of truth for your dbt code. All changes should go through a pull request and code review process. Kestra's ability to [manage dbt projects directly from Git](/docs/how-to-guides/dbt) makes this a natural fit.
 - **Environments:** Maintain separate configurations for development, staging, and production environments. This allows you to test changes thoroughly without impacting production analytics.
+- **Testing:** Gate every promotion on assertions about the data itself, not just a successful build. See [dbt tests explained](/resources/data/dbt-tests-explained) for the built-in generic tests and how to extend them.
 
 By combining the transformation power of dbt with a robust orchestration layer, you can build a data platform that is reliable, scalable, and easy to manage. Explore more [data engineering resources](/resources/data) to optimize your stack.
 
