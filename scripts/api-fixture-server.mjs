@@ -53,6 +53,11 @@ const UPSTREAM_TIMEOUT_MS = 30000
 
 const stats = { hits: 0, records: 0, passthrough: 0, errors: 0 }
 
+// Serialised responses by request path. Without it every hit re-parses and
+// re-stringifies the file, which costs 100 ms on the 3.6 MB plugin subgroups.
+/** @type {Map<string, { status: number; contentType: string; body: string }>} */
+const replayCache = new Map()
+
 /**
  * Whether a request path is recorded. Exact matchers ignore the query string,
  * so /v1/plugins does not swallow /v1/plugins/core.
@@ -105,12 +110,15 @@ function fixtureFile(path) {
  * @returns {{ status: number; contentType: string; body: string } | null}
  */
 function readFixture(path) {
+    const cached = replayCache.get(path)
+    if (cached) return cached
+
     try {
         const file = fixtureFile(path)
         if (!existsSync(file)) return null
 
         const fixture = JSON.parse(readFileSync(file, "utf8"))
-        return {
+        const response = {
             status: fixture.status ?? 200,
             contentType: fixture.contentType ?? "application/json",
             body:
@@ -118,6 +126,9 @@ function readFixture(path) {
                     ? fixture.body
                     : JSON.stringify(fixture.body),
         }
+        replayCache.set(path, response)
+
+        return response
     } catch (err) {
         console.warn(`  fixture unreadable, refetching ${path}: ${err}`)
         return null
@@ -151,6 +162,7 @@ function writeFixture(path, response) {
         body,
     }
     writeFileSync(file, JSON.stringify(fixture))
+    replayCache.delete(path)
 }
 
 /**
