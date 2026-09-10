@@ -72,10 +72,17 @@ jobs:
           name: lighthouse-baseline
           path: baseline/
 
+      # Report links must point at a URL a reviewer can actually open, not the
+      # ephemeral local server Lighthouse measures.
+      - name: Resolve public URL for report links
+        id: public-url
+        uses: ./.github/actions/preview-url
+
       - name: Run Lighthouse benchmark
         run: node scripts/lighthouse-benchmark.mjs
         env:
           BASE_URL: http://localhost:8787
+          BASE_URL_OUTPUT: ${{ steps.public-url.outputs.url }}
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
           MARKDOWN_FILE: lighthouse-report.md
