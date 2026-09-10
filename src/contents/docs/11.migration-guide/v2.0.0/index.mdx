@@ -24,39 +24,9 @@ If you are upgrading directly from 1.0, the [LTS migration guide (1.0 → 1.3)](
 
 ## Migration at a glance
 
-Run the planning step before opening a maintenance window.
+Before scheduling a maintenance window, run `kestra-migrate --check ./flows/` against your exported flows to classify the migration effort — automated-only or manual rewrites required. Then follow the [step-by-step tutorial](./00.migration-tutorial) for the full walkthrough with real command output from a live 1.3.5 → 2.0.0 run.
 
-**Step 0 — Assess your flows**
-
-Export your flows from the 1.3 instance, then run `kestra-migrate --check` to count how much manual work is involved:
-
-```bash
-kestra-migrate --check ./flows/
-```
-
-The output classifies your migration:
-
-| Output | Type | What it means |
-|---|---|---|
-| Only `✔` and `✎` | Automated | `kestra-migrate` handles all rewrites. One maintenance window is enough. |
-| Any `⚠ ✗` items | Manual work required | Flows using removed types (`ForEach`, `ForEachItem`, `pluginDefaults`, `taskDefaults`) need YAML rewrites before they can run on 2.0. Scope the rewrite effort before scheduling a cutover. |
-| Many `⚠ ✗` items across critical flows | Complex | Plan a dedicated rewrite phase separate from the server upgrade window. |
-
-`kestra-migrate` gives every `⚠ ✗` flow a `↳ docs:` link pointing to the relevant migration guide page for that pattern.
-
-**Steps 1–7**
-
-1. Back up your database
-2. [Export flows](./00.migration-tutorial#step-1--export-your-flows) from your 1.3 instance
-3. [Apply automated rewrites](./00.migration-tutorial#step-3--apply-the-automated-migration) — `kestra-migrate -o ./v2-flows/ ./flows/`
-4. [Fix manual items](./00.migration-tutorial#step-4--fix-manual-items) — ForEach, pluginDefaults, taskDefaults, and patterns the CLI does not catch
-5. [Upgrade the server](./00.migration-tutorial#step-5--switch-to-kestra-20) — EE: run [database migrations](./database-migrations) first
-6. [Verify behavior](./00.migration-tutorial#step-6--verify-behavior-on-20) — test executions and run the smoke-test checklist
-7. [Complete the migration](#completing-the-migration) — migrate remaining flows one at a time
-
-The [step-by-step tutorial](./00.migration-tutorial) covers every step with real command output from a live 1.3.5 → 2.0.0 run.
-
-:::alert{type="tip"}
+:::alert{type="info"}
 The [`migrate-kestra-2`](https://github.com/kestra-io/agent-skills) Claude Code skill automates the assessment and rewrite steps interactively. It runs the pre-flight audit, steps through each `⚠ ✗` pattern with a YAML diff, and applies fixes with your confirmation. Install from `kestra-io/agent-skills`, open a Claude Code session in your flows directory, and say "migrate my Kestra flows to 2.0".
 :::
 

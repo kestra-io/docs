@@ -5,6 +5,8 @@ sidebarTitle: Migration tutorial
 description: Walk through a complete Kestra 1.3 to 2.0 migration using kestra-migrate, the database migration CLI, and kestractl — with real command output at every step.
 ---
 
+import CodeTabs from "~/components/common/CodeTabs.vue"
+
 This tutorial walks through a complete migration from Kestra 1.3 to 2.0. Every command and output shown here was captured from a real 1.3.5 → 2.0.0 run against a Kestra OSS instance backed by PostgreSQL.
 
 :::alert{type="info"}
@@ -37,13 +39,10 @@ This tutorial follows seven steps: [export your flows](#step-1--export-your-flow
 
 Export your flows from the 1.3 instance before making any changes to it.
 
-```bash
-curl -u "admin@kestra.io:yourpassword" \
-  "http://localhost:8080/api/v1/flows/export/by-namespace?namespace=company.team" \
-  -o company-team-flows.zip
-
-unzip company-team-flows.zip -d ./flows/
-```
+<CodeTabs client:load storageKey="kestra-cli-preference" tabs={[
+  { label: "kestractl", code: "kestractl flows export --namespace company.team --output-file company-team-flows.zip\nunzip company-team-flows.zip -d ./flows/" },
+  { label: "curl", code: 'curl -u "admin@kestra.io:yourpassword" \\\n  "http://localhost:8080/api/v1/flows/export/by-namespace?namespace=company.team" \\\n  -o company-team-flows.zip\n\nunzip company-team-flows.zip -d ./flows/' }
+]} />
 
 Repeat for each namespace you want to migrate.
 
@@ -358,7 +357,7 @@ kestra-migrate --stay-v1-compatible -o ./v2-flows-compat/ ./flows/
 
 After `kestra-migrate`, grep for patterns the tool does not rewrite and fix them before importing to 2.0.
 
-:::alert{type="tip"}
+:::alert{type="info"}
 Two AI options can help with the manual rewrites in this step:
 
 - **`migrate-kestra-2` Claude Code skill** — an interactive agent that reads your flow files, runs a pre-flight audit, then steps through each unsupported pattern with a three-tab decision UI (ForEach/ForEachItem, Defaults, Triggers) showing the flagged YAML and the proposed rewrite before asking for confirmation. It edits the files in place. Install from [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills), then open a Claude Code session in your flows directory and say "migrate my Kestra flows to 2.0".
@@ -607,6 +606,9 @@ grep -rn "read(" ./v2-flows/
 
 # fs.local.Delete on directories (recursive default flipped)
 grep -rln "fs.local.Delete" ./v2-flows/
+
+# SDK authentication — tasks that call the Kestra API internally now require credentials
+grep -rln "io.kestra.plugin.ee.git\|io.kestra.plugin.kestra" ./v2-flows/
 ```
 
 | 1.3 | 2.0 | Guide |
@@ -617,6 +619,7 @@ grep -rln "fs.local.Delete" ./v2-flows/
 | `docker: {image: ...}` in Script tasks | `taskRunner: {type: ...Docker, containerImage: ...}` | — |
 | `read(outputs.task.uri)` on ION-producing tasks | `fromIon(read(outputs.task.uri))` — unwrapped expressions read binary ION, not usable strings | [ION binary format](../ion-binary-format/index.md) |
 | `fs.local.Delete` on a directory | Add `recursive: true` if subdirectory deletion was intended — the 2.0 default flipped to `false` and stops without error | [Local delete recursive default](../local-delete-recursive-default/index.md) |
+| Tasks that call Kestra API internally (git sync, push, fetch tasks) | Add an `auth` block with credentials, or configure a namespace default service account — without it the task fails with `401 Unauthorized` | [SDK authentication](../sdk-authentication/index.md) |
 
 :::alert{type="warning"}
 **`| json` and `json(` are runtime failures, not parse failures.** Flows using these patterns load and execute on 2.0 without error — the failure only surfaces when the expression is evaluated. `kestra-migrate --check` does not flag them. The grep is your only safety net.
@@ -815,11 +818,7 @@ All eight flows are present. The next step is to verify which ones actually exec
 ### Attempting to run `ForEach` on 2.0
 
 ```bash
-curl -s -X POST \
-  -u "admin@kestra.io:Kestra123!" \
-  -H "Content-Type: application/json" \
-  -d '{}' \
-  "http://localhost:8080/api/v1/executions/company.migration/deploy-environments"
+kestractl executions run company.migration deploy-environments
 ```
 
 ```
@@ -845,14 +844,10 @@ curl -s -u "admin@kestra.io:Kestra123!" \
 
 The `fetch-api-data` flow executes without error:
 
-```bash
-curl -s -X POST \
-  -u "admin@kestra.io:Kestra123!" \
-  -H "Content-Type: application/json" \
-  -d '{}' \
-  "http://localhost:8080/api/v1/executions/company.migration/fetch-api-data" \
-  | jq '{id: .id, state: .state.current}'
-```
+<CodeTabs client:load storageKey="kestra-cli-preference" tabs={[
+  { label: "kestractl", code: "kestractl executions run company.migration fetch-api-data" },
+  { label: "curl", code: 'curl -s -X POST \\\n  -u "admin@kestra.io:Kestra123!" \\\n  -H "Content-Type: application/json" \\\n  -d \'{}\' \\\n  "http://localhost:8080/api/v1/executions/company.migration/fetch-api-data" \\\n  | jq \'{id: .id, state: .state.current}\'' }
+]} />
 
 ```json
 {"id": "3Rp7LmWxqhK91BN2P5t4GU", "state": "RUNNING"}
@@ -876,18 +871,10 @@ The `pluginDefaults` field is not present in the 2.0 server's representation of 
 
 For flows that exist only as local YAML files (not yet uploaded to the 2.0 instance), import them from the `v2-flows/` directory after completing all manual fixes:
 
-```bash
-zip -r v2-flows.zip ./v2-flows/
-curl -u "admin@kestra.io:yourpassword" \
-  -X POST "http://localhost:8080/api/v1/flows/import" \
-  -F "fileUpload=@v2-flows.zip"
-```
-
-Or with `kestractl` on EE:
-
-```bash
-kestractl flows import --namespace company.team ./v2-flows/
-```
+<CodeTabs client:load storageKey="kestra-cli-preference" tabs={[
+  { label: "kestractl", code: "kestractl flows deploy ./v2-flows/ --namespace company.team --override" },
+  { label: "curl", code: 'zip -r v2-flows.zip ./v2-flows/\ncurl -u "admin@kestra.io:yourpassword" \\\n  -X POST "http://localhost:8080/api/v1/flows/import" \\\n  -F "fileUpload=@v2-flows.zip"' }
+]} />
 
 ### Silent behavior changes — smoke-test checklist
 
@@ -913,34 +900,23 @@ curl http://localhost:8081/health
 {"name":"kestra","status":"UP","details":{"service":{"name":"kestra","status":"UP"},"jdbc":{"name":"kestra","status":"UP"}}}
 ```
 
+**Validate all imported flows:**
+
+```bash
+kestractl flows export-by-query --output-file flows.zip
+unzip -q -o flows.zip -d flows/
+kestractl flows validate ./flows/
+```
+
+Any flow that fails to parse on the 2.0 server will be reported here. Fix reported flows before proceeding.
+
 **Run a test execution on a migrated flow:**
 
 ```bash
-curl -s -X POST \
-  -u "admin@kestra.io:Kestra123!" \
-  -H "Content-Type: application/json" \
-  -d '{"inputs": {"enabled": true, "log_level": "INFO", "environment": "staging"}}' \
-  "http://localhost:8080/api/v1/executions/company.migration/input-types-migration" \
-  | jq '{id: .id, state: .state.current}'
+kestractl executions run company.migration input-types-migration --wait
 ```
 
-Expected output (the execution ID will differ):
-
-```json
-{"id": "6Kf2NqWzpbL83MT1R7hDYc", "state": "RUNNING"}
-```
-
-Poll until `SUCCESS` (replace `<execution-id>` with the `id` from the response above):
-
-```bash
-curl -s -u "admin@kestra.io:Kestra123!" \
-  "http://localhost:8080/api/v1/executions/<execution-id>" \
-  | jq '{state: .state.current}'
-```
-
-```json
-{"state": "SUCCESS"}
-```
+`--wait` blocks until the execution reaches a terminal state. The command exits non-zero on `FAILED`, `KILLED`, or `CANCELLED`.
 
 **Check the 2.0 server logs** for any remaining WARN lines about unparseable flows. Any `InvalidTypeConstraintViolationException` lines name flows that still need manual rewriting:
 

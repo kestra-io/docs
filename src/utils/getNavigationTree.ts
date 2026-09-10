@@ -104,7 +104,7 @@ function recursivelyBuildChildren(
         return undefined
     }
 
-    if (parentId === "11.migration-guide") {
+    if (parentId === "migration-guide") {
         children.reverse()
     }
 
