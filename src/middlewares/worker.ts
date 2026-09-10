@@ -48,7 +48,7 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
 
     response.headers.set(
         "x-frame-options",
-        import.meta.env.DEV ? "SAMEORIGIN" : "DENY",
+        isInsecureOrigin ? "SAMEORIGIN" : "DENY",
     )
     response.headers.set("x-content-type-options", "nosniff")
     response.headers.set("x-download-options", "nosniff")
@@ -66,7 +66,8 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     response.headers.set("x-permitted-cross-domain-policies", "none")
     response.headers.set("content-security-policy", contentSecurityPolicy)
 
-    if (!import.meta.env.DEV) {
+    // HSTS is ignored over http anyway, so do not claim it there.
+    if (!isInsecureOrigin) {
         response.headers.set("strict-transport-security", "max-age=31536000")
     }
 

@@ -5,9 +5,9 @@ export default defineConfig({
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
 
-    // Snapshot rewrites have nothing to be flaky about, and a retried hang just
-    // multiplies the wall clock. globalTimeout is the backstop for a wedged browser.
-    retries: 0,
+    // One retry absorbs a crashed or OOM-killed browser process without a manual
+    // re-dispatch; globalTimeout is the backstop for a wedged one.
+    retries: process.env.CI ? 1 : 0,
     workers: process.env.CI ? 2 : undefined,
     timeout: 90_000,
     globalTimeout: 20 * 60_000,

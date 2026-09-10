@@ -48,8 +48,10 @@ jobs:
         if: steps.browser_cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium webkit
 
+      # An explicit if: replaces the implicit success() guard, so without it a
+      # failed install would write a partial cache under this key permanently.
       - name: Save Playwright browsers
-        if: steps.browser_cache.outputs.cache-hit != 'true'
+        if: steps.browser_cache.outputs.cache-hit != 'true' && success()
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/ms-playwright
