@@ -7,13 +7,15 @@
  * show score/metric deltas in the report (used for PR vs. main comparison).
  *
  * Usage (environment variables):
- *   BASE_URL      – Root URL to benchmark, no trailing slash (required)
- *   OUTPUT_FILE   – Path for JSON output  (default: lighthouse-results.json)
- *   BASELINE_FILE – Path to baseline JSON (optional; omit to skip comparison)
- *   MARKDOWN_FILE – Path for Markdown report (default: lighthouse-report.md)
- *   LHR_DIR       – Directory for per-page LHR JSON dumps (default: lhr-reports)
+ *   BASE_URL        – Root URL to benchmark, no trailing slash (required)
+ *   BASE_URL_OUTPUT – Public root URL used for the report links, so they stay
+ *                     clickable outside CI (default: BASE_URL)
+ *   OUTPUT_FILE     – Path for JSON output  (default: lighthouse-results.json)
+ *   BASELINE_FILE   – Path to baseline JSON (optional; omit to skip comparison)
+ *   MARKDOWN_FILE   – Path for Markdown report (default: lighthouse-report.md)
+ *   LHR_DIR         – Directory for per-page LHR JSON dumps (default: lhr-reports)
  *   MULTI_RUN_COUNT – Overrides the per-page run counts in MULTI_RUN_PATHS
- *   WARMUP_PATH   – Page requested before measuring (default: /privacy-policy)
+ *   WARMUP_PATH     – Page requested before measuring (default: /privacy-policy)
  *
  * Exits with code 0 on success, 1 on fatal error.
  * Score regressions never cause a non-zero exit — output is informational only.
@@ -204,26 +206,6 @@ const BENCHMARK_INDEX_THRESHOLD = 0.1
 // ---------------------------------------------------------------------------
 
 /**
- * Throws when a result carries no usable performance data: a page-level
- * runtime error, or a trace with no paint metrics in it.
- *
- * @param {any} lhr
- */
-function assertUsableLhr(lhr) {
-    const code = lhr.runtimeError?.code
-    if (code && code !== "NO_ERROR") {
-        throw new Error(`${code}: ${lhr.runtimeError?.message ?? ""}`)
-    }
-
-    // The non-perf categories audit without the trace, so a run can look fine
-    // while every metric is missing. Reported as 0, that reads as a real drop.
-    const fcp = lhr.audits?.["first-contentful-paint"]
-    if (fcp?.numericValue == null) {
-        throw new Error(fcp?.errorMessage ?? "no paint metrics in the trace")
-    }
-}
-
-/**
  * Runs Lighthouse on a single URL and returns the LHR (Lighthouse Result).
  *
  * @param {string} url
@@ -258,8 +240,37 @@ async function runLighthouse(url, chromePort) {
 
     if (!result?.lhr) throw new Error("Lighthouse returned no result")
 
-    assertUsableLhr(result.lhr)
+    assertScored(result.lhr)
     return result.lhr
+}
+
+/**
+ * Throws when a page failed to load: Lighthouse still returns an LHR, with
+ * null category scores that would otherwise be reported as a genuine 0.
+ *
+ * @param {any} lhr
+ */
+function assertScored(lhr) {
+    const runtimeError = lhr.runtimeError?.code
+    if (runtimeError && runtimeError !== "NO_ERROR") {
+        throw new Error(
+            `${runtimeError}: ${lhr.runtimeError?.message ?? "page did not load"}`,
+        )
+    }
+
+    const unscored = LIGHTHOUSE_CATEGORIES.filter(
+        (id) => lhr.categories?.[id]?.score == null,
+    )
+    if (unscored.length > 0) {
+        throw new Error(`No score returned for: ${unscored.join(", ")}`)
+    }
+
+    // The other categories audit without the trace, so a run can score while
+    // every metric is missing, which then reads as a genuine drop to zero.
+    const fcp = lhr.audits?.["first-contentful-paint"]
+    if (fcp?.numericValue == null) {
+        throw new Error(fcp?.errorMessage ?? "no paint metrics in the trace")
+    }
 }
 
 /**
@@ -276,9 +287,10 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
             return await runLighthouse(url, chromePort)
         } catch (err) {
             lastError = err
+            const message = err instanceof Error ? err.message : String(err)
             if (attempt < maxRetries) {
                 console.log(
-                    `    Attempt ${attempt + 1} failed, retrying in 3 s…`,
+                    `    Attempt ${attempt + 1} failed (${message}), retrying in 3 s…`,
                 )
                 await new Promise((r) => setTimeout(r, 3000))
             }
@@ -532,7 +544,7 @@ function buildMarkdown(output, baseline) {
             : "")
 
     const lines = [
-        `> Tested: \`${output.baseUrl}\` on ${testedAt}  `,
+        `> Tested on ${testedAt} &nbsp;·&nbsp; links point to \`${output.baseUrl}\`  `,
         `> ${baselineInfo}  `,
         `> ${cpuInfo}`,
         "",
@@ -545,12 +557,12 @@ function buildMarkdown(output, baseline) {
     for (const result of reportOrder(output.results)) {
         if (result.error) {
             lines.push(
-                `| [${result.label}](${result.path}) | ❌ error | ❌ error | ❌ error | ❌ error |`,
+                `| [${result.label}](${output.baseUrl}${result.path}) | ❌ error | ❌ error | ❌ error | ❌ error |`,
             )
             continue
         }
         const base = comparedBaseline?.results.find(
-            (r) => r.path === result.path,
+            (r) => r.path === result.path && !r.error,
         )
         const { scores } = result
         const bs = base?.scores
@@ -561,6 +573,14 @@ function buildMarkdown(output, baseline) {
                 `| ${scores["best-practices"]}${scoreDelta(scores["best-practices"], bs?.["best-practices"])} ` +
                 `| ${scores.seo}${scoreDelta(scores.seo, bs?.seo)} |`,
         )
+    }
+
+    const failed = output.results.filter((r) => r.error)
+    if (failed.length > 0) {
+        lines.push("")
+        for (const result of failed) {
+            lines.push(`❌ \`${result.path}\` — ${result.error}  `)
+        }
     }
 
     lines.push("", "### Core Web Vitals (lower is better)", "")
@@ -574,11 +594,13 @@ function buildMarkdown(output, baseline) {
     for (const result of reportOrder(output.results)) {
         if (result.error) {
             const cells = METRIC_DEFS.map(() => "❌").join(" | ")
-            lines.push(`| [${result.label}](${result.path}) | ${cells} |`)
+            lines.push(
+                `| [${result.label}](${output.baseUrl}${result.path}) | ${cells} |`,
+            )
             continue
         }
         const base = comparedBaseline?.results.find(
-            (r) => r.path === result.path,
+            (r) => r.path === result.path && !r.error,
         )
         const cells = METRIC_DEFS.map((def) => {
             const val = result.metrics[/** @type {keyof Metrics} */ (def.key)]
