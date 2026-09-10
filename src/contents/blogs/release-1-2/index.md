@@ -115,7 +115,7 @@ namespace: company.team
 inputs:
   - id: assets
     type: MULTISELECT
-    expression: '{{ assets(type="io.kestra.core.models.assets.Table") | jq(".[].id") }}'
+    expression: '{{ assets(type="io.kestra.plugin.ee.assets.Table") | jq(".[].id") }}'
 
 tasks:
   - id: for_each
