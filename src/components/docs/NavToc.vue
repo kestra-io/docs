@@ -13,6 +13,7 @@
                 :edit-url="editUrl"
                 :stem="stem"
                 :extension="extension"
+                :exclude-actions="excludeActions"
             />
 
             <template v-if="links?.length" class="bd-contents-list">
@@ -94,6 +95,7 @@
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
     import SocialsList from "~/components/common/SocialsList.vue"
     import MarkdownActionsMenu from "~/components/docs/MarkdownActionsMenu.vue"
+    import type { MarkdownActionId } from "~/utils/markdown-actions"
 
     export interface TocLink {
         id: string
@@ -114,6 +116,7 @@
             pagePath?: string,
             pageTitle?: string,
             pageUrl?: string,
+            excludeActions?: MarkdownActionId[],
         }>(),
         {
             links: () => [],

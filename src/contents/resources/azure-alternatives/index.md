@@ -20,6 +20,49 @@ faq:
 author: "virgile"
 hub: "infrastructure"
 alternatives_count: 6
+schema:
+  "@context": "https://schema.org"
+  "@type": "ItemList"
+  name: "Top Azure Alternatives"
+  description: "A list of the top alternatives to Microsoft Azure for cloud computing and workflow orchestration."
+  itemListElement:
+    - "@type": "ListItem"
+      position: 1
+      item:
+        "@type": "Service"
+        name: "Kestra"
+        description: "The Universal Orchestration Control Plane for unifying workloads across any cloud."
+        url: "https://kestra.io"
+    - "@type": "ListItem"
+      position: 2
+      item:
+        "@type": "Service"
+        name: "Amazon Web Services (AWS)"
+        description: "The market-leading cloud provider with the broadest portfolio of services."
+    - "@type": "ListItem"
+      position: 3
+      item:
+        "@type": "Service"
+        name: "Google Cloud Platform (GCP)"
+        description: "A cloud provider specializing in data analytics, AI/ML, and Kubernetes."
+    - "@type": "ListItem"
+      position: 4
+      item:
+        "@type": "Service"
+        name: "DigitalOcean"
+        description: "A developer-focused cloud platform known for simplicity and transparent pricing."
+    - "@type": "ListItem"
+      position: 5
+      item:
+        "@type": "Service"
+        name: "Scaleway & OVHcloud"
+        description: "Leading European cloud providers focused on data sovereignty."
+    - "@type": "ListItem"
+      position: 6
+      item:
+        "@type": "Service"
+        name: "Harness"
+        description: "A cloud-native DevOps and software delivery platform."
 ---
 
 The cloud computing landscape is constantly evolving, with organizations continually re-evaluating their infrastructure choices. While Microsoft Azure offers a robust suite of services, many factors—from cost optimization and vendor lock-in concerns to specific regional requirements or a desire for simpler developer experiences—drive the search for alternatives. The leading alternatives to Azure in 2026 range from fellow hyperscalers like AWS and GCP to specialized platforms like DigitalOcean and European providers like Scaleway, each suited to different workloads.
@@ -135,150 +178,3 @@ Selecting the best alternative depends entirely on your team's priorities and us
 The search for Azure alternatives reveals a vibrant and diverse cloud market. While hyperscalers like AWS and GCP remain the most direct competitors, a rich ecosystem of specialized IaaS, PaaS, and orchestration platforms offers compelling advantages in simplicity, cost, and functionality.
 
 As organizations increasingly adopt multi-cloud and hybrid strategies, the need for a flexible, vendor-agnostic control plane becomes critical. A universal orchestration platform like Kestra allows you to harness the best of each provider, defining your infrastructure and application workflows as code while avoiding vendor lock-in. By choosing the right combination of infrastructure and orchestration, you can build a resilient, cost-effective, and future-proof cloud strategy.
-
-## Structured data
-
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is an alternative to Azure?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "An alternative to Azure is any cloud platform that provides similar services, such as hosting, scaling, and deploying applications. These platforms offer alternatives for various reasons, including different pricing models, simpler interfaces, or specialized services. Examples include AWS, Google Cloud, DigitalOcean, Scaleway, and Kestra, among others."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is a competitor of Microsoft Azure?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Microsoft Azure's main competitors are other hyperscale cloud providers like Amazon Web Services (AWS) and Google Cloud Platform (GCP). However, many other platforms compete in specific niches, offering specialized services, different pricing, or regional advantages, such as DigitalOcean for simplicity or Scaleway for European data sovereignty."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Who are the big 3 cloud providers?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The three biggest cloud service providers globally are Amazon Web Services (AWS), Google Cloud Platform (GCP), and Microsoft Azure. These providers dominate the market, offering extensive portfolios of services ranging from compute and storage to advanced AI and machine learning capabilities."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is Azure being replaced with?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Azure itself is not being replaced, but some specific services may evolve or be rebranded. For instance, Azure Active Directory has been rebranded as Microsoft Entra ID. For organizations looking to move away from Azure, a variety of alternatives offer similar or enhanced capabilities, depending on their specific needs."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can Kestra replace Azure?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Kestra is not a direct replacement for Azure as an IaaS/PaaS cloud provider. Instead, Kestra acts as an orchestration control plane that can coordinate workflows across Azure, other clouds, on-premise infrastructure, and various tools. It can orchestrate Azure services, complementing or enhancing existing Azure deployments, or facilitate multi-cloud strategies."
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  "name": "Top Azure Alternatives",
-  "description": "A list of the top alternatives to Microsoft Azure for cloud computing and workflow orchestration.",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "item": {
-        "@type": "Service",
-        "name": "Kestra",
-        "description": "The Universal Orchestration Control Plane for unifying workloads across any cloud.",
-        "url": "https://kestra.io"
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "item": {
-        "@type": "Service",
-        "name": "Amazon Web Services (AWS)",
-        "description": "The market-leading cloud provider with the broadest portfolio of services."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "item": {
-        "@type": "Service",
-        "name": "Google Cloud Platform (GCP)",
-        "description": "A cloud provider specializing in data analytics, AI/ML, and Kubernetes."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "item": {
-        "@type": "Service",
-        "name": "DigitalOcean",
-        "description": "A developer-focused cloud platform known for simplicity and transparent pricing."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 5,
-      "item": {
-        "@type": "Service",
-        "name": "Scaleway & OVHcloud",
-        "description": "Leading European cloud providers focused on data sovereignty."
-      }
-    },
-    {
-      "@type": "ListItem",
-      "position": 6,
-      "item": {
-        "@type": "Service",
-        "name": "Harness",
-        "description": "A cloud-native DevOps and software delivery platform."
-      }
-    }
-  ]
-}
-```
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://kestra.io"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Resources",
-      "item": "https://kestra.io/resources"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Infrastructure",
-      "item": "https://kestra.io/resources/infrastructure"
-    },
-    {
-      "@type": "ListItem",
-      "position": 4,
-      "name": "Azure alternatives: Top Cloud Computing Platforms"
-    }
-  ]
-}
-```

@@ -316,6 +316,7 @@
                                         <div class="item-row">
                                             <component :is="item.icon" />
                                             <span>{{ item.title }}</span>
+                                            <OpenInNew v-if="item.target === '_blank'" class="external-link-icon" />
                                         </div>
                                     </a>
                                 </li>
@@ -636,6 +637,7 @@
                                                         <span>{{
                                                             item.title
                                                         }}</span>
+                                                        <OpenInNew v-if="item.target === '_blank'" class="external-link-icon" />
                                                         <strong
                                                             v-if="item.tag"
                                                             class="tag"
@@ -718,6 +720,7 @@
     import GithubButton from "~/components/layout/GithubButton.vue"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Close from "vue-material-design-icons/Close.vue"
+    import OpenInNew from "vue-material-design-icons/OpenInNew.vue"
     import Segment from "vue-material-design-icons/Segment.vue"
     import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
@@ -756,6 +759,29 @@
 
     let collapse: Collapse | undefined = undefined
 
+    function isEditable(target: EventTarget | null): boolean {
+        const el = target instanceof HTMLElement ? target : null
+        if (!el) return false
+        return (
+            el.tagName === "INPUT" ||
+            el.tagName === "TEXTAREA" ||
+            el.tagName === "SELECT" ||
+            el.isContentEditable
+        )
+    }
+
+    function handleShortcut(e: KeyboardEvent) {
+        if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+        if (isEditable(e.target)) return
+        if (e.key.toLowerCase() === "a") {
+            e.preventDefault()
+            const modal = document.getElementById("search-ai-modal")
+            if (modal && window.$bootstrap) {
+                window.$bootstrap.Modal.getOrCreateInstance(modal).show()
+            }
+        }
+    }
+
     function getCollapseInstance(): Collapse | undefined {
         if (!collapse) {
             const BootstrapCollapse = window.$bootstrap?.Collapse
@@ -792,6 +818,7 @@
 
         useEventListener(window, "resize", syncMobileState)
         useEventListener(window, "scroll", syncScrollState, { passive: true })
+        useEventListener(window, "keydown", handleShortcut)
 
         document.documentElement.style.setProperty(
             "--top-bar-height",
@@ -1313,7 +1340,7 @@
                 padding: 0.25rem;
             }
 
-            @include media-breakpoint-between(xl, xxl) {
+@include media-breakpoint-between(xl, xxl) {
                 .btn:not(.icon-button) {
                     padding-inline: 0.5rem;
                     font-size: $font-size-sm;
@@ -1797,6 +1824,10 @@
                                         align-self: unset;
                                         color: var(--ks-icon-color);
                                         transition: color 0.2s ease;
+
+                                        &.external-link-icon {
+                                            margin: 0;
+                                        }
                                     }
 
                                     &:hover {
@@ -1831,6 +1862,15 @@
             width: 16px;
             height: 16px;
             filter: brightness(0);
+        }
+    }
+
+    .external-link-icon.material-design-icon {
+        margin: 0;
+
+        :deep(svg) {
+            width: 14px;
+            height: 14px;
         }
     }
 </style>

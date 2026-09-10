@@ -20,3 +20,7 @@ Test resource
 - `content` (String) The actual Test YAML content
 - `namespace` (String) The Test namespace
 - `test_id` (String) The Test id
+
+### Optional
+
+- `tenant_id` (String) The tenant id. Defaults to the provider tenant when omitted.

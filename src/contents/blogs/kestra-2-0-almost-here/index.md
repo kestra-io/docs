@@ -8,7 +8,7 @@ author:
   image: ldehon
   linkedin: https://www.linkedin.com/in/ludovic-dehon/
   role: CTO & Co-founder
-image: ./main.png
+image: ./main.jpg
 ---
 
 Kestra 2.0 marks the biggest update in the project's history with a complete overhaul of the execution engine, a redesigned UI, and the most substantial set of changes we've ever released. Importantly, **Kestra 2.0 remains open source under the Apache 2.0 license**, the same as from the start. Unlike many projects that use major versions to change licenses, we are leveraging ours to open up earlier.
@@ -56,7 +56,7 @@ And if you would rather watch before you jump in, we are hosting a series of pre
 
 Your existing flows continue to work. A few advanced constructs, such as ForEach and trigger conditions, will require a guided migration.
 
-We would rather tell you now than surprise you later, so we built the tooling first. The [flow migration CLI](https://github.com/kestra-io/kestra2-flow-migration) is already public: point it at your flow YAML to get a per-flow diff of what 2.0 changes, and preview everything with a dry run before touching anything. The full migration guide documents every change with before-and-after examples.
+We would rather tell you now than surprise you later, so we built the tooling first. The [flow migration CLI](https://github.com/kestra-io/kestra2-flow-migration) is already public: point it at your flow YAML to get a per-flow diff of what 2.0 changes, and preview everything with a dry run before touching anything. The [full migration guide](/docs/migration-guide/v2.0.0) documents every change with before-and-after examples.
 
 ## The releases you remember are the ones you were part of
 
@@ -65,3 +65,7 @@ Kestra exists because engineers adopted it, contributed to it, and trusted that 
 Kestra 2.0 is almost here. Download [the latest release candidate](https://github.com/kestra-io/kestra/releases/tag/v2.0.0-rc7), or [pull the same build from Docker Hub](https://hub.docker.com/layers/kestra/kestra/v2.0.0-rc7/images/sha256-e85ab0746d54f7d6c87cbc31fefa587caeb28f78b55ea81a89e893eadf3e6442). Then join the [Early Adopter Program](/early-adopter-program), or tell us what you found on [Slack](/slack).
 
 The engine is rebuilt. Help shape the future of orchestration.
+
+:::alert{type="info"}
+**Update, September 8, 2026: Kestra 2.0 is generally available.** The engineering deep dives are out: [what changed in the engine](/blogs/2026-09-01-kestra20-rebuild-engine), [the 1.3 against 2.0 benchmarks](/blogs/performance-improvements-2-0), [how to choose your backend](/blogs/kestra-2-0-backend-choice), [any flow as a tool your agents can call](/blogs/2026-09-04-kestra-2-0-flows-as-agent-tools), and [plugin performance improvements](/blogs/plugin-performance-improvements).
+:::

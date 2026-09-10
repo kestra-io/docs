@@ -1,15 +1,12 @@
 ---
 import NavSideBar from "~/components/docs/NavSideBar.vue"
 import Layout from "~/components/layout.astro"
-import { buildDocsNavigation } from "~/utils/buildDocsNavigation"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 import { generatePageNames, recursivePages } from "~/utils/navigation"
+import { getDocsLatestVersion, getKnownDocVersions } from "~/utils/docVersionsFetch"
 import squaredGrid from "~/assets/squared-grid.svg"
-
-const navigation = await buildDocsNavigation()
-
-const pageList = recursivePages(navigation[0])
-const pageNames = generatePageNames(navigation[0])
+import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
+import FeatureScopeMarker from "~/components/docs/FeatureScopeMarker.astro"
 
 interface Props {
     title?: string
@@ -18,16 +15,44 @@ interface Props {
     pageTitle?: string
     isHomePage?: boolean
     image?: string
+    /** Nav tree; each caller builds its own (content collection or version children map). */
+    navigation: { title: string; children: NavigationItem[] }[]
+    /** Version label of the page being viewed (e.g. "1.2"), unset on the latest docs. */
+    currentVersion?: string
+    /** Override the canonical URL (e.g. the real /docs/{version}/... path for a rewritten route). */
+    canonical?: string
+    /** Override the analytics content-view-name; independent of `canonical`. */
+    analyticsSlug?: string
+    noindex?: boolean
+    /** Explicit breadcrumb trail, bypassing the slug-split default (the versioned docs page's version segment isn't a real page). */
+    breadcrumbItems?: { label: string; href: string }[]
+    /** Frontmatter `editions` of the page, rendered as "Available on:" pills above the body. */
+    editions?: string[]
 }
 
 const props = Astro.props as Props
+const { navigation } = props
+
+const pageList = recursivePages(navigation[0])
+const pageNames = generatePageNames(navigation[0])
+
+// Version selector data. Fetched once per build (memoized); lets readers jump
+// from the latest docs to any known version (served by the middleware).
+const [latestDocVersion, knownDocVersions] = await Promise.all([
+    getDocsLatestVersion(),
+    getKnownDocVersions(),
+])
+
+const canonicalHref = props.canonical
+    ? new URL(props.canonical, Astro.url).href
+    : Astro.url.href
 
 const techArticleSchema = {
     "@context": "https://schema.org",
     "@type": "TechArticle",
-    "@id": Astro.url.href,
+    "@id": canonicalHref,
     "headline": props.pageTitle ?? props.title ?? "Kestra Documentation",
-    "url": Astro.url.href,
+    "url": canonicalHref,
     "inLanguage": "en",
     ...(props.description ? { description: props.description } : {}),
     "isPartOf": {
@@ -43,7 +68,14 @@ const techArticleSchema = {
 }
 ---
 
-<Layout title={props.title} description={props.description} image={props.image}>
+<Layout
+    title={props.title}
+    description={props.description}
+    image={props.image}
+    canonical={props.canonical}
+    analyticsSlug={props.analyticsSlug}
+    noindex={props.noindex}
+>
     <Fragment slot="head">
         <script is:inline type="application/ld+json" set:html={JSON.stringify(techArticleSchema)} />
     </Fragment>
@@ -67,6 +99,9 @@ const techArticleSchema = {
             type="docs"
             navigation={navigation}
             slug={props.activeStem}
+            latestVersion={latestDocVersion}
+            knownVersions={knownDocVersions.versions}
+            currentVersion={props.currentVersion}
             client:idle
             transition:persist
         />
@@ -79,11 +114,13 @@ const techArticleSchema = {
             ]}
         >
             <div class="bd-title">
+                <slot name="banner" />
                 <Breadcrumb
                     slug={props.activeStem}
                     pageList={pageList}
                     pageNames={pageNames}
                     pageTitle={props.pageTitle}
+                    items={props.breadcrumbItems}
                 />
                 <slot name="title" />
             </div>
@@ -92,6 +129,7 @@ const techArticleSchema = {
             <div class="layout-docs">
                 <div class="bd-content">
                     <blockquote class="llms-directive">For the complete documentation index, see <a href="/llms.txt">llms.txt</a>. For a full content snapshot, see <a href="/llms-full.txt">llms-full.txt</a>. Append <code>.md</code> to any <code>kestra.io/docs/*</code> URL for plain Markdown.</blockquote>
+                    <FeatureScopeMarker editions={props.editions} />
                     <slot />
                 </div>
             </div>

@@ -8,6 +8,7 @@
             :page="page"
             :description="description"
             :orchestration-links="orchestrationLinks"
+            :task-urls="taskUrls"
         />
     </Suspense>
 </template>
@@ -19,5 +20,6 @@
         page: { title: string; includedTasks?: string[] }
         description: string
         orchestrationLinks?: { slug: string; name: string }[]
+        taskUrls?: Record<string, string>
     }>()
 </script>

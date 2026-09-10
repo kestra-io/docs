@@ -173,11 +173,12 @@ export const menuItems: MenuItems = {
             {
                 icon: School,
                 title: "Courses",
-                link: "https://academy.kestra.io"
+                link: "https://academy.kestra.io",
+                target: "_blank"
             },
             {
                 icon: PresentationPlay,
-                title: "Webinars",
+                title: "Events",
                 link: "https://luma.com/kestra",
                 target: "_blank"
             },

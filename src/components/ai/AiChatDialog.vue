@@ -238,6 +238,16 @@
         sendMessage()
     }
 
+    const setUserInput = (value: string): void => {
+        userInput.value = value
+        nextTick(() => {
+            autoResize()
+            textareaRef.value?.focus()
+        })
+    }
+
+    defineExpose({ setUserInput })
+
     const clearMessage = (): void => {
         abortController.value.abort()
         abortController.value = new AbortController()
@@ -763,7 +773,7 @@
 
                         &:hover {
                             border-color: var(--ks-border-secondary);
-                            color: var(--ks-background-body);
+                            color: var(--ks-content-primary);
                         }
 
                         @include media-breakpoint-down(md) {
