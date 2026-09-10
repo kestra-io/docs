@@ -126,7 +126,7 @@ The right tools are essential for implementing a Day-2 strategy at scale. The mo
 - **Monitoring and Observability Tools:** Prometheus, Grafana, Datadog, and OpenTelemetry provide the visibility needed to understand system health.
 - **IaC Tools:** Terraform, OpenTofu, and Ansible are used to manage infrastructure declaratively, preventing configuration drift.
 - **ITSM Platforms:** ServiceNow and Jira help manage incident response, change requests, and operational workflows.
-Choosing the [best IT automation platform](/resources/infrastructure/it-automation-platform) is a key decision that can significantly impact operational efficiency. The goal is a cohesive stack that provides a single source of truth and control, which is the core promise of an [infrastructure automation control plane](/infra-automation).
+Choosing the [best IT automation platform](/resources/infrastructure/it-automation-platform) is a key decision that can significantly impact operational efficiency. The goal is a cohesive stack that provides a single source of truth and control, which is the core promise of an [infrastructure automation control plane](/infra-automation). Virtual machines are where most day-2 activity actually lands, from patching to right-sizing to decommissioning — see [VM lifecycle management](/resources/infrastructure/vm-lifecycle-management) for that end-to-end view.
 
 ### Best Practices for Managing Post-Deployment Complexity
 

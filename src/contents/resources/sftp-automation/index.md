@@ -48,7 +48,7 @@ While a simple cron job running a shell script can automate a basic SFTP transfe
 - **Auditability and Compliance**: For regulated industries, proving that a file was sent or received is non-negotiable. Orchestration provides detailed audit logs for every execution, tracking who did what, when, and whether it succeeded or failed.
 - **Dependency Management**: An SFTP download might be the first step in a long chain of tasks, such as loading data into a warehouse, running a dbt model, and then updating a BI dashboard. Orchestration ensures these dependent tasks run in the correct order.
 - **Scalability and Concurrency**: Handling a high volume of transfers or running multiple transfers in parallel requires a system designed for concurrency, which is beyond the scope of simple scripts.
-- **Secure Credential Management**: An orchestration platform provides a centralized and secure way to manage credentials, keys, and other secrets, preventing them from being hardcoded in scripts. You can learn more about [workflow secret management](/resources/infrastructure/workflow-secret-management) to enhance your security.
+- **Secure Credential Management**: An orchestration platform provides a centralized and secure way to manage credentials, keys, and other secrets, preventing them from being hardcoded in scripts. You can learn more about [workflow secret management](/resources/infrastructure/workflow-secret-management) to enhance your security. Teams that would rather buy this capability than build it can compare packaged options in our guide to [managed file transfer software](/resources/infrastructure/best-managed-file-transfer-software).
 
 ## Orchestrate SFTP Transfers with Kestra: An Automated Retail Supplier Ingestion Flow
 

@@ -101,6 +101,7 @@ BPM provides a structured methodology for applying BPA effectively. The lifecycl
 3.  **Execute:** Implement the process using a BPA tool. This involves configuring integrations, building the workflow logic, and testing it thoroughly.
 4.  **Monitor:** Track the performance of the automated process in real-time. Collect data on key metrics like cycle time, error rates, and cost per transaction.
 5.  **Optimize:** Analyze the performance data to identify bottlenecks or areas for improvement. Use these insights to refine the workflow, and then repeat the cycle.
+5.  **Justify:** Before the first cycle runs, the programme needs funding. See [building the business case for automation](/resources/business/business-case-for-automation) for how to quantify and present it.
 
 ### Choosing the right BPA tools and solutions
 
