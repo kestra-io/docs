@@ -270,7 +270,7 @@ When a test fails, dbt provides the information you need to diagnose the problem
 
 While `dbt test` is a powerful command-line tool, its true potential is unlocked when it's automated and integrated into your broader data ecosystem. This is [why an orchestration platform like Kestra](https://kestra.io/docs/why-kestra) comes in.
 
-Kestra allows you to [orchestrate dbt workflows](https://kestra.io/use-cases/dbt) with a simple, declarative YAML interface. You can easily create a pipeline that builds your dbt models and then runs your tests as two separate, observable steps within a single workflow. You can also build [scalable dbt workflows with Kestra's built-in Code Editor and Git Sync features](https://kestra.io/blogs/2024-10-08-dbt-kestra).
+Kestra allows you to [orchestrate dbt workflows](/docs/use-cases/dbt) with a simple, declarative YAML interface. You can easily create a pipeline that builds your dbt models and then runs your tests as two separate, observable steps within a single workflow. You can also build [scalable dbt workflows with Kestra's built-in Code Editor and Git Sync features](https://kestra.io/blogs/2024-10-08-dbt-kestra).
 
 Here’s an example of a Kestra flow that runs dbt tests after building the models. Note the `WorkingDirectory` task, which ensures the cloned repository is available to the dbt tasks that follow:
 
