@@ -55,6 +55,7 @@ What an agent cannot supply for itself is durable state, retries and an audit tr
 *   **Error Handling and Resilience**: What happens when a tool fails or an LLM gives an unexpected response? Orchestration platforms provide automatic retries, fallback mechanisms, and human-in-the-loop approval gates to ensure resilience.
 *   **Observability and Auditability**: For debugging and compliance, you need a clear record of an agent's decisions, tool calls, and outcomes. A central control plane offers detailed logs and audit trails for every execution.
 *   **Scalability and Resource Management**: An orchestration engine can handle concurrent agent executions, manage compute resources efficiently, and scale your agentic workflows as demand grows.
+*   **Tool Definition**: Agents are only as capable as the tools they can call, and frameworks such as [FastMCP](/resources/ai/fast-mcp) standardise how those tools are declared and served.
 
 ## Building AI Agents with Declarative Kestra: A Practical Example
 

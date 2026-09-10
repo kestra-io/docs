@@ -32,7 +32,7 @@ Active Directory (AD) automation is the practice of using software, scripts, and
 Automating Active Directory tasks provides several immediate and long-term advantages for IT departments:
 - **Reduced manual effort and human error**: Automation eliminates the repetitive, error-prone nature of manual data entry and configuration. This ensures that tasks like user provisioning are performed correctly every time.
 - **Improved consistency and compliance**: Automated workflows enforce standard configurations and policies consistently. This is critical for maintaining security posture and meeting regulatory compliance requirements.
-- **Faster response times for user provisioning/deprovisioning**: Onboarding new employees or offboarding departing ones can be executed in minutes instead of hours or days, granting or revoking access promptly to secure company resources.
+- **Faster response times for user provisioning/deprovisioning**: Onboarding new employees or offboarding departing ones can be executed in minutes instead of hours or days, granting or revoking access promptly to secure company resources. Active Directory is usually one system inside a wider chain of provisioning steps, described in [identity and access management workflow](/resources/infrastructure/identity-and-access-management-workflow).
 
 ### Why Active Directory automation is essential for IT
 In modern IT landscapes, automation is no longer a luxury but a necessity.

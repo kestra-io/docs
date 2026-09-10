@@ -67,7 +67,7 @@ A robust data ingestion system is composed of several key elements working in co
 - **Connectors/Agents:** Software components that connect to data sources and extract the data. These can be API clients, database drivers, or specialized agents. A platform with a rich ecosystem of [plugins](https://kestra.io/plugins) can connect to virtually any source.
 - **Ingestion Layer:** The transport mechanism that moves the data. For real-time ingestion, this is often a message broker like Apache Kafka or AWS SQS. For batch, it might be a direct transfer protocol.
 - **Staging Area:** An intermediate storage location, such as a data lake or cloud storage (e.g., S3, GCS), where raw data is landed before further processing.
-- **Orchestration Layer:** The brain of the system. An orchestrator like Kestra coordinates all the components, managing schedules, dependencies, retries, and monitoring the entire ingestion workflow. Learn more about the role of [data orchestration](/resources/data/data-orchestration) in modern pipelines.
+- **Orchestration Layer:** The brain of the system. An orchestrator like Kestra coordinates all the components, managing schedules, dependencies, retries, and monitoring the entire ingestion workflow. Learn more about the role of [data orchestration](/resources/data/data-orchestration) in modern pipelines. On Snowflake specifically, continuous loading is handled by [Snowpipe](/resources/data/snowpipe), which reacts to files landing in cloud storage.
 
 ### Common Data Ingestion Architecture Patterns
 
