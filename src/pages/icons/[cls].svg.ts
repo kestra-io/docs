@@ -4,9 +4,11 @@ export const prerender = false
 import { $fetchApiRawCached } from "~/utils/fetch.ts"
 import { optimizeSvgIcon } from "~/utils/svgo"
 
-// The API serves this blank-page outline for any type it cannot resolve. It resolves against the
-// running Kestra, so every class removed or renamed since the current release gets it, which on an
-// archived version page is a real task with an empty sheet where its icon should be.
+// Path from DEFAULT_ICON in api.kestra.io PluginController, the blank sheet it serves for any type
+// it cannot resolve. Icons resolve against the running Kestra, so anything renamed or removed since
+// the current release gets it, which on an archived page is a real task with no icon. The response
+// carries no other signal that it is a fallback, so matching the path is the only way to spot one.
+// If DEFAULT_ICON ever changes there, this stops matching and blanks come back.
 const PLACEHOLDER_PATH = "M288 32H0v448h384V128l-96-96z"
 
 async function fetchIcon(type: string): Promise<string | null> {
