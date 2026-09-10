@@ -79,7 +79,7 @@
     "slugify": "^1.6.9",
     "strip-indent": "^4.1.1",
     "svgo": "^4.1.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "unist-util-visit": "^5.1.0",
     "vanilla-cookieconsent": "^3.1.0",
     "vue": "^3.5.42",
