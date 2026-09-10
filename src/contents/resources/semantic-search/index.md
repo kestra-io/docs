@@ -132,6 +132,8 @@ A semantic search index is only as good as the data it contains. Kestra can auto
 3.  **Generating Embeddings:** Calling an LLM or a dedicated embedding model via an API.
 4.  **Indexing:** Loading the text chunks and their corresponding vectors into a vector database like Elasticsearch or OpenSearch.
 
+Assembled end to end, this is the same pipeline that commercial enterprise search platforms sell as a managed service. Our guide to [Glean alternatives](/resources/ai/glean-alternatives) compares building it in-house against buying it.
+
 This entire process can be defined as a declarative YAML workflow in Kestra, ensuring it is version-controlled, auditable, and repeatable.
 
 ```yaml
