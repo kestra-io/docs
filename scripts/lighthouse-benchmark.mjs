@@ -15,7 +15,8 @@
  *   MARKDOWN_FILE   – Path for Markdown report (default: lighthouse-report.md)
  *   LHR_DIR         – Directory for per-page LHR JSON dumps (default: lhr-reports)
  *   MULTI_RUN_COUNT – Overrides the `runs` counts in the page sample
- *   WARMUP_PATH     – Page requested before measuring (default: /privacy-policy)
+ *   WARMUP_PATH     – Page warmed before measuring (default: /privacy-policy);
+ *                     the sample's SSR pages are warmed after it
  *
  * Exits with code 0 on success, 1 on fatal error.
  * Score regressions never cause a non-zero exit — output is informational only.
@@ -272,13 +273,14 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
 }
 
 /**
- * Requests the warm-up page a few times, discarding every response, so the
- * workerd compile and the first shared-asset reads stay out of the traces.
+ * Requests a page a few times, discarding every response, so the work its
+ * first hit does stays out of the measured traces.
  *
  * @param {string} url
+ * @param {number} [requests=WARMUP_REQUESTS]
  */
-async function warmUp(url) {
-    for (let i = 0; i < WARMUP_REQUESTS; i++) {
+async function warmUp(url, requests = WARMUP_REQUESTS) {
+    for (let i = 0; i < requests; i++) {
         try {
             const response = await fetch(url, {
                 signal: AbortSignal.timeout(30000),
@@ -644,8 +646,16 @@ async function main() {
 
     mkdirSync(LHR_DIR, { recursive: true })
 
-    process.stdout.write(`Warming up on ${WARMUP_PATH}… `)
+    // WARMUP_PATH covers the workerd compile and the shared layout assets. The
+    // SSR routes each compile and render on their own first hit, so they follow.
+    const ssrPaths = PAGES.filter((page) => page.ssr).map((page) => page.path)
+    process.stdout.write(
+        `Warming up on ${WARMUP_PATH} and ${ssrPaths.length} SSR pages… `,
+    )
     await warmUp(`${BASE_URL}${WARMUP_PATH}`)
+    for (const path of ssrPaths) {
+        await warmUp(`${BASE_URL}${path}`, 1)
+    }
     console.log("done\n")
 
     /** @type {PageResult[]} */
