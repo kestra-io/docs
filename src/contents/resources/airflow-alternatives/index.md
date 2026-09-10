@@ -33,7 +33,7 @@ Common pain points include:
 - **Operational Overhead and Complexity:** Managing Airflow's distributed components—scheduler, webserver, worker nodes, and metadata database—requires significant operational expertise. Debugging DAGs written in Python can be cumbersome, and dependency conflicts within the Python environment are a frequent source of friction.
 - **Python-centric Limitations:** Airflow's "DAGs as Python code" paradigm is a major hurdle for polyglot teams. Orchestrating non-Python workloads like SQL, shell scripts, or Java applications often requires wrapping them in Python operators, adding unnecessary layers of complexity and making workflows less accessible to non-Python developers.
 - **Scaling and Performance Challenges:** Airflow was designed primarily for scheduled batch jobs. While it can be adapted for event-driven or high-throughput scenarios, it's not its native strength. Scaling workers and tuning the scheduler for dynamic, real-time workloads can be a significant engineering challenge.
-- **Vendor Lock-in and Ecosystem Constraints:** Managed services like Amazon MWAA and Google Cloud Composer simplify deployment but can lead to vendor lock-in and inherit the same core architectural limitations. This can make it difficult to build a truly hybrid or multi-cloud orchestration strategy. For a deeper dive into these challenges, see our detailed [Kestra vs. Airflow comparison](https://kestra.io/vs/airflow).
+- **Vendor Lock-in and Ecosystem Constraints:** Managed services like [Amazon MWAA](/resources/data/amazon-mwaa-alternatives) and Google Cloud Composer simplify deployment but can lead to vendor lock-in and inherit the same core architectural limitations. This can make it difficult to build a truly hybrid or multi-cloud orchestration strategy. For a deeper dive into these challenges, see our detailed [Kestra vs. Airflow comparison](https://kestra.io/vs/airflow).
 
 ## How we evaluated these alternatives
 
@@ -152,7 +152,7 @@ Kedro is an open-source Python framework for creating reproducible, maintainable
 
 ### 10. Luigi: Simple Workflow Management for Python
 
-Luigi is an open-source Python package developed by Spotify for building complex pipelines of batch jobs. It focuses on dependency resolution and workflow management.
+[Luigi](/resources/data/luigi-alternatives) is an open-source Python package developed by Spotify for building complex pipelines of batch jobs. It focuses on dependency resolution and workflow management.
 
 - **Strengths:** Luigi is lightweight and easy to integrate into existing Python projects. It allows developers to define tasks and their dependencies programmatically in Python, making it a simple, code-centric solution for managing batch jobs.
 - **Trade-offs vs. Kestra:** It lacks many features of modern orchestrators, such as a rich UI, event-driven triggers, polyglot support, and distributed execution out-of-the-box. It is best suited for simpler batch processing and has been largely superseded by more comprehensive tools.
