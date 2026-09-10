@@ -15,8 +15,8 @@ A flow execution in Kestra is an object that contains:
   - Their attempts, including:
     - Metrics
     - State history
-  - Their outputs
-  - Their state history
+  - Outputs
+  - State history
 
 Internally:
 - Each TaskRun belongs to the same execution context, which holds all task data for the entire flow.
