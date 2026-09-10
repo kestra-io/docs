@@ -17,11 +17,11 @@ Kestra 2.0 closes that gap. **Cases turns any execution into an incident: own it
 
 ## What changes when incidents live in the orchestrator
 
-The first failure opens a case. The ninety-nine that follow attach to it. One notification goes out, and every failure is accounted for instead of drowned in a muted channel.
+The first failure opens a case; the ninety-nine that follow attach to it. This means, one notification goes out, and every failure is accounted for instead of drowned in a muted channel.
 
-Each case has an owner: assignee, watchers, two SLA clocks. Time to acknowledge and time to resolve both count down on the board. A missed deadline becomes an event on the timeline and a notification to the people who need to know. Acknowledging changes notification behavior, but it never changes detection; new failures keep attaching to the open case regardless of status.
+Each case has an owner: assignee, watchers, two SLA clocks, where the time to acknowledge and time to resolve both count down on the board. A missed deadline becomes an event on the timeline and a notification to the people who need to know. And importantly, an acknowledgement changes notification behavior, but it never changes detection; new failures keep attaching to the open case regardless of status.
 
-Remediation lives on the same record. Flows attach to a case as action buttons: click one, fill its inputs, and it runs as a normal Kestra execution linked back to the case, labeled with its ID, governed by the same RBAC as everything else. The step you would have looked up in a runbook is now the trail of what actually happened.
+When ready to resolve, Remediation lives on the same record. Flows can be attached to a case as action buttons: click one, fill its inputs, and it runs as a normal Kestra execution linked back to the case, labeled with its ID, governed by the same RBAC as everything else in the platform. The step you would have looked up in a runbook is now the trail of what actually happened.
 
 Closing a case requires a reason: Fixed, Workaround applied, Configuration change, Duplicate, No action needed, Won't fix. You can always ask how many incidents were configuration changes versus dependency outages. No need to datamine through Slack, Resolution is a queryable fact.
 
