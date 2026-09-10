@@ -21,11 +21,11 @@ faq:
     answer: "The '30% rule' is an informal heuristic suggesting that even highly automated AI systems should keep humans involved in roughly 30% of decisions — typically the ambiguous, high-stakes, or novel cases — while automation handles the routine majority. It is not a formal standard; the right ratio depends on the domain, risk tolerance, and system maturity, and mature HITL systems shrink the human share over time as confidence grows."
 ---
 
-> **TL;DR** — Human-in-the-Loop (HITL) orchestration integrates human decisions into automated workflows as explicit, auditable approval gates — essential for deploying AI agents, data pipelines, and infrastructure automation in high-stakes or regulated contexts.
+> **TL;DR** — Human-in-the-Loop (HITL) orchestration integrates human decisions into automated workflows as explicit, auditable approval gates — essential for deploying AI agents, data pipelines, infrastructure automation, and business process workflows in high-stakes or regulated contexts.
 
 AI agents can now classify incoming requests, parse documents, draft responses, and call APIs end to end. What they can't do is take responsibility. When a workflow is about to send a customer-facing reply, approve a transaction, or modify production infrastructure, someone accountable needs to say yes.
 
-Human-in-the-Loop (HITL) orchestration is how you build that "yes" into an automated system without breaking it: the workflow pauses, routes the decision to the right person, waits — for minutes or for days — and resumes with the human decision recorded in the audit trail. This article covers what HITL orchestration is, why it's the prerequisite for putting AI agents in production, and how to implement it declaratively.
+Human-in-the-Loop (HITL) orchestration is how you build that "yes" into an automated system without breaking it: the workflow pauses, routes the decision to the right person, waits — for minutes or for days — and resumes with the human decision recorded in the audit trail. At its heart, this is a business process pattern — approval, sign-off, escalation, and routing to a reviewer — which makes HITL native to business process orchestration, one of the core categories of unified orchestration alongside AI, data pipelines, and infrastructure. This article covers what HITL orchestration is, why it's the prerequisite for putting AI agents in production, and how to implement it declaratively.
 
 ## What is Human-in-the-Loop (HITL) Orchestration?
 
@@ -161,6 +161,7 @@ Modern orchestration platforms also allow reviewers to submit their decisions vi
 
 HITL is not just for fraud detection. The pattern is fundamental across any domain where automation needs accountability:
 
+*   **Business Process Approvals:** Routing approvals, sign-offs, and escalations — purchase orders, contract sign-off, employee onboarding, or policy exceptions — to the right person before a process moves forward. See the [Business Processes workflow example](/blueprints/business-processes) blueprint.
 *   **AI Agent Output Review:** Approving AI-generated customer service emails, marketing copy, or technical documentation before it's published.
 *   **Fraud Detection and Risk Assessment:** Validating flagged insurance claims or loan applications.
 *   **Document and Identity Validation:** Having a human verify documents that an OCR or AI model couldn't parse with high confidence.
