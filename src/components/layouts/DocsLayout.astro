@@ -6,6 +6,7 @@ import { generatePageNames, recursivePages } from "~/utils/navigation"
 import { getDocsLatestVersion, getKnownDocVersions } from "~/utils/docVersionsFetch"
 import squaredGrid from "~/assets/squared-grid.svg"
 import type { NavigationItem } from "~/components/docs/RecursiveNavSidebar.vue"
+import FeatureScopeMarker from "~/components/docs/FeatureScopeMarker.astro"
 
 interface Props {
     title?: string
@@ -25,6 +26,8 @@ interface Props {
     noindex?: boolean
     /** Explicit breadcrumb trail, bypassing the slug-split default (the versioned docs page's version segment isn't a real page). */
     breadcrumbItems?: { label: string; href: string }[]
+    /** Frontmatter `editions` of the page, rendered as "Available on:" pills above the body. */
+    editions?: string[]
 }
 
 const props = Astro.props as Props
@@ -126,6 +129,7 @@ const techArticleSchema = {
             <div class="layout-docs">
                 <div class="bd-content">
                     <blockquote class="llms-directive">For the complete documentation index, see <a href="/llms.txt">llms.txt</a>. For a full content snapshot, see <a href="/llms-full.txt">llms-full.txt</a>. Append <code>.md</code> to any <code>kestra.io/docs/*</code> URL for plain Markdown.</blockquote>
+                    <FeatureScopeMarker editions={props.editions} />
                     <slot />
                 </div>
             </div>

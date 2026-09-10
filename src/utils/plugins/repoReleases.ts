@@ -1,10 +1,11 @@
 import { DISABLE_GITHUB } from "astro:env/server"
-import { compareVersionsDesc } from "~/utils/plugins/compareVersions"
+import { compareVersionsDesc, isStableVersion } from "~/utils/plugins/compareVersions"
 
 interface GitHubRelease {
     tag_name: string
     published_at: string | null
     draft: boolean
+    prerelease: boolean
 }
 
 export interface ReleaseInfo {
@@ -34,14 +35,17 @@ async function fetchRepoReleases(repo: string): Promise<{ versions: ReleaseInfo[
 
     const releases = (await response.json()) as GitHubRelease[]
     const versions: ReleaseInfo[] = releases
-        .filter((release) => !release.draft && !release.tag_name.includes("SNAPSHOT"))
+        .filter(
+            (release) =>
+                !release.draft && !release.prerelease && !release.tag_name.includes("SNAPSHOT"),
+        )
         .map((release) => ({
             version: release.tag_name.replace(/^v/, ""),
             publishedAt: release.published_at,
         }))
         .filter((v) => {
             const major = parseInt(v.version.split(".")[0])
-            return !isNaN(major) && major >= 1
+            return !isNaN(major) && major >= 1 && isStableVersion(v.version)
         })
         .toSorted((a, b) => compareVersionsDesc(a.version, b.version))
 
