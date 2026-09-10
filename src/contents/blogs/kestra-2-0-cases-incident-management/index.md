@@ -1,5 +1,5 @@
 ---
-title: "Cases in Kestra 2.0: one record and owners per incident"
+title: "Cases in Kestra 2.0: Manage Incidents All In One Place"
 description: "Cases in Kestra 2.0 turn repeated failures into one owned incident, with an SLA, the evidence attached, and the fix as a button. What it gives you, and how to run it in production."
 date: 2026-09-11T10:00:00
 category: News & Product Updates
