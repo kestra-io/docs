@@ -65,6 +65,10 @@ Two reports, one case, one remediation and one resolution. Every step of it is e
 
 ![Executions list with the new Cases column](./02-executions-cases-column.png)
 
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/lSLV19-fBk0" title="Track and Resolve Workflow Incidents with Cases" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 ## Five ways to use it
 
 Cases are opened by a task, `io.kestra.plugin.kestra.ee.cases.CreateCase`, and the task goes wherever a task goes: `errors`, `finally`, `afterExecution`, or inline with `runIf`. That choice is what makes everything below possible.
