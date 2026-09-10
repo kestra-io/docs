@@ -75,7 +75,7 @@ Kestra's [RAG search task](https://kestra.io/plugins/plugin-ai/rag/io.kestra.plu
 
 ### Powering Semantic Search and Recommendation Systems
 
-Vector databases are the engine behind semantic search, which understands the intent and contextual meaning of a user's query. Instead of matching keywords, it finds results that are conceptually related, leading to more relevant and accurate search experiences.
+Vector databases are the engine behind [semantic search](/resources/ai/semantic-search), which understands the intent and contextual meaning of a user's query. Instead of matching keywords, it finds results that are conceptually related, leading to more relevant and accurate search experiences.
 
 Similarly, they are used in recommendation systems to find items (products, movies, articles) that are similar to what a user has previously shown interest in. By representing both users and items as vectors, the system can recommend items whose vectors are close to a user's vector.
 

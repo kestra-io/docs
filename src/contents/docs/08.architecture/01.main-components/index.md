@@ -65,6 +65,8 @@ The **queue** is the internal communication channel between Kestra’s server co
 - **AMQP queue** — Enterprise Edition.
 - **GCP Pub/Sub queue** — Enterprise Edition.
 
+For configuration details on the JDBC queue backends, see [Runtime and Storage](../../configuration/02.runtime-and-storage/index.md). For Kafka, Redis, AMQP, and GCP Pub/Sub, see [Enterprise and Advanced Configuration](../../configuration/06.enterprise-and-advanced/index.md#redis-amqp-and-gcp-pubsub-queue-backends).
+
 The queue surface covers four delivery families:
 
 - **Dispatch** — point-to-point; exactly one subscriber processes each message. Used for executions, execution events and commands, worker task results, logs, and metrics.
@@ -72,7 +74,7 @@ The queue surface covers four delivery families:
 - **VNode dispatch** — sharded across a fixed set of virtual nodes so a scaled component can divide a single logical stream deterministically. Used for trigger evaluation across a Scheduler fleet.
 - **Broadcast** — fan-out; every active subscriber receives every message. Used for kill signals, flow and metadata change notifications, follow-execution streams, and cluster-wide events.
 
-Messages above a configurable size limit are rejected before reaching the backend, protecting it from oversized payloads. Terminal execution states are always allowed through regardless of size. Message protection is enabled by default with a 1 MB limit and can be adjusted under `kestra.queue.message-protection`.
+Message protection rejects messages above a configurable size limit before they reach the backend. Terminal execution states are always allowed through regardless of size. Configure it under `kestra.queue.message-protection`.
 
 ## Repository
 

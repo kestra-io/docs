@@ -20,7 +20,7 @@ faq:
 
 Argo Workflows has established itself as a robust, Kubernetes-native engine for orchestrating containerized tasks, particularly popular for CI/CD and ML pipelines. Its YAML-defined Custom Resource Definitions (CRDs) offer a powerful way to manage workflows directly within the Kubernetes control plane. However, for organizations seeking broader polyglot support, simplified operational overhead across diverse environments, or more explicit support for data, AI, and business process workflows, exploring alternatives becomes essential.
 
-The leading alternatives to Argo Workflows in 2026 include Kestra, Flyte, Prefect, Dagster, and Temporal—each suited to different workloads such as general-purpose orchestration, ML pipelines, and application-level durability. This article will help you navigate these options, providing a clear decision framework to select the best orchestrator for your [Kubernetes](https://kestra.io/resources/infrastructure/kubernetes) environment and beyond.
+The leading alternatives to Argo Workflows in 2026 include Kestra, [Flyte](/resources/ai/flyte-alternatives), Prefect, Dagster, and Temporal—each suited to different workloads such as general-purpose orchestration, ML pipelines, and application-level durability. This article will help you navigate these options, providing a clear decision framework to select the best orchestrator for your [Kubernetes](https://kestra.io/resources/infrastructure/kubernetes) environment and beyond.
 
 ## Understanding Argo Workflows and its Core Purpose
 

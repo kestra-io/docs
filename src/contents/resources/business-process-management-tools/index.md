@@ -43,7 +43,7 @@ Furthermore, BPM tools enhance visibility and control over business operations. 
 
 ### Process Modeling and Design for Clarity
 
-The foundation of any BPM tool is its ability to model and visualize business processes. This is typically done through a graphical interface where users can map out tasks, decision points, and the flow of information. Many traditional tools use Business Process Model and Notation (BPMN) as a standard. A clear visual model serves as a common language for both business and technical stakeholders, ensuring everyone understands how the process works.
+The foundation of any BPM tool is its ability to model and visualize business processes. This is typically done through a graphical interface where users can map out tasks, decision points, and the flow of information. Many traditional tools use Business Process Model and Notation ([BPMN](/resources/business/bpmn)) as a standard. A clear visual model serves as a common language for both business and technical stakeholders, ensuring everyone understands how the process works.
 
 ### Workflow Automation and Orchestration Capabilities
 
@@ -95,7 +95,7 @@ Power Automate includes Robotic Process Automation (RPA) capabilities for automa
 
 ### 4. UiPath: The RPA and Hyperautomation Leader
 
-UiPath is a market leader in Robotic Process Automation (RPA) and positions itself as a platform for "hyperautomation"—combining RPA, AI, process mining, and BPM to automate end-to-end business processes. Its strength lies in its powerful software robots that can mimic human actions to interact with legacy systems that lack APIs.
+UiPath is a market leader in Robotic Process Automation (RPA) and positions itself as a platform for "hyperautomation"—combining RPA, AI, [process mining](/resources/business/process-mining), and BPM to automate end-to-end business processes. Its strength lies in its powerful software robots that can mimic human actions to interact with legacy systems that lack APIs.
 
 UiPath is a comprehensive, enterprise-grade platform well-suited for large organizations looking to automate repetitive, manual tasks at scale. The main trade-off is its complexity and cost, as it's a heavy-duty solution primarily focused on UI automation rather than backend or [infrastructure orchestration](/infra-automation).
 

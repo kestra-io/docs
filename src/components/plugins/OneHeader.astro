@@ -1,5 +1,5 @@
 ---
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import KestraIcon from "../icons/KestraIcon.vue"
 import type { Plugin } from "~/utils/plugins/plugin"
 
@@ -46,7 +46,7 @@ const { headingTitle, rootPlugin, currentPageIcon, headingDescription } =
         {
             headingDescription && (
                 <div class="bd-content">
-                    <MDCParserAndRenderer content={headingDescription} />
+                    <MarkdownRenderer content={headingDescription} />
                 </div>
             )
         }

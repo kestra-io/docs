@@ -148,6 +148,7 @@ A strong observability practice delivers value across numerous use cases, turnin
 *   **Proactive Incident Response**: For infrastructure teams, observability provides early warnings of issues in CI/CD or GitOps workflows, preventing bad deployments.
 *   **AI Governance**: In agentic workflows, observability is crucial for tracking agent behavior, monitoring costs, and ensuring compliance with operational policies.
 *   **Optimizing Batch Jobs**: For organizations moving beyond simple cron jobs, observability helps optimize resource-intensive [batch scheduling platforms](/resources/infrastructure/batch-scheduling-platform-alternatives) by identifying long-running tasks and bottlenecks. This makes any [cron replacement](/resources/infrastructure/cron-replacement) effort more effective.
+*   **Tool Selection**: Turning these outcomes into practice starts with instrumentation — our comparison of [workflow monitoring tools](/resources/infrastructure/workflow-monitoring-tools) covers the platforms that surface these signals.
 
 ## Related Concepts
 *   [Python Logging & Centralized Workflow Management](/resources/data/python-logging)

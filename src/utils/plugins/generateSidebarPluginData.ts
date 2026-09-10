@@ -1,6 +1,6 @@
 import { type Plugin, type PluginMetadata } from "./plugin"
 import { groupBySubpackage, hasMultipleSubPackages } from "./all"
-import { nuxtBlocksFromSubGroupsWrappers } from "./nuxtBlocks"
+import { pageBlocksFromSubGroupsWrappers } from "./pageBlocks"
 
 export function generateSidebarPluginData(subgroups: Plugin[], allMetadata: PluginMetadata[]) {
     const rootPlugin = subgroups.find((sg) => sg.subGroup === undefined)
@@ -9,5 +9,5 @@ export function generateSidebarPluginData(subgroups: Plugin[], allMetadata: Plug
         subgroups = [rootPlugin, ...groupBySubpackage(rootPlugin, allMetadata)]
     }
 
-    return nuxtBlocksFromSubGroupsWrappers(subgroups)
+    return pageBlocksFromSubGroupsWrappers(subgroups)
 }

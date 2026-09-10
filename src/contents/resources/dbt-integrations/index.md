@@ -100,6 +100,7 @@ With Kestra, you can:
 - **Chain Polyglot Tasks:** A dbt run is often just one step in a larger process. Kestra allows you to seamlessly chain dbt transformations with Python scripts, shell commands, SQL queries, or any of the hundreds of available plugin tasks.
 - **Implement Event-Driven Triggers:** Start a dbt Cloud job automatically when a file lands in S3, a message arrives in Kafka, or a Fivetran sync completes. Kestra's event-driven architecture makes your data pipelines more responsive and efficient.
 - **Gain Centralized Observability:** Monitor the status, logs, and outputs of every dbt run from a single UI. Kestra provides a unified view across all your orchestrated tools, simplifying debugging and performance tuning.
+- **Compare the Two Models:** For a head-to-head look at this approach against the operator-based one, see [running dbt on Airflow vs Kestra](/resources/data/dbt-on-airflow-vs-kestra).
 
 Here is an example of how you can [orchestrate dbt workflows](/docs/use-cases/dbt) with Kestra. This flow clones a dbt project from a Git repository and runs `dbt build` against a Snowflake warehouse.
 
@@ -158,6 +159,7 @@ Automation is key to building reliable data products.
 Treat your dbt project like any other critical software application.
 - **GitOps:** Use Git as the single source of truth for your dbt code. All changes should go through a pull request and code review process. Kestra's ability to [manage dbt projects directly from Git](/docs/how-to-guides/dbt) makes this a natural fit.
 - **Environments:** Maintain separate configurations for development, staging, and production environments. This allows you to test changes thoroughly without impacting production analytics.
+- **Testing:** Gate every promotion on assertions about the data itself, not just a successful build. See [dbt tests explained](/resources/data/dbt-tests-explained) for the built-in generic tests and how to extend them.
 
 By combining the transformation power of dbt with a robust orchestration layer, you can build a data platform that is reliable, scalable, and easy to manage. Explore more [data engineering resources](/resources/data) to optimize your stack.
 

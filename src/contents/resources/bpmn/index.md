@@ -114,7 +114,7 @@ While BPMN provides an excellent framework for modeling formal business processe
 
 ### When BPMN engines excel (e.g., Camunda)
 
-BPMN-native engines like Camunda are powerful for orchestrating complex, long-running business processes, especially those involving human interaction and strict, auditable logic. They are designed to execute BPMN models directly, making them a strong fit for use cases in regulated industries like finance, insurance, and healthcare, where process compliance is paramount. However, this model can introduce overhead for purely technical workflows where engineering teams prefer to define logic as code.
+BPMN-native engines like Camunda are powerful for orchestrating complex, long-running business processes, especially those involving human interaction and strict, auditable logic. They are designed to execute BPMN models directly, making them a strong fit for use cases in regulated industries like finance, insurance, and healthcare, where process compliance is paramount. However, this model can introduce overhead for purely technical workflows where engineering teams prefer to define logic as code. For a view of the wider category, spanning modelling, execution, and process monitoring, see our overview of [business process management tools](/resources/business/business-process-management-tools).
 
 ### Kestra's declarative approach: Orchestrating processes beyond BPMN
 
