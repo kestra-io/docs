@@ -1,10 +1,21 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi, beforeEach } from "vitest"
 import {
     collectionContentDigest,
     collectionMetadataDigest,
     entryCacheKey,
+    fileContentsDigest,
     hashString,
 } from "~/utils/incrementalCacheKey"
+import { DOCS_LATEST_OVERRIDE } from "~/utils/versionedDocs"
+
+const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }))
+vi.mock("~/utils/fetch", () => ({ $fetchApiCached: fetchMock }))
+
+beforeEach(() => {
+    fetchMock.mockReset()
+    fetchMock.mockResolvedValue({ version: "2.9.0" })
+    vi.resetModules()
+})
 
 const entry = (id: string, digest: string, data: Record<string, unknown>) => ({
     id,
@@ -54,6 +65,41 @@ describe("collectionContentDigest", () => {
         expect(
             collectionContentDigest([collection[0], entry("b", "d9", { title: "B" })]),
         ).not.toBe(collectionContentDigest(collection))
+    })
+})
+
+describe("fileContentsDigest", () => {
+    it("ignores key order", () => {
+        expect(fileContentsDigest({ a: "1", b: "2" })).toBe(
+            fileContentsDigest({ b: "2", a: "1" }),
+        )
+    })
+
+    it("changes when a file's content changes, is added or removed", () => {
+        const base = fileContentsDigest({ a: "1", b: "2" })
+        expect(fileContentsDigest({ a: "1", b: "2 changed" })).not.toBe(base)
+        expect(fileContentsDigest({ a: "1", b: "2", c: "3" })).not.toBe(base)
+        expect(fileContentsDigest({ a: "1" })).not.toBe(base)
+    })
+
+    it("doesn't collide a path/content split across different files", () => {
+        expect(fileContentsDigest({ a: "b:c" })).not.toBe(fileContentsDigest({ "a:b": "c" }))
+    })
+})
+
+describe("layoutDigest", () => {
+    it("combines the docs version with a digest of the shared stylesheets", async () => {
+        const { layoutDigest } = await import("./incrementalCacheKey")
+        const [prefix, hex] = (await layoutDigest()).split("|")
+        expect(prefix).toBe(`l${DOCS_LATEST_OVERRIDE}`)
+        expect(hex).toMatch(/^[0-9a-f]{16}$/)
+    })
+
+    it("globs scss partials outside src/assets/styles too, since those also escape the module graph", async () => {
+        const { scssModules } = await import("./incrementalCacheKey")
+        expect(
+            Object.keys(scssModules).some((path) => path.endsWith("blueprints/_blueprintCard.scss")),
+        ).toBe(true)
     })
 })
 
