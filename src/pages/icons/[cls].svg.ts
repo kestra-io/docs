@@ -34,13 +34,11 @@ export async function GET({ params }: { params: { cls: string } }) {
     }
 
     // Fall back to the subgroup so an archived page shows the Flow icon rather than a blank sheet.
-    let isPlaceholder = icon.includes(PLACEHOLDER_PATH)
-    if (isPlaceholder) {
+    if (icon.includes(PLACEHOLDER_PATH)) {
         const pkg = packageOf(cls)
         const subGroupIcon = pkg ? await fetchIcon(pkg) : null
         if (subGroupIcon && !subGroupIcon.includes(PLACEHOLDER_PATH)) {
             icon = subGroupIcon
-            isPlaceholder = false
         }
     }
 
@@ -56,11 +54,7 @@ export async function GET({ params }: { params: { cls: string } }) {
             // gets a new URL, it never mutates an existing one), so they can be
             // cached "forever". This stops Googlebot from re-crawling the plugin
             // SVGs on every visit, they were ~40% of the crawl budget at 24h.
-            // A placeholder is the exception: it stops being the answer the moment
-            // the class resolves, so it must not be pinned for a year.
-            "Cache-Control": isPlaceholder
-                ? "public, max-age=3600"
-                : "public, max-age=31536000, immutable",
+            "Cache-Control": "public, max-age=31536000, immutable",
         },
     })
 }
