@@ -31,10 +31,33 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      # Serves the recorded /blueprints API responses. That page is SSR and
+      # fans out ~15 live calls per request, so its LCP tracked WAN latency
+      # instead of the code. Anything not recorded is proxied to the real API.
+      - name: Start API fixture server
+        run: node scripts/api-fixture-server.mjs &
+
+      - name: Wait for the fixture server
+        run: |
+          for i in $(seq 1 10); do
+            curl -sf http://127.0.0.1:9001/__fixtures/stats > /dev/null && exit 0
+            sleep 1
+          done
+          echo "Fixture server did not come up on port 9001."
+          exit 1
+
       - name: Build site
         run: npm run build
         env:
           NO_IMAGE_OPTIM: "true"
+          # Inlined into the server and client bundles, so both the build and
+          # the SSR pages read the API through the fixture server.
+          API_URL: http://127.0.0.1:9001/v1
+
+      # The build itself calls the blueprint API, so the counters have to be
+      # snapshotted here for the check at the end to mean anything.
+      - name: Snapshot fixture server counters
+        run: curl -s http://127.0.0.1:9001/__fixtures/stats > fixtures-before.json
 
       - name: Install Lighthouse
         # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
@@ -43,7 +66,11 @@ jobs:
       - name: Start local dev server
         # wrangler dev serves the built Workers bundle locally via Miniflare —
         # no Cloudflare credentials required, no network access needed.
-        run: npx wrangler dev --local &
+        # global_fetch_strictly_public is dropped here (the flag list replaces
+        # the one in wrangler.jsonc): it blocks the worker from reaching the
+        # fixture server on loopback, and it only affects same-zone routing,
+        # which does not exist locally.
+        run: npx wrangler dev --local --compatibility-flags nodejs_compat &
 
       - name: Wait for dev server to be ready
         run: |
@@ -72,10 +99,17 @@ jobs:
           name: lighthouse-baseline
           path: baseline/
 
+      # Report links must point at a URL a reviewer can actually open, not the
+      # ephemeral local server Lighthouse measures.
+      - name: Resolve public URL for report links
+        id: public-url
+        uses: ./.github/actions/preview-url
+
       - name: Run Lighthouse benchmark
         run: node scripts/lighthouse-benchmark.mjs
         env:
           BASE_URL: http://localhost:8787
+          BASE_URL_OUTPUT: ${{ steps.public-url.outputs.url }}
           OUTPUT_FILE: lighthouse-results.json
           BASELINE_FILE: ${{ steps.baseline.outcome == 'success' && 'baseline/lighthouse-results.json' || '' }}
           MARKDOWN_FILE: lighthouse-report.md
@@ -130,3 +164,28 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: 🔦 Lighthouse Benchmark
           template: ${{ steps.report.outputs.content }}
+
+      # First run records what /blueprints asks for; commit these to freeze it.
+      - name: Upload API fixtures artifact
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: api-fixtures
+          path: tests/fixtures/api/
+          retention-days: 30
+
+      # No new calls during the benchmark means the SSR blueprints page never
+      # reached the fixture server, so the page measured is not the page we
+      # think it is. Compared against the post-build snapshot, since the build
+      # calls the same API and would otherwise satisfy any absolute threshold.
+      - name: Check the fixture server was used
+        run: |
+          BEFORE=$(jq '.hits + .records' fixtures-before.json)
+          STATS=$(curl -s http://127.0.0.1:9001/__fixtures/stats)
+          AFTER=$(echo "$STATS" | jq '.hits + .records')
+          echo "$STATS"
+          echo "blueprint API calls during the benchmark: $((AFTER - BEFORE))"
+          if [ "$AFTER" -le "$BEFORE" ]; then
+            echo "::error::No blueprint API calls reached the fixture server during the benchmark."
+            exit 1
+          fi

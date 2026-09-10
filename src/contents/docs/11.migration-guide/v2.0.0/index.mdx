@@ -43,24 +43,10 @@ See [Database Migrations](./database-migrations) for the full upgrade sequence, 
 
 ### Inventory your flows
 
-Before upgrading, scan your flow sources for constructs that are removed in 2.0:
+Before starting the migration we recommend you list what Flows will need to be rewritten before they can be valid again.
+Two easy solutions for that:
 
-```bash
-grep -rl "pluginDefaults:" flows/
-grep -rl "ForEach\|ForEachItem" flows/
-grep -rl "conditions:" flows/
-grep -rl "preconditions:" flows/
-grep -rl "json(" flows/
-grep -rl "workerGroup.key" flows/
-```
-
-Fix each match using the guides below before restarting Kestra.
-
-## Migration tooling
-
-Two tools are available to reduce manual effort during the upgrade.
-
-### kestra-migrate CLI
+#### Use kestra-migrate CLI
 
 [`kestra-migrate`](https://github.com/kestra-io/kestra2-flow-migration) is a command-line tool that automatically rewrites v1.3 flow YAML to the v2.0 format. It covers 16 migration rules (type renames, property renames, auth restructuring, and more) and flags flows that use removed types requiring manual rewriting.
 
@@ -84,7 +70,7 @@ kestra-migrate -o v2-flows/ ./flows/
 
 Run `--check` first to scope the work. After `kestra-migrate` runs, use the guides below for the two patterns the CLI cannot handle automatically: the `json()` function and `pluginDefaults` replacement.
 
-### Claude Code migration skill
+#### Use our Claude Code migration skill
 
 The [`migrate-kestra-2`](https://github.com/kestra-io/agent-skills) Claude Code skill guides the full upgrade journey: pre-flight access audit, server upgrade (Docker Compose and Helm paths), CLI-first flow migration using `kestra-migrate`, and guided rewrites for patterns the CLI does not cover.
 
