@@ -17,11 +17,13 @@ This tutorial assumes you are already running **Kestra 1.3.x**. If you are on an
 
 For a reference list of every breaking change, see the [2.0 migration index](../index.mdx).
 
+This tutorial follows seven steps: [export your flows](#step-1--export-your-flows) → [scan with `kestra-migrate --check`](#step-2--scan-with-kestra-migrate---check) → [apply the automated migration](#step-3--apply-the-automated-migration) → [fix the items the tool cannot rewrite](#step-4--fix-manual-items) → [switch the server to 2.0](#step-5--switch-to-kestra-20) → [verify behavior](#step-6--verify-behavior-on-20) → [complete and sign off](#step-7--verify-and-complete). Steps 1–4 are non-destructive and can be repeated; Step 5 is the cutover.
+
 ## Resources
 
 | Resource | Where to get it |
 |---|---|
-| `kestra-migrate` flow migration CLI | [github.com/kestra-io/kestra2-flow-migration](https://github.com/kestra-io/kestra2-flow-migration) — download the binary from Releases |
+| `kestra-migrate` flow migration CLI | [github.com/kestra-io/kestra2-flow-migration](https://github.com/kestra-io/kestra2-flow-migration) — download the binary from Releases; outputs in this tutorial were captured from **v2.1.2** |
 | `kestractl` | [Install guide](../../../kestra-cli/kestractl/index.md) |
 | Kestra 2.0 Docker image | `kestra/kestra:v2.0.0-slim` |
 
@@ -53,97 +55,45 @@ Run the check against your exported flows:
 kestra-migrate --check ./flows/
 ```
 
-The examples below show output from eight flows that cover the main migration patterns. The first four show what `kestra-migrate` reports as `✔ v2-compatible` but does not rewrite — these are the dangerous false negatives. The last four show what it correctly detects and rewrites.
+`kestra-migrate` uses three output symbols to categorize each flow:
 
-### Patterns `kestra-migrate` does not rewrite
+| Symbol | Meaning | Action required |
+|---|---|---|
+| `✔` | No changes needed — flow is already v2-compatible | None |
+| `✎` | Auto-rewritable — the tool will apply the change when you run without `--check` | Run `kestra-migrate -o ./v2-flows/ ./flows/` |
+| `⚠ ✗` | Removed or unsupported construct — the tool writes the file through unchanged | Rewrite manually before importing to 2.0 |
 
-**`flows/01-foreach.yaml`** — `ForEach` task, removed in 2.0:
+Each `⚠ ✗` entry includes a `↳ docs:` line pointing to the relevant migration guide page for that specific pattern.
 
+The eight example flows below cover the main migration patterns. Each snippet shows only the flagged construct — the `--check` output that follows shows what the tool reports for each one.
+
+**Flows flagged `⚠ ✗` (manual fix required):**
+
+`flows/01-foreach.yaml` — `ForEach` task, removed in 2.0:
 ```yaml
-id: deploy-environments
-namespace: company.migration
-
-tasks:
-  - id: deploy
-    type: io.kestra.plugin.core.flow.ForEach
-    values: '["dev", "staging", "production"]'
-    tasks:
-      - id: run_deploy
-        type: io.kestra.plugin.core.log.Log
-        message: "Deploying to {{ taskrun.value }} (step {{ taskrun.iteration }})"
-
-      - id: verify
-        type: io.kestra.plugin.core.log.Log
-        message: "Health check passed for {{ taskrun.value }}"
-
-  - id: done
-    type: io.kestra.plugin.core.log.Log
-    message: "All {{ outputs.deploy | length }} environments deployed"
+- id: deploy
+  type: io.kestra.plugin.core.flow.ForEach
+  values: '["dev", "staging", "production"]'
+  tasks:
+    - message: "Deploying to {{ taskrun.value }} (step {{ taskrun.iteration }})"
 ```
 
-**`flows/02-foreachitem-processor.yaml`** — subflow target for `ForEachItem`:
+`flows/02-foreachitem-processor.yaml` — subflow target, already compatible (`✔`).
 
+`flows/03-foreachitem.yaml` — `ForEachItem` task, removed in 2.0:
 ```yaml
-id: process-report-item
-namespace: company.migration
-
-inputs:
-  - id: item
-    type: STRING
-
-tasks:
-  - id: process
-    type: io.kestra.plugin.core.log.Log
-    message: "Processing item: {{ inputs.item }}"
+- id: each_item
+  type: io.kestra.plugin.core.flow.ForEachItem
+  items: "{{ inputs.report_file }}"
+  batch:
+    rows: 1
+  flowId: process-report-item
+  inputs:
+    item: "{{ taskrun.items }}"
 ```
 
-**`flows/03-foreachitem.yaml`** — `ForEachItem` task, removed in 2.0:
-
+`flows/04-plugin-defaults.yaml` — flow-level `pluginDefaults`, removed in 2.0:
 ```yaml
-id: process-report
-namespace: company.migration
-
-inputs:
-  - id: report_file
-    type: FILE
-    description: CSV report to process, one row per line
-
-tasks:
-  - id: each_item
-    type: io.kestra.plugin.core.flow.ForEachItem
-    items: "{{ inputs.report_file }}"
-    batch:
-      rows: 1
-    wait: true
-    namespace: company.migration
-    flowId: process-report-item
-    inputs:
-      item: "{{ taskrun.items }}"
-```
-
-**`flows/04-plugin-defaults.yaml`** — flow-level `pluginDefaults`, removed in 2.0:
-
-```yaml
-id: fetch-api-data
-namespace: company.migration
-
-tasks:
-  - id: fetch_orders
-    type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
-
-  - id: fetch_products
-    type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
-
-  - id: fetch_users
-    type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
-
-  - id: summarize
-    type: io.kestra.plugin.core.log.Log
-    message: "Fetched orders ({{ outputs.fetch_orders.code }}), products ({{ outputs.fetch_products.code }}), users ({{ outputs.fetch_users.code }})"
-
 pluginDefaults:
   - type: io.kestra.plugin.core.http.Request
     values:
@@ -156,81 +106,8 @@ pluginDefaults:
         readTimeout: PT30S
 ```
 
-### Patterns `kestra-migrate` rewrites automatically
-
-**`flows/05-input-types.yaml`** — `BOOLEAN` and `ENUM` input types (renamed in 2.0):
-
+`flows/07-task-defaults.yaml` — flow-level `taskDefaults`, removed in 2.0:
 ```yaml
-id: input-types-migration
-namespace: company.migration
-
-inputs:
-  - id: enabled
-    type: BOOLEAN
-    defaults: true
-
-  - id: log_level
-    type: ENUM
-    values: [DEBUG, INFO, WARNING, ERROR]
-    defaults: INFO
-
-  - id: environment
-    type: ENUM
-    values: [staging, production]
-    defaults: staging
-
-tasks:
-  - id: log_config
-    type: io.kestra.plugin.core.log.Log
-    message: "enabled={{ inputs.enabled }}, level={{ inputs.log_level }}, env={{ inputs.environment }}"
-```
-
-**`flows/06-type-renames.yaml`** — deprecated plugin type paths renamed in 2.0:
-
-```yaml
-id: type-renames
-namespace: company.migration
-
-tasks:
-  - id: load_count
-    type: io.kestra.plugin.core.state.Get
-    name: execution_count
-
-  - id: purge_old
-    type: io.kestra.plugin.core.storage.Purge
-    endDate: "{{ now() | dateAdd(-30, 'DAYS') }}"
-
-  - id: notify
-    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-    payload: |
-      {"text": "Cleanup complete"}
-
-triggers:
-  - id: weekly
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 0 * * 0"
-```
-
-**`flows/07-task-defaults.yaml`** — pre-1.3 `taskDefaults` key (renamed to `pluginDefaults` by kestra-migrate, but also removed in 2.0; see [Step 4](#step-4--fix-manual-items)):
-
-```yaml
-id: task-defaults-migration
-namespace: company.migration
-
-tasks:
-  - id: fetch_orders
-    type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
-
-  - id: fetch_products
-    type: io.kestra.plugin.core.http.Request
-    uri: https://kestra.io/api/mock
-
-  - id: process
-    type: io.kestra.plugin.core.log.Log
-    message: "Orders and products fetched"
-
 taskDefaults:
   - type: io.kestra.plugin.core.http.Request
     values:
@@ -239,125 +116,106 @@ taskDefaults:
         Accept: application/json
 ```
 
-**`flows/08-trigger-conditions.yaml`** — `conditions:` blocks rewritten to `when:` expressions in 2.0:
+**Flows flagged `✎` (auto-rewritten):**
 
+`flows/05-input-types.yaml` — `BOOLEAN` and `ENUM` input types renamed in 2.0:
 ```yaml
-id: trigger-conditions
-namespace: company.migration
+inputs:
+  - id: enabled
+    type: BOOLEAN    # → BOOL
+  - id: log_level
+    type: ENUM       # → SELECT
+    values: [DEBUG, INFO, WARNING, ERROR]
+```
 
-tasks:
-  - id: weekly_report
-    type: io.kestra.plugin.core.log.Log
-    message: "Running weekday morning report"
+`flows/06-type-renames.yaml` — deprecated plugin type paths:
+```yaml
+- type: io.kestra.plugin.core.state.Get               # → kv.Get
+- type: io.kestra.plugin.core.storage.Purge           # → PurgeExecutions
+- type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook  # → plugin.slack.notifications.*
+```
 
-  - id: send_notification
-    type: io.kestra.plugin.core.log.Log
-    message: "Notification sent"
-
+`flows/08-trigger-conditions.yaml` — `conditions:` blocks on Schedule triggers:
+```yaml
 triggers:
   - id: weekday_mornings
     type: io.kestra.plugin.core.trigger.Schedule
     cron: "0 8 * * *"
-    conditions:
-      - type: io.kestra.plugin.core.condition.DayWeekCondition
-        dayOfWeek: MONDAY
-      - type: io.kestra.plugin.core.condition.DayWeekCondition
-        dayOfWeek: WEDNESDAY
-      - type: io.kestra.plugin.core.condition.DayWeekCondition
-        dayOfWeek: FRIDAY
-
-  - id: business_hours_only
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 */2 * * *"
     conditions:
       - type: io.kestra.plugin.core.condition.DateTimeBetweenCondition
         before: "18:00:00"
         after: "08:00:00"
 ```
 
-```bash
-curl -u "admin@kestra.io:yourpassword" \
-  "http://localhost:8080/api/v1/flows/export/by-namespace?namespace=company.team" \
-  -o company-team-flows.zip
-
-unzip company-team-flows.zip -d ./flows/
-```
-
 ### `kestra-migrate --check` output
 
-**Output:**
-
 ```
-✔ 01-foreach.yaml
-
+⚠ 01-foreach.yaml
+  ✗ deploy uses io.kestra.plugin.core.flow.ForEach (removed in v2; rewrite manually as
+    io.kestra.plugin.core.flow.Loop (taskrun.value→item.value, taskrun.iteration→item.index,
+    declare outputs, AllowFailure→transmitFailed))
+    ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/foreach-loop
 ✔ 02-foreachitem-processor.yaml
-
-✔ 03-foreachitem.yaml
-
-✔ 04-plugin-defaults.yaml
-
+⚠ 03-foreachitem.yaml
+  ✗ each_item uses io.kestra.plugin.core.flow.ForEachItem (removed in v2; rewrite manually as
+    io.kestra.plugin.core.flow.Loop (taskrun.value→item.value, taskrun.iteration→item.index,
+    declare outputs, AllowFailure→transmitFailed))
+    ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/foreach-loop
+⚠ 04-plugin-defaults.yaml
+  ✗ flow-level `pluginDefaults` is removed in v2 and must be rewritten manually
+    (EE: a Policy with `Add` rules, referenced via `policyRefs:`; OSS: inline the values
+    onto each task or use flow `variables:`)
+    ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/plugin-defaults-removed
 ✎ 05-input-types.yaml
 --- original
 +++ migrated
 @@ -8,11 +8,11 @@
-
-  - id: enabled
+   - id: enabled
 -    type: BOOLEAN
 +    type: BOOL
-    defaults: true
+     defaults: true
 
-  - id: log_level
+   - id: log_level
 -    type: ENUM
 +    type: SELECT
-    values: [DEBUG, INFO, WARNING, ERROR]
-    defaults: INFO
+     values: [DEBUG, INFO, WARNING, ERROR]
+     defaults: INFO
 
-  - id: environment
+   - id: environment
 -    type: ENUM
 +    type: SELECT
-    values: [staging, production]
-    defaults: staging
-
+     values: [staging, production]
+     defaults: staging
 ✎ 06-type-renames.yaml
 --- original
 +++ migrated
 @@ -12,15 +12,15 @@
-  - id: load_count
+   - id: load_count
 -    type: io.kestra.plugin.core.state.Get
 +    type: io.kestra.plugin.core.kv.Get
-    name: execution_count
+     name: execution_count
 
-  - id: purge_old
+   - id: purge_old
 -    type: io.kestra.plugin.core.storage.Purge
 +    type: io.kestra.plugin.core.storage.PurgeExecutions
-    endDate: "{{ now() | dateAdd(-30, 'DAYS') }}"
+     endDate: "{{ now() | dateAdd(-30, 'DAYS') }}"
 
-  - id: notify
+   - id: notify
 -    type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
 +    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-    url: "{{ secret('SLACK_WEBHOOK') }}"
-
-✎ 07-task-defaults.yaml
---- original
-+++ migrated
-@@ -18,8 +18,7 @@
-  - id: process
-    type: io.kestra.plugin.core.log.Log
-    message: "Orders and products fetched"
--
--taskDefaults:
-+pluginDefaults:
-  - type: io.kestra.plugin.core.http.Request
-    values:
-      method: GET
-
+     url: "{{ secret('SLACK_WEBHOOK') }}"
+⚠ 07-task-defaults.yaml
+  ✗ flow-level `taskDefaults` is removed in v2 and must be rewritten manually
+    (EE: a Policy with `Add` rules, referenced via `policyRefs:`; OSS: inline the values
+    onto each task or use flow `variables:`)
+    ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/plugin-defaults-removed
 ✎ 08-trigger-conditions.yaml
 --- original
 +++ migrated
 @@ -21,19 +21,10 @@
-  - id: weekday_mornings
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 8 * * *"
+   - id: weekday_mornings
+     type: io.kestra.plugin.core.trigger.Schedule
+     cron: "0 8 * * *"
 -    conditions:
 -      - type: io.kestra.plugin.core.condition.DayWeekCondition
 -        dayOfWeek: MONDAY
@@ -367,25 +225,21 @@ unzip company-team-flows.zip -d ./flows/
 -        dayOfWeek: FRIDAY
 +    when: "{{ (dayOfWeek(trigger.date) == 'MONDAY') and (dayOfWeek(trigger.date) == 'WEDNESDAY') and (dayOfWeek(trigger.date) == 'FRIDAY') }}"
 
-  - id: business_hours_only
-    type: io.kestra.plugin.core.trigger.Schedule
-    cron: "0 */2 * * *"
+   - id: business_hours_only
+     type: io.kestra.plugin.core.trigger.Schedule
+     cron: "0 */2 * * *"
 -    conditions:
 -      - type: io.kestra.plugin.core.condition.DateTimeBetweenCondition
 -        before: "18:00:00"
 -        after: "08:00:00"
 +    when: "{{ trigger.date > '08:00:00' and trigger.date < '18:00:00' }}"
 
-⚠  4/8 flows need migration
+⚠  7/8 flows need migration
 ```
 
-:::alert{type="warning"}
-**`kestra-migrate` reports flows 01–04 as `✔ v2-compatible`. They are not.** The tool does not detect the removal of `ForEach`, `ForEachItem`, or flow-level `pluginDefaults`. Flows using these patterns will fail the moment a 2.0 server tries to load or execute them. See [Step 4](#step-4--fix-manual-items) for the manual fixes required.
-:::
+Exit code is `1` whenever any flow needs changes, making it useful as a CI gate. Four flows (`⚠ ✗`) require manual rewrites before Step 4. Three flows (`✎`) will be rewritten automatically when you run the migration command.
 
-The tool correctly diffs flows 05–08 and proposes the automated rewrites shown above. Exit code is `1` because four flows need changes, which makes it useful as a CI gate.
-
-### What `kestra-migrate` handles automatically
+### What `kestra-migrate` rewrites automatically (`✎`)
 
 | Pattern | Before (1.3) | After (2.0) |
 |---|---|---|
@@ -393,7 +247,6 @@ The tool correctly diffs flows 05–08 and proposes the automated rewrites shown
 | State Store tasks | `io.kestra.plugin.core.state.*` | `io.kestra.plugin.core.kv.*` |
 | Storage tasks | `io.kestra.plugin.core.storage.Purge` | `io.kestra.plugin.core.storage.PurgeExecutions` |
 | Notifications | `io.kestra.plugin.notifications.slack.*` | `io.kestra.plugin.slack.notifications.*` |
-| Task defaults key (step 1 of 2) | `taskDefaults:` | `pluginDefaults:` (also removed — see below) |
 | Trigger conditions | `conditions: [DayWeekCondition, ...]` | `when: "{{ dayOfWeek(...) == ... }}"` |
 | Flow trigger dependencies | `conditions: [ExecutionFlow, ...]` | `dependsOn: [{flowId: ...}]` |
 | Debug task | `io.kestra.plugin.core.debug.Echo` | `io.kestra.plugin.core.log.Log` |
@@ -401,17 +254,21 @@ The tool correctly diffs flows 05–08 and proposes the automated rewrites shown
 | Script runner key | `runner:` | `taskRunner:` |
 | Required/defaults conflict | `required: false` + `defaults:` | Remove `required: false` |
 
-### Removed task types
+### What `kestra-migrate` flags but does not rewrite (`⚠ ✗`)
 
-`kestra-migrate` flags these with `✗` warnings and writes the files through unchanged:
+The tool detects these patterns and prints a `✗` message with a docs link. The file is written through unchanged — you must apply the fix manually before importing to 2.0:
 
-| Type | Replacement |
-|---|---|
-| `io.kestra.plugin.core.execution.Count` | Use a [KV Store](../../../concepts/kv-store) task or custom script |
-| `io.kestra.plugin.core.execution.Resume` | Use the Kestra SDK |
-| `io.kestra.plugin.core.trigger.Toggle` | Use the Kestra API or SDK |
-| `io.kestra.plugin.git.Push` | `io.kestra.plugin.git.SyncFlows` |
-| `io.kestra.plugin.scripts.nashorn.*` | Migrate to GraalJS or another script task |
+| Pattern | Manual fix | Guide |
+|---|---|---|
+| `io.kestra.plugin.core.flow.ForEach` | Rewrite as `Loop`; replace `taskrun.value` → `item.value`, `taskrun.iteration` → `item.index` | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
+| `io.kestra.plugin.core.flow.ForEachItem` | Rewrite as `Loop` + `Subflow`; see Step 4 | [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) |
+| Flow-level `pluginDefaults:` | OSS: inline values on each task. EE: migrate to a namespace Policy | [Plugin defaults removed](../plugin-defaults-removed/index.md) |
+| Flow-level `taskDefaults:` | Same as `pluginDefaults` above — both keys are removed in 2.0 | [Plugin defaults removed](../plugin-defaults-removed/index.md) |
+| `io.kestra.plugin.core.execution.Count` | Use a [KV Store](../../../concepts/kv-store) task or custom script | — |
+| `io.kestra.plugin.core.execution.Resume` | Use the Kestra SDK | — |
+| `io.kestra.plugin.core.trigger.Toggle` | Use the Kestra API or SDK | — |
+| `io.kestra.plugin.git.Push` | `io.kestra.plugin.git.SyncFlows` | — |
+| `io.kestra.plugin.scripts.nashorn.*` | Migrate to GraalJS or another script task | — |
 
 ## Step 3 — Apply the automated migration
 
@@ -421,7 +278,20 @@ Apply the migration to an output directory:
 kestra-migrate -o ./v2-flows/ ./flows/
 ```
 
-Verify with `diff -r`:
+The command prints a warning for each flow it cannot rewrite and writes it through unchanged. Auto-rewritable flows are migrated silently:
+
+```
+⚠  01-foreach.yaml: deploy uses io.kestra.plugin.core.flow.ForEach (removed in v2; rewrite manually...)
+   ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/foreach-loop
+⚠  03-foreachitem.yaml: each_item uses io.kestra.plugin.core.flow.ForEachItem (removed in v2; rewrite manually...)
+   ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/foreach-loop
+⚠  04-plugin-defaults.yaml: flow-level `pluginDefaults` is removed in v2 and must be rewritten manually...
+   ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/plugin-defaults-removed
+⚠  07-task-defaults.yaml: flow-level `taskDefaults` is removed in v2 and must be rewritten manually...
+   ↳ docs: https://kestra.io/docs/migration-guide/v2.0.0/plugin-defaults-removed
+```
+
+Verify the auto-applied changes with `diff -r`:
 
 ```bash
 diff -r ./flows/ ./v2-flows/
@@ -454,12 +324,6 @@ diff -r flows/06-type-renames.yaml v2-flows/06-type-renames.yaml
 <     type: io.kestra.plugin.notifications.slack.SlackIncomingWebhook
 ---
 >     type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
-diff -r flows/07-task-defaults.yaml v2-flows/07-task-defaults.yaml
-21,22c21
-< 
-< taskDefaults:
----
-> pluginDefaults:
 diff -r flows/08-trigger-conditions.yaml v2-flows/08-trigger-conditions.yaml
 24,30c24
 <     conditions:
@@ -480,7 +344,7 @@ diff -r flows/08-trigger-conditions.yaml v2-flows/08-trigger-conditions.yaml
 >     when: "{{ trigger.date > '08:00:00' and trigger.date < '18:00:00' }}"
 ```
 
-Flows 01–04 have no diff; they were written through unchanged. The absence of a diff does not mean they are 2.0-compatible.
+Flows 01, 03, 04, and 07 have no diff because the tool wrote them through unchanged. The `⚠` warnings above are your signal that manual work is still required on those four before you move to Step 4.
 
 ### Parallel v1/v2 deployments
 
@@ -497,7 +361,48 @@ After `kestra-migrate`, grep for patterns the tool does not rewrite and fix them
 :::alert{type="tip"}
 Two AI options can help with the manual rewrites in this step:
 
-- **`migrate-kestra-2` Claude Code skill** — runs in your terminal, audits your flows, and guides you through each rewrite including ForEach → Loop, ForEachItem → Loop, and pluginDefaults removal (or pluginDefaults → Policies on EE). Install from [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills), then open any Claude Code session and say "migrate my Kestra instance to 2.0".
+- **`migrate-kestra-2` Claude Code skill** — an interactive agent that reads your flow files, runs a pre-flight audit, then steps through each unsupported pattern with a three-tab decision UI (ForEach/ForEachItem, Defaults, Triggers) showing the flagged YAML and the proposed rewrite before asking for confirmation. It edits the files in place. Install from [kestra-io/agent-skills](https://github.com/kestra-io/agent-skills), then open a Claude Code session in your flows directory and say "migrate my Kestra flows to 2.0".
+
+  **Phase 1 — Pre-flight audit** (example output):
+  ```
+  ┌─────────────────────────────────────────────────────────┐
+  │  Kestra Migration Pre-flight Audit                      │
+  │  Source: ./flows/ (8 flows)                             │
+  ├───────────────────────┬─────────────────────────────────┤
+  │ Pattern               │ Flows affected                  │
+  ├───────────────────────┼─────────────────────────────────┤
+  │ ForEach               │ 01-foreach.yaml                 │
+  │ ForEachItem           │ 03-foreachitem.yaml             │
+  │ pluginDefaults        │ 04-plugin-defaults.yaml         │
+  │ taskDefaults          │ 07-task-defaults.yaml           │
+  │ Flow trigger          │ 08-trigger-conditions.yaml      │
+  │ | json filter         │ 04-plugin-defaults.yaml         │
+  └───────────────────────┴─────────────────────────────────┘
+  ```
+
+  **Phase 2 — Triage complete** (example summary):
+  ```
+  ┌──────────────────────────────────┬──────────────────────────────────────┬──────────┐
+  │ Flow                             │ Change applied                       │ Status   │
+  ├──────────────────────────────────┼──────────────────────────────────────┼──────────┤
+  │ 01-foreach.yaml                  │ ForEach → Loop (confirmed)           │ ✔        │
+  │ 03-foreachitem.yaml              │ ForEachItem → Split+Loop+Subflow     │ ✔        │
+  │ 04-plugin-defaults.yaml          │ pluginDefaults inlined; | json →     │ ✔        │
+  │                                  │ | toJson                             │          │
+  │ 07-task-defaults.yaml            │ taskDefaults inlined                 │ ✔        │
+  │ 08-trigger-conditions.yaml       │ Trigger shipped disabled: true       │ ✔        │
+  └──────────────────────────────────┴──────────────────────────────────────┴──────────┘
+
+  ⚠  Attention items:
+  1. 04-plugin-defaults.yaml — | json is a runtime failure, not a parse error. It
+     passed --check and parsed fine on 2.0; it would have failed at execution.
+     Caught via grep; fixed to | toJson.
+  2. 07-task-defaults.yaml — transform_data calls json.dumps without import json.
+     Pre-existing bug on 1.3, not migration-caused; carried through unchanged.
+  3. 08-trigger-conditions.yaml — trigger ships disabled: true. Enable after the
+     gating probe confirms correct dependsOn firing behavior.
+  ```
+
 - **[AI Copilot](../../../ai-tools/ai-copilot/index.md)** — available directly in the Kestra UI. Open the flow editor, switch to Edit mode, and describe the migration: "Rewrite this flow to replace ForEach with Loop". The Copilot rewrites the YAML in place and waits for your confirmation before saving.
 :::
 
@@ -507,7 +412,7 @@ Two AI options can help with the manual rewrites in this step:
 grep -rn "plugin.core.flow.ForEach" ./v2-flows/
 ```
 
-Both task types are removed in 2.0 and replaced by `Loop`. `kestra-migrate` gives them a `✔` and does not rewrite them.
+Both task types are removed in 2.0 and replaced by `Loop`. `kestra-migrate` flags them with `⚠ ✗` and writes the files through unchanged — the grep confirms which flows still need rewriting after Step 3.
 
 **`ForEach` → `Loop`**
 
@@ -544,11 +449,22 @@ Expression changes:
 | `{{ taskrun.key }}` | `{{ item.key }}` |
 | `{{ outputs.loopTask \| length }}` | `{{ outputs.loopTask.iterationCount }}` |
 
-The last row applies to expressions outside the loop that reference how many iterations ran, such as a downstream `Log` task summarizing the loop output.
+The last row requires two additional changes on the `Loop` task itself — without them `outputs.loopTask` is empty on 2.0:
 
-**`ForEachItem` → `Loop` + `Subflow`**
+```yaml
+- id: deploy
+  type: io.kestra.plugin.core.flow.Loop
+  values: '["dev", "staging", "production"]'
+  fetchType: FETCH        # collect iteration outputs
+  outputs:
+    - iterationCount      # declare what you'll consume downstream
+  tasks:
+    - ...
+```
 
-`ForEachItem` dispatched batches of file rows to a separate subflow execution. In 2.0, use a `Loop` task with an inline `Subflow` task:
+**`ForEachItem` → `Split` + `Loop` + `Subflow`**
+
+`ForEachItem` split a file into batches and dispatched each to a subflow execution. In 2.0, use `Split` to produce per-batch URIs, then `Loop` over those URIs, dispatching to the subflow with an inline `Subflow` task:
 
 ```yaml
 # Before (1.3) — ForEachItem
@@ -565,27 +481,31 @@ The last row applies to expressions outside the loop that reference how many ite
 ```
 
 ```yaml
-# After (2.0) — Loop + Subflow
+# After (2.0) — Split + Loop + Subflow
+- id: split
+  type: io.kestra.plugin.core.storage.Split
+  from: "{{ inputs.report_file }}"
+  rows: 1
+
 - id: each_item
   type: io.kestra.plugin.core.flow.Loop
-  values: "{{ inputs.report_items }}"
+  values: "{{ outputs.split.uris }}"
   tasks:
-    - id: process_item
+    - id: run_child
       type: io.kestra.plugin.core.flow.Subflow
       namespace: company.migration
       flowId: process-report-item
+      wait: true
+      transmitFailed: true
       inputs:
         item: "{{ item.value }}"
-      wait: true
 ```
 
-:::alert{type="info"}
-The `Loop` task iterates over a list of values, not a file directly. If your `ForEachItem` flow used a `FILE` input, you will need to read and parse the file first — for example with a script task — and pass the resulting list to `Loop` via `values`. See the [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) guide for a complete worked example of this pattern.
-:::
+The child subflow (`process-report-item`) still receives a URI string via `item`, exactly as `taskrun.items` did under `batch.rows: 1`. No change to the subflow itself is required. See the [ForEach and ForEachItem replaced by Loop](../foreach-loop/index.md) guide for the full pattern including output handling.
 
 ### `pluginDefaults` at flow level
 
-Flow-level `pluginDefaults` is removed in 2.0. `kestra-migrate` gives it a `✔` and does not rewrite it. Grep for it in your output directory:
+Flow-level `pluginDefaults` is removed in 2.0. `kestra-migrate` flags it with `⚠ ✗` and writes the file through unchanged. Grep to confirm which flows in your output directory still carry it:
 
 ```bash
 grep -rn "pluginDefaults:" ./v2-flows/
@@ -650,29 +570,43 @@ tasks:
 
 See [Plugin defaults removed](../plugin-defaults-removed/index.md) for the Policy syntax.
 
-### `taskDefaults` → `pluginDefaults` is a two-step migration
+### `taskDefaults`
 
-`kestra-migrate` renames `taskDefaults:` to `pluginDefaults:` in flow 07. Both keys are rejected with a 422 on the 2.0 server:
+`taskDefaults:` and `pluginDefaults:` are both removed in 2.0. `kestra-migrate` flags `taskDefaults:` as a `⚠ ✗` item and writes the file through unchanged; the key stays in your output directory as-is. Both keys produce HTTP 422 on import:
 
 ```
 # taskDefaults: (original 1.3 key)
 HTTP 422 {"detail":"Unrecognized field \"taskDefaults\""}
 
-# pluginDefaults: (kestra-migrate output)
+# pluginDefaults: (also rejected)
 HTTP 422 {"detail":"Unrecognized field \"pluginDefaults\""}
 ```
 
-After `kestra-migrate` runs, grep for `pluginDefaults:` in your output and inline the values or migrate to a Policy as described above.
+Grep for both in your output directory and inline the values or migrate to a Policy:
+
+```bash
+grep -rln "taskDefaults:" ./v2-flows/
+grep -rln "pluginDefaults:" ./v2-flows/
+```
 
 ### Other patterns to grep for
 
 ```bash
-# Removed Pebble function
+# Removed Pebble json() function and | json filter
 grep -rn "json(" ./v2-flows/
 grep -rn "| json" ./v2-flows/
 
-# Script task runner rename
+# Script task runner key rename
 grep -rn "^\s*runner:" ./v2-flows/
+
+# Docker runner shape change (docker: block → taskRunner: + containerImage:)
+grep -rn "^\s*docker:" ./v2-flows/
+
+# ION binary output reads (silent data corruption)
+grep -rn "read(" ./v2-flows/
+
+# fs.local.Delete on directories (recursive default flipped)
+grep -rln "fs.local.Delete" ./v2-flows/
 ```
 
 | 1.3 | 2.0 | Guide |
@@ -680,6 +614,40 @@ grep -rn "^\s*runner:" ./v2-flows/
 | `{{ json(outputs.task.body).key }}` | `{{ fromJson(outputs.task.body).key }}` | [json() function removed](../json-function-removed/index.md) |
 | `{{ value \| json }}` | `{{ value \| toJson }}` | [json() function removed](../json-function-removed/index.md) |
 | `runner: type: ...Docker` | `taskRunner: type: ...Docker` | — |
+| `docker: {image: ...}` in Script tasks | `taskRunner: {type: ...Docker, containerImage: ...}` | — |
+| `read(outputs.task.uri)` on ION-producing tasks | `fromIon(read(outputs.task.uri))` — unwrapped expressions read binary ION, not usable strings | [ION binary format](../ion-binary-format/index.md) |
+| `fs.local.Delete` on a directory | Add `recursive: true` if subdirectory deletion was intended — the 2.0 default flipped to `false` and stops without error | [Local delete recursive default](../local-delete-recursive-default/index.md) |
+
+:::alert{type="warning"}
+**`| json` and `json(` are runtime failures, not parse failures.** Flows using these patterns load and execute on 2.0 without error — the failure only surfaces when the expression is evaluated. `kestra-migrate --check` does not flag them. The grep is your only safety net.
+
+The `grep -rn "read("` sweep also matches `read()` inside Python or JavaScript tasks. Check only Pebble expressions (`{{ read(...) }}`) that consume the output of an ION-producing task — not host-language code.
+:::
+
+### Verify all flows are v2-compatible
+
+Once you have applied all manual fixes, re-run `--check` against your output directory:
+
+```bash
+kestra-migrate --check ./v2-flows/
+```
+
+When every flow is clean, the output is all `✔` and the tool exits `0`:
+
+```
+✔ 01-foreach.yaml
+✔ 02-foreachitem-processor.yaml
+✔ 03-foreachitem.yaml
+✔ 04-plugin-defaults.yaml
+✔ 05-input-types.yaml
+✔ 06-type-renames.yaml
+✔ 07-task-defaults.yaml
+✔ 08-trigger-conditions.yaml
+
+✔  All 8 flows are v2-compatible
+```
+
+Exit code `0` is your gate to proceed to Step 5. If any `⚠` or `✎` lines remain, complete those fixes before switching the server.
 
 ## Step 5 — Switch to Kestra 2.0
 
@@ -890,7 +858,7 @@ curl -s -X POST \
 {"id": "3Rp7LmWxqhK91BN2P5t4GU", "state": "RUNNING"}
 ```
 
-The execution completes with `SUCCESS`. However, the `pluginDefaults` block was dropped — no error is returned by the execution API. Check the flow definition on 2.0:
+The execution completes with `SUCCESS`. However, the `pluginDefaults` block was dropped. No error is returned by the execution API. Check the flow definition on 2.0:
 
 ```bash
 curl -s -u "admin@kestra.io:Kestra123!" \
@@ -921,6 +889,18 @@ Or with `kestractl` on EE:
 kestractl flows import --namespace company.team ./v2-flows/
 ```
 
+### Silent behavior changes — smoke-test checklist
+
+Some 2.0 changes parse without error and only surface at runtime. Run through this checklist before signing off on the migration:
+
+- [ ] **`fs.local.Delete` directory deletions** — confirm subdirectories are still removed where expected (`recursive: true` required; the default flipped to `false`)
+- [ ] **ION output reads** — confirm expressions that read ION-producing task outputs produce correct values (`fromIon()` wrapping required)
+- [ ] **Flow triggers — deploy disabled first** — import any migrated Flow triggers with `disabled: true` set on the trigger before enabling them. A known issue in early 2.0 builds caused migrated Flow triggers to fire on every flow in the namespace rather than only the listed `dependsOn` flows. Enable each trigger only after the gating probe below passes.
+- [ ] **Flow triggers with `PAUSED` upstream states** — confirm any migrated Flow triggers that relied on `PAUSED` in the default states list now declare `states: [SUCCESS, WARNING, PAUSED]` explicitly (the default lost `PAUSED` in 2.0)
+- [ ] **`dependsOn` gating probe** — enable one trigger at a time and confirm: triggering one upstream flow does not fire it; triggering all upstreams inside the window fires exactly once; triggering an unrelated flow in the namespace does not fire it
+- [ ] **Multi-entry `dependsOn` output access** — confirm consumers read `trigger.outputs.<flowId>.<key>` (scoped shape) rather than the unscoped `trigger.outputs.<key>` shorthand, which applies only to single-entry `dependsOn`
+- [ ] **EE: `IMPERSONATE` permission** — re-grant the `USER: IMPERSONATE` permission to any roles that previously held `IMPERSONATE`; it was dropped in 2.0 and must be granted manually under the new action model
+
 ## Step 7 — Verify and complete
 
 **Health check:**
@@ -944,7 +924,31 @@ curl -s -X POST \
   | jq '{id: .id, state: .state.current}'
 ```
 
-**Check the 2.0 server logs** for any remaining WARN lines about unparseable flows. Any `InvalidTypeConstraintViolationException` lines name flows that still need manual rewriting.
+Expected output (the execution ID will differ):
+
+```json
+{"id": "6Kf2NqWzpbL83MT1R7hDYc", "state": "RUNNING"}
+```
+
+Poll until `SUCCESS` (replace `<execution-id>` with the `id` from the response above):
+
+```bash
+curl -s -u "admin@kestra.io:Kestra123!" \
+  "http://localhost:8080/api/v1/executions/<execution-id>" \
+  | jq '{state: .state.current}'
+```
+
+```json
+{"state": "SUCCESS"}
+```
+
+**Check the 2.0 server logs** for any remaining WARN lines about unparseable flows. Any `InvalidTypeConstraintViolationException` lines name flows that still need manual rewriting:
+
+```bash
+docker compose logs kestra | grep InvalidTypeConstraint
+```
+
+No output means all flows loaded cleanly.
 
 **Review RBAC** if you use Enterprise Edition. The [RBAC action model](../rbac-action-model/index.md) changed from CRUD to resource+action in 2.0.
 
@@ -962,15 +966,16 @@ See [Instance Owner](../superadmin-renamed-instance-owner/index.md) for full det
 ## Troubleshooting
 
 **`kestra-migrate` exits 1 when I expected 0**
-The tool exits `1` if any flow needs migration in `--check` mode, or has unrewritable types in both modes. Check the output for `✎` (needs rewrite) and `✗` (removed type) markers.
+The tool exits `1` whenever any flow needs migration — both in `--check` mode and when running the actual migration. Check the output for `✎` (auto-rewritable) and `⚠ ✗` (manual required) markers. Each `⚠ ✗` line includes a `↳ docs:` link to the relevant migration guide.
 
 **A flow passes `kestra-migrate` but fails to import on 2.0**
-Run these checks against your output directory:
+`kestra-migrate` flags `ForEach`, `ForEachItem`, `pluginDefaults`, and `taskDefaults` as `⚠ ✗` and writes those files through unchanged. They will fail on the 2.0 server. Confirm none remain in your output directory:
 
 ```bash
 grep -rn "plugin.core.flow.ForEach" ./v2-flows/
 grep -rn "plugin.core.flow.ForEachItem" ./v2-flows/
 grep -rn "pluginDefaults:" ./v2-flows/
+grep -rn "taskDefaults:" ./v2-flows/
 grep -rn "json(" ./v2-flows/
 grep -rn "| json" ./v2-flows/
 grep -rn "^\s*runner:" ./v2-flows/
@@ -987,6 +992,9 @@ when: >
 ```
 
 See [Trigger conditions redesign](../trigger-conditions-redesign/index.md) for the complete `when` expression reference.
+
+**A Flow trigger used `windowAdvance`**
+`windowAdvance` is removed in 2.0 with no direct equivalent. If your trigger relied on it, discuss the intended behavior with your team and either remodel it using the available `window` options (`every`, `lookback`, `from`/`to`, `deadline`) or disable the trigger until a replacement strategy is confirmed.
 
 **Login fails after upgrading to 2.0**
 The `basicAuth:` config key changed to `basic-auth:` (kebab-case) in 2.0. Update your `KESTRA_CONFIGURATION` or `application.yaml` before starting the 2.0 server.
