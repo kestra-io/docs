@@ -693,16 +693,16 @@ describe("renderVersionedDocBody data-driven components", () => {
 
     it("renders a bare ChildCard as the current page's child cards, mirroring the real GuidesChildCard.vue's markup", async () => {
         const html = await renderWith("getting-started", ":::ChildCard\n:::")
-        expect(html).toContain('class="ks-card-grid"')
-        expect(html).toContain('class="ks-card" href="/docs/1.3/getting-started/quickstart"')
-        expect(html).toContain('class="ks-card-title"')
+        expect(html).toContain('class="ks-child-card-grid"')
+        expect(html).toContain('class="ks-child-card" href="/docs/1.3/getting-started/quickstart"')
+        expect(html).toContain('class="ks-child-card-title"')
         expect(html).toContain("Quickstart")
         expect(html).not.toContain("ChildCard")
     })
 
     it("renders the child's icon as an img when the children map has one", async () => {
         const html = await renderWith("getting-started", ":::ChildCard\n:::")
-        expect(html).toContain('class="ks-card-icon"')
+        expect(html).toContain('class="ks-child-card-icon"')
         expect(html).toContain(
             'src="https://api.kestra.io/v1/docs/docs/icons/quickstart.svg/versions/1.3.0"',
         )
@@ -710,7 +710,7 @@ describe("renderVersionedDocBody data-driven components", () => {
 
     it("omits the icon element when the child has none", async () => {
         const html = await renderWith("use-cases", ":::ChildCard\n:::")
-        expect(html).not.toContain("ks-card-icon")
+        expect(html).not.toContain("ks-child-card-icon")
     })
 
     it("strips the 1.2+ API's /src/contents content-root prefix from icon refs", async () => {
@@ -764,7 +764,7 @@ describe("renderVersionedDocBody data-driven components", () => {
 
     it("renders nothing for ChildCard when the children map is empty", async () => {
         const html = await render(`---\ntitle: T\n---\n:::ChildCard\n:::`)
-        expect(html).not.toContain('class="ks-card-grid"')
+        expect(html).not.toContain('class="ks-child-card-grid"')
         expect(html).not.toContain("ChildCard")
     })
 
@@ -782,7 +782,7 @@ describe("renderVersionedDocBody data-driven components", () => {
             markdown: `---\ntitle: T\n---\nAdjust the filters based on your needs or search directly.\n\n<GuidesChildCard />`,
             children,
         })
-        expect(body.html).not.toContain("ks-card-grid")
+        expect(body.html).not.toContain("ks-child-card-grid")
         expect(body.html).not.toContain("GuidesChildCard")
         expect(body.unknownComponents).toEqual([])
         expect(body.guidesChildCard).toEqual([
@@ -799,7 +799,7 @@ describe("renderVersionedDocBody data-driven components", () => {
 
     it("omits guidesChildCard when the page doesn't use the component", async () => {
         const html = await renderWith("getting-started", ":::ChildCard\n:::")
-        expect(html).toContain('class="ks-card-grid"')
+        expect(html).toContain('class="ks-child-card-grid"')
         const body = await renderVersionedDocBody({
             version: "1.3",
             path: "getting-started",
