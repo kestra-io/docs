@@ -19,11 +19,13 @@ const { post } = Astro.props
 const { Content, headings } = await render(post)
 const page = post.data
 
-const links = headings.map((h) => ({
-    text: h.text,
-    id: h.slug,
-    depth: h.depth,
-}))
+const links = headings
+    .filter((h) => h.depth === 2)
+    .map((h) => ({
+        text: h.text,
+        id: h.slug,
+        depth: h.depth,
+    }))
 
 const editUrl = `https://github.com/kestra-io/docs/edit/main/src/contents/resources/${post.id}/index.md`
 
