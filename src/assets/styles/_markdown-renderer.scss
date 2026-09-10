@@ -1,7 +1,7 @@
-// Shared styles for the MDC markdown renderers. Used from the scoped style
-// blocks of MDCParserAndRenderer.vue and MDCParserAndRendererSSR.vue so the
+// Shared styles for the markdown renderers. Used from the scoped style
+// blocks of MarkdownRenderer.vue and MarkdownRendererSSR.vue so the
 // two variants can't drift apart visually.
-@mixin mdc-renderer {
+@mixin markdown-renderer {
     & :deep(pre) {
         padding: 1rem;
         padding-bottom: 0;
