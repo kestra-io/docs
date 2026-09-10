@@ -4,9 +4,17 @@ export default defineConfig({
     testDir: "./tests",
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
-    retries: process.env.CI ? 2 : 0,
-    workers: process.env.CI ? 1 : undefined,
-    reporter: "html",
+
+    // One retry absorbs a crashed or OOM-killed browser process without a manual
+    // re-dispatch; globalTimeout is the backstop for a wedged one.
+    retries: process.env.CI ? 1 : 0,
+    workers: process.env.CI ? 2 : undefined,
+    timeout: 90_000,
+    globalTimeout: 20 * 60_000,
+
+    reporter: process.env.CI
+        ? [["github"], ["html", { open: "never" }]]
+        : "html",
 
     expect: {
         toHaveScreenshot: {
@@ -16,7 +24,9 @@ export default defineConfig({
 
     use: {
         baseURL: "http://localhost:8787",
-        trace: "on-first-retry",
+        navigationTimeout: 45_000,
+        actionTimeout: 30_000,
+        trace: "retain-on-failure",
     },
 
     projects: [

@@ -32,7 +32,7 @@ The lakehouse is not just an incremental improvement; it represents a fundamenta
 
 A data lakehouse architecture is a modern data management system that combines the low-cost, flexible storage of a data lake with the powerful data management and analytics capabilities of a data warehouse. Historically, data lakes excelled at storing vast amounts of raw, unstructured data, but lacked transactional support and data quality enforcement. Data warehouses, on the other hand, provided structured, high-performance analytics but were expensive and inflexible for modern data types like video, audio, and text.
 
-The lakehouse resolves this by implementing a metadata and transaction layer directly on top of low-cost object storage. This is made possible by open table formats like Apache Iceberg and Delta Lake, which bring key warehouse features to the data lake:
+The lakehouse resolves this by implementing a metadata and transaction layer directly on top of low-cost object storage. This is made possible by open table formats like Apache Iceberg and [Delta Lake](/resources/data/delta-lake), which bring key warehouse features to the data lake:
 - **ACID Transactions:** Ensures data integrity and reliability, allowing multiple users to read and write data concurrently.
 - **Schema Enforcement and Evolution:** Prevents data corruption by enforcing a schema on write, while still allowing the schema to evolve over time.
 - **Time Travel:** Enables data versioning, allowing users to query historical data, audit changes, and roll back errors.

@@ -2,34 +2,86 @@
 /**
  * Lighthouse performance benchmark script for kestra.io docs.
  *
- * Runs Lighthouse on a set of key pages, writes JSON results and a
- * Markdown report. Optionally compares against a baseline JSON file to
- * show score/metric deltas in the report (used for PR vs. main comparison).
+ * Measures one shard of the page sample and writes its scores as JSON, plus
+ * the per-page LHR dumps. scripts/lighthouse-report.mjs merges the shards and
+ * builds the Markdown report.
  *
  * Usage (environment variables):
- *   BASE_URL      – Root URL to benchmark, no trailing slash (required)
- *   OUTPUT_FILE   – Path for JSON output  (default: lighthouse-results.json)
- *   BASELINE_FILE – Path to baseline JSON (optional; omit to skip comparison)
- *   MARKDOWN_FILE – Path for Markdown report (default: lighthouse-report.md)
- *   LHR_DIR       – Directory for per-page LHR JSON dumps (default: lhr-reports)
+ *   BASE_URL        – Root URL to benchmark, no trailing slash (required)
+ *   OUTPUT_FILE     – Path for JSON output  (default: lighthouse-results.json)
+ *   LHR_DIR         – Directory for per-page LHR JSON dumps (default: lhr-reports)
+ *   MULTI_RUN_COUNT – Overrides the `runs` counts in the page sample
+ *   SHARD_INDEX     – 0-based shard to measure (default: 0)
+ *   SHARD_TOTAL     – Number of shards the sample is split across (default: 1)
+ *   WARMUP_PATH     – Page warmed before measuring (default: /privacy-policy);
+ *                     the shard's SSR pages are warmed after it
  *
  * Exits with code 0 on success, 1 on fatal error.
  * Score regressions never cause a non-zero exit — output is informational only.
  */
 
-import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs"
+import { writeFileSync, mkdirSync } from "node:fs"
 import { PAGES } from "../tests/fixtures/page-sample.mjs"
+import {
+    METRIC_DEFS,
+    median,
+    runsFor as sampleRunsFor,
+    shardPages,
+} from "./lighthouse-shared.mjs"
 
 // ---------------------------------------------------------------------------
 // Config
 // ---------------------------------------------------------------------------
 
 const BASE_URL = (process.env.BASE_URL ?? "").replace(/\/$/, "")
-const BASE_URL_OUTPUT = process.env.BASE_URL_OUTPUT ?? BASE_URL
 const OUTPUT_FILE = process.env.OUTPUT_FILE ?? "lighthouse-results.json"
-const BASELINE_FILE = process.env.BASELINE_FILE ?? ""
-const MARKDOWN_FILE = process.env.MARKDOWN_FILE ?? "lighthouse-report.md"
 const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
+// Warm-up target: a prerendered page with almost no content of its own, so it
+// pulls the worker and the shared layout assets without touching the sample.
+const WARMUP_PATH = process.env.WARMUP_PATH ?? "/privacy-policy"
+const WARMUP_REQUESTS = 3
+
+// Overrides the `runs` counts carried by the page sample when set above 0.
+const MULTI_RUN_COUNT = Math.max(
+    0,
+    Math.trunc(Number(process.env.MULTI_RUN_COUNT ?? 0)) || 0,
+)
+
+const SHARD_TOTAL = Math.max(
+    1,
+    Math.trunc(Number(process.env.SHARD_TOTAL ?? 1)) || 1,
+)
+const SHARD_INDEX = Math.min(
+    SHARD_TOTAL - 1,
+    Math.max(0, Math.trunc(Number(process.env.SHARD_INDEX ?? 0)) || 0),
+)
+
+/** This shard's slice of the page sample. */
+const SHARD_PAGES = shardPages(SHARD_TOTAL, MULTI_RUN_COUNT)[SHARD_INDEX]
+
+/**
+ * The shard's pages with the server-rendered ones hoisted to the front, order
+ * otherwise preserved. They are measured while workerd is freshest, and the
+ * prerendered pages, served from disk, care far less where they land.
+ *
+ * @returns {typeof PAGES}
+ */
+function orderedPages() {
+    return [
+        ...SHARD_PAGES.filter((page) => page.ssr),
+        ...SHARD_PAGES.filter((page) => !page.ssr),
+    ]
+}
+
+/**
+ * Runs to measure for a page: what the sample asks for, 1 by default.
+ *
+ * @param {typeof PAGES[number]} page
+ * @returns {number}
+ */
+function runsFor(page) {
+    return sampleRunsFor(page, MULTI_RUN_COUNT)
+}
 
 if (!BASE_URL) {
     console.error("ERROR: BASE_URL environment variable is required.")
@@ -43,88 +95,11 @@ const LIGHTHOUSE_CATEGORIES = [
     "seo",
 ]
 
-/** Metrics extracted from the Lighthouse audit results. */
-const METRIC_DEFS = [
-    {
-        auditKey: "largest-contentful-paint",
-        key: "lcp",
-        label: "LCP",
-        unit: "s",
-        divisor: 1000,
-        decimals: 2,
-    },
-    {
-        auditKey: "first-contentful-paint",
-        key: "fcp",
-        label: "FCP",
-        unit: "s",
-        divisor: 1000,
-        decimals: 2,
-    },
-    {
-        auditKey: "total-blocking-time",
-        key: "tbt",
-        label: "TBT",
-        unit: "ms",
-        divisor: 1,
-        decimals: 0,
-    },
-    {
-        auditKey: "cumulative-layout-shift",
-        key: "cls",
-        label: "CLS",
-        unit: "",
-        divisor: 1,
-        decimals: 3,
-    },
-    {
-        auditKey: "speed-index",
-        key: "si",
-        label: "Speed Index",
-        unit: "s",
-        divisor: 1000,
-        decimals: 2,
-    },
-]
-
-// Score delta significance threshold (points).
-const SCORE_THRESHOLD = 10
-// Metric delta significance threshold (fraction of baseline value).
-const METRIC_THRESHOLD = 0.3
-
-// ---------------------------------------------------------------------------
-// Types (JSDoc)
-// ---------------------------------------------------------------------------
-
 /**
- * @typedef {{
- *   performance: number;
- *   accessibility: number;
- *   'best-practices': number;
- *   seo: number;
- * }} Scores
- *
- * @typedef {{
- *   lcp: number;
- *   fcp: number;
- *   tbt: number;
- *   cls: number;
- *   si: number;
- * }} Metrics
- *
- * @typedef {{
- *   path: string;
- *   label: string;
- *   scores: Scores;
- *   metrics: Metrics;
- *   error?: string;
- * }} PageResult
- *
- * @typedef {{
- *   timestamp: string;
- *   baseUrl: string;
- *   results: PageResult[];
- * }} BenchmarkOutput
+ * @typedef {import("./lighthouse-shared.mjs").Scores} Scores
+ * @typedef {import("./lighthouse-shared.mjs").Metrics} Metrics
+ * @typedef {import("./lighthouse-shared.mjs").PageResult} PageResult
+ * @typedef {import("./lighthouse-shared.mjs").BenchmarkOutput} BenchmarkOutput
  */
 
 // ---------------------------------------------------------------------------
@@ -165,7 +140,38 @@ async function runLighthouse(url, chromePort) {
     })
 
     if (!result?.lhr) throw new Error("Lighthouse returned no result")
+
+    assertScored(result.lhr)
     return result.lhr
+}
+
+/**
+ * Throws when a page failed to load: Lighthouse still returns an LHR, with
+ * null category scores that would otherwise be reported as a genuine 0.
+ *
+ * @param {any} lhr
+ */
+function assertScored(lhr) {
+    const runtimeError = lhr.runtimeError?.code
+    if (runtimeError && runtimeError !== "NO_ERROR") {
+        throw new Error(
+            `${runtimeError}: ${lhr.runtimeError?.message ?? "page did not load"}`,
+        )
+    }
+
+    const unscored = LIGHTHOUSE_CATEGORIES.filter(
+        (id) => lhr.categories?.[id]?.score == null,
+    )
+    if (unscored.length > 0) {
+        throw new Error(`No score returned for: ${unscored.join(", ")}`)
+    }
+
+    // The other categories audit without the trace, so a run can score while
+    // every metric is missing, which then reads as a genuine drop to zero.
+    const fcp = lhr.audits?.["first-contentful-paint"]
+    if (fcp?.numericValue == null) {
+        throw new Error(fcp?.errorMessage ?? "no paint metrics in the trace")
+    }
 }
 
 /**
@@ -182,15 +188,70 @@ async function runWithRetry(url, chromePort, maxRetries = 2) {
             return await runLighthouse(url, chromePort)
         } catch (err) {
             lastError = err
+            const message = err instanceof Error ? err.message : String(err)
             if (attempt < maxRetries) {
                 console.log(
-                    `    Attempt ${attempt + 1} failed, retrying in 3 s…`,
+                    `    Attempt ${attempt + 1} failed (${message}), retrying in 3 s…`,
                 )
                 await new Promise((r) => setTimeout(r, 3000))
             }
         }
     }
     throw lastError
+}
+
+/**
+ * Requests a page a few times, discarding every response, so the work its
+ * first hit does stays out of the measured traces.
+ *
+ * @param {string} url
+ * @param {number} [requests=WARMUP_REQUESTS]
+ */
+async function warmUp(url, requests = WARMUP_REQUESTS) {
+    for (let i = 0; i < requests; i++) {
+        try {
+            const response = await fetch(url, {
+                signal: AbortSignal.timeout(30000),
+            })
+            await response.arrayBuffer()
+        } catch (err) {
+            const message = err instanceof Error ? err.message : String(err)
+            console.log(`  warm-up failed for ${url}: ${message}`)
+        }
+    }
+}
+
+/**
+ * Performance score (0-100) of a Lighthouse result.
+ *
+ * @param {any} lhr
+ * @returns {number}
+ */
+function perfScore(lhr) {
+    return Math.round((lhr.categories["performance"]?.score ?? 0) * 100)
+}
+
+/**
+ * Runs Lighthouse `runs` times and returns the run whose performance score is
+ * the median, keeping every reported score and metric from one single trace.
+ *
+ * @param {string} url
+ * @param {number} chromePort
+ * @param {number} runs
+ * @returns {Promise<{ lhr: any; perfScores: number[] }>}
+ */
+async function runMedian(url, chromePort, runs) {
+    /** @type {any[]} */
+    const lhrs = []
+    for (let i = 0; i < runs; i++) {
+        lhrs.push(await runWithRetry(url, chromePort))
+    }
+
+    const perfScores = lhrs.map(perfScore)
+    const medianScore = median(perfScores)
+    const lhr = lhrs[perfScores.indexOf(medianScore)]
+
+    return { lhr, perfScores }
 }
 
 /**
@@ -214,7 +275,7 @@ function slugify(label) {
  * Extracts scores and metrics from a Lighthouse result object.
  *
  * @param {any} lhr
- * @returns {{ scores: Scores; metrics: Metrics }}
+ * @returns {{ scores: Scores; metrics: Metrics; benchmarkIndex: number }}
  */
 function extractResults(lhr) {
     /** @type {Scores} */
@@ -241,147 +302,11 @@ function extractResults(lhr) {
         )
     }
 
-    return { scores, metrics: /** @type {Metrics} */ (metricsRaw) }
-}
-
-// ---------------------------------------------------------------------------
-// Delta helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Returns a display string for a score delta (higher is better).
- *
- * @param {number} current
- * @param {number | undefined} baseline
- * @returns {string}
- */
-function scoreDelta(current, baseline) {
-    if (baseline == null) return ""
-    const delta = Math.round(current - baseline)
-    if (delta >= SCORE_THRESHOLD) return ` 🟢 +${delta}`
-    if (delta <= -SCORE_THRESHOLD) return ` 🔻 ${delta}`
-    return ""
-}
-
-/**
- * Returns a display arrow for a metric delta (lower is better).
- *
- * @param {number} current
- * @param {number | undefined} baseline
- * @returns {string}
- */
-function metricDelta(current, baseline) {
-    if (baseline == null || baseline === 0) return ""
-    const pctChange = (current - baseline) / baseline
-    if (pctChange <= -METRIC_THRESHOLD) return " 🟢" // lower = better
-    if (pctChange >= METRIC_THRESHOLD) return " 🔻" // higher = worse
-    return ""
-}
-
-// ---------------------------------------------------------------------------
-// Markdown report generation
-// ---------------------------------------------------------------------------
-
-/**
- * Formats a metric value for display.
- *
- * @param {number} value
- * @param {{ unit: string; decimals: number }} def
- * @returns {string}
- */
-function fmtMetric(value, def) {
-    const formatted = value.toFixed(def.decimals)
-    return def.unit ? `${formatted} ${def.unit}` : formatted
-}
-
-/**
- * Builds the Markdown report string.
- *
- * @param {BenchmarkOutput} output
- * @param {BenchmarkOutput | null} baseline
- * @returns {string}
- */
-function buildMarkdown(output, baseline) {
-    const testedAt =
-        new Date(output.timestamp)
-            .toISOString()
-            .replace("T", " ")
-            .slice(0, 16) + " UTC"
-    const baselineInfo = baseline
-        ? `Compared against \`main\` baseline from ${new Date(baseline.timestamp).toISOString().slice(0, 10)}`
-        : "No baseline available — scores will appear after the first merge to `main`"
-
-    const lines = [
-        `> Tested: \`${output.baseUrl}\` on ${testedAt}  `,
-        `> ${baselineInfo}`,
-        "",
-        "### Scores (0–100, higher is better)",
-        "",
-        "| Page | Performance | Accessibility | Best Practices | SEO |",
-        "|------|-------------|---------------|----------------|-----|",
-    ]
-
-    for (const result of output.results) {
-        if (result.error) {
-            lines.push(
-                `| [${result.label}](${result.path}) | ❌ error | ❌ error | ❌ error | ❌ error |`,
-            )
-            continue
-        }
-        const base = baseline?.results.find((r) => r.path === result.path)
-        const { scores } = result
-        const bs = base?.scores
-        lines.push(
-            `| [${result.label}](${output.baseUrl}${result.path}) ` +
-                `| ${scores.performance}${scoreDelta(scores.performance, bs?.performance)} ` +
-                `| ${scores.accessibility}${scoreDelta(scores.accessibility, bs?.accessibility)} ` +
-                `| ${scores["best-practices"]}${scoreDelta(scores["best-practices"], bs?.["best-practices"])} ` +
-                `| ${scores.seo}${scoreDelta(scores.seo, bs?.seo)} |`,
-        )
+    return {
+        scores,
+        metrics: /** @type {Metrics} */ (metricsRaw),
+        benchmarkIndex: Math.round(lhr.environment?.benchmarkIndex ?? 0),
     }
-
-    lines.push("", "### Core Web Vitals (lower is better)", "")
-
-    // Build header from metric defs
-    const metricHeaders = METRIC_DEFS.map((d) => d.label).join(" | ")
-    const metricSep = METRIC_DEFS.map(() => "---").join(" | ")
-    lines.push(`| Page | ${metricHeaders} |`)
-    lines.push(`|------|${metricSep}|`)
-
-    for (const result of output.results) {
-        if (result.error) {
-            const cells = METRIC_DEFS.map(() => "❌").join(" | ")
-            lines.push(`| [${result.label}](${result.path}) | ${cells} |`)
-            continue
-        }
-        const base = baseline?.results.find((r) => r.path === result.path)
-        const cells = METRIC_DEFS.map((def) => {
-            const val = result.metrics[/** @type {keyof Metrics} */ (def.key)]
-            const bval = base?.metrics[/** @type {keyof Metrics} */ (def.key)]
-            return `${fmtMetric(val, def)}${metricDelta(val, bval)}`
-        }).join(" | ")
-        lines.push(
-            `| [${result.label}](${output.baseUrl}${result.path}) | ${cells} |`,
-        )
-    }
-
-    lines.push(
-        "",
-        "<details><summary>Legend</summary>",
-        "",
-        "🟢 improved &nbsp;·&nbsp; 🔻 regressed &nbsp;·&nbsp; (blank) no significant change  ",
-        `Score threshold: ±${SCORE_THRESHOLD} pts &nbsp;·&nbsp; Metric threshold: ±${METRIC_THRESHOLD * 100}% of baseline`,
-        "",
-        "</details>",
-        "",
-        "<details><summary>View full Lighthouse HTML report for a page</summary>",
-        "",
-        "Full per-page Lighthouse Results (LHR) are attached as the `lhr-reports` artifact on this run. Download and unzip it, then open <https://googlechrome.github.io/lighthouse/viewer/> and drop the `<page>-lhr.json` file into the page to see every audit, opportunity, and diagnostic.",
-        "",
-        "</details>",
-    )
-
-    return lines.join("\n")
 }
 
 // ---------------------------------------------------------------------------
@@ -392,11 +317,17 @@ async function main() {
     // @ts-ignore - optional CI-only dependency, not in package.json
     const chromeLauncher = await import("chrome-launcher")
 
+    const shardRuns = SHARD_PAGES.reduce((sum, page) => sum + runsFor(page), 0)
+    const runPlan = SHARD_PAGES.filter((page) => runsFor(page) > 1)
+        .map((page) => `${page.path} x${runsFor(page)}`)
+        .join(", ")
+
     console.log(`\nLighthouse Benchmark`)
     console.log(`Base URL : ${BASE_URL}`)
-    console.log(`Pages    : ${PAGES.length}`)
+    console.log(`Shard    : ${SHARD_INDEX + 1} of ${SHARD_TOTAL}`)
+    console.log(`Pages    : ${SHARD_PAGES.length} of ${PAGES.length}`)
     console.log(
-        `Baseline : ${BASELINE_FILE && existsSync(BASELINE_FILE) ? BASELINE_FILE : "none"}\n`,
+        `Runs     : ${shardRuns}, 1 per page except ${runPlan || "none"}\n`,
     )
 
     // Launch Chrome once and reuse for all pages.
@@ -412,27 +343,52 @@ async function main() {
 
     mkdirSync(LHR_DIR, { recursive: true })
 
+    // WARMUP_PATH covers the workerd compile and the shared layout assets. The
+    // SSR routes each compile and render on their own first hit, so they follow.
+    const ssrPaths = SHARD_PAGES.filter((page) => page.ssr).map(
+        (page) => page.path,
+    )
+    process.stdout.write(
+        `Warming up on ${WARMUP_PATH} and ${ssrPaths.length} SSR pages… `,
+    )
+    await warmUp(`${BASE_URL}${WARMUP_PATH}`)
+    for (const path of ssrPaths) {
+        await warmUp(`${BASE_URL}${path}`, 1)
+    }
+    console.log("done\n")
+
     /** @type {PageResult[]} */
     const results = []
 
     try {
-        for (const page of PAGES) {
+        for (const page of orderedPages()) {
             const url = `${BASE_URL}${page.path}`
+            const runs = runsFor(page)
             process.stdout.write(`  ${page.label.padEnd(24)} ${url} … `)
 
             try {
-                const lhr = await runWithRetry(url, chrome.port)
+                const { lhr, perfScores } = await runMedian(
+                    url,
+                    chrome.port,
+                    runs,
+                )
                 const lhrPath = `${LHR_DIR}/${slugify(page.label)}-lhr.json`
                 writeFileSync(lhrPath, JSON.stringify(lhr))
-                const { scores, metrics } = extractResults(lhr)
+                const { scores, metrics, benchmarkIndex } = extractResults(lhr)
                 results.push({
                     path: page.path,
                     label: page.label,
                     scores,
                     metrics,
+                    benchmarkIndex,
+                    runs,
+                    shard: SHARD_INDEX,
+                    perfScores,
                 })
+                const spread =
+                    runs > 1 ? ` (median of ${perfScores.join("/")})` : ""
                 console.log(
-                    `perf=${scores.performance} a11y=${scores.accessibility} bp=${scores["best-practices"]} seo=${scores.seo}`,
+                    `perf=${scores.performance}${spread} a11y=${scores.accessibility} bp=${scores["best-practices"]} seo=${scores.seo} cpu=${benchmarkIndex}`,
                 )
             } catch (err) {
                 const message = err instanceof Error ? err.message : String(err)
@@ -447,6 +403,9 @@ async function main() {
                         seo: 0,
                     },
                     metrics: { lcp: 0, fcp: 0, tbt: 0, cls: 0, si: 0 },
+                    benchmarkIndex: 0,
+                    runs,
+                    shard: SHARD_INDEX,
                     error: message,
                 })
             }
@@ -456,37 +415,25 @@ async function main() {
         console.log("\nChrome closed.")
     }
 
+    // One index for the whole run: it is a property of the runner, not the page.
+    const benchmarkIndex = median(
+        results.map((r) => r.benchmarkIndex).filter(Boolean),
+    )
+
     /** @type {BenchmarkOutput} */
     const output = {
         timestamp: new Date().toISOString(),
-        baseUrl: BASE_URL_OUTPUT,
+        baseUrl: BASE_URL,
+        benchmarkIndex,
+        shard: SHARD_INDEX,
+        shardTotal: SHARD_TOTAL,
         results,
     }
 
-    // Write JSON output.
+    console.log(`\nRunner CPU index (median): ${benchmarkIndex || "unknown"}`)
+
     writeFileSync(OUTPUT_FILE, JSON.stringify(output, null, 2))
-    console.log(`\nResults written to ${OUTPUT_FILE}`)
-
-    // Load baseline if provided and file exists.
-    /** @type {BenchmarkOutput | null} */
-    let baseline = null
-    if (BASELINE_FILE && existsSync(BASELINE_FILE)) {
-        try {
-            baseline = JSON.parse(readFileSync(BASELINE_FILE, "utf8"))
-            console.log(
-                `Baseline loaded from ${BASELINE_FILE} (${baseline?.timestamp?.slice(0, 10)})`,
-            )
-        } catch {
-            console.warn(
-                `Warning: Could not parse baseline file ${BASELINE_FILE}, skipping comparison.`,
-            )
-        }
-    }
-
-    // Write Markdown report.
-    const markdown = buildMarkdown(output, baseline)
-    writeFileSync(MARKDOWN_FILE, markdown)
-    console.log(`Report written to ${MARKDOWN_FILE}\n`)
+    console.log(`Results written to ${OUTPUT_FILE}\n`)
 }
 
 main().catch((err) => {
