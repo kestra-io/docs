@@ -239,14 +239,18 @@ jobs:
 
     steps:
       # The report scripts have no dependencies beyond the page sample, so the
-      # 800 MB of content in the tree is dead weight here.
+      # 800 MB of content in the tree is dead weight here. Non-cone mode takes
+      # these patterns and nothing else, so .nvmrc has to be asked for by name
+      # or setup-node has no file to read; the leading slashes anchor them, or
+      # `scripts` would drag src/scripts along too.
       - name: Checkout
         uses: actions/checkout@v6
         with:
           sparse-checkout: |
-            .github/actions
-            scripts
-            tests/fixtures/page-sample.mjs
+            /.github/actions/
+            /scripts/
+            /tests/fixtures/page-sample.mjs
+            /.nvmrc
           sparse-checkout-cone-mode: false
 
       - name: Set up Node
