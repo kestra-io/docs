@@ -13,20 +13,7 @@ image: ./main.png
 
 Every orchestrator can tell you that something failed, but almost none of them can tell you who is dealing with it.
 
-
 Kestra 2.0 takes a position on that. **A failed execution is usually an incident, and the platform that ran it is the right place to manage it.** Cases is the result.
-
-
-## Before and after
-
-| | Without Cases | With Cases |
-|---|---|---|
-| An API is down for 40 minutes | 80 failed executions, 80 alerts, a muted channel | 1 case, 1 notification, 80 executions attached |
-| Who's on it? | Whoever answers in the thread | A named assignee, watchers, an acknowledgement clock |
-| Where's the evidence? | Execution ids pasted into a ticket elsewhere | The executions are the case; live state, kept even after purge |
-| How do we fix it? | Find the runbook, run it, remember to say you did | A button on the case; the run is linked and labelled |
-| What happened, afterwards? | Read the thread | Resolution reason, timeline, SLA met or missed, queryable |
-| An approval before a prod change | An @-mention and hope | A case assigned to the approver, counting down in public |
 
 ## What changes when incidents live in the orchestrator
 
@@ -41,6 +28,18 @@ Kestra 2.0 takes a position on that. **A failed execution is usually an incident
 **Approvals get the same treatment.** Who gave it, and when, sit on the same record as the execution it unblocked.
 
 None of this needed a second tool, a sync job, or another permissions model. The failing execution, the incident, the remediation, the approval and the audit entry are all things happening in the same engine.
+
+## Before and after
+
+| | Without Cases | With Cases |
+|---|---|---|
+| An API is down for 40 minutes | 80 failed executions, 80 alerts, a muted channel | 1 case, 1 notification, 80 executions attached |
+| Who's on it? | Whoever answers in the thread | A named assignee, watchers, an acknowledgement clock |
+| Where's the evidence? | Execution ids pasted into a ticket elsewhere | The executions are the case; live state, kept even after purge |
+| How do we fix it? | Find the runbook, run it, remember to say you did | A button on the case; the run is linked and labelled |
+| What happened, afterwards? | Read the thread | Resolution reason, timeline, SLA met or missed, queryable |
+| An approval before a prod change | An @-mention and hope | A case assigned to the approver, counting down in public |
+
 
 ## How cases work in Kestra
 
