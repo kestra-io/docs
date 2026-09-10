@@ -59,8 +59,21 @@ jobs:
 
       # dist is thousands of files, most of them images. One tarball moves in a
       # fraction of the time the artifact actions take over the tree itself.
+      #
+      # .wrangler/deploy/config.json travels with it: that redirect is what
+      # points wrangler at the generated dist/server/wrangler.json. Without it
+      # wrangler falls back to wrangler.jsonc and bundles the worker from src/,
+      # where the adapter's virtual modules do not resolve, so the dev server
+      # never serves. It is gitignored, so a shard only has it if it is packed.
       - name: Pack the build
-        run: tar -I 'zstd -1 -T0' -cf dist.tar.zst dist
+        run: |
+          test -f .wrangler/deploy/config.json || {
+            echo "::error::.wrangler/deploy/config.json missing after the build."
+            echo "::error::wrangler dev would bundle src/ instead of the build."
+            exit 1
+          }
+          cat .wrangler/deploy/config.json
+          tar -I 'zstd -1 -T0' -cf dist.tar.zst dist .wrangler/deploy/config.json
 
       - name: Upload the build
         uses: actions/upload-artifact@v7
