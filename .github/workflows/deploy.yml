@@ -21,14 +21,18 @@ jobs:
     name: Truncate URL
     runs-on: ubuntu-latest
     outputs:
-      slug: ${{ steps.truncate-url.outputs.slug }}
+      slug: ${{ steps.preview-url.outputs.slug }}
+      url: ${{ steps.preview-url.outputs.url }}
     steps:
-      - name: Display branch name
-        run: echo ${GITHUB_HEAD_REF}
+      # Only the composite action is needed here, so skip the full tree.
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: .github/actions
 
-      - name: truncate Url
-        id: truncate-url
-        run: echo "slug=ks-$(echo ${GITHUB_HEAD_REF} | tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]' '-' | cut -c1-30 | sed 's/-*$//')" >> "$GITHUB_OUTPUT"
+      - name: Resolve preview URL
+        id: preview-url
+        uses: ./.github/actions/preview-url
 
   deploy-workers:
     name: Publish to Cloudflare Workers
@@ -38,10 +42,13 @@ jobs:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
       CF_PAGES_COMMIT_SHA: ${{ github.sha }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      # Preview and production render different image URLs and gated content,
+      # and Astro's own config hash does not cover either, so they cache apart.
+      BUILD_VARIANT: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'preview' || 'production' }}
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
-      url: ${{ github.ref == 'refs/heads/main' && 'https://kestra.io' || format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}
+      url: ${{ needs.truncate-url-slug.outputs.url }}
 
     steps:
       - name: Checkout
@@ -58,6 +65,17 @@ jobs:
       - name: Check usage of collection in SSR pages
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
         run: node scripts/check-astro-content-imports.mjs
+
+      # Holds the content store plus the incremental build manifest and its copy
+      # of the pages from the last build, which is what lets pages be skipped.
+      - name: Restore Astro build cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.astro
+          key: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-${{ github.sha }}
+          # Only the same ref and variant: main builds production, PR builds
+          # preview, so a cross-ref fallback would never match anything.
+          restore-keys: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
 
       - name: Build
         run: npm run build
@@ -90,5 +108,5 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           title: "☁️ Cloudflare Worker Preview Deployed!"
           template: |
-            🔗 [${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }}](${{ format('https://{0}-docs.kestra-io.workers.dev', needs.truncate-url-slug.outputs.slug) }})
+            🔗 [${{ needs.truncate-url-slug.outputs.url }}](${{ needs.truncate-url-slug.outputs.url }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})

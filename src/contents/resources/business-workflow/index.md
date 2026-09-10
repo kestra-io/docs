@@ -116,7 +116,7 @@ The terms "Workflow Management" (WfM) and "Business Process Management" (BPM) ar
 
 BPM is a holistic, strategic discipline focused on analyzing, redesigning, and continuously improving end-to-end business processes to align with organizational goals. It's about *what* the business does and *why*.
 
-Workflow Management is the operational implementation of a process. It focuses on the *how*: coordinating and automating the sequence of tasks within a defined process. A workflow is a practical application of a BPM strategy. For teams looking for powerful automation without the overhead of traditional BPMN tools, exploring [Camunda alternatives](/resources/infrastructure/camunda-alternatives) can be a valuable step.
+Workflow Management is the operational implementation of a process. It focuses on the *how*: coordinating and automating the sequence of tasks within a defined process. A workflow is a practical application of a BPM strategy. For teams looking for powerful automation without the overhead of traditional [BPMN](/resources/business/bpmn) tools, exploring [Camunda alternatives](/resources/infrastructure/camunda-alternatives) can be a valuable step.
 
 ### Overlaps and Synergies
 

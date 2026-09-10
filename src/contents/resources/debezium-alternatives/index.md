@@ -108,7 +108,7 @@ Unlike Debezium, which is a specialized CDC engine, Airbyte is a complete ELT to
 
 ### 3. Maxwell's Daemon: Lightweight MySQL CDC
 
-Maxwell's Daemon is an open-source CDC application specifically for MySQL and its variants (MariaDB, Aurora). It reads MySQL binlogs, transforms row changes into JSON, and pushes them to various targets, including Kafka, Kinesis, Google Cloud Pub/Sub, or standard output.
+Maxwell's Daemon is an open-source CDC application specifically for MySQL and its variants (MariaDB, Aurora). It reads MySQL binlogs, transforms row changes into JSON, and pushes them to various targets, including Kafka, [Kinesis](/resources/data/kinesis-vs-kafka), Google Cloud Pub/Sub, or standard output.
 
 Its key advantage over Debezium is its simplicity and lightweight nature. It runs as a single process and is significantly easier to configure and operate for MySQL-only environments. If your entire data ecosystem is built on MySQL and you need a straightforward, no-frills CDC tool, Maxwell is a strong contender.
 
@@ -134,8 +134,8 @@ As a fully managed service, Integrate.io handles all the underlying infrastructu
 
 For large enterprises with complex, heterogeneous environments and strict requirements for security, governance, and support, established commercial platforms are often the preferred choice.
 
-*   **Qlik Replicate (formerly Attunity):** A leader in enterprise data replication, Qlik provides high-performance, real-time CDC across a wide range of databases, mainframes, and SaaS applications.
-*   **Talend:** A comprehensive data integration suite that includes CDC as part of its broader capabilities, which also cover data quality, master data management, and an enterprise service bus.
+*   **[Qlik](/resources/data/qlik-alternatives) Replicate (formerly Attunity):** A leader in enterprise data replication, Qlik provides high-performance, real-time CDC across a wide range of databases, mainframes, and SaaS applications.
+*   **[Talend](/resources/data/talend-alternatives):** A comprehensive data integration suite that includes CDC as part of its broader capabilities, which also cover data quality, master data management, and an enterprise service bus.
 *   **Oracle GoldenGate:** A premium, high-performance solution for real-time data integration and replication, especially powerful within Oracle ecosystems but also supporting heterogeneous environments.
 
 These tools come with a significant price tag but offer proven reliability, extensive features, and dedicated enterprise support.

@@ -7,6 +7,8 @@
     "name": "docs",
     "main": "./src/middlewares/worker.ts",
     "compatibility_date": "2026-03-01",
+    // global_fetch_strictly_public is dropped by .github/workflows/lighthouse.yml,
+    // which needs the worker to reach a fixture server on loopback.
     "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
     "preview_urls": true,
     "routes": [

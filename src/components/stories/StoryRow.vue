@@ -18,7 +18,7 @@
             <div class="sr-kpis" v-if="kpis.length">
                 <div class="sr-kpi" v-for="(kpi, i) in kpis" :key="i">
                     <CheckboxMultipleMarkedCircleOutlineIcon />
-                    <MDCParserAndRenderer :content="kpi" class="sr-kpi-body" />
+                    <MarkdownRenderer :content="kpi" class="sr-kpi-body" />
                 </div>
             </div>
             <Link :href="storyUrl" text="Read the Story" class="sr-link" />
@@ -28,7 +28,7 @@
 
 <script lang="ts" setup>
     import { computed } from "vue"
-    import MDCParserAndRenderer from "../MDCParserAndRenderer.vue"
+    import MarkdownRenderer from "../MarkdownRenderer.vue"
     import CheckboxMultipleMarkedCircleOutlineIcon from "vue-material-design-icons/CheckboxMultipleMarkedCircleOutline.vue"
     import TaskIcon from "../common/TaskIcon.vue"
     import Link from "../common/Link.vue"

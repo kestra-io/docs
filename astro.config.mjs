@@ -155,6 +155,9 @@ export default defineConfig({
         },
     ],
     experimental: {
+        // Skips re-rendering static pages whose `cacheKey` and module graph are
+        // unchanged since the last build. See src/utils/incrementalCacheKey.ts.
+        incrementalBuild: true,
         svgOptimizer: svgoOptimizer({
             plugins: [
                 {

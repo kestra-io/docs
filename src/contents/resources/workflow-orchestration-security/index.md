@@ -45,7 +45,7 @@ The terms "automation" and "orchestration" are often used interchangeably, but t
 *   **Security Automation** refers to the execution of a single, specific task without human intervention. Examples include automatically blocking an IP address, running a malware scan on a file, or creating a ticket from an alert. Automation improves efficiency for isolated, repetitive actions.
 *   **Security Orchestration** is the coordination of multiple automated tasks (and sometimes manual interventions) into a cohesive, end-to-end workflow. For example, an orchestration might chain together several automated tasks: an alert from a SIEM (1) triggers a workflow that (2) enriches the alert data with threat intelligence, (3) scans the affected endpoint, (4) quarantines the device if malware is found, and (5) creates a high-priority ticket with all relevant details for a security analyst.
 
-Orchestration is the missing layer that connects disparate security tools and automated tasks into a unified response system. While a tool like Tines focuses specifically on [security automation](https://kestra.io/vs/tines), a universal orchestration platform like Kestra extends this capability across your entire tech stack, including data and infrastructure.
+Orchestration is the missing layer that connects disparate security tools and automated tasks into a unified response system. While a tool like [Tines](/resources/infrastructure/tines-alternatives) focuses specifically on [security automation](https://kestra.io/vs/tines), a universal orchestration platform like Kestra extends this capability across your entire tech stack, including data and infrastructure.
 
 ### The Core Purpose of Workflow Orchestration in Cybersecurity
 
@@ -81,7 +81,7 @@ This automated, multi-tool coordination provides a comprehensive view of the inc
 
 ### Enhancing Compliance, Privacy, and Risk Management
 
-Meeting regulatory requirements like GDPR, HIPAA, or PCI DSS requires meticulous documentation and consistent application of security controls. Workflow orchestration provides a powerful mechanism for enforcing these policies automatically.
+Meeting regulatory requirements like GDPR, HIPAA, or [PCI DSS](/resources/infrastructure/pci-dss-compliance-automation) requires meticulous documentation and consistent application of security controls. Workflow orchestration provides a powerful mechanism for enforcing these policies automatically.
 
 Because every action taken by the orchestrator is logged, organizations gain a complete, immutable audit trail for compliance purposes. Workflows can be designed to enforce data privacy rules, manage access controls, and conduct regular compliance checks. In Kestra's [Enterprise Edition](https://kestra.io/enterprise), features like [audit logs](https://kestra.io/docs/enterprise/governance/audit-logs) provide the detailed evidence needed to satisfy auditors and demonstrate due diligence. This transforms compliance from a periodic, manual effort into a continuous, automated process embedded in daily operations.
 
