@@ -86,7 +86,7 @@ Hybrid automation is not just a theoretical concept; it solves real-world operat
 
 ### Automating provisioning and configuration
 
-A primary use case is the automated provisioning of servers, virtual machines, containers, and network components. A developer can request a new environment via a self-service portal, triggering an orchestration workflow that uses Terraform to provision the necessary resources in the appropriate cloud or on-prem location, then uses Ansible to configure the operating system and install application dependencies. This entire process can be managed as a single, auditable workflow, as seen when you [orchestrate Terraform with Kestra](https://kestra.io/orchestration/terraform).
+A primary use case is the automated provisioning of servers, virtual machines, containers, and network components. A developer can request a new environment via a [self-service](/resources/infrastructure/self-service-infrastructure) portal, triggering an orchestration workflow that uses Terraform to provision the necessary resources in the appropriate cloud or on-prem location, then uses Ansible to configure the operating system and install application dependencies. This entire process can be managed as a single, auditable workflow, as seen when you [orchestrate Terraform with Kestra](https://kestra.io/orchestration/terraform).
 
 ### Workload migration and management
 

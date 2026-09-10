@@ -109,7 +109,7 @@ Security is a shared responsibility. Both the application sending the webhook an
 ### Designing secure webhooks: Provider responsibilities
 
 *   **Send Minimal Data:** Avoid sending sensitive information like PII or credentials in the payload. Instead, send an event ID and require the consumer to fetch the full details via a secure, authenticated API call.
-*   **Offer Idempotency Keys:** Provide a unique key for each event so consumers can safely retry requests without causing duplicate processing.
+*   **Offer [Idempotency](/resources/infrastructure/idempotency) Keys:** Provide a unique key for each event so consumers can safely retry requests without causing duplicate processing.
 *   **Implement Retry Mechanisms:** Offer a reliable retry policy with exponential backoff for failed deliveries.
 *   **Provide Clear Documentation:** Document your security scheme, expected headers, IP ranges, and retry logic clearly for your users.
 

@@ -50,7 +50,7 @@ Airflow's strengths lie in its massive ecosystem of pre-built operators and prov
 
 ### Conductor: Microservices orchestration platform
 
-Originally developed by Netflix, Conductor is designed primarily for orchestrating workflows across distributed microservices. Unlike Airflow's Python-centric approach, Conductor workflows are defined using JSON-based blueprints. This language-agnostic definition allows it to coordinate services written in any language.
+Originally developed by Netflix, [Conductor](/resources/infrastructure/orkes-conductor-alternatives) is designed primarily for orchestrating workflows across distributed microservices. Unlike Airflow's Python-centric approach, Conductor workflows are defined using JSON-based blueprints. This language-agnostic definition allows it to coordinate services written in any language.
 
 Conductor excels at managing long-running, stateful application flows and is built for high throughput and scalability. Self-hosting Conductor involves deploying its server components and often integrating with external systems like Elasticsearch for indexing and a queueing service for distributed workers. It's an excellent choice for organizations with a strong microservices architecture, but it can be less intuitive for data-centric or infrastructure automation tasks.
 
