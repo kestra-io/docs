@@ -21,7 +21,7 @@ faq:
     answer: "A Delta Lake Lakehouse architecture combines the best features of data lakes (scalability, flexibility, low cost) and data warehouses (ACID transactions, schema governance, performance). Delta Lake serves as the transaction layer on top of object storage, allowing data teams to perform SQL analytics, machine learning, and data science directly on their data lake with strong reliability guarantees."
 ---
 
-> **TL;DR** — Delta Lake is an open-source storage layer that brings ACID transactions, schema enforcement, and time travel to data lakes, forming the foundation of modern lakehouse architectures for reliable data management.
+> **TL;DR** — [Delta Lake](/resources/data/iceberg-vs-delta-lake) is an open-source storage layer that brings ACID transactions, schema enforcement, and time travel to data lakes, forming the foundation of modern lakehouse architectures for reliable data management.
 
 Traditional data lakes promised flexibility but often struggled with data reliability, consistency, and governance, leading to "data swamps." As data volumes and complexity grew, teams faced challenges ensuring data quality and managing concurrent operations without corruption.
 

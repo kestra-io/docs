@@ -11,4 +11,4 @@ const { content, class: className, ...rest } = props
 const htmlContent = await getMarked().parse(content)
 ---
 
-<div class:list={["mdc-renderer", className]} set:html={htmlContent} {...rest} />
+<div class:list={["markdown-renderer", className]} set:html={htmlContent} {...rest} />

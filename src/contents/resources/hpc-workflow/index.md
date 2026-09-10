@@ -20,7 +20,7 @@ faq:
 author: "..."
 ---
 
-High-Performance Computing (HPC) powers breakthroughs across science, engineering, and artificial intelligence, tackling problems too vast for conventional systems. Yet, the true challenge often lies not just in the raw computational power, but in orchestrating the intricate sequences of tasks that make up an HPC workflow. From data preparation to simulation, analysis, and visualization, these workflows demand precision, scalability, and robust automation.
+High-Performance Computing (HPC) powers breakthroughs across science, engineering, and artificial intelligence, tackling problems too vast for conventional systems. Yet, the true challenge often lies not just in the raw computational power, but in orchestrating the intricate sequences of tasks that make up an [HPC workflow](/resources/infrastructure/hpc-workflow-orchestration). From data preparation to simulation, analysis, and visualization, these workflows demand precision, scalability, and robust automation.
 
 This guide demystifies HPC workflows, exploring their fundamental components, the tools that manage them, and how modern platforms like Kestra are transforming their execution. We’ll delve into strategies for optimization, the growing role of AI, and practical approaches to automating and governing your most demanding computational tasks.
 

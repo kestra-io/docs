@@ -43,7 +43,7 @@ Furthermore, BPM tools enhance visibility and control over business operations. 
 
 ### Process Modeling and Design for Clarity
 
-The foundation of any BPM tool is its ability to model and visualize business processes. This is typically done through a graphical interface where users can map out tasks, decision points, and the flow of information. Many traditional tools use Business Process Model and Notation (BPMN) as a standard. A clear visual model serves as a common language for both business and technical stakeholders, ensuring everyone understands how the process works.
+The foundation of any BPM tool is its ability to model and visualize business processes. This is typically done through a graphical interface where users can map out tasks, decision points, and the flow of information. Many traditional tools use Business Process Model and Notation ([BPMN](/resources/business/bpmn)) as a standard. A clear visual model serves as a common language for both business and technical stakeholders, ensuring everyone understands how the process works.
 
 ### Workflow Automation and Orchestration Capabilities
 

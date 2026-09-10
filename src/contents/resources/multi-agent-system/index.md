@@ -121,7 +121,7 @@ Developing a Multi-Agent System involves more than just writing code for individ
 
 Several frameworks have emerged to simplify the creation of MAS by providing pre-built components for agent communication, behavior modeling, and interaction protocols.
 
-*   **LangChain & CrewAI:** These are popular in the LLM space for creating agentic applications. While not strictly traditional MAS frameworks, they provide powerful primitives for defining agents with specific roles, tools, and goals. They excel at structuring collaborative tasks for small teams of LLM-based agents.
+*   **[LangChain](/resources/ai/langchain-alternatives) & CrewAI:** These are popular in the LLM space for creating agentic applications. While not strictly traditional MAS frameworks, they provide powerful primitives for defining agents with specific roles, tools, and goals. They excel at structuring collaborative tasks for small teams of LLM-based agents.
 *   **Google Agent Development Kit (ADK):** This is a more complete toolkit for building distributed multi-agent systems, focusing on production readiness. It provides a protocol (A2A) and infrastructure for creating scalable and interoperable agent networks.
 *   **JADE (Java Agent DEvelopment Framework):** A long-standing, mature framework that implements the FIPA specifications for agent interoperability. It's a powerful choice for building complex, standards-compliant MAS.
 

@@ -1,7 +1,7 @@
 <template>
     <div
         :key="content"
-        class="mdc-renderer"
+        class="markdown-renderer"
         v-html="htmlContent"
         @click="handleCopyClick"
     />
@@ -35,7 +35,7 @@
         },
     )
 
-    // Unlike MDCParserAndRenderer.vue — which parses in onMounted and shows a
+    // Unlike MarkdownRenderer.vue — which parses in onMounted and shows a
     // skeleton until the client catches up — parse before the first render, on
     // the server as well as during hydration. The markdown is then part of the
     // server HTML and the hydrated vdom matches it, so the content neither
@@ -46,9 +46,9 @@
 </script>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/mdc-renderer" as mdc;
+    @use "/src/assets/styles/markdown-renderer" as markdown;
 
-    .mdc-renderer {
-        @include mdc.mdc-renderer;
+    .markdown-renderer {
+        @include markdown.markdown-renderer;
     }
 </style>

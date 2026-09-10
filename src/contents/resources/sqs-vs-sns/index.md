@@ -179,7 +179,7 @@ SQS and SNS are designed for massive scale and high availability, automatically 
 
 ### SQS, SNS, and Other Messaging Systems: Kafka and RabbitMQ
 
-While SQS and SNS are excellent managed services, open-source alternatives like RabbitMQ and Apache Kafka serve different needs.
+While SQS and SNS are excellent managed services, open-source alternatives like [RabbitMQ](/resources/data/rabbitmq-vs-kafka) and Apache Kafka serve different needs.
 *   **RabbitMQ** is a traditional message broker that offers more complex routing protocols (like AMQP) and is often self-hosted, giving you more control at the cost of operational overhead.
 *   **Apache Kafka** is a distributed streaming platform, designed for high-throughput, real-time data pipelines and stream processing. It offers durable, replayable logs, which is a different paradigm from the ephemeral messages of SQS/SNS.
 
