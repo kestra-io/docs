@@ -61,7 +61,7 @@ This capability is powered by Large Language Models (LLMs) combined with a struc
 
 This is a common point of confusion. While ChatGPT is a powerful generative AI model, it is not, by itself, an agentic AI. ChatGPT excels at generating human-like text, code, and other content based on a user's prompt. However, it is primarily reactive; it responds to input but does not autonomously take actions to achieve a goal in an external environment.
 
-An agentic AI integrates a model like ChatGPT as its "brain" but adds critical components like planning capabilities, tool usage, and memory. It's the difference between a writer who can draft an email (ChatGPT) and an executive assistant who can read a request, decide an email needs to be sent, draft it, find the recipient's contact information, send it, and schedule a follow-up (agentic AI). Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) uses generative AI to help you build workflows, while Kestra's AI Agents execute them autonomously.
+An agentic AI integrates a model like ChatGPT as its "brain" but adds critical components like planning capabilities, tool usage, and memory. It's the difference between a writer who can draft an email (ChatGPT) and an executive assistant who can read a request, decide an email needs to be sent, draft it, find the recipient's contact information, send it, and schedule a follow-up (agentic AI). Kestra's [AI Copilot](/docs/ai-tools/ai-copilot) uses generative AI to help you build workflows, while Kestra's AI Agents execute them autonomously. Sales teams were among the first to put this distinction into production; see [sales AI agents](/resources/ai/sales-ai-agent) for how those workflows are structured.
 
 ### Core Patterns and Components of Agentic Systems
 

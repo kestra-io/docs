@@ -166,7 +166,7 @@ An agent written in Python can be a task in a Kestra flow, followed by a task th
 
 ### Human-in-the-loop and auditability for agentic workflows
 
-Full autonomy can be risky in business-critical processes. Kestra has built-in support for human-in-the-loop workflows. You can insert approval steps at critical junctures in a multi-agent process, where the system pauses and waits for a human to review the agents' proposed actions before proceeding. This provides an important safety layer, enabling [dynamic multi-agent workflows with explicit human approval gates](/blogs/context-engineering-plugins-squad). Combined with detailed audit logs, this ensures that even the most complex autonomous systems remain under human oversight and control.
+Full autonomy can be risky in business-critical processes. Kestra has built-in support for human-in-the-loop workflows. You can insert approval steps at critical junctures in a multi-agent process, where the system pauses and waits for a human to review the agents' proposed actions before proceeding. This provides an important safety layer, enabling [dynamic multi-agent workflows with explicit human approval gates](/blogs/context-engineering-plugins-squad). Combined with detailed audit logs, this ensures that even the most complex autonomous systems remain under human oversight and control. Coding agents are where these gates matter most, since their output lands directly in a repository — see [Claude Code agents](/resources/ai/claude-code-agents).
 
 ## Advantages and Challenges of Multi-Agent Systems
 
