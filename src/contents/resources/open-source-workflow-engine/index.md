@@ -57,7 +57,7 @@ Workflows are defined in simple YAML files, making them easy to write, review, a
 
 ### 2. Apache Airflow: The Python-Centric Data Orchestrator
 
-Apache Airflow is the most established open source workflow engine in the data engineering space. Its maturity, extensive library of operators, and large community make it a default choice for many teams. Workflows, or DAGs (Directed Acyclic Graphs), are defined as Python code, offering flexibility for developers comfortable in that ecosystem.
+Apache Airflow is the most established open source workflow engine in the data engineering space. Its maturity, extensive library of operators, and large community make it a default choice for many teams. Workflows, or DAGs (Directed Acyclic Graphs), are defined as Python code, offering flexibility for developers comfortable in that ecosystem. For a comparison focused on managed integration platforms rather than self-hosted engines, see [Orchestra alternatives](/resources/data/orchestra-alternatives).
 
 However, this Python-centric approach is also its main trade-off. Defining infrastructure as Python code can be complex to debug and manage, and it presents a higher learning curve for non-Python developers. The [YAML vs. Python workflow](/blogs/yaml-vs-python-workflow) debate often centers on this operational complexity. Airflow's architecture, with its separate scheduler, executor, and metadata database, requires significant operational investment to run reliably at scale. With the end-of-life for Airflow 2, many teams are taking the opportunity to re-evaluate their orchestration strategy.
 

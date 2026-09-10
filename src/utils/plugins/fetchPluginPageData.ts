@@ -4,9 +4,9 @@ import type { Plugin, PluginMetadata } from "./plugin"
 
 import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
-import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
+import { pageBlocksFromJsonSchema } from "~/utils/plugins/pageBlocks"
 import { retrieveRepoReleases } from "~/utils/plugins/repoReleases"
-import { compareVersionsDesc } from "~/utils/plugins/compareVersions"
+import { compareVersionsDesc, isStableVersion } from "~/utils/plugins/compareVersions"
 import type { PluginPage } from "./types"
 
 const EE_RELEASES_PAGE_SIZE = 100
@@ -48,12 +48,14 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
             }>(
                 `/plugins/artifacts/ee/releases?artifactId=${pluginName}&size=${EE_RELEASES_PAGE_SIZE}`,
             )
-            githubVersions.versions = eeData.results.map((r) => ({
-                version: r.version,
-                publishedAt: r.releaseDate,
-                minCoreCompatibilityVersion: r.kestraVersion,
-                releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
-            }))
+            githubVersions.versions = eeData.results
+                .filter((r) => isStableVersion(r.version))
+                .map((r) => ({
+                    version: r.version,
+                    publishedAt: r.releaseDate,
+                    minCoreCompatibilityVersion: r.kestraVersion,
+                    releaseNotesUrl: `${API_URL}/plugins/artifacts/ee/release-notes/${githubReleaseRepo}?version=${r.version}`,
+                }))
         } catch (e) {
             console.error("EE releases fetch failed", e)
         }
@@ -101,13 +103,13 @@ export async function fetchInitialPluginData(pluginName: string, githubReleaseRe
                 githubVersions.versions = coreVersions
                     .filter((v) => {
                         const major = parseInt(v.version.split(".")[0])
-                        return !isNaN(major) && major >= 1
+                        return !isNaN(major) && major >= 1 && isStableVersion(v.version)
                     })
                     .map((v) => ({ version: v.version, publishedAt: null }))
                     .toSorted((a, b) => compareVersionsDesc(a.version, b.version))
             } else {
                 githubVersions.versions = (Object.values(artifactsData).flat() as any[])
-                    .filter((a) => a?.version)
+                    .filter((a) => a?.version && isStableVersion(a.version))
                     .map((a) => ({
                         version: a.version,
                         publishedAt: a.publishedAt ?? null,
@@ -205,7 +207,7 @@ function pageDataToPluginPage(pageData: {
     if (pageData.schema.properties.$deprecated === "true") return null
     const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
     const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
-    return { name, type: definitionType, ...nuxtBlocksFromJsonSchema(pageData.schema) } as any
+    return { name, type: definitionType, ...pageBlocksFromJsonSchema(pageData.schema) } as any
 }
 
 export interface VersionedSubgroupsResult {

@@ -43,7 +43,7 @@ An Identity Provider can send a `POST` request to a service provider's `/Users` 
 
 The SCIM model involves two main roles:
 
-*   **SCIM Client (Identity Provider or IdP):** This is the system that acts as the source of truth for user identities. It initiates provisioning requests to manage users and groups in other applications. Examples include Okta, Microsoft Entra ID (formerly Azure AD), and Keycloak.
+*   **SCIM Client (Identity Provider or IdP):** This is the system that acts as the source of truth for user identities. It initiates provisioning requests to manage users and groups in other applications. Examples include Okta, Microsoft Entra ID (formerly Azure AD), and [Keycloak](/resources/infrastructure/keycloak-sso-integration).
 *   **SCIM Service Provider (SP):** This is the target application or service that consumes identity data from the IdP. It exposes a SCIM-compliant API endpoint to allow for the creation and management of user accounts. Examples include Kestra, Google Workspace, Salesforce, and Microsoft 365.
 
 By implementing [SCIM Directory Sync](/docs/enterprise/auth/scim), organizations can connect their central IdP, such as [Microsoft Entra ID](/docs/enterprise/auth/scim/microsoft-entra-id) or [Okta](/docs/enterprise/auth/scim/okta), to all their SaaS applications, ensuring that user access is always synchronized and up-to-date.

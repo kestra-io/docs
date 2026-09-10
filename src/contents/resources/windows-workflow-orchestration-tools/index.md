@@ -29,7 +29,7 @@ This guide explores the landscape of Windows workflow orchestration, from defini
 
 ## What is Windows Workflow Orchestration?
 
-Windows workflow orchestration is the process of automating, managing, and coordinating multi-step tasks and processes within a Windows environment. It goes beyond simple task scheduling by handling complex dependencies, managing error conditions, and providing a centralized platform for visibility and control. Instead of relying on a patchwork of PowerShell scripts, batch files, and the Windows Task Scheduler, orchestration provides a structured framework to define, execute, and monitor end-to-end [workflows](https://kestra.io/docs/workflow-components/flow).
+Windows workflow orchestration is the process of automating, managing, and coordinating multi-step tasks and processes within a Windows environment. It goes beyond simple task scheduling by handling complex dependencies, managing error conditions, and providing a centralized platform for visibility and control. Instead of relying on a patchwork of [PowerShell](/resources/infrastructure/powershell-automation-alternatives) scripts, batch files, and the Windows Task Scheduler, orchestration provides a structured framework to define, execute, and monitor end-to-end [workflows](https://kestra.io/docs/workflow-components/flow).
 
 In a Windows context, this means seamlessly connecting actions across various systems, such as:
 - Executing a PowerShell script to configure a server.
@@ -122,7 +122,7 @@ With a polyglot orchestrator like Kestra, these steps can be defined in a single
 - **Automated Patch Management:** Create a workflow that uses PowerShell to check for, download, and apply Windows updates across a fleet of servers on a schedule, with built-in checks and reporting to Slack. See how to implement [automated patch management](https://kestra.io/resources/infrastructure/patch-management-automation).
 - **IT Operations and Active Directory:** Automate user onboarding by creating a workflow that receives input from an HR system, then uses PowerShell tasks to create an Active Directory account, set permissions, and provision a mailbox.
 - **SQL Server Data Pipelines:** Orchestrate nightly ETL jobs that extract data from production applications, load it into a [Microsoft SQL Server](https://kestra.io/plugins/plugin-jdbc-sqlserver) data warehouse, and trigger data model transformations.
-- **Hybrid Infrastructure Management:** Use Kestra to manage both on-premise Windows servers and cloud resources. For example, a workflow could provision a new VM on-prem, configure it using [Ansible](https://kestra.io/orchestration/ansible), and then update DNS records in a cloud provider. You can even [detect configuration drift](https://kestra.io/blueprints/ansible-config-drift) automatically.
+- **Hybrid Infrastructure Management:** Use Kestra to manage both on-premise Windows servers and cloud resources. For example, a workflow could provision a new VM on-prem, configure it using [Ansible](https://kestra.io/orchestration/ansible), and then update DNS records in a cloud provider. You can even [detect configuration drift](https://kestra.io/blueprints/ansible-config-drift) automatically. On-premises Windows estates frequently run these workloads on failover clusters; see [Windows cluster](/resources/infrastructure/windows-cluster) for how they are built and managed.
 
 ## Conclusion: Modernizing Windows Workflows with Kestra
 

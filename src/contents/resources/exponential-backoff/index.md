@@ -25,7 +25,7 @@ faq:
 
 Distributed systems are complex. Services can be temporarily unavailable, APIs might rate-limit, and network glitches are inevitable. When a task fails due to a transient issue, simply retrying immediately can often worsen the problem, overwhelming the struggling service or creating a "thundering herd" effect.
 
-This is where exponential backoff comes in. It's a fundamental strategy for building resilient systems, allowing your applications and workflows to gracefully recover from temporary failures without causing further strain. This article will explain how exponential backoff works, why it's superior to simpler retry methods, and how Kestra can help you implement it for robust, self-healing operations.
+This is where exponential backoff comes in. It's a fundamental strategy for building resilient systems, allowing your applications and workflows to gracefully recover from temporary failures without causing further strain. This article will explain how exponential backoff works, why it's superior to simpler retry methods, and how Kestra can help you implement it for robust, [self-healing](/resources/infrastructure/self-healing-infrastructure) operations.
 
 ## How Exponential Backoff Enhances System Resilience
 

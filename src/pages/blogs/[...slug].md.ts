@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import { entryCacheKey } from "~/utils/incrementalCacheKey"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
@@ -9,6 +10,7 @@ export async function getStaticPaths() {
             title: post.data.title,
             source: post.body,
         },
+        cacheKey: entryCacheKey(post),
     }))
 }
 
