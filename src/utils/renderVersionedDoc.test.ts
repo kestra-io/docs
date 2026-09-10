@@ -588,6 +588,69 @@ Real content.
         expect(html).not.toContain("height: 50px")
     })
 
+    it("closes a nested component on its own fence, not the parent's", async () => {
+        const html = await render(`---
+title: T
+---
+::::alert{type="info"}
+outer copy
+
+:::collapse{title="Inner"}
+inner copy
+:::
+
+still outer
+::::`)
+        expect(html).toMatch(
+            /<div class="doc-alert alert-info">[\s\S]*<details class="doc-collapse">[\s\S]*inner copy[\s\S]*<\/details>[\s\S]*still outer[\s\S]*<\/div>/,
+        )
+        expect(html).not.toContain("::")
+    })
+
+    it("treats an unclosed :: directive as a leaf, leaving the following prose its own paragraph", async () => {
+        const html = await render(`---
+title: T
+---
+::badge{editions="EE"}
+
+Body copy.`)
+        expect(html).toContain("Enterprise Edition")
+        expect(html).toContain("<p>Body copy.</p>")
+    })
+
+    it("keeps a raw-HTML wrapper around the markdown blocks it spans", async () => {
+        // Blank lines split the wrapper's open and close tags into separate
+        // tokens; the div must still contain the markdown between them.
+        const html = await render(`---
+title: T
+---
+<div class="callout">
+
+Wrapped **copy**.
+
+</div>`)
+        expect(html).toMatch(
+            /<div class="callout">[\s\S]*<p>Wrapped <strong>copy<\/strong>.<\/p>[\s\S]*<\/div>/,
+        )
+    })
+
+    it("does not double-escape entities already written in the source", async () => {
+        const html = await render(`---
+title: T
+---
+Use &lt;task&gt; and R&amp;D.`)
+        expect(html).toContain("Use &lt;task&gt; and R&amp;D.")
+        expect(html).not.toContain("&amp;lt;")
+    })
+
+    it("leaves a URL's colon alone instead of reading it as an inline directive", async () => {
+        const html = await render(`---
+title: T
+---
+See https://kestra.io/docs for more.`)
+        expect(html).toContain("https://kestra.io/docs")
+    })
+
     it("keeps a mid-document rule", async () => {
         const html = await render(`---
 title: T

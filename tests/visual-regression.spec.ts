@@ -11,9 +11,12 @@ import { PAGES } from "./fixtures/page-sample.mjs"
 
 for (const page of PAGES) {
     test(`${page.label} matches screenshot`, async ({ page: p }) => {
-        await p.goto(page.path, { waitUntil: "networkidle" })
-
-        // Allow animations/transitions to settle
+        // networkidle never settles on pages that keep polling, which is how a
+        // run wedges with no output. Wait for fonts instead, they drive layout.
+        await p.goto(page.path, { waitUntil: "load" })
+        await p.evaluate(async () => {
+            await document.fonts.ready
+        })
         await p.waitForTimeout(500)
 
         await expect(p).toHaveScreenshot(`${page.label}.png`, {

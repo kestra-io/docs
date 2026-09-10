@@ -60,7 +60,7 @@
                                 v-if="message.markdown"
                                 @click="handleContentClick"
                             >
-                                <MDCParserAndRenderer
+                                <MarkdownRenderer
                                     class="bd-markdown"
                                     :content="message.markdown"
                                     copyable
@@ -178,7 +178,7 @@
         extractSourcesFromMarkdown,
         isInternalLink,
     } from "~/utils/sources.ts"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import MarkdownRenderer from "~/components/MarkdownRenderer.vue"
     import { API_URL } from "astro:env/client"
 
     interface Message {
@@ -773,7 +773,7 @@
 
                         &:hover {
                             border-color: var(--ks-border-secondary);
-                            color: var(--ks-background-body);
+                            color: var(--ks-content-primary);
                         }
 
                         @include media-breakpoint-down(md) {

@@ -57,7 +57,7 @@ A central dashboard is the command center for your workflows. It should provide 
 
 ### Automated Alerting and Notification Systems
 
-You can't afford to wait for someone to notice a failure. A robust monitoring tool must include a flexible alerting system that can proactively notify the right teams through the right channels (e.g., Slack, PagerDuty, email, Microsoft Teams). Look for features like configurable alert rules, escalation policies, and the ability to reduce alert fatigue by grouping related notifications.
+You can't afford to wait for someone to notice a failure. A robust monitoring tool must include a flexible alerting system that can proactively notify the right teams through the right channels (e.g., Slack, [PagerDuty](/resources/infrastructure/pagerduty-alternatives), email, Microsoft Teams). Look for features like configurable alert rules, escalation policies, and the ability to reduce alert fatigue by grouping related notifications.
 
 ### Log Aggregation and Centralized Troubleshooting
 

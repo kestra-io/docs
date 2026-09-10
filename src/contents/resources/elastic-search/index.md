@@ -21,7 +21,7 @@ faq:
     answer: "Alternatives to Elasticsearch vary depending on the use case. For full-text search, options include Apache Solr, OpenSearch, and Meilisearch. For log management and observability, Splunk, Loki, and Grafana offer similar capabilities. For general-purpose analytics, traditional databases like PostgreSQL or data warehouses like Snowflake can be used, often with specialized indexing or search layers."
 ---
 
-> **TL;DR** — Elasticsearch is a distributed, real-time search and analytics engine that indexes and stores data in a way that allows for incredibly fast, complex queries. It excels at handling large volumes of diverse data, making it ideal for use cases like log analysis, full-text search, and business intelligence.
+> **TL;DR** — [Elasticsearch](/resources/data/elastic-search-alternatives) is a distributed, real-time search and analytics engine that indexes and stores data in a way that allows for incredibly fast, complex queries. It excels at handling large volumes of diverse data, making it ideal for use cases like log analysis, full-text search, and business intelligence.
 
 Dealing with vast amounts of data, from application logs to customer feedback, often creates a critical challenge: how do you make it instantly searchable and analyzable? Traditional databases struggle with the volume and unstructured nature of this data, making real-time insights a distant dream.
 
