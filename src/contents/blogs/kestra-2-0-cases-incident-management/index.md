@@ -216,7 +216,7 @@ Cases is an incident record with remediation attached, living where the failures
 
 ## Why here
 
-Cases keeps your attention all in one place, avoiding the dreaded context switching. The failing execution, the incident, the remediation, the approval, and the audit trail are all in the same engine. The label on the remediation execution is the link. The system flow that groups failures is a flow. Every human decision made during an incident is a structured record next to the execution that caused it, and not a thread in another tool that goes stale or gets archived.
+Cases keeps your attention all in one place, avoiding dreaded context switching. The failing execution, the incident, the remediation, the approval, and the audit trail are all in the same engine. The label on the remediation execution is the link. The system flow that groups failures is a flow. Every human decision made during an incident is a structured record next to the execution that caused it, and not a thread in another tool that goes stale or gets archived.
 
 Cases, [Policies](https://kestra.io/docs/enterprise/governance/policies/index.md), and [Promote](https://kestra.io/docs/enterprise/governance/promote) are three answers to the same question: how do you govern what runs in production? That is what it means to move from a workflow tool to a platform you run production on.
 
