@@ -59,7 +59,7 @@ For analytical queries, Parquet offers significant performance gains:
 
 1.  **Reduced I/O:** By reading only the necessary columns, query engines minimize the amount of data read from disk or cloud storage. This is a game-changer for wide tables with hundreds of columns.
 2.  **Higher Compression Ratios:** Columnar data homogeneity leads to better compression, reducing storage footprint and costs, especially in cloud environments where storage is a recurring expense.
-3.  **Vectorized Execution:** Modern query engines like DuckDB, Polars, and those in Spark or Snowflake can leverage columnar data to perform operations on entire columns at once (vectorized processing), which is much faster than row-by-row iteration.
+3.  **Vectorized Execution:** Modern query engines like [DuckDB](/resources/data/duckdb-alternatives), Polars, and those in Spark or Snowflake can leverage columnar data to perform operations on entire columns at once (vectorized processing), which is much faster than row-by-row iteration.
 
 ### Common Use Cases for Parquet
 

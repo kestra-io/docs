@@ -7,7 +7,7 @@
             :props-initially-expanded="true"
         >
             <template #markdown="{ content }">
-                <MDCParserAndRendererSSR v-if="content" :content="content" />
+                <MarkdownRendererSSR v-if="content" :content="content" />
             </template>
         </SchemaToHtml>
     </Suspense>
@@ -20,7 +20,7 @@
     // hydration render), so the schema docs are complete in the initial HTML
     // instead of collapsing to skeletons while the client re-parses — that
     // skeleton swap was the main layout-shift source on plugin pages.
-    import MDCParserAndRendererSSR from "../MDCParserAndRendererSSR.vue"
+    import MarkdownRendererSSR from "../MarkdownRendererSSR.vue"
 
     defineProps<{
         schema: JSONSchema

@@ -23,7 +23,7 @@ faq:
 
 The landscape of IT automation is constantly evolving, with teams seeking more flexible, scalable, and unified solutions. While AWX has served as a reliable open-source web interface for Ansible automation, its architectural limitations have led many organizations to explore alternatives. The challenge for platform engineers and DevOps teams is finding a platform that not only manages Ansible playbooks but also orchestrates a broader array of tools and workflows across diverse environments.
 
-This article dives into the top alternatives to AWX in 2026, helping you navigate the options available. The leading alternatives to AWX include Kestra, Ansible Semaphore, Rundeck, and Red Hat's own Ansible Automation Platform, each suited to different infrastructure and operational needs. We'll examine why teams are moving beyond AWX, the key criteria for evaluating new platforms, and provide a detailed comparison of open-source and commercial solutions.
+This article dives into the top alternatives to AWX in 2026, helping you navigate the options available. The leading alternatives to AWX include Kestra, Ansible [Semaphore](/resources/infrastructure/semaphore-ui-alternatives), Rundeck, and Red Hat's own Ansible Automation Platform, each suited to different infrastructure and operational needs. We'll examine why teams are moving beyond AWX, the key criteria for evaluating new platforms, and provide a detailed comparison of open-source and commercial solutions.
 
 ## The Evolving Need for AWX Alternatives in Modern IT
 
