@@ -54,6 +54,11 @@ jobs:
           # the SSR pages read the API through the fixture server.
           API_URL: http://127.0.0.1:9001/v1
 
+      # The build itself calls the blueprint API, so the counters have to be
+      # snapshotted here for the check at the end to mean anything.
+      - name: Snapshot fixture server counters
+        run: curl -s http://127.0.0.1:9001/__fixtures/stats > fixtures-before.json
+
       - name: Install Lighthouse
         # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.
         run: npm install --no-save lighthouse chrome-launcher
@@ -169,13 +174,18 @@ jobs:
           path: tests/fixtures/api/
           retention-days: 30
 
-      # Zero means the SSR blueprints page never reached the fixture server, so
-      # the page under measurement is not the page we think it is.
+      # No new calls during the benchmark means the SSR blueprints page never
+      # reached the fixture server, so the page measured is not the page we
+      # think it is. Compared against the post-build snapshot, since the build
+      # calls the same API and would otherwise satisfy any absolute threshold.
       - name: Check the fixture server was used
         run: |
+          BEFORE=$(jq '.hits + .records' fixtures-before.json)
           STATS=$(curl -s http://127.0.0.1:9001/__fixtures/stats)
+          AFTER=$(echo "$STATS" | jq '.hits + .records')
           echo "$STATS"
-          if [ "$(echo "$STATS" | jq '.hits + .records')" -eq 0 ]; then
-            echo "::error::No blueprint API calls reached the fixture server."
+          echo "blueprint API calls during the benchmark: $((AFTER - BEFORE))"
+          if [ "$AFTER" -le "$BEFORE" ]; then
+            echo "::error::No blueprint API calls reached the fixture server during the benchmark."
             exit 1
           fi

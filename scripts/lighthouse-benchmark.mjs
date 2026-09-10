@@ -14,7 +14,7 @@
  *   BASELINE_FILE   – Path to baseline JSON (optional; omit to skip comparison)
  *   MARKDOWN_FILE   – Path for Markdown report (default: lighthouse-report.md)
  *   LHR_DIR         – Directory for per-page LHR JSON dumps (default: lhr-reports)
- *   MULTI_RUN_COUNT – Overrides the per-page run counts in MULTI_RUN_PATHS
+ *   MULTI_RUN_COUNT – Overrides the `runs` counts in the page sample
  *   WARMUP_PATH     – Page requested before measuring (default: /privacy-policy)
  *
  * Exits with code 0 on success, 1 on fatal error.
@@ -39,63 +39,35 @@ const LHR_DIR = process.env.LHR_DIR ?? "lhr-reports"
 const WARMUP_PATH = process.env.WARMUP_PATH ?? "/privacy-policy"
 const WARMUP_REQUESTS = 3
 
-// Overrides the per-page run counts below when set above 0.
+// Overrides the `runs` counts carried by the page sample when set above 0.
 const MULTI_RUN_COUNT = Math.max(
     0,
     Math.trunc(Number(process.env.MULTI_RUN_COUNT ?? 0)) || 0,
 )
 
-// Pages whose score sits mid-curve with TBT dominating, so a single run swings
-// 20+ points between runners. Reported as the median of these many runs.
-const MULTI_RUN_PATHS = new Map([
-    ["/", 5],
-    ["/docs", 5],
-    ["/blueprints", 3],
-    ["/about-us", 3],
-    ["/docs/workflow-components/flow", 3],
-])
-
-// The prerender = false pages, measured first while workerd is freshest. Their
-// TTFB drifts up over a job: from the tail, Blueprints lost 7 points and 0.36 s
-// of FCP, and the plugin pages' Speed Index rose with it.
-const SSR_FIRST_PATHS = [
-    "/blueprints",
-    "/blueprints/audit-logs-csv-export",
-    "/plugins",
-    "/plugins/core",
-    "/plugins/core/debug",
-    "/plugins/core/debug/io.kestra.plugin.core.debug.return",
-]
-
 /**
  * PAGES with the server-rendered ones hoisted to the front, order otherwise
- * preserved. A path that no longer exists warns rather than reordering nothing.
+ * preserved. They are measured while workerd is freshest, and the prerendered
+ * pages, served from disk, care far less where they land.
  *
  * @returns {typeof PAGES}
  */
 function orderedPages() {
-    const ssr = []
-    for (const path of SSR_FIRST_PATHS) {
-        const page = PAGES.find((entry) => entry.path === path)
-        if (page) ssr.push(page)
-        else console.warn(`Warning: ${path} is not in the page sample.`)
-    }
-
-    const rest = PAGES.filter((page) => !SSR_FIRST_PATHS.includes(page.path))
-
-    return [...ssr, ...rest]
+    return [
+        ...PAGES.filter((page) => page.ssr),
+        ...PAGES.filter((page) => !page.ssr),
+    ]
 }
 
 /**
- * Runs to measure for a page, 1 for anything not listed as noisy.
+ * Runs to measure for a page: what the sample asks for, 1 by default.
  *
- * @param {string} path
+ * @param {typeof PAGES[number]} page
  * @returns {number}
  */
-function runsFor(path) {
-    const runs = MULTI_RUN_PATHS.get(path)
-    if (!runs) return 1
-    return MULTI_RUN_COUNT || runs
+function runsFor(page) {
+    if (!page.runs || page.runs < 2) return 1
+    return MULTI_RUN_COUNT || page.runs
 }
 
 if (!BASE_URL) {
@@ -651,8 +623,8 @@ async function main() {
     console.log(`\nLighthouse Benchmark`)
     console.log(`Base URL : ${BASE_URL}`)
     console.log(`Pages    : ${PAGES.length}`)
-    const runPlan = [...MULTI_RUN_PATHS.keys()]
-        .map((path) => `${path} x${runsFor(path)}`)
+    const runPlan = PAGES.filter((page) => runsFor(page) > 1)
+        .map((page) => `${page.path} x${runsFor(page)}`)
         .join(", ")
     console.log(`Runs     : 1 per page, except ${runPlan}`)
     console.log(
@@ -682,7 +654,7 @@ async function main() {
     try {
         for (const page of orderedPages()) {
             const url = `${BASE_URL}${page.path}`
-            const runs = runsFor(page.path)
+            const runs = runsFor(page)
             process.stdout.write(`  ${page.label.padEnd(24)} ${url} … `)
 
             try {

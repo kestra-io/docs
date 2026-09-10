@@ -21,6 +21,9 @@
  *   RECORD          – "false" to never write new fixtures (default: record)
  *
  * GET /__fixtures/stats returns the hit/record/passthrough counters as JSON.
+ *
+ * Requests are forwarded as GET: the method and body are dropped, which the
+ * benchmark never needs and nothing here should be reused for.
  */
 
 import { createServer } from "node:http"
