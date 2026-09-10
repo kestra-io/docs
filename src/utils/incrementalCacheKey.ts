@@ -38,12 +38,36 @@ export function collectionContentDigest(entries: readonly KeyedEntry[]): string 
     return hashString(contents.join("\n"))
 }
 
+/** Digest of a set of file contents keyed by path, order-independent so glob
+ * iteration order doesn't matter. */
+export function fileContentsDigest(files: Record<string, string>): string {
+    const content = Object.keys(files)
+        .sort()
+        .map((path) => JSON.stringify([path, files[path]]))
+        .join("\n")
+    return hashString(content)
+}
+
+// A scss partial reached via `@use`/`@import` isn't a rollup module, so
+// Astro's own module-graph-based cache invalidation can't see it change.
+export const scssModules = import.meta.glob("~/**/*.scss", {
+    query: "?raw",
+    import: "default",
+    eager: true,
+}) as Record<string, string>
+
+if (Object.keys(scssModules).length === 0) {
+    throw new Error(
+        'layoutDigest: glob "~/**/*.scss" matched no files — shared style changes would silently stop invalidating the cache',
+    )
+}
+
 /** Build-time inputs the shared layout bakes into every page from outside the
- * module graph: today the latest docs version, fetched from the API. */
+ * module graph: the latest docs version, fetched from the API, and the
+ * shared stylesheets every cached route's chrome is built from. */
 export async function layoutDigest(): Promise<string> {
-    // Imported lazily so the pure helpers here stay importable outside a build.
     const { getDocsLatestVersion } = await import("~/utils/docVersionsFetch")
-    return `l${(await getDocsLatestVersion()) ?? "unknown"}`
+    return `l${(await getDocsLatestVersion()) ?? "unknown"}|${fileContentsDigest(scssModules)}`
 }
 
 /** Key for one entry, or undefined when the loader reports no digest, which
