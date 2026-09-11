@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/flow.svg
 version: ">= 0.13.0"
 ---
 
-Concurrency limits control how many executions can run at the same time — at the flow, namespace, or tenant level. When a limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
+Concurrency limits control how many executions can run at the same time, at the flow, namespace, or tenant level. When a limit is reached, new executions are queued, cancelled, or failed depending on the configured `behavior`.
 
 Once an execution occupies a concurrency slot, it keeps that slot until it reaches a terminal state. This includes executions in the `PAUSED` state while they wait for manual approval. For example, with `concurrency.limit` set to 1, a flow paused by a `Pause` task blocks all subsequent executions until the paused execution is resumed, killed, or otherwise reaches a terminal state. Resuming the execution continues to use its existing slot, so it cannot exceed the configured limit.
 
@@ -29,9 +29,9 @@ Use concurrency when you need to:
 
 Do **not** use concurrency to:
 
-- Throttle worker CPU or memory usage — tune worker thread pools or task runners instead.
-- Replace task-level limits — use task runner settings and retry backoff for per-task control.
-- Cap how many executions are **created** over time — use [Quotas](../21.quotas/index.md) (Enterprise Edition) for time-window rate limits.
+- Throttle worker CPU or memory usage; tune worker thread pools or task runners instead.
+- Replace task-level limits; use task runner settings and retry backoff for per-task control.
+- Cap how many executions are **created** over time; use [Quotas](../21.quotas/index.md) (Enterprise Edition) for time-window rate limits.
 
 ## Configuring concurrency
 
@@ -69,15 +69,13 @@ A namespace concurrency limit applies to every flow whose namespace matches or i
 
 Set a concurrency limit at the tenant level to cap total simultaneous executions across all namespaces in the tenant.
 
-In **Instance Owner**, click **Concurrency Limits** in the sidebar, then **Administer** on the target tenant.
-
 ## `behavior` property
 
 By default, executions that exceed the limit are queued. Set `behavior` to control what happens instead:
 
-- `QUEUE` — hold the execution until a slot opens (default).
-- `CANCEL` — immediately mark the execution as `CANCELLED`.
-- `FAIL` — immediately mark the execution as `FAILED`.
+- `QUEUE`: hold the execution until a slot opens (default).
+- `CANCEL`: immediately mark the execution as `CANCELLED`.
+- `FAIL`: immediately mark the execution as `FAILED`.
 
 If you expect execution spikes, combine a conservative limit with backoff at the source (e.g., slower trigger rates) to avoid large queues that increase database lock contention.
 
@@ -99,7 +97,7 @@ tasks:
 ```
 
 :::alert{type="warning"}
-When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case — no new executions start while the trigger is locked.
+When an execution starts from a [Trigger](../07.triggers/index.mdx), the trigger locks until it finishes, preventing multiple executions from that trigger from running concurrently. The `behavior` property does not apply in this case; no new executions start while the trigger is locked.
 
 Read more in the [Locked Triggers](../07.triggers/index.mdx#locked-triggers) section.
 :::
@@ -132,7 +130,7 @@ The **Concurrency Limits** page under **Tenant** in the sidebar lists every flow
 
 ## Concurrent trigger executions
 
-Any [Trigger](../07.triggers/index.mdx) type supports concurrent executions through the `allowConcurrent` property. By default, `allowConcurrent: false` — if a trigger fires while a previous execution is still running, the new execution is skipped.
+Any [Trigger](../07.triggers/index.mdx) type supports concurrent executions through the `allowConcurrent` property. By default, `allowConcurrent: false`; if a trigger fires while a previous execution is still running, the new execution is skipped.
 
 ```yaml
 id: sleep_concurrent
@@ -151,6 +149,14 @@ triggers:
 
 Set `allowConcurrent: true` to allow multiple executions to run simultaneously from the same trigger.
 
+## Updating a concurrency limit
+
+Update a concurrency limit when executions are backing up or hitting the limit unexpectedly. Avoid changing limits routinely; a stable limit is a deliberate resource protection decision.
+
+**In Open Source and Enterprise Edition**, edit the `concurrency.limit` value directly in the flow editor and save. The executor reads the latest flow revision immediately, so the new limit takes effect for all in-progress executions without a restart.
+
+You can also update the limit from the **Concurrency Limits** page (under **Instance Owner** in the sidebar) in the Enterprise Edition): click the edit icon next to the affected flow, adjust the limit, and save. This applies the change without modifying the flow YAML.
+
 ## Troubleshooting concurrency issues
 
 ### Check the Concurrency tab
@@ -158,10 +164,6 @@ Set `allowConcurrent: true` to allow multiple executions to run simultaneously f
 Open the **Concurrency** tab on the Flow page to see which executions are running, queued, or failed. This shows which executions hold slots and which are waiting.
 
 ![Flow Concurrency tab for a FAIL-behavior flow showing 0 of 2 active slots with two failed executions](./concurrency-fail-tab.png)
-
-### Edit the concurrency limit
-
-You can change or remove the `concurrency` property in the flow editor and save. The executor always reads the latest flow revision, so the updated limit takes effect immediately for all in-progress executions.
 
 ### Reset a stuck running counter
 

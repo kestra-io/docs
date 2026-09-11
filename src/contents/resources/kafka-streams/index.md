@@ -19,7 +19,7 @@ faq:
     answer: "Yes, Netflix uses Kafka extensively across its observability stack and for various real-time data processing needs. For example, the Title Health microservice at Netflix ingests real-time title impression events via Kafka to validate content availability, recommendations, and localization across thousands of monthly launches, showcasing Kafka's critical role in their operations."
 ---
 
-> **TL;DR** — Kafka Streams is a client library for Apache Kafka that enables developers to build real-time stream processing applications. It provides high-level APIs to process data directly from Kafka topics, allowing for scalable, fault-tolerant, and stateful computations on streaming data.
+> **TL;DR** — Kafka Streams is a client library for Apache Kafka that enables developers to build real-time stream processing applications. It provides high-level APIs to process data directly from Kafka topics, allowing for scalable, fault-tolerant, and stateful computations on streaming data. For the underlying architecture — brokers, topics, partitions, and consumer groups — see [what is Apache Kafka](/resources/data/what-is-kafka).
 
 In today's event-driven architectures, processing data as it arrives is no longer a luxury—it's a necessity. From real-time analytics to immediate fraud detection, the ability to react to data streams at sub-second latency drives competitive advantage. Apache Kafka has emerged as the de facto standard for handling these high-throughput event streams, but building applications that intelligently process this data presents its own set of challenges.
 

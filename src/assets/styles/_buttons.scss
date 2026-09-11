@@ -1,0 +1,30 @@
+// Shared secondary-button surface variants (Figma "Button_Secondary" and
+// "Button_Secondary-darkbkg"). Used from app.scss for the `.surface-dark` /
+// `.surface-inverse` section markers and from the scoped style block of
+// layout/Header.vue for the header's pre-scroll states, so the two can't drift.
+//
+// The global `.btn-secondary` rule reads these `--ks-*` tokens, so a surface
+// restyles the button by re-pointing them instead of out-ranking its
+// `!important` colours. Set on the button itself they win over the theme
+// defaults; set on an ancestor (home/Hero.astro, twozero/Cta.astro) they still
+// let a page pin its own palette.
+$btn-secondary-paper: #ffffff; // $base-grey-white
+$btn-secondary-ink: #131316; // $base-grey-Black
+
+// Dark surface: transparent, white text and border; inverts to white on hover.
+@mixin btn-secondary-dark-surface {
+    --ks-background-button-secondary: transparent;
+    --ks-background-button-secondary-hover: #{$btn-secondary-paper};
+    --ks-border-button-secondary: #{$btn-secondary-paper};
+    --ks-content-primary: #{$btn-secondary-paper};
+    --ks-content-btn-secondary-hover: #{$btn-secondary-ink};
+}
+
+// Light surface: white, dark text and border; inverts to dark on hover.
+@mixin btn-secondary-light-surface {
+    --ks-background-button-secondary: #{$btn-secondary-paper};
+    --ks-background-button-secondary-hover: #{$btn-secondary-ink};
+    --ks-border-button-secondary: #{$btn-secondary-ink};
+    --ks-content-primary: #{$btn-secondary-ink};
+    --ks-content-btn-secondary-hover: #{$btn-secondary-paper};
+}

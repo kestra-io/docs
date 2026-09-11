@@ -89,10 +89,11 @@ By collecting and correlating these different types of metadata, a data lineage 
 ### Key tools and technologies for data lineage implementation
 
 The data lineage tool market has matured significantly, with solutions catering to different needs and ecosystems.
-*   **Data Catalogs:** Tools like Alation, Collibra, and Atlan often include data lineage as a core feature. They focus on data discovery, governance, and providing a unified view of all data assets.
+*   **Data Catalogs:** Tools like Alation, Collibra, and [Atlan](/resources/data/atlan-alternatives) often include data lineage as a core feature. They focus on data discovery, governance, and providing a unified view of all data assets.
 *   **Orchestration Platforms:** Modern orchestrators are increasingly providing native lineage capabilities. For instance, comparing [Kestra vs. Dagster](https://kestra.io/vs/dagster) shows a focus on asset-based lineage, where the orchestrator understands the data assets being produced and consumed. Similarly, managed platforms like [Astronomer](https://kestra.io/vs/astronomer) offer lineage features built around the Airflow ecosystem.
 *   **Open-Source Standards:** OpenLineage is an open standard for collecting lineage metadata from various sources. By adopting this standard, tools can send lineage events to a central collector, creating a unified view even in a heterogeneous environment.
 *   **Specialized Lineage Tools:** Some vendors focus exclusively on data lineage, offering deep parsing capabilities for complex SQL dialects and proprietary ETL tools.
+*   **Catalog-Integrated Lineage:** Most teams consume lineage inside the catalog rather than as a standalone view; [data catalog lineage](/resources/data/data-catalog-lineage) covers how the two fit together.
 
 The best solution often involves integrating your orchestration platform with a dedicated data catalog, using a standard like OpenLineage to bridge the gap.
 

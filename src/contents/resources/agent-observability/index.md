@@ -68,56 +68,96 @@ A declarative orchestration platform like Kestra provides a powerful framework f
 Consider a scenario where an AI agent is tasked with analyzing a customer support ticket, querying a database for user history, and drafting a response. The following Kestra flow orchestrates this process, ensuring every step is logged and failures are handled gracefully.
 
 ```yaml
-id: observable-support-agent
+id: observable_support_agent
 namespace: company.team.ai
 
 tasks:
-  - id: start-log
+  - id: log_incoming_ticket
     type: io.kestra.plugin.core.log.Log
-    message: "Starting support ticket analysis for ticket ID {{ trigger.data.ticketId }}"
+    message: "Triaging support ticket {{ trigger.body.ticketId }}"
 
-  - id: analyze-ticket
+  - id: analyze_ticket
     type: io.kestra.plugin.ai.agent.AIAgent
-    model: "openai/gpt-4o"
+    systemMessage: |
+      You are a support triage agent. Return only JSON matching the schema.
+      Do not add commentary.
     prompt: |
-      You are a support agent. Analyze the following ticket and determine the user's account ID and the core issue.
-      Ticket: {{ trigger.data.ticketContent }}
-      Respond with a JSON object containing 'accountId' and 'issueSummary'.
-    temperature: 0.2
-    maxTokens: 256
+      Ticket: {{ trigger.body.ticketContent }}
+      Identify the account ID and summarise the core issue.
+    configuration:
+      responseFormat:
+        type: JSON
+        jsonSchema:
+          type: object
+          required: ["accountId", "issueSummary"]
+          properties:
+            accountId:
+              type: string
+            issueSummary:
+              type: string
 
-  - id: get-user-history
+  - id: get_account_history
     type: io.kestra.plugin.jdbc.postgresql.Query
-    # This task would query a database using the accountId from the previous task
-    # For simplicity, we are returning a mock result here.
-    sql: "SELECT 'Mock user history' as history;"
-    fetchOne: true
-    disabled: true # Disabled for demonstration; in production, this would be enabled.
+    url: jdbc:postgresql://db.internal:5432/support
+    username: "{{ secret('POSTGRES_USERNAME') }}"
+    password: "{{ secret('POSTGRES_PASSWORD') }}"
+    sql: SELECT summary FROM ticket_history WHERE account_id = :accountId ORDER BY created_at DESC LIMIT 5
+    parameters:
+      accountId: "{{ outputs.analyze_ticket.jsonOutput.accountId }}"
+    fetchType: FETCH
 
-  - id: draft-response-agent
+  - id: draft_reply
     type: io.kestra.plugin.ai.agent.AIAgent
-    model: "openai/gpt-4o"
     prompt: |
-      Based on the issue summary "{{ outputs['analyze-ticket'].content.issueSummary }}" and user history, draft a helpful and empathetic response.
-    temperature: 0.7
+      Issue: {{ outputs.analyze_ticket.jsonOutput.issueSummary }}
+      Previous tickets for this account: {{ outputs.get_account_history.rows }}
+      Draft a factual, empathetic reply. Do not promise anything not in the history.
 
-  - id: final-output
+  - id: log_agent_telemetry
+    type: io.kestra.plugin.core.log.Log
+    message: |
+      triage: finishReason={{ outputs.analyze_ticket.finishReason }} tokens={{ outputs.analyze_ticket.tokenUsage }}
+      draft:  finishReason={{ outputs.draft_reply.finishReason }} tokens={{ outputs.draft_reply.tokenUsage }}
+
+  - id: return_reply
     type: io.kestra.plugin.core.debug.Return
-    format: "{{ outputs['draft-response-agent'].content }}"
+    format: "{{ outputs.draft_reply.textOutput }}"
 
 errors:
-  - id: alert-on-failure
-    type: io.kestra.plugin.notifications.slack.SlackExecution
-    url: "{{ secret('SLACK_WEBHOOK_URL') }}"
-    message: "Critical failure in observable-support-agent for ticket {{ trigger.data.ticketId }}. Please review execution logs."
+  - id: alert_on_failure
+    type: io.kestra.plugin.slack.notifications.SlackIncomingWebhook
+    url: "{{ secret('SLACK_WEBHOOK') }}"
+    messageText: "Support agent failed on ticket {{ trigger.body.ticketId }} — execution {{ execution.id }}"
+
+triggers:
+  - id: new_ticket
+    type: io.kestra.plugin.core.trigger.Webhook
+    key: "{{ secret('SUPPORT_WEBHOOK_KEY') }}"
+
+pluginDefaults:
+  - type: io.kestra.plugin.ai.agent.AIAgent
+    values:
+      provider:
+        type: io.kestra.plugin.ai.provider.GoogleGemini
+        modelName: gemini-2.5-flash
+        apiKey: "{{ secret('GEMINI_API_KEY') }}"
+      observability:
+        type: io.kestra.plugin.ai.domain.LangfuseObservability
+        endpoint: "{{ secret('LANGFUSE_ENDPOINT') }}"
+        publicKey: "{{ secret('LANGFUSE_PUBLIC_KEY') }}"
+        secretKey: "{{ secret('LANGFUSE_SECRET_KEY') }}"
+        capturePrompt: true
+        captureOutput: true
+        captureToolArguments: true
+        captureToolResults: true
 ```
 
 A few things are worth noticing in this flow:
--   **Declarative Definition:** The entire process, including the agent's prompts and the error handling logic, is defined in a single, version-controlled YAML file.
--   **Built-in Tracing:** Kestra's UI automatically provides a visual graph and detailed logs for every task execution, creating a complete trace without any extra setup.
--   **Automated Alerting:** The `errors` block ensures that any failure in the agent or its tools will trigger an immediate Slack notification, enabling rapid response.
+-   **Declarative Definition:** The entire process — the agent's prompts, the JSON schema its answer must satisfy, the error handling and the observability export — lives in one version-controlled YAML file. Shared settings sit in `pluginDefaults`, so both agents inherit the same provider and tracing configuration.
+-   **Built-in Tracing:** Kestra's UI provides a visual graph and detailed logs for every task execution, creating a complete trace without any extra setup. The `observability` property on the agent goes further, exporting prompts, outputs and tool calls to an OpenTelemetry backend such as Langfuse.
+-   **Automated Alerting:** The `errors` block sends a Slack notification on any failure in the agent or its tools. Note the task class: `SlackIncomingWebhook` is the one to use inside an `errors` block, not `SlackExecution`, which is designed for flow-level triggers.
 -   **Cross-Tool Observability:** The flow integrates an [AI Agent task](/docs/ai-tools/ai-agents) with a database query, providing end-to-end visibility across different systems.
--   **Cost-Awareness Foundation:** While not explicit, logs from the `AIAgent` task can be parsed to extract token usage, which can then be aggregated for cost monitoring.
+-   **Cost Awareness:** The `AIAgent` task exposes `tokenUsage` and `finishReason` as outputs. The `log_agent_telemetry` task records both on every run, so spend and truncation can be aggregated from the logs rather than inferred.
 
 For more examples, explore Kestra's [AI agent blueprints](/blueprints/ai-agent-calling-flows).
 

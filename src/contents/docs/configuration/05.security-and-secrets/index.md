@@ -407,6 +407,24 @@ Accepts ISO 8601 duration strings (e.g., `PT30S`, `PT1M`) or Micronaut shorthand
 The timeout is set once at startup and cannot be changed at runtime without restarting the server.
 :::
 
+## Passwordless OTP
+
+Enable passwordless One-Time-Password login so users authenticate via an emailed code instead of a password. Requires a mail service to be configured.
+
+```yaml
+kestra:
+  security:
+    one-time-password:
+      enabled: true
+      expiration: PT5M
+      code-length: 6
+      rate-limit:
+        max-requests: 10
+        window: PT1H
+```
+
+See [Passwordless (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) for setup prerequisites and full property details.
+
 ## Related docs
 
 - Secrets manager concepts: [External Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md)

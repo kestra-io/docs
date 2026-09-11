@@ -2,7 +2,15 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["import"],
   "rules": {
-      "no-unused-vars": "error",
+      // oxlint 1.82 stopped exempting `_` on its own, so name the convention.
+      "no-unused-vars": [
+          "error",
+          {
+              "argsIgnorePattern": "^_",
+              "varsIgnorePattern": "^_",
+              "destructuredArrayIgnorePattern": "^_",
+          },
+      ],
       "no-console": ["error", { "allow": ["warn", "error"] }],
   },
   "env": {
