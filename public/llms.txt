@@ -26,6 +26,7 @@ This section covers two distinct things: (1) guidance for AI agents interacting 
 
 - [Agent Skills](https://kestra.io/docs/ai-tools/agent-skills.md): **Start here if you are an AI agent.** How coding agents should interact with Kestra — reading flow definitions, calling the API, deploying flows, and avoiding common mistakes
 - [Kestra MCP resources](https://kestra.io/docs/ai-tools/kestra-mcp-resources.md): Connect Claude Code, Cursor, or any MCP-compatible AI tool to live Kestra plugin docs, blueprints, and documentation at runtime — no training data required
+- [Docs for Agents](https://kestra.io/docs/ai-tools/docs-for-agents.md): All machine-readable Kestra resources in one place — MCP server, Agent Skills, llms.txt endpoints, plain Markdown docs, plugin schemas, and OpenAPI specs
 - [AI Tools overview](https://kestra.io/docs/ai-tools.md): Overview of all AI capabilities in Kestra — Copilot, Agents, Agent Skills, AI Workflows, and RAG Workflows
 - [AI Copilot](https://kestra.io/docs/ai-tools/ai-copilot.md): Generate and refine flow YAML from natural language prompts inside the Kestra UI
 - [AI Agents](https://kestra.io/docs/ai-tools/ai-agents.md): Build autonomous orchestration patterns where agents decide which tasks to run based on runtime context
