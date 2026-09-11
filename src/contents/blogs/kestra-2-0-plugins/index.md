@@ -158,6 +158,14 @@ While in the same area, plugin icons became real SVG resources instead of data U
 
 The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
+## Plugin Auto Install - Kestra Slim
+
+The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/p95rP8pu7bw?si=tSZo8QLdemsXD95O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 2.0 splits it. Every tag has a `-slim` twin, so `kestra/kestra:latest-slim` is the lean core and you add what you need. It's also what [kestra.io/get-started](https://kestra.io/get-started) hands you by default:
 
 ```bash
@@ -315,6 +323,10 @@ These are not new plugin repositories, they're new capabilities added to plugins
 - **Scripts**: new realtime triggers for [Python](https://kestra.io/plugins/plugin-script-python), [Go](https://kestra.io/plugins/plugin-script-go), [Ruby](https://kestra.io/plugins/plugin-script-ruby) and [Node](https://kestra.io/plugins/plugin-script-node)
 
 ## Versioned plugin docs
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/W5E2Q7Ucznk?si=V2_ze26TF0P--wDF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 Running several versions of the same plugin side by side isn't new, Enterprise has supported that since late 2024. What 2.0 added around it is smaller: work toward the same version selection inside the instance UI, and a clearer distinction between open source and Enterprise plugins in the catalogue, backed by artifact filtering on the distribution flag.
 
