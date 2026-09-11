@@ -12,17 +12,22 @@ author:
 image: ./main.png
 ---
 
-For most of Kestra's life, "plugin" meant one thing: a task that talks to something. Snowflake, dbt, S3, Slack. Kestra 2.0 just crossed 2000 of them.
+For most of Kestra's life, "plugin" meant one thing: a task that talks to something, such as Snowflake, dbt, S3, Slack. Kestra 2.0 just crossed 2000 of them.
 
-The interesting part is what else a plugin could *be*.
+The interesting part is what else could a plugin *be*.
 
-The answer turned out to be: the governance rule that blocks a task. The renderer that draws your Parquet file. The store your logs live in. The queue underneath the whole engine. The interface you look at while a Kubernetes pod starts.
+The answer turned out to be:
+- The governance rule that blocks a task.
+- The file renderer that draws your Parquet file.
+- The store your logs live in.
+- The queue underneath the whole engine.
+- The interface you look at while a Kubernetes pod starts.
 
 That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
 
 ## Three new plugin types
 
-Three new plugin types arrived this cycle, out of seventeen total (tasks, triggers, storages, secrets, task runners, apps, charts, etc.): policy rules (Enterprise Edition), log data stores (Enterprise Edition), and file preview renderers. Each one turns something that used to be ours into something that can be yours.
+Three new plugin types arrived this cycle, out of seventeen total (tasks, triggers, storages, secrets, task runners, apps, charts, etc.): policy rules (Enterprise Edition), log data stores (Enterprise Edition), and file preview renderers. Each one turns a piece of Kestra's internal machinery, what governs a task, where logs live, how a file renders, into something you write yourself.
 
 ### Policy rules (Enterprise Edition)
 
@@ -38,13 +43,13 @@ rules:
         value: io.kestra.plugin.scripts.shell
 ```
 
-Read that again with an eye on the edition line: the rules are Enterprise, the extension point is open source. Which means the mechanism for enforcing what may run in your platform is part of the engine everyone gets, and the rules shipped on top of it are a product decision rather than an architectural one. Policies also brought a `POLICY` schema type and a `policyRefs` field on flows, tasks and triggers, so a rule is addressable from the thing it governs.
+The mechanism for enforcing what may run in your platform is part of the engine everyone gets: it's open source. The rules shipped on top of it, like `Deny` above, are Enterprise, which makes this a product decision rather than an architectural one. Policies also brought a `POLICY` schema type and a `policyRefs` field on flows, tasks and triggers, so a rule is addressable from the thing it governs.
 
 #### pluginDefaults is gone
 
-The same work that gave us policy rules took away plugin defaults, and the symmetry is the point: one mechanism suggested values, the other enforces them, and keeping both would have meant two answers to the same question.
+The same work that gave us policy rules took away plugin defaults. While plugin defaults suggested values, policies enforce them. Keeping both would have meant two answers to the same question.
 
-So flow level `pluginDefaults` is removed, the service that implemented it was renamed to describe what it actually does now, and a flow containing that block will not parse. This is the change most likely to interrupt your upgrade, and it arrives without a deprecation window, so plan for it rather than discover it.
+So flow level `pluginDefaults` is removed, the service that implemented it was renamed to describe what it actually does now, and a flow containing that block will not parse. This is the change most likely to interrupt your upgrade: it arrives without a deprecation window, so migrate your flows before you upgrade rather than after.
 
 What replaces it depends on your edition. In Enterprise, a `REFERENCE` policy that flows opt into through `policyRefs`, or an `Add` rule scoped to a namespace. Namespace level plugin defaults, which shipped in 1.3, are the surviving mechanism and migrate automatically. In open source there is no centralized replacement: inline the values or hoist them into flow variables.
 
@@ -52,7 +57,7 @@ Two behaviors follow, and neither is obvious until it bites:
 
 **Plugin aliases are not resolved in rule matching.** A `where` clause matches the type string literally, so a rule naming the canonical type will not catch a flow using a deprecated alias. Which matters more in 2.0 because core task aliases and trigger aliases were removed outright during the cycle.
 
-**Lists are replaced, never merged.** A tenant policy setting three environment variables and a namespace policy setting one leaves you with one.
+**A more specific policy list replaces a broader one instead of merging with it.** A tenant policy setting three environment variables and a namespace policy setting one leaves you with just the one from the namespace policy.
 
 Do not confuse any of this with `kestra.plugins.configurations`, which is unchanged and is for tuning plugin features a flow never expresses:
 
@@ -114,7 +119,11 @@ This is one of the biggest plugin features for 2.0, and it has a name of its own
 
 Until 2.0 a plugin could contribute a form generated from its schema, and that was the whole of its UI surface. A task in the execution view was configuration, logs and a list of output files, so understanding what a task did often meant leaving Kestra: download the Parquet somewhere else, open dbt Cloud for the model graph, read Kubernetes events to find out why a pod took four minutes.
 
-Artifacts let a plugin render a rich, domain specific view inside Kestra, before and after a run, with no extra YAML in anyone's flow. Four kinds shipped: data tables previewing Parquet, CSV, ION and Avro with local filtering, data summaries with row counts and per-column statistics, dependency graphs for dbt models and Ansible trees and Terraform plans, and topology sub-nodes that decompose a task into its real steps with per-step timing.
+Artifacts let a plugin render a rich, domain specific view inside Kestra, before and after a run, with no extra YAML in anyone's flow. Three kinds shipped:
+
+- Data tables previewing Parquet, CSV, ION and Avro with local filtering.
+- Data summaries with row counts and per-column statistics.
+- Topology sub-nodes that decompose a task into its real steps with per-step timing.
 
 The architecture is worth knowing because it is more considered than a typical plugin hook. A **slot** is a part of the Kestra UI a plugin may modify. A **plugin UI artifact** is the object in the plugin that modifies the visualization for a task. A **slot contract** is a TypeScript interface defining the props your component receives, and the contracts live in the Kestra repository under `ui/packages/slot-contracts`, so they are enforced at compile time. **Module federation** glues it together, letting a plugin ship a Vue component that shares Kestra's own Vue, API client and design system instead of bundling its own copies.
 
@@ -153,10 +162,6 @@ The scale of the follow-up is the detail I find most telling about the size of t
 Useful for plugin authors: the annotation is non-breaking and was made available to 1.x plugin builds, so you can adopt it without moving your plugin to a 2.0 dependency. The rendering is what is new.
 
 While in the same area, plugin icons became real SVG resources instead of data URIs, with lazy loading and content sanitization through a new sanitizer, and a monochrome flag derived from whether the SVG uses `currentColor`. The measurable result is **12MB removed from a JSON payload**, which is a page load rather than a feature but you will feel it on the plugins page.
-
-## Plugin Auto Install - Kestra Slim
-
-The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
 ## Plugin Auto Install - Kestra Slim
 
