@@ -1,6 +1,6 @@
 <template>
     <rapi-doc
-        spec-url="/kestra.yml"
+        :spec-url="specUrl"
         theme="dark"
         render-style="view"
         show-header="false"
@@ -13,6 +13,10 @@
 
 <script setup>
     import "rapidoc"
+
+    defineProps({
+        specUrl: { type: String, default: "/kestra.yml" },
+    })
 </script>
 
 <style lang="scss" scoped>

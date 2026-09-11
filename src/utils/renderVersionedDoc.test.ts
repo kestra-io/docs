@@ -7,6 +7,7 @@ import { componentKey } from "../markdown/mdcTree"
 
 // The tags docs-versioned.astro's component glob resolves to a real component.
 const renderableComponents = new Set([
+    "api-doc",
     "api-doc-ee",
     "home-page-buttons",
     "support-links",
@@ -1049,7 +1050,9 @@ API Reference of Kestra Cloud & Enterprise.
 <ApiDocEE />`,
             renderableComponents,
         })
-        expect(body.components).toEqual([{ tag: "api-doc-ee", props: {} }])
+        expect(body.components).toEqual([
+            { tag: "api-doc-ee", props: { specUrl: "/api/openapi/1.3/ee.yml" } },
+        ])
         expect(body.html).toContain("<!--mdc:0-->")
         expect(body.unknownComponents).toEqual([])
     })
@@ -1119,6 +1122,24 @@ Before.
         })
         expect(body.components).toEqual([])
         expect(body.unknownComponents).toEqual(["some-deleted-component"])
+    })
+
+    it("points an archived API reference at that version's own spec", async () => {
+        // Otherwise an archived page documents today's API: the spec is a static
+        // asset of the live site, not part of the versioned doc content.
+        const body = await renderVersionedDocBody({
+            version: "0.19",
+            path: "api-reference/open-source",
+            markdown: `---
+title: T
+---
+::api-doc
+::`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([
+            { tag: "api-doc", props: { specUrl: "/api/openapi/0.19/oss.yml" } },
+        ])
     })
 })
 
