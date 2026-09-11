@@ -1,59 +1,25 @@
 ---
 import FeaturedCarousel from "~/components/stories/FeaturedCarousel.vue"
 
-interface FeaturedStory {
-    id: string
-    slug: string
-    title: string
-    heroImage: string
-    logo?: string
-    logoDark?: string
-    logoIcon?: string
-    companyName: string
-    kpi1: string
-    kpi2: string
-    kpi3: string
-    kpi4?: string
-    quote: string
-    quotePerson: string
-    quotePersonTitle?: string
-    tasks: string[]
-    industry: string
-    useCase?: string
-    description: string
-}
-
 interface Props {
-    featuredStories: FeaturedStory[]
+    featuredStories: Story[]
 }
 
 const { featuredStories } = Astro.props
-
-function parseKpi(kpi: string | undefined): { value: string; label: string } | null {
-    if (!kpi) return null
-    const lines = kpi.trim().split("\n").map((l) => l.trim()).filter(Boolean)
-    const value = lines[0]?.replace(/^#{1,6}\s*/, "") ?? ""
-    const label = lines.slice(1).join(" ")
-    return value ? { value, label } : null
-}
-
-const storiesWithKpis = featuredStories.map((story) => ({
-    ...story,
-    kpis: [story.kpi1, story.kpi2, story.kpi3, story.kpi4]
-        .map(parseKpi)
-        .filter(Boolean) as { value: string; label: string }[],
-}))
-
 ---
 
 <section class="stories-hero">
     <div class="container">
         <div class="hero-intro">
-            <h1>Trusted worldwide as the default<br />workflow orchestration platform<span class="accent-dot">.</span></h1>
-            <p class="hero-sub">Browse stories from engineering teams across every industry. Find the use case that matches yours — and see exactly how they built it.</p>
+            <h1>Thousands of teams.<br />Millions of flows. Zero drama.</h1>
+            <p class="hero-sub">
+                See how engineering teams use Kestra to orchestrate everything —
+                from real-time AI pipelines to enterprise-scale ERP
+                integrations.
+            </p>
         </div>
 
-        <FeaturedCarousel stories={storiesWithKpis} client:idle />
+        <FeaturedCarousel stories={featuredStories} client:idle />
     </div>
 </section>
 
@@ -63,149 +29,108 @@ const storiesWithKpis = featuredStories.map((story) => ({
 
 <style lang="scss">
     .stories-hero {
-        background:
-            radial-gradient(
-                ellipse 80% 60% at 15% 100%,
-                rgba(108, 44, 255, 0.28) 0%,
-                transparent 60%
-            ),
-            #060613;
-        color: white;
-        padding-top: 4rem;
-        padding-bottom: 0;
+        --hero-grid-size: 68px;
+        --header-h: calc(
+            var(--top-bar-height, 67px) + var(--announce-height, 0px)
+        );
+        position: relative;
+        isolation: isolate;
+        overflow: hidden;
+        background: #0a0b0d;
+        color: #fff;
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 3.75rem) 0 3.5rem;
 
         @include media-breakpoint-down(lg) {
-            padding-top: 2.5rem;
+            padding: calc(var(--header-h) + 3rem) 0 2.5rem;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(
+                    to right,
+                    rgba(185, 135, 255, 0.12) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    to bottom,
+                    rgba(185, 135, 255, 0.12) 1px,
+                    transparent 1px
+                );
+            background-size: var(--hero-grid-size) var(--hero-grid-size);
+            -webkit-mask: radial-gradient(
+                ellipse 85% 70% at 60% 0%,
+                #000 15%,
+                transparent 100%
+            );
+            mask: radial-gradient(
+                ellipse 85% 70% at 60% 0%,
+                #000 15%,
+                transparent 100%
+            );
+            pointer-events: none;
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(
+                    ellipse 45% 60% at 0% 100%,
+                    rgba(108, 44, 255, 0.5) 0%,
+                    transparent 70%
+                ),
+                radial-gradient(
+                    ellipse 40% 50% at 100% 100%,
+                    rgba(31, 155, 243, 0.35) 0%,
+                    transparent 70%
+                );
+            pointer-events: none;
         }
 
         .container {
+            position: relative;
             max-width: 1180px;
-            padding-bottom: 3rem;
         }
     }
 
     .hero-intro {
-        margin-bottom: 2.5rem;
-        text-align: center;
+        margin-bottom: 4rem;
+        max-width: 860px;
+
+        @include media-breakpoint-down(lg) {
+            margin-bottom: 2rem;
+        }
 
         h1 {
-            font-size: clamp(2rem, 3.5vw, 3rem);
-            font-weight: 700;
-            line-height: 1.1;
-            color: white;
-            letter-spacing: -0.02em;
-            margin: 0 0 1rem;
-
-            .accent-dot {
-                color: #f62e76;
-            }
+            font-size: clamp(2.25rem, 4.2vw, 3.5rem);
+            font-weight: 600;
+            line-height: 1.05;
+            color: #fff;
+            letter-spacing: -0.025em;
+            margin: 0 0 1.25rem;
         }
 
         .hero-sub {
-            font-size: 1.0625rem;
-            color: rgba(255, 255, 255, 0.6);
-            line-height: 1.65;
-            margin: 0 auto;
-            max-width: 560px;
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.75rem;
+            margin: 0;
+            max-width: 640px;
+
+            @include media-breakpoint-down(md) {
+                font-size: 1rem;
+            }
         }
     }
 
     .stories-list-section {
         background: var(--ks-background-body);
-    }
-</style>
-
-<style is:global lang="scss">
-    .stories-list-section {
-        .stories-inner {
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 2.5rem 1rem 4rem;
-        }
-
-        .filter-bar {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-
-            @include media-breakpoint-down(sm) {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        .stories-count {
-            font-size: 0.9375rem;
-            font-weight: 600;
-            color: var(--ks-content-primary);
-            flex-shrink: 0;
-        }
-
-        /* large: all 4 filters in one row · tablet: 2×2 · mobile: 1 column */
-        .filters {
-            flex: 1;
-            min-width: 0;
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 0.75rem;
-
-            @include media-breakpoint-down(lg) {
-                width: 100%;
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            @include media-breakpoint-down(sm) {
-                grid-template-columns: minmax(0, 1fr);
-            }
-        }
-
-        .filter-select {
-            appearance: none;
-            background: var(--ks-background-secondary);
-            border: 1px solid var(--ks-border-secondary);
-            border-radius: 0.5rem;
-            padding: 0.5rem 2.25rem 0.5rem 0.875rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--ks-content-primary);
-            cursor: pointer;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2387858f' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            width: 100%;
-            transition: border-color 0.15s;
-
-            &:focus {
-                outline: none;
-                border-color: var(--ks-content-link);
-            }
-
-            &:hover {
-                border-color: var(--ks-content-link);
-            }
-        }
-
-        .stories-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 1.25rem;
-
-            @include media-breakpoint-down(md) {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            @include media-breakpoint-down(sm) {
-                grid-template-columns: minmax(0, 1fr);
-            }
-        }
-
-        .no-results {
-            text-align: center;
-            color: var(--ks-content-tertiary);
-            padding: 3rem 0;
-            font-size: 0.9375rem;
-        }
     }
 </style>
