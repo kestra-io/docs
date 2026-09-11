@@ -7,7 +7,7 @@ icon: /src/contents/docs/icons/migration-guide.svg
 release: 2.0.0
 ---
 
-Upgrade from Kestra 1.3 to 2.0.0 by reviewing and applying the breaking changes below.
+Kestra 2.0.0 removes several flow constructs and changes how triggers, permissions, and plugin defaults work. This page covers what changed, how to assess your migration effort, and where to find step-by-step guidance.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/zl0ibWKBycg?si=_rL1iknfcw9InCwX" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -20,6 +20,14 @@ Upgrade from Kestra 1.3 to 2.0.0 by reviewing and applying the breaking changes 
 - [Namespace Files metadata migration](../v1.2.0/namespace-file-migration) (introduced in 1.2)
 
 If you are upgrading directly from 1.0, the [LTS migration guide (1.0 → 1.3)](../v1.3.0/lts-migration) consolidates all required steps in one pass.
+:::
+
+## Migration at a glance
+
+Before scheduling a maintenance window, run `kestra-migrate --check ./flows/` against your exported flows to classify the migration effort — automated-only or manual rewrites required. Then follow the [step-by-step tutorial](./00.migration-tutorial) for the full walkthrough with real command output from a live 1.3.5 → 2.0.0 run.
+
+:::alert{type="info"}
+The [`migrate-kestra-2`](https://github.com/kestra-io/agent-skills) Claude Code skill automates the assessment and rewrite steps interactively. It runs the pre-flight audit, steps through each `⚠ ✗` pattern with a YAML diff, and applies fixes with your confirmation. Install from `kestra-io/agent-skills`, open a Claude Code session in your flows directory, and say "migrate my Kestra flows to 2.0".
 :::
 
 ## Before you start
@@ -41,48 +49,6 @@ Open-source users do not need to do this manually; migrations run automatically 
 
 See [Database Migrations](./database-migrations) for the full upgrade sequence, Docker Compose and Kubernetes examples, and configuration options.
 
-### Inventory your flows
-
-Before starting the migration we recommend you list what Flows will need to be rewritten before they can be valid again.
-Two easy solutions for that:
-
-#### Use kestra-migrate CLI
-
-[`kestra-migrate`](https://github.com/kestra-io/kestra2-flow-migration) is a command-line tool that automatically rewrites v1.3 flow YAML to the v2.0 format. It covers 16 migration rules (type renames, property renames, auth restructuring, and more) and flags flows that use removed types requiring manual rewriting.
-
-**Install on macOS or Linux:**
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/kestra-io/kestra2-flow-migration/main/install-scripts/install.sh | bash
-```
-
-**Check which flows need migration:**
-
-```bash
-kestra-migrate --check ./flows/
-```
-
-**Migrate flows to an output directory:**
-
-```bash
-kestra-migrate -o v2-flows/ ./flows/
-```
-
-Run `--check` first to scope the work. After `kestra-migrate` runs, use the guides below for the two patterns the CLI cannot handle automatically: the `json()` function and `pluginDefaults` replacement.
-
-#### Use our Claude Code migration skill
-
-The [`migrate-kestra-2`](https://github.com/kestra-io/agent-skills) Claude Code skill guides the full upgrade journey: pre-flight access audit, server upgrade (Docker Compose and Helm paths), CLI-first flow migration using `kestra-migrate`, and guided rewrites for patterns the CLI does not cover.
-
-**Install:**
-
-```bash
-git clone git@github.com:kestra-io/agent-skills.git
-ln -s $(pwd)/agent-skills/skills/migrate-kestra-2 ~/.claude/skills/migrate-kestra-2
-```
-
-Then open any Claude Code session and say: "migrate my Kestra instance to 2.0".
-
 ## What changed in 2.0.0
 
 The changes below are grouped by the area they affect. Work through the categories relevant to your setup; not every change applies to every installation.
@@ -96,7 +62,7 @@ Changes that affect how flows are written or behave at runtime. Review all of th
 | [ForEach replaced by Loop](./foreach-loop) | OSS, EE | `ForEach` and `ForEachItem` are removed. Migrate all uses to the `Loop` task before upgrading; flows that reference either task fail to parse in 2.0. |
 | [Trigger conditions redesign](./trigger-conditions-redesign) | OSS, EE | The `conditions` list and `preconditions` block on triggers are removed. All trigger types now use a top-level `when` Pebble expression. |
 | [condition → when (Checks)](./checks-condition-renamed-when) | OSS, EE | The `condition` property on flow-level checks is renamed to `when`. |
-| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function is removed. Replace all calls with `fromJson()`; the signature is identical. |
+| [json() → fromJson()](./json-function-removed) | OSS, EE | The `json()` Pebble function and `\| json` filter are removed. Replace `json(x)` with `fromJson(x)` and `\| json` with `\| toJson`. The filter form fails at runtime rather than parse time — `kestra-migrate --check` does not flag it; grep for `\| json` manually. |
 | [local.Delete recursive default](./local-delete-recursive-default) | OSS, EE | `io.kestra.plugin.fs.local.Delete` now defaults `recursive` to `false`. Flows deleting directories without setting `recursive` explicitly will stop removing subdirectory contents. |
 
 Two additional removals have no dedicated guide. The four tasks `io.kestra.plugin.core.execution.Count`, `Resume`, `trigger.Toggle`, and `log.Fetch` are removed from core; replace them with the equivalent tasks from `plugin-kestra`. The `CANCELED` execution state alias is also removed; replace with `CANCELLED` (double-L) in flow expressions, API clients, and any tooling that reads execution state.
