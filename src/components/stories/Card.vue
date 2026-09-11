@@ -248,7 +248,7 @@
         flex-direction: column;
         gap: 1rem;
         padding: 1rem 1.5rem 1.5rem;
-        background: var(--ks-background-secondary);
+        background: var(--ks-background-primary);
         border: 1px solid var(--ks-border-secondary);
         box-shadow: 2px 3px 16px rgba(57, 82, 242, 0.1);
         color: var(--ks-content-primary);

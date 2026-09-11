@@ -3,257 +3,311 @@
     import TaskIcon from "~/components/common/TaskIcon.vue"
 
     const MAX_TASKS = 5
+    /** px per second the rail drifts while nobody interacts with it */
+    const DRIFT_SPEED = 30
+    /** px per second while the pointer is over the strip */
+    const HOVER_SPEED = 8
+    /** pointer travel before a press counts as a drag rather than a click */
+    const DRAG_THRESHOLD = 6
 
     const props = defineProps<{ stories: Story[] }>()
 
     const trackRef = ref<HTMLElement | null>(null)
-    const currentIdx = ref(0)
-    const maxIdx = ref(props.stories.length - 1)
+    const railRef = ref<HTMLElement | null>(null)
+    // Repeated sets of cards so the rail can wrap without a visible seam; the
+    // extra copies are hidden from assistive tech and the tab order.
+    const copies = ref(3)
+    const dragging = ref(false)
 
-    const GAP = 16
+    let offset = 0 // rail translation, kept within [0, loopWidth)
+    let loopWidth = 0 // width of one set of cards including the trailing gap
+    let frame = 0
+    let lastTime = 0
+    let speed = DRIFT_SPEED
+    let targetSpeed = DRIFT_SPEED
+    let interacting = false
+    let inView = true
+    let reducedMotion = false
 
-    function cardWidth(): number {
-        const el = trackRef.value?.querySelector(".fc-card") as HTMLElement | null
-        return el?.offsetWidth ?? 0
+    function setOffset(x: number) {
+        if (!railRef.value || !loopWidth) return
+        offset = ((x % loopWidth) + loopWidth) % loopWidth
+        railRef.value.style.transform = `translate3d(${-offset}px, 0, 0)`
     }
 
-    // Last index where the final card sits flush at the right edge — stops the
-    // nav from scrolling into empty space past the end (and "phantom" presses).
-    function computeMaxIdx() {
+    function measure() {
         const track = trackRef.value
-        const w = cardWidth()
-        if (!track || w === 0) {
-            maxIdx.value = Math.max(0, props.stories.length - 1)
-            return
+        const rail = railRef.value
+        const card = rail?.querySelector<HTMLElement>(".fc-card")
+        if (!track || !rail || !card || !props.stories.length) return
+        const gap = parseFloat(getComputedStyle(rail).columnGap) || 0
+        loopWidth = props.stories.length * (card.offsetWidth + gap)
+        copies.value = Math.max(3, Math.ceil(track.clientWidth / loopWidth) + 2)
+        // Start with the first card on the hero's content edge so the cards
+        // before it fill the bleed on the left.
+        const bleed = track.parentElement!.getBoundingClientRect().left - track.getBoundingClientRect().left
+        setOffset(loopWidth - bleed)
+    }
+
+    function tick(now: number) {
+        const dt = Math.min((now - lastTime) / 1000, 0.1)
+        lastTime = now
+        // glide between speeds instead of snapping
+        speed += (targetSpeed - speed) * Math.min(1, dt * 6)
+        setOffset(offset + speed * dt)
+        frame = requestAnimationFrame(tick)
+    }
+    function startDrift() {
+        if (frame || interacting || dragging.value || !inView || reducedMotion || document.hidden) return
+        lastTime = performance.now()
+        frame = requestAnimationFrame(tick)
+    }
+    function stopDrift() {
+        if (frame) {
+            cancelAnimationFrame(frame)
+            frame = 0
         }
-        const maxScroll = track.scrollWidth - track.clientWidth
-        maxIdx.value = Math.max(0, Math.round(maxScroll / (w + GAP)))
+    }
+    function slow() {
+        targetSpeed = HOVER_SPEED
+    }
+    function restore() {
+        targetSpeed = DRIFT_SPEED
+    }
+    // Keyboard focus and dragging hold the rail still; hovering only slows it.
+    function pause() {
+        interacting = true
+        stopDrift()
+    }
+    function resume() {
+        interacting = false
+        startDrift()
+    }
+    function onVisibility() {
+        if (document.hidden) stopDrift()
+        else startDrift()
     }
 
-    function goTo(i: number) {
-        if (!trackRef.value) return
-        const clamped = Math.min(Math.max(0, i), maxIdx.value)
-        trackRef.value.scrollTo({ left: clamped * (cardWidth() + GAP), behavior: "smooth" })
-        currentIdx.value = clamped
-    }
+    let pointerId: number | null = null
+    let startX = 0
+    let startOffset = 0
+    let moved = false
 
-    function prev() {
-        goTo(currentIdx.value - 1)
+    function onPointerDown(e: PointerEvent) {
+        if (e.pointerType === "mouse" && e.button !== 0) return
+        pointerId = e.pointerId
+        startX = e.clientX
+        startOffset = offset
+        moved = false
+        stopDrift()
     }
-    function next() {
-        goTo(currentIdx.value >= maxIdx.value ? 0 : currentIdx.value + 1)
+    function onPointerMove(e: PointerEvent) {
+        if (e.pointerId !== pointerId) return
+        const dx = e.clientX - startX
+        if (!moved && Math.abs(dx) < DRAG_THRESHOLD) return
+        if (!moved) {
+            moved = true
+            dragging.value = true
+            trackRef.value?.setPointerCapture(e.pointerId)
+        }
+        setOffset(startOffset - dx)
     }
-
-    function onScroll() {
-        const w = cardWidth()
-        if (!trackRef.value || w === 0) return
-        currentIdx.value = Math.min(maxIdx.value, Math.round(trackRef.value.scrollLeft / (w + GAP)))
+    function onPointerUp(e: PointerEvent) {
+        if (e.pointerId !== pointerId) return
+        pointerId = null
+        dragging.value = false
+        startDrift()
+    }
+    // A drag must not also follow the card link it started on.
+    function onClickCapture(e: MouseEvent) {
+        if (!moved) return
+        e.preventDefault()
+        e.stopPropagation()
+        moved = false
     }
 
     let ro: ResizeObserver
+    let io: IntersectionObserver
     onMounted(() => {
-        trackRef.value?.addEventListener("scroll", onScroll, { passive: true })
-        computeMaxIdx()
-        ro = new ResizeObserver(() => {
-            computeMaxIdx()
-            if (trackRef.value) trackRef.value.scrollLeft = 0
-            currentIdx.value = 0
+        const track = trackRef.value
+        if (!track) return
+        reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        measure()
+        ro = new ResizeObserver(measure)
+        ro.observe(track)
+        io = new IntersectionObserver(([entry]) => {
+            inView = entry.isIntersecting
+            if (inView) startDrift()
+            else stopDrift()
         })
-        if (trackRef.value) ro.observe(trackRef.value)
+        io.observe(track)
+        document.addEventListener("visibilitychange", onVisibility)
+        startDrift()
     })
     onUnmounted(() => {
-        trackRef.value?.removeEventListener("scroll", onScroll)
+        document.removeEventListener("visibilitychange", onVisibility)
         ro?.disconnect()
+        io?.disconnect()
+        stopDrift()
     })
 </script>
 
 <template>
-    <div class="fc-root">
-        <div class="fc-carousel-row">
-            <button
-                class="fc-arrow"
-                @click="prev"
-                :disabled="currentIdx === 0"
-                aria-label="Previous story"
-            >
-                <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
-            </button>
+    <div
+        class="fc-root"
+        @mouseenter="slow"
+        @mouseleave="restore"
+        @focusin="pause"
+        @focusout="resume"
+    >
+        <div
+            class="fc-track"
+            ref="trackRef"
+            :class="{ 'is-dragging': dragging }"
+            @pointerdown="onPointerDown"
+            @pointermove="onPointerMove"
+            @pointerup="onPointerUp"
+            @pointercancel="onPointerUp"
+            @click.capture="onClickCapture"
+            @dragstart.prevent
+        >
+            <div class="fc-rail" ref="railRef">
+                <template v-for="copy in copies" :key="copy">
+                    <a
+                        v-for="story in stories"
+                        :key="`${copy}-${story.slug}`"
+                        :href="`/customers/${story.slug}`"
+                        class="fc-card"
+                        :aria-hidden="copy > 1 || undefined"
+                        :tabindex="copy > 1 ? -1 : undefined"
+                    >
+                        <img
+                            class="fc-bg"
+                            :src="story.heroImage"
+                            alt=""
+                            loading="eager"
+                            decoding="async"
+                        />
 
-            <div class="fc-track" ref="trackRef">
-                <a
-                    v-for="story in stories"
-                    :key="story.slug"
-                    :href="`/customers/${story.slug}`"
-                    class="fc-card"
-                >
-                    <img
-                        class="fc-bg"
-                        :src="story.heroImage"
-                        alt=""
-                        loading="eager"
-                        decoding="async"
-                    />
-
-                    <div class="fc-body">
-                        <div class="fc-top">
-                            <div class="fc-wordmark">
-                                <img
-                                    v-if="story.logo || story.logoIcon"
-                                    :src="story.logo ?? story.logoIcon"
-                                    :alt="story.companyName"
-                                    loading="eager"
-                                />
-                                <span v-else class="fc-initial">
-                                    {{ story.companyName.charAt(0).toUpperCase() }}
-                                </span>
+                        <div class="fc-body">
+                            <div class="fc-top">
+                                <div class="fc-wordmark">
+                                    <img
+                                        v-if="story.logo || story.logoIcon"
+                                        :src="story.logo ?? story.logoIcon"
+                                        :alt="story.companyName"
+                                        loading="eager"
+                                    />
+                                    <span v-else class="fc-initial">
+                                        {{ story.companyName.charAt(0).toUpperCase() }}
+                                    </span>
+                                </div>
+                                <span class="fc-industry">{{ story.industry }}</span>
                             </div>
-                            <span class="fc-industry">{{ story.industry }}</span>
-                        </div>
 
-                        <div class="fc-bottom">
-                            <div class="fc-quote-block">
-                                <p class="fc-quote">
-                                    <span class="fc-quote-mark">“</span>{{ story.quote
-                                    }}<span class="fc-quote-mark">”</span>
-                                </p>
-                                <p class="fc-cite">
-                                    <strong>{{ story.quotePerson }}</strong>
-                                    <span v-if="story.quotePersonTitle"
-                                        >, {{ story.quotePersonTitle }}</span
+                            <div class="fc-bottom">
+                                <div class="fc-quote-block">
+                                    <p class="fc-quote">
+                                        <span class="fc-quote-mark">“</span>{{ story.quote
+                                        }}<span class="fc-quote-mark">”</span>
+                                    </p>
+                                    <p class="fc-cite">
+                                        <strong>{{ story.quotePerson }}</strong>
+                                        <span v-if="story.quotePersonTitle"
+                                            >, {{ story.quotePersonTitle }}</span
+                                        >
+                                    </p>
+                                </div>
+
+                                <div v-if="story.tasks && story.tasks.length" class="fc-tasks">
+                                    <div
+                                        v-for="task in story.tasks.slice(0, MAX_TASKS)"
+                                        :key="task"
+                                        class="fc-task"
                                     >
-                                </p>
-                            </div>
-
-                            <div v-if="story.tasks && story.tasks.length" class="fc-tasks">
-                                <div
-                                    v-for="task in story.tasks.slice(0, MAX_TASKS)"
-                                    :key="task"
-                                    class="fc-task"
-                                >
-                                    <TaskIcon :cls="task" theme="dark" />
-                                </div>
-                                <div
-                                    v-if="story.tasks.length > MAX_TASKS"
-                                    class="fc-task fc-task-more"
-                                >
-                                    +{{ story.tasks.length - MAX_TASKS }}
+                                        <TaskIcon :cls="task" theme="dark" />
+                                    </div>
+                                    <div
+                                        v-if="story.tasks.length > MAX_TASKS"
+                                        class="fc-task fc-task-more"
+                                    >
+                                        +{{ story.tasks.length - MAX_TASKS }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-
-            <button class="fc-arrow" @click="next" aria-label="Next story">
-                <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
-        </div>
-
-        <div class="fc-nav">
-            <div class="fc-dots">
-                <button
-                    v-for="(_, i) in stories"
-                    :key="i"
-                    class="fc-dot"
-                    :class="{ active: i === currentIdx }"
-                    @click="goTo(i)"
-                    :aria-label="`Go to story ${i + 1}`"
-                />
+                    </a>
+                </template>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
+    $ease-out-bounce: linear(
+        0,
+        0.004,
+        0.016,
+        0.035,
+        0.063,
+        0.098,
+        0.141,
+        0.191,
+        0.25,
+        0.316,
+        0.391,
+        0.563,
+        0.766,
+        1,
+        0.891,
+        0.813,
+        0.785,
+        0.813,
+        0.891,
+        1,
+        0.973,
+        0.953,
+        0.941,
+        0.938,
+        0.941,
+        0.953,
+        0.973,
+        1
+    );
+
     .fc-root {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        grid-template-areas:
-            "prev track next"
-            "nav  nav   nav";
-        align-items: center;
-        column-gap: 0.75rem;
-        row-gap: 1.5rem;
+        container-type: inline-size;
     }
 
-    .fc-carousel-row {
-        display: contents;
-    }
-
-    .fc-carousel-row > .fc-arrow:first-child {
-        grid-area: prev;
-    }
-    .fc-carousel-row > .fc-arrow:last-child {
-        grid-area: next;
-    }
-
-    @include media-breakpoint-down(md) {
-        .fc-root {
-            grid-template-areas:
-                "track track track"
-                "prev  nav   next";
-            column-gap: 0.5rem;
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-        }
-    }
-
+    /* Full-viewport strip; the hero's overflow clip trims it. 100cqw is
+       .fc-root's width, so the bleed is the container's side margin. */
     .fc-track {
-        grid-area: track;
-        min-width: 0;
+        --fc-bleed: calc((100vw - 100cqw) / 2);
+        margin-inline: calc(-1 * var(--fc-bleed));
+        /* Breathing room for the hover lift and shadow; the negative block
+           margins keep the strip's footprint unchanged. */
+        padding-block: 1.5rem 3rem;
+        margin-block: -1.5rem -3rem;
+        overflow: hidden;
+        cursor: grab;
+        touch-action: pan-y;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .fc-track.is-dragging {
+        cursor: grabbing;
+    }
+
+    .fc-rail {
         display: flex;
         align-items: stretch;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
         gap: 1rem;
-    }
-
-    .fc-track::-webkit-scrollbar {
-        display: none;
+        will-change: transform;
     }
 
     .fc-card {
-        flex: 0 0 420px;
-        scroll-snap-align: start;
-    }
-
-    @include media-breakpoint-down(lg) {
-        .fc-card {
-            flex: 0 0 calc(50% - 0.5rem);
-        }
-    }
-
-    @include media-breakpoint-down(md) {
-        .fc-card {
-            flex: 0 0 100%;
-        }
-    }
-
-    .fc-card {
+        flex: 0 0 min(420px, calc(100vw - 3rem));
         position: relative;
         display: flex;
         flex-direction: column;
@@ -263,11 +317,14 @@
         background: #0e0e10;
         text-decoration: none;
         color: #fff;
-        transition: transform 0.25s;
+        transition:
+            transform 300ms $ease-out-bounce,
+            box-shadow 300ms ease-out;
     }
 
     .fc-card:hover {
-        transform: translateY(-2px);
+        transform: translateY(-16px);
+        box-shadow: 0 24px 40px -12px rgba(0, 0, 0, 0.65);
     }
 
     .fc-bg {
@@ -292,7 +349,12 @@
         justify-content: space-between;
         gap: 2rem;
         padding: 1rem 1.5rem 1.5rem;
-        background: linear-gradient(to top, #0e0e10 17.6%, rgba(14, 14, 16, 0.2) 100%);
+        background: linear-gradient(
+            to top,
+            #0e0e10 22%,
+            rgba(14, 14, 16, 0.9) 48%,
+            rgba(14, 14, 16, 0.35) 100%
+        );
     }
 
     .fc-top {
@@ -417,65 +479,5 @@
         width: 100%;
         height: 100%;
         object-fit: contain;
-    }
-
-    /* ── nav ── */
-    .fc-nav {
-        grid-area: nav;
-        display: flex;
-        justify-content: center;
-    }
-
-    .fc-arrow {
-        width: 2.25rem;
-        height: 2.25rem;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.06);
-        color: rgba(255, 255, 255, 0.75);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition:
-            color 0.15s,
-            border-color 0.15s,
-            background 0.15s;
-        flex-shrink: 0;
-    }
-
-    .fc-arrow:hover:not(:disabled) {
-        color: #fff;
-        border-color: #a78bfa;
-        background: rgba(167, 139, 250, 0.15);
-    }
-
-    .fc-arrow:disabled {
-        opacity: 0.35;
-        cursor: default;
-    }
-
-    .fc-dots {
-        display: flex;
-        gap: 0.5rem;
-        align-items: center;
-    }
-
-    .fc-dot {
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.25);
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        transition:
-            background 0.2s,
-            width 0.2s;
-    }
-
-    .fc-dot.active {
-        width: 2.5rem;
-        background: #8c4bff;
     }
 </style>

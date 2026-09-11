@@ -30,7 +30,7 @@
                 <div class="sidebar-field-label">Use case</div>
                 <div class="sidebar-field-value">{{ story.useCaseShort }}</div>
             </div>
-            <div v-if="story.tasks?.length" class="sidebar-field">
+            <div v-if="story.tasks?.length" class="sidebar-field sidebar-field-wide">
                 <div class="sidebar-field-label">Tech stack</div>
                 <div class="tool-list">
                     <div class="tool-item">
@@ -219,6 +219,30 @@
         text-align: center;
         justify-content: center;
         margin-bottom: 1.5rem;
+    }
+
+    @include media-breakpoint-down(lg) {
+        .sidebar-fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sidebar-field {
+            padding-right: 1rem;
+        }
+
+        /* The tech stack, and any field left alone in its row, span both
+           columns so each row keeps a full-width separator. */
+        .sidebar-field-wide,
+        .sidebar-field:nth-child(odd):last-child,
+        .sidebar-field:nth-child(odd):has(+ .sidebar-field-wide) {
+            grid-column: 1 / -1;
+        }
+
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     .sidebar-share {

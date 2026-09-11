@@ -185,7 +185,7 @@
 
     .filter-select {
         appearance: none;
-        background: var(--ks-background-secondary);
+        background: var(--ks-background-input);
         border: 1px solid var(--ks-border-secondary);
         border-radius: 0.5rem;
         padding: 0.6rem 2.5rem 0.6rem 1rem;
