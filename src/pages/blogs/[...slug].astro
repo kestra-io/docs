@@ -37,6 +37,7 @@ const links = headings.map((h) => ({
 const editUrl = `https://github.com/kestra-io/docs/edit/main/src/contents/blogs/${post.id}/index.md`
 
 const title = page.title ?? "Insights & News on Data Orchestration"
+const metaTitle = page.metaTitle ?? title
 const description =
     page.description ??
     "Explore the Kestra Blog for the latest articles, insights, product updates & engineering deep dives."
@@ -84,7 +85,7 @@ const jsonLinkedData = {
 }
 ---
 
-<Layout title={title} description={description} image={staticImage?.src} canonical={page.canonical}>
+<Layout title={metaTitle} breadcrumbTitle={title} description={description} image={staticImage?.src} canonical={page.canonical}>
     <section>
         <Fragment slot="head">
             <meta property="og:type" content="article" />
