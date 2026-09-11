@@ -10,8 +10,9 @@ import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-// Hashed asset paths as they appear in href/src/srcset/url() and preload links.
-const ASSET_REF = /\/_astro\/[^"'\s)?#<>]+/g
+// Astro emits `[name].[hash].[ext]` with only these characters, which also stops a
+// match from running into HTML-escaped JSON such as `.jpg&quot;],&quot;title...`.
+const ASSET_REF = /\/_astro\/[\w.-]+/g
 
 /** @param {string} dir @returns {string[]} */
 function htmlFiles(dir) {
@@ -36,7 +37,7 @@ export function findDanglingAssetLinks(distDir) {
         for (const ref of new Set(html.match(ASSET_REF) ?? [])) {
             let exists = seen.get(ref)
             if (exists === undefined) {
-                exists = fs.existsSync(path.join(distDir, decodeURIComponent(ref)))
+                exists = fs.existsSync(path.join(distDir, ref))
                 seen.set(ref, exists)
             }
             if (exists) continue

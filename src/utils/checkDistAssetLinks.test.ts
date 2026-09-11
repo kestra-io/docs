@@ -47,11 +47,11 @@ describe("findDanglingAssetLinks", () => {
         ])
     })
 
-    it("ignores non-html files and url-encoded names still resolve", () => {
+    it("stops at the filename inside HTML-escaped island props", () => {
         const dist = makeDist({
-            "_astro/a b.css": "",
+            "_astro/image.JePILTmM_zVVpq.jpg": "",
             "_astro/x.js": `import "/_astro/gone.js"`,
-            "index.html": `<link href="/_astro/a%20b.css">`,
+            "index.html": `<astro-island props="{&quot;img&quot;:[0,&quot;/_astro/image.JePILTmM_zVVpq.jpg&quot;],&quot;title&quot;:[0,&quot;x&quot;]}"></astro-island>`,
         })
         expect(findDanglingAssetLinks(dist).size).toBe(0)
     })
