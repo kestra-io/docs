@@ -331,8 +331,8 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.5rem;
         padding: 1rem 0;
-        border-top: 1px solid var(--ks-border-secondary);
-        border-bottom: 1px solid var(--ks-border-secondary);
+        border-top: 1px solid var(--ks-border-primary);
+        border-bottom: 1px solid var(--ks-border-primary);
     }
 
     .card-kpi {
@@ -380,7 +380,7 @@
         width: 2.125rem;
         height: 2.125rem;
         border-radius: 0.25rem;
-        border: 1px solid var(--ks-border-secondary);
+        border: 1px solid var(--ks-border-primary);
         background: var(--ks-background-body);
         display: flex;
         align-items: center;

@@ -244,37 +244,6 @@
 </template>
 
 <style scoped lang="scss">
-    $ease-out-bounce: linear(
-        0,
-        0.004,
-        0.016,
-        0.035,
-        0.063,
-        0.098,
-        0.141,
-        0.191,
-        0.25,
-        0.316,
-        0.391,
-        0.563,
-        0.766,
-        1,
-        0.891,
-        0.813,
-        0.785,
-        0.813,
-        0.891,
-        1,
-        0.973,
-        0.953,
-        0.941,
-        0.938,
-        0.941,
-        0.953,
-        0.973,
-        1
-    );
-
     .fc-root {
         container-type: inline-size;
     }
@@ -318,7 +287,7 @@
         text-decoration: none;
         color: #fff;
         transition:
-            transform 300ms $ease-out-bounce,
+            transform 300ms ease-out,
             box-shadow 300ms ease-out;
     }
 
