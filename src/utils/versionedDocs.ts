@@ -212,18 +212,18 @@ export function versionedSpecHref(version: string, edition: SpecEdition): string
 
 /**
  * The OpenAPI spec is a static asset of the live site, so an archived page would
- * otherwise document today's API. Each docs release branch froze its own copy at
- * release time, which is the only per-version source there is — the docs API
- * indexes page content, never this file. Undefined for anything but major.minor,
- * so no path can be spliced into the fetched URL.
+ * otherwise document today's API. The docs indexing job uploads `public/` per
+ * version alongside the doc assets, so each release's own spec is already served
+ * at the versioned asset path. Undefined for anything but major.minor, so no
+ * path can be spliced into the fetched URL.
  */
 export function versionedSpecSourceUrl(
+    apiUrl: string,
     version: string,
     edition: SpecEdition,
 ): string | undefined {
     if (!/^\d+\.\d+$/.test(version)) return undefined
-    const file = edition === "ee" ? "kestra-ee.yml" : "kestra.yml"
-    return `https://raw.githubusercontent.com/kestra-io/docs/releases/v${version}.x/public/${file}`
+    return versionedAssetUrl(apiUrl, version, edition === "ee" ? "/kestra-ee.yml" : "/kestra.yml")
 }
 
 /**
