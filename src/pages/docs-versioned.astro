@@ -8,12 +8,36 @@ import ArchivedBanner from "~/components/layout/ArchivedBanner.astro"
 import NavToc from "~/components/docs/NavToc.vue"
 import PrevNext from "~/components/layout/PrevNext.vue"
 import GuidesChildCardRender from "~/components/content/GuidesChildCard.vue"
-import { renderVersionedDocBody, type VersionedDocBody } from "~/utils/renderVersionedDoc"
+import {
+    renderVersionedDocBody,
+    splitComponentPlaceholders,
+    type VersionedDocBody,
+} from "~/utils/renderVersionedDoc"
+import { componentKey } from "~/markdown/mdcTree"
 import { buildVersionedNavigation, versionedBreadcrumbItems } from "~/utils/versionedNavigation"
 import { getDocSections } from "~/utils/docSectionsFetch"
 import * as versionedDocs from "~/utils/versionedDocs"
 
 export const prerender = false
+
+// Only ever instantiated as a component, never called directly.
+type AstroComponent = (props: Record<string, unknown>) => unknown
+
+// Every component an archived doc can embed, resolved by file name instead of a
+// case in the renderer: a component added under these directories works on
+// archived versions with no change here. Lazy, so only the ones a page actually
+// references are pulled into this SSR route — which is also why the glob stays
+// off components/common, 30-odd components wide and embedded by exactly one doc
+// page. Anything it doesn't resolve is logged as unknown below.
+const componentLoaders = import.meta.glob<{ default: AstroComponent }>(
+    "/src/components/{content,docs}/*.astro",
+)
+const componentsByName = new Map(
+    Object.entries(componentLoaders).map(([file, load]) => [
+        componentKey(file.slice(file.lastIndexOf("/") + 1).replace(/\.astro$/, "")),
+        load,
+    ]),
+)
 
 const { versionedDoc } = Astro.locals
 if (!versionedDoc) {
@@ -23,7 +47,14 @@ const { version, path, markdown, children } = versionedDoc
 
 let body: VersionedDocBody
 try {
-    body = await renderVersionedDocBody({ version, path, markdown, children, apiUrl: API_URL })
+    body = await renderVersionedDocBody({
+        version,
+        path,
+        markdown,
+        children,
+        apiUrl: API_URL,
+        renderableComponents: new Set(componentsByName.keys()),
+    })
 } catch (error) {
     // A malformed relic MDC directive on an old page can throw mid-render;
     // degrade the same way the middleware does for a missing page.
@@ -36,13 +67,23 @@ try {
 }
 
 if (body.unknownComponents.length) {
-    // Drift signal: a component entered the corpus that componentHtml doesn't
-    // style yet. The page still renders (children only) — grep the request
-    // logs for this line to know the renderer needs a new case.
+    // Drift signal: the page references a component this repo no longer has
+    // (nor a directive, nor a file the glob above resolves). It still renders
+    // (children only) — grep the request logs for this line.
     console.warn(
         `Unknown MDC component(s) in versioned doc ${version}/${path}: ${body.unknownComponents.join(", ")}`,
     )
 }
+
+// Resolved in frontmatter: the template can't await, and only the components
+// this page actually references get loaded.
+const bodySegments = splitComponentPlaceholders(body.html)
+const embeddedComponents = await Promise.all(
+    body.components.map(async ({ tag, props }) => {
+        const load = componentsByName.get(componentKey(tag))
+        return load ? { Component: (await load()).default, props } : undefined
+    }),
+)
 
 const pageKey = versionedDocs.currentDocKey(path)
 const activeStem = versionedDocs.docChildHref(version, pageKey)
@@ -83,7 +124,19 @@ const navigation = [
             excludeActions={["edit"]}
         />
     </Fragment>
-    <div class="markdown-renderer" set:html={body.html} />
+    <div class="markdown-renderer">
+        {
+            bodySegments.map((segment) => {
+                if (segment.type === "html") {
+                    return <Fragment set:html={segment.html} />
+                }
+                const embedded = embeddedComponents[segment.index]
+                if (!embedded) return null
+                const Embedded = embedded.Component
+                return <Embedded {...embedded.props} />
+            })
+        }
+    </div>
     {body.guidesChildCard && (
         <GuidesChildCardRender
             navigation={body.guidesChildCard}
