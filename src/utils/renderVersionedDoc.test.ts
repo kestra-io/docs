@@ -1,5 +1,17 @@
 import { describe, it, expect } from "vitest"
-import { renderVersionedDocBody } from "./renderVersionedDoc"
+import { renderVersionedDocBody, splitComponentPlaceholders } from "./renderVersionedDoc"
+import { readdirSync } from "node:fs"
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
+import { componentKey } from "../markdown/mdcTree"
+
+// The tags docs-versioned.astro's component glob resolves to a real component.
+const renderableComponents = new Set([
+    "api-doc",
+    "api-doc-ee",
+    "home-page-buttons",
+    "support-links",
+])
 
 const render = async (markdown: string) =>
     (await renderVersionedDocBody({ version: "1.3", path: "x", markdown })).html
@@ -38,7 +50,7 @@ title: T
 known content here
 :::`)
         expect(html).toContain("known content here")
-        expect(html).toContain('class="doc-alert alert-warning"')
+        expect(html).toContain('class="doc-alert alert alert-warning"')
         expect(html).not.toContain(":::")
     })
 
@@ -172,8 +184,12 @@ A paragraph with [a link](https://kestra.io).`)
         expect(html).toContain('href="https://kestra.io"')
     })
 
-    it("renders HomePageButtons as the site's real Button.vue markup, first primary then secondary, not leaking :buttons", async () => {
-        const html = await render(`---
+    it("hands HomePageButtons to the page with its :buttons JSON parsed, not leaking the raw prop", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            renderableComponents,
+            markdown: `---
 title: T
 ---
 Welcome.
@@ -181,14 +197,21 @@ Welcome.
 :::HomePageButtons{ :buttons='[{"label":"Quickstart →","href":"/docs/quickstart#start-kestra"},{"label":"Why Kestra?","href":"/docs/why-kestra"}]'}
 :::
 
-More.`)
-        expect(html).toContain('class="docs-button-row"')
-        // first button is primary, the rest secondary (mirrors the live site)
-        expect(html).toContain('class="btn btn-primary btn-md"')
-        expect(html).toContain('class="btn btn-secondary btn-md"')
-        expect(html).toContain("Quickstart →")
-        expect(html).toContain('href="/docs/quickstart#start-kestra"')
-        expect(html).toContain("Why Kestra?")
+More.`,
+        })
+        const html = body.html
+        expect(body.components).toEqual([
+            {
+                tag: "home-page-buttons",
+                props: {
+                    buttons: [
+                        { label: "Quickstart →", href: "/docs/quickstart#start-kestra" },
+                        { label: "Why Kestra?", href: "/docs/why-kestra" },
+                    ],
+                },
+            },
+        ])
+        expect(html).toContain("<!--mdc:0-->")
         expect(html).not.toContain(":buttons")
         expect(html).not.toContain("HomePageButtons")
         // the container's closing ::: must be consumed too, not orphaned
@@ -223,8 +246,12 @@ import { configureClient } from "@kestra-io/kestra-sdk";
         expect(textOnly(html)).toContain('import { configureClient } from "@kestra-io/kestra-sdk";')
     })
 
-    it("normalizes the homepage's real JSX <HomePageButtons buttons={[...]}/> into styled links, no leak", async () => {
-        const html = await render(`---
+    it("normalizes the homepage's real JSX <HomePageButtons buttons={[...]}/> into parsed props, no leak", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            renderableComponents,
+            markdown: `---
 title: T
 ---
 
@@ -233,15 +260,14 @@ title: T
         { label: "Quickstart →", href: "/docs/quickstart#start-kestra" },
         { label: "Why Kestra?", href: "/docs/why-kestra" },
     ]}
-/>`)
-        expect(html).toContain('class="docs-button-row"')
-        expect(html).toContain('class="btn btn-primary btn-md"')
-        expect(html).toContain('class="btn btn-secondary btn-md"')
-        expect(html).toContain("Quickstart →")
-        expect(html).toContain('href="/docs/quickstart#start-kestra"')
-        expect(html).toContain("Why Kestra?")
-        expect(html).not.toContain("HomePageButtons")
-        expect(html).not.toContain("buttons={")
+/>`,
+        })
+        expect(body.components[0].props.buttons).toEqual([
+            { label: "Quickstart →", href: "/docs/quickstart#start-kestra" },
+            { label: "Why Kestra?", href: "/docs/why-kestra" },
+        ])
+        expect(body.html).not.toContain("HomePageButtons")
+        expect(body.html).not.toContain("buttons={")
     })
 
     it("normalizes a self-closing <HomePageHeader title=.../> without swallowing the following paragraph as raw text", async () => {
@@ -558,17 +584,20 @@ Thanks to :PluginCount plugins, building is easy.`)
         expect(html).toContain("Thanks to hundreds of plugins")
     })
 
-    it("renders SupportLinks as the real SupportLinks.astro component's markup", async () => {
-        const html = await render(`---
+    it("hands SupportLinks to the page to render as the real component", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            renderableComponents,
+            markdown: `---
 title: T
 ---
 :::SupportLinks
-:::`)
-        expect(html).toContain('class="support-links-row"')
-        expect(html).toContain('class="support-link" href="https://kestra.io/slack"')
-        expect(html).toContain("Community Slack")
-        expect(html).toContain('href="https://github.com/kestra-io/kestra"')
-        expect(html).not.toContain("SupportLinks")
+:::`,
+        })
+        expect(body.components).toEqual([{ tag: "support-links", props: {} }])
+        expect(body.html).toContain("<!--mdc:0-->")
+        expect(body.html).not.toContain("SupportLinks")
     })
 
     it("trims the trailing rule and spacer left by dropped components", async () => {
@@ -602,7 +631,7 @@ inner copy
 still outer
 ::::`)
         expect(html).toMatch(
-            /<div class="doc-alert alert-info">[\s\S]*<details class="doc-collapse">[\s\S]*inner copy[\s\S]*<\/details>[\s\S]*still outer[\s\S]*<\/div>/,
+            /<div class="doc-alert alert alert-info"[^>]*>[\s\S]*<details class="doc-collapse">[\s\S]*inner copy[\s\S]*<\/details>[\s\S]*still outer[\s\S]*<\/div>/,
         )
         expect(html).not.toContain("::")
     })
@@ -821,12 +850,17 @@ describe("renderVersionedDocBody data-driven components", () => {
     })
 
     it("re-points the HomePageButtons CTA hrefs too", async () => {
-        const html = await renderWith(
-            "",
-            `:::HomePageButtons{ :buttons='[{"label":"Quickstart","href":"/docs/getting-started/quickstart#go"},{"label":"Ext","href":"/pricing"}]'}\n:::`,
-        )
-        expect(html).toContain('href="/docs/1.3/getting-started/quickstart#go"')
-        expect(html).toContain('href="/pricing"')
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "",
+            children,
+            renderableComponents,
+            markdown: `---\ntitle: T\n---\n:::HomePageButtons{ :buttons='[{"label":"Quickstart","href":"/docs/getting-started/quickstart#go"},{"label":"Ext","href":"/pricing"}]'}\n:::`,
+        })
+        expect(body.components[0].props.buttons).toEqual([
+            { label: "Quickstart", href: "/docs/1.3/getting-started/quickstart#go" },
+            { label: "Ext", href: "/pricing" },
+        ])
     })
 })
 
@@ -994,4 +1028,208 @@ title: T
             'poster="https://api.kestra.io/v1/docs/docs/demo.png/versions/1.3.0"',
         )
     })
+})
+
+describe("renderVersionedDocBody real-component rendering", () => {
+    it("hands a codebase component to the page even as the last, childless node", async () => {
+        // The reported /docs/1.3/api-reference/enterprise blank page: ApiDocEE is
+        // trailing and childless, so it was trimmed as decorative residue before
+        // it could ever be rendered.
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "api-reference/enterprise",
+            markdown: `---
+title: T
+---
+import ApiDocEE from "~/components/content/ApiDocee.astro"
+
+API Reference of Kestra Cloud & Enterprise.
+
+## Explore the Kestra Cloud and Enterprise API
+
+<ApiDocEE />`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([
+            { tag: "api-doc-ee", props: { specUrl: "/api/openapi/1.3/ee.yml" } },
+        ])
+        expect(body.html).toContain("<!--mdc:0-->")
+        expect(body.unknownComponents).toEqual([])
+    })
+
+    it("keeps a placeholder inline so it can't split the surrounding paragraph", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+Text with <SupportLinks /> inline.`,
+            renderableComponents,
+        })
+        expect(body.html).toMatch(/<p>Text with <!--mdc:0--> inline\.<\/p>/)
+    })
+
+    it("passes a component's attributes through as props", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+<SupportLinks title="Need help?" />`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([
+            { tag: "support-links", props: { title: "Need help?" } },
+        ])
+    })
+
+    it("re-points home-page-buttons hrefs at the rendered version", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "",
+            markdown: `---
+title: T
+---
+<HomePageButtons buttons={[{label: "Get Started", href: "/docs/getting-started"}]}/>`,
+            children: { docs: {}, "docs/getting-started": {} },
+            renderableComponents,
+        })
+        expect(body.components).toEqual([
+            {
+                tag: "home-page-buttons",
+                props: {
+                    buttons: [
+                        { label: "Get Started", href: "/docs/1.3/getting-started" },
+                    ],
+                },
+            },
+        ])
+    })
+
+    it("still reports a component that exists nowhere in the codebase", async () => {
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+Before.
+
+<SomeDeletedComponent />`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([])
+        expect(body.unknownComponents).toEqual(["some-deleted-component"])
+    })
+
+    it("points an archived API reference at that version's own spec", async () => {
+        // Otherwise an archived page documents today's API: the spec is a static
+        // asset of the live site, not part of the versioned doc content.
+        const body = await renderVersionedDocBody({
+            version: "0.19",
+            path: "api-reference/open-source",
+            markdown: `---
+title: T
+---
+::api-doc
+::`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([
+            { tag: "api-doc", props: { specUrl: "/api/openapi/0.19/oss.yml" } },
+        ])
+    })
+})
+
+describe("renderVersionedDocBody remark directive reuse", () => {
+    it("renders a directive registered in the live remark componentMap with no bespoke case", async () => {
+        // next-link is registered for current docs but had no case here, so it
+        // rendered as nothing on versioned pages.
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+:::next-link
+[Next up](/docs/x)
+:::`,
+        })
+        expect(body.html).toContain("ks-doc-next-link")
+        expect(body.html).toContain("btn btn-outline-primary btn-chevron-right")
+        expect(body.html).toContain("Next up")
+        expect(body.unknownComponents).toEqual([])
+    })
+
+    it("degrades to the directive's children when its handler throws", async () => {
+        // badge throws without version/editions; a relic page must not 500.
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "x",
+            markdown: `---
+title: T
+---
+::badge
+
+After.`,
+        })
+        expect(body.html).toContain("After.")
+        expect(body.html).not.toContain("::badge")
+    })
+})
+
+describe("splitComponentPlaceholders", () => {
+    it("splits the HTML runs around each component placeholder", () => {
+        expect(splitComponentPlaceholders("<p>a</p><!--mdc:0--><p>b</p>")).toEqual([
+            { type: "html", html: "<p>a</p>" },
+            { type: "component", index: 0 },
+            { type: "html", html: "<p>b</p>" },
+        ])
+    })
+
+    it("keeps adjacent placeholders and their order", () => {
+        expect(splitComponentPlaceholders("<!--mdc:1--><!--mdc:0-->")).toEqual([
+            { type: "component", index: 1 },
+            { type: "component", index: 0 },
+        ])
+    })
+
+    it("leaves placeholder-free HTML as a single run", () => {
+        expect(splitComponentPlaceholders("<p>only</p>")).toEqual([
+            { type: "html", html: "<p>only</p>" },
+        ])
+    })
+
+    it("splits a placeholder sitting mid-element without balancing the halves", () => {
+        // The page injects each run with set:html, so an unbalanced run is fine
+        // as long as the concatenation is whole — that's what keeps an inline
+        // component from breaking its paragraph in two.
+        expect(splitComponentPlaceholders("<p>x <!--mdc:0--> y</p>")).toEqual([
+            { type: "html", html: "<p>x " },
+            { type: "component", index: 0 },
+            { type: "html", html: " y</p>" },
+        ])
+    })
+})
+
+describe("componentKey file-name resolution", () => {
+    // The page resolves a placeholder's tag against the component file names the
+    // glob returns, so a tag only renders if both sides canonicalise the same —
+    // <ApiDocEE/> living in ApiDocee.astro is exactly the mismatch that guards.
+    const componentFileKeys = new Set(
+        ["content", "docs"].flatMap((dir) =>
+            readdirSync(resolve(dirname(fileURLToPath(import.meta.url)), "../components", dir))
+                .filter((file) => file.endsWith(".astro"))
+                .map((file) => componentKey(file.replace(/\.astro$/, ""))),
+        ),
+    )
+
+    it.each(["api-doc-ee", "api-doc", "home-page-buttons", "support-links", "child-table-of-contents"])(
+        "resolves <%s> to a component file",
+        (tag) => {
+            expect(componentFileKeys).toContain(componentKey(tag))
+        },
+    )
 })

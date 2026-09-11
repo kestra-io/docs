@@ -1,5 +1,5 @@
 import GithubSlugger from "github-slugger"
-import { kebabCaseTag, parseMdcDocument, type MdcNode } from "~/markdown/mdcTree"
+import { componentKey, kebabCaseTag, parseMdcDocument, type MdcNode } from "~/markdown/mdcTree"
 import { getHighlighterCore } from "~/components/plugins/schema/shikiToolset"
 import {
     currentDocKey,
@@ -14,15 +14,17 @@ import {
     resolveRelativeAssetRef,
     resolveVersionedDocLink,
     versionedAssetUrl,
+    versionedSpecHref,
     type DocChildren,
     type HomePageButton,
 } from "~/utils/versionedDocs"
-import { editionLabelAndColorByPrefix } from "~/utils/badgeMaps.mjs"
+import { componentMap } from "~/markdown/remark/remark-custom-elements/index.mjs"
 
-// Tags passed straight through as HTML. Anything else is treated as a bespoke
-// MDC component (alert/collapse/badge/home-page-buttons get styled; the rest
-// fall through to just their children — no "::"/component-name leak). Not
-// exhaustive — extend it when a legit tag shows up in unknownComponents.
+// Tags passed straight through as HTML. Anything else is treated as an MDC
+// component: rendered by its live remark directive, handed to the page as a
+// real component, or — when it exists nowhere — falling through to just its
+// children, no "::"/component-name leak. Not exhaustive — extend it when a
+// legit tag shows up in unknownComponents.
 const HTML_TAGS = new Set([
     "p", "a", "strong", "em", "del", "code", "pre", "blockquote", "hr", "br",
     "h1", "h2", "h3", "h4", "h5", "h6", "ul", "ol", "li", "table", "thead",
@@ -72,45 +74,83 @@ function parseButtons(raw: unknown): HomePageButton[] {
     }
 }
 
-/** "Available on:" pill row for ::badge{version editions}, mirroring the real
- * remark badge directive's markup (`badge.mjs`) so it picks up the same
- * Bootstrap `.badge`/`.bg-*` styling as the latest docs. */
-function badgeHtml(props: Record<string, unknown>): string {
-    const pills: string[] = []
-    if (props.version) {
-        pills.push(
-            `<span class="badge badge-secondary d-flex align-items-center">v${escapeHtml(String(props.version))}</span>`,
-        )
-    }
-    for (const e of String(props.editions ?? "")
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean)) {
-        const info = editionLabelAndColorByPrefix[e] ?? { label: e, color: "secondary" }
-        pills.push(
-            `<span class="badge d-flex align-items-center bg-${info.color}">${escapeHtml(info.label)}</span>`,
-        )
-    }
-    if (!pills.length) return ""
-    return `<div class="fw-bold d-flex gap-2 flex-wrap mb-3"><p class="mb-0">Available on:</p>${pills.join("")}</div>`
-}
-
 interface RenderCtx {
     version: string
     apiUrl: string
     children: DocChildren
     pageKey: string
-    /** MDC components the serializer didn't recognize — the drift signal. */
+    /** Tags docs-versioned.astro can render as their real component. */
+    renderableComponents: ReadonlySet<string>
+    /** Real components to render, in placeholder order. */
+    components: RenderedComponent[]
+    /** MDC components that exist nowhere in the codebase — the drift signal. */
     unknownComponents: Set<string>
     /** Every tag componentHtml was actually called with, handled or not. */
     seenComponents: Set<string>
 }
 
-// Style the handful of known MDC components with the site's own component
-// classes. `inner` is always appended: MDC's "::" (no closing fence) is a
-// *block* component that swallows the following content as its body, so
-// dropping children would drop real page content. Unknown components render
-// as just their children — graceful, no leak.
+// Components the page can't just render as-is: they read the *current* content
+// collection (`getCollection("docs")`), which holds only the latest docs, so on
+// an archived version they'd silently list the wrong pages — the versioned
+// children map this renderer already holds is the only correct source. Plus the
+// two that can't be resolved at all: home-page-header is deleted from the
+// codebase, and plugin-count is a Vue component with no generic client
+// directive to pick.
+const OVERRIDDEN_COMPONENTS = new Set([
+    "child-card",
+    "big-child-cards",
+    "child-table-of-contents",
+    "guides-child-card",
+    "home-page-header",
+    "plugin-count",
+])
+
+/** A component tag resolves to something renderable, one way or another. */
+function isKnownComponent(tag: string, ctx: RenderCtx): boolean {
+    return (
+        OVERRIDDEN_COMPONENTS.has(tag) ||
+        tag in componentMap ||
+        ctx.renderableComponents.has(componentKey(tag))
+    )
+}
+
+// Props the real component needs in a shape the markdown doesn't carry. Only
+// transforms — never markup, or this becomes the per-component switch again.
+const PROPS_TRANSFORMS: Record<
+    string,
+    (props: Record<string, unknown>, ctx: RenderCtx) => Record<string, unknown>
+> = {
+    "api-doc": (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "oss") }),
+    "api-doc-ee": (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "ee") }),
+    "home-page-buttons": ({ ":buttons": bound, buttons, ...rest }, ctx) => ({
+        ...rest,
+        buttons: parseButtons(bound ?? buttons).map((b) =>
+            b.href.startsWith("/docs")
+                ? { ...b, href: repointAbsoluteDocHref(b.href, ctx) }
+                : b,
+        ),
+    }),
+}
+
+/** Hand a real component off to the page, holding its spot in the HTML. */
+function componentPlaceholder(
+    tag: string,
+    props: Record<string, unknown>,
+    ctx: RenderCtx,
+): string {
+    const transform = PROPS_TRANSFORMS[tag]
+    const index = ctx.components.push({
+        tag,
+        props: transform ? transform(props, ctx) : props,
+    })
+    return `<!--mdc:${index - 1}-->`
+}
+
+// Resolve an MDC component to its real implementation. `inner` is always
+// appended: MDC's "::" (no closing fence) is a *block* component that swallows
+// the following content as its body, so dropping children would drop real page
+// content. Components that exist nowhere render as just their children —
+// graceful, no leak.
 function componentHtml(
     tag: string,
     props: Record<string, unknown>,
@@ -119,21 +159,6 @@ function componentHtml(
 ): string {
     ctx.seenComponents.add(tag)
     switch (tag) {
-        case "alert":
-            return `<div class="doc-alert alert-${escapeHtml(String(props.type ?? "info"))}">${inner}</div>`
-        case "collapse":
-            return `<details class="doc-collapse"><summary>${escapeHtml(String(props.title ?? "Details"))}</summary>${inner}</details>`
-        case "badge":
-            return badgeHtml(props) + inner
-        case "home-page-buttons": {
-            const buttons = parseButtons(props[":buttons"] ?? props.buttons).map(
-                (b) =>
-                    b.href.startsWith("/docs")
-                        ? { ...b, href: repointAbsoluteDocHref(b.href, ctx) }
-                        : b,
-            )
-            return (buttons.length ? buttonRowHtml(buttons) : "") + inner
-        }
         // The home hero contributes only its section title, already lifted
         // into a real <h2> by transformTree.
         case "home-page-header":
@@ -142,26 +167,17 @@ function componentHtml(
         // ("Thanks to  plugins…").
         case "plugin-count":
             return "hundreds of" + inner
-        // Static on the live site too — mirrored with the real SupportLinks
-        // component's markup/classes.
-        case "support-links":
-            return SUPPORT_LINKS_HTML + inner
         // Card grids of a directory's pages, fed by the children map already on
         // hand for the sidebar. Bare ChildCard lists the current page's own
         // children; pageUrl (0.19 era) / directory (BigChildCards) target
         // another node. Renders nothing when the data isn't there.
         case "child-card":
-        case "big-child-cards": {
-            // The MDC parser kebab-cases camelCase attribute names, so a
-            // 0.19-era `{pageUrl="..."}` directive lands as `page-url`, not
-            // `pageUrl` — check both so the intended directory is honored.
-            const target = props.pageUrl ?? props["page-url"] ?? props.directory
-            const key =
-                typeof target === "string"
-                    ? `docs/${target.replace(/^\/?docs\/?/, "").replace(/\/+$/, "")}`.replace(/\/$/, "")
-                    : ctx.pageKey
-            return childCardsHtml(key, ctx) + inner
-        }
+        case "big-child-cards":
+            return childCardsHtml(targetDocKey(props, ctx), ctx) + inner
+        // Same versioned-children data as the cards above, as the real
+        // component's nested link list.
+        case "child-table-of-contents":
+            return tableOfContentsHtml(targetDocKey(props, ctx), ctx) + inner
         // Rendered separately, as a real client:load Vue island (the real
         // component's topic/stage/search filtering is genuinely interactive,
         // unlike ChildCard/BigChildCards) — renderVersionedDocBody surfaces
@@ -170,9 +186,86 @@ function componentHtml(
         case "guides-child-card":
             return inner
         default:
+            if (ctx.renderableComponents.has(componentKey(tag))) {
+                return componentPlaceholder(tag, props, ctx) + inner
+            }
             ctx.unknownComponents.add(tag)
             return inner
     }
+}
+
+/** The children map key a card/ToC component is pointed at, defaulting to the page's own. */
+function targetDocKey(props: Record<string, unknown>, ctx: RenderCtx): string {
+    // The MDC parser kebab-cases camelCase attribute names, so a 0.19-era
+    // `{pageUrl="..."}` directive lands as `page-url`, not `pageUrl` — check
+    // both so the intended directory is honored.
+    const target = props.pageUrl ?? props["page-url"] ?? props.directory
+    if (typeof target !== "string") return ctx.pageKey
+    return `docs/${target.replace(/^\/?docs\/?/, "").replace(/\/+$/, "")}`.replace(/\/$/, "")
+}
+
+/** Nested link list of a node's children, mirroring ChildTableOfContents.astro. */
+function tableOfContentsHtml(parentKey: string, ctx: RenderCtx): string {
+    const items = directDocChildren(ctx.children, parentKey)
+    if (!items.length) return ""
+    const links = items
+        .map(({ key, meta }) => {
+            const title = meta.sidebarTitle ?? meta.title ?? key.split("/").pop() ?? key
+            return `<li><a href="${escapeHtml(docChildHref(ctx.version, key))}">${escapeHtml(title)}</a></li>`
+        })
+        .join("")
+    return `<ul>${links}</ul>`
+}
+
+// A directive handler lowers itself onto the node the way remark-directive
+// expects: `data.hName`/`data.hProperties` for the wrapper, plus whatever it
+// puts on `node.children`. Fabricated children come back in that same lowered
+// shape, so convert them to this file's nodes before serializing.
+interface LoweredNode {
+    type: string
+    value?: string
+    data?: { hName?: string; hProperties?: Record<string, unknown> }
+    children?: LoweredNode[]
+    tag?: string
+    props?: Record<string, unknown>
+}
+
+function fromLoweredNode(node: LoweredNode): MdcNode {
+    const hName = node.data?.hName
+    if (!hName) return node as MdcNode
+    return {
+        type: "element",
+        tag: hName,
+        props: node.data?.hProperties ?? {},
+        children: (node.children ?? []).map(fromLoweredNode),
+    }
+}
+
+/**
+ * Render a directive through the very handler the live docs use, so a directive
+ * registered in `componentMap` needs no case here to work on archived versions.
+ */
+function directiveHtml(tag: string, node: MdcNode, ctx: RenderCtx): string {
+    ctx.seenComponents.add(tag)
+    const data: LoweredNode["data"] = {}
+    // The handlers mutate `children`, so hand them a copy: `node` is the real
+    // tree, and a re-render of the same memoized parse must start clean.
+    const lowered: LoweredNode = { type: "element", children: [...(node.children ?? [])] }
+    try {
+        componentMap[tag](data, node.props ?? {}, lowered)
+    } catch (error) {
+        // A relic page can hold a directive the current handler rejects
+        // (::badge with no attributes throws). Keep the content, drop the
+        // wrapper, rather than failing the whole page.
+        console.error(`Versioned-doc directive "${tag}" failed to render:`, error)
+        return (node.children ?? []).map((child) => serialize(child, ctx)).join("")
+    }
+    const inner = (lowered.children ?? [])
+        .map((child) => serialize(fromLoweredNode(child), ctx))
+        .join("")
+    const wrapper = data.hName
+    if (!wrapper) return inner
+    return `<${wrapper}${attrs(data.hProperties ?? {})}>${inner}</${wrapper}>`
 }
 
 /**
@@ -210,8 +303,6 @@ function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
         .join("")
     return `<div class="ks-child-card-grid">${items}</div>`
 }
-
-const SUPPORT_LINKS_HTML = `<div class="support-links-row"><a class="support-link" href="https://kestra.io/slack"><h3>Community Slack</h3><p>Discuss topics with other users and kestra Team</p></a><a class="support-link" href="https://github.com/kestra-io/kestra"><h3>GitHub</h3><p>Give our open-source project a star</p></a><a class="support-link" href="https://kestra.io/demo"><h3>Help Center</h3><p>Contact support for help with your Enterprise account</p></a></div>`
 
 export interface GuideCard {
     title: string
@@ -253,6 +344,16 @@ function serialize(node: MdcNode | undefined, ctx: RenderCtx): string {
     if (node.type === "comment") return ""
     if (node.type === "element") {
         const tag = node.tag ?? ""
+        // An override outranks a same-named directive, so the versioned-data
+        // components below stay authoritative whatever gets registered later.
+        if (
+            tag &&
+            !HTML_TAGS.has(tag) &&
+            !OVERRIDDEN_COMPONENTS.has(tag) &&
+            tag in componentMap
+        ) {
+            return directiveHtml(tag, node, ctx)
+        }
         const inner = (node.children ?? []).map((c) => serialize(c, ctx)).join("")
         if (!tag) return inner
         if (!HTML_TAGS.has(tag)) {
@@ -455,35 +556,32 @@ async function highlightCodeBlocks(node: MdcNode | undefined): Promise<void> {
     }
 }
 
-// Components whose HTML is (partly) built from attributes or page data, so
-// they render content even with no children — never trailing residue.
-const ATTR_DRIVEN_COMPONENTS = new Set([
-    "badge", "home-page-buttons", "home-page-header", "plugin-count",
-    "support-links", "child-card", "big-child-cards",
-])
-
 /**
  * A trailing node that serializes to nothing visible: whitespace, comments, an
- * <hr>, an empty spacer <div>, or a dropped bespoke component. Old homepages
- * end with "---" + component blocks we don't render, leaving a dangling rule
- * and spacer at the bottom of the page.
+ * <hr>, an empty spacer <div>, or a component that exists nowhere anymore. Old
+ * homepages end with "---" + such component blocks, leaving a dangling rule and
+ * spacer at the bottom of the page.
+ *
+ * A component that still exists is never residue, however childless: it renders
+ * from its attributes or from page data. Getting that wrong silently blanked
+ * the 1.3 API reference, whose whole body is a trailing childless <ApiDocEE/>.
  */
-function isTrailingResidue(node: MdcNode): boolean {
+function isTrailingResidue(node: MdcNode, isKnown: (tag: string) => boolean): boolean {
     if (node.type === "text") return !(node.value ?? "").trim()
     if (node.type === "comment") return true
     if (node.type !== "element") return false
     if (node.tag === "hr") return true
-    const empty = !(node.children ?? []).some((c) => !isTrailingResidue(c))
+    const empty = !(node.children ?? []).some((c) => !isTrailingResidue(c, isKnown))
     if (node.tag === "div") return empty
-    if (!HTML_TAGS.has(node.tag ?? "") && !ATTR_DRIVEN_COMPONENTS.has(node.tag ?? "")) {
+    if (!HTML_TAGS.has(node.tag ?? "") && !isKnown(node.tag ?? "")) {
         return empty
     }
     return false
 }
 
-function trimTrailingResidue(body: MdcNode): void {
+function trimTrailingResidue(body: MdcNode, isKnown: (tag: string) => boolean): void {
     const kids = body.children ?? []
-    while (kids.length && isTrailingResidue(kids[kids.length - 1])) {
+    while (kids.length && isTrailingResidue(kids[kids.length - 1], isKnown)) {
         kids.pop()
     }
 }
@@ -546,15 +644,10 @@ function normalizeHomePageHeaderJsx(markdown: string): string {
     )
 }
 
-// Diagnostics only — never affects rendered HTML. A component that's the
-// last, childless thing on a page is trimmed by trimTrailingResidue/
-// isTrailingResidue below unless it's in ATTR_DRIVEN_COMPONENTS — the exact
-// gap that silently dropped GuidesChildCard (see that set's comment).
-// Trimmed-before-serialize means it never reaches componentHtml either, so
-// unknownComponents' switch-case coverage check can't see it. Cross-checking
-// every JSX tag actually referenced in the source (skipping code samples,
-// which routinely contain unrelated `<Foo>` generics/HTML) against every tag
-// componentHtml actually saw closes that hole for any future component.
+// Diagnostics only — never affects rendered HTML. Cross-checking every JSX tag
+// actually referenced in the source (skipping code samples, which routinely
+// contain unrelated `<Foo>` generics/HTML) against every tag the serializer saw
+// catches components trimmed as trailing residue before they reach it.
 const FENCED_CODE_BLOCK = /```[\s\S]*?```|~~~[\s\S]*?~~~/g
 const INLINE_CODE = /`[^`\n]*`/g
 const JSX_TAG_REF = /(?<![\w-])<([A-Z][A-Za-z0-9]*)(?=[\s/>])/g
@@ -576,18 +669,29 @@ const escapeHtml = (s: string) =>
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#39;")
 
+const COMPONENT_PLACEHOLDER = /<!--mdc:(\d+)-->/g
+
+export type DocBodySegment =
+    | { type: "html"; html: string }
+    | { type: "component"; index: number }
+
 /**
- * Render the homepage CTA buttons as the real site's Button.vue markup
- * (`.btn.btn-primary`/`.btn.btn-secondary`), so they pick up global button
- * styling instead of a bespoke duplicate.
+ * Split rendered HTML on its component placeholders, so the page can render the
+ * real components in place between the raw-HTML runs.
  */
-const buttonRowHtml = (buttons: HomePageButton[]): string =>
-    `<div class="docs-button-row">${buttons
-        .map(
-            (b, i) =>
-                `<a class="btn btn-${i === 0 ? "primary" : "secondary"} btn-md" href="${escapeHtml(b.href)}">${escapeHtml(b.label)}</a>`,
-        )
-        .join("")}</div>`
+export function splitComponentPlaceholders(html: string): DocBodySegment[] {
+    const segments: DocBodySegment[] = []
+    let last = 0
+    for (const match of html.matchAll(COMPONENT_PLACEHOLDER)) {
+        if (match.index > last) {
+            segments.push({ type: "html", html: html.slice(last, match.index) })
+        }
+        segments.push({ type: "component", index: Number(match[1]) })
+        last = match.index + match[0].length
+    }
+    if (last < html.length) segments.push({ type: "html", html: html.slice(last) })
+    return segments
+}
 
 /** h2/h3 entries for NavToc's right-rail TOC (ids already stabilized by the pre-pass). */
 function collectHeadings(
@@ -616,6 +720,19 @@ export interface VersionedDocBodyInput {
     children?: DocChildren
     /** API base for versioned asset URLs (injected; defaulted for tests) */
     apiUrl?: string
+    /**
+     * Component tags the caller can render as their real implementation —
+     * docs-versioned.astro's component glob. Each one found in the source is
+     * returned on `components` with a placeholder holding its spot in `html`,
+     * instead of needing a case in this file.
+     */
+    renderableComponents?: ReadonlySet<string>
+}
+
+/** A real component the page should render, in placeholder order. */
+export interface RenderedComponent {
+    tag: string
+    props: Record<string, unknown>
 }
 
 export interface VersionedDocBody {
@@ -626,9 +743,14 @@ export interface VersionedDocBody {
     html: string
     headings: { id: string; text: string; level: number }[]
     /**
-     * MDC components in the source the serializer didn't recognize (each
-     * rendered as bare children). Non-empty means a new component entered the
-     * corpus and componentHtml needs a case for it — surface, don't swallow.
+     * Components the page should render itself, in the order their `<!--mdc:N-->`
+     * placeholders appear in `html`.
+     */
+    components: RenderedComponent[]
+    /**
+     * MDC components in the source that resolve to nothing at all (each rendered
+     * as bare children). Non-empty means the page references a component this
+     * repo no longer has — surface, don't swallow.
      */
     unknownComponents: string[]
     /** Set when the page uses GuidesChildCard — docs-versioned.astro renders the real Vue component with this. */
@@ -642,6 +764,7 @@ export async function renderVersionedDocBody({
     markdown,
     children = {},
     apiUrl = "https://api.kestra.io/v1",
+    renderableComponents = new Set<string>(),
 }: VersionedDocBodyInput): Promise<VersionedDocBody> {
     const title = frontmatterField(markdown, "title") ?? "Documentation"
     const h1 = frontmatterField(markdown, "h1") ?? title
@@ -660,7 +783,6 @@ export async function renderVersionedDocBody({
         children,
         slugger: new GithubSlugger(),
     })
-    trimTrailingResidue(body)
     await highlightCodeBlocks(body)
     const pageKey = currentDocKey(path)
     const ctx: RenderCtx = {
@@ -668,20 +790,22 @@ export async function renderVersionedDocBody({
         apiUrl,
         children,
         pageKey,
+        // Keyed by component identity, so callers can pass tags or file names.
+        renderableComponents: new Set([...renderableComponents].map(componentKey)),
+        components: [],
         unknownComponents: new Set(),
         seenComponents: new Set(),
     }
+    trimTrailingResidue(body, (tag) => isKnownComponent(tag, ctx))
     const html = serialize(body, ctx)
     const headings: { id: string; text: string; level: number }[] = []
     collectHeadings(body, headings)
 
     const referencedTags = referencedComponentTags(markdown)
     for (const tag of referencedTags) {
-        // Handled below via guidesChildCard, not componentHtml's switch — it's
-        // childless and trimmed as trailing residue before componentHtml ever
-        // runs on the real how-to-guides page, so it'd otherwise false-flag.
-        if (tag === "guides-child-card") continue
-        if (!ctx.seenComponents.has(tag)) ctx.unknownComponents.add(tag)
+        if (!ctx.seenComponents.has(tag) && !isKnownComponent(tag, ctx)) {
+            ctx.unknownComponents.add(tag)
+        }
     }
     const guidesChildCard = referencedTags.has("guides-child-card")
         ? guidesChildCardData(pageKey, ctx)
@@ -693,6 +817,7 @@ export async function renderVersionedDocBody({
         description,
         html,
         headings,
+        components: ctx.components,
         unknownComponents: [...ctx.unknownComponents].sort(),
         guidesChildCard,
     }
