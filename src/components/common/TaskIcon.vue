@@ -14,10 +14,11 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed, onMounted, onUnmounted, ref, watch } from "vue"
+    import { computed, onMounted, onUnmounted, ref, watch, type PropType } from "vue"
 
     const props = defineProps({
-        cls: { type: String, default: "" }
+        cls: { type: String, default: "" },
+        theme: { type: String as PropType<"light" | "dark">, default: undefined },
     })
 
     const isDark = ref(false)
@@ -35,9 +36,10 @@
 
     onUnmounted(() => observer?.disconnect())
 
-    const src = computed(
-        () => `/icons/${props.cls}${isDark.value ? "-white" : "-black"}.svg`
-    )
+    const src = computed(() => {
+        const dark = props.theme ? props.theme === "dark" : isDark.value
+        return `/icons/${props.cls}${dark ? "-white" : "-black"}.svg`
+    })
 
     watch(src, () => {
         hidden.value = false

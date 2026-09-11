@@ -42,11 +42,7 @@
                         </div>
                         <span class="tool-name">Kestra</span>
                     </div>
-                    <div
-                        v-for="task in story.tasks"
-                        :key="task"
-                        class="tool-item"
-                    >
+                    <div v-for="task in story.tasks" :key="task" class="tool-item">
                         <div class="tool-icon">
                             <TaskIcon :cls="task" />
                         </div>
@@ -59,11 +55,7 @@
         <Link href="/demo" text="Book a Demo" class="btn btn-primary sidebar-cta" />
 
         <div class="sidebar-share">
-            <Share
-                :title="story.title"
-                :url="pageUrl"
-                title-text="Share this story"
-            />
+            <Share :title="story.title" :url="pageUrl" title-text="Share this story" />
         </div>
     </div>
 </template>
@@ -78,13 +70,9 @@
         story: Story
     }>()
 
-    const pageUrl = computed(() =>
-        typeof window !== "undefined" ? window.location.href : "",
-    )
+    const pageUrl = computed(() => (typeof window !== "undefined" ? window.location.href : ""))
 
-    const displayName = computed(
-        () => props.story.companyName || props.story.title,
-    )
+    const displayName = computed(() => props.story.companyName || props.story.title)
 
     const initial = computed(() => {
         const name = props.story.companyName || props.story.title
@@ -100,55 +88,56 @@
     }
 
     .sidebar-logo {
-        width: 4.5rem;
-        height: 4.5rem;
-        border-radius: 0.625rem;
+        width: 6.25rem;
+        height: 6.25rem;
+        border-radius: 0.5rem;
         border: 1px solid var(--ks-border-secondary);
         background: #000;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        margin-bottom: 0.875rem;
+        margin-bottom: 1rem;
         flex-shrink: 0;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            padding: 6px;
+            padding: 8px;
         }
     }
 
     .sidebar-initial {
-        font-size: 1.5rem;
+        font-size: 2rem;
         font-weight: 700;
-        color: var(--ks-content-link);
+        color: #fff;
     }
 
     .sidebar-company-name {
-        font-size: 1rem;
-        font-weight: 700;
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
         color: var(--ks-content-primary);
         margin-bottom: 0.25rem;
         line-height: 1.3;
     }
 
     .sidebar-company-desc {
-        font-size: 0.8125rem;
+        font-size: 0.875rem;
         color: var(--ks-content-secondary);
         line-height: 1.5;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
     }
 
     .sidebar-fields {
         display: flex;
         flex-direction: column;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
     }
 
     .sidebar-field {
-        padding: 0.75rem 0;
+        padding: 1rem 0;
         border-top: 1px solid var(--ks-border-secondary);
 
         &:last-child {
@@ -157,17 +146,15 @@
     }
 
     .sidebar-field-label {
-        font-size: 0.75rem;
+        font-size: 0.875rem;
         font-weight: 700;
         color: var(--ks-content-primary);
-        margin-bottom: 0.2rem;
+        margin-bottom: 0.25rem;
         line-height: 1.4;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
     }
 
     .sidebar-field-value {
-        font-size: 0.8125rem;
+        font-size: 0.875rem;
         color: var(--ks-content-secondary);
         line-height: 1.5;
     }
@@ -175,20 +162,20 @@
     .tool-list {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-        margin-top: 0.375rem;
+        gap: 0.625rem;
+        margin-top: 0.5rem;
     }
 
     .tool-item {
         display: flex;
         align-items: center;
-        gap: 0.625rem;
+        gap: 0.75rem;
     }
 
     .tool-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-        border-radius: 0.3125rem;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: 0.5rem;
         border: 1px solid var(--ks-border-secondary);
         background: var(--ks-background-body);
         display: flex;
@@ -196,7 +183,7 @@
         justify-content: center;
         flex-shrink: 0;
         overflow: hidden;
-        padding: 3px;
+        padding: 6px;
 
         img {
             width: 100%;
@@ -219,7 +206,7 @@
     }
 
     .tool-name {
-        font-size: 0.8125rem;
+        font-size: 0.875rem;
         color: var(--ks-content-secondary);
         white-space: nowrap;
         overflow: hidden;
@@ -231,7 +218,7 @@
         width: 100%;
         text-align: center;
         justify-content: center;
-        margin-bottom: 1.25rem;
+        margin-bottom: 1.5rem;
     }
 
     .sidebar-share {

@@ -1,7 +1,7 @@
 <template>
     <div class="story-main">
         <nav class="story-breadcrumb" aria-label="breadcrumb">
-            <a href="/customers">← All stories</a>
+            <a href="/customers">← All customer stories</a>
         </nav>
 
         <h1 class="story-headline">{{ story.title }}</h1>
