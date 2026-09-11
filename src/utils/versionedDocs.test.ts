@@ -916,18 +916,18 @@ describe("versionedSpecHref", () => {
 })
 
 describe("versionedSpecSourceUrl", () => {
-    it("resolves a version to the spec frozen on its docs release branch", () => {
-        expect(versionedSpecSourceUrl("1.3", "ee")).toBe(
-            "https://raw.githubusercontent.com/kestra-io/docs/releases/v1.3.x/public/kestra-ee.yml",
+    it("resolves a version to the spec the indexing job uploaded for it", () => {
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "1.3", "ee")).toBe(
+            "https://api.kestra.io/v1/docs/kestra-ee.yml/versions/1.3.0",
         )
-        expect(versionedSpecSourceUrl("0.19", "oss")).toBe(
-            "https://raw.githubusercontent.com/kestra-io/docs/releases/v0.19.x/public/kestra.yml",
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "0.19", "oss")).toBe(
+            "https://api.kestra.io/v1/docs/kestra.yml/versions/0.19.0",
         )
     })
 
     it("refuses anything but major.minor, so a path can't be spliced into the URL", () => {
-        expect(versionedSpecSourceUrl("../../heads/main", "oss")).toBeUndefined()
-        expect(versionedSpecSourceUrl("1.3.0", "ee")).toBeUndefined()
-        expect(versionedSpecSourceUrl("", "ee")).toBeUndefined()
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "../../docs", "oss")).toBeUndefined()
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "1.3.0", "ee")).toBeUndefined()
+        expect(versionedSpecSourceUrl("https://api.kestra.io/v1", "", "ee")).toBeUndefined()
     })
 })
