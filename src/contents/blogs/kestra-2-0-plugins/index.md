@@ -108,6 +108,10 @@ The reason this is more than a convenience: the moment somebody has to download 
 
 This is one of the biggest plugin features for 2.0, and it has a name of its own: **Artifacts**.
 
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/cjDOvDzuS2E?si=sl8iHRw9w3HAF99o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 Until 2.0 a plugin could contribute a form generated from its schema, and that was the whole of its UI surface. A task in the execution view was configuration, logs and a list of output files, so understanding what a task did often meant leaving Kestra: download the Parquet somewhere else, open dbt Cloud for the model graph, read Kubernetes events to find out why a pod took four minutes.
 
 Artifacts let a plugin render a rich, domain specific view inside Kestra, before and after a run, with no extra YAML in anyone's flow. Four kinds shipped: data tables previewing Parquet, CSV, ION and Avro with local filtering, data summaries with row counts and per-column statistics, dependency graphs for dbt models and Ansible trees and Terraform plans, and topology sub-nodes that decompose a task into its real steps with per-step timing.
