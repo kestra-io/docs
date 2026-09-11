@@ -156,9 +156,6 @@ Keep new packages aligned with project conventions and metadata.
 - Use `"{{ secret('YOUR_SECRET') }}"` in the examples for sensitive info such as an API key.
 - Align the `"""` to close examples blocks with the flow id.
 - Update the existing `index.yaml` for the main plugin, and for each new subpackage add a metadata file named exactly after the subpackage (e.g. `s3.yaml` for `io.kestra.plugin.aws.s3`) under `src/main/resources/metadata/`, following the same schema — never invent fields, and make sure `group` matches the Java package name of the subpackage.
-- Update `AGENTS.md` at the repository root whenever new tasks, triggers, or subpackages are added, describing only what the current diff actually adds — never leave dangling references to code that doesn't exist yet on `main`.
-- **Storage providers**: when adding a new storage provider plugin, open a PR on the `kestra-ee` repository and register it in `listAvailableVersionedPluginsForStorage()` inside `webserver-ee/src/main/java/io/kestra/ee/webserver/controllers/api/InstanceController.java`.
-- **Secret managers**: when adding a new secret manager plugin, open a PR on the `kestra-ee` repository and register it in `listAvailableVersionedPluginsForSecretManager()` inside the same `InstanceController.java`.
 
 ---
 
