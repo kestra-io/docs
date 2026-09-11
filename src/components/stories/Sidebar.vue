@@ -1,17 +1,20 @@
 <template>
     <div class="sidebar">
-        <div class="sidebar-logo">
-            <img
-                v-if="story.logoIcon || story.logo"
-                :src="story.logoIcon ?? story.logo"
-                :alt="displayName"
-                loading="lazy"
-            />
-            <span v-else class="sidebar-initial">{{ initial }}</span>
+        <div class="sidebar-identity">
+            <div class="sidebar-logo">
+                <img
+                    v-if="story.logoIcon || story.logo"
+                    :src="story.logoIcon ?? story.logo"
+                    :alt="displayName"
+                    loading="lazy"
+                />
+                <span v-else class="sidebar-initial">{{ initial }}</span>
+            </div>
+            <div class="sidebar-identity-text">
+                <div class="sidebar-company-name">{{ displayName }}</div>
+                <div v-if="story.tagline" class="sidebar-company-desc">{{ story.tagline }}</div>
+            </div>
         </div>
-
-        <div class="sidebar-company-name">{{ displayName }}</div>
-        <div v-if="story.tagline" class="sidebar-company-desc">{{ story.tagline }}</div>
 
         <div class="sidebar-fields">
             <div class="sidebar-field">
@@ -85,6 +88,10 @@
         display: flex;
         flex-direction: column;
         width: 100%;
+    }
+
+    .sidebar-identity-text {
+        min-width: 0;
     }
 
     .sidebar-logo {
@@ -222,6 +229,18 @@
     }
 
     @include media-breakpoint-down(lg) {
+        .sidebar-identity {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-logo,
+        .sidebar-company-desc {
+            margin-bottom: 0;
+        }
+
         .sidebar-fields {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));

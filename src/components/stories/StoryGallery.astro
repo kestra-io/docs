@@ -30,15 +30,19 @@ const { featuredStories } = Astro.props
 <style lang="scss">
     .stories-hero {
         --hero-grid-size: 68px;
+        --header-h: calc(
+            var(--top-bar-height, 67px) + var(--announce-height, 0px)
+        );
         position: relative;
         isolation: isolate;
         overflow: hidden;
         background: #0a0b0d;
         color: #fff;
-        padding: 3.75rem 0 3.5rem;
+        margin-top: calc(-1 * var(--header-h));
+        padding: calc(var(--header-h) + 3.75rem) 0 3.5rem;
 
         @include media-breakpoint-down(lg) {
-            padding: 3rem 0 2.5rem;
+            padding: calc(var(--header-h) + 3rem) 0 2.5rem;
         }
 
         &::before {

@@ -110,9 +110,14 @@
         border-radius: 0.75rem;
         overflow: hidden;
         margin-bottom: 2.5rem;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 
     .metric-cell {
+        min-width: 0;
         padding: 1.375rem 1.5rem;
         border-right: 1px solid var(--ks-border-secondary);
 
@@ -120,12 +125,22 @@
             border-right: none;
         }
 
+
         @include media-breakpoint-down(md) {
-            border-right: none;
+            padding: 1.25rem 1rem;
             border-bottom: 1px solid var(--ks-border-secondary);
 
-            &:last-child {
+            &:nth-child(even) {
+                border-right: none;
+            }
+
+            &:last-child,
+            &:nth-last-child(2):nth-child(odd) {
                 border-bottom: none;
+            }
+
+            &:last-child:nth-child(odd) {
+                grid-column: 1 / -1;
             }
         }
     }
@@ -138,6 +153,11 @@
         color: $purple;
         line-height: 1;
         margin-bottom: 0.4rem;
+        overflow-wrap: anywhere;
+
+        @include media-breakpoint-down(md) {
+            font-size: 2rem;
+        }
     }
 
     .metric-label {

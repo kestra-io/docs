@@ -22,7 +22,7 @@ const stories = allEntries.map(toStoryCard)
 const featuredStories = featuredEntries(allEntries).map(toStoryCard)
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} headerTheme="lightText">
     <StoryGallery featuredStories={featuredStories}>
         <StoriesList
             slot="stories"
