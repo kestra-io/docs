@@ -49,9 +49,13 @@ export function findDanglingAssetLinks(distDir) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    const distDir = path.resolve(process.argv[2] ?? "dist")
-    if (!fs.existsSync(path.join(distDir, "_astro"))) {
-        console.error(`No _astro directory under ${distDir}, nothing to check`)
+    // Server-output builds (the Cloudflare adapter) put static files in dist/client.
+    const candidates = [process.argv[2] ?? "dist"].flatMap((d) => [d, path.join(d, "client")])
+    const distDir = candidates
+        .map((d) => path.resolve(d))
+        .find((d) => fs.existsSync(path.join(d, "_astro")))
+    if (!distDir) {
+        console.error(`No _astro directory under ${candidates.join(" or ")}, nothing to check`)
         process.exit(1)
     }
     const missing = findDanglingAssetLinks(distDir)
