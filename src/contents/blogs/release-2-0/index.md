@@ -454,7 +454,7 @@ In 2.0 (EE), logs can be routed to a separate store using `kestra.logs.type`. Bo
 
 The [External Log Data Store docs](/docs/administrator-guide/log-data-store) cover Elasticsearch config, aggregation and pagination behavior, and the plugin developer guide for custom backends.
 
-## Slim Image and Plugin Auto-Install
+## Plugin Auto Install - Kestra Slim
 
 Getting started with Kestra OSS used to mean pulling a large image that bundled every plugin, most of which you'd never use. The `kestra/kestra:*-slim` image flips that: pull a minimal image and let Kestra figure out what to install as you build.
 
