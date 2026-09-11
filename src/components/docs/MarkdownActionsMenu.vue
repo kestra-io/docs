@@ -1,5 +1,5 @@
 <template>
-    <div v-if="markdownBody" class="markdown-actions dropdown">
+    <div v-if="markdownBody || lazyMarkdown" class="markdown-actions dropdown">
         <button
             class="markdown-actions-trigger"
             type="button"
@@ -38,20 +38,25 @@
     import { useMarkdownActions } from "~/composables/useMarkdownActions"
     import type { MarkdownActionDefinition, MarkdownActionId } from "~/utils/markdown-actions"
 
-    const props = defineProps<{
-        markdownBody: string
-        pagePath: string
-        pageTitle?: string
-        pageUrl?: string
-        editUrl?: string
-        stem?: string
-        extension?: string
-        /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
-        excludeActions?: MarkdownActionId[]
-    }>()
+    const props = withDefaults(
+        defineProps<{
+            markdownBody?: string
+            pagePath: string
+            pageTitle?: string
+            pageUrl?: string
+            editUrl?: string
+            stem?: string
+            extension?: string
+            excludeActions?: MarkdownActionId[]
+            label?: string
+            lazyMarkdown?: boolean
+        }>(),
+        { markdownBody: "", label: "Copy Page" },
+    )
 
     const context = computed(() => ({
         markdownBody: props.markdownBody,
+        lazyMarkdown: props.lazyMarkdown,
         pagePath: props.pagePath,
         pageTitle: props.pageTitle,
         pageUrl: props.pageUrl,
@@ -77,7 +82,7 @@
     }
 
     const triggerIcon = computed(() => (copied.value ? Check : ContentCopy))
-    const triggerLabel = computed(() => (copied.value ? "Copied!" : "Copy Page"))
+    const triggerLabel = computed(() => (copied.value ? "Copied!" : props.label))
 
     const actionLabel = (action: MarkdownActionDefinition) => {
         if (action.id === "copy" && copied.value && action.successLabel) {
