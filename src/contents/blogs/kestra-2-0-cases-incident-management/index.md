@@ -17,11 +17,11 @@ Kestra 2.0 closes that gap. **Cases turns any execution into an incident: own it
 
 ## What changes when incidents live in the orchestrator
 
-The first failure opens a case. The ninety-nine that follow attach to it. One notification goes out, and every failure is accounted for instead of drowned in a muted channel.
+The first failure opens a case; the ninety-nine that follow attach to it. This means, one notification goes out, and every failure is accounted for instead of drowned in a muted channel.
 
-Each case has an owner: assignee, watchers, two SLA clocks. Time to acknowledge and time to resolve both count down on the board. A missed deadline becomes an event on the timeline and a notification to the people who need to know. Acknowledging changes notification behavior, but it never changes detection; new failures keep attaching to the open case regardless of status.
+Each case has an owner: assignee, watchers, two SLA clocks, where the time to acknowledge and time to resolve both count down on the board. A missed deadline becomes an event on the timeline and a notification to the people who need to know. And importantly, an acknowledgement changes notification behavior, but it never changes detection; new failures keep attaching to the open case regardless of status.
 
-Remediation lives on the same record. Flows attach to a case as action buttons: click one, fill its inputs, and it runs as a normal Kestra execution linked back to the case, labeled with its ID, governed by the same RBAC as everything else. The step you would have looked up in a runbook is now the trail of what actually happened.
+When ready to resolve, Remediation lives on the same record. Flows can be attached to a case as action buttons: click one, fill its inputs, and it runs as a normal Kestra execution linked back to the case, labeled with its ID, governed by the same RBAC as everything else in the platform. The step you would have looked up in a runbook is now the trail of what actually happened.
 
 Closing a case requires a reason: Fixed, Workaround applied, Configuration change, Duplicate, No action needed, Won't fix. You can always ask how many incidents were configuration changes versus dependency outages. No need to datamine through Slack, Resolution is a queryable fact.
 
@@ -214,11 +214,11 @@ Cases is an incident record with remediation attached, living where the failures
 **Availability.** Cases is available today in Kestra 2.0 Enterprise Edition and Kestra Cloud. Requires `plugin-kestra` 2.0.3 or later.
 :::
 
-## Why here
+## Final thoughts and next steps
 
-Cases has nothing to integrate because nothing has left. The failing execution, the incident, the remediation, the approval, and the audit trail are all in the same engine. The label on the remediation execution is the link. The system flow that groups failures is a flow. Every human decision made during an incident is a structured record next to the execution that caused it, not a thread in another tool that goes stale or gets archived.
+Cases keeps your attention all in one place, avoiding dreaded context switching. The failing execution, the incident, the remediation, the approval, and the audit trail are all in the same engine. The label on the remediation execution is the link. Every human decision made during an incident is a structured record next to the execution that caused it, and not a thread in another tool that goes stale, gets archived, or just gets ignored.
 
-Cases, Policies, and Promote are three answers to the same question: how do you govern what runs in production? That is what it means to move from a workflow tool to a platform you run production on.
+Cases, [Policies](https://kestra.io/docs/enterprise/governance/policies/index.md), and [Promote](https://kestra.io/docs/enterprise/governance/promote) are three answers to the same question: how do you govern what runs in production? That is what it means to move from a workflow tool to a platform you run production on.
 
 ---
 
