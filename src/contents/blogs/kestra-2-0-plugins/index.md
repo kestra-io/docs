@@ -162,10 +162,6 @@ The default image bundles every plugin at its latest version. That is convenient
 
 The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/p95rP8pu7bw?si=tSZo8QLdemsXD95O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
 2.0 splits it. Every tag has a `-slim` twin, so `kestra/kestra:latest-slim` is the lean core and you add what you need. It's also what [kestra.io/get-started](https://kestra.io/get-started) hands you by default:
 
 ```bash
@@ -182,7 +178,9 @@ That auto-install is scoped: it's an open source, `server local` behavior, gated
 
 None of that costs you the editor. For every release, CI compiles a plugin bundle schema, one JSON schema per registered plugin, task and trigger, and bakes it directly into the Kestra JAR. The editor loads that bundled schema at startup, so a task from a plugin you haven't installed yet still validates and autocompletes correctly. Auto-download only happens later, the moment a flow actually runs that task.
 
-<div style="position: relative; padding-bottom: calc(54.8643% + 41px); height: 0px; width: 100%;"><iframe src="https://demo.arcade.software/8xE47n6bLlDfIcIQrHyj?embed&embed_mobile=tab&embed_desktop=inline&show_copy_link=true" title="Plugin Auto Install - Kestra Slim" frameborder="0" loading="lazy" webkitallowfullscreen mozallowfullscreen allowfullscreen allow="clipboard-write; autoplay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; color-scheme: light;" ></iframe></div>
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/p95rP8pu7bw?si=tSZo8QLdemsXD95O" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Compatibility, and a deliberate decision not to break you
 
@@ -324,15 +322,15 @@ These are not new plugin repositories, they're new capabilities added to plugins
 
 ## Versioned plugin docs
 
-<div class="video-container">
-    <iframe src="https://www.youtube.com/embed/W5E2Q7Ucznk?si=V2_ze26TF0P--wDF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
 Running several versions of the same plugin side by side isn't new, Enterprise has supported that since late 2024. What 2.0 added around it is smaller: work toward the same version selection inside the instance UI, and a clearer distinction between open source and Enterprise plugins in the catalogue, backed by artifact filtering on the distribution flag.
 
 The real addition is on the docs side. Task and trigger docs used to reflect whatever version happened to be latest at build time, which is a problem the moment a flow deliberately pins an older one: the documentation in front of you and the plugin actually running could disagree on what a property does.
 
 Plugin pages on the [catalogue](https://kestra.io/plugins) are now versioned. The [dbt plugin](https://kestra.io/plugins/plugin-dbt) is a good one to look at, since it has accumulated enough releases to make the version picker worth having: pick an older version from the dropdown and the page shows that version's tasks, properties and examples, not the latest one. If your flow pins `version: "0.21.0"` on a task, the docs for `0.21.0` are the ones you actually want, and now they are the ones you get.
+
+<div class="video-container">
+    <iframe src="https://www.youtube.com/embed/W5E2Q7Ucznk?si=V2_ze26TF0P--wDF" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ## Deciding which plugins may run
 
