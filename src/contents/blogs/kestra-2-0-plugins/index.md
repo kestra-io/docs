@@ -12,11 +12,12 @@ author:
 image: ./main.png
 ---
 
-For most of Kestra's life, "plugin" meant one thing: a task that talks to something, such as Snowflake, dbt, S3, Slack. Kestra 2.0 just crossed 2000 of them.
+Kestra 2.0 just crossed 2,000 plugins. For most of Kestra's life, "plugin" meant one thing: a task that talks to something, such as Snowflake, dbt, S3, Slack.
 
-The interesting part is what else could a plugin *be*.
+While building 2.0, the plugin team kept asking a different question: what else could a plugin be?
 
 The answer turned out to be:
+
 - The governance rule that blocks a task.
 - The file renderer that draws your Parquet file.
 - The store your logs live in.
