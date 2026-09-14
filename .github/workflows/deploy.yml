@@ -158,6 +158,9 @@ jobs:
       - name: Build profile
         if: always()
         run: |
+          # Counting steps: a zero count is a legitimate result, not a failure,
+          # and grep -c exits 1 on no match, which `bash -e` would abort on.
+          set +e
           # The logs API caps its response at ~7KB from the end of the job, and
           # post-job cleanup eats most of it, so print only the compact part.
           # Full profile is in the Build step's own output. (run 2 of the scope experiment)
