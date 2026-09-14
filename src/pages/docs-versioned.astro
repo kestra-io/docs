@@ -37,19 +37,23 @@ type AstroComponent = (props: Record<string, unknown>) => unknown
 // blows Cloudflare's 64 MB limit. They must not render on an archived page
 // anyway — they'd list the current docs tree — so the renderer overrides them
 // or skips them outright.
-const CONTENT_COLLECTION_COUPLED = [
+// The negative patterns are repeated literally in both calls on purpose: Vite
+// only reads statically analysable patterns here, and silently keeps the
+// positive one when handed anything else. The glob test pins them to the files
+// that actually import astro:content.
+const vueLoaders = import.meta.glob<{ default: AstroComponent }>([
+    "/src/components/{content,docs,common}/*.vue",
     "!/src/components/docs/ChildCard.astro",
     "!/src/components/docs/GuidesChildCard.astro",
     "!/src/components/content/ChildTableOfContents.astro",
     "!/src/components/common/WhatsNew.astro",
-]
-const vueLoaders = import.meta.glob<{ default: AstroComponent }>([
-    "/src/components/{content,docs,common}/*.vue",
-    ...CONTENT_COLLECTION_COUPLED,
 ])
 const astroLoaders = import.meta.glob<{ default: AstroComponent }>([
     "/src/components/{content,docs,common}/*.astro",
-    ...CONTENT_COLLECTION_COUPLED,
+    "!/src/components/docs/ChildCard.astro",
+    "!/src/components/docs/GuidesChildCard.astro",
+    "!/src/components/content/ChildTableOfContents.astro",
+    "!/src/components/common/WhatsNew.astro",
 ])
 const componentsByName = new Map(
     [...Object.entries(vueLoaders), ...Object.entries(astroLoaders)].map(([file, load]) => [
