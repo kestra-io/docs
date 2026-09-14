@@ -122,13 +122,15 @@ function isKnownComponent(tag: string, ctx: RenderCtx): boolean {
 
 // Props the real component needs in a shape the markdown doesn't carry. Only
 // transforms — never markup, or this becomes the per-component switch again.
+// Keyed by componentKey: the same component is spelled <ApiDocEE/> on 1.3 and
+// <ApiDocee/> on 1.0.
 const PROPS_TRANSFORMS: Record<
     string,
     (props: Record<string, unknown>, ctx: RenderCtx) => Record<string, unknown>
 > = {
-    "api-doc": (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "oss") }),
-    "api-doc-ee": (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "ee") }),
-    "home-page-buttons": ({ ":buttons": bound, buttons, ...rest }, ctx) => ({
+    apidoc: (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "oss") }),
+    apidocee: (props, ctx) => ({ ...props, specUrl: versionedSpecHref(ctx.version, "ee") }),
+    homepagebuttons: ({ ":buttons": bound, buttons, ...rest }, ctx) => ({
         ...rest,
         buttons: parseButtons(bound ?? buttons).map((b) =>
             b.href.startsWith("/docs")
@@ -144,7 +146,7 @@ function componentPlaceholder(
     props: Record<string, unknown>,
     ctx: RenderCtx,
 ): string {
-    const transform = PROPS_TRANSFORMS[tag]
+    const transform = PROPS_TRANSFORMS[componentKey(tag)]
     const index = ctx.components.push({
         tag,
         props: transform ? transform(props, ctx) : props,

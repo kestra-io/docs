@@ -11,6 +11,8 @@ const renderableComponents = new Set([
     "api-doc-ee",
     "home-page-buttons",
     "support-links",
+    "whats-new",
+    "card-logos",
 ])
 
 const render = async (markdown: string) =>
@@ -1144,6 +1146,22 @@ title: T
             { tag: "api-doc", props: { specUrl: "/api/openapi/0.19/oss.yml" } },
         ])
     })
+
+    it("wires the spec whichever way the archived page spelled the tag", async () => {
+        // 1.0 and 0.19 write <ApiDocee/>, 1.3 writes <ApiDocEE/>.
+        const body = await renderVersionedDocBody({
+            version: "1.0",
+            path: "api-reference/enterprise",
+            markdown: `---
+title: T
+---
+<ApiDocee />`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([
+            { tag: "api-docee", props: { specUrl: "/api/openapi/1.0/ee.yml" } },
+        ])
+    })
 })
 
 describe("renderVersionedDocBody remark directive reuse", () => {
@@ -1222,14 +1240,24 @@ describe("componentKey file-name resolution", () => {
     // glob returns, so a tag only renders if both sides canonicalise the same —
     // <ApiDocEE/> living in ApiDocee.astro is exactly the mismatch that guards.
     const componentFileKeys = new Set(
-        ["content", "docs"].flatMap((dir) =>
+        ["content", "docs", "common"].flatMap((dir) =>
             readdirSync(resolve(dirname(fileURLToPath(import.meta.url)), "../components", dir))
-                .filter((file) => file.endsWith(".astro"))
-                .map((file) => componentKey(file.replace(/\.astro$/, ""))),
+                .filter((file) => file.endsWith(".astro") || file.endsWith(".vue"))
+                .map((file) => componentKey(file.replace(/\.(astro|vue)$/, ""))),
         ),
     )
 
-    it.each(["api-doc-ee", "api-doc", "home-page-buttons", "support-links", "child-table-of-contents"])(
+    it.each([
+        "api-doc-ee",
+        "api-docee",
+        "api-doc",
+        "home-page-buttons",
+        "support-links",
+        "child-table-of-contents",
+        "whats-new",
+        "card-logos",
+        "download-logo-pack",
+    ])(
         "resolves <%s> to a component file",
         (tag) => {
             expect(componentFileKeys).toContain(componentKey(tag))

@@ -26,15 +26,20 @@ type AstroComponent = (props: Record<string, unknown>) => unknown
 // Every component an archived doc can embed, resolved by file name instead of a
 // case in the renderer: a component added under these directories works on
 // archived versions with no change here. Lazy, so only the ones a page actually
-// references are pulled into this SSR route — which is also why the glob stays
-// off components/common, 30-odd components wide and embedded by exactly one doc
-// page. Anything it doesn't resolve is logged as unknown below.
-const componentLoaders = import.meta.glob<{ default: AstroComponent }>(
-    "/src/components/{content,docs}/*.astro",
+// references are pulled into this SSR route. Anything it doesn't resolve is
+// logged as unknown below.
+// Vue components render server-side with no client directive, exactly as the
+// current docs embed them (`<CardLogos/>`); the .astro wrapper wins the name
+// when both exist, since that's the one carrying the client directive.
+const vueLoaders = import.meta.glob<{ default: AstroComponent }>(
+    "/src/components/{content,docs,common}/*.vue",
+)
+const astroLoaders = import.meta.glob<{ default: AstroComponent }>(
+    "/src/components/{content,docs,common}/*.astro",
 )
 const componentsByName = new Map(
-    Object.entries(componentLoaders).map(([file, load]) => [
-        componentKey(file.slice(file.lastIndexOf("/") + 1).replace(/\.astro$/, "")),
+    [...Object.entries(vueLoaders), ...Object.entries(astroLoaders)].map(([file, load]) => [
+        componentKey(file.slice(file.lastIndexOf("/") + 1).replace(/\.(astro|vue)$/, "")),
         load,
     ]),
 )
