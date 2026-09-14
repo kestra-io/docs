@@ -11,7 +11,6 @@ const renderableComponents = new Set([
     "api-doc-ee",
     "home-page-buttons",
     "support-links",
-    "whats-new",
     "card-logos",
 ])
 
@@ -1147,6 +1146,25 @@ title: T
         ])
     })
 
+    it("skips a component bound to the current site without flagging drift", async () => {
+        // WhatsNew lists today's blog posts off the current content collection:
+        // wrong on an archived page, and not a missing component either.
+        const body = await renderVersionedDocBody({
+            version: "1.3",
+            path: "",
+            markdown: `---
+title: T
+---
+<WhatsNew title="What's New in Kestra" />
+
+After.`,
+            renderableComponents,
+        })
+        expect(body.components).toEqual([])
+        expect(body.unknownComponents).toEqual([])
+        expect(body.html).toContain("After.")
+    })
+
     it("wires the spec whichever way the archived page spelled the tag", async () => {
         // 1.0 and 0.19 write <ApiDocee/>, 1.3 writes <ApiDocEE/>.
         const body = await renderVersionedDocBody({
@@ -1254,7 +1272,6 @@ describe("componentKey file-name resolution", () => {
         "home-page-buttons",
         "support-links",
         "child-table-of-contents",
-        "whats-new",
         "card-logos",
         "download-logo-pack",
     ])(

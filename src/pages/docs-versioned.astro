@@ -31,12 +31,25 @@ type AstroComponent = (props: Record<string, unknown>) => unknown
 // Vue components render server-side with no client directive, exactly as the
 // current docs embed them (`<CardLogos/>`); the .astro wrapper wins the name
 // when both exist, since that's the one carrying the client directive.
-const vueLoaders = import.meta.glob<{ default: AstroComponent }>(
+// The exclusions are components that read the current content collection:
+// globbing them pulls Astro's content data layer (50 MB) into this worker and
+// blows Cloudflare's 64 MB limit. They must not render on an archived page
+// anyway — they'd list the current docs tree — so the renderer overrides them
+// or skips them outright.
+const CONTENT_COLLECTION_COUPLED = [
+    "!/src/components/docs/ChildCard.astro",
+    "!/src/components/docs/GuidesChildCard.astro",
+    "!/src/components/content/ChildTableOfContents.astro",
+    "!/src/components/common/WhatsNew.astro",
+]
+const vueLoaders = import.meta.glob<{ default: AstroComponent }>([
     "/src/components/{content,docs,common}/*.vue",
-)
-const astroLoaders = import.meta.glob<{ default: AstroComponent }>(
+    ...CONTENT_COLLECTION_COUPLED,
+])
+const astroLoaders = import.meta.glob<{ default: AstroComponent }>([
     "/src/components/{content,docs,common}/*.astro",
-)
+    ...CONTENT_COLLECTION_COUPLED,
+])
 const componentsByName = new Map(
     [...Object.entries(vueLoaders), ...Object.entries(astroLoaders)].map(([file, load]) => [
         componentKey(file.slice(file.lastIndexOf("/") + 1).replace(/\.(astro|vue)$/, "")),

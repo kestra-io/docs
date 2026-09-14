@@ -111,6 +111,12 @@ const OVERRIDDEN_COMPONENTS = new Set([
     "plugin-count",
 ])
 
+// Exists in the codebase, deliberately not rendered here: it lists the latest
+// blog posts off the current content collection, which an archived page has no
+// business showing — and which would drag the whole content data layer into the
+// docs worker. Known, so it stays out of the drift signal.
+const CURRENT_CONTENT_ONLY = new Set(["whats-new"])
+
 /** A component tag resolves to something renderable, one way or another. */
 function isKnownComponent(tag: string, ctx: RenderCtx): boolean {
     return (
@@ -197,6 +203,7 @@ function componentHtml(
             if (ctx.renderableComponents.has(componentKey(tag))) {
                 return componentPlaceholder(tag, props, ctx) + inner
             }
+            if (CURRENT_CONTENT_ONLY.has(tag)) return inner
             ctx.unknownComponents.add(tag)
             return inner
     }
