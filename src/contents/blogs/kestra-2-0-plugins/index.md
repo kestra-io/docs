@@ -163,7 +163,7 @@ While in the same area, plugin icons became real SVG resources instead of data U
 
 ## Plugin Auto Install - Kestra Slim
 
-The default image bundles every plugin at its latest version. That is convenient and it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
+The default image bundles every plugin at its latest version. That is convenient but it is over 3GB, which is a genuinely bad first experience: almost every product evaluator mentioned image size as a drawback of onboarding.
 
 2.0 splits it. Every tag has a `-slim` twin, so `kestra/kestra:latest-slim` is the lean core and you add what you need. It's also what [kestra.io/get-started](https://kestra.io/get-started) hands you by default:
 
