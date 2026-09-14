@@ -12,16 +12,17 @@ author:
 image: ./main.png
 ---
 
-For most of Kestra's life, "plugin" meant one thing: a task that talks to something, such as Snowflake, dbt, S3, Slack. Kestra 2.0 just crossed 2000 of them.
+Kestra 2.0 just crossed 2,000 plugins. For most of Kestra's life, "plugin" meant one thing: a task that talks to something, such as Snowflake, dbt, S3, Slack.
 
-The interesting part is what else could a plugin *be*.
+While building 2.0, the plugin team kept asking a different question: what else could a plugin be?
 
 The answer turned out to be:
-- The governance rule that blocks a task.
-- The file renderer that draws your Parquet file.
-- The store your logs live in.
+
+- Governance rule that blocks a task.
+- File renderer that draws your Parquet file.
+- store your logs live in.
 - The queue underneath the whole engine.
-- The interface you look at while a Kubernetes pod starts.
+- An interface you look at while a Kubernetes pod starts.
 
 That is a different kind of product than a bigger catalogue, one where the surface you extend is the platform itself. This post is what changed, and what it means if you build on Kestra or maintain a plugin for it.
 
