@@ -38,7 +38,7 @@ One database serving as both queue and repository. This is the reference archite
 
 ### AMQP or Redis when you want lower latency
 
-Keep Postgres as your repository and move the queue to a broker. Latency drops by roughly half. We lead with AMQP, RabbitMQ specifically, because the implementation on our side is simpler and there are fewer edge cases in it. Redis is supported and delivers comparable latency.
+Keep Postgres as your repository and move the queue to a broker. [Latency drops by roughly half](/blogs/performance-improvements-2-0), and stays flat to 5000 executions per minute where a Postgres queue collapses past 4000. We lead with AMQP, RabbitMQ specifically, because the implementation on our side is simpler and there are fewer edge cases in it. Redis is supported and delivers comparable latency.
 
 This buys you latency, not capacity. Moving the queue to AMQP might let you push a few hundred more executions per minute, but it does not fundamentally raise the ceiling on what a single instance handles. If your problem is queue-to-execution delay, this is your answer. If your problem is total throughput, it is not.
 
@@ -120,3 +120,5 @@ On open source, you run a single JDBC database, Postgres or MySQL, serving as yo
 Join the Kestra 2.0 launch webinar on September 8th, 2026. [Register here](https://luma.com/194wtite).
 
 For the architecture picture behind all of this, read [what changed in the engine](/blogs/2026-09-01-kestra20-rebuild-engine), and watch [the pre-launch webinar on the backend](https://www.youtube.com/watch?v=_ijZ1x7s2Uk).
+
+The numbers behind each of the three architectures are in [the 2.0 benchmarks](/blogs/performance-improvements-2-0), the configuration reference is in the [architecture documentation](/docs/architecture), and switching from a 1.x bundle is covered in the [2.0 migration guide](/docs/migration-guide/v2.0.0).
