@@ -135,9 +135,7 @@ If you maintain a plugin, this is the most interesting thing 2.0 gives you. It i
 
 ## The queue is a plugin now
 
-This is the change with the biggest architectural consequence and the least noise around it.
-
-Queue implementations used to live inside the Enterprise repository, compiled in, part of the engine. In 2.0 they moved out and became plugins. The thing at the very bottom of the stack, the component every execution in the system passes through, is now an extension point.
+Queue implementations used to live inside the Enterprise repository, compiled in, part of the engine. In 2.0 they moved out and became plugins. The thing at the very bottom of the stack as well as the component every execution in the system passes through is now an extension point.
 
 Today that shows up as an internal simplification: you still choose with `kestra.queue.type`, and the supported pairings are documented and finite. What it means is that the list can grow without a core release, and that the boundary between "the engine" and "a thing you plug into the engine" moved down a layer.
 
