@@ -2,11 +2,7 @@
 // use astro content collection to fetch markdown files from /content/docs
 import { render, getCollection, type CollectionEntry } from "astro:content"
 import { buildDocsNavigation } from "../../utils/buildDocsNavigation"
-import {
-    collectionMetadataDigest,
-    entryCacheKey,
-    layoutDigest,
-} from "~/utils/incrementalCacheKey"
+import { entryCacheKey } from "~/utils/incrementalCacheKey"
 import { resolveDocsPagePath } from "../../utils/markdown-actions"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import NavToc from "~/components/docs/NavToc.vue"
@@ -17,14 +13,14 @@ export async function getStaticPaths() {
     const docsPages = await getCollection("docs")
     // Sidebar, prev/next and child cards read every doc's metadata, so a page
     // may only be restored from cache while that metadata is unchanged.
-    const scope = [collectionMetadataDigest(docsPages), await layoutDigest()]
-    // TEMPORARY probe (test branch): which half of the scope moves between builds?
-    // eslint-disable-next-line no-console
-    console.log(`[cachekey-probe] meta=${scope[0]} layout=${scope[1]} entries=${docsPages.length}`)
+    // TEMPORARY (test branch): scope dropped on purpose. If docs pages restore
+    // without it, the scope was unstable; if they still don't, the blocker is
+    // dependencyHash, which is Astro's side. NOT a fix: a stale sidebar would
+    // survive a sibling's frontmatter change.
     return docsPages.map((doc) => ({
         params: { docsPath: doc.id },
         props: doc,
-        cacheKey: entryCacheKey(doc, ...scope),
+        cacheKey: entryCacheKey(doc),
     }))
 }
 type Props = CollectionEntry<"docs">
