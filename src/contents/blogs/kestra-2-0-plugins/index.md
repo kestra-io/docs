@@ -204,7 +204,7 @@ What changed for plugin authors is not the API but instead what plugin code may 
 
 Only the last one is renamed automatically by the flow migration CLI. The other three need a manual rewrite, and moving `Resume` in particular was about permissions: changing another execution's state should go through the API where RBAC applies.
 
-The SDK that absorbed them grew a lot in the cycle, and it is worth knowing as a surface. Open source: `executions.Count`, `Delete`, `Kill`, `Query`, `Resume`, `flows.Export`, `ExportById`, `List`, `logs.Fetch`, `namespaces.List`, `NamespacesWithFlows`, `triggers.ScheduleMonitor` and `Toggle`. Enterprise adds asset management, test running, and the whole IAM surface, covering bindings, groups, invitations, roles, service accounts and tenant access.
+The SDK that absorbed them grew a lot in the cycle, and it is worth knowing about the changes at a high level. Open source: `executions.Count`, `Delete`, `Kill`, `Query`, `Resume`, `flows.Export`, `ExportById`, `List`, `logs.Fetch`, `namespaces.List`, `NamespacesWithFlows`, `triggers.ScheduleMonitor` and `Toggle`. Enterprise adds asset management, test running, and the whole IAM surface, covering bindings, groups, invitations, roles, service accounts and tenant access.
 
 That IAM family is a 2.0 addition worth pausing on. Until now IAM was only manageable from outside a flow, through the REST API, Terraform or `kestractl`. Now it is a set of tasks, which makes event driven onboarding a flow: a joiner event arrives, a flow creates the user, adds them to groups and binds a role, and every step is an audited execution. Authentication is usually free, because `auth.auto` defaults to on and reuses the credentials of the instance the flow is running on.
 
