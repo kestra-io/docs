@@ -202,7 +202,7 @@ What changed for plugin authors is not the API but instead what plugin code may 
 | `io.kestra.plugin.core.trigger.Toggle` | `io.kestra.plugin.kestra.triggers.Toggle` |
 | `io.kestra.plugin.core.log.Fetch` | `io.kestra.plugin.kestra.logs.Fetch` |
 
-Only the last is renamed automatically by the flow migration CLI. The other three need a manual rewrite, and moving `Resume` in particular was about permissions: changing another execution's state should go through the API where RBAC applies.
+Only the last one is renamed automatically by the flow migration CLI. The other three need a manual rewrite, and moving `Resume` in particular was about permissions: changing another execution's state should go through the API where RBAC applies.
 
 The SDK that absorbed them grew a lot in the cycle, and it is worth knowing as a surface. Open source: `executions.Count`, `Delete`, `Kill`, `Query`, `Resume`, `flows.Export`, `ExportById`, `List`, `logs.Fetch`, `namespaces.List`, `NamespacesWithFlows`, `triggers.ScheduleMonitor` and `Toggle`. Enterprise adds asset management, test running, and the whole IAM surface, covering bindings, groups, invitations, roles, service accounts and tenant access.
 
