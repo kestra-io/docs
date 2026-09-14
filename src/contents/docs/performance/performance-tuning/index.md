@@ -75,6 +75,21 @@ kestra:
 
 By default, it's 0, which means the number of available CPUs. Two thread pools are started, effectively using 2 times the number of available CPUs by default.
 
+## MySQL-specific tuning
+
+If you run the JDBC backend on MySQL, you may see meaningfully lower executor throughput than on PostgreSQL on comparable hardware, even after tuning the JDBC queue settings above. This comes from a MySQL server default, not from the JDBC queue itself.
+
+Kestra's JDBC queue commits frequently: a busy instance can produce thousands of commits per second. By default, MySQL synchronously flushes the binary log to disk on every commit (`sync_binlog=1`), on top of its own redo log flush; PostgreSQL only flushes once per commit. That extra flush is what dominates at this commit rate.
+
+`sync_binlog` controls how often the binary log is flushed. Setting it above `1` flushes only every Nth commit, applied server-wide:
+
+```ini
+[mysqld]
+sync_binlog=25
+```
+
+**Trade-off:** this doesn't affect `mysqld` crash safety or data durability (`innodb_flush_log_at_trx_commit` is untouched): only the binary log can lose up to N-1 transactions on an OS-level crash, which matters only for replication or point-in-time recovery. A single instance with no replicas or binlog backups has no practical downside; otherwise, pick N based on acceptable replication lag.
+
 ## The Kafka backend
 
 First, we set the Kafka partition count to 16 with a replication factor of 1 by default. Because Kafka is not the primary storage, increasing the replication factor is optional; all data can be re-created from the database if needed. It's worth noting that as the partition count is 16, starting more than 16 instances of a Kestra component (16 Workers, 16 Executors, etc.) would not provide any benefits. If you plan to exceed this, increase the partition count.
