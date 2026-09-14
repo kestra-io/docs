@@ -92,6 +92,8 @@ jobs:
             head -12 /tmp/build.log
             echo "--- phase lines ---"
             grep -aE "\[(build|vite|content|types|adapter|glob-loader)\]" /tmp/build.log | tail -40
+            echo "--- cachekey probe ---"
+            grep -a "cachekey-probe" /tmp/build.log | sort -u
             echo "--- route buckets ---"
             perl -pe 's/\e\[[0-9;]*m//g' /tmp/build.log > /tmp/build.plain
             grep -a -e '├─' -e '└─' /tmp/build.plain > /tmp/pages.txt
