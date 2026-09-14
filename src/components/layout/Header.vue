@@ -1087,6 +1087,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "/src/assets/styles/buttons" as *;
+
     @mixin dark-nav-content($color: $white) {
         a.nav-link:not(.btn),
         button.nav-link:not(.btn),
@@ -1625,6 +1627,10 @@
 
                 @include dark-nav-content;
 
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
+
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
                 }
@@ -1644,6 +1650,10 @@
                 }
 
                 @include dark-nav-content($black);
+
+                .btn-secondary {
+                    @include btn-secondary-light-surface;
+                }
             }
 
             body[data-header-theme="darkBg"] &:not(.scrolled):not(.open) {
@@ -1661,6 +1671,10 @@
 
                 @include dark-nav-content;
 
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
+
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
                 }
@@ -1668,6 +1682,10 @@
 
             html.dark & {
                 @include dark-nav-content;
+
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
 
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);

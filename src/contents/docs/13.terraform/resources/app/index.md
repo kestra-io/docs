@@ -23,7 +23,21 @@ This resource is only available on the [Enterprise Edition](https://kestra.io/en
 
 - `source` (String) The source text.
 
+### Optional
+
+- `tenant_id` (String) The tenant id. Defaults to the provider tenant when omitted.
+
 ### Read-Only
 
 - `id` (String) The ID of this resource.
 - `uid` (String) The unique identifier.
+
+## Import
+
+Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
+
+```shell
+terraform import kestra_app.example {{app_uid}}
+```

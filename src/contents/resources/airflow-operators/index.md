@@ -162,6 +162,7 @@ While Airflow is a mature and powerful tool, several scenarios warrant consideri
 - **GitOps and IaC Practices:** Declarative YAML workflows are a natural fit for GitOps. They can be versioned, reviewed, and deployed just like infrastructure code.
 - **Cross-Domain Orchestration:** If you need to orchestrate workflows that span data engineering, infrastructure provisioning (Terraform/Ansible), and AI/ML pipelines, a unified platform provides better visibility and control.
 - **Reducing Operational Overhead:** For teams looking to minimize the complexity of managing dependencies, custom code, and the orchestration platform itself, a simpler, declarative model can significantly lower the total cost of ownership.
+- **Comparing Concretely:** For a worked example of the same dbt project run under both models, see [running dbt on Airflow vs Kestra](/resources/data/dbt-on-airflow-vs-kestra).
 
 The data ecosystem is constantly evolving. With the recent [end of life for Airflow 2](/blogs/2026-04-06-airflow-2-end-of-life) and the release of [Airflow 3](/blogs/airflow-3-vs-airflow-2), many teams are taking the opportunity to evaluate if their current tool still meets their needs. For a comprehensive overview, explore our guide to [Airflow alternatives](/resources/data/airflow-alternatives).
 

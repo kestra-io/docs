@@ -1,5 +1,5 @@
-import { createMarkdownParser } from "@nuxtjs/mdc/runtime"
 import GithubSlugger from "github-slugger"
+import { kebabCaseTag, parseMdcDocument, type MdcNode } from "~/markdown/mdcTree"
 import { getHighlighterCore } from "~/components/plugins/schema/shikiToolset"
 import {
     currentDocKey,
@@ -7,27 +7,17 @@ import {
     directDocChildren,
     docLinkBaseDir,
     frontmatterField,
+    isRelativeAssetRef,
     isRelativeDocHref,
     isVersionedAssetRef,
     plainDocText,
+    resolveRelativeAssetRef,
     resolveVersionedDocLink,
     versionedAssetUrl,
     type DocChildren,
     type HomePageButton,
 } from "~/utils/versionedDocs"
 import { editionLabelAndColorByPrefix } from "~/utils/badgeMaps.mjs"
-
-// @nuxtjs/mdc's hast-like tree, walked ourselves so the emitted HTML reuses
-// the real site's markdown/component classes (inherits `.bd-content` styling).
-interface MdcNode {
-    type: string
-    tag?: string
-    props?: Record<string, unknown>
-    children?: MdcNode[]
-    value?: string
-    /** Pre-rendered Shiki inner HTML for a `pre`, set by highlightCodeBlocks. */
-    highlightedHtml?: string
-}
 
 // Tags passed straight through as HTML. Anything else is treated as a bespoke
 // MDC component (alert/collapse/badge/home-page-buttons get styled; the rest
@@ -41,7 +31,7 @@ const HTML_TAGS = new Set([
     "iframe", "picture", "input", "audio",
 ])
 const VOID_TAGS = new Set(["img", "br", "hr", "source", "input", "meta", "link"])
-// MDC-internal props that aren't real HTML attributes.
+// Parser-internal props that aren't real HTML attributes.
 const DROP_PROPS = new Set(["code", "language", "meta", "__ignoreMap"])
 
 /** Serialize an MDC props map to an HTML attribute string. */
@@ -185,7 +175,13 @@ function componentHtml(
     }
 }
 
-/** The `.ks-card-grid` for a node's direct children, mirroring the real GuidesChildCard.vue's card markup. */
+/**
+ * The `.ks-child-card-grid` for a node's direct children, mirroring the real
+ * GuidesChildCard.vue's card markup. Styled by the global markdown mixin, so
+ * the classes are deliberately NOT the real ChildCard.astro's `.ks-card-*`:
+ * that component is Astro-scoped and its chevron would otherwise inherit the
+ * icon box below (kestra-io/docs#5558).
+ */
 function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
     const cards = directDocChildren(ctx.children, parentKey)
     if (!cards.length) return ""
@@ -200,19 +196,19 @@ function childCardsHtml(parentKey: string, ctx: RenderCtx): string {
             const iconRef = meta.icon?.replace(/^\/src\/contents/, "")
             const icon =
                 iconRef && isVersionedAssetRef(iconRef)
-                    ? `<img class="ks-card-icon" src="${escapeHtml(
+                    ? `<img class="ks-child-card-icon" src="${escapeHtml(
                           versionedAssetUrl(ctx.apiUrl, ctx.version, iconRef),
                       )}" alt="" width="48" height="48" />`
                     : ""
             const desc = meta.description
-                ? `<p class="ks-card-text">${escapeHtml(plainDocText(meta.description))}</p>`
+                ? `<p class="ks-child-card-text">${escapeHtml(plainDocText(meta.description))}</p>`
                 : ""
-            return `<a class="ks-card" href="${escapeHtml(
+            return `<a class="ks-child-card" href="${escapeHtml(
                 docChildHref(ctx.version, key),
-            )}">${icon}<h4 class="ks-card-title">${escapeHtml(title)}</h4>${desc}</a>`
+            )}">${icon}<h4 class="ks-child-card-title">${escapeHtml(title)}</h4>${desc}</a>`
         })
         .join("")
-    return `<div class="ks-card-grid">${items}</div>`
+    return `<div class="ks-child-card-grid">${items}</div>`
 }
 
 const SUPPORT_LINKS_HTML = `<div class="support-links-row"><a class="support-link" href="https://kestra.io/slack"><h3>Community Slack</h3><p>Discuss topics with other users and kestra Team</p></a><a class="support-link" href="https://github.com/kestra-io/kestra"><h3>GitHub</h3><p>Give our open-source project a star</p></a><a class="support-link" href="https://kestra.io/demo"><h3>Help Center</h3><p>Contact support for help with your Enterprise account</p></a></div>`
@@ -330,8 +326,9 @@ function repointAbsoluteDocHref(
 
 // Pre-pass over the parsed tree, mutating in place before serialize:
 // - asset refs re-pointed at the versioned asset API (mirrors the in-app
-//   ProseImg + doc store); only root-absolute refs with a file extension (see
-//   isVersionedAssetRef) — external and protocol-relative refs are left alone
+//   ProseImg + doc store): root-absolute refs (<=1.1) directly, colocated
+//   relative ones (1.2+) resolved against the page's own directory first —
+//   external and protocol-relative refs are left alone
 // - relative in-content links resolved to versioned pretty URLs (the raw
 //   source-relative "NN.foo.md" hrefs are all dead routes)
 // - heading ids assigned via a fresh GithubSlugger per render (the memoized
@@ -342,9 +339,21 @@ function transformTree(node: MdcNode | undefined, ctx: TransformCtx): void {
     if (node.type === "element" && node.tag && node.props) {
         for (const attr of ASSET_ATTRS[node.tag] ?? []) {
             const v = node.props[attr]
-            if (typeof v === "string" && isVersionedAssetRef(v)) {
-                node.props[attr] = versionedAssetUrl(ctx.apiUrl, ctx.version, v)
+            if (typeof v !== "string") continue
+            const ref = isRelativeAssetRef(v)
+                ? resolveRelativeAssetRef(ctx.baseDir, v)
+                : v
+            if (isVersionedAssetRef(ref)) {
+                node.props[attr] = versionedAssetUrl(ctx.apiUrl, ctx.version, ref)
             }
+        }
+        // Latest's rehype img-plugin tags every image `zoom`, what medium-zoom
+        // binds to for click-to-enlarge.
+        if (node.tag === "img") {
+            const existing = node.props.className
+            node.props.className = existing
+                ? [...(Array.isArray(existing) ? existing : [existing]), "zoom"]
+                : "zoom"
         }
         if (node.tag === "a") {
             const href = node.props.href
@@ -479,23 +488,6 @@ function trimTrailingResidue(body: MdcNode): void {
     }
 }
 
-// createMarkdownParser is framework-agnostic (no Vue runtime) and runs on the
-// Worker. It natively parses both MDC dialects in the corpus — "::" (0.19–0.24)
-// and ":::" (1.0/1.1) — including `:prop='json'` v-bind props. It's expensive
-// to build; reuse one.
-let parserPromise: ReturnType<typeof createMarkdownParser> | null = null
-function getParser() {
-    if (!parserPromise) {
-        parserPromise = createMarkdownParser()
-        // Don't memoize a rejection: a cold-start init failure would otherwise
-        // fail every later render in this isolate (mirrors getHighlighterCore).
-        parserPromise.catch(() => {
-            parserPromise = null
-        })
-    }
-    return parserPromise
-}
-
 // The homepage and every category-index page are authored as real Astro/MDX,
 // with genuine ESM import lines for their Astro components (like ChildCard,
 // aliased via "~/components/docs/ChildCard.astro"). Those lines are meaningless
@@ -566,10 +558,6 @@ function normalizeHomePageHeaderJsx(markdown: string): string {
 const FENCED_CODE_BLOCK = /```[\s\S]*?```|~~~[\s\S]*?~~~/g
 const INLINE_CODE = /`[^`\n]*`/g
 const JSX_TAG_REF = /(?<![\w-])<([A-Z][A-Za-z0-9]*)(?=[\s/>])/g
-
-function kebabCaseTag(tag: string): string {
-    return tag.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
-}
 
 function referencedComponentTags(markdown: string): Set<string> {
     const stripped = markdown.replace(FENCED_CODE_BLOCK, "").replace(INLINE_CODE, "")
@@ -659,23 +647,21 @@ export async function renderVersionedDocBody({
     const h1 = frontmatterField(markdown, "h1") ?? title
     const description = frontmatterField(markdown, "description")
 
-    const parse = await getParser()
-    // The parser strips frontmatter and parses the MDC body (both "::" and
-    // ":::" dialects, plus `:prop='json'` props) into a hast-like tree we
-    // serialize ourselves — no Vue runtime, no "::"/component-name leak.
-    const normalizedMarkdown = normalizeHomePageHeaderJsx(
-        normalizeHomePageButtonsJsx(stripEsmImports(markdown)),
+    // parseMdcDocument strips frontmatter and parses the MDC body (both "::"
+    // and ":::" dialects, plus `:prop='json'` props) into a hast-like tree we
+    // serialize ourselves — no "::"/component-name leak.
+    const body = parseMdcDocument(
+        normalizeHomePageHeaderJsx(normalizeHomePageButtonsJsx(stripEsmImports(markdown))),
     )
-    const { body } = await parse(normalizedMarkdown)
-    transformTree(body as MdcNode, {
+    transformTree(body, {
         apiUrl,
         version,
         baseDir: docLinkBaseDir(path, children),
         children,
         slugger: new GithubSlugger(),
     })
-    trimTrailingResidue(body as MdcNode)
-    await highlightCodeBlocks(body as MdcNode)
+    trimTrailingResidue(body)
+    await highlightCodeBlocks(body)
     const pageKey = currentDocKey(path)
     const ctx: RenderCtx = {
         version,
@@ -685,9 +671,9 @@ export async function renderVersionedDocBody({
         unknownComponents: new Set(),
         seenComponents: new Set(),
     }
-    const html = serialize(body as MdcNode, ctx)
+    const html = serialize(body, ctx)
     const headings: { id: string; text: string; level: number }[] = []
-    collectHeadings(body as MdcNode, headings)
+    collectHeadings(body, headings)
 
     const referencedTags = referencedComponentTags(markdown)
     for (const tag of referencedTags) {

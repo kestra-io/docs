@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content"
 import ChevronRightIcon from "vue-material-design-icons/ChevronRight.vue"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import generateId from "~/utils/generateId"
 
 interface Props {
@@ -79,7 +79,7 @@ const children = await Promise.all(
         children.map((item) => (
             <a href={item.path} class="ks-card">
                 <h4 class="ks-card-title">{item.title}</h4>
-                <MDCParserAndRenderer
+                <MarkdownRenderer
                     content={item.description}
                     class:list={["ks-card-text"]}
                 />

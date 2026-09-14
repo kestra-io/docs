@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from "astro"
 import { getCollection } from "astro:content"
+import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
 import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
@@ -48,9 +49,13 @@ function getImgSvg(filename: string): ImageMetadata {
 
 export async function getStaticPaths() {
     const vsEntries = await getCollection("vs")
+    // The page substitutes the live plugin count into the entry, so the count
+    // is a build-time input of every cached page here.
+    const scope = [await layoutDigest(), `p${await fetchTotalPluginsCount()}`]
     return vsEntries.map((entry) => ({
         params: { slug: entry.id },
         props: { entry },
+        cacheKey: entryCacheKey(entry, ...scope),
     }))
 }
 

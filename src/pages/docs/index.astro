@@ -23,6 +23,7 @@ const editUrl = doc.filePath
     title={doc.data?.title}
     description={doc.data?.description}
     navigation={navigation}
+    editions={doc.data?.editions}
 >
     <h1 slot="title" class="py-0 title">{doc.data?.h1 ?? doc.data?.title}</h1>
 

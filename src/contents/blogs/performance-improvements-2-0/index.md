@@ -13,7 +13,7 @@ image: ./main.png
 
 Kestra 2.0 rebuilds the execution engine. The architecture side of that change is covered in [what changed in the engine](/blogs/2026-09-01-kestra20-rebuild-engine). This post covers the performance side.
 
-Previous posts in this series were about tuning individual hot paths. 2.0 is different: it changes what the engine has to do for each execution, and the benchmarks move accordingly.
+Previous posts in this series were about [tuning individual hot paths](/blogs/plugin-performance-improvements). 2.0 is different: it changes what the engine has to do for each execution, and the benchmarks move accordingly.
 
 The post starts with the numbers, 1.3 against 2.0 on identical hardware, then goes through the changes that produced them, and ends with where the ceiling sits now, because it is no longer where it used to be.
 
@@ -219,6 +219,8 @@ On the same flows, the same VMs, and the same Postgres, Kestra 2.0 sustains twic
 The improvements came from making each execution cheaper for the engine: a queue that deletes on consume, messages that carry commands instead of executions, outputs stored outside the execution, and a Worker that batches. The reference benchmarks are on the [benchmark page](../../docs/performance/benchmark) and will be updated with each release.
 
 If you need more than 4000 exec/min, the answer in 2.0 is no longer a bigger Kestra node. It is a queue that is not also your repository. The [backend guide](/blogs/kestra-2-0-backend-choice) walks through how to pick one.
+
+None of these numbers require a flow change, only an upgrade: the steps are in the [2.0 migration guide](/docs/migration-guide/v2.0.0).
 
 :::alert{type="info"}
 If you have any questions, reach out via [Slack](/slack) or open a [GitHub issue](https://github.com/kestra-io/kestra).

@@ -184,9 +184,11 @@ export const collections = {
         loader: file("src/contents/annonces/annonces.yml"),
         schema: z.object({
             id: z.number(),
-            text: z.string(),
+            tag: z.string().optional(),
+            linkText: z.string().optional(),
+            text: z.string().optional(),
+            tail: z.string().optional(),
             href: z.string(),
-            linkText: z.string(),
         }),
     }),
     redirects: defineCollection({
@@ -268,4 +270,3 @@ export const collections = {
             }),
     }),
 }
-

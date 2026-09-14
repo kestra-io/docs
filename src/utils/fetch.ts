@@ -120,6 +120,24 @@ export async function $fetchApiCachedWithRetry<T = any>(
     throw lastError
 }
 
+// Same as $fetchApiCached but resolves to undefined when the API fails, for
+// decorative data that must not take the whole page down.
+export async function $fetchApiCachedOptional<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T | undefined> {
+    try {
+        return await $fetchApiCached<T>(url, init)
+    } catch (error) {
+        const status = (error as { response?: { status?: number } })?.response
+            ?.status
+        console.warn(
+            `Optional API fetch failed (${status ?? "network"}): ${url}`,
+        )
+        return undefined
+    }
+}
+
 export async function $fetchApiRawCached(
     url: string,
     init: RequestInit = {},

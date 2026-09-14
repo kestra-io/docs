@@ -11,8 +11,10 @@ import {
     docLinkBaseDir,
     frontmatterField,
     plainDocText,
+    isRelativeAssetRef,
     isRelativeDocHref,
     isVersionedAssetRef,
+    resolveRelativeAssetRef,
     resolveVersionedDocLink,
     versionedAssetUrl,
     decideVersionedRoute,
@@ -148,6 +150,64 @@ describe("docLinkBaseDir", () => {
 
     it("is the root for the version home", () => {
         expect(docLinkBaseDir("", children)).toBe("")
+    })
+
+    it("is the page itself for a childless index page (1.2+ shape)", () => {
+        // Every 1.2+ page is an index.md in its own directory, so a page with
+        // no child PAGES still owns the directory its screenshots sit in.
+        expect(
+            docLinkBaseDir("tutorial/fundamentals", {
+                ...children,
+                "docs/tutorial/fundamentals": { title: "Fundamentals", isIndex: true },
+            }),
+        ).toBe("tutorial/fundamentals")
+    })
+})
+
+describe("isRelativeAssetRef", () => {
+    it("matches the 1.2+ colocated asset refs", () => {
+        expect(isRelativeAssetRef("./create-button.png")).toBe(true)
+        expect(isRelativeAssetRef("../okta/sso.png")).toBe(true)
+        expect(isRelativeAssetRef("x.gif")).toBe(true)
+    })
+
+    it("leaves root-absolute, external and anchor refs alone", () => {
+        expect(isRelativeAssetRef("/docs/tutorial/x.png")).toBe(false)
+        expect(isRelativeAssetRef("https://cdn.example/x.png")).toBe(false)
+        expect(isRelativeAssetRef("data:image/png;base64,AAAA")).toBe(false)
+        expect(isRelativeAssetRef("#frag")).toBe(false)
+    })
+
+    it("leaves extension-less relative paths (doc links) alone", () => {
+        expect(isRelativeAssetRef("./01.fundamentals")).toBe(false)
+        expect(isRelativeAssetRef("")).toBe(false)
+    })
+})
+
+describe("resolveRelativeAssetRef", () => {
+    it("resolves a colocated ref against the page's own directory", () => {
+        expect(resolveRelativeAssetRef("tutorial/fundamentals", "./create_button.png")).toBe(
+            "/docs/tutorial/fundamentals/create_button.png",
+        )
+        expect(resolveRelativeAssetRef("tutorial/fundamentals", "create_button.png")).toBe(
+            "/docs/tutorial/fundamentals/create_button.png",
+        )
+    })
+
+    it("walks up and drops ordering prefixes from directory segments", () => {
+        expect(
+            resolveRelativeAssetRef("use-cases/dbt", "../../15.how-to-guides/dbt/x.png"),
+        ).toBe("/docs/how-to-guides/dbt/x.png")
+    })
+
+    it("keeps a query/hash suffix and never strips the filename's own prefix", () => {
+        expect(resolveRelativeAssetRef("ui/flows", "./1.2-editor.png?v=2")).toBe(
+            "/docs/ui/flows/1.2-editor.png?v=2",
+        )
+    })
+
+    it("clamps a ref that walks above the docs root", () => {
+        expect(resolveRelativeAssetRef("", "../../x.png")).toBe("/docs/x.png")
     })
 })
 

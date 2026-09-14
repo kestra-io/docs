@@ -94,30 +94,6 @@ If `workerSelector` is absent or all tags resolve to null, the task routes to th
 `fallback` only applies when a matching Worker Queue exists but has no live worker right now. If no queue matches the tags at all, the task fails immediately regardless of the `fallback` value — that is a configuration error, not a capacity gap.
 :::
 
-### Dynamic routing
-
-Use Pebble expressions to set tags at runtime:
-
-```yaml
-inputs:
-  - id: region
-    type: STRING
-    defaults: eu
-
-tasks:
-  - id: process
-    type: io.kestra.plugin.scripts.python.Commands
-    workerSelector:
-      tags:
-        - "{{ inputs.region }}"
-        - sensitive
-      fallback: WAIT
-    commands:
-      - python process.py
-```
-
-When an expression resolves to null or a blank string, that tag is omitted from the selector. If all tags resolve to null, the task routes to the default queue.
-
 ### Namespace and tenant-level routing defaults
 
 Instead of adding `workerSelector` to every task, set a default selector at the namespace or tenant level. Kestra resolves the selector most-specific-first — task, then flow, then the nearest namespace ancestor, then the tenant — and stops at the first level that declares one.

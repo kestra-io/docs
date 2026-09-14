@@ -1,5 +1,10 @@
 ---
 import { getCollection } from "astro:content"
+import {
+    collectionMetadataDigest,
+    entryCacheKey,
+    layoutDigest,
+} from "~/utils/incrementalCacheKey"
 
 import Layout from "~/components/layout.astro"
 import SchemaFAQ from "~/components/common/SchemaFAQ.astro"
@@ -84,9 +89,17 @@ const LOGO_MAP: Record<string, string> = {
 
 export async function getStaticPaths() {
     const entries = await getCollection("orchestration")
+    // The page also renders the blog list, so blog metadata is part of its key,
+    // as is the live plugin count substituted into the entry.
+    const scope = [
+        collectionMetadataDigest(await getCollection("blogs")),
+        await layoutDigest(),
+        `p${await fetchTotalPluginsCount()}`,
+    ]
     return entries.map((entry) => ({
         params: { slug: entry.id },
         props: { entry },
+        cacheKey: entryCacheKey(entry, ...scope),
     }))
 }
 

@@ -64,6 +64,7 @@ While Cloud Run Jobs provide an excellent execution environment, they are not a 
 - **Parameterization and Dynamic Execution:** Workflows often need to pass data between tasks, such as passing a filename from a GCS trigger to a Cloud Run Job.
 - **End-to-End Observability:** You need a single pane of glass to monitor the entire workflow, not just individual job executions. This includes centralized logging, execution history, and alerting on failures.
 - **Cross-Service Integration:** Batch jobs rarely live in isolation. They need to interact with other services like BigQuery, Dataproc, dbt Cloud, or even systems in a [multi-cloud environment](/resources/infrastructure/multi-cloud-orchestration).
+- **Execution Time Limits:** Cloud Run Jobs allow a task to run for up to 24 hours, well beyond what serverless functions permit. Teams migrating workloads from AWS have to design around a far tighter ceiling — see [AWS Lambda timeout limits and how to work around them](/resources/infrastructure/aws-lambda-timeout).
 
 Without an orchestration layer, you are left to build this complex logic yourself using a combination of Cloud Functions, Eventarc, and custom scripts—a solution that is often brittle and difficult to maintain.
 

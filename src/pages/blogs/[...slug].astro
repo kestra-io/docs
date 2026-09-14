@@ -1,5 +1,6 @@
 ---
 import { render, getCollection, type CollectionEntry } from "astro:content"
+import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
 import { getImage, Image } from "astro:assets"
 import Layout from "~/components/layout.astro"
 import SubscribeToNewsletter from "~/components/layout/SubscribeToNewsletter.vue"
@@ -14,9 +15,11 @@ import Breadcrumb from "~/components/layout/Breadcrumb.vue"
 
 export async function getStaticPaths() {
     const blogsPages = await getCollection("blogs")
+    const scope = [await layoutDigest()]
     return blogsPages.map((post) => ({
         params: { slug: post.id.toLowerCase() },
         props: post,
+        cacheKey: entryCacheKey(post, ...scope),
     }))
 }
 

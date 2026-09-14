@@ -162,7 +162,7 @@ A common pattern is to use the services for what they do best. For example, Even
 
 ### Open-Source Alternatives for Cloud-Agnostic Messaging
 
-While Azure provides powerful managed services, some teams require cloud-agnostic solutions. Apache Kafka and RabbitMQ are popular open-source alternatives for event streaming and message brokering, respectively. An orchestration platform that can manage both cloud-native services and open-source tools provides the flexibility to build hybrid and multi-cloud architectures without being locked into a single vendor's ecosystem. Using tools like [Azure Workload Identity](/docs/how-to-guides/azure-workload-id) can further streamline secure access across these environments, especially when deploying on platforms like [Azure Kubernetes Service (AKS)](/docs/installation/kubernetes-azure-aks).
+While Azure provides powerful managed services, some teams require cloud-agnostic solutions. Apache Kafka and [RabbitMQ](/resources/data/rabbitmq-vs-kafka) are popular open-source alternatives for event streaming and message brokering, respectively. An orchestration platform that can manage both cloud-native services and open-source tools provides the flexibility to build hybrid and multi-cloud architectures without being locked into a single vendor's ecosystem. Using tools like [Azure Workload Identity](/docs/how-to-guides/azure-workload-id) can further streamline secure access across these environments, especially when deploying on platforms like [Azure Kubernetes Service (AKS)](/docs/installation/kubernetes-azure-aks).
 
 ## Unifying Azure Messaging Orchestration with Kestra
 

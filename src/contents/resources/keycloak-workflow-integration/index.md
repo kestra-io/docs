@@ -23,7 +23,7 @@ faq:
     answer: "Yes, Kestra is well-suited for managing Keycloak user provisioning and deprovisioning. By leveraging Kestra's SCIM plugin, you can synchronize users and groups from Keycloak (or other IdPs) to Kestra Enterprise, ensuring consistent access control and automated identity lifecycle management across your Kestra-orchestrated systems."
 ---
 
-Identity and Access Management (IAM) is no longer a static configuration task. As enterprises scale, the need for dynamic, automated workflows around systems like Keycloak becomes critical for security, compliance, and operational efficiency. Keycloak's introduction of an experimental "Workflows" feature in v26.4 signals a recognition of this need, allowing for internal administrative automation.
+Identity and Access Management (IAM) is no longer a static configuration task. As enterprises scale, the need for dynamic, automated workflows around systems like [Keycloak](/resources/infrastructure/keycloak-sso-integration) becomes critical for security, compliance, and operational efficiency. Keycloak's introduction of an experimental "Workflows" feature in v26.4 signals a recognition of this need, allowing for internal administrative automation.
 
 However, true enterprise-grade workflow integration requires more than an internal solution. It demands a universal control plane that can orchestrate Keycloak alongside data pipelines, infrastructure automation, AI agents, and business processes. This article explores how Kestra provides this declarative, language-agnostic orchestration layer, transforming Keycloak from a standalone identity provider into a fully integrated component of your automated enterprise.
 

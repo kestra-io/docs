@@ -19,6 +19,14 @@ Source code and releases are available at [github.com/kestra-io/kestractl](https
 curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | bash
 ```
 
+:::alert{type="warning"}
+The default install script installs kestractl 2.0, compatible with Kestra 2.0 only. For Kestra 1.x, pass `VERSION=1`:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/kestra-io/kestractl/main/install-scripts/install.sh | VERSION=1 bash
+```
+:::
+
 ## Quick Setup
 
 ### Open Source (basic auth)

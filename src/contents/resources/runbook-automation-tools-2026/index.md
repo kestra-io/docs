@@ -43,7 +43,7 @@ The modern approach, and the standard for 2026, is declarative and event-driven.
 *   **Declarative:** Instead of scripting every step, teams define the desired end state in a configuration file (like YAML). The automation platform is responsible for figuring out how to achieve that state. This makes runbooks more readable, versionable, and auditable—a practice often referred to as GitOps for operations.
 *   **Event-Driven:** Rather than relying solely on scheduled execution, modern runbooks are triggered by events from monitoring systems, ITSM platforms, or cloud services. An alert from Prometheus, a new ticket in ServiceNow, or an S3 bucket event can all initiate an automated remediation workflow, enabling real-time response to operational issues.
 
-This evolution turns runbooks from static, reactive documents into dynamic, proactive components of a self-healing IT ecosystem.
+This evolution turns runbooks from static, reactive documents into dynamic, proactive components of a [self-healing](/resources/infrastructure/self-healing-infrastructure) IT ecosystem.
 
 ## Why Modern IT Operations Demand Automated Runbooks
 

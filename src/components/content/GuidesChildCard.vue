@@ -67,7 +67,7 @@
                         </div>
                         <div class="guide-card-body">
                             <h3 class="guide-card-title">{{ item.title }}</h3>
-                            <MDCParserAndRendererSSR
+                            <MarkdownRendererSSR
                                 :content="item.description"
                                 class="guide-card-description"
                             />
@@ -115,7 +115,7 @@
     import DeleteOutline from "vue-material-design-icons/DeleteOutline.vue"
     import BookOpenVariantOutline from "vue-material-design-icons/BookOpenVariantOutline.vue"
     import MultiSelect from "~/components/select/MultiSelect.vue"
-    import MDCParserAndRendererSSR from "~/components/MDCParserAndRendererSSR.vue"
+    import MarkdownRendererSSR from "~/components/MarkdownRendererSSR.vue"
     import PaginationContainer from "~/components/common/PaginationContainer.vue"
 
     const props = defineProps({

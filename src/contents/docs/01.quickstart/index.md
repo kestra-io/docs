@@ -30,7 +30,6 @@ docker run --pull=always --rm -it -p 8080:8080 --user=root \
   -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v /tmp:/tmp \
-  -e KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true \
   kestra/kestra:latest-slim server local
 ```
 
@@ -45,7 +44,7 @@ If you re-run the command and Docker reports `You have to remove (or rename) tha
 :::
 
 :::alert{type="info"}
-The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. The `KESTRA_PLUGINS_AUTO_INSTALL_ENABLED=true` environment variable makes Kestra install any plugin automatically the first time a flow needs it, so you don't need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
+The `kestra/kestra:latest-slim` image ships without any plugins to keep the download small. Plugin auto-install is on by default for `server local`, so Kestra installs any plugin automatically the first time a flow needs it — no need to pre-install anything. If you prefer an image with all plugins bundled, use `kestra/kestra:latest` instead.
 :::
 
 The container is ready when the logs show `Main server is running at http://...:8080`.

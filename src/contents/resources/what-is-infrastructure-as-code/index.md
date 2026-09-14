@@ -24,7 +24,7 @@ Infrastructure as Code (IaC) emerged to solve exactly this problem, turning infr
 
 ## What is Infrastructure as Code?
 
-Infrastructure as Code is the practice of managing and provisioning IT infrastructure through machine-readable definition files, rather than through physical hardware setup or interactive configuration tools. It treats servers, networks, load balancers, and even entire data centers as software, applying the same version control, automated testing, and continuous integration that application developers have relied on for decades.
+Infrastructure as Code is the practice of managing and provisioning IT infrastructure through machine-readable definition files, rather than through physical hardware setup or interactive configuration tools. It treats servers, networks, load balancers, and even entire data centers as software, applying the same version control, automated testing, and continuous integration that application developers have relied on for decades. Provisioning is only the first step; keeping those resources running, scaled, and cleaned up is the wider practice of [cloud automation](/resources/infrastructure/cloud-automation).
 
 In plain terms: instead of clicking through a cloud console to create a virtual machine, you write a file that says "I want a virtual machine of this size, in this region, with this network attached." A tool reads that file and makes it real. Because the file lives in Git, anyone can see exactly what infrastructure exists, who changed it, and why.
 

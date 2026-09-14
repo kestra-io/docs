@@ -119,7 +119,7 @@ Here's what's worth noticing in this workflow:
 
 *   **Declarative Pipeline:** The entire process is defined in a simple, version-controllable YAML file. There's no hidden "glue code."
 *   **Internal Storage:** Kestra seamlessly handles the intermediate storage. The Python script writes to an output file, and the MongoDB task reads from it using a simple expression `{{ outputs['generate-records'].outputFiles.users }}`.
-*   **Specialized Plugins:** Instead of writing custom loading logic, the workflow uses the `io.kestra.plugin.mongodb.bulk` task, which is optimized for high-performance bulk operations using NDJSON. A similar plugin exists for Elasticsearch bulk loading, `io.kestra.plugin.elasticsearch.bulk`, providing a consistent pattern for different destinations.
+*   **Specialized Plugins:** Instead of writing custom loading logic, the workflow uses the `io.kestra.plugin.mongodb.bulk` task, which is optimized for high-performance bulk operations using NDJSON. A similar plugin exists for [Elasticsearch](/resources/data/elastic-search) bulk loading, `io.kestra.plugin.elasticsearch.bulk`, providing a consistent pattern for different destinations.
 *   **Secrets Management:** Database credentials are not hardcoded. They are securely accessed via `{{ secret('MONGO_URI') }}`, ensuring proper security hygiene.
 
 ## Where NDJSON pays off: Practical use cases

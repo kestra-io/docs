@@ -56,6 +56,7 @@ The decision to seek an alternative to Snowflake Tasks usually stems from a need
 - **Operational efficiency & cost:** While convenient, the compute costs associated with running orchestration logic directly within Snowflake can add up. Dedicated orchestrators often offer more cost-efficient execution models, especially for complex or frequent workflows.
 - **Developer experience & governance:** External orchestrators often provide richer developer tooling, GitOps integration, and more advanced governance features like RBAC, audit logs, and version control for workflows as code. This also makes [data observability](/resources/data/data-observability) across your entire stack far more achievable.
 - **Event-driven architectures:** The shift towards real-time data processing and event-driven patterns is poorly supported by the scheduled nature of Snowflake Tasks. External orchestrators excel at reacting to events from various sources.
+- **Ingestion is a separate concern:** Tasks schedule transformations, not loading. Continuous file ingestion is handled by [Snowpipe](/resources/data/snowpipe), which most teams end up orchestrating alongside them.
 
 ## How we evaluated these alternatives
 We evaluated each alternative based on its ability to address the limitations of Snowflake Tasks and provide superior workflow orchestration capabilities. Key criteria included:

@@ -32,7 +32,7 @@ The lakehouse is not just an incremental improvement; it represents a fundamenta
 
 A data lakehouse architecture is a modern data management system that combines the low-cost, flexible storage of a data lake with the powerful data management and analytics capabilities of a data warehouse. Historically, data lakes excelled at storing vast amounts of raw, unstructured data, but lacked transactional support and data quality enforcement. Data warehouses, on the other hand, provided structured, high-performance analytics but were expensive and inflexible for modern data types like video, audio, and text.
 
-The lakehouse resolves this by implementing a metadata and transaction layer directly on top of low-cost object storage. This is made possible by open table formats like Apache Iceberg and Delta Lake, which bring key warehouse features to the data lake:
+The lakehouse resolves this by implementing a metadata and transaction layer directly on top of low-cost object storage. This is made possible by open table formats like Apache Iceberg and [Delta Lake](/resources/data/delta-lake), which bring key warehouse features to the data lake:
 - **ACID Transactions:** Ensures data integrity and reliability, allowing multiple users to read and write data concurrently.
 - **Schema Enforcement and Evolution:** Prevents data corruption by enforcing a schema on write, while still allowing the schema to evolve over time.
 - **Time Travel:** Enables data versioning, allowing users to query historical data, audit changes, and roll back errors.
@@ -46,6 +46,7 @@ A typical lakehouse architecture is built on several key components working in c
 - **Metadata Layer:** A centralized catalog (like AWS Glue Data Catalog or Hive Metastore) that stores information about the data, including schemas, table locations, and partitions.
 - **Processing Engines:** A variety of engines can access the data directly. Apache Spark is the most common for large-scale data processing, while query engines like [DuckDB](/blogs/2024-03-14-duck-db) and Trino enable high-performance SQL analytics.
 - **Governance and Access Control:** Tools for managing security, access control, data quality, and lineage are integrated across the platform.
+- **Catalog Layer:** A single catalog exposes those governed assets to every engine that queries the lakehouse. On Databricks this role is played by [Unity Catalog](/resources/data/databricks-unity-catalog), which centralises schemas, access policies, and lineage across workspaces.
 
 This unified structure directly addresses the limitations of maintaining separate data lakes and data warehouses, and increasingly sits at the heart of the [modern data stack](/use-cases/modern-data-stack) Kestra customers operate.
 
