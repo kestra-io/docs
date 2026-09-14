@@ -151,7 +151,7 @@ The repository, on the other hand, is still a compiled-in Gradle module. `QueueI
 
 ## Task forms stopped being a wall of fields
 
-If you have configured a plugin with forty properties, you know the problem: the form lists them in schema order, required and obscure side by side, and finding `timeout` means scrolling past six authentication fields.
+If you have configured a plugin with forty properties, you know the problem: the form lists them in schema order, required and obscure side by side, and finding `timeout` means  a lot of scrolling.
 
 2.0 added a property group taxonomy to `@PluginProperty`, with nine groups: `main`, `connection`, `source`, `processing`, `execution`, `destination`, `reliability`, `advanced` and `deprecated`, plus an optional index for ordering inside a group. The generator threads it into the JSON schema and the task form renders the sections.
 
