@@ -9,6 +9,7 @@ author:
   linkedin: https://www.linkedin.com/in/charming-data/
   image: aschroeder
   role: Developer Advocate
+image: ./main.png
 ---
 
 Kestra is an open source orchestration platform where you define workflows in YAML instead of Python, and its workers can run without holding a database connection. That second part is the detail worth understanding if you're evaluating orchestrators against Airflow or Dagster and haven't tried Kestra yet. This is what lets you place a worker in a separate cloud, an on-premises environment, or a network that only allows outbound traffic, with no inbound ports open at all.
