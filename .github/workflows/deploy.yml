@@ -83,6 +83,11 @@ jobs:
           NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
           PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
+      # A page restored from a stale incremental cache links CSS/JS hashes this
+      # build no longer emits. Catch it here rather than as a 404 in production.
+      - name: Check for dangling /_astro/ links
+        run: node scripts/check-dist-asset-links.mjs dist
+
       - name: Deploy Worker
         id: prod-deploy
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.ref == 'refs/heads/main' }}
