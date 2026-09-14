@@ -75,7 +75,7 @@ This article delves into the top Microsoft Fabric alternatives in 2026. The lead
 
 ## Understanding Microsoft Fabric and its purpose
 
-Microsoft Fabric is a unified analytics platform that bundles multiple services into a single, cohesive SaaS offering. Its core components include Data Factory for data integration, Synapse for data engineering and warehousing, Real-Time Analytics for streaming data, and Power BI for business intelligence. At its foundation is OneLake, a unified data lake for the entire organization.
+Microsoft Fabric is a unified analytics platform that bundles multiple services into a single, cohesive SaaS offering. Its core components include Data Factory for data integration, Synapse for data engineering and warehousing, Real-Time Analytics for streaming data, and Power BI for business intelligence. At its foundation is OneLake, a unified data lake for the entire organization. The Data Factory component keeps the pipeline model it inherited from the standalone service, described in [ADF pipelines explained](/resources/data/adf-pipeline-explained).
 
 The primary value proposition of Fabric is simplification. By integrating these tools, Microsoft aims to reduce the complexity and management overhead of building an end-to-end data platform. For organizations already invested in the Microsoft ecosystem, it offers a seemingly straightforward path to modern analytics. However, this all-in-one approach is also its main point of friction, leading many to explore alternatives that offer more flexibility and control over their [data orchestration](/resources/data/data-orchestration).
 

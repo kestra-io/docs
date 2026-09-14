@@ -130,7 +130,7 @@ It is worth noting that a data mesh can coexist with existing data warehouses an
 
 ### Data Mesh vs. Data Fabric
 
-Data mesh is often confused with data fabric, but the two solve different parts of the problem. Data mesh is primarily an **organizational and architectural** pattern: it changes *who owns data* and *how data is treated*, decentralizing ownership to domains and packaging data as products. Data fabric is primarily a **technology** pattern: it uses metadata, knowledge graphs, and automation to create a unified layer that integrates and accesses data across distributed sources, regardless of where it lives.
+Data mesh is often confused with [data fabric](/resources/data/data-mesh-vs-data-fabric), but the two solve different parts of the problem. Data mesh is primarily an **organizational and architectural** pattern: it changes *who owns data* and *how data is treated*, decentralizing ownership to domains and packaging data as products. Data fabric is primarily a **technology** pattern: it uses metadata, knowledge graphs, and automation to create a unified layer that integrates and accesses data across distributed sources, regardless of where it lives.
 
 Because they operate at different levels, the two are complementary rather than competing. A data fabric can supply the connective technology—automated metadata, discovery, and access—that a data mesh's self-serve platform exposes to domain teams. An organization can adopt the domain-ownership philosophy of a mesh while using fabric-style tooling to make data discoverable and accessible across that mesh.
 

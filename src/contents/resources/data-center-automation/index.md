@@ -173,6 +173,7 @@ An effective [IT automation platform](/resources/infrastructure/it-automation-pl
 *   **Broad Integration Ecosystem:** A rich library of plugins to connect to all your systems without extensive custom code.
 *   **Centralized Observability:** A single pane of glass to monitor all workflow executions, view logs, and track performance.
 *   **Strong Governance:** Features like Role-Based Access Control (RBAC), audit logs, and secure secret management.
+*   **A Trusted Source of Truth:** Automation is only as reliable as the inventory it reads from. Teams standardising on a DCIM and IPAM system of record can compare options in our guide to [NetBox alternatives](/resources/infrastructure/netbox-alternatives).
 
 ### Comparing Kestra with traditional and niche solutions
 

@@ -4,7 +4,7 @@ import type { Plugin, PluginMetadata } from "./plugin"
 
 import { $fetchApiCached } from "~/utils/fetch"
 import loadBlogPostsMetadata from "~/utils/loadBlogPostsMetadata"
-import { nuxtBlocksFromJsonSchema } from "~/utils/plugins/nuxtBlocks"
+import { pageBlocksFromJsonSchema } from "~/utils/plugins/pageBlocks"
 import { retrieveRepoReleases } from "~/utils/plugins/repoReleases"
 import { compareVersionsDesc, isStableVersion } from "~/utils/plugins/compareVersions"
 import type { PluginPage } from "./types"
@@ -207,7 +207,7 @@ function pageDataToPluginPage(pageData: {
     if (pageData.schema.properties.$deprecated === "true") return null
     const name = /^title: (.*)$/m.exec(pageData?.markdown)?.[1]
     const definitionType = /^type: "(.*)"$/m.exec(pageData?.markdown)?.[1]
-    return { name, type: definitionType, ...nuxtBlocksFromJsonSchema(pageData.schema) } as any
+    return { name, type: definitionType, ...pageBlocksFromJsonSchema(pageData.schema) } as any
 }
 
 export interface VersionedSubgroupsResult {

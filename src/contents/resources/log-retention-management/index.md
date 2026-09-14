@@ -65,7 +65,7 @@ These logs include application traces, performance metrics, and general system e
 This category includes logs critical for security forensics, compliance audits, and legal investigations. Examples are user authentication logs, firewall and IDS/IPS events, privileged access records, and change logs for critical systems.
 
 - **Retention Period:** A minimum of one year in readily accessible storage is a common baseline for security analysis. Depending on industry regulations (e.g., finance, healthcare), these logs may need to be archived for up to seven years or more.
-- **Justification:** Security incidents may not be discovered for months. Retaining these logs is essential for post-breach forensic analysis. Compliance frameworks like PCI-DSS, SOX, and HIPAA explicitly mandate long-term retention of audit trails.
+- **Justification:** Security incidents may not be discovered for months. Retaining these logs is essential for post-breach forensic analysis. Compliance frameworks like [PCI-DSS](/resources/infrastructure/pci-dss-compliance-automation), SOX, and HIPAA explicitly mandate long-term retention of audit trails.
 
 ### Defining tier-based storage from hot to cold
 
@@ -138,6 +138,8 @@ A typical automated purging flow includes these steps:
 4.  **Delete:** Execute the deletion command.
 5.  **Notify:** Send a confirmation to a Slack channel or monitoring system with metrics on the data reclaimed.
 6.  **Log:** The orchestration platform's own execution logs provide a permanent, auditable record of the purge operation.
+
+Retention policy and storage backend are difficult to separate in practice: the cost of keeping logs longer depends on the engine holding them. Teams reassessing that choice can compare options in our guide to [Elasticsearch alternatives](/resources/data/elastic-search-alternatives).
 
 Here is a conceptual example of a Kestra flow that purges old execution data, which can be adapted for any data source:
 

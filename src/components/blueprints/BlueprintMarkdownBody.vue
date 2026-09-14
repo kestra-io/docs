@@ -3,7 +3,7 @@
         <div class="container-xxl">
             <div class="bd-markdown">
                 <div
-                    class="mdc-renderer"
+                    class="markdown-renderer"
                     v-html="htmlContent"
                     @click="handleCopyClick"
                 />
@@ -103,17 +103,17 @@
     // HTML instead of appearing only after client-side hydration. The
     // top-level await makes this an async component: BlueprintMarkdown.vue
     // provides the required <Suspense> boundary directly above it (the same
-    // shape as PluginsMDCRender > SchemaToHtml on the plugin pages).
+    // shape as PluginsMarkdownRender > SchemaToHtml on the plugin pages).
     if (props.description) {
         htmlContent.value = await getMarked().parse(props.description)
     }
 </script>
 
 <style scoped lang="scss">
-    @use "/src/assets/styles/mdc-renderer" as mdc;
+    @use "/src/assets/styles/markdown-renderer" as markdown;
 
-    .mdc-renderer {
-        @include mdc.mdc-renderer;
+    .markdown-renderer {
+        @include markdown.markdown-renderer;
     }
 
     .markdown {

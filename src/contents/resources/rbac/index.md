@@ -138,6 +138,7 @@ Implementing RBAC successfully requires careful planning and ongoing maintenance
 *   **Avoid role explosion**: Creating too many highly specific roles can make the system as complex as managing individual permissions. Aim for a manageable number of well-defined roles.
 *   **Document roles and permissions**: Maintain clear documentation that describes the purpose of each role and the permissions it contains.
 *   **Monitor and audit access**: Continuously monitor access logs to detect suspicious activity and ensure compliance with security policies.
+*   **Automate the joiner-mover-leaver cycle**: Roles only stay accurate if provisioning and revocation are driven by workflow rather than by tickets. See [identity and access management workflow](/resources/infrastructure/identity-and-access-management-workflow).
 
 ## The future of access control and RBAC in orchestration
 

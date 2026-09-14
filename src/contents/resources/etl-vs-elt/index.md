@@ -44,7 +44,7 @@ Everything else — pros, cons, tools, decision criteria — flows from these di
 
 ETL is the older of the two patterns, originating in the 1970s and dominant until the mid-2010s. Raw data gets pulled from source systems, transformed on a dedicated processing server (often running Python, Spark, or Pandas), and then loaded into the destination warehouse in its final, analytics-ready form.
 
-**Typical tools:** Informatica, Talend, IBM DataStage, SSIS, and custom Python or Spark pipelines.
+**Typical tools:** Informatica, Talend, IBM [DataStage](/resources/data/migrate-datastage), SSIS, and custom Python or Spark pipelines.
 
 **Pros:**
 

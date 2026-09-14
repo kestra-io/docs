@@ -11,8 +11,8 @@
                 <!-- When the parent already parsed the snippet (SnippetsSSR
                      does it server-side), render it directly; otherwise fall
                      back to the client-side markdown renderer. -->
-                <div v-if="html" class="mdc-renderer" v-html="html" />
-                <MDCParserAndRenderer v-else :content="markdownCode" />
+                <div v-if="html" class="markdown-renderer" v-html="html" />
+                <MarkdownRenderer v-else :content="markdownCode" />
             </div>
             <Copy :code="props.code" class="snippet-copy" />
         </div>
@@ -31,7 +31,7 @@
 <script setup lang="ts">
     import { ref, computed } from "vue"
     import Copy from "~/components/common/Copy.vue"
-    import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.vue"
+    import MarkdownRenderer from "~/components/MarkdownRenderer.vue"
     import DotsHorizontal from "vue-material-design-icons/DotsHorizontal.vue"
 
     interface Props {
@@ -71,12 +71,12 @@
 </script>
 
 <style lang="scss" scoped>
-    @use "/src/assets/styles/mdc-renderer" as mdc;
+    @use "/src/assets/styles/markdown-renderer" as markdown;
 
-    // The v-html branch renders the .mdc-renderer div itself, so it needs the
-    // same base styles the MDCParserAndRenderer component ships with.
-    .mdc-renderer {
-        @include mdc.mdc-renderer;
+    // The v-html branch renders the .markdown-renderer div itself, so it needs the
+    // same base styles the MarkdownRenderer component ships with.
+    .markdown-renderer {
+        @include markdown.markdown-renderer;
     }
 
     .code-card {
@@ -104,7 +104,7 @@
                 display: block;
             }
 
-            :deep(.mdc-renderer) {
+            :deep(.markdown-renderer) {
                 margin-bottom: 0;
 
                 pre {

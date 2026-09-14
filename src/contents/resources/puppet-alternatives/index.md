@@ -133,7 +133,7 @@ AWS Step Functions is a serverless workflow service for coordinating AWS service
 
 Azure Automation is a cloud-based service for process automation and configuration management within the Microsoft Azure ecosystem.
 
-*   **Strengths:** It provides native integration with Azure services and supports runbooks written in PowerShell and Python. It includes a Desired State Configuration (DSC) feature for managing the configuration of both Azure and hybrid machines.
+*   **Strengths:** It provides native integration with Azure services and supports runbooks written in [PowerShell](/resources/infrastructure/powershell-automation-alternatives) and Python. It includes a Desired State Configuration (DSC) feature for managing the configuration of both Azure and hybrid machines.
 *   **Weaknesses:** Its functionality is heavily centered on Azure, with limited capabilities for multi-cloud or non-Microsoft environments. Managing DSC at scale can be complex.
 *   **Best for:** Organizations heavily invested in Azure looking for an integrated solution for automation, configuration management, and runbook execution.
 

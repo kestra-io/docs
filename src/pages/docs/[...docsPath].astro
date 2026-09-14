@@ -2,6 +2,11 @@
 // use astro content collection to fetch markdown files from /content/docs
 import { render, getCollection, type CollectionEntry } from "astro:content"
 import { buildDocsNavigation } from "../../utils/buildDocsNavigation"
+import {
+    collectionMetadataDigest,
+    entryCacheKey,
+    layoutDigest,
+} from "~/utils/incrementalCacheKey"
 import { resolveDocsPagePath } from "../../utils/markdown-actions"
 import LayoutDocs from "~/components/layouts/DocsLayout.astro"
 import NavToc from "~/components/docs/NavToc.vue"
@@ -10,9 +15,13 @@ import HelpfulVote from "~/components/docs/HelpfulVote.vue"
 
 export async function getStaticPaths() {
     const docsPages = await getCollection("docs")
+    // Sidebar, prev/next and child cards read every doc's metadata, so a page
+    // may only be restored from cache while that metadata is unchanged.
+    const scope = [collectionMetadataDigest(docsPages), await layoutDigest()]
     return docsPages.map((doc) => ({
         params: { docsPath: doc.id },
         props: doc,
+        cacheKey: entryCacheKey(doc, ...scope),
     }))
 }
 type Props = CollectionEntry<"docs">

@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from "astro"
 import Layout from "~/components/layout.astro"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import {
     fetchMajorReleases,
     type GitHubRelease,
@@ -68,7 +68,7 @@ const isMajor = version.split(".").pop() === "0"
                     </div>
 
                     <div class="release-content">
-                        <MDCParserAndRenderer content={release.body} />
+                        <MarkdownRenderer content={release.body} />
                     </div>
                 </div>
             </article>

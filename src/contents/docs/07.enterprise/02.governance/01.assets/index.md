@@ -701,7 +701,7 @@ namespace: company.team
 inputs:
   - id: assets
     type: MULTISELECT
-    expression: '{{ assets(type="io.kestra.core.models.assets.Table") | jq(".[].id") }}'
+    expression: '{{ assets(type="io.kestra.plugin.ee.assets.Table") | jq(".[].id") }}'
 
 tasks:
   - id: for_each
@@ -719,7 +719,7 @@ tasks:
 inputs:
   - id: staging_tables
     type: MULTISELECT
-    expression: '{{ assets(type="io.kestra.core.models.assets.Table", namespace="company.team") | jq(".[].id") }}'
+    expression: '{{ assets(type="io.kestra.plugin.ee.assets.Table", namespace="company.team") | jq(".[].id") }}'
 ```
 
 **Filter assets by metadata:**

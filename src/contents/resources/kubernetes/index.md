@@ -110,7 +110,7 @@ Kubernetes is powerful, but its complexity means it's not always the right tool 
 
 *   **Single Host / Local Development**: For running a few containers on a single machine, Docker Compose is often a simpler and more efficient choice.
 *   **Simple Multi-Host Orchestration**: Docker Swarm offers a less complex alternative to Kubernetes for basic container orchestration across multiple hosts.
-*   **Serverless Containers**: For workloads where you don't want to manage the underlying cluster infrastructure, services like AWS Fargate, Google Cloud Run, or Azure Container Instances are excellent options. They allow you to run containers without provisioning or managing servers.
+*   **Serverless Containers**: For workloads where you don't want to manage the underlying cluster infrastructure, services like AWS [Fargate](/resources/infrastructure/ecs-vs-fargate), Google Cloud Run, or Azure Container Instances are excellent options. They allow you to run containers without provisioning or managing servers.
 
 The decision often comes down to scale and complexity. If you are managing a microservices architecture with dozens or hundreds of services that need to scale independently and communicate reliably, Kubernetes is the industry standard. For simpler applications, the overhead of managing a Kubernetes cluster might not be justified. Kestra's architecture reflects this flexibility, offering various [task runner types](/docs/task-runners/types) that can execute tasks on Docker, in local processes, or as Kubernetes pods.
 

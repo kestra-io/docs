@@ -51,18 +51,22 @@ Executions and task runs move through the following states:
 | State | Description |
 | - | - |
 | `CREATED` | Waiting to be processed — queued but not yet started. |
+| `SUBMITTED` | Submitted to the Executor queue but not yet running. |
 | `RUNNING` | Currently being processed. |
 | `PAUSED` | Paused for manual validation or a configured delay. |
+| `BREAKPOINT` | Paused at a debug breakpoint (Enterprise Edition). Resume via the **Resume from Breakpoint** command. |
+| `RESTARTED` | Transitional state equivalent to `CREATED` for a restarted failed execution. |
+| `RETRYING` | Currently being [retried](../12.retries/index.md). |
+| `KILLING` | Kill command issued; system is terminating associated tasks. |
+| `QUEUED` | On hold due to a concurrency limit with `QUEUE` behavior. |
 | `SUCCESS` | Completed successfully. |
 | `WARNING` | Completed with warnings — execution continued but was flagged. |
 | `FAILED` | Encountered errors that caused the execution to fail. |
-| `KILLING` | Kill command issued; system is terminating associated tasks. |
-| `KILLED` | Killed on request — no further tasks will run. |
-| `RESTARTED` | Transitional state equivalent to `CREATED` for a restarted failed execution. |
-| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior. |
-| `QUEUED` | On hold due to a concurrency limit with `QUEUE` behavior. |
-| `RETRYING` | Currently being [retried](../12.retries/index.md). |
 | `RETRIED` | Stopped and created a new execution as defined by a [flow-level retry policy](../12.retries/index.md#flow-level-retries) with `CREATE_NEW_EXECUTION` behavior. |
+| `RESUBMITTED` | Resubmitted directly; a new execution continues in its place. |
+| `SKIPPED` | Skipped. Did not run due to a condition, SLA policy, or concurrency behavior. |
+| `CANCELLED` | Aborted due to a [concurrency limit](../14.concurrency/index.md) or [SLA](../18.sla/index.md) with `CANCEL` behavior. |
+| `KILLED` | Killed on request — no further tasks will run. |
 
 For a detailed overview of state transitions, see the [States](../17.states/index.md) page.
 

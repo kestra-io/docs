@@ -52,7 +52,7 @@ Kestra is not a direct, like-for-like replacement for Matillion's visual ELT int
 
 Workflows in Kestra are defined in simple, declarative YAML, making them easy to version, review, and manage with GitOps practices. Its language-agnostic architecture allows you to run tasks in Python, SQL, R, Bash, or any Docker container, providing ultimate flexibility. With an event-driven design and over 1,400 plugins, Kestra can trigger complex workflows from sources like Kafka, S3, or webhooks, connecting your entire data ecosystem.
 
-For example, a Kestra workflow could first trigger a Fivetran sync, then run a dbt transformation, validate the data with a Python script, and finally notify a Slack channel—all within a single, auditable YAML file. This provides a level of end-to-end [data orchestration](/resources/data/data-orchestration) that specialized [ETL orchestration tools](/resources/data/etl-orchestration-tool-alternatives) cannot match. Companies like Leroy Merlin have used Kestra to manage their Data Mesh at scale, increasing data production by 900%.
+For example, a Kestra workflow could first trigger a [Fivetran](/resources/data/fivetran-alternatives) sync, then run a dbt transformation, validate the data with a Python script, and finally notify a Slack channel—all within a single, auditable YAML file. This provides a level of end-to-end [data orchestration](/resources/data/data-orchestration) that specialized [ETL orchestration tools](/resources/data/etl-orchestration-tool-alternatives) cannot match. Companies like Leroy Merlin have used Kestra to manage their Data Mesh at scale, increasing data production by 900%.
 
 ```yaml
 id: elt-orchestration-with-dbt
@@ -140,7 +140,7 @@ Like Glue, its biggest drawback is vendor lock-in to the Azure platform. While p
 
 ## 8. Talend: Data Integration and Governance for Hybrid Environments
 
-Talend offers a broad data integration platform with both an open-source version (Talend Open Studio) and a commercial cloud offering (Talend Cloud). It supports a wide range of integration scenarios, including ETL, ELT, and Enterprise Application Integration (EAI).
+[Talend](/resources/data/talend-alternatives) offers a broad data integration platform with both an open-source version (Talend Open Studio) and a commercial cloud offering (Talend Cloud). It supports a wide range of integration scenarios, including ETL, ELT, and Enterprise Application Integration (EAI).
 
 One of Talend's key strengths is its ability to operate in complex hybrid and multi-cloud environments, connecting on-premises systems with cloud services. The platform also includes strong features for data quality, data profiling, and master data management, making it a good fit for organizations with mature data governance programs.
 

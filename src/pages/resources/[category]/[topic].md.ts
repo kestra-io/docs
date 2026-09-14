@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro"
 import { getCollection } from "astro:content"
+import { entryCacheKey } from "~/utils/incrementalCacheKey"
 
 export async function getStaticPaths() {
     const all = await getCollection("resources")
@@ -8,6 +9,7 @@ export async function getStaticPaths() {
         .map((post) => ({
             params: { category: post.data.tag, topic: post.id },
             props: { title: post.data.title, source: post.body },
+            cacheKey: entryCacheKey(post),
         }))
 }
 

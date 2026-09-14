@@ -40,6 +40,7 @@ When an ERP system is not integrated, its data becomes isolated. This leads to s
 *   **Delayed Insights:** Decision-makers work with outdated information because financial, inventory, and sales data isn't consolidated in real-time. This delays reporting and hinders the ability to react quickly to market changes.
 *   **Inconsistent Information:** Different departments end up with conflicting data. The sales team's customer records in the CRM may not match the finance team's records in the ERP, leading to billing errors and poor customer service.
 *   **Brittle Processes:** Without automated data flows, businesses rely on fragile, manual workarounds. A single missed email or incorrect spreadsheet upload can disrupt critical processes like order fulfillment or financial closing.
+*   **Point-to-Point Sprawl:** Each new connection is built in isolation, so nobody owns the end-to-end sequence. Coordinating those calls as one flow is the job of [API orchestration](/resources/infrastructure/api-orchestration).
 
 A modern [data pipeline](/resources/data/data-pipeline) architecture requires that the ERP is a connected source, not an island.
 
