@@ -45,6 +45,8 @@ jobs:
       # Preview and production render different image URLs and gated content,
       # and Astro's own config hash does not cover either, so they cache apart.
       BUILD_VARIANT: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'preview' || 'production' }}
+      NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+      PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'Production' || 'Preview' }}
@@ -85,14 +87,23 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
-          PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
       # A page restored from a stale incremental cache links CSS/JS hashes this
       # build no longer emits. Catch it here rather than as a 404 in production.
       - name: Check for dangling /_astro/ links
+        id: asset-links
+        continue-on-error: true
         run: node scripts/check-dist-asset-links.mjs dist
+
+      # Known upstream gaps (withastro/astro#17974, #17993) can restore a page whose
+      # assets this build pruned. Rebuild from scratch and re-check, strictly this time.
+      - name: Rebuild without the incremental cache
+        if: steps.asset-links.outcome == 'failure'
+        run: |
+          echo "::warning title=Incremental cache discarded::Restored pages linked assets missing from dist (see the previous step). Rebuilt from scratch."
+          rm -rf dist node_modules/.astro/incremental-build.json node_modules/.astro/dist
+          npm run build
+          node scripts/check-dist-asset-links.mjs dist
 
       - name: Deploy Worker
         id: prod-deploy
