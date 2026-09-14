@@ -77,23 +77,27 @@ jobs:
           # preview, so a cross-ref fallback would never match anything.
           restore-keys: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
 
-      # TEMPORARY (test branch only): tee the build and print a phase summary,
-      # since per-page lines bury the timings in the middle of the job log.
+      # TEMPORARY (test branch only): tee the build and stash a profile, printed
+      # by the last step of the job so the log tail can actually reach it.
       - name: Build
         run: |
           set -o pipefail
           npm run build 2>&1 | tee /tmp/build.log
-          echo "::group::PHASE SUMMARY"
-          grep -aE "\[(build|vite|content|types|adapter|glob-loader)\]" /tmp/build.log | tail -60
-          echo "::endgroup::"
-          echo "pages cached:    $(grep -ac '(cached)' /tmp/build.log)"
-          echo "pages restored:  $(grep -ac '(restored)' /tmp/build.log)"
-          echo "pages emitted:   $(grep -acE '^ *(├─|└─)' /tmp/build.log)"
           d=dist; [ -d dist/client ] && d=dist/client
-          echo "html files:      $(find $d -name '*.html' | wc -l)"
-          echo "_astro files:    $(find $d/_astro -type f | wc -l)"
-          echo "_astro css:      $(find $d/_astro -name '*.css' | wc -l)"
-          echo "_astro js:       $(find $d/_astro -name '*.js' | wc -l)"
+          {
+            echo "--- first 40 lines (content sync, loaders) ---"
+            head -40 /tmp/build.log
+            echo "--- phase lines ---"
+            grep -aE "\[(build|vite|content|types|adapter|glob-loader)\]" /tmp/build.log | tail -40
+            echo "--- counts ---"
+            echo "cached:   $(grep -ac '(cached)' /tmp/build.log)"
+            echo "restored: $(grep -ac '(restored)' /tmp/build.log)"
+            echo "emitted:  $(grep -acE '^ *(├─|└─)' /tmp/build.log)"
+            echo "html:     $(find $d -name '*.html' | wc -l)"
+            echo "_astro:   $(find $d/_astro -type f | wc -l)"
+            echo "css:      $(find $d/_astro -name '*.css' | wc -l)"
+            echo "js:       $(find $d/_astro -name '*.js' | wc -l)"
+          } > /tmp/profile.txt
         env:
           NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
           PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
@@ -130,3 +134,9 @@ jobs:
           template: |
             🔗 [${{ needs.truncate-url-slug.outputs.url }}](${{ needs.truncate-url-slug.outputs.url }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
+
+      # TEMPORARY (test branch only): last step, so the profile sits at the end
+      # of the job log where the API tail can reach it.
+      - name: Build profile
+        if: always()
+        run: cat /tmp/profile.txt || echo "no profile written"
