@@ -163,3 +163,5 @@ jobs:
           # Full profile is in the Build step's own output. (run 2 of the scope experiment)
           grep -a 'cachekey-probe' /tmp/build.log | sort -u
           sed -n '/--- counts ---/,$p' /tmp/profile.txt
+          # Last line of the job: the tail-limited logs API always reaches this.
+          echo "KEY restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log)"
