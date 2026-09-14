@@ -165,3 +165,8 @@ jobs:
           sed -n '/--- counts ---/,$p' /tmp/profile.txt
           # Last line of the job: the tail-limited logs API always reaches this.
           echo "KEY restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log)"
+          for r in a b c; do
+            tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
+            res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
+            echo "LADDER $r restored=$res of $tot"
+          done

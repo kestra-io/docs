@@ -1,0 +1,22 @@
+---
+// TEMPORARY (test branch): rung C. Rung A plus one hydrated Vue island, so
+// the client build and its chunking join the route's graph.
+import { getCollection } from "astro:content"
+import { entryCacheKey } from "~/utils/incrementalCacheKey"
+import TestIsland from "~/components/cachetest/TestIsland.vue"
+
+export async function getStaticPaths() {
+    const docs = (await getCollection("docs")).slice(0, 20)
+    return docs.map((doc) => ({
+        params: { id: doc.id.replace(/\//g, "-") },
+        props: { title: doc.data.title ?? doc.id },
+        cacheKey: entryCacheKey(doc),
+    }))
+}
+const { title } = Astro.props
+---
+
+<html lang="en">
+    <head><title>{title}</title></head>
+    <body><TestIsland client:load label={title} /></body>
+</html>
