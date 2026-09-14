@@ -6,7 +6,7 @@ icon: /src/contents/docs/icons/quickstart.svg
 description: Get started with Kestra in minutes by launching Kestra locally with Docker and running your first workflow.
 ---
 
-Launch Kestra locally, create a simple flow, and run your first execution in a few minutes.
+Launch Kestra locally, create a simple flow, and run your first execution in just a few minutes.
 
 ## Watch the quickstart video
 
