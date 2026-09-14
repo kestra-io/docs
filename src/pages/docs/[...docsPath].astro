@@ -19,6 +19,7 @@ export async function getStaticPaths() {
     // may only be restored from cache while that metadata is unchanged.
     const scope = [collectionMetadataDigest(docsPages), await layoutDigest()]
     // TEMPORARY probe (test branch): which half of the scope moves between builds?
+    // eslint-disable-next-line no-console
     console.log(`[cachekey-probe] meta=${scope[0]} layout=${scope[1]} entries=${docsPages.length}`)
     return docsPages.map((doc) => ({
         params: { docsPath: doc.id },
