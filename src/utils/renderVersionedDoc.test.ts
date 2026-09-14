@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import { renderVersionedDocBody, splitComponentPlaceholders } from "./renderVersionedDoc"
-import { readdirSync } from "node:fs"
+import { readFileSync, readdirSync } from "node:fs"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { componentKey } from "../markdown/mdcTree"
@@ -1280,4 +1280,31 @@ describe("componentKey file-name resolution", () => {
             expect(componentFileKeys).toContain(componentKey(tag))
         },
     )
+})
+
+describe("versioned-docs component glob", () => {
+    const srcDir = resolve(dirname(fileURLToPath(import.meta.url)), "..")
+    const page = readFileSync(resolve(srcDir, "pages/docs-versioned.astro"), "utf8")
+    const excluded = new Set(
+        [...page.matchAll(/"!(\/src\/components\/[^"]+)"/g)].map((match) => match[1]),
+    )
+
+    it("excludes exactly the components that read the current content collection", () => {
+        // Each of these drags Astro's content data layer (50 MB) into the docs
+        // worker, which Cloudflare rejects at 64 MB. A new getCollection
+        // component under these directories fails here rather than at deploy.
+        const coupled = new Set(
+            ["content", "docs", "common"].flatMap((dir) =>
+                readdirSync(resolve(srcDir, "components", dir))
+                    .filter((file) => /\.(astro|vue)$/.test(file))
+                    .filter((file) =>
+                        readFileSync(resolve(srcDir, "components", dir, file), "utf8").includes(
+                            "astro:content",
+                        ),
+                    )
+                    .map((file) => `/src/components/${dir}/${file}`),
+            ),
+        )
+        expect(excluded).toEqual(coupled)
+    })
 })

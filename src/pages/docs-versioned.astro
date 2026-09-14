@@ -30,7 +30,8 @@ type AstroComponent = (props: Record<string, unknown>) => unknown
 // logged as unknown below.
 // Vue components render server-side with no client directive, exactly as the
 // current docs embed them (`<CardLogos/>`); the .astro wrapper wins the name
-// when both exist, since that's the one carrying the client directive.
+// when both exist, since that's the one carrying the client directive — the
+// .vue it wraps is still bundled, which is why rapidoc shows up in this route.
 // The exclusions are components that read the current content collection:
 // globbing them pulls Astro's content data layer (50 MB) into this worker and
 // blows Cloudflare's 64 MB limit. They must not render on an archived page
