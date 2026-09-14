@@ -20,6 +20,12 @@ import {
 } from "~/utils/versionedDocs"
 import { componentMap } from "~/markdown/remark/remark-custom-elements/index.mjs"
 
+// The registry is plain JS, so give the lookup a signature instead of indexing it as any.
+const directiveHandlers = componentMap as Record<
+    string,
+    (data: LoweredNode["data"], attributes: Record<string, unknown>, node: LoweredNode) => void
+>
+
 // Tags passed straight through as HTML. Anything else is treated as an MDC
 // component: rendered by its live remark directive, handed to the page as a
 // real component, or — when it exists nowhere — falling through to just its
@@ -252,7 +258,7 @@ function directiveHtml(tag: string, node: MdcNode, ctx: RenderCtx): string {
     // tree, and a re-render of the same memoized parse must start clean.
     const lowered: LoweredNode = { type: "element", children: [...(node.children ?? [])] }
     try {
-        componentMap[tag](data, node.props ?? {}, lowered)
+        directiveHandlers[tag](data, node.props ?? {}, lowered)
     } catch (error) {
         // A relic page can hold a directive the current handler rejects
         // (::badge with no attributes throws). Keep the content, drop the

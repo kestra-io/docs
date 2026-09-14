@@ -1093,7 +1093,10 @@ title: T
 title: T
 ---
 <HomePageButtons buttons={[{label: "Get Started", href: "/docs/getting-started"}]}/>`,
-            children: { docs: {}, "docs/getting-started": {} },
+            children: {
+                docs: { title: "Docs" },
+                "docs/getting-started": { title: "Getting Started" },
+            },
             renderableComponents,
         })
         expect(body.components).toEqual([
