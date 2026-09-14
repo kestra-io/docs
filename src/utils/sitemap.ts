@@ -17,7 +17,15 @@ const loadLastCommitDates = (): Map<string, Date> => {
     const dates = new Map<string, Date>()
     let log: string
     try {
-        log = git(["-c", "core.quotePath=false", "log", `--format=${DATE_MARKER}%cI`, "--name-only"])
+        // Rename detection reads blob contents, which a blobless clone fetches lazily.
+        log = git([
+            "-c",
+            "core.quotePath=false",
+            "log",
+            "--no-renames",
+            `--format=${DATE_MARKER}%cI`,
+            "--name-only",
+        ])
     } catch {
         return dates
     }
