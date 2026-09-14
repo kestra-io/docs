@@ -51,8 +51,13 @@ jobs:
       url: ${{ needs.truncate-url-slug.outputs.url }}
 
     steps:
+      # Full history for the sitemaps' lastmod dates, without the blobs of old
+      # revisions: only commits and trees, a few seconds and ~10 MB.
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          filter: blob:none
 
       - name: Set up Node via nvm
         uses: actions/setup-node@v6
