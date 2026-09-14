@@ -26,13 +26,13 @@
             />
 
             <div class="managed">
-                <div v-if="repoUrl">
+                <div>
                     <p>Maintained by</p>
                     <div class="meta-info">
                         <img :src="kestraIcon.src" alt="Kestra icon" class="author-icon" />
                         <span>Kestra Core Team</span>
                     </div>
-                    <div class="meta-info">
+                    <div v-if="repoUrl" class="meta-info">
                         <a :href="`${repoUrl}/graphs/contributors`" target="_blank" rel="noopener noreferrer">
                             See all contributors
                         </a>
