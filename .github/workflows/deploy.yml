@@ -84,6 +84,9 @@ jobs:
           set -o pipefail
           npm run build 2>&1 | tee /tmp/build.log
           d=dist; [ -d dist/client ] && d=dist/client
+          # Profiling only from here: steps run under `bash -e`, and a
+          # SIGPIPE from `| head` would abort a build that actually passed.
+          set +e +o pipefail
           {
             echo "--- first lines (content sync, loaders) ---"
             head -12 /tmp/build.log
