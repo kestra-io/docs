@@ -193,7 +193,7 @@ Of the roughly 230 plugin Maven artifacts compatible with 2.0, 216 (93.91%) are 
 
 That took work to keep true. A nightly compatibility check runs against the development branch, and most of what it caught was a Java version gap, with plugins on 21 while core moved to 25. We decided against forcing every plugin onto a 2.0 build, so older plugin versions stay usable. We put the tradeoff plainly internally: keeping 1.x compatibility means holding some dependency upgrades until 1.x support ends. Concretely, Micronaut 5 and Jackson 3 are not in 2.0 for exactly this reason.
 
-What changed for plugin authors is not the API but what plugin code may touch. Workers in 2.0 never reach the database, and some core tasks did, so those were removed and replaced with tasks that call the Kestra API through the `plugin-kestra` SDK:
+What changed for plugin authors is not the API but instead what plugin code may touch. Workers in 2.0 never reach the database, but some core tasks did. To rectify that, they were removed and replaced with tasks that call the Kestra API through the `plugin-kestra` SDK:
 
 | Removed in 2.0 | Replacement |
 | --- | --- |
