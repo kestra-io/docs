@@ -109,14 +109,17 @@
         }
 
         @include media-breakpoint-down(md) {
+            // Shares the body's cell so it has the whole entry to stick within;
+            // the body pads itself down by this row's 1.7rem height.
             grid-column: 2;
-            position: static;
+            grid-row: 1;
+            z-index: 1;
             flex-direction: row;
             align-items: baseline;
             justify-content: flex-start;
             gap: 0.375rem;
-            padding-top: 0;
-            margin-bottom: 0.5rem;
+            padding: 0 0 0.5rem;
+            background: var(--ks-background-body);
         }
     }
 
@@ -136,7 +139,7 @@
 
         @include media-breakpoint-down(md) {
             grid-column: 1;
-            grid-row: 1 / span 2;
+            grid-row: 1;
         }
     }
 
@@ -160,8 +163,8 @@
             box-shadow 0.2s ease;
 
         @include media-breakpoint-down(md) {
-            position: relative;
-            top: auto;
+            top: calc(var(--sticky-top) + 0.3rem);
+            margin-top: 0.3rem;
         }
     }
 
@@ -180,6 +183,8 @@
 
         @include media-breakpoint-down(md) {
             grid-column: 2;
+            grid-row: 1;
+            padding-top: 1.7rem;
         }
     }
 
