@@ -49,12 +49,13 @@
 
     <section class="changelog-body">
         <div class="container">
-            <div v-if="visibleEntries.length > 0" class="changelog-timeline">
+            <div v-if="visibleEntries.length > 0" ref="timeline" class="changelog-timeline">
                 <ChangelogEntry
                     v-for="entry in visibleEntries"
                     :key="entry.tag"
                     :entry="entry"
                     :open-groups="openGroupsFor(entry)"
+                    :active="entry.tag === activeTag"
                 />
             </div>
 
@@ -78,6 +79,7 @@
 
 <script lang="ts" setup>
     import { computed, onMounted, ref, watch } from "vue"
+    import { useEventListener, useThrottleFn } from "@vueuse/core"
     import Magnify from "vue-material-design-icons/Magnify.vue"
     import Check from "vue-material-design-icons/Check.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
@@ -101,9 +103,39 @@
 
     const HIGHLIGHTED_GROUPS = ["breaking-changes", "features"]
 
+    /** Px below the header where entries pin; matches `--sticky-top` (1.5rem) in ChangelogEntry.vue. */
+    const STICKY_OFFSET = 24
+
     const searchQuery = ref("")
     const currentFilter = ref<FilterId>("all")
     const visibleCount = ref(PAGE_SIZE)
+
+    const timeline = ref<HTMLElement | null>(null)
+    const scrolledTag = ref<string | null>(null)
+
+    const updateScrolledTag = useThrottleFn(() => {
+        const headerHeight =
+            parseFloat(
+                getComputedStyle(document.documentElement).getPropertyValue(
+                    "--top-bar-height",
+                ),
+            ) || 67
+        const line = headerHeight + STICKY_OFFSET
+
+        const entries =
+            timeline.value?.querySelectorAll<HTMLElement>(".changelog-entry") ?? []
+
+        let current: string | null = null
+        for (const entry of entries) {
+            if (entry.getBoundingClientRect().top > line) {
+                break
+            }
+            current = entry.dataset.tag ?? null
+        }
+        scrolledTag.value = current
+    }, 100)
+
+    useEventListener("scroll", updateScrolledTag, { passive: true })
 
     onMounted(() => {
         const params = new URL(window.location.href).searchParams
@@ -112,6 +144,7 @@
             currentFilter.value = filter
         }
         searchQuery.value = params.get("q") ?? ""
+        updateScrolledTag()
     })
 
     const matches = (haystack: string | undefined, needle: string) =>
@@ -188,12 +221,13 @@
 
     const isSearching = computed(() => searchQuery.value.trim().length > 0)
 
+    const activeTag = computed(
+        () => scrolledTag.value ?? visibleEntries.value[0]?.tag ?? null,
+    )
+
     const openGroupsFor = (entry: Entry) => {
-        // A search only ever keeps matching lines, so every group is worth opening.
-        if (isSearching.value) {
-            return entry.editions.flatMap((edition) =>
-                edition.groups.map((group) => group.id),
-            )
+        if (isSearching.value || currentFilter.value !== "all") {
+            return []
         }
         if (entry.tag !== filteredEntries.value[0]?.tag) {
             return []
@@ -241,6 +275,8 @@
         visibleCount.value = PAGE_SIZE
         syncUrl()
     })
+
+    watch(visibleEntries, () => updateScrolledTag(), { flush: "post" })
 </script>
 
 <style lang="scss" scoped>

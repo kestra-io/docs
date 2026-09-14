@@ -1,5 +1,9 @@
 <template>
-    <article class="changelog-entry" :class="{ major: entry.isMajor }">
+    <article
+        class="changelog-entry"
+        :class="{ major: entry.isMajor, active }"
+        :data-tag="entry.tag"
+    >
         <time class="entry-date" :datetime="entry.publishedAt">
             <span class="day">{{ day }}</span>
             <span class="year">{{ year }}</span>
@@ -52,8 +56,9 @@
             entry: ChangelogEntry
             /** Group ids to render expanded, used to open the latest release. */
             openGroups?: string[]
+            active?: boolean
         }>(),
-        { openGroups: () => [] },
+        { openGroups: () => [], active: false },
     )
 
     const publishedAt = computed(() => new Date(props.entry.publishedAt))
@@ -70,6 +75,8 @@
 
 <style lang="scss" scoped>
     .changelog-entry {
+        // Keep the 1.5rem in step with STICKY_OFFSET in ChangelogTimeline.vue.
+        --sticky-top: calc(var(--top-bar-height, 67px) + 1.5rem);
         display: grid;
         grid-template-columns: 5rem 1.5rem minmax(0, 1fr);
         column-gap: 1rem;
@@ -84,6 +91,10 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        align-self: start;
+        position: sticky;
+        top: var(--sticky-top);
+        padding-top: 0.375rem;
         line-height: 1.2;
 
         .day {
@@ -99,10 +110,12 @@
 
         @include media-breakpoint-down(md) {
             grid-column: 2;
+            position: static;
             flex-direction: row;
             align-items: baseline;
             justify-content: flex-start;
             gap: 0.375rem;
+            padding-top: 0;
             margin-bottom: 0.5rem;
         }
     }
@@ -123,7 +136,7 @@
 
         @include media-breakpoint-down(md) {
             grid-column: 1;
-            grid-row: 1 / -1;
+            grid-row: 1 / span 2;
         }
     }
 
@@ -133,16 +146,30 @@
     }
 
     .entry-dot {
-        position: relative;
+        position: sticky;
+        top: calc(var(--sticky-top) + 0.25rem);
         width: 10px;
         height: 10px;
-        margin-top: 0.375rem;
+        margin-top: 0.625rem;
         border: 1px solid var(--ks-border-secondary);
         border-radius: 50%;
         background: var(--ks-background-body);
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
+
+        @include media-breakpoint-down(md) {
+            position: relative;
+            top: auto;
+        }
     }
 
     .major .entry-dot {
+        border-color: var(--ks-border-active);
+    }
+
+    .active .entry-dot {
         border-color: var(--ks-border-active);
         background: var(--ks-border-active);
         box-shadow: 0 0 0 4px var(--ks-background-tag-category);
