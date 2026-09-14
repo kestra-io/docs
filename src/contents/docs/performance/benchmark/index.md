@@ -26,8 +26,8 @@ Benchmarks were run on a Google Cloud **n2-standard-4** VM (4 vCPUs, 16 GB RAM) 
 
 :::alert{type="info"}
 Benchmark results are for Kestra 2.0.0.
-Compared to previous benchmarks, we now run with `n2-standard-4` instead of `e2-standard-4`.
-We now also run at higher throughput as [Kestra 2.0 delivers close to a **2x** throughput improvement compared to 1.3](https://kestra.io/blogs/performance-improvements-2-0).
+These results use an `n2-standard-4` VM, replacing the previous `e2-standard-4`.
+[Kestra 2.0 delivers close to a **2x** throughput improvement compared to 1.3.](https://kestra.io/blogs/performance-improvements-2-0)
 :::
 
 ---
@@ -92,9 +92,9 @@ tasks:
 **Key takeaways**
 - At 1000 executions/min (2000 tasks/min), execution latency is approximately 115ms — similar to a single execution time.
 - Kestra OSS (Postgres backend) sustains up to 4000 executions/min (8000 tasks/min) with an execution duration of less than 1s, which is what we could realistically target for such a workflow.
-- Kestra EE (RabbitMQ + Postgres backend) sustains up to 7000 executions/min (14000 tasks/min), maybe more as our backend harness cannot saturate it at the moment!
-- Kestra EE has 55% lower latency and supports way higher throughput than Kestra OSS.
-- At sustained throughput, p99 latency stays way under 1s.
+- Kestra EE (RabbitMQ + Postgres backend) sustains up to 7000 executions/min (14000 tasks/min); the benchmark harness did not saturate this limit.
+- Kestra EE has 55% lower latency and supports significantly higher throughput than Kestra OSS.
+- At sustained throughput, p99 latency stays well under 1s.
 
 ## Benchmark 2 -- complex flow
 
@@ -191,7 +191,7 @@ tasks:
 
 | step | rate | avg ms | p99 ms | kestra cpu | rmq cpu | pg cpu |
 |--:|--:|--:|--:|--:|--:|--:|
-| 1 | 200 | 177 | 263 | 9% | 14.5%| 7.9% |
+| 1 | 200 | 177 | 263 | 9% | 14.5% | 7.9% |
 | 2 | 400 | 186 | 228 | 14.4% | 21.2% | 14% |
 | 3 | 600 | 211 | 279 | 22.3% | 27.2% | 21% |
 | 4 | 800 | 252 | 327 | 26.4% | 30.9% | 25.1% |
@@ -203,7 +203,7 @@ tasks:
 **Key takeaways**
 - At 200 executions/min (1000 tasks/min), execution latency is approximately 400ms — similar to a single execution time.
 - Kestra OSS (Postgres backend) sustains up to 1200 executions/min (6000 tasks/min) with an execution duration of less than 2s, which is what we could realistically target for such a workflow.
-- Kestra EE (RabbitMQ + Postgres backend) sustains the same throughput at lower latency.
+- Kestra EE (RabbitMQ + Postgres backend) sustains the same peak throughput as OSS at lower latency.
 - The Kestra Executor processing capability is independent of the type of tasks to process; the number of tasks per minute sustained in this benchmark is of the same level as in the first benchmark.
 
 ## Benchmark 3 -- large `Loop` task
@@ -230,12 +230,12 @@ tasks:
 **Observations**
 The `Loop` task is executed once, so the flow results in 101 task executions.
 
-On average, the execution time for the both backends is around **1.5s**, that is about 67 tasks/s or 4020 tasks/mn, as each loop iteration runs inside dedicated sub-executions, the overhead is expected for an iteration with a single task.
+On average, the execution time for both backends is around **1.5s**, equivalent to approximately 67 tasks/s or 4020 tasks/min. As each loop iteration runs inside a dedicated sub-execution, the overhead is expected for an iteration with a single task.
 
 ## Benchmark 4 -- realtime trigger with JSON transformation
 
 :::alert{type="info"}
-This benchmark has not been run yet on 2.0.0 as we changed our benchmarking harness, we will publish results later.
+This benchmark has not been updated for Kestra 2.0.0. In 2.0, the EE default backend changed from Kafka to RabbitMQ, which changes the characteristics of this benchmark. Updated results will be published in a future release.
 :::
 
 
