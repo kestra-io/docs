@@ -4,7 +4,7 @@ info:
   description: |-
     All API operations, except for Instance-owner-only endpoints, require a tenant identifier in the HTTP path.<br/>
     Endpoints designated as Instance-owner-only are not tenant-scoped.
-  version: 2.0.0
+  version: 2.0.1
 tags:
 - name: Flows
   description: Flows api
@@ -7898,7 +7898,7 @@ paths:
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -14199,7 +14199,7 @@ paths:
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -14691,7 +14691,7 @@ paths:
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -18236,11 +18236,11 @@ paths:
       - name: maxRows
         in: query
         description: The max row returns
-        required: true
         explode: false
         schema:
           type: integer
           format: int32
+          nullable: true
       - name: encoding
         in: query
         description: The file encoding as Java charset name. Defaults to UTF-8
@@ -25340,7 +25340,7 @@ paths:
             application/octet-stream:
               schema:
                 type: string
-                format: byte
+                format: binary
         '401':
           description: Authentication required
           content:
@@ -26416,7 +26416,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PagedResults_ReusableInputs_'
+                $ref: '#/components/schemas/PagedResults_ReusableInputsWithSource_'
         '401':
           description: Authentication required
           content:
@@ -26473,7 +26473,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReusableInputs'
+                $ref: '#/components/schemas/ReusableInputsWithSource'
         '401':
           description: Authentication required
           content:
@@ -26541,7 +26541,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReusableInputs'
+                $ref: '#/components/schemas/ReusableInputsWithSource'
         '401':
           description: Authentication required
           content:
@@ -26638,7 +26638,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ReusableInputs'
+                  $ref: '#/components/schemas/ReusableInputsWithSource'
         '401':
           description: Authentication required
           content:
@@ -27648,9 +27648,16 @@ paths:
     post:
       tags:
       - Promote
-      summary: Test connectivity to an unsaved SERVER-mode promotion target definition
+      summary: Test connectivity to an unsaved SERVER-mode promotion target definition, or to edits of a saved one
       operationId: testPromotionTarget
       parameters:
+      - name: id
+        in: query
+        description: The saved promotion target being edited; its stored token is used when the definition omits one
+        explode: false
+        schema:
+          type: string
+          nullable: true
       - name: tenant
         in: path
         required: true
@@ -39684,7 +39691,7 @@ components:
         total:
           type: integer
           format: int64
-    PagedResults_ReusableInputs_:
+    PagedResults_ReusableInputsWithSource_:
       required:
       - results
       - total
@@ -39693,7 +39700,7 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/ReusableInputs'
+            $ref: '#/components/schemas/ReusableInputsWithSource'
         total:
           type: integer
           format: int64
@@ -40908,12 +40915,13 @@ components:
           type: string
         required:
           type: boolean
-    ReusableInputs:
-      title: Reusable inputs
+    ReusableInputsWithSource:
+      title: Reusable inputs with source
       required:
       - id
       - inputs
       - namespace
+      - revision
       type: object
       properties:
         namespace:
@@ -40933,7 +40941,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Input_Object_'
-      description: A reusable set of inputs referenced from flows via a REUSABLE_INPUTS input.
+        revision:
+          title: The revision of the block, bumped on every save.
+          type: integer
+          format: int32
+          readOnly: true
+        last:
+          title: Whether this is the block's current revision.
+          type: boolean
+          readOnly: true
+        created:
+          title: When the block was first created.
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        updated:
+          title: When this revision was created.
+          type: string
+          format: date-time
+          nullable: true
+          readOnly: true
+        deleted:
+          title: Whether the block is soft-deleted.
+          type: boolean
+          readOnly: true
+        source:
+          title: The block's YAML source, as written in the editor.
+          type: string
+          readOnly: true
+      description: 'A stored reusable inputs block: its authorable shape plus the fields the server owns.'
     RightSidebarConfiguration:
       type: object
       properties:
