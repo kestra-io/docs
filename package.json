@@ -45,7 +45,7 @@
     "@vue-flow/controls": "^1.1.3",
     "@vue-flow/core": "^1.48.2",
     "@vueuse/core": "^14.4.0",
-    "astro": "https://pkg.pr.new/astro@cb815d8",
+    "astro": "^7.3.1",
     "astro-expressive-code": "^0.44.2",
     "astro-icon": "^1.2.0",
     "astro-loading-indicator": "^0.9.0",
@@ -98,10 +98,10 @@
   },
   "overrides": {
     "astro-loading-indicator": {
-      "astro": "https://pkg.pr.new/astro@cb815d8"
+      "astro": "$astro"
     },
     "astro-expressive-code": {
-      "astro": "https://pkg.pr.new/astro@cb815d8"
+      "astro": "$astro"
     }
   },
   "optionalDependencies": {
