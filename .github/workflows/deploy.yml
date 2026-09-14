@@ -53,13 +53,13 @@ jobs:
       url: ${{ needs.truncate-url-slug.outputs.url }}
 
     steps:
-      # Full history for the sitemaps' lastmod dates, without the blobs of old
-      # revisions: only commits and trees, a few seconds and ~10 MB.
       - name: Checkout
         uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-          filter: blob:none
+
+      # Commit history for the sitemaps' lastmod dates, without the blobs of old
+      # revisions: ~9 MB in a few seconds, where fetch-depth 0 took up to 1m50s.
+      - name: Fetch commit history
+        run: git fetch --unshallow --filter=blob:none --no-tags origin
 
       - name: Set up Node via nvm
         uses: actions/setup-node@v6
