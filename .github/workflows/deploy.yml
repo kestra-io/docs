@@ -85,10 +85,24 @@ jobs:
           npm run build 2>&1 | tee /tmp/build.log
           d=dist; [ -d dist/client ] && d=dist/client
           {
-            echo "--- first 40 lines (content sync, loaders) ---"
-            head -40 /tmp/build.log
+            echo "--- first lines (content sync, loaders) ---"
+            head -12 /tmp/build.log
             echo "--- phase lines ---"
             grep -aE "\[(build|vite|content|types|adapter|glob-loader)\]" /tmp/build.log | tail -40
+            echo "--- route buckets ---"
+            perl -pe 's/\e\[[0-9;]*m//g' /tmp/build.log > /tmp/build.plain
+            grep -a '\.html' /tmp/build.plain > /tmp/pages.txt || true
+            echo "page lines: $(wc -l < /tmp/pages.txt)"
+            echo "sample of non-restored lines:"
+            grep -av '(restored)' /tmp/pages.txt | head -5
+            echo "RESTORED by first path segment:"
+            grep -a '(restored)' /tmp/pages.txt \
+              | sed -n 's#.*\(/[^ ]*\.html\).*#\1#p' | cut -d/ -f2 \
+              | sort | uniq -c | sort -rn | head -15
+            echo "NOT restored by first path segment:"
+            grep -av '(restored)' /tmp/pages.txt \
+              | sed -n 's#.*\(/[^ ]*\.html\).*#\1#p' | cut -d/ -f2 \
+              | sort | uniq -c | sort -rn | head -20
             echo "--- counts ---"
             echo "cached:   $(grep -ac '(cached)' /tmp/build.log)"
             echo "restored: $(grep -ac '(restored)' /tmp/build.log)"
