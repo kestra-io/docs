@@ -157,4 +157,9 @@ jobs:
       # of the job log where the API tail can reach it.
       - name: Build profile
         if: always()
-        run: cat /tmp/profile.txt || echo "no profile written"
+        run: |
+          # The logs API caps its response at ~7KB from the end of the job, and
+          # post-job cleanup eats most of it, so print only the compact part.
+          # Full profile is in the Build step's own output.
+          grep -a 'cachekey-probe' /tmp/build.log | sort -u
+          sed -n '/--- counts ---/,$p' /tmp/profile.txt
