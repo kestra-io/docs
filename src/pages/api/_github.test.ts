@@ -1,3 +1,5 @@
+// Underscore-prefixed so Astro does not build this as the /api/github.test
+// route and try to import vitest while prerendering.
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 vi.mock("astro:env/server", () => ({ DISABLE_GITHUB: false }))
