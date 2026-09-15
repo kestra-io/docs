@@ -33,15 +33,15 @@ In practice, this is what lets you run a worker in a restricted network, an air-
 
 ## Authentication
 
-**Password hashing.** The BasicAuth password was stored as salted SHA-512, which is fast to compute and therefore fast to brute-force offline. It is now bcrypt with cost 12 (GHSA-m727-pcjm-j28h). Existing hashes are wrapped at startup by migration `2.0.10-basic-auth-password`. This migration is irreversible and prevents rolling back to 1.x basic auth, so plan the upgrade accordingly; see [database migrations in the migration guide](/docs/migration-guide/v2.0.0/database-migrations).
+**Password hashing.** The BasicAuth password was stored as salted SHA-512, which is fast to compute and therefore fast to brute-force offline. It is now bcrypt with cost 12. Existing hashes are wrapped at startup by migration `2.0.10-basic-auth-password`. This migration is irreversible and prevents rolling back to 1.x basic auth, so plan the upgrade accordingly; see [database migrations in the migration guide](/docs/migration-guide/v2.0.0/database-migrations).
 
 More generally, no secret is stored in plaintext anymore. Non-recoverable secrets, passwords and tokens, use bcrypt. Recoverable secrets are encrypted with AES under `kestra.encryption.secret-key` ([encryption configuration](/docs/configuration/security-and-secrets#encryption)).
 
-**Timing oracles.** Several authentication paths responded faster when a username did not exist, or compared tokens byte by byte and stopped at the first difference. Basic-auth verification is now constant-time and always checks both username and password (GHSA-38rc-2jxj-2h75). Webhook keys and the auth token cache use the same constant-time comparison. The webhook endpoint is public by design, so this one is remotely exploitable without an account.
+**Timing oracles.** Several authentication paths responded faster when a username did not exist, or compared tokens byte by byte and stopped at the first difference. Basic-auth verification is now constant-time and always checks both username and password. Webhook keys and the auth token cache use the same constant-time comparison. The webhook endpoint is public by design, so this one is remotely exploitable without an account.
 
 **Rate limiting.** All authentication endpoints are rate-limited to mitigate brute force. The login lockout is configurable under `kestra.security.login.failed-attempts` (defaults: 10 attempts, 5-minute window, 30-minute lock); see the [security and secrets configuration](/docs/enterprise/auth/rbac#user-lockout).
 
-**Access control fixes.** A namespace named `webhook` matched the anonymous open-URL prefix, which let anyone execute any flow in that namespace and read its outputs. [Open-URL matching now requires the actual webhook route](/docs/configuration/security-and-secrets#security-settings) (GHSA-j5cv-8rw9-vv2p), and `/api/v1/basicAuthValidationErrors` was removed from the default open URLs. In clusters with several webservers, a changed password is rejected on every node immediately, and changing credentials now requires the current password (GHSA-94pv-f379-3gp3). The pre-authentication guard fails closed to the login page. Soft-deleted flow revisions can no longer be executed (GHSA-52wv-cgfg-4j6x).
+**Access control fixes.** A namespace named `webhook` matched the anonymous open-URL prefix, which let anyone execute any flow in that namespace and read its outputs. [Open-URL matching now requires the actual webhook route](/docs/configuration/security-and-secrets#security-settings), and `/api/v1/basicAuthValidationErrors` was removed from the default open URLs. In clusters with several webservers, a changed password is rejected on every node immediately, and changing credentials now requires the current password. The pre-authentication guard fails closed to the login page. Soft-deleted flow revisions can no longer be executed.
 
 **Setup page.** On a fresh installation with no `basic-auth` configured, the Setup page is publicly reachable and the first person to reach it sets the credentials. Configure `kestra.server.basic-auth` in the application configuration before starting Kestra in production, as described in [credential initialization](/docs/administrator-guide/security-hardening#credential-initialization).
 
@@ -76,7 +76,7 @@ It took a few follow-ups to get right: the `Secure` flag follows the request sch
 
 ## XSS
 
-Markdown rendered in the UI is sanitised: script, iframe and object tags and all event handler attributes are stripped. This fixed a stored XSS. The in-app documentation renderers no longer disable that protection. Server-returned execution, task and flow IDs are escaped before being interpolated into confirmation dialogs. Plugin SVG icons are sanitised at load: scripts, handlers, iframes and `javascript:` URIs are removed. A namespace file whose name contains markup no longer executes it in the delete dialog (GHSA-crq7-3xg2-hjch).
+Markdown rendered in the UI is sanitised: script, iframe and object tags and all event handler attributes are stripped. This fixed a stored XSS. The in-app documentation renderers no longer disable that protection. Server-returned execution, task and flow IDs are escaped before being interpolated into confirmation dialogs. Plugin SVG icons are sanitised at load: scripts, handlers, iframes and `javascript:` URIs are removed. A namespace file whose name contains markup no longer executes it in the delete dialog.
 
 ## Security headers
 
@@ -116,7 +116,7 @@ Both lists are empty by default; nothing is filtered until you configure them. T
 
 ## Uploads and user-supplied input
 
-**Path traversal.** `inputFiles` names are resolved through the working-directory guard, closing an arbitrary file write on the worker host through `../` and absolute paths (GHSA-q3fw-mvgv-pjr2). Backslash and mixed-separator traversal is rejected in local storage, closing an authenticated arbitrary file read through the download API (GHSA-qw4v-6w32-xx9h). Namespace file operations received the same fix.
+**Path traversal.** `inputFiles` names are resolved through the working-directory guard, closing an arbitrary file write on the worker host through `../` and absolute paths. Backslash and mixed-separator traversal is rejected in local storage, closing an authenticated arbitrary file read through the download API. Namespace file operations received the same fix.
 
 **ZIP bombs.** Flow import and namespace file upload accept archives. An opt-in guard checks the entry count and the uncompressed size of each entry during decompression and rejects the upload with a 422 if either limit is exceeded:
 
@@ -133,7 +133,7 @@ It is disabled by default and both limits are required when enabled. Set them fr
 
 **ReDoS.** [User-supplied regexes are protected against catastrophic backtracking](/docs/configuration/security-and-secrets#regex-timeout) with a timeout, `kestra.regex.timeout`, defaulting to ten seconds. `REGEX` query and dashboard filters are rejected up front when they contain nested quantifiers or ambiguous alternation. The UI had two of its own: the topology parser and the Pebble expression highlighter no longer hang on a crafted flow source.
 
-**Injection.** SQL injection through label search filters was fixed (GHSA-365w-2m69-mp9x). Label keys are escaped before being embedded in H2 jq programs. REGEX handling in JDBC filters was hardened.
+**Injection.** SQL injection through label search filters was fixed. Label keys are escaped before being embedded in H2 jq programs. REGEX handling in JDBC filters was hardened.
 
 **Validation.** Nested request bodies are now validated; a missing `@Valid` meant they were not. Flows exposed as MCP tools validate their inputs before execution. The UI is not the only client of the API, and the backend now assumes it is not.
 
@@ -157,7 +157,7 @@ On Enterprise, also configure the [plugin allow list](/docs/administrator-guide/
 
 The 2.0 cycle fixed timing and existence oracles, moved passwords to bcrypt, added rate limiting on authentication, CSRF tokens on every form, security headers on every response, SSRF filtering for HTTP tasks, ZIP-bomb and ReDoS protection, stronger secrets masking, and closed several XSS, injection and path traversal issues. Management endpoints went from open to closed by default. And workers no longer have a path to the database.
 
-All advisories were published on GitHub before this post, and every fix links to its pull request. If you find something, the [security policy](https://github.com/kestra-io/kestra/security/policy) explains how to report it.
+If you find something, the [security policy](https://github.com/kestra-io/kestra/security/policy) explains how to report it.
 
 The [security hardening guide](/docs/administrator-guide/security-hardening) lists every configuration key mentioned here, and the [2.0 migration guide](/docs/migration-guide/v2.0.0) covers the default changes that can affect an upgrade.
 
