@@ -2,13 +2,11 @@
     <aside class="bd-sidebar scroller">
         <div>
             <button
-                ref="menuToggleBtn"
                 class="btn d-lg-none mt-2"
                 type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#docs-menu"
-                aria-expanded="false"
-                aria-controls="tocContents"
+                :aria-expanded="menuExpanded"
+                aria-controls="docs-menu"
+                @click="menuExpanded = !menuExpanded"
             >
                 <Menu /> Documentation Menu
             </button>
@@ -16,8 +14,7 @@
                 <button
                     class="ai-button"
                     title="Ask Kestra AI"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-ai-modal"
+                    data-modal-target="#search-ai-modal"
                 >
                     <img v-bind="KSAIImg" alt="Kestra AI" width="30" height="30" />
                     Ask Kestra AI
@@ -25,8 +22,7 @@
             </div>
             <div
                 class="search"
-                data-bs-toggle="modal"
-                data-bs-target="#search-modal"
+                data-modal-target="#search-modal"
                 title="Search"
             >
                 <div class="input-group">
@@ -59,7 +55,12 @@
                     </option>
                 </select>
             </div>
-            <div class="collapse bd-menu-collapse" id="docs-menu">
+            <div
+                class="bd-menu-collapse"
+                :class="{ open: menuExpanded }"
+                id="docs-menu"
+            >
+                <div class="bd-menu-collapse-inner">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
                     <ul class="list-unstyled mb-0">
                         <RecursiveNavSidebar
@@ -73,6 +74,7 @@
                         />
                     </ul>
                 </nav>
+                </div>
             </div>
         </div>
     </aside>
@@ -153,16 +155,10 @@
         "/docs/terraform/resources",
     ]
 
-    const menuToggleBtn = ref<HTMLButtonElement | null>(null)
+    const menuExpanded = ref(false)
 
     const closeSidebar = () => {
-        if (
-            window.innerWidth < 992 &&
-            menuToggleBtn.value &&
-            menuToggleBtn.value.getAttribute("aria-expanded") === "true"
-        ) {
-            menuToggleBtn.value.click()
-        }
+        if (window.innerWidth < 992) menuExpanded.value = false
     }
 
     provide(closeSidebarInjectionKey, closeSidebar)
@@ -209,17 +205,36 @@
                 }
             }
         }
+        // Height transition without JS: 0fr to 1fr on a single-row grid.
         .bd-menu-collapse {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.25s ease;
+
+            .bd-menu-collapse-inner {
+                overflow: hidden;
+                min-height: 0;
+            }
+
+            &.open {
+                grid-template-rows: 1fr;
+            }
+
             @include media-breakpoint-down(lg) {
                 nav {
                     padding: calc($spacer / 2) $spacer;
                     border: $block-border;
                     box-shadow: $box-shadow-sm;
-                    @include border-radius(var(--bs-border-radius));
+                    border-radius: $border-radius;
                 }
             }
             @include media-breakpoint-up(lg) {
-                display: block !important; // stylelint-disable-line declaration-no-important
+                grid-template-rows: 1fr;
+                transition: none;
+
+                .bd-menu-collapse-inner {
+                    overflow: visible;
+                }
             }
         }
         .search,

@@ -4,8 +4,6 @@
             class="btn toggle d-lg-none"
             :class="{ collapsed: !tableOfContentsExpanded }"
             type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#tocContents"
             :aria-expanded="tableOfContentsExpanded"
             aria-controls="tocContents"
             @click="tableOfContentsExpanded = !tableOfContentsExpanded"
@@ -17,9 +15,14 @@
             </span>
         </button>
 
-        <div class="collapse bd-toc-collapse" id="tocContents">
-            <h6 class="title d-none d-lg-block">Table of contents</h6>
-            <nav id="nav-toc">
+        <div
+            class="bd-toc-collapse"
+            :class="{ open: tableOfContentsExpanded }"
+            id="tocContents"
+        >
+            <div class="bd-toc-collapse-inner">
+                <h6 class="title d-none d-lg-block">Table of contents</h6>
+                <nav id="nav-toc">
                 <ul class="list">
                     <li
                         v-for="link in links"
@@ -35,8 +38,9 @@
                             {{ link.text }}
                         </a>
                     </li>
-                </ul>
-            </nav>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </div>
 </template>
@@ -142,9 +146,28 @@
         }
     }
 
+    // Height transition without JS: 0fr to 1fr on a single-row grid.
     .bd-toc-collapse {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.25s ease;
+
+        .bd-toc-collapse-inner {
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        &.open {
+            grid-template-rows: 1fr;
+        }
+
         @include media-breakpoint-up(lg) {
-            display: block !important;
+            grid-template-rows: 1fr;
+            transition: none;
+
+            .bd-toc-collapse-inner {
+                overflow: visible;
+            }
         }
     }
 

@@ -98,8 +98,7 @@
                     @click="globalClick(true)"
                     id="header-search-button"
                     class="btn btn-sm icon-button p-0 ms-2"
-                    data-bs-toggle="modal"
-                    data-bs-target="#search-modal"
+                    data-modal-target="#search-modal"
                     title="Search"
                     aria-label="Search"
                 >
@@ -121,7 +120,7 @@
                 </button>
             </div>
 
-            <div class="collapse navbar-collapse" id="main-header">
+            <div class="navbar-collapse" :class="{ show: isOpen }" id="main-header">
                 <ul class="navbar-nav me-auto mb-2 mb-xl-0 ms-xl-3">
                     <li
                         class="nav-item dropdown"
@@ -135,7 +134,6 @@
                             :class="{
                                 show: showMenuId === 'product' && showMenu,
                             }"
-                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             :aria-expanded="
                                 (showMenuId === 'product' && showMenu) || false
                             "
@@ -148,7 +146,10 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </button>
-                        <div class="dropdown-menu d-xl-none">
+                        <div
+                            class="dropdown-menu d-xl-none"
+                            :class="{ show: showMenuId === 'product' && showMenu }"
+                        >
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.product.items"
@@ -189,7 +190,6 @@
                             :class="{
                                 show: showMenuId === 'solutions' && showMenu,
                             }"
-                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             :aria-expanded="
                                 (showMenuId === 'solutions' && showMenu) ||
                                 false
@@ -203,7 +203,10 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </button>
-                        <div class="dropdown-menu d-xl-none">
+                        <div
+                            class="dropdown-menu d-xl-none"
+                            :class="{ show: showMenuId === 'solutions' && showMenu }"
+                        >
                             <ul class="dropdown-column">
                                 <p class="column-caption">Use-cases</p>
                                 <li
@@ -282,7 +285,6 @@
                             :class="{
                                 show: showMenuId === 'resources' && showMenu,
                             }"
-                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             :aria-expanded="
                                 (showMenuId === 'resources' && showMenu) ||
                                 false
@@ -296,7 +298,10 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </button>
-                        <div class="dropdown-menu d-xl-none">
+                        <div
+                            class="dropdown-menu d-xl-none"
+                            :class="{ show: showMenuId === 'resources' && showMenu }"
+                        >
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.resources.items"
@@ -335,7 +340,6 @@
                             :class="{
                                 show: showMenuId === 'company' && showMenu,
                             }"
-                            :data-bs-toggle="isMobile ? 'dropdown' : undefined"
                             :aria-expanded="
                                 (showMenuId === 'company' && showMenu) || false
                             "
@@ -348,7 +352,10 @@
                                 class="d-inline-block dropdown-chevron"
                             />
                         </button>
-                        <div class="dropdown-menu d-xl-none">
+                        <div
+                            class="dropdown-menu d-xl-none"
+                            :class="{ show: showMenuId === 'company' && showMenu }"
+                        >
                             <ul class="dropdown-column">
                                 <li
                                     v-for="item in menuItems.company.items"
@@ -724,6 +731,7 @@
     import Segment from "vue-material-design-icons/Segment.vue"
     import { menuWidths } from "~/utils/menu-sizes"
     import { menuItems } from "~/utils/menu-items"
+    import { openModal } from "~/utils/modal"
     import LogoBlack from "~/assets/logo-black.svg?raw"
     import LogoWhite from "~/assets/logo-white.svg?raw"
     import SlackIcon from "~/assets/socials/slack.svg?raw"
@@ -751,14 +759,6 @@
     const isScrolled = ref(false)
     const closeMenuTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 
-    interface Collapse {
-        hide: () => void
-        show: () => void
-        toggle: () => void
-    }
-
-    let collapse: Collapse | undefined = undefined
-
     function isEditable(target: EventTarget | null): boolean {
         const el = target instanceof HTMLElement ? target : null
         if (!el) return false
@@ -775,31 +775,12 @@
         if (isEditable(e.target)) return
         if (e.key.toLowerCase() === "a") {
             e.preventDefault()
-            const modal = document.getElementById("search-ai-modal")
-            if (modal && window.$bootstrap) {
-                window.$bootstrap.Modal.getOrCreateInstance(modal).show()
-            }
+            openModal("#search-ai-modal")
         }
-    }
-
-    function getCollapseInstance(): Collapse | undefined {
-        if (!collapse) {
-            const BootstrapCollapse = window.$bootstrap?.Collapse
-            if (BootstrapCollapse) {
-                const el = document.getElementById("main-header")
-                if (el) {
-                    collapse = BootstrapCollapse.getOrCreateInstance(el, {
-                        toggle: false,
-                    })
-                }
-            }
-        }
-        return collapse
     }
 
     onMounted(() => {
         nextTick(() => {
-            getCollapseInstance()
             measureAllMenuHeights()
         })
 
@@ -952,17 +933,8 @@
 
     function globalClick(close?: boolean) {
         if (window.innerWidth < 1200) {
-            const collapseInstance = getCollapseInstance()
-            if (close === true) {
-                collapseInstance?.hide()
-                isOpen.value = false
-            } else if (close === false) {
-                collapseInstance?.show()
-                isOpen.value = true
-            } else {
-                collapseInstance?.toggle()
-                isOpen.value = !isOpen.value
-            }
+            isOpen.value = close === undefined ? !isOpen.value : !close
+            if (!isOpen.value) closeMobileMenu()
             return
         }
         if (close) {
@@ -975,13 +947,6 @@
                 document.body.style.overflow = "unset"
                 document.body.style.position = "unset"
                 document.body.style.width = "unset"
-            }
-            const element = document.querySelector(".nav-link.show")
-            if (element) {
-                element.classList.remove("show")
-                ;(element.nextElementSibling as HTMLElement)?.classList.remove(
-                    "show",
-                )
             }
         } else {
             document.body.style.overflow = "hidden"
@@ -1022,10 +987,20 @@
         headerMenuPointerEvents.value = "none"
     }
 
+    function closeMobileMenu() {
+        showMenu.value = false
+        showMenuId.value = null
+    }
+
     function onTriggerClick(id: string, event: MouseEvent) {
-        if (isMobile.value) return
         event.preventDefault()
-        if (showMenuId.value === id && showMenu.value) {
+        const isExpanded = showMenuId.value === id && showMenu.value
+        if (isMobile.value) {
+            showMenu.value = !isExpanded
+            showMenuId.value = isExpanded ? null : id
+            return
+        }
+        if (isExpanded) {
             closeDesktopMenu()
         } else {
             openDesktopMenu(id)
@@ -1374,20 +1349,26 @@
         .navbar-collapse {
             max-width: 100%;
 
+            // Closed state folds the panel away without `display: none`, so the
+            // open/close transition still runs (it replaces bootstrap's
+            // `.collapsing` bookkeeping).
             @include media-breakpoint-down(xl) {
-                max-height: calc(100vh - 4rem);
-                min-height: calc(100vh - 4rem);
+                height: 0;
+                opacity: 0;
+                visibility: hidden;
                 overflow-y: auto;
                 overflow-x: hidden;
-                height: auto;
-                transition: all 0.25s ease-in-out;
+                transition: all 0.1s ease-in-out;
                 background: var(--ks-background-body);
                 margin-top: -0.25rem;
 
-                &.collapsing {
-                    height: 0;
-                    opacity: 0;
-                    transition: all 0.1s ease-in-out;
+                &.show {
+                    height: auto;
+                    max-height: calc(100vh - 4rem);
+                    min-height: calc(100vh - 4rem);
+                    opacity: 1;
+                    visibility: visible;
+                    transition: all 0.25s ease-in-out;
                 }
             }
 
