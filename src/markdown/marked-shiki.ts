@@ -1,11 +1,14 @@
-import { Marked } from "marked"
+import { Marked, type Tokens } from "marked"
 import { markedHighlight } from "marked-highlight"
-import { getHighlighterCore } from "~/components/plugins/schema/shikiToolset"
 
 const LIGHT_THEME = "github-light-default"
 const DARK_THEME = "github-dark-default"
 
 let instance: Marked | undefined
+let plainInstance: Marked | undefined
+
+const escapeHtml = (value: string) =>
+    value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
 
 /** Dedicated `Marked` instance that highlights fenced code blocks with Shiki. */
 export function getMarked() {
@@ -17,21 +20,18 @@ export function getMarked() {
         markedHighlight({
             async: true,
             async highlight(code, lang) {
-                // Use the shared core highlighter (Shiki's JavaScript regex
-                // engine) instead of the full `shiki` bundle: the full bundle
-                // defaults to the Oniguruma WASM engine, which workerd refuses
-                // to compile at runtime ("Wasm code generation disallowed by
-                // embedder"), silently breaking every fenced code block in
-                // server-rendered markdown. It also keeps the multi-megabyte
-                // all-languages build out of the client chunks. Languages not
-                // registered in the toolset fall back to plain text.
-                const highlighter = await getHighlighterCore()
-                const normalized = (lang ?? "").trim().toLowerCase()
-                const supported = highlighter
-                    .getLoadedLanguages()
-                    .includes(normalized)
+                // Dynamic import, and the only way in: a static one would pull
+                // the core, the themes and the grammars into every route.
+                const { getHighlighterCore, resolveLanguage } = await import(
+                    "~/components/plugins/schema/shikiToolset"
+                )
+                // Languages the toolset doesn't carry render as plain text.
+                const resolved = resolveLanguage(lang)
+                const highlighter = await getHighlighterCore(
+                    resolved ? [resolved] : [],
+                )
                 const html = highlighter.codeToHtml(code, {
-                    lang: supported ? normalized : "text",
+                    lang: resolved ?? "text",
                     themes: { light: LIGHT_THEME, dark: DARK_THEME },
                 })
                 // Strip Shiki's outer `<pre><code>`; marked-highlight adds its own.
@@ -43,4 +43,18 @@ export function getMarked() {
     )
 
     return instance
+}
+
+/** `Marked` instance that leaves fences as escaped plain text, so markdown can
+ * render before Shiki lands and be upgraded in place afterwards. */
+export function getPlainMarked() {
+    plainInstance ??= new Marked({
+        renderer: {
+            code({ text }: Tokens.Code) {
+                return `<pre class="shiki-fallback"><code>${escapeHtml(text)}</code></pre>`
+            },
+        },
+    })
+
+    return plainInstance
 }

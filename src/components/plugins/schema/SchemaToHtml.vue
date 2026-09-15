@@ -155,9 +155,23 @@
         )
     );
 
+    // Only the grammars this schema's examples actually name, rather than the
+    // whole set: most plugins are YAML and nothing else.
+    const exampleLangs = (node: unknown, found = new Set<string>(["yaml"])): Set<string> => {
+        if (Array.isArray(node)) {
+            node.forEach(item => exampleLangs(item, found));
+        } else if (node && typeof node === "object") {
+            for (const [key, value] of Object.entries(node)) {
+                if (key === "lang" && typeof value === "string") found.add(value);
+                else exampleLangs(value, found);
+            }
+        }
+        return found;
+    };
+
     const {getHighlighterCore} = await import("./shikiToolset");
 
-    highlighter.value = await getHighlighterCore();
+    highlighter.value = await getHighlighterCore(exampleLangs(props.schema));
 </script>
 
 <style scoped lang="scss">
