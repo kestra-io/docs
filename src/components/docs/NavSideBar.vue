@@ -180,7 +180,7 @@
             top: calc(8rem + var(--announce-height));
             display: block !important;
             height: fit-content;
-            max-height: subtract(100vh, 9rem);
+            max-height: calc(100vh - 9rem);
             padding-left: 0.25rem;
             margin-left: -0.25rem;
             overflow-y: auto;
