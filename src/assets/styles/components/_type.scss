@@ -3,6 +3,62 @@
 // a selector somewhere in this repo. Dropped: display-1..6, initialism,
 // img-thumbnail, icon-link, vstack/hstack/vr, ratio, color-modes and the
 // colored-links helper.
+// Heading classes, for markup that wants heading typography on another
+// element (NavToc.vue puts `h6` on a `<strong>`). The element selectors live
+// in _base.scss; these mirror them.
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--ks-heading-color);
+}
+
+.h1 {
+    font-size: calc(1.375rem + 1.5vw);
+
+    @include media-breakpoint-up(xl) {
+        font-size: 2.5rem;
+    }
+}
+
+.h2 {
+    font-size: calc(1.3375rem + 1.05vw);
+
+    @include media-breakpoint-up(xl) {
+        font-size: 2.125rem;
+    }
+}
+
+.h3 {
+    font-size: calc(1.3rem + 0.6vw);
+
+    @include media-breakpoint-up(xl) {
+        font-size: 1.75rem;
+    }
+}
+
+.h4 {
+    font-size: calc(1.275rem + 0.3vw);
+
+    @include media-breakpoint-up(xl) {
+        font-size: 1.5rem;
+    }
+}
+
+.h5 {
+    font-size: 1.125rem;
+}
+
+.h6 {
+    font-size: 1rem;
+}
+
 small,
 .small {
     font-size: 0.875em;

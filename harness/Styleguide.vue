@@ -41,6 +41,15 @@
         </div>
         <select class="form-select" data-probe="form-select"><option>a</option></select>
 
+        <strong class="h6" data-probe="h6-class">heading class on a strong</strong>
+        <div class="modal-header" data-probe="modal-header-probe">
+            <button type="button" class="btn-close" data-probe="btn-close">X</button>
+        </div>
+        <input class="form-control is-invalid" data-probe="form-control-invalid" value="bad" />
+        <textarea class="form-control is-invalid" data-probe="textarea-invalid">bad</textarea>
+        <select class="form-select is-invalid" data-probe="form-select-invalid"><option>o</option></select>
+        <div class="invalid-feedback" data-probe="invalid-feedback">required</div>
+
         <ul class="list-unstyled" data-probe="list-unstyled"><li>item</li></ul>
         <p class="lead" data-probe="lead">Lead</p>
         <figcaption class="figure-caption" data-probe="figure-caption">Caption</figcaption>

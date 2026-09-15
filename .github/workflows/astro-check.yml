@@ -27,7 +27,7 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Install dependencies
-        run: npm install
+        uses: ./.github/actions/node-modules
 
       - name: Run unit tests
         run: npm run test:unit

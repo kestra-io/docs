@@ -70,7 +70,7 @@
     color: var(--ks-form-color);
     appearance: none;
     background-color: var(--ks-form-bg);
-    background-image: var(--ks-form-select-bg-img);
+    background-image: var(--ks-form-select-bg-img), var(--ks-form-select-bg-icon, none);
     background-repeat: no-repeat;
     background-position: right 0.75rem center;
     background-size: 16px 12px;
@@ -97,6 +97,63 @@
     }
 }
 
+// Validation. Only the `.is-invalid` half is kept: nothing sets `.is-valid`
+// or `.was-validated`, and three of the four forms using `.is-invalid` style
+// it themselves — contact/Header.vue is the one that does not.
+$ks-invalid: #dc3545;
+$ks-invalid-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+
+.form-control.is-invalid {
+    border-color: $ks-invalid;
+    padding-right: calc(1.5em + 0.75rem);
+    background-image: $ks-invalid-icon;
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+
+    &:focus {
+        border-color: $ks-invalid;
+        box-shadow: 0 0 0 0.25rem rgba($ks-invalid, 0.25);
+    }
+}
+
+textarea.form-control.is-invalid {
+    background-position: top calc(0.375em + 0.1875rem) right calc(0.375em + 0.1875rem);
+}
+
+.form-select.is-invalid {
+    border-color: $ks-invalid;
+
+    &:not([multiple]):not([size]),
+    &:not([multiple])[size="1"] {
+        --ks-form-select-bg-icon: #{$ks-invalid-icon};
+        padding-right: 4.125rem;
+        background-position:
+            right 0.75rem center,
+            center right 2.25rem;
+        background-size:
+            16px 12px,
+            calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+    &:focus {
+        border-color: $ks-invalid;
+        box-shadow: 0 0 0 0.25rem rgba($ks-invalid, 0.25);
+    }
+}
+
+.invalid-feedback {
+    display: none;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: $ks-invalid;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
 .input-group {
     position: relative;
     display: flex;
@@ -113,6 +170,10 @@
 
         &:focus {
             z-index: 5;
+        }
+
+        &:not(:focus).is-invalid {
+            z-index: 4;
         }
     }
 

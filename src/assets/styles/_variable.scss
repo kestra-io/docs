@@ -1,3 +1,5 @@
+// Prelude for every SCSS block (vite.css.preprocessorOptions.scss.additionalData) and the
+// global sheets. Project values only.
 $white: #fff;
 $black: #000;
 
@@ -63,13 +65,14 @@ $rem-8: 8rem;
 $rem-9: 9rem;
 $rem-10: 10rem;
 
-// The handful of bootstrap Sass values this codebase still reads, inlined at
-// the values bootstrap resolved them to. This file is prepended to every
+// Values components read that used to come from bootstrap/scss/_variables.scss,
+// pinned to what it resolved them to. This file is prepended to every
 // `lang="scss"` block by astro.config.mjs, so what it costs to evaluate is
 // paid ~370 times per build: keeping it to plain values and four mixins is
 // the point of it.
 $spacer: 1rem;
 $line-height-base: 1.5;
+$input-padding-x: 0.75rem;
 
 $purple: #6f42c1;
 $pink: #d63384;

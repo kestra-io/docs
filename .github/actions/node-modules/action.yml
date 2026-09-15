@@ -1,0 +1,35 @@
+name: node_modules
+description: >-
+  Restores node_modules from the Actions cache, or runs `npm ci` and saves the
+  tree. Keyed on the exact lockfile, Node version and runner image.
+
+runs:
+  using: composite
+  steps:
+    # sharp, workerd and esbuild are native binaries, so the installed tree is only
+    # reused on the exact lockfile, Node version and runner image: no restore-keys.
+    - name: Resolve runner image
+      id: runner-image
+      shell: bash
+      run: echo "id=${ImageOS:-unknown}-${ImageVersion:-unknown}" >> "$GITHUB_OUTPUT"
+
+    - name: Restore node_modules
+      id: node-modules
+      uses: actions/cache/restore@v4
+      with:
+        path: node_modules
+        key: node-modules-${{ runner.os }}-${{ runner.arch }}-${{ steps.runner-image.outputs.id }}-${{ hashFiles('.nvmrc', 'package-lock.json') }}
+
+    - name: Install dependencies
+      if: steps.node-modules.outputs.cache-hit != 'true'
+      shell: bash
+      run: npm ci
+
+    # Saved right after the install, before a build writes node_modules/.astro,
+    # which the deploy workflow caches on its own, per ref.
+    - name: Save node_modules
+      if: steps.node-modules.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: node_modules
+        key: ${{ steps.node-modules.outputs.cache-primary-key }}
