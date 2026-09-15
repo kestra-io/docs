@@ -82,6 +82,7 @@ jobs:
       # Holds the content store plus the incremental build manifest and its copy
       # of the pages from the last build, which is what lets pages be skipped.
       - name: Restore Astro build cache
+        id: astro-cache
         uses: actions/cache@v4
         with:
           # A matched directory is archived whole, so the passthrough image cache is
@@ -208,9 +209,10 @@ jobs:
           grep -a 'cachekey-probe' /tmp/build.log | sort -u
           sed -n '/--- counts ---/,$p' /tmp/profile.txt
           # Last lines of the job: the tail-limited logs API reaches these.
-          echo "KEY restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log)"
           for r in b c d a; do
             tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
             res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
             echo "LADDER $r restored=$res of $tot"
           done
+          echo "KEY restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log)"
+          echo "CACHE matched=${{ steps.astro-cache.outputs.cache-matched-key }} hit=${{ steps.astro-cache.outputs.cache-hit }}"
