@@ -71,7 +71,7 @@ Host matching is **exact** by default. The scheme and port must also match. The 
 - `*.example.com` (or `https://*.example.com`) matches `foo.example.com` and `bar.example.com` but not `example.com`.
 - To match both a domain and all its subdomains, add two entries: `example.com` and `*.example.com`.
 
-Matching is not CIDR or glob-based. IP ranges cannot be expressed as a single entry — list each address explicitly.
+Matching is not CIDR or glob-based. IP ranges cannot be expressed as a single entry; list each address explicitly.
 
 When a URI is blocked, the task fails with an error that identifies the matching config key:
 
