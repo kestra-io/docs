@@ -36,7 +36,7 @@ function memoizeGet<T>(
 
 // A single 504 from an upstream API used to abort a whole build, so idempotent
 // requests back off and retry before the error propagates.
-const MAX_ATTEMPTS = 4
+const MAX_ATTEMPTS = 3
 const RETRY_BASE_DELAY_MS = 250
 const RETRY_MAX_DELAY_MS = 5_000
 const RETRYABLE_STATUSES = new Set([408, 425, 429, 500, 502, 503, 504])

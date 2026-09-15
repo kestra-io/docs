@@ -120,7 +120,7 @@ describe("transient failures", () => {
         expect(fetchMock).toHaveBeenCalledTimes(2)
     })
 
-    it("gives up after three retries and throws the last error", async () => {
+    it("gives up after two retries and throws the last error", async () => {
         fetchMock.mockImplementation(() => Promise.resolve(failure(503)))
         const { $fetchApiCached } = await load()
 
@@ -129,7 +129,7 @@ describe("transient failures", () => {
         }
 
         expect(outcome.error.message).toContain("Fetch error: 503")
-        expect(fetchMock).toHaveBeenCalledTimes(4)
+        expect(fetchMock).toHaveBeenCalledTimes(3)
     })
 
     it("does not retry a 4xx the upstream will keep returning", async () => {
