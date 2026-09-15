@@ -204,7 +204,7 @@ jobs:
           set +e
           # The logs API caps its response at ~7KB from the end of the job, and
           # post-job cleanup eats most of it, so print only the compact part.
-          # Full profile is in the Build step's own output. (run 2 of the scope experiment)
+          # Full profile is in the Build step own output.
           grep -a 'cachekey-probe' /tmp/build.log | sort -u
           sed -n '/--- counts ---/,$p' /tmp/profile.txt
           # Last line of the job: the tail-limited logs API always reaches this.
