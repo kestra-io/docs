@@ -1,6 +1,5 @@
 import GithubSlugger from "github-slugger"
 import { kebabCaseTag, parseMdcDocument, type MdcNode } from "~/markdown/mdcTree"
-import { getHighlighterCore } from "~/components/plugins/schema/shikiToolset"
 import {
     currentDocKey,
     docChildHref,
@@ -435,8 +434,11 @@ async function highlightCodeBlocks(node: MdcNode | undefined): Promise<void> {
         const code = node.props.code
         if (typeof code === "string") {
             try {
-                const highlighter = await getHighlighterCore()
+                // Dynamic import so the toolset stays out of every static
+                // closure; only the block's own grammar is fetched.
+                const { getHighlighterCore } = await import("~/components/plugins/schema/shikiToolset")
                 const lang = typeof node.props.language === "string" ? node.props.language.toLowerCase() : ""
+                const highlighter = await getHighlighterCore(lang ? [lang] : [])
                 const usable = lang && highlighter.getLoadedLanguages().includes(lang) ? lang : "text"
                 const html = highlighter.codeToHtml(code.replace(/\n$/, ""), {
                     lang: usable,

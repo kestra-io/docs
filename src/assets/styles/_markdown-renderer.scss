@@ -17,6 +17,15 @@
         }
     }
 
+    // Plain fences shown before Shiki's chunk lands. Geometry comes from the
+    // rules above; these match the wrapping and background Shiki sets inline.
+    & :deep(pre.shiki-fallback) {
+        background-color: #fff;
+        & code {
+            white-space: pre-wrap;
+        }
+    }
+
     :deep(h3) {
         padding: 0;
     }
