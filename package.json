@@ -73,7 +73,8 @@
     "rehype-external-links": "^3.0.0",
     "remark-directive": "^4.0.0",
     "remark-link-rewrite": "^1.0.7",
-    "sass": "^1.104.0",
+    "sass": "^1.104.1",
+    "sass-embedded": "^1.104.1",
     "sharp": "^0.35.4",
     "shiki": "^4.4.3",
     "slugify": "^1.6.9",
@@ -90,7 +91,6 @@
   "devDependencies": {
     "@astrojs/node": "^11.1.5",
     "@playwright/test": "1.61.0",
-    "sass-embedded": "^1.104.0",
     "vitest": "^5.0.0"
   },
   "engines": {
