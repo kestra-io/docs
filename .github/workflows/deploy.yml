@@ -188,11 +188,12 @@ jobs:
             🔗 [${{ needs.truncate-url-slug.outputs.url }}](${{ needs.truncate-url-slug.outputs.url }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
 
-      # ~700 MB of passthrough image copies that regenerate in seconds; drop them
-      # before the post-job cache save so they stay out of the 10 GB quota.
-      - name: Drop the passthrough image cache before it is saved
-        if: always()
-        run: rm -rf node_modules/.astro/assets
+      # TEMPORARY (test branch only): main's drop step is disabled on purpose, to
+      # establish whether the cached passthrough images are what stopped .astro
+      # routes restoring. Revert after the experiment.
+      # - name: Drop the passthrough image cache before it is saved
+      #   if: always()
+      #   run: rm -rf node_modules/.astro/assets
 
       # TEMPORARY (test branch only): last step, so the profile sits at the end
       # of the job log where the API tail can reach it.
