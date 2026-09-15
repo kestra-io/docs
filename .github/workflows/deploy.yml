@@ -241,4 +241,11 @@ jobs:
             res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
             lad="$lad $r=$res/$tot"
           done
+          seg() { sed -n 's#^[^/]*\(/[^ ]*\).*#\1#p' | awk -F/ '{ print ($2 == "" || $2 ~ /\.html$/ ? "(root)" : $2) }'; }
+          perl -pe 's/\e\[[0-9;]*m//g' /tmp/build.log > /tmp/build.plain
+          grep -a -e '├─' -e '└─' /tmp/build.plain > /tmp/pages.txt
           echo "::notice title=Incremental profile::restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log) html=$(find "${dd:-dist}" -name '*.html' 2>/dev/null | wc -l) ladder:$lad cache-matched=${{ steps.astro-cache.outputs.cache-matched-key }} cache-hit=${{ steps.astro-cache.outputs.cache-hit }}"
+          resb=$(grep -a '(restored)' /tmp/pages.txt | seg | sort | uniq -c | sort -rn | head -6 | tr '\n' ' ')
+          nonb=$(grep -av '(restored)' /tmp/pages.txt | seg | sort | uniq -c | sort -rn | head -8 | tr '\n' ' ')
+          echo "::notice title=Restored by prefix::$resb"
+          echo "::notice title=NOT restored by prefix::$nonb"
