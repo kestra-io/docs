@@ -15,6 +15,8 @@ concurrency:
 
 permissions:
   pull-requests: write
+  # Lets the last step delete this ref's superseded incremental build caches.
+  actions: write
 
 jobs:
   truncate-url-slug:
@@ -153,3 +155,16 @@ jobs:
       - name: Drop the passthrough image cache before it is saved
         if: always()
         run: rm -rf node_modules/.astro/assets
+
+      # The post-job save adds this commit's entry under the same prefix, which supersedes
+      # the older ones: one ~22 MB entry per ref instead of one per push. Success only, so
+      # a failed job (nothing saved) keeps its last good entry. Fork tokens cannot delete.
+      - name: Prune superseded incremental build caches
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          KEY_PREFIX: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
+        run: |
+          gh cache list --repo "$GITHUB_REPOSITORY" --key "$KEY_PREFIX" --limit 100 --json id,key \
+            --jq ".[] | select(.key != \"$KEY_PREFIX$GITHUB_SHA\") | .id" \
+            | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
