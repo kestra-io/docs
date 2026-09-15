@@ -15,8 +15,6 @@ concurrency:
 
 permissions:
   pull-requests: write
-  # Lets the last step delete this ref's superseded incremental build caches.
-  actions: write
 
 jobs:
   truncate-url-slug:
@@ -40,6 +38,10 @@ jobs:
     name: Publish to Cloudflare Workers
     runs-on: ubuntu-latest
     needs: truncate-url-slug
+    permissions:
+      pull-requests: write
+      # The prune step deletes this ref's superseded incremental build caches.
+      actions: write
     env:
       CF_PAGES_BRANCH: ${{ github.ref_name }}
       CF_PAGES_COMMIT_SHA: ${{ github.sha }}
@@ -83,8 +85,10 @@ jobs:
 
       # Holds the content store plus the incremental build manifest and its copy
       # of the pages from the last build, which is what lets pages be skipped.
+      # Restore only: the save is an explicit step below, so the prune can follow it.
       - name: Restore Astro build cache
-        uses: actions/cache@v4
+        id: astro-cache
+        uses: actions/cache/restore@v4
         with:
           # A matched directory is archived whole, so the passthrough image cache is
           # removed by the last step below rather than excluded by pattern.
@@ -156,15 +160,24 @@ jobs:
         if: always()
         run: rm -rf node_modules/.astro/assets
 
-      # The post-job save adds this commit's entry under the same prefix, which supersedes
-      # the older ones: one ~22 MB entry per ref instead of one per push. Success only, so
-      # a failed job (nothing saved) keeps its last good entry. Fork tokens cannot delete.
+      # Saved here, on success, so the prune below runs after it: a failed save then
+      # leaves the ref its previous entry instead of none. A re-run's key already exists.
+      - name: Save Astro build cache
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules/.astro
+          key: ${{ steps.astro-cache.outputs.cache-primary-key }}
+
+      # This commit's entry is saved above, so every older entry under the same prefix
+      # is superseded: one ~22 MB entry per ref instead of one per push. Fork PR tokens
+      # cannot delete, hence continue-on-error.
       - name: Prune superseded incremental build caches
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
           KEY_PREFIX: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
         run: |
-          gh cache list --repo "$GITHUB_REPOSITORY" --key "$KEY_PREFIX" --limit 100 --json id,key \
-            --jq ".[] | select(.key != \"$KEY_PREFIX$GITHUB_SHA\") | .id" \
-            | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          ids=$(gh cache list --repo "$GITHUB_REPOSITORY" --key "$KEY_PREFIX" --limit 100 --json id,key \
+            --jq ".[] | select(.key != \"$KEY_PREFIX$GITHUB_SHA\") | .id")
+          printf '%s\n' $ids | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          echo "deleted $(printf '%s\n' $ids | grep -c .) superseded entries under $KEY_PREFIX"
