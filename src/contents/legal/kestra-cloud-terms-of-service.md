@@ -3,6 +3,12 @@ title: Kestra Cloud Terms of Service
 description: Terms of Service governing access to and use of Kestra Cloud, the hosted and managed Kestra orchestration platform
 ---
 
+<head>
+
+<meta name="robots" content="noindex, nofollow">
+
+</head>
+
 # Kestra Cloud Terms of Service
 
 **Last Updated: 14 September 2026**

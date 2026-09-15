@@ -3,6 +3,12 @@ title: Kestra Cloud Privacy Policy
 description: How Kestra Technologies collects, uses, and shares personal information when you use Kestra Cloud
 ---
 
+<head>
+
+<meta name="robots" content="noindex, nofollow">
+
+</head>
+
 # Kestra Cloud Privacy Policy
 
 **Last Updated: 14 September 2026**
