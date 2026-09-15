@@ -216,3 +216,19 @@ jobs:
           done
           echo "KEY restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log)"
           echo "CACHE matched=${{ steps.astro-cache.outputs.cache-matched-key }} hit=${{ steps.astro-cache.outputs.cache-hit }}"
+          # The logs API only serves ~7KB from the end of a job and cleanup eats it,
+          # so mirror the numbers into the job summary, which the check-runs API
+          # returns in full.
+          {
+            echo "### incremental build profile"
+            echo ""
+            echo '```'
+            sed -n '/--- counts ---/,$p' /tmp/profile.txt
+            for r in a b c d; do
+              tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
+              res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
+              echo "LADDER $r restored=$res of $tot"
+            done
+            echo "CACHE matched=${{ steps.astro-cache.outputs.cache-matched-key }} hit=${{ steps.astro-cache.outputs.cache-hit }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
