@@ -36,6 +36,10 @@ export default {
         "https://jobs.ashbyhq.com/",
         "https://*.claydar.com",
         "https://*.vector.co",
+        // gtag loads the Google Ads conversion pixel as a script and as an
+        // image; connect-src alone is not enough, both were blocked.
+        "https://*.g.doubleclick.net",
+        "https://www.googleadservices.com",
     ],
     // styles & fonts
     "style-src": ["'self'", "https:", "'unsafe-inline'"],
@@ -58,6 +62,8 @@ export default {
         "https://*.ytimg.com",
         "https://*.googletagmanager.com",
         "https://*.githubusercontent.com/",
+        // Google Ads conversion pings fall back to an <img> beacon.
+        "https://*.g.doubleclick.net",
     ],
     // audio/video
     "media-src": [
@@ -89,7 +95,6 @@ export default {
     "connect-src": [
         "'self'",
         "cloudflareinsights.com",
-        "ws://localhost:4000",
         "https://kestra.io",
         "https://*.kestra.io",
         "https://*.google.com",
