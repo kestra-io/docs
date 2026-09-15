@@ -227,7 +227,7 @@ jobs:
       - name: Build profile
         if: always()
         run: |
-          # Counting steps: a zero count is a legitimate result, not a failure,
+          # A zero count is a legitimate result, not a failure:
           # and grep -c exits 1 on no match, which `bash -e` would abort on.
           set +e
           # The logs API caps its response at ~7KB from the end of the job, and
