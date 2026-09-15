@@ -9,7 +9,6 @@ metaDescription: This is the Story of HTCH a collaborative web platform for
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
 tasks:
   - io.kestra.plugin.kafka.Produce
   - io.kestra.plugin.notifications.discord.DiscordExecution

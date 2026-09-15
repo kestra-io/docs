@@ -74,7 +74,48 @@ export async function layoutDigest(): Promise<string> {
  * leaves the page out of the cache instead of guessing. */
 export function entryCacheKey(
     entry: KeyedEntry,
-    ...scope: string[]
+    ...scope: (string | undefined)[]
 ): string | undefined {
-    return entry.digest === undefined ? undefined : [entry.digest, ...scope].join("|")
+    return entry.digest === undefined || scope.includes(undefined)
+        ? undefined
+        : [entry.digest, ...scope].join("|")
+}
+
+/** Digest of a set of remote payloads, or undefined when any of them can't be
+ * read, which leaves the page uncached instead of keying it on a failure. */
+async function remoteDigest(
+    keys: readonly string[],
+    load: (key: string) => Promise<unknown>,
+): Promise<string | undefined> {
+    try {
+        // GETs are memoized per build, so these resolve to what the page renders.
+        const payloads = await Promise.all(
+            [...new Set(keys)]
+                .sort()
+                .map(async (key) => JSON.stringify([key, await load(key)])),
+        )
+        return hashString(payloads.join("\n"))
+    } catch (error) {
+        console.warn(`remoteDigest: leaving a page uncached, ${error}`)
+        return undefined
+    }
+}
+
+/** Digest of the Kestra API payloads a page bakes in, so a plugin or blueprint
+ * release invalidates it. */
+export async function apiPayloadDigest(
+    ...paths: readonly string[]
+): Promise<string | undefined> {
+    const { $fetchApiCached } = await import("~/utils/fetch")
+    return remoteDigest(paths, $fetchApiCached)
+}
+
+/** Digest of the plugin icons a page inlines, which are SVG text rather than
+ * JSON, so a re-drawn icon invalidates the pages showing it. */
+export async function pluginIconDigest(
+    ...classes: readonly string[]
+): Promise<string | undefined> {
+    const { $fetchApiTextCached } = await import("~/utils/fetch")
+    const { pluginIconPath } = await import("~/utils/pluginIcon")
+    return remoteDigest(classes, (cls) => $fetchApiTextCached(pluginIconPath(cls)))
 }

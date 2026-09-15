@@ -124,6 +124,20 @@ export async function $fetchApiCached<T = any>(
     )
 }
 
+// Plugin icons are SVG text, not JSON, so they need their own memoized helper
+// rather than going through $fetchApiCached.
+export async function $fetchApiTextCached(
+    url: string,
+    init: RequestInit = {},
+): Promise<string> {
+    const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
+
+    // `text:` keeps this out of the JSON memo entry for the same URL.
+    return await memoizeGet(`text:${API_URL}${url}`, init, async () =>
+        (await internalFetch(`${API_URL}${url}`, cachingConfig)).text(),
+    )
+}
+
 // Same as $fetchApiCached but resolves to undefined when the API fails, for
 // decorative data that must not take the whole page down.
 export async function $fetchApiCachedOptional<T = any>(

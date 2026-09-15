@@ -8,12 +8,20 @@ import {
 } from "~/utils/incrementalCacheKey"
 import { DOCS_LATEST_OVERRIDE } from "~/utils/versionedDocs"
 
-const { fetchMock } = vi.hoisted(() => ({ fetchMock: vi.fn() }))
-vi.mock("~/utils/fetch", () => ({ $fetchApiCached: fetchMock }))
+const { fetchMock, textFetchMock } = vi.hoisted(() => ({
+    fetchMock: vi.fn(),
+    textFetchMock: vi.fn(),
+}))
+vi.mock("~/utils/fetch", () => ({
+    $fetchApiCached: fetchMock,
+    $fetchApiTextCached: textFetchMock,
+}))
 
 beforeEach(() => {
     fetchMock.mockReset()
     fetchMock.mockResolvedValue({ version: "2.9.0" })
+    textFetchMock.mockReset()
+    textFetchMock.mockResolvedValue("<svg />")
     vi.resetModules()
 })
 
@@ -110,5 +118,58 @@ describe("entryCacheKey", () => {
 
     it("returns undefined without a digest, leaving the page uncached", () => {
         expect(entryCacheKey({ id: "a", data: {} }, "scope")).toBeUndefined()
+    })
+
+    it("returns undefined when a scope part is missing, rather than keying without it", () => {
+        expect(entryCacheKey(collection[0], "scope", undefined)).toBeUndefined()
+    })
+})
+
+describe("apiPayloadDigest", () => {
+    const digest = async (...paths: string[]) => {
+        const { apiPayloadDigest } = await import("./incrementalCacheKey")
+        return apiPayloadDigest(...paths)
+    }
+
+    it("ignores the order the endpoints are listed in, and repeats", async () => {
+        fetchMock.mockImplementation(async (path: string) => ({ path }))
+        expect(await digest("/a", "/b")).toBe(await digest("/b", "/a", "/a"))
+    })
+
+    it("changes when a payload changes", async () => {
+        fetchMock.mockResolvedValue({ total: 1 })
+        const base = await digest("/plugins/subgroups")
+        fetchMock.mockResolvedValue({ total: 2 })
+        expect(await digest("/plugins/subgroups")).not.toBe(base)
+    })
+
+    it("returns undefined when a payload can't be read", async () => {
+        fetchMock.mockRejectedValue(new Error("503"))
+        expect(await digest("/plugins/subgroups")).toBeUndefined()
+    })
+})
+
+describe("pluginIconDigest", () => {
+    const digest = async (...classes: string[]) => {
+        const { pluginIconDigest } = await import("./incrementalCacheKey")
+        return pluginIconDigest(...classes)
+    }
+
+    it("changes when an icon is redrawn", async () => {
+        const base = await digest("io.kestra.plugin.core.log.Log")
+        textFetchMock.mockResolvedValue("<svg><path /></svg>")
+        expect(await digest("io.kestra.plugin.core.log.Log")).not.toBe(base)
+    })
+
+    it("reads each class from its own icon endpoint", async () => {
+        await digest("io.kestra.plugin.core.log.Log")
+        expect(textFetchMock).toHaveBeenCalledWith(
+            "/plugins/icons/io.kestra.plugin.core.log.Log",
+        )
+    })
+
+    it("returns undefined when an icon can't be read", async () => {
+        textFetchMock.mockRejectedValue(new Error("404"))
+        expect(await digest("io.kestra.plugin.core.log.Log")).toBeUndefined()
     })
 })

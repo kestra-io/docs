@@ -4,8 +4,10 @@ rank: 1
 description: A European government IT provider managing security operations for multiple German federal states replaced Palo Alto XSOAR with Kestra, building 100+ SOC workflows with zero cloud dependencies.
 metaTitle: Government SOC Team Replaced Palo Alto XSOAR with Kestra
 metaDescription: How a European government IT provider replaced Palo Alto XSOAR with Kestra — building 100+ SOC alert workflows fully self-hosted, with no cloud dependencies, serving multiple German federal states.
-heroImage: ./hero.jpg
-featuredImage: ./hero.jpg
+# Shared with the Dataport story: a second byte-identical copy would emit one
+# asset under whichever filename registered first, which varies per build.
+heroImage: ../building-a-government-grade-orchestration-control-plane-with-kestra/hero.jpg
+featuredImage: ../building-a-government-grade-orchestration-control-plane-with-kestra/hero.jpg
 logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.elasticsearch.Search
