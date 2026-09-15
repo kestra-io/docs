@@ -58,3 +58,11 @@ export function getPlainMarked() {
 
     return plainInstance
 }
+
+/** Kicks off the toolset fetch from a module that knows it will highlight, so
+ * the round trips overlap hydration instead of starting after it. */
+export function warmHighlighter(langs?: Iterable<string>) {
+    void import("~/components/plugins/schema/shikiToolset")
+        .then((toolset) => toolset.warmHighlighterCore(langs))
+        .catch(() => {})
+}

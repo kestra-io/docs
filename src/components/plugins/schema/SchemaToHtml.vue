@@ -94,6 +94,14 @@
     </div>
 </template>
 
+<script lang="ts">
+    import { warmHighlighter } from "~/markdown/marked-shiki";
+
+    // Module scope, not setup: starts the Shiki fetch when this island's
+    // chunk is evaluated, so its round trips overlap hydration.
+    warmHighlighter(["yaml"]);
+</script>
+
 <script setup lang="ts">
     import {computed, onMounted, onUnmounted, provide, ref} from "vue";
     import type {HighlighterCore} from "shiki/core";
