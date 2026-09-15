@@ -71,7 +71,7 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         console.error(`  ${ref}  <- ${pages.length} page(s): ${sample}${more}`)
     }
     console.error(
-        "Stale HTML restored by the incremental build? Clear the astro-build-* Actions cache and rebuild.",
+        "Stale HTML restored by the incremental build? The deploy job rebuilds without the cache on its own; locally, delete node_modules/.astro/incremental-build.json and rebuild.",
     )
     process.exit(1)
 }
