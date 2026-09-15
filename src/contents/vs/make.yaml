@@ -208,7 +208,7 @@ platformStrengths:
     - title: No platform-imposed execution limits
       description: "Kestra flows run for as long as the task requires, from seconds to hours, with no ceiling on execution time. A dbt run against a large model, a Spark job processing overnight data, or a file export from cloud storage all complete at their natural pace. Retry logic, timeout configuration, and execution monitoring are available as YAML-level settings on every workflow."
     - title: Data pipelines as native workflows
-      description: "1,400+ plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven automations and business process workflows. DAG visualization and data-specific retry semantics are built in, not bolted on."
+      description: "{totalPlugins}+ plugins cover dbt, Airbyte, Spark, Snowflake, BigQuery, Databricks, and every major data warehouse, cloud provider, and message queue. Data engineers define ETL pipelines in the same declarative YAML they use for event-driven automations and business process workflows. DAG visualization and data-specific retry semantics are built in, not bolted on."
     - title: Version control for every workflow change
       description: "Kestra flows are YAML files in a repository. Every modification is a commit, deployments are tracked, and rolling back a broken workflow is a git revert. Teams review automation changes in a pull request before they go live, the same process they use for any other production change."
 
@@ -235,7 +235,7 @@ decisionGuide:
 
 commonQuestions:
   - question: How do I migrate from Make to Kestra?
-    answer: "Map each Make module to the equivalent Kestra plugin. Schedule triggers, HTTP modules, and Slack/email notifications translate directly. For Make's pre-built app connectors, Kestra's 1,200+ plugin library covers the most common targets. For anything without a native plugin, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with scenarios that are hitting Make's 40-minute execution limit or that involve data workloads better suited to a dedicated orchestration platform."
+    answer: "Map each Make module to the equivalent Kestra plugin. Schedule triggers, HTTP modules, and Slack/email notifications translate directly. For Make's pre-built app connectors, Kestra's {totalPlugins}+ plugin library covers the most common targets. For anything without a native plugin, the HTTP plugin handles any REST API. Most teams migrate incrementally, starting with scenarios that are hitting Make's 40-minute execution limit or that involve data workloads better suited to a dedicated orchestration platform."
   - question: Can Kestra handle complex multi-step automation the way Make does?
     answer: "Yes. Kestra supports multi-step flows with conditional branching, parallel task execution, iterators, error handling, and subflows as first-class YAML constructs. Make's visual strength is that non-engineers can build complex routing and filtering logic without code. In Kestra, engineers write that logic in YAML, which makes it version-controllable and reviewable but requires technical ownership. If the primary requirement is non-technical users building complex automation independently, Make's visual builder has an advantage."
   - question: What is Make's 40-minute execution limit and how does it affect data workflows?

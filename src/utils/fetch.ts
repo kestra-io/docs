@@ -124,6 +124,31 @@ export async function $fetchApiCached<T = any>(
     )
 }
 
+const RETRY_ATTEMPTS = 3
+const RETRY_BASE_DELAY_MS = 500
+
+// Retries transient failures with a short growing backoff before rethrowing, for
+// values rendered on many prerendered pages where one blip would fail the build.
+export async function $fetchApiCachedWithRetry<T = any>(
+    url: string,
+    init: RequestInit = {},
+): Promise<T> {
+    let lastError: unknown
+    for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
+        try {
+            return await $fetchApiCached<T>(url, init)
+        } catch (e) {
+            lastError = e
+            if (attempt < RETRY_ATTEMPTS) {
+                await new Promise((resolve) =>
+                    setTimeout(resolve, RETRY_BASE_DELAY_MS * attempt),
+                )
+            }
+        }
+    }
+    throw lastError
+}
+
 // Same as $fetchApiCached but resolves to undefined when the API fails, for
 // decorative data that must not take the whole page down.
 export async function $fetchApiCachedOptional<T = any>(
