@@ -98,3 +98,9 @@ export async function getHighlighterCore(
     )
     return highlighter
 }
+
+/** Starts the core (and optionally some grammars) loading without waiting, so
+ * the chunks land while the caller is still hydrating. */
+export function warmHighlighterCore(langs: Iterable<string> = []) {
+    void getHighlighterCore(langs).catch(() => {})
+}
