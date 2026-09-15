@@ -232,3 +232,13 @@ jobs:
             echo "CACHE matched=${{ steps.astro-cache.outputs.cache-matched-key }} hit=${{ steps.astro-cache.outputs.cache-hit }}"
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
+          # Job summaries are not exposed by the API, and the logs endpoint only
+          # serves ~7KB from the end of a job. Annotations are returned in full by
+          # /check-runs/{id}/annotations, so emit one notice carrying every number.
+          lad=""
+          for r in a b c d; do
+            tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
+            res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
+            lad="$lad $r=$res/$tot"
+          done
+          echo "::notice title=Incremental profile::restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log) html=$(find "${dd:-dist}" -name '*.html' 2>/dev/null | wc -l) ladder:$lad cache-matched=${{ steps.astro-cache.outputs.cache-matched-key }} cache-hit=${{ steps.astro-cache.outputs.cache-hit }}"
