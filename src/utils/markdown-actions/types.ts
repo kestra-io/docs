@@ -5,6 +5,11 @@ export interface MarkdownActionContext {
     pagePath: string
     /** Raw markdown source for clipboard copy. */
     markdownBody: string
+    /**
+     * Fetch the markdown from `markdownUrl` on copy instead of shipping it in
+     * `markdownBody`, for pages whose markdown is too large for island props.
+     */
+    lazyMarkdown?: boolean
     /** Optional page title for AI prompt context. */
     pageTitle?: string
     /** Optional absolute page URL; resolved from `pagePath` when omitted. */
