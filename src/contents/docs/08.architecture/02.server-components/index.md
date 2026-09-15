@@ -45,7 +45,7 @@ Before dispatching a job, the Worker Controller writes it to a durable **running
 
 Multiple Worker Controller instances can run in parallel. Workers discover available controllers through static endpoint lists, DNS, or self-registration in internal storage. The controller periodically recycles long-lived streams so that newly deployed controller instances pick up traffic without requiring worker restarts.
 
-gRPC transport is available in all editions. TLS and mTLS secure the connection in all editions; JWT-based worker authentication is an Enterprise Edition feature.
+gRPC transport is available in all editions. TLS, mTLS, and JWT-based worker authentication for the channel are Enterprise Edition features; the open-source edition uses a plaintext channel.
 
 ## Worker
 
