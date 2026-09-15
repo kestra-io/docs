@@ -44,6 +44,9 @@ export const collections = {
         schema: ({ image }) =>
             z.object({
                 title: z.string(),
+                // Override the <title>/og:title when the SEO title should differ
+                // from the on-page H1. Falls back to `title` when unset.
+                metaTitle: z.string().optional(),
                 description: z.string().optional(),
                 date: z.date(),
                 category: z.string(),
