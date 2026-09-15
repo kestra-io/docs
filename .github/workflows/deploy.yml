@@ -98,8 +98,48 @@ jobs:
           # preview, so a cross-ref fallback would never match anything.
           restore-keys: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-
 
+      # TEMPORARY (test branch only): tee the build and stash a profile, printed
+      # by the last step of the job so the log tail can actually reach it.
       - name: Build
-        run: npm run build
+        run: |
+          set -o pipefail
+          npm run build 2>&1 | tee /tmp/build.log
+          d=dist; [ -d dist/client ] && d=dist/client
+          # Profiling only from here: steps run under `bash -e`, and a
+          # SIGPIPE from `| head` would abort a build that actually passed.
+          set +e +o pipefail
+          {
+            echo "--- first lines (content sync, loaders) ---"
+            head -12 /tmp/build.log
+            echo "--- phase lines ---"
+            grep -aE "\[(build|vite|content|types|adapter|glob-loader)\]" /tmp/build.log | tail -40
+            echo "--- cachekey probe ---"
+            grep -a "cachekey-probe" /tmp/build.log | sort -u
+            echo "--- route buckets ---"
+            perl -pe 's/\e\[[0-9;]*m//g' /tmp/build.log > /tmp/build.plain
+            grep -a -e '├─' -e '└─' /tmp/build.plain > /tmp/pages.txt
+            echo "page lines: $(wc -l < /tmp/pages.txt)"
+            echo "sample restored:"
+            grep -a '(restored)' /tmp/pages.txt | head -3
+            echo "sample not restored:"
+            grep -av '(restored)' /tmp/pages.txt | head -3
+            seg() { sed -n 's#^[^/]*\(/[^ ]*\).*#\1#p' | awk -F/ '{ print ($2 == "" || $2 ~ /\.html$/ ? "(root)" : $2) }'; }
+            echo "RESTORED by first segment:"
+            grep -a '(restored)' /tmp/pages.txt | seg | sort | uniq -c | sort -rn | head -15
+            echo "NOT restored by first segment:"
+            grep -av '(restored)' /tmp/pages.txt | seg | sort | uniq -c | sort -rn | head -20
+            echo "--- counts ---"
+            echo "cached:   $(grep -ac '(cached)' /tmp/build.log)"
+            echo "restored: $(grep -ac '(restored)' /tmp/build.log)"
+            echo "emitted:  $(grep -acE '^ *(├─|└─)' /tmp/build.log)"
+            echo "html:     $(find $d -name '*.html' | wc -l)"
+            echo "_astro:   $(find $d/_astro -type f | wc -l)"
+            echo "css:      $(find $d/_astro -name '*.css' | wc -l)"
+            echo "js:       $(find $d/_astro -name '*.js' | wc -l)"
+          } > /tmp/profile.txt
+        env:
+          NO_IMAGE_OPTIM: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
+          PREVIEW: ${{ startsWith(github.repository, 'kestra-io/') && github.ref != 'refs/heads/main' && 'true' || 'false' }}
 
       # A page restored from a stale incremental cache links CSS/JS hashes this
       # build no longer emits. Catch it here rather than as a 404 in production.
@@ -181,3 +221,58 @@ jobs:
             --jq ".[] | select(.key != \"$KEY_PREFIX$GITHUB_SHA\") | .id")
           printf '%s\n' $ids | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
           echo "deleted $(printf '%s\n' $ids | grep -c .) superseded entries under $KEY_PREFIX"
+
+      # TEMPORARY (test branch only): last step, so the profile sits at the end
+      # of the job log where the API tail can reach it.
+      - name: Build profile
+        if: always()
+        run: |
+          # A zero count is a legitimate result, not a failure:
+          # and grep -c exits 1 on no match, which `bash -e` would abort on.
+          set +e
+          # The logs API caps its response at ~7KB from the end of the job, and
+          # post-job cleanup eats most of it, so print only the compact part.
+          # Full profile is in the Build step own output.
+          grep -a 'cachekey-probe' /tmp/build.log | sort -u
+          sed -n '/--- counts ---/,$p' /tmp/profile.txt
+          # Last lines of the job: the tail-limited logs API reaches these.
+          for r in b c d a; do
+            tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
+            res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
+            echo "LADDER $r restored=$res of $tot"
+          done
+          echo "KEY restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log)"
+          echo "CACHE matched=${{ steps.astro-cache.outputs.cache-matched-key }} hit=${{ steps.astro-cache.outputs.cache-hit }}"
+          # The logs API only serves ~7KB from the end of a job and cleanup eats it,
+          # so mirror the numbers into the job summary, which the check-runs API
+          # returns in full.
+          {
+            echo "### incremental build profile"
+            echo ""
+            echo '```'
+            sed -n '/--- counts ---/,$p' /tmp/profile.txt
+            for r in a b c d; do
+              tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
+              res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
+              echo "LADDER $r restored=$res of $tot"
+            done
+            echo "CACHE matched=${{ steps.astro-cache.outputs.cache-matched-key }} hit=${{ steps.astro-cache.outputs.cache-hit }}"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          # Job summaries are not exposed by the API, and the logs endpoint only
+          # serves ~7KB from the end of a job. Annotations are returned in full by
+          # /check-runs/{id}/annotations, so emit one notice carrying every number.
+          lad=""
+          for r in a b c d; do
+            tot=$(grep -ac "/cachetest-$r/" /tmp/build.log)
+            res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
+            lad="$lad $r=$res/$tot"
+          done
+          seg() { sed -n 's#^[^/]*\(/[^ ]*\).*#\1#p' | awk -F/ '{ print ($2 == "" || $2 ~ /\.html$/ ? "(root)" : $2) }'; }
+          perl -pe 's/\e\[[0-9;]*m//g' /tmp/build.log > /tmp/build.plain
+          grep -a -e '├─' -e '└─' /tmp/build.plain > /tmp/pages.txt
+          echo "::notice title=Incremental profile::restored=$(grep -ac '(restored)' /tmp/build.log) pages=$(grep -ac -e '├─' -e '└─' /tmp/build.log) html=$(find "${dd:-dist}" -name '*.html' 2>/dev/null | wc -l) ladder:$lad cache-matched=${{ steps.astro-cache.outputs.cache-matched-key }} cache-hit=${{ steps.astro-cache.outputs.cache-hit }}"
+          resb=$(grep -a '(restored)' /tmp/pages.txt | seg | sort | uniq -c | sort -rn | head -6 | tr '\n' ' ')
+          nonb=$(grep -av '(restored)' /tmp/pages.txt | seg | sort | uniq -c | sort -rn | head -8 | tr '\n' ' ')
+          echo "::notice title=Restored by prefix::$resb"
+          echo "::notice title=NOT restored by prefix::$nonb"

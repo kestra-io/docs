@@ -7,8 +7,7 @@ export async function fetchFullCatalog(): Promise<Blueprint[]> {
             results: Blueprint[]
             total: number
         }>(`/blueprints/versions/latest?size=${PAGE}&page=1&sort=A-Z`)
-        // Copy: the memoized payload is shared with every other caller.
-        const results = [...(first?.results ?? [])]
+        const results = first?.results ?? []
         const total = first?.total ?? results.length
         const pages = Math.min(Math.ceil(total / PAGE), 5)
         if (pages > 1) {

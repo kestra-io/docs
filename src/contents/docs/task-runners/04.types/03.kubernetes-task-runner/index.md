@@ -342,9 +342,9 @@ Three properties control how long the runner waits at different stages of pod ex
 |---|---|---|
 | `waitUntilRunning` | `PT10M` | Maximum time to wait for the pod to be scheduled, the image to be pulled, and containers to start. |
 | `waitUntilCompletion` | `PT1H` | Wall-clock timeout for task execution when the task itself has no `timeout` set. In Job mode, this budget is shared across all pod attempts — size it relative to `job.backoffLimit` so per-attempt eviction-detection overhead does not exhaust it before the task completes. |
-| `waitForLogs` | `PT30S` | Maximum extra time after containers exit to wait for the log stream to flush. The task returns as soon as the log stream goes quiet, so this is a ceiling, not a fixed delay — it only comes into play for a container that keeps writing logs right up to the limit. |
+| `waitForLogs` | `PT30S` | Extra time after containers exit to allow the log stream to flush completely. |
 
-Increase `waitUntilRunning` for clusters that pull large images or have slow scheduling. Increase `waitUntilCompletion` for long-running tasks. Increase `waitForLogs` only if a container's logs keep flushing late enough that the default ceiling is not enough to capture them.
+Increase `waitUntilRunning` for clusters that pull large images or have slow scheduling. Increase `waitUntilCompletion` for long-running tasks. Decrease `waitForLogs` when you know logs are always flushed quickly and want to reduce idle time at the end of each task.
 
 ```yaml
 taskRunner:

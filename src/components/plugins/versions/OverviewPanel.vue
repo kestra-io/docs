@@ -26,15 +26,11 @@
             />
 
             <div class="managed">
-                <div>
+                <div v-if="repoUrl">
                     <p>Maintained by</p>
                     <div class="meta-info">
-                        <img :src="kestraIcon.src" alt="Kestra icon" class="author-icon" />
-                        <span>Kestra Core Team</span>
-                    </div>
-                    <div v-if="repoUrl" class="meta-info">
                         <a :href="`${repoUrl}/graphs/contributors`" target="_blank" rel="noopener noreferrer">
-                            See all contributors
+                            Contributors
                         </a>
                     </div>
                 </div>
@@ -86,7 +82,6 @@
     import InformationOutline from "vue-material-design-icons/InformationOutline.vue"
     import Versions from "./Versions.vue"
     import type { ReleaseInfo } from "../../../utils/plugins/repoReleases"
-    import kestraIcon from "../assets/kestra.svg"
 
     const props = withDefaults(
         defineProps<{
