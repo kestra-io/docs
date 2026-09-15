@@ -264,7 +264,7 @@
             }
         }
         nav {
-            @include font-size(0.875rem);
+            font-size: 0.875rem;
             padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--ks-border-primary);
             position: relative;
@@ -358,7 +358,7 @@
         }
 
         hr {
-            border-color: var(--bs-gray-600);
+            border-color: var(--ks-gray-600);
         }
     }
 

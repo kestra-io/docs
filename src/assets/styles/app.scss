@@ -52,9 +52,7 @@ body {
 
 :root {
     --spacer: #{$spacer};
-    --bs-link-color-rgb: var(--ks-content-link);
-    --#{$prefix}font-size-lg: #{$font-size-lg};
-    --#{$prefix}font-size-sm: #{$font-size-sm};
+    --ks-link-color-rgb: var(--ks-content-link);
 }
 
 @each $breakpoint, $container-max-width in $container-max-widths {
@@ -126,7 +124,6 @@ main {
     height: auto;
 }
 
-// bootstrap
 table.table {
     thead {
         border-bottom: 2px solid var(--ks-content-primary);
@@ -391,7 +388,7 @@ html.dark .surface-inverse .btn-secondary {
     }
 
     p.overline {
-        font-family: var(--bs-font-monospace);
+        font-family: var(--ks-font-monospace);
         font-size: $font-size-xl;
         text-transform: uppercase;
         font-weight: bold;
@@ -400,7 +397,7 @@ html.dark .surface-inverse .btn-secondary {
 
     .dot {
         color: var(--ks-content-color-highlight);
-        font-family: var(--bs-font-monospace);
+        font-family: var(--ks-font-monospace);
         font-size: 52px;
     }
 
@@ -519,8 +516,8 @@ html.dark .surface-inverse .btn-secondary {
 }
 
 .type-mark {
-    background-color: var(--bs-secondary);
-    border-radius: var(--bs-border-radius);
+    background-color: var(--ks-secondary);
+    border-radius: var(--ks-border-radius);
     color: var(--ks-content-primary);
 
     font-size: $font-size-sm;
@@ -534,7 +531,7 @@ html.dark .surface-inverse .btn-secondary {
 small.agree {
     font-size: 75%;
     opacity: 0.6;
-    color: var(--bs-body-color);
+    color: var(--ks-body-color);
     a {
         color: var(--ks-content-link);
     }
@@ -582,15 +579,10 @@ small.agree {
 
 :root {
     --spacer: #{$spacer};
-    // avoids issues when pagination css file is loaded too late or not at all
-    .pagination {
-        --bs-pagination-disabled-bg: var(--ks-background-secondary);
-        --bs-pagination-bg: var(--ks-background-secondary);
-    }
 }
 
 #cc-main {
-    --cc-font-family: var(--bs-body-font-family);
+    --cc-font-family: var(--ks-body-font-family);
     --cc-btn-primary-color: #{$white};
 
     --cc-btn-primary-bg: var(--ks-background-button-primary);
@@ -627,7 +619,7 @@ small.agree {
     font-size: $font-size-sm;
     color: var(--ks-content-link);
 
-    font-family: var(--bs-font-monospace);
+    font-family: var(--ks-font-monospace);
     font-weight: 700;
     text-transform: uppercase;
     max-width: 700px;
@@ -643,7 +635,7 @@ small.agree {
         display: inline-block;
         height: 2px;
         width: 51px;
-        background: var(--bs-pink);
+        background: var(--ks-pink);
     }
 }
 
@@ -670,54 +662,6 @@ small.agree {
 @include media-breakpoint-up(lg) {
     .mobile {
         display: none;
-    }
-}
-
-.plugin-tooltip {
-    .tooltip-inner {
-        text-align: left !important;
-        max-height: 20rem;
-        overflow: auto;
-        background-color: rgb(0, 0, 0, 0.6);
-        -webkit-backdrop-filter: blur(4px);
-        backdrop-filter: blur(4px);
-        color: var(--ks-content-primary);
-
-        border: 1px solid var(--kestra-io-token-color-border-primary);
-        border-radius: 1em;
-        max-width: 80ch;
-        padding: 1rem;
-
-        p:not(li p) {
-            margin-bottom: 0;
-            line-height: 1.625rem;
-        }
-
-        li::marker,
-        a {
-            color: var(--ks-content-link);
-        }
-
-        li {
-            line-height: 1.25rem;
-        }
-
-        &::-webkit-scrollbar {
-            width: 2px;
-            height: 2px;
-        }
-
-        &::-webkit-scrollbar-track {
-            background: var(--card-bg);
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background: var(--bs-primary);
-            border-radius: 0px;
-        }
-    }
-    .tooltip-arrow {
-        --bs-tooltip-bg: var(--kestra-io-token-color-border-primary);
     }
 }
 
@@ -851,7 +795,7 @@ html.no-animation {
     border: 1px solid var(--ks-border-info);
     color: var(--ks-content-info);
     padding: 0.25rem 0.5rem;
-    border-radius: var(--bs-border-radius);
+    border-radius: var(--ks-border-radius);
 }
 
 .mermaid {

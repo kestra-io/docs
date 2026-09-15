@@ -189,7 +189,7 @@
             min-width: 250px;
         }
         button.btn {
-            border: 1px solid var(--bs-gray-300);
+            border: 1px solid var(--ks-gray-300);
             font-weight: bold;
             width: 100%;
             color: var(--ks-content-primary);

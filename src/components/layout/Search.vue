@@ -619,7 +619,7 @@
         .badge {
             font-weight: normal;
             &.bg-light {
-                background: var(--bs-gray-400) !important;
+                background: var(--ks-gray-400) !important;
             }
         }
         .icon-wrapper {
@@ -708,7 +708,7 @@
                 text-overflow: ellipsis;
                 width: 100%;
                 font-size: $font-size-xs;
-                color: var(--bs-gray-600);
+                color: var(--ks-gray-600);
                 margin-bottom: calc($spacer / 3);
                 span {
                     color: var(--ks-content-tertiary);
@@ -757,7 +757,7 @@
         .search-detail {
             .extract {
                 margin-top: 1rem;
-                font-family: var(--bs-font-monospace);
+                font-family: var(--ks-font-monospace);
                 font-size: 80%;
                 max-width: 100%;
                 color: var(--ks-content-primary);

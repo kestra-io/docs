@@ -1,11 +1,10 @@
 @import "variable";
 
-@import "bootstrap/scss/root";
-@import "bootstrap/scss/reboot";
-@import "bootstrap/scss/type";
-@import "bootstrap/scss/images";
-@import "bootstrap/scss/containers";
-@import "bootstrap/scss/grid";
+@import "components/root";
+@import "modern-normalize/modern-normalize.css";
+@import "components/base";
+@import "components/type";
+@import "components/grid";
 @import "components/form";
 @import "components/button";
 @import "components/dropdown";
@@ -15,9 +14,8 @@
 @import "components/pagination";
 @import "components/badge";
 @import "components/modal";
-@import "bootstrap/scss/helpers";
-@import "bootstrap/scss/utilities";
-@import "bootstrap/scss/utilities/api";
+@import "components/helpers";
+@import "components/utilities";
 
 @import "vue-material-design-icons/styles.css";
 @import "vanilla-cookieconsent/dist/cookieconsent.css";

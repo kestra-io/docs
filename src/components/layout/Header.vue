@@ -498,7 +498,7 @@
                             <div class="header-menu-content">
                                 <div
                                     class="row w-100 h-100 flex-nowrap"
-                                    style="--bs-gutter-x: 10px"
+                                    style="--ks-gutter-x: 10px"
                                 >
                                     <div class="col-xl-4">
                                         <p class="solutions-col-heading">
