@@ -8,7 +8,17 @@ import {
 
 const YAML_FENCE = "```yaml\nid: hello\n```"
 
-const textOnly = (html: string) => html.replace(/<[^>]+>/g, "")
+// Same shape as renderVersionedDoc.test.ts: loops until stable, so a single
+// pass can't leave a tag reconstituted from adjacent fragments behind.
+const textOnly = (html: string) => {
+    let stripped = html
+    let previous
+    do {
+        previous = stripped
+        stripped = stripped.replace(/<[^>]*>/g, "")
+    } while (stripped !== previous)
+    return stripped
+}
 
 describe("getPlainMarked", () => {
     it("renders fences as a plain, escaped block with the fallback class", () => {
