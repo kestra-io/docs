@@ -246,7 +246,7 @@ tasks:
 
 ### Custom Quality Checks
 
-Add quality checks validating dbt models using various plugins such as [Soda](/plugins/plugin-soda):
+Add quality checks validating dbt models using various plugins such as [Soda](/plugins/plugin-soda). The `Scan` task below runs Soda Core 3 (SodaCL) checks and is deprecated — for new flows on Soda Core 4, use the [`VerifyContract`](/plugins/plugin-soda/io.kestra.plugin.soda.verifycontract) task with data contracts instead:
 ```yaml
   - id: scan
     type: io.kestra.plugin.soda.Scan
@@ -264,7 +264,7 @@ Add quality checks validating dbt models using various plugins such as [Soda](/p
             name: Failed rows query test
             fail condition: regionId = 4
     requirements:
-      - soda-core-bigquery
+      - soda-core-bigquery==3.5.6
 ```
 
 ### Multi-Project Coordination
