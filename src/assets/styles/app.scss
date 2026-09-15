@@ -652,12 +652,12 @@ small.agree {
 }
 
 .form-select {
-    --bs-body-bg: var(--ks-background-body);
-    --bs-border-color: var(--ks-border-primary);
-    --bs-body-color: var(--ks-background-secondary);
+    --ks-form-bg: var(--ks-background-body);
+    --ks-form-border-color: var(--ks-border-primary);
+    --ks-form-color: var(--ks-background-secondary);
 
     html.dark & {
-        --bs-form-select-bg-img: url("/landing/plugins/select-arrow.svg") !important;
+        --ks-form-select-bg-img: url("/landing/plugins/select-arrow.svg");
     }
 }
 
