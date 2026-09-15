@@ -1,3 +1,5 @@
+// Prelude for every SCSS block (vite.css.preprocessorOptions.scss.additionalData) and the
+// global sheets. Project values only: Bootstrap compiles once, see _bootstrap-config.scss.
 $white: #fff;
 $black: #000;
 
@@ -24,15 +26,27 @@ $h6-font-size: $font-size-md;
 
 $link-decoration: none;
 
-:root {
-    --bs-link-color: var(--ks-content-link);
-    --bs-link-hover-color: var(--ks-content-color-highlight);
-    --bs-primary: var(--ks-content-color-highlight);
-    --bs-link-color-rgb: var(--ks-content-color-highlight);
-}
 
 // grid
 $grid-gutter-width: 1.75rem;
+$container-padding-x: $grid-gutter-width * 0.5;
+$grid-row-columns: 6;
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1520px
+);
 
 // border
 $border-radius: 0.27rem;
@@ -71,51 +85,157 @@ $rem-9: 9rem;
 $rem-10: 10rem;
 
 // bootstrap
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/variables-dark";
 
-$grid-breakpoints: (
-    xs: 0,
-    sm: 576px,
-    md: 768px,
-    lg: 992px,
-    xl: 1200px,
-    xxl: 1400px
-);
+// Bootstrap values components read, pinned to what bootstrap/scss/_variables.scss resolves
+// them to, so the prelude no longer imports Bootstrap for them.
+$spacer: 1rem;
+$line-height-base: 1.5;
+$prefix: bs-;
+$primary: #0d6efd;
+$gray-500: #adb5bd;
+$pink: #d63384;
+$input-padding-x: 0.75rem;
+$zindex-fixed: 1030;
+$zindex-modal: 1055;
 
-$container-max-widths: (
-    sm: 540px,
-    md: 720px,
-    lg: 960px,
-    xl: 1140px,
-    xxl: 1520px
-);
+// Breakpoint helpers: verbatim copy of bootstrap/scss/mixins/_breakpoints.scss (MIT), so
+// `@include media-breakpoint-*` compiles without Bootstrap's preamble.
+// Breakpoint viewport sizes and media queries.
+//
+// Breakpoints are defined as a map of (name: minimum width), order from small to large:
+//
+//    (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px)
+//
+// The map defined in the `$grid-breakpoints` global variable is used as the `$breakpoints` argument by default.
 
-$container-padding-x: $grid-gutter-width * 0.5;
-$grid-row-columns: 6;
+// Name of the next breakpoint, or null for the last breakpoint.
+//
+//    >> breakpoint-next(sm)
+//    md
+//    >> breakpoint-next(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px))
+//    md
+//    >> breakpoint-next(sm, $breakpoint-names: (xs sm md lg xl xxl))
+//    md
+@function breakpoint-next($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+  $n: index($breakpoint-names, $name);
+  @if not $n {
+    @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
+  }
+  @return if($n < length($breakpoint-names), nth($breakpoint-names, $n + 1), null);
+}
 
-$spacers: map-merge(
-    $spacers,
-    (
-        6: (
-            $spacer * 2,
-        ),
-        7: (
-            $spacer * 0.625,
-        ),
-    )
-);
+// Minimum breakpoint width. Null for the smallest (first) breakpoint.
+//
+//    >> breakpoint-min(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px))
+//    576px
+@function breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
 
-$font-sizes: map-merge(
-    $font-sizes,
-    (
-        7: (
-            $font-size-xs,
-        ),
-    )
-);
+// Maximum breakpoint width.
+// The maximum value is reduced by 0.02px to work around the limitations of
+// `min-` and `max-` prefixes and viewports with fractional widths.
+// See https://www.w3.org/TR/mediaqueries-4/#mq-min-max
+// Uses 0.02px rather than 0.01px to work around a current rounding bug in Safari.
+// See https://bugs.webkit.org/show_bug.cgi?id=178261
+//
+//    >> breakpoint-max(md, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px))
+//    767.98px
+@function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
+  $max: map-get($breakpoints, $name);
+  @return if($max and $max > 0, $max - .02, null);
+}
 
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+// Returns a blank string if smallest breakpoint, otherwise returns the name with a dash in front.
+// Useful for making responsive utilities.
+//
+//    >> breakpoint-infix(xs, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px))
+//    ""  (Returns a blank string)
+//    >> breakpoint-infix(sm, (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1400px))
+//    "-sm"
+@function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
+  @return if(breakpoint-min($name, $breakpoints) == null, "", "-#{$name}");
+}
+
+// Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
+// Makes the @content apply to the given breakpoint and wider.
+@mixin media-breakpoint-up($name, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($name, $breakpoints);
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Media of at most the maximum breakpoint width. No query for the largest breakpoint.
+// Makes the @content apply to the given breakpoint and narrower.
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+  $max: breakpoint-max($name, $breakpoints);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Media that spans multiple breakpoint widths.
+// Makes the @content apply between the min and max breakpoints
+@mixin media-breakpoint-between($lower, $upper, $breakpoints: $grid-breakpoints) {
+  $min: breakpoint-min($lower, $breakpoints);
+  $max: breakpoint-max($upper, $breakpoints);
+
+  @if $min != null and $max != null {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $max == null {
+    @include media-breakpoint-up($lower, $breakpoints) {
+      @content;
+    }
+  } @else if $min == null {
+    @include media-breakpoint-down($upper, $breakpoints) {
+      @content;
+    }
+  }
+}
+
+// Media between the breakpoint's minimum and maximum widths.
+// No minimum for the smallest breakpoint, and no maximum for the largest one.
+// Makes the @content apply only to the given breakpoint, not viewports any wider or narrower.
+@mixin media-breakpoint-only($name, $breakpoints: $grid-breakpoints) {
+  $min:  breakpoint-min($name, $breakpoints);
+  $next: breakpoint-next($name, $breakpoints);
+  $max:  breakpoint-max($next, $breakpoints);
+
+  @if $min != null and $max != null {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $max == null {
+    @include media-breakpoint-up($name, $breakpoints) {
+      @content;
+    }
+  } @else if $min == null {
+    @include media-breakpoint-down($next, $breakpoints) {
+      @content;
+    }
+  }
+}
+
+// Shims for the three other Bootstrap helpers components still call. Same output at every
+// current call site: rfs is static below 1.25rem and $enable-rounded is true.
+@mixin font-size($fs) {
+    font-size: $fs;
+}
+@mixin border-radius($radius: $border-radius, $fallback-border-radius: false) {
+    border-radius: $radius;
+}
+@function subtract($value1, $value2, $return-calc: true) {
+    @return calc(#{$value1} - #{$value2});
+}
