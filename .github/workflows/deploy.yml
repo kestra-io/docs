@@ -77,7 +77,7 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        uses: ./.github/actions/node-modules
 
       - name: Check usage of collection in SSR pages
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
