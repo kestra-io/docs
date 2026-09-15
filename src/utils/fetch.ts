@@ -7,6 +7,33 @@ const cloudflareCache = {
     },
 } as RequestInit
 
+// Prerendering runs in Node and hundreds of pages fetch the same payloads, so memoize
+// them per build (workerd excluded). Callers share the resolved object: never mutate it.
+const memoizeCachedFetches =
+    import.meta.env.SSR &&
+    import.meta.env.PROD &&
+    globalThis.navigator?.userAgent !== "Cloudflare-Workers"
+
+const buildMemo = new Map<string, Promise<unknown>>()
+
+function memoizeGet<T>(
+    url: string,
+    init: RequestInit,
+    load: () => Promise<T>,
+): Promise<T> {
+    const method = (init.method ?? "GET").toUpperCase()
+    if (!memoizeCachedFetches || method !== "GET" || init.body) return load()
+    const key = `${url} ${JSON.stringify(init.headers ?? null)}`
+    let pending = buildMemo.get(key) as Promise<T> | undefined
+    if (!pending) {
+        pending = load()
+        // A transient failure must not be replayed on every page that follows.
+        pending.catch(() => buildMemo.delete(key))
+        buildMemo.set(key, pending)
+    }
+    return pending
+}
+
 async function internalFetch(
     url: string,
     init: RequestInit = {},
@@ -67,7 +94,7 @@ export async function $fetchCached<T = any>(
 ): Promise<T> {
     const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
 
-    return await $fetch<T>(url, cachingConfig)
+    return await memoizeGet(url, init, () => $fetch<T>(url, cachingConfig))
 }
 
 export async function $fetchCachedRaw(
@@ -92,7 +119,9 @@ export async function $fetchApiCached<T = any>(
 ): Promise<T> {
     const cachingConfig: RequestInit = { ...init, ...cloudflareCache }
 
-    return await $fetchApi<T>(url, cachingConfig)
+    return await memoizeGet(`${API_URL}${url}`, init, () =>
+        $fetchApi<T>(url, cachingConfig),
+    )
 }
 
 // Same as $fetchApiCached but resolves to undefined when the API fails, for
