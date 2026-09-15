@@ -62,8 +62,10 @@ export default {
         "https://*.ytimg.com",
         "https://*.googletagmanager.com",
         "https://*.githubusercontent.com/",
-        // Google Ads conversion pings fall back to an <img> beacon.
+        // Google Ads conversion pings fall back to an <img> beacon; the
+        // /ccm/conversion endpoint on googleadservices is one of them.
         "https://*.g.doubleclick.net",
+        "https://www.googleadservices.com",
     ],
     // audio/video
     "media-src": [

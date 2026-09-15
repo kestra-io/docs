@@ -20,6 +20,15 @@ describe("buildContentSecurityPolicy", () => {
         )
     })
 
+    it("allows the googleadservices conversion beacon as script and image", () => {
+        expect(directive(production, "script-src")).toContain(
+            "https://www.googleadservices.com",
+        )
+        expect(directive(production, "img-src")).toContain(
+            "https://www.googleadservices.com",
+        )
+    })
+
     it("keeps loopback out of the production policy", () => {
         expect(production).not.toContain("localhost")
         expect(production).not.toContain("127.0.0.1")
