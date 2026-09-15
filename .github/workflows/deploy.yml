@@ -215,14 +215,3 @@ jobs:
             res=$(grep -a "/cachetest-$r/" /tmp/build.log | grep -ac '(restored)')
             echo "LADDER $r restored=$res of $tot"
           done
-          # Does a bare page route HTML reference any hashed asset at all?
-
-          dd=dist; [ -d dist/client ] && dd=dist/client
-          for r in a d; do
-            f=$(find "$dd" -path "*/cachetest-$r/*/index.html" 2>/dev/null | head -1)
-            if [ -n "$f" ]; then
-              echo "ASSETS $r: $(grep -ao '/_astro/[A-Za-z0-9._-]*' "$f" | sort -u | tr '\n' ' ')"
-            else
-              echo "ASSETS $r: no html found"
-            fi
-          done
