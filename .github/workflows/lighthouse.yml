@@ -32,7 +32,7 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Install dependencies
-        run: npm install
+        uses: ./.github/actions/node-modules
 
       # Serves the recorded /blueprints API responses. That page is SSR and
       # fans out ~15 live calls per request, so its LCP tracked WAN latency
@@ -128,7 +128,7 @@ jobs:
       # wrangler compiles the worker from src/ at dev time, so the shards need
       # the dependencies even though they never run the Astro build.
       - name: Install dependencies
-        run: npm install
+        uses: ./.github/actions/node-modules
 
       - name: Install Lighthouse
         # Installed ad-hoc to keep package.json lean; ~100 MB only needed in CI.

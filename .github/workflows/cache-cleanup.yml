@@ -1,0 +1,26 @@
+name: Cache cleanup
+
+# A PR's caches live under its merge ref and outlive the PR until the 7-day expiry or
+# an eviction under the 10 GB quota. pull_request_target: a fork PR's own token cannot
+# delete caches, and nothing from the PR is checked out or run here.
+on:
+  pull_request_target:
+    types: [closed]
+
+permissions:
+  actions: write
+
+jobs:
+  delete-pr-caches:
+    name: Delete the closed PR's caches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete caches of refs/pull/${{ github.event.pull_request.number }}/merge
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REF: refs/pull/${{ github.event.pull_request.number }}/merge
+        run: |
+          gh cache list --repo "$GITHUB_REPOSITORY" --ref "$REF" --limit 100 --json id,key,sizeInBytes \
+            --jq '.[] | "\(.id) \(.sizeInBytes) \(.key)"' | tee caches.txt
+          cut -d' ' -f1 caches.txt | xargs -r -n1 gh cache delete --repo "$GITHUB_REPOSITORY"
+          echo "deleted $(wc -l < caches.txt) cache entries"
