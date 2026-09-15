@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
     import { onMounted, ref, watch } from "vue"
-    import { getMarked } from "~/markdown/marked-shiki"
+    import { getMarked, getPlainMarked } from "~/markdown/marked-shiki"
     import { handleCopyClick, injectCopyButtons } from "~/utils/code-copy"
 
     const props = defineProps<{
@@ -23,25 +23,45 @@
     }>()
 
     const htmlContent = ref<string>("")
+    const parseError = ref<string>("")
+    let parseToken = 0
+
+    const decorate = (html: string) =>
+        props.copyable ? injectCopyButtons(html) : html
 
     async function parseContent() {
+        const token = ++parseToken
+        parseError.value = ""
+
         if (!props.content) {
-            throw new Error("No content provided to MarkdownRenderer.vue")
+            htmlContent.value = ""
+            return
         }
-        const html = await getMarked().parse(props.content)
-        htmlContent.value = props.copyable ? injectCopyButtons(html) : html
+
+        // Plain fences first, so the text is readable without waiting on the
+        // highlighter chunk; Shiki then upgrades the same markup in place.
+        try {
+            htmlContent.value = decorate(
+                getPlainMarked().parse(props.content, { async: false }),
+            )
+        } catch (error) {
+            parseError.value = String(error)
+            return
+        }
+
+        try {
+            const html = await getMarked().parse(props.content)
+            if (token === parseToken) {
+                htmlContent.value = decorate(html)
+            }
+        } catch {
+            // Highlighting is an upgrade, not a precondition: keep the fences.
+        }
     }
 
-    onMounted(async () => {
-        await parseContent()
-    })
+    onMounted(parseContent)
 
-    watch(
-        () => props.content,
-        async () => {
-            await parseContent()
-        },
-    )
+    watch(() => props.content, parseContent)
 </script>
 
 <style scoped lang="scss">
