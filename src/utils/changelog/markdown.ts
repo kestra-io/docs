@@ -1,12 +1,12 @@
-import { commitUrl, type ChangelogEntry } from "./parseRelease"
+import { commitUrl, issueUrl, type ChangelogEntry } from "./parseRelease"
 
-const ISSUE_BASE_URL = "https://github.com/kestra-io/kestra/issues"
-
+/** Formats in UTC so the build and the viewer's browser agree on the day. */
 export function formatReleaseDate(publishedAt: string): string {
     return new Date(publishedAt).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
+        timeZone: "UTC",
     })
 }
 
@@ -37,9 +37,7 @@ export function buildChangelogMarkdown(entries: ChangelogEntry[]): string {
                             : `\`${change.sha}\` `
                         : ""
                     const scope = change.scope ? `**${change.scope}**: ` : ""
-                    const pr = change.pr
-                        ? ` ([#${change.pr}](${ISSUE_BASE_URL}/${change.pr}))`
-                        : ""
+                    const pr = change.pr ? ` ([#${change.pr}](${issueUrl(change.pr)}))` : ""
                     lines.push(`- ${sha}${scope}${change.message}${pr}`)
                 }
 

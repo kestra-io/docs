@@ -98,9 +98,11 @@ const FALLBACK_CATEGORY: Omit<CategoryDefinition, "id" | "title"> = {
     noun: ["change", "changes"],
 }
 
+const ENTERPRISE_EDITION = "Enterprise Edition"
+
 const EDITION_HEADINGS: Record<string, string> = {
     "kestra open-source edition changes": "Open-Source Edition",
-    "kestra enterprise edition changes": "Enterprise Edition",
+    "kestra enterprise edition changes": ENTERPRISE_EDITION,
 }
 
 const CATEGORY_HEADING = /^#{2,4}\s+(.+?)\s*$/
@@ -114,6 +116,7 @@ const LEADING_EMOJI = /^[\p{Extended_Pictographic}️‍]+\s*/u
 const HEADING_EMOJI = /^[\p{Extended_Pictographic}️‍\s]+/u
 
 const COMMIT_BASE_URL = "https://github.com/kestra-io/kestra/commit"
+const ISSUE_BASE_URL = "https://github.com/kestra-io/kestra/issues"
 
 function normalizeHeading(heading: string): string {
     return heading.replace(HEADING_EMOJI, "").trim().toLowerCase()
@@ -134,15 +137,23 @@ function categoryFor(heading: string): CategoryDefinition {
     )
 }
 
-function cleanMessage(message: string): { message: string; pr?: number } {
+/**
+ * Strips the conventional-changelog decorations from a commit subject. With
+ * `linkable`, the trailing `(#N)` pull request id is lifted out so the page can
+ * render it as a link; otherwise it stays in the text.
+ */
+function cleanMessage(message: string, linkable: boolean): { message: string; pr?: number } {
     let cleaned = message.replace(CLOSES_SUFFIX, "").trim()
     cleaned = cleaned.replace(LEADING_EMOJI, "").trim()
 
+    // A few commits carry a long italic body after the subject (" - *…*"); keep
+    // the subject only, before reading the PR number off the end of the line.
     cleaned = cleaned.split(/\s+-\s+\*/)[0].trim()
 
-    const prMatch = cleaned.match(/\(#(\d+)\)\s*$/)
-    const pr = prMatch ? Number(prMatch[1]) : undefined
+    let pr: number | undefined
+    const prMatch = linkable ? cleaned.match(/\(#(\d+)\)\s*$/) : null
     if (prMatch) {
+        pr = Number(prMatch[1])
         cleaned = cleaned.slice(0, prMatch.index).trim()
     }
 
@@ -206,9 +217,11 @@ export function parseReleaseBody(body: string): ChangelogEdition[] {
 
         const [, linkedSha, bareSha, rest] = match
 
-        const sha = edition?.label === EDITION_HEADINGS["kestra enterprise edition changes"]
-            ? undefined
-            : (linkedSha ?? bareSha)
+        // Enterprise Edition commits live in a private repository, so neither
+        // the SHA nor the `(#N)` id can link anywhere: drop the SHA the way the
+        // release detail page does and leave the id as plain text.
+        const isPublic = edition?.label !== ENTERPRISE_EDITION
+        const sha = isPublic ? (linkedSha ?? bareSha) : undefined
         let subject = rest ?? ""
         let changeScope = scope
         const inlineScope = subject.match(INLINE_SCOPE)
@@ -217,7 +230,7 @@ export function parseReleaseBody(body: string): ChangelogEdition[] {
             subject = subject.slice(inlineScope[0].length)
         }
 
-        const { message, pr } = cleanMessage(subject)
+        const { message, pr } = cleanMessage(subject, isPublic)
         if (!message) {
             return
         }
@@ -342,4 +355,9 @@ export function buildChangelogEntries(releases: ReleaseInput[]): ChangelogEntry[
 
 export function commitUrl(change: ChangelogChange): string | undefined {
     return change.sha ? `${COMMIT_BASE_URL}/${change.sha}` : undefined
+}
+
+/** Link for a `kestra-io/kestra` pull request or issue id. */
+export function issueUrl(id: number): string {
+    return `${ISSUE_BASE_URL}/${id}`
 }

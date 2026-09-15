@@ -20,6 +20,11 @@ describe("formatReleaseDate", () => {
     it("renders a long date", () => {
         expect(formatReleaseDate("2026-09-08T12:26:31Z")).toBe("September 8, 2026")
     })
+
+    it("keeps the UTC day for a late-evening release", () => {
+        expect(formatReleaseDate("2026-09-02T18:16:07Z")).toBe("September 2, 2026")
+        expect(formatReleaseDate("2026-09-02T23:59:59Z")).toBe("September 2, 2026")
+    })
 })
 
 describe("buildChangelogMarkdown", () => {

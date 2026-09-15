@@ -47,11 +47,12 @@
             editUrl?: string
             stem?: string
             extension?: string
+            /** Action ids to omit from the menu (e.g. "edit" when there's no repo file to link to). */
             excludeActions?: MarkdownActionId[]
-            label?: string
+            /** Fetch the markdown on copy instead of passing it in `markdownBody`. */
             lazyMarkdown?: boolean
         }>(),
-        { markdownBody: "", label: "Copy Page" },
+        { markdownBody: "" },
     )
 
     const context = computed(() => ({
@@ -82,7 +83,7 @@
     }
 
     const triggerIcon = computed(() => (copied.value ? Check : ContentCopy))
-    const triggerLabel = computed(() => (copied.value ? "Copied!" : props.label))
+    const triggerLabel = computed(() => (copied.value ? "Copied!" : "Copy Page"))
 
     const actionLabel = (action: MarkdownActionDefinition) => {
         if (action.id === "copy" && copied.value && action.successLabel) {

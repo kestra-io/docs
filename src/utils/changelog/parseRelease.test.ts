@@ -91,7 +91,7 @@ describe("parseReleaseBody", () => {
         expect(titles).not.toContain("Contributors")
     })
 
-    it("splits Open-Source and Enterprise sections, unlinking private SHAs", () => {
+    it("splits Open-Source and Enterprise sections, unlinking private SHAs and ids", () => {
         const editions = parseReleaseBody(SPLIT_EDITION_BODY)
 
         expect(editions.map((edition) => edition.label)).toEqual([
@@ -101,10 +101,12 @@ describe("parseReleaseBody", () => {
         expect(commitUrl(editions[0].groups[0].changes[0])).toBe(
             "https://github.com/kestra-io/kestra/commit/4e00b6d",
         )
+        expect(editions[0].groups[0].changes[0].pr).toBe(15905)
+        // The Enterprise `(#N)` is a private-repository id, so it stays as text
+        // rather than becoming a link to an unrelated kestra-io/kestra issue.
         expect(editions[1].groups[0].changes[0]).toEqual({
             scope: "core",
-            message: "clear kill switch form when opening create dialog",
-            pr: 7697,
+            message: "clear kill switch form when opening create dialog (#7697)",
         })
     })
 

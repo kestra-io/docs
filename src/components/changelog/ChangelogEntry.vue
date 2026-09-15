@@ -63,14 +63,18 @@
 
     const publishedAt = computed(() => new Date(props.entry.publishedAt))
 
+    // UTC on both sides: the page is prerendered on the build server and then
+    // hydrated in the viewer's timezone, and a late-evening release would
+    // otherwise flip to the next day and fail hydration.
     const day = computed(() =>
         publishedAt.value.toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
+            timeZone: "UTC",
         }),
     )
 
-    const year = computed(() => publishedAt.value.getFullYear())
+    const year = computed(() => publishedAt.value.getUTCFullYear())
 </script>
 
 <style lang="scss" scoped>
@@ -169,7 +173,7 @@
     }
 
     .major .entry-dot {
-        border-color: var(--ks-border-active);
+        border-color: var(--ks-border-alert-success);
     }
 
     .active .entry-dot {

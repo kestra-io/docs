@@ -39,7 +39,7 @@
                             <a
                                 v-if="change.pr"
                                 class="change-pr"
-                                :href="`https://github.com/kestra-io/kestra/issues/${change.pr}`"
+                                :href="issueUrl(change.pr)"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
@@ -65,7 +65,7 @@
     import FormatListChecks from "vue-material-design-icons/FormatListChecks.vue"
     import SourceMerge from "vue-material-design-icons/SourceMerge.vue"
     import ChevronDown from "vue-material-design-icons/ChevronDown.vue"
-    import { commitUrl, type ChangelogGroup } from "~/utils/changelog/parseRelease"
+    import { commitUrl, issueUrl, type ChangelogGroup } from "~/utils/changelog/parseRelease"
 
     const props = withDefaults(
         defineProps<{
@@ -173,23 +173,30 @@
     }
 
     .change-list {
+        display: grid;
+        grid-template-columns: fit-content(6rem) max-content minmax(0, 1fr);
+        column-gap: 1rem;
         margin: 0;
         padding: 0 1rem;
         list-style: none;
+
+        @include media-breakpoint-down(md) {
+            grid-template-columns: auto minmax(0, 1fr);
+            column-gap: 0.5rem;
+        }
     }
 
     .change {
         display: grid;
-        grid-template-columns: 7rem 5rem minmax(0, 1fr);
+        grid-column: 1 / -1;
+        grid-template-columns: subgrid;
         align-items: baseline;
-        gap: 0.5rem 1rem;
         padding: 0.625rem 0;
         border-top: 1px solid var(--ks-border-primary);
         font-size: 0.875rem;
 
         @include media-breakpoint-down(md) {
-            grid-template-columns: auto 1fr;
-            gap: 0.25rem 0.5rem;
+            row-gap: 0.25rem;
 
             .change-message {
                 grid-column: 1 / -1;

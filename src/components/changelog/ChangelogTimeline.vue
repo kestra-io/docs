@@ -38,7 +38,6 @@
                         class="changelog-markdown-actions"
                         page-path="/docs/changelog"
                         page-title="Kestra Changelog"
-                        label="Copy as Markdown"
                         lazy-markdown
                         :exclude-actions="['edit']"
                     />
@@ -92,6 +91,9 @@
     }>()
 
     type FilterId = "all" | "major" | "minor"
+
+    /** A release as listed: `narrowed` when a search kept only some of its changes. */
+    type VisibleEntry = Entry & { narrowed?: boolean }
 
     const FILTERS: { id: FilterId; label: string }[] = [
         { id: "all", label: "All" },
@@ -151,7 +153,7 @@
         !!haystack && haystack.toLowerCase().includes(needle)
 
 
-    const searchedEntries = computed(() => {
+    const searchedEntries = computed<VisibleEntry[]>(() => {
         const query = searchQuery.value.trim().toLowerCase()
         if (!query) {
             return props.entries
@@ -172,7 +174,8 @@
                                 (change) =>
                                     matches(change.message, query) ||
                                     matches(change.scope, query) ||
-                                    matches(change.sha, query),
+                                    matches(change.sha, query) ||
+                                    matches(change.pr?.toString(), query),
                             ),
                         }))
                         .filter((group) => group.changes.length > 0),
@@ -197,6 +200,7 @@
                     totalChanges,
                     // The release-wide summary would contradict the narrowed list.
                     summary: `${totalChanges} matching change${totalChanges === 1 ? "" : "s"}.`,
+                    narrowed: true,
                 },
             ]
         })
@@ -225,11 +229,16 @@
         () => scrolledTag.value ?? visibleEntries.value[0]?.tag ?? null,
     )
 
-    const openGroupsFor = (entry: Entry) => {
-        if (isSearching.value || currentFilter.value !== "all") {
-            return []
+    const openGroupsFor = (entry: VisibleEntry) => {
+        // A search that kept only matching changes opens them, otherwise the
+        // match would sit behind a closed group. A release matched by its title
+        // or a Major/Minor filter result lands as a compact list of closed groups.
+        if (isSearching.value) {
+            return entry.narrowed
+                ? entry.editions.flatMap((edition) => edition.groups.map((group) => group.id))
+                : []
         }
-        if (entry.tag !== filteredEntries.value[0]?.tag) {
+        if (currentFilter.value !== "all" || entry.tag !== filteredEntries.value[0]?.tag) {
             return []
         }
 
