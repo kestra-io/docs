@@ -8,8 +8,8 @@ metaTitle: "JPMorgan Chase & Kestra: Orchestrating Cybersecurity for 100+ Users 
 metaDescription: In under 3 months, JPMorgan Chase empowered
   100+ users, ran thousands of API pulls weekly, and processed billions of rows
   securely with Trino, dbt, and AWS thanks to Kestra.
-heroImage: ./hero.png
-featuredImage: ./hero.png
+heroImage: ./hero.jpeg
+featuredImage: ./hero.jpeg
 logo: ./logo.svg
 logoDark: ./logo-dark.svg
 tasks:
