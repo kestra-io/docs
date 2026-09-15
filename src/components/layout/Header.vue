@@ -1474,14 +1474,14 @@
                         }
 
                         .dropdown-item {
-                            --bs-dropdown-link-hover-color: var(--ks-icon-colr);
-                            --bs-dropdown-link-hover-bg: var(
+                            --ks-dropdown-link-hover-color: var(--ks-icon-colr);
+                            --ks-dropdown-link-hover-bg: var(
                                 --ks-background-purple-light
                             );
-                            --bs-dropdown-link-active-color: var(
+                            --ks-dropdown-link-active-color: var(
                                 --ks-content-color-highlight
                             );
-                            --bs-dropdown-link-active-bg: var(
+                            --ks-dropdown-link-active-bg: var(
                                 --ks-background-purple-light
                             );
 
