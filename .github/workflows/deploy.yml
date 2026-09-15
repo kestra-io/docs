@@ -84,11 +84,12 @@ jobs:
       - name: Restore Astro build cache
         uses: actions/cache@v4
         with:
-          # The preview image cache is ~670 MB of passthrough copies that regenerate
-          # in seconds; keep it out of the repository's 10 GB cache quota.
+          # Listed file by file: a matched directory is archived whole, so the ~700 MB
+          # passthrough image cache in assets/ cannot be excluded by pattern.
           path: |
-            node_modules/.astro
-            !node_modules/.astro/assets/**
+            node_modules/.astro/data-store.json
+            node_modules/.astro/incremental-build.json
+            node_modules/.astro/dist
           key: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-${{ github.sha }}
           # Only the same ref and variant: main builds production, PR builds
           # preview, so a cross-ref fallback would never match anything.
