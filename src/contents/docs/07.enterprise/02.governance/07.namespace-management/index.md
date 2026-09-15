@@ -8,13 +8,13 @@ editions: ["EE", "Cloud"]
 docId: namespace.management
 ---
 
-How to manage secrets, variables, and plugin defaults at the Namespace level.
+Namespaces provide an additional layer of isolation for secrets, variables, and plugin defaults within a tenant.
 
 <div class="video-container">
     <iframe src="https://www.youtube.com/embed/As4y2oliD_8?si=d-2AsAuqlwaBFuEX" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
-## Namespace management – secure configuration
+## Namespace management — secure configuration
 
 Kestra is a [multi-tenant](../../02.governance/tenants/index.md) platform. Each tenant can have multiple Namespaces, and each Namespace provides additional isolation and security.
 
@@ -34,13 +34,9 @@ Since Kestra supports [everything as code and from the UI](https://youtu.be/dU3p
 
 ### Secrets
 
-On the Namespaces page, select the Namespace where you want to define the secrets and go to the **Secrets** tab. Here, you will see all existing secrets associated with this Namespace. Click on **Add a secret** button on the top right corner of the page.
+On the namespace page, go to the **Secrets** tab, click **Add a secret**, enter a key and value, and save.
 
-![add_secret.png](./add_secret.png)
-
-Define the secret by entering its key and value. Save the secret by clicking on the **Save** button at the bottom.
-
-The secret key should now start appearing on the **Secrets** tab. You can edit the secret's value or delete the secret by clicking on the appropriate button towards the right of the secret row. You can reference the secret in the flow by using the key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
+The secret key now appears on the **Secrets** tab. Edit or delete it using the action buttons on the right. Reference the secret in flows using its key, for example, `"{{ secret('MYSQL_PASSWORD') }}"`.
 
 For APIs that issue short-lived access tokens (e.g., OAuth2), create a [Credential](../../03.auth/credentials/index.md) that relies on these secrets and fetch the token in flows with `{{ credential('your_credential_key') }}`.
 
@@ -66,17 +62,32 @@ Make sure to only use the secret in flows defined in the same Namespace (or chil
 
 When building new flows in a Namespace, Namespace secrets are accessible from the **Secrets** tab. Open the tab to view all available Namespace secret key names.
 
-### Plugin defaults
+### Policies
 
-Plugin Defaults can also be defined at the Namespace level. These plugin defaults are then applied for all tasks of the corresponding type defined in the flows under the same Namespace.
+[Policies](../policies/index.md) can be defined at the Namespace level to inject, restrict, or validate configuration for all flows in the Namespace. On the namespace page, open the **Policies** tab to create and manage Policies.
 
-On the Namespaces page, select the Namespace where you want to define the plugin defaults and navigate to the **Plugin defaults** tab. You can add the plugin defaults here and save the changes by clicking on the **Save** button at the bottom of the page.
+Policies can reference secrets and variables defined in the same Namespace.
 
-![Define Plugin Defaults](./plugindefaults-namespaces.png)
+For example, a namespace-scoped Policy can inject database credentials into every MySQL task so flows don't need to declare them individually:
 
-You can reference secrets and variables defined with the same Namespace in the plugin defaults.
+```yaml
+id: mysql-credentials
+description: "Inject MySQL credentials for all MySQL tasks in this namespace."
+enforcement: ACTIVE
+rules:
+  - type: io.kestra.plugin.ee.rules.Add
+    on: PLUGIN
+    where:
+      - field: type
+        operator: STARTS_WITH
+        value: io.kestra.plugin.jdbc.mysql
+    values:
+      url: jdbc:mysql://localhost:3306/test
+      username: root
+      password: "{{ secret('MYSQL_PASSWORD') }}"
+```
 
-In the example below, you no longer need to add the `password` property for the MySQL query task as it's defined in your Namespace-level `pluginDefaults`:
+With this Policy applied, flows in the Namespace need no credentials on the task:
 
 ```yaml
 id: query-mysql
@@ -85,11 +96,11 @@ namespace: company.team
 tasks:
   - id: query
     type: io.kestra.plugin.jdbc.mysql.Query
-    url: jdbc:mysql://localhost:3306/test
-    username: root
     sql: select * from employees
     fetchOne: true
 ```
+
+Namespace-level Policies are inherited by child Namespaces. A Policy created in a parent Namespace applies to all flows in the parent and every child Namespace under it. See [Policies](../policies/index.md) for the full DSL reference, enforcement modes, and inheritance behavior.
 
 ### Default service account for SDK plugins
 
@@ -103,9 +114,7 @@ On the Namespace **Edit** page, open the **Default authentication** section and 
 
 Variables defined at the Namespace level can be used in any flow defined under the same Namespace using the syntax: `{{ namespace.variable_name }}`.
 
-On the Namespaces page, select the Namespace where you want to define the variables. Go to the **Variables** tab. You can now define the variables on this page. Save the changes by clicking the **Save** button at the bottom of the page.
-
-![define_variables.png](./define_variables.png)
+On the namespace page, go to the **Variables** tab, define the variables, and save.
 
 Here is an example flow where the Namespace variable is used:
 
@@ -122,15 +131,13 @@ tasks:
     fetchOne: true
 ```
 
-When building new flows in a Namespace, Namespace variables are accessible from the **Variables** tab. Open the tab to view all available Namespace variables and their associated values.
-
-![Namespace Variables Tab](./namespace-variable-tab.png)
+When building new flows in a Namespace, Namespace variables are accessible from the **Variables** tab.
 
 ## Creating Namespaces
 
 ### From the UI
 
-The video below shows how you can create a Namespace from the Kestra UI. After creating a Namespace, we're adding:
+The video below shows how to create a namespace and add:
 - several new secrets
 - a nested Namespace variable that references one of these secrets
 - a list of plugin defaults helping to use those pre-configured secrets and variables in all the tasks from the AWS and Git plugins.
@@ -141,7 +148,7 @@ The video below shows how you can create a Namespace from the Kestra UI. After c
 
 ### From Terraform
 
-The following example reproduces the UI steps using Terraform, so that you know how to perform the same steps both from the UI and programmatically.
+The following example reproduces those steps in Terraform.
 
 To create a Namespace from Terraform, use the [kestra_namespace](https://registry.terraform.io/providers/kestra-io/kestra/latest/docs) resource.
 
@@ -192,7 +199,7 @@ github:
   token: "{{ secret('GITHUB_TOKEN') }}"
 ```
 
-Then, create another file for `task_defaults_marketing.yml`:
+Then, create another file for `plugin_defaults_marketing.yml`:
 
 ```yaml
 - type: io.kestra.plugin.aws
@@ -213,7 +220,7 @@ resource "kestra_namespace" "marketing" {
   namespace_id  = "marketing"
   description   = "Namespace for the marketing team"
   variables     = file("variables_marketing.yml")
-  task_defaults = file("task_defaults_marketing.yml")
+  plugin_defaults = file("plugin_defaults_marketing.yml")
 }
 ```
 
@@ -293,10 +300,7 @@ kestra_password = "your-kestra-password"
 ```
 
 ## Allowed Namespaces
-When you navigate to any Namespace and go to the Edit tab, you can explicitly configure which Namespaces are allowed to access flows and other resources related to that Namespace. By default, all Namespaces are allowed:
 
-![allowed-namespaces](./allowed-namespaces.png)
+On the **Edit** tab of any namespace, configure which namespaces are allowed to access its flows and resources.
 
-However, you can restrict that access if you want only specific Namespaces (or no Namespace at all) to trigger its corresponding resources.
-
-![allowed-namespaces-2](./allowed-namespaces-2.png)
+By default, **all Namespaces** are allowed. To restrict access, **select specific Namespaces** — access automatically extends to each selected namespace's children.

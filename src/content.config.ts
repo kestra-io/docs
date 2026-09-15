@@ -44,6 +44,9 @@ export const collections = {
         schema: ({ image }) =>
             z.object({
                 title: z.string(),
+                // Override the <title>/og:title when the SEO title should differ
+                // from the on-page H1. Falls back to `title` when unset.
+                metaTitle: z.string().optional(),
                 description: z.string().optional(),
                 date: z.date(),
                 category: z.string(),
@@ -184,9 +187,11 @@ export const collections = {
         loader: file("src/contents/annonces/annonces.yml"),
         schema: z.object({
             id: z.number(),
-            text: z.string(),
+            tag: z.string().optional(),
+            linkText: z.string().optional(),
+            text: z.string().optional(),
+            tail: z.string().optional(),
             href: z.string(),
-            linkText: z.string(),
         }),
     }),
     redirects: defineCollection({
@@ -268,4 +273,3 @@ export const collections = {
             }),
     }),
 }
-

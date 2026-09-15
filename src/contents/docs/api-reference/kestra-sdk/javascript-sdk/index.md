@@ -167,6 +167,47 @@ The server emits an initial keepalive event with no `state` — skip it before p
 
 ---
 
+## Read execution logs
+
+### List logs
+
+Fetch all log entries for a completed execution:
+
+```javascript
+import * as Logs from "@kestra-io/kestra-sdk/logs";
+
+async function listLogs() {
+  const logs = await Logs.listLogsFromExecution({
+    executionId: "your-execution-id",
+  });
+  logs?.forEach(entry => console.log(`[${entry.level}] ${entry.message}`));
+}
+```
+
+To filter by minimum log level, pass a `filters` array:
+
+```javascript
+const logs = await Logs.listLogsFromExecution({
+  executionId: "your-execution-id",
+  filters: [{ field: "LEVEL", operation: "GREATER_THAN_OR_EQUAL_TO", value: "INFO" }],
+});
+```
+
+### Search logs
+
+Search across all executions with pagination:
+
+```javascript
+import * as Logs from "@kestra-io/kestra-sdk/logs";
+
+async function searchLogs() {
+  const result = await Logs.searchLogs({ page: 1, size: 50 });
+  result?.results?.forEach(entry => console.log(`[${entry.level}] ${entry.message}`));
+}
+```
+
+---
+
 ## KV Store
 
 The KV Store lets you read and write key-value pairs scoped to a namespace.

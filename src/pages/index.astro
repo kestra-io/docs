@@ -9,31 +9,16 @@ import UseCaseGrid from "~/components/home/UseCaseGrid.astro"
 import Testimonial from "~/components/home/Testimonial.astro"
 import Blueprints from "~/components/home/Blueprints.astro"
 import ClosingCTA from "~/components/home/ClosingCTA.astro"
-import EarlyAdopterBanner from "~/components/early-adopter-program/EarlyAdopterBanner.astro"
 import GetStarted from "~/components/common/GetStarted.astro"
 import PluginsBlock from "~/components/common/PluginsBlock.astro"
 import { fetchTotalPluginsCount } from "~/utils/plugins/pluginCount"
-import mobileHeroBgUrl from "~/components/home/assets/hero/bg-mobile.webp?url"
 
 const totalPlugins = await fetchTotalPluginsCount()
 ---
 
-<Layout headerTheme="darkHeader">
+<Layout headerTheme="lightText">
     <Fragment slot="head">
-        <SchemaSoftwareApplication
-            url="https://kestra.io"
-        />
-        {/* The mobile hero background is the LCP element but lives in CSS
-            (Hero.astro .mobile-bg), so the browser only discovers it after
-            the stylesheets load. Preload it so it starts downloading with
-            the document instead. */}
-        <link
-            rel="preload"
-            as="image"
-            href={mobileHeroBgUrl}
-            media="(max-width: 767.98px)"
-            fetchpriority="high"
-        />
+        <SchemaSoftwareApplication url="https://kestra.io" />
     </Fragment>
     <div class="home-page">
         <Hero />
@@ -55,8 +40,9 @@ const totalPlugins = await fetchTotalPluginsCount()
             </span>
             <span slot="description">
                 Kestra integrates with your existing cloud, data,
-                infrastructure, and SaaS tools. <br />With {totalPlugins}+ plugins, you
-                can orchestrate everything without building custom glue code.
+                infrastructure, and SaaS tools. <br />With {totalPlugins}+
+                plugins, you can orchestrate everything without building custom
+                glue code.
             </span>
         </PluginsBlock>
         <Testimonial />
@@ -67,7 +53,6 @@ const totalPlugins = await fetchTotalPluginsCount()
         </GetStarted>
         <Blueprints />
         <ClosingCTA />
-        <EarlyAdopterBanner />
     </div>
 </Layout>
 
@@ -78,14 +63,12 @@ const totalPlugins = await fetchTotalPluginsCount()
         --hp-background-dark: #0a0b0d;
         --hp-content-dark: #ffffff;
         --hp-content-primary: #131316;
-        --hp-background-secondary: #f7f7f7;
         --hp-content-secondary: #3b3a41;
         --hp-content-secondary-inverse: #cccbce;
         --hp-background-tertiary: #7f7f86;
         --hp-content-tertiary: #94a3b8;
         --hp-border-primary: #f1f1f1;
         --hp-border-secondary: #cccbce;
-        --hp-content-color-highlight: #631bff;
         --hp-background-purple-light: #f1efff;
         --hp-grid-size: 68px;
         background-color: var(--hp-background-dark);
@@ -114,4 +97,3 @@ const totalPlugins = await fetchTotalPluginsCount()
         color: var(--ks-content-primary-inverse);
     }
 </style>
-

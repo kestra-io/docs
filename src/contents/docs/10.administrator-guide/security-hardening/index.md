@@ -22,15 +22,89 @@ Running workflows in isolated environments reduces the impact of potentially mal
 - Ephemeral compute: use Kestra's native [Task Runners](../../07.enterprise/04.scalability/task-runners/index.md) to auto-scale ephemeral compute nodes that are destroyed after each run, leaving no residual state.
 - Minimum host permissions: grant only the OS-level rights required for the runtime; avoid mounting cloud credential files or granting host-level IAM roles directly.
 
+## Transport security
+
+In distributed deployments, Worker Controllers communicate with Workers over gRPC. By default this channel is plaintext. TLS and mTLS are available in all editions; JWT-based worker authentication is an Enterprise Edition feature.
+
+- **One-way TLS** — the controller presents a certificate; workers verify it. Encrypts the channel without requiring worker certificates.
+- **Mutual TLS (mTLS)** — both controller and worker present certificates. Use this when you need strong identity verification between components, not just encryption.
+
+See [gRPC TLS/mTLS configuration](../../configuration/06.enterprise-and-advanced/index.md#grpc-tlsmtls) for setup instructions and a full property reference.
+
+## HTTP task URL filtering
+
+HTTP plugin tasks (`Request`, `Download`, `SseRequest`, and `Trigger`) make server-side HTTP calls to URIs controlled by flow authors. Without restrictions, a flow author can reach cloud metadata endpoints (such as `169.254.169.254` on AWS, GCP, and Azure), internal management APIs, or private services not reachable from the internet.
+
+Configure an allow-list, a deny-list, or both under `kestra.tasks.http`:
+
+```yaml
+kestra:
+  tasks:
+    http:
+      allowed-list:
+        - https://api.example.com
+        - https://data.partner.io
+      denied-list:
+        - http://169.254.169.254
+        - http://localhost
+        - http://127.0.0.1
+```
+
+| Property | Default | Description |
+|---|---|---|
+| `kestra.tasks.http.allowed-list` | `[]` | When non-empty, a request URI must start with at least one entry or the task fails. |
+| `kestra.tasks.http.denied-list` | `[]` | A request URI that starts with any entry causes the task to fail. Evaluated after the allowed-list. |
+
+Both lists are empty by default — no filtering is applied unless you configure them.
+
+When both lists are set, the allowed-list is checked first. A URI that matches an allowed-list entry but also matches a denied-list entry is still blocked.
+
+**Matching is prefix-based**, not glob or CIDR. Each entry is a literal string prefix, so:
+- `http://169.254.169.254` blocks `http://169.254.169.254/latest/meta-data/...`
+- `http://10.` blocks `http://10.0.0.1/admin` but not `https://10.0.0.1/admin` because the scheme differs
+
+When a URI is blocked, the task fails with an error that identifies the matching config key:
+
+```
+The URI http://169.254.169.254/... is in the configured denied list (kestra.tasks.http.denied-list).
+```
+
+:::alert{type="info"}
+This filter applies to HTTP plugin tasks and the `http()` Pebble expression function.
+:::
+
+## Encryption key
+
+Configure an encryption key so that `SECRET` inputs and outputs can be stored safely at rest. Without it, any flow that uses `SECRET`-typed inputs or outputs fails at runtime.
+
+```yaml
+kestra:
+  encryption:
+    secret-key: BASE64_ENCODED_STRING_OF_32_CHARACTERS
+```
+
+Generate a key with:
+
+```bash
+openssl rand -base64 32
+```
+
+See [Encryption configuration](../../configuration/05.security-and-secrets/index.md#encryption) for full details.
+
+## Plugin restrictions (EE)
+
+Restrict which task runners and plugins flow authors can use. At minimum, restrict access to the Process task runner in multi-tenant or untrusted environments — the Process runner executes directly on the worker host with no container isolation.
+
+Configure plugin restrictions and worker isolation under [Worker Isolation](../../07.enterprise/02.governance/worker-isolation/index.md). For finer-grained policy enforcement across namespaces and tenants, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject, validate, or reject plugin and flow configuration at save or execution time.
+
 ## Plugin and code validation
 
 - Plugin configuration: use Kestra’s plugin architecture, including [Plugin Versioning](../../07.enterprise/05.instance/versioned-plugins/index.md), to control which plugins are allowed and [which should be prohibited](../../07.enterprise/02.governance/worker-isolation/index.md).
 - CI/CD validation: add a [Flow Validation step in your CI/CD pipeline](../../version-control-cicd/cicd/index.md) to scan task definitions for disallowed patterns (e.g., `169.254.169.254`) and block merging if detected.
-- Java Security (EE): Enterprise Edition users can define security policies to restrict access to untrusted files, plugins, or network resources.
 
 ## Credential initialization
 
-On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials.
+On Enterprise Edition, use [OIDC/SSO](../../07.enterprise/03.auth/sso/index.md) or [LDAP](../../07.enterprise/03.auth/sso/ldap/index.md) instead of Basic Authentication. These integrate with your existing identity provider, support MFA, and remove the risk of locally managed credentials. [One-Time-Password (OTP)](../../07.enterprise/03.auth/04.authentication/index.md#passwordless-otp) is also supported, though it provides less protection than SSO with MFA.
 
 If you use Basic Authentication on OSS or EE:
 
@@ -50,7 +124,7 @@ kestra:
 
 ## Management endpoint access
 
-Kestra exposes internal endpoints on a separate management port (default `8081`). These include health checks, runtime log level changes (`/loggers`), metrics (`/metrics`), and an environment inspection endpoint (`/env`) that can expose configuration values. This port is unauthenticated by default.
+Kestra exposes internal endpoints on a separate management port (default `8081`). These include health checks, metrics (`/metrics`), and runtime log level inspection (`/loggers`). This port is unauthenticated by default.
 
 The primary protection is network isolation: do not expose port `8081` outside the internal network. Firewall or security-group rules should restrict access to the management port to trusted internal hosts only (monitoring agents, load balancer health checkers, operations tooling).
 
@@ -67,21 +141,32 @@ endpoints:
 
 When `basic-auth` credentials are present, Kestra's management endpoint filter requires Basic Auth on every request to that port.
 
-You can also disable individual endpoints you do not need:
-
-```yaml
-endpoints:
-  env:
-    enabled: false   # disables /env, which can expose config values
-```
-
-:::alert{type="warning"}
-The `/env` endpoint is enabled by default and can expose configuration properties including secrets passed as environment variables. Disable it or restrict the management port at the network layer before deploying to production.
-:::
-
 See [Kestra endpoints](../03.monitoring/index.md#kestra-endpoints) for the full list of what is exposed on the management port.
 
-## Documentation and audit
+## ZIP bomb protection
 
-- User guidance: update onboarding materials and runbooks to highlight metadata-blocking best practices when deploying a new Kestra environment.
-- Periodic review: include network and host configuration checks in your security audit cycle to verify link-local ranges remain blocked.
+Kestra guards against ZIP bomb attacks on the two endpoints that accept user-uploaded ZIP archives: flow import and namespace file upload. The protection is opt-in and disabled by default.
+
+Enable it under `kestra.security.zip-bomb-protection` in your `application.yml`:
+
+```yaml
+kestra:
+  security:
+    zip-bomb-protection:
+      enabled: true
+      max-number-of-entries: <integer>   # maximum number of entries in the archive
+      max-entry-size: <bytes>            # maximum uncompressed size of a single entry
+```
+
+Both `max-number-of-entries` and `max-entry-size` are required when `enabled: true`. Set them based on the largest legitimate ZIP archives your users are expected to upload. When a ZIP exceeds either limit, the request is rejected with an HTTP 422 error.
+
+:::alert{type="info"}
+The protection applies only to user-uploaded ZIPs (flow import and namespace file upload). Internal Kestra archives used for task execution caching are not affected.
+:::
+
+
+## Related configuration
+
+- [Encryption and secrets configuration](../../configuration/05.security-and-secrets/index.md) — encryption key setup, secret backend configuration, and auth security settings.
+- [External Secrets Manager](../../07.enterprise/02.governance/secrets-manager/index.md) — integrate with AWS Secrets Manager, Azure Key Vault, GCP Secret Manager, HashiCorp Vault, and others to avoid storing credentials in Kestra directly.
+- [Policies](../../07.enterprise/02.governance/policies/index.md) — enforce governance rules that inject, validate, or reject plugin and flow configuration across namespaces and tenants.

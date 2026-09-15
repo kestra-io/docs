@@ -72,7 +72,7 @@ tasks:
     accessKeyId: "{{ secret('AWS_ACCESS_KEY_ID') }}"
     secretKeyId: "{{ secret('AWS_SECRET_KEY_ID') }}"
     region: "eu-central-1"
-    from: "{{ outputs.get_orders_per_product_csv.uri }}"
+    from: "{{ outputs.ion_to_csv.uri }}"
     bucket: "my_bucket"
     key: "orders/detailed_orders"
 

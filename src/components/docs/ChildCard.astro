@@ -1,15 +1,16 @@
 ---
 import { getCollection } from "astro:content"
 import ChevronRightIcon from "vue-material-design-icons/ChevronRight.vue"
-import MDCParserAndRenderer from "~/components/MDCParserAndRenderer.astro"
+import MarkdownRenderer from "~/components/MarkdownRenderer.astro"
 import generateId from "~/utils/generateId"
 
 interface Props {
     title?: string
     directory?: string
+    reverse?: boolean
 }
 
-const { title, directory } = Astro.props
+const { title, directory, reverse = false } = Astro.props
 
 const currentPage =
     directory ??
@@ -29,10 +30,10 @@ const children = await Promise.all(
                 !doc.id.slice(contentPath.length + 1).includes("/"),
         )
         .sort((a, b) => {
-            if (a.filePath && b.filePath) {
-                return a.filePath.localeCompare(b.filePath)
-            }
-            return a.id.localeCompare(b.id)
+            const cmp = a.filePath && b.filePath
+                ? a.filePath.localeCompare(b.filePath)
+                : a.id.localeCompare(b.id)
+            return reverse ? -cmp : cmp
         })
         .map(async (doc) => {
             const firstLine = doc.body
@@ -78,7 +79,7 @@ const children = await Promise.all(
         children.map((item) => (
             <a href={item.path} class="ks-card">
                 <h4 class="ks-card-title">{item.title}</h4>
-                <MDCParserAndRenderer
+                <MarkdownRenderer
                     content={item.description}
                     class:list={["ks-card-text"]}
                 />

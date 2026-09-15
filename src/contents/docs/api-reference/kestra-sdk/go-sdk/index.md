@@ -256,23 +256,84 @@ func deleteKVKey(ctx context.Context, apiClient *openapiclient.APIClient) {
 
 ## Read execution logs
 
-Fetch logs for a completed execution.
+Fetch all log entries for a completed execution. Log operations use `KestraClient` from the same package — not the generated `APIClient`.
 
 ```go
-func listLogs(ctx context.Context, apiClient *openapiclient.APIClient) {
-    tenant := "main"
-    result, _, err := apiClient.LogsAPI.
-        ListLogsFromExecution(ctx, "your-execution-id", tenant).
-        Execute()
+import (
+    "context"
+    "fmt"
+    kestra "github.com/kestra-io/client-sdk/go-sdk/kestra_api_client"
+)
+
+func listLogs() {
+    ctx := context.Background()
+    client := kestra.NewClient("http://localhost:8080",
+        kestra.WithBasicAuth("root@root.com", "Root!1234"))
+
+    logs, err := client.Logs().ListLogsFromExecution(ctx, "your-execution-id", "main", nil, nil, nil, nil)
     if err != nil {
         fmt.Printf("Error fetching logs: %v\n", err)
         return
     }
-    for _, log := range result.GetResults() {
+    for _, log := range logs {
         fmt.Printf("[%s] %s\n", log.GetLevel(), log.GetMessage())
     }
 }
 ```
+
+Pass a minimum log level to filter results — for example `kestra.PtrString("INFO")` as the fourth argument. Remaining arguments (`taskRunId`, `taskId`, `attempt`) narrow by task; pass `nil` to skip each filter.
+
+---
+
+## Stream execution logs (SSE)
+
+Stream logs from a running execution in real time. `FollowLogsFromExecution` opens an SSE connection and returns a `<-chan *LogEntry`. Entries arrive as the execution produces them. The channel closes when the execution ends or the context is cancelled.
+
+```go
+func followLogs() {
+    ctx, cancel := context.WithCancel(context.Background())
+    defer cancel()
+
+    client := kestra.NewClient("http://localhost:8080",
+        kestra.WithBasicAuth("root@root.com", "Root!1234"))
+
+    ch, err := client.Logs().FollowLogsFromExecution(ctx, "your-execution-id", "main", nil)
+    if err != nil {
+        fmt.Printf("Error starting log stream: %v\n", err)
+        return
+    }
+
+    for entry := range ch {
+        if entry.GetExecutionId() == "" {
+            continue // skip the synthetic "start" entry the server sends on stream open
+        }
+        fmt.Printf("[%s] %s\n", entry.GetLevel(), entry.GetMessage())
+    }
+}
+```
+
+To stop streaming early, cancel the context. The server-side SSE connection closes and the channel drains within milliseconds:
+
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+defer cancel()
+
+ch, err := client.Logs().FollowLogsFromExecution(ctx, "your-execution-id", "main", nil)
+if err != nil {
+    fmt.Printf("Error starting log stream: %v\n", err)
+    return
+}
+for entry := range ch {
+    if entry.GetExecutionId() == "" {
+        continue
+    }
+    fmt.Printf("[%s] %s\n", entry.GetLevel(), entry.GetMessage())
+}
+```
+
+:::alert{type="info"}
+The fourth argument is an optional minimum log level filter (`*string`). Pass `kestra.PtrString("INFO")` to receive only INFO and above, or `nil` to receive all levels.
+:::
 
 ---
 

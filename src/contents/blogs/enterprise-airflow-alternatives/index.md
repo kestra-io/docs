@@ -139,7 +139,7 @@ If your team is Python-native and you want minimal disruption, Astronomer or Pre
 
 But here's the question most comparisons don't ask: what happens when your orchestration needs expand beyond data pipelines?
 
-The reality of 2026 is that workloads are converging. [AI workflows](../../docs/ai-tools/ai-workflows/index.md) don't respect the boundaries between data engineering, ML ops, and application development. The same platform that orchestrates your [ETL pipelines](../../docs/15.how-to-guides/etl-pipelines/index.md) might need to coordinate model training, API calls, and business process automation. If you choose a Python-only orchestrator today, you're betting that Python will remain the center of gravity for every workflow your organization needs to run. That's a big bet.
+The reality of 2026 is that workloads are converging. [AI workflows](../../docs/ai-tools/06.ai-workflows/index.md) don't respect the boundaries between data engineering, ML ops, and application development. The same platform that orchestrates your [ETL pipelines](../../docs/15.how-to-guides/etl-pipelines/index.md) might need to coordinate model training, API calls, and business process automation. If you choose a Python-only orchestrator today, you're betting that Python will remain the center of gravity for every workflow your organization needs to run. That's a big bet.
 
 This is where Kestra's language-agnostic approach pays off. You can start with [data pipelines](../../docs/use-cases/01.data-pipelines/index.md), migrate off Airflow without rewriting everything, and then expand to orchestrate workloads across teams and languages as your needs evolve. No silos,  second orchestrator for non-Python work, or rearchitecting when requirements change.
 

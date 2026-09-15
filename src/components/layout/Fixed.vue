@@ -20,7 +20,8 @@
                     data-bs-target="#search-ai-modal"
                 >
                     <img :src="AIGenImg.src" alt="Kestra AI" width="25" height="25" />
-                    <span class="title d-none d-md-inline">Ask Kestra AI</span>
+                    <span class="title d-none d-md-inline">Ask AI</span>
+                    <kbd class="ask-kbd d-none d-md-inline-flex">A</kbd>
                 </button>
             </div>
         </div>
@@ -85,7 +86,7 @@
             button {
                 display: inline-flex;
                 align-items: center;
-                width: 137px;
+                width: auto;
                 height: 36px;
                 padding: 8px 16px;
                 border-radius: 44px;
@@ -98,6 +99,22 @@
             }
             img {
                 border-radius: 6px;
+            }
+
+            .ask-kbd {
+                align-items: center;
+                justify-content: center;
+                width: 18px;
+                height: 18px;
+                border-radius: 3px;
+                font-style: normal;
+                font-size: 11px;
+                font-weight: 500;
+                line-height: 1;
+                margin-left: 4px;
+                border: 1px solid rgba(0, 0, 0, 0.25);
+                background: rgba(0, 0, 0, 0.06);
+                color: $black;
             }
         }
         span.online {

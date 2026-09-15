@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from "astro"
 import { getCollection } from "astro:content"
+import { entryCacheKey, layoutDigest } from "~/utils/incrementalCacheKey"
 import VsLayout from "~/components/versus/VsLayout.astro"
 import Intro from "~/components/versus/Intro.astro"
 import Philosophy from "~/components/versus/Philosophy.astro"
@@ -45,9 +46,11 @@ function getImgSvg(filename: string): ImageMetadata {
 
 export async function getStaticPaths() {
     const vsEntries = await getCollection("vs")
+    const scope = [await layoutDigest()]
     return vsEntries.map((entry) => ({
         params: { slug: entry.id },
         props: { entry },
+        cacheKey: entryCacheKey(entry, ...scope),
     }))
 }
 

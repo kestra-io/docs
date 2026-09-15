@@ -197,6 +197,7 @@ The right choice depends on your team's profile and primary objective. Here’s 
 - **For data engineering teams:** Your automation needs often involve complex dependencies between data ingestion, transformation, and ML tools. Prioritize platforms with strong data ecosystem integrations and polyglot support, like **Kestra**, which can orchestrate dbt, Spark, and Airbyte in the same workflow as your infrastructure.
 - **For infrastructure/DevOps teams:** If your core task is managing server state, robust configuration management tools like **Puppet**, **Chef**, or **SaltStack** are strong alternatives. For provisioning, **Terraform** is the standard. A unified orchestrator like **Kestra** can tie these disparate tools together into a single, auditable workflow.
 - **For small teams getting started:** Weigh ease of use against future scalability. **AWX** offers a gentle step up from Ansible CLI. **Kestra's** open-source edition provides a powerful, all-in-one platform that can grow with you from simple cron job replacement to complex, event-driven orchestration.
+- **For teams staying on Ansible:** If your blocker is the control plane rather than the automation engine, the shortlist is different. See [AWX alternatives](/resources/infrastructure/awx-alternatives) for options that replace the web UI, RBAC, and API layer while keeping your existing playbooks.
 
 ## Emerging Trends and the Future of Automation Tools
 

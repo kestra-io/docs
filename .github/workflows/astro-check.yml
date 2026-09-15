@@ -27,7 +27,7 @@ jobs:
           node-version-file: .nvmrc
 
       - name: Install dependencies
-        run: npm install
+        uses: ./.github/actions/node-modules
 
       - name: Run unit tests
         run: npm run test:unit
@@ -105,3 +105,10 @@ jobs:
               -fail-level=any < content-imports.jsonl || status=1
 
           exit $status
+
+      # Hard gate (pre-existing scripts, previously run by no workflow). Runs
+      # after the reviewdog report so a test failure can't suppress the inline
+      # lint feedback.
+      - name: Run unit tests
+        if: ${{ !cancelled() }}
+        run: npm run test:unit

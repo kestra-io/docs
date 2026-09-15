@@ -222,7 +222,7 @@ Not every fix shows up in a benchmark, and honestly these next three worried us 
 
 ## Conclusion
 
-None of these changes touch how you write a flow. You get them for free by upgrading. They came out of a fairly simple habit: read the hot paths and ask what work is being repeated, then check whether a task can fail without saying so. Pool the connection, cache the formatter, batch the round-trip, check the future.
+None of these changes touch how you write a flow. You get them for free by upgrading, alongside the [engine-level gains in 2.0](/blogs/performance-improvements-2-0). They came out of a fairly simple habit: read the hot paths and ask what work is being repeated, then check whether a task can fail without saying so. Pool the connection, cache the formatter, batch the round-trip, check the future.
 
 Individually each one is small. Together they add up, and they matter most exactly when you are running at scale, which is where you least want a plugin getting in the way. Plugins are a big surface, we have only been through a handful so far, and we are not done. Performance and correctness across the plugin ecosystem stay a focus for us.
 

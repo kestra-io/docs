@@ -2,7 +2,14 @@
     <div class="cards">
         <a :href="blog.path" :target="target">
             <div class="img-container">
-                <img :src="blog.image" :alt="blog.title" width="1600" height="900" />
+                <img
+                    :src="blog.image"
+                    :alt="blog.title"
+                    width="1600"
+                    height="900"
+                    :loading="eager ? 'eager' : 'lazy'"
+                    decoding="async"
+                />
             </div>
             <div class="content">
                 <small class="meta">
@@ -17,9 +24,12 @@
 <script setup lang="ts">
     import { computed } from 'vue'
 
+    // `eager` opts the card out of lazy loading: set it on the first card of a
+    // grid so the one image that is always above the fold is not deferred.
     const props = defineProps<{
         blog: any
         target?: string
+        eager?: boolean
     }>()
 
     const authorName = computed(() => {

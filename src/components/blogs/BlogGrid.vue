@@ -12,6 +12,7 @@
                 v-for="(blog, index) in filteredBlogs"
                 :key="blog.path"
                 :blog="blog"
+                :eager="index === 0"
                 :class="{ hidden: index >= visibleCount }"
             />
         </div>

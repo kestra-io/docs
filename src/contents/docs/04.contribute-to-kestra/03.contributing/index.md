@@ -203,7 +203,7 @@ Before reporting a bug, please search for your issue in our [already reported bu
 
 ### Reporting security issues
 
-Please do not create a public GitHub issue. If you've found a security issue, please email us directly at [security@kestra.io](mailto:security@kestra.io) instead of raising an issue.
+If you've found a security issue, please report directly to Kestra's [GitHub Advisories](https://github.com/kestra-io/kestra/security/advisories/new) to make our team aware.
 
 ### Requesting new features
 

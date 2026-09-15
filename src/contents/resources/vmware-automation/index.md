@@ -24,7 +24,7 @@ This guide explores the essentials of VMware automation, from native platforms l
 
 ## Understanding VMware Automation
 
-VMware automation involves using software to execute tasks and processes related to virtual machines (VMs), networks, storage, and cloud resources within VMware ecosystems. The primary goal is to replace repetitive, manual operations with automated, consistent workflows. This is a critical component of modern [infrastructure automation](https://kestra.io/resources/infrastructure/automation), where speed, reliability, and scale are paramount.
+VMware automation involves using software to execute tasks and processes related to virtual machines (VMs), networks, storage, and cloud resources within VMware ecosystems. The primary goal is to replace repetitive, manual operations with automated, consistent workflows. This is a critical component of modern [infrastructure automation](https://kestra.io/resources/infrastructure/automation), where speed, reliability, and scale are paramount. Most of that work tracks the machine itself from provisioning through to decommissioning, a sequence covered in [VM lifecycle management](/resources/infrastructure/vm-lifecycle-management).
 
 The importance of this practice cannot be overstated. Effective automation leads to:
 *   **Increased Efficiency:** Repetitive tasks like VM provisioning, patching, and configuration are completed in minutes instead of hours.
@@ -74,6 +74,7 @@ With Kestra, you can:
 *   **Leverage Event-Driven Automation:** Kestra can react to events from your VMware environment. For example, a VM creation event in vCenter can automatically trigger a workflow to configure the server, install applications, and add it to a monitoring system.
 *   **Execute Polyglot Scripts:** Run Python, PowerShell, or shell scripts as part of your VMware automation without complex wrappers.
 *   **Gain Unified Observability:** Get a centralized view of all your automation workflows, with detailed logs, audit trails, and execution history, regardless of the underlying tools.
+*   **Stay Portable:** Because the control plane is decoupled from the hypervisor, the same workflows keep running if part of the estate moves elsewhere — a common requirement for teams weighing [VMware cloud alternatives](/resources/infrastructure/vmware-cloud-alternatives) after the recent licensing changes.
 
 For example, a common use case is orchestrating the full VM lifecycle. A Kestra workflow can provision a VM, wait for it to be ready, [create a snapshot](https://kestra.io/plugins/plugin-ee-vmware/vmware-vcenter/io.kestra.plugin.ee.vmware.vcenter.createvmsnapshot) for backup, and later [power it down](https://kestra.io/plugins/plugin-ee-vmware/vmware-esxi/io.kestra.plugin.ee.vmware.esxi.stopvm) based on a schedule, all defined in one auditable YAML file. You can [control VMware without the legacy automation layer](https://kestra.io/blogs/control-vmware-with-kestra), simplifying your stack and reducing operational overhead.
 

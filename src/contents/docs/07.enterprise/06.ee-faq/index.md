@@ -9,11 +9,9 @@ editions: ["EE", "Cloud"]
 
 Frequently asked questions about the Cloud and Enterprise Edition of Kestra.
 
-## Kestra Cloud & Enterprise FAQ – common questions
-
 ## My session expires too quickly. Is there a way to change the session expiration time?
 
-Yes, there is! Add the following Micronaut setting to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) to change the session expiration time to 10 hours:
+Add the following Micronaut setting to your [Observability and Networking configuration](../../configuration/03.observability-and-networking/index.md) to set the session expiration time to 10 hours:
 
 ```yaml
     environment:
@@ -28,13 +26,13 @@ Yes, there is! Add the following Micronaut setting to your [Observability and Ne
                 cookie-max-age: 10h
 ```
 
-In Cloud, you might need to ask our support team to change this setting for you.
+On Kestra Cloud, contact support to change this setting.
 
 ## How do I configure Kestra with my license details?
 
-To use Kestra Enterprise Edition, you will need a valid license configured under the `kestra.ee.license` configuration. The license is unique to your organization. If you need a license, please reach out to our Sales team at [sales@kestra.io](mailto:sales@kestra.io).
+Kestra Enterprise Edition requires a valid license configured under `kestra.ee.license`. The license is unique to your organization. To get a license, contact the Sales team at [sales@kestra.io](mailto:sales@kestra.io).
 
-The license is set up using three configuration properties: `id`, `fingerprint`, and `key`.
+The license uses three configuration properties: `id`, `fingerprint`, and `key`.
 
 - `kestra.ee.license.id`: license identifier.
 - `kestra.ee.license.fingerprint`: license authentication.
@@ -50,7 +48,7 @@ kestra:
         <LICENSE KEY>
 ```
 
-When you launch Kestra Enterprise Edition, it will check the license and display the validation step in the log.
+Kestra validates the license on startup and logs the validation result.
 
 ## When should I use Secrets vs Credentials?
 

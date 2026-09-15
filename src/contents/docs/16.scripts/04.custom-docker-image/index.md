@@ -34,7 +34,7 @@ services:
     image: kestra-python:latest
 ```
 
-Once you start Kestra containers using `docker compose up -d`, you can create a flow that directly runs Python tasks with your custom dependencies using the `PROCESS` runner:
+Once you start Kestra containers using `docker compose up -d`, you can create a flow that directly runs Python tasks with your custom dependencies using the Process task runner:
 
 ```yaml
 id: python_process
@@ -42,7 +42,8 @@ namespace: company.team
 tasks:
   - id: custom_dependencies
     type: io.kestra.plugin.scripts.python.Script
-    runner: PROCESS
+    taskRunner:
+      type: io.kestra.plugin.core.runner.Process
     script: |
       import pandas as pd
       import requests

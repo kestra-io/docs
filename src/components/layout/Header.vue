@@ -759,6 +759,29 @@
 
     let collapse: Collapse | undefined = undefined
 
+    function isEditable(target: EventTarget | null): boolean {
+        const el = target instanceof HTMLElement ? target : null
+        if (!el) return false
+        return (
+            el.tagName === "INPUT" ||
+            el.tagName === "TEXTAREA" ||
+            el.tagName === "SELECT" ||
+            el.isContentEditable
+        )
+    }
+
+    function handleShortcut(e: KeyboardEvent) {
+        if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+        if (isEditable(e.target)) return
+        if (e.key.toLowerCase() === "a") {
+            e.preventDefault()
+            const modal = document.getElementById("search-ai-modal")
+            if (modal && window.$bootstrap) {
+                window.$bootstrap.Modal.getOrCreateInstance(modal).show()
+            }
+        }
+    }
+
     function getCollapseInstance(): Collapse | undefined {
         if (!collapse) {
             const BootstrapCollapse = window.$bootstrap?.Collapse
@@ -795,6 +818,7 @@
 
         useEventListener(window, "resize", syncMobileState)
         useEventListener(window, "scroll", syncScrollState, { passive: true })
+        useEventListener(window, "keydown", handleShortcut)
 
         document.documentElement.style.setProperty(
             "--top-bar-height",
@@ -1063,6 +1087,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "/src/assets/styles/buttons" as *;
+
     @mixin dark-nav-content($color: $white) {
         a.nav-link:not(.btn),
         button.nav-link:not(.btn),
@@ -1316,7 +1342,7 @@
                 padding: 0.25rem;
             }
 
-            @include media-breakpoint-between(xl, xxl) {
+@include media-breakpoint-between(xl, xxl) {
                 .btn:not(.icon-button) {
                     padding-inline: 0.5rem;
                     font-size: $font-size-sm;
@@ -1601,6 +1627,10 @@
 
                 @include dark-nav-content;
 
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
+
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
                 }
@@ -1620,6 +1650,10 @@
                 }
 
                 @include dark-nav-content($black);
+
+                .btn-secondary {
+                    @include btn-secondary-light-surface;
+                }
             }
 
             body[data-header-theme="darkBg"] &:not(.scrolled):not(.open) {
@@ -1637,6 +1671,10 @@
 
                 @include dark-nav-content;
 
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
+
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);
                 }
@@ -1644,6 +1682,10 @@
 
             html.dark & {
                 @include dark-nav-content;
+
+                .btn-secondary {
+                    @include btn-secondary-dark-surface;
+                }
 
                 .slack-link .slack-icon :deep(svg) {
                     filter: brightness(0) invert(1);

@@ -2,6 +2,7 @@ import { handle } from '@astrojs/cloudflare/handler';
 import contentSecurityPolicyConfig from "../../content-security-policy.config"
 import { defineCFMiddleware, type CFMiddleware } from './worker.types';
 import { proxyTracking } from "../utils/trackingProxy";
+import { VERSIONED_DOCS_PATH } from "../utils/versionedDocs";
 
 const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) => {
     // disable for tracking
@@ -12,17 +13,23 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     const nextResponse = await next()
     const response = new Response(nextResponse.body, nextResponse)
 
+    // wrangler dev serves the production build, so import.meta.env.DEV is false
+    // there: key these off the request scheme, which is what actually matters.
+    const isInsecureOrigin = url.protocol === "http:"
+
     const localhost: string[] = []
-    if (import.meta.env.DEV) {
+    if (isInsecureOrigin) {
         localhost.push(url.protocol + "//" + url.host)
     }
 
     const contentSecurityPolicy: string = Object.entries(
         contentSecurityPolicyConfig as Record<string, Array<string> | boolean>,
     )
+        // upgrade-insecure-requests over http rewrites every subresource to https
+        // and nothing serves TLS on localhost, so the whole page stalls.
         .filter(
             ([key]) =>
-                !import.meta.env.DEV || key !== "upgrade-insecure-requests",
+                !isInsecureOrigin || key !== "upgrade-insecure-requests",
         )
         .map(([key, value]) => {
             let line = key
@@ -41,7 +48,7 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
 
     response.headers.set(
         "x-frame-options",
-        import.meta.env.DEV ? "SAMEORIGIN" : "DENY",
+        isInsecureOrigin ? "SAMEORIGIN" : "DENY",
     )
     response.headers.set("x-content-type-options", "nosniff")
     response.headers.set("x-download-options", "nosniff")
@@ -59,7 +66,8 @@ const setupContentSecurityPolicyHeaders = defineCFMiddleware(async (url, next) =
     response.headers.set("x-permitted-cross-domain-policies", "none")
     response.headers.set("content-security-policy", contentSecurityPolicy)
 
-    if (!import.meta.env.DEV) {
+    // HSTS is ignored over http anyway, so do not claim it there.
+    if (!isInsecureOrigin) {
         response.headers.set("strict-transport-security", "max-age=31536000")
     }
 
@@ -140,7 +148,12 @@ function isEdgeCacheablePage(url: URL): boolean {
         path === "/plugins" ||
         path.startsWith("/plugins/") ||
         path === "/blueprints" ||
-        path.startsWith("/blueprints/")
+        path.startsWith("/blueprints/") ||
+        // Versioned docs, SSR-rendered from per-release markdown fetched at
+        // request time — the MDC parse + Shiki pass make every miss expensive.
+        // Their .md variants bypass this cache via the extension short-circuit
+        // below; that's fine, they're a cheap fetch + string reshape, no rendering.
+        VERSIONED_DOCS_PATH.test(path)
     )
 }
 

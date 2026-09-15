@@ -20,6 +20,7 @@ export const GET: APIRoute = async () => {
         // Paid-campaign landing pages are `noindex`, so submitting them would
         // point Google at pages it is told not to index.
         .filter((r) => !r.startsWith("/lp/"))
+        .filter((r) => r !== "/docs-versioned")
         .filter((r) => r !== "/use-cases" && !r.startsWith("/use-cases/"))
         .filter((r) => r !== "/orchestration" && !r.startsWith("/orchestration/"))
         .filter((r) => r !== "/resources" && !r.startsWith("/resources/"))

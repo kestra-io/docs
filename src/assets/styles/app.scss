@@ -1,4 +1,5 @@
 @import "variable";
+@import "buttons";
 @import "ks-theme-light";
 @import "ks-theme-dark";
 @import "layout";
@@ -21,9 +22,9 @@ pre {
 // per-token `style` attribute; switch to the dark theme via the per-token
 // `--shiki-dark` CSS variable when `.dark` is set on <html>. `!important`
 // is required to beat the inline light-theme color. Single source for the
-// v-html markdown output of MDCParserAndRendererSSR, BlueprintMarkdownBody
-// and Snippets — don't duplicate this per-component.
-html.dark .mdc-renderer pre code span {
+// v-html markdown output of MarkdownRendererSSR, BlueprintMarkdownBody,
+// Snippets and the versioned-docs SSR page — don't duplicate this per-component.
+html.dark .markdown-renderer pre code span {
     color: var(--shiki-dark) !important;
 }
 
@@ -51,7 +52,6 @@ body {
 
 :root {
     --spacer: #{$spacer};
-    --bs-link-color-rgb: var(--ks-content-link);
     --#{$prefix}font-size-lg: #{$font-size-lg};
     --#{$prefix}font-size-sm: #{$font-size-sm};
 }
@@ -210,6 +210,8 @@ blockquote.blockquote {
     }
 }
 
+// Secondary button reads the theme tokens so a component can restyle it by
+// re-pointing them (see `btn-secondary-*-surface` in _buttons.scss).
 .btn-secondary {
     background-color: var(--ks-background-button-secondary);
     color: var(--ks-content-primary) !important;
@@ -219,6 +221,18 @@ blockquote.blockquote {
         background: var(--ks-background-button-secondary-hover) !important;
         color: var(--ks-content-btn-secondary-hover) !important;
     }
+}
+
+// Surface-aware variants. `.surface-dark` marks a section that stays dark in
+// both themes; `.surface-inverse` marks one painted with the `*-inverse` tokens
+// (dark in the light theme, light in the dark theme).
+.surface-dark .btn-secondary,
+.surface-inverse .btn-secondary {
+    @include btn-secondary-dark-surface;
+}
+
+html.dark .surface-inverse .btn-secondary {
+    @include btn-secondary-light-surface;
 }
 
 .btn.btn-primary,
@@ -841,4 +855,13 @@ html.no-animation {
 
 .mermaid {
     margin-bottom: 1.5rem;
+}
+
+// Bootstrap link and primary tokens mapped to the theme. Last global rule so it wins over
+// bootstrap/scss/root, as the per-component copies of the old prelude used to.
+:root {
+    --bs-link-color: var(--ks-content-link);
+    --bs-link-hover-color: var(--ks-content-color-highlight);
+    --bs-primary: var(--ks-content-color-highlight);
+    --bs-link-color-rgb: var(--ks-content-color-highlight);
 }

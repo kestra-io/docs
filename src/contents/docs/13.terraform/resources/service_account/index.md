@@ -41,7 +41,7 @@ resource "kestra_service_account" "example" {
 - `id` (String) The ID of this resource.
 
 <a id="nestedblock--groups"></a>
-### Nested schema for `groups`
+### Nested Schema for `groups`
 
 Required:
 
@@ -50,6 +50,8 @@ Required:
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_service_account.example {{user_id}}

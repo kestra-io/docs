@@ -117,9 +117,9 @@ tasks:
     commands:
       - echo '::{"outputs":{"test":"value","int":2,"bool":true,"float":3.65}}::'
 
-  - id: return
-    type: io.kestra.plugin.core.debug.Return
-    format: '{{ outputs.shell_outputs_task.vars.test }}'
+  - id: log_vars
+    type: io.kestra.plugin.core.log.Log
+    message: '{{ outputs.shell_outputs_task.vars.test }}'
 ```
 
 _This example works for both `io.kestra.plugin.scripts.shell.Script` and `io.kestra.plugin.scripts.shell.Commands`._
@@ -172,3 +172,57 @@ tasks:
 Once this has executed, both the metrics can be viewed under **Metrics**.
 
 ![metrics](./metrics.png)
+
+## Automate Shell with triggers
+
+You can also use shell code as polling logic by using `ScriptTrigger` or `CommandsTrigger`. These trigger types run shell code on an interval and start a flow execution only when the `exitCondition` matches.
+
+Use `ScriptTrigger` for inline shell code:
+
+```yaml
+id: script_trigger
+namespace: company.team
+
+triggers:
+  - id: script_failure
+    type: io.kestra.plugin.scripts.shell.ScriptTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: ubuntu
+    script: |
+      cat /path/that/does/not/exist
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+Use `CommandsTrigger` when you want to run shell commands instead:
+
+```yaml
+id: commands_trigger
+namespace: company.team
+
+triggers:
+  - id: commands_failure
+    type: io.kestra.plugin.scripts.shell.CommandsTrigger
+    interval: PT10S
+    exitCondition: "exit 1"
+    edge: true
+    containerImage: ubuntu
+    commands:
+      - cat /path/that/does/not/exist
+
+tasks:
+  - id: log
+    type: io.kestra.plugin.core.log.Log
+    message: "Triggered with exitCode={{ trigger.exitCode }} (condition={{ trigger.condition }})"
+```
+
+These trigger types support:
+
+- `interval` to control how often the script or commands run
+- `exitCondition` to match an exit code such as `exit 1`, or a regex or substring matched against emitted vars and failure logs
+- `edge` to emit only on a transition from not matching to matching

@@ -84,7 +84,7 @@ Raw data is rarely useful on its own. The transformation stage is where data is 
 *   **Cleaning:** Handling null values, correcting errors, and standardizing formats.
 *   **Enrichment:** Joining data with other datasets to add context.
 *   **Aggregation:** Summarizing data to calculate metrics (e.g., daily sales, monthly active users).
-*   **Modeling:** Structuring data into well-defined tables or views (e.g., star schemas) for efficient querying.
+*   **Modeling:** Structuring data into well-defined tables or views (e.g., [star schemas](/resources/data/star-schema)) for efficient querying.
 
 Tools like dbt (Data Build Tool) have become central to this stage, allowing teams to manage transformations with software engineering best practices like version control, testing, and documentation. Understanding the differences between [dbt Core vs. dbt Cloud](/blogs/dbt-core-vs-dbt-cloud) can help teams choose the right setup for their transformation workflows.
 

@@ -19,7 +19,7 @@ resource "kestra_template" "example" {
   content     = <<EOT
 tasks:
   - id: t2
-    type: io.kestra.core.tasks.log.Log
+    type: io.kestra.plugin.core.log.Log
     message: first {{task.id}}
     level: TRACE
 EOT
@@ -43,6 +43,8 @@ EOT
 ## Import
 
 Import is supported using the following syntax:
+
+The [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import) can be used, for example:
 
 ```shell
 terraform import kestra_template.example {{namespace}}/{{template_id}}

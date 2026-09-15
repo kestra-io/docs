@@ -139,24 +139,31 @@ The same applies to `kestra.storage.gcs.project-id`, `kestra.storage.gcs.service
 
 ## SDK default authentication
 
-SDK-based plugins can use default authentication if configured. Kestra resolves credentials in this order:
+SDK-based plugins resolve authentication in this order:
 
-1. namespace-level default service account
-2. tenant-level default service account
-3. global SDK defaults
+1. Namespace-level default service account
+2. Tenant-level default service account
+3. Global SDK defaults (`kestra.tasks.sdk.authentication`)
 
-Example:
+**In OSS,** when `kestra.server.basic-auth` is configured, Kestra automatically derives the global SDK credentials from it — no additional configuration is needed. SDK-based tasks using `DEFAULT` or `AUTO` authentication work without further setup.
+
+If you need to use different credentials from those in `kestra.server.basic-auth`, or to authenticate with an API token, override the global default explicitly:
 
 ```yaml
-tasks:
-  sdk:
-    authentication:
-      username: ${kestra.server.basic-auth.username}
-      password: ${kestra.server.basic-auth.password}
-      # token: ${KESTRA_API_TOKEN}
+kestra:
+  tasks:
+    sdk:
+      authentication:
+        username: my-user        # overrides basic-auth username
+        password: my-password    # overrides basic-auth password
+        # api-token: ${KESTRA_API_TOKEN}  # use an API token instead
 ```
 
-If no namespace, tenant, or global default is configured, SDK-based tasks that use `DEFAULT` or `AUTO` authentication fail because no API credentials are available.
+:::alert{type="warning"}
+If only one of `username` or `password` is set — either explicitly or resolved from `basic-auth` — Kestra throws an error when a task first attempts to use the SDK. Both must be provided together or neither.
+:::
+
+If no credential is available at any level, SDK-based tasks using `DEFAULT` or `AUTO` authentication fail. This applies to OSS instances without basic auth configured, and to EE/Cloud instances without a namespace or tenant-level service account.
 
 ## What belongs on the other configuration pages
 

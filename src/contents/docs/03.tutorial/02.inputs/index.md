@@ -11,7 +11,7 @@ Instead of hardcoding values in your flow, use inputs to make your workflows mor
 ## Make Flows dynamic with Inputs
 
 <div class="video-container">
-  <iframe src="https://www.youtube.com/embed/7abajF7wmzY?si=7oLTHTmC1QPPSCn7" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe src="https://www.youtube.com/embed/o7biCltS40Y?si=U0IrgWNeHZM8ym4w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 
 ## Defining inputs
@@ -43,7 +43,7 @@ Hit the `Backspace` or `Delete` key while building your expression? Use the keyb
 
 Try running the above flow with different values for the `user` input. You can do this by clicking on the **Execute** button and then typing a new string value in the prompt for whatever name you'd like.
 
-![Inputs](./inputs.png)
+![Inputs](./inputs-2-0.png)
 
 :::alert{type="info"}
 The plural form `defaults` is used instead of `default` for two reasons. First, `default` is a reserved keyword in Java, so it cannot be used. Second, this property allows you to set default values for a JSON object which can be an array that simultaneously defines multiple default values.

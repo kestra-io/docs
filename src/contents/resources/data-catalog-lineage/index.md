@@ -33,7 +33,7 @@ To understand data catalog lineage, you first need to examine its two constituen
 
 ### What is a data catalog?
 
-A data catalog acts as a centralized inventory or dictionary for an organization's data assets. It stores technical, operational, and business metadata, including table schemas, column descriptions, data owners, freshness metrics, and access policies. When an analyst needs to find a table containing customer purchase histories, they search the data catalog. 
+A data catalog acts as a centralized inventory or dictionary for an organization's data assets. It stores technical, operational, and business metadata, including table schemas, column descriptions, data owners, freshness metrics, and access policies. When an analyst needs to find a table containing customer purchase histories, they search the data catalog. Platform-native catalogs follow the same model within a single ecosystem: [Databricks Unity Catalog](/resources/data/databricks-unity-catalog) plays this role for lakehouse assets.
 
 However, a traditional data catalog is inherently static. It provides a snapshot of an asset at rest, answering questions about definition and ownership without necessarily detailing the computational path that populated the table.
 

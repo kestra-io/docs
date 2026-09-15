@@ -83,7 +83,7 @@ tasks:
 
 [n8n](/resources/infrastructure/n8n-alternatives) is a popular open-source workflow automation tool often described as a "self-hosted Zapier." It provides a visual, node-based interface for connecting hundreds of applications and APIs. While it is a general-purpose tool, its strong HTTP request node and community-built integrations make it a viable Tines alternative for API-driven security tasks.
 
-n8n's strength is its speed of development for SaaS-to-SaaS workflows. A security analyst can quickly build a flow that takes an alert from a service like PagerDuty, enriches it with data from GreyNoise, and posts a summary to a Slack channel. Its visual nature makes it accessible to a wide range of users, similar to Tines' no-code approach.
+n8n's strength is its speed of development for SaaS-to-SaaS workflows. A security analyst can quickly build a flow that takes an alert from a service like [PagerDuty](/resources/infrastructure/pagerduty-alternatives), enriches it with data from GreyNoise, and posts a summary to a Slack channel. Its visual nature makes it accessible to a wide range of users, similar to Tines' no-code approach.
 
 However, n8n is less suited for complex, code-heavy orchestration or infrastructure-level tasks compared to Kestra. While it can execute code, its primary paradigm is visual and focused on connecting APIs. Governance, auditability, and version control are less robust than in a declarative, code-first platform.
 

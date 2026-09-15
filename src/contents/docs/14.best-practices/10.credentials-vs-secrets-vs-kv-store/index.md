@@ -36,7 +36,7 @@ Use this rule of thumb:
 | A value created by one flow and reused later by another flow | KV Store | It is designed for runtime state shared across flows |
 | A value that changes during execution and must be updated programmatically | KV Store | Flows can read and write KV pairs dynamically |
 | Sensitive material used by a credential, such as a client secret or private key | Secrets | Credentials should reference secrets rather than embed raw secret values |
-| A non-sensitive setting such as region, endpoint, or bucket name | Task properties, [variables](../../05.workflow-components/04.variables/index.md), or [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) | These are configuration values, not authentication objects |
+| A non-sensitive setting such as region, endpoint, or bucket name | Task properties, [variables](../../05.workflow-components/04.variables/index.md), or [Policies](../../07.enterprise/02.governance/policies/index.md) (EE) | These are configuration values, not authentication objects |
 
 ## When to use credentials
 
@@ -135,12 +135,12 @@ This is the preferred pattern when Kestra should mint or refresh tokens for you.
 
 ### Pattern 2: Secrets plus non-sensitive configuration
 
-Use secrets for the confidential part and task properties, [variables](../../05.workflow-components/04.variables/index.md), or [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) for the rest.
+Use secrets for the confidential part and task properties or [variables](../../05.workflow-components/04.variables/index.md) for the rest. In Enterprise Edition, use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject repeated non-sensitive settings across all tasks of a type.
 
 Example:
 
 - `password` from `secret('DB_PASSWORD')`
-- `host`, `port`, and `database` from [variables](../../05.workflow-components/04.variables/index.md) or [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md)
+- `host`, `port`, and `database` from [variables](../../05.workflow-components/04.variables/index.md) or task properties
 
 ### Pattern 3: Secret plus KV Store
 
@@ -153,9 +153,9 @@ Example:
 
 This is common in [polling triggers](../../05.workflow-components/07.triggers/04.polling-trigger/index.md), ingestion, and synchronization flows.
 
-### Pattern 4: Plugin defaults plus secrets
+### Pattern 4: Policies plus secrets (Enterprise Edition)
 
-Use [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) to centralize repeated connection settings, while referencing secrets for the sensitive fields.
+Use [Policies](../../07.enterprise/02.governance/policies/index.md) to inject repeated connection settings into all tasks of a given type, while referencing secrets for the sensitive fields.
 
 This is often the cleanest approach for large teams because it reduces duplication without putting secret material in the flow body.
 
@@ -186,7 +186,7 @@ If yes, consider the **KV Store**.
 If yes, use **secrets**.
 
 5. Is the value stable non-sensitive configuration reused across many tasks?
-If yes, consider [**plugin defaults**](../../05.workflow-components/09.plugin-defaults/index.md), [variables](../../05.workflow-components/04.variables/index.md), or [namespace-level configuration](../../07.enterprise/02.governance/07.namespace-management/index.md).
+If yes, consider [**Policies**](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition), [variables](../../05.workflow-components/04.variables/index.md), or task properties.
 
 ## Summary
 
@@ -198,5 +198,5 @@ In most cases, the right answer is not one feature alone, but a combination:
 
 - credentials for token-based authentication
 - secrets for sensitive inputs
-- [plugin defaults](../../05.workflow-components/09.plugin-defaults/index.md) or [variables](../../05.workflow-components/04.variables/index.md) for non-sensitive configuration
+- [Policies](../../07.enterprise/02.governance/policies/index.md) (Enterprise Edition) or [variables](../../05.workflow-components/04.variables/index.md) for non-sensitive configuration
 - KV Store for changing state

@@ -34,13 +34,30 @@
                         <span class="input-group-text">
                             <Magnify />
                         </span>
-                        <p>Search</p>
+                        <p>{{ currentVersion ? `Search (${currentVersion})` : "Search" }}</p>
                     </div>
                     <div class="align-items-center d-flex input-group-append">
                         <Keyboard />
                         <span class="command">Ctrl + K</span>
                     </div>
                 </div>
+            </div>
+            <div v-if="versionOptions.length > 1" class="version-select-wrapper mb-2">
+                <label for="docs-version" class="version-label">Version</label>
+                <select
+                    id="docs-version"
+                    class="version-select form-select"
+                    @change="onVersionChange"
+                >
+                    <option
+                        v-for="option in versionOptions"
+                        :key="option.label"
+                        :value="option.version"
+                        :selected="option.selected"
+                    >
+                        {{ option.label }}
+                    </option>
+                </select>
             </div>
             <div class="collapse bd-menu-collapse" id="docs-menu">
                 <nav class="bd-links w-100" id="bd-docs-nav" aria-label="Docs navigation">
@@ -72,6 +89,7 @@
     } from "~/components/docs/RecursiveNavSidebar.vue"
     import KSAIImg from "./assets/ks-ai.svg"
     import { activeSlug } from "~/utils/store"
+    import { versionSelectOptions, resolveVersionSwitchHref } from "~/utils/versionedDocs"
 
     const props = defineProps({
         type: {
@@ -84,7 +102,46 @@
         slug: {
             type: String,
         },
+        /** MAJOR.MINOR of the current GA release (e.g. "1.3"), unset if unavailable. */
+        latestVersion: {
+            type: String,
+            default: undefined,
+        },
+        // No `default: () => []` here: combining a factory default with an
+        // array PropType breaks this component's inferred type for TS
+        // consumers (astro check reports the whole module as having "no
+        // default export"). Default to [] at the read site instead.
+        knownVersions: {
+            type: Array as PropType<string[]>,
+        },
+        /** Version label of the page being viewed (e.g. "1.2"), unset on the latest docs. */
+        currentVersion: {
+            type: String,
+            default: undefined,
+        },
     })
+
+    const versionOptions = computed(() =>
+        versionSelectOptions(props.latestVersion, props.knownVersions ?? [], props.currentVersion ?? null),
+    )
+
+    // Though `transition:persist`ed, this island's props DO refresh on
+    // client-side navigations (persist-props defaults to false; verified on a
+    // prod build) — only the onMounted activeSlug sync below doesn't re-run.
+    // The URL read is simply the same value without depending on prop-update
+    // timing mid-transition. Full navigation on purpose: versioned targets
+    // are served by the middleware, outside the prerendered routes.
+    // The probe makes this async: only the most recent selection may navigate,
+    // or a slower earlier probe would win the location assignment.
+    let switchSeq = 0
+    const onVersionChange = async (event: Event) => {
+        const version = (event.target as HTMLSelectElement).value
+        const seq = ++switchSeq
+        const href = await resolveVersionSwitchHref(version, window.location.pathname)
+        if (seq === switchSeq) {
+            window.location.href = href
+        }
+    }
 
     onMounted(() => {
         activeSlug.value = props.slug || ""
@@ -173,6 +230,29 @@
             @include media-breakpoint-down(lg) {
                 width: 100%;
                 margin-top: $spacer;
+            }
+        }
+        .version-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: calc($spacer * 0.5);
+            .version-label {
+                color: var(--ks-content-tertiary);
+                font-size: $font-size-sm;
+            }
+            // .form-select for the caret: the native one is drawn hard against
+            // the border, and Bootstrap's background-image version is inset,
+            // like every other styled select on the site. Only the block padding
+            // is ours, to keep the sidebar control compact.
+            .version-select {
+                flex: 1;
+                padding-block: calc($spacer * 0.25);
+                font-size: $font-size-sm;
+                color: var(--ks-content-primary);
+                background-color: var(--ks-background-secondary);
+                border: $block-border;
+                border-radius: calc($spacer * 0.25);
+                cursor: pointer;
             }
         }
         .ai-button-wrapper {

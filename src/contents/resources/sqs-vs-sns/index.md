@@ -95,6 +95,7 @@ SQS is the ideal choice when you need to reliably decouple the producer of work 
 *   **Background Job Processing:** An e-commerce application can send an "order received" message to an SQS queue. A separate worker service can then process orders for payment, inventory, and shipping without blocking the main application.
 *   **Throttling and Buffering:** If a service generates data faster than a downstream system can process it (e.g., logging or analytics events), SQS can act as a buffer, smoothing out traffic spikes and preventing the downstream system from being overloaded.
 *   **Microservice Communication:** When two microservices need to communicate asynchronously, SQS provides a reliable, persistent channel that ensures messages are eventually processed even if one service experiences downtime.
+*   **Workflow Buffering:** SQS is also the standard escape hatch for processes that outgrow a state machine's payload or execution-history ceilings, covered in [AWS Step Functions limits](/resources/infrastructure/step-functions-limits).
 
 ### Architecting with Amazon SNS: Notifications and Event Distribution
 
@@ -179,7 +180,7 @@ SQS and SNS are designed for massive scale and high availability, automatically 
 
 ### SQS, SNS, and Other Messaging Systems: Kafka and RabbitMQ
 
-While SQS and SNS are excellent managed services, open-source alternatives like RabbitMQ and Apache Kafka serve different needs.
+While SQS and SNS are excellent managed services, open-source alternatives like [RabbitMQ](/resources/data/rabbitmq-vs-kafka) and Apache Kafka serve different needs.
 *   **RabbitMQ** is a traditional message broker that offers more complex routing protocols (like AMQP) and is often self-hosted, giving you more control at the cost of operational overhead.
 *   **Apache Kafka** is a distributed streaming platform, designed for high-throughput, real-time data pipelines and stream processing. It offers durable, replayable logs, which is a different paradigm from the ephemeral messages of SQS/SNS.
 

@@ -26,7 +26,7 @@ author: "elliot"
 
 The landscape of workflow automation is constantly evolving, with new tools emerging to meet the demands of modern data, AI, and infrastructure teams. n8n has carved out a significant niche as an open-source, self-hostable option for connecting APIs and automating tasks. Yet, as organizations scale and workflows become more complex, many developers and platform engineers find themselves seeking alternatives that offer greater control, advanced capabilities, or a different operational model.
 
-The leading alternatives to n8n in 2026 include Kestra, Zapier, Make, Microsoft Power Automate, Gumloop, Lindy AI, ZenML, Vellum AI, Relay.app, and Node-RED — each suited to different workloads such as SaaS integration, AI agent orchestration, or robust infrastructure automation. This guide explores these top alternatives, helping you evaluate their strengths and choose the best fit for your project's unique requirements.
+The leading alternatives to n8n in 2026 include Kestra, Zapier, Make, Microsoft Power Automate, Gumloop, Lindy AI, ZenML, Vellum AI, Relay.app, and [Node-RED](/resources/infrastructure/node-red-alternatives) — each suited to different workloads such as SaaS integration, AI agent orchestration, or robust infrastructure automation. This guide explores these top alternatives, helping you evaluate their strengths and choose the best fit for your project's unique requirements.
 
 ## Why look for an alternative to n8n?
 

@@ -105,7 +105,7 @@ It supports Python, TypeScript, Go, and Bash scripts as first-class citizens and
 
 ### 6. Mage AI: A Developer-First, Hybrid Cloud Data Pipeline Tool
 
-Mage is a newer open-source tool that aims to provide an exceptional developer experience for building and managing data pipelines. It combines a code-based approach with an interactive UI, allowing engineers to build and test pipelines in a notebook-style environment that promotes rapid iteration.
+[Mage](/resources/data/mage-alternatives) is a newer open-source tool that aims to provide an exceptional developer experience for building and managing data pipelines. It combines a code-based approach with an interactive UI, allowing engineers to build and test pipelines in a notebook-style environment that promotes rapid iteration.
 
 Mage supports hybrid cloud deployments and includes features for data quality monitoring and observability directly within the pipeline definition. It's designed to be an all-in-one tool for the entire data pipeline lifecycle, from development to production monitoring.
 

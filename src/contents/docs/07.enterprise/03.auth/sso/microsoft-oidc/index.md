@@ -7,9 +7,11 @@ icon: /src/contents/docs/icons/admin.svg
 editions: ["EE", "Cloud"]
 ---
 
-## Set up Microsoft OIDC SSO
+Authenticate Kestra users with their Microsoft Entra ID credentials using OIDC.
 
-To configure Microsoft authentication, follow these steps:
+## Configure Microsoft OIDC
+
+To authenticate with Microsoft, add the following to your Micronaut configuration:
 
 ```yaml
 micronaut:
@@ -26,7 +28,7 @@ micronaut:
 
 To get your `client-id` and `client-secret`, refer to the [Microsoft Documentation](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc).
 
-## Using Microsoft Entra ID as an OIDC SSO provider
+## Using Microsoft Entra ID as an OIDC provider
 
 ### Create an Enterprise Application
 
@@ -34,9 +36,9 @@ To get your `client-id` and `client-secret`, refer to the [Microsoft Documentati
 2. Select **Microsoft Entra ID**.
 3. Navigate to **App registrations**.
 4. Click on **New registration** and provide the necessary details:
-- Enter a name for your application.
-- Set **Supported account types** (e.g., "Default Directory only - Single tenant").
-- Under **Redirect URI**, select *Web* and enter `https://{{ url }}/oauth/callback/microsoft`. Be sure to use `https` and the actual URL of your webserver.
+   - Enter a name for your application.
+   - Set **Supported account types** (e.g., "Default Directory only - Single tenant").
+   - Under **Redirect URI**, select *Web* and enter `https://{{ url }}/oauth/callback/microsoft`. Use `https` and your actual webserver URL.
 
 ### Generate client secret
 
@@ -47,11 +49,11 @@ To get your `client-id` and `client-secret`, refer to the [Microsoft Documentati
 ### Kestra configuration
 
 - Copy the **Application (client) ID** from the **Overview** section and use it as your `{{ clientId }}`.
-- In the **Endpoints** section, locate the **OpenID Connect metadata document** URL. Remove the `.well-known/openid-configuration` suffix, and use the remainining base URL as your `{{ issuerUrl }}`.
+- In the **Endpoints** section, locate the **OpenID Connect metadata document** URL. Remove the `.well-known/openid-configuration` suffix, and use the remaining base URL as your `{{ issuerUrl }}`.
 
 The final URL should look like `https://login.microsoftonline.com/{{ directory }}/v2.0/`.
 
-Here's an example Microsoft OIDC configuration:
+Example configuration:
 
 ```yaml
 micronaut:
@@ -66,4 +68,4 @@ micronaut:
             issuer: '{{ issuerUrl }}'
 ```
 
-With these settings, Kestra is now configured to use OIDC for SSO with your chosen providers. Ensure that all placeholders are replaced with the actual values obtained during the provider's setup process.
+Replace all placeholders with the values obtained from Entra ID.

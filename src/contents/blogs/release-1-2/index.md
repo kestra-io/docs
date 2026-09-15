@@ -115,7 +115,7 @@ namespace: company.team
 inputs:
   - id: assets
     type: MULTISELECT
-    expression: '{{ assets(type="io.kestra.core.models.assets.Table") | jq(".[].id") }}'
+    expression: '{{ assets(type="io.kestra.plugin.ee.assets.Table") | jq(".[].id") }}'
 
 tasks:
   - id: for_each
@@ -360,7 +360,7 @@ id: vm_provisioning
 namespace: company.team
 
 checks:
-  - condition: "{{ kv('VMs') | length < 2 }}"
+  - when: "{{ kv('VMs') | length < 2 }}"
     message: "You have provisioned too many VMs"
     style: ERROR
     behavior: BLOCK_EXECUTION
