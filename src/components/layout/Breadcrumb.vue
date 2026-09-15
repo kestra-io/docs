@@ -84,8 +84,8 @@
             max-width: 71.25rem;
         }
         .breadcrumb {
-            --bs-breadcrumb-divider: ">";
-            --bs-breadcrumb-margin-bottom: 0.5rem;
+            --ks-breadcrumb-divider: ">";
+            --ks-breadcrumb-margin-bottom: 0.5rem;
         }
         .breadcrumb-item {
             a,
