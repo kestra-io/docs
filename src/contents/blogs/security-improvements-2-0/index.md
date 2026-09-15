@@ -35,7 +35,7 @@ In practice, this is what lets you run a worker in a restricted network, an air-
 
 **Password hashing.** The BasicAuth password was stored as salted SHA-512, which is fast to compute and therefore fast to brute-force offline. It is now bcrypt with cost 12. Existing hashes are wrapped at startup by migration `2.0.10-basic-auth-password`. This migration is irreversible and prevents rolling back to 1.x basic auth, so plan the upgrade accordingly; see [database migrations in the migration guide](/docs/migration-guide/v2.0.0/database-migrations).
 
-More generally, no secret is stored in plaintext anymore. Non-recoverable secrets, passwords and tokens, use bcrypt. Recoverable secrets are encrypted with AES under `kestra.encryption.secret-key` ([encryption configuration](/docs/configuration/security-and-secrets#encryption)).
+More generally, no secret is stored in plaintext anymore. Non-recoverable secrets, passwords and tokens, use bcrypt. Recoverable secrets are encrypted with AES/GCM under `kestra.encryption.secret-key` ([encryption configuration](/docs/configuration/security-and-secrets#encryption)).
 
 **Timing oracles.** Several authentication paths responded faster when a username did not exist, or compared tokens byte by byte and stopped at the first difference. Basic-auth verification is now constant-time and always checks both username and password. Webhook keys and the auth token cache use the same constant-time comparison. The webhook endpoint is public by design, so this one is remotely exploitable without an account.
 
