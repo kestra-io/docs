@@ -84,12 +84,9 @@ jobs:
       - name: Restore Astro build cache
         uses: actions/cache@v4
         with:
-          # Listed file by file: a matched directory is archived whole, so the ~700 MB
-          # passthrough image cache in assets/ cannot be excluded by pattern.
-          path: |
-            node_modules/.astro/data-store.json
-            node_modules/.astro/incremental-build.json
-            node_modules/.astro/dist
+          # A matched directory is archived whole, so the passthrough image cache is
+          # removed by the last step below rather than excluded by pattern.
+          path: node_modules/.astro
           key: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-${{ github.sha }}
           # Only the same ref and variant: main builds production, PR builds
           # preview, so a cross-ref fallback would never match anything.
@@ -110,7 +107,8 @@ jobs:
         if: steps.asset-links.outcome == 'failure' && github.ref == 'refs/heads/main' && env.SLACK_WEBHOOK_URL != ''
         run: |
           jq -cn --arg text ":warning: docs deploy <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> restored stale pages from the incremental build cache and is rebuilding from scratch (withastro/astro#17974, #17993). See the step \"Check for dangling /_astro/ links\"." '{text: $text}' \
-            | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"
+            | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL" \
+            || echo "::warning::Slack notification failed; continuing"
 
       # Known upstream gaps (withastro/astro#17974, #17993) can restore a page whose
       # assets this build pruned. Rebuild from scratch and re-check, strictly this time.
@@ -149,3 +147,9 @@ jobs:
           template: |
             🔗 [${{ needs.truncate-url-slug.outputs.url }}](${{ needs.truncate-url-slug.outputs.url }})
             🔗 [${{ steps.preview-deploy.outputs.deployment-url }}](${{ steps.preview-deploy.outputs.deployment-url }})
+
+      # ~700 MB of passthrough image copies that regenerate in seconds; drop them
+      # before the post-job cache save so they stay out of the 10 GB quota.
+      - name: Drop the passthrough image cache before it is saved
+        if: always()
+        run: rm -rf node_modules/.astro/assets
