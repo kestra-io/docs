@@ -72,8 +72,31 @@ jobs:
           node-version-file: ".nvmrc"
           cache: npm
 
+      # sharp, workerd and esbuild are native binaries, so the installed tree is only
+      # reused on the exact lockfile, Node version and runner image: no restore-keys.
+      - name: Resolve runner image
+        id: runner-image
+        run: echo "id=${ImageOS:-unknown}-${ImageVersion:-unknown}" >> "$GITHUB_OUTPUT"
+
+      - name: Restore node_modules
+        id: node-modules
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ runner.arch }}-${{ steps.runner-image.outputs.id }}-${{ hashFiles('.nvmrc', 'package-lock.json') }}
+
       - name: Install dependencies
-        run: npm install
+        if: steps.node-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # Saved right after the install, before the build writes node_modules/.astro,
+      # which is cached separately below, per ref.
+      - name: Save node_modules
+        if: steps.node-modules.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules
+          key: ${{ steps.node-modules.outputs.cache-primary-key }}
 
       - name: Check usage of collection in SSR pages
         if: ${{ startsWith(github.repository, 'kestra-io/') && github.event_name == 'pull_request'}}
