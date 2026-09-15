@@ -43,7 +43,10 @@ const dp = await dctx.newPage()
 dp.on("pageerror", (e) => check("no page error (desktop)", false, e.message))
 await dp.goto(URL, { waitUntil: "load" })
 await dp.waitForTimeout(800)
-for (const [name, sel] of [["docs menu", "#docs-menu"], ["toc", "#tocContents"]]) {
+// Measured on the nav inside, not the wrapper: above lg the collapse wrapper
+// is `display: contents` so it has no box of its own, which is the point — it
+// must not perturb the sidebar's box model.
+for (const [name, sel] of [["docs menu", "#docs-menu nav"], ["toc", "#tocContents nav"]]) {
     const hh = await dp.evaluate((s) => document.querySelector(s)?.getBoundingClientRect().height ?? -1, sel)
     check(`${name} open by default on desktop`, hh > 50, `h=${hh}`)
 }

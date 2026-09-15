@@ -162,11 +162,15 @@
         }
 
         @include media-breakpoint-up(lg) {
-            grid-template-rows: 1fr;
-            transition: none;
+            // Above the breakpoint the panel is always open and never
+            // animates, so the grid wrapper and its inner div drop out of
+            // the box model entirely. Leaving them as boxes shifts the
+            // sidebar ~8px (grid suppresses the margin collapse main relied
+            // on) and changes where its max-height clips.
+            display: contents;
 
             .bd-toc-collapse-inner {
-                overflow: visible;
+                display: contents;
             }
         }
     }
