@@ -1349,26 +1349,37 @@
         .navbar-collapse {
             max-width: 100%;
 
-            // Closed state folds the panel away without `display: none`, so the
-            // open/close transition still runs (it replaces bootstrap's
-            // `.collapsing` bookkeeping).
+            // Closed with `display: none`, and `allow-discrete` keeps the fade
+            // that a bare `display` toggle would lose. The obvious
+            // `visibility: hidden` instead costs layout for this panel's ~270
+            // descendants on every mobile page load, which lighthouse reads as
+            // TBT; `display: none` skips the subtree the way bootstrap's
+            // `.collapse` did.
             @include media-breakpoint-down(xl) {
-                height: 0;
+                display: none;
                 opacity: 0;
-                visibility: hidden;
                 overflow-y: auto;
                 overflow-x: hidden;
-                transition: all 0.1s ease-in-out;
                 background: var(--ks-background-body);
                 margin-top: -0.25rem;
+                transition:
+                    opacity 0.1s ease-in-out,
+                    display 0.1s allow-discrete;
 
                 &.show {
-                    height: auto;
+                    display: block;
                     max-height: calc(100vh - 4rem);
                     min-height: calc(100vh - 4rem);
                     opacity: 1;
-                    visibility: visible;
-                    transition: all 0.25s ease-in-out;
+                    transition:
+                        opacity 0.25s ease-in-out,
+                        display 0.25s allow-discrete;
+                }
+
+                @starting-style {
+                    &.show {
+                        opacity: 0;
+                    }
                 }
             }
 
