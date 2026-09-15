@@ -58,8 +58,13 @@ jobs:
 
       # Commit history for the sitemaps' lastmod dates, without the blobs of old
       # revisions: ~9 MB in a few seconds, where fetch-depth 0 took up to 1m50s.
+      # Only this commit's ancestry is read, and a complete clone has nothing to do.
       - name: Fetch commit history
-        run: git fetch --unshallow --filter=blob:none --no-tags origin
+        run: |
+          if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+            git fetch --unshallow --filter=blob:none --no-tags origin "$GITHUB_SHA" \
+              || git fetch --unshallow --filter=blob:none --no-tags origin
+          fi
 
       - name: Set up Node via nvm
         uses: actions/setup-node@v6
@@ -83,7 +88,7 @@ jobs:
           # in seconds; keep it out of the repository's 10 GB cache quota.
           path: |
             node_modules/.astro
-            !node_modules/.astro/assets
+            !node_modules/.astro/assets/**
           key: astro-build-${{ env.BUILD_VARIANT }}-${{ github.ref_name }}-${{ github.sha }}
           # Only the same ref and variant: main builds production, PR builds
           # preview, so a cross-ref fallback would never match anything.
@@ -98,6 +103,13 @@ jobs:
         id: asset-links
         continue-on-error: true
         run: node scripts/check-dist-asset-links.mjs dist
+
+      # A silent fallback on main would hide a recurring double build; say so in Slack.
+      - name: Slack - incremental cache discarded
+        if: steps.asset-links.outcome == 'failure' && github.ref == 'refs/heads/main' && env.SLACK_WEBHOOK_URL != ''
+        run: |
+          jq -cn --arg text ":warning: docs deploy <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|#${{ github.run_number }}> restored stale pages from the incremental build cache and is rebuilding from scratch (withastro/astro#17974, #17993). See the step \"Check for dangling /_astro/ links\"." '{text: $text}' \
+            | curl -sS -X POST -H 'Content-type: application/json' --data @- "$SLACK_WEBHOOK_URL"
 
       # Known upstream gaps (withastro/astro#17974, #17993) can restore a page whose
       # assets this build pruned. Rebuild from scratch and re-check, strictly this time.

@@ -46,9 +46,14 @@ describe("gitLastModified", () => {
         gitLastModified("src/contents/docs/a/index.md")
         gitLastModified("src/contents/docs/b/index.md")
         gitLastModified("src/contents/blogs/post/index.md")
-        const spawned = execFileSync.mock.calls.map(([, args]) => (args as string[])[0])
-        expect(spawned.filter((sub) => sub !== "rev-parse")).toHaveLength(1)
-        expect(spawned.filter((sub) => sub === "rev-parse")).toHaveLength(1)
+        const spawned = execFileSync.mock.calls.map(([, args]) => args as string[])
+        const logs = spawned.filter((args) => args.includes("log"))
+        expect(logs).toHaveLength(1)
+        expect(spawned.filter((args) => args[0] === "rev-parse")).toHaveLength(1)
+        // Rename detection reads blobs (a lazy download on a blobless clone) and
+        // quoted paths would not match the keys callers look up.
+        expect(logs[0]).toContain("--no-renames")
+        expect(logs[0]).toContain("core.quotePath=false")
     })
 
     it("resolves absolute paths against the repository root", async () => {

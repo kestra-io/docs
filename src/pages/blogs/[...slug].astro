@@ -47,17 +47,21 @@ const staticImage = image
     ? await getImage({ src: image, format: "webp" })
     : null
 
-const allAuthors = authors ?? (author ? [author] : [])
+// Same fallback as useBlogAuthors: an empty `authors` list defers to `author`.
+const allAuthors = authors?.length ? authors : author ? [author] : []
 
 // Transforms are recorded per page and replayed when the page is restored by the
-// incremental build; a raw ImageMetadata src is not, and its file may be pruned.
+// incremental build; a raw ImageMetadata src is not. 96px is 2x the rendered 48px.
 const Avatars = Object.fromEntries(
     await Promise.all(
         allAuthors.map(async (a) => {
             const key = `${a.image}-sm.png`
             const original = TeamsImages[key]
             if (!original) return [key, undefined]
-            const { src, attributes } = await getImage({ src: original })
+            const { src, attributes } = await getImage({
+                src: original,
+                width: 96,
+            })
             return [
                 key,
                 { src, width: attributes.width, height: attributes.height },

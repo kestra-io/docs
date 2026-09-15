@@ -7,8 +7,8 @@ const cloudflareCache = {
     },
 } as RequestInit
 
-// Prerendering runs in Node and hundreds of pages fetch the same payloads, so
-// memoize them for the build. The worker (workerd) is excluded to keep runtime freshness.
+// Prerendering runs in Node and hundreds of pages fetch the same payloads, so memoize
+// them per build (workerd excluded). Callers share the resolved object: never mutate it.
 const memoizeCachedFetches =
     import.meta.env.SSR &&
     import.meta.env.PROD &&
