@@ -8,7 +8,7 @@ import BlogDetails from "~/components/blogs/BlogDetails.vue"
 import BlogToc from "~/components/blogs/BlogToc.vue"
 import BlogSocials from "~/components/blogs/BlogSocials.vue"
 import BlogMobileHeader from "~/components/blogs/BlogMobileHeader.vue"
-import TeamsImages from "~/utils/teamsImages"
+import { default as Avatars } from "~/utils/teamsImages"
 import TwoColumnStickyLayout from "~/components/layouts/TwoColumnStickyLayout.vue"
 import Mesh from "~/components/layout/Mesh.vue"
 import Breadcrumb from "~/components/layout/Breadcrumb.vue"
@@ -49,26 +49,6 @@ const staticImage = image
 
 // Same fallback as useBlogAuthors: an empty `authors` list defers to `author`.
 const allAuthors = authors?.length ? authors : author ? [author] : []
-
-// Transforms are recorded per page and replayed when the page is restored by the
-// incremental build; a raw ImageMetadata src is not. 96px is 2x the rendered 48px.
-const Avatars = Object.fromEntries(
-    await Promise.all(
-        allAuthors.map(async (a) => {
-            const key = `${a.image}-sm.png`
-            const original = TeamsImages[key]
-            if (!original) return [key, undefined]
-            const { src, attributes } = await getImage({
-                src: original,
-                width: 96,
-            })
-            return [
-                key,
-                { src, width: attributes.width, height: attributes.height },
-            ]
-        }),
-    ),
-)
 
 const buildAuthor = (a: { name: string; linkedin?: string | null; medium?: string | null }) => {
     const sameAs = [a.linkedin, a.medium].filter(Boolean)
