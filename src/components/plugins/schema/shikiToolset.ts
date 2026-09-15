@@ -55,21 +55,20 @@ export function resolveLanguage(lang?: string | null): ShikiLanguage | undefined
 let corePromise: Promise<HighlighterCore> | undefined
 const langPromises = new Map<ShikiLanguage, Promise<unknown>>()
 
-function createCore() {
-    // The JavaScript regex engine, not the default Oniguruma WASM one, which
-    // workerd refuses to compile ("Wasm code generation disallowed by embedder").
-    return Promise.all([
+async function createCore() {
+    const [core, engine, light, dark] = await Promise.all([
         import("shiki/core"),
         import("shiki/engine/javascript"),
         import("shiki/themes/github-light-default.mjs"),
         import("shiki/themes/github-dark-default.mjs"),
-    ]).then(([core, engine, light, dark]) =>
-        core.createHighlighterCore({
-            themes: [light.default, dark.default],
-            langs: [],
-            engine: engine.createJavaScriptRegexEngine(),
-        }),
-    )
+    ])
+    // The JavaScript regex engine, not the default Oniguruma WASM one, which
+    // workerd refuses to compile ("Wasm code generation disallowed by embedder").
+    return core.createHighlighterCore({
+        themes: [light.default, dark.default],
+        langs: [],
+        engine: engine.createJavaScriptRegexEngine(),
+    })
 }
 
 function loadLanguage(highlighter: HighlighterCore, lang: string) {
