@@ -65,6 +65,32 @@ describe("$fetchApiCached during a production build", () => {
         expect(fetchMock).toHaveBeenCalledTimes(2)
     })
 
+    it("retries a 5xx but not a 4xx", async () => {
+        vi.useFakeTimers()
+        try {
+            const { $fetchApiCachedWithRetry } = await load()
+
+            fetchMock.mockResolvedValue(new Response("nope", { status: 404 }))
+            const notFound = $fetchApiCachedWithRetry("/missing")
+            notFound.catch(() => {}) // observed below; avoid an unhandled rejection
+            await vi.runAllTimersAsync()
+            await expect(notFound).rejects.toThrow("404")
+            // A 4xx is a stable answer: one attempt, no backoff.
+            expect(fetchMock).toHaveBeenCalledTimes(1)
+
+            fetchMock.mockReset()
+            fetchMock
+                .mockResolvedValueOnce(new Response("down", { status: 503 }))
+                .mockResolvedValueOnce(json({ ok: true }))
+            const recovered = $fetchApiCachedWithRetry("/flaky-5xx")
+            await vi.runAllTimersAsync()
+            await expect(recovered).resolves.toEqual({ ok: true })
+            expect(fetchMock).toHaveBeenCalledTimes(2)
+        } finally {
+            vi.useRealTimers()
+        }
+    })
+
     it("retries after a failure instead of replaying it", async () => {
         fetchMock
             .mockImplementationOnce(() => Promise.reject(new Error("down")))

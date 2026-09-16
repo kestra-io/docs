@@ -124,6 +124,12 @@ export async function $fetchApiCached<T = any>(
     )
 }
 
+// internalFetch attaches the HTTP status to the error it throws; a network
+// failure has none.
+function errorStatus(error: unknown): number | undefined {
+    return (error as { response?: { status?: number } })?.response?.status
+}
+
 const RETRY_ATTEMPTS = 3
 const RETRY_BASE_DELAY_MS = 500
 
@@ -139,6 +145,10 @@ export async function $fetchApiCachedWithRetry<T = any>(
             return await $fetchApiCached<T>(url, init)
         } catch (e) {
             lastError = e
+            // A 4xx is a stable answer, so retrying only burns the backoff
+            // before failing with it. Network errors carry no status.
+            const status = errorStatus(e)
+            if (status && status < 500) break
             if (attempt < RETRY_ATTEMPTS) {
                 await new Promise((resolve) =>
                     setTimeout(resolve, RETRY_BASE_DELAY_MS * attempt),
@@ -158,8 +168,7 @@ export async function $fetchApiCachedOptional<T = any>(
     try {
         return await $fetchApiCached<T>(url, init)
     } catch (error) {
-        const status = (error as { response?: { status?: number } })?.response
-            ?.status
+        const status = errorStatus(error)
         console.warn(
             `Optional API fetch failed (${status ?? "network"}): ${url}`,
         )

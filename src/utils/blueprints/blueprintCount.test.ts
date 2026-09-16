@@ -47,11 +47,24 @@ describe("fetchTotalBlueprintsCount", () => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
-    it("treats a missing total as zero", async () => {
+    it("throws rather than shipping 0 when the response carries no usable total", async () => {
         fetchMock.mockResolvedValue(jsonResponse({}))
         const fetchTotalBlueprintsCount = await freshFetchTotalBlueprintsCount()
 
-        expect(await fetchTotalBlueprintsCount()).toBe("0")
+        await expect(fetchTotalBlueprintsCount()).rejects.toThrow(
+            "no usable total",
+        )
+        // The request itself succeeded, so it is not retried.
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it("throws when the total rounds down to zero", async () => {
+        fetchMock.mockResolvedValue(jsonResponse({ total: 4 }))
+        const fetchTotalBlueprintsCount = await freshFetchTotalBlueprintsCount()
+
+        await expect(fetchTotalBlueprintsCount()).rejects.toThrow(
+            "no usable total",
+        )
     })
 
     it("shares one request across concurrent and repeated callers", async () => {

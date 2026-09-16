@@ -1,10 +1,19 @@
 import { $fetchApiCachedWithRetry } from "~/utils/fetch"
 
-async function loadTotalBlueprintsCount(): Promise<string> {
-    const { total = 0 } = await $fetchApiCachedWithRetry<{ total: number }>(
+// Un-memoized: for per-request (prerender = false) pages, where the memo
+// below freezes the count for the Worker isolate's lifetime.
+export async function loadTotalBlueprintsCount(): Promise<string> {
+    const { total } = await $fetchApiCachedWithRetry<{ total?: number }>(
         "/blueprints/versions/latest?size=1&page=1",
     )
-    const rounded = Math.floor(total / 10) * 10
+    const rounded = Math.floor((total ?? 0) / 10) * 10
+    // A 200 carrying a missing or nonsensical total is as wrong as a failed
+    // request, so it fails the same way rather than shipping "0+ Blueprints".
+    if (rounded <= 0) {
+        throw new Error(
+            `Blueprints count endpoint returned no usable total (got ${total})`,
+        )
+    }
     return `${rounded}`
 }
 

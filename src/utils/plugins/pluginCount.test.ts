@@ -112,16 +112,6 @@ describe("replaceTotalPluginsPlaceholder", () => {
 })
 
 describe("fetchTotalPluginsCount", () => {
-    const subgroups = [
-        {
-            tasks: [{ cls: "a.A" }, { cls: "a.B" }],
-            triggers: [{ cls: "a.C" }],
-            categories: ["should be ignored"],
-        },
-        // Duplicate class across groups counts once.
-        { tasks: [{ cls: "a.A" }, { cls: "b.D" }] },
-    ]
-
     // The count is memoized at module level, so each test re-imports a fresh copy.
     async function freshFetchTotalPluginsCount() {
         vi.resetModules()
@@ -159,8 +149,28 @@ describe("fetchTotalPluginsCount", () => {
         expect(await fetchTotalPluginsCount()).toBe("1,900")
     })
 
+    it("throws rather than shipping 0 when the payload yields no plugin classes", async () => {
+        fetchMock.mockResolvedValue(jsonResponse([]))
+        const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
+
+        await expect(fetchTotalPluginsCount()).rejects.toThrow(
+            "no usable plugin classes",
+        )
+        // The request itself succeeded, so it is not retried.
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it("throws when the class count rounds down to zero", async () => {
+        fetchMock.mockResolvedValue(subgroupsWith(42))
+        const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
+
+        await expect(fetchTotalPluginsCount()).rejects.toThrow(
+            "no usable plugin classes",
+        )
+    })
+
     it("shares one request across concurrent and repeated callers", async () => {
-        fetchMock.mockResolvedValue(jsonResponse(subgroups))
+        fetchMock.mockResolvedValue(subgroupsWith(234))
         const fetchTotalPluginsCount = await freshFetchTotalPluginsCount()
 
         const [first, second] = await Promise.all([

@@ -25,7 +25,16 @@ export function formatPluginCount(count: number): string {
 
 async function loadTotalPluginsCount(): Promise<string> {
     const pluginGroups = await $fetchApiCachedWithRetry<Plugin[]>("/plugins/subgroups");
-    return formatPluginCount(calculateTotalPlugins(pluginGroups));
+    const count = calculateTotalPlugins(pluginGroups);
+    const formatted = formatPluginCount(count);
+    // A 200 carrying an empty or unexpected payload is as wrong as a failed
+    // request, so it fails the same way rather than shipping "0+ plugins".
+    if (formatted === "0") {
+        throw new Error(
+            `Plugins subgroups endpoint returned no usable plugin classes (counted ${count})`,
+        );
+    }
+    return formatted;
 }
 
 let totalPluginsCountPromise: Promise<string> | undefined;
