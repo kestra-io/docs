@@ -29,9 +29,6 @@ Disallow: /*?q=
 Disallow: /*?search=
 Disallow: /*?ref=
 Disallow: /*?utm_
-# Link shortener (?clid=) and HubSpot cross-domain (__hstc/__hssc/__hsfp)
-# parameters: every variant already canonicalizes to the clean URL, so
-# blocking them only saves crawl budget.
 Disallow: /*?clid=
 Disallow: /*&clid=
 Disallow: /*?__hs
