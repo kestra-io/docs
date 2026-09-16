@@ -79,16 +79,22 @@ By default, it's 0, which means the number of available CPUs. Two thread pools a
 
 If you run the JDBC backend on MySQL, you may see meaningfully lower executor throughput than on PostgreSQL on comparable hardware, even after tuning the JDBC queue settings above. This comes from a MySQL server default, not from the JDBC queue itself.
 
-Kestra's JDBC queue commits frequently: a busy instance can produce thousands of commits per second. By default, MySQL synchronously flushes the binary log to disk on every commit (`sync_binlog=1`), on top of its own redo log flush; PostgreSQL only flushes once per commit. That extra flush is what dominates at this commit rate.
+Kestra's JDBC queue is commit-heavy. A busy instance can produce thousands of commits per second. By default, MySQL synchronously flushes the binary log to disk on every commit (`sync_binlog=1`), on top of its own redo log flush. PostgreSQL does not perform this second fsync. That extra flush is what dominates at this commit rate.
 
-`sync_binlog` controls how often the binary log is flushed. Setting it above `1` flushes only every Nth commit, applied server-wide:
+`sync_binlog` controls how often the binary log is flushed. Setting it above `1` flushes only every Nth commit, applied server-wide. Values around 25 significantly reduce the throughput gap to PostgreSQL while keeping the binary log exposure window small:
 
 ```ini
 [mysqld]
 sync_binlog=25
 ```
 
-**Trade-off:** this doesn't affect `mysqld` crash safety or data durability (`innodb_flush_log_at_trx_commit` is untouched): only the binary log can lose up to N-1 transactions on an OS-level crash, which matters only for replication or point-in-time recovery. A single instance with no replicas or binlog backups has no practical downside; otherwise, pick N based on acceptable replication lag.
+You can also apply this without a server restart:
+
+```sql
+SET GLOBAL sync_binlog = 25;
+```
+
+This setting does not affect `mysqld` crash safety or data durability — `innodb_flush_log_at_trx_commit` is untouched. Only the binary log is affected: up to N-1 transactions can be lost from the binary log on an OS-level crash, which impacts replication and point-in-time recovery only. The exposure is limited to the binary log and has no impact on data visible to Kestra. Pick N based on your acceptable replication lag.
 
 ## The Kafka backend
 
