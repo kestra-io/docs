@@ -7,7 +7,7 @@ metaDescription: How Amdocs' Foundation team uses Kestra to orchestrate end-to-e
 heroImage: ./hero.png
 featuredImage: ./hero.png
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo.svg
 tasks:
   - io.kestra.plugin.scripts.shell.Commands
   - io.kestra.plugin.core.flow.Subflow

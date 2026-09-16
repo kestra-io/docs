@@ -11,7 +11,7 @@ metaDescription: This is the story of how Ntico leveraged Kestra to power
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo.svg
 logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.aws.athena.Query

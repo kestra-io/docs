@@ -11,7 +11,7 @@ metaDescription: This is the story of Valorissimo's partnership with Hanalytics
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo.svg
 tasks:
   - io.kestra.plugin.gcp.bigquery.Load
   - io.kestra.plugin.hightouch.Sync

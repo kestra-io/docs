@@ -11,7 +11,7 @@ metaDescription: This is the story of how Airpaz, a leading travel service
 heroImage: ./hero.jpg
 featuredImage: ./hero.jpg
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo.svg
 tasks:
   - io.kestra.plugin.scripts.python.Commands
   - io.kestra.plugin.jdbc.clickhouse.Query

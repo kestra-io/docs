@@ -11,7 +11,7 @@ metaDescription: This is the story of Sopht’s partnership with DataFlooder to
 heroImage: ./hero.png
 featuredImage: ./hero.png
 logo: ./logo.svg
-logoDark: ./logo-dark.svg
+logoDark: ./logo.svg
 logoIcon: ./icon.svg
 tasks:
   - io.kestra.plugin.terraform.cli.TerraformCLI
