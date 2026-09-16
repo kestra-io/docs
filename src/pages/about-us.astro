@@ -39,7 +39,9 @@ const description =
     .about-us {
         position: relative;
         min-height: 100vh;
-        overflow-y: hidden;
+        // clip, not hidden: hidden on one axis computes the other to auto,
+        // making this a ~15000px scroll container WebKit fails to repaint.
+        overflow-x: clip;
 
         &::after {
             content: "";

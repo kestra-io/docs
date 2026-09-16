@@ -1,10 +1,9 @@
 import type { App } from "vue"
 import { defineComponent, h } from "vue"
 import { createGtm } from "@gtm-support/vue-gtm"
-import { USALPlugin } from "@usal/vue"
 import { GTM_ID } from "astro:env/client"
 
-export default (app: App) => {
+export default async (app: App) => {
     app.use(
         createGtm({
             id: GTM_ID, // Your GTM single container ID, array of container ids ['GTM-xxxxxx', 'GTM-yyyyyy'] or array of objects [{id: 'GTM-xxxxxx', queryParams: { gtm_auth: 'abc123', gtm_preview: 'env-4', gtm_cookies_win: 'x'}}, {id: 'GTM-yyyyyy', queryParams: {gtm_auth: 'abc234', gtm_preview: 'env-5', gtm_cookies_win: 'x'}}], // Your GTM single container ID or array of container ids ['GTM-xxxxxx', 'GTM-yyyyyy']
@@ -27,7 +26,15 @@ export default (app: App) => {
         }),
     )
 
-    if (typeof document === "undefined" || !document.documentElement.classList.contains("no-animation")) {
+    // USAL self-initialises on import, so gating app.use() is not enough: below
+    // 768px, where app.scss already neutralises it, the module must not load.
+    const animationsOff =
+        typeof window === "undefined" ||
+        document.documentElement.classList.contains("no-animation") ||
+        window.matchMedia("(max-width: 768px)").matches
+
+    if (!animationsOff) {
+        const { USALPlugin } = await import("@usal/vue")
         app.use(USALPlugin, {
             defaults: {
                 duration: 200,
