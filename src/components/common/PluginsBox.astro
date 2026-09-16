@@ -5,10 +5,14 @@ import { $fetchApiCachedOptional } from "~/utils/fetch"
 import { type PluginMetadata } from "~/utils/plugins/plugin"
 import TaskIcon from "./TaskIcon.astro"
 import { randomSortFunction } from "~/utils/random"
+import { fetchDeprecatedOnlyPlugins } from "~/utils/plugins/deprecatedOnlyPlugins"
 
 const totalPlugins = await fetchTotalPluginsCount()
 const pluginMetadata =
     (await $fetchApiCachedOptional<PluginMetadata[]>("/plugins/metadata")) ?? []
+// Metadata keeps listing plugins whose elements are all deprecated; their
+// group page 301s to /plugins, so linking a logo there is a redirected link.
+const deprecatedOnly = await fetchDeprecatedOnlyPlugins()
 
 const filteredPlugins = pluginMetadata
     .filter(
@@ -19,7 +23,8 @@ const filteredPlugins = pluginMetadata
             r.artifactId !== "plugin-debezium" &&
             !r.artifactId.startsWith("plugin-ee") &&
             !r.artifactId.startsWith("secret-") &&
-            !r.artifactId.startsWith("storage-"),
+            !r.artifactId.startsWith("storage-") &&
+            !deprecatedOnly.has(r.artifactId.toLowerCase()),
     )
     .sort(randomSortFunction)
     .slice(0, 20)
