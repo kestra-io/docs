@@ -41,6 +41,12 @@ const totalBlueprints = await fetchTotalBlueprintsCount()
 </section>
 
 <style lang="scss">
+    // Astro leaves the inside of :has() unscoped, so this reaches the cards the
+    // carousel renders and drops the band when the blueprints API degraded.
+    section:not(:has(.blueprint)) {
+        display: none;
+    }
+
     section {
         background-color: var(--ks-background-body);
         color: var(--ks-content-primary);

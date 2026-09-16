@@ -150,6 +150,45 @@ describe("transient failures", () => {
         expect(fetchMock).toHaveBeenCalledTimes(1)
     })
 
+    it("waits out a Retry-After sent as an HTTP-date", async () => {
+        vi.setSystemTime(new Date("2026-01-01T00:00:00Z"))
+        fetchMock
+            .mockImplementationOnce(() =>
+                Promise.resolve(
+                    failure(503, {
+                        "retry-after": "Thu, 01 Jan 2026 00:00:02 GMT",
+                    }),
+                ),
+            )
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchApiCached } = await load()
+
+        const pending = $fetchApiCached("/dated")
+        await vi.advanceTimersByTimeAsync(1_999)
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+
+        await vi.advanceTimersByTimeAsync(1)
+        expect(await pending).toEqual({ ok: true })
+    })
+
+    it("falls back to backoff when Retry-After is in the past", async () => {
+        fetchMock
+            .mockImplementationOnce(() =>
+                Promise.resolve(
+                    failure(503, { "retry-after": "Thu, 01 Jan 1970 00:00:00 GMT" }),
+                ),
+            )
+            .mockImplementation(() => Promise.resolve(json({ ok: true })))
+        const { $fetchApiCached } = await load()
+
+        const pending = $fetchApiCached("/past")
+        await vi.advanceTimersByTimeAsync(249)
+        expect(fetchMock).toHaveBeenCalledTimes(1)
+
+        await vi.advanceTimersByTimeAsync(1)
+        expect(await pending).toEqual({ ok: true })
+    })
+
     it("waits out a Retry-After header before the next attempt", async () => {
         fetchMock
             .mockImplementationOnce(() =>

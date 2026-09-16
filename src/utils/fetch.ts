@@ -60,12 +60,22 @@ function isTransient(error: FetchError): boolean {
     return status === undefined || RETRYABLE_STATUSES.has(status)
 }
 
-function retryDelay(attempt: number, retryAfter: string | null): number {
+function retryAfterDelay(retryAfter: string | null): number | undefined {
+    if (!retryAfter) return undefined
     const seconds = Number(retryAfter)
-    if (Number.isFinite(seconds) && seconds > 0) {
-        return Math.min(seconds * 1000, RETRY_MAX_DELAY_MS)
+    if (Number.isFinite(seconds)) {
+        return seconds > 0 ? Math.min(seconds * 1000, RETRY_MAX_DELAY_MS) : undefined
     }
-    return Math.min(RETRY_BASE_DELAY_MS * 2 ** (attempt - 1), RETRY_MAX_DELAY_MS)
+    // The header is delta-seconds or an HTTP-date; Number() makes NaN of the latter.
+    const until = Date.parse(retryAfter) - Date.now()
+    return until > 0 ? Math.min(until, RETRY_MAX_DELAY_MS) : undefined
+}
+
+function retryDelay(attempt: number, retryAfter: string | null): number {
+    return (
+        retryAfterDelay(retryAfter) ??
+        Math.min(RETRY_BASE_DELAY_MS * 2 ** (attempt - 1), RETRY_MAX_DELAY_MS)
+    )
 }
 
 async function fetchOnce(url: string, init: RequestInit): Promise<Response> {
